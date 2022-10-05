@@ -24,7 +24,7 @@ class Builder extends AuthenticatedMenu
     public function mainMenu(ItemInterface $menu): void
     {
         $menu->addHeader('Payments');
-        $menu->addChild(PaymentMenu::main());
-        $menu->addChild(PaymentMenu::methods());
+        PaymentMenu::main($menu);
+        PaymentMenu::methods($menu);
     }
 }

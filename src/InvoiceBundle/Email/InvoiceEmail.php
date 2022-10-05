@@ -14,19 +14,20 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Email;
 
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
 final class InvoiceEmail extends TemplatedEmail
 {
-    private BaseInvoice $invoice;
+    private Invoice $invoice;
 
-    public function __construct(BaseInvoice $invoice)
+    public function __construct(Invoice $invoice)
     {
         $this->invoice = $invoice;
         parent::__construct();
     }
 
-    public function getInvoice(): BaseInvoice
+    public function getInvoice(): Invoice
     {
         return $this->invoice;
     }
@@ -36,6 +37,9 @@ final class InvoiceEmail extends TemplatedEmail
         return '@SolidInvoiceInvoice/Email/invoice.html.twig';
     }
 
+    /**
+     * @return array{invoice: Invoice}
+     */
     public function getContext(): array
     {
         return \array_merge(['invoice' => $this->invoice], parent::getContext());

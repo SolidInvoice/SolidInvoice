@@ -31,14 +31,22 @@ trait SymfonyKernelTrait
     protected static $kernel;
 
     /**
+     * @var ContainerInterface|null
+     *
+     * @deprecated use static::getContainer() instead
+     */
+    protected static $container;
+
+    /**
      * @var bool
      */
     protected static $booted = false;
 
     protected function tearDown(): void
     {
+        parent::tearDown();
+
         static::ensureKernelShutdown();
-        static::$class = null;
         static::$kernel = null;
         static::$booted = false;
     }
@@ -56,9 +64,6 @@ trait SymfonyKernelTrait
         $kernel->boot();
         static::$kernel = $kernel;
         static::$booted = true;
-
-        $container = static::$kernel->getContainer();
-        static::$container = $container->has('test.service_container') ? $container->get('test.service_container') : $container;
 
         return static::$kernel;
     }
@@ -78,6 +83,7 @@ trait SymfonyKernelTrait
         }
 
         try {
+            // @phpstan-ignore-next-line
             $container = self::$kernel->getContainer()->get('test.service_container');
             assert($container instanceof ContainerInterface);
 
@@ -130,7 +136,5 @@ trait SymfonyKernelTrait
                 $container->reset();
             }
         }
-
-        static::$container = null;
     }
 }

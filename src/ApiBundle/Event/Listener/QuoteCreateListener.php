@@ -35,7 +35,7 @@ class QuoteCreateListener implements EventSubscriberInterface
     }
 
     /**
-     * @return array<string, list<array<string, int>>>
+     * @return array<string, list<list<string|int>>>
      */
     public static function getSubscribedEvents(): array
     {

@@ -28,7 +28,7 @@ class Kernel extends BaseKernel
 
     private const CONFIG_EXTS = '.{php,xml,yaml,yml}';
 
-    public function boot()
+    public function boot(): void
     {
         parent::boot();
 

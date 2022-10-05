@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InstallBundle\Action;
 
 use DateTime;
+use DateTimeInterface;
 use Defuse\Crypto\Exception\EnvironmentIsBrokenException;
 use Defuse\Crypto\Key;
 use Doctrine\Persistence\ManagerRegistry;
@@ -71,6 +72,10 @@ final class Setup
         $this->router = $router;
     }
 
+    /**
+     * @return Template|RedirectResponse
+     * @throws EnvironmentIsBrokenException
+     */
     public function __invoke(Request $request)
     {
         if ($request->isMethod(Request::METHOD_POST)) {
@@ -103,6 +108,10 @@ final class Setup
         return $userCount;
     }
 
+    /**
+     * @return Template|RedirectResponse
+     * @throws EnvironmentIsBrokenException
+     */
     public function handleForm(Request $request)
     {
         $form = $this->getForm();
@@ -127,13 +136,17 @@ final class Setup
         return $this->render($form);
     }
 
+    /**
+     * @param array{username: string, password: string, email_address: string} $data
+     * @return void
+     */
     private function createAdminUser(array $data): void
     {
         $user = new User();
 
         $encoder = $this->passwordHasherFactory->getPasswordHasher($user);
 
-        $password = $encoder->hash($data['password'], null);
+        $password = $encoder->hash($data['password']);
 
         $user->setUsername($data['username'])
             ->setEmail($data['email_address'])
@@ -162,6 +175,8 @@ final class Setup
     }
 
     /**
+     * @param array{locale: string, currency?: string} $data
+     *
      * @throws EnvironmentIsBrokenException|InvalidArgumentException|DependencyInjectionException\ServiceCircularReferenceException|DependencyInjectionException\ServiceNotFoundException
      */
     private function saveConfig(array $data): void
@@ -170,7 +185,7 @@ final class Setup
 
         $config = [
             'locale' => $data['locale'],
-            'installed' => $time->format(DateTime::ATOM),
+            'installed' => $time->format(DateTimeInterface::ATOM),
             'secret' => Key::createNewRandomKey()->saveToAsciiSafeString(),
         ];
 

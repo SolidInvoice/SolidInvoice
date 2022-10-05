@@ -32,7 +32,7 @@ class Builder extends AuthenticatedMenu
     public function userMenu(ItemInterface $menu): void
     {
         $menu->addDivider();
-        $menu->addChild(MainMenu::logout());
+        MainMenu::logout($menu);
     }
 
     /**
@@ -44,9 +44,9 @@ class Builder extends AuthenticatedMenu
     {
         $menu->addDivider();
         $menu->addHeader('System');
-        $menu->addChild(MainMenu::tax());
-        $menu->addChild(MainMenu::users());
-        $menu->addChild(MainMenu::settings());
-        $menu->addChild(MainMenu::api());
+        MainMenu::tax($menu);
+        MainMenu::users($menu);
+        MainMenu::settings($menu);
+        MainMenu::api($menu);
     }
 }

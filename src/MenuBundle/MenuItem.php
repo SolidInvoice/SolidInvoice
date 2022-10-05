@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MenuBundle;
 
-use InvalidArgumentException;
 use Knp\Menu\MenuItem as BaseItem;
+use function is_array;
 
 /**
  * @see \SolidInvoice\MenuBundle\Tests\MenuItemTest
@@ -24,24 +24,22 @@ class MenuItem extends BaseItem implements ItemInterface
     private const DIVIDER_KEY = 'divider';
 
     /**
-     * @param ItemInterface|string|array<int|string, mixed> $child
-     *
+     * @param ItemInterface|string $child
+     * @param array<string, mixed> $options
      * @return ItemInterface
-     *
-     * @throws InvalidArgumentException
      */
-    public function addChild($child, array $options = []): \Knp\Menu\ItemInterface
+    public function addChild($child, array $options = []): ItemInterface
     {
-        if (\is_array($child) && [] === $options) {
-            [$child, $options] = $child;
-        }
-
         $options['attributes'] = $options['attributes'] ?? [];
         $options['attributes']['class'] = ($options['attributes']['class'] ?? '') . ' nav-item';
         $options['linkAttributes'] = $options['linkAttributes'] ?? [];
         $options['linkAttributes']['class'] = ($options['linkAttributes']['class'] ?? '') . ' nav-link';
 
-        return parent::addChild($child, $options);
+        $result = parent::addChild($child, $options);
+
+        assert($result instanceof ItemInterface);
+
+        return $result;
     }
 
     public function addDivider(string $type = ''): ItemInterface

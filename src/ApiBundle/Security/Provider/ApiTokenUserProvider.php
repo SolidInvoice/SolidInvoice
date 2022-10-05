@@ -38,7 +38,7 @@ class ApiTokenUserProvider implements UserProviderInterface
         return $this->tokenRepository->getUsernameForToken($token);
     }
 
-    public function loadUserByUsername($username): UserInterface
+    public function loadUserByUsername(string $username): UserInterface
     {
         $user = $this->userRepository->findOneBy(['username' => $username]);
 
@@ -58,7 +58,7 @@ class ApiTokenUserProvider implements UserProviderInterface
         throw new UnsupportedUserException();
     }
 
-    public function supportsClass($class): bool
+    public function supportsClass(string $class): bool
     {
         return User::class === $class;
     }

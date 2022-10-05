@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Tests\Form\Handler;
 
 use Mockery as M;
+use Mockery\MockInterface;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
@@ -26,15 +27,18 @@ use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactory;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 use Symfony\Component\Routing\RouterInterface;
 
-class UserEditFormHandlerTest extends FormHandlerTestCase
+final class UserEditFormHandlerTest extends FormHandlerTestCase
 {
+    /**
+     * @var RouterInterface&MockInterface
+     */
     private $router;
 
-    private $userPasswordHasher;
+    private UserPasswordHasher $userPasswordHasher;
 
-    private $password;
+    private string $password;
 
-    private $user;
+    private User $user;
 
     protected function setUp(): void
     {
@@ -50,7 +54,7 @@ class UserEditFormHandlerTest extends FormHandlerTestCase
         ]));
     }
 
-    public function getHandler()
+    public function getHandler(): UserEditFormHandler
     {
         $handler = new UserEditFormHandler($this->userPasswordHasher, $this->router);
         $handler->setDoctrine($this->registry);
@@ -83,6 +87,9 @@ class UserEditFormHandlerTest extends FormHandlerTestCase
         self::assertInstanceOf(Template::class, $formRequest->getResponse());
     }
 
+    /**
+     * @return array{user: User}
+     */
     protected function getHandlerOptions(): array
     {
         $this->user->setUsername('one');
@@ -95,6 +102,9 @@ class UserEditFormHandlerTest extends FormHandlerTestCase
         ];
     }
 
+    /**
+     * @return array{user: array{username: string, email: string, plainPassword: array{first: string, second: string}, mobile: string, enabled: bool}}
+     */
     public function getFormData(): array
     {
         return [

@@ -47,7 +47,7 @@ class AppRequirements extends SymfonyRequirements
         );
     }
 
-    public function addRequirement($fulfilled, $testMessage, $helpHtml, $helpText = null)
+    public function addRequirement($fulfilled, $testMessage, $helpHtml, $helpText = null): void
     {
         if (str_starts_with($testMessage, 'PHP version must be at least ')) {
             $installedPhpVersion = phpversion();
@@ -68,12 +68,13 @@ class AppRequirements extends SymfonyRequirements
     }
 
 
-    public function addRecommendation($fulfilled, $testMessage, $helpHtml, $helpText = null)
+    public function addRecommendation($fulfilled, $testMessage, $helpHtml, $helpText = null): void
     {
         if ('PDO should be installed' === $testMessage || preg_match('#PDO should have some drivers installed#', $testMessage)) {
-            return parent::addRequirement($fulfilled, $testMessage, $helpHtml, $helpText);
+            parent::addRequirement($fulfilled, $testMessage, $helpHtml, $helpText);
+            return;
         }
 
-        return parent::addRecommendation($fulfilled, $testMessage, $helpHtml, $helpText);
+        parent::addRecommendation($fulfilled, $testMessage, $helpHtml, $helpText);
     }
 }

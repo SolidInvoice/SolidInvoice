@@ -27,8 +27,8 @@ class Builder extends AuthenticatedMenu
     public function sidebar(ItemInterface $menu): void
     {
         $menu->addHeader('Clients');
-        $menu->addChild(ClientMenu::list());
-        $menu->addChild(ClientMenu::add());
+        ClientMenu::list($menu);
+        ClientMenu::add($menu);
 
         $menu->addDivider();
     }

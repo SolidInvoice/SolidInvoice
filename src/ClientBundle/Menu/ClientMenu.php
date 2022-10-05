@@ -13,13 +13,14 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Menu;
 
+use Knp\Menu\ItemInterface;
 use SolidInvoice\CoreBundle\Icon;
 
 class ClientMenu
 {
-    public static function list(): array
+    public static function list(ItemInterface $item): ItemInterface
     {
-        return [
+        return $item->addChild(
             'client.menu.list',
             [
                 'extras' => [
@@ -27,12 +28,12 @@ class ClientMenu
                 ],
                 'route' => '_clients_index',
             ],
-        ];
+        );
     }
 
-    public static function add(): array
+    public static function add(ItemInterface $item): ItemInterface
     {
-        return [
+        return $item->addChild(
             'client.menu.add',
             [
                 'extras' => [
@@ -40,6 +41,6 @@ class ClientMenu
                 ],
                 'route' => '_clients_add',
             ],
-        ];
+        );
     }
 }

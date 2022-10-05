@@ -23,7 +23,7 @@ class InvoiceSubjectListener implements EventSubscriberInterface
     /**
      * @var SystemConfig
      */
-    private $config;
+    private SystemConfig $config;
 
     public function __construct(SystemConfig $config)
     {

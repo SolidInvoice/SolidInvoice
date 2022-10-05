@@ -14,24 +14,24 @@ declare(strict_types=1);
 namespace SolidInvoice\SettingsBundle\Tests\Form\Handler;
 
 use Mockery as M;
+use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
-use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
 use SolidInvoice\SettingsBundle\Entity\Setting;
 use SolidInvoice\SettingsBundle\Form\Handler\SettingsFormHandler;
 use SolidInvoice\SettingsBundle\Form\Type\MailTransportType;
 use SolidWorx\FormHandler\FormRequest;
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 
-class SettingsFormHandlerTest extends FormHandlerTestCase
+final class SettingsFormHandlerTest extends FormHandlerTestCase
 {
-    use DoctrineTestTrait;
-
     protected function setUp(): void
     {
-        static::bootKernel();
+        parent::setUp();
+        self::bootKernel();
     }
 
     public function getHandler(): SettingsFormHandler
@@ -96,6 +96,7 @@ class SettingsFormHandlerTest extends FormHandlerTestCase
         ], $data);
 
         self::assertInstanceOf(RedirectResponse::class, $response);
+        self::assertInstanceOf(FlashResponse::class, $response);
         self::assertCount(1, $response->getFlash());
     }
 
@@ -104,6 +105,9 @@ class SettingsFormHandlerTest extends FormHandlerTestCase
         self::assertInstanceOf(Template::class, $formRequest->getResponse());
     }
 
+    /**
+     * @return array{settings: array{company: array{company_name: string}}}
+     */
     public function getFormData(): array
     {
         return [
@@ -115,6 +119,9 @@ class SettingsFormHandlerTest extends FormHandlerTestCase
         ];
     }
 
+    /**
+     * @return FormTypeInterface[]
+     */
     protected function getTypes(): array
     {
         $extensions = parent::getTypes();

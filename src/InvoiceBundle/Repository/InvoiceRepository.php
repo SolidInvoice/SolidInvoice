@@ -15,9 +15,9 @@ namespace SolidInvoice\InvoiceBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
-use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Money\Money;
@@ -27,6 +27,9 @@ use SolidInvoice\InvoiceBundle\Entity\Item;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 
+/**
+ * @extends ServiceEntityRepository<Invoice>
+ */
 class InvoiceRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -37,9 +40,9 @@ class InvoiceRepository extends ServiceEntityRepository
     /**
      * Get the total amount for paid invoices.
      *
-     * @param Client $client set this parameter to filter per client
-     *
      * @deprecated This function is deprecated, and the one in PaymentRepository should be used instead
+     *
+     * @throws NoResultException|NonUniqueResultException
      */
     public function getTotalIncome(Client $client = null): int
     {
@@ -54,14 +57,11 @@ class InvoiceRepository extends ServiceEntityRepository
     /**
      * Get the total amount for a specific invoice status.
      *
-     * @param string $status
-     * @param Client $client  filter per client
-     * @param int    $hydrate
+     * @param int|string $hydrate
      *
-     * @throws NoResultException
-     * @throws NonUniqueResultException
+     * @throws NoResultException|NonUniqueResultException
      */
-    public function getTotalByStatus($status, Client $client = null, $hydrate = Query::HYDRATE_SINGLE_SCALAR): int
+    public function getTotalByStatus(string $status, Client $client = null, $hydrate = AbstractQuery::HYDRATE_SINGLE_SCALAR): int
     {
         $qb = $this->createQueryBuilder('i');
 
@@ -74,15 +74,11 @@ class InvoiceRepository extends ServiceEntityRepository
                 ->setParameter('client', $client);
         }
 
-        $query = $qb->getQuery();
-
-        return $query->getSingleResult($hydrate);
+        return $qb->getQuery()->getSingleResult($hydrate);
     }
 
     /**
      * Get the total amount for outstanding invoices.
-     *
-     * @param Client $client set this parameter to filter per client
      */
     public function getTotalOutstanding(Client $client = null): int
     {
@@ -99,14 +95,17 @@ class InvoiceRepository extends ServiceEntityRepository
 
         $query = $qb->getQuery();
 
-        return (int) $query->getSingleScalarResult();
+        try {
+            return (int) $query->getSingleScalarResult();
+        } catch (NoResultException | NonUniqueResultException $e) {
+            return 0;
+        }
     }
 
     /**
      * Get the total number of invoices for a specific status.
      *
-     * @param string|array $status
-     * @param Client       $client set this parameter to filter per client
+     * @param string|string[] $status
      */
     public function getCountByStatus($status, Client $client = null): int
     {
@@ -115,7 +114,6 @@ class InvoiceRepository extends ServiceEntityRepository
         $qb->select('COUNT(i)');
 
         if (is_array($status)) {
-            /* @noinspection PhpParamsInspection */
             $qb->add('where', $qb->expr()->in('i.status', ':status'));
         } else {
             $qb->where('i.status = :status');
@@ -130,15 +128,19 @@ class InvoiceRepository extends ServiceEntityRepository
 
         $query = $qb->getQuery();
 
-        return (int) $query->getSingleScalarResult();
+        try {
+            return (int) $query->getSingleScalarResult();
+        } catch (NoResultException | NonUniqueResultException $e) {
+            return 0;
+        }
     }
 
     /**
      * Gets the most recent created invoices.
      *
-     * @param int $limit
+     * @return Invoice[]
      */
-    public function getRecentInvoices($limit = 5): array
+    public function getRecentInvoices(int $limit = 5): array
     {
         $qb = $this->createQueryBuilder('i');
 
@@ -147,11 +149,12 @@ class InvoiceRepository extends ServiceEntityRepository
             ->orderBy('i.created', Criteria::DESC)
             ->setMaxResults($limit);
 
-        $query = $qb->getQuery();
-
-        return $query->getResult();
+        return $qb->getQuery()->getResult();
     }
 
+    /**
+     * @param array{client?: Client} $parameters
+     */
     public function getGridQuery(array $parameters = []): QueryBuilder
     {
         $qb = $this->createQueryBuilder('i');
@@ -223,6 +226,9 @@ class InvoiceRepository extends ServiceEntityRepository
         $filters->enable('archivable');
     }
 
+    /**
+     * @param list<int> $ids
+     */
     public function deleteInvoices(array $ids): void
     {
         $filters = $this->getEntityManager()->getFilters();
