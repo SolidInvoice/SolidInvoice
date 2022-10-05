@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 module.exports = async ({ github, context }) => {
-    const rootDir = path.resolve('../');
+    const rootDir = path.resolve(path.join(__dirname, '..'));
     let commentBody = '';
 
     // Return "https" URLs by setting secure: true
