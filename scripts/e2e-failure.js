@@ -5,7 +5,15 @@ const path = require('path');
 module.exports = async ({ github, context }) => {
     const { JOB_NAME } = process.env;
     const rootDir = path.resolve(path.join(__dirname, '..'));
-    let commentBody = `### Functional Test Failure 🙀! (${context.workflow} / ${JOB_NAME})\n\n`;
+    let commentBody = '### Functional Test Failure 🙀!';
+
+    commentBody += `
+| Job Name | SHA | REF |
+|----------|-----|-----|
+| ${JOB_NAME} | ${context.sha} | ${context.ref} |
+`;
+
+    console.log(context)
 
     // Return "https" URLs by setting secure: true
     cloudinary.config({
@@ -23,7 +31,7 @@ module.exports = async ({ github, context }) => {
             let uplaodedImagePromise = cloudinary.uploader.upload(
                 `${rootDir}/var/error-screenshots/${element}`,
                 {
-                    tags: 'ci,github-actions,e2e,screenshot',
+                    tags: `ci,github-actions,e2e,screenshot,${context.ref}`,
                     folder: `solidinvoice/ci/errors/${context.issue.number}/${context.sha}`,
                     sign_url: true,
                     use_filename: true,
