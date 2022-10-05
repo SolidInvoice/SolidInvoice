@@ -28,17 +28,26 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class PasswordChangeHandlerTest extends FormHandlerTestCase
+final class PasswordChangeHandlerTest extends FormHandlerTestCase
 {
+    /**
+     * @var UserRepository&M\MockInterface
+     */
     private $userRepository;
 
-    private $userPasswordHasher;
+    private UserPasswordHasher $userPasswordHasher;
 
+    /**
+     * @var TokenStorageInterface&M\MockInterface
+     */
     private $tokenStorage;
 
+    /**
+     * @var RouterInterface&M\MockInterface
+     */
     private $router;
 
-    private $password;
+    private string $password;
 
     protected function setUp(): void
     {
@@ -60,17 +69,9 @@ class PasswordChangeHandlerTest extends FormHandlerTestCase
             ->andReturn(new AnonymousToken($this->faker->sha1, 'anon.'));
     }
 
-    public function getHandler()
+    public function getHandler(): PasswordChangeHandler
     {
         return new PasswordChangeHandler($this->userRepository, $this->userPasswordHasher, $this->tokenStorage, $this->router);
-    }
-
-    protected function beforeSuccess(FormRequest $form, $data): void
-    {
-        $this->userPasswordHasher->shouldReceive('encodePassword')
-            ->once()
-            ->with($data, $this->password)
-            ->andReturn(password_hash($this->password, PASSWORD_DEFAULT));
     }
 
     protected function assertOnSuccess(?Response $response, FormRequest $form, $data): void
@@ -82,6 +83,9 @@ class PasswordChangeHandlerTest extends FormHandlerTestCase
         self::assertSame(FlashResponse::FLASH_SUCCESS, $response->getFlash()->key());
     }
 
+    /**
+     * @return array{user: User}
+     */
     protected function getHandlerOptions(): array
     {
         return [
@@ -89,6 +93,9 @@ class PasswordChangeHandlerTest extends FormHandlerTestCase
         ];
     }
 
+    /**
+     * @return array{plainPassword: array{first: string, second: string}}
+     */
     public function getFormData(): array
     {
         return [

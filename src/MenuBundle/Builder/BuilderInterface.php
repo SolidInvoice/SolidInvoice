@@ -20,5 +20,5 @@ interface BuilderInterface
      * From here you can check for specific permissions etc.
      * If this method returns false, then the menu function isn't called.
      */
-    public function validate();
+    public function validate(): bool;
 }

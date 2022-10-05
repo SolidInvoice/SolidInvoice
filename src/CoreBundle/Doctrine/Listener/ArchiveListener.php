@@ -13,12 +13,15 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Doctrine\Listener;
 
-use Doctrine\Common\EventArgs;
+use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Gedmo\Mapping\MappedEventSubscriber;
 
 class ArchiveListener extends MappedEventSubscriber
 {
-    public function getSubscribedEvents()
+    /**
+     * @return list<string>
+     */
+    public function getSubscribedEvents(): array
     {
         return [
             'loadClassMetadata',
@@ -28,13 +31,13 @@ class ArchiveListener extends MappedEventSubscriber
     /**
      * Maps additional metadata.
      */
-    public function loadClassMetadata(EventArgs $eventArgs): void
+    public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs): void
     {
         $ea = $this->getEventAdapter($eventArgs);
-        $this->loadMetadataForObjectClass($ea->getObjectManager(), $this->loadClassMetadata($eventArgs));
+        $this->loadMetadataForObjectClass($ea->getObjectManager(), $eventArgs->getClassMetadata());
     }
 
-    protected function getNamespace()
+    protected function getNamespace(): string
     {
         return __NAMESPACE__;
     }

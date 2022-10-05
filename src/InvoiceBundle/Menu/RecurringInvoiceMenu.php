@@ -13,14 +13,16 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Menu;
 
+use Knp\Menu\ItemInterface;
+
 /**
  * Menu items for invoices.
  */
 class RecurringInvoiceMenu
 {
-    public static function list(): array
+    public static function list(ItemInterface $menu): ItemInterface
     {
-        return [
+        return $menu->addChild(
             'invoice.menu.recurring.list',
             [
                 'route' => '_invoices_index_recurring',
@@ -28,12 +30,12 @@ class RecurringInvoiceMenu
                     'icon' => 'sync-alt',
                 ],
             ],
-        ];
+        );
     }
 
-    public static function create(): array
+    public static function create(ItemInterface $menu): ItemInterface
     {
-        return [
+        return $menu->addChild(
             'invoice.menu.recurring.create',
             [
                 'extras' => [
@@ -41,6 +43,6 @@ class RecurringInvoiceMenu
                 ],
                 'route' => '_invoices_create_recurring',
             ],
-        ];
+        );
     }
 }

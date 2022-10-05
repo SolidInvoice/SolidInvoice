@@ -16,6 +16,7 @@ namespace SolidInvoice\InvoiceBundle\Action\Grid;
 use SolidInvoice\CoreBundle\Response\AjaxResponse;
 use SolidInvoice\CoreBundle\Traits\JsonTrait;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 final class Delete implements AjaxResponse
@@ -25,16 +26,16 @@ final class Delete implements AjaxResponse
     /**
      * @var InvoiceRepository
      */
-    private $repository;
+    private InvoiceRepository $repository;
 
     public function __construct(InvoiceRepository $repository)
     {
         $this->repository = $repository;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): JsonResponse
     {
-        $this->repository->deleteInvoices($request->request->get('data'));
+        $this->repository->deleteInvoices((array) $request->request->get('data'));
 
         return $this->json([]);
     }

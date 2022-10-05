@@ -26,7 +26,7 @@ use SplPriorityQueue;
 class Provider implements MenuProviderInterface
 {
     /**
-     * @var array<string, BuilderInterface>
+     * @var array<string, SplPriorityQueue<int, MenuBuilder>>
      */
     protected array $list = [];
 
@@ -40,6 +40,8 @@ class Provider implements MenuProviderInterface
     public function get(string $name, array $options = []): ItemInterface
     {
         $root = $this->factory->createItem('root');
+
+        assert($root instanceof MenuItem);
 
         foreach ($this->list[$name] as $builder) {
             $builder->invoke($root, $options);

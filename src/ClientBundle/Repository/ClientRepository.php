@@ -15,19 +15,17 @@ namespace SolidInvoice\ClientBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use InvalidArgumentException;
+use Exception;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Model\Status;
 use SolidInvoice\CoreBundle\Util\ArrayUtil;
 
 /**
- * ClientRepository.
- *
- * Custom Repository class for managing clients
+ * @extends ServiceEntityRepository<Client>
  */
 class ClientRepository extends ServiceEntityRepository
 {
@@ -38,8 +36,6 @@ class ClientRepository extends ServiceEntityRepository
 
     /**
      * Gets total number of clients.
-     *
-     * @param string $status
      */
     public function getTotalClients(string $status = null): int
     {
@@ -54,15 +50,19 @@ class ClientRepository extends ServiceEntityRepository
 
         $query = $qb->getQuery();
 
-        return (int) $query->getSingleScalarResult();
+        try {
+            return (int) $query->getSingleScalarResult();
+        } catch (NoResultException | NonUniqueResultException $e) {
+            return 0;
+        }
     }
 
     /**
      * Gets the most recent created clients.
      *
-     * @param int $limit
+     * @return Client[]
      */
-    public function getRecentClients($limit = 5): array
+    public function getRecentClients(int $limit = 5): array
     {
         $qb = $this->createQueryBuilder('c');
 
@@ -77,11 +77,13 @@ class ClientRepository extends ServiceEntityRepository
             ->orderBy('c.created', Criteria::DESC)
             ->setMaxResults($limit);
 
-        $query = $qb->getQuery();
-
-        return $query->getArrayResult();
+        return $qb->getQuery()->getArrayResult();
     }
 
+    /**
+     * @return string[]
+     * @throws Exception
+     */
     public function getStatusList(): array
     {
         $qb = $this->createQueryBuilder('c');
@@ -114,6 +116,8 @@ class ClientRepository extends ServiceEntityRepository
 
     /**
      * Archives a list of clients.
+     *
+     * @param list<int> $ids
      */
     public function archiveClients(array $ids): void
     {
@@ -134,6 +138,9 @@ class ClientRepository extends ServiceEntityRepository
         $em->flush();
     }
 
+    /**
+     * @param list<int> $ids
+     */
     public function restoreClients(array $ids): void
     {
         $em = $this->getEntityManager();
@@ -156,7 +163,7 @@ class ClientRepository extends ServiceEntityRepository
     }
 
     /**
-     * @throws ORMException|OptimisticLockException|InvalidArgumentException
+     * @param list<int> $ids
      */
     public function deleteClients(array $ids): void
     {
@@ -167,7 +174,7 @@ class ClientRepository extends ServiceEntityRepository
         /** @var Client[] $clients */
         $clients = $this->findBy(['id' => $ids]);
 
-        array_walk($clients, function (object $entity) use ($em): void {
+        array_walk($clients, static function (object $entity) use ($em): void {
             $em->remove($entity);
         });
 

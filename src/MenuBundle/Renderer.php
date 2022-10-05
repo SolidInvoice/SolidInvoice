@@ -19,6 +19,7 @@ use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\Matcher;
 use Knp\Menu\Matcher\Voter\RouteVoter;
 use Knp\Menu\Renderer\ListRenderer;
+use SolidInvoice\MenuBundle\Builder\MenuBuilder;
 use SplPriorityQueue;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
@@ -30,20 +31,11 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
 {
     use ContainerAwareTrait;
 
-    /**
-     * @var FactoryInterface
-     */
-    protected $factory;
+    private FactoryInterface $factory;
 
-    /**
-     * @var Environment
-     */
-    protected $twig;
+    private Environment $twig;
 
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private TranslatorInterface $translator;
 
     /**
      * @throws InvalidArgumentException
@@ -80,10 +72,15 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
 
     /**
      * Renders a menu at a specific location.
+     *
+     * @param SplPriorityQueue<int, MenuBuilder> $storage
+     * @param array<string, mixed> $options
      */
     public function build(SplPriorityQueue $storage, array $options = []): string
     {
         $menu = $this->factory->createItem('root');
+
+        assert($menu instanceof MenuItem);
 
         if (isset($options['attr'])) {
             $menu->setChildrenAttributes($options['attr']);
@@ -92,7 +89,6 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
         }
 
         foreach ($storage as $builder) {
-            /** @var \SolidInvoice\MenuBundle\Builder\MenuBuilder $builder */
             $builder->setContainer($this->container);
             $builder->invoke($menu, $options);
         }
@@ -108,7 +104,7 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
      * has children).
      * This method updates the depth for the children.
      *
-     * @param array $options The options to render the item
+     * @param array<string, mixed> $options The options to render the item
      */
     protected function renderChildren(ItemInterface $item, array $options): string
     {
@@ -130,6 +126,9 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
         return $html;
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     protected function renderDivider(ItemInterface $item, array $options = []): string
     {
         return $this->format(
@@ -142,6 +141,8 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
 
     /**
      * Renders the menu label.
+     *
+     * @param array<string, mixed> $options
      */
     protected function renderLabel(ItemInterface $item, array $options): string
     {

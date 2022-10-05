@@ -13,11 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Menu;
 
+use Knp\Menu\ItemInterface;
+
 class PaymentMenu
 {
-    public static function main(): array
+    public static function main(ItemInterface $item): ItemInterface
     {
-        return [
+        return $item->addChild(
             'payment.menu.main',
             [
                 'route' => '_payments_index',
@@ -25,12 +27,12 @@ class PaymentMenu
                     'icon' => 'credit-card',
                 ],
             ],
-        ];
+        );
     }
 
-    public static function methods(): array
+    public static function methods(ItemInterface $item): ItemInterface
     {
-        return [
+        return $item->addChild(
             'payment.menu.methods',
             [
                 'route' => '_payment_settings_index',
@@ -38,6 +40,6 @@ class PaymentMenu
                     'icon' => 'credit-card',
                 ],
             ],
-        ];
+        );
     }
 }

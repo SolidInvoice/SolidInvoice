@@ -26,7 +26,7 @@ final class Archive implements AjaxResponse
     /**
      * @var ClientRepository
      */
-    private $repository;
+    private ClientRepository $repository;
 
     public function __construct(ClientRepository $repository)
     {
@@ -35,7 +35,7 @@ final class Archive implements AjaxResponse
 
     public function __invoke(Request $request): JsonResponse
     {
-        $this->repository->archiveClients($request->request->get('data'));
+        $this->repository->archiveClients((array) $request->request->get('data'));
 
         return $this->json([]);
     }

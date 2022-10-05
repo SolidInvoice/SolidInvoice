@@ -17,7 +17,10 @@ use SolidInvoice\CoreBundle\Routing\Loader\AbstractDirectoryLoader;
 
 class GridRouteLoader extends AbstractDirectoryLoader
 {
-    public function supports($resource, $type = null): bool
+    /**
+     * @param mixed $resource
+     */
+    public function supports($resource, string $type = null): bool
     {
         return is_string($resource) && 'grid' === $type && '@' === $resource[0];
     }

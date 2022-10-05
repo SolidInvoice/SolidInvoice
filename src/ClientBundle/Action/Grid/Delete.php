@@ -23,10 +23,7 @@ final class Delete implements AjaxResponse
 {
     use JsonTrait;
 
-    /**
-     * @var ClientRepository
-     */
-    private $repository;
+    private ClientRepository $repository;
 
     public function __construct(ClientRepository $repository)
     {
@@ -35,7 +32,7 @@ final class Delete implements AjaxResponse
 
     public function __invoke(Request $request): JsonResponse
     {
-        $this->repository->deleteClients($request->request->get('data'));
+        $this->repository->deleteClients((array) $request->request->get('data'));
 
         return $this->json([]);
     }

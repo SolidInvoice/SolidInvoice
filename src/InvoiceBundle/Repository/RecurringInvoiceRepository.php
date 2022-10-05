@@ -16,8 +16,12 @@ namespace SolidInvoice\InvoiceBundle\Repository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 
+/**
+ * @extends ServiceEntityRepository<RecurringInvoice>
+ */
 class RecurringInvoiceRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -25,6 +29,9 @@ class RecurringInvoiceRepository extends ServiceEntityRepository
         parent::__construct($registry, RecurringInvoice::class);
     }
 
+    /**
+     * @param array{client?: Client} $parameters
+     */
     public function getRecurringGridQuery(array $parameters = []): QueryBuilder
     {
         $qb = $this->createQueryBuilder('i');
@@ -53,6 +60,10 @@ class RecurringInvoiceRepository extends ServiceEntityRepository
         return $qb;
     }
 
+    /**
+     * @param list<int> $ids
+     * @return void
+     */
     public function deleteInvoices(array $ids): void
     {
         $filters = $this->getEntityManager()->getFilters();
@@ -63,7 +74,7 @@ class RecurringInvoiceRepository extends ServiceEntityRepository
         /** @var RecurringInvoice[] $invoices */
         $invoices = $this->findBy(['id' => $ids]);
 
-        array_walk($invoices, function (object $entity) use ($em): void {
+        array_walk($invoices, static function (object $entity) use ($em): void {
             $em->remove($entity);
         });
 

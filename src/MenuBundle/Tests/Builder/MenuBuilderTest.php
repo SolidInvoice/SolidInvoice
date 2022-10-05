@@ -13,12 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MenuBundle\Tests\Builder;
 
+use Knp\Menu\FactoryInterface;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\MenuBundle\Builder\BuilderInterface;
 use SolidInvoice\MenuBundle\Builder\MenuBuilder;
-use SolidInvoice\MenuBundle\ItemInterface;
+use SolidInvoice\MenuBundle\MenuItem;
 
 class MenuBuilderTest extends TestCase
 {
@@ -27,7 +28,7 @@ class MenuBuilderTest extends TestCase
     public function testInvoke(): void
     {
         $builder = M::mock(BuilderInterface::class);
-        $item = M::mock(ItemInterface::class);
+        $item = new MenuItem('', M::mock(FactoryInterface::class));
 
         $builder->shouldReceive('validate')
             ->once()
@@ -42,13 +43,14 @@ class MenuBuilderTest extends TestCase
 
         $menuBuilder->invoke($item);
 
+        // @phpstan-ignore-next-line
         $builder->shouldHaveReceived('something', [$item, []]);
     }
 
     public function testInvokeFail(): void
     {
         $builder = M::mock(BuilderInterface::class, ['validate' => false]);
-        $item = M::mock(ItemInterface::class);
+        $item = new MenuItem('', M::mock(FactoryInterface::class));
 
         $builder->shouldReceive('validate')
             ->once()
@@ -62,13 +64,14 @@ class MenuBuilderTest extends TestCase
 
         $menuBuilder->invoke($item);
 
+        // @phpstan-ignore-next-line
         $builder->shouldNotHaveReceived('something', [$item, []]);
     }
 
     public function testContainer(): void
     {
         $builder = M::mock('SolidInvoice\MenuBundle\Builder\BuilderInterface, Symfony\Component\DependencyInjection\ContainerAwareInterface', ['validate' => false]);
-        $item = M::mock(ItemInterface::class);
+        $item = new MenuItem('', M::mock(FactoryInterface::class));
 
         $builder->shouldReceive('validate')
             ->once()
@@ -82,6 +85,7 @@ class MenuBuilderTest extends TestCase
 
         $menuBuilder->invoke($item);
 
+        // @phpstan-ignore-next-line
         $builder->shouldNotHaveReceived('something', [$item, []]);
     }
 }

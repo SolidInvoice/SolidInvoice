@@ -37,6 +37,7 @@ trait EnsureApplicationInstalled
         $schemaTool = new SchemaTool($entityManager);
         $schemaTool->dropDatabase();
 
+        // @phpstan-ignore-next-line Ignore this line in PHPStan, since it sees the Migration service as private
         static::getContainer()->get(Migration::class)->migrate();
 
         /** @var VersionRepository $version */

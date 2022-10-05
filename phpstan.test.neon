@@ -3,4 +3,4 @@ includes:
 
 parameters:
     symfony:
-        container_xml_path: var/cache/test/srcSolidInvoice_KernelTestDebugContainer.xml
+        container_xml_path: var/cache/test/SolidInvoice_KernelTestDebugContainer.xml

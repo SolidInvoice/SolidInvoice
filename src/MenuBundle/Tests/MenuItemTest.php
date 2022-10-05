@@ -57,20 +57,6 @@ class MenuItemTest extends TestCase
         self::assertInstanceOf(ItemInterface::class, $child);
     }
 
-    public function testAddChildArray(): void
-    {
-        $factory = M::mock(FactoryInterface::class);
-        $item = new MenuItem('test', $factory);
-
-        $factory->shouldReceive('createItem')
-            ->with('abc', ['attributes' => ['class' => ' nav-item'], 'linkAttributes' => ['class' => ' nav-link']])
-            ->andReturn(new MenuItem('abc', $factory));
-
-        $child = $item->addChild(['abc', []]);
-
-        self::assertInstanceOf(ItemInterface::class, $child);
-    }
-
     public function testIsDivider(): void
     {
         $coreExtension = new CoreExtension();

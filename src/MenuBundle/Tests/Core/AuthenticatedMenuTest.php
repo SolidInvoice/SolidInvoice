@@ -27,12 +27,12 @@ class AuthenticatedMenuTest extends TestCase
     use MockeryPHPUnitIntegration;
 
     /**
-     * @var MockInterface
+     * @var MockInterface&ContainerInterface
      */
     private $container;
 
     /**
-     * @var MockInterface
+     * @var MockInterface&AuthorizationCheckerInterface
      */
     private $security;
 

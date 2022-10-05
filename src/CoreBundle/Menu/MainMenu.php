@@ -13,15 +13,16 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Menu;
 
+use Knp\Menu\ItemInterface;
 use SolidInvoice\UserBundle\Entity\User;
 
 class MainMenu
 {
-    public static function user(User $user): array
+    public static function user(ItemInterface $item, User $user): ItemInterface
     {
         $username = $user->getUsername() . ' <b class="caret"></b>';
 
-        return [
+        return $item->addChild(
             'user',
             [
                 'uri' => '#',
@@ -32,37 +33,37 @@ class MainMenu
                     'icon' => 'user',
                 ],
             ],
-        ];
+        );
     }
 
-    public static function profile(): array
+    public static function profile(ItemInterface $item): ItemInterface
     {
-        return [
+        return $item->addChild(
             'menu.top.profile', ['route' => '_profile', 'extras' => ['icon' => 'user']],
-        ];
+        );
     }
 
-    public static function api(): array
+    public static function api(ItemInterface $item): ItemInterface
     {
-        return [
+        return $item->addChild(
             'menu.top.api', ['route' => '_api_keys_index', 'extras' => ['icon' => 'user-secret']],
-        ];
+        );
     }
 
-    public static function logout(): array
+    public static function logout(ItemInterface $item): ItemInterface
     {
-        return [
+        return $item->addChild(
             'menu.top.logout',
             [
                 'route' => '_logout',
                 'extras' => ['icon' => 'power-off'],
             ],
-        ];
+        );
     }
 
-    public static function system(): array
+    public static function system(ItemInterface $item): ItemInterface
     {
-        return [
+        return $item->addChild(
             'menu.top.system',
             [
                 'uri' => '#',
@@ -72,39 +73,39 @@ class MainMenu
                     'icon' => 'laptop',
                 ],
             ],
-        ];
+        );
     }
 
-    public static function settings(): array
+    public static function settings(ItemInterface $item): ItemInterface
     {
-        return [
+        return $item->addChild(
             'menu.top.settings',
             [
                 'route' => '_settings',
                 'extras' => ['icon' => 'cog'],
             ],
-        ];
+        );
     }
 
-    public static function tax(): array
+    public static function tax(ItemInterface $item): ItemInterface
     {
-        return [
+        return $item->addChild(
             'menu.top.tax',
             [
                 'route' => '_tax_rates',
                 'extras' => ['icon' => 'money'],
             ],
-        ];
+        );
     }
 
-    public static function users(): array
+    public static function users(ItemInterface $item): ItemInterface
     {
-        return [
+        return $item->addChild(
             'menu.top.users',
             [
                 'route' => '_users_list',
                 'extras' => ['icon' => 'users'],
             ],
-        ];
+        );
     }
 }
