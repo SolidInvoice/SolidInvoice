@@ -21,15 +21,7 @@ use function date;
 
 final class Version20000 extends AbstractMigration
 {
-    /**
-     * @var Schema
-     */
-    private $schema;
-
-    public function isTransactional(): bool
-    {
-        return \PHP_VERSION_ID < 80000;
-    }
+    private Schema $schema;
 
     public function up(Schema $schema): void
     {

@@ -15,7 +15,6 @@ namespace DoctrineMigrations;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
-use SolidInvoice\SettingsBundle\Exception\InvalidSettingException;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
@@ -24,21 +23,14 @@ final class Version20001 extends AbstractMigration implements ContainerAwareInte
 {
     use ContainerAwareTrait;
 
-    public function isTransactional(): bool
-    {
-        return \PHP_VERSION_ID < 80000;
-    }
-
     public function up(Schema $schema): void
     {
         /** @var SystemConfig $config */
         $config = $this->container->get('settings');
 
-        try {
-            if ('skin-solidinoice-default' === $config->get('design/system/theme')) {
-                $config->set('design/system/theme', 'skin-solidinvoice-default');
-            }
-        } catch (InvalidSettingException $e) {}
+        if ('skin-solidinoice-default' === $config->get('design/system/theme')) {
+            $config->set('design/system/theme', 'skin-solidinvoice-default');
+        }
     }
 
     public function down(Schema $schema): void
