@@ -27,7 +27,7 @@ class AddressTypeTest extends FormTestCase
             'street1' => $faker->buildingNumber . ' ' . $faker->streetName,
             'street2' => $faker->randomNumber(2) . ' ' . $faker->streetName . ' ' . $faker->streetSuffix,
             'city' => $faker->city,
-            'state' => $faker->state,
+            'state' => $faker->city,
             'zip' => $faker->postcode,
             'country' => $faker->countryCode,
         ];

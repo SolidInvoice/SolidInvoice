@@ -37,4 +37,9 @@ class KernelTestCase
      * @var ContainerInterface|null
      */
     protected static $container;
+
+    /**
+     * @var bool
+     */
+    protected static $booted;
 }
