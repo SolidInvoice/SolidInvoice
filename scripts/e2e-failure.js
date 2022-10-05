@@ -5,6 +5,7 @@ const path = require('path');
 module.exports = async ({ github, context }) => {
     const { JOB_NAME } = process.env;
     const rootDir = path.resolve(path.join(__dirname, '..'));
+    let hasFailureInfo = false;
     let commentBody = '### Functional Test Failure 🙀!';
 
     commentBody += `
@@ -21,6 +22,10 @@ module.exports = async ({ github, context }) => {
 
     const uploadImages = async () => {
         let promiseArray = [];
+
+        if (!fs.existsSync(`${rootDir}/var/error-screenshots/`)) {
+            return [];
+        }
 
         let images = fs.readdirSync(`${rootDir}/var/error-screenshots/`);
 
@@ -51,21 +56,26 @@ module.exports = async ({ github, context }) => {
 
     const urlList = await uploadImages();
 
-    urlList.forEach((element) => {
-        commentBody += `**${element.name}**\n![screenshot-${element.name}](${element.url}) \n`;
-    });
+    if (0 !== urlList.length) {
+        hasFailureInfo = true;
+        urlList.forEach((element) => {
+            commentBody += `**${element.name}**\n![screenshot-${element.name}](${element.url}) \n`;
+        });
+    }
 
     if (fs.existsSync(`${rootDir}/var/log/test.log`)) {
+        hasFailureInfo = true;
         const logFileContent = fs.readFileSync(`${rootDir}/var/log/test.log`);
 
         commentBody += `\n ### Log File\n \`\`\`${logFileContent}\`\`\``;
     }
 
-    github.rest.issues.createComment({
-        issue_number: context.issue.number,
-        owner: context.repo.owner,
-        repo: context.repo.repo,
-        body: commentBody,
-    });
+    if (hasFailureInfo) {
+        github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: commentBody,
+        });
+    }
 };
-
