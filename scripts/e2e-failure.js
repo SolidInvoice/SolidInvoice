@@ -49,6 +49,12 @@ module.exports = async ({ github, context }) => {
             `### ${element.name} \n <br /> ![screenshot-${element.name}](${element.url}) \n`;
     });
 
+    if (fs.existsSync(`${rootDir}/var/log/test.log`)) {
+        const logFileContent = fs.readFileSync(`${rootDir}/var/log/test.log`);
+
+        commentBody += `\n ### Log File\n \`\`\`${logFileContent}\`\`\``;
+    }
+
     github.rest.issues.createComment({
         issue_number: context.issue.number,
         owner: context.repo.owner,

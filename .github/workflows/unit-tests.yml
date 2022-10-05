@@ -109,9 +109,3 @@ jobs:
           script: |
             const script = require('./scripts/e2e-failure.js')
             await script({github, context, core})
-
-      - name: Print logs file
-        if: ${{ failure() }}
-        run: |
-          ls -la var
-          ls -la var/log
