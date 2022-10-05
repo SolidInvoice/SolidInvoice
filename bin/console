@@ -1,37 +1,17 @@
 #!/usr/bin/env php
 <?php
 
+use SolidInvoice\Kernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Input\ArgvInput;
-use Symfony\Component\ErrorHandler\Debug;
 
-if (!in_array(PHP_SAPI, ['cli', 'phpdbg', 'embed'], true)) {
-    echo 'Warning: The console should be invoked via the CLI version of PHP, not the '.PHP_SAPI.' SAPI'.PHP_EOL;
+if (!is_file(dirname(__DIR__).'/vendor/autoload_runtime.php')) {
+    throw new LogicException('Symfony Runtime is missing. Try running "composer require symfony/runtime".');
 }
 
-set_time_limit(0);
+require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
 
-require dirname(__DIR__).'/vendor/autoload.php';
+return static function (array $context) {
+    $kernel = new Kernel($context['SOLIDINVOICE_ENV'], (bool) $context['SOLIDINVOICE_DEBUG']);
 
-$input = new ArgvInput();
-if (null !== $env = $input->getParameterOption(['--env', '-e'], null, true)) {
-    putenv('SOLIDINVOICE_ENV='.$_SERVER['SOLIDINVOICE_ENV'] = $_ENV['SOLIDINVOICE_ENV'] = $env);
-}
-
-if ($input->hasParameterOption('--no-debug', true)) {
-    putenv('SOLIDINVOICE_DEBUG='.$_SERVER['SOLIDINVOICE_DEBUG'] = $_ENV['SOLIDINVOICE_DEBUG'] = '0');
-}
-
-require dirname(__DIR__).'/config/bootstrap.php';
-
-if ($_SERVER['SOLIDINVOICE_DEBUG']) {
-    umask(0000);
-
-    if (class_exists(Debug::class)) {
-        Debug::enable();
-    }
-}
-
-$kernel = new SolidInvoice\Kernel($_SERVER['SOLIDINVOICE_ENV'], (bool) $_SERVER['SOLIDINVOICE_DEBUG']);
-$application = new Application($kernel);
-$application->run($input);
+    return new Application($kernel);
+};

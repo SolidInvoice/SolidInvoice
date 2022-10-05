@@ -19,7 +19,7 @@
         convertDeprecationsToExceptions="false"
         processIsolation="false"
         stopOnFailure="false"
-        bootstrap="tests/bootstrap.php"
+        bootstrap="vendor/autoload.php"
 >
     <testsuites>
         <testsuite name="SolidInvoice Test Suite">
