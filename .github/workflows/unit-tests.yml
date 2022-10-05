@@ -10,14 +10,14 @@ jobs:
 
     strategy:
       matrix:
-        php: [ '7.3', '7.4', '8.0' ]
+        php: [ '7.4', '8.0', '8.1' ]
         coverage: [ false ]
         include:
-          - php: '7.3'
+          - php: '7.4'
             coverage: true
-          - php: '7.3'
-            coverage: false
           - php: '8.0'
+            coverage: false
+          - php: '8.1'
             coverage: false
       fail-fast: false
 
