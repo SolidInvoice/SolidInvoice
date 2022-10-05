@@ -78,7 +78,7 @@ trait SymfonyKernelTrait
      */
     protected static function getContainer(): ContainerInterface
     {
-        if (!static::$booted) {
+        if (! static::$booted) {
             static::bootKernel();
         }
 

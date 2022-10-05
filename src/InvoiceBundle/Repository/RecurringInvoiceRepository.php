@@ -62,7 +62,6 @@ class RecurringInvoiceRepository extends ServiceEntityRepository
 
     /**
      * @param list<int> $ids
-     * @return void
      */
     public function deleteInvoices(array $ids): void
     {

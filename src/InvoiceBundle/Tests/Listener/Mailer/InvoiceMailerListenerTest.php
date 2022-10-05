@@ -17,12 +17,12 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Contact;
+use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvent;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvents;
 use SolidInvoice\InvoiceBundle\Listener\Mailer\InvoiceMailerListener;
 use Symfony\Component\Mailer\MailerInterface;
-use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 
 class InvoiceMailerListenerTest extends TestCase
 {

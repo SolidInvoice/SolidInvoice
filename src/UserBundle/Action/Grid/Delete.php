@@ -26,9 +26,6 @@ final class Delete implements AjaxResponse
 {
     use JsonTrait;
 
-    /**
-     * @var Security
-     */
     private Security $security;
 
     /**

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\MenuBundle;
 
 use Knp\Menu\MenuItem as BaseItem;
-use function is_array;
 
 /**
  * @see \SolidInvoice\MenuBundle\Tests\MenuItemTest
@@ -26,7 +25,6 @@ class MenuItem extends BaseItem implements ItemInterface
     /**
      * @param ItemInterface|string $child
      * @param array<string, mixed> $options
-     * @return ItemInterface
      */
     public function addChild($child, array $options = []): ItemInterface
     {

@@ -20,9 +20,6 @@ use Symfony\Component\Mailer\Event\MessageEvent;
 
 class InvoiceSubjectListener implements EventSubscriberInterface
 {
-    /**
-     * @var SystemConfig
-     */
     private SystemConfig $config;
 
     public function __construct(SystemConfig $config)

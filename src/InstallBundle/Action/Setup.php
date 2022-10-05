@@ -138,7 +138,6 @@ final class Setup
 
     /**
      * @param array{username: string, password: string, email_address: string} $data
-     * @return void
      */
     private function createAdminUser(array $data): void
     {

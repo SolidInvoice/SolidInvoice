@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MenuBundle\Builder;
 
-use SolidInvoice\MenuBundle\ItemInterface;
 use SolidInvoice\MenuBundle\MenuItem;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
