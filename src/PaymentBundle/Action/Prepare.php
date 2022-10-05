@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Action;
 
+use const FILTER_VALIDATE_BOOLEAN;
 use DateTime;
 use Exception;
 use Money\Currency;
@@ -215,7 +216,7 @@ final class Prepare
             $invoice->addPayment($payment);
             $this->save($payment);
 
-            if (true === filter_var($data['capture_online'], FILTER_VALIDATE_BOOL)) {
+            if (filter_var($data['capture_online'], FILTER_VALIDATE_BOOLEAN)) {
                 $captureToken = $this->payum
                     ->getTokenFactory()
                     ->createCaptureToken(
