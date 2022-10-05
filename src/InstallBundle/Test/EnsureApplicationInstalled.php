@@ -37,7 +37,7 @@ trait EnsureApplicationInstalled
         $schemaTool = new SchemaTool($entityManager);
         $schemaTool->dropDatabase();
 
-        static::$container->get(Migration::class)->migrate();
+        static::getContainer()->get(Migration::class)->migrate();
 
         /** @var VersionRepository $version */
         $version = $entityManager->getRepository(Version::class);
