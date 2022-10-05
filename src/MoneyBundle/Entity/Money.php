@@ -16,6 +16,7 @@ namespace SolidInvoice\MoneyBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Money\Currency;
 use Money\Money as BaseMoney;
+use SolidInvoice\MoneyBundle\Factory\CurrencyFactory;
 
 /**
  * @ORM\Embeddable()
@@ -31,9 +32,9 @@ class Money
     /**
      * @ORM\Column(name="currency", type="string", length=3, nullable=true)
      */
-    private ?string $currency;
+    private ?string $currency = null;
 
-    private static string $baseCurrency;
+    private static string $baseCurrency = CurrencyFactory::DEFAULT_CURRENCY;
 
     public static function setBaseCurrency(string $currency): void
     {
@@ -45,9 +46,6 @@ class Money
         return self::$baseCurrency;
     }
 
-    /**
-     * @param BaseMoney|null $money
-     */
     public function __construct(?BaseMoney $money = null)
     {
         if (null !== $money) {
