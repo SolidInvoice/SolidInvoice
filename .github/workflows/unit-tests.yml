@@ -100,14 +100,24 @@ jobs:
           export PATH="$PATH:$HOME/.composer/vendor/bin"
           php-coveralls --coverage_clover=build/logs/clover.xml -v
 
+      - name: Setup Python (For Cloudinary when build fails)
+        uses: actions/setup-python@v4
+        if: ${{ failure() }}
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
       - name: Upload failed test screenshots
         if: ${{ failure() }}
-        uses: edunad/actions-image@v1.0.1
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          path: './var/error-screenshots/*.png'
-          title: 'Failed E2E tests 🙀'
+        env:
+            CLOUDINARY_URL: cloudinary://${{ secrets.CLOUDINARY_API_KEY }}:${{ secrets.CLOUDINARY_API_SECRET }}@${{ secrets.CLOUDINARY_CLOUD_NAME }}
+        run: |
+          pip3 install cloudinary-cli
+          for image in ./var/error-screenshots/*.png
+          do
+             cld uploader upload "$image" folder="solidinvoice/ci/errors/$GITHUB_REF/$GITHUB_SHA" tags="ci,github-actions,e2e,screenshot"
+          done
 
       - name: Print logs file
         if: ${{ failure() }}
-        run: cat var/log/test.log
+        run: cat var/log/*.log
