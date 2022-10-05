@@ -44,7 +44,7 @@ module.exports = async ({ github, context }) => {
     const urlList = await uploadImages();
 
     urlList.forEach((element) => {
-        commentBody += `**element.name**\n![screenshot-${element.name}](${element.url}) \n`;
+        commentBody += `**${element.name}**\n![screenshot-${element.name}](${element.url}) \n`;
     });
 
     if (fs.existsSync(`${rootDir}/var/log/test.log`)) {
@@ -57,10 +57,7 @@ module.exports = async ({ github, context }) => {
         issue_number: context.issue.number,
         owner: context.repo.owner,
         repo: context.repo.repo,
-        body: `
-
-        ${commentBody}
-        `,
+        body: commentBody,
     });
 };
 
