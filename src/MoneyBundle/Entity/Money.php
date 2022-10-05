@@ -20,26 +20,20 @@ use Money\Money as BaseMoney;
 /**
  * @ORM\Embeddable()
  */
+#[ORM\Embeddable()]
 class Money
 {
     /**
      * @ORM\Column(name="amount", type="integer", nullable=true)
-     *
-     * @var string|null
      */
-    private $value = '0';
+    private ?string $value = '0';
 
     /**
      * @ORM\Column(name="currency", type="string", length=3, nullable=true)
-     *
-     * @var string|null
      */
-    private $currency;
+    private ?string $currency;
 
-    /**
-     * @var string
-     */
-    private static $baseCurrency;
+    private static string $baseCurrency;
 
     public static function setBaseCurrency(string $currency): void
     {
@@ -52,7 +46,7 @@ class Money
     }
 
     /**
-     * @param BaseMoney $money
+     * @param BaseMoney|null $money
      */
     public function __construct(?BaseMoney $money = null)
     {
