@@ -4,8 +4,7 @@ const path = require('path');
 
 module.exports = async ({ github, context }) => {
     const rootDir = path.resolve(path.join(__dirname, '..'));
-    let commentBody = 'Functional Test Failure 🙀!';
-    commentBody += `\n**(${context.workflow})**\n`;
+    let commentBody = `###Functional Test Failure 🙀! (${context.workflow})\n`;
 
     // Return "https" URLs by setting secure: true
     cloudinary.config({
@@ -45,7 +44,7 @@ module.exports = async ({ github, context }) => {
     const urlList = await uploadImages();
 
     urlList.forEach((element) => {
-        commentBody += `![screenshot-${element.name}](${element.url}) \n`;
+        commentBody += `**element.name**\n![screenshot-${element.name}](${element.url}) \n`;
     });
 
     if (fs.existsSync(`${rootDir}/var/log/test.log`)) {
