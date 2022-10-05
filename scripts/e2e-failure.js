@@ -4,7 +4,7 @@ const path = require('path');
 
 module.exports = async ({ github, context }) => {
     const rootDir = path.resolve(path.join(__dirname, '..'));
-    let commentBody = `###Functional Test Failure 🙀! (${context.workflow})\n`;
+    let commentBody = `###Functional Test Failure 🙀! (${context.workflow} / ${context.job.name})\n`;
 
     // Return "https" URLs by setting secure: true
     cloudinary.config({
