@@ -16,18 +16,12 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\JsonType;
 use Doctrine\Migrations\AbstractMigration;
-use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 final class Version20200 extends AbstractMigration implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
-
-    public function isTransactional(): bool
-    {
-        return \PHP_VERSION_ID < 80000;
-    }
 
     public function up(Schema $schema): void
     {
