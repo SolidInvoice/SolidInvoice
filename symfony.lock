@@ -158,9 +158,6 @@
             "config/routes/fos_js_routing.yaml"
         ]
     },
-    "fzaninotto/faker": {
-        "version": "v1.9.1"
-    },
     "gedmo/doctrine-extensions": {
         "version": "v2.4.41"
     },
@@ -238,9 +235,6 @@
     "monolog/monolog": {
         "version": "2.1.1"
     },
-    "moontoast/math": {
-        "version": "1.2.1"
-    },
     "mpdf/mpdf": {
         "version": "v8.0.7"
     },
@@ -274,9 +268,6 @@
     },
     "pagerfanta/pagerfanta": {
         "version": "v2.4.1"
-    },
-    "paragonie/constant_time_encoding": {
-        "version": "v2.4.0"
     },
     "paragonie/random_compat": {
         "version": "v9.99.99"
@@ -337,12 +328,6 @@
     },
     "php-webdriver/webdriver": {
         "version": "1.8.2"
-    },
-    "phpseclib/bcmath_compat": {
-        "version": "1.0.5"
-    },
-    "phpseclib/phpseclib": {
-        "version": "2.0.28"
     },
     "phpstan/extension-installer": {
         "version": "1.0.5"
