@@ -52,7 +52,7 @@ jobs:
         run: composer install --no-scripts
 
       - name: Ensure lock file is up to date
-        run: composer update --lock
+        run: composer update --lock --no-scripts
 
       - name: Run composer normalize
         run: composer normalize --no-update-lock --diff --dry-run
