@@ -11,9 +11,8 @@ module.exports = async ({ github, context }) => {
 | Job Name | SHA | REF |
 |----------|-----|-----|
 | ${JOB_NAME} | ${context.sha} | ${context.ref} |
-`;
 
-    console.log(context)
+`;
 
     // Return "https" URLs by setting secure: true
     cloudinary.config({
@@ -26,7 +25,7 @@ module.exports = async ({ github, context }) => {
         let images = fs.readdirSync(`${rootDir}/var/error-screenshots/`);
 
         images.forEach((element) => {
-            console.log('uploading image to cloudinary..');
+            console.log(`Uploading ${element} to cloudinary..`);
 
             let uplaodedImagePromise = cloudinary.uploader.upload(
                 `${rootDir}/var/error-screenshots/${element}`,
