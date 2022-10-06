@@ -21,7 +21,6 @@ use SolidInvoice\MoneyBundle\Factory\CurrencyFactory;
 /**
  * @ORM\Embeddable()
  */
-#[ORM\Embeddable()]
 class Money
 {
     /**

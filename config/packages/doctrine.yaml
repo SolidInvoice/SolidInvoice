@@ -25,6 +25,14 @@ doctrine:
                         enabled: true
                 auto_mapping: true
                 mappings:
+                    # The Money Bundle does not include any @Entity mappings, which means Doctrine defaults to Attribute mapping on PHP 8.0+
+                    # This is a workaround to force the Annotation mapping driver to be used
+                    SolidInvoiceMoneyBundle:
+                       is_bundle: false
+                       dir: '%kernel.project_dir%/src/MoneyBundle/Entity'
+                       prefix: 'SolidInvoice\MoneyBundle\Entity'
+                       alias: SolidInvoiceMoney
+                       type: annotation
                     gedmo_loggable:
                         type: annotation
                         prefix: Gedmo\Loggable\Entity
