@@ -3,6 +3,12 @@ const Encore = require('@symfony/webpack-encore'),
     { execSync } = require('child_process'),
     fs = require('fs');
 
+// Manually configure the runtime environment if not already configured yet by the "encore" command.
+// It's useful when you use tools that rely on webpack.config.js file.
+if (!Encore.isRuntimeEnvironmentConfigured()) {
+    Encore.configureRuntimeEnvironment(process.env.NODE_ENV || 'dev');
+}
+
 Encore
     .setOutputPath('public/static/')
     .setPublicPath('/static')
@@ -16,11 +22,16 @@ Encore
     .enableSingleRuntimeChunk()
     .splitEntryChunks()
     .cleanupOutputBeforeBuild()
+
+    .enableBuildNotifications()
     .enableSourceMaps(!Encore.isProduction())
     .enableVersioning(Encore.isProduction())
+    .enableIntegrityHashes(Encore.isProduction())
 
     .enableSassLoader()
-    .autoProvidejQuery()
+    .enableTypeScriptLoader()
+
+    .autoProvidejQuery() // @TODO: Remove
 
     .addAliases({
         '~': path.resolve(__dirname, 'assets/js'),
@@ -39,6 +50,9 @@ Encore
         'translator': path.resolve(__dirname, 'src/CoreBundle/Resources/public/js/extend/translator'),
     })
 
+    .enableStimulusBridge('./assets/controllers.json')
+
+    // @TODO: Remove
     .enableHandlebarsLoader((options) => {
         options.helperDirs = [
             path.resolve(__dirname, 'src/CoreBundle/Resources/public/js/extend/handlebars/helpers'),
@@ -79,6 +93,7 @@ Encore
      })
 ;
 
+// @TODO: Remove
 const pagesDir = path.resolve(__dirname, 'assets/js/pages');
 
 try {
@@ -108,6 +123,7 @@ const output = (err, stdout, stderr) => {
     }
 };
 
+// @TODO: Check if this is still necessary
 execSync('bin/console assets:install public', output);
 execSync('bin/console fos:js-routing:dump --format=json --target=assets/js/js_routes.json', output);
 execSync('bin/console bazinga:js-translation:dump assets/js --merge-domains --format=json', output);

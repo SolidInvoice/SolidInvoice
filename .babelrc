@@ -1,11 +1,20 @@
 {
-  "presets": ["@babel/env"],
+  "presets": [
+    [
+      "@babel/env",
+      {
+        "useBuiltIns": "usage",
+        "corejs": 3
+      }
+    ]
+  ],
   "ignore": [
     "csbillcore/js/lib/**/*.js",
     "csbillcore/js/app.js",
     "**/router.js"
   ],
   "plugins": [
-    "@babel/plugin-syntax-dynamic-import"
+    "@babel/plugin-syntax-dynamic-import",
+    "@babel/plugin-proposal-class-properties"
   ]
 }
