@@ -43,7 +43,7 @@
         "jasmine": "^4.4.0",
         "postcss-scss": "^4.0.5",
         "sass": "^1.55.0",
-        "sass-loader": "^13.0.2",
+        "sass-loader": "^13.1.0",
         "stylelint": "^14.13.0",
         "stylelint-config-recommended": "^9.0.0",
         "stylelint-config-standard-scss": "^5.0.0",
