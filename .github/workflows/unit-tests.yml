@@ -59,7 +59,7 @@ jobs:
           extensions: intl, gd, opcache, pdo_sqlite, soap, zip, :xdebug
           coverage: ${{ steps.coverage_driver.outputs.value }}
 
-      - uses: actions/setup-node@v3.4.1
+      - uses: actions/setup-node@v3.5.0
         with:
           node-version: 14
 
