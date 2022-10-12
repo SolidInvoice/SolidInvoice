@@ -171,6 +171,7 @@ class Client implements Stringable
         $this->recurringInvoices = new ArrayCollection();
         $this->payments = new ArrayCollection();
         $this->addresses = new ArrayCollection();
+        $this->credit = new Credit();
     }
 
     public function getId(): ?UuidInterface
@@ -354,7 +355,8 @@ class Client implements Stringable
         return $this->addresses;
     }
 
-    public function getCredit(): ?Credit
+
+    public function getCredit(): Credit
     {
         return $this->credit;
     }

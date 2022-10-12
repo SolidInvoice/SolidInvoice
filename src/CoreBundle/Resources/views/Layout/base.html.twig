@@ -19,7 +19,7 @@
     <title>{{ block('page_title') is defined  ? block('page_title') : (block('title') is defined ? block('title')) }}</title>
 
     <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link rel="icon" type="image/x-icon" href="{{ asset('/favicon.ico') }}" />
     <link rel="shortcut icon" type="image/png" href="{{ asset('/favicon.ico') }}"/>
@@ -54,11 +54,12 @@
             </footer>
         {% endif %}
 
+        {# TODO: Remove #}
         {% if module is defined %}
             {{ encore_entry_script_tags(module) }}
-        {% else %}
-            {{ encore_entry_script_tags('core') }}
         {% endif %}
+
+        {{ encore_entry_script_tags('core') }}
 
         {{ block('scripts') is defined ? block('scripts') }}
 

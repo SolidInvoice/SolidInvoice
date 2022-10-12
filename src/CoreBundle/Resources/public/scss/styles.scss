@@ -1,4 +1,5 @@
 @import '~bootstrap/scss/bootstrap';
+@import '~bootstrap-vue/src/index.scss';
 @import '~admin-lte/build/scss/adminlte.raw';
 @import '~@fortawesome/fontawesome-free/scss/fontawesome';
 @import '~@fortawesome/fontawesome-free/scss/solid';
@@ -15,6 +16,6 @@
 @import './form';
 @import './grid';
 @import './invoice';
-@import '~SolidInvoiceDataGrid/scss/grid';
-@import '~SolidInvoiceCore/css/bootstrap-modal.css';
-@import '~SolidInvoiceCore/css/bootstrap-modal-bs3patch.css';
+@import '~SolidInvoiceDataGrid/scss/grid.scss';
+// @import '~SolidInvoiceCore/css/bootstrap-modal.css';
+// @import '~SolidInvoiceCore/css/bootstrap-modal-bs3patch.css';

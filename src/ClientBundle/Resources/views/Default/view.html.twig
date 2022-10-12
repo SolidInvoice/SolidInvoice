@@ -69,7 +69,7 @@
                         {% endif %}
 
                         <li class="list-group-item">
-                            <div id="client-credit"></div>
+                            <div {{ vue_component('Client/Credit', {'credit': client.credit.value|formatCurrency, currency: client.currency|default(setting('system/company/currency')), clientId: client.id }) }}></div>
                         </li>
                     </ul>
 

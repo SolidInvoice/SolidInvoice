@@ -30,12 +30,13 @@ Encore
 
     .enableSassLoader()
     .enableTypeScriptLoader()
+    .enableVueLoader(() => {}, { runtimeCompilerBuild: false })
 
     .autoProvidejQuery() // @TODO: Remove
 
     .addAliases({
         '~': path.resolve(__dirname, 'assets/js'),
-        'SolidInvoiceClient': path.resolve(__dirname, 'src/ClientBundle/Resources/public'),
+        'SolidInvoiceClient': path.resolve(__dirname, 'src/ClientBundle/Resources/assets'),
         'SolidInvoiceCore': path.resolve(__dirname, 'src/CoreBundle/Resources/public'),
         'SolidInvoiceDataGrid': path.resolve(__dirname, 'src/DataGridBundle/Resources/public'),
         'SolidInvoiceInvoice': path.resolve(__dirname, 'src/InvoiceBundle/Resources/public'),
@@ -48,6 +49,7 @@ Encore
         'fos_js': path.resolve(__dirname, 'public/bundles/fosjsrouting/js'),
         'router': path.resolve(__dirname, 'src/CoreBundle/Resources/public/js/extend/routing'),
         'translator': path.resolve(__dirname, 'src/CoreBundle/Resources/public/js/extend/translator'),
+        'vue': '@vue/compat', // Required for bootstrap-vue
     })
 
     .enableStimulusBridge('./assets/controllers.json')
@@ -128,4 +130,10 @@ execSync('bin/console assets:install public', output);
 execSync('bin/console fos:js-routing:dump --format=json --target=assets/js/js_routes.json', output);
 execSync('bin/console bazinga:js-translation:dump assets/js --merge-domains --format=json', output);
 
-module.exports = Encore.getWebpackConfig();
+const config = Encore.getWebpackConfig();
+
+config.experiments = {
+    topLevelAwait: true
+};
+
+module.exports = config;
