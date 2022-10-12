@@ -9,9 +9,9 @@
 
 import { View } from 'backbone.marionette';
 import Template from '../../templates/info.hbs';
-import Contact from '../model/contact'
-import ContactModal from './contact_modal'
-import Translator from 'translator'
+import Contact from '../model/contact';
+import ContactModal from './contact_modal';
+import Translator from 'translator';
 
 export default View.extend({
     template: Template,

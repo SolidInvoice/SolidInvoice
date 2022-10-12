@@ -14,18 +14,13 @@ import Alert from 'SolidInvoiceCore/js/alert';
 import Router from 'router';
 import Translator from 'translator';
 import InfoView from './view/info';
-import ClientCredit from './credit';
 import ClientContact from './contacts';
 import AddressView from './view/address_collection';
 import AddressCollection from './model/address_collection';
 
 export default Module.extend({
     regions: {
-        'clientCredit': '#client-credit',
         'clientInfo': '#client-info'
-    },
-    _renderCredit (options) {
-        this.app.showChildView('clientCredit', ClientCredit(options));
     },
     _renderContactCollection (layoutView, options) {
         layoutView.renderContactsRegion(ClientContact(options));
@@ -63,8 +58,6 @@ export default Module.extend({
         return infoView;
     },
     initialize (options) {
-        this._renderCredit(options);
-
         const infoView = this._renderClientInfo(options);
         this.render(infoView, options);
 
