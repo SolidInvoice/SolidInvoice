@@ -37,7 +37,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/migrations": "^3.5",
         "doctrine/orm": "^2.13",
-        "dragonmantank/cron-expression": "^2.3",
+        "dragonmantank/cron-expression": "^3.3",
         "egulias/email-validator": "^3.2",
         "friendsofsymfony/jsrouting-bundle": "^2.5",
         "knplabs/knp-menu-bundle": "^3.2",
