@@ -30,9 +30,5 @@ services:
     volumes_from:
         - docs
     command:
-        #- 'npm'
-        #- 'rebuild'
-        #- 'node-sass'
-        #- '--force'
         - 'gulp'
     working_dir: '/opt/docs/'
