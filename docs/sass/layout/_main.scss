@@ -1,0 +1,103 @@
+///
+/// Editorial by Pixelarity
+/// pixelarity.com | hello@pixelarity.com
+/// License: pixelarity.com/license
+///
+
+/* Main */
+
+#main {
+  @include vendor('flex-grow', '1');
+  @include vendor('flex-shrink', '1');
+  width: 100%;
+
+  > .inner {
+    @include padding(0, 6em);
+    margin: 0 auto;
+    max-width: 110em;
+
+    > section {
+      @include padding(6em, 0);
+      border-top: solid 2px _palette(border);
+
+      &:first-of-type {
+        border-top: 0 !important;
+      }
+
+      h1 {
+        font-size: 2.5em;
+      }
+
+      @include breakpoint(small) {
+        h1 {
+          font-size: 2em;
+        }
+      }
+    }
+
+    img {
+      width: 100%;
+
+      p & {
+        text-align: center;
+      }
+    }
+
+    .headerlink {
+      display: none;
+      visibility: hidden;
+      font-size: 14px;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      &:hover {
+        .headerlink {
+          text-decoration: none;
+
+          &:after {
+            content: "\f0c1";
+            -moz-osx-font-smoothing: grayscale;
+            -webkit-font-smoothing: antialiased;
+            font-family: FontAwesome;
+            font-style: normal;
+            font-weight: normal;
+            text-transform: none !important;
+            visibility: visible;
+          }
+
+          display: inline-block;
+        }
+      }
+    }
+  }
+
+  @include breakpoint(xlarge) {
+    > .inner {
+      @include padding(0, 5em);
+
+      > section {
+        @include padding(4em, 0);
+      }
+    }
+  }
+
+  @include breakpoint(large) {
+    > .inner {
+      @include padding(0, 4em);
+
+      > section {
+        @include padding(3em, 0);
+      }
+    }
+  }
+
+  @include breakpoint(small) {
+    > .inner {
+      @include padding(0, 2em);
+
+      > section {
+        @include padding(2em, 0);
+      }
+    }
+  }
+}

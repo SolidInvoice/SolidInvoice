@@ -1,0 +1,38 @@
+version: '3.3'
+
+services:
+  docs:
+    build: .
+    volumes:
+      - './:/opt/docs'
+    working_dir: '/opt/docs/'
+    command:
+        - '/usr/local/bin/sphinx-autobuild'
+        - '--host'
+        - '0.0.0.0'
+        - '-d'
+        - '/opt/docs/_build/doctrees'
+        - '-b'
+        - 'html'
+        - '--watch'
+        - '/opt/docs/theme'
+        - '--watch'
+        - '/opt/docs/theme/static/css'
+        - '--watch'
+        - '/opt/docs/theme/static/js'
+        - '-a'
+        - '/opt/docs/source'
+        - '/opt/docs/_build/html'
+    ports:
+      - '8000:8000'
+  build:
+    build: ./build
+    volumes_from:
+        - docs
+    command:
+        #- 'npm'
+        #- 'rebuild'
+        #- 'node-sass'
+        #- '--force'
+        - 'gulp'
+    working_dir: '/opt/docs/'
