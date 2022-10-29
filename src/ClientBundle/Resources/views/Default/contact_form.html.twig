@@ -28,17 +28,25 @@
                 </div>
             </div>
 
-            <div class="card card-primary">
+            {% set addressesPrototypeForm %}
+                {{ _macro.widget_prototype(form.addresses, 'client.address.delete'|trans, {'trash' : {'class' : 'float-right btn-flat btn btn-danger'} }) }}
+            {% endset %}
+
+            {% do form.addresses.setRendered() %}
+
+            <div
+                class="card card-primary"
+                data-controller="form-collection"
+                data-form-collection-item-selector-value=".client_addresses .prototype-widget"
+                data-prototype="{{ addressesPrototypeForm|escape }}"
+                data-form-collection-prototype-name-value="{{ form.addresses.vars.prototype.vars.name }}"
+            >
                 <div class="card-header with-border">
                     <h3 class="card-title">{{ 'client.address.info'|trans }}</h3>
                 </div>
 
                 <div class="card-body">
-                    {% set addressesPrototypeForm %}
-                        {{ _macro.widget_prototype(form.addresses, 'client.address.delete'|trans, {'trash' : {'class' : 'float-right btn-flat btn btn-danger'} }) }}
-                    {% endset %}
-
-                    <div class="client_addresses" data-prototype="{{ addressesPrototypeForm|escape }}" data-prototype-name="{{ form.addresses.vars.prototype.vars.name }}">
+                    <div class="client_addresses">
                         {% for widget in form.addresses %}
                             {{ _macro.widget_prototype(widget, 'client.address.delete'|trans, {'trash' : {'class' : 'float-right btn-flat btn btn-danger'}}) }}
                         {% else %}
@@ -46,36 +54,44 @@
                         {% endfor %}
                     </div>
                 </div>
-
                 <div class="card-footer">
-                    <a href="#" data-target="client_addresses" class="btn-flat btn-add add_form_collection_link">
+                    <a href="#" data-action="click->form-collection#add" class="btn-flat btn-add add_form_collection_link">
                         {{ icon('plus', ['circle']) }} {{ "client.address.add"|trans }}
                     </a>
                 </div>
             </div>
         </div>
         <div class="col-lg-6 col-md-6" id="client-contacts-collection">
-            <div class="card card-primary">
+
+            {% set prototypeForm %}
+                {{ _macro.widget_prototype(form.contacts, 'client.contact.delete'|trans, {'trash' : {'class' : 'float-right btn btn-flat btn-danger'} }) }}
+            {% endset %}
+
+            {% do form.contacts.setRendered() %}
+
+            <div
+                class="card card-primary"
+                data-controller="form-collection"
+                data-form-collection-item-selector-value=".client_contacts > .prototype-widget"
+                data-prototype="{{ prototypeForm|escape }}"
+                data-form-collection-prototype-name-value="{{ form.contacts.vars.prototype.vars.name }}"
+            >
                 <div class="card-header with-border">
                     <h3 class="card-title">{{ 'client.contact.info'|trans }}</h3>
                 </div>
 
                 <div class="card-body">
-                    {% set prototypeForm %}
-                        {{ _macro.widget_prototype(form.contacts, 'client.contact.delete'|trans, {'trash' : {'class' : 'float-right btn btn-flat btn-danger'} }) }}
-                    {% endset %}
-
-                    <div class="client_contacts" data-prototype="{{ prototypeForm|escape }}" data-prototype-name="{{ form.contacts.vars.prototype.vars.name }}">
+                    <div class="client_contacts">
                         {% for widget in form.contacts %}
                             {{ _macro.widget_prototype(widget, 'client.contact.delete'|trans, {'trash' : {'class' : 'float-right btn btn-flat btn-danger'}}) }}
                         {% else %}
-                            {{ prototypeForm|replace({'__contact_prototype__' : 0})|raw }}
+                            {{ prototypeForm|replace({(attribute(form.contacts.vars.prototype.vars, 'name')) : 0})|raw }}
                         {% endfor %}
                     </div>
                 </div>
 
                 <div class="card-footer">
-                    <a href="#" data-target="client_contacts" class="btn-flat btn-add add_form_collection_link">
+                    <a href="#" data-action="click->form-collection#add" class="btn-flat btn-add add_form_collection_link">
                         {{ icon('plus', ['circle']) }} {{ "client.contact.add"|trans }}
                     </a>
                 </div>

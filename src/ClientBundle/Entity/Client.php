@@ -355,7 +355,6 @@ class Client implements Stringable
         return $this->addresses;
     }
 
-
     public function getCredit(): Credit
     {
         return $this->credit;

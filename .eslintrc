@@ -1,7 +1,7 @@
 {
-    "parser": "@babel/eslint-parser",
+    "parser": "vue-eslint-parser",
     "parserOptions": {
-        "parser": "babel-eslint",
+        "parser": "@typescript-eslint/parser",
         "sourceType": "module"
     },
     "root": true,
@@ -23,7 +23,8 @@
         "eslint:recommended",
         "plugin:lodash/recommended",
         "plugin:backbone/recommended",
-        "plugin:no-jquery/deprecated-3.5"
+        "plugin:no-jquery/deprecated-3.5",
+        'plugin:vue/vue3-recommended'
     ],
     "rules": {
         "lodash/prefer-lodash-method": "off",

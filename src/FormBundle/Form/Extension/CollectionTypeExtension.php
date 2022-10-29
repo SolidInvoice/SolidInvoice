@@ -1,0 +1,129 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of SolidInvoice project.
+ *
+ * (c) Pierre du Plessis <open-source@solidworx.co>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace SolidInvoice\FormBundle\Form\Extension;
+
+use Symfony\Component\Form\AbstractTypeExtension;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use function array_merge;
+
+final class CollectionTypeExtension extends AbstractTypeExtension
+{
+    public static function getExtendedTypes(): iterable
+    {
+        return [CollectionType::class];
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        /** @var FormInterface|null $prototype */
+        $prototype = $builder->getAttribute('prototype');
+
+        if (! $prototype) {
+            return;
+        }
+
+        // TODO add button only if `delete_type` is defined and set `delete_type` default to null?
+        if ($options['allow_delete']) {
+            // add delete button to prototype
+            // TODO add toolbar here to allow extension add other buttons
+            $prototype->add('deleteButton', $options['delete_type'], $options['delete_options']);
+        }
+    }
+
+    public function buildView(FormView $view, FormInterface $form, array $options): void
+    {
+        /** @var FormInterface|null $prototype */
+        $prototype = $form->getConfig()->getAttribute('prototype');
+
+        if (! $prototype) {
+            return;
+        }
+
+        if ($options['allow_delete']) {
+            // add delete button to rendered elements from the Collection ResizeListener
+            foreach ($form as $child) {
+                // $child->add('deleteButton', $options['delete_type'], $options['delete_options']);
+            }
+        }
+
+        // TODO add button only if `add_type` is defined and set `add_type` default to null?
+        if ($options['allow_add']) {
+            // TODO add toolbar here to allow extension add other buttons
+            // $form->add('addButton', $options['add_type'], $options['add_options']);
+        }
+    }
+
+    public function finishView(FormView $view, FormInterface $form, array $options): void
+    {
+        if (! $form->has('addButton')) {
+            return;
+        }
+
+        $form->add('addButton', $options['add_type'], $options['add_options']);
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $attrNormalizer = function (Options $options, $value) {
+            if (! isset($value['data-controller'])) {
+                // TODO default be `symfony--ux-collection--collection` or `collection`?
+                $value['data-controller'] = 'form-collection';
+            }
+
+            $value['data-' . $value['data-controller'] . '-prototype-name-value'] = $options['prototype_name'];
+
+            return $value;
+        };
+
+        $resolver->setDefaults([
+            'add_type' => ButtonType::class, // TODO add AddButtonType for easier theming and extending
+            'add_options' => [],
+            'delete_type' => ButtonType::class, // TODO add DeleteButtonType for easier theming and extending
+            'delete_options' => [],
+        ]);
+
+        $addOptionsNormalizer = function (Options $options, $value) {
+            $value['attr'] = array_merge([
+                'data-action' => $options['attr']['data-controller'] . '#add',
+            ], $value['attr'] ?? []);
+
+            return $value;
+        };
+
+        $deleteOptionsNormalizer = function (Options $options, $value) {
+            $value['attr'] = array_merge([
+                'data-action' => $options['attr']['data-controller'] . '#delete',
+            ], $value['attr'] ?? []);
+
+            return $value;
+        };
+
+        $entryOptionsNormalizer = function (Options $options, $value) {
+            $value['row_attr']['data-' . $options['attr']['data-controller'] . '-target'] = 'entry';
+
+            return $value;
+        };
+
+        $resolver->setNormalizer('attr', $attrNormalizer);
+        $resolver->setNormalizer('add_options', $addOptionsNormalizer);
+        $resolver->setNormalizer('delete_options', $deleteOptionsNormalizer);
+        $resolver->addNormalizer('entry_options', $entryOptionsNormalizer);
+    }
+}

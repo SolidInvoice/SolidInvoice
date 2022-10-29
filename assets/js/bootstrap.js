@@ -7,4 +7,4 @@ export const app = startStimulusApp(require.context(
     /\.[jt]sx?$/
 ));
 
-app.debug = process.env.NODE_ENV === 'development';
+app.debug = 'development' === process.env.NODE_ENV;

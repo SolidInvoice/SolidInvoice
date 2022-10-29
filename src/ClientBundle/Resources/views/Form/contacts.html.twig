@@ -9,9 +9,7 @@
 
 {% import "@SolidInvoiceCore/Form/macro.html.twig" as _macro %}
 
-{% set id = random() %}
-
-<div class="widget" data-content="{{ id }}">
+<div{% with {attr: row_attr|merge({class: (row_attr.class|default('') ~ ' form-group')|trim})} %}{{ block('attributes') }}{% endwith %}>
     <br class="clear" />
 
     <div class="child row">
@@ -29,30 +27,49 @@
 
     {% set additional_details = form_row(form.additionalContactDetails.vars.prototype) %}
 
-    <script type="text/template" class="additional-details">
-        {{ additional_details|raw }}
-    </script>
-
     <h5>
         {{ 'client.contact.details.extra'|trans }}
     </h5>
 
-    {% set total = form.additionalContactDetails|length %}
-    <div class="prototype-widget client_contacts" data-counter="{{ total > 0 ? total : 0 }}">
-        {% for widget in form.additionalContactDetails %}
-            {{ form_row(widget, {'child' : true}) }}
-        {% endfor %}
+    <div
+        data-controller="form-collection contact-details-form-collection"
+        data-form-collection-item-selector-value=".client_contacts > .form-group"
+        data-prototype="{{ additional_details|escape }}"
+        data-form-collection-prototype-name-value="{{ form.additionalContactDetails.vars.prototype.vars.name }}"
+    >
+        <div class="client_additional_details">
+            {% set total = form.additionalContactDetails|length %}
+            <div class="prototype-widget client_contacts">
+            {% for widget in form.additionalContactDetails %}
+                    {{ form_row(widget, {'child' : true}) }}
+                {% endfor %}
 
-        {{ additional_details|replace({'__contact_details_prototype__' : total})|raw }}
+                {{ additional_details|replace({'__contact_details_prototype__' : total})|raw }}
+            </div>
+        </div>
     </div>
+
 
     {{ form_errors(form.additionalContactDetails) }}
     {{ form_errors(form) }}
 
     {% if allow_delete %}
-        <a href="#" class="btn btn-danger btn-flat btn-sm btn-remove float-right" data-related="{{ id }}">
+        <a href="#" data-action="click->form-collection#delete" class="btn btn-danger btn-flat btn-sm btn-remove float-right">
             {{ icon('trash-o') }} {{ 'client.contact.delete'|trans }}
         </a>
         <br class="clear" />
     {% endif %}
 </div>
+
+{% block attributes -%}
+    {%- for attrname, attrvalue in attr -%}
+        {{- " " -}}
+        {%- if attrname in ['placeholder', 'title'] -%}
+            {{- attrname }}="{{ translation_domain is same as(false) or attrvalue is null ? attrvalue : attrvalue|trans(attr_translation_parameters, translation_domain) }}"
+        {%- elseif attrvalue is same as(true) -%}
+            {{- attrname }}="{{ attrname }}"
+        {%- elseif attrvalue is not same as(false) -%}
+            {{- attrname }}="{{ attrvalue }}"
+        {%- endif -%}
+    {%- endfor -%}
+{%- endblock attributes -%}

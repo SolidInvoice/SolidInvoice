@@ -122,8 +122,7 @@
 {%- endblock tax_choice_widget_options %}
 
 {% block address_widget %}
-    {% set id = random() %}
-    <div class="widget" data-content="{{ id }}">
+    <div{% with {attr: row_attr|merge({class: (row_attr.class|default('') ~ ' form-group')|trim})} %}{{ block('attributes') }}{% endwith %}>
 
         <div class="row">
             <div class="col-md-6">
@@ -153,7 +152,7 @@
         </div>
 
         {% if canDelete %}
-            <a href="#" class="btn btn-danger btn-flat btn-sm btn-remove float-right" data-related="{{ id }}">
+            <a href="#" data-action="click->form-collection#delete" class="btn btn-danger btn-flat btn-sm btn-remove float-right">
                 {{ icon('trash-o') }} {{ 'client.address.delete'|trans }}
             </a>
         {% endif %}

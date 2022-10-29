@@ -8,21 +8,19 @@
  */
 
 import Module from 'SolidInvoiceCore/js/module';
-import FormCollection from 'SolidInvoiceCore/js/util/form/collection';
-import ContactCollection from './contacts_collection';
 
 export default Module.extend({
     formCollection: null,
     contactCollection: null,
-    initialize() {
-        this.formCollection = new FormCollection({
+/*    initialize () {
+        /!*this.formCollection = new FormCollection({
             el: '#client-address-collection',
             addSelector: '.add_form_collection_link'
-        });
+        });*!/
 
-        this.contactCollection = new ContactCollection({
+        /!*this.contactCollection = new ContactCollection({
             el: '#client-contacts-collection',
             addSelector: '.add_form_collection_link'
-        });
-    }
+        });*!/
+    }*/
 });
