@@ -11,17 +11,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@2e205a28d0e1da00c5f53b161f4067b052c61f34
+        with:
+          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+
       - name: Checkout
-        uses: "actions/checkout@v3"
+        uses: "actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8"
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@1a18b2267f80291a81ca1d33e7c851fe09e7dfc4
         with:
           php-version: 7.4
           extensions: intl, gd, opcache, mysql, pdo_mysql, soap, zip, :xdebug
           coverage: none
 
-      - uses: actions/setup-node@v3.5.1
+      - uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516
         with:
           node-version: 14
 
@@ -29,20 +34,20 @@ jobs:
         run: "./scripts/build_dist.sh ${{ github.event.milestone.title }} ${{ github.event.milestone.title }}"
 
       - name: "Upload Release Artifact"
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@1e07f4398721186383de40550babbdf2b84acfc5
         with:
           files: |
             build/dist/SolidInvoice-${{ github.event.milestone.title }}.zip
             build/dist/SolidInvoice-${{ github.event.milestone.title }}.tar.gz
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@e81a89b1732b9c48d79cd809d8d81d79c4647a18
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@8c0edbc76e98fa90f69d9a2c020dcb50019dc325
 
       - name: Release
-        uses: laminas/automatic-releases@v1
+        uses: laminas/automatic-releases@1b61a5fcf90ba3223c85130b7bc2a7f95311e79c
         with:
           command-name: laminas:automatic-releases:release
         env:
@@ -55,7 +60,7 @@ jobs:
         run: "./scripts/build_dist.sh $(git rev-parse --abbrev-ref HEAD) ${{ github.event.milestone.title }}"
 
       - name: Upload Release Artifact
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@1e07f4398721186383de40550babbdf2b84acfc5
         with:
           tag_name: ${{ github.event.milestone.title }}
           files: |
@@ -63,13 +68,13 @@ jobs:
             build/dist/SolidInvoice-${{ github.event.milestone.title }}.tar.gz
 
       - name: Login to DockerHub
-        uses: docker/login-action@v2
+        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
       - name: Build and push docker image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@c56af957549030174b10d6867f20e78cfd7debc5
         with:
           push: true
           context: ./docker
@@ -81,7 +86,7 @@ jobs:
             solidinvoice/solidinvoice:${{ github.event.milestone.title }}
 
       - name: Create Merge-Up Pull Request
-        uses: laminas/automatic-releases@v1
+        uses: laminas/automatic-releases@1b61a5fcf90ba3223c85130b7bc2a7f95311e79c
         with:
           command-name: laminas:automatic-releases:create-merge-up-pull-request
         env:
@@ -91,7 +96,7 @@ jobs:
           "GIT_AUTHOR_EMAIL": ${{ secrets.GIT_AUTHOR_EMAIL }}
 
       - name: Create new milestones
-        uses: laminas/automatic-releases@v1
+        uses: laminas/automatic-releases@1b61a5fcf90ba3223c85130b7bc2a7f95311e79c
         with:
           command-name: laminas:automatic-releases:create-milestones
         env:
