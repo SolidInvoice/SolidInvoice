@@ -76,7 +76,7 @@ class ItemType extends AbstractType
                 [
                     'placeholder' => 'No Tax',
                     'attr' => [
-                        'class' => 'select2 input-mini invoice-item-tax',
+                        'class' => 'input-mini invoice-item-tax',
                     ],
                     'required' => false,
                 ]

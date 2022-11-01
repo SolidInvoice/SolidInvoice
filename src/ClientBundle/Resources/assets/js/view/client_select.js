@@ -74,11 +74,6 @@ export default ItemView.extend({
         const clientSelectContainer = this.$('#client-select-container');
         clientSelect.toggle();
 
-        if (clientSelect.is(':visible')) {
-            // eslint-disable-next-line
-            clientSelect.find('select').select2().select2('val', 0);
-        }
-
         if (!isUndefined(show)) {
             if (true === show) {
                 clientSelectContainer.show();

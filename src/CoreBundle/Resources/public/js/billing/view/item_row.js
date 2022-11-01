@@ -35,11 +35,7 @@ export default ItemView.extend({
             }
 
             if (this.model.get(type)) {
-                if ('tax' === type) {
-                    $this.select2('val', this.model.get(type).id);
-                } else {
-                    $this.val(this.model.get(type));
-                }
+                $this.val(this.model.get(type));
             }
         });
     },

@@ -1,16 +1,14 @@
 <template>
-  <div>
-    <b-dropdown :text="dropDownLabel">
-      <b-dropdown-item-button v-for="item in options" :key="item.text" @click="setItem(item)">
-       {{ item.text }}
-      </b-dropdown-item-button>
-    </b-dropdown>
-  </div>
+  <b-dropdown :text="dropDownLabel">
+    <b-dropdown-item-button v-for="item in options" :key="item.text" @click="setItem(item)">
+      {{ item.text }}
+    </b-dropdown-item-button>
+  </b-dropdown>
 </template>
 
 <script lang="ts" setup>
   import { ref, PropType } from 'vue'
-  import { BDropdown, BDropdownItemButton } from "bootstrap-vue";
+  import { BDropdown, BDropdownItemButton } from 'bootstrap-vue';
 
   type OptionType = {
     text: string;

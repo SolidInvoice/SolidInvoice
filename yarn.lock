@@ -403,7 +403,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/parser@npm:^7.22.15, @babel/parser@npm:^7.23.0, @babel/parser@npm:^7.23.3, @babel/parser@npm:^7.23.4":
+"@babel/parser@npm:^7.18.4, @babel/parser@npm:^7.22.15, @babel/parser@npm:^7.23.0, @babel/parser@npm:^7.23.3, @babel/parser@npm:^7.23.4":
   version: 7.23.4
   resolution: "@babel/parser@npm:7.23.4"
   bin:
@@ -2295,6 +2295,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/vue-select@npm:^3.16.2":
+  version: 3.16.8
+  resolution: "@types/vue-select@npm:3.16.8"
+  dependencies:
+    vue: "npm:^2.0.0"
+  checksum: e31e8b6339c975e63051ba0ddcb77dac2ea043e78f5e8d9c444bb509c9f901831c480bc4fa6091874a51487356cffae788943f3cde73d4dd0d7bc13c19817374
+  languageName: node
+  linkType: hard
+
 "@types/webpack-env@npm:^1.16.4":
   version: 1.18.4
   resolution: "@types/webpack-env@npm:1.18.4"
@@ -2446,6 +2455,17 @@ __metadata:
     "@vue/compiler-core": "npm:3.3.8"
     "@vue/shared": "npm:3.3.8"
   checksum: 81d18034169d37c058852a1fe708e54443de5c237f83c8d5ebde9621da2f51d3cb9ac256be6c0324aa382155a267e63a956bd0c372441f5a81594cfda27895c5
+  languageName: node
+  linkType: hard
+
+"@vue/compiler-sfc@npm:2.7.15":
+  version: 2.7.15
+  resolution: "@vue/compiler-sfc@npm:2.7.15"
+  dependencies:
+    "@babel/parser": "npm:^7.18.4"
+    postcss: "npm:^8.4.14"
+    source-map: "npm:^0.6.1"
+  checksum: d5dc7667bea091702657cd9263371d407d708ab0a571da01ebff5870b7800ac709678285c7dc86ae23a0757ff8a5de13dceffc063687be6a7700f58519bd5f57
   languageName: node
   linkType: hard
 
@@ -4247,7 +4267,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"csstype@npm:^3.1.2":
+"csstype@npm:^3.1.0, csstype@npm:^3.1.2":
   version: 3.1.2
   resolution: "csstype@npm:3.1.2"
   checksum: 32c038af259897c807ac738d9eab16b3d86747c72b09d5c740978e06f067f9b7b1737e1b75e407c7ab1fe1543dc95f20e202b4786aeb1b8d3bdf5d5ce655e6c6
@@ -8710,7 +8730,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.2.14, postcss@npm:^8.4.19, postcss@npm:^8.4.21, postcss@npm:^8.4.24, postcss@npm:^8.4.31":
+"postcss@npm:^8.2.14, postcss@npm:^8.4.14, postcss@npm:^8.4.19, postcss@npm:^8.4.21, postcss@npm:^8.4.24, postcss@npm:^8.4.31":
   version: 8.4.31
   resolution: "postcss@npm:8.4.31"
   dependencies:
@@ -9301,24 +9321,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"select2-bootstrap-theme@npm:^0.1.0-beta.10":
-  version: 0.1.0-beta.10
-  resolution: "select2-bootstrap-theme@npm:0.1.0-beta.10"
-  checksum: 51bbdd76478e98f99f5a3eb00e91491df94ce83016806250f92efb70fb3fde0c41716da9ebbe44396305f70c849ce7ab2414b812046059939f0cd74476ee0dac
-  languageName: node
-  linkType: hard
-
 "select2@npm:^4.0.13":
   version: 4.0.13
   resolution: "select2@npm:4.0.13"
   checksum: a393866565a5f878ca21276ed32793595851debb35ff48a8c368640e732619349f547d335b438b45ff5647145eb6c5af868cd5153740de58306a2dca2498550f
-  languageName: node
-  linkType: hard
-
-"select2@npm:^4.1.0-rc.0":
-  version: 4.1.0-rc.0
-  resolution: "select2@npm:4.1.0-rc.0"
-  checksum: 6e25a387ad059b341bd154374894a730d862a65913a86b84d3a9d5b31d71219f415c2f79ec8d40761efb4d8dc3e11155cdf14b2902cf6e4f99a21148f2688e69
   languageName: node
   linkType: hard
 
@@ -9614,6 +9620,7 @@ __metadata:
     "@symfony/ux-vue": "file:vendor/symfony/ux-vue/assets"
     "@symfony/webpack-encore": "npm:^4.3.0"
     "@types/accounting": "npm:^0.4.2"
+    "@types/vue-select": "npm:^3.16.2"
     "@typescript-eslint/parser": "npm:^5.41.0"
     "@vue/compat": "npm:^3.2.40"
     "@vue/compiler-sfc": "npm:^3.3.8"
@@ -9659,8 +9666,6 @@ __metadata:
     regenerator-runtime: "npm:^0.13.11"
     sass: "npm:^1.63.3"
     sass-loader: "npm:^13.3.2"
-    select2: "npm:^4.1.0-rc.0"
-    select2-bootstrap-theme: "npm:^0.1.0-beta.10"
     stylelint: "npm:^14.16.1"
     stylelint-config-recommended: "npm:^9.0.0"
     stylelint-config-standard-scss: "npm:^6.1.0"
@@ -9671,6 +9676,7 @@ __metadata:
     vue: "npm:^3.0"
     vue-eslint-parser: "npm:^9.1.0"
     vue-loader: "npm:^17.0.0"
+    vue-select: "npm:^4.0.0-beta.5"
     webpack: "npm:^5.89.0"
     webpack-cli: "npm:^5.1.4"
     webpack-notifier: "npm:^1.15.0"
@@ -10763,6 +10769,25 @@ __metadata:
     vue:
       optional: true
   checksum: b758c0e11197b398ac5b0c6451c1f7bd14cfea16e9b2fb0bc7d41f5880504a78b8e5093ba96c6744ec9c153007dc90e4218f5ce17d80aa6aa81275f4253be0e1
+  languageName: node
+  linkType: hard
+
+"vue-select@npm:^4.0.0-beta.5":
+  version: 4.0.0-beta.6
+  resolution: "vue-select@npm:4.0.0-beta.6"
+  peerDependencies:
+    vue: 3.x
+  checksum: a6fc86537a4eb01d6c3b9339ce3daacd41d78dd66bacf06d632c886fd4b40a36f7762b6ee40a9abea377929cb2870935f1759ec3d920dd07c89529c0c30d2242
+  languageName: node
+  linkType: hard
+
+"vue@npm:^2.0.0":
+  version: 2.7.15
+  resolution: "vue@npm:2.7.15"
+  dependencies:
+    "@vue/compiler-sfc": "npm:2.7.15"
+    csstype: "npm:^3.1.0"
+  checksum: 92bc7bcef1a54fe6b98409a7094f7c8b1f4b8fcf52469380f130d0d671d581130b1ef8715f0e95020fc5dbffff7f519a0621206484b3fdee5e6319a76073fb0c
   languageName: node
   linkType: hard
 

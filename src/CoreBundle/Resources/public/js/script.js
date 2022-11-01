@@ -18,13 +18,6 @@ $(function() {
     });
 
     /!**
-     * Select2
-     *!/
-    $('select.select2').select2({
-        allowClear: true
-    });
-
-    /!**
      * PlaceHolder
      *!/
     $('input[placeholder]').placeholder();

@@ -14,7 +14,6 @@ import Backbone from 'backbone';
 import { forEach, functionsIn, includes, isFunction, isUndefined, trim } from 'lodash';
 import 'admin-lte';
 import 'bootstrap';
-import 'select2';
 import 'jquery-placeholder';
 import 'regenerator-runtime/runtime';
 
@@ -31,16 +30,6 @@ const Application = MnApplication.extend({
         const $tooltip = $('*[rel=tooltip]');
         if ($tooltip.length) {
             $tooltip.tooltip();
-        }
-
-        /**
-         * Select2
-         */
-        const $select2 = $('select.select2');
-        if ($select2.length) {
-            $select2.select2({
-                theme: 'bootstrap'
-            });
         }
 
         /**

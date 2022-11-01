@@ -41,9 +41,6 @@ class AddressType extends AbstractType
             'country',
             CountryType::class,
             [
-                'attr' => [
-                    'class' => 'select2',
-                ],
                 'placeholder' => 'client.address.country.select',
                 'required' => false,
             ]

@@ -45,7 +45,7 @@ class QuoteType extends AbstractType
             null,
             [
                 'attr' => [
-                    'class' => 'select2 client-select',
+                    'class' => 'client-select',
                 ],
                 'placeholder' => 'quote.client.choose',
                 'choices' => $this->registry->getRepository(Client::class)->findAll()

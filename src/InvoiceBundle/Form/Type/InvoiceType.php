@@ -44,7 +44,7 @@ class InvoiceType extends AbstractType
             null,
             [
                 'attr' => [
-                    'class' => 'select2 client-select',
+                    'class' => 'client-select',
                 ],
                 'placeholder' => 'invoice.client.choose',
                 'choices' => $this->registry->getRepository(Client::class)->findAll()

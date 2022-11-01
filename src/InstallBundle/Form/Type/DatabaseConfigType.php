@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Form\Type;
 
-use SolidInvoice\CoreBundle\Form\Type\Select2Type;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -33,7 +33,7 @@ class DatabaseConfigType extends AbstractType
 
         $builder->add(
             'driver',
-            Select2Type::class,
+            ChoiceType::class,
             [
                 'choices' => array_flip($drivers),
                 'placeholder' => 'Select Database Driver',

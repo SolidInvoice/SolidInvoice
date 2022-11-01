@@ -34,6 +34,7 @@
         "@symfony/ux-vue": "file:vendor/symfony/ux-vue/assets",
         "@symfony/webpack-encore": "^4.3.0",
         "@types/accounting": "^0.4.2",
+        "@types/vue-select": "^3.16.2",
         "@typescript-eslint/parser": "^5.41.0",
         "@vue/compiler-sfc": "^3.3.8",
         "babel-loader": "^9.1.2",
@@ -96,9 +97,8 @@
         "parsleyjs": "^2.9.2",
         "popper.js": "^1.16.1",
         "regenerator-runtime": "^0.13.11",
-        "select2": "^4.1.0-rc.0",
-        "select2-bootstrap-theme": "^0.1.0-beta.10",
-        "underscore": "^1.13.6"
+        "underscore": "^1.13.6",
+        "vue-select": "^4.0.0-beta.5"
     },
     "resolutions": {
         "backbone": "1.3.3"

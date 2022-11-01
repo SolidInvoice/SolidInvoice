@@ -10,7 +10,6 @@
 import $ from 'jquery';
 import { View } from 'backbone.marionette';
 import { isEmpty, result, bind, replace } from 'lodash';
-import 'select2';
 
 export default View.extend({
     addSelector: '.btn-add',
@@ -37,12 +36,6 @@ export default View.extend({
             collectionHolder.data('counter', ++counter);
 
             const el = collectionHolder.append(form);
-            const $select2 = $('select.select2');
-            if ($select2.length) {
-                $select2.select2({
-                    theme: 'bootstrap'
-                });
-            }
 
             this.$el.trigger('collection:add', el);
 

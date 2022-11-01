@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SettingsBundle\Form\Type;
 
-use SolidInvoice\CoreBundle\Form\Type\Select2Type;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ThemeType extends AbstractType
@@ -45,6 +45,6 @@ class ThemeType extends AbstractType
 
     public function getParent()
     {
-        return Select2Type::class;
+        return ChoiceType::class;
     }
 }

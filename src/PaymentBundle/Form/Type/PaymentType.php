@@ -49,9 +49,6 @@ class PaymentType extends AbstractType
                 'constraints' => new Assert\NotBlank(),
                 'placeholder' => 'Choose Payment Method',
                 'choice_attr' => fn (PaymentMethod $paymentMethod) => ['data-gateway' => $paymentMethod->getGatewayName()],
-                'attr' => [
-                    'class' => 'select2',
-                ],
             ]
         );
 
