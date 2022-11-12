@@ -30,16 +30,6 @@ jobs:
         with:
           node-version: 14
 
-      - name: "Build Release Artifact"
-        run: "./scripts/build_dist.sh ${{ github.event.milestone.title }} ${{ github.event.milestone.title }}"
-
-      - name: "Upload Release Artifact"
-        uses: softprops/action-gh-release@1e07f4398721186383de40550babbdf2b84acfc5
-        with:
-          files: |
-            build/dist/SolidInvoice-${{ github.event.milestone.title }}.zip
-            build/dist/SolidInvoice-${{ github.event.milestone.title }}.tar.gz
-
       - name: Set up QEMU
         uses: docker/setup-qemu-action@e81a89b1732b9c48d79cd809d8d81d79c4647a18
 
