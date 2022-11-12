@@ -7,6 +7,63 @@
     "content-hash": "43d9508f9164a981a2cc2933a66246c7",
     "packages": [
         {
+            "name": "alcohol/iso4217",
+            "version": "3.1.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alcohol/iso4217.git",
+                "reference": "3a764b8d8f1d5ea7506620a21f42909a7d6a4832"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alcohol/iso4217/zipball/3a764b8d8f1d5ea7506620a21f42909a7d6a4832",
+                "reference": "3a764b8d8f1d5ea7506620a21f42909a7d6a4832",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.4 || ^7.0"
+            },
+            "require-dev": {
+                "phpunit/php-invoker": "@stable",
+                "phpunit/phpunit": "^4.8.36 || ^5.7 || ^6.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Alcohol\\": "."
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rob Bast",
+                    "email": "rob.bast@gmail.com"
+                }
+            ],
+            "description": "ISO 4217 PHP Library",
+            "homepage": "http://alcohol.github.io/iso4217/",
+            "keywords": [
+                "4217",
+                "ISO 4217",
+                "currencies",
+                "iso",
+                "library"
+            ],
+            "support": {
+                "issues": "https://github.com/alcohol/iso4217/issues",
+                "source": "https://github.com/alcohol/iso4217"
+            },
+            "time": "2019-10-30T10:03:42+00:00"
+        },
+        {
             "name": "api-platform/core",
             "version": "v2.6.6",
             "source": {
@@ -391,16 +448,16 @@
         },
         {
             "name": "clue/stream-filter",
-            "version": "v1.5.0",
+            "version": "v1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/clue/stream-filter.git",
-                "reference": "aeb7d8ea49c7963d3b581378955dbf5bc49aa320"
+                "reference": "d6169430c7731d8509da7aecd0af756a5747b78e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/clue/stream-filter/zipball/aeb7d8ea49c7963d3b581378955dbf5bc49aa320",
-                "reference": "aeb7d8ea49c7963d3b581378955dbf5bc49aa320",
+                "url": "https://api.github.com/repos/clue/stream-filter/zipball/d6169430c7731d8509da7aecd0af756a5747b78e",
+                "reference": "d6169430c7731d8509da7aecd0af756a5747b78e",
                 "shasum": ""
             },
             "require": {
@@ -441,7 +498,7 @@
             ],
             "support": {
                 "issues": "https://github.com/clue/stream-filter/issues",
-                "source": "https://github.com/clue/stream-filter/tree/v1.5.0"
+                "source": "https://github.com/clue/stream-filter/tree/v1.6.0"
             },
             "funding": [
                 {
@@ -453,7 +510,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-10-02T12:38:20+00:00"
+            "time": "2022-02-21T13:15:14+00:00"
         },
         {
             "name": "composer/package-versions-deprecated",
@@ -3175,35 +3232,50 @@
         },
         {
             "name": "league/uri",
-            "version": "5.3.0",
+            "version": "6.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/uri.git",
-                "reference": "f2bceb755f1108758cf4cf925e4cd7699ce686aa"
+                "reference": "c68ca445abb04817d740ddd6d0b3551826ef0c5a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/uri/zipball/f2bceb755f1108758cf4cf925e4cd7699ce686aa",
-                "reference": "f2bceb755f1108758cf4cf925e4cd7699ce686aa",
+                "url": "https://api.github.com/repos/thephpleague/uri/zipball/c68ca445abb04817d740ddd6d0b3551826ef0c5a",
+                "reference": "c68ca445abb04817d740ddd6d0b3551826ef0c5a",
                 "shasum": ""
             },
             "require": {
-                "ext-fileinfo": "*",
-                "ext-intl": "*",
-                "ext-mbstring": "*",
-                "league/uri-components": "^1.8",
-                "league/uri-hostname-parser": "^1.1",
-                "league/uri-interfaces": "^1.0",
-                "league/uri-manipulations": "^1.5",
-                "league/uri-parser": "^1.4",
-                "league/uri-schemes": "^1.2",
-                "php": ">=7.0.13",
+                "ext-json": "*",
+                "league/uri-interfaces": "^2.3",
+                "php": "^7.3 || ^8.0",
                 "psr/http-message": "^1.0"
             },
-            "type": "metapackage",
+            "conflict": {
+                "league/uri-schemes": "^1.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.19 || ^3.0",
+                "phpstan/phpstan": "^0.12.90",
+                "phpstan/phpstan-phpunit": "^0.12.22",
+                "phpstan/phpstan-strict-rules": "^0.12.11",
+                "phpunit/phpunit": "^8.0 || ^9.0",
+                "psr/http-factory": "^1.0"
+            },
+            "suggest": {
+                "ext-fileinfo": "Needed to create Data URI from a filepath",
+                "ext-intl": "Needed to improve host validation",
+                "league/uri-components": "Needed to easily manipulate URI objects",
+                "psr/http-factory": "Needed to use the URI factory"
+            },
+            "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.x-dev"
+                    "dev-master": "6.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\Uri\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -3234,55 +3306,72 @@
                 "querystring",
                 "rfc3986",
                 "rfc3987",
+                "rfc6570",
                 "uri",
+                "uri-template",
                 "url",
                 "ws"
             ],
             "support": {
-                "forum": "https://groups.google.com/forum/#!forum/thephpleague",
+                "docs": "https://uri.thephpleague.com",
+                "forum": "https://thephpleague.slack.com",
                 "issues": "https://github.com/thephpleague/uri/issues",
-                "source": "https://github.com/thephpleague/uri/tree/master"
+                "source": "https://github.com/thephpleague/uri/tree/6.5.0"
             },
-            "time": "2018-03-14T17:19:39+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/sponsors/nyamsprod",
+                    "type": "github"
+                }
+            ],
+            "time": "2021-08-27T09:54:07+00:00"
         },
         {
             "name": "league/uri-components",
-            "version": "1.8.2",
+            "version": "2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/uri-components.git",
-                "reference": "d0412fd730a54a8284009664188cf239070eae64"
+                "reference": "c97c83e7d915cdb0163f0322a87a07df1d0d9fe1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/uri-components/zipball/d0412fd730a54a8284009664188cf239070eae64",
-                "reference": "d0412fd730a54a8284009664188cf239070eae64",
+                "url": "https://api.github.com/repos/thephpleague/uri-components/zipball/c97c83e7d915cdb0163f0322a87a07df1d0d9fe1",
+                "reference": "c97c83e7d915cdb0163f0322a87a07df1d0d9fe1",
                 "shasum": ""
             },
             "require": {
-                "ext-curl": "*",
-                "ext-fileinfo": "*",
-                "ext-intl": "*",
-                "league/uri-hostname-parser": "^1.1.0",
-                "php": ">=7.0"
+                "ext-json": "*",
+                "league/uri-interfaces": "^2.3",
+                "php": "^7.3 || ^8.0",
+                "psr/http-message": "^1.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.3",
-                "phpstan/phpstan": "^0.9.2",
-                "phpstan/phpstan-phpunit": "^0.9.4",
-                "phpstan/phpstan-strict-rules": "^0.9.0",
-                "phpunit/phpunit": "^6.0"
+                "friendsofphp/php-cs-fixer": "^2.19",
+                "guzzlehttp/psr7": "^1.4.2",
+                "laminas/laminas-diactoros": "^2.6.0",
+                "league/uri": "^6.0",
+                "phpstan/phpstan": "^0.12.94",
+                "phpstan/phpstan-phpunit": "^0.12.21",
+                "phpstan/phpstan-strict-rules": "^0.12.10",
+                "phpunit/phpunit": "^9.5.8"
+            },
+            "suggest": {
+                "ext-fileinfo": "Needed to create Data URI from a filepath",
+                "ext-gmp": "to improve handle IPV4 parsing",
+                "ext-intl": "to handle IDN host",
+                "jeremykendall/php-domain-parser": "Public Suffix and Top Level Domain parsing implemented in PHP",
+                "league/uri": "to allow manipulating URI objects",
+                "php-64bit": "to improve handle IPV4 parsing",
+                "psr/http-message-implementation": "to allow manipulating PSR-7 Uri objects"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.x-dev"
+                    "dev-master": "2.x-dev"
                 }
             },
             "autoload": {
-                "files": [
-                    "src/functions_include.php"
-                ],
                 "psr-4": {
                     "League\\Uri\\": "src"
                 }
@@ -3316,108 +3405,49 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/uri-components/issues",
-                "source": "https://github.com/thephpleague/uri-components/tree/master"
+                "source": "https://github.com/thephpleague/uri-components/tree/2.4.0"
             },
-            "time": "2018-10-24T11:31:02+00:00"
-        },
-        {
-            "name": "league/uri-hostname-parser",
-            "version": "1.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thephpleague/uri-hostname-parser.git",
-                "reference": "7a6be3d06d0ed08dcb51f666aa60f3b66cd51325"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/uri-hostname-parser/zipball/7a6be3d06d0ed08dcb51f666aa60f3b66cd51325",
-                "reference": "7a6be3d06d0ed08dcb51f666aa60f3b66cd51325",
-                "shasum": ""
-            },
-            "require": {
-                "ext-intl": "*",
-                "php": ">=7.0",
-                "psr/simple-cache": "^1"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.7",
-                "mikey179/vfsstream": "^1.6",
-                "phpunit/phpunit": "^6.3"
-            },
-            "suggest": {
-                "ext-curl": "To use the bundle cURL HTTP client",
-                "psr/simple-cache-implementation": "To enable using other cache providers"
-            },
-            "bin": [
-                "bin/update-psl-icann-section"
-            ],
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "League\\Uri\\": "src"
-                },
-                "files": [
-                    "src/functions_include.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
+            "funding": [
                 {
-                    "name": "Jeremy Kendall",
-                    "homepage": "http://about.me/jeremykendall",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Ignace Nyamagana Butera",
-                    "homepage": "http://nyamsprod.com",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Contributors",
-                    "homepage": "https://github.com/phpleague/uri-hostname-parser/graphs/contributors"
+                    "url": "https://github.com/nyamsprod",
+                    "type": "github"
                 }
             ],
-            "description": "ICANN base hostname parsing implemented in PHP.",
-            "homepage": "https://github.com/thephphleague/uri-hostname-parser",
-            "keywords": [
-                "Public Suffix List",
-                "domain parsing",
-                "icann"
-            ],
-            "support": {
-                "issues": "https://github.com/thephphleague/uri-hostname-parser/issues",
-                "source": "https://github.com/thephphleague/uri-hostname-parser"
-            },
-            "abandoned": true,
-            "time": "2018-02-16T07:29:26+00:00"
+            "time": "2021-08-02T20:31:29+00:00"
         },
         {
             "name": "league/uri-interfaces",
-            "version": "1.1.1",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/uri-interfaces.git",
-                "reference": "081760c53a4ce76c9935a755a21353610f5495f6"
+                "reference": "00e7e2943f76d8cb50c7dfdc2f6dee356e15e383"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/uri-interfaces/zipball/081760c53a4ce76c9935a755a21353610f5495f6",
-                "reference": "081760c53a4ce76c9935a755a21353610f5495f6",
+                "url": "https://api.github.com/repos/thephpleague/uri-interfaces/zipball/00e7e2943f76d8cb50c7dfdc2f6dee356e15e383",
+                "reference": "00e7e2943f76d8cb50c7dfdc2f6dee356e15e383",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "ext-json": "*",
+                "php": "^7.2 || ^8.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.0.0"
+                "friendsofphp/php-cs-fixer": "^2.19",
+                "phpstan/phpstan": "^0.12.90",
+                "phpstan/phpstan-phpunit": "^0.12.19",
+                "phpstan/phpstan-strict-rules": "^0.12.9",
+                "phpunit/phpunit": "^8.5.15 || ^9.5"
+            },
+            "suggest": {
+                "ext-intl": "to use the IDNA feature",
+                "symfony/intl": "to use the IDNA feature via Symfony Polyfill"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.x-dev"
+                    "dev-master": "2.x-dev"
                 }
             },
             "autoload": {
@@ -3446,241 +3476,15 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/uri-interfaces/issues",
-                "source": "https://github.com/thephpleague/uri-interfaces/tree/master"
+                "source": "https://github.com/thephpleague/uri-interfaces/tree/2.3.0"
             },
-            "time": "2018-11-05T14:00:06+00:00"
-        },
-        {
-            "name": "league/uri-manipulations",
-            "version": "1.5.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thephpleague/uri-manipulations.git",
-                "reference": "ae8d49a3203ccf7a1e39aaf7fae9f08bfbc454a2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/uri-manipulations/zipball/ae8d49a3203ccf7a1e39aaf7fae9f08bfbc454a2",
-                "reference": "ae8d49a3203ccf7a1e39aaf7fae9f08bfbc454a2",
-                "shasum": ""
-            },
-            "require": {
-                "ext-intl": "*",
-                "league/uri-components": "^1.8.0",
-                "league/uri-interfaces": "^1.0",
-                "php": ">=7.0",
-                "psr/http-message": "^1.0"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.0",
-                "guzzlehttp/psr7": "^1.2",
-                "league/uri-schemes": "^1.2",
-                "phpstan/phpstan": "^0.9.2",
-                "phpstan/phpstan-phpunit": "^0.9.4",
-                "phpstan/phpstan-strict-rules": "^0.9.0",
-                "phpunit/phpunit": "^6.0",
-                "zendframework/zend-diactoros": "1.4.0"
-            },
-            "suggest": {
-                "league/uri-schemes": "Allow manipulating URI objects"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "League\\Uri\\": "src"
-                },
-                "files": [
-                    "src/functions_include.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
+            "funding": [
                 {
-                    "name": "Ignace Nyamagana Butera",
-                    "email": "nyamsprod@gmail.com",
-                    "homepage": "https://nyamsprod.com"
+                    "url": "https://github.com/sponsors/nyamsprod",
+                    "type": "github"
                 }
             ],
-            "description": "URI manipulation library",
-            "homepage": "http://url.thephpleague.com",
-            "keywords": [
-                "formatter",
-                "manipulation",
-                "manipulations",
-                "middlewares",
-                "modifiers",
-                "psr-7",
-                "references",
-                "rfc3986",
-                "rfc3987",
-                "uri",
-                "url"
-            ],
-            "support": {
-                "forum": "https://groups.google.com/forum/#!forum/thephpleague",
-                "issues": "https://github.com/thephpleague/uri/issues",
-                "source": "https://github.com/thephpleague/uri-manipulations/tree/master"
-            },
-            "abandoned": true,
-            "time": "2018-03-14T16:44:57+00:00"
-        },
-        {
-            "name": "league/uri-parser",
-            "version": "1.4.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thephpleague/uri-parser.git",
-                "reference": "671548427e4c932352d9b9279fdfa345bf63fa00"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/uri-parser/zipball/671548427e4c932352d9b9279fdfa345bf63fa00",
-                "reference": "671548427e4c932352d9b9279fdfa345bf63fa00",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.0.0"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.0",
-                "phpstan/phpstan": "^0.9.2",
-                "phpstan/phpstan-phpunit": "^0.9.4",
-                "phpstan/phpstan-strict-rules": "^0.9.0",
-                "phpunit/phpunit": "^6.0"
-            },
-            "suggest": {
-                "ext-intl": "Allow parsing RFC3987 compliant hosts",
-                "league/uri-schemes": "Allow validating and normalizing URI parsing results"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.x-dev"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "src/functions_include.php"
-                ],
-                "psr-4": {
-                    "League\\Uri\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Ignace Nyamagana Butera",
-                    "email": "nyamsprod@gmail.com",
-                    "homepage": "https://nyamsprod.com"
-                }
-            ],
-            "description": "userland URI parser RFC 3986 compliant",
-            "homepage": "https://github.com/thephpleague/uri-parser",
-            "keywords": [
-                "parse_url",
-                "parser",
-                "rfc3986",
-                "rfc3987",
-                "uri",
-                "url"
-            ],
-            "support": {
-                "issues": "https://github.com/thephpleague/uri-parser/issues",
-                "source": "https://github.com/thephpleague/uri-parser/tree/master"
-            },
-            "time": "2018-11-22T07:55:51+00:00"
-        },
-        {
-            "name": "league/uri-schemes",
-            "version": "1.2.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thephpleague/uri-schemes.git",
-                "reference": "f821a444785724bcc9bc244b1173b9d6ca4d71e6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/uri-schemes/zipball/f821a444785724bcc9bc244b1173b9d6ca4d71e6",
-                "reference": "f821a444785724bcc9bc244b1173b9d6ca4d71e6",
-                "shasum": ""
-            },
-            "require": {
-                "ext-fileinfo": "*",
-                "league/uri-interfaces": "^1.1",
-                "league/uri-parser": "^1.4.0",
-                "php": ">=7.0.13",
-                "psr/http-message": "^1.0"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.0",
-                "phpstan/phpstan": "^0.9.2",
-                "phpstan/phpstan-phpunit": "^0.9.4",
-                "phpstan/phpstan-strict-rules": "^0.9.0",
-                "phpunit/phpunit": "^6.0"
-            },
-            "suggest": {
-                "ext-intl": "Allow parsing RFC3987 compliant hosts",
-                "league/uri-manipulations": "Needed to easily manipulate URI objects"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "League\\Uri\\": "src"
-                },
-                "files": [
-                    "src/functions_include.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Ignace Nyamagana Butera",
-                    "email": "nyamsprod@gmail.com",
-                    "homepage": "https://nyamsprod.com"
-                }
-            ],
-            "description": "URI manipulation library",
-            "homepage": "http://uri.thephpleague.com",
-            "keywords": [
-                "data-uri",
-                "file",
-                "ftp",
-                "http",
-                "https",
-                "parse_url",
-                "psr-7",
-                "rfc3986",
-                "uri",
-                "url",
-                "ws",
-                "wss"
-            ],
-            "support": {
-                "forum": "https://groups.google.com/forum/#!forum/thephpleague",
-                "issues": "https://github.com/thephpleague/uri/issues",
-                "source": "https://github.com/thephpleague/uri-schemes/tree/master"
-            },
-            "abandoned": true,
-            "time": "2018-11-26T08:09:30+00:00"
+            "time": "2021-06-28T04:27:21+00:00"
         },
         {
             "name": "lorenzo/pinky",
@@ -4609,21 +4413,21 @@
         },
         {
             "name": "payum/authorize-net-aim",
-            "version": "1.6.0",
+            "version": "1.7.3",
             "target-dir": "Payum/AuthorizeNet/Aim",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/AuthorizeNetAim.git",
-                "reference": "ff05a5997e2d93699b60c8f531453d8cb99b7da8"
+                "reference": "b8518f3e14cae9f9b1ec46009ffa1f478204ef9c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/AuthorizeNetAim/zipball/ff05a5997e2d93699b60c8f531453d8cb99b7da8",
-                "reference": "ff05a5997e2d93699b60c8f531453d8cb99b7da8",
+                "url": "https://api.github.com/repos/Payum/AuthorizeNetAim/zipball/b8518f3e14cae9f9b1ec46009ffa1f478204ef9c",
+                "reference": "b8518f3e14cae9f9b1ec46009ffa1f478204ef9c",
                 "shasum": ""
             },
             "require": {
-                "authorizenet/authorizenet": "^1.8",
+                "authorizenet/authorizenet": "^1.8.1",
                 "payum/core": "^1.5"
             },
             "require-dev": {
@@ -4634,7 +4438,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.5-dev"
+                    "dev-master": "1.6-dev"
                 }
             },
             "autoload": {
@@ -4668,23 +4472,23 @@
                 "payment"
             ],
             "support": {
-                "source": "https://github.com/Payum/AuthorizeNetAim/tree/master"
+                "source": "https://github.com/Payum/AuthorizeNetAim/tree/1.7.3"
             },
-            "time": "2019-11-23T14:41:43+00:00"
+            "time": "2021-05-17T19:26:36+00:00"
         },
         {
             "name": "payum/be2bill",
-            "version": "1.6.0",
+            "version": "1.7.3",
             "target-dir": "Payum/Be2Bill",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/Be2Bill.git",
-                "reference": "3c1dd3cebc6ba6cfd8efbbd01b8ccff533104b90"
+                "reference": "95d3aa5be379a8417a500be2f4b527f23b5f0a3c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/Be2Bill/zipball/3c1dd3cebc6ba6cfd8efbbd01b8ccff533104b90",
-                "reference": "3c1dd3cebc6ba6cfd8efbbd01b8ccff533104b90",
+                "url": "https://api.github.com/repos/Payum/Be2Bill/zipball/95d3aa5be379a8417a500be2f4b527f23b5f0a3c",
+                "reference": "95d3aa5be379a8417a500be2f4b527f23b5f0a3c",
                 "shasum": ""
             },
             "require": {
@@ -4699,7 +4503,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.5-dev"
+                    "dev-master": "1.6-dev"
                 }
             },
             "autoload": {
@@ -4732,58 +4536,64 @@
                 "payment"
             ],
             "support": {
-                "source": "https://github.com/Payum/Be2Bill/tree/1.6.0"
+                "source": "https://github.com/Payum/Be2Bill/tree/1.7.3"
             },
-            "time": "2019-11-23T14:41:43+00:00"
+            "time": "2021-05-17T19:26:36+00:00"
         },
         {
             "name": "payum/core",
-            "version": "1.6.0",
+            "version": "1.7.3",
             "target-dir": "Payum/Core",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/Core.git",
-                "reference": "43954de6415e1a29fa09d7ca7949b071741afbc6"
+                "reference": "37b75090d77245569c481c4b9240a9cf01e0e8c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/Core/zipball/43954de6415e1a29fa09d7ca7949b071741afbc6",
-                "reference": "43954de6415e1a29fa09d7ca7949b071741afbc6",
+                "url": "https://api.github.com/repos/Payum/Core/zipball/37b75090d77245569c481c4b9240a9cf01e0e8c8",
+                "reference": "37b75090d77245569c481c4b9240a9cf01e0e8c8",
                 "shasum": ""
             },
             "require": {
-                "league/uri": "^5.0",
+                "alcohol/iso4217": "^3.1 || ^4.0",
+                "league/uri": "^6.4",
+                "league/uri-components": "^2.2",
                 "payum/iso4217": "^1.0",
-                "php": "^7.0",
+                "php": "^7.2 || ^8.0",
                 "php-http/client-implementation": "^1.0",
                 "php-http/message": "^1.0",
-                "twig/twig": "^1.0|^2.0"
+                "psr/log": "^1 || ^2 || ^3",
+                "twig/twig": "^1.34|^2.4|^3.0"
             },
             "require-dev": {
                 "defuse/php-encryption": "^2",
+                "doctrine/dbal": "^2",
                 "doctrine/orm": "2.*",
+                "doctrine/persistence": "^1.3.3|^2.0",
                 "ext-curl": "*",
                 "ext-pdo_sqlite": "*",
-                "omnipay/common": "^3@dev",
-                "omnipay/dummy": "^3@alpha",
-                "payum/omnipay-v3-bridge": "^1@alpha",
+                "laminas/laminas-db": "^2.0",
+                "omnipay/common": "^3.0",
+                "omnipay/dummy": "^3.0",
+                "payum/omnipay-v3-bridge": "^1.0",
                 "php-http/guzzle6-adapter": "^1.0",
                 "phpunit/phpunit": "^5.7",
                 "propel/propel1": "~1.7",
-                "psr/log": "~1.0",
+                "symfony/cache": "^4.4|^5.0",
                 "symfony/dependency-injection": "^4.4|^5.0",
                 "symfony/form": "^4.4|^5.0",
                 "symfony/http-foundation": "^4.4|^5.0",
                 "symfony/http-kernel": "^4.4|^5.0",
                 "symfony/phpunit-bridge": "^4.4|^5.0",
                 "symfony/routing": "^4.4|^5.0",
-                "symfony/validator": "^4.4|^5.0",
-                "zendframework/zend-db": "~2"
+                "symfony/validator": "^4.4|^5.0"
             },
             "suggest": {
                 "defuse/php-encryption": "^2 If you want to encrypt gateways credentials in database",
-                "doctrine/mongodb-odm": "~1.1 If you want to store models to mongo doctrin2 ODM",
+                "doctrine/mongodb-odm": "~2.0 If you want to store models to mongo doctrin2 ODM",
                 "doctrine/orm": "~2.3 If you want to store models to database using doctrin2 ORM",
+                "laminas/laminas-db": "~2.0 If you want to store models to Laminas Db ORM",
                 "monolog/monolog": "~1.0 If you want to use PSR-3 logger",
                 "payum/authorize-net-aim": "self.version If you want to use Authorize.Net AIM payment gateway",
                 "payum/be2bill": "self.version If you want to use be2bill payment gateway",
@@ -4799,13 +4609,12 @@
                 "symfony/form": "~2.8|~3.0 If you want to use forms",
                 "symfony/http-foundation": "~2.8|~3.0 If you want to use HttpRequestVerifier or HttpResponse reply from symfony's bridge",
                 "symfony/http-kernel": "~2.8|~3.0 If you want to use HttpRequestVerifier from symfony's bridge",
-                "symfony/routing": "~2.8|~3.0 If you want to use TokenFactory from symfony's bridge",
-                "zendframework/zend-db": "~2.0 If you want to store models to Zend Db ORM"
+                "symfony/routing": "~2.8|~3.0 If you want to use TokenFactory from symfony's bridge"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.5-dev"
+                    "dev-master": "1.6-dev"
                 }
             },
             "autoload": {
@@ -4831,7 +4640,7 @@
                     "homepage": "https://github.com/Payum/Payum/contributors"
                 }
             ],
-            "description": "One million downloads of Payum already! Payum offers everything you need to work with payments. Friendly for all PHP frameworks (Symfony, Laravel, Zend, Yii, Silex). Check more visiting site.",
+            "description": "One million downloads of Payum already! Payum offers everything you need to work with payments. Friendly for all PHP frameworks (Symfony, Laravel, Laminas, Yii, Silex). Check more visiting site.",
             "homepage": "https://payum.forma-pro.com/",
             "keywords": [
                 "authorize",
@@ -4845,22 +4654,22 @@
                 "withdrawal"
             ],
             "support": {
-                "source": "https://github.com/Payum/Core/tree/1.6.0"
+                "source": "https://github.com/Payum/Core/tree/1.7.3"
             },
-            "time": "2020-02-11T22:12:10+00:00"
+            "time": "2022-07-04T09:47:14+00:00"
         },
         {
             "name": "payum/iso4217",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/iso4217.git",
-                "reference": "6a45480e2818350dea58b7a076d0115aa7ff5789"
+                "reference": "faafdd2c5e799c673d7aa576aaf26fa2fb631014"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/iso4217/zipball/6a45480e2818350dea58b7a076d0115aa7ff5789",
-                "reference": "6a45480e2818350dea58b7a076d0115aa7ff5789",
+                "url": "https://api.github.com/repos/Payum/iso4217/zipball/faafdd2c5e799c673d7aa576aaf26fa2fb631014",
+                "reference": "faafdd2c5e799c673d7aa576aaf26fa2fb631014",
                 "shasum": ""
             },
             "require": {
@@ -4890,20 +4699,20 @@
                     "email": "rob.bast@gmail.com"
                 },
                 {
-                    "name": "Community contributions",
-                    "homepage": "https://github.com/Payum/Payum/contributors"
-                },
-                {
                     "name": "Kotlyar Maksim",
                     "email": "kotlyar.maksim@gmail.com"
                 },
                 {
                     "name": "Payum project",
                     "homepage": "http://payum.org/"
+                },
+                {
+                    "name": "Community contributions",
+                    "homepage": "https://github.com/Payum/Payum/contributors"
                 }
             ],
             "description": "ISO 4217 PHP Library",
-            "homepage": "http://payum.org",
+            "homepage": "https://payum.forma-pro.com/",
             "keywords": [
                 "4217",
                 "ISO 4217",
@@ -4915,25 +4724,25 @@
                 "issues": "https://github.com/payum/iso4217/issues",
                 "source": "https://github.com/payum/iso4217"
             },
-            "time": "2016-08-04T08:15:12+00:00"
+            "time": "2022-02-27T10:14:23+00:00"
         },
         {
             "name": "payum/klarna-checkout",
-            "version": "1.6.0",
+            "version": "1.7.3",
             "target-dir": "Payum/Klarna/Checkout",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/KlarnaCheckout.git",
-                "reference": "b5a3f26b56295bc4436f8270fdaab567de0893ce"
+                "reference": "29dbe9d7268bee6bef1024c027c09b4a2bc467d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/KlarnaCheckout/zipball/b5a3f26b56295bc4436f8270fdaab567de0893ce",
-                "reference": "b5a3f26b56295bc4436f8270fdaab567de0893ce",
+                "url": "https://api.github.com/repos/Payum/KlarnaCheckout/zipball/29dbe9d7268bee6bef1024c027c09b4a2bc467d6",
+                "reference": "29dbe9d7268bee6bef1024c027c09b4a2bc467d6",
                 "shasum": ""
             },
             "require": {
-                "klarna/checkout": "^1|^2",
+                "klarna/checkout": "^1.1|^2.0",
                 "payum/core": "^1.5"
             },
             "require-dev": {
@@ -4944,7 +4753,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.5-dev"
+                    "dev-master": "1.6-dev"
                 }
             },
             "autoload": {
@@ -4977,23 +4786,23 @@
                 "payment"
             ],
             "support": {
-                "source": "https://github.com/Payum/KlarnaCheckout/tree/master"
+                "source": "https://github.com/Payum/KlarnaCheckout/tree/1.7.3"
             },
-            "time": "2020-02-12T18:23:35+00:00"
+            "time": "2021-05-17T19:26:36+00:00"
         },
         {
             "name": "payum/klarna-invoice",
-            "version": "1.6.0",
+            "version": "1.7.3",
             "target-dir": "Payum/Klarna/Invoice",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/KlarnaInvoice.git",
-                "reference": "bd15ae896531d59ea49b541bfee4226bc87fef86"
+                "reference": "e75925fb28ca2dedb0b043b1e86887c471f4f0b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/KlarnaInvoice/zipball/bd15ae896531d59ea49b541bfee4226bc87fef86",
-                "reference": "bd15ae896531d59ea49b541bfee4226bc87fef86",
+                "url": "https://api.github.com/repos/Payum/KlarnaInvoice/zipball/e75925fb28ca2dedb0b043b1e86887c471f4f0b5",
+                "reference": "e75925fb28ca2dedb0b043b1e86887c471f4f0b5",
                 "shasum": ""
             },
             "require": {
@@ -5008,7 +4817,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.5-dev"
+                    "dev-master": "1.6-dev"
                 }
             },
             "autoload": {
@@ -5041,23 +4850,23 @@
                 "payment"
             ],
             "support": {
-                "source": "https://github.com/Payum/KlarnaInvoice/tree/1.6.0"
+                "source": "https://github.com/Payum/KlarnaInvoice/tree/1.7.3"
             },
-            "time": "2019-11-23T14:41:43+00:00"
+            "time": "2021-05-17T19:26:36+00:00"
         },
         {
             "name": "payum/offline",
-            "version": "1.6.0",
+            "version": "1.7.3",
             "target-dir": "Payum/Offline",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/Offline.git",
-                "reference": "b92fabfe2b1842f752250dacdb2e17217f2941c7"
+                "reference": "0600b0eb3cff8f19a351a0b3c7d29743c9cdbb20"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/Offline/zipball/b92fabfe2b1842f752250dacdb2e17217f2941c7",
-                "reference": "b92fabfe2b1842f752250dacdb2e17217f2941c7",
+                "url": "https://api.github.com/repos/Payum/Offline/zipball/0600b0eb3cff8f19a351a0b3c7d29743c9cdbb20",
+                "reference": "0600b0eb3cff8f19a351a0b3c7d29743c9cdbb20",
                 "shasum": ""
             },
             "require": {
@@ -5071,7 +4880,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.5-dev"
+                    "dev-master": "1.6-dev"
                 }
             },
             "autoload": {
@@ -5105,23 +4914,23 @@
                 "payment"
             ],
             "support": {
-                "source": "https://github.com/Payum/Offline/tree/1.6.0"
+                "source": "https://github.com/Payum/Offline/tree/1.7.3"
             },
-            "time": "2019-11-23T14:41:43+00:00"
+            "time": "2021-05-17T19:26:36+00:00"
         },
         {
             "name": "payum/payex",
-            "version": "1.6.0",
+            "version": "1.7.3",
             "target-dir": "Payum/Payex",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/Payex.git",
-                "reference": "a910c5942121f2e4388a17c28de6a60d421b7422"
+                "reference": "5a854bb533fbdd865569d63fa2e29ed5cbdc4c0d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/Payex/zipball/a910c5942121f2e4388a17c28de6a60d421b7422",
-                "reference": "a910c5942121f2e4388a17c28de6a60d421b7422",
+                "url": "https://api.github.com/repos/Payum/Payex/zipball/5a854bb533fbdd865569d63fa2e29ed5cbdc4c0d",
+                "reference": "5a854bb533fbdd865569d63fa2e29ed5cbdc4c0d",
                 "shasum": ""
             },
             "require": {
@@ -5138,7 +4947,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.5-dev"
+                    "dev-master": "1.6-dev"
                 }
             },
             "autoload": {
@@ -5171,23 +4980,23 @@
                 "payment"
             ],
             "support": {
-                "source": "https://github.com/Payum/Payex/tree/master"
+                "source": "https://github.com/Payum/Payex/tree/1.7.3"
             },
-            "time": "2019-11-23T14:41:43+00:00"
+            "time": "2021-05-17T19:26:36+00:00"
         },
         {
             "name": "payum/paypal-express-checkout-nvp",
-            "version": "1.6.0",
+            "version": "1.7.3",
             "target-dir": "Payum/Paypal/ExpressCheckout/Nvp",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/PaypalExpressCheckoutNvp.git",
-                "reference": "937023f6d49da62df700c3861e1ad07709590dbb"
+                "reference": "79d2c3535bd528fd963a9ab4c3ce4b087101ab57"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/PaypalExpressCheckoutNvp/zipball/937023f6d49da62df700c3861e1ad07709590dbb",
-                "reference": "937023f6d49da62df700c3861e1ad07709590dbb",
+                "url": "https://api.github.com/repos/Payum/PaypalExpressCheckoutNvp/zipball/79d2c3535bd528fd963a9ab4c3ce4b087101ab57",
+                "reference": "79d2c3535bd528fd963a9ab4c3ce4b087101ab57",
                 "shasum": ""
             },
             "require": {
@@ -5202,7 +5011,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.5-dev"
+                    "dev-master": "1.6-dev"
                 }
             },
             "autoload": {
@@ -5238,23 +5047,23 @@
                 "recurring payment"
             ],
             "support": {
-                "source": "https://github.com/Payum/PaypalExpressCheckoutNvp/tree/master"
+                "source": "https://github.com/Payum/PaypalExpressCheckoutNvp/tree/1.7.3"
             },
-            "time": "2019-11-23T14:41:43+00:00"
+            "time": "2021-05-17T19:26:36+00:00"
         },
         {
             "name": "payum/paypal-pro-checkout-nvp",
-            "version": "1.6.0",
+            "version": "1.7.3",
             "target-dir": "Payum/Paypal/ProCheckout/Nvp",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/PaypalProCheckoutNvp.git",
-                "reference": "a637d6c42dd7028173d3f0e135b2516a374a2663"
+                "reference": "2c3cb5597c3db0dc3dc399d7447eaa2764e8006b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/PaypalProCheckoutNvp/zipball/a637d6c42dd7028173d3f0e135b2516a374a2663",
-                "reference": "a637d6c42dd7028173d3f0e135b2516a374a2663",
+                "url": "https://api.github.com/repos/Payum/PaypalProCheckoutNvp/zipball/2c3cb5597c3db0dc3dc399d7447eaa2764e8006b",
+                "reference": "2c3cb5597c3db0dc3dc399d7447eaa2764e8006b",
                 "shasum": ""
             },
             "require": {
@@ -5269,7 +5078,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.5-dev"
+                    "dev-master": "1.6-dev"
                 }
             },
             "autoload": {
@@ -5307,56 +5116,58 @@
                 "pro checkout"
             ],
             "support": {
-                "source": "https://github.com/Payum/PaypalProCheckoutNvp/tree/1.6.0"
+                "source": "https://github.com/Payum/PaypalProCheckoutNvp/tree/1.7.3"
             },
-            "time": "2019-11-23T14:41:43+00:00"
+            "time": "2021-05-17T19:26:36+00:00"
         },
         {
             "name": "payum/payum-bundle",
-            "version": "2.4.1",
+            "version": "2.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/PayumBundle.git",
-                "reference": "08416446c546d3aca218b91b237c2a25d147afbc"
+                "reference": "7cc019c32ebc7d1b0f574e8dbff8dc4ea832fedb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/PayumBundle/zipball/08416446c546d3aca218b91b237c2a25d147afbc",
-                "reference": "08416446c546d3aca218b91b237c2a25d147afbc",
+                "url": "https://api.github.com/repos/Payum/PayumBundle/zipball/7cc019c32ebc7d1b0f574e8dbff8dc4ea832fedb",
+                "reference": "7cc019c32ebc7d1b0f574e8dbff8dc4ea832fedb",
                 "shasum": ""
             },
             "require": {
-                "payum/core": "^1.5",
-                "php": "^7.1.3",
-                "symfony/form": "^4.4|^5",
-                "symfony/framework-bundle": "^4.4|^5",
-                "symfony/security-csrf": "^4.4|^5",
-                "symfony/validator": "^4.4|^5"
+                "payum/core": "^1.6",
+                "php": "^7.2 || ^8.0",
+                "symfony/form": "^4.4 || ^5.0",
+                "symfony/framework-bundle": "^4.4 || ^5.0",
+                "symfony/security-csrf": "^4.4 | ^5.0",
+                "symfony/validator": "^4.4 || ^5.0"
             },
             "require-dev": {
                 "defuse/php-encryption": "^2",
+                "doctrine/annotations": "^1.9",
                 "doctrine/orm": "~2.5",
                 "ext-curl": "*",
                 "ext-pdo_sqlite": "*",
                 "ext-soap": "*",
                 "fp/klarna-invoice": "0.1.*",
                 "klarna/checkout": "~1|~2.0",
+                "league/uri-schemes": "^1.1",
                 "omnipay/common": "^3@dev",
                 "omnipay/dummy": "^3@alpha",
                 "omnipay/paypal": "^3@dev",
                 "paypal/rest-api-sdk-php": "0.5.*",
                 "payum/omnipay-v3-bridge": "^1@alpha",
-                "payum/payum": "^1.5@dev",
-                "php-http/guzzle6-adapter": "^1",
-                "phpunit/phpunit": "^7.5",
+                "payum/payum": "^1.6",
+                "php-http/guzzle6-adapter": "1.1.1",
+                "phpunit/phpunit": "^7.5 || ^8.5",
                 "stripe/stripe-php": "~1.0",
-                "symfony/browser-kit": "^4.4|^5",
-                "symfony/expression-language": "^4.4|^5",
-                "symfony/phpunit-bridge": "^4.4|^5",
-                "symfony/templating": "^4.4|^5",
+                "symfony/browser-kit": "^4.4 || ^5.0",
+                "symfony/expression-language": "^4.4 || ^5.0",
+                "symfony/phpunit-bridge": "^4.4 || ^5.0",
+                "symfony/templating": "^4.4 || ^5.0",
                 "symfony/twig-bundle": "^4.4|^5",
-                "symfony/yaml": "^4.4|^5",
-                "twig/twig": "^1.16|^2.0"
+                "symfony/yaml": "^4.4 || ^5.0 ",
+                "twig/twig": "^1.16 || ^2.0 || ^3.0"
             },
             "suggest": {
                 "sonata-project/admin-bundle": "^3 If you want to configure payments in the backend."
@@ -5364,7 +5175,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.3-dev"
+                    "dev-master": "2.5-dev"
                 }
             },
             "autoload": {
@@ -5412,23 +5223,23 @@
             ],
             "support": {
                 "issues": "https://github.com/Payum/PayumBundle/issues",
-                "source": "https://github.com/Payum/PayumBundle/tree/2.4.1"
+                "source": "https://github.com/Payum/PayumBundle/tree/2.4.2"
             },
-            "time": "2020-02-11T19:51:20+00:00"
+            "time": "2021-04-01T09:18:10+00:00"
         },
         {
             "name": "payum/stripe",
-            "version": "1.5.1",
+            "version": "1.6.3",
             "target-dir": "Payum/Stripe",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/Stripe.git",
-                "reference": "b0e324738ec85dba5901fde992fdc2f63e1de9be"
+                "reference": "7638953ad146a34e88ee284e94d2e6e8d3f625c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/Stripe/zipball/b0e324738ec85dba5901fde992fdc2f63e1de9be",
-                "reference": "b0e324738ec85dba5901fde992fdc2f63e1de9be",
+                "url": "https://api.github.com/repos/Payum/Stripe/zipball/7638953ad146a34e88ee284e94d2e6e8d3f625c0",
+                "reference": "7638953ad146a34e88ee284e94d2e6e8d3f625c0",
                 "shasum": ""
             },
             "require": {
@@ -5443,7 +5254,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.5-dev"
+                    "dev-master": "1.6-dev"
                 }
             },
             "autoload": {
@@ -5457,16 +5268,16 @@
             ],
             "authors": [
                 {
-                    "name": "Community contributions",
-                    "homepage": "https://github.com/Payum/Stripe/contributors"
-                },
-                {
                     "name": "Kotlyar Maksim",
                     "email": "kotlyar.maksim@gmail.com"
                 },
                 {
                     "name": "Payum project",
                     "homepage": "https://payum.forma-pro.com/"
+                },
+                {
+                    "name": "Community contributions",
+                    "homepage": "https://github.com/Payum/Stripe/contributors"
                 }
             ],
             "description": "The Payum extension. It provides Stripe payment integration.",
@@ -5481,9 +5292,9 @@
                 "subscription"
             ],
             "support": {
-                "source": "https://github.com/Payum/Stripe/tree/master"
+                "source": "https://github.com/Payum/Stripe/tree/1.6.3"
             },
-            "time": "2018-11-06T16:28:25+00:00"
+            "time": "2021-04-29T09:46:15+00:00"
         },
         {
             "name": "php-http/guzzle7-adapter",
@@ -5611,16 +5422,16 @@
         },
         {
             "name": "php-http/message",
-            "version": "1.10.0",
+            "version": "1.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/message.git",
-                "reference": "39db36d5972e9e6d00ea852b650953f928d8f10d"
+                "reference": "7886e647a30a966a1a8d1dad1845b71ca8678361"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/message/zipball/39db36d5972e9e6d00ea852b650953f928d8f10d",
-                "reference": "39db36d5972e9e6d00ea852b650953f928d8f10d",
+                "url": "https://api.github.com/repos/php-http/message/zipball/7886e647a30a966a1a8d1dad1845b71ca8678361",
+                "reference": "7886e647a30a966a1a8d1dad1845b71ca8678361",
                 "shasum": ""
             },
             "require": {
@@ -5636,15 +5447,15 @@
                 "ergebnis/composer-normalize": "^2.6",
                 "ext-zlib": "*",
                 "guzzlehttp/psr7": "^1.0",
-                "phpspec/phpspec": "^5.1 || ^6.3",
-                "slim/slim": "^3.0",
-                "zendframework/zend-diactoros": "^1.0"
+                "laminas/laminas-diactoros": "^2.0",
+                "phpspec/phpspec": "^5.1 || ^6.3 || ^7.1",
+                "slim/slim": "^3.0"
             },
             "suggest": {
                 "ext-zlib": "Used with compressor/decompressor streams",
                 "guzzlehttp/psr7": "Used with Guzzle PSR-7 Factories",
-                "slim/slim": "Used with Slim Framework PSR-7 implementation",
-                "zendframework/zend-diactoros": "Used with Diactoros Factories"
+                "laminas/laminas-diactoros": "Used with Diactoros Factories",
+                "slim/slim": "Used with Slim Framework PSR-7 implementation"
             },
             "type": "library",
             "extra": {
@@ -5679,9 +5490,9 @@
             ],
             "support": {
                 "issues": "https://github.com/php-http/message/issues",
-                "source": "https://github.com/php-http/message/tree/1.10.0"
+                "source": "https://github.com/php-http/message/tree/1.13.0"
             },
-            "time": "2020-11-11T10:19:56+00:00"
+            "time": "2022-02-11T13:41:14+00:00"
         },
         {
             "name": "php-http/message-factory",
@@ -6388,16 +6199,16 @@
         },
         {
             "name": "psr/log",
-            "version": "1.1.3",
+            "version": "1.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "0f73288fd15629204f9d42b7055f72dacbe811fc"
+                "reference": "d49695b909c3b7628b6289db5479a1c204601f11"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/0f73288fd15629204f9d42b7055f72dacbe811fc",
-                "reference": "0f73288fd15629204f9d42b7055f72dacbe811fc",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/d49695b909c3b7628b6289db5479a1c204601f11",
+                "reference": "d49695b909c3b7628b6289db5479a1c204601f11",
                 "shasum": ""
             },
             "require": {
@@ -6421,7 +6232,7 @@
             "authors": [
                 {
                     "name": "PHP-FIG",
-                    "homepage": "http://www.php-fig.org/"
+                    "homepage": "https://www.php-fig.org/"
                 }
             ],
             "description": "Common interface for logging libraries",
@@ -6432,60 +6243,9 @@
                 "psr-3"
             ],
             "support": {
-                "source": "https://github.com/php-fig/log/tree/1.1.3"
+                "source": "https://github.com/php-fig/log/tree/1.1.4"
             },
-            "time": "2020-03-23T09:12:05+00:00"
-        },
-        {
-            "name": "psr/simple-cache",
-            "version": "1.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-fig/simple-cache.git",
-                "reference": "408d5eafb83c57f6365a3ca330ff23aa4a5fa39b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/simple-cache/zipball/408d5eafb83c57f6365a3ca330ff23aa4a5fa39b",
-                "reference": "408d5eafb83c57f6365a3ca330ff23aa4a5fa39b",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Psr\\SimpleCache\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "PHP-FIG",
-                    "homepage": "http://www.php-fig.org/"
-                }
-            ],
-            "description": "Common interfaces for simple caching",
-            "keywords": [
-                "cache",
-                "caching",
-                "psr",
-                "psr-16",
-                "simple-cache"
-            ],
-            "support": {
-                "source": "https://github.com/php-fig/simple-cache/tree/master"
-            },
-            "time": "2017-10-23T01:57:42+00:00"
+            "time": "2021-05-03T11:20:27+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -9843,16 +9603,16 @@
         },
         {
             "name": "symfony/polyfill",
-            "version": "v1.26.0",
+            "version": "v1.27.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill.git",
-                "reference": "d45b58e9f527e408fb28c4b6431b7284f8c168ff"
+                "reference": "b78222a273aac3e5bab6358bf499d7f1fb88e48b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill/zipball/d45b58e9f527e408fb28c4b6431b7284f8c168ff",
-                "reference": "d45b58e9f527e408fb28c4b6431b7284f8c168ff",
+                "url": "https://api.github.com/repos/symfony/polyfill/zipball/b78222a273aac3e5bab6358bf499d7f1fb88e48b",
+                "reference": "b78222a273aac3e5bab6358bf499d7f1fb88e48b",
                 "shasum": ""
             },
             "require": {
@@ -9874,6 +9634,7 @@
                 "symfony/polyfill-php80": "self.version",
                 "symfony/polyfill-php81": "self.version",
                 "symfony/polyfill-php82": "self.version",
+                "symfony/polyfill-php83": "self.version",
                 "symfony/polyfill-util": "self.version",
                 "symfony/polyfill-uuid": "self.version",
                 "symfony/polyfill-xml": "self.version"
@@ -9886,7 +9647,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "1.26-dev"
+                    "dev-main": "1.27-dev"
                 }
             },
             "autoload": {
@@ -9939,7 +9700,7 @@
             ],
             "support": {
                 "issues": "https://github.com/symfony/polyfill/issues",
-                "source": "https://github.com/symfony/polyfill/tree/v1.26.0"
+                "source": "https://github.com/symfony/polyfill/tree/v1.27.0"
             },
             "funding": [
                 {
@@ -9955,7 +9716,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-06-02T08:30:38+00:00"
+            "time": "2022-11-10T10:11:03+00:00"
         },
         {
             "name": "symfony/postmark-mailer",
