@@ -9417,16 +9417,16 @@
         },
         {
             "name": "symfony/polyfill",
-            "version": "v1.26.0",
+            "version": "v1.27.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill.git",
-                "reference": "d45b58e9f527e408fb28c4b6431b7284f8c168ff"
+                "reference": "b78222a273aac3e5bab6358bf499d7f1fb88e48b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill/zipball/d45b58e9f527e408fb28c4b6431b7284f8c168ff",
-                "reference": "d45b58e9f527e408fb28c4b6431b7284f8c168ff",
+                "url": "https://api.github.com/repos/symfony/polyfill/zipball/b78222a273aac3e5bab6358bf499d7f1fb88e48b",
+                "reference": "b78222a273aac3e5bab6358bf499d7f1fb88e48b",
                 "shasum": ""
             },
             "require": {
@@ -9448,6 +9448,7 @@
                 "symfony/polyfill-php80": "self.version",
                 "symfony/polyfill-php81": "self.version",
                 "symfony/polyfill-php82": "self.version",
+                "symfony/polyfill-php83": "self.version",
                 "symfony/polyfill-util": "self.version",
                 "symfony/polyfill-uuid": "self.version",
                 "symfony/polyfill-xml": "self.version"
@@ -9460,7 +9461,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "1.26-dev"
+                    "dev-main": "1.27-dev"
                 }
             },
             "autoload": {
@@ -9513,7 +9514,7 @@
             ],
             "support": {
                 "issues": "https://github.com/symfony/polyfill/issues",
-                "source": "https://github.com/symfony/polyfill/tree/v1.26.0"
+                "source": "https://github.com/symfony/polyfill/tree/v1.27.0"
             },
             "funding": [
                 {
@@ -9529,7 +9530,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-06-02T08:30:38+00:00"
+            "time": "2022-11-10T10:11:03+00:00"
         },
         {
             "name": "symfony/postmark-mailer",
@@ -11718,16 +11719,16 @@
         },
         {
             "name": "symfony/webpack-encore-bundle",
-            "version": "v1.15.1",
+            "version": "v1.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/webpack-encore-bundle.git",
-                "reference": "718673b1e758533614190ae74d07305a72bc66a9"
+                "reference": "bb399930c0299866258b616a74a27b50b94c5d45"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/webpack-encore-bundle/zipball/718673b1e758533614190ae74d07305a72bc66a9",
-                "reference": "718673b1e758533614190ae74d07305a72bc66a9",
+                "url": "https://api.github.com/repos/symfony/webpack-encore-bundle/zipball/bb399930c0299866258b616a74a27b50b94c5d45",
+                "reference": "bb399930c0299866258b616a74a27b50b94c5d45",
                 "shasum": ""
             },
             "require": {
@@ -11771,7 +11772,7 @@
             "description": "Integration with your Symfony app & Webpack Encore!",
             "support": {
                 "issues": "https://github.com/symfony/webpack-encore-bundle/issues",
-                "source": "https://github.com/symfony/webpack-encore-bundle/tree/v1.15.1"
+                "source": "https://github.com/symfony/webpack-encore-bundle/tree/v1.16.0"
             },
             "funding": [
                 {
@@ -11787,7 +11788,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-07-13T17:07:35+00:00"
+            "time": "2022-10-18T15:21:06+00:00"
         },
         {
             "name": "symfony/workflow",
