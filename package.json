@@ -31,7 +31,7 @@
         "@symfony/webpack-encore": "^4.1.1",
         "babel-loader": "^9.1.0",
         "cloudinary": "^1.32.0",
-        "eslint": "^8.26.0",
+        "eslint": "^8.27.0",
         "eslint-loader": "^4.0.2",
         "eslint-plugin-backbone": "^2.1.1",
         "eslint-plugin-jasmine": "^4.1.3",
