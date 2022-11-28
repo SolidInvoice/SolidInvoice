@@ -15,5 +15,5 @@ jobs:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
 
       - uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
-      - uses: symfonycorp/security-checker-action@bb5092fdb50d4b92d301885fb6d0b0a41cea7bcd
+      - uses: symfonycorp/security-checker-action@258311ef7ac571f1310780ef3d79fc5abef642b5
 
