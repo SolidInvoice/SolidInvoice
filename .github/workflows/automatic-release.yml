@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@2e205a28d0e1da00c5f53b161f4067b052c61f34
+        uses: step-security/harden-runner@ebacdc22ef6c2cfb85ee5ded8f2e640f4c776dd5
         with:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
 
@@ -29,16 +29,6 @@ jobs:
       - uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516
         with:
           node-version: 14
-
-      - name: "Build Release Artifact"
-        run: "./scripts/build_dist.sh ${{ github.event.milestone.title }} ${{ github.event.milestone.title }}"
-
-      - name: "Upload Release Artifact"
-        uses: softprops/action-gh-release@1e07f4398721186383de40550babbdf2b84acfc5
-        with:
-          files: |
-            build/dist/SolidInvoice-${{ github.event.milestone.title }}.zip
-            build/dist/SolidInvoice-${{ github.event.milestone.title }}.tar.gz
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@e81a89b1732b9c48d79cd809d8d81d79c4647a18

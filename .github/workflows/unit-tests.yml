@@ -42,14 +42,14 @@ jobs:
 
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@2e205a28d0e1da00c5f53b161f4067b052c61f34
+        uses: step-security/harden-runner@ebacdc22ef6c2cfb85ee5ded8f2e640f4c776dd5
         with:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
 
       - name: Checkout
         uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
 
-      - uses: haya14busa/action-cond@c69871f4d4693e93126e770d7c3588cb1d473462
+      - uses: haya14busa/action-cond@1d6e8a12b20cdb4f1954feef9aa475b9c390cab5
         id: coverage_driver
         with:
           cond: ${{ matrix.coverage }}
@@ -73,7 +73,7 @@ jobs:
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
       - name: Cache dependencies
-        uses: actions/cache@1c73980b09e7aea7201f325a7aa3ad00beddcdda
+        uses: actions/cache@9b0c1fce7a93df8e3bb8926b0d6e9d89e92f20a7
         with:
           path: ${{ steps.composercache.outputs.dir }}
           key: ${{ runner.os }}-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json composer.lock') }}
