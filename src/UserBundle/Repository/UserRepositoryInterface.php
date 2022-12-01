@@ -21,4 +21,5 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
  */
 interface UserRepositoryInterface extends UserProviderInterface, UserLoaderInterface
 {
+    public function getUserCount(): int;
 }
