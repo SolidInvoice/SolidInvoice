@@ -68,6 +68,6 @@ jobs:
       - name: 'Qodana Scan'
         uses: JetBrains/qodana-action@2b75b91f95751e06ff1341cae0869a9cfcc6bb10
 
-      - uses: github/codeql-action/upload-sarif@4238421316c33d73aeea2801274dd286f157c2bb
+      - uses: github/codeql-action/upload-sarif@b2a92eb56d8cb930006a1c6ed86b0782dd8a4297
         with:
           sarif_file: ${{ runner.temp }}/qodana/results/qodana.sarif.json
