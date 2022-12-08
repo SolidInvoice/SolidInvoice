@@ -1,4 +1,8 @@
 services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
     solidinvoice_invoice.menu:
         class: SolidInvoice\InvoiceBundle\Menu\Builder
         tags:
@@ -15,13 +19,6 @@ services:
         arguments: ['@solidinvoice.payment.locator']
         tags: ['doctrine.event_subscriber']
 
-    SolidInvoice\InvoiceBundle\Cron\RecurringInvoiceCreate:
-        autowire: true
-        arguments:
-            $stateMachine: '@state_machine.invoice'
-        tags:
-            - { name: cron.command }
-
     SolidInvoice\InvoiceBundle\Cloner\InvoiceCloner:
         autowire: true
 
@@ -37,3 +34,5 @@ services:
     SolidInvoice\InvoiceBundle\DataFixtures\ORM\:
         resource: '%kernel.project_dir%/src/InvoiceBundle/DataFixtures/ORM/*'
         tags: ['doctrine.fixture.orm']
+
+    SolidInvoice\InvoiceBundle\Schedule\ScheduleBuilder: ~

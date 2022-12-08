@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Manager;
 
 use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
@@ -31,6 +32,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Workflow\StateMachine;
+use function str_replace;
 
 /**
  * @see \SolidInvoice\InvoiceBundle\Tests\Manager\InvoiceManagerTest
@@ -78,7 +80,34 @@ class InvoiceManager implements ContainerAwareInterface
 
     public function createFromRecurring(RecurringInvoice $recurringInvoice): Invoice
     {
-        return $this->createFromObject($recurringInvoice);
+        $invoice = $this->createFromObject($recurringInvoice);
+
+        $now = CarbonImmutable::now();
+
+        /** @var Item $item */
+        foreach ($invoice->getItems() as $item) {
+            $description = $item->getDescription();
+
+            $description = str_replace(
+                [
+                    '{day}',
+                    '{day_name}',
+                    '{month}',
+                    '{year}',
+                ],
+                [
+                    $now->day,
+                    $now->format('l'),
+                    $now->format('F'),
+                    $now->year,
+                ],
+                $description
+            );
+
+            $item->setDescription($description);
+        }
+
+        return $invoice;
     }
 
     private function createFromObject($object): Invoice

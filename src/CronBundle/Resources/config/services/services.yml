@@ -2,8 +2,5 @@ services:
     _defaults:
         autoconfigure: true
         autowire: true
-        bind:
-            $installed: '%env(installed)%'
 
-    SolidInvoice\CronBundle\Runner: ~
     SolidInvoice\CronBundle\Command\CronRunCommand: ~

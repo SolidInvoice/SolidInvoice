@@ -86,6 +86,7 @@
         "symfony/mailchimp-mailer": "^5.4",
         "symfony/mailer": "^5.4",
         "symfony/mailgun-mailer": "^5.4",
+        "symfony/messenger": "^5.4",
         "symfony/mime": "^5.4",
         "symfony/monolog-bundle": "^3.7",
         "symfony/options-resolver": "^5.4",
@@ -115,7 +116,8 @@
         "twig/twig": "^3.4",
         "twilio/sdk": "^6.42",
         "willdurand/js-translation-bundle": "^5.0",
-        "willdurand/negotiation": "^3.0"
+        "willdurand/negotiation": "^3.0",
+        "zenstruck/schedule-bundle": "^1.5"
     },
     "require-dev": {
         "dbrekelmans/bdi": "^1.0",

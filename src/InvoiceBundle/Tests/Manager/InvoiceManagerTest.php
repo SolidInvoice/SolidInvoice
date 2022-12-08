@@ -158,7 +158,7 @@ class InvoiceManagerTest extends KernelTestCase
 
         $item = new InvoiceItem();
         $item->setTax($tax);
-        $item->setDescription('Item Description');
+        $item->setDescription('Item Description {day} {day_name} {month} {year}');
         $item->setCreated(new DateTime('now'));
         $item->setPrice(new Money(120, $currency));
         $item->setQty(10);
@@ -197,7 +197,7 @@ class InvoiceManagerTest extends KernelTestCase
         self::assertInstanceOf(InvoiceItem::class, $invoiceItem[0]);
 
         self::assertSame($item->getTax(), $invoiceItem[0]->getTax());
-        self::assertSame($item->getDescription(), $invoiceItem[0]->getDescription());
+        self::assertSame('Item Description ' . date('j l F Y'), $invoiceItem[0]->getDescription());
         self::assertInstanceOf(\DateTime::class, $invoiceItem[0]->getCreated());
         self::assertEquals($item->getPrice(), $invoiceItem[0]->getPrice());
         self::assertSame($item->getQty(), $invoiceItem[0]->getQty());
