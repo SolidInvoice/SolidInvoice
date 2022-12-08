@@ -551,11 +551,6 @@ parameters:
 			path: src/CoreBundle/Util/ArrayUtil.php
 
 		-
-			message: "#^Method SolidInvoice\\\\CronBundle\\\\CommandInterface\\:\\:process\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/CronBundle/CommandInterface.php
-
-		-
 			message: "#^Method SolidInvoice\\\\DashboardBundle\\\\WidgetFactory\\:\\:get\\(\\) return type with generic class SplPriorityQueue does not specify its types\\: TPriority, TValue$#"
 			count: 1
 			path: src/DashboardBundle/WidgetFactory.php
@@ -899,11 +894,6 @@ parameters:
 			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Cloner\\\\InvoiceCloner\\:\\:addItems\\(\\) return type has no value type specified in iterable type Traversable\\.$#"
 			count: 1
 			path: src/InvoiceBundle/Cloner/InvoiceCloner.php
-
-		-
-			message: "#^Call to an undefined method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:getItems\\(\\)\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Cron/RecurringInvoiceCreate.php
 
 		-
 			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:setBaseTotal\\(\\) should return SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\Invoice but returns \\$this\\(SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\)\\.$#"
