@@ -111,6 +111,16 @@ jobs:
           export PATH="$PATH:$HOME/.composer/vendor/bin"
           php-coveralls --coverage_clover=build/logs/clover.xml -v
 
+      - name: Upload coverage results to Codecov
+        uses: codecov/codecov-action@v3
+        if: matrix.coverage
+        with:
+          files: build/logs/clover.xml
+          flags: unittests # optional
+          name: codecov-umbrella # optional
+          fail_ci_if_error: true # optional (default = false)
+          verbose: true # optional (default = false)
+
       - name: Add comment to PR with failure screenshots
         uses: actions/github-script@d556feaca394842dc55e4734bf3bb9f685482fa0
         if: ${{ failure() }}
