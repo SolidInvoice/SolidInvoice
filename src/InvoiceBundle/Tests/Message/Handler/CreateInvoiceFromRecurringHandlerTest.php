@@ -1,14 +1,24 @@
 <?php
+
 declare(strict_types=1);
+
+/*
+ * This file is part of SolidInvoice project.
+ *
+ * (c) Pierre du Plessis <open-source@solidworx.co>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace SolidInvoice\InvoiceBundle\Tests\Message\Handler;
 
+use PHPUnit\Framework\TestCase;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\InvoiceBundle\Message\CreateInvoiceFromRecurring;
 use SolidInvoice\InvoiceBundle\Message\Handler\CreateInvoiceFromRecurringHandler;
-use PHPUnit\Framework\TestCase;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use Symfony\Component\Workflow\StateMachine;
 use function iterator_to_array;
@@ -20,7 +30,7 @@ final class CreateInvoiceFromRecurringHandlerTest extends TestCase
     {
         self::assertSame(
             [
-                CreateInvoiceFromRecurring::class => ['from_transport' => 'sync',],
+                CreateInvoiceFromRecurring::class => ['from_transport' => 'sync'],
             ],
             iterator_to_array(CreateInvoiceFromRecurringHandler::getHandledMessages())
         );

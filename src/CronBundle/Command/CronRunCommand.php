@@ -20,6 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class CronRunCommand extends Command
 {
     protected static $defaultName = 'cron:run';
+
     protected static $defaultDescription = 'Run scheduled tasks';
 
     protected function execute(InputInterface $input, OutputInterface $output): int
