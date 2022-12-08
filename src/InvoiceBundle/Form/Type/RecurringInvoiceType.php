@@ -102,6 +102,7 @@ class RecurringInvoiceType extends AbstractType
             [
                 'required' => false,
                 'widget' => 'single_text',
+                'input' => 'datetime_immutable',
                 'label' => 'invoice.recurring.date_end',
                 'help' => 'invoice.recurring.date_end_info',
                 'help_type' => 'block',

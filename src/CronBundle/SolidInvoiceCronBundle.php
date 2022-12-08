@@ -13,14 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CronBundle;
 
-use SolidInvoice\CronBundle\DependencyInjection\CompilerPass\CronCommandCompilerPass;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class SolidInvoiceCronBundle extends Bundle
 {
-    public function build(ContainerBuilder $container): void
-    {
-        $container->addCompilerPass(new CronCommandCompilerPass());
-    }
 }

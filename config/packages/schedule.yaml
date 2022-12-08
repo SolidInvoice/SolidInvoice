@@ -1,0 +1,4 @@
+zenstruck_schedule:
+    messenger:
+        enabled: true
+        message_bus: 'messenger.default_bus'
