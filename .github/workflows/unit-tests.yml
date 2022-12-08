@@ -111,3 +111,13 @@ jobs:
           export PATH="$PATH:$HOME/.composer/vendor/bin"
           php-coveralls --coverage_clover=build/logs/clover.xml -v
 
+      - name: Upload coverage results to Codecov
+        uses: codecov/codecov-action@v3
+        if: matrix.coverage
+        with:
+          files: build/logs/clover.xml
+          flags: unittests # optional
+          name: codecov-umbrella # optional
+          fail_ci_if_error: true # optional (default = false)
+          verbose: true # optional (default = false)
+
