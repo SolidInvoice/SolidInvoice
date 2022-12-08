@@ -16,25 +16,23 @@ namespace SolidInvoice\InvoiceBundle\Action\Grid;
 use SolidInvoice\CoreBundle\Response\AjaxResponse;
 use SolidInvoice\CoreBundle\Traits\JsonTrait;
 use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 final class RecurringDelete implements AjaxResponse
 {
     use JsonTrait;
 
-    /**
-     * @var RecurringInvoiceRepository
-     */
-    private $repository;
+    private RecurringInvoiceRepository $repository;
 
     public function __construct(RecurringInvoiceRepository $repository)
     {
         $this->repository = $repository;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): JsonResponse
     {
-        $this->repository->deleteInvoices($request->request->get('data'));
+        $this->repository->deleteInvoices((array) $request->request->get('data'));
 
         return $this->json([]);
     }

@@ -16,10 +16,10 @@ namespace SolidInvoice\MenuBundle;
 use InvalidArgumentException;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
-use Knp\Menu\ItemInterface as Item;
 use Knp\Menu\Matcher\Matcher;
 use Knp\Menu\Matcher\Voter\RouteVoter;
 use Knp\Menu\Renderer\ListRenderer;
+use SolidInvoice\MenuBundle\Builder\MenuBuilder;
 use SplPriorityQueue;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
@@ -31,20 +31,11 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
 {
     use ContainerAwareTrait;
 
-    /**
-     * @var FactoryInterface
-     */
-    protected $factory;
+    private FactoryInterface $factory;
 
-    /**
-     * @var Environment
-     */
-    protected $twig;
+    private Environment $twig;
 
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private TranslatorInterface $translator;
 
     /**
      * @throws InvalidArgumentException
@@ -56,7 +47,7 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
         $this->translator = $translator;
 
         $matcher = new class([new RouteVoter($requestStack)]) extends Matcher {
-            public function isCurrent(ItemInterface $item)
+            public function isCurrent(ItemInterface $item): bool
             {
                 $current = parent::isCurrent($item);
                 $item->setCurrent($current);
@@ -68,12 +59,28 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
         parent::__construct($matcher, ['allow_safe_labels' => true, 'currentClass' => 'active']);
     }
 
+    public function render(ItemInterface $item, array $options = []): string
+    {
+        if (isset($options['attr'])) {
+            $item->setChildrenAttributes($options['attr']);
+        } else {
+            $item->setChildrenAttributes(['class' => 'nav nav-pills nav-sidebar flex-column']);
+        }
+
+        return parent::render($item, $options);
+    }
+
     /**
      * Renders a menu at a specific location.
+     *
+     * @param SplPriorityQueue<int, MenuBuilder> $storage
+     * @param array<string, mixed> $options
      */
     public function build(SplPriorityQueue $storage, array $options = []): string
     {
         $menu = $this->factory->createItem('root');
+
+        assert($menu instanceof MenuItem);
 
         if (isset($options['attr'])) {
             $menu->setChildrenAttributes($options['attr']);
@@ -82,7 +89,6 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
         }
 
         foreach ($storage as $builder) {
-            /* @var \SolidInvoice\MenuBundle\Builder\MenuBuilder $builder */
             $builder->setContainer($this->container);
             $builder->invoke($menu, $options);
         }
@@ -98,9 +104,9 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
      * has children).
      * This method updates the depth for the children.
      *
-     * @param array $options The options to render the item
+     * @param array<string, mixed> $options The options to render the item
      */
-    protected function renderChildren(Item $item, array $options): string
+    protected function renderChildren(ItemInterface $item, array $options): string
     {
         // render children with a depth - 1
         if (null !== $options['depth']) {
@@ -109,7 +115,7 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
 
         $html = '';
         foreach ($item->getChildren() as $child) {
-            /* @var \SolidInvoice\MenuBundle\MenuItem $child */
+            /** @var MenuItem $child */
             if ($child->isDivider()) {
                 $html .= $this->renderDivider($child, $options);
             } else {
@@ -120,10 +126,13 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
         return $html;
     }
 
-    protected function renderDivider(Item $item, array $options = []): string
+    /**
+     * @param array<string, mixed> $options
+     */
+    protected function renderDivider(ItemInterface $item, array $options = []): string
     {
         return $this->format(
-            '<li'.$this->renderHtmlAttributes(['class' => 'divider'.$item->getExtra('divider')]).'>',
+            '<li' . $this->renderHtmlAttributes(['class' => 'divider' . $item->getExtra('divider')]) . '>',
             'li',
             $item->getLevel(),
             $options
@@ -132,8 +141,10 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
 
     /**
      * Renders the menu label.
+     *
+     * @param array<string, mixed> $options
      */
-    protected function renderLabel(Item $item, array $options): string
+    protected function renderLabel(ItemInterface $item, array $options): string
     {
         $icon = '';
         if ($item->getExtra('icon')) {
@@ -141,7 +152,7 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
         }
 
         if ($options['allow_safe_labels'] && $item->getExtra('safe_label', false)) {
-            return $icon.$this->translator->trans($item->getLabel());
+            return $icon . $this->translator->trans($item->getLabel());
         }
 
         return sprintf('%s <p>%s</p>', $icon, $this->escape($this->translator->trans($item->getLabel())));
@@ -155,11 +166,11 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
         return $this->twig->render('@SolidInvoiceMenu/icon.html.twig', ['icon' => $icon]);
     }
 
-    protected function renderLinkElement(ItemInterface $item, array $options)
+    protected function renderLinkElement(ItemInterface $item, array $options): string
     {
         $attributes = $item->getLinkAttributes();
 
-        $attributes['class'] .= $item->isCurrent() ? ' '.$options['currentClass'] : '';
+        $attributes['class'] .= $item->isCurrent() ? ' ' . $options['currentClass'] : '';
 
         return \sprintf('<a href="%s"%s>%s</a>', $this->escape($item->getUri()), $this->renderHtmlAttributes($attributes), $this->renderLabel($item, $options));
     }

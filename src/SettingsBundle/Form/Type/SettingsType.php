@@ -19,14 +19,11 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class Settings.
+ * @see \SolidInvoice\SettingsBundle\Tests\Form\Type\SettingsTypeTest
  */
 class SettingsType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         foreach ($options['settings'] as $key => $setting) {
             if (is_array($setting)) {
@@ -35,7 +32,7 @@ class SettingsType extends AbstractType
                 continue;
             }
 
-            /* @var Setting $setting */
+            /** @var Setting $setting */
             $builder->add(
                 $key,
                 $setting->getType(),
@@ -47,14 +44,11 @@ class SettingsType extends AbstractType
         }
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired('settings');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'settings';

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Form\Step;
 
-use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Exception;
 use PDOException;
 use SolidInvoice\InstallBundle\Form\Type\DatabaseConfigType;
 use Symfony\Component\Form\AbstractType;
@@ -23,11 +23,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
+/**
+ * @see \SolidInvoice\InstallBundle\Tests\Form\Step\ConfigStepFormTest
+ */
 class ConfigStepForm extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $drivers = $options['drivers'];
@@ -38,11 +38,11 @@ class ConfigStepForm extends AbstractType
             [
                 'drivers' => $drivers,
                 'constraints' => new Callback(
-                    static function ($data, ExecutionContextInterface $executionContext) {
+                    static function ($data, ExecutionContextInterface $executionContext): void {
                         if (null !== $data['driver'] && null !== $data['user']) {
                             try {
                                 DriverManager::getConnection($data)->connect();
-                            } catch (PDOException|DBALException $e) {
+                            } catch (PDOException | Exception $e) {
                                 $executionContext->addViolation($e->getMessage());
                             }
                         }
@@ -52,18 +52,12 @@ class ConfigStepForm extends AbstractType
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired(['drivers']);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'config_step';
     }

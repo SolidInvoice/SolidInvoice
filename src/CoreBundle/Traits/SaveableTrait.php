@@ -29,13 +29,13 @@ trait SaveableTrait
      *
      * @throws Exception
      */
-    public function save($entity, bool $flush = true)
+    public function save($entity, bool $flush = true): void
     {
-        if (!$this->doctrine) {
-            throw new Exception(sprintf('You need to call %s::setDoctrine with a valid %s instance before calling %s', get_class($this), ManagerRegistry::class, __METHOD__));
+        if (! $this->doctrine) {
+            throw new Exception(sprintf('You need to call %s::setDoctrine with a valid %s instance before calling %s', static::class, ManagerRegistry::class, __METHOD__));
         }
 
-        if (!is_object($entity)) {
+        if (! is_object($entity)) {
             throw new Exception(sprintf('%s expects $entity yo be an object, %s given', __METHOD__, gettype($entity)));
         }
 

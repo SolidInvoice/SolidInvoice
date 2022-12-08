@@ -19,7 +19,7 @@ use SolidInvoice\UserBundle\Form\Type\UserType;
 
 class UserTypeTest extends FormTestCase
 {
-    public function testSubmit()
+    public function testSubmit(): void
     {
         $userName = $this->faker->userName;
         $email = $this->faker->email;

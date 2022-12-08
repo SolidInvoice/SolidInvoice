@@ -39,9 +39,6 @@ class StatsWidget implements WidgetInterface
         $this->manager = $registry->getManager();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getData(): array
     {
         /** @var ClientRepository $clientRepository */
@@ -68,9 +65,6 @@ class StatsWidget implements WidgetInterface
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTemplate(): string
     {
         return '@SolidInvoiceDashboard/Widget/stats.html.twig';

@@ -28,20 +28,20 @@ class ConfigWriter
      */
     private $configFile;
 
-    public function __construct(string $projectDir, Filesystem $fileSystem)
+    public function __construct(string $projectDir)
     {
-        $this->fileSystem = $fileSystem;
-        $this->configFile = $projectDir.'/config/env.php';
+        $this->fileSystem = new Filesystem();
+        $this->configFile = $projectDir . '/config/env.php';
     }
 
     /**
      * Dumps an array into the parameters.yml file.
      */
-    public function dump(array $config)
+    public function dump(array $config): void
     {
         $values = array_merge($this->getConfigValues(), $config);
 
-        $code = "<?php\n\nreturn ".var_export($values, true).";\n";
+        $code = "<?php\n\nreturn " . var_export($values, true) . ";\n";
 
         $this->fileSystem->dumpFile($this->configFile, $code);
     }
@@ -53,7 +53,7 @@ class ConfigWriter
      */
     public function getConfigValues(): array
     {
-        if (!\file_exists($this->configFile)) {
+        if (! \file_exists($this->configFile)) {
             return [];
         }
 

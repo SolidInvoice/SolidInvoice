@@ -16,9 +16,6 @@ namespace SolidInvoice\TaxBundle\Form\Type;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 
-/**
- * Class TaxEntityType.
- */
 class TaxEntityType extends AbstractType
 {
     public function getParent(): string

@@ -15,12 +15,12 @@ namespace SolidInvoice\DashboardBundle\Tests\Twig\Extension;
 
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery\Mock;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DashboardBundle\Twig\Extension\WidgetExtension;
+use SolidInvoice\DashboardBundle\WidgetFactory;
+use SolidInvoice\DashboardBundle\Widgets\WidgetInterface;
 use SplPriorityQueue;
 use Twig\Environment;
-use Twig\Extension\ExtensionInterface;
 use Twig\Loader\ArrayLoader;
 use Twig\TwigFunction;
 
@@ -28,41 +28,32 @@ class WidgetExtensionTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    /**
-     * @var ExtensionInterface
-     */
-    private $extension;
+    private WidgetExtension $extension;
 
     /**
-     * @var Mock
+     * @var Mockery\MockInterface
      */
     private $factory;
 
     protected function setUp(): void
     {
-        $this->factory = Mockery::mock('SolidInvoice\DashboardBundle\WidgetFactory');
+        $this->factory = Mockery::mock(WidgetFactory::class);
         $this->extension = new WidgetExtension($this->factory);
     }
 
-    public function testGetName()
+    public function testGetFunctions(): void
     {
-        static::assertSame('dashboard_widget_extension', $this->extension->getName());
-    }
-
-    public function testGetFunctions()
-    {
-        /** @var TwigFunction[] $functions */
         $functions = $this->extension->getFunctions();
 
-        static::assertCount(1, $functions);
-        static::assertInstanceOf('Twig_SimpleFunction', $functions[0]);
-        static::assertSame('render_dashboard_widget', $functions[0]->getName());
+        self::assertCount(1, $functions);
+        self::assertInstanceOf(TwigFunction::class, $functions[0]);
+        self::assertSame('render_dashboard_widget', $functions[0]->getName());
     }
 
-    public function testRenderDashboardWidget()
+    public function testRenderDashboardWidget(): void
     {
         $widget = Mockery::mock(
-            'SolidInvoice\DashboardBundle\Widgets\WidgetInterface',
+            WidgetInterface::class,
             [
                 'getTemplate' => 'test_template.html.twig',
                 'getData' => ['a' => '1', 'b' => '2', 'c' => '3'],
@@ -81,6 +72,6 @@ class WidgetExtensionTest extends TestCase
 
         $content = $this->extension->renderDashboardWidget($environment, 'top');
 
-        static::assertSame('123', $content);
+        self::assertSame('123', $content);
     }
 }

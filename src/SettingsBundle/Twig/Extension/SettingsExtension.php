@@ -13,28 +13,28 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SettingsBundle\Twig\Extension;
 
-use Doctrine\DBAL\Exception\ConnectionException;
-use Doctrine\DBAL\Exception\DriverException;
-use Doctrine\DBAL\Exception\TableNotFoundException;
+use const JSON_THROW_ON_ERROR;
+use Doctrine\DBAL\Exception;
+use JsonException;
 use SolidInvoice\ClientBundle\Entity\Address;
-use SolidInvoice\SettingsBundle\Exception\InvalidSettingException;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
+use function json_decode;
 
+/**
+ * @see \SolidInvoice\SettingsBundle\Tests\Twig\Extension\SettingsExtensionTest
+ */
 class SettingsExtension extends AbstractExtension
 {
-    /**
-     * @var SystemConfig
-     */
-    private $config;
+    private SystemConfig $config;
 
     public function __construct(SystemConfig $config)
     {
         $this->config = $config;
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('setting', function (string $setting, $default = null, $decode = false) {
@@ -46,23 +46,37 @@ class SettingsExtension extends AbstractExtension
         ];
     }
 
-    public function renderAddress(array $address)
+    /**
+     * @param array<string, string|null> $address
+     */
+    public function renderAddress(array $address): string
     {
         return (string) Address::fromArray($address);
     }
 
-    public function getSetting(string $setting, $default = null, $decode = false)
+    /**
+     * @param mixed|null $default
+     *
+     * @return mixed|null
+     *
+     * @throws JsonException
+     */
+    public function getSetting(string $key, $default = null, bool $decode = false)
     {
         try {
-            $setting = $this->config->get($setting);
-
-            if ($decode && $setting) {
-                return json_decode($setting, true, 512, JSON_THROW_ON_ERROR);
-            }
-
-            return $setting;
-        } catch (InvalidSettingException|TableNotFoundException|ConnectionException|DriverException $e) {
+            $setting = $this->config->get($key);
+        } catch (Exception $e) {
             return $default;
         }
+
+        if (null === $setting) {
+            return $default;
+        }
+
+        if ($decode && $setting) {
+            return json_decode($setting, true, 512, JSON_THROW_ON_ERROR);
+        }
+
+        return $setting;
     }
 }

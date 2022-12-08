@@ -28,6 +28,7 @@ use SolidInvoice\MoneyBundle\Form\Extension\MoneyExtension;
 use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
 use Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormInterface;
@@ -48,6 +49,8 @@ abstract class FormTestCase extends TypeTestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->faker = Factory::create();
 
         $this->factory = Forms::createFormFactoryBuilder()
@@ -56,7 +59,7 @@ abstract class FormTestCase extends TypeTestCase
             ->addTypes($this->getTypes())
             ->getFormFactory();
 
-        $this->dispatcher = M::mock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $this->dispatcher = M::mock(EventDispatcherInterface::class);
         $this->builder = new FormBuilder(null, null, $this->dispatcher, $this->factory);
     }
 
@@ -89,31 +92,31 @@ abstract class FormTestCase extends TypeTestCase
         ];
     }
 
-    protected function assertFormData($form, array $formData, $object)
+    protected function assertFormData($form, array $formData, $object): void
     {
-        static::assertNotEmpty($formData);
+        self::assertNotEmpty($formData);
 
-        if (!$form instanceof FormInterface) {
+        if (! $form instanceof FormInterface) {
             $form = $this->factory->create($form);
         }
 
         // submit the data to the form directly
         $form->submit($formData);
 
-        static::assertTrue($form->isSynchronized());
-        static::assertEquals($object, $form->getData());
+        self::assertTrue($form->isSynchronized());
+        self::assertEquals($object, $form->getData());
 
         $view = $form->createView();
         $children = $view->children;
 
         foreach (array_keys($formData) as $key) {
-            static::assertArrayHasKey($key, $children);
+            self::assertArrayHasKey($key, $children);
         }
     }
 
     private function getInternalExtension()
     {
-        if (!DoctrineType::hasType('uuid')) {
+        if (! DoctrineType::hasType('uuid')) {
             DoctrineType::addType('uuid', UuidType::class);
         }
 

@@ -19,7 +19,7 @@ use SolidInvoice\TaxBundle\Form\Type\TaxType;
 
 class TaxTypeTest extends FormTestCase
 {
-    public function testSubmit()
+    public function testSubmit(): void
     {
         $name = $this->faker->name;
         $rate = $this->faker->randomFloat(2, 0, 100);

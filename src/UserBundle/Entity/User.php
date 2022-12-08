@@ -14,11 +14,13 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Entity;
 
 use DateTime;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -26,56 +28,56 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Entity(repositoryClass="SolidInvoice\UserBundle\Repository\UserRepository")
  * @Gedmo\Loggable
  */
-class User implements UserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use TimeStampable;
 
     /**
-     * @var int
+     * @var int|null
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      */
     private $id;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="mobile", type="string", nullable=true)
      */
     private $mobile;
 
     /**
-     * @var ApiToken[]|Collection<int, ApiToken>
+     * @var Collection<int, ApiToken>
      *
      * @ORM\OneToMany(targetEntity="ApiToken", mappedBy="user", fetch="EXTRA_LAZY", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $apiTokens;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="username", type="string", length=180)
      */
     private $username;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="email", type="string", length=180)
      */
     private $email;
 
     /**
-     * @var bool
+     * @var bool|null
      *
      * @ORM\Column(name="enabled", type="boolean")
      */
-    private $enabled;
+    private $enabled = false;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="password", type="string")
      */
@@ -87,7 +89,7 @@ class User implements UserInterface
     private $plainPassword;
 
     /**
-     * @var DateTime|null
+     * @var DateTimeInterface|null
      *
      * @ORM\Column(name="last_login", type="datetime", nullable=true)
      */
@@ -101,7 +103,7 @@ class User implements UserInterface
     private $confirmationToken;
 
     /**
-     * @var DateTime|null
+     * @var DateTimeInterface|null
      *
      * @ORM\Column(name="password_requested_at", type="datetime", nullable=true)
      */
@@ -112,13 +114,11 @@ class User implements UserInterface
      *
      * @ORM\Column(name="roles", type="array")
      */
-    private $roles;
+    private $roles = [];
 
     public function __construct()
     {
         $this->apiTokens = new ArrayCollection();
-        $this->enabled = false;
-        $this->roles = [];
     }
 
     /**
@@ -126,11 +126,10 @@ class User implements UserInterface
      */
     public function getSalt(): void
     {
-        return;
     }
 
     /**
-     * @return ApiToken[]|Collection<int, ApiToken>
+     * @return Collection<int, ApiToken>
      */
     public function getApiTokens(): Collection
     {
@@ -138,9 +137,7 @@ class User implements UserInterface
     }
 
     /**
-     * @param ApiToken[]|Collection<int, ApiToken> $apiTokens
-     *
-     * @return User
+     * @param Collection<int, ApiToken> $apiTokens
      */
     public function setApiTokens(Collection $apiTokens): self
     {
@@ -157,9 +154,6 @@ class User implements UserInterface
         return $this->mobile;
     }
 
-    /**
-     * @return User
-     */
     public function setMobile(string $mobile): self
     {
         $this->mobile = $mobile;
@@ -172,9 +166,6 @@ class User implements UserInterface
         return $this->getUsername();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addRole($role)
     {
         $role = strtoupper($role);
@@ -182,16 +173,13 @@ class User implements UserInterface
             return $this;
         }
 
-        if (!in_array($role, $this->roles, true)) {
+        if (! in_array($role, $this->roles, true)) {
             $this->roles[] = $role;
         }
 
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function serialize()
     {
         return serialize([
@@ -207,10 +195,7 @@ class User implements UserInterface
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function unserialize($serialized)
+    public function unserialize($serialized): void
     {
         [
             $this->password,
@@ -224,49 +209,31 @@ class User implements UserInterface
         ] = unserialize($serialized);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         $this->plainPassword = null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getUsername()
     {
         return $this->username;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getEmail()
     {
         return $this->email;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getPassword()
+    public function getPassword(): ?string
     {
         return $this->password;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPlainPassword()
     {
         return $this->plainPassword;
@@ -275,24 +242,18 @@ class User implements UserInterface
     /**
      * Gets the last login time.
      *
-     * @return DateTime|null
+     * @return DateTimeInterface|null
      */
     public function getLastLogin()
     {
         return $this->lastLogin;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getConfirmationToken()
     {
         return $this->confirmationToken;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRoles(): array
     {
         $roles = $this->roles;
@@ -303,9 +264,6 @@ class User implements UserInterface
         return array_unique($roles);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasRole($role)
     {
         return in_array(strtoupper($role), $this->getRoles(), true);
@@ -316,9 +274,6 @@ class User implements UserInterface
         return $this->enabled;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeRole($role)
     {
         if (false !== $key = array_search(strtoupper($role), $this->roles, true)) {
@@ -329,9 +284,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setUsername($username)
     {
         $this->username = $username;
@@ -339,9 +291,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setEmail($email)
     {
         $this->email = $email;
@@ -349,9 +298,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setEnabled($boolean)
     {
         $this->enabled = (bool) $boolean;
@@ -359,9 +305,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setPassword($password)
     {
         $this->password = $password;
@@ -369,9 +312,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setPlainPassword($password)
     {
         $this->plainPassword = $password;
@@ -379,9 +319,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setLastLogin(DateTime $time = null)
     {
         $this->lastLogin = $time;
@@ -389,9 +326,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setConfirmationToken($confirmationToken)
     {
         $this->confirmationToken = $confirmationToken;
@@ -399,9 +333,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setPasswordRequestedAt(DateTime $date = null)
     {
         $this->passwordRequestedAt = $date;
@@ -412,25 +343,19 @@ class User implements UserInterface
     /**
      * Gets the timestamp that the user requested a password reset.
      *
-     * @return DateTime|null
+     * @return DateTimeInterface|null
      */
     public function getPasswordRequestedAt()
     {
         return $this->passwordRequestedAt;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isPasswordRequestNonExpired($ttl)
     {
         return $this->getPasswordRequestedAt() instanceof DateTime &&
             $this->getPasswordRequestedAt()->getTimestamp() + $ttl > time();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setRoles(array $roles)
     {
         $this->roles = [];

@@ -17,24 +17,9 @@ use Knp\Menu\ItemInterface as BaseInterface;
 
 interface ItemInterface extends BaseInterface
 {
-    /**
-     * {@inheritdoc}
-     *
-     * @param ItemInterface|string|array $child
-     *
-     * @return ItemInterface
-     */
-    public function addChild($child, array $options = []);
+    public function addDivider(string $type = ''): self;
 
-    /**
-     * @return $this
-     */
-    public function addDivider(string $type = '');
-
-    /**
-     * @return $this
-     */
-    public function addHeader(string $header);
+    public function addHeader(string $header): self;
 
     public function isDivider(): bool;
 }

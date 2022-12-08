@@ -15,7 +15,7 @@ namespace SolidInvoice\QuoteBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
-use DateTime;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -52,11 +52,11 @@ class Quote
     use TimeStampable;
 
     /**
-     * @var int
+     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Serialize\Groups({"quote_api", "client_api"})
      */
     private $id;
@@ -70,7 +70,7 @@ class Quote
     private $uuid;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="status", type="string", length=25)
      * @Serialize\Groups({"quote_api", "client_api"})
@@ -78,7 +78,7 @@ class Quote
     private $status;
 
     /**
-     * @var Client
+     * @var Client|null
      *
      * @ORM\ManyToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Client", inversedBy="quotes")
      * @Assert\NotBlank
@@ -120,7 +120,7 @@ class Quote
     private $discount;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="terms", type="text", nullable=true)
      * @Serialize\Groups({"quote_api", "client_api", "create_quote_api"})
@@ -128,7 +128,7 @@ class Quote
     private $terms;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="notes", type="text", nullable=true)
      * @Serialize\Groups({"quote_api", "client_api", "create_quote_api"})
@@ -136,7 +136,7 @@ class Quote
     private $notes;
 
     /**
-     * @var DateTime
+     * @var DateTimeInterface|null
      *
      * @ORM\Column(name="due", type="date", nullable=true)
      * @Assert\DateTime
@@ -145,7 +145,7 @@ class Quote
     private $due;
 
     /**
-     * @var ItemInterface[]|Collection<int, ItemInterface>
+     * @var Collection<int, Item>
      *
      * @ORM\OneToMany(targetEntity="Item", mappedBy="quote", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Assert\Valid
@@ -155,7 +155,7 @@ class Quote
     private $items;
 
     /**
-     * @var Contact[]|Collection<int, Contact>
+     * @var Collection<int, Contact>
      *
      * @ORM\ManyToMany(targetEntity="SolidInvoice\ClientBundle\Entity\Contact", cascade={"persist"}, fetch="EXTRA_LAZY", inversedBy="quotes")
      * @Assert\Count(min=1, minMessage="You need to select at least 1 user to attach to the Quote")
@@ -200,9 +200,6 @@ class Quote
         return $this->uuid;
     }
 
-    /**
-     * @return Quote
-     */
     public function setUuid(UuidInterface $uuid): self
     {
         $this->uuid = $uuid;
@@ -213,7 +210,7 @@ class Quote
     /**
      * Return users array.
      *
-     * @return Contact[]|Collection<int, Contact>
+     * @return Collection<int, Contact>
      */
     public function getUsers(): Collection
     {
@@ -222,8 +219,6 @@ class Quote
 
     /**
      * @param Contact[] $users
-     *
-     * @return Quote
      */
     public function setUsers(array $users): self
     {
@@ -232,9 +227,6 @@ class Quote
         return $this;
     }
 
-    /**
-     * @return Quote
-     */
     public function addUser(Contact $user): self
     {
         $this->users[] = $user;
@@ -252,11 +244,6 @@ class Quote
         return $this->status;
     }
 
-    /**
-     * Set status.
-     *
-     * @return Quote
-     */
     public function setStatus(string $status): self
     {
         $this->status = $status;
@@ -274,11 +261,6 @@ class Quote
         return $this->client;
     }
 
-    /**
-     * Set client.
-     *
-     * @return Quote
-     */
     public function setClient(?Client $client): self
     {
         $this->client = $client;
@@ -291,9 +273,6 @@ class Quote
         return $this->total->getMoney();
     }
 
-    /**
-     * @return Quote
-     */
     public function setTotal(Money $total): self
     {
         $this->total = new MoneyEntity($total);
@@ -306,9 +285,6 @@ class Quote
         return $this->baseTotal->getMoney();
     }
 
-    /**
-     * @return Quote
-     */
     public function setBaseTotal(Money $baseTotal): self
     {
         $this->baseTotal = new MoneyEntity($baseTotal);
@@ -321,9 +297,6 @@ class Quote
         return $this->discount;
     }
 
-    /**
-     * @return Quote
-     */
     public function setDiscount(Discount $discount): self
     {
         $this->discount = $discount;
@@ -332,26 +305,20 @@ class Quote
     }
 
     /**
-     * @return DateTime
+     * @return DateTimeInterface
      */
-    public function getDue(): ?DateTime
+    public function getDue(): ?DateTimeInterface
     {
         return $this->due;
     }
 
-    /**
-     * @return Quote
-     */
-    public function setDue(DateTime $due): self
+    public function setDue(DateTimeInterface $due): self
     {
         $this->due = $due;
 
         return $this;
     }
 
-    /**
-     * @return Quote
-     */
     public function addItem(ItemInterface $item): self
     {
         assert($item instanceof Item);
@@ -361,9 +328,6 @@ class Quote
         return $this;
     }
 
-    /**
-     * @return Quote
-     */
     public function removeItem(Item $item): self
     {
         $this->items->removeElement($item);
@@ -373,7 +337,7 @@ class Quote
     }
 
     /**
-     * @return ItemInterface[]|Collection<int, ItemInterface>
+     * @return Collection<int, Item>
      */
     public function getItems(): Collection
     {
@@ -388,9 +352,6 @@ class Quote
         return $this->terms;
     }
 
-    /**
-     * @return Quote
-     */
     public function setTerms(?string $terms): self
     {
         $this->terms = $terms;
@@ -406,9 +367,6 @@ class Quote
         return $this->notes;
     }
 
-    /**
-     * @return Quote
-     */
     public function setNotes(?string $notes): self
     {
         $this->notes = $notes;
@@ -421,9 +379,6 @@ class Quote
         return $this->tax->getMoney();
     }
 
-    /**
-     * @return Quote
-     */
     public function setTax(Money $tax): self
     {
         $this->tax = new MoneyEntity($tax);

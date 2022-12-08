@@ -27,30 +27,26 @@ use Symfony\Component\Routing\RouteCollection;
 
 abstract class AbstractDirectoryLoader extends Loader
 {
-    /**
-     * @var FileLocatorInterface
-     */
-    private $locator;
+    private FileLocatorInterface $locator;
 
-    /**
-     * @var KernelInterface
-     */
-    private $kernel;
+    private KernelInterface $kernel;
 
     public function __construct(FileLocatorInterface $locator, KernelInterface $kernel)
     {
         $this->locator = $locator;
         $this->kernel = $kernel;
+
+        parent::__construct();
     }
 
     /**
-     * {@inheritdoc}
+     * @param mixed $resource
      */
-    public function load($resource, $type = null): ?RouteCollection
+    public function load($resource, string $type = null): ?RouteCollection
     {
         $dir = $this->locator->locate($resource);
 
-        if (!is_dir($dir)) {
+        if (! is_dir($dir)) {
             // @TODO: Throw exception when resource is not a valid directory
             return null;
         }
@@ -68,12 +64,12 @@ abstract class AbstractDirectoryLoader extends Loader
 
         $inflector = InflectorFactory::create()->build();
 
-        /* @var Bundle $bundle */
+        /** @var Bundle $bundle */
         $bundle = $this->kernel->getBundle(substr($resource, 1, strpos($resource, '/') - 1));
         $namespace = $bundle->getNamespace();
         $bundleName = $inflector->tableize(str_replace('Bundle', '', substr($namespace, strrpos($namespace, '\\') + 1)));
 
-        /* @var SplFileInfo $action */
+        /** @var SplFileInfo $action */
         foreach ($actions as $action) {
             $actionName = $inflector->tableize($action->getBasename('.php'));
             $controller = ClassUtil::findClassInFile($action->getRealPath());

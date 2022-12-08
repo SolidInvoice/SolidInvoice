@@ -23,10 +23,7 @@ final class Restore implements AjaxResponse
 {
     use JsonTrait;
 
-    /**
-     * @var ClientRepository
-     */
-    private $repository;
+    private ClientRepository $repository;
 
     public function __construct(ClientRepository $repository)
     {
@@ -35,7 +32,7 @@ final class Restore implements AjaxResponse
 
     public function __invoke(Request $request): JsonResponse
     {
-        $this->repository->restoreClients($request->request->get('data'));
+        $this->repository->restoreClients((array) $request->request->get('data'));
 
         return $this->json([]);
     }

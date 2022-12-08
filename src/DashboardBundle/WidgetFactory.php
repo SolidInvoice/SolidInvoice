@@ -17,6 +17,9 @@ use Exception;
 use SolidInvoice\DashboardBundle\Widgets\WidgetInterface;
 use SplPriorityQueue;
 
+/**
+ * @see \SolidInvoice\DashboardBundle\Tests\WidgetFactoryTest
+ */
 class WidgetFactory
 {
     public const DEFAULT_LOCATION = 'top';
@@ -41,11 +44,11 @@ class WidgetFactory
      *
      * @throws Exception
      */
-    public function add(WidgetInterface $widget, string $location = null, $priority = null)
+    public function add(WidgetInterface $widget, string $location = null, $priority = null): void
     {
         $location = $location ?: self::DEFAULT_LOCATION;
 
-        if (!isset($this->queues[$location])) {
+        if (! isset($this->queues[$location])) {
             throw new Exception(sprintf('Invalid widget location: %s', $location));
         }
 
@@ -57,7 +60,7 @@ class WidgetFactory
      */
     public function get($location): SplPriorityQueue
     {
-        if (!isset($this->queues[$location])) {
+        if (! isset($this->queues[$location])) {
             return new SplPriorityQueue();
         }
 

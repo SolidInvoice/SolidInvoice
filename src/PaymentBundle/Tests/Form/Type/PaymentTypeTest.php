@@ -20,7 +20,7 @@ use SolidInvoice\PaymentBundle\Form\Type\PaymentType;
 
 class PaymentTypeTest extends FormTestCase
 {
-    public function testSubmit()
+    public function testSubmit(): void
     {
         $paymentMethod = $this->faker->name;
         $amount = $this->faker->randomNumber();

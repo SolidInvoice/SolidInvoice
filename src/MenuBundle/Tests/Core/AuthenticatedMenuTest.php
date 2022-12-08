@@ -18,6 +18,8 @@ use Mockery as M;
 use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\MenuBundle\Core\AuthenticatedMenu;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
 class AuthenticatedMenuTest extends TestCase
@@ -25,22 +27,22 @@ class AuthenticatedMenuTest extends TestCase
     use MockeryPHPUnitIntegration;
 
     /**
-     * @var MockInterface
+     * @var MockInterface&ContainerInterface
      */
     private $container;
 
     /**
-     * @var MockInterface
+     * @var MockInterface&AuthorizationCheckerInterface
      */
     private $security;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
-        $this->container = M::mock('Symfony\Component\DependencyInjection\ContainerInterface');
-        $this->security = M::mock('Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface');
+        $this->container = M::mock(ContainerInterface::class);
+        $this->security = M::mock(AuthorizationCheckerInterface::class);
     }
 
-    public function testValidate()
+    public function testValidate(): void
     {
         $menu = new AuthenticatedMenu();
         $menu->setContainer($this->container);
@@ -55,12 +57,12 @@ class AuthenticatedMenuTest extends TestCase
             ->withArgs(['IS_AUTHENTICATED_REMEMBERED'])
             ->andReturn(true);
 
-        static::assertTrue($menu->validate());
+        self::assertTrue($menu->validate());
 
         $this->security->shouldHaveReceived('isGranted')->once()->withArgs(['IS_AUTHENTICATED_REMEMBERED']);
     }
 
-    public function testValidateFail()
+    public function testValidateFail(): void
     {
         $menu = new AuthenticatedMenu();
         $menu->setContainer($this->container);
@@ -75,12 +77,12 @@ class AuthenticatedMenuTest extends TestCase
             ->withArgs(['IS_AUTHENTICATED_REMEMBERED'])
             ->andReturn(false);
 
-        static::assertFalse($menu->validate());
+        self::assertFalse($menu->validate());
 
         $this->security->shouldHaveReceived('isGranted')->once()->withArgs(['IS_AUTHENTICATED_REMEMBERED']);
     }
 
-    public function testValidateFailException()
+    public function testValidateFailException(): void
     {
         $menu = new AuthenticatedMenu();
         $menu->setContainer($this->container);
@@ -90,7 +92,7 @@ class AuthenticatedMenuTest extends TestCase
             ->withArgs(['security.authorization_checker'])
             ->andThrow(new AuthenticationCredentialsNotFoundException());
 
-        static::assertFalse($menu->validate());
+        self::assertFalse($menu->validate());
 
         $this->security->shouldNotHaveReceived('isGranted');
     }

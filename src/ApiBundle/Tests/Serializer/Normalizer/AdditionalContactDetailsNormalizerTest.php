@@ -27,7 +27,7 @@ class AdditionalContactDetailsNormalizerTest extends TestCase
     use MockeryPHPUnitIntegration;
     use DoctrineTestTrait;
 
-    public function testSupportsNormalization()
+    public function testSupportsNormalization(): void
     {
         $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
             public function normalize($object, $format = null, array $context = [])
@@ -53,11 +53,11 @@ class AdditionalContactDetailsNormalizerTest extends TestCase
 
         $normalizer = new AdditionalContactDetailsNormalizer($this->registry, $parentNormalizer);
 
-        static::assertTrue($normalizer->supportsNormalization(new AdditionalContactDetail()));
-        static::assertFalse($normalizer->supportsNormalization(AdditionalContactDetail::class));
+        self::assertTrue($normalizer->supportsNormalization(new AdditionalContactDetail()));
+        self::assertFalse($normalizer->supportsNormalization(AdditionalContactDetail::class));
     }
 
-    public function testSupportsDenormalization()
+    public function testSupportsDenormalization(): void
     {
         $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
             public function normalize($object, $format = null, array $context = [])
@@ -83,11 +83,11 @@ class AdditionalContactDetailsNormalizerTest extends TestCase
 
         $normalizer = new AdditionalContactDetailsNormalizer($this->registry, $parentNormalizer);
 
-        static::assertTrue($normalizer->supportsDenormalization(null, AdditionalContactDetail::class));
-        static::assertFalse($normalizer->supportsDenormalization([], NormalizerInterface::class));
+        self::assertTrue($normalizer->supportsDenormalization(null, AdditionalContactDetail::class));
+        self::assertFalse($normalizer->supportsDenormalization([], NormalizerInterface::class));
     }
 
-    public function testNormalization()
+    public function testNormalization(): void
     {
         $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
             public function normalize($object, $format = null, array $context = [])
@@ -119,10 +119,10 @@ class AdditionalContactDetailsNormalizerTest extends TestCase
         $additionalContactDetail->setType($type)
             ->setValue('one@two.com');
 
-        static::assertSame(['type' => 'email', 'value' => 'one@two.com'], $normalizer->normalize($additionalContactDetail));
+        self::assertSame(['type' => 'email', 'value' => 'one@two.com'], $normalizer->normalize($additionalContactDetail));
     }
 
-    public function testDenormalization()
+    public function testDenormalization(): void
     {
         $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
             public function normalize($object, $format = null, array $context = [])
@@ -159,8 +159,8 @@ class AdditionalContactDetailsNormalizerTest extends TestCase
             ->setValue('one@two.com');
 
         $detail = $normalizer->denormalize(['type' => 'email', 'value' => 'one@two.com'], AdditionalContactDetail::class);
-        static::assertInstanceOf(AdditionalContactDetail::class, $detail);
-        static::assertSame('email', $detail->getType()->getName());
-        static::assertSame('one@two.com', $detail->getValue());
+        self::assertInstanceOf(AdditionalContactDetail::class, $detail);
+        self::assertSame('email', $detail->getType()->getName());
+        self::assertSame('one@two.com', $detail->getValue());
     }
 }

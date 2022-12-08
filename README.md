@@ -1,16 +1,34 @@
-# SolidInvoice
+<p align="center">
+    <a href="https://github.com/SolidInvoice/SolidInvoice" target="_blank">
+        <img src="https://avatars.githubusercontent.com/u/25333451?s=200&v=4" height="100px">
+    </a>
+    <h1 align="center">SolidInvoice</h1>
+    <br>
+</p>
 
-[![Build Status](https://travis-ci.org/SolidInvoice/SolidInvoice.png?branch=master)](https://travis-ci.org/SolidInvoice/SolidInvoice)
+SolidInvoice is a simple open source invoicing application aimed to help small businesses and freelancers manage their day-to-day billing.
+It's a feature rich elegant online application to ensure that you can always get paid on time.
 
-Open-Source General Billing Manager
+## Features
 
-SolidInvoice is an open-source application that allows you to manage clients and contacts and send invoices and quotes.
+* Clients and Contacts management
+* Create and manage Quotes
+* Create and manage Invoices
+* Accept payments online
+* Tax and discount handling
+* RESTful API
+* Receive Notifications either via text message, email or through HipChat
+* More to come
+
+## Demo
+
+<img src="https://dopd56xbeo74f.cloudfront.net/images/banner.png" />
+
+[https://demo.solidinvoice.co/](https://demo.solidinvoice.co/)
 
 ## Requirements
 
-SolidInvoice requires minimum PHP 7.3.0.
-
-*Note:* The latest version of PHP is always recommended
+PHP >= 7.4.15 is required. Use the latest version of PHP for best experience.
 
 ## Installation
 
@@ -27,7 +45,7 @@ and extract the contents of the archive under your webserver directory.
 
 ### For developers
 
-To install from source, you first need to clone the repository, then you need [composer][2] in order to install all the dependencies.
+To install from source, you first need to clone the repository, then you need [composer][1] in order to install all the dependencies.
 
 To clone the repository, issue the following command. Remember to clone the repository to the path you want, that is accessible from your webserver.
 
@@ -69,20 +87,6 @@ If you want to run SolidInvoice in production mode, some additional steps is req
 npm run build
 ```
 
-## Features
-
-Some of the basic features included in SolidInvoice is:
-
-* Clients and Contacts management
-* Create and manage Quotes
-* Create and manage Invoices
-* Accept payments online
-* Tax and discount handling
-* RESTful API
-* Receive Notifications either via text message, email or through HipChat
-* More to come
-
-
 ## Contributing
 
 See [CONTRIBUTING](CONTRIBUTING.md)
@@ -93,14 +97,10 @@ SolidInvoice is open-sourced software licensed under the [MIT license](http://op
 
 Please see the [LICENSE](LICENSE) file for the full license.
 
-## Demo
-
-[http://demo.solidinvoice.co/](http://demo.solidinvoice.co/)
-
-
-[1]: http://symfony.com
-[2]: http://getcomposer.org
-
 ## Donate
 
+Thank you for supporting the project!
+
 [![Paypal](https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EQLK2P3VBW2LC)
+
+[1]: http://getcomposer.org

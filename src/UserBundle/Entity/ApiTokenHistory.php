@@ -27,30 +27,30 @@ class ApiTokenHistory
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      *
-     * @var int
+     * @var int|null
      */
     private $id;
 
     /**
      * @ORM\Column(type="string")
      *
-     * @var string
+     * @var string|null
      */
     private $ip;
 
     /**
      * @ORM\Column(type="string", length=125)
      *
-     * @var string
+     * @var string|null
      */
     private $resource;
 
     /**
      * @ORM\Column(type="string", length=25)
      *
-     * @var string
+     * @var string|null
      */
     private $method;
 
@@ -64,15 +64,15 @@ class ApiTokenHistory
     /**
      * @ORM\Column(type="string")
      *
-     * @var string
+     * @var string|null
      */
     private $userAgent;
 
     /**
-     * @var ApiToken
+     * @var ApiToken|null
      *
      * @ORM\ManyToOne(targetEntity="ApiToken", inversedBy="history")
-     * @ORM\JoinColumn(name="token_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="token_id")
      */
     private $token;
 
@@ -92,9 +92,6 @@ class ApiTokenHistory
         return $this->ip;
     }
 
-    /**
-     * @return ApiTokenHistory
-     */
     public function setIp(string $ip): self
     {
         $this->ip = $ip;
@@ -110,9 +107,6 @@ class ApiTokenHistory
         return $this->resource;
     }
 
-    /**
-     * @return ApiTokenHistory
-     */
     public function setResource(string $resource): self
     {
         $this->resource = $resource;
@@ -128,9 +122,6 @@ class ApiTokenHistory
         return $this->method;
     }
 
-    /**
-     * @return ApiTokenHistory
-     */
     public function setMethod(string $method): self
     {
         $this->method = $method;
@@ -146,9 +137,6 @@ class ApiTokenHistory
         return $this->requestData;
     }
 
-    /**
-     * @return ApiTokenHistory
-     */
     public function setRequestData(array $requestData): self
     {
         $this->requestData = $requestData;
@@ -164,9 +152,6 @@ class ApiTokenHistory
         return $this->userAgent;
     }
 
-    /**
-     * @return ApiTokenHistory
-     */
     public function setUserAgent(string $userAgent): self
     {
         $this->userAgent = $userAgent;
@@ -182,9 +167,6 @@ class ApiTokenHistory
         return $this->token;
     }
 
-    /**
-     * @return ApiTokenHistory
-     */
     public function setToken(ApiToken $token): self
     {
         $this->token = $token;

@@ -18,33 +18,19 @@ use Twig\TwigFunction;
 
 class FileExtension extends AbstractExtension
 {
-    /**
-     * @var string
-     */
-    private $projectDir;
+    private string $projectDir;
 
     public function __construct(string $projectDir)
     {
         $this->projectDir = $projectDir;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('file', function ($file) {
-                return file_get_contents($this->projectDir.'/public/'.ltrim($file, '\\'));
+                return file_get_contents($this->projectDir . '/public/' . ltrim($file, '\\'));
             }, ['is_safe' => ['css', 'html']]),
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'solidinvoice_core.twig.file';
     }
 }

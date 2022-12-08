@@ -34,14 +34,11 @@ class CurrencyType extends AbstractType
         $this->locale = $locale;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefault('choices', iterator_to_array($this->getCurrencyChoices()));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent()
     {
         return Select2Type::class;

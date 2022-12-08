@@ -20,6 +20,9 @@ use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 
+/**
+ * @see \SolidInvoice\InvoiceBundle\Tests\Listener\Doctrine\InvoiceSaveListenerTest
+ */
 class InvoiceSaveListener implements EventSubscriber
 {
     /**
@@ -63,7 +66,7 @@ class InvoiceSaveListener implements EventSubscriber
     private function checkDiscount(BaseInvoice $entity): void
     {
         $discount = $entity->getDiscount();
-        if (!$discount->getValue()) {
+        if (! $discount->getValue()) {
             $discount->setType(null);
         }
     }

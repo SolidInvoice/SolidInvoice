@@ -36,7 +36,7 @@ class DiscountTypeTest extends FormTestCase
         ];
     }
 
-    public function testSubmit()
+    public function testSubmit(): void
     {
         foreach ($this->discountProvider() as $discountItem) {
             $formData = [

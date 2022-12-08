@@ -18,10 +18,7 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
 final class InvoiceEmail extends TemplatedEmail
 {
-    /**
-     * @var Invoice
-     */
-    private $invoice;
+    private Invoice $invoice;
 
     public function __construct(Invoice $invoice)
     {
@@ -39,6 +36,9 @@ final class InvoiceEmail extends TemplatedEmail
         return '@SolidInvoiceInvoice/Email/invoice.html.twig';
     }
 
+    /**
+     * @return array{invoice: Invoice}
+     */
     public function getContext(): array
     {
         return \array_merge(['invoice' => $this->invoice], parent::getContext());

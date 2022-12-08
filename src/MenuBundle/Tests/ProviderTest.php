@@ -13,71 +13,52 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MenuBundle\Tests;
 
+use Knp\Menu\FactoryInterface;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\MenuBundle\Builder\BuilderInterface;
+use SolidInvoice\MenuBundle\MenuItem;
 use SolidInvoice\MenuBundle\Provider;
-use SplPriorityQueue;
 
 class ProviderTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    public function testGet()
+    public function testGet(): void
     {
-        $storage = M::mock('SolidInvoice\MenuBundle\Storage\MenuStorageInterface');
+        $factory = M::mock(FactoryInterface::class);
 
-        $provider = new Provider($storage);
+        $provider = new Provider($factory);
+        $builder = M::mock(BuilderInterface::class);
+        $provider->addBuilder($builder, 'abc', 'foo', 1);
 
-        $q = new SplPriorityQueue();
-        $q->insert('def', 0);
-        $storage->shouldReceive('get')
-            ->with('abc')
+        $q = new MenuItem('root', $factory);
+        $factory->shouldReceive('createItem')
+            ->once()
+            ->with('root')
             ->andReturn($q);
 
-        static::assertSame($q, $provider->get('abc', []));
-
-        $storage->shouldHaveReceived('get')
-            ->with('abc');
-    }
-
-    public function testHas()
-    {
-        $storage = M::mock('SolidInvoice\MenuBundle\Storage\MenuStorageInterface');
-
-        $provider = new Provider($storage);
-
-        $storage->shouldReceive('has')
-            ->with('abc')
+        $builder->shouldReceive('validate')
+            ->once()
             ->andReturn(true);
 
-        static::assertTrue($provider->has('abc', []));
+        $builder->shouldReceive('foo')
+            ->once()
+            ->withArgs([$q, []]);
 
-        $storage->shouldHaveReceived('has')
-            ->with('abc');
+        self::assertSame($q, $provider->get('abc', []));
     }
 
-    public function testAddBuilder()
+    public function testHas(): void
     {
-        $queue = M::mock('SplPriorityQueue');
-        $storage = M::mock('SolidInvoice\MenuBundle\Storage\MenuStorageInterface');
+        $factory = M::mock(FactoryInterface::class);
 
-        $provider = new Provider($storage);
+        $provider = new Provider($factory);
+        $builder = M::mock(BuilderInterface::class);
+        $provider->addBuilder($builder, 'abc', 'foo', 1);
 
-        $class = M::mock('SolidInvoice\MenuBundle\Builder\BuilderInterface');
-        $method = 'abc';
-
-        $storage->shouldReceive('get')
-            ->with('abc')
-            ->andReturn($queue);
-
-        $queue->shouldReceive('insert');
-
-        $provider->addBuilder($class, 'abc', $method, 120);
-
-        $storage->shouldHaveReceived('get')
-            ->with('abc');
-
-        $queue->shouldHaveReceived('insert');
+        self::assertTrue($provider->has('abc', []));
+        self::assertFalse($provider->has('def', []));
     }
 }

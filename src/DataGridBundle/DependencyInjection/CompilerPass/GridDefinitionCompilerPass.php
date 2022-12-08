@@ -15,7 +15,13 @@ namespace SolidInvoice\DataGridBundle\DependencyInjection\CompilerPass;
 
 use InvalidArgumentException;
 use SolidInvoice\DataGridBundle\DependencyInjection\GridConfiguration;
+use SolidInvoice\DataGridBundle\Filter\ChainFilter;
+use SolidInvoice\DataGridBundle\Filter\PaginateFilter;
+use SolidInvoice\DataGridBundle\Filter\SearchFilter;
+use SolidInvoice\DataGridBundle\Filter\SortFilter;
+use SolidInvoice\DataGridBundle\Grid;
 use SolidInvoice\DataGridBundle\Repository\GridRepository;
+use SolidInvoice\DataGridBundle\Source\ORMSource;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\Resource\FileResource;
@@ -39,10 +45,7 @@ class GridDefinitionCompilerPass implements CompilerPassInterface
         $this->kernel = $kernel;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $resourceLocator = new FileLocator($this->kernel);
         $definition = $container->getDefinition(GridRepository::class);
@@ -76,10 +79,10 @@ class GridDefinitionCompilerPass implements CompilerPassInterface
         return $process->processConfiguration($config, $grid);
     }
 
-    private function setGridDefinition(Definition $gridService, array $config)
+    private function setGridDefinition(Definition $gridService, array $config): void
     {
         foreach ($config as $gridName => $gridConfig) {
-            $gridDefinition = new Definition('SolidInvoice\DataGridBundle\Grid');
+            $gridDefinition = new Definition(Grid::class);
 
             $gridConfig['name'] = $gridName;
 
@@ -96,26 +99,26 @@ class GridDefinitionCompilerPass implements CompilerPassInterface
     {
         array_unshift($arguments, new Reference('doctrine'));
 
-        return new Definition('SolidInvoice\DataGridBundle\Source\ORMSource', array_values($arguments));
+        return new Definition(ORMSource::class, array_values($arguments));
     }
 
     private function getFilterService(array &$gridData): Definition
     {
-        $definition = new Definition('SolidInvoice\DataGridBundle\Filter\ChainFilter');
+        $definition = new Definition(ChainFilter::class);
 
         if (true === $gridData['properties']['sortable']) {
-            $sortFilter = new Definition('SolidInvoice\DataGridBundle\Filter\SortFilter');
+            $sortFilter = new Definition(SortFilter::class);
             $definition->addMethodCall('addFilter', [$sortFilter]);
         }
 
         if (true === $gridData['properties']['sortable']) {
-            $paginateFilter = new Definition('SolidInvoice\DataGridBundle\Filter\PaginateFilter');
+            $paginateFilter = new Definition(PaginateFilter::class);
             $definition->addMethodCall('addFilter', [$paginateFilter]);
         }
 
-        if (!empty($gridData['search']['fields'])) {
+        if (! empty($gridData['search']['fields'])) {
             $searchFilter = new Definition(
-                'SolidInvoice\DataGridBundle\Filter\SearchFilter',
+                SearchFilter::class,
                 [$gridData['search']['fields']]
             );
             $definition->addMethodCall('addFilter', [$searchFilter]);

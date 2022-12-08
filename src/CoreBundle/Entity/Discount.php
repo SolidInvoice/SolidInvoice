@@ -37,7 +37,7 @@ class Discount
     private $valueMoney;
 
     /**
-     * @var float
+     * @var float|null
      *
      * @ORM\Column(name="value_percentage", type="float", nullable=true)
      * @Serialize\Groups({"invoice_api", "quote_api", "client_api"})
@@ -45,16 +45,15 @@ class Discount
     private $valuePercentage;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="type", type="string", nullable=true)
      * @Serialize\Groups({"invoice_api", "quote_api", "client_api"})
      */
-    private $type;
+    private $type = self::TYPE_PERCENTAGE;
 
     public function __construct()
     {
-        $this->type = self::TYPE_PERCENTAGE;
         $this->valueMoney = new MoneyEntity();
     }
 
@@ -127,7 +126,7 @@ class Discount
         return null;
     }
 
-    public function setValue($value)
+    public function setValue($value): void
     {
         switch ($this->getType()) {
             case self::TYPE_PERCENTAGE:

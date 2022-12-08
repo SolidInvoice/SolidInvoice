@@ -24,13 +24,13 @@ final class MailerTransportConfigCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        if (!$container->hasDefinition('mailer.transport_factory')) {
+        if (! $container->hasDefinition('mailer.transport_factory')) {
             return;
         }
 
         $definition = new Definition(MailerConfigFactory::class);
         $definition->setDecoratedService('mailer.transport_factory');
-        $definition->addArgument(new Reference(MailerConfigFactory::class.'.inner'));
+        $definition->addArgument(new Reference(MailerConfigFactory::class . '.inner'));
         $definition->setArgument('$transports', new TaggedIteratorArgument('solidinvoice_mailer.transport.configurator'));
         $definition->setAutowired(true);
         $container->setDefinition(MailerConfigFactory::class, $definition);

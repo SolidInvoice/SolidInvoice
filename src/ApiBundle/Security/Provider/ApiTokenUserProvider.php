@@ -17,18 +17,15 @@ use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Repository\ApiTokenRepository;
 use SolidInvoice\UserBundle\Repository\UserRepositoryInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class ApiTokenUserProvider implements UserProviderInterface
 {
-    /**
-     * @var ApiTokenRepository
-     */
-    private $tokenRepository;
+    private ApiTokenRepository $tokenRepository;
 
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
     public function __construct(ApiTokenRepository $tokenRepository, UserRepositoryInterface $userRepository)
     {
@@ -36,32 +33,23 @@ class ApiTokenUserProvider implements UserProviderInterface
         $this->userRepository = $userRepository;
     }
 
-    /**
-     * @return string
-     */
     public function getUsernameForToken(string $token): ?string
     {
         return $this->tokenRepository->getUsernameForToken($token);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function loadUserByUsername($username)
+    public function loadUserByUsername(string $username): UserInterface
     {
         $user = $this->userRepository->findOneBy(['username' => $username]);
 
-        if (!$user) {
-            throw new UsernameNotFoundException();
+        if (! $user) {
+            throw new UserNotFoundException();
         }
 
         return $user;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function refreshUser(UserInterface $user)
+    public function refreshUser(UserInterface $user): UserInterface
     {
         // this is used for storing authentication in the session
         // but the token is sent in each request,
@@ -70,10 +58,7 @@ class ApiTokenUserProvider implements UserProviderInterface
         throw new UnsupportedUserException();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsClass($class)
+    public function supportsClass(string $class): bool
     {
         return User::class === $class;
     }

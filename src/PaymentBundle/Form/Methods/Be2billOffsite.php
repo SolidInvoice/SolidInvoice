@@ -22,10 +22,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class Be2billOffsite extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
             'identifier',
@@ -52,9 +49,6 @@ class Be2billOffsite extends AbstractType
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'be2bill_offsite';

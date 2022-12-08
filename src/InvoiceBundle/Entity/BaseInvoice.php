@@ -25,7 +25,7 @@ use Symfony\Component\Serializer\Annotation as Serialize;
 abstract class BaseInvoice
 {
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="status", type="string", length=25)
      * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api"})
@@ -65,7 +65,7 @@ abstract class BaseInvoice
     protected $discount;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="terms", type="text", nullable=true)
      * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api", "create_invoice_api", "create_recurring_invoice_api"})
@@ -73,7 +73,7 @@ abstract class BaseInvoice
     protected $terms;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="notes", type="text", nullable=true)
      * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api", "create_invoice_api", "create_recurring_invoice_api"})
@@ -110,9 +110,6 @@ abstract class BaseInvoice
         return $this;
     }
 
-    /**
-     * Get total.
-     */
     public function getTotal(): Money
     {
         return $this->total->getMoney();
@@ -150,9 +147,6 @@ abstract class BaseInvoice
         return $this;
     }
 
-    /**
-     * Get discount.
-     */
     public function getDiscount(): Discount
     {
         return $this->discount;

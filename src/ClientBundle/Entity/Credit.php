@@ -33,7 +33,9 @@ class Credit
     /**
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
+     *
+     * @var int|null
      */
     private $id;
 
@@ -45,7 +47,7 @@ class Credit
     private $value;
 
     /**
-     * @var Client
+     * @var Client|null
      * @ORM\OneToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Client", inversedBy="credit")
      */
     private $client;
@@ -68,9 +70,6 @@ class Credit
         return $this->client;
     }
 
-    /**
-     * @return Credit
-     */
     public function setClient(Client $client): self
     {
         $this->client = $client;

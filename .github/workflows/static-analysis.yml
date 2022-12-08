@@ -13,11 +13,16 @@ jobs:
       SOLIDINVOICE_DEBUG: 1
 
     steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@ebacdc22ef6c2cfb85ee5ded8f2e640f4c776dd5
+        with:
+          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@1a18b2267f80291a81ca1d33e7c851fe09e7dfc4
         with:
           php-version: 7.4
           ini-values: date.timezone=Europe/Paris, opcache.enable=1, opcache.enable_cli=1, opcache.memory_consumption=256, opcache.max_accelerated_files=32531, opcache.interned_strings_buffer=8, opcache.validate_timestamps=0, opcache.save_comments=1, opcache.fast_shutdown=0
@@ -28,7 +33,7 @@ jobs:
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
       - name: Cache dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@9b0c1fce7a93df8e3bb8926b0d6e9d89e92f20a7
         with:
           path: ${{ steps.composercache.outputs.dir }}
           key: ${{ runner.os }}-php-74-composer-${{ hashFiles('composer.json composer.lock') }}
@@ -45,4 +50,24 @@ jobs:
         run: ./bin/simple-phpunit --version
 
       - name: Run PHPStan
-        run: bin/phpstan analyse
+        run: bin/phpstan analyse -c phpstan.test.neon
+
+  qodana:
+    name: Qodana
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@ebacdc22ef6c2cfb85ee5ded8f2e640f4c776dd5
+        with:
+          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+
+      - uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
+
+      - name: 'Qodana Scan'
+        uses: JetBrains/qodana-action@02cc364ad985bd673e0758e6218890bd1bd27959
+
+      - uses: github/codeql-action/upload-sarif@b2a92eb56d8cb930006a1c6ed86b0782dd8a4297
+        with:
+          sarif_file: ${{ runner.temp }}/qodana/results/qodana.sarif.json

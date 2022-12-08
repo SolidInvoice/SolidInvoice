@@ -16,11 +16,11 @@ namespace SolidInvoice\ClientBundle\Form\Handler;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidWorx\FormHandler\FormRequest;
 
+/**
+ * @see \SolidInvoice\ClientBundle\Tests\Form\Handler\ClientEditFormHandlerTest
+ */
 class ClientEditFormHandler extends AbstractClientFormHandler
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getResponse(FormRequest $formRequest): Template
     {
         return new Template(

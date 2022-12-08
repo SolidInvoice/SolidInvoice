@@ -33,9 +33,6 @@ abstract class AbstractContactFormHandler implements FormHandlerInterface, FormH
     use SaveableTrait;
     use SerializeTrait;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getResponse(FormRequest $formRequest)
     {
         return new Template(
@@ -46,20 +43,14 @@ abstract class AbstractContactFormHandler implements FormHandlerInterface, FormH
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getForm(FormFactoryInterface $factory, Options $options)
     {
         return $factory->create(ContactType::class, $options->get('contact'), ['allow_delete' => false]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function onSuccess(FormRequest $form, $contact): ?Response
     {
-        /* @var Contact $contact */
+        /** @var Contact $contact */
         $this->save($contact);
 
         return $this->serialize($contact, ['client_api']);
@@ -69,9 +60,6 @@ abstract class AbstractContactFormHandler implements FormHandlerInterface, FormH
 
     // This needs to be public for the lazy proxy service definition to work
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired('contact')

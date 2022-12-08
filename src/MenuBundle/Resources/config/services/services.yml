@@ -8,10 +8,14 @@ services:
         arguments: ['@request_stack', '@solidinvoice_menu.factory', '@translator', '@twig']
         calls:
             - ['setContainer', ['@service_container']]
+        tags:
+            - { name: knp_menu.renderer, alias: 'solidinvoice' }
 
     solidinvoice_menu.provider:
         class: SolidInvoice\MenuBundle\Provider
-        arguments: ['@solidinvoice_menu.storage']
+        arguments:
+            - '@solidinvoice_menu.factory'
+            # - !tagged cs_core.menu
+        tags:
+          - { name: knp_menu.provider }
 
-    solidinvoice_menu.storage:
-        class: SolidInvoice\MenuBundle\Storage\MenuStorage

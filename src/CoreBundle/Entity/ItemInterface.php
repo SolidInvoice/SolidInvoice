@@ -25,11 +25,6 @@ interface ItemInterface
      */
     public function getId(): ?int;
 
-    /**
-     * Set description.
-     *
-     * @return ItemInterface
-     */
     public function setDescription(string $description): self;
 
     /**
@@ -41,8 +36,6 @@ interface ItemInterface
 
     /**
      * Set the price.
-     *
-     * @return ItemInterface
      */
     public function setPrice(Money $price): self;
 
@@ -55,8 +48,6 @@ interface ItemInterface
 
     /**
      * Set the qty.
-     *
-     * @return ItemInterface
      */
     public function setQty(float $qty): self;
 
@@ -67,9 +58,6 @@ interface ItemInterface
      */
     public function getQty(): ?float;
 
-    /**
-     * @return ItemInterface
-     */
     public function setTotal(Money $total): self;
 
     /**
@@ -86,8 +74,6 @@ interface ItemInterface
 
     /**
      * @param Tax $tax
-     *
-     * @return ItemInterface
      */
     public function setTax(?Tax $tax): self;
 }

@@ -18,7 +18,7 @@ use SolidInvoice\NotificationBundle\Form\Type\NotificationType;
 
 class NotificationTypeTest extends FormTestCase
 {
-    public function testSubmit()
+    public function testSubmit(): void
     {
         $formData = [
             'email' => $this->faker->boolean,

@@ -32,7 +32,7 @@ class WorkFlowSubscriberTest extends TestCase
     use DoctrineTestTrait;
     use MockeryPHPUnitIntegration;
 
-    public function testInvoicePaid()
+    public function testInvoicePaid(): void
     {
         $notification = M::mock(NotificationManager::class);
         $notification->shouldReceive('sendNotification')
@@ -45,11 +45,11 @@ class WorkFlowSubscriberTest extends TestCase
             ->setBalance(new Money(1200, new Currency('USD')));
 
         $subscriber->onWorkflowTransitionApplied(new Event($invoice, new Marking(['pending' => 1]), new Transition('pay', 'pending', 'paid'), M::mock(WorkflowInterface::class)));
-        static::assertNotNull($invoice->getPaidDate());
-        static::assertEquals($invoice, $this->em->getRepository(Invoice::class)->find($invoice->getId()));
+        self::assertNotNull($invoice->getPaidDate());
+        self::assertEquals($invoice, $this->em->getRepository(Invoice::class)->find($invoice->getId()));
     }
 
-    public function testInvoiceArchive()
+    public function testInvoiceArchive(): void
     {
         $notification = M::mock(NotificationManager::class);
         $notification->shouldReceive('sendNotification')
@@ -63,7 +63,7 @@ class WorkFlowSubscriberTest extends TestCase
 
         $subscriber->onWorkflowTransitionApplied(new Event($invoice, new Marking(['pending' => 1]), new Transition('archive', 'pending', 'archived'), M::mock(WorkflowInterface::class)));
 
-        static::assertTrue($invoice->isArchived());
-        static::assertSame($invoice, $this->em->getRepository(Invoice::class)->find($invoice->getId()));
+        self::assertTrue($invoice->isArchived());
+        self::assertSame($invoice, $this->em->getRepository(Invoice::class)->find($invoice->getId()));
     }
 }

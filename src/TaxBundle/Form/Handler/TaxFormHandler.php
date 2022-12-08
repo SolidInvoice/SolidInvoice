@@ -30,6 +30,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 
+/**
+ * @see \SolidInvoice\TaxBundle\Tests\Form\Handler\TaxFormHandlerTest
+ */
 class TaxFormHandler implements FormHandlerInterface, FormHandlerSuccessInterface, FormHandlerResponseInterface, FormHandlerOptionsResolver
 {
     use SaveableTrait;
@@ -44,17 +47,11 @@ class TaxFormHandler implements FormHandlerInterface, FormHandlerSuccessInterfac
         $this->router = $router;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getForm(FormFactoryInterface $factory, Options $options)
     {
         return $factory->create(TaxType::class, $options->get('tax', new Tax()));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function onSuccess(FormRequest $form, $data): ?Response
     {
         $this->save($data);
@@ -62,24 +59,18 @@ class TaxFormHandler implements FormHandlerInterface, FormHandlerSuccessInterfac
         $route = $this->router->generate('_tax_rates');
 
         return new class($route) extends RedirectResponse implements FlashResponse {
-            public function getFlash(): iterable
+            public function getFlash(): \Generator
             {
                 yield FlashResponse::FLASH_SUCCESS => 'Tax rate successfully saved';
             }
         };
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getResponse(FormRequest $formRequest)
     {
         return new Template('@SolidInvoiceTax/Default/form.html.twig', ['form' => $formRequest->getForm()->createView()]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefined('tax')

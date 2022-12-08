@@ -19,15 +19,15 @@ use SolidInvoice\CoreBundle\Tests\FormTestCase;
 
 class AddressTypeTest extends FormTestCase
 {
-    public function testSubmit()
+    public function testSubmit(): void
     {
         $faker = Factory::create();
 
         $formData = [
-            'street1' => $faker->buildingNumber.' '.$faker->streetName,
-            'street2' => $faker->randomNumber(2).' '.$faker->streetName.' '.$faker->streetSuffix,
+            'street1' => $faker->buildingNumber . ' ' . $faker->streetName,
+            'street2' => $faker->randomNumber(2) . ' ' . $faker->streetName . ' ' . $faker->streetSuffix,
             'city' => $faker->city,
-            'state' => $faker->state,
+            'state' => $faker->city,
             'zip' => $faker->postcode,
             'country' => $faker->countryCode,
         ];

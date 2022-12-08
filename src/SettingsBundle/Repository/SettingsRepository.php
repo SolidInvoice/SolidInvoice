@@ -32,14 +32,14 @@ class SettingsRepository extends ServiceEntityRepository
     public function save(array $settings): void
     {
         try {
-            $this->_em->transactional(function () use ($settings) {
+            $this->_em->transactional(function () use ($settings): void {
                 foreach ($settings as $key => $value) {
                     $this->createQueryBuilder('s')
                         ->update()
                         ->set('s.value', ':val')
                         ->where('s.key = :key')
                         ->setParameter('key', $key)
-                        ->setParameter('val', !empty($value) ? $value : null)
+                        ->setParameter('val', empty($value) ? null : $value)
                         ->getQuery()
                         ->execute();
                 }

@@ -29,7 +29,7 @@ class ItemRepository extends ServiceEntityRepository
     /**
      * Removes all tax rates from invoices.
      */
-    public function removeTax(Tax $tax)
+    public function removeTax(Tax $tax): void
     {
         if (Tax::TYPE_EXCLUSIVE === $tax->getType()) {
             $qb = $this->createQueryBuilder('i');

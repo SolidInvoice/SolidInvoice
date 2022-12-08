@@ -16,7 +16,9 @@ namespace SolidInvoice\UserBundle\Action\Grid;
 use SolidInvoice\CoreBundle\Response\AjaxResponse;
 use SolidInvoice\CoreBundle\Traits\JsonTrait;
 use SolidInvoice\UserBundle\Entity\User;
+use SolidInvoice\UserBundle\Repository\UserRepository;
 use SolidInvoice\UserBundle\Repository\UserRepositoryInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 
@@ -24,13 +26,10 @@ final class Delete implements AjaxResponse
 {
     use JsonTrait;
 
-    /**
-     * @var Security
-     */
-    private $security;
+    private Security $security;
 
     /**
-     * @var UserRepositoryInterface
+     * @var UserRepository|UserRepositoryInterface
      */
     private $userRepository;
 
@@ -40,9 +39,9 @@ final class Delete implements AjaxResponse
         $this->userRepository = $userRepository;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): JsonResponse
     {
-        $users = $request->request->get('data');
+        $users = (array) $request->request->get('data');
 
         $currentUser = $this->security->getUser();
 

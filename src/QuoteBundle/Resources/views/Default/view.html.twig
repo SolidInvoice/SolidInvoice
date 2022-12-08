@@ -15,10 +15,6 @@
     {{ "quote.title"|trans({"%id%" : quote.id}) }}
 {% endblock page_title %}
 
-{% block sidebar %}
-    {{ menu('quotes_view', {'client': quote.client}) }}
-{% endblock sidebar %}
-
 {% block content %}
     <div class="float-right no-print">
         <div class="btn-toolbar" role="toolbar">

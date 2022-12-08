@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Util;
 
+/**
+ * @see \SolidInvoice\CoreBundle\Tests\Util\ClassUtilTest
+ */
 class ClassUtil
 {
     /**
@@ -26,12 +29,12 @@ class ClassUtil
         $count = count($tokens);
 
         foreach ($tokens as $i => $token) {
-            if (!is_array($token)) {
+            if (! is_array($token)) {
                 continue;
             }
 
             if ($class && T_STRING === $token[0]) {
-                return $namespace.'\\'.$token[1];
+                return $namespace . '\\' . $token[1];
             }
 
             if (true === $namespace && T_STRING === $token[0]) {

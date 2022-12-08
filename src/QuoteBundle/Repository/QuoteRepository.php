@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\QuoteBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\ClientBundle\Entity\Client;
@@ -59,7 +60,7 @@ class QuoteRepository extends ServiceEntityRepository
 
         $qb
             ->innerJoin('q.client', 'c')
-            ->orderBy('q.created', 'DESC')
+            ->orderBy('q.created', Criteria::DESC)
             ->setMaxResults($limit);
 
         $query = $qb->getQuery();
@@ -74,7 +75,7 @@ class QuoteRepository extends ServiceEntityRepository
         $qb->select(['q', 'c'])
             ->join('q.client', 'c');
 
-        if (!empty($parameters['client'])) {
+        if (! empty($parameters['client'])) {
             $qb->where('q.client = :client')
                 ->setParameter('client', $parameters['client']);
         }
@@ -95,7 +96,7 @@ class QuoteRepository extends ServiceEntityRepository
         return $qb;
     }
 
-    public function updateCurrency(Client $client)
+    public function updateCurrency(Client $client): void
     {
         $filters = $this->getEntityManager()->getFilters();
         $filters->disable('archivable');
@@ -150,7 +151,9 @@ class QuoteRepository extends ServiceEntityRepository
         /** @var Quote[] $quotes */
         $quotes = $this->findBy(['id' => $ids]);
 
-        array_walk($quotes, [$em, 'remove']);
+        array_walk($quotes, function (object $entity) use ($em): void {
+            $em->remove($entity);
+        });
 
         $em->flush();
 

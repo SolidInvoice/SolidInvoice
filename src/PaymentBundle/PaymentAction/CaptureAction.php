@@ -27,10 +27,7 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface
 {
     use GatewayAwareTrait;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function execute($request)
+    public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
@@ -46,12 +43,9 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface
         $this->gateway->execute($request);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($request)
     {
-        if (!($request instanceof Capture && $request->getModel() instanceof Payment)) {
+        if (! ($request instanceof Capture && $request->getModel() instanceof Payment)) {
             return false;
         }
 

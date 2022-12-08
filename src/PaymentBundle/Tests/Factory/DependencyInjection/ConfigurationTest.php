@@ -28,7 +28,7 @@ class ConfigurationTest extends TestCase
         return new Configuration();
     }
 
-    public function testValidConfig()
+    public function testValidConfig(): void
     {
         $this->assertConfigurationIsValid(
             [
@@ -44,7 +44,7 @@ class ConfigurationTest extends TestCase
         );
     }
 
-    public function testFormIsOptionalConfig()
+    public function testFormIsOptionalConfig(): void
     {
         $this->assertConfigurationIsValid(
             [
@@ -59,7 +59,7 @@ class ConfigurationTest extends TestCase
         );
     }
 
-    public function testNoGatewaysConfigured()
+    public function testNoGatewaysConfigured(): void
     {
         $this->assertConfigurationIsInvalid(
             [
@@ -71,7 +71,7 @@ class ConfigurationTest extends TestCase
         );
     }
 
-    public function testFactoryConfigCannotBeEmpty()
+    public function testFactoryConfigCannotBeEmpty(): void
     {
         $this->assertConfigurationIsInvalid(
             [
@@ -87,7 +87,7 @@ class ConfigurationTest extends TestCase
         );
     }
 
-    public function testFormConfigCannotBeEmpty()
+    public function testFormConfigCannotBeEmpty(): void
     {
         $this->assertConfigurationIsInvalid(
             [

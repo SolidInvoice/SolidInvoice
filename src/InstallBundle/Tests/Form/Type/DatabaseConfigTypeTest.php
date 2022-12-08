@@ -18,7 +18,7 @@ use SolidInvoice\InstallBundle\Form\Type\DatabaseConfigType;
 
 class DatabaseConfigTypeTest extends FormTestCase
 {
-    public function testSubmit()
+    public function testSubmit(): void
     {
         $drivers = [
             'pdo_mysql' => 'MySQL',

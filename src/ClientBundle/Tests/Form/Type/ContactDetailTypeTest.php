@@ -17,11 +17,14 @@ use Faker\Factory;
 use SolidInvoice\ClientBundle\Entity\ContactType;
 use SolidInvoice\ClientBundle\Form\Type\ContactDetailType;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
+use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use Symfony\Component\Form\PreloadedExtension;
 
 class ContactDetailTypeTest extends FormTestCase
 {
-    public function testSubmit()
+    use EnsureApplicationInstalled;
+
+    public function testSubmit(): void
     {
         $faker = Factory::create();
 

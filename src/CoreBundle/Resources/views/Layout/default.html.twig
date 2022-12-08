@@ -53,7 +53,7 @@
                 </div>
             </div>
 
-            {{ menu('sidebar') }}
+            {{ knp_menu_render('sidebar', {}, 'solidinvoice') }}
 
             {% if block('sidebar') is defined %}
                 <nav class="mt-2">

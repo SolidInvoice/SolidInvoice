@@ -13,15 +13,14 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Tests\Functional;
 
-use function count;
 use Exception;
-use function file_exists;
-use function getenv;
-use function realpath;
-use function rename;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Panther\Client;
 use Symfony\Component\Panther\PantherTestCase;
+use function count;
+use function file_exists;
+use function realpath;
+use function rename;
 use function unlink;
 
 /**
@@ -31,41 +30,54 @@ class InstallationTest extends PantherTestCase
 {
     public static function setUpBeforeClass(): void
     {
-        $configFile = realpath(static::$defaultOptions['webServerDir'].'/../').'/config/env.php';
+        $configFile = realpath(static::$defaultOptions['webServerDir'] . '/../') . '/config/env.php';
         if (file_exists($configFile)) {
-            rename($configFile, $configFile.'.tmp');
+            rename($configFile, $configFile . '.tmp');
         }
     }
 
     public static function tearDownAfterClass(): void
     {
-        $configFile = realpath(static::$defaultOptions['webServerDir'].'/../').'/config/env.php';
-        if (file_exists($configFile.'.tmp')) {
-            rename($configFile.'.tmp', $configFile);
+        $configFile = realpath(static::$defaultOptions['webServerDir'] . '/../') . '/config/env.php';
+        if (file_exists($configFile . '.tmp')) {
+            rename($configFile . '.tmp', $configFile);
         }
     }
 
-    public function testItRedirectsToInstallationPage()
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $dbFile = realpath(static::$defaultOptions['webServerDir'] . '/../') . '/var/db/sqlite.db';
+
+        if (file_exists($dbFile)) {
+            unlink($dbFile);
+        }
+
+        unset($_SERVER['locale'], $_ENV['locale'], $_SERVER['installed'], $_ENV['installed']);
+    }
+
+    public function testItRedirectsToInstallationPage(): void
     {
         $client = self::createPantherClient();
 
         $crawler = $client->request('GET', '/');
 
-        static::assertStringContainsString('/install', $crawler->getUri());
+        self::assertStringContainsString('/install', $crawler->getUri());
     }
 
-    public function testApplicationInstallation()
+    public function testApplicationInstallation(): void
     {
         $client = self::createPantherClient();
 
         $crawler = $client->request('GET', '/install');
 
         // No error messages on the site
-        static::assertCount(0, $crawler->filter('.alert-danger'));
+        self::assertCount(0, $crawler->filter('.alert-danger'));
 
         $this->continue($client, $crawler);
 
-        static::assertStringContainsString('/install/config', $client->getCurrentURL());
+        self::assertStringContainsString('/install/config', $client->getCurrentURL());
 
         try {
             // Configuration page
@@ -75,14 +87,15 @@ class InstallationTest extends PantherTestCase
                     'config_step[database_config][driver]' => 'pdo_mysql',
                     'config_step[database_config][host]' => getenv('database_host') ?: '127.0.0.1',
                     'config_step[database_config][user]' => 'root',
+                    'config_step[database_config][password]' => '',
                     'config_step[database_config][name]' => 'solidinvoice_test',
                 ]
             );
 
-            static::assertStringContainsString('/install/install', $crawler->getUri());
+            self::assertStringContainsString('/install/install', $crawler->getUri());
 
             $kernel = self::bootKernel();
-            static::assertSame('solidinvoice_test', $kernel->getContainer()->getParameter('env(database_name)'));
+            self::assertSame('solidinvoice_test', $kernel->getContainer()->getParameter('env(database_name)'));
 
             // Wait for installation steps to be completed
             $time = microtime(true);
@@ -92,18 +105,18 @@ class InstallationTest extends PantherTestCase
                 $client->waitFor('.fa-check.text-success');
             }
 
-            static::assertStringNotContainsString('disabled', $crawler->filter('#continue_step')->first()->attr('class'));
+            self::assertStringNotContainsString('disabled', $crawler->filter('#continue_step')->first()->attr('class'));
 
             $crawler = $this->continue($client, $crawler);
 
-            static::assertStringContainsString('/install/setup', $client->getCurrentURL());
+            self::assertStringContainsString('/install/setup', $client->getCurrentURL());
 
             $formData = [
                 'system_information[locale]' => 'en',
                 'system_information[currency]' => 'USD',
             ];
 
-            if (0 === count($crawler->filter('.callout.callout-warning'))) {
+            if (0 === (is_countable($crawler->filter('.callout.callout-warning')) ? count($crawler->filter('.callout.callout-warning')) : 0)) {
                 $formData += [
                     'system_information[username]' => 'admin',
                     'system_information[email_address]' => 'foo@bar.com',
@@ -114,10 +127,10 @@ class InstallationTest extends PantherTestCase
 
             $crawler = $client->submitForm('Next', $formData);
 
-            static::assertStringContainsString('/install/finish', $client->getCurrentURL());
-            static::assertStringContainsString('You have successfully installed SolidInvoice!', $crawler->html());
+            self::assertStringContainsString('/install/finish', $client->getCurrentURL());
+            self::assertStringContainsString('You have successfully installed SolidInvoice!', $crawler->html());
         } finally {
-            $configFile = realpath(static::$defaultOptions['webServerDir'].'/../').'/config/env.php';
+            $configFile = realpath(static::$defaultOptions['webServerDir'] . '/../') . '/config/env.php';
             if (file_exists($configFile)) {
                 unlink($configFile);
             }

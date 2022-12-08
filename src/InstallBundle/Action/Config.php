@@ -23,6 +23,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
+use function assert;
 
 final class Config
 {
@@ -108,16 +109,18 @@ final class Config
                 $config[$key] = $param;
             }
 
-            $tmpConnection = DriverManager::getConnection([
+            $nativeConnection = DriverManager::getConnection([
                 'host' => $config['database_host'] ?? null,
                 'port' => $config['database_port'] ?? null,
                 'name' => $config['database_name'] ?? null,
                 'user' => $config['database_user'] ?? null,
                 'password' => $config['database_password'] ?? null,
                 'driver' => $config['database_driver'] ?? null,
-            ]);
+            ])->getNativeConnection();
 
-            $config['database_version'] = $tmpConnection->getWrappedConnection()->getServerVersion();
+            assert($nativeConnection instanceof PDO);
+
+            $config['database_version'] = $nativeConnection->getAttribute(PDO::ATTR_SERVER_VERSION);
 
             $this->configWriter->dump($config);
 

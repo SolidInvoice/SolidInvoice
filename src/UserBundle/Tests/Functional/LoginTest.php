@@ -13,21 +13,21 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Tests\Functional;
 
+use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
-use Symfony\Component\Panther\PantherTestCase;
 
 /**
  * @group functional
  */
-class LoginTest extends PantherTestCase
+final class LoginTest extends ApiTestCase
 {
     use EnsureApplicationInstalled;
 
-    public function testRedirectToLoginPage()
+    public function testRedirectToLoginPage(): void
     {
         $client = self::createClient();
         $client->followRedirects();
         $crawler = $client->request('GET', '/');
-        static::assertStringContainsString('/login', $crawler->getUri());
+        self::assertStringContainsString('/login', $crawler->getUri());
     }
 }

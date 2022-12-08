@@ -13,63 +13,51 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MenuBundle;
 
-use InvalidArgumentException;
 use Knp\Menu\MenuItem as BaseItem;
 
+/**
+ * @see \SolidInvoice\MenuBundle\Tests\MenuItemTest
+ */
 class MenuItem extends BaseItem implements ItemInterface
 {
-    /**
-     * @param \Knp\Menu\ItemInterface|string|array $child
-     *
-     * @return \Knp\Menu\ItemInterface|string
-     *
-     * @throws InvalidArgumentException
-     */
-    public function addChild($child, array $options = [])
-    {
-        if (\is_array($child) && [] === $options) {
-            [$child, $options] = $child;
-        }
+    private const DIVIDER_KEY = 'divider';
 
+    /**
+     * @param ItemInterface|string $child
+     * @param array<string, mixed> $options
+     */
+    public function addChild($child, array $options = []): ItemInterface
+    {
         $options['attributes'] = $options['attributes'] ?? [];
-        $options['attributes']['class'] = ($options['attributes']['class'] ?? '').' nav-item';
+        $options['attributes']['class'] = ($options['attributes']['class'] ?? '') . ' nav-item';
         $options['linkAttributes'] = $options['linkAttributes'] ?? [];
-        $options['linkAttributes']['class'] = ($options['linkAttributes']['class'] ?? '').' nav-link';
+        $options['linkAttributes']['class'] = ($options['linkAttributes']['class'] ?? '') . ' nav-link';
 
-        return parent::addChild($child, $options);
+        $result = parent::addChild($child, $options);
+
+        assert($result instanceof ItemInterface);
+
+        return $result;
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @throws InvalidArgumentException
-     */
-    public function addDivider(string $type = '')
+    public function addDivider(string $type = ''): ItemInterface
     {
-        $name = uniqid();
+        $name = uniqid('', true);
 
-        if (!empty($type)) {
-            $type = '-'.$type;
+        if ('' !== $type) {
+            $type = '-' . $type;
         }
 
-        return $this->addChild($name, ['extras' => ['divider' => $type]]);
+        return $this->addChild($name, ['extras' => [self::DIVIDER_KEY => $type]]);
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @throws InvalidArgumentException
-     */
-    public function addHeader(string $header)
+    public function addHeader(string $header): ItemInterface
     {
         return $this->addChild($header, ['attributes' => ['class' => 'nav-header']]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isDivider(): bool
     {
-        return null !== $this->getExtra('divider');
+        return null !== $this->getExtra(self::DIVIDER_KEY);
     }
 }

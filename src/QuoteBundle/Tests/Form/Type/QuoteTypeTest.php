@@ -24,7 +24,7 @@ use Symfony\Component\Form\PreloadedExtension;
 
 class QuoteTypeTest extends FormTestCase
 {
-    public function testSubmit()
+    public function testSubmit(): void
     {
         $formData = [
             'client' => null,

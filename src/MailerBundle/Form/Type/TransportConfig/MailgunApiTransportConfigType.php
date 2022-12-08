@@ -15,8 +15,11 @@ namespace SolidInvoice\MailerBundle\Form\Type\TransportConfig;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
+/**
+ * @see \SolidInvoice\MailerBundle\Tests\Form\Type\TransportConfig\MailgunApiTransportConfigTypeTest
+ */
 final class MailgunApiTransportConfigType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -25,7 +28,7 @@ final class MailgunApiTransportConfigType extends AbstractType
             'domain',
             null,
             [
-                'constraints' => new Constraints\NotBlank(['groups' => 'mailgun']),
+                'constraints' => new NotBlank(['groups' => 'mailgun']),
             ]
         );
 
@@ -33,7 +36,7 @@ final class MailgunApiTransportConfigType extends AbstractType
             'key',
             null,
             [
-                'constraints' => new Constraints\NotBlank(['groups' => 'mailgun']),
+                'constraints' => new NotBlank(['groups' => 'mailgun']),
             ]
         );
     }

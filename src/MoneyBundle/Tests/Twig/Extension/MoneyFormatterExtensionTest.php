@@ -28,25 +28,22 @@ class MoneyFormatterExtensionTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    public function testGetFunctions()
+    public function testGetFunctions(): void
     {
         $currency = new Currency('USD');
         $moneyFormatter = new MoneyFormatter('en_US', $currency);
         $extension = new MoneyFormatterExtension($moneyFormatter, $currency);
 
-        static::assertSame('currency_formatter', $extension->getName());
-
-        /** @var TwigFunction[] $functions */
         $functions = $extension->getFunctions();
 
-        static::assertCount(1, $functions);
+        self::assertCount(1, $functions);
 
-        static::assertInstanceOf('Twig_SimpleFunction', $functions[0]);
-        static::assertSame('currencyFormatter', $functions[0]->getName());
-        static::assertSame($moneyFormatter, call_user_func($functions[0]->getCallable()));
+        self::assertInstanceOf(TwigFunction::class, $functions[0]);
+        self::assertSame('currencyFormatter', $functions[0]->getName());
+        self::assertSame($moneyFormatter, call_user_func($functions[0]->getCallable()));
     }
 
-    public function testGetFilters()
+    public function testGetFilters(): void
     {
         $currency = new Currency('USD');
         $money = new Money(1200, $currency);
@@ -60,13 +57,12 @@ class MoneyFormatterExtensionTest extends TestCase
 
         $extension = new MoneyFormatterExtension($moneyFormatter, $currency);
 
-        /** @var TwigFilter[] $filters */
         $filters = $extension->getFilters();
 
-        static::assertCount(1, $filters);
+        self::assertCount(1, $filters);
 
-        static::assertInstanceOf('Twig_SimpleFilter', $filters[0]);
-        static::assertSame('formatCurrency', $filters[0]->getName());
-        static::assertSame('$12,00', call_user_func_array($filters[0]->getCallable(), [$money]));
+        self::assertInstanceOf(TwigFilter::class, $filters[0]);
+        self::assertSame('formatCurrency', $filters[0]->getName());
+        self::assertSame('$12,00', call_user_func($filters[0]->getCallable(), $money));
     }
 }

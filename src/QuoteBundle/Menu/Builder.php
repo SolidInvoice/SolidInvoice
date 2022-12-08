@@ -27,11 +27,11 @@ class Builder extends AuthenticatedMenu
      *
      * @throws InvalidArgumentException
      */
-    public function sidebar(ItemInterface $menu)
+    public function sidebar(ItemInterface $menu): void
     {
         $menu->addHeader('quotes');
-        $menu->addChild(QuoteMenu::list());
-        $menu->addChild(QuoteMenu::create());
+        QuoteMenu::list($menu);
+        QuoteMenu::create($menu);
 
         $menu->addDivider();
     }

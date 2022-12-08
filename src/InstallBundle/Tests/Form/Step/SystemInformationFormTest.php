@@ -21,7 +21,7 @@ use Symfony\Component\Intl\Locales;
 
 class SystemInformationFormTest extends FormTestCase
 {
-    public function testSubmit()
+    public function testSubmit(): void
     {
         $formData = [
             'locale' => $this->faker->randomKey(Locales::getNames()),

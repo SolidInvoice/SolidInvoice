@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\UserBundle\Entity\ApiToken;
 use SolidInvoice\UserBundle\Entity\ApiTokenHistory;
@@ -48,7 +49,7 @@ class ApiTokenHistoryRepository extends ServiceEntityRepository
         $ids = $queryBuilder
             ->select('a.id')
             ->where('a.token = :token')
-            ->orderBy('a.id', 'DESC')
+            ->orderBy('a.id', Criteria::DESC)
             ->setMaxResults(10)
             ->setParameter('token', $apiToken)
             ->getQuery()

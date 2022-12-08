@@ -38,19 +38,20 @@ class Contact implements Serializable
     use TimeStampable;
 
     /**
-     * @var int
+     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
+     * @ORM\GeneratedValue
      * @ORM\GeneratedValue(strategy="AUTO")
      * @Serialize\Groups({"client_api", "contact_api"})
      */
     private $id;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(name="firstName", type="string", length=125, nullable=false)
+     * @ORM\Column(name="firstName", type="string", length=125)
      * @Assert\NotBlank()
      * @Assert\Length(max=125)
      * @Serialize\Groups({"client_api", "contact_api"})
@@ -59,7 +60,7 @@ class Contact implements Serializable
     private $firstName;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="lastName", type="string", length=125, nullable=true)
      * @Assert\Length(max=125)
@@ -69,10 +70,10 @@ class Contact implements Serializable
     private $lastName;
 
     /**
-     * @var Client
+     * @var Client|null
      *
      * @ORM\ManyToOne(targetEntity="Client", inversedBy="contacts")
-     * @ORM\JoinColumn(name="client_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="client_id")
      * @Serialize\Groups({"contact_api"})
      * @ApiProperty(iri="https://schema.org/Organization")
      * @Assert\Valid()
@@ -81,7 +82,7 @@ class Contact implements Serializable
     private $client;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="email", type="string", length=255)
      * @Assert\NotBlank()
@@ -92,7 +93,7 @@ class Contact implements Serializable
     private $email;
 
     /**
-     * @var AdditionalContactDetail[]|Collection<int, AdditionalContactDetail>
+     * @var Collection<int, AdditionalContactDetail>
      *
      * @ORM\OneToMany(targetEntity="AdditionalContactDetail", mappedBy="contact", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Assert\Valid()
@@ -101,21 +102,21 @@ class Contact implements Serializable
     private $additionalContactDetails;
 
     /**
-     * @var Invoice[]|Collection<int, Invoice>
+     * @var Collection<int, Invoice>
      *
      * @ORM\ManyToMany(targetEntity="SolidInvoice\InvoiceBundle\Entity\Invoice", cascade={"persist"}, fetch="EXTRA_LAZY", mappedBy="users")
      */
     private $invoices;
 
     /**
-     * @var RecurringInvoice[]|Collection<int, Invoice>
+     * @var Collection<int, RecurringInvoice>
      *
      * @ORM\ManyToMany(targetEntity="SolidInvoice\InvoiceBundle\Entity\RecurringInvoice", cascade={"persist"}, fetch="EXTRA_LAZY", mappedBy="users")
      */
     private $recurringInvoices;
 
     /**
-     * @var Quote[]|Collection<int, Quote>
+     * @var Collection<int, Quote>
      *
      * @ORM\ManyToMany(targetEntity="SolidInvoice\QuoteBundle\Entity\Quote", cascade={"persist"}, fetch="EXTRA_LAZY", mappedBy="users")
      */
@@ -149,11 +150,6 @@ class Contact implements Serializable
         return $this->firstName;
     }
 
-    /**
-     * Set firstName.
-     *
-     * @return Contact
-     */
     public function setFirstName(string $firstName): self
     {
         $this->firstName = $firstName;
@@ -171,9 +167,6 @@ class Contact implements Serializable
         return $this->lastName;
     }
 
-    /**
-     * @return Contact
-     */
     public function setLastName(?string $lastName): self
     {
         $this->lastName = $lastName;
@@ -191,11 +184,6 @@ class Contact implements Serializable
         return $this->client;
     }
 
-    /**
-     * Set client.
-     *
-     * @return Contact
-     */
     public function setClient(Client $client): self
     {
         $this->client = $client;
@@ -205,8 +193,6 @@ class Contact implements Serializable
 
     /**
      * Add additional detail.
-     *
-     * @return Contact
      */
     public function addAdditionalContactDetail(AdditionalContactDetail $detail): self
     {
@@ -218,8 +204,6 @@ class Contact implements Serializable
 
     /**
      * Removes additional detail from the current contact.
-     *
-     * @return Contact
      */
     public function removeAdditionalContactDetail(AdditionalContactDetail $detail): self
     {
@@ -231,7 +215,7 @@ class Contact implements Serializable
     /**
      * Get additional details.
      *
-     * @return AdditionalContactDetail[]|Collection<int, AdditionalContactDetail>
+     * @return Collection<int, AdditionalContactDetail>
      */
     public function getAdditionalContactDetails(): Collection
     {
@@ -260,14 +244,14 @@ class Contact implements Serializable
     /**
      * @param string $serialized
      */
-    public function unserialize($serialized)
+    public function unserialize($serialized): void
     {
         [$this->id, $this->firstName, $this->lastName, $this->created, $this->updated] = unserialize($serialized);
     }
 
     public function __toString(): string
     {
-        return $this->firstName.' '.$this->lastName;
+        return $this->firstName . ' ' . $this->lastName;
     }
 
     /**
@@ -278,9 +262,6 @@ class Contact implements Serializable
         return $this->email;
     }
 
-    /**
-     * @return Contact
-     */
     public function setEmail(string $email): self
     {
         $this->email = $email;

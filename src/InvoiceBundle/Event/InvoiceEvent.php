@@ -28,7 +28,7 @@ class InvoiceEvent extends Event
         $this->invoice = $invoice;
     }
 
-    public function setInvoice(BaseInvoice $invoice)
+    public function setInvoice(BaseInvoice $invoice): void
     {
         $this->invoice = $invoice;
     }

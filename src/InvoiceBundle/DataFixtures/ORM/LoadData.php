@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\DataFixtures\ORM;
 
+use DateTimeImmutable;
+use DateTimeZone;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Money\Currency;
@@ -27,10 +29,7 @@ use SolidInvoice\InvoiceBundle\Model\Graph;
  */
 class LoadData extends Fixture
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $invoice = new Invoice();
         $invoice->setClient($this->getReference('client'));
@@ -42,7 +41,7 @@ class LoadData extends Fixture
         $recurringInvoice->addUser($this->getReference('contact'));
         $recurringInvoice->setStatus(Graph::STATUS_DRAFT);
         $recurringInvoice->setFrequency('* * * * *');
-        $recurringInvoice->setDateStart(new \DateTimeImmutable('2012-01-01 15:30:00', new \DateTimeZone('Europe/Paris')));
+        $recurringInvoice->setDateStart(new DateTimeImmutable('2012-01-01 15:30:00', new DateTimeZone('Europe/Paris')));
 
         $item = new Item();
         $item->setQty(1);

@@ -29,6 +29,8 @@ interface FlashResponse
      * Return a Generator to set flash messages, with the key as the type and the value as the message.
      *
      * E.G yield self::FLASH_SUCCESS => 'my.flash.message'
+     *
+     * @return \Generator<string, string>
      */
-    public function getFlash(): iterable;
+    public function getFlash(): \Generator;
 }

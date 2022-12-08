@@ -20,6 +20,9 @@ use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 
+/**
+ * @see \SolidInvoice\QuoteBundle\Tests\Listener\Doctrine\QuoteSaveListenerTest
+ */
 class QuoteSaveListener implements EventSubscriber
 {
     /**
@@ -63,7 +66,7 @@ class QuoteSaveListener implements EventSubscriber
     private function checkDiscount(Quote $entity): void
     {
         $discount = $entity->getDiscount();
-        if (!$discount->getValue()) {
+        if (! $discount->getValue()) {
             $discount->setType(null);
         }
     }

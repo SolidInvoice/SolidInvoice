@@ -22,10 +22,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class PaypalProCheckout extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
             'username',
@@ -69,9 +66,6 @@ class PaypalProCheckout extends AbstractType
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'paypal_pro_checkout';

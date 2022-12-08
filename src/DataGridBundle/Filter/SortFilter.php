@@ -20,16 +20,13 @@ class SortFilter implements FilterInterface
 {
     public const DEFAULT_ORDER = 'ASC';
 
-    /**
-     * {@inheritdoc}
-     */
-    public function filter(Request $request, QueryBuilder $queryBuilder)
+    public function filter(Request $request, QueryBuilder $queryBuilder): void
     {
         $order = $request->query->get('order') ?: self::DEFAULT_ORDER;
 
         if ($request->query->has('sort')) {
             $alias = $queryBuilder->getRootAliases()[0];
-            $queryBuilder->orderBy($alias.'.'.$request->query->get('sort'), $order);
+            $queryBuilder->orderBy($alias . '.' . $request->query->get('sort'), $order);
         }
     }
 }

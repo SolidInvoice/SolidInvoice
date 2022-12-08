@@ -20,14 +20,14 @@ use Symfony\Component\Form\FormView;
 
 class Select2Type extends AbstractType
 {
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $attr = $view->vars['attr'];
 
         $class = 'select2';
 
         if (isset($attr['class'])) {
-            $class .= ' '.$attr['class'];
+            $class .= ' ' . $attr['class'];
         }
 
         $view->vars['attr']['class'] = $class;

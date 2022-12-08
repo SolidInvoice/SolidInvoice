@@ -26,14 +26,11 @@ class MoneyHydrator extends AbstractHydrator
      */
     private static $currency;
 
-    public static function setCurrency(Currency $currency)
+    public static function setCurrency(Currency $currency): void
     {
         self::$currency = $currency;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function hydrateAllData()
     {
         $result = [];
@@ -44,12 +41,9 @@ class MoneyHydrator extends AbstractHydrator
         return $result;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function hydrateRowData(array $row, array &$result)
     {
-        if (0 === count($row)) {
+        if ([] === $row) {
             return false;
         }
 

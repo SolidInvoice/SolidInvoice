@@ -16,11 +16,11 @@ namespace SolidInvoice\ClientBundle\Form\Handler;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidWorx\FormHandler\FormRequest;
 
+/**
+ * @see \SolidInvoice\ClientBundle\Tests\Form\Handler\ClientCreateFormHandlerTest
+ */
 class ClientCreateFormHandler extends AbstractClientFormHandler
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getResponse(FormRequest $formRequest): Template
     {
         return new Template('@SolidInvoiceClient/Default/add.html.twig', ['form' => $formRequest->getForm()->createView()]);

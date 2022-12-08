@@ -17,8 +17,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use SolidInvoice\CoreBundle\Entity\ItemInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
+use SolidInvoice\InvoiceBundle\Entity\Item;
+use SolidInvoice\QuoteBundle\Entity\Item as QuoteItem;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -37,16 +38,16 @@ class Tax
     public const TYPE_EXCLUSIVE = 'Exclusive';
 
     /**
-     * @var int
+     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      */
     private $id;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="name", type="string", length=32)
      * @Assert\NotBlank()
@@ -54,7 +55,7 @@ class Tax
     private $name;
 
     /**
-     * @var float
+     * @var float|null
      *
      * @ORM\Column(name="rate", type="float", precision=4)
      * @Assert\Type("float")
@@ -63,7 +64,7 @@ class Tax
     private $rate;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="tax_type", type="string", length=32)
      * @Assert\NotBlank()
@@ -71,14 +72,14 @@ class Tax
     private $type;
 
     /**
-     * @var ItemInterface[]|Collection<int, ItemInterface>
+     * @var Collection<int, Item>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\InvoiceBundle\Entity\Item", mappedBy="tax")
      */
     private $invoiceItems;
 
     /**
-     * @var ItemInterface[]|Collection<int, ItemInterface>
+     * @var Collection<int, QuoteItem>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\QuoteBundle\Entity\Item", mappedBy="tax")
      */
@@ -121,9 +122,6 @@ class Tax
         return $this->name;
     }
 
-    /**
-     * @return Tax
-     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -139,9 +137,6 @@ class Tax
         return $this->rate;
     }
 
-    /**
-     * @return Tax
-     */
     public function setRate(float $rate): self
     {
         $this->rate = $rate;
@@ -157,9 +152,6 @@ class Tax
         return $this->type;
     }
 
-    /**
-     * @return Tax
-     */
     public function setType(string $type): self
     {
         $this->type = $type;
@@ -168,7 +160,7 @@ class Tax
     }
 
     /**
-     * @return ItemInterface[]|Collection<int, ItemInterface>
+     * @return Collection<int, Item>
      */
     public function getInvoiceItems(): Collection
     {
@@ -176,9 +168,7 @@ class Tax
     }
 
     /**
-     * @param ItemInterface[] $invoiceItems
-     *
-     * @return Tax
+     * @param Item[] $invoiceItems
      */
     public function setInvoiceItems(array $invoiceItems): self
     {
@@ -188,7 +178,7 @@ class Tax
     }
 
     /**
-     * @return ItemInterface[]|Collection<int, ItemInterface>
+     * @return Collection<int, QuoteItem>
      */
     public function getQuoteItems(): Collection
     {
@@ -196,9 +186,7 @@ class Tax
     }
 
     /**
-     * @param ItemInterface[] $quoteItems
-     *
-     * @return Tax
+     * @param QuoteItem[] $quoteItems
      */
     public function setQuoteItems(array $quoteItems): self
     {

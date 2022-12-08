@@ -28,14 +28,14 @@ class Builder extends AuthenticatedMenu
      *
      * @throws InvalidArgumentException
      */
-    public function sidebar(ItemInterface $menu)
+    public function sidebar(ItemInterface $menu): void
     {
         $menu->addHeader('invoices');
-        $menu->addChild(InvoiceMenu::list());
-        $menu->addChild(InvoiceMenu::create());
 
-        $menu->addChild(RecurringInvoiceMenu::list());
-        $menu->addChild(RecurringInvoiceMenu::create());
+        InvoiceMenu::list($menu);
+        InvoiceMenu::create($menu);
+        RecurringInvoiceMenu::list($menu);
+        RecurringInvoiceMenu::create($menu);
 
         $menu->addDivider();
     }

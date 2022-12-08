@@ -26,9 +26,12 @@ use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+/**
+ * @see \SolidInvoice\InstallBundle\Tests\Form\Step\SystemInformationFormTest
+ */
 class SystemInformationForm extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         if (extension_loaded('intl')) {
             $builder->add(
@@ -103,10 +106,7 @@ class SystemInformationForm extends AbstractType
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired('userCount');
         $resolver->setAllowedTypes('userCount', ['int']);

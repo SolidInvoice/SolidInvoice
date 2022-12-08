@@ -29,10 +29,10 @@ class Builder extends AuthenticatedMenu
      * @throws ServiceCircularReferenceException
      * @throws ServiceNotFoundException
      */
-    public function userMenu(ItemInterface $menu)
+    public function userMenu(ItemInterface $menu): void
     {
         $menu->addDivider();
-        $menu->addChild(MainMenu::logout());
+        MainMenu::logout($menu);
     }
 
     /**
@@ -40,13 +40,13 @@ class Builder extends AuthenticatedMenu
      *
      * @throws InvalidArgumentException
      */
-    public function systemMenu(ItemInterface $menu)
+    public function systemMenu(ItemInterface $menu): void
     {
         $menu->addDivider();
         $menu->addHeader('System');
-        $menu->addChild(MainMenu::tax());
-        $menu->addChild(MainMenu::users());
-        $menu->addChild(MainMenu::settings());
-        $menu->addChild(MainMenu::api());
+        MainMenu::tax($menu);
+        MainMenu::users($menu);
+        MainMenu::settings($menu);
+        MainMenu::api($menu);
     }
 }

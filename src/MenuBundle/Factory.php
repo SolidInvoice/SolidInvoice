@@ -15,14 +15,18 @@ namespace SolidInvoice\MenuBundle;
 
 use Knp\Menu\Factory\ExtensionInterface;
 use Knp\Menu\Integration\Symfony\RoutingExtension;
+use Knp\Menu\ItemInterface;
 use Knp\Menu\MenuFactory;
 use SplPriorityQueue;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
+/**
+ * @see \SolidInvoice\MenuBundle\Tests\FactoryTest
+ */
 class Factory extends MenuFactory
 {
     /**
-     * @var SplPriorityQueue|ExtensionInterface[]
+     * @var SplPriorityQueue<int, ExtensionInterface>
      */
     protected $extensions;
 
@@ -35,12 +39,7 @@ class Factory extends MenuFactory
         $this->addExtension(new RoutingExtension($generator));
     }
 
-    /**
-     * @param string $name
-     *
-     * @return MenuItem|\Knp\Menu\MenuItem
-     */
-    public function createItem($name, array $options = [])
+    public function createItem(string $name, array $options = []): ItemInterface
     {
         $item = new MenuItem($name, $this);
 
@@ -53,20 +52,15 @@ class Factory extends MenuFactory
         return $item;
     }
 
-    /**
-     * Adds a factory extension.
-     *
-     * @param int $priority
-     */
-    public function addExtension(ExtensionInterface $extension, $priority = 0)
+    public function addExtension(ExtensionInterface $extension, int $priority = 0): void
     {
         $this->extensions->insert($extension, $priority);
     }
 
     /**
-     * @return ExtensionInterface[]|SplPriorityQueue
+     * @return SplPriorityQueue<int, ExtensionInterface>
      */
-    public function getExtensions()
+    public function getExtensions(): SplPriorityQueue
     {
         return $this->extensions;
     }

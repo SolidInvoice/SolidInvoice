@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Tests\Functional\Api;
 
-use Liip\TestFixturesBundle\Test\FixturesTrait;
+use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
+use SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 
 /**
@@ -23,23 +24,26 @@ use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 class PaymentTest extends ApiTestCase
 {
     use EnsureApplicationInstalled;
-    use FixturesTrait;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $this->loadFixtures([
-            'SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData',
-            'SolidInvoice\PaymentBundle\DataFixtures\ORM\LoadData',
+        self::bootKernel();
+
+        $databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
+
+        $databaseTool->loadFixtures([
+            LoadData::class,
+            \SolidInvoice\PaymentBundle\DataFixtures\ORM\LoadData::class,
         ], true);
     }
 
-    public function testGetAll()
+    public function testGetAll(): void
     {
         $data = $this->requestGet('/api/payments');
 
-        static::assertSame([
+        self::assertSame([
             [
                 'method' => null,
                 'status' => 'captured',
@@ -49,11 +53,11 @@ class PaymentTest extends ApiTestCase
         ], $data);
     }
 
-    public function testGet()
+    public function testGet(): void
     {
         $data = $this->requestGet('/api/payments/1');
 
-        static::assertSame([
+        self::assertSame([
             'method' => null,
             'status' => 'captured',
             'message' => null,

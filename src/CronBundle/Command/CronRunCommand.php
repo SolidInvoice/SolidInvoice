@@ -40,20 +40,14 @@ class CronRunCommand extends Command
         parent::__construct();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Runs the cron commands');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        if (!$this->installed) {
+        if (! $this->installed) {
             return 0;
         }
 

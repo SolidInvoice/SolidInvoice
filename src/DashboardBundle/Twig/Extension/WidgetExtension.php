@@ -19,22 +19,19 @@ use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
+/**
+ * @see \SolidInvoice\DashboardBundle\Tests\Twig\Extension\WidgetExtensionTest
+ */
 class WidgetExtension extends AbstractExtension
 {
-    /**
-     * @var WidgetFactory
-     */
-    private $widgetFactory;
+    private WidgetFactory $widgetFactory;
 
     public function __construct(WidgetFactory $widgetFactory)
     {
         $this->widgetFactory = $widgetFactory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('render_dashboard_widget', function (Environment $environment, string $location): string {
@@ -58,13 +55,5 @@ class WidgetExtension extends AbstractExtension
         }
 
         return $content;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'dashboard_widget_extension';
     }
 }

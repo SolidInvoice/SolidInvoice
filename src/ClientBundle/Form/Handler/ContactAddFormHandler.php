@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Form\Handler;
 
+/**
+ * @see \SolidInvoice\ClientBundle\Tests\Form\Handler\ContactAddFormHandlerTest
+ */
 class ContactAddFormHandler extends AbstractContactFormHandler
 {
     public function getTemplate(): string

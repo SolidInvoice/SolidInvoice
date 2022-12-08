@@ -13,53 +13,52 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Test;
 
-use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
 use DateTimeInterface;
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\Tools\SchemaTool;
-use function getenv;
-use SolidInvoice\CoreBundle\ConfigWriter;
+use SolidInvoice\CoreBundle\Entity\Version;
+use SolidInvoice\CoreBundle\Repository\VersionRepository;
+use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
+use SolidInvoice\CoreBundle\Test\Traits\SymfonyKernelTrait;
 use SolidInvoice\InstallBundle\Installer\Database\Migration;
-use Throwable;
+use function date;
 
 trait EnsureApplicationInstalled
 {
+    use SymfonyKernelTrait;
+
     /**
      * @before
      */
     public function installApplication(): void
     {
-        StaticDriver::setKeepStaticConnections(false);
-
         $kernel = self::bootKernel();
-        $em = $kernel->getContainer()->get('doctrine')->getManager();
 
-        /** @var Connection $connection */
-        $connection = $em->getConnection();
-        $params = $connection->getParams();
-        $dbName = $params['dbname'];
-
-        unset($params['dbname']);
-
-        try {
-            DriverManager::getConnection($params)->getSchemaManager()->createDatabase($dbName);
-        } catch (Throwable $e) {
-            // Database already exists
-        }
-
-        $em->getConnection()->getConfiguration()->setSQLLogger(null);
-
-        $schemaTool = new SchemaTool($em);
+        $entityManager = $kernel->getContainer()->get('doctrine.orm.entity_manager');
+        $schemaTool = new SchemaTool($entityManager);
         $schemaTool->dropDatabase();
-        self::$container->get(Migration::class)->migrate();
-        self::$container->get(ConfigWriter::class)->dump([
-            'database_host' => getenv('database_host') ?: '127.0.0.1',
-            'database_user' => 'root',
-            'database_password' => null,
-            'installed' => date(DateTimeInterface::ATOM),
-        ]);
 
-        StaticDriver::setKeepStaticConnections(true);
+        // @phpstan-ignore-next-line Ignore this line in PHPStan, since it sees the Migration service as private
+        static::getContainer()->get(Migration::class)->migrate();
+
+        /** @var VersionRepository $version */
+        $version = $entityManager->getRepository(Version::class);
+        $version->updateVersion(SolidInvoiceCoreBundle::VERSION);
+
+        $_SERVER['locale'] = $_ENV['locale'] = 'en_US';
+        $_SERVER['installed'] = $_ENV['installed'] = date(DateTimeInterface::ATOM);
+    }
+
+    /**
+     * @after
+     */
+    public function clearDatabase(): void
+    {
+        $kernel = self::bootKernel();
+
+        $entityManager = $kernel->getContainer()->get('doctrine.orm.entity_manager');
+        $schemaTool = new SchemaTool($entityManager);
+        $schemaTool->dropDatabase();
+
+        unset($_SERVER['locale'], $_ENV['locale'], $_SERVER['installed'], $_ENV['installed']);
     }
 }

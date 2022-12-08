@@ -16,6 +16,7 @@ namespace SolidInvoice\PaymentBundle\Repository;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
@@ -126,7 +127,7 @@ class PaymentRepository extends ServiceEntityRepository
      */
     public function getTotalPaidForInvoice(Invoice $invoice): int
     {
-        if (!$invoice->getId()) {
+        if (! $invoice->getId()) {
             return 0;
         }
 
@@ -196,7 +197,7 @@ class PaymentRepository extends ServiceEntityRepository
             ->where('p.created >= :date')
             ->setParameter('date', $timestamp)
             ->groupBy('p.created')
-            ->orderBy('p.created', 'ASC');
+            ->orderBy('p.created', Criteria::ASC);
 
         $query = $queryBuilder->getQuery();
 
@@ -220,7 +221,7 @@ class PaymentRepository extends ServiceEntityRepository
             $created = $result['created'];
 
             $date = $created->format($dateFormat);
-            if (!isset($payments[$date])) {
+            if (! isset($payments[$date])) {
                 $payments[$date] = 0;
             }
 
@@ -244,7 +245,7 @@ class PaymentRepository extends ServiceEntityRepository
             ->where('p.created >= :date')
             ->setParameter('date', new DateTime('-1 Year'))
             ->groupBy('p.created')
-            ->orderBy('p.created', 'ASC');
+            ->orderBy('p.created', Criteria::ASC);
 
         $query = $queryBuilder->getQuery();
 
@@ -258,7 +259,7 @@ class PaymentRepository extends ServiceEntityRepository
      */
     public function updatePaymentStatus($payments, string $status)
     {
-        if (!is_array($payments) && !$payments instanceof Traversable) {
+        if (! is_array($payments) && ! $payments instanceof Traversable) {
             $payments = [$payments];
         }
 
@@ -299,7 +300,7 @@ class PaymentRepository extends ServiceEntityRepository
         return $qb;
     }
 
-    public function updateCurrency(Client $client)
+    public function updateCurrency(Client $client): void
     {
         $filters = $this->getEntityManager()->getFilters();
         $filters->disable('archivable');

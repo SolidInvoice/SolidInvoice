@@ -27,18 +27,15 @@ class PaymentDetailsStatusAction implements ActionInterface, GatewayAwareInterfa
 {
     use GatewayAwareTrait;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function execute($request)
+    public function execute($request): void
     {
-        /* @var StatusRequest $request */
+        /** @var StatusRequest $request */
         RequestNotSupportedException::assertSupports($this, $request);
 
         /** @var Payment $payment */
         $payment = $request->getModel();
 
-        if (!$payment instanceof Payment) {
+        if (! $payment instanceof Payment) {
             $payment = $request->getFirstModel();
         }
 
@@ -47,8 +44,8 @@ class PaymentDetailsStatusAction implements ActionInterface, GatewayAwareInterfa
         $message = [];
 
         foreach (range(0, 9) as $index) {
-            if ($details['L_ERRORCODE'.$index]) {
-                $message[] = $details['L_LONGMESSAGE'.$index];
+            if ($details['L_ERRORCODE' . $index]) {
+                $message[] = $details['L_LONGMESSAGE' . $index];
             }
         }
 
@@ -72,13 +69,9 @@ class PaymentDetailsStatusAction implements ActionInterface, GatewayAwareInterfa
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($request)
     {
-        return
-            $request instanceof StatusRequest &&
+        return $request instanceof StatusRequest &&
             $request->getModel() instanceof PaymentInterface;
     }
 }

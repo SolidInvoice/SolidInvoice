@@ -17,6 +17,7 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Contact;
+use SolidInvoice\QuoteBundle\Email\QuoteEmail;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Event\QuoteEvent;
 use SolidInvoice\QuoteBundle\Event\QuoteEvents;
@@ -31,13 +32,15 @@ class QuoteMailerListenerTest extends TestCase
     {
         $quote = new Quote();
 
-        $mailer = M::mock(MailerInterface::class);
-        $mailer->shouldReceive('send');
+        $mailer = M::spy(MailerInterface::class);
 
         $listener = new QuoteMailerListener($mailer);
 
         $quote->addUser((new Contact())->setEmail('another@example.com')->setFirstName('Another'));
         $listener->onQuoteSend(new QuoteEvent($quote));
+
+        $mailer->shouldHaveReceived('send')
+            ->with(M::type(QuoteEmail::class));
     }
 
     public function testEvents(): void

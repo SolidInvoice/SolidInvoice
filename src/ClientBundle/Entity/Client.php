@@ -45,19 +45,19 @@ class Client
     use TimeStampable;
 
     /**
-     * @var int
+     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Serialize\Groups({"client_api"})
      */
     private $id;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(name="name", type="string", length=125, nullable=false, unique=true)
+     * @ORM\Column(name="name", type="string", length=125, unique=true)
      * @Assert\NotBlank()
      * @Assert\Length(max=125)
      * @Serialize\Groups({"client_api"})
@@ -66,7 +66,7 @@ class Client
     private $name;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="website", type="string", length=125, nullable=true)
      * @Assert\Url()
@@ -77,7 +77,7 @@ class Client
     private $website;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="status", type="string", length=25)
      * @Serialize\Groups({"client_api"})
@@ -86,7 +86,7 @@ class Client
     private $status;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="currency", type="string", length=3, nullable=true)
      * @Serialize\Groups({"client_api"})
@@ -95,7 +95,7 @@ class Client
     private $currency;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="vat_number", type="string", nullable=true)
      * @Serialize\Groups({"client_api"})
@@ -103,7 +103,7 @@ class Client
     private $vatNumber;
 
     /**
-     * @var Contact[]|Collection<int, Contact>
+     * @var Collection<int, Contact>
      *
      * @ORM\OneToMany(targetEntity="Contact", mappedBy="client", fetch="EXTRA_LAZY", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"firstName" = "ASC"})
@@ -115,7 +115,7 @@ class Client
     private $contacts;
 
     /**
-     * @var Quote[]|Collection<int, Quote>
+     * @var Collection<int, Quote>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\QuoteBundle\Entity\Quote", mappedBy="client", fetch="EXTRA_LAZY", cascade={"remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"created" = "DESC"})
@@ -124,7 +124,7 @@ class Client
     private $quotes;
 
     /**
-     * @var Invoice[]|Collection<int, Invoice>
+     * @var Collection<int, Invoice>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\InvoiceBundle\Entity\Invoice", mappedBy="client", fetch="EXTRA_LAZY", cascade={"remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"created" = "DESC"})
@@ -133,7 +133,7 @@ class Client
     private $invoices;
 
     /**
-     * @var RecurringInvoice[]|Collection<int, RecurringInvoice>
+     * @var Collection<int, RecurringInvoice>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\InvoiceBundle\Entity\RecurringInvoice", mappedBy="client", fetch="EXTRA_LAZY", cascade={"remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"created" = "DESC"})
@@ -142,7 +142,7 @@ class Client
     private $recurringInvoices;
 
     /**
-     * @var Payment[]|Collection<int, Payment>
+     * @var Collection<int, Payment>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\PaymentBundle\Entity\Payment", mappedBy="client", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ApiSubresource
@@ -150,7 +150,7 @@ class Client
     private $payments;
 
     /**
-     * @var Address[]|Collection<int, Address>
+     * @var Collection<int, Address>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\ClientBundle\Entity\Address", mappedBy="client", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Serialize\Groups({"client_api"})
@@ -158,7 +158,7 @@ class Client
     private $addresses;
 
     /**
-     * @var Credit
+     * @var Credit|null
      *
      * @ORM\OneToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Credit", mappedBy="client", fetch="EXTRA_LAZY", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Serialize\Groups({"client_api"})
@@ -196,11 +196,6 @@ class Client
         return $this->name;
     }
 
-    /**
-     * Set name.
-     *
-     * @return Client
-     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -218,11 +213,6 @@ class Client
         return $this->status;
     }
 
-    /**
-     * Set status.
-     *
-     * @return Client
-     */
     public function setStatus(string $status): self
     {
         $this->status = $status;
@@ -240,11 +230,6 @@ class Client
         return $this->website;
     }
 
-    /**
-     * Set website.
-     *
-     * @return Client
-     */
     public function setWebsite(string $website): self
     {
         $this->website = $website;
@@ -254,8 +239,6 @@ class Client
 
     /**
      * Add contact.
-     *
-     * @return Client
      */
     public function addContact(Contact $contact): self
     {
@@ -267,8 +250,6 @@ class Client
 
     /**
      * Removes a contact.
-     *
-     * @return Client
      */
     public function removeContact(Contact $contact): self
     {
@@ -289,8 +270,6 @@ class Client
 
     /**
      * Add quote.
-     *
-     * @return Client
      */
     public function addQuote(Quote $quote): self
     {
@@ -302,8 +281,6 @@ class Client
 
     /**
      * Remove quote.
-     *
-     * @return Client
      */
     public function removeQuote(Quote $quote): self
     {
@@ -315,7 +292,7 @@ class Client
     /**
      * Get quotes.
      *
-     * @return Quote[]|Collection<int, Quote>
+     * @return Collection<int, Quote>
      */
     public function getQuotes(): Collection
     {
@@ -324,8 +301,6 @@ class Client
 
     /**
      * Add invoice.
-     *
-     * @return Client
      */
     public function addInvoice(Invoice $invoice): self
     {
@@ -337,8 +312,6 @@ class Client
 
     /**
      * Remove invoice.
-     *
-     * @return Client
      */
     public function removeInvoice(Invoice $invoice): self
     {
@@ -350,16 +323,13 @@ class Client
     /**
      * Get invoices.
      *
-     * @return Invoice[]|Collection<int, Invoice>
+     * @return Collection<int, Invoice>
      */
     public function getInvoices(): Collection
     {
         return $this->invoices;
     }
 
-    /**
-     * @return Client
-     */
     public function addRecurringInvoice(RecurringInvoice $invoice): self
     {
         $this->recurringInvoices[] = $invoice;
@@ -368,9 +338,6 @@ class Client
         return $this;
     }
 
-    /**
-     * @return Client
-     */
     public function removeRecurringInvoice(RecurringInvoice $invoice): self
     {
         $this->recurringInvoices->removeElement($invoice);
@@ -379,7 +346,7 @@ class Client
     }
 
     /**
-     * @return RecurringInvoice[]|Collection<int, RecurringInvoice>
+     * @return Collection<int, RecurringInvoice>
      */
     public function getRecurringInvoices(): Collection
     {
@@ -388,8 +355,6 @@ class Client
 
     /**
      * Add payment.
-     *
-     * @return Client
      */
     public function addPayment(Payment $payment): self
     {
@@ -401,8 +366,6 @@ class Client
 
     /**
      * Removes a payment.
-     *
-     * @return Client
      */
     public function removePayment(Payment $payment): self
     {
@@ -414,16 +377,13 @@ class Client
     /**
      * Get payments.
      *
-     * @return Payment[]|Collection<int, Payment>
+     * @return Collection<int, Payment>
      */
     public function getPayments(): Collection
     {
         return $this->payments;
     }
 
-    /**
-     * @return Client
-     */
     public function addAddress(?Address $address): self
     {
         if (null !== $address) {
@@ -436,8 +396,6 @@ class Client
 
     /**
      * Removes an address.
-     *
-     * @return Client
      */
     public function removeAddress(Address $address): self
     {
@@ -449,7 +407,7 @@ class Client
     /**
      * Get addresses.
      *
-     * @return Address[]|Collection<int, Address>
+     * @return Collection<int, Address>
      */
     public function getAddresses(): Collection
     {
@@ -464,9 +422,6 @@ class Client
         return $this->credit;
     }
 
-    /**
-     * @return Client
-     */
     public function setCredit(Credit $credit): self
     {
         $this->credit = $credit;
@@ -500,9 +455,6 @@ class Client
         return null !== $this->currency ? new Currency($this->currency) : null;
     }
 
-    /**
-     * @return Client
-     */
     public function setCurrency(?string $currency): self
     {
         $this->currency = $currency;

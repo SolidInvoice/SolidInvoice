@@ -23,7 +23,7 @@ class GridRepository
      */
     private $grids = [];
 
-    public function addGrid(string $name, GridInterface $grid)
+    public function addGrid(string $name, GridInterface $grid): void
     {
         $this->grids[$name] = $grid;
     }
@@ -33,7 +33,7 @@ class GridRepository
      */
     public function find(string $name): GridInterface
     {
-        if (!array_key_exists($name, $this->grids)) {
+        if (! array_key_exists($name, $this->grids)) {
             throw new InvalidGridException($name);
         }
 

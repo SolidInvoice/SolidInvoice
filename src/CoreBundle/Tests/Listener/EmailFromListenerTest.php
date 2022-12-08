@@ -51,7 +51,7 @@ class EmailFromListenerTest extends TestCase
         $message = new TemplatedEmail();
         $listener(new MessageEvent($message, Envelope::create($message), 'smtp'));
 
-        static::assertEquals([new Address('info@example.com', 'SolidInvoice')], $message->getFrom());
+        self::assertEquals([new Address('info@example.com', 'SolidInvoice')], $message->getFrom());
     }
 
     public function testWithoutFromAddress(): void
@@ -84,7 +84,7 @@ class EmailFromListenerTest extends TestCase
         $message = new TemplatedEmail();
         $listener(new MessageEvent($message, Envelope::create($message), 'smtp'));
 
-        static::assertEquals([new Address('test@example.com')], $message->getFrom());
+        self::assertEquals([new Address('test@example.com')], $message->getFrom());
     }
 
     public function testEvents(): void

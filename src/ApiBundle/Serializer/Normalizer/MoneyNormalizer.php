@@ -22,6 +22,9 @@ use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
+/**
+ * @see \SolidInvoice\ApiBundle\Tests\Serializer\Normalizer\MoneyNormalizerTest
+ */
 class MoneyNormalizer implements NormalizerInterface, DenormalizerInterface
 {
     /**
@@ -41,8 +44,8 @@ class MoneyNormalizer implements NormalizerInterface, DenormalizerInterface
 
     public function __construct(NormalizerInterface $normalizer, MoneyFormatterInterface $formatter, Currency $currency)
     {
-        if (!$normalizer instanceof DenormalizerInterface) {
-            throw new InvalidArgumentException('The normalizer must implement '.DenormalizerInterface::class);
+        if (! $normalizer instanceof DenormalizerInterface) {
+            throw new InvalidArgumentException('The normalizer must implement ' . DenormalizerInterface::class);
         }
 
         $this->formatter = $formatter;
@@ -63,7 +66,7 @@ class MoneyNormalizer implements NormalizerInterface, DenormalizerInterface
 
     public function normalize($object, $format = null, array $context = [])
     {
-        /* @var Money $object */
+        /** @var Money $object */
         return $this->formatter->format($object);
     }
 

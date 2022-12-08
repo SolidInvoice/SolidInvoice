@@ -43,8 +43,8 @@ class QuoteReceiverListenerTest extends TestCase
         $message = new QuoteEmail($quote);
         $listener(new MessageEvent($message, Envelope::create($message), 'smtp'));
 
-        static::assertEquals([new Address('test@example.com', 'Test User'), new Address('another@example.com', 'Another')], $message->getTo());
-        static::assertSame([], $message->getBcc());
+        self::assertEquals([new Address('test@example.com', 'Test User'), new Address('another@example.com', 'Another')], $message->getTo());
+        self::assertSame([], $message->getBcc());
     }
 
     public function testWithBcc(): void
@@ -61,8 +61,8 @@ class QuoteReceiverListenerTest extends TestCase
         $message = new QuoteEmail($quote);
         $listener(new MessageEvent($message, Envelope::create($message), 'smtp'));
 
-        static::assertEquals([new Address('test@example.com', 'Test User'), new Address('another@example.com', 'Another')], $message->getTo());
-        static::assertEquals([new Address('bcc@example.com')], $message->getBcc());
+        self::assertEquals([new Address('test@example.com', 'Test User'), new Address('another@example.com', 'Another')], $message->getTo());
+        self::assertEquals([new Address('bcc@example.com')], $message->getBcc());
     }
 
     public function testEvents(): void

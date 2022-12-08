@@ -26,9 +26,6 @@ class SolidInvoiceApiExtensionTest extends AbstractExtensionTestCase
 {
     use MockeryPHPUnitIntegration;
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getContainerExtensions(): array
     {
         return [
@@ -36,7 +33,7 @@ class SolidInvoiceApiExtensionTest extends AbstractExtensionTestCase
         ];
     }
 
-    public function testLoad()
+    public function testLoad(): void
     {
         $this->load();
 

@@ -17,6 +17,9 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
 
+/**
+ * @see \SolidInvoice\DataGridBundle\Tests\Source\ORMSourceTest
+ */
 class ORMSource implements SourceInterface
 {
     /**
@@ -34,9 +37,6 @@ class ORMSource implements SourceInterface
      */
     private $method;
 
-    /**
-     * ORMSource constructor.
-     */
     public function __construct(ManagerRegistry $registry, string $repository, string $method)
     {
         $this->registry = $registry;
@@ -44,9 +44,6 @@ class ORMSource implements SourceInterface
         $this->method = $method;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function fetch(array $parameters = []): QueryBuilder
     {
         $repository = $this->registry->getRepository($this->repository);
@@ -54,7 +51,7 @@ class ORMSource implements SourceInterface
         $method = $this->method;
         $qb = $repository->{$method}($parameters);
 
-        if (!$qb instanceof QueryBuilder) {
+        if (! $qb instanceof QueryBuilder) {
             throw new Exception('Grid source should return a query builder');
         }
 

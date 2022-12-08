@@ -9,10 +9,6 @@
 
 {% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
-{% block sidebar %}
-    {{ menu('payments_list') }}
-{% endblock sidebar %}
-
 {% block title %}{{ icon('credit-card') }} {{ 'payment.list.title'|trans }}{% endblock title %}
 {% block page_title %}{{ 'payment.list.title'|trans }}{% endblock page_title %}
 

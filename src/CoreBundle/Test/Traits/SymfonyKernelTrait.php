@@ -15,7 +15,10 @@ namespace SolidInvoice\CoreBundle\Test\Traits;
 
 use SolidInvoice\Kernel;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Contracts\Service\ResetInterface;
+use function assert;
 
 /**
  * @codeCoverageIgnore
@@ -23,55 +26,115 @@ use Symfony\Component\HttpKernel\KernelInterface;
 trait SymfonyKernelTrait
 {
     /**
-     * @var KernelInterface
+     * @var KernelInterface|null
      */
-    protected $kernel;
+    protected static $kernel;
 
     /**
-     * @var ContainerInterface
+     * @var ContainerInterface|null
+     *
+     * @deprecated use static::getContainer() instead
      */
-    protected $container;
+    protected static $container;
 
     /**
-     * @before
+     * @var bool
      */
-    protected function setUpSymfonyKernel(): void
+    protected static $booted = false;
+
+    protected function tearDown(): void
     {
-        if (null === $this->kernel) {
-            $this->kernel = $this->createKernel();
-            $this->kernel->boot();
-            $this->container = $this->kernel->getContainer();
+        parent::tearDown();
+
+        static::ensureKernelShutdown();
+        static::$kernel = null;
+        static::$booted = false;
+    }
+
+    /**
+     * Boots the Kernel for this test.
+     *
+     * @param array{environment?: string, debug?: bool} $options
+     */
+    protected static function bootKernel(array $options = []): KernelInterface
+    {
+        static::ensureKernelShutdown();
+
+        $kernel = static::createKernel($options);
+        $kernel->boot();
+        static::$kernel = $kernel;
+        static::$booted = true;
+
+        return static::$kernel;
+    }
+
+    /**
+     * Provides a dedicated test container with access to both public and private
+     * services. The container will not include private services that have been
+     * inlined or removed. Private services will be removed when they are not
+     * used by other services.
+     *
+     * Using this method is the best way to get a container from your test code.
+     */
+    protected static function getContainer(): ContainerInterface
+    {
+        if (! static::$booted) {
+            static::bootKernel();
+        }
+
+        try {
+            // @phpstan-ignore-next-line
+            $container = self::$kernel->getContainer()->get('test.service_container');
+            assert($container instanceof ContainerInterface);
+
+            return $container;
+        } catch (ServiceNotFoundException $e) {
+            throw new \LogicException('Could not find service "test.service_container". Try updating the "framework.test" config to "true".', 0, $e);
         }
     }
 
-    protected function createKernel(): KernelInterface
+    /**
+     * @param array{environment?: string, debug?: bool} $options
+     */
+    protected static function createKernel(array $options = []): Kernel
     {
-        $class = $this->getKernelClass();
-        $options = $this->getKernelOptions();
+        if (isset($options['environment'])) {
+            $env = $options['environment'];
+        } elseif (isset($_ENV['APP_ENV'])) {
+            $env = $_ENV['APP_ENV'];
+        } elseif (isset($_SERVER['APP_ENV'])) {
+            $env = $_SERVER['APP_ENV'];
+        } else {
+            $env = 'test';
+        }
 
-        return new $class(
-            $options['environment'] ?? 'test',
-            $options['debug'] ?? true
-        );
-    }
+        if (isset($options['debug'])) {
+            $debug = $options['debug'];
+        } elseif (isset($_ENV['APP_DEBUG'])) {
+            $debug = $_ENV['APP_DEBUG'];
+        } elseif (isset($_SERVER['APP_DEBUG'])) {
+            $debug = $_SERVER['APP_DEBUG'];
+        } else {
+            $debug = true;
+        }
 
-    protected function getKernelClass(): string
-    {
-        return Kernel::class;
-    }
-
-    protected function getKernelOptions(): array
-    {
-        return ['environment' => 'test', 'debug' => true];
+        return new Kernel($env, (bool) $debug);
     }
 
     /**
-     * @after
+     * Shuts the kernel down if it was used in the test - called by the tearDown method by default.
      */
-    protected function tearDownSymfonyKernel(): void
+    protected static function ensureKernelShutdown(): void
     {
-        if (null !== $this->kernel) {
-            $this->kernel->shutdown();
+        if (null !== static::$kernel) {
+            static::$kernel->boot();
+            $container = static::$kernel->getContainer();
+            static::$kernel->shutdown();
+            static::$booted = false;
+
+            if ($container instanceof ResetInterface) {
+                $container->reset();
+            }
         }
     }
 }

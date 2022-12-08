@@ -13,11 +13,13 @@ vendor
 bin/*
 !bin/console
 !bin/check
+!bin/phpunit
 composer.phar
 !public/js/.gitkeep
 !public/css/.gitkeep
 !public/fonts/.gitkeep
 !public/img/.gitkeep
+!var/db/.gitkeep
 config/env.php
 .idea
 node_modules

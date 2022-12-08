@@ -34,11 +34,11 @@ final class Finish
     {
         $session = $request->getSession();
 
-        if ($session instanceof SessionInterface && (!$session->has('installation_step') || !filter_var($session->remove('installation_step'), FILTER_VALIDATE_BOOLEAN))) {
+        if ($session instanceof SessionInterface && (! $session->has('installation_step') || ! filter_var($session->remove('installation_step'), FILTER_VALIDATE_BOOLEAN))) {
             throw new ApplicationInstalledException();
         }
 
-        $binDir = $this->projectDir.'/bin';
+        $binDir = $this->projectDir . '/bin';
 
         return new Template('@SolidInvoiceInstall/finish.html.twig', ['binDir' => $binDir]);
     }

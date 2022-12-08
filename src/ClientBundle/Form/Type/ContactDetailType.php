@@ -25,6 +25,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+/**
+ * @see \SolidInvoice\ClientBundle\Tests\Form\Type\ContactDetailTypeTest
+ */
 class ContactDetailType extends AbstractType
 {
     /**
@@ -37,18 +40,12 @@ class ContactDetailType extends AbstractType
         $this->contactTypeRepository = $contactTypeRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['contactTypes'] = $this->contactTypeRepository->findAll();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
             $builder
@@ -77,33 +74,24 @@ class ContactDetailType extends AbstractType
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefault('validation_groups', function (FormInterface $form) {
             // @codeCoverageIgnoreStart
             $type = $form->get('type')->getData()->getName();
             $value = $form->get('value')->getData();
 
-            if (!empty($type) && empty($value)) {
+            if (! empty($type) && empty($value)) {
                 return ['Default', 'not_blank'];
             }
 
-            switch (strtolower($form->get('type')->getData()->getName())) {
-                case 'email':
-                    return ['Default', 'email'];
-
-                    break;
+            if ('email' === strtolower($form->get('type')->getData()->getName())) {
+                return ['Default', 'email'];
             }
             // @codeCoverageIgnoreEnd
         });
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'contact_detail';

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InstallBundle\Action;
 
 use DateTime;
+use DateTimeInterface;
 use Defuse\Crypto\Exception\EnvironmentIsBrokenException;
 use Defuse\Crypto\Key;
 use Doctrine\Persistence\ManagerRegistry;
@@ -34,48 +35,27 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 final class Setup
 {
-    /**
-     * @var EncoderFactoryInterface
-     */
-    private $encoderFactory;
+    private PasswordHasherFactoryInterface $passwordHasherFactory;
 
-    /**
-     * @var FormFactoryInterface
-     */
-    private $formFactory;
+    private FormFactoryInterface $formFactory;
 
-    /**
-     * @var ManagerRegistry
-     */
-    private $doctrine;
+    private ManagerRegistry $doctrine;
 
-    /**
-     * @var ConfigWriter
-     */
-    private $configWriter;
+    private ConfigWriter $configWriter;
 
-    /**
-     * @var VatCalculator
-     */
-    private $vatCalculator;
+    private VatCalculator $vatCalculator;
 
-    /**
-     * @var SystemConfig
-     */
-    private $systemConfig;
+    private SystemConfig $systemConfig;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
     public function __construct(
-        EncoderFactoryInterface $encoderFactory,
+        PasswordHasherFactoryInterface $passwordHasherFactory,
         FormFactoryInterface $formFactory,
         ManagerRegistry $doctrine,
         ConfigWriter $configWriter,
@@ -83,7 +63,7 @@ final class Setup
         SystemConfig $systemConfig,
         RouterInterface $router
     ) {
-        $this->encoderFactory = $encoderFactory;
+        $this->passwordHasherFactory = $passwordHasherFactory;
         $this->formFactory = $formFactory;
         $this->doctrine = $doctrine;
         $this->configWriter = $configWriter;
@@ -92,6 +72,10 @@ final class Setup
         $this->router = $router;
     }
 
+    /**
+     * @return Template|RedirectResponse
+     * @throws EnvironmentIsBrokenException
+     */
     public function __invoke(Request $request)
     {
         if ($request->isMethod(Request::METHOD_POST)) {
@@ -113,10 +97,7 @@ final class Setup
         return $this->formFactory->create(SystemInformationForm::class, $data, ['userCount' => $this->getUserCount()]);
     }
 
-    /**
-     * @return int
-     */
-    private function getUserCount()
+    private function getUserCount(): int
     {
         static $userCount;
 
@@ -127,6 +108,10 @@ final class Setup
         return $userCount;
     }
 
+    /**
+     * @return Template|RedirectResponse
+     * @throws EnvironmentIsBrokenException
+     */
     public function handleForm(Request $request)
     {
         $form = $this->getForm();
@@ -151,13 +136,16 @@ final class Setup
         return $this->render($form);
     }
 
-    private function createAdminUser(array $data)
+    /**
+     * @param array{username: string, password: string, email_address: string} $data
+     */
+    private function createAdminUser(array $data): void
     {
         $user = new User();
 
-        $encoder = $this->encoderFactory->getEncoder($user);
+        $encoder = $this->passwordHasherFactory->getPasswordHasher($user);
 
-        $password = $encoder->encodePassword($data['password'], null);
+        $password = $encoder->hash($data['password']);
 
         $user->setUsername($data['username'])
             ->setEmail($data['email_address'])
@@ -173,7 +161,7 @@ final class Setup
     /**
      * Saves the current app version in the database.
      */
-    private function saveCurrentVersion()
+    private function saveCurrentVersion(): void
     {
         $version = SolidInvoiceCoreBundle::VERSION;
 
@@ -186,15 +174,17 @@ final class Setup
     }
 
     /**
+     * @param array{locale: string, currency?: string} $data
+     *
      * @throws EnvironmentIsBrokenException|InvalidArgumentException|DependencyInjectionException\ServiceCircularReferenceException|DependencyInjectionException\ServiceNotFoundException
      */
-    private function saveConfig(array $data)
+    private function saveConfig(array $data): void
     {
         $time = new DateTime('NOW');
 
         $config = [
             'locale' => $data['locale'],
-            'installed' => $time->format(DateTime::ATOM),
+            'installed' => $time->format(DateTimeInterface::ATOM),
             'secret' => Key::createNewRandomKey()->saveToAsciiSafeString(),
         ];
 

@@ -17,7 +17,6 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\SettingsBundle\Entity\Setting;
-use SolidInvoice\SettingsBundle\Exception\InvalidSettingException;
 use SolidInvoice\SettingsBundle\SystemConfig;
 
 class SystemConfigTest extends TestCase
@@ -25,18 +24,18 @@ class SystemConfigTest extends TestCase
     use DoctrineTestTrait;
     use MockeryPHPUnitIntegration;
 
-    public function testGet()
+    public function testGet(): void
     {
         $config = new SystemConfig($this->em->getRepository(Setting::class));
 
         static::assertSame('SolidInvoice', $config->get('email/from_name'));
     }
 
-    public function testGetAll()
+    public function testGetAll(): void
     {
         $config = new SystemConfig($this->em->getRepository(Setting::class));
 
-        static::assertSame([
+        self::assertSame([
             'email/from_address' => 'info@solidinvoice.co',
             'email/from_name' => 'SolidInvoice',
             'email/sending_options/provider' => null,
@@ -61,13 +60,10 @@ class SystemConfigTest extends TestCase
         ], $config->getAll());
     }
 
-    public function testInvalidGet()
+    public function testInvalidGet(): void
     {
         $config = new SystemConfig($this->em->getRepository(Setting::class));
 
-        $this->expectException(InvalidSettingException::class);
-        $this->expectExceptionMessage('Invalid settings key: some/invalid/key');
-
-        $config->get('some/invalid/key');
+        self::assertNull($config->get('some/invalid/key'));
     }
 }

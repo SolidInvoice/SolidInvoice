@@ -25,7 +25,7 @@ class MenuItemTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    public function testAddDivider()
+    public function testAddDivider(): void
     {
         $factory = M::mock(FactoryInterface::class);
         $item = new MenuItem('test', $factory);
@@ -38,12 +38,12 @@ class MenuItemTest extends TestCase
 
         $child = $item->addDivider('*');
 
-        static::assertInstanceOf(ItemInterface::class, $child);
-        static::assertTrue($child->isDivider());
-        static::assertSame('-*', $child->getExtra('divider'));
+        self::assertInstanceOf(ItemInterface::class, $child);
+        self::assertTrue($child->isDivider());
+        self::assertSame('-*', $child->getExtra('divider'));
     }
 
-    public function testAddChild()
+    public function testAddChild(): void
     {
         $factory = M::mock(FactoryInterface::class);
         $item = new MenuItem('test', $factory);
@@ -54,24 +54,10 @@ class MenuItemTest extends TestCase
 
         $child = $item->addChild('abc');
 
-        static::assertInstanceOf(ItemInterface::class, $child);
+        self::assertInstanceOf(ItemInterface::class, $child);
     }
 
-    public function testAddChildArray()
-    {
-        $factory = M::mock(FactoryInterface::class);
-        $item = new MenuItem('test', $factory);
-
-        $factory->shouldReceive('createItem')
-            ->with('abc', ['attributes' => ['class' => ' nav-item'], 'linkAttributes' => ['class' => ' nav-link']])
-            ->andReturn(new MenuItem('abc', $factory));
-
-        $child = $item->addChild(['abc', []]);
-
-        static::assertInstanceOf(ItemInterface::class, $child);
-    }
-
-    public function testIsDivider()
+    public function testIsDivider(): void
     {
         $coreExtension = new CoreExtension();
         $item = new MenuItem('test', M::mock(FactoryInterface::class));
@@ -80,16 +66,16 @@ class MenuItemTest extends TestCase
 
         $coreExtension->buildItem($item, $coreExtension->buildOptions($options));
 
-        static::assertTrue($item->isDivider());
+        self::assertTrue($item->isDivider());
     }
 
-    public function testIsDividerFalse()
+    public function testIsDividerFalse(): void
     {
         $coreExtension = new CoreExtension();
         $item = new MenuItem('test', M::mock(FactoryInterface::class));
 
         $coreExtension->buildItem($item, $coreExtension->buildOptions([]));
 
-        static::assertFalse($item->isDivider());
+        self::assertFalse($item->isDivider());
     }
 }

@@ -15,6 +15,7 @@ namespace SolidInvoice\PaymentBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Payum\Core\Model\Payment as BasePayment;
@@ -42,7 +43,7 @@ class Payment extends BasePayment implements PaymentInterface
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      *
-     * @var int
+     * @var int|null
      */
     protected $id;
 
@@ -59,7 +60,7 @@ class Payment extends BasePayment implements PaymentInterface
     /**
      * @ORM\ManyToOne(targetEntity="SolidInvoice\InvoiceBundle\Entity\Invoice", inversedBy="payments")
      *
-     * @var Invoice
+     * @var Invoice|null
      */
     private $invoice;
 
@@ -67,20 +68,20 @@ class Payment extends BasePayment implements PaymentInterface
      * @ORM\ManyToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Client", inversedBy="payments")
      * @ORM\JoinColumn(name="client", fieldName="client")
      *
-     * @var Client
+     * @var Client|null
      */
     private $client;
 
     /**
      * @ORM\ManyToOne(targetEntity="SolidInvoice\PaymentBundle\Entity\PaymentMethod", inversedBy="payments")
      *
-     * @var PaymentMethod
+     * @var PaymentMethod|null
      * @Serialize\Groups({"payment_api", "client_api"})
      */
     private $method;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="status", type="string", length=25)
      * @Serialize\Groups({"payment_api", "client_api"})
@@ -90,11 +91,13 @@ class Payment extends BasePayment implements PaymentInterface
     /**
      * @ORM\Column(name="message", type="text", nullable=true)
      * @Serialize\Groups({"payment_api", "client_api"})
+     *
+     * @var string|null
      */
     private $message;
 
     /**
-     * @var DateTime
+     * @var DateTimeInterface
      *
      * @ORM\Column(name="completed", type="datetime", nullable=true)
      * @Assert\DateTime
@@ -120,9 +123,6 @@ class Payment extends BasePayment implements PaymentInterface
         return $this->invoice;
     }
 
-    /**
-     * @return Payment
-     */
     public function setInvoice(Invoice $invoice): self
     {
         $this->invoice = $invoice;
@@ -138,9 +138,6 @@ class Payment extends BasePayment implements PaymentInterface
         return $this->method;
     }
 
-    /**
-     * @return Payment
-     */
     public function setMethod(PaymentMethod $method): self
     {
         $this->method = $method;
@@ -158,11 +155,6 @@ class Payment extends BasePayment implements PaymentInterface
         return $this->status;
     }
 
-    /**
-     * Set status.
-     *
-     * @return Payment
-     */
     public function setStatus(string $status): self
     {
         $this->status = $status;
@@ -175,8 +167,6 @@ class Payment extends BasePayment implements PaymentInterface
      *
      * @param array|Traversable $details
      *
-     * @return Payment
-     *
      * @throws UnexpectedTypeException
      */
     public function setDetails($details): self
@@ -185,7 +175,7 @@ class Payment extends BasePayment implements PaymentInterface
             $details = iterator_to_array($details);
         }
 
-        if (!is_array($details)) {
+        if (! is_array($details)) {
             throw new UnexpectedTypeException((string) $details, 'array or \Traversable');
         }
 
@@ -202,9 +192,6 @@ class Payment extends BasePayment implements PaymentInterface
         return $this->message;
     }
 
-    /**
-     * @return Payment
-     */
     public function setMessage(string $message): self
     {
         $this->message = $message;
@@ -212,17 +199,11 @@ class Payment extends BasePayment implements PaymentInterface
         return $this;
     }
 
-    /**
-     * @return DateTime
-     */
-    public function getCompleted(): ?DateTime
+    public function getCompleted(): ?DateTimeInterface
     {
         return $this->completed;
     }
 
-    /**
-     * @return Payment
-     */
     public function setCompleted(DateTime $completed): self
     {
         $this->completed = $completed;
@@ -248,9 +229,6 @@ class Payment extends BasePayment implements PaymentInterface
         return $this->client;
     }
 
-    /**
-     * @return Payment
-     */
     public function setClient(Client $client): self
     {
         $this->client = $client;

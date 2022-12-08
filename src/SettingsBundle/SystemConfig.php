@@ -13,9 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SettingsBundle;
 
-use SolidInvoice\SettingsBundle\Exception\InvalidSettingException;
+use Doctrine\DBAL\Exception;
 use SolidInvoice\SettingsBundle\Repository\SettingsRepository;
+use function is_array;
 
+/**
+ * @see \SolidInvoice\SettingsBundle\Tests\SystemConfigTest
+ */
 class SystemConfig
 {
     /**
@@ -34,14 +38,14 @@ class SystemConfig
     {
         $this->load();
 
-        if (array_key_exists($key, self::$settings)) {
+        if (is_array(self::$settings) && array_key_exists($key, self::$settings)) {
             return self::$settings[$key];
         }
 
-        throw new InvalidSettingException($key);
+        return null;
     }
 
-    public function set(string $path, $value)
+    public function set(string $path, $value): void
     {
         $this->repository->save([$path => $value]);
         self::$settings = null;
@@ -54,15 +58,19 @@ class SystemConfig
         return self::$settings;
     }
 
-    private function load()
+    private function load(): void
     {
-        if (!self::$settings) {
-            $settings = $this->repository
-                ->createQueryBuilder('c')
-                ->select('c.key', 'c.value')
-                ->orderBy('c.key')
-                ->getQuery()
-                ->getArrayResult();
+        if (! self::$settings) {
+            try {
+                $settings = $this->repository
+                    ->createQueryBuilder('c')
+                    ->select('c.key', 'c.value')
+                    ->orderBy('c.key')
+                    ->getQuery()
+                    ->getArrayResult();
+            } catch (Exception $e) {
+                return;
+            }
 
             self::$settings = array_combine(array_column($settings, 'key'), array_column($settings, 'value'));
         }

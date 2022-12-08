@@ -1,2 +1,15 @@
 parameters:
     env(database_name): solidinvoice_test
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        bind:
+            $projectDir: '%kernel.project_dir%'
+
+    SolidInvoice\InstallBundle\Installer\Database\Migration:
+        public: true
+
+    SolidInvoice\CoreBundle\ConfigWriter:
+        public: true

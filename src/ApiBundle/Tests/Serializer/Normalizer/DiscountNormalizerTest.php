@@ -31,7 +31,7 @@ class DiscountNormalizerTest extends TestCase
         Money::setBaseCurrency('USD');
     }
 
-    public function testSupportsNormalization()
+    public function testSupportsNormalization(): void
     {
         $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
             public function normalize($object, $format = null, array $context = [])
@@ -58,11 +58,11 @@ class DiscountNormalizerTest extends TestCase
         $currency = new Currency('USD');
         $normalizer = new DiscountNormalizer($parentNormalizer, new MoneyFormatter('en', $currency), $currency);
 
-        static::assertTrue($normalizer->supportsNormalization(new Discount()));
-        static::assertFalse($normalizer->supportsNormalization(Discount::class));
+        self::assertTrue($normalizer->supportsNormalization(new Discount()));
+        self::assertFalse($normalizer->supportsNormalization(Discount::class));
     }
 
-    public function testSupportsDenormalization()
+    public function testSupportsDenormalization(): void
     {
         $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
             public function normalize($object, $format = null, array $context = [])
@@ -89,11 +89,11 @@ class DiscountNormalizerTest extends TestCase
         $currency = new Currency('USD');
         $normalizer = new DiscountNormalizer($parentNormalizer, new MoneyFormatter('en', $currency), $currency);
 
-        static::assertTrue($normalizer->supportsDenormalization(null, Discount::class));
-        static::assertFalse($normalizer->supportsDenormalization([], NormalizerInterface::class));
+        self::assertTrue($normalizer->supportsDenormalization(null, Discount::class));
+        self::assertFalse($normalizer->supportsDenormalization([], NormalizerInterface::class));
     }
 
-    public function testNormalization()
+    public function testNormalization(): void
     {
         $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
             public function normalize($object, $format = null, array $context = [])
@@ -124,10 +124,10 @@ class DiscountNormalizerTest extends TestCase
         $discount->setType(Discount::TYPE_MONEY);
         $discount->setValue(100);
 
-        static::assertEquals(['type' => 'money', 'value' => new \Money\Money(10000, $currency)], $normalizer->normalize($discount));
+        self::assertEquals(['type' => 'money', 'value' => new \Money\Money(10000, $currency)], $normalizer->normalize($discount));
     }
 
-    public function testDenormalization()
+    public function testDenormalization(): void
     {
         $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
             public function normalize($object, $format = null, array $context = [])
@@ -158,6 +158,6 @@ class DiscountNormalizerTest extends TestCase
         $discount->setType(Discount::TYPE_MONEY);
         $discount->setValue(10000);
 
-        static::assertEquals($discount, $normalizer->denormalize(['type' => 'money', 'value' => 10000], Discount::class));
+        self::assertEquals($discount, $normalizer->denormalize(['type' => 'money', 'value' => 10000], Discount::class));
     }
 }

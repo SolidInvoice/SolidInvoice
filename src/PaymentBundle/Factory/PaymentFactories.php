@@ -16,6 +16,9 @@ namespace SolidInvoice\PaymentBundle\Factory;
 use Exception;
 use SolidInvoice\PaymentBundle\Exception\InvalidGatewayException;
 
+/**
+ * @see \SolidInvoice\PaymentBundle\Tests\Factory\PaymentFactoriesTest
+ */
 class PaymentFactories
 {
     /**
@@ -28,12 +31,12 @@ class PaymentFactories
      */
     private $forms;
 
-    public function setGatewayFactories(array $factories)
+    public function setGatewayFactories(array $factories): void
     {
         $this->factories = $factories;
     }
 
-    public function setGatewayForms(array $gateForms)
+    public function setGatewayForms(array $gateForms): void
     {
         $this->forms = $gateForms;
     }

@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Tests\Manager;
 
 use DateTime;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use Mockery\Mock;
@@ -52,7 +52,7 @@ class InvoiceManagerTest extends KernelTestCase
      */
     private $entityManager;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->entityManager = M::mock(EntityManagerInterface::class);
         $doctrine = M::mock(ManagerRegistry::class, ['getManager' => $this->entityManager]);
@@ -81,7 +81,7 @@ class InvoiceManagerTest extends KernelTestCase
             ->zeroOrMoreTimes();
     }
 
-    public function testCreateFromQuote()
+    public function testCreateFromQuote(): void
     {
         $currency = new Currency('USD');
 
@@ -118,31 +118,31 @@ class InvoiceManagerTest extends KernelTestCase
 
         $invoice = $this->manager->createFromQuote($quote);
 
-        static::assertEquals($quote->getTotal(), $invoice->getTotal());
-        static::assertEquals($quote->getBaseTotal(), $invoice->getBaseTotal());
-        static::assertSame($quote->getDiscount(), $invoice->getDiscount());
-        static::assertSame($quote->getNotes(), $invoice->getNotes());
-        static::assertSame($quote->getTerms(), $invoice->getTerms());
-        static::assertEquals($quote->getTax(), $invoice->getTax());
-        static::assertSame($client, $invoice->getClient());
-        static::assertNull($invoice->getStatus());
+        self::assertEquals($quote->getTotal(), $invoice->getTotal());
+        self::assertEquals($quote->getBaseTotal(), $invoice->getBaseTotal());
+        self::assertSame($quote->getDiscount(), $invoice->getDiscount());
+        self::assertSame($quote->getNotes(), $invoice->getNotes());
+        self::assertSame($quote->getTerms(), $invoice->getTerms());
+        self::assertEquals($quote->getTax(), $invoice->getTax());
+        self::assertSame($client, $invoice->getClient());
+        self::assertNull($invoice->getStatus());
 
-        static::assertNotSame($quote->getUuid(), $invoice->getUuid());
-        static::assertNull($invoice->getId());
+        self::assertNotSame($quote->getUuid(), $invoice->getUuid());
+        self::assertNull($invoice->getId());
 
-        static::assertCount(1, $invoice->getItems());
+        self::assertCount(1, $invoice->getItems());
 
         $invoiceItem = $invoice->getItems();
-        static::assertInstanceOf(InvoiceItem::class, $invoiceItem[0]);
+        self::assertInstanceOf(InvoiceItem::class, $invoiceItem[0]);
 
-        static::assertSame($item->getTax(), $invoiceItem[0]->getTax());
-        static::assertSame($item->getDescription(), $invoiceItem[0]->getDescription());
-        static::assertInstanceOf('DateTime', $invoiceItem[0]->getCreated());
-        static::assertEquals($item->getPrice(), $invoiceItem[0]->getPrice());
-        static::assertSame($item->getQty(), $invoiceItem[0]->getQty());
+        self::assertSame($item->getTax(), $invoiceItem[0]->getTax());
+        self::assertSame($item->getDescription(), $invoiceItem[0]->getDescription());
+        self::assertInstanceOf(\DateTime::class, $invoiceItem[0]->getCreated());
+        self::assertEquals($item->getPrice(), $invoiceItem[0]->getPrice());
+        self::assertSame($item->getQty(), $invoiceItem[0]->getQty());
     }
 
-    public function testCreateFromRecurring()
+    public function testCreateFromRecurring(): void
     {
         $currency = new Currency('USD');
 
@@ -180,26 +180,26 @@ class InvoiceManagerTest extends KernelTestCase
 
         $invoice = $this->manager->createFromRecurring($recurringInvoice);
 
-        static::assertEquals($recurringInvoice->getTotal(), $invoice->getTotal());
-        static::assertEquals($recurringInvoice->getBaseTotal(), $invoice->getBaseTotal());
-        static::assertSame($recurringInvoice->getDiscount(), $invoice->getDiscount());
-        static::assertSame($recurringInvoice->getNotes(), $invoice->getNotes());
-        static::assertSame($recurringInvoice->getTerms(), $invoice->getTerms());
-        static::assertEquals($recurringInvoice->getTax(), $invoice->getTax());
-        static::assertSame($client, $invoice->getClient());
-        static::assertNull($invoice->getStatus());
+        self::assertEquals($recurringInvoice->getTotal(), $invoice->getTotal());
+        self::assertEquals($recurringInvoice->getBaseTotal(), $invoice->getBaseTotal());
+        self::assertSame($recurringInvoice->getDiscount(), $invoice->getDiscount());
+        self::assertSame($recurringInvoice->getNotes(), $invoice->getNotes());
+        self::assertSame($recurringInvoice->getTerms(), $invoice->getTerms());
+        self::assertEquals($recurringInvoice->getTax(), $invoice->getTax());
+        self::assertSame($client, $invoice->getClient());
+        self::assertNull($invoice->getStatus());
 
-        static::assertNull($invoice->getId());
+        self::assertNull($invoice->getId());
 
-        static::assertCount(1, $invoice->getItems());
+        self::assertCount(1, $invoice->getItems());
 
         $invoiceItem = $invoice->getItems();
-        static::assertInstanceOf(InvoiceItem::class, $invoiceItem[0]);
+        self::assertInstanceOf(InvoiceItem::class, $invoiceItem[0]);
 
-        static::assertSame($item->getTax(), $invoiceItem[0]->getTax());
-        static::assertSame($item->getDescription(), $invoiceItem[0]->getDescription());
-        static::assertInstanceOf('DateTime', $invoiceItem[0]->getCreated());
-        static::assertEquals($item->getPrice(), $invoiceItem[0]->getPrice());
-        static::assertSame($item->getQty(), $invoiceItem[0]->getQty());
+        self::assertSame($item->getTax(), $invoiceItem[0]->getTax());
+        self::assertSame($item->getDescription(), $invoiceItem[0]->getDescription());
+        self::assertInstanceOf(\DateTime::class, $invoiceItem[0]->getCreated());
+        self::assertEquals($item->getPrice(), $invoiceItem[0]->getPrice());
+        self::assertSame($item->getQty(), $invoiceItem[0]->getQty());
     }
 }

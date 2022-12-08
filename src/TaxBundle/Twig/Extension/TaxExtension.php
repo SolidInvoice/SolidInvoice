@@ -13,26 +13,21 @@ declare(strict_types=1);
 
 namespace SolidInvoice\TaxBundle\Twig\Extension;
 
-use SolidInvoice\TaxBundle\Repository\TaxRepository;
+use Doctrine\Persistence\ManagerRegistry;
+use SolidInvoice\TaxBundle\Entity\Tax;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 class TaxExtension extends AbstractExtension
 {
-    /**
-     * @var TaxRepository
-     */
-    private $repository;
+    private ManagerRegistry $registry;
 
-    public function __construct(TaxRepository $repository)
+    public function __construct(ManagerRegistry $registry)
     {
-        $this->repository = $repository;
+        $this->registry = $registry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('taxRatesConfigured', function (): bool {
@@ -41,25 +36,10 @@ class TaxExtension extends AbstractExtension
         ];
     }
 
-    /**
-     * @return true
-     */
     public function taxRatesConfigured(): bool
     {
         static $taxConfigured;
 
-        if (null !== $taxConfigured) {
-            return $taxConfigured;
-        }
-
-        return $this->repository->taxRatesConfigured();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'tax_extension';
+        return $taxConfigured ?? ($taxConfigured = $this->registry->getRepository(Tax::class)->taxRatesConfigured());
     }
 }

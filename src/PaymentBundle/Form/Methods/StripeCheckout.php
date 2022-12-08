@@ -20,10 +20,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class StripeCheckout extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
             'publishable_key',
@@ -42,9 +39,6 @@ class StripeCheckout extends AbstractType
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'stripe_checkout';

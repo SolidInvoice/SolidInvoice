@@ -26,54 +26,54 @@ class MoneyFormatterTest extends TestCase
     /**
      * @dataProvider localeProvider
      */
-    public function testFormatCurrencyWithDefaultValues(string $locale, string $currency, string $format)
+    public function testFormatCurrencyWithDefaultValues(string $locale, string $currency, string $format): void
     {
         $currency = new Currency($currency);
         $formatter = new MoneyFormatter($locale, $currency);
 
         $money = new Money(1200, $currency);
 
-        static::assertSame($format, $formatter->format($money));
+        self::assertSame($format, $formatter->format($money));
     }
 
     /**
      * @dataProvider symbolProvider
      */
-    public function testGetCurrencySymbol(string $locale, string $currency, string $symbol)
+    public function testGetCurrencySymbol(string $locale, string $currency, string $symbol): void
     {
         $formatter = new MoneyFormatter($locale, new Currency($currency));
 
-        static::assertSame($symbol, $formatter->getCurrencySymbol());
+        self::assertSame($symbol, $formatter->getCurrencySymbol());
     }
 
     /**
      * @dataProvider thousandSeparatorProvider
      */
-    public function testGetThousandSeparator(string $locale, string $separator)
+    public function testGetThousandSeparator(string $locale, string $separator): void
     {
         $formatter = new MoneyFormatter($locale, new Currency('USD'));
 
-        static::assertEquals($separator, $formatter->getThousandSeparator());
+        self::assertSame($separator, $formatter->getThousandSeparator());
     }
 
     /**
      * @dataProvider decimalSeparatorProvider
      */
-    public function testGetDecimalSeparator(string $locale, string $separator)
+    public function testGetDecimalSeparator(string $locale, string $separator): void
     {
         $formatter = new MoneyFormatter($locale, new Currency('USD'));
 
-        static::assertEquals($separator, $formatter->getDecimalSeparator());
+        self::assertSame($separator, $formatter->getDecimalSeparator());
     }
 
     /**
      * @dataProvider patternProvider
      */
-    public function testGetPattern(string $locale, string $pattern)
+    public function testGetPattern(string $locale, string $pattern): void
     {
         $formatter = new MoneyFormatter($locale, new Currency('USD'));
 
-        static::assertStringContainsString($pattern, $formatter->getPattern());
+        self::assertStringContainsString($pattern, $formatter->getPattern());
     }
 
     public function localeProvider(): array

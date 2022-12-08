@@ -1,5 +1,5 @@
 security:
-    encoders:
+    password_hashers:
         SolidInvoice\UserBundle\Entity\User:
             algorithm: auto
     role_hierarchy:
@@ -21,7 +21,8 @@ security:
             security: false
         api_doc:
             pattern: ^/api/docs
-            anonymous: lazy
+            anonymous: true
+            lazy: true
         api_login:
             pattern: ^/api/login
             stateless: true
@@ -35,34 +36,41 @@ security:
         api:
             pattern: ^/api
             stateless: true
-            simple_preauth:
-                authenticator: 'SolidInvoice\ApiBundle\Security\ApiTokenAuthenticator'
+            guard:
+                authenticators: ['SolidInvoice\ApiBundle\Security\ApiTokenAuthenticator']
             provider: api_token_user_provider
         installer:
             pattern: '^/install(.*)'
-            anonymous: lazy
+            anonymous: true
+            lazy: true
         external:
             pattern: '^/view/(quote|invoice)/([a-zA-Z0-9-]{36})'
-            anonymous: lazy
+            anonymous: true
+            lazy: true
             context: frontend
         create:
             pattern: '^/payments/create/([a-zA-Z0-9-]{36})'
-            anonymous: lazy
+            anonymous: true
+            lazy: true
             context: frontend
         capture:
             pattern: '^/payment/(capture|notify|done)/(.*)'
-            anonymous: lazy
+            anonymous: true
+            lazy: true
             context: frontend
         done:
             pattern: ^/payments/done$
-            anonymous: lazy
+            anonymous: true
+            lazy: true
             context: frontend
         login:
             pattern: ^/login$
-            anonymous: lazy
+            anonymous: true
+            lazy: true
         password_reset:
             pattern: '^/forgot-password(.*)'
-            anonymous: lazy
+            anonymous: true
+            lazy: true
         main:
             remember_me:
                 secret: '%env(secret)%'

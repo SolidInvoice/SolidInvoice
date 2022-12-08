@@ -29,6 +29,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\RouterInterface;
 
+/**
+ * @see \SolidInvoice\SettingsBundle\Tests\Form\Handler\SettingsFormHandlerTest
+ */
 class SettingsFormHandler implements FormHandlerInterface, FormHandlerSuccessInterface, FormHandlerResponseInterface
 {
     /**
@@ -47,27 +50,19 @@ class SettingsFormHandler implements FormHandlerInterface, FormHandlerSuccessInt
         $this->router = $router;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getForm(FormFactoryInterface $factory, Options $options)
     {
         return $factory->create(SettingsType::class, $this->getSettings(false), ['settings' => $this->getSettings()]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function onSuccess(FormRequest $form, $data): ?Response
     {
-        $config = [];
-
         $this->settingsRepository->save($this->flatten($data));
 
         $route = $this->router->generate($form->getRequest()->attributes->get('_route'));
 
         return new class($route) extends RedirectResponse implements FlashResponse {
-            public function getFlash(): iterable
+            public function getFlash(): \Generator
             {
                 yield self::FLASH_SUCCESS => 'settings.saved.success';
             }
@@ -80,18 +75,15 @@ class SettingsFormHandler implements FormHandlerInterface, FormHandlerSuccessInt
 
         foreach ($array as $key => $value) {
             if (is_array($value)) {
-                $result = array_merge($result, $this->flatten($value, $prefix.$key.'/'));
+                $result = array_merge($result, $this->flatten($value, $prefix . $key . '/'));
             } else {
-                $result[$prefix.$key] = $value;
+                $result[$prefix . $key] = $value;
             }
         }
 
         return $result;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getResponse(FormRequest $formRequest)
     {
         $form = $formRequest->getForm();
@@ -112,7 +104,7 @@ class SettingsFormHandler implements FormHandlerInterface, FormHandlerSuccessInt
 
         /** @var Setting $setting */
         foreach ($this->settingsRepository->findAll() as $setting) {
-            $path = '['.str_replace('/', '][', $setting->getKey()).']';
+            $path = '[' . str_replace('/', '][', $setting->getKey()) . ']';
 
             $propertyAccessor->setValue($settings, $path, $keepObject ? $setting : $setting->getValue());
         }

@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ImageUploadType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addModelTransformer(new class() implements DataTransformerInterface {
             private $file;
@@ -43,15 +43,15 @@ class ImageUploadType extends AbstractType
                     return $this->file;
                 }
 
-                if (!$value instanceof UploadedFile) {
+                if (! $value instanceof UploadedFile) {
                     return;
                 }
 
-                if (!$value->isValid()) {
+                if (! $value->isValid()) {
                     throw new TransformationFailedException();
                 }
 
-                return $value->guessExtension().'|'.base64_encode(file_get_contents($value->getPathname()));
+                return $value->guessExtension() . '|' . base64_encode(file_get_contents($value->getPathname()));
             }
         });
     }

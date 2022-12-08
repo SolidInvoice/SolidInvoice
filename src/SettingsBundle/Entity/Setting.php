@@ -28,35 +28,37 @@ class Setting
     /**
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
+     *
+     * @var int|null
      */
     private $id;
 
     /**
-     * @ORM\Column(name="setting_key", type="string", length=125, nullable=false, unique=true)
+     * @ORM\Column(name="setting_key", type="string", length=125, unique=true)
      *
-     * @var string
+     * @var string|null
      */
     protected $key;
 
     /**
      * @ORM\Column(name="setting_value", type="text", nullable=true)
      *
-     * @var string
+     * @var string|null
      */
     protected $value;
 
     /**
      * @ORM\Column(name="description", type="text", nullable=true)
      *
-     * @var string
+     * @var string|null
      */
     protected $description;
 
     /**
-     * @ORM\Column(name="field_type", type="string", nullable=false)
+     * @ORM\Column(name="field_type", type="string")
      *
-     * @var string
+     * @var string|null
      */
     protected $type;
 
@@ -70,19 +72,11 @@ class Setting
         return $this->id;
     }
 
-    /**
-     * Get key.
-     */
     public function getKey(): string
     {
         return $this->key;
     }
 
-    /**
-     * Set key.
-     *
-     * @return Setting
-     */
     public function setKey(string $key): self
     {
         $this->key = $key;
@@ -104,8 +98,6 @@ class Setting
      * Set value.
      *
      * @param mixed $value
-     *
-     * @return Setting
      */
     public function setValue($value): self
     {
@@ -128,8 +120,6 @@ class Setting
      * Set description.
      *
      * @param string $description
-     *
-     * @return Setting
      */
     public function setDescription(?string $description): self
     {
@@ -148,11 +138,6 @@ class Setting
         return $this->type;
     }
 
-    /**
-     * Set type.
-     *
-     * @return Setting
-     */
     public function setType(string $type): self
     {
         $this->type = $type;

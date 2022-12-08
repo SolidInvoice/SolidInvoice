@@ -13,23 +13,20 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MenuBundle\Builder;
 
-use Knp\Menu\ItemInterface;
+use SolidInvoice\MenuBundle\MenuItem;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
+/**
+ * @see \SolidInvoice\MenuBundle\Tests\Builder\MenuBuilderTest
+ */
 final class MenuBuilder implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
 
-    /**
-     * @var BuilderInterface An instance of the class that creates a menu
-     */
-    protected $class;
+    protected BuilderInterface $class;
 
-    /**
-     * @var string The name of the method to be called
-     */
-    protected $method;
+    protected string $method;
 
     public function __construct(BuilderInterface $class, string $method)
     {
@@ -40,14 +37,10 @@ final class MenuBuilder implements ContainerAwareInterface
     /**
      * Invokes the builder class to add items to the menu.
      *
-     * @return mixed
+     * @param array<string, mixed> $options
      */
-    public function invoke(ItemInterface $menu, array $options = [])
+    public function invoke(MenuItem $menu, array $options = []): void
     {
-        if ($this->class instanceof ContainerAwareInterface) {
-            $this->class->setContainer($this->container);
-        }
-
         if ($this->class->validate()) {
             $this->class->{$this->method}($menu, $options);
         }

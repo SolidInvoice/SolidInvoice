@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Tests\Functional\Api;
 
-use Liip\TestFixturesBundle\Test\FixturesTrait;
+use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
+use SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 
 /**
@@ -23,19 +24,22 @@ use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 class QuoteTest extends ApiTestCase
 {
     use EnsureApplicationInstalled;
-    use FixturesTrait;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $this->loadFixtures([
-            'SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData',
-            'SolidInvoice\QuoteBundle\DataFixtures\ORM\LoadData',
+        self::bootKernel();
+
+        $databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
+
+        $databaseTool->loadFixtures([
+            LoadData::class,
+            \SolidInvoice\QuoteBundle\DataFixtures\ORM\LoadData::class,
         ], true);
     }
 
-    public function testCreate()
+    public function testCreate(): void
     {
         $data = [
             'users' => [
@@ -59,7 +63,7 @@ class QuoteTest extends ApiTestCase
 
         unset($result['uuid']);
 
-        static::assertSame([
+        self::assertSame([
             'id' => 2,
             'status' => 'draft',
             'client' => '/api/clients/1',
@@ -89,18 +93,18 @@ class QuoteTest extends ApiTestCase
         ], $result);
     }
 
-    public function testDelete()
+    public function testDelete(): void
     {
         $this->requestDelete('/api/quotes/1');
     }
 
-    public function testGet()
+    public function testGet(): void
     {
         $data = $this->requestGet('/api/quotes/1');
 
         unset($data['uuid']);
 
-        static::assertSame([
+        self::assertSame([
             'id' => 1,
             'status' => 'draft',
             'client' => '/api/clients/1',
@@ -130,7 +134,7 @@ class QuoteTest extends ApiTestCase
         ], $data);
     }
 
-    public function testEdit()
+    public function testEdit(): void
     {
         $data = $this->requestPut(
             '/api/quotes/1',
@@ -151,7 +155,7 @@ class QuoteTest extends ApiTestCase
 
         unset($data['uuid']);
 
-        static::assertSame([
+        self::assertSame([
             'id' => 1,
             'status' => 'draft',
             'client' => '/api/clients/1',

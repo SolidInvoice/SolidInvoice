@@ -16,25 +16,23 @@ namespace SolidInvoice\QuoteBundle\Action\Grid;
 use SolidInvoice\CoreBundle\Response\AjaxResponse;
 use SolidInvoice\CoreBundle\Traits\JsonTrait;
 use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 final class Delete implements AjaxResponse
 {
     use JsonTrait;
 
-    /**
-     * @var QuoteRepository
-     */
-    private $repository;
+    private QuoteRepository $repository;
 
     public function __construct(QuoteRepository $repository)
     {
         $this->repository = $repository;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): JsonResponse
     {
-        $this->repository->deleteQuotes($request->request->get('data'));
+        $this->repository->deleteQuotes((array) $request->request->get('data'));
 
         return $this->json([]);
     }

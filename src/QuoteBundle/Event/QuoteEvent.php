@@ -31,7 +31,7 @@ class QuoteEvent extends Event
         $this->quote = $quote;
     }
 
-    public function setQuote(Quote $quote)
+    public function setQuote(Quote $quote): void
     {
         $this->quote = $quote;
     }

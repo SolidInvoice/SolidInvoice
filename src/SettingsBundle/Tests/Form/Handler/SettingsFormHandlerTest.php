@@ -14,26 +14,27 @@ declare(strict_types=1);
 namespace SolidInvoice\SettingsBundle\Tests\Form\Handler;
 
 use Mockery as M;
+use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
-use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
 use SolidInvoice\SettingsBundle\Entity\Setting;
 use SolidInvoice\SettingsBundle\Form\Handler\SettingsFormHandler;
 use SolidInvoice\SettingsBundle\Form\Type\MailTransportType;
-use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormRequest;
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 
-class SettingsFormHandlerTest extends FormHandlerTestCase
+final class SettingsFormHandlerTest extends FormHandlerTestCase
 {
-    use DoctrineTestTrait;
+    protected function setUp(): void
+    {
+        parent::setUp();
+        self::bootKernel();
+    }
 
-    /**
-     * @return string|FormHandlerInterface
-     */
-    public function getHandler()
+    public function getHandler(): SettingsFormHandler
     {
         $repository = $this->registry->getRepository(Setting::class);
         $router = M::mock(RouterInterface::class);
@@ -43,9 +44,14 @@ class SettingsFormHandlerTest extends FormHandlerTestCase
         return new SettingsFormHandler($repository, $router);
     }
 
+    protected function beforeSuccess(FormRequest $form, $data): void
+    {
+        $form->getRequest()->attributes->set('_route', 'settings');
+    }
+
     protected function assertOnSuccess(?Response $response, FormRequest $form, $data): void
     {
-        static::assertSame([
+        self::assertSame([
             'system' => [
                 'company' => [
                     'company_name' => null,
@@ -89,15 +95,19 @@ class SettingsFormHandlerTest extends FormHandlerTestCase
             ],
         ], $data);
 
-        static::assertInstanceOf(RedirectResponse::class, $response);
-        static::assertCount(1, $response->getFlash());
+        self::assertInstanceOf(RedirectResponse::class, $response);
+        self::assertInstanceOf(FlashResponse::class, $response);
+        self::assertCount(1, $response->getFlash());
     }
 
     protected function assertResponse(FormRequest $formRequest): void
     {
-        static::assertInstanceOf(Template::class, $formRequest->getResponse());
+        self::assertInstanceOf(Template::class, $formRequest->getResponse());
     }
 
+    /**
+     * @return array{settings: array{company: array{company_name: string}}}
+     */
     public function getFormData(): array
     {
         return [
@@ -109,6 +119,9 @@ class SettingsFormHandlerTest extends FormHandlerTestCase
         ];
     }
 
+    /**
+     * @return FormTypeInterface[]
+     */
     protected function getTypes(): array
     {
         $extensions = parent::getTypes();

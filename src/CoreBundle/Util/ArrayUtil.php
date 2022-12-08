@@ -30,7 +30,7 @@ class ArrayUtil
      */
     public static function column($array, $column): array
     {
-        if (!is_array($array) && !$array instanceof Traversable) {
+        if (! is_array($array) && ! $array instanceof Traversable) {
             throw new Exception(sprintf('Array or instance of Traversable expected, "%s" given', gettype($array)));
         }
 
@@ -44,7 +44,7 @@ class ArrayUtil
 
         foreach ($array as $item) {
             if ((is_array($item) || $item instanceof ArrayAccess) && '[' !== $column[0]) {
-                $column = '['.$column.']';
+                $column = '[' . $column . ']';
             }
 
             $return[] = $accessor->getValue($item, $column);

@@ -22,12 +22,12 @@ use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Workflow\StateMachine;
 
+/**
+ * @see \SolidInvoice\ApiBundle\Tests\Event\Listener\InvoiceCreateListenerTest
+ */
 class InvoiceCreateListener implements EventSubscriberInterface
 {
-    /**
-     * @var StateMachine
-     */
-    private $stateMachine;
+    private StateMachine $stateMachine;
 
     public function __construct(StateMachine $stateMachine)
     {
@@ -35,21 +35,21 @@ class InvoiceCreateListener implements EventSubscriberInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return array<string, list<list<string|int>>>
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::VIEW => [['setInvoiceStatus', EventPriorities::PRE_WRITE]],
         ];
     }
 
-    public function setInvoiceStatus(ViewEvent $event)
+    public function setInvoiceStatus(ViewEvent $event): void
     {
         $invoice = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
 
-        if (!$invoice instanceof BaseInvoice || Request::METHOD_POST !== $method || !$event->isMasterRequest() || $invoice->getStatus()) {
+        if (! $invoice instanceof BaseInvoice || Request::METHOD_POST !== $method || ! $event->isMainRequest() || $invoice->getStatus()) {
             return;
         }
 

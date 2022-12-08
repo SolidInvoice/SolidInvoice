@@ -29,6 +29,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @see \SolidInvoice\UserBundle\Tests\Form\Handler\ApiFormHandlerTest
+ */
 class ApiFormHandler implements FormHandlerInterface, FormHandlerResponseInterface, FormHandlerSuccessInterface, FormHandlerOptionsResolver
 {
     use SaveableTrait;
@@ -43,17 +46,11 @@ class ApiFormHandler implements FormHandlerInterface, FormHandlerResponseInterfa
         $this->tokenManager = $tokenManager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getForm(FormFactoryInterface $factory, Options $options)
     {
         return $factory->create(ApiTokenType::class, $options->get('api_token'));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getResponse(FormRequest $formRequest)
     {
         return new Template(
@@ -64,28 +61,22 @@ class ApiFormHandler implements FormHandlerInterface, FormHandlerResponseInterfa
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function onSuccess(FormRequest $form, $user): ?Response
+    public function onSuccess(FormRequest $form, $data): ?Response
     {
-        /* @var ApiToken $user */
-        $user->setToken($this->tokenManager->generateToken());
+        /** @var ApiToken $data */
+        $data->setToken($this->tokenManager->generateToken());
 
-        $this->save($user);
+        $this->save($data);
 
         return new JsonResponse(
             [
-                'token' => $user->getToken(),
-                'name' => $user->getName(),
-                'id' => $user->getId(),
+                'token' => $data->getToken(),
+                'name' => $data->getName(),
+                'id' => $data->getId(),
             ]
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired('api_token')

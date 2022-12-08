@@ -26,11 +26,18 @@ class ContactAddFormHandlerTest extends FormHandlerTestCase
 {
     use SymfonyKernelTrait;
 
-    public function getHandler()
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        static::bootKernel();
+    }
+
+    public function getHandler(): ContactAddFormHandler
     {
         $handler = new ContactAddFormHandler();
         $handler->setDoctrine($this->registry);
-        $handler->setSerializer($this->container->get('serializer'));
+        $handler->setSerializer(static::getContainer()->get('serializer'));
 
         return $handler;
     }
@@ -52,14 +59,14 @@ class ContactAddFormHandlerTest extends FormHandlerTestCase
 
     protected function assertOnSuccess(?Response $response, FormRequest $form, $data): void
     {
-        static::assertInstanceOf(JsonResponse::class, $response);
-        static::assertInstanceOf(Contact::class, $data);
-        static::assertCount(1, $this->em->getRepository(Contact::class)->findAll());
+        self::assertInstanceOf(JsonResponse::class, $response);
+        self::assertInstanceOf(Contact::class, $data);
+        self::assertCount(1, $this->em->getRepository(Contact::class)->findAll());
     }
 
     protected function assertResponse(FormRequest $formRequest): void
     {
-        static::assertInstanceOf(Template::class, $formRequest->getResponse());
-        static::assertSame($this->getHandler()->getTemplate(), $formRequest->getResponse()->getTemplate());
+        self::assertInstanceOf(Template::class, $formRequest->getResponse());
+        self::assertSame($this->getHandler()->getTemplate(), $formRequest->getResponse()->getTemplate());
     }
 }

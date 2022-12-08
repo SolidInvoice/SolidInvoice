@@ -14,23 +14,21 @@ declare(strict_types=1);
 namespace SolidInvoice\ApiBundle\Test;
 
 use const PASSWORD_DEFAULT;
-use function password_hash;
 use SolidInvoice\ApiBundle\ApiTokenManager;
 use SolidInvoice\UserBundle\Entity\User;
-use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Component\BrowserKit\AbstractBrowser;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Panther\PantherTestCase;
+use function password_hash;
 
 /**
  * @codeCoverageIgnore
  */
 abstract class ApiTestCase extends PantherTestCase
 {
-    /**
-     * @var KernelBrowser
-     */
-    protected static $client;
+    protected static AbstractBrowser $client;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -43,7 +41,7 @@ abstract class ApiTestCase extends PantherTestCase
         /** @var User[] $users */
         $users = $userRepository->findAll();
 
-        if (0 === count($users)) {
+        if ([] === $users) {
             $user = new User();
             $user->setUsername('test')
                 ->setEmail('test@example.com')
@@ -63,15 +61,15 @@ abstract class ApiTestCase extends PantherTestCase
     {
         $server = ['CONTENT_TYPE' => 'application/json', 'HTTP_ACCEPT' => 'application/json'];
         foreach ($headers as $key => $value) {
-            $server['HTTP_'.strtoupper($key)] = $value;
+            $server['HTTP_' . strtoupper($key)] = $value;
         }
 
-        self::$client->request('POST', $uri, [], [], $server, json_encode($data, JSON_THROW_ON_ERROR));
+        self::$client->request(Request::METHOD_POST, $uri, [], [], $server, json_encode($data, JSON_THROW_ON_ERROR));
 
         $statusCode = self::$client->getResponse()->getStatusCode();
-        static::assertSame(201, $statusCode);
+        self::assertSame(201, $statusCode);
         $content = self::$client->getResponse()->getContent();
-        static::assertJson($content);
+        self::assertJson($content);
 
         return json_decode($content, true, 512, JSON_THROW_ON_ERROR);
     }
@@ -80,15 +78,15 @@ abstract class ApiTestCase extends PantherTestCase
     {
         $server = ['CONTENT_TYPE' => 'application/json', 'HTTP_ACCEPT' => 'application/json'];
         foreach ($headers as $key => $value) {
-            $server['HTTP_'.strtoupper($key)] = $value;
+            $server['HTTP_' . strtoupper($key)] = $value;
         }
 
-        self::$client->request('PUT', $uri, [], [], $server, json_encode($data, JSON_THROW_ON_ERROR));
+        self::$client->request(Request::METHOD_PUT, $uri, [], [], $server, json_encode($data, JSON_THROW_ON_ERROR));
 
         $statusCode = self::$client->getResponse()->getStatusCode();
-        static::assertSame(200, $statusCode);
+        self::assertSame(200, $statusCode);
         $content = self::$client->getResponse()->getContent();
-        static::assertJson($content);
+        self::assertJson($content);
 
         return json_decode($content, true, 512, JSON_THROW_ON_ERROR);
     }
@@ -97,15 +95,15 @@ abstract class ApiTestCase extends PantherTestCase
     {
         $server = ['CONTENT_TYPE' => 'application/json', 'HTTP_ACCEPT' => 'application/json'];
         foreach ($headers as $key => $value) {
-            $server['HTTP_'.strtoupper($key)] = $value;
+            $server['HTTP_' . strtoupper($key)] = $value;
         }
 
-        self::$client->request('GET', $uri, [], [], $server);
+        self::$client->request(Request::METHOD_GET, $uri, [], [], $server);
 
         $statusCode = self::$client->getResponse()->getStatusCode();
-        static::assertSame(200, $statusCode);
+        self::assertSame(200, $statusCode);
         $content = self::$client->getResponse()->getContent();
-        static::assertJson($content);
+        self::assertJson($content);
 
         return json_decode($content, true, 512, JSON_THROW_ON_ERROR);
     }
@@ -114,15 +112,15 @@ abstract class ApiTestCase extends PantherTestCase
     {
         $server = ['CONTENT_TYPE' => 'application/json', 'HTTP_ACCEPT' => 'application/json'];
         foreach ($headers as $key => $value) {
-            $server['HTTP_'.strtoupper($key)] = $value;
+            $server['HTTP_' . strtoupper($key)] = $value;
         }
 
-        self::$client->request('DELETE', $uri, [], [], $server);
+        self::$client->request(Request::METHOD_DELETE, $uri, [], [], $server);
 
         $statusCode = self::$client->getResponse()->getStatusCode();
-        static::assertSame(204, $statusCode);
+        self::assertSame(204, $statusCode);
         $content = self::$client->getResponse()->getContent();
-        static::assertEmpty($content);
+        self::assertEmpty($content);
 
         return $content;
     }

@@ -45,7 +45,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Workflow\StateMachine;
 use function array_key_exists;
 use function filter_var;
-use const FILTER_VALIDATE_BOOL;
 
 // @TODO: Refactor this class to make it cleaner
 
@@ -133,7 +132,7 @@ final class Prepare
             throw new NotFoundHttpException();
         }
 
-        if (!$this->stateMachine->can($invoice, Graph::TRANSITION_PAY)) {
+        if (! $this->stateMachine->can($invoice, Graph::TRANSITION_PAY)) {
             throw new Exception('This invoice cannot be paid');
         }
 
@@ -171,7 +170,7 @@ final class Prepare
 
             $paymentName = $paymentMethod->getGatewayName();
 
-            if (!array_key_exists($paymentName, $paymentFactories)) {
+            if (! array_key_exists($paymentName, $paymentFactories)) {
                 throw new Exception('Invalid payment method');
             }
 
@@ -185,7 +184,7 @@ final class Prepare
                     $invalid = 'payment.create.exception.amount_exceeds_balance';
                 }
 
-                if (!empty($invalid)) {
+                if (! empty($invalid)) {
                     $request->getSession()->getFlashbag()->add(FlashResponse::FLASH_DANGER, $invalid);
 
                     return new Template(
@@ -199,13 +198,13 @@ final class Prepare
                 }
             }
 
-            $data['capture_online'] = $data['capture_online'] ?? !array_key_exists($paymentName, $offlinePaymentFactories);
+            $data['capture_online'] = $data['capture_online'] ?? ! array_key_exists($paymentName, $offlinePaymentFactories);
 
             $payment = new Payment();
             $payment->setInvoice($invoice);
             $payment->setStatus(Status::STATUS_NEW);
             $payment->setMethod($data['payment_method']);
-            /** @var \Money\Money $money */
+            /** @var Money $money */
             $money = $data['amount'];
             $payment->setTotalAmount($money->getAmount());
             $payment->setCurrencyCode($money->getCurrency()->getCode());
@@ -258,7 +257,7 @@ final class Prepare
             return null;
         }
 
-        if (!is_object($user = $token->getUser())) {
+        if (! is_object($user = $token->getUser())) {
             return null;
         }
 

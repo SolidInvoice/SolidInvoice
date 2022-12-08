@@ -21,15 +21,12 @@ class ArchivableFilter extends SQLFilter
 {
     private const ARCHIVABLE_CLASS = Archivable::class;
 
-    /**
-     * {@inheritdoc}
-     */
     public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias)
     {
-        if (!in_array(self::ARCHIVABLE_CLASS, $targetEntity->reflClass->getTraitNames(), true)) {
+        if (! in_array(self::ARCHIVABLE_CLASS, $targetEntity->reflClass->getTraitNames(), true)) {
             return '';
         }
 
-        return $targetTableAlias.'.archived IS NULL';
+        return $targetTableAlias . '.archived IS NULL';
     }
 }

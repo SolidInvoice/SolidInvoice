@@ -26,19 +26,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ContactType
 {
     /**
-     * @var int
+     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Serialize\Groups({"client_api", "contact_api"})
      */
     private $id;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(name="name", type="string", length=45, unique=true, nullable=false)
+     * @ORM\Column(name="name", type="string", length=45, unique=true)
      * @Assert\NotBlank()
      * @Assert\Length(max=45)
      * @Serialize\Groups({"client_api", "contact_api"})
@@ -46,7 +46,7 @@ class ContactType
     private $name;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="type", type="string", length=45)
      * @Assert\NotBlank()
@@ -64,15 +64,16 @@ class ContactType
     private $options;
 
     /**
-     * @var bool
+     * @var bool|null
      *
+     * @ORM\Column(name="required", type="boolean")
      * @ORM\Column(name="required", type="boolean", nullable=false)
      * @Serialize\Groups({"none"})
      */
     private $required = false;
 
     /**
-     * @var AdditionalContactDetail[]|Collection<int, AdditionalContactDetail>
+     * @var Collection<int, AdditionalContactDetail>
      *
      * @ORM\OneToMany(targetEntity="AdditionalContactDetail", mappedBy="type", orphanRemoval=true)
      * @Serialize\Groups({"none"})
@@ -97,11 +98,6 @@ class ContactType
         return $this->id;
     }
 
-    /**
-     * Set name.
-     *
-     * @return ContactType
-     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -121,8 +117,6 @@ class ContactType
 
     /**
      * Set the contact type required.
-     *
-     * @return ContactType
      */
     public function setRequired(bool $required): self
     {
@@ -141,8 +135,6 @@ class ContactType
 
     /**
      * Add detail.
-     *
-     * @return ContactType
      */
     public function addDetail(AdditionalContactDetail $detail): self
     {
@@ -155,7 +147,7 @@ class ContactType
     /**
      * Get details.
      *
-     * @return AdditionalContactDetail[]|Collection<int, AdditionalContactDetail>
+     * @return Collection<int, AdditionalContactDetail>|null
      */
     public function getDetails(): ?Collection
     {
@@ -170,9 +162,6 @@ class ContactType
         return $this->type;
     }
 
-    /**
-     * @return ContactType
-     */
     public function setType(string $type): self
     {
         $this->type = $type;
@@ -188,9 +177,6 @@ class ContactType
         return $this->options;
     }
 
-    /**
-     * @return ContactType
-     */
     public function setOptions(array $options): self
     {
         $this->options = $options;

@@ -13,14 +13,16 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Menu;
 
+use Knp\Menu\ItemInterface;
+
 /**
  * Menu items for quotes.
  */
 class QuoteMenu
 {
-    public static function list()
+    public static function list(ItemInterface $item): ItemInterface
     {
-        return [
+        return $item->addChild(
             'quote.menu.list',
             [
                 'route' => '_quotes_index',
@@ -28,12 +30,12 @@ class QuoteMenu
                     'icon' => 'file-text-o',
                 ],
             ],
-        ];
+        );
     }
 
-    public static function create()
+    public static function create(ItemInterface $item): ItemInterface
     {
-        return [
+        return $item->addChild(
             'client.menu.create.quote',
             [
                 'extras' => [
@@ -41,6 +43,6 @@ class QuoteMenu
                 ],
                 'route' => '_quotes_create',
             ],
-        ];
+        );
     }
 }

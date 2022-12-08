@@ -24,11 +24,11 @@ class Builder extends AuthenticatedMenu
      *
      * @throws InvalidArgumentException
      */
-    public function sidebar(ItemInterface $menu)
+    public function sidebar(ItemInterface $menu): void
     {
         $menu->addHeader('Clients');
-        $menu->addChild(ClientMenu::list());
-        $menu->addChild(ClientMenu::add());
+        ClientMenu::list($menu);
+        ClientMenu::add($menu);
 
         $menu->addDivider();
     }

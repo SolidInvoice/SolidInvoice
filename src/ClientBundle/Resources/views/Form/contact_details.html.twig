@@ -11,7 +11,7 @@
     <div class="input-group-btn input-group-select">
         <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
             <span class="concept">
-    		{% for type in contactTypes if type.id == form.type.vars.value %}
+    		{% for type in contactTypes|filter((v) => v.id == form.type.vars.value) %}
                     {{ type.name|title }}
                 {% else %}
                     {{ 'client.contact.details.choose'|trans }}

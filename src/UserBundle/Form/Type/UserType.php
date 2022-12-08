@@ -23,12 +23,12 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+/**
+ * @see \SolidInvoice\UserBundle\Tests\Form\Type\UserTypeTest
+ */
 class UserType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('username', null, ['required' => true]);
         $builder->add('email', EmailType::class, ['required' => true]);
@@ -48,10 +48,7 @@ class UserType extends AbstractType
         $builder->add('enabled', CheckboxType::class, ['required' => false]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefault('data_class', User::class);
     }

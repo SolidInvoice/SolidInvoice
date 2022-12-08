@@ -27,17 +27,17 @@ class TwilioHandlerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    public function testShouldHandle()
+    public function testShouldHandle(): void
     {
         $client = M::mock(Client::class);
         $config = M::mock(SystemConfig::class);
         $handler = new TwilioHandler($client, $config);
 
-        static::assertTrue($handler->shouldHandle(new TwilioNotification('1234567890', 'test')));
-        static::assertFalse($handler->shouldHandle(new Notification('Test')));
+        self::assertTrue($handler->shouldHandle(new TwilioNotification('1234567890', 'test')));
+        self::assertFalse($handler->shouldHandle(new Notification('Test')));
     }
 
-    public function testHandle()
+    public function testHandle(): void
     {
         $client = M::mock(Client::class);
         $messageList = M::mock(MessageList::class);
@@ -57,7 +57,7 @@ class TwilioHandlerTest extends TestCase
         $handler->handle(new TwilioNotification('1234567890', 'Test Message'));
     }
 
-    public function testHandleWithEmptyNumber()
+    public function testHandleWithEmptyNumber(): void
     {
         $client = M::mock(Client::class);
         $messageList = M::mock(MessageList::class);

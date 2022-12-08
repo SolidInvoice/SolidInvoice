@@ -19,12 +19,6 @@
     </h4>
 {% endif %}
 
-<div class="container">
-    <div class="collapse navbar-collapse" id="top_menu">
-        {{ menu('top', {'attr' : {'class' : 'nav navbar-nav navbar-right'}}) }}
-    </div>
-</div>
-
 {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
     <div class="btn-group float-right" id="top-menu-create-button">
         <button class="btn btn-info btn-sm dropdown-toggle m-0" type="button" data-toggle="dropdown">

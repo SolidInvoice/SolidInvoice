@@ -1,0 +1,2631 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Return type \\(Money\\\\Money\\) of method SolidInvoice\\\\ApiBundle\\\\Serializer\\\\Normalizer\\\\CreditNormalizer\\:\\:normalize\\(\\) should be compatible with return type \\(array\\|bool\\|float\\|int\\|string\\|null\\) of method Symfony\\\\Component\\\\Serializer\\\\Normalizer\\\\NormalizerInterface\\:\\:normalize\\(\\)$#"
+			count: 1
+			path: src/ApiBundle/Serializer/Normalizer/CreditNormalizer.php
+
+		-
+			message: "#^Property SolidInvoice\\\\ApiBundle\\\\Serializer\\\\Normalizer\\\\DiscountNormalizer\\:\\:\\$currency is never read, only written\\.$#"
+			count: 1
+			path: src/ApiBundle/Serializer/Normalizer/DiscountNormalizer.php
+
+		-
+			message: "#^Property SolidInvoice\\\\ApiBundle\\\\Serializer\\\\Normalizer\\\\DiscountNormalizer\\:\\:\\$formatter \\(SolidInvoice\\\\MoneyBundle\\\\Formatter\\\\MoneyFormatter\\) does not accept SolidInvoice\\\\MoneyBundle\\\\Formatter\\\\MoneyFormatterInterface\\.$#"
+			count: 1
+			path: src/ApiBundle/Serializer/Normalizer/DiscountNormalizer.php
+
+		-
+			message: "#^Property SolidInvoice\\\\ApiBundle\\\\Serializer\\\\Normalizer\\\\DiscountNormalizer\\:\\:\\$formatter is never read, only written\\.$#"
+			count: 1
+			path: src/ApiBundle/Serializer/Normalizer/DiscountNormalizer.php
+
+		-
+			message: "#^Property SolidInvoice\\\\ApiBundle\\\\Serializer\\\\Normalizer\\\\DiscountNormalizer\\:\\:\\$normalizer is never read, only written\\.$#"
+			count: 1
+			path: src/ApiBundle/Serializer/Normalizer/DiscountNormalizer.php
+
+		-
+			message: "#^Property SolidInvoice\\\\ApiBundle\\\\Serializer\\\\Normalizer\\\\MoneyNormalizer\\:\\:\\$formatter \\(SolidInvoice\\\\MoneyBundle\\\\Formatter\\\\MoneyFormatter\\) does not accept SolidInvoice\\\\MoneyBundle\\\\Formatter\\\\MoneyFormatterInterface\\.$#"
+			count: 1
+			path: src/ApiBundle/Serializer/Normalizer/MoneyNormalizer.php
+
+		-
+			message: "#^Property SolidInvoice\\\\ApiBundle\\\\Serializer\\\\Normalizer\\\\MoneyNormalizer\\:\\:\\$normalizer is never read, only written\\.$#"
+			count: 1
+			path: src/ApiBundle/Serializer/Normalizer/MoneyNormalizer.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ApiBundle\\\\Test\\\\ApiTestCase\\:\\:requestDelete\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/ApiBundle/Test/ApiTestCase.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ApiBundle\\\\Test\\\\ApiTestCase\\:\\:requestDelete\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ApiBundle/Test/ApiTestCase.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ApiBundle\\\\Test\\\\ApiTestCase\\:\\:requestGet\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ApiBundle/Test/ApiTestCase.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ApiBundle\\\\Test\\\\ApiTestCase\\:\\:requestGet\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ApiBundle/Test/ApiTestCase.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ApiBundle\\\\Test\\\\ApiTestCase\\:\\:requestPost\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ApiBundle/Test/ApiTestCase.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ApiBundle\\\\Test\\\\ApiTestCase\\:\\:requestPost\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ApiBundle/Test/ApiTestCase.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ApiBundle\\\\Test\\\\ApiTestCase\\:\\:requestPost\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ApiBundle/Test/ApiTestCase.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ApiBundle\\\\Test\\\\ApiTestCase\\:\\:requestPut\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ApiBundle/Test/ApiTestCase.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ApiBundle\\\\Test\\\\ApiTestCase\\:\\:requestPut\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ApiBundle/Test/ApiTestCase.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ApiBundle\\\\Test\\\\ApiTestCase\\:\\:requestPut\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ApiBundle/Test/ApiTestCase.php
+
+		-
+			message: "#^Property SolidInvoice\\\\ApiBundle\\\\Tests\\\\Serializer\\\\Normalizer\\\\AdditionalContactDetailsNormalizerTest\\:\\:\\$em \\(Doctrine\\\\ORM\\\\EntityManager&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Persistence\\\\ObjectManager\\.$#"
+			count: 1
+			path: src/ApiBundle/Tests/Serializer/Normalizer/AdditionalContactDetailsNormalizerTest.php
+
+		-
+			message: "#^Property SolidInvoice\\\\ApiBundle\\\\Tests\\\\Serializer\\\\Normalizer\\\\AdditionalContactDetailsNormalizerTest\\:\\:\\$registry \\(Doctrine\\\\Persistence\\\\ManagerRegistry&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Registry\\.$#"
+			count: 1
+			path: src/ApiBundle/Tests/Serializer/Normalizer/AdditionalContactDetailsNormalizerTest.php
+
+		-
+			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with 123 and SolidInvoice\\\\ClientBundle\\\\Entity\\\\Credit will always evaluate to false\\.$#"
+			count: 1
+			path: src/ApiBundle/Tests/Serializer/Normalizer/CreditNormalizerTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Ajax\\\\Address\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/ClientBundle/Action/Ajax/Address.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Ajax\\\\Address\\:\\:serialize\\(\\) has parameter \\$groups with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ClientBundle/Action/Ajax/Address.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: src/ClientBundle/Action/Ajax/Address.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Ajax\\\\Address\\\\AddressList\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/ClientBundle/Action/Ajax/Address/AddressList.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Ajax\\\\Address\\\\AddressList\\:\\:serialize\\(\\) has parameter \\$groups with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ClientBundle/Action/Ajax/Address/AddressList.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: src/ClientBundle/Action/Ajax/Address/AddressList.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Ajax\\\\Address\\\\Delete\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/ClientBundle/Action/Ajax/Address/Delete.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Ajax\\\\Address\\\\Delete\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ClientBundle/Action/Ajax/Address/Delete.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Ajax\\\\Address\\\\Edit\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/ClientBundle/Action/Ajax/Address/Edit.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Ajax\\\\Address\\\\Edit\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ClientBundle/Action/Ajax/Address/Edit.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: src/ClientBundle/Action/Ajax/Address/Edit.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Ajax\\\\Contact\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/ClientBundle/Action/Ajax/Contact.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Ajax\\\\Contact\\:\\:serialize\\(\\) has parameter \\$groups with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ClientBundle/Action/Ajax/Contact.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: src/ClientBundle/Action/Ajax/Contact.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Ajax\\\\Contact\\\\Add\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/ClientBundle/Action/Ajax/Contact/Add.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Ajax\\\\Contact\\\\Delete\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/ClientBundle/Action/Ajax/Contact/Delete.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Ajax\\\\Contact\\\\Delete\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ClientBundle/Action/Ajax/Contact/Delete.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Ajax\\\\Contact\\\\Edit\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/ClientBundle/Action/Ajax/Contact/Edit.php
+
+		-
+			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
+			count: 1
+			path: src/ClientBundle/Action/Ajax/Credit.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Ajax\\\\Credit\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ClientBundle/Action/Ajax/Credit.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Ajax\\\\Credit\\:\\:toJson\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/ClientBundle/Action/Ajax/Credit.php
+
+		-
+			message: "#^Property SolidInvoice\\\\ClientBundle\\\\Action\\\\Ajax\\\\Credit\\:\\:\\$formatter \\(SolidInvoice\\\\MoneyBundle\\\\Formatter\\\\MoneyFormatter\\) does not accept SolidInvoice\\\\MoneyBundle\\\\Formatter\\\\MoneyFormatterInterface\\.$#"
+			count: 1
+			path: src/ClientBundle/Action/Ajax/Credit.php
+
+		-
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\HttpFoundation\\\\Session\\\\SessionInterface\\:\\:getFlashBag\\(\\)\\.$#"
+			count: 1
+			path: src/ClientBundle/Action/Ajax/Delete.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Ajax\\\\Delete\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ClientBundle/Action/Ajax/Delete.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Ajax\\\\Info\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/ClientBundle/Action/Ajax/Info.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Ajax\\\\Info\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ClientBundle/Action/Ajax/Info.php
+
+		-
+			message: "#^Property SolidInvoice\\\\ClientBundle\\\\Action\\\\Ajax\\\\Info\\:\\:\\$formatter \\(SolidInvoice\\\\MoneyBundle\\\\Formatter\\\\MoneyFormatter\\) does not accept SolidInvoice\\\\MoneyBundle\\\\Formatter\\\\MoneyFormatterInterface\\.$#"
+			count: 1
+			path: src/ClientBundle/Action/Ajax/Info.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Grid\\\\Archive\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ClientBundle/Action/Grid/Archive.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Grid\\\\Delete\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ClientBundle/Action/Grid/Delete.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Grid\\\\Restore\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ClientBundle/Action/Grid/Restore.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Index\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/ClientBundle/Action/Index.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Entity\\\\Address\\:\\:fromArray\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ClientBundle/Entity/Address.php
+
+		-
+			message: "#^Property SolidInvoice\\\\ClientBundle\\\\Entity\\\\Address\\:\\:\\$countryName is unused\\.$#"
+			count: 1
+			path: src/ClientBundle/Entity/Address.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Entity\\\\Client\\:\\:archive\\(\\) has invalid return type SolidInvoice\\\\CoreBundle\\\\Traits\\\\Entity\\\\Archivable\\.$#"
+			count: 1
+			path: src/ClientBundle/Entity/Client.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Entity\\\\Client\\:\\:getContacts\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
+			count: 1
+			path: src/ClientBundle/Entity/Client.php
+
+		-
+			message: "#^PHPDoc tag @return with type \\$this\\(SolidInvoice\\\\ClientBundle\\\\Entity\\\\Client\\)\\|SolidInvoice\\\\CoreBundle\\\\Traits\\\\Entity\\\\Archivable is not subtype of native type SolidInvoice\\\\ClientBundle\\\\Entity\\\\Client\\.$#"
+			count: 1
+			path: src/ClientBundle/Entity/Client.php
+
+		-
+			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
+			count: 1
+			path: src/ClientBundle/Entity/Contact.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Entity\\\\Contact\\:\\:getInvoices\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
+			count: 1
+			path: src/ClientBundle/Entity/Contact.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Entity\\\\Contact\\:\\:getQuotes\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
+			count: 1
+			path: src/ClientBundle/Entity/Contact.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Entity\\\\Contact\\:\\:getRecurringInvoices\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
+			count: 1
+			path: src/ClientBundle/Entity/Contact.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Entity\\\\ContactType\\:\\:getOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ClientBundle/Entity/ContactType.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Entity\\\\ContactType\\:\\:setOptions\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ClientBundle/Entity/ContactType.php
+
+		-
+			message: "#^Property SolidInvoice\\\\ClientBundle\\\\Entity\\\\ContactType\\:\\:\\$options type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ClientBundle/Entity/ContactType.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Form\\\\ConstraintBuilder\\:\\:build\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ClientBundle/Form/ConstraintBuilder.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Form\\\\ConstraintBuilder\\:\\:build\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ClientBundle/Form/ConstraintBuilder.php
+
+		-
+			message: "#^Class SolidInvoice\\\\ClientBundle\\\\Form\\\\DataTransformer\\\\ContactTypeTransformer implements generic interface Symfony\\\\Component\\\\Form\\\\DataTransformerInterface but does not specify its types\\: T, R$#"
+			count: 1
+			path: src/ClientBundle/Form/DataTransformer/ContactTypeTransformer.php
+
+		-
+			message: "#^If condition is always true\\.$#"
+			count: 1
+			path: src/ClientBundle/Form/DataTransformer/ContactTypeTransformer.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Form\\\\DataTransformer\\\\ContactTypeTransformer\\:\\:__construct\\(\\) has parameter \\$types with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ClientBundle/Form/DataTransformer/ContactTypeTransformer.php
+
+		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			count: 1
+			path: src/ClientBundle/Form/DataTransformer/ContactTypeTransformer.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: src/ClientBundle/Form/Handler/AbstractClientFormHandler.php
+
+		-
+			message: "#^Parameter \\#2 \\$default of method SolidWorx\\\\FormHandler\\\\Options\\:\\:get\\(\\) expects null, SolidInvoice\\\\ClientBundle\\\\Entity\\\\Client given\\.$#"
+			count: 1
+			path: src/ClientBundle/Form/Handler/AbstractClientFormHandler.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Form\\\\Handler\\\\AbstractContactFormHandler\\:\\:serialize\\(\\) has parameter \\$groups with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ClientBundle/Form/Handler/AbstractContactFormHandler.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 2
+			path: src/ClientBundle/Form/Handler/AbstractContactFormHandler.php
+
+		-
+			message: "#^Class SolidInvoice\\\\ClientBundle\\\\Form\\\\ViewTransformer\\\\ContactTypeTransformer implements generic interface Symfony\\\\Component\\\\Form\\\\DataTransformerInterface but does not specify its types\\: T, R$#"
+			count: 1
+			path: src/ClientBundle/Form/ViewTransformer/ContactTypeTransformer.php
+
+		-
+			message: "#^Class SolidInvoice\\\\ClientBundle\\\\Repository\\\\ContactRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#"
+			count: 1
+			path: src/ClientBundle/Repository/ContactRepository.php
+
+		-
+			message: "#^Class SolidInvoice\\\\ClientBundle\\\\Repository\\\\ContactTypeRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#"
+			count: 1
+			path: src/ClientBundle/Repository/ContactTypeRepository.php
+
+		-
+			message: "#^Class SolidInvoice\\\\ClientBundle\\\\Repository\\\\CreditRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#"
+			count: 1
+			path: src/ClientBundle/Repository/CreditRepository.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Tests\\\\Form\\\\Handler\\\\ClientCreateFormHandlerTest\\:\\:getFormData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ClientBundle/Tests/Form/Handler/ClientCreateFormHandlerTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Tests\\\\Form\\\\Handler\\\\ClientEditFormHandlerTest\\:\\:getFormData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ClientBundle/Tests/Form/Handler/ClientEditFormHandlerTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Tests\\\\Form\\\\Handler\\\\ClientEditFormHandlerTest\\:\\:getHandlerOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ClientBundle/Tests/Form/Handler/ClientEditFormHandlerTest.php
+
+		-
+			message: "#^Property SolidInvoice\\\\ClientBundle\\\\Tests\\\\Form\\\\Handler\\\\ClientEditFormHandlerTest\\:\\:\\$clientName has no type specified\\.$#"
+			count: 1
+			path: src/ClientBundle/Tests/Form/Handler/ClientEditFormHandlerTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Tests\\\\Form\\\\Handler\\\\ContactAddFormHandlerTest\\:\\:getFormData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ClientBundle/Tests/Form/Handler/ContactAddFormHandlerTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Tests\\\\Form\\\\Handler\\\\ContactAddFormHandlerTest\\:\\:getHandlerOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ClientBundle/Tests/Form/Handler/ContactAddFormHandlerTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Tests\\\\Form\\\\Handler\\\\ContactEditFormHandlerTest\\:\\:getFormData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ClientBundle/Tests/Form/Handler/ContactEditFormHandlerTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Tests\\\\Form\\\\Handler\\\\ContactEditFormHandlerTest\\:\\:getHandlerOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/ClientBundle/Tests/Form/Handler/ContactEditFormHandlerTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Tests\\\\Form\\\\Type\\\\ClientTypeTest\\:\\:getExtensions\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/ClientBundle/Tests/Form/Type/ClientTypeTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Tests\\\\Form\\\\Type\\\\ContactDetailTypeTest\\:\\:getExtensions\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/ClientBundle/Tests/Form/Type/ContactDetailTypeTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Tests\\\\Form\\\\Type\\\\ContactTypeTest\\:\\:getExtensions\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/ClientBundle/Tests/Form/Type/ContactTypeTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Action\\\\ViewBilling\\:\\:createResponse\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/CoreBundle/Action/ViewBilling.php
+
+		-
+			message: "#^Unable to resolve the template type T in call to method Doctrine\\\\Persistence\\\\ManagerRegistry\\:\\:getRepository\\(\\)$#"
+			count: 1
+			path: src/CoreBundle/Action/ViewBilling.php
+
+		-
+			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Billing\\\\TotalCalculator\\:\\:calculateTotals\\(\\) has parameter \\$entity with no type specified\\.$#"
+			count: 1
+			path: src/CoreBundle/Billing/TotalCalculator.php
+
+		-
+			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Billing\\\\TotalCalculator\\:\\:updateTotal\\(\\) has parameter \\$entity with no type specified\\.$#"
+			count: 1
+			path: src/CoreBundle/Billing/TotalCalculator.php
+
+		-
+			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Command\\\\YamlFormatCommand\\:\\:findFiles\\(\\) return type has no value type specified in iterable type iterable\\.$#"
+			count: 1
+			path: src/CoreBundle/Command/YamlFormatCommand.php
+
+		-
+			message: "#^Method SolidInvoice\\\\CoreBundle\\\\ConfigWriter\\:\\:dump\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/CoreBundle/ConfigWriter.php
+
+		-
+			message: "#^Method SolidInvoice\\\\CoreBundle\\\\ConfigWriter\\:\\:getConfigValues\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/CoreBundle/ConfigWriter.php
+
+		-
+			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Entity\\\\Discount\\:\\:getValue\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/CoreBundle/Entity/Discount.php
+
+		-
+			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Entity\\\\Discount\\:\\:setValue\\(\\) has parameter \\$value with no type specified\\.$#"
+			count: 1
+			path: src/CoreBundle/Entity/Discount.php
+
+		-
+			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Form\\\\FieldRenderer\\:\\:render\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/CoreBundle/Form/FieldRenderer.php
+
+		-
+			message: "#^Class SolidInvoice\\\\CoreBundle\\\\Form\\\\Transformer\\\\DiscountTransformer implements generic interface Symfony\\\\Component\\\\Form\\\\DataTransformerInterface but does not specify its types\\: T, R$#"
+			count: 1
+			path: src/CoreBundle/Form/Transformer/DiscountTransformer.php
+
+		-
+			message: "#^Property class@anonymous/CoreBundle/Form/Type/ImageUploadType\\.php\\:28\\:\\:\\$file has no type specified\\.$#"
+			count: 1
+			path: src/CoreBundle/Form/Type/ImageUploadType.php
+
+		-
+			message: "#^Result of && is always true\\.$#"
+			count: 1
+			path: src/CoreBundle/Listener/DoctrineExtensionListener.php
+
+		-
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\HttpFoundation\\\\Session\\\\SessionInterface\\:\\:getFlashBag\\(\\)\\.$#"
+			count: 1
+			path: src/CoreBundle/Listener/SessionRequestListener.php
+
+		-
+			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Logger\\\\Dbal\\\\TraceLogger\\:\\:formatTrace\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/CoreBundle/Logger/Dbal/TraceLogger.php
+
+		-
+			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Logger\\\\Dbal\\\\TraceLogger\\:\\:formatTrace\\(\\) has parameter \\$trace with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/CoreBundle/Logger/Dbal/TraceLogger.php
+
+		-
+			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Logger\\\\Dbal\\\\TraceLogger\\:\\:getBactrace\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/CoreBundle/Logger/Dbal/TraceLogger.php
+
+		-
+			message: "#^Property SolidInvoice\\\\CoreBundle\\\\Logger\\\\Dbal\\\\TraceLogger\\:\\:\\$queries type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/CoreBundle/Logger/Dbal/TraceLogger.php
+
+		-
+			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Model\\\\Status\\:\\:getStatusList\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/CoreBundle/Model/Status.php
+
+		-
+			message: "#^Property SolidInvoice\\\\CoreBundle\\\\Model\\\\Status\\:\\:\\$statusLabels type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/CoreBundle/Model/Status.php
+
+		-
+			message: "#^Class SolidInvoice\\\\CoreBundle\\\\Repository\\\\StatusRepository extends generic class Doctrine\\\\ORM\\\\EntityRepository but does not specify its types\\: TEntityClass$#"
+			count: 1
+			path: src/CoreBundle/Repository/StatusRepository.php
+
+		-
+			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Repository\\\\StatusRepository\\:\\:getStatusList\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/CoreBundle/Repository/StatusRepository.php
+
+		-
+			message: "#^Class SolidInvoice\\\\CoreBundle\\\\Repository\\\\VersionRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#"
+			count: 1
+			path: src/CoreBundle/Repository/VersionRepository.php
+
+		-
+			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Repository\\\\VersionRepository\\:\\:updateVersion\\(\\) has parameter \\$version with no type specified\\.$#"
+			count: 1
+			path: src/CoreBundle/Repository/VersionRepository.php
+
+		-
+			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Response\\\\PdfResponse\\:\\:__construct\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/CoreBundle/Response/PdfResponse.php
+
+		-
+			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Templating\\\\Template\\:\\:__construct\\(\\) has parameter \\$params with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/CoreBundle/Templating/Template.php
+
+		-
+			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Templating\\\\Template\\:\\:getParams\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/CoreBundle/Templating/Template.php
+
+		-
+			message: "#^Property SolidInvoice\\\\CoreBundle\\\\Templating\\\\Template\\:\\:\\$params type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/CoreBundle/Templating/Template.php
+
+		-
+			message: "#^Property SolidInvoice\\\\CoreBundle\\\\Tests\\\\Billing\\\\TotalCalculatorTest\\:\\:\\$em \\(Doctrine\\\\ORM\\\\EntityManager&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Persistence\\\\ObjectManager\\.$#"
+			count: 1
+			path: src/CoreBundle/Tests/Billing/TotalCalculatorTest.php
+
+		-
+			message: "#^Property SolidInvoice\\\\CoreBundle\\\\Tests\\\\Billing\\\\TotalCalculatorTest\\:\\:\\$registry \\(Doctrine\\\\Persistence\\\\ManagerRegistry&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Registry\\.$#"
+			count: 1
+			path: src/CoreBundle/Tests/Billing/TotalCalculatorTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Tests\\\\Form\\\\Type\\\\DiscountTypeTest\\:\\:discountProvider\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/CoreBundle/Tests/Form/Type/DiscountTypeTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Tests\\\\Form\\\\Type\\\\DiscountTypeTest\\:\\:getExtensions\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/CoreBundle/Tests/Form/Type/DiscountTypeTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Tests\\\\FormTestCase\\:\\:assertFormData\\(\\) has parameter \\$form with no type specified\\.$#"
+			count: 1
+			path: src/CoreBundle/Tests/FormTestCase.php
+
+		-
+			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Tests\\\\FormTestCase\\:\\:assertFormData\\(\\) has parameter \\$formData with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/CoreBundle/Tests/FormTestCase.php
+
+		-
+			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Tests\\\\FormTestCase\\:\\:assertFormData\\(\\) has parameter \\$object with no type specified\\.$#"
+			count: 1
+			path: src/CoreBundle/Tests/FormTestCase.php
+
+		-
+			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Tests\\\\FormTestCase\\:\\:getInternalExtension\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/CoreBundle/Tests/FormTestCase.php
+
+		-
+			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Tests\\\\FormTestCase\\:\\:getTypedExtensions\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/CoreBundle/Tests/FormTestCase.php
+
+		-
+			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Tests\\\\FormTestCase\\:\\:getTypes\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/CoreBundle/Tests/FormTestCase.php
+
+		-
+			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Tests\\\\FormTestCase\\:\\:testSubmit\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/CoreBundle/Tests/FormTestCase.php
+
+		-
+			message: "#^Property SolidInvoice\\\\CoreBundle\\\\Tests\\\\FormTestCase\\:\\:\\$em \\(Doctrine\\\\ORM\\\\EntityManager&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Persistence\\\\ObjectManager\\.$#"
+			count: 1
+			path: src/CoreBundle/Tests/FormTestCase.php
+
+		-
+			message: "#^Property SolidInvoice\\\\CoreBundle\\\\Tests\\\\FormTestCase\\:\\:\\$registry \\(Doctrine\\\\Persistence\\\\ManagerRegistry&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Registry\\.$#"
+			count: 1
+			path: src/CoreBundle/Tests/FormTestCase.php
+
+		-
+			message: "#^Property SolidInvoice\\\\CoreBundle\\\\Tests\\\\KernelAwareTest\\:\\:\\$container \\(Symfony\\\\Component\\\\DependencyInjection\\\\Container\\) does not accept Symfony\\\\Component\\\\DependencyInjection\\\\ContainerInterface\\.$#"
+			count: 1
+			path: src/CoreBundle/Tests/KernelAwareTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Util\\\\ArrayUtil\\:\\:column\\(\\) has parameter \\$array with no value type specified in iterable type Traversable\\.$#"
+			count: 1
+			path: src/CoreBundle/Util/ArrayUtil.php
+
+		-
+			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Util\\\\ArrayUtil\\:\\:column\\(\\) has parameter \\$array with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/CoreBundle/Util/ArrayUtil.php
+
+		-
+			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Util\\\\ArrayUtil\\:\\:column\\(\\) has parameter \\$array with no value type specified in iterable type array\\|Traversable\\.$#"
+			count: 1
+			path: src/CoreBundle/Util/ArrayUtil.php
+
+		-
+			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Util\\\\ArrayUtil\\:\\:column\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/CoreBundle/Util/ArrayUtil.php
+
+		-
+			message: "#^Result of && is always false\\.$#"
+			count: 1
+			path: src/CoreBundle/Util/ArrayUtil.php
+
+		-
+			message: "#^Method SolidInvoice\\\\CronBundle\\\\CommandInterface\\:\\:process\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/CronBundle/CommandInterface.php
+
+		-
+			message: "#^Method SolidInvoice\\\\DashboardBundle\\\\WidgetFactory\\:\\:get\\(\\) return type with generic class SplPriorityQueue does not specify its types\\: TPriority, TValue$#"
+			count: 1
+			path: src/DashboardBundle/WidgetFactory.php
+
+		-
+			message: "#^Property SolidInvoice\\\\DashboardBundle\\\\WidgetFactory\\:\\:\\$locations has no type specified\\.$#"
+			count: 1
+			path: src/DashboardBundle/WidgetFactory.php
+
+		-
+			message: "#^Property SolidInvoice\\\\DashboardBundle\\\\WidgetFactory\\:\\:\\$queues with generic class SplPriorityQueue does not specify its types\\: TPriority, TValue$#"
+			count: 1
+			path: src/DashboardBundle/WidgetFactory.php
+
+		-
+			message: "#^Method SolidInvoice\\\\DashboardBundle\\\\Widgets\\\\RecentClientsWidget\\:\\:getData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/DashboardBundle/Widgets/RecentClientsWidget.php
+
+		-
+			message: "#^Method SolidInvoice\\\\DashboardBundle\\\\Widgets\\\\RecentInvoicesWidget\\:\\:getData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/DashboardBundle/Widgets/RecentInvoicesWidget.php
+
+		-
+			message: "#^Method SolidInvoice\\\\DashboardBundle\\\\Widgets\\\\RecentPaymentsWidget\\:\\:getData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/DashboardBundle/Widgets/RecentPaymentsWidget.php
+
+		-
+			message: "#^Method SolidInvoice\\\\DashboardBundle\\\\Widgets\\\\RecentQuotesWidget\\:\\:getData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/DashboardBundle/Widgets/RecentQuotesWidget.php
+
+		-
+			message: "#^Method SolidInvoice\\\\DashboardBundle\\\\Widgets\\\\StatsWidget\\:\\:getData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/DashboardBundle/Widgets/StatsWidget.php
+
+		-
+			message: "#^Method SolidInvoice\\\\DashboardBundle\\\\Widgets\\\\WidgetInterface\\:\\:getData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/DashboardBundle/Widgets/WidgetInterface.php
+
+		-
+			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\Action\\\\Data\\:\\:serialize\\(\\) has parameter \\$groups with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/DataGridBundle/Action/Data.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: src/DataGridBundle/Action/Data.php
+
+		-
+			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\DependencyInjection\\\\CompilerPass\\\\GridDefinitionCompilerPass\\:\\:getFilterService\\(\\) has parameter \\$gridData with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/DataGridBundle/DependencyInjection/CompilerPass/GridDefinitionCompilerPass.php
+
+		-
+			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\DependencyInjection\\\\CompilerPass\\\\GridDefinitionCompilerPass\\:\\:getGridSource\\(\\) has parameter \\$arguments with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/DataGridBundle/DependencyInjection/CompilerPass/GridDefinitionCompilerPass.php
+
+		-
+			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\DependencyInjection\\\\CompilerPass\\\\GridDefinitionCompilerPass\\:\\:processConfiguration\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/DataGridBundle/DependencyInjection/CompilerPass/GridDefinitionCompilerPass.php
+
+		-
+			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\DependencyInjection\\\\CompilerPass\\\\GridDefinitionCompilerPass\\:\\:processConfiguration\\(\\) has parameter \\$grid with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/DataGridBundle/DependencyInjection/CompilerPass/GridDefinitionCompilerPass.php
+
+		-
+			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\DependencyInjection\\\\CompilerPass\\\\GridDefinitionCompilerPass\\:\\:setGridDefinition\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/DataGridBundle/DependencyInjection/CompilerPass/GridDefinitionCompilerPass.php
+
+		-
+			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\Filter\\\\SearchFilter\\:\\:__construct\\(\\) has parameter \\$searchFields with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/DataGridBundle/Filter/SearchFilter.php
+
+		-
+			message: "#^Property SolidInvoice\\\\DataGridBundle\\\\Filter\\\\SearchFilter\\:\\:\\$searchFields type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/DataGridBundle/Filter/SearchFilter.php
+
+		-
+			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\Grid\\:\\:__construct\\(\\) has parameter \\$gridData with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/DataGridBundle/Grid.php
+
+		-
+			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\Grid\\:\\:fetchData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/DataGridBundle/Grid.php
+
+		-
+			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\Grid\\:\\:setParameters\\(\\) has parameter \\$params with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/DataGridBundle/Grid.php
+
+		-
+			message: "#^Property SolidInvoice\\\\DataGridBundle\\\\Grid\\:\\:\\$actions type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/DataGridBundle/Grid.php
+
+		-
+			message: "#^Property SolidInvoice\\\\DataGridBundle\\\\Grid\\:\\:\\$columns with generic class Doctrine\\\\Common\\\\Collections\\\\ArrayCollection does not specify its types\\: TKey, T$#"
+			count: 1
+			path: src/DataGridBundle/Grid.php
+
+		-
+			message: "#^Property SolidInvoice\\\\DataGridBundle\\\\Grid\\:\\:\\$lineActions type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/DataGridBundle/Grid.php
+
+		-
+			message: "#^Property SolidInvoice\\\\DataGridBundle\\\\Grid\\:\\:\\$moneyFormatter \\(SolidInvoice\\\\MoneyBundle\\\\Formatter\\\\MoneyFormatter\\) does not accept SolidInvoice\\\\MoneyBundle\\\\Formatter\\\\MoneyFormatterInterface\\.$#"
+			count: 1
+			path: src/DataGridBundle/Grid.php
+
+		-
+			message: "#^Property SolidInvoice\\\\DataGridBundle\\\\Grid\\:\\:\\$parameters type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/DataGridBundle/Grid.php
+
+		-
+			message: "#^Property SolidInvoice\\\\DataGridBundle\\\\Grid\\:\\:\\$properties type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/DataGridBundle/Grid.php
+
+		-
+			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\GridInterface\\:\\:fetchData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/DataGridBundle/GridInterface.php
+
+		-
+			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\GridInterface\\:\\:setParameters\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/DataGridBundle/GridInterface.php
+
+		-
+			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\GridInterface\\:\\:setParameters\\(\\) has parameter \\$params with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/DataGridBundle/GridInterface.php
+
+		-
+			message: "#^PHPDoc tag @return with type mixed is not subtype of native type array\\.$#"
+			count: 1
+			path: src/DataGridBundle/GridInterface.php
+
+		-
+			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\Source\\\\ORMSource\\:\\:fetch\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/DataGridBundle/Source/ORMSource.php
+
+		-
+			message: "#^Unable to resolve the template type T in call to method Doctrine\\\\Persistence\\\\ManagerRegistry\\:\\:getRepository\\(\\)$#"
+			count: 1
+			path: src/DataGridBundle/Source/ORMSource.php
+
+		-
+			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\Source\\\\SourceInterface\\:\\:fetch\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/DataGridBundle/Source/SourceInterface.php
+
+		-
+			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\Tests\\\\DependencyInjection\\\\GridConfigurationTest\\:\\:getConfiguration\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/DataGridBundle/Tests/DependencyInjection/GridConfigurationTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\Tests\\\\DependencyInjection\\\\GridConfigurationTest\\:\\:invalidConfigProvider\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/DataGridBundle/Tests/DependencyInjection/GridConfigurationTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\Tests\\\\DependencyInjection\\\\GridConfigurationTest\\:\\:testInvalidGridConfig\\(\\) has parameter \\$config with no type specified\\.$#"
+			count: 1
+			path: src/DataGridBundle/Tests/DependencyInjection/GridConfigurationTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\Tests\\\\DependencyInjection\\\\GridConfigurationTest\\:\\:testInvalidGridConfig\\(\\) has parameter \\$message with no type specified\\.$#"
+			count: 1
+			path: src/DataGridBundle/Tests/DependencyInjection/GridConfigurationTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\Tests\\\\DependencyInjection\\\\GridConfigurationTest\\:\\:testValidGridConfig\\(\\) has parameter \\$config with no type specified\\.$#"
+			count: 1
+			path: src/DataGridBundle/Tests/DependencyInjection/GridConfigurationTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\Tests\\\\DependencyInjection\\\\GridConfigurationTest\\:\\:validConfigProvider\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/DataGridBundle/Tests/DependencyInjection/GridConfigurationTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\FormBundle\\\\Test\\\\FormHandlerTestCase\\:\\:getExtensions\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/FormBundle/Test/FormHandlerTestCase.php
+
+		-
+			message: "#^Method SolidInvoice\\\\FormBundle\\\\Test\\\\FormHandlerTestCase\\:\\:getTypeExtensions\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/FormBundle/Test/FormHandlerTestCase.php
+
+		-
+			message: "#^Property SolidInvoice\\\\FormBundle\\\\Test\\\\FormHandlerTestCase\\:\\:\\$em \\(Doctrine\\\\ORM\\\\EntityManager&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Persistence\\\\ObjectManager\\.$#"
+			count: 1
+			path: src/FormBundle/Test/FormHandlerTestCase.php
+
+		-
+			message: "#^Property SolidInvoice\\\\FormBundle\\\\Test\\\\FormHandlerTestCase\\:\\:\\$registry \\(Doctrine\\\\Persistence\\\\ManagerRegistry&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Registry\\.$#"
+			count: 1
+			path: src/FormBundle/Test/FormHandlerTestCase.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InstallBundle\\\\Action\\\\Config\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/InstallBundle/Action/Config.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InstallBundle\\\\Action\\\\Config\\:\\:handleForm\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/InstallBundle/Action/Config.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InstallBundle\\\\Action\\\\Install\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/InstallBundle/Action/Install.php
+
+		-
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\Console\\\\Helper\\\\HelperInterface\\:\\:formatBlock\\(\\)\\.$#"
+			count: 1
+			path: src/InstallBundle/Command/InstallCommand.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InstallBundle\\\\Tests\\\\Form\\\\Step\\\\SystemInformationFormTest\\:\\:getExtensions\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/InstallBundle/Tests/Form/Step/SystemInformationFormTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InstallBundle\\\\Tests\\\\Functional\\\\InstallationTest\\:\\:continue\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/InstallBundle/Tests/Functional/InstallationTest.php
+
+		-
+			message: "#^Call to an undefined method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:getId\\(\\)\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Action/CloneInvoice.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\CloneInvoice\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Action/CloneInvoice.php
+
+		-
+			message: "#^Call to an undefined method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:getId\\(\\)\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Action/CloneRecurringInvoice.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\CloneRecurringInvoice\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Action/CloneRecurringInvoice.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\Create\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Action/Create.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\CreateRecurring\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Action/CreateRecurring.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\Edit\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Action/Edit.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\EditRecurring\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Action/EditRecurring.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\Fields\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Action/Fields.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\Fields\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Action/Fields.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\Grid\\\\Archive\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Action/Grid/Archive.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\Grid\\\\Archive\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Action/Grid/Archive.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\Grid\\\\Delete\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Action/Grid/Delete.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\Grid\\\\RecurringArchive\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Action/Grid/RecurringArchive.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\Grid\\\\RecurringArchive\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Action/Grid/RecurringArchive.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\Grid\\\\RecurringDelete\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Action/Grid/RecurringDelete.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\Index\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Action/Index.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\RecurringIndex\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Action/RecurringIndex.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\RecurringTransition\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Action/RecurringTransition.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Action/RecurringTransition.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\Transition\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Action/Transition.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Action/Transition.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\Transition\\\\Send\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Action/Transition/Send.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Action/Transition/Send.php
+
+		-
+			message: "#^Call to an undefined method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:getClient\\(\\)\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Cloner/InvoiceCloner.php
+
+		-
+			message: "#^Call to an undefined method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:getItems\\(\\)\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Cloner/InvoiceCloner.php
+
+		-
+			message: "#^Call to an undefined method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:getUsers\\(\\)\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Cloner/InvoiceCloner.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Cloner\\\\InvoiceCloner\\:\\:addItems\\(\\) return type has no value type specified in iterable type Traversable\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Cloner/InvoiceCloner.php
+
+		-
+			message: "#^Call to an undefined method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:getItems\\(\\)\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Cron/RecurringInvoiceCreate.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:setBaseTotal\\(\\) should return SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\Invoice but returns \\$this\\(SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\)\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Entity/BaseInvoice.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:setDiscount\\(\\) should return SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\Invoice but returns \\$this\\(SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\)\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Entity/BaseInvoice.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:setNotes\\(\\) should return SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\Invoice but returns \\$this\\(SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\)\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Entity/BaseInvoice.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:setStatus\\(\\) should return SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\Invoice but returns \\$this\\(SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\)\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Entity/BaseInvoice.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:setTax\\(\\) should return SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\Invoice but returns \\$this\\(SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\)\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Entity/BaseInvoice.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:setTerms\\(\\) should return SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\Invoice but returns \\$this\\(SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\)\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Entity/BaseInvoice.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:setTotal\\(\\) should return SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\Invoice but returns \\$this\\(SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\)\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Entity/BaseInvoice.php
+
+		-
+			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Entity/Invoice.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\Invoice\\:\\:archive\\(\\) has invalid return type SolidInvoice\\\\CoreBundle\\\\Traits\\\\Entity\\\\Archivable\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Entity/Invoice.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\Invoice\\:\\:getItems\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
+			count: 1
+			path: src/InvoiceBundle/Entity/Invoice.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\Invoice\\:\\:getUsers\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
+			count: 1
+			path: src/InvoiceBundle/Entity/Invoice.php
+
+		-
+			message: "#^PHPDoc tag @return with type \\$this\\(SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\Invoice\\)\\|SolidInvoice\\\\CoreBundle\\\\Traits\\\\Entity\\\\Archivable is not subtype of native type SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\Invoice\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Entity/Invoice.php
+
+		-
+			message: "#^Property SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\Invoice\\:\\:\\$uuid \\(Ramsey\\\\Uuid\\\\Uuid\\) does not accept Ramsey\\\\Uuid\\\\UuidInterface\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Entity/Invoice.php
+
+		-
+			message: "#^Instanceof between SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\Invoice\\|null and SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\RecurringInvoice will always evaluate to false\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Entity/Item.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\RecurringInvoice\\:\\:archive\\(\\) has invalid return type SolidInvoice\\\\CoreBundle\\\\Traits\\\\Entity\\\\Archivable\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Entity/RecurringInvoice.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\RecurringInvoice\\:\\:getItems\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
+			count: 1
+			path: src/InvoiceBundle/Entity/RecurringInvoice.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\RecurringInvoice\\:\\:getUsers\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
+			count: 1
+			path: src/InvoiceBundle/Entity/RecurringInvoice.php
+
+		-
+			message: "#^PHPDoc tag @return with type \\$this\\(SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\RecurringInvoice\\)\\|SolidInvoice\\\\CoreBundle\\\\Traits\\\\Entity\\\\Archivable is not subtype of native type SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\RecurringInvoice\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Entity/RecurringInvoice.php
+
+		-
+			message: "#^Parameter \\#1 \\$invoice of method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\Item\\:\\:setInvoice\\(\\) expects SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\Invoice\\|null, \\$this\\(SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\RecurringInvoice\\) given\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Entity/RecurringInvoice.php
+
+		-
+			message: "#^Property SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\RecurringInvoice\\:\\:\\$items with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
+			count: 1
+			path: src/InvoiceBundle/Entity/RecurringInvoice.php
+
+		-
+			message: "#^Property SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\RecurringInvoice\\:\\:\\$users with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
+			count: 1
+			path: src/InvoiceBundle/Entity/RecurringInvoice.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Form/Handler/AbstractInvoiceHandler.php
+
+		-
+			message: "#^Call to an undefined method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:getClient\\(\\)\\.$#"
+			count: 2
+			path: src/InvoiceBundle/Listener/InvoiceCancelListener.php
+
+		-
+			message: "#^Call to an undefined method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:getPayments\\(\\)\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Listener/InvoiceCancelListener.php
+
+		-
+			message: "#^Call to an undefined method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:setBalance\\(\\)\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Listener/InvoiceCancelListener.php
+
+		-
+			message: "#^Parameter \\#1 \\$invoice of method SolidInvoice\\\\PaymentBundle\\\\Repository\\\\PaymentRepository\\:\\:getTotalPaidForInvoice\\(\\) expects SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\Invoice, SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice given\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Listener/InvoiceCancelListener.php
+
+		-
+			message: "#^Parameter \\#1 \\$invoice of class SolidInvoice\\\\InvoiceBundle\\\\Email\\\\InvoiceEmail constructor expects SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\Invoice, SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice given\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Listener/Mailer/InvoiceMailerListener.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Manager\\\\InvoiceManager\\:\\:createFromObject\\(\\) has parameter \\$object with no type specified\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Manager/InvoiceManager.php
+
+		-
+			message: "#^Binary operation \"\\+\" between Money\\\\Money and Money\\\\Money results in an error\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Repository/ItemRepository.php
+
+		-
+			message: "#^Class SolidInvoice\\\\InvoiceBundle\\\\Repository\\\\ItemRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#"
+			count: 1
+			path: src/InvoiceBundle/Repository/ItemRepository.php
+
+		-
+			message: "#^Parameter \\#1 \\$tax of method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:setTax\\(\\) expects Money\\\\Money, null given\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Repository/ItemRepository.php
+
+		-
+			message: "#^Call to an undefined method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:getClient\\(\\)\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Tests/Cloner/InvoiceClonerTest.php
+
+		-
+			message: "#^Call to an undefined method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:getId\\(\\)\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Tests/Cloner/InvoiceClonerTest.php
+
+		-
+			message: "#^Call to an undefined method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:getItems\\(\\)\\.$#"
+			count: 2
+			path: src/InvoiceBundle/Tests/Cloner/InvoiceClonerTest.php
+
+		-
+			message: "#^Call to an undefined method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:getUuid\\(\\)\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Tests/Cloner/InvoiceClonerTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Tests\\\\Form\\\\Handler\\\\InvoiceCreateHandlerTest\\:\\:getFormData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Tests/Form/Handler/InvoiceCreateHandlerTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Tests\\\\Form\\\\Handler\\\\InvoiceCreateHandlerTest\\:\\:getHandlerOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Tests/Form/Handler/InvoiceCreateHandlerTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Tests\\\\Form\\\\Handler\\\\InvoiceEditHandlerTest\\:\\:getFormData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Tests/Form/Handler/InvoiceEditHandlerTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Tests\\\\Form\\\\Handler\\\\InvoiceEditHandlerTest\\:\\:getHandlerOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Tests/Form/Handler/InvoiceEditHandlerTest.php
+
+		-
+			message: "#^Property SolidInvoice\\\\InvoiceBundle\\\\Tests\\\\Form\\\\Handler\\\\InvoiceEditHandlerTest\\:\\:\\$invoice has no type specified\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Tests/Form/Handler/InvoiceEditHandlerTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Tests\\\\Form\\\\Type\\\\InvoiceTypeTest\\:\\:getExtensions\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Tests/Form/Type/InvoiceTypeTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Tests\\\\Form\\\\Type\\\\ItemTypeTest\\:\\:getExtensions\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Tests/Form/Type/ItemTypeTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Tests\\\\Form\\\\Type\\\\RecurringInvoiceTypeTest\\:\\:getExtensions\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Tests/Form/Type/RecurringInvoiceTypeTest.php
+
+		-
+			message: "#^Property SolidInvoice\\\\InvoiceBundle\\\\Tests\\\\Listener\\\\WorkFlowSubscriberTest\\:\\:\\$em \\(Doctrine\\\\ORM\\\\EntityManager&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Persistence\\\\ObjectManager\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Tests/Listener/WorkFlowSubscriberTest.php
+
+		-
+			message: "#^Property SolidInvoice\\\\InvoiceBundle\\\\Tests\\\\Listener\\\\WorkFlowSubscriberTest\\:\\:\\$registry \\(Doctrine\\\\Persistence\\\\ManagerRegistry&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Registry\\.$#"
+			count: 1
+			path: src/InvoiceBundle/Tests/Listener/WorkFlowSubscriberTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\MailerBundle\\\\Configurator\\\\ConfiguratorInterface\\:\\:configure\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/MailerBundle/Configurator/ConfiguratorInterface.php
+
+		-
+			message: "#^Method SolidInvoice\\\\MailerBundle\\\\Configurator\\\\GmailConfigurator\\:\\:configure\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/MailerBundle/Configurator/GmailConfigurator.php
+
+		-
+			message: "#^Method SolidInvoice\\\\MailerBundle\\\\Configurator\\\\MailchimpConfigurator\\:\\:configure\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/MailerBundle/Configurator/MailchimpConfigurator.php
+
+		-
+			message: "#^Method SolidInvoice\\\\MailerBundle\\\\Configurator\\\\MailgunConfigurator\\:\\:configure\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/MailerBundle/Configurator/MailgunConfigurator.php
+
+		-
+			message: "#^Method SolidInvoice\\\\MailerBundle\\\\Configurator\\\\PostmarkConfigurator\\:\\:configure\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/MailerBundle/Configurator/PostmarkConfigurator.php
+
+		-
+			message: "#^Method SolidInvoice\\\\MailerBundle\\\\Configurator\\\\SendgridConfigurator\\:\\:configure\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/MailerBundle/Configurator/SendgridConfigurator.php
+
+		-
+			message: "#^Method SolidInvoice\\\\MailerBundle\\\\Configurator\\\\SesConfigurator\\:\\:configure\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/MailerBundle/Configurator/SesConfigurator.php
+
+		-
+			message: "#^Method SolidInvoice\\\\MailerBundle\\\\Configurator\\\\SmtpConfigurator\\:\\:configure\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/MailerBundle/Configurator/SmtpConfigurator.php
+
+		-
+			message: "#^Method SolidInvoice\\\\MailerBundle\\\\Factory\\\\MailerConfigFactory\\:\\:__construct\\(\\) has parameter \\$transports with no value type specified in iterable type iterable\\.$#"
+			count: 1
+			path: src/MailerBundle/Factory/MailerConfigFactory.php
+
+		-
+			message: "#^Property SolidInvoice\\\\MailerBundle\\\\Factory\\\\MailerConfigFactory\\:\\:\\$config has no type specified\\.$#"
+			count: 1
+			path: src/MailerBundle/Factory/MailerConfigFactory.php
+
+		-
+			message: "#^Property SolidInvoice\\\\MailerBundle\\\\Factory\\\\MailerConfigFactory\\:\\:\\$inner has no type specified\\.$#"
+			count: 1
+			path: src/MailerBundle/Factory/MailerConfigFactory.php
+
+		-
+			message: "#^Method SolidInvoice\\\\MoneyBundle\\\\Calculator\\:\\:calculateDiscount\\(\\) has parameter \\$entity with no type specified\\.$#"
+			count: 1
+			path: src/MoneyBundle/Calculator.php
+
+		-
+			message: "#^Method SolidInvoice\\\\MoneyBundle\\\\Calculator\\:\\:calculatePercentage\\(\\) has parameter \\$amount with no type specified\\.$#"
+			count: 1
+			path: src/MoneyBundle/Calculator.php
+
+		-
+			message: "#^Parameter \\#1 \\$amount of class Money\\\\Money constructor expects int\\|string, float given\\.$#"
+			count: 1
+			path: src/MoneyBundle/Calculator.php
+
+		-
+			message: "#^Method SolidInvoice\\\\MoneyBundle\\\\Doctrine\\\\Hydrator\\\\MoneyHydrator\\:\\:hydrateRowData\\(\\) with return type void returns false but should not return anything\\.$#"
+			count: 1
+			path: src/MoneyBundle/Doctrine/Hydrator/MoneyHydrator.php
+
+		-
+			message: "#^Method SolidInvoice\\\\MoneyBundle\\\\Doctrine\\\\Types\\\\MoneyType\\:\\:getSQLDeclaration\\(\\) has parameter \\$fieldDeclaration with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/MoneyBundle/Doctrine/Types/MoneyType.php
+
+		-
+			message: "#^Class SolidInvoice\\\\MoneyBundle\\\\Form\\\\DataTransformer\\\\ModelTransformer implements generic interface Symfony\\\\Component\\\\Form\\\\DataTransformerInterface but does not specify its types\\: T, R$#"
+			count: 1
+			path: src/MoneyBundle/Form/DataTransformer/ModelTransformer.php
+
+		-
+			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
+			count: 1
+			path: src/MoneyBundle/Form/DataTransformer/ModelTransformer.php
+
+		-
+			message: "#^Binary operation \"/\" between string and 100 results in an error\\.$#"
+			count: 1
+			path: src/MoneyBundle/Form/DataTransformer/ViewTransformer.php
+
+		-
+			message: "#^Class SolidInvoice\\\\MoneyBundle\\\\Form\\\\DataTransformer\\\\ViewTransformer implements generic interface Symfony\\\\Component\\\\Form\\\\DataTransformerInterface but does not specify its types\\: T, R$#"
+			count: 1
+			path: src/MoneyBundle/Form/DataTransformer/ViewTransformer.php
+
+		-
+			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
+			count: 1
+			path: src/MoneyBundle/Form/DataTransformer/ViewTransformer.php
+
+		-
+			message: "#^Property SolidInvoice\\\\MoneyBundle\\\\Form\\\\Type\\\\HiddenMoneyType\\:\\:\\$currency is never read, only written\\.$#"
+			count: 1
+			path: src/MoneyBundle/Form/Type/HiddenMoneyType.php
+
+		-
+			message: "#^PHPDoc tag @param for parameter \\$currency with type Money\\\\Currency\\|string is not subtype of native type Money\\\\Currency\\.$#"
+			count: 1
+			path: src/MoneyBundle/Formatter/MoneyFormatter.php
+
+		-
+			message: "#^Method SolidInvoice\\\\MoneyBundle\\\\Tests\\\\Formatter\\\\MoneyFormatterTest\\:\\:decimalSeparatorProvider\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/MoneyBundle/Tests/Formatter/MoneyFormatterTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\MoneyBundle\\\\Tests\\\\Formatter\\\\MoneyFormatterTest\\:\\:localeProvider\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/MoneyBundle/Tests/Formatter/MoneyFormatterTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\MoneyBundle\\\\Tests\\\\Formatter\\\\MoneyFormatterTest\\:\\:patternProvider\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/MoneyBundle/Tests/Formatter/MoneyFormatterTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\MoneyBundle\\\\Tests\\\\Formatter\\\\MoneyFormatterTest\\:\\:symbolProvider\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/MoneyBundle/Tests/Formatter/MoneyFormatterTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\MoneyBundle\\\\Tests\\\\Formatter\\\\MoneyFormatterTest\\:\\:thousandSeparatorProvider\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/MoneyBundle/Tests/Formatter/MoneyFormatterTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\NotificationBundle\\\\Notification\\\\ChainedNotification\\:\\:__construct\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/NotificationBundle/Notification/ChainedNotification.php
+
+		-
+			message: "#^Method SolidInvoice\\\\NotificationBundle\\\\Notification\\\\ChainedNotificationInterface\\:\\:addNotification\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/NotificationBundle/Notification/ChainedNotificationInterface.php
+
+		-
+			message: "#^PHPDoc tag @var for variable \\$repository contains generic class Doctrine\\\\ORM\\\\EntityRepository but does not specify its types\\: TEntityClass$#"
+			count: 1
+			path: src/NotificationBundle/Notification/NotificationManager.php
+
+		-
+			message: "#^Method SolidInvoice\\\\NotificationBundle\\\\Notification\\\\NotificationMessage\\:\\:__construct\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/NotificationBundle/Notification/NotificationMessage.php
+
+		-
+			message: "#^Method SolidInvoice\\\\NotificationBundle\\\\Notification\\\\NotificationMessage\\:\\:getParameters\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/NotificationBundle/Notification/NotificationMessage.php
+
+		-
+			message: "#^Method SolidInvoice\\\\NotificationBundle\\\\Notification\\\\NotificationMessage\\:\\:setParameters\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/NotificationBundle/Notification/NotificationMessage.php
+
+		-
+			message: "#^Method SolidInvoice\\\\NotificationBundle\\\\Notification\\\\NotificationMessage\\:\\:setParameters\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/NotificationBundle/Notification/NotificationMessage.php
+
+		-
+			message: "#^Method SolidInvoice\\\\NotificationBundle\\\\Notification\\\\NotificationMessage\\:\\:setUsers\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/NotificationBundle/Notification/NotificationMessage.php
+
+		-
+			message: "#^Method SolidInvoice\\\\NotificationBundle\\\\Notification\\\\NotificationMessage\\:\\:setUsers\\(\\) has parameter \\$users with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/NotificationBundle/Notification/NotificationMessage.php
+
+		-
+			message: "#^Property SolidInvoice\\\\NotificationBundle\\\\Notification\\\\NotificationMessage\\:\\:\\$parameters type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/NotificationBundle/Notification/NotificationMessage.php
+
+		-
+			message: "#^Property SolidInvoice\\\\NotificationBundle\\\\Notification\\\\NotificationMessage\\:\\:\\$users type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/NotificationBundle/Notification/NotificationMessage.php
+
+		-
+			message: "#^Method SolidInvoice\\\\NotificationBundle\\\\Notification\\\\NotificationMessageInterface\\:\\:getParameters\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/NotificationBundle/Notification/NotificationMessageInterface.php
+
+		-
+			message: "#^Method SolidInvoice\\\\NotificationBundle\\\\Notification\\\\NotificationMessageInterface\\:\\:setParameters\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/NotificationBundle/Notification/NotificationMessageInterface.php
+
+		-
+			message: "#^Method SolidInvoice\\\\NotificationBundle\\\\Notification\\\\NotificationMessageInterface\\:\\:setParameters\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/NotificationBundle/Notification/NotificationMessageInterface.php
+
+		-
+			message: "#^Method SolidInvoice\\\\NotificationBundle\\\\Notification\\\\NotificationMessageInterface\\:\\:setUsers\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/NotificationBundle/Notification/NotificationMessageInterface.php
+
+		-
+			message: "#^Method SolidInvoice\\\\NotificationBundle\\\\Notification\\\\NotificationMessageInterface\\:\\:setUsers\\(\\) has parameter \\$users with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/NotificationBundle/Notification/NotificationMessageInterface.php
+
+		-
+			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Action\\\\Ajax\\\\MethodList\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/PaymentBundle/Action/Ajax/MethodList.php
+
+		-
+			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Action\\\\Ajax\\\\MethodList\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PaymentBundle/Action/Ajax/MethodList.php
+
+		-
+			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Action\\\\Ajax\\\\Settings\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/PaymentBundle/Action/Ajax/Settings.php
+
+		-
+			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Action\\\\Done\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/PaymentBundle/Action/Done.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: src/PaymentBundle/Action/Done.php
+
+		-
+			message: "#^Property SolidInvoice\\\\PaymentBundle\\\\Action\\\\Done\\:\\:\\$payum \\(Payum\\\\Core\\\\Payum\\) does not accept Payum\\\\Core\\\\Registry\\\\RegistryInterface\\.$#"
+			count: 1
+			path: src/PaymentBundle/Action/Done.php
+
+		-
+			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Action\\\\Index\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/PaymentBundle/Action/Index.php
+
+		-
+			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Action\\\\Prepare\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/PaymentBundle/Action/Prepare.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: src/PaymentBundle/Action/Prepare.php
+
+		-
+			message: "#^Parameter \\#1 \\$number of method Payum\\\\Core\\\\Model\\\\Payment\\:\\:setNumber\\(\\) expects string, int\\|null given\\.$#"
+			count: 1
+			path: src/PaymentBundle/Action/Prepare.php
+
+		-
+			message: "#^Parameter \\#1 \\$totalAmount of method Payum\\\\Core\\\\Model\\\\Payment\\:\\:setTotalAmount\\(\\) expects int, string given\\.$#"
+			count: 1
+			path: src/PaymentBundle/Action/Prepare.php
+
+		-
+			message: "#^Property SolidInvoice\\\\PaymentBundle\\\\Action\\\\Prepare\\:\\:\\$payum \\(Payum\\\\Core\\\\Payum\\) does not accept Payum\\\\Core\\\\Registry\\\\RegistryInterface\\.$#"
+			count: 1
+			path: src/PaymentBundle/Action/Prepare.php
+
+		-
+			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Action\\\\Settings\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/PaymentBundle/Action/Settings.php
+
+		-
+			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Entity\\\\Payment\\:\\:setDetails\\(\\) has parameter \\$details with no value type specified in iterable type Traversable\\.$#"
+			count: 1
+			path: src/PaymentBundle/Entity/Payment.php
+
+		-
+			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Entity\\\\Payment\\:\\:setDetails\\(\\) has parameter \\$details with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PaymentBundle/Entity/Payment.php
+
+		-
+			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Entity\\\\Payment\\:\\:setDetails\\(\\) has parameter \\$details with no value type specified in iterable type array\\|Traversable\\.$#"
+			count: 1
+			path: src/PaymentBundle/Entity/Payment.php
+
+		-
+			message: "#^Property SolidInvoice\\\\PaymentBundle\\\\Entity\\\\Payment\\:\\:\\$details type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PaymentBundle/Entity/Payment.php
+
+		-
+			message: "#^Return type \\(int\\|null\\) of method SolidInvoice\\\\PaymentBundle\\\\Entity\\\\Payment\\:\\:getClientId\\(\\) should be compatible with return type \\(string\\) of method Payum\\\\Core\\\\Model\\\\Payment\\:\\:getClientId\\(\\)$#"
+			count: 1
+			path: src/PaymentBundle/Entity/Payment.php
+
+		-
+			message: "#^Return type \\(int\\|null\\) of method SolidInvoice\\\\PaymentBundle\\\\Entity\\\\Payment\\:\\:getClientId\\(\\) should be compatible with return type \\(string\\) of method Payum\\\\Core\\\\Model\\\\PaymentInterface\\:\\:getClientId\\(\\)$#"
+			count: 1
+			path: src/PaymentBundle/Entity/Payment.php
+
+		-
+			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Entity\\\\PaymentMethod\\:\\:getConfig\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PaymentBundle/Entity/PaymentMethod.php
+
+		-
+			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Entity\\\\PaymentMethod\\:\\:setConfig\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PaymentBundle/Entity/PaymentMethod.php
+
+		-
+			message: "#^Property SolidInvoice\\\\PaymentBundle\\\\Entity\\\\PaymentMethod\\:\\:\\$config type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PaymentBundle/Entity/PaymentMethod.php
+
+		-
+			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Exception\\\\InvalidGatewayException\\:\\:__construct\\(\\) has parameter \\$gateway with no type specified\\.$#"
+			count: 1
+			path: src/PaymentBundle/Exception/InvalidGatewayException.php
+
+		-
+			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Factory\\\\PaymentFactories\\:\\:getFactories\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PaymentBundle/Factory/PaymentFactories.php
+
+		-
+			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Factory\\\\PaymentFactories\\:\\:setGatewayFactories\\(\\) has parameter \\$factories with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PaymentBundle/Factory/PaymentFactories.php
+
+		-
+			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Factory\\\\PaymentFactories\\:\\:setGatewayForms\\(\\) has parameter \\$gateForms with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PaymentBundle/Factory/PaymentFactories.php
+
+		-
+			message: "#^Property SolidInvoice\\\\PaymentBundle\\\\Factory\\\\PaymentFactories\\:\\:\\$factories type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PaymentBundle/Factory/PaymentFactories.php
+
+		-
+			message: "#^Property SolidInvoice\\\\PaymentBundle\\\\Factory\\\\PaymentFactories\\:\\:\\$forms type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PaymentBundle/Factory/PaymentFactories.php
+
+		-
+			message: "#^If condition is always true\\.$#"
+			count: 1
+			path: src/PaymentBundle/Form/Handler/PaymentMethodSettingsHandler.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: src/PaymentBundle/Form/Handler/PaymentMethodSettingsHandler.php
+
+		-
+			message: "#^Property SolidInvoice\\\\PaymentBundle\\\\Form\\\\Handler\\\\PaymentMethodSettingsHandler\\:\\:\\$originalSettings has no type specified\\.$#"
+			count: 1
+			path: src/PaymentBundle/Form/Handler/PaymentMethodSettingsHandler.php
+
+		-
+			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Form\\\\Type\\\\PaymentMethodSettingsType\\:\\:getOptions\\(\\) has parameter \\$settings with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PaymentBundle/Form/Type/PaymentMethodSettingsType.php
+
+		-
+			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Form\\\\Type\\\\PaymentMethodSettingsType\\:\\:getOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PaymentBundle/Form/Type/PaymentMethodSettingsType.php
+
+		-
+			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Form\\\\Type\\\\PaymentMethodSettingsType\\:\\:getType\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/PaymentBundle/Form/Type/PaymentMethodSettingsType.php
+
+		-
+			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Form\\\\Type\\\\PaymentMethodSettingsType\\:\\:getType\\(\\) has parameter \\$type with no type specified\\.$#"
+			count: 1
+			path: src/PaymentBundle/Form/Type/PaymentMethodSettingsType.php
+
+		-
+			message: "#^Parameter \\#2 \\$value of method Symfony\\\\Component\\\\Validator\\\\Violation\\\\ConstraintViolationBuilderInterface\\:\\:setParameter\\(\\) expects string, int given\\.$#"
+			count: 1
+			path: src/PaymentBundle/Form/Type/PaymentType.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\:\\:getSettingsForMethodArray\\(\\)\\.$#"
+			count: 1
+			path: src/PaymentBundle/Manager/PaymentSettingsManager.php
+
+		-
+			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Manager\\\\PaymentSettingsManager\\:\\:get\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PaymentBundle/Manager/PaymentSettingsManager.php
+
+		-
+			message: "#^Property SolidInvoice\\\\PaymentBundle\\\\Manager\\\\PaymentSettingsManager\\:\\:\\$repository with generic interface Doctrine\\\\Persistence\\\\ObjectRepository does not specify its types\\: TEntityClass$#"
+			count: 1
+			path: src/PaymentBundle/Manager/PaymentSettingsManager.php
+
+		-
+			message: "#^Property SolidInvoice\\\\PaymentBundle\\\\Manager\\\\PaymentSettingsManager\\:\\:\\$settings type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PaymentBundle/Manager/PaymentSettingsManager.php
+
+		-
+			message: "#^Parameter \\#1 \\$multiplier of method Money\\\\Money\\:\\:multiply\\(\\) expects float\\|int\\|string, SolidInvoice\\\\CoreBundle\\\\Entity\\\\Discount given\\.$#"
+			count: 1
+			path: src/PaymentBundle/PaymentAction/PaypalExpress/CapturePaymentAction.php
+
+		-
+			message: "#^Property SolidInvoice\\\\PaymentBundle\\\\PaymentAction\\\\PaypalExpress\\\\CapturePaymentAction\\:\\:\\$formatter \\(SolidInvoice\\\\MoneyBundle\\\\Formatter\\\\MoneyFormatter\\) does not accept SolidInvoice\\\\MoneyBundle\\\\Formatter\\\\MoneyFormatterInterface\\.$#"
+			count: 1
+			path: src/PaymentBundle/PaymentAction/PaypalExpress/CapturePaymentAction.php
+
+		-
+			message: "#^Property Payum\\\\Core\\\\Request\\\\BaseGetStatus\\:\\:\\$status \\(int\\) does not accept string\\.$#"
+			count: 10
+			path: src/PaymentBundle/PaymentAction/Request/StatusRequest.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between 'authorized' and int will always evaluate to false\\.$#"
+			count: 1
+			path: src/PaymentBundle/PaymentAction/Request/StatusRequest.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between 'cancelled' and int will always evaluate to false\\.$#"
+			count: 1
+			path: src/PaymentBundle/PaymentAction/Request/StatusRequest.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between 'captured' and int will always evaluate to false\\.$#"
+			count: 1
+			path: src/PaymentBundle/PaymentAction/Request/StatusRequest.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between 'expired' and int will always evaluate to false\\.$#"
+			count: 1
+			path: src/PaymentBundle/PaymentAction/Request/StatusRequest.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between 'failed' and int will always evaluate to false\\.$#"
+			count: 1
+			path: src/PaymentBundle/PaymentAction/Request/StatusRequest.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between 'new' and int will always evaluate to false\\.$#"
+			count: 1
+			path: src/PaymentBundle/PaymentAction/Request/StatusRequest.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between 'pending' and int will always evaluate to false\\.$#"
+			count: 1
+			path: src/PaymentBundle/PaymentAction/Request/StatusRequest.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between 'refunded' and int will always evaluate to false\\.$#"
+			count: 1
+			path: src/PaymentBundle/PaymentAction/Request/StatusRequest.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between 'suspended' and int will always evaluate to false\\.$#"
+			count: 1
+			path: src/PaymentBundle/PaymentAction/Request/StatusRequest.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between 'unknown' and int will always evaluate to false\\.$#"
+			count: 1
+			path: src/PaymentBundle/PaymentAction/Request/StatusRequest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Payum\\\\Extension\\\\UpdatePaymentDetailsExtension\\:\\:onException\\(\\) has parameter \\$request with no type specified\\.$#"
+			count: 1
+			path: src/PaymentBundle/Payum/Extension/UpdatePaymentDetailsExtension.php
+
+		-
+			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Payum\\\\Extension\\\\UpdatePaymentDetailsExtension\\:\\:onReply\\(\\) has parameter \\$request with no type specified\\.$#"
+			count: 1
+			path: src/PaymentBundle/Payum/Extension/UpdatePaymentDetailsExtension.php
+
+		-
+			message: "#^Class SolidInvoice\\\\PaymentBundle\\\\Repository\\\\PaymentMethodRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#"
+			count: 1
+			path: src/PaymentBundle/Repository/PaymentMethodRepository.php
+
+		-
+			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Repository\\\\PaymentMethodRepository\\:\\:getSettingsForMethodArray\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PaymentBundle/Repository/PaymentMethodRepository.php
+
+		-
+			message: "#^Call to function is_array\\(\\) with Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<SolidInvoice\\\\PaymentBundle\\\\Entity\\\\Payment\\> will always evaluate to false\\.$#"
+			count: 1
+			path: src/PaymentBundle/Repository/PaymentRepository.php
+
+		-
+			message: "#^Class SolidInvoice\\\\PaymentBundle\\\\Repository\\\\PaymentRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#"
+			count: 1
+			path: src/PaymentBundle/Repository/PaymentRepository.php
+
+		-
+			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Repository\\\\PaymentRepository\\:\\:formatDate\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PaymentBundle/Repository/PaymentRepository.php
+
+		-
+			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Repository\\\\PaymentRepository\\:\\:getGridQuery\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PaymentBundle/Repository/PaymentRepository.php
+
+		-
+			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Repository\\\\PaymentRepository\\:\\:getPaymentsByMonth\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PaymentBundle/Repository/PaymentRepository.php
+
+		-
+			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Repository\\\\PaymentRepository\\:\\:getPaymentsForClient\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PaymentBundle/Repository/PaymentRepository.php
+
+		-
+			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Repository\\\\PaymentRepository\\:\\:getPaymentsForInvoice\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PaymentBundle/Repository/PaymentRepository.php
+
+		-
+			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Repository\\\\PaymentRepository\\:\\:getPaymentsList\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PaymentBundle/Repository/PaymentRepository.php
+
+		-
+			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Repository\\\\PaymentRepository\\:\\:getRecentPayments\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PaymentBundle/Repository/PaymentRepository.php
+
+		-
+			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Repository\\\\PaymentRepository\\:\\:getTotalIncome\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PaymentBundle/Repository/PaymentRepository.php
+
+		-
+			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Repository\\\\PaymentRepository\\:\\:updatePaymentStatus\\(\\) has parameter \\$payments with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection but does not specify its types\\: TKey, T$#"
+			count: 1
+			path: src/PaymentBundle/Repository/PaymentRepository.php
+
+		-
+			message: "#^Result of && is always false\\.$#"
+			count: 1
+			path: src/PaymentBundle/Repository/PaymentRepository.php
+
+		-
+			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Tests\\\\Factory\\\\DependencyInjection\\\\ConfigurationTest\\:\\:getConfiguration\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/PaymentBundle/Tests/Factory/DependencyInjection/ConfigurationTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Tests\\\\Form\\\\Handler\\\\PaymentMethodSettingsHandlerTest\\:\\:getFormData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PaymentBundle/Tests/Form/Handler/PaymentMethodSettingsHandlerTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Tests\\\\Form\\\\Handler\\\\PaymentMethodSettingsHandlerTest\\:\\:getHandlerOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/PaymentBundle/Tests/Form/Handler/PaymentMethodSettingsHandlerTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\CloneQuote\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/QuoteBundle/Action/CloneQuote.php
+
+		-
+			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\Create\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/QuoteBundle/Action/Create.php
+
+		-
+			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\Edit\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/QuoteBundle/Action/Edit.php
+
+		-
+			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\Fields\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/QuoteBundle/Action/Fields.php
+
+		-
+			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\Fields\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/QuoteBundle/Action/Fields.php
+
+		-
+			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\Grid\\\\Archive\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/QuoteBundle/Action/Grid/Archive.php
+
+		-
+			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\Grid\\\\Archive\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/QuoteBundle/Action/Grid/Archive.php
+
+		-
+			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\Grid\\\\Delete\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/QuoteBundle/Action/Grid/Delete.php
+
+		-
+			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\Index\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/QuoteBundle/Action/Index.php
+
+		-
+			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\Transition\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/QuoteBundle/Action/Transition.php
+
+		-
+			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\Transition\\\\Send\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/QuoteBundle/Action/Transition/Send.php
+
+		-
+			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Cloner\\\\QuoteCloner\\:\\:addItems\\(\\) return type has no value type specified in iterable type Traversable\\.$#"
+			count: 1
+			path: src/QuoteBundle/Cloner/QuoteCloner.php
+
+		-
+			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Email\\\\QuoteEmail\\:\\:getContext\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/QuoteBundle/Email/QuoteEmail.php
+
+		-
+			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
+			count: 1
+			path: src/QuoteBundle/Entity/Quote.php
+
+		-
+			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Entity\\\\Quote\\:\\:archive\\(\\) has invalid return type SolidInvoice\\\\CoreBundle\\\\Traits\\\\Entity\\\\Archivable\\.$#"
+			count: 1
+			path: src/QuoteBundle/Entity/Quote.php
+
+		-
+			message: "#^PHPDoc tag @return with type \\$this\\(SolidInvoice\\\\QuoteBundle\\\\Entity\\\\Quote\\)\\|SolidInvoice\\\\CoreBundle\\\\Traits\\\\Entity\\\\Archivable is not subtype of native type SolidInvoice\\\\QuoteBundle\\\\Entity\\\\Quote\\.$#"
+			count: 1
+			path: src/QuoteBundle/Entity/Quote.php
+
+		-
+			message: "#^Property SolidInvoice\\\\QuoteBundle\\\\Entity\\\\Quote\\:\\:\\$uuid \\(Ramsey\\\\Uuid\\\\Uuid\\) does not accept Ramsey\\\\Uuid\\\\UuidInterface\\.$#"
+			count: 1
+			path: src/QuoteBundle/Entity/Quote.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: src/QuoteBundle/Form/Handler/AbstractQuoteHandler.php
+
+		-
+			message: "#^Class SolidInvoice\\\\QuoteBundle\\\\Repository\\\\ItemRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#"
+			count: 1
+			path: src/QuoteBundle/Repository/ItemRepository.php
+
+		-
+			message: "#^Parameter \\#1 \\$tax of method SolidInvoice\\\\QuoteBundle\\\\Entity\\\\Quote\\:\\:setTax\\(\\) expects Money\\\\Money, null given\\.$#"
+			count: 1
+			path: src/QuoteBundle/Repository/ItemRepository.php
+
+		-
+			message: "#^Class SolidInvoice\\\\QuoteBundle\\\\Repository\\\\QuoteRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#"
+			count: 1
+			path: src/QuoteBundle/Repository/QuoteRepository.php
+
+		-
+			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Repository\\\\QuoteRepository\\:\\:deleteQuotes\\(\\) has parameter \\$ids with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/QuoteBundle/Repository/QuoteRepository.php
+
+		-
+			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Repository\\\\QuoteRepository\\:\\:getGridQuery\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/QuoteBundle/Repository/QuoteRepository.php
+
+		-
+			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Repository\\\\QuoteRepository\\:\\:getRecentQuotes\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/QuoteBundle/Repository/QuoteRepository.php
+
+		-
+			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Tests\\\\Form\\\\Handler\\\\QuoteCreateHandlerTest\\:\\:getFormData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/QuoteBundle/Tests/Form/Handler/QuoteCreateHandlerTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Tests\\\\Form\\\\Handler\\\\QuoteCreateHandlerTest\\:\\:getHandlerOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/QuoteBundle/Tests/Form/Handler/QuoteCreateHandlerTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Tests\\\\Form\\\\Handler\\\\QuoteEditHandlerTest\\:\\:getFormData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/QuoteBundle/Tests/Form/Handler/QuoteEditHandlerTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Tests\\\\Form\\\\Handler\\\\QuoteEditHandlerTest\\:\\:getHandlerOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/QuoteBundle/Tests/Form/Handler/QuoteEditHandlerTest.php
+
+		-
+			message: "#^Property SolidInvoice\\\\QuoteBundle\\\\Tests\\\\Form\\\\Handler\\\\QuoteEditHandlerTest\\:\\:\\$quote has no type specified\\.$#"
+			count: 1
+			path: src/QuoteBundle/Tests/Form/Handler/QuoteEditHandlerTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Tests\\\\Form\\\\Type\\\\QuoteTypeTest\\:\\:getExtensions\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/QuoteBundle/Tests/Form/Type/QuoteTypeTest.php
+
+		-
+			message: "#^Property SolidInvoice\\\\QuoteBundle\\\\Tests\\\\Listener\\\\WorkFlowSubscriberTest\\:\\:\\$em \\(Doctrine\\\\ORM\\\\EntityManager&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Persistence\\\\ObjectManager\\.$#"
+			count: 1
+			path: src/QuoteBundle/Tests/Listener/WorkFlowSubscriberTest.php
+
+		-
+			message: "#^Property SolidInvoice\\\\QuoteBundle\\\\Tests\\\\Listener\\\\WorkFlowSubscriberTest\\:\\:\\$registry \\(Doctrine\\\\Persistence\\\\ManagerRegistry&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Registry\\.$#"
+			count: 1
+			path: src/QuoteBundle/Tests/Listener/WorkFlowSubscriberTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\SettingsBundle\\\\Action\\\\Index\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/SettingsBundle/Action/Index.php
+
+		-
+			message: "#^Method SolidInvoice\\\\SettingsBundle\\\\Collection\\\\ConfigCollection\\:\\:add\\(\\) has parameter \\$settings with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/SettingsBundle/Collection/ConfigCollection.php
+
+		-
+			message: "#^Method SolidInvoice\\\\SettingsBundle\\\\Collection\\\\ConfigCollection\\:\\:getSections\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/SettingsBundle/Collection/ConfigCollection.php
+
+		-
+			message: "#^Method SolidInvoice\\\\SettingsBundle\\\\Collection\\\\ConfigCollection\\:\\:getSettings\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/SettingsBundle/Collection/ConfigCollection.php
+
+		-
+			message: "#^Property SolidInvoice\\\\SettingsBundle\\\\Collection\\\\ConfigCollection\\:\\:\\$current \\(string\\) does not accept null\\.$#"
+			count: 1
+			path: src/SettingsBundle/Collection/ConfigCollection.php
+
+		-
+			message: "#^Property SolidInvoice\\\\SettingsBundle\\\\Collection\\\\ConfigCollection\\:\\:\\$elements type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/SettingsBundle/Collection/ConfigCollection.php
+
+		-
+			message: "#^Property SolidInvoice\\\\SettingsBundle\\\\Collection\\\\ConfigCollection\\:\\:\\$sections type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/SettingsBundle/Collection/ConfigCollection.php
+
+		-
+			message: "#^Method SolidInvoice\\\\SettingsBundle\\\\Form\\\\Handler\\\\SettingsFormHandler\\:\\:flatten\\(\\) has parameter \\$array with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/SettingsBundle/Form/Handler/SettingsFormHandler.php
+
+		-
+			message: "#^Method SolidInvoice\\\\SettingsBundle\\\\Form\\\\Handler\\\\SettingsFormHandler\\:\\:flatten\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/SettingsBundle/Form/Handler/SettingsFormHandler.php
+
+		-
+			message: "#^Method SolidInvoice\\\\SettingsBundle\\\\Form\\\\Handler\\\\SettingsFormHandler\\:\\:getSettings\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/SettingsBundle/Form/Handler/SettingsFormHandler.php
+
+		-
+			message: "#^Method SolidInvoice\\\\SettingsBundle\\\\Form\\\\Type\\\\MailTransportType\\:\\:__construct\\(\\) has parameter \\$transports with no value type specified in iterable type iterable\\.$#"
+			count: 1
+			path: src/SettingsBundle/Form/Type/MailTransportType.php
+
+		-
+			message: "#^Class SolidInvoice\\\\SettingsBundle\\\\Repository\\\\SectionRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#"
+			count: 1
+			path: src/SettingsBundle/Repository/SectionRepository.php
+
+		-
+			message: "#^Method SolidInvoice\\\\SettingsBundle\\\\Repository\\\\SectionRepository\\:\\:getTopLevelSections\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/SettingsBundle/Repository/SectionRepository.php
+
+		-
+			message: "#^Class SolidInvoice\\\\SettingsBundle\\\\Repository\\\\SettingsRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#"
+			count: 1
+			path: src/SettingsBundle/Repository/SettingsRepository.php
+
+		-
+			message: "#^Method SolidInvoice\\\\SettingsBundle\\\\Repository\\\\SettingsRepository\\:\\:save\\(\\) has parameter \\$settings with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/SettingsBundle/Repository/SettingsRepository.php
+
+		-
+			message: "#^Method SolidInvoice\\\\SettingsBundle\\\\SystemConfig\\:\\:get\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/SettingsBundle/SystemConfig.php
+
+		-
+			message: "#^Method SolidInvoice\\\\SettingsBundle\\\\SystemConfig\\:\\:getAll\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/SettingsBundle/SystemConfig.php
+
+		-
+			message: "#^Method SolidInvoice\\\\SettingsBundle\\\\SystemConfig\\:\\:set\\(\\) has parameter \\$value with no type specified\\.$#"
+			count: 1
+			path: src/SettingsBundle/SystemConfig.php
+
+		-
+			message: "#^Property SolidInvoice\\\\SettingsBundle\\\\SystemConfig\\:\\:\\$settings has no type specified\\.$#"
+			count: 1
+			path: src/SettingsBundle/SystemConfig.php
+
+		-
+			message: "#^Method SolidInvoice\\\\SettingsBundle\\\\Tests\\\\Form\\\\Type\\\\SettingsTypeTest\\:\\:getTypes\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/SettingsBundle/Tests/Form/Type/SettingsTypeTest.php
+
+		-
+			message: "#^Property SolidInvoice\\\\SettingsBundle\\\\Tests\\\\SystemConfigTest\\:\\:\\$em \\(Doctrine\\\\ORM\\\\EntityManager&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Persistence\\\\ObjectManager\\.$#"
+			count: 1
+			path: src/SettingsBundle/Tests/SystemConfigTest.php
+
+		-
+			message: "#^Property SolidInvoice\\\\SettingsBundle\\\\Tests\\\\SystemConfigTest\\:\\:\\$registry \\(Doctrine\\\\Persistence\\\\ManagerRegistry&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Registry\\.$#"
+			count: 1
+			path: src/SettingsBundle/Tests/SystemConfigTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\TaxBundle\\\\Action\\\\Add\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/TaxBundle/Action/Add.php
+
+		-
+			message: "#^Method SolidInvoice\\\\TaxBundle\\\\Action\\\\Edit\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/TaxBundle/Action/Edit.php
+
+		-
+			message: "#^Method SolidInvoice\\\\TaxBundle\\\\Action\\\\Grid\\\\Delete\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/TaxBundle/Action/Grid/Delete.php
+
+		-
+			message: "#^Method SolidInvoice\\\\TaxBundle\\\\Action\\\\Index\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/TaxBundle/Action/Index.php
+
+		-
+			message: "#^Method SolidInvoice\\\\TaxBundle\\\\Action\\\\Validate\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/TaxBundle/Action/Validate.php
+
+		-
+			message: "#^Method SolidInvoice\\\\TaxBundle\\\\Action\\\\Validate\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/TaxBundle/Action/Validate.php
+
+		-
+			message: "#^Method SolidInvoice\\\\TaxBundle\\\\Entity\\\\Tax\\:\\:getTypes\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/TaxBundle/Entity/Tax.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: src/TaxBundle/Form/Handler/TaxFormHandler.php
+
+		-
+			message: "#^Parameter \\#2 \\$default of method SolidWorx\\\\FormHandler\\\\Options\\:\\:get\\(\\) expects null, SolidInvoice\\\\TaxBundle\\\\Entity\\\\Tax given\\.$#"
+			count: 1
+			path: src/TaxBundle/Form/Handler/TaxFormHandler.php
+
+		-
+			message: "#^Class SolidInvoice\\\\TaxBundle\\\\Repository\\\\TaxRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#"
+			count: 1
+			path: src/TaxBundle/Repository/TaxRepository.php
+
+		-
+			message: "#^Method SolidInvoice\\\\TaxBundle\\\\Repository\\\\TaxRepository\\:\\:getTaxList\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/TaxBundle/Repository/TaxRepository.php
+
+		-
+			message: "#^Method SolidInvoice\\\\TaxBundle\\\\Tests\\\\Form\\\\Handler\\\\TaxFormHandlerTest\\:\\:getFormData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/TaxBundle/Tests/Form/Handler/TaxFormHandlerTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\AddUser\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Action/AddUser.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\Ajax\\\\ApiList\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Action/Ajax/ApiList.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\Ajax\\\\ApiList\\:\\:serialize\\(\\) has parameter \\$groups with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/UserBundle/Action/Ajax/ApiList.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: src/UserBundle/Action/Ajax/ApiList.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\Ajax\\\\ApiRevoke\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Action/Ajax/ApiRevoke.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\Ajax\\\\ApiRevoke\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/UserBundle/Action/Ajax/ApiRevoke.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\Ajax\\\\ApiTokenHistory\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Action/Ajax/ApiTokenHistory.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\ApiIndex\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Action/ApiIndex.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\EditProfile\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Action/EditProfile.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\EditUser\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Action/EditUser.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\ForgotPassword\\\\Check\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Action/ForgotPassword/Check.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\ForgotPassword\\\\Request\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Action/ForgotPassword/Request.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\ForgotPassword\\\\Reset\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Action/ForgotPassword/Reset.php
+
+		-
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\:\\:getConfirmationToken\\(\\)\\.$#"
+			count: 1
+			path: src/UserBundle/Action/ForgotPassword/Send.php
+
+		-
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\:\\:isPasswordRequestNonExpired\\(\\)\\.$#"
+			count: 1
+			path: src/UserBundle/Action/ForgotPassword/Send.php
+
+		-
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\:\\:setConfirmationToken\\(\\)\\.$#"
+			count: 1
+			path: src/UserBundle/Action/ForgotPassword/Send.php
+
+		-
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\:\\:setPasswordRequestedAt\\(\\)\\.$#"
+			count: 1
+			path: src/UserBundle/Action/ForgotPassword/Send.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\ForgotPassword\\\\Send\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Action/ForgotPassword/Send.php
+
+		-
+			message: "#^Method class@anonymous/UserBundle/Action/ForgotPassword/Send\\.php\\:37\\:\\:__construct\\(\\) has parameter \\$message with no type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Action/ForgotPassword/Send.php
+
+		-
+			message: "#^Method class@anonymous/UserBundle/Action/ForgotPassword/Send\\.php\\:37\\:\\:__construct\\(\\) has parameter \\$route with no type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Action/ForgotPassword/Send.php
+
+		-
+			message: "#^Property class@anonymous/UserBundle/Action/ForgotPassword/Send\\.php\\:37\\:\\:\\$message has no type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Action/ForgotPassword/Send.php
+
+		-
+			message: "#^Call to an undefined method SolidInvoice\\\\UserBundle\\\\Repository\\\\UserRepositoryInterface\\:\\:deleteUsers\\(\\)\\.$#"
+			count: 1
+			path: src/UserBundle/Action/Grid/Delete.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\Grid\\\\Delete\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/UserBundle/Action/Grid/Delete.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\Profile\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Action/Profile.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\Security\\\\ChangePassword\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Action/Security/ChangePassword.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\Security\\\\Login\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Action/Security/Login.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\Users\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Action/Users.php
+
+		-
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\:\\:getEmail\\(\\)\\.$#"
+			count: 1
+			path: src/UserBundle/Email/ResetPasswordEmail.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Email\\\\ResetPasswordEmail\\:\\:getContext\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/UserBundle/Email/ResetPasswordEmail.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Entity\\\\ApiTokenHistory\\:\\:getRequestData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/UserBundle/Entity/ApiTokenHistory.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Entity\\\\ApiTokenHistory\\:\\:setRequestData\\(\\) has parameter \\$requestData with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/UserBundle/Entity/ApiTokenHistory.php
+
+		-
+			message: "#^Property SolidInvoice\\\\UserBundle\\\\Entity\\\\ApiTokenHistory\\:\\:\\$requestData type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/UserBundle/Entity/ApiTokenHistory.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:addRole\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Entity/User.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:addRole\\(\\) has parameter \\$role with no type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Entity/User.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:getConfirmationToken\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Entity/User.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:getEmail\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Entity/User.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:getId\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Entity/User.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:getPlainPassword\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Entity/User.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:hasRole\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Entity/User.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:hasRole\\(\\) has parameter \\$role with no type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Entity/User.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:isEnabled\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Entity/User.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:isPasswordRequestNonExpired\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Entity/User.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:isPasswordRequestNonExpired\\(\\) has parameter \\$ttl with no type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Entity/User.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:removeRole\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Entity/User.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:removeRole\\(\\) has parameter \\$role with no type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Entity/User.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:serialize\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Entity/User.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:setConfirmationToken\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Entity/User.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:setConfirmationToken\\(\\) has parameter \\$confirmationToken with no type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Entity/User.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:setEmail\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Entity/User.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:setEmail\\(\\) has parameter \\$email with no type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Entity/User.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:setEnabled\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Entity/User.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:setEnabled\\(\\) has parameter \\$boolean with no type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Entity/User.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:setLastLogin\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Entity/User.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:setPassword\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Entity/User.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:setPassword\\(\\) has parameter \\$password with no type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Entity/User.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:setPasswordRequestedAt\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Entity/User.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:setPlainPassword\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Entity/User.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:setPlainPassword\\(\\) has parameter \\$password with no type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Entity/User.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:setRoles\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Entity/User.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:setRoles\\(\\) has parameter \\$roles with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/UserBundle/Entity/User.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:setUsername\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Entity/User.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:setUsername\\(\\) has parameter \\$username with no type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Entity/User.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:unserialize\\(\\) has parameter \\$serialized with no type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Entity/User.php
+
+		-
+			message: "#^Property SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:\\$plainPassword \\(string\\) does not accept null\\.$#"
+			count: 1
+			path: src/UserBundle/Entity/User.php
+
+		-
+			message: "#^Return type \\(void\\) of method SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:getSalt\\(\\) should be compatible with return type \\(string\\|null\\) of method Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\:\\:getSalt\\(\\)$#"
+			count: 1
+			path: src/UserBundle/Entity/User.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: src/UserBundle/Form/Handler/ApiFormHandler.php
+
+		-
+			message: "#^Call to an undefined method SolidInvoice\\\\UserBundle\\\\Repository\\\\UserRepositoryInterface\\:\\:save\\(\\)\\.$#"
+			count: 1
+			path: src/UserBundle/Form/Handler/PasswordChangeHandler.php
+
+		-
+			message: "#^Parameter \\#2 \\$default of method SolidWorx\\\\FormHandler\\\\Options\\:\\:get\\(\\) expects null, string given\\.$#"
+			count: 1
+			path: src/UserBundle/Form/Handler/PasswordChangeHandler.php
+
+		-
+			message: "#^Parameter \\#2 \\$default of method SolidWorx\\\\FormHandler\\\\Options\\:\\:get\\(\\) expects null, true given\\.$#"
+			count: 1
+			path: src/UserBundle/Form/Handler/PasswordChangeHandler.php
+
+		-
+			message: "#^Call to an undefined method SolidInvoice\\\\UserBundle\\\\Repository\\\\UserRepositoryInterface\\:\\:save\\(\\)\\.$#"
+			count: 1
+			path: src/UserBundle/Form/Handler/ProfileEditFormHandler.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: src/UserBundle/Form/Handler/UserAddFormHandler.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: src/UserBundle/Form/Handler/UserEditFormHandler.php
+
+		-
+			message: "#^Class SolidInvoice\\\\UserBundle\\\\Repository\\\\ApiTokenHistoryRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#"
+			count: 1
+			path: src/UserBundle/Repository/ApiTokenHistoryRepository.php
+
+		-
+			message: "#^Class SolidInvoice\\\\UserBundle\\\\Repository\\\\ApiTokenRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#"
+			count: 1
+			path: src/UserBundle/Repository/ApiTokenRepository.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Repository\\\\ApiTokenRepository\\:\\:getApiTokensForUser\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/UserBundle/Repository/ApiTokenRepository.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Tests\\\\Form\\\\Handler\\\\ApiFormHandlerTest\\:\\:getFormData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/UserBundle/Tests/Form/Handler/ApiFormHandlerTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Tests\\\\Form\\\\Handler\\\\ApiFormHandlerTest\\:\\:getHandlerOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/UserBundle/Tests/Form/Handler/ApiFormHandlerTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Tests\\\\Form\\\\Handler\\\\KernelExecutor\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Tests/Form/Handler/ProfileEditHandlerTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Tests\\\\Form\\\\Handler\\\\ProfileEditHandlerTest\\:\\:getFormData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/UserBundle/Tests/Form/Handler/ProfileEditHandlerTest.php
+
+		-
+			message: "#^Property SolidInvoice\\\\UserBundle\\\\Tests\\\\Form\\\\Handler\\\\ProfileEditHandlerTest\\:\\:\\$router has no type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Tests/Form/Handler/ProfileEditHandlerTest.php
+
+		-
+			message: "#^Property SolidInvoice\\\\UserBundle\\\\Tests\\\\Form\\\\Handler\\\\ProfileEditHandlerTest\\:\\:\\$tokenStorage has no type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Tests/Form/Handler/ProfileEditHandlerTest.php
+
+		-
+			message: "#^Property SolidInvoice\\\\UserBundle\\\\Tests\\\\Form\\\\Handler\\\\ProfileEditHandlerTest\\:\\:\\$userRepository has no type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Tests/Form/Handler/ProfileEditHandlerTest.php
+
+		-
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\:\\:getEmail\\(\\)\\.$#"
+			count: 1
+			path: src/UserBundle/Tests/Repository/UserRepositoryTest.php
+
+		-
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\:\\:getId\\(\\)\\.$#"
+			count: 1
+			path: src/UserBundle/Tests/Repository/UserRepositoryTest.php

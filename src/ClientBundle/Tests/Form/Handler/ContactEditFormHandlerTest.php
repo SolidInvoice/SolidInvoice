@@ -26,23 +26,25 @@ class ContactEditFormHandlerTest extends FormHandlerTestCase
 {
     use SymfonyKernelTrait;
 
-    private $firstName;
+    private string $firstName;
 
-    private $email;
+    private string $email;
 
     protected function setUp(): void
     {
         parent::setUp();
 
+        static::bootKernel();
+
         $this->firstName = $this->faker->firstName;
         $this->email = $this->faker->email;
     }
 
-    public function getHandler()
+    public function getHandler(): ContactEditFormHandler
     {
         $handler = new ContactEditFormHandler();
         $handler->setDoctrine($this->registry);
-        $handler->setSerializer($this->container->get('serializer'));
+        $handler->setSerializer(static::getContainer()->get('serializer'));
 
         return $handler;
     }
@@ -72,16 +74,16 @@ class ContactEditFormHandlerTest extends FormHandlerTestCase
 
     protected function assertOnSuccess(?Response $response, FormRequest $form, $data): void
     {
-        static::assertInstanceOf(JsonResponse::class, $response);
-        static::assertInstanceOf(Contact::class, $data);
-        static::assertCount(1, $this->em->getRepository(Contact::class)->findAll());
-        static::assertSame($this->firstName, $data->getFirstName());
-        static::assertSame($this->email, $data->getEmail());
+        self::assertInstanceOf(JsonResponse::class, $response);
+        self::assertInstanceOf(Contact::class, $data);
+        self::assertCount(2, $this->em->getRepository(Contact::class)->findAll());
+        self::assertSame($this->firstName, $data->getFirstName());
+        self::assertSame($this->email, $data->getEmail());
     }
 
     protected function assertResponse(FormRequest $formRequest): void
     {
-        static::assertInstanceOf(Template::class, $formRequest->getResponse());
-        static::assertSame($this->getHandler()->getTemplate(), $formRequest->getResponse()->getTemplate());
+        self::assertInstanceOf(Template::class, $formRequest->getResponse());
+        self::assertSame($this->getHandler()->getTemplate(), $formRequest->getResponse()->getTemplate());
     }
 }

@@ -22,7 +22,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\HttpKernel\Kernel;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
 
@@ -30,34 +29,34 @@ class TemplateListenerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    public function testOnKernelView()
+    public function testOnKernelView(): void
     {
         $twig = new Environment(new ArrayLoader(['Foo' => 'foo bar baz']));
 
         $listener = new TemplateListener($twig);
 
-        $event = new ViewEvent(M::mock(HttpKernelInterface::class), Request::createFromGlobals(), Kernel::MASTER_REQUEST, new Template('Foo', ['bar' => 'baz']));
+        $event = new ViewEvent(M::mock(HttpKernelInterface::class), Request::createFromGlobals(), HttpKernelInterface::MAIN_REQUEST, new Template('Foo', ['bar' => 'baz']));
 
         $listener->onKernelView($event);
 
-        static::assertInstanceOf(Response::class, $event->getResponse());
-        static::assertSame('foo bar baz', $event->getResponse()->getContent());
+        self::assertInstanceOf(Response::class, $event->getResponse());
+        self::assertSame('foo bar baz', $event->getResponse()->getContent());
     }
 
-    public function testOnKernelViewWithoutResponse()
+    public function testOnKernelViewWithoutResponse(): void
     {
         $twig = new Environment(new ArrayLoader());
 
         $listener = new TemplateListener($twig);
 
-        $event = new ViewEvent(M::mock(HttpKernelInterface::class), Request::createFromGlobals(), Kernel::MASTER_REQUEST, []);
+        $event = new ViewEvent(M::mock(HttpKernelInterface::class), Request::createFromGlobals(), HttpKernelInterface::MAIN_REQUEST, []);
 
         $listener->onKernelView($event);
 
-        static::assertNull($event->getResponse());
+        self::assertNull($event->getResponse());
     }
 
-    public function testOnKernelViewWithCustomResponse()
+    public function testOnKernelViewWithCustomResponse(): void
     {
         $twig = new Environment(new ArrayLoader(['Foo' => 'foo bar baz']));
         $response = new Response();
@@ -65,11 +64,11 @@ class TemplateListenerTest extends TestCase
 
         $listener = new TemplateListener($twig);
 
-        $event = new ViewEvent(M::mock(HttpKernelInterface::class), Request::createFromGlobals(), Kernel::MASTER_REQUEST, new Template('Foo', ['bar' => 'baz'], $response));
+        $event = new ViewEvent(M::mock(HttpKernelInterface::class), Request::createFromGlobals(), HttpKernelInterface::MAIN_REQUEST, new Template('Foo', ['bar' => 'baz'], $response));
 
         $listener->onKernelView($event);
 
-        static::assertSame($response, $event->getResponse());
-        static::assertSame('foo bar baz', $event->getResponse()->getContent());
+        self::assertSame($response, $event->getResponse());
+        self::assertSame('foo bar baz', $event->getResponse()->getContent());
     }
 }

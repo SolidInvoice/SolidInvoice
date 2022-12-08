@@ -13,10 +13,6 @@
 
 {% block title %}{{ 'edit_client'|trans }} - {{ client }}{% endblock %}
 
-{% block sidebar %}
-    {{ menu('clients_edit') }}
-{% endblock sidebar %}
-
 {% block content %}
     {% include "@SolidInvoiceClient/Default/contact_form.html.twig" %}
 {% endblock %}

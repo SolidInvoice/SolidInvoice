@@ -21,15 +21,7 @@ use function date;
 
 final class Version20000 extends AbstractMigration
 {
-    /**
-     * @var Schema
-     */
-    private $schema;
-
-    public function isTransactional(): bool
-    {
-        return \PHP_VERSION_ID < 80000;
-    }
+    private Schema $schema;
 
     public function up(Schema $schema): void
     {
@@ -304,7 +296,7 @@ final class Version20000 extends AbstractMigration
                 ['client_id', 'string', ['length' => 255, 'notnull' => false]],
                 ['total_amount', 'integer', ['notnull' => false]],
                 ['currency_code', 'string', ['length' => 255, 'notnull' => false]],
-                ['details', 'json_array', ['notnull' => true]],
+                ['details', 'json', ['notnull' => true]],
                 ['status', 'string', ['length' => 25, 'notnull' => true]],
                 ['message', 'text', ['notnull' => false]],
                 ['completed', 'datetime', ['notnull' => false]],

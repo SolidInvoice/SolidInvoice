@@ -17,8 +17,12 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Type;
 
+/**
+ * @see \SolidInvoice\MailerBundle\Tests\Form\Type\TransportConfig\SmtpTransportConfigTypeTest
+ */
 final class SmtpTransportConfigType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -27,7 +31,7 @@ final class SmtpTransportConfigType extends AbstractType
             'host',
             null,
             [
-                'constraints' => new Constraints\NotBlank(['groups' => 'smtp']),
+                'constraints' => new NotBlank(['groups' => 'smtp']),
             ]
         );
 
@@ -35,7 +39,7 @@ final class SmtpTransportConfigType extends AbstractType
             'port',
             IntegerType::class,
             [
-                'constraints' => new Constraints\Type(['groups' => ['smtp'], 'type' => 'integer']),
+                'constraints' => new Type(['groups' => ['smtp'], 'type' => 'integer']),
                 'required' => false,
             ]
         );
@@ -44,7 +48,7 @@ final class SmtpTransportConfigType extends AbstractType
             'user',
             null,
             [
-                'constraints' => new Constraints\NotBlank(['groups' => 'smtp']),
+                'constraints' => new NotBlank(['groups' => 'smtp']),
                 'required' => false,
             ]
         );
@@ -53,7 +57,7 @@ final class SmtpTransportConfigType extends AbstractType
             'password',
             PasswordType::class,
             [
-                'constraints' => new Constraints\NotBlank(['groups' => 'smtp']),
+                'constraints' => new NotBlank(['groups' => 'smtp']),
                 'required' => false,
             ]
         );

@@ -17,7 +17,6 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Namshi\Notificator\ManagerInterface;
-use SolidInvoice\SettingsBundle\Exception\InvalidSettingException;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\UserBundle\Entity\User;
 
@@ -55,10 +54,7 @@ class NotificationManager
         $this->entityManager = $doctrine->getManager();
     }
 
-    /**
-     * @throws InvalidSettingException
-     */
-    public function sendNotification(string $event, NotificationMessageInterface $message)
+    public function sendNotification(string $event, NotificationMessageInterface $message): void
     {
         /** @var EntityRepository $repository */
         $repository = $this->entityManager->getRepository(User::class);
@@ -68,7 +64,13 @@ class NotificationManager
         $notification = new ChainedNotification();
 
         // @TODO: Settings should automatically be decoded
-        $settings = json_decode($this->settings->get(sprintf('notification/%s', $event)), true, 512, JSON_THROW_ON_ERROR);
+        $json = $this->settings->get(sprintf('notification/%s', $event));
+
+        if (null === $json) {
+            return;
+        }
+
+        $settings = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
 
         if ((bool) $settings['email']) {
             $notification->addNotification($this->factory->createEmailNotification($message));

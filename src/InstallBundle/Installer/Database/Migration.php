@@ -13,79 +13,38 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Installer\Database;
 
-use Closure;
-use Doctrine\Migrations\Configuration\Configuration;
-use Doctrine\Migrations\Exception\MigrationException;
-use Doctrine\Migrations\OutputWriter;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
-use Symfony\Component\Filesystem\Exception\IOException;
-use Symfony\Component\Filesystem\Filesystem;
+use Doctrine\Migrations\DependencyFactory;
+use Doctrine\Migrations\MigratorConfiguration;
+use Doctrine\Migrations\Query\Query;
 
-/**
- * Class Migration.
- *
- * Performs database migrations
- */
-class Migration implements ContainerAwareInterface
+final class Migration
 {
-    use ContainerAwareTrait;
+    private DependencyFactory $migrationDependencyFactory;
 
-    /**
-     * @var Filesystem
-     */
-    private $filesystem;
-
-    public function __construct(Filesystem $filesystem)
+    public function __construct(DependencyFactory $migrationDependencyFactory)
     {
-        $this->filesystem = $filesystem;
+        $this->migrationDependencyFactory = $migrationDependencyFactory;
     }
 
     /**
-     * @param Closure $outputWriter
-     *
-     * @throws InvalidArgumentException|MigrationException|IOException
+     * @return array<string, Query[]>
      */
-    public function migrate(Closure $outputWriter = null): array
+    public function migrate(): array
     {
-        $dir = $this->container->getParameter('doctrine_migrations.dir_name');
+        $this->migrationDependencyFactory->getMetadataStorage()->ensureInitialized();
 
-        if (!$this->filesystem->exists($dir)) {
-            $this->filesystem->mkdir($dir);
-        }
+        $planCalculator = $this->migrationDependencyFactory->getMigrationPlanCalculator();
 
-        $configuration = $this->getConfiguration($dir, $outputWriter);
+        $version = $this->migrationDependencyFactory->getVersionAliasResolver()->resolveVersionAlias('latest');
 
-        $versions = $configuration->getMigrations();
+        $plan = $planCalculator->getPlanUntilVersion($version);
 
-        foreach ($versions as $version) {
-            $migration = $version->getMigration();
-            if ($migration instanceof ContainerAwareInterface) {
-                $migration->setContainer($this->container);
-            }
-        }
-
-        $migration = $configuration->getDependencyFactory()->getMigrator();
-
-        return $migration->migrate();
-    }
-
-    /**
-     * @param string  $dir
-     * @param Closure $outputWriter
-     */
-    private function getConfiguration($dir, Closure $outputWriter = null): Configuration
-    {
-        $connection = $this->container->get('database_connection');
-
-        $configuration = new Configuration($connection, new OutputWriter($outputWriter));
-        $configuration->setMigrationsNamespace($this->container->getParameter('doctrine_migrations.namespace'));
-        $configuration->setMigrationsDirectory($dir);
-        $configuration->registerMigrationsFromDirectory($dir);
-        $configuration->setName($this->container->getParameter('doctrine_migrations.name'));
-        $configuration->setMigrationsTableName($this->container->getParameter('doctrine_migrations.table_name'));
-
-        return $configuration;
+        return $this->migrationDependencyFactory->getMigrator()->migrate(
+            $plan,
+            (new MigratorConfiguration())
+                ->setDryRun(false)
+                ->setTimeAllQueries(true)
+                ->setAllOrNothing(true)
+        );
     }
 }

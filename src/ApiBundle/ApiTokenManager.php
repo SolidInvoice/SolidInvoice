@@ -17,6 +17,9 @@ use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\UserBundle\Entity\ApiToken;
 use SolidInvoice\UserBundle\Entity\User;
 
+/**
+ * @see \SolidInvoice\ApiBundle\Tests\ApiTokenManagerTest
+ */
 class ApiTokenManager
 {
     public const TOKEN_LENGTH = 32;
@@ -26,9 +29,6 @@ class ApiTokenManager
      */
     private $registry;
 
-    /**
-     * ApiTokenManager constructor.
-     */
     public function __construct(ManagerRegistry $registry)
     {
         $this->registry = $registry;

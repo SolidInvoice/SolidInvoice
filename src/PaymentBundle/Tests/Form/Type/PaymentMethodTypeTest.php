@@ -18,7 +18,7 @@ use SolidInvoice\PaymentBundle\Form\Type\PaymentMethodType;
 
 class PaymentMethodTypeTest extends FormTestCase
 {
-    public function testSubmit()
+    public function testSubmit(): void
     {
         $name = $this->faker->name;
         $enabled = $this->faker->boolean;

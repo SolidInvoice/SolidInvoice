@@ -13,27 +13,25 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\Twig\Extension;
 
+use JsonException;
 use SolidInvoice\DataGridBundle\Exception\InvalidGridException;
 use SolidInvoice\DataGridBundle\Repository\GridRepository;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 class GridExtension extends AbstractExtension
 {
-    /**
-     * @var GridRepository
-     */
-    private $repository;
+    private GridRepository $repository;
 
     public function __construct(GridRepository $repository)
     {
         $this->repository = $repository;
     }
 
-    /**
-     * @return TwigFunction[]
-     */
     public function getFunctions(): array
     {
         return [
@@ -61,13 +59,15 @@ class GridExtension extends AbstractExtension
     }
 
     /**
-     * @throws InvalidGridException
+     * @param array<string, string> $parameters
+
+     * @throws InvalidGridException|JsonException|LoaderError|RuntimeError|SyntaxError
      */
     public function renderGrid(Environment $env, string $gridName, array $parameters = []): string
     {
         $grid = $this->repository->find($gridName);
 
-        if (!empty($parameters)) {
+        if (! empty($parameters)) {
             $grid->setParameters($parameters);
         }
 
@@ -83,7 +83,7 @@ class GridExtension extends AbstractExtension
     }
 
     /**
-     * @throws InvalidGridException
+     * @throws InvalidGridException|JsonException|LoaderError|RuntimeError|SyntaxError
      */
     public function renderMultipleGrid(Environment $env): string
     {
@@ -94,7 +94,7 @@ class GridExtension extends AbstractExtension
         $grids = array_splice($args, 1);
 
         if (is_array($grids[0])) {
-            if (!empty($grids[1]) && is_array($grids[1])) {
+            if (! empty($grids[1]) && is_array($grids[1])) {
                 $parameters = $grids[1];
             }
 
@@ -118,13 +118,5 @@ class GridExtension extends AbstractExtension
                 'grids' => $renderGrids,
             ]
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'grid_extension';
     }
 }

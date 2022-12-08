@@ -22,7 +22,7 @@ class PaymentFactoriesTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    public function testSetGatewayFactories()
+    public function testSetGatewayFactories(): void
     {
         $data = [
             'cash' => 'offline',
@@ -34,33 +34,17 @@ class PaymentFactoriesTest extends TestCase
 
         $paymentFactories->setGatewayFactories($data);
 
-        static::assertSame($data, $paymentFactories->getFactories());
+        self::assertSame($data, $paymentFactories->getFactories());
     }
 
-    public function testGetGatewayFactories()
+    public function testGetGatewayFactories(): void
     {
         $paymentFactories = new PaymentFactories();
 
-        static::assertEmpty($paymentFactories->getFactories());
+        self::assertEmpty($paymentFactories->getFactories());
     }
 
-    public function testGetSpecificGatewayFactories()
-    {
-        $data = [
-            'cash' => 'offline',
-            'credit' => 'offline',
-            'paypal' => 'paypal_express',
-        ];
-
-        $paymentFactories = new PaymentFactories();
-        $paymentFactories->setGatewayFactories($data);
-
-        static::assertSame(['cash' => 'offline', 'credit' => 'offline'], $paymentFactories->getFactories('offline'));
-        static::assertSame(['paypal' => 'paypal_express'], $paymentFactories->getFactories('paypal_express'));
-        static::assertSame([], $paymentFactories->getFactories('paypal_pro'));
-    }
-
-    public function testIsOffline()
+    public function testGetSpecificGatewayFactories(): void
     {
         $data = [
             'cash' => 'offline',
@@ -71,13 +55,12 @@ class PaymentFactoriesTest extends TestCase
         $paymentFactories = new PaymentFactories();
         $paymentFactories->setGatewayFactories($data);
 
-        static::assertTrue($paymentFactories->isOffline('cash'));
-        static::assertTrue($paymentFactories->isOffline('credit'));
-        static::assertFalse($paymentFactories->isOffline('paypal'));
-        static::assertFalse($paymentFactories->isOffline('payex'));
+        self::assertSame(['cash' => 'offline', 'credit' => 'offline'], $paymentFactories->getFactories('offline'));
+        self::assertSame(['paypal' => 'paypal_express'], $paymentFactories->getFactories('paypal_express'));
+        self::assertSame([], $paymentFactories->getFactories('paypal_pro'));
     }
 
-    public function testGetFactory()
+    public function testIsOffline(): void
     {
         $data = [
             'cash' => 'offline',
@@ -88,12 +71,29 @@ class PaymentFactoriesTest extends TestCase
         $paymentFactories = new PaymentFactories();
         $paymentFactories->setGatewayFactories($data);
 
-        static::assertSame('offline', $paymentFactories->getFactory('cash'));
-        static::assertSame('offline', $paymentFactories->getFactory('credit'));
-        static::assertSame('paypal_express', $paymentFactories->getFactory('paypal'));
+        self::assertTrue($paymentFactories->isOffline('cash'));
+        self::assertTrue($paymentFactories->isOffline('credit'));
+        self::assertFalse($paymentFactories->isOffline('paypal'));
+        self::assertFalse($paymentFactories->isOffline('payex'));
     }
 
-    public function testGetEmptyFactory()
+    public function testGetFactory(): void
+    {
+        $data = [
+            'cash' => 'offline',
+            'credit' => 'offline',
+            'paypal' => 'paypal_express',
+        ];
+
+        $paymentFactories = new PaymentFactories();
+        $paymentFactories->setGatewayFactories($data);
+
+        self::assertSame('offline', $paymentFactories->getFactory('cash'));
+        self::assertSame('offline', $paymentFactories->getFactory('credit'));
+        self::assertSame('paypal_express', $paymentFactories->getFactory('paypal'));
+    }
+
+    public function testGetEmptyFactory(): void
     {
         $paymentFactories = new PaymentFactories();
 
@@ -102,7 +102,7 @@ class PaymentFactoriesTest extends TestCase
         $paymentFactories->getFactory('unknown');
     }
 
-    public function testSetGatewayForms()
+    public function testSetGatewayForms(): void
     {
         $paymentFactories = new PaymentFactories();
 
@@ -114,9 +114,9 @@ class PaymentFactoriesTest extends TestCase
 
         $paymentFactories->setGatewayForms($data);
 
-        static::assertSame('cash_form', $paymentFactories->getForm('cash'));
-        static::assertSame('credit_form', $paymentFactories->getForm('credit'));
-        static::assertSame('paypal_form', $paymentFactories->getForm('paypal'));
-        static::assertNull($paymentFactories->getForm('payex'));
+        self::assertSame('cash_form', $paymentFactories->getForm('cash'));
+        self::assertSame('credit_form', $paymentFactories->getForm('credit'));
+        self::assertSame('paypal_form', $paymentFactories->getForm('paypal'));
+        self::assertNull($paymentFactories->getForm('payex'));
     }
 }

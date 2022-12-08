@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Tests\Form\Handler;
 
 use Mockery as M;
+use Mockery\MockInterface;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
@@ -22,18 +23,22 @@ use SolidInvoice\UserBundle\Form\Handler\UserEditFormHandler;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactory;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class UserEditFormHandlerTest extends FormHandlerTestCase
+final class UserEditFormHandlerTest extends FormHandlerTestCase
 {
+    /**
+     * @var RouterInterface&MockInterface
+     */
     private $router;
 
-    private $userPasswordEncoder;
+    private UserPasswordHasher $userPasswordHasher;
 
-    private $password;
+    private string $password;
 
-    private $user;
+    private User $user;
 
     protected function setUp(): void
     {
@@ -42,12 +47,16 @@ class UserEditFormHandlerTest extends FormHandlerTestCase
         $this->user = new User();
         $this->password = $this->faker->password;
         $this->router = M::mock(RouterInterface::class);
-        $this->userPasswordEncoder = M::mock(UserPasswordEncoderInterface::class);
+        $this->userPasswordHasher = new UserPasswordHasher(new PasswordHasherFactory([
+            User::class => [
+                'algorithm' => 'auto',
+            ],
+        ]));
     }
 
-    public function getHandler()
+    public function getHandler(): UserEditFormHandler
     {
-        $handler = new UserEditFormHandler($this->userPasswordEncoder, $this->router);
+        $handler = new UserEditFormHandler($this->userPasswordHasher, $this->router);
         $handler->setDoctrine($this->registry);
 
         return $handler;
@@ -55,11 +64,6 @@ class UserEditFormHandlerTest extends FormHandlerTestCase
 
     protected function beforeSuccess(FormRequest $form, $data): void
     {
-        $this->userPasswordEncoder->shouldReceive('encodePassword')
-            ->once()
-            ->with($data, $this->password)
-            ->andReturn(password_hash($this->password, PASSWORD_DEFAULT));
-
         $this->router->shouldReceive('generate')
             ->once()
             ->with('_users_list')
@@ -68,21 +72,24 @@ class UserEditFormHandlerTest extends FormHandlerTestCase
 
     protected function assertOnSuccess(?Response $response, FormRequest $form, $data): void
     {
-        static::assertCount(1, $this->em->getRepository(User::class)->findAll());
-        static::assertInstanceOf(RedirectResponse::class, $response);
-        static::assertInstanceOf(FlashResponse::class, $response);
-        static::assertSame('/users', $response->getTargetUrl());
-        static::assertSame('test', $data->getUserName());
-        static::assertTrue(password_verify($this->password, $data->getPassword()));
-        static::assertCount(1, $response->getFlash());
-        static::assertSame(FlashResponse::FLASH_SUCCESS, $response->getFlash()->key());
+        self::assertCount(1, $this->em->getRepository(User::class)->findAll());
+        self::assertInstanceOf(RedirectResponse::class, $response);
+        self::assertInstanceOf(FlashResponse::class, $response);
+        self::assertSame('/users', $response->getTargetUrl());
+        self::assertSame('test', $data->getUserName());
+        self::assertTrue(password_verify($this->password, $data->getPassword()));
+        self::assertCount(1, $response->getFlash());
+        self::assertSame(FlashResponse::FLASH_SUCCESS, $response->getFlash()->key());
     }
 
     protected function assertResponse(FormRequest $formRequest): void
     {
-        static::assertInstanceOf(Template::class, $formRequest->getResponse());
+        self::assertInstanceOf(Template::class, $formRequest->getResponse());
     }
 
+    /**
+     * @return array{user: User}
+     */
     protected function getHandlerOptions(): array
     {
         $this->user->setUsername('one');
@@ -95,6 +102,9 @@ class UserEditFormHandlerTest extends FormHandlerTestCase
         ];
     }
 
+    /**
+     * @return array{user: array{username: string, email: string, plainPassword: array{first: string, second: string}, mobile: string, enabled: bool}}
+     */
     public function getFormData(): array
     {
         return [

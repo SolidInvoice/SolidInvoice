@@ -21,6 +21,9 @@ use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use Traversable;
 
+/**
+ * @see \SolidInvoice\InvoiceBundle\Tests\Cloner\InvoiceClonerTest
+ */
 final class InvoiceCloner
 {
     /**

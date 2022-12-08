@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class CreditNormalizerTest extends TestCase
 {
-    public function testSupportsNormalization()
+    public function testSupportsNormalization(): void
     {
         $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
             public function normalize($object, $format = null, array $context = [])
@@ -49,11 +49,11 @@ class CreditNormalizerTest extends TestCase
 
         $normalizer = new CreditNormalizer($parentNormalizer);
 
-        static::assertTrue($normalizer->supportsNormalization(new Credit()));
-        static::assertFalse($normalizer->supportsNormalization(Credit::class));
+        self::assertTrue($normalizer->supportsNormalization(new Credit()));
+        self::assertFalse($normalizer->supportsNormalization(Credit::class));
     }
 
-    public function testSupportsDenormalization()
+    public function testSupportsDenormalization(): void
     {
         $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
             public function normalize($object, $format = null, array $context = [])
@@ -79,11 +79,11 @@ class CreditNormalizerTest extends TestCase
 
         $normalizer = new CreditNormalizer($parentNormalizer);
 
-        static::assertTrue($normalizer->supportsDenormalization(null, Credit::class));
-        static::assertFalse($normalizer->supportsDenormalization([], NormalizerInterface::class));
+        self::assertTrue($normalizer->supportsDenormalization(null, Credit::class));
+        self::assertFalse($normalizer->supportsDenormalization([], NormalizerInterface::class));
     }
 
-    public function testNormalization()
+    public function testNormalization(): void
     {
         $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
             public function normalize($object, $format = null, array $context = [])
@@ -113,10 +113,10 @@ class CreditNormalizerTest extends TestCase
         $money = new Money(10000, new Currency('USD'));
         $credit->setValue($money);
 
-        static::assertEquals($money, $normalizer->normalize($credit));
+        self::assertEquals($money, $normalizer->normalize($credit));
     }
 
-    public function testDenormalization()
+    public function testDenormalization(): void
     {
         $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
             public function normalize($object, $format = null, array $context = [])
@@ -142,6 +142,6 @@ class CreditNormalizerTest extends TestCase
 
         $normalizer = new CreditNormalizer($parentNormalizer);
 
-        static::assertEquals(123, $normalizer->denormalize([], Credit::class));
+        self::assertSame(123, $normalizer->denormalize([], Credit::class));
     }
 }

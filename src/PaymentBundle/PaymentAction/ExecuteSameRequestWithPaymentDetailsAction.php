@@ -27,11 +27,9 @@ class ExecuteSameRequestWithPaymentDetailsAction implements ActionInterface, Gat
     use GatewayAwareTrait;
 
     /**
-     * {@inheritdoc}
-     *
-     * @param $request Generic
+     * @param Generic $request
      */
-    public function execute($request)
+    public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
@@ -50,13 +48,9 @@ class ExecuteSameRequestWithPaymentDetailsAction implements ActionInterface, Gat
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($request)
     {
-        return
-            $request instanceof Generic &&
+        return $request instanceof Generic &&
             $request->getModel() instanceof Payment;
     }
 }

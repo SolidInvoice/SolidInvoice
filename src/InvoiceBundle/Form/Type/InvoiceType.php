@@ -23,6 +23,9 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @see \SolidInvoice\InvoiceBundle\Tests\Form\Type\InvoiceTypeTest
+ */
 class InvoiceType extends AbstractType
 {
     /**
@@ -35,9 +38,6 @@ class InvoiceType extends AbstractType
         $this->currency = $currency;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
@@ -77,17 +77,11 @@ class InvoiceType extends AbstractType
         $builder->addEventSubscriber(new InvoiceUsersSubscriber());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'invoice';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(

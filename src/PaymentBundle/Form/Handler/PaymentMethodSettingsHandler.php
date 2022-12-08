@@ -30,6 +30,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 
+/**
+ * @see \SolidInvoice\PaymentBundle\Tests\Form\Handler\PaymentMethodSettingsHandlerTest
+ */
 class PaymentMethodSettingsHandler implements FormHandlerInterface, FormHandlerSuccessInterface, FormHandlerResponseInterface, FormHandlerOptionsResolver
 {
     use SaveableTrait;
@@ -52,9 +55,6 @@ class PaymentMethodSettingsHandler implements FormHandlerInterface, FormHandlerS
         $this->router = $router;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getForm(FormFactoryInterface $factory, Options $options)
     {
         /** @var PaymentMethod $paymentMethod */
@@ -73,17 +73,14 @@ class PaymentMethodSettingsHandler implements FormHandlerInterface, FormHandlerS
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function onSuccess(FormRequest $form, $data): ?Response
     {
-        /* @var PaymentMethod $data */
+        /** @var PaymentMethod $data */
 
         $settings = (array) $data->getConfig();
 
         foreach ($settings as $key => $value) {
-            if ('password' === $key && null === $value && !empty($this->originalSettings[$key])) {
+            if ('password' === $key && null === $value && ! empty($this->originalSettings[$key])) {
                 $settings[$key] = $this->originalSettings[$key];
             }
         }
@@ -102,9 +99,6 @@ class PaymentMethodSettingsHandler implements FormHandlerInterface, FormHandlerS
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getResponse(FormRequest $formRequest)
     {
         return new Template(
@@ -116,9 +110,6 @@ class PaymentMethodSettingsHandler implements FormHandlerInterface, FormHandlerS
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired('payment_method')

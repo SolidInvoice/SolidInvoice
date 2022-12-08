@@ -52,9 +52,6 @@ class RecurringInvoiceCreate implements CommandInterface
         $this->invoiceManager = $invoiceManager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isDue(): bool
     {
         // We want to run this process always when a cron runs, to ensure we always send out the invoices
@@ -62,8 +59,6 @@ class RecurringInvoiceCreate implements CommandInterface
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @throws InvalidTransitionException
      */
     public function process(): void

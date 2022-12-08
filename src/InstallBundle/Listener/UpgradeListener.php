@@ -20,7 +20,7 @@ use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\InstallBundle\Installer\Database\Migration;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
-use Symfony\Component\HttpKernel\HttpKernel;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
@@ -28,34 +28,22 @@ use Symfony\Component\HttpKernel\KernelEvents;
  */
 class UpgradeListener implements EventSubscriberInterface
 {
-    /**
-     * @var string
-     */
-    private $installed;
+    private ?string $installed;
+
+    private ManagerRegistry $registry;
+
+    private Migration $migration;
 
     /**
-     * @var ManagerRegistry
+     * @return array<string, list<int|string>>
      */
-    private $registry;
-
-    /**
-     * @var Migration
-     */
-    private $migration;
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::REQUEST => ['onKernelRequest', 10],
         ];
     }
 
-    /**
-     * @param string $installed
-     */
     public function __construct(?string $installed, ManagerRegistry $registry, Migration $migration)
     {
         $this->installed = $installed;
@@ -63,13 +51,13 @@ class UpgradeListener implements EventSubscriberInterface
         $this->migration = $migration;
     }
 
-    public function onKernelRequest(RequestEvent $event)
+    public function onKernelRequest(RequestEvent $event): void
     {
         if (null === $this->installed) {
             return;
         }
 
-        if (HttpKernel::MASTER_REQUEST !== $event->getRequestType()) {
+        if (HttpKernelInterface::MAIN_REQUEST !== $event->getRequestType()) {
             return;
         }
 

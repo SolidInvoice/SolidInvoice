@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Tests\Functional\Api;
 
-use Liip\TestFixturesBundle\Test\FixturesTrait;
+use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
+use SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 
 /**
@@ -23,18 +24,21 @@ use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 class ClientTest extends ApiTestCase
 {
     use EnsureApplicationInstalled;
-    use FixturesTrait;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $this->loadFixtures([
-            'SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData',
+        self::bootKernel();
+
+        $databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
+
+        $databaseTool->loadFixtures([
+            LoadData::class,
         ], true);
     }
 
-    public function testCreate()
+    public function testCreate(): void
     {
         $data = [
             'name' => 'Dummy User',
@@ -48,7 +52,7 @@ class ClientTest extends ApiTestCase
 
         $result = $this->requestPost('/api/clients', $data);
 
-        static::assertSame([
+        self::assertSame([
             'id' => 2,
             'name' => 'Dummy User',
             'website' => null,
@@ -69,16 +73,16 @@ class ClientTest extends ApiTestCase
         ], $result);
     }
 
-    public function testDelete()
+    public function testDelete(): void
     {
         $this->requestDelete('/api/clients/1');
     }
 
-    public function testGet()
+    public function testGet(): void
     {
         $data = $this->requestGet('/api/clients/1');
 
-        static::assertSame([
+        self::assertSame([
             'id' => 1,
             'name' => 'Test',
             'website' => null,
@@ -99,11 +103,11 @@ class ClientTest extends ApiTestCase
         ], $data);
     }
 
-    public function testEdit()
+    public function testEdit(): void
     {
         $data = $this->requestPut('/api/clients/1', ['name' => 'New Test']);
 
-        static::assertSame([
+        self::assertSame([
             'id' => 1,
             'name' => 'New Test',
             'website' => null,

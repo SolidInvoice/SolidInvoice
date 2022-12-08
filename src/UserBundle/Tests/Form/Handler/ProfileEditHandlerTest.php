@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Tests\Form\Handler;
 
-use Liip\TestFixturesBundle\Test\FixturesTrait;
+use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Mockery as M;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
@@ -52,9 +52,6 @@ class ProfileEditHandlerTest extends FormHandlerTestCase
             ->andReturn(new AnonymousToken($this->faker->sha1, $executor->getReferenceRepository()->getReference('user2')));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getHandler()
     {
         return new ProfileEditFormHandler($this->userRepository, $this->tokenStorage, $this->router);
@@ -74,11 +71,11 @@ class ProfileEditHandlerTest extends FormHandlerTestCase
 
     protected function assertOnSuccess(?Response $response, FormRequest $form, $data): void
     {
-        static::assertSame('9876543210', $data->getMobile());
-        static::assertInstanceOf(RedirectResponse::class, $response);
-        static::assertInstanceOf(FlashResponse::class, $response);
-        static::assertSame('/profile', $response->getTargetUrl());
-        static::assertSame(FlashResponse::FLASH_SUCCESS, $response->getFlash()->key());
+        self::assertSame('9876543210', $data->getMobile());
+        self::assertInstanceOf(RedirectResponse::class, $response);
+        self::assertInstanceOf(FlashResponse::class, $response);
+        self::assertSame('/profile', $response->getTargetUrl());
+        self::assertSame(FlashResponse::FLASH_SUCCESS, $response->getFlash()->key());
     }
 
     public function getFormData(): array
@@ -93,11 +90,13 @@ class ProfileEditHandlerTest extends FormHandlerTestCase
 
 class KernelExecutor extends KernelTestCase
 {
-    use FixturesTrait;
-
     public function __invoke()
     {
-        return $this->loadFixtures([LoadData::class], true);
+        self::bootKernel();
+
+        $databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
+
+        return $databaseTool->loadFixtures([LoadData::class], true);
     }
 
     public function __destruct()

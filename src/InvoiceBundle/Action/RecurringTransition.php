@@ -44,7 +44,7 @@ final class RecurringTransition
 
     public function __invoke(Request $request, string $action, RecurringInvoice $invoice)
     {
-        if (!$this->stateMachine->can($invoice, $action)) {
+        if (! $this->stateMachine->can($invoice, $action)) {
             throw new InvalidTransitionException($action);
         }
 
@@ -66,9 +66,9 @@ final class RecurringTransition
                 parent::__construct($route);
             }
 
-            public function getFlash(): iterable
+            public function getFlash(): \Generator
             {
-                yield self::FLASH_SUCCESS => 'invoice.transition.action.'.$this->action;
+                yield self::FLASH_SUCCESS => 'invoice.transition.action.' . $this->action;
             }
         };
     }

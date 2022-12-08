@@ -36,18 +36,12 @@ class ChainedNotification extends Notification implements ChainedNotificationInt
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNotifications(): array
     {
         return $this->notifications;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function addNotification(NotificationInterface $notification)
+    public function addNotification(NotificationInterface $notification): void
     {
         $this->notifications[] = $notification;
     }

@@ -27,40 +27,31 @@ use SolidWorx\FormHandler\Options;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+/**
+ * @see \SolidInvoice\UserBundle\Tests\Form\Handler\UserAddFormHandlerTest
+ */
 class UserAddFormHandler implements FormHandlerResponseInterface, FormHandlerInterface, FormHandlerSuccessInterface
 {
     use SaveableTrait;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
-    /**
-     * @var UserPasswordEncoderInterface
-     */
-    private $userPasswordEncoder;
+    private UserPasswordHasherInterface $userPasswordHasher;
 
-    public function __construct(UserPasswordEncoderInterface $userPasswordEncoder, RouterInterface $router)
+    public function __construct(UserPasswordHasherInterface $userPasswordHasher, RouterInterface $router)
     {
         $this->router = $router;
-        $this->userPasswordEncoder = $userPasswordEncoder;
+        $this->userPasswordHasher = $userPasswordHasher;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getForm(FormFactoryInterface $factory, Options $options)
     {
         return $factory->create(UserType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getResponse(FormRequest $formRequest)
     {
         return new Template(
@@ -72,22 +63,20 @@ class UserAddFormHandler implements FormHandlerResponseInterface, FormHandlerInt
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * @param User $user
+     * @param User $data
      *
      * @throws Exception
      */
-    public function onSuccess(FormRequest $form, $user): ?Response
+    public function onSuccess(FormRequest $form, $data): ?Response
     {
-        $user->setPassword($this->userPasswordEncoder->encodePassword($user, $user->getPlainPassword()));
-        $user->eraseCredentials();
-        $this->save($user);
+        $data->setPassword($this->userPasswordHasher->hashPassword($data, $data->getPlainPassword()));
+        $data->eraseCredentials();
+        $this->save($data);
 
         $route = $this->router->generate('_users_list');
 
         return new class($route) extends RedirectResponse implements FlashResponse {
-            public function getFlash(): iterable
+            public function getFlash(): \Generator
             {
                 yield self::FLASH_SUCCESS => 'users.create.success';
             }

@@ -53,7 +53,7 @@ class CreditRepository extends ServiceEntityRepository
         return $credit;
     }
 
-    public function updateCurrency(Client $client)
+    public function updateCurrency(Client $client): void
     {
         $filters = $this->getEntityManager()->getFilters();
         $filters->disable('archivable');

@@ -19,6 +19,9 @@ use Doctrine\DBAL\Types\Type;
 use Money\Currency;
 use Money\Money;
 
+/**
+ * @see \SolidInvoice\MoneyBundle\Tests\Doctrine\Types\MoneyTypeTest
+ */
 class MoneyType extends Type
 {
     public const NAME = 'money';
@@ -28,7 +31,7 @@ class MoneyType extends Type
      */
     private static $currency;
 
-    public static function setCurrency(Currency $currency)
+    public static function setCurrency(Currency $currency): void
     {
         self::$currency = $currency;
     }
@@ -46,9 +49,6 @@ class MoneyType extends Type
         return $platform->getIntegerTypeDeclarationSQL($fieldDeclaration);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
         if ($value instanceof Money) {
@@ -63,8 +63,6 @@ class MoneyType extends Type
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @throws ConversionException
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
@@ -89,9 +87,6 @@ class MoneyType extends Type
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return 'money';

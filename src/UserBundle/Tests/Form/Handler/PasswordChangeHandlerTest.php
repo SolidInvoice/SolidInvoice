@@ -22,25 +22,43 @@ use SolidInvoice\UserBundle\Repository\UserRepository;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactory;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class PasswordChangeHandlerTest extends FormHandlerTestCase
+final class PasswordChangeHandlerTest extends FormHandlerTestCase
 {
+    /**
+     * @var UserRepository&M\MockInterface
+     */
     private $userRepository;
-    private $userPasswordEncoder;
+
+    private UserPasswordHasher $userPasswordHasher;
+
+    /**
+     * @var TokenStorageInterface&M\MockInterface
+     */
     private $tokenStorage;
+
+    /**
+     * @var RouterInterface&M\MockInterface
+     */
     private $router;
-    private $password;
+
+    private string $password;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->userRepository = M::mock(UserRepository::class);
-        $this->userPasswordEncoder = M::mock(UserPasswordEncoderInterface::class);
+        $this->userPasswordHasher = new UserPasswordHasher(new PasswordHasherFactory([
+            User::class => [
+                'algorithm' => 'auto',
+            ],
+        ]));
         $this->tokenStorage = M::mock(TokenStorageInterface::class);
         $this->router = M::mock(RouterInterface::class);
         $this->password = $this->faker->password;
@@ -51,31 +69,23 @@ class PasswordChangeHandlerTest extends FormHandlerTestCase
             ->andReturn(new AnonymousToken($this->faker->sha1, 'anon.'));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getHandler()
+    public function getHandler(): PasswordChangeHandler
     {
-        return new PasswordChangeHandler($this->userRepository, $this->userPasswordEncoder, $this->tokenStorage, $this->router);
-    }
-
-    protected function beforeSuccess(FormRequest $form, $data): void
-    {
-        $this->userPasswordEncoder->shouldReceive('encodePassword')
-            ->once()
-            ->with($data, $this->password)
-            ->andReturn(password_hash($this->password, PASSWORD_DEFAULT));
+        return new PasswordChangeHandler($this->userRepository, $this->userPasswordHasher, $this->tokenStorage, $this->router);
     }
 
     protected function assertOnSuccess(?Response $response, FormRequest $form, $data): void
     {
-        static::assertInstanceOf(RedirectResponse::class, $response);
-        static::assertInstanceOf(FlashResponse::class, $response);
-        static::assertSame('profile', $response->getTargetUrl());
-        static::assertTrue(password_verify($this->password, $data->getPassword()));
-        static::assertSame(FlashResponse::FLASH_SUCCESS, $response->getFlash()->key());
+        self::assertInstanceOf(RedirectResponse::class, $response);
+        self::assertInstanceOf(FlashResponse::class, $response);
+        self::assertSame('profile', $response->getTargetUrl());
+        self::assertTrue(password_verify($this->password, $data->getPassword()));
+        self::assertSame(FlashResponse::FLASH_SUCCESS, $response->getFlash()->key());
     }
 
+    /**
+     * @return array{user: User}
+     */
     protected function getHandlerOptions(): array
     {
         return [
@@ -83,6 +93,9 @@ class PasswordChangeHandlerTest extends FormHandlerTestCase
         ];
     }
 
+    /**
+     * @return array{plainPassword: array{first: string, second: string}}
+     */
     public function getFormData(): array
     {
         return [

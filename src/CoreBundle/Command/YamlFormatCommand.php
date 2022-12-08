@@ -36,9 +36,6 @@ class YamlFormatCommand extends Command
         parent::__construct();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         /** @var SplFileInfo $file */
@@ -60,8 +57,8 @@ class YamlFormatCommand extends Command
             ->ignoreDotFiles(true)
             ->ignoreUnreadableDirs(true)
             ->ignoreVCS(true)
-            ->in($this->projectDir.'/app')
-            ->in($this->projectDir.'/src/**/*')
+            ->in($this->projectDir . '/app')
+            ->in($this->projectDir . '/src/**/*')
             ->name('*.yml');
 
         return $finder->getIterator();

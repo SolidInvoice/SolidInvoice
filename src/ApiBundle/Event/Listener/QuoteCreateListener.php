@@ -22,12 +22,12 @@ use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Workflow\StateMachine;
 
+/**
+ * @see \SolidInvoice\ApiBundle\Tests\Event\Listener\QuoteCreateListenerTest
+ */
 class QuoteCreateListener implements EventSubscriberInterface
 {
-    /**
-     * @var StateMachine
-     */
-    private $stateMachine;
+    private StateMachine $stateMachine;
 
     public function __construct(StateMachine $stateMachine)
     {
@@ -35,21 +35,21 @@ class QuoteCreateListener implements EventSubscriberInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return array<string, list<list<string|int>>>
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::VIEW => [['setQuoteStatus', EventPriorities::PRE_WRITE]],
         ];
     }
 
-    public function setQuoteStatus(ViewEvent $event)
+    public function setQuoteStatus(ViewEvent $event): void
     {
         $quote = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
 
-        if (!$quote instanceof Quote || Request::METHOD_POST !== $method || !$event->isMasterRequest() || $quote->getStatus()) {
+        if (! $quote instanceof Quote || Request::METHOD_POST !== $method || ! $event->isMainRequest() || $quote->getStatus()) {
             return;
         }
 

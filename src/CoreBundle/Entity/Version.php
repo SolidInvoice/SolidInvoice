@@ -24,9 +24,9 @@ use Doctrine\ORM\Mapping as ORM;
 class Version
 {
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(name="version", type="string", length=125, nullable=false)
+     * @ORM\Column(name="version", type="string", length=125)
      * @ORM\Id
      */
     private $version;
@@ -43,8 +43,6 @@ class Version
      * Set version.
      *
      * @param string $version
-     *
-     * @return Version
      */
     public function setVersion(?string $version): self
     {

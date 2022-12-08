@@ -19,6 +19,9 @@ use SolidInvoice\QuoteBundle\Event\QuoteEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\MailerInterface;
 
+/**
+ * @see \SolidInvoice\QuoteBundle\Tests\Listener\Mailer\QuoteMailerListenerTest
+ */
 class QuoteMailerListener implements EventSubscriberInterface
 {
     /**
@@ -31,9 +34,6 @@ class QuoteMailerListener implements EventSubscriberInterface
         $this->mailer = $mailer;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents(): array
     {
         return [
@@ -41,7 +41,7 @@ class QuoteMailerListener implements EventSubscriberInterface
         ];
     }
 
-    public function onQuoteSend(QuoteEvent $event)
+    public function onQuoteSend(QuoteEvent $event): void
     {
         $this->mailer->send(new QuoteEmail($event->getQuote()));
     }

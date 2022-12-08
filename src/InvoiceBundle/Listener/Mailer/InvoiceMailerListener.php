@@ -19,21 +19,18 @@ use SolidInvoice\InvoiceBundle\Event\InvoiceEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\MailerInterface;
 
+/**
+ * @see \SolidInvoice\InvoiceBundle\Tests\Listener\Mailer\InvoiceMailerListenerTest
+ */
 class InvoiceMailerListener implements EventSubscriberInterface
 {
-    /**
-     * @var MailerInterface
-     */
-    private $mailer;
+    private MailerInterface $mailer;
 
     public function __construct(MailerInterface $mailer)
     {
         $this->mailer = $mailer;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents(): array
     {
         return [
@@ -41,7 +38,7 @@ class InvoiceMailerListener implements EventSubscriberInterface
         ];
     }
 
-    public function onInvoiceAccepted(InvoiceEvent $event)
+    public function onInvoiceAccepted(InvoiceEvent $event): void
     {
         $this->mailer->send(new InvoiceEmail($event->getInvoice()));
     }

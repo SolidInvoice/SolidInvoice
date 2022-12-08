@@ -22,6 +22,9 @@ use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\TaxBundle\Entity\Tax;
 
+/**
+ * @see \SolidInvoice\CoreBundle\Tests\Billing\TotalCalculatorTest
+ */
 class TotalCalculator
 {
     /**
@@ -34,9 +37,9 @@ class TotalCalculator
         $this->paymentRepository = $paymentRepository;
     }
 
-    public function calculateTotals($entity)
+    public function calculateTotals($entity): void
     {
-        if (!$entity instanceof BaseInvoice && !$entity instanceof Quote) {
+        if (! $entity instanceof BaseInvoice && ! $entity instanceof Quote) {
             throw new UnexpectedTypeException($entity, 'Invoice or Quote');
         }
 
@@ -48,9 +51,9 @@ class TotalCalculator
         }
     }
 
-    private function updateTotal($entity)
+    private function updateTotal($entity): void
     {
-        /* @var BaseInvoice|Quote $entity */
+        /** @var BaseInvoice|Quote $entity */
 
         $total = new Money(0, $entity->getTotal()->getCurrency());
         $subTotal = new Money(0, $entity->getTotal()->getCurrency());

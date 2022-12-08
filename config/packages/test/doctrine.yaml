@@ -1,0 +1,4 @@
+doctrine:
+    dbal:
+        driver: 'pdo_sqlite'
+        url: 'sqlite:///%kernel.project_dir%/var/db/sqlite.db'

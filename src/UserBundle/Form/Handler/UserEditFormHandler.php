@@ -28,41 +28,32 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+/**
+ * @see \SolidInvoice\UserBundle\Tests\Form\Handler\UserEditFormHandlerTest
+ */
 class UserEditFormHandler implements FormHandlerResponseInterface, FormHandlerInterface, FormHandlerSuccessInterface, FormHandlerOptionsResolver
 {
     use SaveableTrait;
 
-    /**
-     * @var UserPasswordEncoderInterface
-     */
-    private $userPasswordEncoder;
+    private UserPasswordHasherInterface $userPasswordHasher;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
-    public function __construct(UserPasswordEncoderInterface $userPasswordEncoder, RouterInterface $router)
+    public function __construct(UserPasswordHasherInterface $userPasswordHasher, RouterInterface $router)
     {
         $this->router = $router;
-        $this->userPasswordEncoder = $userPasswordEncoder;
+        $this->userPasswordHasher = $userPasswordHasher;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getForm(FormFactoryInterface $factory, Options $options)
     {
         return $factory->create(UserType::class, $options->get('user'));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getResponse(FormRequest $formRequest)
+    public function getResponse(FormRequest $formRequest): Template
     {
         return new Template(
             '@SolidInvoiceUser/Users/form.html.twig',
@@ -72,19 +63,16 @@ class UserEditFormHandler implements FormHandlerResponseInterface, FormHandlerIn
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function onSuccess(FormRequest $form, $user): ?Response
+    public function onSuccess(FormRequest $form, $data): ?Response
     {
-        $user->setPassword($this->userPasswordEncoder->encodePassword($user, $user->getPlainPassword()));
-        $user->eraseCredentials();
-        $this->save($user);
+        $data->setPassword($this->userPasswordHasher->hashPassword($data, $data->getPlainPassword()));
+        $data->eraseCredentials();
+        $this->save($data);
 
         $route = $this->router->generate('_users_list');
 
         return new class($route) extends RedirectResponse implements FlashResponse {
-            public function getFlash(): iterable
+            public function getFlash(): \Generator
             {
                 yield self::FLASH_SUCCESS => 'users.update.success';
             }

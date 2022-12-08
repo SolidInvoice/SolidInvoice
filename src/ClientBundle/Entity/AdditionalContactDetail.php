@@ -30,37 +30,37 @@ class AdditionalContactDetail
     use TimeStampable;
 
     /**
-     * @var int
+     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Serialize\Groups({"client_api", "contact_api"})
      */
     protected $id;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(name="value", type="text", nullable=false)
+     * @ORM\Column(name="value", type="text")
      * @Serialize\Groups({"client_api", "contact_api"})
      */
     protected $value;
 
     /**
-     * @var ContactType
+     * @var ContactType|null
      *
      * @ORM\ManyToOne(targetEntity="ContactType", inversedBy="details")
-     * @ORM\JoinColumn(name="contact_type_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="contact_type_id")
      * @Serialize\Groups({"client_api", "contact_api"})
      */
     protected $type;
 
     /**
-     * @var Contact
+     * @var Contact|null
      *
      * @ORM\ManyToOne(targetEntity="Contact", inversedBy="additionalContactDetails")
-     * @ORM\JoinColumn(name="contact_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="contact_id")
      * @Serialize\Groups({"js"})
      */
     private $contact;
@@ -89,8 +89,6 @@ class AdditionalContactDetail
      * Set value.
      *
      * @param string $value
-     *
-     * @return AdditionalContactDetail
      */
     public function setValue(?string $value): self
     {
@@ -113,8 +111,6 @@ class AdditionalContactDetail
      * Set type.
      *
      * @param ContactType $type
-     *
-     * @return AdditionalContactDetail
      */
     public function setType(?ContactType $type): self
     {
@@ -138,11 +134,6 @@ class AdditionalContactDetail
         return $this->contact;
     }
 
-    /**
-     * Set contact.
-     *
-     * @return AdditionalContactDetail
-     */
     public function setContact(Contact $contact): self
     {
         $this->contact = $contact;

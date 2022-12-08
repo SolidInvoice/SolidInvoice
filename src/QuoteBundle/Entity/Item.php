@@ -34,17 +34,17 @@ class Item implements ItemInterface
     use TimeStampable;
 
     /**
-     * @var int
+     * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue()
      * @Serialize\Groups({"quote_api", "client_api"})
      */
     private $id;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="description", type="text")
      * @Assert\NotBlank
@@ -62,7 +62,7 @@ class Item implements ItemInterface
     private $price;
 
     /**
-     * @var float
+     * @var float|null
      *
      * @ORM\Column(name="qty", type="float")
      * @Assert\NotBlank()
@@ -71,7 +71,7 @@ class Item implements ItemInterface
     private $qty;
 
     /**
-     * @var Quote
+     * @var Quote|null
      *
      * @ORM\ManyToOne(targetEntity="Quote", inversedBy="items")
      */
@@ -80,6 +80,8 @@ class Item implements ItemInterface
     /**
      * @ORM\ManyToOne(targetEntity="SolidInvoice\TaxBundle\Entity\Tax", inversedBy="quoteItems")
      * @Serialize\Groups({"quote_api", "client_api", "create_quote_api"})
+     *
+     * @var Tax|null
      */
     private $tax;
 
@@ -107,9 +109,6 @@ class Item implements ItemInterface
         return $this->id;
     }
 
-    /**
-     * Set description.
-     */
     public function setDescription(string $description): ItemInterface
     {
         $this->description = $description;
