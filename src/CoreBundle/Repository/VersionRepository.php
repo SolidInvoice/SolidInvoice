@@ -29,8 +29,6 @@ class VersionRepository extends ServiceEntityRepository
 
     /**
      * Updates the current version.
-     *
-     * @param $version
      */
     public function updateVersion($version): void
     {
