@@ -1,0 +1,8 @@
+SolidInvoice\ClientBundle\Entity\Address:
+    'address{1..15}':
+        street1: '<buildingNumber()> <streetName()> <streetSuffix()>'
+        street2: <secondaryAddress()>
+        city: <city()>
+        state: <state()>
+        country: <countryCode()>
+        zip: <postcode()>

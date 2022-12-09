@@ -1,4 +1,5 @@
 nelmio_alice:
+    seed: null
     functions_blacklist:
         - 'current'
         - 'shuffle'

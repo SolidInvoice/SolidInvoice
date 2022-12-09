@@ -18,3 +18,5 @@ parameters:
     env(secret): 'SecretToken'
 
     env(installed): ~
+
+    env(DEMO_MODE): false

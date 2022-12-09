@@ -121,7 +121,7 @@
         "dbrekelmans/bdi": "^1.0",
         "doctrine/doctrine-fixtures-bundle": "^3.3",
         "ergebnis/composer-normalize": "^2.20",
-        "hautelook/alice-bundle": "^2.9",
+        "hautelook/alice-bundle": "^2.10",
         "laminas/laminas-zendframework-bridge": "^1.6",
         "liip/test-fixtures-bundle": "^2.4",
         "matthiasnoback/symfony-dependency-injection-test": "^4.1",

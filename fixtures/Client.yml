@@ -1,0 +1,7 @@
+SolidInvoice\ClientBundle\Entity\Client:
+    'client_{1..10}':
+        name (unique): <company()>
+        addresses: '<numberBetween(0, 2)>x @address*'
+        contacts: '<numberBetween(1, 4)>x @contact*'
+        currency: '<currencyCode()>'
+        website: '50%? <domainName()>'

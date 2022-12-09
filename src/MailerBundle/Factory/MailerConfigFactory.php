@@ -27,20 +27,26 @@ final class MailerConfigFactory
 {
     private const CONFIG_KEY = 'email/sending_options/provider';
 
-    private $config;
+    private SystemConfig $config;
 
-    private $inner;
+    private Transport $inner;
 
     /**
-     * @var ConfiguratorInterface[]
+     * @var iterable<ConfiguratorInterface>
      */
-    private $transports;
+    private iterable $transports;
 
-    public function __construct(Transport $inner, SystemConfig $config, iterable $transports)
+    private bool $demoMode;
+
+    /**
+     * @param iterable<ConfiguratorInterface> $transports
+     */
+    public function __construct(Transport $inner, SystemConfig $config, iterable $transports, bool $demoMode)
     {
         $this->config = $config;
         $this->inner = $inner;
         $this->transports = $transports;
+        $this->demoMode = $demoMode;
     }
 
     /**
@@ -48,6 +54,11 @@ final class MailerConfigFactory
      */
     public function fromStrings(): TransportInterface
     {
+        if ($this->demoMode) {
+            // Disable email sending in demo mode
+            return $this->inner->fromString('null://null');
+        }
+
         $config = \json_decode($this->config->get(self::CONFIG_KEY), true, 512, JSON_THROW_ON_ERROR);
         $provider = $config['provider'] ?? '';
 

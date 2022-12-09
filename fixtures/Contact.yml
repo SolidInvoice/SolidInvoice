@@ -1,0 +1,5 @@
+SolidInvoice\ClientBundle\Entity\Contact:
+    'contact_{1..20}':
+        firstName: <firstName()>
+        lastName: <lastName()>
+        email: <email()>
