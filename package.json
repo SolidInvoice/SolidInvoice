@@ -28,7 +28,7 @@
         "@babel/eslint-parser": "^7.19.1",
         "@babel/plugin-syntax-dynamic-import": "^7.8.3",
         "@babel/preset-env": "^7.20.2",
-        "@symfony/webpack-encore": "^4.1.2",
+        "@symfony/webpack-encore": "^4.2.0",
         "babel-loader": "^9.1.0",
         "cloudinary": "^1.32.0",
         "eslint": "^8.29.0",
