@@ -20,7 +20,7 @@ jobs:
         uses: "actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c"
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@1a18b2267f80291a81ca1d33e7c851fe09e7dfc4
+        uses: shivammathur/setup-php@8e2ac35f639d3e794c1da1f28999385ab6fdf0fc
         with:
           php-version: 7.4
           extensions: intl, gd, opcache, mysql, pdo_mysql, soap, zip, :xdebug
