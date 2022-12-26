@@ -30,7 +30,7 @@ jobs:
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
       - name: Cache dependencies
-        uses: actions/cache@9b0c1fce7a93df8e3bb8926b0d6e9d89e92f20a7
+        uses: actions/cache@c1a5de879eb890d062a85ee0252d6036480b1fe2
         with:
           path: ${{ steps.composercache.outputs.dir }}
           key: ${{ runner.os }}-php-74-composer-${{ hashFiles('composer.json composer.lock') }}
