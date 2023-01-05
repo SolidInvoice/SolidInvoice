@@ -132,7 +132,7 @@
         "phpstan/phpstan-mockery": "^1.1.0",
         "phpstan/phpstan-phpunit": "^1.1.1",
         "phpstan/phpstan-symfony": "^1.2.13",
-        "rector/rector": "^0.14.1",
+        "rector/rector": "^0.15.2",
         "roave/security-advisories": "dev-latest",
         "symfony/debug-bundle": "^5.4",
         "symfony/maker-bundle": "^1.33",
