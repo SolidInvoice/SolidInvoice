@@ -68,7 +68,7 @@
         "bootstrap-material-datetimepicker": "^2.7.3",
         "handlebars": "^4.7.7",
         "intl-messageformat": "^10.2.5",
-        "jquery": "^3.6.2",
+        "jquery": "^3.6.3",
         "jquery-placeholder": "^2.3.1",
         "lodash": "^4.17.21",
         "marionette.approuter": "^1.0.2",
