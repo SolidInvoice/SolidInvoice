@@ -5563,16 +5563,16 @@
         },
         {
             "name": "phpxmlrpc/phpxmlrpc",
-            "version": "4.9.0",
+            "version": "4.9.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/gggeek/phpxmlrpc.git",
-                "reference": "cf6e605e09d001ce520bfa8e7b168cfa514e663b"
+                "reference": "b61833dbd45deedb366cc78cd3bf95c0e9a89a8b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gggeek/phpxmlrpc/zipball/cf6e605e09d001ce520bfa8e7b168cfa514e663b",
-                "reference": "cf6e605e09d001ce520bfa8e7b168cfa514e663b",
+                "url": "https://api.github.com/repos/gggeek/phpxmlrpc/zipball/b61833dbd45deedb366cc78cd3bf95c0e9a89a8b",
+                "reference": "b61833dbd45deedb366cc78cd3bf95c0e9a89a8b",
                 "shasum": ""
             },
             "require": {
@@ -5591,7 +5591,7 @@
                 "yoast/phpunit-polyfills": "*"
             },
             "suggest": {
-                "ext-curl": "Needed for HTTPS and HTTP 1.1 support, NTLM Auth etc...",
+                "ext-curl": "Needed for HTTPS, HTTP2 and HTTP 1.1 support, NTLM Auth etc...",
                 "ext-mbstring": "Needed to allow reception of requests/responses in character sets other than ASCII,LATIN-1,UTF-8",
                 "ext-zlib": "Needed for sending compressed requests and receiving compressed responses, if cURL is not available",
                 "phpxmlrpc/extras": "Adds more featured Server classes and other useful bits",
@@ -5616,9 +5616,9 @@
             ],
             "support": {
                 "issues": "https://github.com/gggeek/phpxmlrpc/issues",
-                "source": "https://github.com/gggeek/phpxmlrpc/tree/4.9.0"
+                "source": "https://github.com/gggeek/phpxmlrpc/tree/4.9.5"
             },
-            "time": "2022-11-28T10:04:37+00:00"
+            "time": "2023-01-11T11:15:43+00:00"
         },
         {
             "name": "psr/cache",
