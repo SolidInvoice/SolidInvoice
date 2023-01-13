@@ -49,3 +49,8 @@ services:
 
     SolidInvoice\CoreBundle\Config\Loader\EnvLoader:
         $projectDir: '%kernel.project_dir%'
+
+    SolidInvoice\CoreBundle\Company\CompanySelector: ~
+
+    SolidInvoice\CoreBundle\Repository\CompanyRepository:
+        tags: ['doctrine.repository_service']

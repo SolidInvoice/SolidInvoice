@@ -1,0 +1,41 @@
+{% extends "@SolidInvoiceCore/Layout/default_no_nav.html.twig" %}
+
+{% block title %}Create Company{% endblock title %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-6 offset-3">
+            <div class="card">
+                {{ form_start(form) }}
+                <div class="card-header with-border">
+                    <h3 class="card-title" id="install-title">
+                        Create Company
+                    </h3>
+                </div>
+                <div class="card-body">
+                    {{ form_row(form) }}
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        {% if allowCancel %}
+                            <div class="col align-self-start">
+                                <a href="{{ path('_dashboard') }}" class="btn btn-warning btn-block">
+                                    Cancel
+                                </a>
+                            </div>
+                        {% endif %}
+                        <div class="col-7">
+                        </div>
+                        <div class="col" id="next_button">
+                            <button type="submit" class="btn btn-success btn-block">
+                                Create {{ icon('save') }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

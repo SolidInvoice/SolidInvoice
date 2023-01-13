@@ -23,6 +23,7 @@ use Payum\Core\Model\Payment as BasePayment;
 use Payum\Core\Model\PaymentInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Exception\UnexpectedTypeException;
+use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use Symfony\Component\Serializer\Annotation as Serialize;
@@ -38,6 +39,7 @@ use Traversable;
 class Payment extends BasePayment implements PaymentInterface
 {
     use TimeStampable;
+    use CompanyAware;
 
     /**
      * @ORM\Column(name="id", type="integer")

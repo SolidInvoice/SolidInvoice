@@ -16,19 +16,6 @@
 
 {% block form_widget_simple -%}{{ parent() }}{% if help is defined and help is not empty %}<span class="help-{{ help_type }}"><small>{{ help|trans|nl2br }}</small></span>{% endif %}{%- endblock form_widget_simple %}
 
-{% block form_rows -%}
-    {{ form_errors(form) }}
-    {% for child in form %}
-        {% if prototype is defined %}
-            <div class="content">
-        {% endif %}
-        {{ form_row(child) }}
-        {% if prototype is defined %}
-            </div>
-        {% endif %}
-    {% endfor %}
-{%- endblock form_rows %}
-
 {% block form_row -%}
     <div class="form-group{% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %}">
         {{ form_label(form) }}

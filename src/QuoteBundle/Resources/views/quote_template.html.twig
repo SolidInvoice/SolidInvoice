@@ -23,7 +23,7 @@
                     <div class="row invoice-info">
                         <div class="col-sm-4 invoice-col">
                             From:
-                            <h4>{{ app_name }}</h4>
+                            <h4>{{ company_name() }}</h4>
 
                             {% set vatNumber = setting('system/company/vat_number') %}
                             {% if vatNumber is not empty %}

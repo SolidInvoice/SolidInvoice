@@ -22,6 +22,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Currency;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
+use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
@@ -33,7 +34,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(attributes={"normalization_context"={"groups"={"client_api"}}, "denormalization_context"={"groups"={"client_api"}}}, iri="https://schema.org/Corporation")
- * @ORM\Table(name="clients")
+ * @ORM\Table(
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(columns={"name", "company_id"})
+ *     },
+ *     name="clients"
+ * )
  * @ORM\Entity(repositoryClass="SolidInvoice\ClientBundle\Repository\ClientRepository")
  * @ORM\HasLifecycleCallbacks()
  * @UniqueEntity("name")
@@ -43,6 +49,7 @@ class Client
 {
     use Archivable;
     use TimeStampable;
+    use CompanyAware;
 
     /**
      * @var int|null
@@ -57,7 +64,7 @@ class Client
     /**
      * @var string|null
      *
-     * @ORM\Column(name="name", type="string", length=125, unique=true)
+     * @ORM\Column(name="name", type="string", length=125)
      * @Assert\NotBlank()
      * @Assert\Length(max=125)
      * @Serialize\Groups({"client_api"})

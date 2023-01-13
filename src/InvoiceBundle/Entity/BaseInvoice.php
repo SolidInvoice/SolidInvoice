@@ -16,6 +16,7 @@ namespace SolidInvoice\InvoiceBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Money\Money;
 use SolidInvoice\CoreBundle\Entity\Discount;
+use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
 use Symfony\Component\Serializer\Annotation as Serialize;
 
@@ -24,6 +25,8 @@ use Symfony\Component\Serializer\Annotation as Serialize;
  */
 abstract class BaseInvoice
 {
+    use CompanyAware;
+
     /**
      * @var string|null
      *

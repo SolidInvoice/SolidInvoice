@@ -29,6 +29,7 @@ use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Entity\ItemInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
+use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
@@ -50,6 +51,7 @@ class Quote
         Archivable::isArchived insteadof QuoteStatusTrait;
     }
     use TimeStampable;
+    use CompanyAware;
 
     /**
      * @var int|null

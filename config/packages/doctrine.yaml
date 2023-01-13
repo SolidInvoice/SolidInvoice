@@ -19,6 +19,9 @@ doctrine:
                 hydrators:
                     money: SolidInvoice\MoneyBundle\Doctrine\Hydrator\MoneyHydrator
                 filters:
+                    company:
+                        class: SolidInvoice\CoreBundle\Doctrine\Filter\CompanyFilter
+                        enabled: true
                     archivable:
                         class: SolidInvoice\CoreBundle\Doctrine\Filter\ArchivableFilter
                         enabled: true
