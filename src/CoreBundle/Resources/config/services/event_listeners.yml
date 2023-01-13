@@ -1,4 +1,9 @@
 services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
     _instanceof:
         Symfony\Component\EventDispatcher\EventSubscriberInterface:
             autowire: true
@@ -18,3 +23,6 @@ services:
             $secret: '%env(secret)%'
 
     SolidInvoice\CoreBundle\Listener\TemplateListener: ~
+
+    SolidInvoice\CoreBundle\Doctrine\Listener\CompanyListener:
+        tags: ['doctrine.event_subscriber']

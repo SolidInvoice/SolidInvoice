@@ -16,6 +16,7 @@ namespace SolidInvoice\SettingsBundle\Repository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use InvalidArgumentException;
+use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\SettingsBundle\Entity\Setting;
 use Throwable;
 
@@ -42,6 +43,10 @@ class SettingsRepository extends ServiceEntityRepository
                         ->setParameter('val', empty($value) ? null : $value)
                         ->getQuery()
                         ->execute();
+
+                    if ('system/company/company_name' === $key) {
+                        $this->getEntityManager()->getRepository(Company::class)->updateCompanyName($value);
+                    }
                 }
             });
         } finally {

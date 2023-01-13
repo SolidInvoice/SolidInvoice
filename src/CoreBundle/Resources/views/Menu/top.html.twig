@@ -21,6 +21,33 @@
 
 {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
     <div class="btn-group float-right" id="top-menu-create-button">
+        <button class="btn btn-sm dropdown-toggle m-0" type="button" data-toggle="dropdown">
+            {{ company_name() }} <b class="caret"></b>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            {% set availableCompanies = app.user.companies|filter(v => v.id != company_id()) %}
+            {% for company in availableCompanies %}
+                <li class="nav-item">
+                    <a href="{{ path('_switch_company', {'id': company.id}) }}" class="nav-link">
+                        {{ company }}
+                    </a>
+                </li>
+            {% endfor %}
+
+            {% if availableCompanies|length > 0 %}
+                <li class="dropdown-divider">
+                </li>
+            {% endif %}
+
+            <li class="nav-item">
+                <a href="{{ path('_create_company') }}" class="nav-link">
+                    {{ icon('plus') }} {{ 'Add Company'|trans }}
+                </a>
+            </li>
+        </ul>
+    </div>
+    &nbsp;&nbsp;
+    <div class="btn-group float-right" id="top-menu-create-button">
         <button class="btn btn-info btn-sm dropdown-toggle m-0" type="button" data-toggle="dropdown">
             {{ icon('plus') }} {{ 'menu.button.create'|trans }} <b class="caret"></b>
         </button>

@@ -25,10 +25,8 @@ final class Version20102 extends AbstractMigration implements ContainerAwareInte
 
     public function up(Schema $schema): void
     {
-        /** @var SystemConfig $config */
-        $config = $this->container->get('settings');
-
-        $config->remove('design/system/theme');
+        $this->connection
+            ->delete('app_config', ['setting_key' => 'design/system/theme']);
     }
 
     public function down(Schema $schema): void

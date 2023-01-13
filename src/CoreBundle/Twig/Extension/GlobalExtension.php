@@ -15,6 +15,7 @@ namespace SolidInvoice\CoreBundle\Twig\Extension;
 
 use Carbon\Carbon;
 use DateTime;
+use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Pdf\Generator;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\MoneyBundle\Calculator;
@@ -24,6 +25,7 @@ use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceExce
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Core\Security;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\SyntaxError;
@@ -46,14 +48,25 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
     private ?string $installed;
 
     private RequestStack $requestStack;
+    private Security $security;
+    private CompanySelector $companySelector;
 
-    public function __construct(Calculator $calculator, Generator $pdfGenerator, SystemConfig $systemConfig, RequestStack $requestStack, ?string $installed)
-    {
+    public function __construct(
+        Calculator $calculator,
+        Generator $pdfGenerator,
+        SystemConfig $systemConfig,
+        RequestStack $requestStack,
+        Security $security,
+        CompanySelector $companySelector,
+        ?string $installed
+    ) {
         $this->calculator = $calculator;
         $this->pdfGenerator = $pdfGenerator;
         $this->systemConfig = $systemConfig;
         $this->installed = $installed;
         $this->requestStack = $requestStack;
+        $this->security = $security;
+        $this->companySelector = $companySelector;
     }
 
     /**
@@ -68,10 +81,6 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
             'app_version' => SolidInvoiceCoreBundle::VERSION,
             'app_name' => SolidInvoiceCoreBundle::APP_NAME,
         ];
-
-        if ($this->installed) {
-            $globals['app_name'] = $this->systemConfig->get('system/company/company_name');
-        }
 
         return $globals;
     }
@@ -125,6 +134,18 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
             new TwigFunction('app_logo', function (Environment $env, string $width = 'auto'): string {
                 return $this->displayAppLogo($env, $width);
             }, ['is_safe' => ['html'], 'needs_environment' => true]),
+
+            new TwigFunction('company_name', function (): string {
+                if (null !== $this->security->getUser()) {
+                    return $this->systemConfig->get('system/company/company_name') ?? SolidInvoiceCoreBundle::APP_NAME;
+                }
+
+                return SolidInvoiceCoreBundle::APP_NAME;
+            }),
+
+            new TwigFunction('company_id', function (): ?int {
+                return $this->companySelector->getCompany();
+            }),
 
             new TwigFunction('can_print_pdf', function (): bool {
                 return $this->pdfGenerator->canPrintPdf();

@@ -39,7 +39,14 @@ class SystemConfig
 
     public function get(string $key): ?string
     {
-        $this->load();
+        $setting = $this->repository->findOneBy(['key' => $key]);
+
+        if (null === $setting) {
+            return null;
+        }
+
+        return $setting->getValue();
+        /*$this->load();
 
         return self::$settings[$key] ?? null;
     }

@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Form\Handler;
 
 use Exception;
+use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
@@ -40,11 +42,19 @@ class UserAddFormHandler implements FormHandlerResponseInterface, FormHandlerInt
     private RouterInterface $router;
 
     private UserPasswordHasherInterface $userPasswordHasher;
+    private CompanySelector $companySelector;
+    private CompanyRepository $companyRepository;
 
-    public function __construct(UserPasswordHasherInterface $userPasswordHasher, RouterInterface $router)
-    {
+    public function __construct(
+        UserPasswordHasherInterface $userPasswordHasher,
+        RouterInterface $router,
+        CompanySelector $companySelector,
+        CompanyRepository $companyRepository
+    ) {
         $this->router = $router;
         $this->userPasswordHasher = $userPasswordHasher;
+        $this->companySelector = $companySelector;
+        $this->companyRepository = $companyRepository;
     }
 
     public function getForm(FormFactoryInterface $factory, Options $options)
@@ -71,6 +81,11 @@ class UserAddFormHandler implements FormHandlerResponseInterface, FormHandlerInt
     {
         $data->setPassword($this->userPasswordHasher->hashPassword($data, $data->getPlainPassword()));
         $data->eraseCredentials();
+
+        if (null !== $this->companySelector->getCompany()) {
+            $data->addCompany($this->companyRepository->find($this->companySelector->getCompany()));
+        }
+
         $this->save($data);
 
         $route = $this->router->generate('_users_list');

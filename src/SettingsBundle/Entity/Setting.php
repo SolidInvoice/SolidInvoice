@@ -15,16 +15,24 @@ namespace SolidInvoice\SettingsBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Table(name="app_config")
+ * @ORM\Table(
+ *     name="app_config",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(columns={"setting_key", "company_id"})
+ *     }
+ * )
  * @ORM\Entity(repositoryClass="SolidInvoice\SettingsBundle\Repository\SettingsRepository")
  * @Gedmo\Loggable
- * @UniqueEntity(fields={"key"})
+ * @UniqueEntity(fields={"company_id", "key"})
  */
 class Setting
 {
+    use CompanyAware;
+
     /**
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -35,7 +43,7 @@ class Setting
     private $id;
 
     /**
-     * @ORM\Column(name="setting_key", type="string", length=125, unique=true)
+     * @ORM\Column(name="setting_key", type="string", length=125)
      *
      * @var string|null
      */

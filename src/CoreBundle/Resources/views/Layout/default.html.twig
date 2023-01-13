@@ -37,7 +37,7 @@
             {{ app_logo() }}
 
             <span class="brand-text font-weight-light">
-                {{ app_name }}
+                {{ company_name() }}
             </span>
         </a>
 
@@ -45,7 +45,7 @@
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                 <div class="image">
                     {#<img src="http://t2.tagstat.com/im/people/silhouette_m_300.png" class="img-circle" alt="User Image">#}
-                    <img src="https://gravatar.com/avatar/{{ app.user.email|md5 }}?d=mm" class="img-circle" alt="User Image">
+                    {#<img src="https://gravatar.com/avatar/{{ app.user.email|md5 }}?d=mm" class="img-circle" alt="User Image">#}
                 </div>
                 <div class="info text-white">
                     <p>{{ app.user.username }}</p>

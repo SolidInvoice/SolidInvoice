@@ -59,7 +59,7 @@
 <div class="row">
     <div class="col-4">
         <b style="font-weight: bold">From:</b>
-        <h4>{{ app_name }}</h4>
+        <h4>{{ company_name() }}</h4>
 
         {% set vatNumber = setting('system/company/vat_number') %}
         {% if vatNumber is not empty %}

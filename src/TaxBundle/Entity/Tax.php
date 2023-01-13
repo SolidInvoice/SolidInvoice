@@ -17,6 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Item;
 use SolidInvoice\QuoteBundle\Entity\Item as QuoteItem;
@@ -32,6 +33,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Tax
 {
     use TimeStampable;
+    use CompanyAware;
 
     public const TYPE_INCLUSIVE = 'Inclusive';
 

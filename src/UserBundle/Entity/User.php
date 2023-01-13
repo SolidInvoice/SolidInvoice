@@ -19,6 +19,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -116,9 +117,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $roles = [];
 
+    /**
+     * @var Collection<int, Company>
+     *
+     * @ORM\ManyToMany(targetEntity=Company::class, inversedBy="users")
+     */
+    private Collection $companies;
+
     public function __construct()
     {
         $this->apiTokens = new ArrayCollection();
+        $this->companies = new ArrayCollection();
     }
 
     /**
@@ -362,6 +371,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         foreach ($roles as $role) {
             $this->addRole($role);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Company>
+     */
+    public function getCompanies(): Collection
+    {
+        return $this->companies;
+    }
+
+    public function addCompany(Company $company): self
+    {
+        if (!$this->companies->contains($company)) {
+            $this->companies[] = $company;
+        }
+
+        return $this;
+    }
+
+    public function removeCompany(Company $company): self
+    {
+        if ($this->companies->contains($company)) {
+            $this->companies->removeElement($company);
         }
 
         return $this;
