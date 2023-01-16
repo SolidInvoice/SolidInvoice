@@ -6,6 +6,7 @@
  # This source file is subject to the MIT license that is bundled
  # with this source code in the file LICENSE.
  #}
+{#
 {% set id = 'grid-' ~ gridName ~ '-' ~ random() %}
 
 <div id="{{ id }}"></div>
@@ -13,3 +14,6 @@
 <script type="application/json" data-type="grid" data-target="#{{ id }}">
     {{ gridOptions|raw }}
 </script>
+#}
+
+<div {{ vue_component('Grid/Grid', gridOptions) }}></div>

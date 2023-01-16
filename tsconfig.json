@@ -1,12 +1,14 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "target": "es6",
-    "module": "esnext",
+    "target": "ESNext",
+    "module": "ESNext",
     "strict": true,
     "jsx": "preserve",
     "importHelpers": true,
     "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "allowJs": true,
     "downlevelIteration": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
@@ -15,16 +17,29 @@
     "sourceMap": true,
     "outDir": "./dist",
     "lib": [
-      "es2015",
-      "es2016",
-      "es2017",
-      "es2018",
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
+      "ES2015",
+      "ES2016",
+      "ES2017",
+      "ES2018",
+      "ESNext",
+      "DOM",
+      "DOM.Iterable",
+      "ScriptHost"
+    ],
+    "paths": {
+      "~/*": [
+        "./assets/js/*"
+      ]
+    },
+    "types": [
+      "webpack-env",
     ]
   },
+  "include": [
+      "assets/js/**/*.js",
+      "assets/js/**/*.ts",
+      "assets/js/**/*.vue"
+  ],
   "exclude": [
     "**/*.spec.ts",
     "**/*.spec.js",

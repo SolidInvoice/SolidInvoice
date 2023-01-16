@@ -2,7 +2,8 @@
     "parser": "vue-eslint-parser",
     "parserOptions": {
         "parser": "@typescript-eslint/parser",
-        "sourceType": "module"
+        "sourceType": "module",
+        "ecmaVersion": "latest"
     },
     "root": true,
     "env": {
@@ -24,10 +25,12 @@
         "plugin:lodash/recommended",
         "plugin:backbone/recommended",
         "plugin:no-jquery/deprecated-3.5",
-        'plugin:vue/vue3-recommended'
+        "plugin:vue/vue3-recommended"
     ],
     "rules": {
         "lodash/prefer-lodash-method": "off",
+        "lodash/prefer-noop": "off",
+        "vue/multi-word-component-names": "off",
         "no-else-return": "error",
         "no-extra-bind": "error",
         "no-lone-blocks": "error",

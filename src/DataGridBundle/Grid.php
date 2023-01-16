@@ -23,6 +23,7 @@ use SolidInvoice\DataGridBundle\Filter\FilterInterface;
 use SolidInvoice\DataGridBundle\Source\SourceInterface;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
 use Symfony\Component\HttpFoundation\Request;
+use function array_map;
 
 class Grid implements GridInterface, JsonSerializable
 {
@@ -86,13 +87,25 @@ class Grid implements GridInterface, JsonSerializable
 
         $paginator = new Paginator($queryBuilder);
 
-        $resultSet = $paginator->getQuery()->getArrayResult();
+        $resultSet = array_map(
+            function (array $row) {
+                foreach ($row as $key => $value) {
+                    if (str_contains($key, '.')) {
+                        [$column, $columnKey] = explode('.', $key);
+                        $row[$column][$columnKey] = $value;
 
-        array_walk_recursive($resultSet, function (&$value, $key): void {
-            if (is_string($key) && str_contains($key, 'currency')) {
-                $value = $this->moneyFormatter->getCurrencySymbol($value);
-            }
-        });
+                        if ($columnKey === 'currency') {
+                            $row[$column]['symbol'] = $this->moneyFormatter->getCurrencySymbol($value);
+                        }
+
+                        unset($row[$key]);
+                    }
+                }
+
+                return $row;
+            },
+            $paginator->getQuery()->getArrayResult()
+        );
 
         return [
             'count' => count($paginator),
@@ -131,12 +144,17 @@ class Grid implements GridInterface, JsonSerializable
      */
     public function jsonSerialize(): array
     {
+        return $this->toArray();
+    }
+
+    public function toArray(): array
+    {
         return [
             'title' => $this->title,
             'name' => $this->name,
             'columns' => $this->columns->toArray(),
             'actions' => $this->actions,
-            'line_actions' => $this->lineActions,
+            'line-actions' => $this->lineActions,
             'properties' => $this->properties,
             'icon' => $this->icon,
             'parameters' => $this->parameters,

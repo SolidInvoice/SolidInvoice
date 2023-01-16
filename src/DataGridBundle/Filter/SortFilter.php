@@ -26,7 +26,11 @@ class SortFilter implements FilterInterface
 
         if ($request->query->has('sort')) {
             $alias = $queryBuilder->getRootAliases()[0];
-            $queryBuilder->orderBy($alias . '.' . $request->query->get('sort'), $order);
+            $sort = $request->query->getAlpha('sort');
+
+            if ($sort !== '') {
+                $queryBuilder->orderBy($alias . '.' . $sort, $order);
+            }
         }
     }
 }

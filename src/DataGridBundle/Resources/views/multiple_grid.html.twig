@@ -7,10 +7,5 @@
  # with this source code in the file LICENSE.
  #}
 
-{% set id = 'multiple-grid-' ~ random() %}
-
-<div class="grid" id="{{ id }}"></div>
-
-<script type="application/json" data-type="multiple_grid" data-target="#{{ id }}">
-    {{ grids|json_encode|raw }}
-</script>
+<div {{ vue_component('Grid/MultipleGrid', {'grids': grids}) }}>
+</div>

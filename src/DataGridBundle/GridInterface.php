@@ -26,4 +26,6 @@ interface GridInterface
     public function fetchData(Request $request, ObjectManager $em): array;
 
     public function setParameters(array $params);
+
+    public function toArray(): array;
 }

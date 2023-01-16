@@ -217,7 +217,7 @@
             'Core/Form/Select',
             {
                 'placeholder': placeholder is not none ? (placeholder != '' ? (translation_domain is same as(false) ? placeholder : placeholder|trans({}, translation_domain)) : null),
-                'options': choices,
+                'options': choices|merge([]),
                 'multiple': multiple,
                 'disabled': disabled,
                 'form-name': full_name,

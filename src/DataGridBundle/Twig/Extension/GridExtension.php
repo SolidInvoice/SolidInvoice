@@ -65,13 +65,11 @@ class GridExtension extends AbstractExtension
             $grid->setParameters($parameters);
         }
 
-        $gridOptions = json_encode($grid, JSON_THROW_ON_ERROR);
-
         return $env->render(
             '@SolidInvoiceDataGrid/grid.html.twig',
             [
                 'gridName' => $gridName,
-                'gridOptions' => $gridOptions,
+                'gridOptions' => $grid->toArray(),
             ]
         );
     }
@@ -101,9 +99,7 @@ class GridExtension extends AbstractExtension
             $grid = $this->repository->find($gridName);
             $grid->setParameters($parameters);
 
-            $gridOptions = json_encode($grid, JSON_THROW_ON_ERROR);
-
-            $renderGrids[$gridName] = json_decode($gridOptions, true, 512, JSON_THROW_ON_ERROR);
+            $renderGrids[$gridName] = $grid->toArray();
         }
 
         return $env->render(

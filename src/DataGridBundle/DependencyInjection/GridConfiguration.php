@@ -27,7 +27,7 @@ class GridConfiguration implements ConfigurationInterface
         $node = $treeBuilder->getRootNode();
 
         $node
-            ->useAttributeAsKey('name', true)
+            ->useAttributeAsKey('key', true)
             ->arrayPrototype()
                 ->children()
                     ->scalarNode('icon')
@@ -68,9 +68,9 @@ class GridConfiguration implements ConfigurationInterface
                         ->requiresAtLeastOneElement()
                         ->arrayPrototype()
                             ->children()
+                                ->scalarNode('key')
+                                ->end()
                                 ->scalarNode('name')
-                                    ->isRequired()
-                                    ->cannotBeEmpty()
                                 ->end()
                                 ->scalarNode('label')
                                     ->isRequired()
@@ -78,6 +78,9 @@ class GridConfiguration implements ConfigurationInterface
                                 ->end()
                                 ->booleanNode('editable')
                                     ->defaultFalse()
+                                ->end()
+                                ->booleanNode('sortable')
+                                    ->defaultTrue()
                                 ->end()
                                 ->scalarNode('cell')
                                     ->isRequired()

@@ -37,7 +37,7 @@ class AjaxResponseListener implements EventSubscriberInterface
         $controller = $event->getController();
 
         if ($controller instanceof AjaxResponse && ! $request->isXmlHttpRequest()) {
-            throw new BadRequestHttpException();
+            // throw new BadRequestHttpException();
         }
     }
 }

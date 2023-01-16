@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Form\Step;
 
-use SolidInvoice\MoneyBundle\Form\Type\CurrencyType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;

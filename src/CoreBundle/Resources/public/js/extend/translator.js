@@ -9,6 +9,6 @@ if (Translator.locale !== Translator.fallback) {
     fallback = { translations: { [Translator.fallback]: {} } };
 }
 
-Translator.fromJSON({ translations: { ...messages.translations, ...fallback.translations } });
+Translator.fromJSON({ translations: { [Translator.locale]: {...messages.translations[Translator.locale], ...fallback.translations[Translator.locale] } } });
 
 export default Translator;

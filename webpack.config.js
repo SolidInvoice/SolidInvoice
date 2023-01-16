@@ -35,7 +35,7 @@ Encore
     .autoProvidejQuery() // @TODO: Remove
 
     .addAliases({
-        '~': path.resolve(__dirname, 'assets/js'),
+        '~': path.resolve(__dirname, 'assets/js/'),
         'SolidInvoiceClient': path.resolve(__dirname, 'src/ClientBundle/Resources/assets'),
         'SolidInvoiceCore': path.resolve(__dirname, 'src/CoreBundle/Resources/public'),
         'SolidInvoiceDataGrid': path.resolve(__dirname, 'src/DataGridBundle/Resources/public'),
