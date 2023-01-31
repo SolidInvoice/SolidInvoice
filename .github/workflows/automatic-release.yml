@@ -34,7 +34,7 @@ jobs:
         uses: docker/setup-qemu-action@e81a89b1732b9c48d79cd809d8d81d79c4647a18
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@8c0edbc76e98fa90f69d9a2c020dcb50019dc325
+        uses: docker/setup-buildx-action@15c905b16b06416d2086efa066dd8e3a35cc7f98
 
       - name: Release
         uses: laminas/automatic-releases@1b61a5fcf90ba3223c85130b7bc2a7f95311e79c
