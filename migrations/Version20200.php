@@ -108,12 +108,21 @@ final class Version20200 extends AbstractMigration implements ContainerAwareInte
 
         $clientsTable->addUniqueConstraint(['company_id', 'name']);
 
+        $addCompanyToTable('addresses');
+        $addCompanyToTable('contact_types');
+        $addCompanyToTable('contacts');
+        $addCompanyToTable('client_credit');
+        $addCompanyToTable('contact_details');
         $addCompanyToTable('invoices');
+        $addCompanyToTable('invoice_lines');
         $addCompanyToTable('payment_methods');
         $addCompanyToTable('payments');
         $addCompanyToTable('quotes');
+        $addCompanyToTable('quote_lines');
         $addCompanyToTable('recurring_invoices');
         $addCompanyToTable('tax_rates');
+        $addCompanyToTable('api_tokens');
+        $addCompanyToTable('api_token_history');
     }
 
     public function postUp(Schema $schema): void
@@ -135,7 +144,26 @@ final class Version20200 extends AbstractMigration implements ContainerAwareInte
         $this->connection
             ->insert('companies', ['name' => $companyName]);
 
-        foreach (['app_config', 'clients', 'invoices', 'payment_methods', 'payments', 'quotes', 'recurring_invoices', 'tax_rates'] as $table) {
+        foreach (
+            [
+                'app_config',
+                'clients',
+                'addresses',
+                'contact_types',
+                'contacts',
+                'client_credit',
+                'contact_details',
+                'invoices',
+                'invoice_lines',
+                'payment_methods',
+                'payments',
+                'quotes',
+                'quote_lines',
+                'recurring_invoices',
+                'tax_rates',
+                'api_tokens',
+                'api_token_history',
+            ] as $table) {
             $this->connection->update($table, ['company_id' => 1], ['1' => '1']);
         }
 

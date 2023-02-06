@@ -27,6 +27,7 @@ class CompanyListener implements EventSubscriber
     {
         $this->companySelector = $companySelector;
     }
+
     /**
      * @return list<string>
      */

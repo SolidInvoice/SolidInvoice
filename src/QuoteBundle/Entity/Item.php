@@ -17,6 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Money;
 use SolidInvoice\CoreBundle\Entity\ItemInterface;
+use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
 use SolidInvoice\TaxBundle\Entity\Tax;
@@ -32,6 +33,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Item implements ItemInterface
 {
     use TimeStampable;
+    use CompanyAware;
 
     /**
      * @var int|null
