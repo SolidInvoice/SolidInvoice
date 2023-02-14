@@ -52,7 +52,7 @@
         "webpack-cli": "^5.0.1"
     },
     "dependencies": {
-        "@fortawesome/fontawesome-free": "^6.2.1",
+        "@fortawesome/fontawesome-free": "^6.3.0",
         "accounting": "^0.4.1",
         "admin-lte": "git+https://github.com/ColorlibHQ/AdminLTE.git#7748b38a6e7afc2415975b9c41adab4e1733d330",
         "backbone": "^1.4.1",
