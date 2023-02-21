@@ -16,6 +16,7 @@ namespace SolidInvoice\UserBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
+use SolidInvoice\CoreBundle\Doctrine\Id\IdGenerator;
 
 /**
  * @ORM\Entity(repositoryClass="SolidInvoice\UserBundle\Repository\ApiTokenHistoryRepository")
@@ -28,8 +29,9 @@ class ApiTokenHistory
 
     /**
      * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue()
+     * @ORM\Id()
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\CustomIdGenerator(class=IdGenerator::class)
      *
      * @var int|null
      */

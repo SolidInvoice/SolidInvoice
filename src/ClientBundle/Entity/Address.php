@@ -19,6 +19,7 @@ use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Serializer\Annotation as Serialize;
+use SolidInvoice\CoreBundle\Doctrine\Id\IdGenerator;
 
 /**
  * @ORM\Table(name="addresses")
@@ -34,8 +35,9 @@ class Address
      * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue()
+     * @ORM\Id()
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\CustomIdGenerator(class=IdGenerator::class)
      * @Serialize\Groups({"client_api"})
      */
     private $id;

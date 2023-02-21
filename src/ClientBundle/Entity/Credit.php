@@ -19,6 +19,7 @@ use Money\Money;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
+use SolidInvoice\CoreBundle\Doctrine\Id\IdGenerator;
 
 /**
  * SolidInvoice\ClientBundle\Entity\Credit.
@@ -34,8 +35,9 @@ class Credit
 
     /**
      * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue()
+     * @ORM\Id()
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\CustomIdGenerator(class=IdGenerator::class)
      *
      * @var int|null
      */

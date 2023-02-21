@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
+use Doctrine\DBAL\Exception\InvalidFieldNameException;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 use SolidInvoice\SettingsBundle\Exception\InvalidSettingException;
@@ -26,14 +27,7 @@ final class Version20001 extends AbstractMigration implements ContainerAwareInte
 
     public function up(Schema $schema): void
     {
-        /** @var SystemConfig $config */
-        $config = $this->container->get('settings');
-
-        try {
-            if ('skin-solidinoice-default' === $config->get('design/system/theme')) {
-                $config->set('design/system/theme', 'skin-solidinvoice-default');
-            }
-        } catch (InvalidSettingException $e) {}
+        $this->connection->update('app_config', ['setting_value' => 'skin-solidinvoice-default'], ['setting_value' => 'skin-solidinoice-default']);
     }
 
     public function down(Schema $schema): void

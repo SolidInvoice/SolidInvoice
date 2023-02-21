@@ -16,6 +16,7 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Table;
+use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\DBAL\Types\JsonType;
 use Doctrine\Migrations\AbstractMigration;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -83,7 +84,7 @@ final class Version20200 extends AbstractMigration implements ContainerAwareInte
         } catch (SchemaException $exception) {
         }
 
-        $appConfigTable->addColumn('company_id', 'integer');
+        $appConfigTable->addColumn('company_id', 'integer', ['notnull' => false]);
         $appConfigTable->addIndex(['company_id']);
         $appConfigTable->addUniqueIndex(['setting_key', 'company_id']);
         // $appConfigTable->addForeignKeyConstraint($companiesTable, ['company_id'], ['id']);
@@ -92,9 +93,17 @@ final class Version20200 extends AbstractMigration implements ContainerAwareInte
         $addCompanyToTable = static function (string $tableName) use ($schema): Table {
             $table = $schema->getTable($tableName);
 
-            $table->addColumn('company_id', 'integer');
+            $table->addColumn('company_id', 'integer', ['notnull' => false]);
             $table->addIndex(['company_id']);
             // $table->addForeignKeyConstraint($companiesTable, ['company_id'], ['id']);
+
+            $table->modifyColumn(
+                'id',
+                [
+                    'type' => new IntegerType(),
+                    'notnull' => true,
+                ]
+            );
 
             return $table;
         };

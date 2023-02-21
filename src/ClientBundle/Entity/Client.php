@@ -31,6 +31,7 @@ use SolidInvoice\QuoteBundle\Entity\Quote;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
+use SolidInvoice\CoreBundle\Doctrine\Id\IdGenerator;
 
 /**
  * @ApiResource(attributes={"normalization_context"={"groups"={"client_api"}}, "denormalization_context"={"groups"={"client_api"}}}, iri="https://schema.org/Corporation")
@@ -55,8 +56,9 @@ class Client
      * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue()
+     * @ORM\Id()
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\CustomIdGenerator(class=IdGenerator::class)
      * @Serialize\Groups({"client_api"})
      */
     private $id;

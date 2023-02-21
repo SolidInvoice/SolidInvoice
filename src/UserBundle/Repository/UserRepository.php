@@ -50,9 +50,10 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
             ->createQueryBuilder('u')
             ->select('u')
             ->where('(u.username = :username OR u.email = :email)')
-            ->andWhere('u.enabled = 1')
+            ->andWhere('u.enabled = :enabled')
             ->setParameter('username', $username)
             ->setParameter('email', $username)
+            ->setParameter('enabled', true)
             ->getQuery();
 
         try {
