@@ -23,6 +23,7 @@ use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
+use SolidInvoice\CoreBundle\Doctrine\Id\IdGenerator;
 
 /**
  * @ORM\Table(name="quote_lines")
@@ -39,8 +40,9 @@ class Item implements ItemInterface
      * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue()
+     * @ORM\Id()
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\CustomIdGenerator(class=IdGenerator::class)
      * @Serialize\Groups({"quote_api", "client_api"})
      */
     private $id;

@@ -36,6 +36,7 @@ use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
 use SolidInvoice\QuoteBundle\Traits\QuoteStatusTrait;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
+use SolidInvoice\CoreBundle\Doctrine\Id\IdGenerator;
 
 /**
  * @ApiResource(attributes={"normalization_context"={"groups"={"quote_api"}}, "denormalization_context"={"groups"={"create_quote_api"}}})
@@ -57,8 +58,9 @@ class Quote
      * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue()
+     * @ORM\Id()
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\CustomIdGenerator(class=IdGenerator::class)
      * @Serialize\Groups({"quote_api", "client_api"})
      */
     private $id;

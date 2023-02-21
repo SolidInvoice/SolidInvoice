@@ -29,6 +29,7 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
 use Traversable;
+use SolidInvoice\CoreBundle\Doctrine\Id\IdGenerator;
 
 /**
  * @ApiResource(collectionOperations={"get"={"method"="GET"}}, itemOperations={"get"={"method"="GET"}}, attributes={"normalization_context"={"groups"={"payment_api"}}})
@@ -43,8 +44,9 @@ class Payment extends BasePayment implements PaymentInterface
 
     /**
      * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Id()
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\CustomIdGenerator(class=IdGenerator::class)
      *
      * @var int|null
      */

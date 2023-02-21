@@ -23,6 +23,7 @@ use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
+use SolidInvoice\CoreBundle\Doctrine\Id\IdGenerator;
 
 /**
  * @ORM\Table(name="payment_methods")
@@ -39,8 +40,9 @@ class PaymentMethod implements GatewayConfigInterface
      * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue()
+     * @ORM\Id()
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\CustomIdGenerator(class=IdGenerator::class)
      */
     private $id;
 

@@ -27,6 +27,7 @@ use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
+use SolidInvoice\CoreBundle\Doctrine\Id\IdGenerator;
 
 /**
  * @ApiResource(attributes={"normalization_context"={"groups"={"recurring_invoice_api"}}, "denormalization_context"={"groups"={"create_recurring_invoice_api"}}})
@@ -44,8 +45,9 @@ class RecurringInvoice extends BaseInvoice
      * @var int|null
      *
      * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue()
+     * @ORM\Id()
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\CustomIdGenerator(class=IdGenerator::class)
      * @Serialize\Groups({"recurring_invoice_api", "client_api"})
      */
     private $id;
