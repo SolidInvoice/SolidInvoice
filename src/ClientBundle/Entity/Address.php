@@ -217,7 +217,7 @@ class Address
      */
     public function getCountryName(): ?string
     {
-        return Countries::getName($this->getCountry());
+        return $this->getCountry() ? Countries::getName($this->getCountry()) : null;
     }
 
     /**
