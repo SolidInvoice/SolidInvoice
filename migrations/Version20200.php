@@ -88,7 +88,13 @@ final class Version20200 extends AbstractMigration implements ContainerAwareInte
         $appConfigTable->addIndex(['company_id']);
         $appConfigTable->addUniqueIndex(['setting_key', 'company_id']);
         // $appConfigTable->addForeignKeyConstraint($companiesTable, ['company_id'], ['id']);
-        $appConfigTable->addUniqueIndex(['company_id', 'setting_key']);
+        $appConfigTable->modifyColumn(
+            'id',
+            [
+                'type' => new IntegerType(),
+                'notnull' => true,
+            ]
+        );
 
         $addCompanyToTable = static function (string $tableName) use ($schema): Table {
             $table = $schema->getTable($tableName);

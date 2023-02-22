@@ -95,7 +95,7 @@ final class MailTransportType extends AbstractType
     {
         $resolver->setDefaults([
             'validation_groups' => static function (FormInterface $form) {
-                return ['Default', \strtolower(\str_replace(' ', '_', $form->get('provider')->getData()))];
+                return ['Default', \strtolower(\str_replace(' ', '_', $form->get('provider')->getData() ?? ''))];
             },
         ]);
     }
