@@ -7,14 +7,22 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Id\AbstractIdGenerator;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
-use SolidInvoice\ClientBundle\Entity\Client;
-use SolidInvoice\ClientBundle\Model\Status;
+use function get_class;
 
 final class IdGenerator extends AbstractIdGenerator
 {
+    /**
+     * @var array<string, int>
+     */
+    private array $entityIds = [];
+
     public function generate(EntityManagerInterface $em, $entity)
     {
         assert(is_object($entity));
+
+        if (isset($this->entityIds[get_class($entity)])) {
+            return ++$this->entityIds[get_class($entity)];
+        }
 
         $classMetadata = $em->getClassMetadata(get_class($entity));
         $idColumn = $classMetadata->getSingleIdentifierFieldName();
@@ -33,6 +41,6 @@ final class IdGenerator extends AbstractIdGenerator
 
         $em->getFilters()->enable('archivable');
 
-        return ($maxId ? ++$maxId : 1);
+        return $this->entityIds[get_class($entity)] = ($maxId ? ++$maxId : 1);
     }
 }
