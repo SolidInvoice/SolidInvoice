@@ -13,23 +13,58 @@ declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\DBAL\Types\JsonType;
 use Doctrine\Migrations\AbstractMigration;
+use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use function array_map;
 
 final class Version20200 extends AbstractMigration implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
 
+    private LoggerInterface $logger;
+
+    private Schema $toSchema;
+
+    /**
+     * @var array<string, array{0: string, 1: string[]}>
+     */
+    private array $tablesForForeignKeys = [];
+
+    /**
+     * @var list<string>
+     */
+    private array $tablesWithCompanyId = [];
+
+    public function __construct(Connection $connection, LoggerInterface $logger)
+    {
+        parent::__construct($connection, $logger);
+
+        $this->logger = $logger;
+    }
+
+    public function preUp(Schema $schema): void
+    {
+        if ($this->connection->getDatabasePlatform() instanceof MySQLPlatform) {
+            $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS=0');
+            $this->connection->executeQuery('SET GLOBAL FOREIGN_KEY_CHECKS=0');
+        }
+    }
+
     public function up(Schema $schema): void
     {
+        $originalSchema = clone $schema;
+        $this->toSchema = clone $originalSchema;
+
         $schema
             ->getTable('payments')
             ->modifyColumn(
@@ -74,74 +109,68 @@ final class Version20200 extends AbstractMigration implements ContainerAwareInte
         $userCompaniesTable->setPrimaryKey(['user_id', 'company_id']);
         $userCompaniesTable->addIndex(['user_id']);
         $userCompaniesTable->addIndex(['company_id']);
-        // $userCompaniesTable->addForeignKeyConstraint($companiesTable, ['company_id'], ['id']);
-        // $userCompaniesTable->addForeignKeyConstraint($schema->getTable('users'), ['user_id'], ['id']);
 
-        $appConfigTable = $schema->getTable('app_config');
+        $appConfigTable = $this->addCompanyToTable($schema, 'app_config');
+        $clientsTable = $this->addCompanyToTable($schema, 'clients');
+        $clientCreditTable = $this->addCompanyToTable($schema, 'client_credit');
 
-        try {
-            $appConfigTable->dropIndex('UNIQ_318942FC5FA1E697');
-        } catch (SchemaException $exception) {
+        foreach ($appConfigTable->getIndexes() as $index) {
+            if ($index->isUnique() && $index->getColumns() === ['setting_key']) {
+                $appConfigTable->dropIndex($index->getName());
+            }
         }
 
-        $appConfigTable->addColumn('company_id', 'integer', ['notnull' => false]);
-        $appConfigTable->addIndex(['company_id']);
         $appConfigTable->addUniqueIndex(['setting_key', 'company_id']);
-        // $appConfigTable->addForeignKeyConstraint($companiesTable, ['company_id'], ['id']);
-        $appConfigTable->modifyColumn(
-            'id',
-            [
-                'type' => new IntegerType(),
-                'notnull' => true,
-            ]
-        );
 
-        $addCompanyToTable = static function (string $tableName) use ($schema): Table {
-            $table = $schema->getTable($tableName);
-
-            $table->addColumn('company_id', 'integer', ['notnull' => false]);
-            $table->addIndex(['company_id']);
-            // $table->addForeignKeyConstraint($companiesTable, ['company_id'], ['id']);
-
-            $table->modifyColumn(
-                'id',
-                [
-                    'type' => new IntegerType(),
-                    'notnull' => true,
-                ]
-            );
-
-            return $table;
-        };
-
-        $clientsTable = $addCompanyToTable('clients');
-
-        try {
-            $clientsTable->dropIndex('UNIQ_C82E745E237E06');
-        } catch (SchemaException $exception) {
+        foreach ($clientsTable->getIndexes() as $index) {
+            if ($index->isUnique() && $index->getColumns() === ['name']) {
+                $clientsTable->dropIndex($index->getName());
+            }
         }
+
+        foreach ($clientCreditTable->getIndexes() as $index) {
+            if ($index->isUnique() && $index->getColumns() === ['client_id']) {
+                $clientCreditTable->dropIndex($index->getName());
+            }
+        }
+
+        $clientCreditTable->addUniqueIndex(['client_id', 'company_id']);
 
         $clientsTable->addUniqueConstraint(['company_id', 'name']);
 
-        $addCompanyToTable('addresses');
-        $addCompanyToTable('contact_types');
-        $addCompanyToTable('contacts');
-        $addCompanyToTable('client_credit');
-        $addCompanyToTable('contact_details');
-        $addCompanyToTable('invoices');
-        $addCompanyToTable('invoice_lines');
-        $addCompanyToTable('payment_methods');
-        $addCompanyToTable('payments');
-        $addCompanyToTable('quotes');
-        $addCompanyToTable('quote_lines');
-        $addCompanyToTable('recurring_invoices');
-        $addCompanyToTable('tax_rates');
-        $addCompanyToTable('api_tokens');
-        $addCompanyToTable('api_token_history');
+        $this->addCompanyToTable($schema, 'addresses');
+        $this->addCompanyToTable($schema, 'contact_types');
+        $this->addCompanyToTable($schema, 'contacts');
+        $this->addCompanyToTable($schema, 'contact_details');
+        $this->addCompanyToTable($schema, 'invoices');
+        $this->addCompanyToTable($schema, 'invoice_lines');
+        $this->addCompanyToTable($schema, 'payment_methods');
+        $this->addCompanyToTable($schema, 'payments');
+        $this->addCompanyToTable($schema, 'quotes');
+        $this->addCompanyToTable($schema, 'quote_lines');
+        $this->addCompanyToTable($schema, 'recurring_invoices');
+        $this->addCompanyToTable($schema, 'tax_rates');
+        $this->addCompanyToTable($schema, 'api_tokens');
+        $this->addCompanyToTable($schema, 'api_token_history');
+
+        foreach(
+            $this->platform
+            ->getAlterSchemaSQL(
+                $this
+                    ->connection
+                    ->createSchemaManager()
+                    ->createComparator()
+                    ->compareSchemas($originalSchema, $this->toSchema)
+            )  as $sql
+        ) {
+            $this->addSql($sql);
+        }
     }
 
     public function postUp(Schema $schema): void
     {
+        $fromSchema = $this->connection->createSchemaManager()->introspectSchema();
+
         $users = $this->connection
             ->createQueryBuilder()
             ->select('u.id')
@@ -179,7 +208,7 @@ final class Version20200 extends AbstractMigration implements ContainerAwareInte
                 'api_tokens',
                 'api_token_history',
             ] as $table) {
-            $this->connection->update($table, ['company_id' => 1], ['1' => '1']);
+            $this->connection->update($table, ['company_id' => 1], [1 => 1]);
         }
 
         foreach ($users as $user) {
@@ -189,6 +218,37 @@ final class Version20200 extends AbstractMigration implements ContainerAwareInte
                     'company_id' => 1,
                 ]);
         }
+
+        foreach ($this->tablesForForeignKeys as $tableB => [$foreignTableName, $foreignKeyName]) {
+            $schema->getTable($tableB)->addForeignKeyConstraint(
+                $foreignTableName,
+                $foreignKeyName,
+                ['id']
+            );
+        }
+
+        foreach ($this->tablesWithCompanyId as $tableName) {
+            $schema->getTable($tableName)->addForeignKeyConstraint($schema->getTable('companies'), ['company_id'], ['id']);
+        }
+
+        foreach(
+            $this->platform
+                ->getAlterSchemaSQL(
+                    $this
+                        ->connection
+                        ->createSchemaManager()
+                        ->createComparator()
+                        ->compareSchemas($fromSchema, $schema)
+                )  as $sql
+        ) {
+            $this->logger->log(LogLevel::DEBUG, '{query}', ['query' => $sql]);
+            $this->connection->executeQuery($sql);
+        }
+
+        if ($this->connection->getDatabasePlatform() instanceof MySQLPlatform) {
+            $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS=1');
+            $this->connection->executeQuery('SET GLOBAL FOREIGN_KEY_CHECKS=1');
+        }
     }
 
     public function down(Schema $schema): void
@@ -196,37 +256,87 @@ final class Version20200 extends AbstractMigration implements ContainerAwareInte
         $this->connection->delete('app_config', ['setting_key' => 'invoice/watermark']);
         $this->connection->delete('app_config', ['setting_key' => 'quote/watermark']);
 
-        $this->addSql('ALTER TABLE app_config DROP FOREIGN KEY FK_318942FC979B1AD6');
-        $this->addSql('ALTER TABLE clients DROP FOREIGN KEY FK_C82E74979B1AD6');
-        $this->addSql('ALTER TABLE invoices DROP FOREIGN KEY FK_6A2F2F95979B1AD6');
-        $this->addSql('ALTER TABLE payment_methods DROP FOREIGN KEY FK_4FABF983979B1AD6');
-        $this->addSql('ALTER TABLE payments DROP FOREIGN KEY FK_65D29B32979B1AD6');
-        $this->addSql('ALTER TABLE quotes DROP FOREIGN KEY FK_A1B588C5979B1AD6');
-        $this->addSql('ALTER TABLE recurring_invoices DROP FOREIGN KEY FK_FE93E284979B1AD6');
-        $this->addSql('ALTER TABLE tax_rates DROP FOREIGN KEY FK_F7AE5E1D979B1AD6');
-        $this->addSql('ALTER TABLE user_company DROP FOREIGN KEY FK_17B21745A76ED395');
-        $this->addSql('ALTER TABLE user_company DROP FOREIGN KEY FK_17B21745979B1AD6');
-        $this->addSql('DROP TABLE companies');
-        $this->addSql('DROP TABLE user_company');
-        $this->addSql('DROP INDEX IDX_318942FC979B1AD6 ON app_config');
-        $this->addSql('DROP INDEX UNIQ_318942FC5FA1E697979B1AD6 ON app_config');
-        $this->addSql('ALTER TABLE app_config DROP company_id');
-        $this->addSql('CREATE UNIQUE INDEX UNIQ_318942FC5FA1E697 ON app_config (setting_key)');
-        $this->addSql('DROP INDEX IDX_C82E74979B1AD6 ON clients');
-        $this->addSql('DROP INDEX UNIQ_C82E745E237E06979B1AD6 ON clients');
-        $this->addSql('ALTER TABLE clients DROP company_id');
-        $this->addSql('CREATE UNIQUE INDEX UNIQ_C82E745E237E06 ON clients (name)');
-        $this->addSql('DROP INDEX IDX_6A2F2F95979B1AD6 ON invoices');
-        $this->addSql('ALTER TABLE invoices DROP company_id');
-        $this->addSql('DROP INDEX IDX_4FABF983979B1AD6 ON payment_methods');
-        $this->addSql('ALTER TABLE payment_methods DROP company_id');
-        $this->addSql('DROP INDEX IDX_65D29B32979B1AD6 ON payments');
-        $this->addSql('ALTER TABLE payments DROP company_id');
-        $this->addSql('DROP INDEX IDX_A1B588C5979B1AD6 ON quotes');
-        $this->addSql('ALTER TABLE quotes DROP company_id');
-        $this->addSql('DROP INDEX IDX_FE93E284979B1AD6 ON recurring_invoices');
-        $this->addSql('ALTER TABLE recurring_invoices DROP company_id');
-        $this->addSql('DROP INDEX IDX_F7AE5E1D979B1AD6 ON tax_rates');
-        $this->addSql('ALTER TABLE tax_rates DROP company_id');
+        foreach (
+            [
+                'app_config',
+                'clients',
+                'addresses',
+                'contact_types',
+                'contacts',
+                'client_credit',
+                'contact_details',
+                'invoices',
+                'invoice_lines',
+                'payment_methods',
+                'payments',
+                'quotes',
+                'quote_lines',
+                'recurring_invoices',
+                'tax_rates',
+                'api_tokens',
+                'api_token_history',
+            ] as $tableName) {
+                $table = $schema->getTable($tableName);
+
+                $table->dropColumn('company_id');
+
+                foreach ($table->getIndexes() as $index) {
+                    if ($index->getColumns() === ['company_id']) {
+                        $table->dropIndex($index->getName());
+                    }
+                }
+
+            $table->modifyColumn(
+                'id',
+                [
+                    'type' => new IntegerType(),
+                    'notnull' => true,
+                    'autoincrement' => true,
+                ]
+            );
+
+            $table->dropPrimaryKey();
+            $table->setPrimaryKey(['id']);
+        }
+
+        $schema->dropTable('companies');
+        $schema->dropTable('user_company');
+    }
+
+    /**
+     * @throws SchemaException
+     */
+    private function addCompanyToTable(Schema $schema, string $tableName): Table
+    {
+        $this->tablesWithCompanyId[] = $tableName;
+
+        $table = $schema->getTable($tableName);
+
+        $table->addColumn('company_id', 'integer', ['notnull' => false]);
+        $table->addIndex(['company_id']);
+
+        $table->modifyColumn(
+            'id',
+            [
+                'type' => new IntegerType(),
+                'notnull' => true,
+                'autoincrement' => false,
+            ]
+        );
+
+        // remove all foreign keys on all tables that are part of this tables primary key
+        foreach ($this->toSchema->getTables() as $tableA) {
+            foreach ($tableA->getForeignKeys() as $foreignKey) {
+                if ($foreignKey->getForeignTableName() === $tableName && $foreignKey->getForeignColumns() === ['id']) {
+                    $this->tablesForForeignKeys[$tableA->getName()] = [$foreignKey->getForeignTableName(), $foreignKey->getLocalColumns()];
+                    $tableA->removeForeignKey($foreignKey->getName());
+                }
+            }
+        }
+
+        $table->dropPrimaryKey();
+        $table->setPrimaryKey(['id', 'company_id']);
+
+        return $table;
     }
 }
