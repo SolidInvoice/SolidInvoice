@@ -6570,6 +6570,85 @@
             "time": "2023-03-23T07:06:34+00:00"
         },
         {
+            "name": "solidworx/toggler",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SolidWorx/Toggler.git",
+                "reference": "c7fe3f4ab2d4f585e211e9f60ea08a2112950dd2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SolidWorx/Toggler/zipball/c7fe3f4ab2d4f585e211e9f60ea08a2112950dd2",
+                "reference": "c7fe3f4ab2d4f585e211e9f60ea08a2112950dd2",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.3",
+                "symfony/polyfill-php80": "^1.20"
+            },
+            "require-dev": {
+                "mikey179/vfsstream": "^1.6",
+                "phpstan/extension-installer": "^1.0",
+                "phpstan/phpstan": "^1.10",
+                "phpstan/phpstan-deprecation-rules": "^1.1",
+                "phpstan/phpstan-phpunit": "^1.3",
+                "phpstan/phpstan-strict-rules": "^1.5",
+                "phpstan/phpstan-symfony": "^1.2",
+                "phpunit/phpunit": "^9.5",
+                "predis/predis": "^1.1 || ^2.0",
+                "symfony/console": "^4.4 || ^5.0",
+                "symfony/expression-language": "^4.4 || ^5.0",
+                "symfony/framework-bundle": "^4.1 || ^5.0",
+                "symfony/security-core": "^4.4 || ^5.0",
+                "symfony/yaml": "^4.4 || ^5.0",
+                "twig/twig": "^2.7 || ^3.0"
+            },
+            "suggest": {
+                "symfony/expression-language": "To use expressions for conditions",
+                "symfony/framework-bundle": "To enable Symfony integration",
+                "symfony/yaml": "To pass yml files to the config",
+                "twig/twig": "To use the twig extension"
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "SolidWorx\\Toggler\\": "./src",
+                    "SolidWorx\\Toggler\\Tests\\": "./tests"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Pierre du Plessis",
+                    "email": "open-source@solidworx.co"
+                }
+            ],
+            "description": "Feature toggle library",
+            "keywords": [
+                "feature",
+                "feature library",
+                "feature switch",
+                "feature toggle",
+                "switch",
+                "toggle"
+            ],
+            "support": {
+                "issues": "https://github.com/SolidWorx/Toggler/issues",
+                "source": "https://github.com/SolidWorx/Toggler/tree/master"
+            },
+            "time": "2023-02-27T13:32:59+00:00"
+        },
+        {
             "name": "stof/doctrine-extensions-bundle",
             "version": "v1.7.0",
             "source": {
@@ -16754,6 +16833,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "solidworx/toggler": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": false,
