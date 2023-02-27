@@ -18,3 +18,5 @@ parameters:
     env(secret): 'SecretToken'
 
     env(installed): ~
+
+    env(SOLIDINVOICE_ALLOW_REGISTRATION): '0'

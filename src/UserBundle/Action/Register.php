@@ -16,11 +16,17 @@ namespace SolidInvoice\UserBundle\Action;
 use SolidInvoice\UserBundle\Form\Handler\RegisterFormHandler;
 use SolidWorx\FormHandler\FormHandler;
 use SolidWorx\FormHandler\FormRequest;
+use SolidWorx\Toggler\ToggleInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 final class Register
 {
-    public function __invoke(FormHandler $formHandler): FormRequest
+    public function __invoke(ToggleInterface $toggle, FormHandler $formHandler): FormRequest
     {
+        if (!$toggle->isActive('allow_registration')) {
+            throw new NotFoundHttpException('Registration is disabled');
+        }
+
         return $formHandler->handle(RegisterFormHandler::class);
     }
 }
