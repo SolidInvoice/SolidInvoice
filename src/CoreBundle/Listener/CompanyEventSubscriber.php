@@ -66,7 +66,7 @@ final class CompanyEventSubscriber implements EventSubscriberInterface
         if (null !== $company) {
             $em->getFilters()
                 ->enable('company')
-                ->setParameter('companyId', $company, Types::INTEGER );
+                ->setParameter('companyId', $company->toString(), Types::STRING);
         }
     }
 }

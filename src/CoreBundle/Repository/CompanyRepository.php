@@ -8,6 +8,9 @@ use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 
+/**
+ * @extends ServiceEntityRepository<Company>
+ */
 final class CompanyRepository extends ServiceEntityRepository
 {
     private CompanySelector $companySelector;

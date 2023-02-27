@@ -14,10 +14,15 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Doctrine\Filter;
 
 use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Filter\SQLFilter;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\UserBundle\Entity\User;
 use function count;
+use function str_replace;
 
 class CompanyFilter extends SQLFilter
 {
@@ -30,17 +35,25 @@ class CompanyFilter extends SQLFilter
                     ->createQueryBuilder()
                     ->select('user_id', 'company_id')
                     ->from('user_company')
-                    ->where('company_id = ' . $this->getParameter('companyId'))
+                    ->where('company_id = :company')
+                    ->setParameter(
+                        'company',
+                        Type::getType('uuid_binary_ordered_time')
+                            ->convertToDatabaseValue(
+                                str_replace("'", '', $this->getParameter('companyId')),
+                                $this->getConnection()->getDatabasePlatform()
+                            )
+                    )
                     ->fetchAllAssociative();
             } catch (Exception $e) {
-                return '';
+                return 'company_id = 0';
             }
 
             if (count($users) > 0) {
                 return sprintf('%s.id IN (%s)', $targetTableAlias, implode(',', array_column($users, 'user_id')));
             }
 
-            return '';
+            return 'company_id = 0';
         }
 
         if (! $targetEntity->hasAssociation('company')) {
@@ -48,9 +61,15 @@ class CompanyFilter extends SQLFilter
         }
 
         if ($this->hasParameter('companyId')) {
-            return sprintf('%s.company_id = %s', $targetTableAlias, $this->getParameter('companyId'));
+            $companyId = Type::getType('uuid_binary_ordered_time')
+                ->convertToDatabaseValue(
+                    str_replace("'", '', $this->getParameter('companyId')),
+                    $this->getConnection()->getDatabasePlatform()
+                );
+
+            return sprintf('%s.company_id = "%s"', $targetTableAlias, $companyId);
         }
 
-        return '';
+        return 'company_id = 0';
     }
 }
