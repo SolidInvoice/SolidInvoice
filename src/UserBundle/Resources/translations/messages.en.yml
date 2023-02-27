@@ -55,6 +55,13 @@ security:
         password: Password
         remember: 'Keep me logged in'
         forgot_password: 'Forgot Password'
+    register:
+        title: Register
+        email: Email
+        password: Password
+        password_confirm: 'Confirm Password'
+        submit: Register
+        success: 'Your account has been created, you can now login'
 
 users:
   add: 'Add User'

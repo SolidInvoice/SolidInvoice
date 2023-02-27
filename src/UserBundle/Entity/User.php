@@ -21,6 +21,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -28,6 +29,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Table(name="users")
  * @ORM\Entity(repositoryClass="SolidInvoice\UserBundle\Repository\UserRepository")
  * @Gedmo\Loggable
+ * @UniqueEntity(fields={"email"}, message="This email is already in use. Do you want to log in instead?")
+ * @UniqueEntity(fields={"username"}, message="This username is already in use")
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -59,14 +62,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string|null
      *
-     * @ORM\Column(name="username", type="string", length=180)
+     * @ORM\Column(name="username", type="string", length=180, unique=true)
      */
     private $username;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="email", type="string", length=180)
+     * @ORM\Column(name="email", type="string", length=180, unique=true)
      */
     private $email;
 

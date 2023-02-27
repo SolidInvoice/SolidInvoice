@@ -64,7 +64,7 @@ security:
             lazy: true
             context: frontend
         login:
-            pattern: ^/login$
+            pattern: ^/(login|register)$
             anonymous: true
             lazy: true
         password_reset:
@@ -97,6 +97,7 @@ security:
         #- { path: ^/_internal/secure, roles: IS_AUTHENTICATED_ANONYMOUSLY, ip: 127.0.0.1 }
         - { path: '^/view/(quote|invoice)/([a-zA-Z0-9-]{36})$', roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: '^/install(.*)', roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, roles: IS_AUTHENTICATED_ANONYMOUSLY }
 
