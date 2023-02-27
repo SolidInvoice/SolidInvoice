@@ -1,0 +1,48 @@
+{#
+# This file is part of SolidInvoice package.
+#
+# (c) Pierre du Plessis <open-source@solidworx.co>
+#
+# This source file is subject to the MIT license that is bundled
+# with this source code in the file LICENSE.
+#}
+
+{% extends '@SolidInvoiceCore/Layout/login.html.twig' %}
+
+{% block page_title %}{{ "security.login.login"|trans }}{% endblock page_title %}
+
+{% block content %}
+    <div class="login-page">
+        <div class="login-logo">
+            {{ app_logo() }} <span class="text-white">{{ app_name }}</span>
+        </div>
+
+        <div class="card login-box elevation-5">
+            {{ form_start(form) }}
+                <div class="card-header">
+                    <h2 class="card-title text-center">
+                        {{ "security.register.title"|trans }}
+                    </h2>
+                </div>
+                <div class="card-body login-card-body">
+                    {{ form_row(form) }}
+                </div>
+                <div class="card-footer">
+
+                    <div class="controls">
+                        <button type="submit" class="btn btn-success btn-block btn-lg" id="login_button">
+                            {{ icon('key') }} {{ "security.register.submit"|trans }}
+                        </button>
+                    </div>
+
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('register') }}"/>
+
+                    <hr/>
+                    <a href="{{ path("_login") }}">
+                        {{ icon('lock') }} {{ "security.login.login"|trans }}
+                    </a>
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock content %}

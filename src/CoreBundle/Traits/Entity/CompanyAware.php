@@ -11,7 +11,6 @@ trait CompanyAware
     /**
      * @ORM\ManyToOne(targetEntity=Company::class)
      * @ORM\JoinColumn(nullable=false)
-     * @ORM\Id()
      */
     private Company $company;
 
