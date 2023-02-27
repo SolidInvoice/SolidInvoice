@@ -23,9 +23,13 @@ use Doctrine\DBAL\Types\JsonType;
 use Doctrine\Migrations\AbstractMigration;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
+use Ramsey\Uuid\Codec\OrderedTimeCodec;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidFactory;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use function assert;
 
 final class Version20200 extends AbstractMigration implements ContainerAwareInterface
 {
@@ -100,12 +104,12 @@ final class Version20200 extends AbstractMigration implements ContainerAwareInte
         $companiesTable = $schema->createTable('companies');
         $userCompaniesTable = $schema->createTable('user_company');
 
-        $companiesTable->addColumn('id', 'integer', ['autoincrement' => true]);
+        $companiesTable->addColumn('id', 'uuid_binary_ordered_time');
         $companiesTable->addColumn('name', 'string', ['length' => 255, 'notnull' => true]);
         $companiesTable->setPrimaryKey(['id']);
 
         $userCompaniesTable->addColumn('user_id', 'integer', ['notnull' => true]);
-        $userCompaniesTable->addColumn('company_id', 'integer', ['notnull' => true]);
+        $userCompaniesTable->addColumn('company_id', 'uuid_binary_ordered_time', ['notnull' => true]);
         $userCompaniesTable->setPrimaryKey(['user_id', 'company_id']);
         $userCompaniesTable->addIndex(['user_id']);
         $userCompaniesTable->addIndex(['company_id']);
@@ -185,8 +189,18 @@ final class Version20200 extends AbstractMigration implements ContainerAwareInte
             ->setParameter('settingKey', 'system/company/company_name')
             ->fetchOne();
 
+
+        $factory = clone Uuid::getFactory();
+        assert($factory instanceof UuidFactory);
+
+        $factory->setCodec(new OrderedTimeCodec(
+            $factory->getUuidBuilder(),
+        ));
+
+        $companyId = $factory->uuid1();
+
         $this->connection
-            ->insert('companies', ['name' => $companyName]);
+            ->insert('companies', ['name' => $companyName, 'id' => $companyId->getBytes()]);
 
         foreach (
             [
@@ -208,14 +222,14 @@ final class Version20200 extends AbstractMigration implements ContainerAwareInte
                 'api_tokens',
                 'api_token_history',
             ] as $table) {
-            $this->connection->update($table, ['company_id' => 1], [1 => 1]);
+            $this->connection->update($table, ['company_id' => $companyId->getBytes()], [1 => 1]);
         }
 
         foreach ($users as $user) {
             $this->connection
                 ->insert('user_company', [
                     'user_id' => $user['id'],
-                    'company_id' => 1,
+                    'company_id' => $companyId->getBytes(),
                 ]);
         }
 
@@ -312,7 +326,7 @@ final class Version20200 extends AbstractMigration implements ContainerAwareInte
 
         $table = $schema->getTable($tableName);
 
-        $table->addColumn('company_id', 'integer', ['notnull' => false]);
+        $table->addColumn('company_id', 'uuid_binary_ordered_time', ['notnull' => false]);
         $table->addIndex(['company_id']);
 
         $table->modifyColumn(

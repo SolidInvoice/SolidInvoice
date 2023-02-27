@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Action;
 
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Templating\Template;
@@ -27,6 +29,9 @@ class SelectCompany
         $this->router = $router;
     }
 
+    /**
+     * @return Template|RedirectResponse
+     */
     public function __invoke()
     {
         $user = $this->security->getUser();
@@ -48,16 +53,18 @@ class SelectCompany
         return new Template('@SolidInvoiceCore/company/select.html.twig', ['companies' => $companies]);
     }
 
-    public function switchCompany(int $id): RedirectResponse
+    public function switchCompany(string $id): RedirectResponse
     {
+        $uuid = Uuid::fromString($id);
+
         $user = $this->security->getUser();
 
         assert($user instanceof User);
 
         $companies = $user->getCompanies();
 
-        if ($companies->exists(static fn (int $key, Company $company) => $company->getId() === $id)) {
-            $this->companySelector->switchCompany($id);
+        if ($companies->exists(static fn (int $key, Company $company) => !$company->getId()->equals($uuid))) {
+            $this->companySelector->switchCompany($uuid);
         }
 
         return new RedirectResponse($this->router->generate('_dashboard'));

@@ -6,6 +6,7 @@ namespace SolidInvoice\CoreBundle\Company;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 final class CompanySelector
@@ -19,12 +20,12 @@ final class CompanySelector
         $this->registry = $registry;
     }
 
-    public function getCompany(): ?int
+    public function getCompany(): ?UuidInterface
     {
         return $this->requestStack->getSession()->get('companyId');
     }
 
-    public function switchCompany(int $companyId): void
+    public function switchCompany(UuidInterface $companyId): void
     {
         $em = $this->registry->getManager();
 
@@ -33,7 +34,7 @@ final class CompanySelector
         $em
             ->getFilters()
             ->enable('company')
-            ->setParameter('companyId', $companyId, Types::INTEGER );
+            ->setParameter('companyId', $companyId->toString(), Types::STRING);
 
         $session = $this->requestStack->getSession();
 

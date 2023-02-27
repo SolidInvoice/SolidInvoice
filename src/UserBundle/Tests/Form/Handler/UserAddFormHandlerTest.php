@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Tests\Form\Handler;
 
 use Mockery as M;
+use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
@@ -21,6 +23,7 @@ use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Form\Handler\UserAddFormHandler;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactory;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
@@ -55,7 +58,13 @@ final class UserAddFormHandlerTest extends FormHandlerTestCase
 
     public function getHandler(): UserAddFormHandler
     {
-        $handler = new UserAddFormHandler($this->userPasswordHasher, $this->router);
+        $handler = new UserAddFormHandler(
+            $this->userPasswordHasher,
+            $this->router,
+            new CompanySelector(new RequestStack(), $this->registry),
+            $this->registry->getRepository(Company::class)
+        );
+
         $handler->setDoctrine($this->registry);
 
         return $handler;

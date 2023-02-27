@@ -15,6 +15,7 @@ namespace SolidInvoice\CoreBundle\Twig\Extension;
 
 use Carbon\Carbon;
 use DateTime;
+use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Pdf\Generator;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
@@ -143,7 +144,7 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
                 return SolidInvoiceCoreBundle::APP_NAME;
             }),
 
-            new TwigFunction('company_id', function (): ?int {
+            new TwigFunction('company_id', function (): UuidInterface {
                 return $this->companySelector->getCompany();
             }),
 

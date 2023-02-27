@@ -6,6 +6,8 @@ namespace SolidInvoice\CoreBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\UuidInterface;
+use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\UserBundle\Entity\User;
 use Stringable;
@@ -17,11 +19,12 @@ use Stringable;
 class Company implements Stringable
 {
     /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Id()
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
+     * @ORM\Column(type="uuid_binary_ordered_time", unique=true)
      */
-    private int $id;
+    private UuidInterface $id;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -40,8 +43,7 @@ class Company implements Stringable
         $this->users = new ArrayCollection();
     }
 
-
-    public function getId(): int
+    public function getId(): UuidInterface
     {
         return $this->id;
     }
