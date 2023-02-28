@@ -16,10 +16,10 @@ namespace SolidInvoice\ClientBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Money;
+use SolidInvoice\CoreBundle\Doctrine\Id\IdGenerator;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
-use SolidInvoice\CoreBundle\Doctrine\Id\IdGenerator;
 
 /**
  * SolidInvoice\ClientBundle\Entity\Credit.

@@ -35,7 +35,9 @@ final class Delete implements AjaxResponse
      * @var UserRepository|UserRepositoryInterface
      */
     private $userRepository;
+
     private CompanySelector $companySelector;
+
     private CompanyRepository $companyRepository;
 
     public function __construct(
@@ -64,7 +66,7 @@ final class Delete implements AjaxResponse
 
         $company = $this->companyRepository->find($this->companySelector->getCompany());
 
-        if (!$company instanceof Company) {
+        if (! $company instanceof Company) {
             return $this->json(['message' => 'Company not found']);
         }
 

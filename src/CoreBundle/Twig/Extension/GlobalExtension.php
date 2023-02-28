@@ -49,7 +49,9 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
     private ?string $installed;
 
     private RequestStack $requestStack;
+
     private Security $security;
+
     private CompanySelector $companySelector;
 
     public function __construct(

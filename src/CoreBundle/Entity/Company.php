@@ -1,13 +1,23 @@
 <?php
+
 declare(strict_types=1);
+
+/*
+ * This file is part of SolidInvoice project.
+ *
+ * (c) Pierre du Plessis <open-source@solidworx.co>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace SolidInvoice\CoreBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\UuidInterface;
 use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
+use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\UserBundle\Entity\User;
 use Stringable;
@@ -53,7 +63,7 @@ class Company implements Stringable
         return $this->name;
     }
 
-    public function setName(string $name): Company
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -73,9 +83,9 @@ class Company implements Stringable
         return $this->users;
     }
 
-    public function addUser(User $user): Company
+    public function addUser(User $user): self
     {
-        if (!$this->users->contains($user)) {
+        if (! $this->users->contains($user)) {
             $this->users[] = $user;
             $user->addCompany($this);
         }
@@ -83,7 +93,7 @@ class Company implements Stringable
         return $this;
     }
 
-    public function removeUser(User $user): Company
+    public function removeUser(User $user): self
     {
         if ($this->users->removeElement($user)) {
             $user->removeCompany($this);

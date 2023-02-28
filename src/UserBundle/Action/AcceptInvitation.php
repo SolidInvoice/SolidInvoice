@@ -1,5 +1,15 @@
 <?php
+
 declare(strict_types=1);
+
+/*
+ * This file is part of SolidInvoice project.
+ *
+ * (c) Pierre du Plessis <open-source@solidworx.co>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace SolidInvoice\UserBundle\Action;
 
@@ -15,7 +25,9 @@ use Symfony\Component\Routing\RouterInterface;
 final class AcceptInvitation
 {
     private UserInvitationRepository $repository;
+
     private UserRepository $userRepository;
+
     private RouterInterface $router;
 
     public function __construct(

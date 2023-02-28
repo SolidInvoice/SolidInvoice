@@ -42,6 +42,7 @@ class RegisterFormHandler implements FormHandlerResponseInterface, FormHandlerIn
     private UserPasswordHasherInterface $userPasswordHasher;
 
     private RouterInterface $router;
+
     private UserInvitationRepository $invitationRepository;
 
     public function __construct(

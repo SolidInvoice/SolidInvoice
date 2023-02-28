@@ -47,11 +47,17 @@ class UserInviteFormHandler implements FormHandlerResponseInterface, FormHandler
     use SaveableTrait;
 
     private RouterInterface $router;
+
     private CompanySelector $companySelector;
+
     private CompanyRepository $companyRepository;
+
     private Security $security;
+
     private SendUserInvitation $userInvitation;
+
     private UserRepository $userRepository;
+
     private ValidatorInterface $validator;
 
     public function __construct(
