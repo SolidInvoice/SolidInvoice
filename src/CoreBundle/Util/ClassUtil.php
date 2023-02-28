@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Util;
 
+use function defined;
+
 /**
  * @see \SolidInvoice\CoreBundle\Tests\Util\ClassUtilTest
  */
@@ -37,8 +39,8 @@ class ClassUtil
                 return $namespace . '\\' . $token[1];
             }
 
-            if (true === $namespace && (T_NAME_QUALIFIED === $token[0] || T_STRING === $token[0])) {
-                if (T_NAME_QUALIFIED === $token[0]) {
+            if (true === $namespace && ((defined('T_NAME_QUALIFIED') && T_NAME_QUALIFIED === $token[0]) || T_STRING === $token[0])) {
+                if (defined('T_NAME_QUALIFIED') && T_NAME_QUALIFIED === $token[0]) {
                     $namespace = $token[1];
                 } else {
                     $namespace = '';
