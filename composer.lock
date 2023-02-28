@@ -13232,16 +13232,16 @@
     "packages-dev": [
         {
             "name": "dbrekelmans/bdi",
-            "version": "1.0",
+            "version": "1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dbrekelmans/bdi.git",
-                "reference": "bdc41bd339558242bf748b99c394a78e2dfbdb4f"
+                "reference": "41f42576647789d15259baa7931e3928273940a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dbrekelmans/bdi/zipball/bdc41bd339558242bf748b99c394a78e2dfbdb4f",
-                "reference": "bdc41bd339558242bf748b99c394a78e2dfbdb4f",
+                "url": "https://api.github.com/repos/dbrekelmans/bdi/zipball/41f42576647789d15259baa7931e3928273940a2",
+                "reference": "41f42576647789d15259baa7931e3928273940a2",
                 "shasum": ""
             },
             "require": {
@@ -13275,9 +13275,9 @@
                 "browser-driver-installer"
             ],
             "support": {
-                "source": "https://github.com/dbrekelmans/bdi/tree/1.0"
+                "source": "https://github.com/dbrekelmans/bdi/tree/1.0.4"
             },
-            "time": "2021-10-16T09:40:32+00:00"
+            "time": "2023-01-22T17:23:00+00:00"
         },
         {
             "name": "doctrine/data-fixtures",
