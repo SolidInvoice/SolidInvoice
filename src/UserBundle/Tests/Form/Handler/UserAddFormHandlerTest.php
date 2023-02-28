@@ -20,7 +20,7 @@ use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
 use SolidInvoice\UserBundle\Entity\User;
-use SolidInvoice\UserBundle\Form\Handler\UserAddFormHandler;
+use SolidInvoice\UserBundle\Form\Handler\UserInviteFormHandler;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -56,9 +56,9 @@ final class UserAddFormHandlerTest extends FormHandlerTestCase
         ]));
     }
 
-    public function getHandler(): UserAddFormHandler
+    public function getHandler(): UserInviteFormHandler
     {
-        $handler = new UserAddFormHandler(
+        $handler = new UserInviteFormHandler(
             $this->userPasswordHasher,
             $this->router,
             new CompanySelector(new RequestStack(), $this->registry),

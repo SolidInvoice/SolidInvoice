@@ -1,14 +1,19 @@
 services:
-    SolidInvoice\UserBundle\Repository\ApiTokenRepository:
+    _defaults:
         autowire: true
+        autoconfigure: true
+        public: false
+
+    SolidInvoice\UserBundle\Repository\ApiTokenRepository:
         tags: ['doctrine.repository_service']
 
     SolidInvoice\UserBundle\Repository\ApiTokenHistoryRepository:
-        autowire: true
         tags: ['doctrine.repository_service']
 
     SolidInvoice\UserBundle\Repository\UserRepository:
-        autowire: true
+        tags: ['doctrine.repository_service']
+
+    SolidInvoice\UserBundle\Repository\UserInvitationRepository:
         tags: ['doctrine.repository_service']
 
     SolidInvoice\UserBundle\Repository\UserRepositoryInterface: '@SolidInvoice\UserBundle\Repository\UserRepository'
@@ -17,3 +22,5 @@ services:
     SolidInvoice\UserBundle\DataFixtures\ORM\:
         resource: '%kernel.project_dir%/src/UserBundle/DataFixtures/ORM/*'
         tags: ['doctrine.fixture.orm']
+
+    SolidInvoice\UserBundle\UserInvitation\UserInvitation: ~

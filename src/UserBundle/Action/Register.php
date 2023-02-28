@@ -13,20 +13,40 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Action;
 
+use Ramsey\Uuid\Uuid;
 use SolidInvoice\UserBundle\Form\Handler\RegisterFormHandler;
+use SolidInvoice\UserBundle\Repository\UserInvitationRepository;
 use SolidWorx\FormHandler\FormHandler;
 use SolidWorx\FormHandler\FormRequest;
 use SolidWorx\Toggler\ToggleInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 final class Register
 {
-    public function __invoke(ToggleInterface $toggle, FormHandler $formHandler): FormRequest
+    private UserInvitationRepository $repository;
+
+    public function __construct(UserInvitationRepository $repository)
     {
-        if (!$toggle->isActive('allow_registration')) {
+        $this->repository = $repository;
+    }
+
+    public function __invoke(Request $request, ToggleInterface $toggle, FormHandler $formHandler): FormRequest
+    {
+        $invitation = null;
+
+        if ($request->query->has('invitation')) {
+            $invitation = $this->repository->find(Uuid::fromString($request->query->get('invitation')));
+
+            if (null === $invitation) {
+                throw new NotFoundHttpException('Invitation is not valid');
+            }
+        }
+
+        if (!$request->query->has('invitation') && !$toggle->isActive('allow_registration')) {
             throw new NotFoundHttpException('Registration is disabled');
         }
 
-        return $formHandler->handle(RegisterFormHandler::class);
+        return $formHandler->handle(RegisterFormHandler::class, ['invitation' => $invitation]);
     }
 }

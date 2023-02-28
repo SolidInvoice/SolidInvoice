@@ -46,14 +46,14 @@ class CompanyFilter extends SQLFilter
                     )
                     ->fetchAllAssociative();
             } catch (Exception $e) {
-                return 'company_id = 0';
+                return '';
             }
 
             if (count($users) > 0) {
                 return sprintf('%s.id IN (%s)', $targetTableAlias, implode(',', array_column($users, 'user_id')));
             }
 
-            return 'company_id = 0';
+            return '';
         }
 
         if (! $targetEntity->hasAssociation('company')) {

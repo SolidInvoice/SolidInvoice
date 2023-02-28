@@ -67,6 +67,10 @@ security:
             pattern: ^/(login|register)$
             anonymous: true
             lazy: true
+        accept_invite:
+            pattern: ^/invite/accept/([a-zA-Z0-9-]{36})$
+            anonymous: true
+            lazy: true
         password_reset:
             pattern: '^/forgot-password(.*)'
             anonymous: true
@@ -100,6 +104,9 @@ security:
         - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: '^/install(.*)', roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+
+        # Invitation
+        - { path: '^/invite/accept/([a-zA-Z0-9-]{36})$', roles: IS_AUTHENTICATED_ANONYMOUSLY }
 
         # payments
         - { path: '^/payments/create/([a-zA-Z0-9-]{36})$', roles: IS_AUTHENTICATED_ANONYMOUSLY }

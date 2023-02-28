@@ -4,14 +4,14 @@
 
 {% block content %}
     <div class="widget">
-        {{ render_grid('users_list') }}
+        {{ render_multiple_grid('users_list', 'users_invitations') }}
     </div>
 {% endblock content %}
 
 {% block heading %}
     <div class="float-right header-button">
-        <a class="btn btn-info" href="{{ path("_user_add") }}">
-            {{ icon('user') }} {{ "users.add"|trans }}
+        <a class="btn btn-info" href="{{ path("_user_invite") }}">
+            {{ icon('user') }} {{ "users.invite"|trans }}
         </a>
     </div>
     <br class="clear" />

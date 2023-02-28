@@ -64,6 +64,12 @@ security:
         success: 'Your account has been created, you can now login'
 
 users:
+  invite: 'Invite User'
+  invitation:
+    success: 'Invitation sent successfully!'
+    accept:
+      success: 'Invitation accepted successfully! You can now log in.'
+    exists: 'There is already an existing invitation for this email address'
   add: 'Add User'
   edit: 'Edit User'
   title: 'Users'
@@ -74,6 +80,9 @@ users:
     success: 'User updated successfully!'
   save: 'Save'
   grid:
+    invitation:
+        actions:
+            resend: 'Resend Invitation'
     actions:
         edit: 'Edit'
         delete: 'Delete'

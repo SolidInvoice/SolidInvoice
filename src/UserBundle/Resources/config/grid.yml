@@ -1,5 +1,7 @@
 datagrid:
     users_list:
+        title: Users
+        icon: user
         source:
             repository: 'SolidInvoiceUserBundle:User'
             method: getGridQuery
@@ -48,4 +50,44 @@ datagrid:
                 icon: ban
                 confirm: 'Are you sure you want to delete the selected rows?'
                 action: user_grid_delete
+                className: danger
+
+    users_invitations:
+        title: 'Invitations'
+        icon: envelope
+        source:
+            repository: 'SolidInvoiceUserBundle:UserInvitation'
+            method: getGridQuery
+        columns:
+            email:
+                name: email
+                label: Email
+                editable: false
+                cell: email
+            status:
+                name: status
+                label: Status
+                editable: false
+                cell: string
+            created:
+                name: created
+                label: Created
+                editable: false
+                cell: date
+        search:
+            fields:
+                - email
+        line_actions:
+            re-send:
+                icon: envelope
+                label: 'users.grid.invitation.actions.resend'
+                route: _user_resend_invite
+                route_params:
+                    id: id
+        actions:
+            delete:
+                label: Delete
+                icon: ban
+                confirm: 'Are you sure you want to remove the selected invited users?'
+                action: _user_delete_invite
                 className: danger

@@ -48,7 +48,6 @@ final class SmtpTransportConfigType extends AbstractType
             'user',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'smtp']),
                 'required' => false,
             ]
         );
@@ -57,7 +56,6 @@ final class SmtpTransportConfigType extends AbstractType
             'password',
             PasswordType::class,
             [
-                'constraints' => new NotBlank(['groups' => 'smtp']),
                 'required' => false,
             ]
         );

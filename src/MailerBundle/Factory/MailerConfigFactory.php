@@ -26,7 +26,7 @@ use function json_decode;
  */
 final class MailerConfigFactory
 {
-    private const CONFIG_KEY = 'email/sending_options/provider';
+    public const CONFIG_KEY = 'email/sending_options/provider';
 
     private SystemConfig $config;
 
@@ -47,15 +47,20 @@ final class MailerConfigFactory
     /**
      * @throws JsonException
      */
-    public function fromStrings(): TransportInterface
+    public function fromStrings(): ?TransportInterface
     {
-        $config = $this->config->get(self::CONFIG_KEY);
+        try {
+            $mailerConfig = $this->config->get(self::CONFIG_KEY);
 
-        if (null === $config) {
-            return $this->inner->fromString('null://null');
+            if (null === $mailerConfig) {
+                return $this->inner->fromString('null://null');
+            }
+
+            $config = json_decode($mailerConfig, true, 512, JSON_THROW_ON_ERROR);
+        } catch (JsonException $e) {
+            throw new RuntimeException('Invalid mailer config');
         }
 
-        $config = json_decode($this->config->get(self::CONFIG_KEY), true, 512, JSON_THROW_ON_ERROR);
         $provider = $config['provider'] ?? '';
 
         foreach ($this->transports as $transport) {
