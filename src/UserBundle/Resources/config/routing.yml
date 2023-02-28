@@ -24,12 +24,6 @@ _user_resend_invite:
     options:
         expose: true
 
-_user_delete_invite:
-    path: /users/invite/delete
-    defaults: { _controller: 'SolidInvoice\UserBundle\Action\Grid\DeleteInvitations' }
-    options:
-        expose: true
-
 _user_accept_invite:
     path: /invite/accept/{id}
     defaults: { _controller: 'SolidInvoice\UserBundle\Action\AcceptInvitation' }
@@ -37,6 +31,7 @@ _user_accept_invite:
 _users_grid:
     resource: '@SolidInvoiceUserBundle/Action/Grid'
     type: grid
+    prefix: /users
 
 _login:
     path: /login
