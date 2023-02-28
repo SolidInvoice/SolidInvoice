@@ -1,0 +1,28 @@
+{% extends '@SolidInvoiceCore/Layout/Email/base.html.twig' %}
+
+{%- block title -%}
+    Invitation to join {{ invitation.company.name }}
+{%- endblock -%}
+
+{%- block content -%}
+    {% apply nl2br %}
+        {% autoescape false %}
+            You have been invited to join {{ invitation.company.name }} on SolidInvoice.
+
+            Please click the button below to set your password and join the company.
+        {% endautoescape %}
+    {% endapply %}
+    <table class="button expand large float-center">
+        <tr>
+            <td>
+                <table>
+                    <tr>
+                        <td>
+                            <a href="{{ url('_user_accept_invite', {'id': invitation.id}) }}" rel="external" target="_blank">{{ 'invitation.accept'|trans([], 'email') }}</a>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+{%- endblock -%}

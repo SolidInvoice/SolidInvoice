@@ -18,8 +18,11 @@ use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
 use SolidInvoice\UserBundle\Entity\User;
+use SolidInvoice\UserBundle\Entity\UserInvitation;
 use SolidInvoice\UserBundle\Form\Type\RegisterType;
+use SolidInvoice\UserBundle\Repository\UserInvitationRepository;
 use SolidWorx\FormHandler\FormHandlerInterface;
+use SolidWorx\FormHandler\FormHandlerOptionsResolver;
 use SolidWorx\FormHandler\FormHandlerResponseInterface;
 use SolidWorx\FormHandler\FormHandlerSuccessInterface;
 use SolidWorx\FormHandler\FormRequest;
@@ -27,25 +30,38 @@ use SolidWorx\FormHandler\Options;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\RouterInterface;
+use function assert;
 
-class RegisterFormHandler implements FormHandlerResponseInterface, FormHandlerInterface, FormHandlerSuccessInterface
+class RegisterFormHandler implements FormHandlerResponseInterface, FormHandlerInterface, FormHandlerSuccessInterface, FormHandlerOptionsResolver
 {
     use SaveableTrait;
 
     private UserPasswordHasherInterface $userPasswordHasher;
 
     private RouterInterface $router;
+    private UserInvitationRepository $invitationRepository;
 
-    public function __construct(UserPasswordHasherInterface $userPasswordHasher, RouterInterface $router)
-    {
+    public function __construct(
+        UserPasswordHasherInterface $userPasswordHasher,
+        RouterInterface $router,
+        UserInvitationRepository $invitationRepository
+    ) {
         $this->router = $router;
         $this->userPasswordHasher = $userPasswordHasher;
+        $this->invitationRepository = $invitationRepository;
     }
 
     public function getForm(FormFactoryInterface $factory, Options $options)
     {
+        $invitation = $options->get('invitation');
+
+        if ($invitation instanceof UserInvitation) {
+            return $factory->create(RegisterType::class, null, ['email' => $invitation->getEmail()]);
+        }
+
         return $factory->create(RegisterType::class);
     }
 
@@ -62,11 +78,23 @@ class RegisterFormHandler implements FormHandlerResponseInterface, FormHandlerIn
     public function onSuccess(FormRequest $form, $data): ?Response
     {
         assert($data instanceof User);
+
+        $invitation = $form->getOptions()->get('invitation');
+
+        if ($invitation instanceof UserInvitation) {
+            $data->setEmail($invitation->getEmail());
+            $data->addCompany($invitation->getCompany());
+        }
+
         $data->setPassword($this->userPasswordHasher->hashPassword($data, $data->getPlainPassword()));
         $data->setUsername($data->getEmail());
         $data->setEnabled(true);
         $data->eraseCredentials();
         $this->save($data);
+
+        if ($invitation instanceof UserInvitation) {
+            $this->invitationRepository->delete($invitation);
+        }
 
         $route = $this->router->generate('_dashboard');
 
@@ -76,5 +104,11 @@ class RegisterFormHandler implements FormHandlerResponseInterface, FormHandlerIn
                 yield self::FLASH_SUCCESS => 'security.register.success';
             }
         };
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefined('invitation');
+        $resolver->setAllowedTypes('invitation', ['null', UserInvitation::class]);
     }
 }

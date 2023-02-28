@@ -15,3 +15,6 @@ reset_password:
 
         To reset your password, please follow the link below
     button_text: 'Reset Password'
+
+invitation:
+    accept: 'Accept Invitation'

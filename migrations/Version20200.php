@@ -35,6 +35,26 @@ final class Version20200 extends AbstractMigration implements ContainerAwareInte
 {
     use ContainerAwareTrait;
 
+    private const ALL_TABLES = [
+        'app_config',
+        'clients',
+        'addresses',
+        'contact_types',
+        'contacts',
+        'client_credit',
+        'contact_details',
+        'invoices',
+        'invoice_lines',
+        'payment_methods',
+        'payments',
+        'quotes',
+        'quote_lines',
+        'recurring_invoices',
+        'tax_rates',
+        'api_tokens',
+        'api_token_history',
+    ];
+
     private LoggerInterface $logger;
 
     private Schema $toSchema;
@@ -169,6 +189,26 @@ final class Version20200 extends AbstractMigration implements ContainerAwareInte
         ) {
             $this->addSql($sql);
         }
+
+        $userInvitationsTable = $schema->createTable('user_invitations');
+        $userInvitationsTable->addColumn('id', 'uuid_binary_ordered_time');
+        $userInvitationsTable->addColumn('invited_by_id', 'integer', ['notnull' => true]);
+        $userInvitationsTable->addColumn('company_id', 'uuid_binary_ordered_time', ['notnull' => true]);
+        $userInvitationsTable->addColumn('email', 'string', ['length' => 255, 'notnull' => true]);
+        $userInvitationsTable->addColumn('status', 'string', ['length' => 255, 'notnull' => true]);
+        $userInvitationsTable->addColumn('created', 'datetimetz_immutable', ['notnull' => true]);
+        $userInvitationsTable->setPrimaryKey(['id', 'company_id']);
+        $userInvitationsTable->addIndex(['company_id']);
+        $userInvitationsTable->addForeignKeyConstraint(
+            $companiesTable,
+            ['company_id'],
+            ['id'],
+        );
+        $userInvitationsTable->addForeignKeyConstraint(
+            $schema->getTable('users'),
+            ['invited_by_id'],
+            ['id'],
+        );
     }
 
     public function postUp(Schema $schema): void
@@ -202,27 +242,8 @@ final class Version20200 extends AbstractMigration implements ContainerAwareInte
         $this->connection
             ->insert('companies', ['name' => $companyName, 'id' => $companyId->getBytes()]);
 
-        foreach (
-            [
-                'app_config',
-                'clients',
-                'addresses',
-                'contact_types',
-                'contacts',
-                'client_credit',
-                'contact_details',
-                'invoices',
-                'invoice_lines',
-                'payment_methods',
-                'payments',
-                'quotes',
-                'quote_lines',
-                'recurring_invoices',
-                'tax_rates',
-                'api_tokens',
-                'api_token_history',
-            ] as $table) {
-            $this->connection->update($table, ['company_id' => $companyId->getBytes()], [1 => 1]);
+        foreach (self::ALL_TABLES as $table) {
+            $this->connection->update($table, ['company_id' => $companyId->getBytes()], ['1' => '1']);
         }
 
         foreach ($users as $user) {
@@ -265,56 +286,53 @@ final class Version20200 extends AbstractMigration implements ContainerAwareInte
         }
     }
 
+    public function preDown(Schema $schema): void
+    {
+        if ($this->connection->getDatabasePlatform() instanceof MySQLPlatform) {
+            $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS=0');
+            $this->connection->executeQuery('SET GLOBAL FOREIGN_KEY_CHECKS=0');
+        }
+    }
+
+
     public function down(Schema $schema): void
     {
         $this->connection->delete('app_config', ['setting_key' => 'invoice/watermark']);
         $this->connection->delete('app_config', ['setting_key' => 'quote/watermark']);
 
-        foreach (
-            [
-                'app_config',
-                'clients',
-                'addresses',
-                'contact_types',
-                'contacts',
-                'client_credit',
-                'contact_details',
-                'invoices',
-                'invoice_lines',
-                'payment_methods',
-                'payments',
-                'quotes',
-                'quote_lines',
-                'recurring_invoices',
-                'tax_rates',
-                'api_tokens',
-                'api_token_history',
-            ] as $tableName) {
-                $table = $schema->getTable($tableName);
-
-                $table->dropColumn('company_id');
-
+        foreach ($schema->getTables() as $table) {
+            if ($table->hasColumn('company_id')) {
                 foreach ($table->getIndexes() as $index) {
                     if ($index->getColumns() === ['company_id']) {
                         $table->dropIndex($index->getName());
                     }
                 }
 
-            $table->modifyColumn(
-                'id',
-                [
-                    'type' => new IntegerType(),
-                    'notnull' => true,
-                    'autoincrement' => true,
-                ]
-            );
+                $table->modifyColumn(
+                    'id',
+                    [
+                        'type' => new IntegerType(),
+                        'notnull' => true,
+                        'autoincrement' => true,
+                    ]
+                );
 
-            $table->dropPrimaryKey();
-            $table->setPrimaryKey(['id']);
+                $table->dropPrimaryKey();
+                $table->setPrimaryKey(['id']);
+            }
         }
 
         $schema->dropTable('companies');
         $schema->dropTable('user_company');
+        $schema->dropTable('user_invitations');
+    }
+
+    public function postDown(Schema $schema): void
+    {
+        if ($this->connection->getDatabasePlatform() instanceof MySQLPlatform) {
+            $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS=1');
+            $this->connection->executeQuery('SET GLOBAL FOREIGN_KEY_CHECKS=1');
+        }
     }
 
     /**

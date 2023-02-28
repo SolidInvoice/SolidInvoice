@@ -14,9 +14,25 @@ _users_list:
     path: /users
     defaults: { _controller: 'SolidInvoice\UserBundle\Action\Users' }
 
-_user_add:
-    path: /users/add
-    defaults: { _controller: 'SolidInvoice\UserBundle\Action\AddUser' }
+_user_invite:
+    path: /users/invite
+    defaults: { _controller: 'SolidInvoice\UserBundle\Action\InviteUser' }
+
+_user_resend_invite:
+    path: /users/invite/{id}/resend
+    defaults: { _controller: 'SolidInvoice\UserBundle\Action\ResendUserInvite' }
+    options:
+        expose: true
+
+_user_delete_invite:
+    path: /users/invite/delete
+    defaults: { _controller: 'SolidInvoice\UserBundle\Action\Grid\DeleteInvitations' }
+    options:
+        expose: true
+
+_user_accept_invite:
+    path: /invite/accept/{id}
+    defaults: { _controller: 'SolidInvoice\UserBundle\Action\AcceptInvitation' }
 
 _user_edit:
     path: /users/edit/{id}

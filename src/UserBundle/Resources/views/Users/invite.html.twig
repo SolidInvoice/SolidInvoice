@@ -1,0 +1,39 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
+
+{% block title %}{{ 'users.invite'|trans }}{% endblock %}
+
+{% block content %}
+    <div class="card card-primary">
+        <div class="card-body">
+            {{ form_start(form) }}
+            {{ form_row(form) }}
+
+            <div class="control-group">
+                <div class="controls">
+                    <div class="float-left">
+                        <button type="button" class="btn btn-warning" onclick="history.back()">
+                            {{ icon('reply') }} {{ 'client.cancel'|trans }}
+                        </button>
+                    </div>
+                    <div class="float-right">
+                        <div class="btn-group">
+                            <button type="submit" class="btn btn-success">{{ icon('save') }} {{ 'users.save'|trans }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock content %}

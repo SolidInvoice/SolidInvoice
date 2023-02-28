@@ -33,8 +33,15 @@ final class SmtpConfigurator implements ConfiguratorInterface
         return 'SMTP';
     }
 
+    /**
+     * @param array{user?: string|null, password?: string|null, host: string, port: int|null} $config
+     */
     public function configure(array $config): Dsn
     {
+        if (empty($config['user']) && empty($config['password'])) {
+            return Dsn::fromString(\sprintf('smtp://%s:%d', $config['host'], $config['port'] ?? self::DEFAULT_PORT));
+        }
+
         return Dsn::fromString(\sprintf('smtp://%s:%s@%s:%d', $config['user'], $config['password'], $config['host'], $config['port'] ?? self::DEFAULT_PORT));
     }
 }
