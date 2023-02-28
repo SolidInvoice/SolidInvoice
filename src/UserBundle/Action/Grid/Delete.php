@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Action\Grid;
 
+use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\CoreBundle\Entity\Company;
+use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\CoreBundle\Response\AjaxResponse;
 use SolidInvoice\CoreBundle\Traits\JsonTrait;
 use SolidInvoice\UserBundle\Entity\User;
@@ -32,16 +35,24 @@ final class Delete implements AjaxResponse
      * @var UserRepository|UserRepositoryInterface
      */
     private $userRepository;
+    private CompanySelector $companySelector;
+    private CompanyRepository $companyRepository;
 
-    public function __construct(UserRepositoryInterface $userRepository, Security $security)
-    {
+    public function __construct(
+        UserRepositoryInterface $userRepository,
+        CompanyRepository $companyRepository,
+        Security $security,
+        CompanySelector $companySelector
+    ) {
         $this->security = $security;
         $this->userRepository = $userRepository;
+        $this->companySelector = $companySelector;
+        $this->companyRepository = $companyRepository;
     }
 
     public function __invoke(Request $request): JsonResponse
     {
-        $users = (array) $request->request->get('data');
+        $users = $request->request->all('data');
 
         $currentUser = $this->security->getUser();
 
@@ -51,6 +62,22 @@ final class Delete implements AjaxResponse
             return $this->json(['message' => "You can't delete the current logged in user"]);
         }
 
-        return $this->json($this->userRepository->deleteUsers($users));
+        $company = $this->companyRepository->find($this->companySelector->getCompany());
+
+        if (!$company instanceof Company) {
+            return $this->json(['message' => 'Company not found']);
+        }
+
+        foreach ($users as $userId) {
+            $user = $this->userRepository->find($userId);
+
+            if ($user instanceof User) {
+                $user->removeCompany($company);
+            }
+
+            $this->userRepository->save($user);
+        }
+
+        return $this->json();
     }
 }

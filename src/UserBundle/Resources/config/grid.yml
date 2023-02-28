@@ -80,5 +80,5 @@ datagrid:
                 label: Delete
                 icon: ban
                 confirm: 'Are you sure you want to remove the selected invited users?'
-                action: _user_delete_invite
+                action: user_grid_delete_invitations
                 className: danger
