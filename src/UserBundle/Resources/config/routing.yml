@@ -34,14 +34,6 @@ _user_accept_invite:
     path: /invite/accept/{id}
     defaults: { _controller: 'SolidInvoice\UserBundle\Action\AcceptInvitation' }
 
-_user_edit:
-    path: /users/edit/{id}
-    defaults: { _controller: 'SolidInvoice\UserBundle\Action\EditUser' }
-    options:
-        expose: true
-    requirements:
-        id: \d+
-
 _users_grid:
     resource: '@SolidInvoiceUserBundle/Action/Grid'
     type: grid

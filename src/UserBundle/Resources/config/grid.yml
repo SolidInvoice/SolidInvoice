@@ -5,8 +5,6 @@ datagrid:
         source:
             repository: 'SolidInvoiceUserBundle:User'
             method: getGridQuery
-        properties:
-            route: '_user_edit'
         columns:
             id:
                 name: id
@@ -37,13 +35,6 @@ datagrid:
             fields:
                 - username
                 - email
-        line_actions:
-            edit:
-                icon: edit
-                label: 'users.grid.actions.edit'
-                route: _user_edit
-                route_params:
-                    id: id
         actions:
             delete:
                 label: 'Delete'

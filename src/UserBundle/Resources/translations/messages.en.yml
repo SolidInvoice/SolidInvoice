@@ -76,8 +76,6 @@ users:
   create:
     generate_password: 'Generate Random Password'
     success: 'User created successfully!'
-  update:
-    success: 'User updated successfully!'
   save: 'Save'
   grid:
     invitation:
