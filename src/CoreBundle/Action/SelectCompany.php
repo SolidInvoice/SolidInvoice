@@ -1,10 +1,19 @@
 <?php
+
 declare(strict_types=1);
+
+/*
+ * This file is part of SolidInvoice project.
+ *
+ * (c) Pierre du Plessis <open-source@solidworx.co>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace SolidInvoice\CoreBundle\Action;
 
 use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Templating\Template;
@@ -16,7 +25,9 @@ use Symfony\Component\Security\Core\Security;
 class SelectCompany
 {
     private CompanySelector $companySelector;
+
     private Security $security;
+
     private RouterInterface $router;
 
     public function __construct(
@@ -63,7 +74,7 @@ class SelectCompany
 
         $companies = $user->getCompanies();
 
-        if ($companies->exists(static fn (int $key, Company $company) => !$company->getId()->equals($uuid))) {
+        if ($companies->exists(static fn (int $key, Company $company) => ! $company->getId()->equals($uuid))) {
             $this->companySelector->switchCompany($uuid);
         }
 

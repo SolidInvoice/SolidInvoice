@@ -43,7 +43,7 @@ final class Register
             }
         }
 
-        if (!$request->query->has('invitation') && !$toggle->isActive('allow_registration')) {
+        if (! $request->query->has('invitation') && ! $toggle->isActive('allow_registration')) {
             throw new NotFoundHttpException('Registration is disabled');
         }
 

@@ -1,15 +1,25 @@
 <?php
+
 declare(strict_types=1);
+
+/*
+ * This file is part of SolidInvoice project.
+ *
+ * (c) Pierre du Plessis <open-source@solidworx.co>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace SolidInvoice\UserBundle\Entity;
 
 use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
 use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\UserBundle\Repository\UserInvitationRepository;
-use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**

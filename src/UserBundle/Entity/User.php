@@ -389,7 +389,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function addCompany(Company $company): self
     {
-        if (!$this->companies->contains($company)) {
+        if (! $this->companies->contains($company)) {
             $this->companies[] = $company;
         }
 

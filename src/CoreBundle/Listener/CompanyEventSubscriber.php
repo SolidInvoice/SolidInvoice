@@ -1,9 +1,18 @@
 <?php
+
 declare(strict_types=1);
+
+/*
+ * This file is part of SolidInvoice project.
+ *
+ * (c) Pierre du Plessis <open-source@solidworx.co>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace SolidInvoice\CoreBundle\Listener;
 
-use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -18,8 +27,11 @@ use Symfony\Component\Security\Core\Security;
 final class CompanyEventSubscriber implements EventSubscriberInterface
 {
     private ManagerRegistry $doctrine;
+
     private CompanySelector $companySelector;
+
     private RouterInterface $router;
+
     private Security $security;
 
     public function __construct(

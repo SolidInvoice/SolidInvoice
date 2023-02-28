@@ -1,5 +1,15 @@
 <?php
+
 declare(strict_types=1);
+
+/*
+ * This file is part of SolidInvoice project.
+ *
+ * (c) Pierre du Plessis <open-source@solidworx.co>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace SolidInvoice\CoreBundle\Form\Handler;
 
@@ -7,28 +17,28 @@ use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Form\Type\CompanyType;
+use SolidInvoice\CoreBundle\Form\Type\ImageUploadType;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
+use SolidInvoice\MoneyBundle\Form\Type\CurrencyType;
+use SolidInvoice\NotificationBundle\Form\Type\NotificationType;
 use SolidInvoice\SettingsBundle\Entity\Setting;
+use SolidInvoice\SettingsBundle\Form\Type\AddressType;
 use SolidInvoice\SettingsBundle\Form\Type\MailTransportType;
+use SolidInvoice\TaxBundle\Form\Type\TaxNumberType;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormHandlerResponseInterface;
 use SolidWorx\FormHandler\FormHandlerSuccessInterface;
 use SolidWorx\FormHandler\FormRequest;
 use SolidWorx\FormHandler\Options;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Security;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use SolidInvoice\CoreBundle\Form\Type\ImageUploadType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use SolidInvoice\TaxBundle\Form\Type\TaxNumberType;
-use SolidInvoice\SettingsBundle\Form\Type\AddressType;
-use SolidInvoice\NotificationBundle\Form\Type\NotificationType;
-use SolidInvoice\MoneyBundle\Form\Type\CurrencyType;
 use function assert;
 
 final class CompanyFormHandler implements FormHandlerInterface, FormHandlerSuccessInterface, FormHandlerResponseInterface
@@ -36,8 +46,11 @@ final class CompanyFormHandler implements FormHandlerInterface, FormHandlerSucce
     use SaveableTrait;
 
     private CompanySelector $companySelector;
+
     private RouterInterface $router;
+
     private Security $security;
+
     private ManagerRegistry $registry;
 
     public function __construct(
@@ -66,7 +79,7 @@ final class CompanyFormHandler implements FormHandlerInterface, FormHandlerSucce
             '@SolidInvoiceCore/Company/create.html.twig',
             [
                 'form' => $formRequest->getForm()->createView(),
-                'allowCancel' => !$user->getCompanies()->isEmpty(),
+                'allowCancel' => ! $user->getCompanies()->isEmpty(),
             ]
         );
     }

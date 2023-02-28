@@ -15,11 +15,8 @@ namespace SolidInvoice\CoreBundle\Doctrine\Filter;
 
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Types\Type;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Filter\SQLFilter;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\UserBundle\Entity\User;
 use function count;
 use function str_replace;

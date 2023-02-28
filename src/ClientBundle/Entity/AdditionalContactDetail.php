@@ -15,10 +15,10 @@ namespace SolidInvoice\ClientBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use SolidInvoice\CoreBundle\Doctrine\Id\IdGenerator;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Symfony\Component\Serializer\Annotation as Serialize;
-use SolidInvoice\CoreBundle\Doctrine\Id\IdGenerator;
 
 /**
  * SolidInvoice\ClientBundle\Entity\AdditionalContactDetail.
