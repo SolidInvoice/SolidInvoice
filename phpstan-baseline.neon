@@ -91,22 +91,7 @@ parameters:
 			path: src/ClientBundle/Action/Ajax/Address/Delete.php
 
 		-
-			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Ajax\\\\Address\\\\Delete\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/ClientBundle/Action/Ajax/Address/Delete.php
-
-		-
 			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Ajax\\\\Address\\\\Edit\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/ClientBundle/Action/Ajax/Address/Edit.php
-
-		-
-			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Ajax\\\\Address\\\\Edit\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/ClientBundle/Action/Ajax/Address/Edit.php
-
-		-
-			message: "#^Negated boolean expression is always false\\.$#"
 			count: 1
 			path: src/ClientBundle/Action/Ajax/Address/Edit.php
 
@@ -136,11 +121,6 @@ parameters:
 			path: src/ClientBundle/Action/Ajax/Contact/Delete.php
 
 		-
-			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Ajax\\\\Contact\\\\Delete\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/ClientBundle/Action/Ajax/Contact/Delete.php
-
-		-
 			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Ajax\\\\Contact\\\\Edit\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/ClientBundle/Action/Ajax/Contact/Edit.php
@@ -151,39 +131,9 @@ parameters:
 			path: src/ClientBundle/Action/Ajax/Credit.php
 
 		-
-			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Ajax\\\\Credit\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/ClientBundle/Action/Ajax/Credit.php
-
-		-
 			message: "#^Call to an undefined method Symfony\\\\Component\\\\HttpFoundation\\\\Session\\\\SessionInterface\\:\\:getFlashBag\\(\\)\\.$#"
 			count: 1
 			path: src/ClientBundle/Action/Ajax/Delete.php
-
-		-
-			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Ajax\\\\Delete\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/ClientBundle/Action/Ajax/Delete.php
-
-		-
-			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Ajax\\\\Info\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/ClientBundle/Action/Ajax/Info.php
-
-		-
-			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Grid\\\\Archive\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/ClientBundle/Action/Grid/Archive.php
-
-		-
-			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Grid\\\\Delete\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/ClientBundle/Action/Grid/Delete.php
-
-		-
-			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Grid\\\\Restore\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/ClientBundle/Action/Grid/Restore.php
 
 		-
 			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Index\\:\\:__invoke\\(\\) has no return type specified\\.$#"
@@ -281,11 +231,6 @@ parameters:
 			path: src/ClientBundle/Form/DataTransformer/ContactTypeTransformer.php
 
 		-
-			message: "#^Negated boolean expression is always false\\.$#"
-			count: 1
-			path: src/ClientBundle/Form/Handler/AbstractClientFormHandler.php
-
-		-
 			message: "#^Parameter \\#2 \\$default of method SolidWorx\\\\FormHandler\\\\Options\\:\\:get\\(\\) expects null, SolidInvoice\\\\ClientBundle\\\\Entity\\\\Client given\\.$#"
 			count: 1
 			path: src/ClientBundle/Form/Handler/AbstractClientFormHandler.php
@@ -297,7 +242,7 @@ parameters:
 
 		-
 			message: "#^Negated boolean expression is always false\\.$#"
-			count: 2
+			count: 1
 			path: src/ClientBundle/Form/Handler/AbstractContactFormHandler.php
 
 		-
@@ -806,39 +751,14 @@ parameters:
 			path: src/InvoiceBundle/Action/Fields.php
 
 		-
-			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\Fields\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Action/Fields.php
-
-		-
 			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\Grid\\\\Archive\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/InvoiceBundle/Action/Grid/Archive.php
 
 		-
-			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\Grid\\\\Archive\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Action/Grid/Archive.php
-
-		-
-			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\Grid\\\\Delete\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Action/Grid/Delete.php
-
-		-
 			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\Grid\\\\RecurringArchive\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/InvoiceBundle/Action/Grid/RecurringArchive.php
-
-		-
-			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\Grid\\\\RecurringArchive\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Action/Grid/RecurringArchive.php
-
-		-
-			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\Grid\\\\RecurringDelete\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Action/Grid/RecurringDelete.php
 
 		-
 			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\Index\\:\\:__invoke\\(\\) has no return type specified\\.$#"
@@ -854,21 +774,6 @@ parameters:
 			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\RecurringTransition\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/InvoiceBundle/Action/RecurringTransition.php
-
-		-
-			message: "#^Negated boolean expression is always false\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Action/RecurringTransition.php
-
-		-
-			message: "#^Negated boolean expression is always false\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Action/Transition.php
-
-		-
-			message: "#^Negated boolean expression is always false\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Action/Transition/Send.php
 
 		-
 			message: "#^Call to an undefined method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:getClient\\(\\)\\.$#"
@@ -996,11 +901,6 @@ parameters:
 			path: src/InvoiceBundle/Entity/RecurringInvoice.php
 
 		-
-			message: "#^Negated boolean expression is always false\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Form/Handler/AbstractInvoiceHandler.php
-
-		-
 			message: "#^Parameter \\#1 \\$invoice of class SolidInvoice\\\\InvoiceBundle\\\\Email\\\\InvoiceEmail constructor expects SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\Invoice, SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice given\\.$#"
 			count: 1
 			path: src/InvoiceBundle/Listener/Mailer/InvoiceMailerListener.php
@@ -1079,11 +979,6 @@ parameters:
 			message: "#^Method SolidInvoice\\\\MailerBundle\\\\Configurator\\\\SesConfigurator\\:\\:configure\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/MailerBundle/Configurator/SesConfigurator.php
-
-		-
-			message: "#^Method SolidInvoice\\\\MailerBundle\\\\Configurator\\\\SmtpConfigurator\\:\\:configure\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/MailerBundle/Configurator/SmtpConfigurator.php
 
 		-
 			message: "#^Method SolidInvoice\\\\MailerBundle\\\\Factory\\\\MailerConfigFactory\\:\\:__construct\\(\\) has parameter \\$transports with no value type specified in iterable type iterable\\.$#"
@@ -1216,22 +1111,12 @@ parameters:
 			path: src/PaymentBundle/Action/Ajax/MethodList.php
 
 		-
-			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Action\\\\Ajax\\\\MethodList\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/PaymentBundle/Action/Ajax/MethodList.php
-
-		-
 			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Action\\\\Ajax\\\\Settings\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/PaymentBundle/Action/Ajax/Settings.php
 
 		-
 			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Action\\\\Done\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/PaymentBundle/Action/Done.php
-
-		-
-			message: "#^Negated boolean expression is always false\\.$#"
 			count: 1
 			path: src/PaymentBundle/Action/Done.php
 
@@ -1247,11 +1132,6 @@ parameters:
 
 		-
 			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Action\\\\Prepare\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/PaymentBundle/Action/Prepare.php
-
-		-
-			message: "#^Negated boolean expression is always false\\.$#"
 			count: 1
 			path: src/PaymentBundle/Action/Prepare.php
 
@@ -1349,11 +1229,6 @@ parameters:
 			message: "#^Property SolidInvoice\\\\PaymentBundle\\\\Factory\\\\PaymentFactories\\:\\:\\$forms type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/PaymentBundle/Factory/PaymentFactories.php
-
-		-
-			message: "#^Negated boolean expression is always false\\.$#"
-			count: 1
-			path: src/PaymentBundle/Form/Handler/PaymentMethodSettingsHandler.php
 
 		-
 			message: "#^Property SolidInvoice\\\\PaymentBundle\\\\Form\\\\Handler\\\\PaymentMethodSettingsHandler\\:\\:\\$originalSettings has no type specified\\.$#"
@@ -1521,24 +1396,9 @@ parameters:
 			path: src/QuoteBundle/Action/Fields.php
 
 		-
-			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\Fields\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/QuoteBundle/Action/Fields.php
-
-		-
 			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\Grid\\\\Archive\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/QuoteBundle/Action/Grid/Archive.php
-
-		-
-			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\Grid\\\\Archive\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/QuoteBundle/Action/Grid/Archive.php
-
-		-
-			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\Grid\\\\Delete\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/QuoteBundle/Action/Grid/Delete.php
 
 		-
 			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\Index\\:\\:__invoke\\(\\) has no return type specified\\.$#"
@@ -1574,11 +1434,6 @@ parameters:
 			message: "#^Property SolidInvoice\\\\QuoteBundle\\\\Entity\\\\Quote\\:\\:\\$uuid \\(Ramsey\\\\Uuid\\\\Uuid\\) does not accept Ramsey\\\\Uuid\\\\UuidInterface\\.$#"
 			count: 1
 			path: src/QuoteBundle/Entity/Quote.php
-
-		-
-			message: "#^Negated boolean expression is always false\\.$#"
-			count: 1
-			path: src/QuoteBundle/Form/Handler/AbstractQuoteHandler.php
 
 		-
 			message: "#^Class SolidInvoice\\\\QuoteBundle\\\\Repository\\\\ItemRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#"
@@ -1696,11 +1551,6 @@ parameters:
 			path: src/TaxBundle/Action/Edit.php
 
 		-
-			message: "#^Method SolidInvoice\\\\TaxBundle\\\\Action\\\\Grid\\\\Delete\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/TaxBundle/Action/Grid/Delete.php
-
-		-
 			message: "#^Method SolidInvoice\\\\TaxBundle\\\\Action\\\\Index\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/TaxBundle/Action/Index.php
@@ -1711,19 +1561,9 @@ parameters:
 			path: src/TaxBundle/Action/Validate.php
 
 		-
-			message: "#^Method SolidInvoice\\\\TaxBundle\\\\Action\\\\Validate\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/TaxBundle/Action/Validate.php
-
-		-
 			message: "#^Method SolidInvoice\\\\TaxBundle\\\\Entity\\\\Tax\\:\\:getTypes\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/TaxBundle/Entity/Tax.php
-
-		-
-			message: "#^Negated boolean expression is always false\\.$#"
-			count: 1
-			path: src/TaxBundle/Form/Handler/TaxFormHandler.php
 
 		-
 			message: "#^Parameter \\#2 \\$default of method SolidWorx\\\\FormHandler\\\\Options\\:\\:get\\(\\) expects null, SolidInvoice\\\\TaxBundle\\\\Entity\\\\Tax given\\.$#"
@@ -1739,11 +1579,6 @@ parameters:
 			message: "#^Method SolidInvoice\\\\TaxBundle\\\\Repository\\\\TaxRepository\\:\\:getTaxList\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/TaxBundle/Repository/TaxRepository.php
-
-		-
-			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\AddUser\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/UserBundle/Action/AddUser.php
 
 		-
 			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\Ajax\\\\ApiList\\:\\:__invoke\\(\\) has no return type specified\\.$#"
@@ -1766,11 +1601,6 @@ parameters:
 			path: src/UserBundle/Action/Ajax/ApiRevoke.php
 
 		-
-			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\Ajax\\\\ApiRevoke\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/UserBundle/Action/Ajax/ApiRevoke.php
-
-		-
 			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\Ajax\\\\ApiTokenHistory\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/UserBundle/Action/Ajax/ApiTokenHistory.php
@@ -1784,11 +1614,6 @@ parameters:
 			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\EditProfile\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/UserBundle/Action/EditProfile.php
-
-		-
-			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\EditUser\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/UserBundle/Action/EditUser.php
 
 		-
 			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\ForgotPassword\\\\Check\\:\\:__invoke\\(\\) has no return type specified\\.$#"
@@ -1844,16 +1669,6 @@ parameters:
 			message: "#^Property class@anonymous/UserBundle/Action/ForgotPassword/Send\\.php\\:37\\:\\:\\$message has no type specified\\.$#"
 			count: 1
 			path: src/UserBundle/Action/ForgotPassword/Send.php
-
-		-
-			message: "#^Call to an undefined method SolidInvoice\\\\UserBundle\\\\Repository\\\\UserRepositoryInterface\\:\\:deleteUsers\\(\\)\\.$#"
-			count: 1
-			path: src/UserBundle/Action/Grid/Delete.php
-
-		-
-			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\Grid\\\\Delete\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/UserBundle/Action/Grid/Delete.php
 
 		-
 			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\Profile\\:\\:__invoke\\(\\) has no return type specified\\.$#"
@@ -2066,16 +1881,6 @@ parameters:
 			path: src/UserBundle/Entity/User.php
 
 		-
-			message: "#^Negated boolean expression is always false\\.$#"
-			count: 1
-			path: src/UserBundle/Form/Handler/ApiFormHandler.php
-
-		-
-			message: "#^Call to an undefined method SolidInvoice\\\\UserBundle\\\\Repository\\\\UserRepositoryInterface\\:\\:save\\(\\)\\.$#"
-			count: 1
-			path: src/UserBundle/Form/Handler/PasswordChangeHandler.php
-
-		-
 			message: "#^Parameter \\#2 \\$default of method SolidWorx\\\\FormHandler\\\\Options\\:\\:get\\(\\) expects null, string given\\.$#"
 			count: 1
 			path: src/UserBundle/Form/Handler/PasswordChangeHandler.php
@@ -2084,21 +1889,6 @@ parameters:
 			message: "#^Parameter \\#2 \\$default of method SolidWorx\\\\FormHandler\\\\Options\\:\\:get\\(\\) expects null, true given\\.$#"
 			count: 1
 			path: src/UserBundle/Form/Handler/PasswordChangeHandler.php
-
-		-
-			message: "#^Call to an undefined method SolidInvoice\\\\UserBundle\\\\Repository\\\\UserRepositoryInterface\\:\\:save\\(\\)\\.$#"
-			count: 1
-			path: src/UserBundle/Form/Handler/ProfileEditFormHandler.php
-
-		-
-			message: "#^Negated boolean expression is always false\\.$#"
-			count: 1
-			path: src/UserBundle/Form/Handler/UserAddFormHandler.php
-
-		-
-			message: "#^Negated boolean expression is always false\\.$#"
-			count: 1
-			path: src/UserBundle/Form/Handler/UserEditFormHandler.php
 
 		-
 			message: "#^Class SolidInvoice\\\\UserBundle\\\\Repository\\\\ApiTokenHistoryRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#"

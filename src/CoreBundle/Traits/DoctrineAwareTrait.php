@@ -17,10 +17,7 @@ use Doctrine\Persistence\ManagerRegistry;
 
 trait DoctrineAwareTrait
 {
-    /**
-     * @var ManagerRegistry
-     */
-    protected $doctrine;
+    protected ?ManagerRegistry $doctrine = null;
 
     /**
      * @required

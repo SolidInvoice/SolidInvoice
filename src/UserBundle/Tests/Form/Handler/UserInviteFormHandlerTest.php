@@ -21,22 +21,22 @@ use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Form\Handler\UserInviteFormHandler;
+use SolidInvoice\UserBundle\UserInvitation\UserInvitation;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactory;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-final class UserAddFormHandlerTest extends FormHandlerTestCase
+final class UserInviteFormHandlerTest extends FormHandlerTestCase
 {
     /**
      * @var RouterInterface&M\MockInterface
      */
     private $router;
-
-    private UserPasswordHasher $userPasswordHasher;
 
     private string $password;
 
@@ -49,20 +49,18 @@ final class UserAddFormHandlerTest extends FormHandlerTestCase
         $this->user = new User();
         $this->password = $this->faker->password;
         $this->router = M::mock(RouterInterface::class);
-        $this->userPasswordHasher = new UserPasswordHasher(new PasswordHasherFactory([
-            User::class => [
-                'algorithm' => 'auto',
-            ],
-        ]));
     }
 
     public function getHandler(): UserInviteFormHandler
     {
         $handler = new UserInviteFormHandler(
-            $this->userPasswordHasher,
             $this->router,
             new CompanySelector(new RequestStack(), $this->registry),
-            $this->registry->getRepository(Company::class)
+            $this->registry->getRepository(Company::class),
+            $this->registry->getRepository(User::class),
+            M::mock(Security::class),
+            M::mock(ValidatorInterface::class),
+            new UserInvitation(M::mock(MailerInterface::class))
         );
 
         $handler->setDoctrine($this->registry);
