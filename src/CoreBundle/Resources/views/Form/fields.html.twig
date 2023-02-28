@@ -52,23 +52,6 @@
     {{ form_errors(form) }}
 {%- endblock notification_widget %}
 
-{#{% block form_errors -%}
-    {% if errors|length > 0 -%}
-        {% if form.parent %}<span class="help-block">{% else %}<div class="alert alert-danger">{% endif %}
-        <ul class="list-unstyled">
-                {%- for error in errors -%}
-                    <li>
-                        {{ icon('exclamation-sign') }}
-                        {{ error.messagePluralization is null
-                        ? error.messageTemplate|trans(error.messageParameters, 'validators')
-                        : error.messageTemplate|transchoice(error.messagePluralization, error.messageParameters, 'validators') }}
-                    </li>
-                {%- endfor -%}
-            </ul>
-        {% if form.parent %}</span>{% else %}</div>{% endif %}
-    {%- endif %}
-{%- endblock form_errors %}#}
-
 {% block form_label -%}
     {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' control-label')|trim}) %}
     {% if label is empty %}
