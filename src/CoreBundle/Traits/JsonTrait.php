@@ -20,6 +20,7 @@ trait JsonTrait
 {
     /**
      * @param mixed $data
+     * @param array<string, string> $headers
      */
     public function json($data = null, int $status = Response::HTTP_OK, array $headers = [], bool $json = false): JsonResponse
     {

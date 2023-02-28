@@ -40,7 +40,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use function count;
 
 /**
- * @see \SolidInvoice\UserBundle\Tests\Form\Handler\UserAddFormHandlerTest
+ * @see \SolidInvoice\UserBundle\Tests\Form\Handler\UserInviteFormHandlerTest
  */
 class UserInviteFormHandler implements FormHandlerResponseInterface, FormHandlerInterface, FormHandlerSuccessInterface
 {
