@@ -66,7 +66,7 @@ class Quote
     private $id;
 
     /**
-     * @var Uuid
+     * @var UuidInterface
      *
      * @ORM\Column(name="uuid", type="uuid", length=36)
      * @Serialize\Groups({"quote_api", "client_api"})
@@ -199,7 +199,7 @@ class Quote
         return $this->id;
     }
 
-    public function getUuid(): Uuid
+    public function getUuid(): UuidInterface
     {
         return $this->uuid;
     }

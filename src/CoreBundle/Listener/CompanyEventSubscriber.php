@@ -17,6 +17,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -69,10 +70,18 @@ final class CompanyEventSubscriber implements EventSubscriberInterface
             '_create_company' !== $request->attributes->get('_route') &&
             null !== $this->security->getUser()
         ) {
-            $event->setResponse(new RedirectResponse($this->router->generate('_select_company')));
-            $event->stopPropagation();
+            $user = $this->security->getUser();
+            assert($user instanceof User);
 
-            return;
+            if (count($user->getCompanies()) === 1) {
+                $this->companySelector->switchCompany($user->getCompanies()->first()->getId());
+                $company = $this->companySelector->getCompany();
+            } else {
+                $event->setResponse(new RedirectResponse($this->router->generate('_select_company')));
+                $event->stopPropagation();
+
+                return;
+            }
         }
 
         if (null !== $company) {

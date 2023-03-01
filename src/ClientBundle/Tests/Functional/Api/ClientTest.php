@@ -23,7 +23,6 @@ use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
  */
 class ClientTest extends ApiTestCase
 {
-    use EnsureApplicationInstalled;
 
     protected function setUp(): void
     {
