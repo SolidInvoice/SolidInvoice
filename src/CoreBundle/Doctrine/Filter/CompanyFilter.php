@@ -67,6 +67,6 @@ class CompanyFilter extends SQLFilter
             return sprintf('%s.company_id = "%s"', $targetTableAlias, $companyId);
         }
 
-        return 'company_id = 0';
+        return '';
     }
 }

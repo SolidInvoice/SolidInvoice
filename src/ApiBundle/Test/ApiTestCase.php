@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Test;
 
+use SolidInvoice\CoreBundle\Entity\Company;
+use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use const PASSWORD_DEFAULT;
 use SolidInvoice\ApiBundle\ApiTokenManager;
 use SolidInvoice\UserBundle\Entity\User;
@@ -26,6 +28,8 @@ use function password_hash;
  */
 abstract class ApiTestCase extends PantherTestCase
 {
+    use EnsureApplicationInstalled;
+
     protected static AbstractBrowser $client;
 
     protected function setUp(): void
@@ -37,15 +41,24 @@ abstract class ApiTestCase extends PantherTestCase
         $registry = self::$kernel->getContainer()->get('doctrine');
 
         $userRepository = $registry->getRepository(User::class);
+        $companyRepository = $registry->getRepository(Company::class);
 
         /** @var User[] $users */
         $users = $userRepository->findAll();
+
+        /** @var Company[] $companies */
+        $companies = $companyRepository->findAll();
 
         if ([] === $users) {
             $user = new User();
             $user->setUsername('test')
                 ->setEmail('test@example.com')
                 ->setPassword(password_hash('Password1', PASSWORD_DEFAULT));
+
+            foreach ($companies as $company) {
+                $user->addCompany($company);
+            }
+
             $registry->getManager()->persist($user);
             $registry->getManager()->flush();
             $users = [$user];

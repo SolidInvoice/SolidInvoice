@@ -30,6 +30,10 @@ services:
         autowire: true
         tags: ['doctrine.repository_service']
 
+    SolidInvoice\InvoiceBundle\Repository\ItemRepository:
+        autowire: true
+        tags: ['doctrine.repository_service']
+
     # Fixtures
     SolidInvoice\InvoiceBundle\DataFixtures\ORM\:
         resource: '%kernel.project_dir%/src/InvoiceBundle/DataFixtures/ORM/*'
