@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Action;
 
-use Payum\Core\Payum;
 use const FILTER_VALIDATE_BOOLEAN;
 use DateTime;
 use Exception;
 use Money\Money;
+use Payum\Core\Payum;
 use Payum\Core\Registry\RegistryInterface;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
