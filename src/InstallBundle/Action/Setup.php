@@ -87,9 +87,10 @@ final class Setup
     {
         $config = $this->configWriter->getConfigValues();
 
+        $currency = $this->systemConfig->getCurrency();
         $data = [
             'locale' => $config['locale'] ?? null,
-            'currency' => $this->systemConfig->getCurrency()->getCode(),
+            'currency' => $currency ? $currency->getCode() : null,
         ];
 
         return $this->formFactory->create(SystemInformationForm::class, $data, ['userCount' => $this->getUserCount()]);
