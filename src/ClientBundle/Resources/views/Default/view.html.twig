@@ -114,13 +114,13 @@
                             <span rel="tooltip" title="{{ "client.stats.tooltip.total_quotes"|trans }}" class="badge badge-pill bg-aqua">
                                 {{ client.quotes|length }}
                             </span>
-                            {{ "client.stats.number_quotes"|transchoice(client.quotes|length) }}
+                            {{ "client.stats.number_quotes"|trans({'%count%': client.quotes|length}) }}
                         </li>
                         <li class="list-group-item">
                             <span rel="tooltip" title="{{ "client.stats.tooltip.total_invoices"|trans }}" class="badge badge-pill bg-aqua">
                                 {{ client.invoices|length }}
                             </span>
-                            {{ "client.stats.number_invoices"|transchoice(client.invoices|length) }}
+                            {{ "client.stats.number_invoices"|trans({'%count%': client.invoices|length}) }}
                         </li>
                         <li class="list-group-item">
                             <span class="badge badge-pill bg-aqua" rel="tooltip" title="{{ "client.stats.tooltip.total_outstanding"|trans }}">

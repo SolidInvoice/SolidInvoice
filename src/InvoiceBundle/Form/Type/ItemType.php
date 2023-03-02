@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Form\Type;
 
 use Doctrine\Persistence\ManagerRegistry;
+use Money\Currency;
 use SolidInvoice\InvoiceBundle\Entity\Item;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidInvoice\TaxBundle\Form\Type\TaxEntityType;
@@ -29,10 +30,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ItemType extends AbstractType
 {
-    /**
-     * @var ManagerRegistry
-     */
-    private $registry;
+    private ManagerRegistry $registry;
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -89,7 +87,7 @@ class ItemType extends AbstractType
         }
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'invoice_item';
     }
@@ -98,6 +96,6 @@ class ItemType extends AbstractType
     {
         $resolver->setDefault('data_class', Item::class)
             ->setRequired('currency')
-            ->setAllowedTypes('currency', ['string']);
+            ->setAllowedTypes('currency', [Currency::class]);
     }
 }

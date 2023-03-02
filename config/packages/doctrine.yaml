@@ -10,7 +10,6 @@ doctrine:
         charset: UTF8
         types:
             uuid: Ramsey\Uuid\Doctrine\UuidType
-            money: SolidInvoice\MoneyBundle\Doctrine\Types\MoneyType
     orm:
         auto_generate_proxy_classes: '%kernel.debug%'
         #naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware

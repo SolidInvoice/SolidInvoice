@@ -18,6 +18,8 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Money\Currency;
+use Money\Money;
 use Payum\Core\Model\Payment as BasePayment;
 use Payum\Core\Model\PaymentInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
@@ -234,5 +236,10 @@ class Payment extends BasePayment implements PaymentInterface
         $this->client = $client;
 
         return $this;
+    }
+
+    public function getAmount(): Money
+    {
+        return new Money($this->getTotalAmount(), new Currency($this->getCurrencyCode()));
     }
 }

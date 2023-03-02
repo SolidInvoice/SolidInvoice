@@ -16,6 +16,7 @@ namespace SolidInvoice\MoneyBundle\Formatter;
 use Money\Currency;
 use Money\Money;
 use NumberFormatter;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\Intl\Currencies;
 use Symfony\Component\Intl\Exception\MethodArgumentNotImplementedException;
 use Symfony\Component\Intl\Exception\MethodArgumentValueNotImplementedException;
@@ -25,27 +26,16 @@ use Symfony\Component\Intl\Exception\MethodArgumentValueNotImplementedException;
  */
 final class MoneyFormatter implements MoneyFormatterInterface
 {
-    /**
-     * @var string
-     */
-    private $locale;
+    private string $locale;
+
+    private NumberFormatter $numberFormatter;
+
+    private SystemConfig $systemConfig;
 
     /**
-     * @var Currency
-     */
-    private $currency;
-
-    /**
-     * @var NumberFormatter
-     */
-    private $numberFormatter;
-
-    /**
-     * @param Currency|string $currency
-     *
      * @throws MethodArgumentNotImplementedException|MethodArgumentValueNotImplementedException
      */
-    public function __construct(string $locale, Currency $currency)
+    public function __construct(string $locale, SystemConfig $systemConfig)
     {
         try {
             $this->numberFormatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
@@ -55,7 +45,7 @@ final class MoneyFormatter implements MoneyFormatterInterface
 
         $this->numberFormatter->setAttribute(NumberFormatter::FRACTION_DIGITS, 2);
         $this->locale = $locale;
-        $this->currency = $currency;
+        $this->systemConfig = $systemConfig;
     }
 
     public function format(Money $money): string
@@ -71,7 +61,11 @@ final class MoneyFormatter implements MoneyFormatterInterface
             $currency = $currency->getCode();
         }
 
-        return Currencies::getSymbol($currency ?: $this->currency->getCode(), $this->locale);
+        if (null === $currency) {
+            $currency = $this->systemConfig->getCurrency()->getCode();
+        }
+
+        return Currencies::getSymbol($currency, $this->locale);
     }
 
     public function getThousandSeparator(): string

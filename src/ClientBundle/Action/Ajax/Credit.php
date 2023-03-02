@@ -13,14 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Action\Ajax;
 
-use Money\Currency;
 use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\CreditRepository;
 use SolidInvoice\CoreBundle\Response\AjaxResponse;
 use SolidInvoice\CoreBundle\Traits\JsonTrait;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
-use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -28,26 +27,14 @@ final class Credit implements AjaxResponse
 {
     use JsonTrait;
 
-    /**
-     * @var Currency
-     */
-    private $currency;
+    private CreditRepository $repository;
 
-    /**
-     * @var CreditRepository
-     */
-    private $repository;
+    private SystemConfig $systemConfig;
 
-    /**
-     * @var MoneyFormatter
-     */
-    private $formatter;
-
-    public function __construct(CreditRepository $repository, MoneyFormatterInterface $formatter, Currency $currency)
+    public function __construct(CreditRepository $repository, SystemConfig $systemConfig)
     {
-        $this->currency = $currency;
         $this->repository = $repository;
-        $this->formatter = $formatter;
+        $this->systemConfig = $systemConfig;
     }
 
     public function get(Client $client): JsonResponse
@@ -57,18 +44,21 @@ final class Credit implements AjaxResponse
 
     public function put(Request $request, Client $client): JsonResponse
     {
-        $value = new Money((int) ((json_decode($request->getContent() ?? '[]', true, 512, JSON_THROW_ON_ERROR)['credit'] ?? 0) * 100), $client->getCurrency() ?? $this->currency);
+        $value = new Money(
+            ((json_decode($request->getContent() ?? '[]', true, 512, JSON_THROW_ON_ERROR)['credit'] ?? 0) * 100),
+            $client->getCurrency() ?? $this->systemConfig->getCurrency()
+        );
 
         $this->repository->addCredit($client, $value);
 
         return $this->toJson($client);
     }
 
-    private function toJson(Client $client)
+    private function toJson(Client $client): JsonResponse
     {
         return $this->json(
             [
-                'credit' => $this->formatter->toFloat($client->getCredit()->getValue()),
+                'credit' => MoneyFormatter::toFloat($client->getCredit()->getValue()),
                 'id' => $client->getId(),
             ]
         );

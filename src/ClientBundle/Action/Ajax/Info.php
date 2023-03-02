@@ -13,41 +13,38 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Action\Ajax;
 
-use Money\Currency;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Response\AjaxResponse;
 use SolidInvoice\CoreBundle\Traits\JsonTrait;
-use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
+use SolidInvoice\SettingsBundle\SystemConfig;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 final class Info implements AjaxResponse
 {
     use JsonTrait;
 
-    /**
-     * @var Environment
-     */
-    private $twig;
+    private Environment $twig;
 
-    /**
-     * @var Currency
-     */
-    private $currency;
+    private MoneyFormatterInterface $formatter;
 
-    /**
-     * @var MoneyFormatter
-     */
-    private $formatter;
+    private SystemConfig $systemConfig;
 
-    public function __construct(Environment $twig, MoneyFormatterInterface $formatter, Currency $currency)
+    public function __construct(Environment $twig, MoneyFormatterInterface $formatter, SystemConfig $systemConfig)
     {
         $this->twig = $twig;
-        $this->currency = $currency;
         $this->formatter = $formatter;
+        $this->systemConfig = $systemConfig;
     }
 
-    public function __invoke(Client $client, string $type = 'quote')
+    /**
+     * @throws SyntaxError|RuntimeError|LoaderError
+     */
+    public function __invoke(Client $client, string $type = 'quote'): JsonResponse
     {
         $content = $this->twig->render(
             '@SolidInvoiceClient/Ajax/info.html.twig',
@@ -57,7 +54,7 @@ final class Info implements AjaxResponse
             ]
         );
 
-        $currency = $client->getCurrency() ?? $this->currency;
+        $currency = $client->getCurrency() ?? $this->systemConfig->getCurrency();
 
         return $this->json([
             'content' => $content,

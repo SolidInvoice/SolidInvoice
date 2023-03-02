@@ -23,7 +23,6 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Form\Handler\InvoiceEditHandler;
 use SolidInvoice\InvoiceBundle\Listener\WorkFlowSubscriber;
 use SolidInvoice\InvoiceBundle\Model\Graph;
-use SolidInvoice\MoneyBundle\Entity\Money;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -53,8 +52,6 @@ class InvoiceEditHandlerTest extends FormHandlerTestCase
 
         $this->em->persist($this->invoice);
         $this->em->flush();
-
-        Money::setBaseCurrency('USD');
     }
 
     public function getHandler()

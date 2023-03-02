@@ -28,11 +28,11 @@ class SettingsExtensionTest extends TestCase
         $config = M::mock(SystemConfig::class);
         $config->shouldReceive('get')
             ->with('dummy/setting')
-            ->andReturn(true);
+            ->andReturn('1');
 
         $extension = new SettingsExtension($config);
 
-        self::assertTrue($extension->getSetting('dummy/setting'));
+        self::assertSame('1', $extension->getSetting('dummy/setting'));
     }
 
     public function testGetSettingsDefaultValue(): void

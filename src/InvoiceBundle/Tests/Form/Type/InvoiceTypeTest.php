@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Form\Type;
 
+use Mockery as M;
 use Money\Currency;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
@@ -20,7 +21,8 @@ use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Form\Type\InvoiceType;
 use SolidInvoice\InvoiceBundle\Form\Type\ItemType;
-use SolidInvoice\MoneyBundle\Entity\Money;
+use SolidInvoice\SettingsBundle\SystemConfig;
+use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\PreloadedExtension;
 
 class InvoiceTypeTest extends FormTestCase
@@ -44,8 +46,6 @@ class InvoiceTypeTest extends FormTestCase
             'tax' => 0,
         ];
 
-        Money::setBaseCurrency('USD');
-
         $object = new Invoice();
         $data = clone $object;
         $data->setUuid($object->getUuid());
@@ -63,16 +63,24 @@ class InvoiceTypeTest extends FormTestCase
         $this->assertFormData($this->factory->create(InvoiceType::class, $data), $formData, $object);
     }
 
-    protected function getExtensions()
+    /**
+     * @return array<FormExtensionInterface>
+     */
+    protected function getExtensions(): array
     {
-        $currency = new Currency('USD');
+        $systemConfig = M::mock(SystemConfig::class);
 
-        $invoiceType = new InvoiceType($currency);
+        $systemConfig
+            ->shouldReceive('getCurrency')
+            ->zeroOrMoreTimes()
+            ->andReturn(new Currency('USD'));
+
+        $invoiceType = new InvoiceType($systemConfig);
         $itemType = new ItemType($this->registry);
 
         return [
             // register the type instances with the PreloadedExtension
-            new PreloadedExtension([$invoiceType, $itemType, new DiscountType($currency)], []),
+            new PreloadedExtension([$invoiceType, $itemType, new DiscountType($systemConfig)], []),
         ];
     }
 }

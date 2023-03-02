@@ -27,10 +27,7 @@ use Symfony\Component\Routing\RouterInterface;
 
 class TaxFormHandlerTest extends FormHandlerTestCase
 {
-    /**
-     * @return string|FormHandlerInterface
-     */
-    public function getHandler()
+    public function getHandler(): FormHandlerInterface
     {
         $router = M::mock(RouterInterface::class);
         $router->shouldReceive('generate')
@@ -44,6 +41,9 @@ class TaxFormHandlerTest extends FormHandlerTestCase
         return $handler;
     }
 
+    /**
+     * @return array{tax: array{name: string, rate: int, type: string}}
+     */
     public function getFormData(): array
     {
         return [

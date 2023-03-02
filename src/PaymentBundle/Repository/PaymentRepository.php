@@ -14,19 +14,26 @@ declare(strict_types=1);
 namespace SolidInvoice\PaymentBundle\Repository;
 
 use DateTime;
+use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Money\Currency;
+use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Model\Status;
-use Traversable;
+use function is_iterable;
 
+/**
+ * @extends ServiceEntityRepository<Payment>
+ */
 class PaymentRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -37,47 +44,34 @@ class PaymentRepository extends ServiceEntityRepository
     /**
      * Gets the total income that was received.
      *
-     * @param Client $client
-     * @param bool   $groupByCurrency
-     *
-     * @return array|int
-     *
-     * @throws NonUniqueResultException
+     * @return Money[]
      */
-    public function getTotalIncome(Client $client = null, $groupByCurrency = false)
+    public function getTotalIncome(): array
     {
         $qb = $this->createQueryBuilder('p');
 
-        $qb->select('SUM(p.totalAmount)')
+        $qb->select('SUM(p.totalAmount) as total', 'p.currencyCode')
             ->where('p.status = :status')
+            ->groupBy('p.currencyCode')
             ->setParameter('status', Status::STATUS_CAPTURED);
-
-        if ($groupByCurrency) {
-            $qb->select('SUM(p.totalAmount) as totalAmount', 'p.currencyCode')
-                ->groupBy('p.currencyCode');
-        }
-
-        if (null !== $client) {
-            $qb->andWhere('p.client = :client')
-                ->setParameter('client', $client);
-        }
 
         $query = $qb->getQuery();
 
-        if ($groupByCurrency) {
-            return $query->getArrayResult();
+        $results = [];
+
+        foreach ($query->getArrayResult() as $result) {
+            $results[] = new Money($result['total'], new Currency($result['currencyCode']));
         }
 
-        return (int) $query->getSingleScalarResult();
+        return $results;
     }
 
     /**
      * Returns an array of all the payments for an invoice.
      *
-     * @param string $orderField
-     * @param string $sort
+     * @return array<string, string|int|DateTimeInterface>
      */
-    public function getPaymentsForInvoice(Invoice $invoice, string $orderField = null, $sort = 'DESC'): array
+    public function getPaymentsForInvoice(Invoice $invoice, string $orderField = null, string $sort = 'DESC'): array
     {
         $queryBuilder = $this->getPaymentQueryBuilder($orderField, $sort);
 
@@ -85,16 +79,10 @@ class PaymentRepository extends ServiceEntityRepository
             ->where('p.invoice = :invoice')
             ->setParameter('invoice', $invoice);
 
-        $query = $queryBuilder->getQuery();
-
-        return $query->getArrayResult();
+        return $queryBuilder->getQuery()->getArrayResult();
     }
 
-    /**
-     * @param string $orderField
-     * @param string $sort
-     */
-    protected function getPaymentQueryBuilder(string $orderField = null, $sort = 'DESC'): QueryBuilder
+    protected function getPaymentQueryBuilder(string $orderField = null, string $sort = 'DESC'): QueryBuilder
     {
         if (null === $orderField) {
             $orderField = 'p.created';
@@ -142,16 +130,19 @@ class PaymentRepository extends ServiceEntityRepository
 
         $query = $queryBuilder->getQuery();
 
-        return (int) $query->getSingleScalarResult();
+        try {
+            return (int) $query->getSingleScalarResult();
+        } catch (NoResultException | NonUniqueResultException $e) {
+            return 0;
+        }
     }
 
     /**
      * Returns an array of all the payments for a client.
      *
-     * @param string $orderField
-     * @param string $sort
+     * @return array<string, string|int|DateTimeInterface>
      */
-    public function getPaymentsForClient(Client $client, string $orderField = null, $sort = 'DESC'): array
+    public function getPaymentsForClient(Client $client, string $orderField = null, string $sort = 'DESC'): array
     {
         $queryBuilder = $this->getPaymentQueryBuilder($orderField, $sort);
 
@@ -159,13 +150,13 @@ class PaymentRepository extends ServiceEntityRepository
             ->where('p.client = :client')
             ->setParameter('client', $client);
 
-        $query = $queryBuilder->getQuery();
-
-        return $query->getArrayResult();
+        return $queryBuilder->getQuery()->getArrayResult();
     }
 
     /**
      * Gets the most recent created payments.
+     *
+     * @return array<string, array<string|int|DateTimeInterface|Money>>
      */
     public function getRecentPayments(int $limit = 5): array
     {
@@ -180,13 +171,15 @@ class PaymentRepository extends ServiceEntityRepository
             ->join('p.client', 'c')
             ->setMaxResults($limit);
 
-        $query = $qb->getQuery();
+        return array_map(static function (array $payment): array {
+            $payment['amount'] = new Money($payment['totalAmount'], new Currency($payment['currencyCode']));
 
-        return $query->getArrayResult();
+            return $payment;
+        }, $qb->getQuery()->getArrayResult());
     }
 
     /**
-     * @param DateTime $timestamp
+     * @return array<array<int>>
      */
     public function getPaymentsList(DateTime $timestamp = null): array
     {
@@ -212,6 +205,9 @@ class PaymentRepository extends ServiceEntityRepository
         return $results;
     }
 
+    /**
+     * @return array<string, int>
+     */
     private function formatDate(Query $query, string $dateFormat = 'Y-m-d'): array
     {
         $payments = [];
@@ -231,6 +227,9 @@ class PaymentRepository extends ServiceEntityRepository
         return $payments;
     }
 
+    /**
+     * @return array<string, int>
+     */
     public function getPaymentsByMonth(): array
     {
         $queryBuilder = $this->createQueryBuilder('p');
@@ -253,13 +252,13 @@ class PaymentRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Payment[]|Collection $payments
+     * @param Payment[]|Collection<Payment> $payments
      *
      * @return mixed
      */
     public function updatePaymentStatus($payments, string $status)
     {
-        if (! is_array($payments) && ! $payments instanceof Traversable) {
+        if (! is_iterable($payments)) {
             $payments = [$payments];
         }
 
@@ -278,6 +277,9 @@ class PaymentRepository extends ServiceEntityRepository
         return $qb->getQuery()->execute();
     }
 
+    /**
+     * @param array{client?: Client, invoice?: Invoice} $parameters
+     */
     public function getGridQuery(array $parameters = []): QueryBuilder
     {
         $qb = $this->createQueryBuilder('p');
@@ -318,5 +320,27 @@ class PaymentRepository extends ServiceEntityRepository
         $qb->getQuery()->execute();
 
         $filters->enable('archivable');
+    }
+
+    public function getTotalIncomeForClient(Client $client): ?Money
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        $qb->select('SUM(p.totalAmount) as total', 'p.currencyCode')
+            ->where('p.status = :status')
+            ->andWhere('p.client = :client')
+            ->groupBy('p.currencyCode')
+            ->setParameter('client', $client)
+            ->setParameter('status', Status::STATUS_CAPTURED);
+
+        $query = $qb->getQuery();
+
+        $result = $query->getResult();
+
+        if ([] === $result) {
+            return null;
+        }
+
+        return new Money($result[0]['total'], new Currency($result[0]['currencyCode']));
     }
 }

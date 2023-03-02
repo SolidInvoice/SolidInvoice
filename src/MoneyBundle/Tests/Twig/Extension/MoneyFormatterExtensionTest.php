@@ -21,6 +21,7 @@ use PHPUnit\Framework\TestCase;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
 use SolidInvoice\MoneyBundle\Twig\Extension\MoneyFormatterExtension;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
@@ -30,9 +31,15 @@ class MoneyFormatterExtensionTest extends TestCase
 
     public function testGetFunctions(): void
     {
-        $currency = new Currency('USD');
-        $moneyFormatter = new MoneyFormatter('en_US', $currency);
-        $extension = new MoneyFormatterExtension($moneyFormatter, $currency);
+        $systemConfig = M::mock(SystemConfig::class);
+
+        $systemConfig
+            ->shouldReceive('getCurrency')
+            ->zeroOrMoreTimes()
+            ->andReturn(new Currency('USD'));
+
+        $moneyFormatter = new MoneyFormatter('en_US', $systemConfig);
+        $extension = new MoneyFormatterExtension($moneyFormatter);
 
         $functions = $extension->getFunctions();
 
@@ -45,8 +52,7 @@ class MoneyFormatterExtensionTest extends TestCase
 
     public function testGetFilters(): void
     {
-        $currency = new Currency('USD');
-        $money = new Money(1200, $currency);
+        $money = new Money(1200, new Currency('USD'));
 
         $moneyFormatter = M::mock(MoneyFormatterInterface::class);
         $moneyFormatter
@@ -55,7 +61,7 @@ class MoneyFormatterExtensionTest extends TestCase
             ->with($money)
             ->andReturn('$12,00');
 
-        $extension = new MoneyFormatterExtension($moneyFormatter, $currency);
+        $extension = new MoneyFormatterExtension($moneyFormatter);
 
         $filters = $extension->getFilters();
 

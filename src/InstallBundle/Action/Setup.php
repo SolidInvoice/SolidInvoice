@@ -18,7 +18,6 @@ use DateTimeInterface;
 use Defuse\Crypto\Exception\EnvironmentIsBrokenException;
 use Defuse\Crypto\Key;
 use Doctrine\Persistence\ManagerRegistry;
-use InvalidArgumentException;
 use Mpociot\VatCalculator\VatCalculator;
 use SolidInvoice\CoreBundle\ConfigWriter;
 use SolidInvoice\CoreBundle\Entity\Version;
@@ -26,17 +25,16 @@ use SolidInvoice\CoreBundle\Repository\VersionRepository;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\InstallBundle\Form\Step\SystemInformationForm;
-use SolidInvoice\MoneyBundle\Factory\CurrencyFactory;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidInvoice\UserBundle\Entity\User;
-use Symfony\Component\DependencyInjection\Exception as DependencyInjectionException;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Throwable;
 
 final class Setup
 {
@@ -74,7 +72,7 @@ final class Setup
 
     /**
      * @return Template|RedirectResponse
-     * @throws EnvironmentIsBrokenException
+     * @throws EnvironmentIsBrokenException|Throwable
      */
     public function __invoke(Request $request)
     {
@@ -91,7 +89,7 @@ final class Setup
 
         $data = [
             'locale' => $config['locale'] ?? null,
-            'currency' => $this->systemConfig->get(CurrencyFactory::CURRENCY_PATH),
+            'currency' => $this->systemConfig->getCurrency()->getCode(),
         ];
 
         return $this->formFactory->create(SystemInformationForm::class, $data, ['userCount' => $this->getUserCount()]);
@@ -110,7 +108,7 @@ final class Setup
 
     /**
      * @return Template|RedirectResponse
-     * @throws EnvironmentIsBrokenException
+     * @throws EnvironmentIsBrokenException|Throwable
      */
     public function handleForm(Request $request)
     {
@@ -176,7 +174,8 @@ final class Setup
     /**
      * @param array{locale: string, currency?: string} $data
      *
-     * @throws EnvironmentIsBrokenException|InvalidArgumentException|DependencyInjectionException\ServiceCircularReferenceException|DependencyInjectionException\ServiceNotFoundException
+     * @throws EnvironmentIsBrokenException
+     * @throws Throwable
      */
     private function saveConfig(array $data): void
     {
@@ -205,7 +204,7 @@ final class Setup
             $em->flush();
         }
 
-        $this->systemConfig->set(CurrencyFactory::CURRENCY_PATH, $data['currency'] ?? CurrencyFactory::DEFAULT_CURRENCY);
+        $this->systemConfig->set(SystemConfig::CURRENCY_CONFIG_PATH, $data['currency'] ?? '');
     }
 
     private function render(FormInterface $form): Template

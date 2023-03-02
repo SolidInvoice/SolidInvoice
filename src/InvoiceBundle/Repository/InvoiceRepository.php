@@ -20,6 +20,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Money\Currency;
 use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -263,5 +264,27 @@ class InvoiceRepository extends ServiceEntityRepository
         );
 
         return $totalPaid->equals($invoiceTotal) || $totalPaid->greaterThan($invoiceTotal);
+    }
+
+    public function getTotalOutstandingForClient(Client $client): ?Money
+    {
+        $qb = $this->createQueryBuilder('i');
+
+        $qb->select('SUM(i.balance.value) as total, i.balance.currency as currency')
+            ->where('i.status = :status')
+            ->andWhere('i.client = :client')
+            ->groupBy('i.balance.currency')
+            ->setParameter('client', $client)
+            ->setParameter('status', Graph::STATUS_PENDING);
+
+        $query = $qb->getQuery();
+
+        $result = $query->getArrayResult();
+
+        if ([] === $result) {
+            return null;
+        }
+
+        return new Money($result[0]['total'], new Currency($result[0]['currency']));
     }
 }

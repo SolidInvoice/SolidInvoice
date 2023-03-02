@@ -13,47 +13,45 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Action;
 
-use Money\Currency;
+use Exception;
+use Generator;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Form\Handler\InvoiceEditHandler;
 use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidWorx\FormHandler\FormHandler;
+use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 
 final class Edit
 {
-    /**
-     * @var Currency
-     */
-    private $currency;
+    private FormHandler $formHandler;
 
-    /**
-     * @var FormHandler
-     */
-    private $formHandler;
+    private RouterInterface $router;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private SystemConfig $systemConfig;
 
-    public function __construct(RouterInterface $router, FormHandler $formHandler, Currency $currency)
+    public function __construct(RouterInterface $router, FormHandler $formHandler, SystemConfig $systemConfig)
     {
         $this->router = $router;
-        $this->currency = $currency;
         $this->formHandler = $formHandler;
+        $this->systemConfig = $systemConfig;
     }
 
+    /**
+     * @return FormRequest|RedirectResponse
+     * @throws Exception
+     */
     public function __invoke(Request $request, Invoice $invoice)
     {
         if (Graph::STATUS_PAID === $invoice->getStatus()) {
             $route = $this->router->generate('_invoices_index');
 
             return new class($route) extends RedirectResponse implements FlashResponse {
-                public function getFlash(): \Generator
+                public function getFlash(): Generator
                 {
                     yield FlashResponse::FLASH_WARNING => 'invoice.edit.paid';
                 }
@@ -63,7 +61,7 @@ final class Edit
         $options = [
             'invoice' => $invoice,
             'form_options' => [
-                'currency' => $invoice->getClient()->getCurrency() ?: $this->currency,
+                'currency' => $invoice->getClient()->getCurrency() ?: $this->systemConfig->getCurrency(),
             ],
         ];
 

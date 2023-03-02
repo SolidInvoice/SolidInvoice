@@ -14,10 +14,12 @@ declare(strict_types=1);
 namespace SolidInvoice\MoneyBundle\Tests\Formatter;
 
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Mockery as M;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
+use SolidInvoice\SettingsBundle\SystemConfig;
 
 class MoneyFormatterTest extends TestCase
 {
@@ -28,10 +30,11 @@ class MoneyFormatterTest extends TestCase
      */
     public function testFormatCurrencyWithDefaultValues(string $locale, string $currency, string $format): void
     {
-        $currency = new Currency($currency);
-        $formatter = new MoneyFormatter($locale, $currency);
+        $systemConfig = $this->getSystemConfigMock();
 
-        $money = new Money(1200, $currency);
+        $formatter = new MoneyFormatter($locale, $systemConfig);
+
+        $money = new Money(1200, new Currency($currency));
 
         self::assertSame($format, $formatter->format($money));
     }
@@ -41,7 +44,9 @@ class MoneyFormatterTest extends TestCase
      */
     public function testGetCurrencySymbol(string $locale, string $currency, string $symbol): void
     {
-        $formatter = new MoneyFormatter($locale, new Currency($currency));
+        $systemConfig = $this->getSystemConfigMock();
+
+        $formatter = new MoneyFormatter($locale, $systemConfig);
 
         self::assertSame($symbol, $formatter->getCurrencySymbol());
     }
@@ -51,7 +56,9 @@ class MoneyFormatterTest extends TestCase
      */
     public function testGetThousandSeparator(string $locale, string $separator): void
     {
-        $formatter = new MoneyFormatter($locale, new Currency('USD'));
+        $systemConfig = $this->getSystemConfigMock();
+
+        $formatter = new MoneyFormatter($locale, $systemConfig);
 
         self::assertSame($separator, $formatter->getThousandSeparator());
     }
@@ -61,7 +68,9 @@ class MoneyFormatterTest extends TestCase
      */
     public function testGetDecimalSeparator(string $locale, string $separator): void
     {
-        $formatter = new MoneyFormatter($locale, new Currency('USD'));
+        $systemConfig = $this->getSystemConfigMock();
+
+        $formatter = new MoneyFormatter($locale, $systemConfig);
 
         self::assertSame($separator, $formatter->getDecimalSeparator());
     }
@@ -71,11 +80,16 @@ class MoneyFormatterTest extends TestCase
      */
     public function testGetPattern(string $locale, string $pattern): void
     {
-        $formatter = new MoneyFormatter($locale, new Currency('USD'));
+        $systemConfig = $this->getSystemConfigMock();
+
+        $formatter = new MoneyFormatter($locale, $systemConfig);
 
         self::assertStringContainsString($pattern, $formatter->getPattern());
     }
 
+    /**
+     * @return array<array<string>>
+     */
     public function localeProvider(): array
     {
         return [
@@ -94,6 +108,9 @@ class MoneyFormatterTest extends TestCase
         ];
     }
 
+    /**
+     * @return array<array<string>>
+     */
     public function symbolProvider(): array
     {
         return [
@@ -112,7 +129,10 @@ class MoneyFormatterTest extends TestCase
         ];
     }
 
-    public function thousandSeparatorProvider()
+    /**
+     * @return array<array<string>>
+     */
+    public function thousandSeparatorProvider(): array
     {
         return [
             [
@@ -130,7 +150,10 @@ class MoneyFormatterTest extends TestCase
         ];
     }
 
-    public function decimalSeparatorProvider()
+    /**
+     * @return array<array<string>>
+     */
+    public function decimalSeparatorProvider(): array
     {
         return [
             [
@@ -148,7 +171,10 @@ class MoneyFormatterTest extends TestCase
         ];
     }
 
-    public function patternProvider()
+    /**
+     * @return array<array<string>>
+     */
+    public function patternProvider(): array
     {
         return [
             [
@@ -164,5 +190,20 @@ class MoneyFormatterTest extends TestCase
                 'af_ZA', '%s%v',
             ],
         ];
+    }
+
+    /**
+     * @return M\MockInterface&SystemConfig
+     */
+    private function getSystemConfigMock(): M\MockInterface
+    {
+        $systemConfig = M::mock(SystemConfig::class);
+
+        $systemConfig
+            ->shouldReceive('getCurrency')
+            ->zeroOrMoreTimes()
+            ->andReturn(new Currency('USD'));
+
+        return $systemConfig;
     }
 }

@@ -13,14 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MoneyBundle;
 
-use SolidInvoice\MoneyBundle\Entity\Money;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class SolidInvoiceMoneyBundle extends Bundle
 {
-    public function boot(): void
-    {
-        $currency = $this->container->get('currency');
-        Money::setBaseCurrency($currency->getCode());
-    }
 }

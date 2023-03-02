@@ -86,7 +86,7 @@ datagrid:
                 editable: false
                 cell: date
             total_amount:
-                name: totalAmount
+                name: total
                 label: Total
                 editable: false
                 cell: string

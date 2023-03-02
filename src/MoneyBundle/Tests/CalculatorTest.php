@@ -19,17 +19,9 @@ use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\MoneyBundle\Calculator;
-use SolidInvoice\MoneyBundle\Entity\Money;
 
 class CalculatorTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        Money::setBaseCurrency('USD');
-    }
-
     public function testCalculateDiscountWithInvalidEntity(): void
     {
         $this->expectException(InvalidArgumentException::class);

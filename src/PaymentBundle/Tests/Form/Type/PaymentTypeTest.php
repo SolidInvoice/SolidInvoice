@@ -34,6 +34,6 @@ class PaymentTypeTest extends FormTestCase
             'amount' => new Money($amount * 100, new Currency('USD')),
         ];
 
-        $this->assertFormData($this->factory->create(PaymentType::class, [], ['currency' => 'USD', 'preferred_choices' => [], 'user' => null]), $formData, $object);
+        $this->assertFormData($this->factory->create(PaymentType::class, [], ['currency' => new Currency('USD'), 'preferred_choices' => [], 'user' => null]), $formData, $object);
     }
 }
