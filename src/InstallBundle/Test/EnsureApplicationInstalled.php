@@ -20,6 +20,7 @@ use SolidInvoice\CoreBundle\Repository\VersionRepository;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\CoreBundle\Test\Traits\SymfonyKernelTrait;
 use SolidInvoice\InstallBundle\Installer\Database\Migration;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use function date;
 
 trait EnsureApplicationInstalled
@@ -39,6 +40,8 @@ trait EnsureApplicationInstalled
 
         // @phpstan-ignore-next-line Ignore this line in PHPStan, since it sees the Migration service as private
         static::getContainer()->get(Migration::class)->migrate();
+        // @phpstan-ignore-next-line Ignore this line in PHPStan, since it sees the SystemConfig service as private
+        static::getContainer()->get(SystemConfig::class)->set(SystemConfig::CURRENCY_CONFIG_PATH, 'USD');
 
         /** @var VersionRepository $version */
         $version = $entityManager->getRepository(Version::class);
