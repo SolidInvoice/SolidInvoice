@@ -62,7 +62,13 @@ final class MoneyFormatter implements MoneyFormatterInterface
         }
 
         if (null === $currency) {
-            $currency = $this->systemConfig->getCurrency()->getCode();
+            $currency = $this->systemConfig->getCurrency();
+
+            if (!$currency instanceof Currency) {
+                return '';
+            }
+
+            $currency = $currency->getCode();
         }
 
         return Currencies::getSymbol($currency, $this->locale);

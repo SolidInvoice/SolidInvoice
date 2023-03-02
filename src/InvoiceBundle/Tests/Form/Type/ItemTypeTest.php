@@ -18,6 +18,7 @@ use Money\Money;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\InvoiceBundle\Entity\Item;
 use SolidInvoice\InvoiceBundle\Form\Type\ItemType;
+use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\PreloadedExtension;
 
 class ItemTypeTest extends FormTestCase
@@ -34,15 +35,20 @@ class ItemTypeTest extends FormTestCase
             'qty' => $qty,
         ];
 
+        $currency = new Currency('USD');
+
         $object = new Item();
         $object->setDescription($description);
         $object->setQty($qty);
-        $object->setPrice(new Money($price * 100, new Currency('USD')));
+        $object->setPrice(new Money($price * 100, $currency));
 
-        $this->assertFormData($this->factory->create(ItemType::class, null, ['currency' => 'USD']), $formData, $object);
+        $this->assertFormData($this->factory->create(ItemType::class, null, ['currency' => $currency]), $formData, $object);
     }
 
-    protected function getExtensions()
+    /**
+     * @return array<FormExtensionInterface>
+     */
+    protected function getExtensions(): array
     {
         $itemType = new ItemType($this->registry);
 

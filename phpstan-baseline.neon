@@ -1136,11 +1136,6 @@ parameters:
 			path: src/InvoiceBundle/Tests/Form/Handler/InvoiceEditHandlerTest.php
 
 		-
-			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Tests\\\\Form\\\\Type\\\\ItemTypeTest\\:\\:getExtensions\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Tests/Form/Type/ItemTypeTest.php
-
-		-
 			message: "#^Property SolidInvoice\\\\InvoiceBundle\\\\Tests\\\\Listener\\\\WorkFlowSubscriberTest\\:\\:\\$em \\(Doctrine\\\\ORM\\\\EntityManager&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Persistence\\\\ObjectManager\\.$#"
 			count: 1
 			path: src/InvoiceBundle/Tests/Listener/WorkFlowSubscriberTest.php

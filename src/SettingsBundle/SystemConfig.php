@@ -88,8 +88,14 @@ class SystemConfig
         self::$settings = [];
     }
 
-    public function getCurrency(): Currency
+    public function getCurrency(): ?Currency
     {
+        $currency = $this->get(self::CURRENCY_CONFIG_PATH);
+
+        if (null === $currency) {
+            return null;
+        }
+
         return new Currency($this->get(self::CURRENCY_CONFIG_PATH));
     }
 }
