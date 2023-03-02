@@ -30,7 +30,7 @@ class MoneyFormatterTest extends TestCase
      */
     public function testFormatCurrencyWithDefaultValues(string $locale, string $currency, string $format): void
     {
-        $systemConfig = $this->getSystemConfigMock();
+        $systemConfig = $this->getSystemConfigMock($currency);
 
         $formatter = new MoneyFormatter($locale, $systemConfig);
 
@@ -44,7 +44,7 @@ class MoneyFormatterTest extends TestCase
      */
     public function testGetCurrencySymbol(string $locale, string $currency, string $symbol): void
     {
-        $systemConfig = $this->getSystemConfigMock();
+        $systemConfig = $this->getSystemConfigMock($currency);
 
         $formatter = new MoneyFormatter($locale, $systemConfig);
 
@@ -195,14 +195,14 @@ class MoneyFormatterTest extends TestCase
     /**
      * @return M\MockInterface&SystemConfig
      */
-    private function getSystemConfigMock(): M\MockInterface
+    private function getSystemConfigMock(string $currency = 'USD'): M\MockInterface
     {
         $systemConfig = M::mock(SystemConfig::class);
 
         $systemConfig
             ->shouldReceive('getCurrency')
             ->zeroOrMoreTimes()
-            ->andReturn(new Currency('USD'));
+            ->andReturn(new Currency($currency));
 
         return $systemConfig;
     }
