@@ -23,16 +23,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class HiddenMoneyType extends AbstractType
 {
-    /**
-     * @var Currency
-     */
-    private $currency;
-
-    public function __construct(Currency $currency)
-    {
-        $this->currency = $currency;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -43,15 +33,15 @@ class HiddenMoneyType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired('currency');
-        $resolver->setAllowedTypes('currency', ['string', Currency::class]);
+        $resolver->setAllowedTypes('currency', [Currency::class]);
     }
 
-    public function getParent()
+    public function getParent(): string
     {
         return HiddenType::class;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'hidden_money';
     }

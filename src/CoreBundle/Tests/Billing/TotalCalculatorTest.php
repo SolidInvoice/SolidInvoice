@@ -34,12 +34,6 @@ class TotalCalculatorTest extends TestCase
     use DoctrineTestTrait;
     use MockeryPHPUnitIntegration;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-        \SolidInvoice\MoneyBundle\Entity\Money::setBaseCurrency('USD');
-    }
-
     public function testOnlyAcceptsQuotesOrInvoices(): void
     {
         $updater = new TotalCalculator($this->em->getRepository(Payment::class));

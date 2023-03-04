@@ -20,25 +20,14 @@ use Symfony\Component\Form\DataTransformerInterface;
 
 class ViewTransformer implements DataTransformerInterface
 {
-    /**
-     * @var Currency
-     */
-    private $currency;
+    private Currency $currency;
 
     /**
-     * @param Currency|string $currency
-     *
      * @throws InvalidArgumentException
      */
-    public function __construct($currency)
+    public function __construct(Currency $currency)
     {
-        if (is_string($currency)) {
-            $this->currency = new Currency($currency);
-        } elseif ($currency instanceof Currency) {
-            $this->currency = $currency;
-        } else {
-            throw new InvalidArgumentException(sprintf(__METHOD__ . ' expects a Currency object or string, %s given', is_object($currency) ? get_class($currency) : gettype($currency)));
-        }
+        $this->currency = $currency;
     }
 
     public function transform($value)
@@ -50,7 +39,7 @@ class ViewTransformer implements DataTransformerInterface
         return 0;
     }
 
-    public function reverseTransform($value)
+    public function reverseTransform($value): Money
     {
         if (null === $value) {
             $value = 0;

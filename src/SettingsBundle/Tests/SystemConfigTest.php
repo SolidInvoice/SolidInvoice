@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\SettingsBundle\Tests;
 
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Money\Currency;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\SettingsBundle\Entity\Setting;
@@ -29,6 +30,14 @@ class SystemConfigTest extends TestCase
         $config = new SystemConfig($this->em->getRepository(Setting::class));
 
         static::assertSame('SolidInvoice', $config->get('email/from_name'));
+    }
+
+    public function testGetCurrency(): void
+    {
+        $config = new SystemConfig($this->em->getRepository(Setting::class));
+
+        static::assertInstanceOf(Currency::class, $config->getCurrency());
+        static::assertSame('USD', $config->getCurrency()->getCode());
     }
 
     public function testGetAll(): void
@@ -54,7 +63,7 @@ class SystemConfigTest extends TestCase
             'system/company/contact_details/address' => null,
             'system/company/contact_details/email' => null,
             'system/company/contact_details/phone_number' => null,
-            'system/company/currency' => null,
+            'system/company/currency' => 'USD',
             'system/company/logo' => null,
             'system/company/vat_number' => null,
         ], $config->getAll());

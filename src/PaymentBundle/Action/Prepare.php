@@ -16,7 +16,6 @@ namespace SolidInvoice\PaymentBundle\Action;
 use const FILTER_VALIDATE_BOOLEAN;
 use DateTime;
 use Exception;
-use Money\Currency;
 use Money\Money;
 use Payum\Core\Payum;
 use Payum\Core\Registry\RegistryInterface;
@@ -33,6 +32,7 @@ use SolidInvoice\PaymentBundle\Factory\PaymentFactories;
 use SolidInvoice\PaymentBundle\Form\Type\PaymentType;
 use SolidInvoice\PaymentBundle\Model\Status;
 use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -52,55 +52,28 @@ final class Prepare
 {
     use SaveableTrait;
 
-    /**
-     * @var StateMachine
-     */
-    private $stateMachine;
+    private StateMachine $stateMachine;
 
-    /**
-     * @var PaymentMethodRepository
-     */
-    private $paymentMethodRepository;
+    private PaymentMethodRepository $paymentMethodRepository;
 
-    /**
-     * @var AuthorizationCheckerInterface
-     */
-    private $authorization;
+    private AuthorizationCheckerInterface $authorization;
 
-    /**
-     * @var TokenStorageInterface
-     */
-    private $tokenStorage;
+    private TokenStorageInterface $tokenStorage;
 
-    /**
-     * @var FormFactoryInterface
-     */
-    private $formFactory;
+    private FormFactoryInterface $formFactory;
 
-    /**
-     * @var Currency
-     */
-    private $currency;
+    private PaymentFactories $paymentFactories;
 
-    /**
-     * @var PaymentFactories
-     */
-    private $paymentFactories;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
+    private EventDispatcherInterface $eventDispatcher;
 
     /**
      * @var Payum
      */
-    private $payum;
+    private RegistryInterface $payum;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
+
+    private SystemConfig $systemConfig;
 
     public function __construct(
         StateMachine $stateMachine,
@@ -108,7 +81,7 @@ final class Prepare
         AuthorizationCheckerInterface $authorization,
         TokenStorageInterface $tokenStorage,
         FormFactoryInterface $formFactory,
-        Currency $currency,
+        SystemConfig $systemConfig,
         PaymentFactories $paymentFactories,
         EventDispatcherInterface $eventDispatcher,
         RegistryInterface $payum,
@@ -119,11 +92,11 @@ final class Prepare
         $this->authorization = $authorization;
         $this->tokenStorage = $tokenStorage;
         $this->formFactory = $formFactory;
-        $this->currency = $currency;
         $this->paymentFactories = $paymentFactories;
         $this->eventDispatcher = $eventDispatcher;
         $this->payum = $payum;
         $this->router = $router;
+        $this->systemConfig = $systemConfig;
     }
 
     public function __invoke(Request $request, ?Invoice $invoice)
@@ -150,7 +123,7 @@ final class Prepare
             ],
             [
                 'user' => $this->getUser(),
-                'currency' => null !== $currency ? $currency->getCode() : $this->currency->getCode(),
+                'currency' => null !== $currency ? $currency->getCode() : $this->systemConfig->getCurrency()->getCode(),
                 'preferred_choices' => $preferredChoices,
             ]
         );

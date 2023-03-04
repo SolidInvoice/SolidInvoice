@@ -6,36 +6,6 @@ parameters:
 			path: src/ApiBundle/Serializer/Normalizer/CreditNormalizer.php
 
 		-
-			message: "#^Property SolidInvoice\\\\ApiBundle\\\\Serializer\\\\Normalizer\\\\DiscountNormalizer\\:\\:\\$currency is never read, only written\\.$#"
-			count: 1
-			path: src/ApiBundle/Serializer/Normalizer/DiscountNormalizer.php
-
-		-
-			message: "#^Property SolidInvoice\\\\ApiBundle\\\\Serializer\\\\Normalizer\\\\DiscountNormalizer\\:\\:\\$formatter \\(SolidInvoice\\\\MoneyBundle\\\\Formatter\\\\MoneyFormatter\\) does not accept SolidInvoice\\\\MoneyBundle\\\\Formatter\\\\MoneyFormatterInterface\\.$#"
-			count: 1
-			path: src/ApiBundle/Serializer/Normalizer/DiscountNormalizer.php
-
-		-
-			message: "#^Property SolidInvoice\\\\ApiBundle\\\\Serializer\\\\Normalizer\\\\DiscountNormalizer\\:\\:\\$formatter is never read, only written\\.$#"
-			count: 1
-			path: src/ApiBundle/Serializer/Normalizer/DiscountNormalizer.php
-
-		-
-			message: "#^Property SolidInvoice\\\\ApiBundle\\\\Serializer\\\\Normalizer\\\\DiscountNormalizer\\:\\:\\$normalizer is never read, only written\\.$#"
-			count: 1
-			path: src/ApiBundle/Serializer/Normalizer/DiscountNormalizer.php
-
-		-
-			message: "#^Property SolidInvoice\\\\ApiBundle\\\\Serializer\\\\Normalizer\\\\MoneyNormalizer\\:\\:\\$formatter \\(SolidInvoice\\\\MoneyBundle\\\\Formatter\\\\MoneyFormatter\\) does not accept SolidInvoice\\\\MoneyBundle\\\\Formatter\\\\MoneyFormatterInterface\\.$#"
-			count: 1
-			path: src/ApiBundle/Serializer/Normalizer/MoneyNormalizer.php
-
-		-
-			message: "#^Property SolidInvoice\\\\ApiBundle\\\\Serializer\\\\Normalizer\\\\MoneyNormalizer\\:\\:\\$normalizer is never read, only written\\.$#"
-			count: 1
-			path: src/ApiBundle/Serializer/Normalizer/MoneyNormalizer.php
-
-		-
 			message: "#^Method SolidInvoice\\\\ApiBundle\\\\Test\\\\ApiTestCase\\:\\:requestDelete\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/ApiBundle/Test/ApiTestCase.php
@@ -84,16 +54,6 @@ parameters:
 			message: "#^Method SolidInvoice\\\\ApiBundle\\\\Test\\\\ApiTestCase\\:\\:requestPut\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/ApiBundle/Test/ApiTestCase.php
-
-		-
-			message: "#^Property SolidInvoice\\\\ApiBundle\\\\Tests\\\\Serializer\\\\Normalizer\\\\AdditionalContactDetailsNormalizerTest\\:\\:\\$em \\(Doctrine\\\\ORM\\\\EntityManager&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Persistence\\\\ObjectManager\\.$#"
-			count: 1
-			path: src/ApiBundle/Tests/Serializer/Normalizer/AdditionalContactDetailsNormalizerTest.php
-
-		-
-			message: "#^Property SolidInvoice\\\\ApiBundle\\\\Tests\\\\Serializer\\\\Normalizer\\\\AdditionalContactDetailsNormalizerTest\\:\\:\\$registry \\(Doctrine\\\\Persistence\\\\ManagerRegistry&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Registry\\.$#"
-			count: 1
-			path: src/ApiBundle/Tests/Serializer/Normalizer/AdditionalContactDetailsNormalizerTest.php
 
 		-
 			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with 123 and SolidInvoice\\\\ClientBundle\\\\Entity\\\\Credit will always evaluate to false\\.$#"
@@ -201,16 +161,6 @@ parameters:
 			path: src/ClientBundle/Action/Ajax/Credit.php
 
 		-
-			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Ajax\\\\Credit\\:\\:toJson\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/ClientBundle/Action/Ajax/Credit.php
-
-		-
-			message: "#^Property SolidInvoice\\\\ClientBundle\\\\Action\\\\Ajax\\\\Credit\\:\\:\\$formatter \\(SolidInvoice\\\\MoneyBundle\\\\Formatter\\\\MoneyFormatter\\) does not accept SolidInvoice\\\\MoneyBundle\\\\Formatter\\\\MoneyFormatterInterface\\.$#"
-			count: 1
-			path: src/ClientBundle/Action/Ajax/Credit.php
-
-		-
 			message: "#^Call to an undefined method Symfony\\\\Component\\\\HttpFoundation\\\\Session\\\\SessionInterface\\:\\:getFlashBag\\(\\)\\.$#"
 			count: 1
 			path: src/ClientBundle/Action/Ajax/Delete.php
@@ -221,17 +171,7 @@ parameters:
 			path: src/ClientBundle/Action/Ajax/Delete.php
 
 		-
-			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Ajax\\\\Info\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/ClientBundle/Action/Ajax/Info.php
-
-		-
 			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Ajax\\\\Info\\:\\:json\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/ClientBundle/Action/Ajax/Info.php
-
-		-
-			message: "#^Property SolidInvoice\\\\ClientBundle\\\\Action\\\\Ajax\\\\Info\\:\\:\\$formatter \\(SolidInvoice\\\\MoneyBundle\\\\Formatter\\\\MoneyFormatter\\) does not accept SolidInvoice\\\\MoneyBundle\\\\Formatter\\\\MoneyFormatterInterface\\.$#"
 			count: 1
 			path: src/ClientBundle/Action/Ajax/Info.php
 
@@ -581,71 +521,6 @@ parameters:
 			path: src/CoreBundle/Templating/Template.php
 
 		-
-			message: "#^Property SolidInvoice\\\\CoreBundle\\\\Tests\\\\Billing\\\\TotalCalculatorTest\\:\\:\\$em \\(Doctrine\\\\ORM\\\\EntityManager&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Persistence\\\\ObjectManager\\.$#"
-			count: 1
-			path: src/CoreBundle/Tests/Billing/TotalCalculatorTest.php
-
-		-
-			message: "#^Property SolidInvoice\\\\CoreBundle\\\\Tests\\\\Billing\\\\TotalCalculatorTest\\:\\:\\$registry \\(Doctrine\\\\Persistence\\\\ManagerRegistry&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Registry\\.$#"
-			count: 1
-			path: src/CoreBundle/Tests/Billing/TotalCalculatorTest.php
-
-		-
-			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Tests\\\\Form\\\\Type\\\\DiscountTypeTest\\:\\:discountProvider\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/CoreBundle/Tests/Form/Type/DiscountTypeTest.php
-
-		-
-			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Tests\\\\Form\\\\Type\\\\DiscountTypeTest\\:\\:getExtensions\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/CoreBundle/Tests/Form/Type/DiscountTypeTest.php
-
-		-
-			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Tests\\\\FormTestCase\\:\\:assertFormData\\(\\) has parameter \\$form with no type specified\\.$#"
-			count: 1
-			path: src/CoreBundle/Tests/FormTestCase.php
-
-		-
-			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Tests\\\\FormTestCase\\:\\:assertFormData\\(\\) has parameter \\$formData with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/CoreBundle/Tests/FormTestCase.php
-
-		-
-			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Tests\\\\FormTestCase\\:\\:assertFormData\\(\\) has parameter \\$object with no type specified\\.$#"
-			count: 1
-			path: src/CoreBundle/Tests/FormTestCase.php
-
-		-
-			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Tests\\\\FormTestCase\\:\\:getInternalExtension\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/CoreBundle/Tests/FormTestCase.php
-
-		-
-			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Tests\\\\FormTestCase\\:\\:getTypedExtensions\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/CoreBundle/Tests/FormTestCase.php
-
-		-
-			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Tests\\\\FormTestCase\\:\\:getTypes\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/CoreBundle/Tests/FormTestCase.php
-
-		-
-			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Tests\\\\FormTestCase\\:\\:testSubmit\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/CoreBundle/Tests/FormTestCase.php
-
-		-
-			message: "#^Property SolidInvoice\\\\CoreBundle\\\\Tests\\\\FormTestCase\\:\\:\\$em \\(Doctrine\\\\ORM\\\\EntityManager&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Persistence\\\\ObjectManager\\.$#"
-			count: 1
-			path: src/CoreBundle/Tests/FormTestCase.php
-
-		-
-			message: "#^Property SolidInvoice\\\\CoreBundle\\\\Tests\\\\FormTestCase\\:\\:\\$registry \\(Doctrine\\\\Persistence\\\\ManagerRegistry&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Registry\\.$#"
-			count: 1
-			path: src/CoreBundle/Tests/FormTestCase.php
-
-		-
 			message: "#^Property SolidInvoice\\\\CoreBundle\\\\Tests\\\\KernelAwareTest\\:\\:\\$container \\(Symfony\\\\Component\\\\DependencyInjection\\\\Container\\) does not accept Symfony\\\\Component\\\\DependencyInjection\\\\ContainerInterface\\.$#"
 			count: 1
 			path: src/CoreBundle/Tests/KernelAwareTest.php
@@ -714,11 +589,6 @@ parameters:
 			message: "#^Method SolidInvoice\\\\DashboardBundle\\\\Widgets\\\\RecentQuotesWidget\\:\\:getData\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/DashboardBundle/Widgets/RecentQuotesWidget.php
-
-		-
-			message: "#^Method SolidInvoice\\\\DashboardBundle\\\\Widgets\\\\StatsWidget\\:\\:getData\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/DashboardBundle/Widgets/StatsWidget.php
 
 		-
 			message: "#^Method SolidInvoice\\\\DashboardBundle\\\\Widgets\\\\WidgetInterface\\:\\:getData\\(\\) return type has no value type specified in iterable type array\\.$#"
@@ -881,26 +751,6 @@ parameters:
 			path: src/DataGridBundle/Tests/DependencyInjection/GridConfigurationTest.php
 
 		-
-			message: "#^Method SolidInvoice\\\\FormBundle\\\\Test\\\\FormHandlerTestCase\\:\\:getExtensions\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/FormBundle/Test/FormHandlerTestCase.php
-
-		-
-			message: "#^Method SolidInvoice\\\\FormBundle\\\\Test\\\\FormHandlerTestCase\\:\\:getTypeExtensions\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/FormBundle/Test/FormHandlerTestCase.php
-
-		-
-			message: "#^Property SolidInvoice\\\\FormBundle\\\\Test\\\\FormHandlerTestCase\\:\\:\\$em \\(Doctrine\\\\ORM\\\\EntityManager&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Persistence\\\\ObjectManager\\.$#"
-			count: 1
-			path: src/FormBundle/Test/FormHandlerTestCase.php
-
-		-
-			message: "#^Property SolidInvoice\\\\FormBundle\\\\Test\\\\FormHandlerTestCase\\:\\:\\$registry \\(Doctrine\\\\Persistence\\\\ManagerRegistry&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Registry\\.$#"
-			count: 1
-			path: src/FormBundle/Test/FormHandlerTestCase.php
-
-		-
 			message: "#^Method SolidInvoice\\\\InstallBundle\\\\Action\\\\Config\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/InstallBundle/Action/Config.php
@@ -959,16 +809,6 @@ parameters:
 			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\CreateRecurring\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/InvoiceBundle/Action/CreateRecurring.php
-
-		-
-			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\Edit\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Action/Edit.php
-
-		-
-			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\EditRecurring\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Action/EditRecurring.php
 
 		-
 			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\Fields\\:\\:__invoke\\(\\) has no return type specified\\.$#"
@@ -1186,26 +1026,6 @@ parameters:
 			path: src/InvoiceBundle/Form/Handler/AbstractInvoiceHandler.php
 
 		-
-			message: "#^Call to an undefined method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:getClient\\(\\)\\.$#"
-			count: 2
-			path: src/InvoiceBundle/Listener/InvoiceCancelListener.php
-
-		-
-			message: "#^Call to an undefined method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:getPayments\\(\\)\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Listener/InvoiceCancelListener.php
-
-		-
-			message: "#^Call to an undefined method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:setBalance\\(\\)\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Listener/InvoiceCancelListener.php
-
-		-
-			message: "#^Parameter \\#1 \\$invoice of method SolidInvoice\\\\PaymentBundle\\\\Repository\\\\PaymentRepository\\:\\:getTotalPaidForInvoice\\(\\) expects SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\Invoice, SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice given\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Listener/InvoiceCancelListener.php
-
-		-
 			message: "#^Parameter \\#1 \\$invoice of class SolidInvoice\\\\InvoiceBundle\\\\Email\\\\InvoiceEmail constructor expects SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\Invoice, SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice given\\.$#"
 			count: 1
 			path: src/InvoiceBundle/Listener/Mailer/InvoiceMailerListener.php
@@ -1274,31 +1094,6 @@ parameters:
 			message: "#^Property SolidInvoice\\\\InvoiceBundle\\\\Tests\\\\Form\\\\Handler\\\\InvoiceEditHandlerTest\\:\\:\\$invoice has no type specified\\.$#"
 			count: 1
 			path: src/InvoiceBundle/Tests/Form/Handler/InvoiceEditHandlerTest.php
-
-		-
-			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Tests\\\\Form\\\\Type\\\\InvoiceTypeTest\\:\\:getExtensions\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Tests/Form/Type/InvoiceTypeTest.php
-
-		-
-			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Tests\\\\Form\\\\Type\\\\ItemTypeTest\\:\\:getExtensions\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Tests/Form/Type/ItemTypeTest.php
-
-		-
-			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Tests\\\\Form\\\\Type\\\\RecurringInvoiceTypeTest\\:\\:getExtensions\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Tests/Form/Type/RecurringInvoiceTypeTest.php
-
-		-
-			message: "#^Property SolidInvoice\\\\InvoiceBundle\\\\Tests\\\\Listener\\\\WorkFlowSubscriberTest\\:\\:\\$em \\(Doctrine\\\\ORM\\\\EntityManager&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Persistence\\\\ObjectManager\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Tests/Listener/WorkFlowSubscriberTest.php
-
-		-
-			message: "#^Property SolidInvoice\\\\InvoiceBundle\\\\Tests\\\\Listener\\\\WorkFlowSubscriberTest\\:\\:\\$registry \\(Doctrine\\\\Persistence\\\\ManagerRegistry&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Registry\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Tests/Listener/WorkFlowSubscriberTest.php
 
 		-
 			message: "#^Method SolidInvoice\\\\MailerBundle\\\\Configurator\\\\ConfiguratorInterface\\:\\:configure\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
@@ -1376,11 +1171,6 @@ parameters:
 			path: src/MoneyBundle/Doctrine/Hydrator/MoneyHydrator.php
 
 		-
-			message: "#^Method SolidInvoice\\\\MoneyBundle\\\\Doctrine\\\\Types\\\\MoneyType\\:\\:getSQLDeclaration\\(\\) has parameter \\$fieldDeclaration with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/MoneyBundle/Doctrine/Types/MoneyType.php
-
-		-
 			message: "#^Class SolidInvoice\\\\MoneyBundle\\\\Form\\\\DataTransformer\\\\ModelTransformer implements generic interface Symfony\\\\Component\\\\Form\\\\DataTransformerInterface but does not specify its types\\: T, R$#"
 			count: 1
 			path: src/MoneyBundle/Form/DataTransformer/ModelTransformer.php
@@ -1399,46 +1189,6 @@ parameters:
 			message: "#^Class SolidInvoice\\\\MoneyBundle\\\\Form\\\\DataTransformer\\\\ViewTransformer implements generic interface Symfony\\\\Component\\\\Form\\\\DataTransformerInterface but does not specify its types\\: T, R$#"
 			count: 1
 			path: src/MoneyBundle/Form/DataTransformer/ViewTransformer.php
-
-		-
-			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
-			count: 1
-			path: src/MoneyBundle/Form/DataTransformer/ViewTransformer.php
-
-		-
-			message: "#^Property SolidInvoice\\\\MoneyBundle\\\\Form\\\\Type\\\\HiddenMoneyType\\:\\:\\$currency is never read, only written\\.$#"
-			count: 1
-			path: src/MoneyBundle/Form/Type/HiddenMoneyType.php
-
-		-
-			message: "#^PHPDoc tag @param for parameter \\$currency with type Money\\\\Currency\\|string is not subtype of native type Money\\\\Currency\\.$#"
-			count: 1
-			path: src/MoneyBundle/Formatter/MoneyFormatter.php
-
-		-
-			message: "#^Method SolidInvoice\\\\MoneyBundle\\\\Tests\\\\Formatter\\\\MoneyFormatterTest\\:\\:decimalSeparatorProvider\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/MoneyBundle/Tests/Formatter/MoneyFormatterTest.php
-
-		-
-			message: "#^Method SolidInvoice\\\\MoneyBundle\\\\Tests\\\\Formatter\\\\MoneyFormatterTest\\:\\:localeProvider\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/MoneyBundle/Tests/Formatter/MoneyFormatterTest.php
-
-		-
-			message: "#^Method SolidInvoice\\\\MoneyBundle\\\\Tests\\\\Formatter\\\\MoneyFormatterTest\\:\\:patternProvider\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/MoneyBundle/Tests/Formatter/MoneyFormatterTest.php
-
-		-
-			message: "#^Method SolidInvoice\\\\MoneyBundle\\\\Tests\\\\Formatter\\\\MoneyFormatterTest\\:\\:symbolProvider\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/MoneyBundle/Tests/Formatter/MoneyFormatterTest.php
-
-		-
-			message: "#^Method SolidInvoice\\\\MoneyBundle\\\\Tests\\\\Formatter\\\\MoneyFormatterTest\\:\\:thousandSeparatorProvider\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/MoneyBundle/Tests/Formatter/MoneyFormatterTest.php
 
 		-
 			message: "#^Method SolidInvoice\\\\NotificationBundle\\\\Notification\\\\ChainedNotification\\:\\:__construct\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
@@ -1806,66 +1556,6 @@ parameters:
 			path: src/PaymentBundle/Repository/PaymentMethodRepository.php
 
 		-
-			message: "#^Call to function is_array\\(\\) with Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<SolidInvoice\\\\PaymentBundle\\\\Entity\\\\Payment\\> will always evaluate to false\\.$#"
-			count: 1
-			path: src/PaymentBundle/Repository/PaymentRepository.php
-
-		-
-			message: "#^Class SolidInvoice\\\\PaymentBundle\\\\Repository\\\\PaymentRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#"
-			count: 1
-			path: src/PaymentBundle/Repository/PaymentRepository.php
-
-		-
-			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Repository\\\\PaymentRepository\\:\\:formatDate\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/PaymentBundle/Repository/PaymentRepository.php
-
-		-
-			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Repository\\\\PaymentRepository\\:\\:getGridQuery\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/PaymentBundle/Repository/PaymentRepository.php
-
-		-
-			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Repository\\\\PaymentRepository\\:\\:getPaymentsByMonth\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/PaymentBundle/Repository/PaymentRepository.php
-
-		-
-			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Repository\\\\PaymentRepository\\:\\:getPaymentsForClient\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/PaymentBundle/Repository/PaymentRepository.php
-
-		-
-			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Repository\\\\PaymentRepository\\:\\:getPaymentsForInvoice\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/PaymentBundle/Repository/PaymentRepository.php
-
-		-
-			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Repository\\\\PaymentRepository\\:\\:getPaymentsList\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/PaymentBundle/Repository/PaymentRepository.php
-
-		-
-			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Repository\\\\PaymentRepository\\:\\:getRecentPayments\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/PaymentBundle/Repository/PaymentRepository.php
-
-		-
-			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Repository\\\\PaymentRepository\\:\\:getTotalIncome\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/PaymentBundle/Repository/PaymentRepository.php
-
-		-
-			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Repository\\\\PaymentRepository\\:\\:updatePaymentStatus\\(\\) has parameter \\$payments with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection but does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/PaymentBundle/Repository/PaymentRepository.php
-
-		-
-			message: "#^Result of && is always false\\.$#"
-			count: 1
-			path: src/PaymentBundle/Repository/PaymentRepository.php
-
-		-
 			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Tests\\\\Factory\\\\DependencyInjection\\\\ConfigurationTest\\:\\:getConfiguration\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/PaymentBundle/Tests/Factory/DependencyInjection/ConfigurationTest.php
@@ -1889,11 +1579,6 @@ parameters:
 			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\Create\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/QuoteBundle/Action/Create.php
-
-		-
-			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\Edit\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/QuoteBundle/Action/Edit.php
 
 		-
 			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\Fields\\:\\:__invoke\\(\\) has no return type specified\\.$#"
@@ -2026,21 +1711,6 @@ parameters:
 			path: src/QuoteBundle/Tests/Form/Handler/QuoteEditHandlerTest.php
 
 		-
-			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Tests\\\\Form\\\\Type\\\\QuoteTypeTest\\:\\:getExtensions\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/QuoteBundle/Tests/Form/Type/QuoteTypeTest.php
-
-		-
-			message: "#^Property SolidInvoice\\\\QuoteBundle\\\\Tests\\\\Listener\\\\WorkFlowSubscriberTest\\:\\:\\$em \\(Doctrine\\\\ORM\\\\EntityManager&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Persistence\\\\ObjectManager\\.$#"
-			count: 1
-			path: src/QuoteBundle/Tests/Listener/WorkFlowSubscriberTest.php
-
-		-
-			message: "#^Property SolidInvoice\\\\QuoteBundle\\\\Tests\\\\Listener\\\\WorkFlowSubscriberTest\\:\\:\\$registry \\(Doctrine\\\\Persistence\\\\ManagerRegistry&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Registry\\.$#"
-			count: 1
-			path: src/QuoteBundle/Tests/Listener/WorkFlowSubscriberTest.php
-
-		-
 			message: "#^Method SolidInvoice\\\\SettingsBundle\\\\Action\\\\Index\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/SettingsBundle/Action/Index.php
@@ -2116,41 +1786,6 @@ parameters:
 			path: src/SettingsBundle/Repository/SettingsRepository.php
 
 		-
-			message: "#^Method SolidInvoice\\\\SettingsBundle\\\\SystemConfig\\:\\:get\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/SettingsBundle/SystemConfig.php
-
-		-
-			message: "#^Method SolidInvoice\\\\SettingsBundle\\\\SystemConfig\\:\\:getAll\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/SettingsBundle/SystemConfig.php
-
-		-
-			message: "#^Method SolidInvoice\\\\SettingsBundle\\\\SystemConfig\\:\\:set\\(\\) has parameter \\$value with no type specified\\.$#"
-			count: 1
-			path: src/SettingsBundle/SystemConfig.php
-
-		-
-			message: "#^Property SolidInvoice\\\\SettingsBundle\\\\SystemConfig\\:\\:\\$settings has no type specified\\.$#"
-			count: 1
-			path: src/SettingsBundle/SystemConfig.php
-
-		-
-			message: "#^Method SolidInvoice\\\\SettingsBundle\\\\Tests\\\\Form\\\\Type\\\\SettingsTypeTest\\:\\:getTypes\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/SettingsBundle/Tests/Form/Type/SettingsTypeTest.php
-
-		-
-			message: "#^Property SolidInvoice\\\\SettingsBundle\\\\Tests\\\\SystemConfigTest\\:\\:\\$em \\(Doctrine\\\\ORM\\\\EntityManager&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Persistence\\\\ObjectManager\\.$#"
-			count: 1
-			path: src/SettingsBundle/Tests/SystemConfigTest.php
-
-		-
-			message: "#^Property SolidInvoice\\\\SettingsBundle\\\\Tests\\\\SystemConfigTest\\:\\:\\$registry \\(Doctrine\\\\Persistence\\\\ManagerRegistry&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Registry\\.$#"
-			count: 1
-			path: src/SettingsBundle/Tests/SystemConfigTest.php
-
-		-
 			message: "#^Method SolidInvoice\\\\TaxBundle\\\\Action\\\\Add\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/TaxBundle/Action/Add.php
@@ -2204,11 +1839,6 @@ parameters:
 			message: "#^Method SolidInvoice\\\\TaxBundle\\\\Repository\\\\TaxRepository\\:\\:getTaxList\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/TaxBundle/Repository/TaxRepository.php
-
-		-
-			message: "#^Method SolidInvoice\\\\TaxBundle\\\\Tests\\\\Form\\\\Handler\\\\TaxFormHandlerTest\\:\\:getFormData\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/TaxBundle/Tests/Form/Handler/TaxFormHandlerTest.php
 
 		-
 			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\AddUser\\:\\:__invoke\\(\\) has no return type specified\\.$#"

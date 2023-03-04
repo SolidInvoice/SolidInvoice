@@ -14,44 +14,50 @@ declare(strict_types=1);
 namespace SolidInvoice\SettingsBundle;
 
 use Doctrine\DBAL\Exception;
+use Money\Currency;
 use SolidInvoice\SettingsBundle\Repository\SettingsRepository;
-use function is_array;
+use Throwable;
 
 /**
  * @see \SolidInvoice\SettingsBundle\Tests\SystemConfigTest
  */
 class SystemConfig
 {
-    /**
-     * @var SettingsRepository
-     */
-    private $repository;
+    public const CURRENCY_CONFIG_PATH = 'system/company/currency';
 
-    private static $settings;
+    private SettingsRepository $repository;
+
+    /**
+     * @var array<string, string>
+     */
+    private static array $settings = [];
 
     public function __construct(SettingsRepository $repository)
     {
         $this->repository = $repository;
     }
 
-    public function get(string $key)
+    public function get(string $key): ?string
     {
         $this->load();
 
-        if (is_array(self::$settings) && array_key_exists($key, self::$settings)) {
-            return self::$settings[$key];
-        }
-
-        return null;
+        return self::$settings[$key] ?? null;
     }
 
+    /**
+     * @param mixed $value
+     * @throws Throwable
+     */
     public function set(string $path, $value): void
     {
         $this->repository->save([$path => $value]);
-        self::$settings = null;
+        self::$settings = [];
     }
 
-    public function getAll()
+    /**
+     * @return array<string, string>
+     */
+    public function getAll(): array
     {
         $this->load();
 
@@ -60,7 +66,7 @@ class SystemConfig
 
     private function load(): void
     {
-        if (! self::$settings) {
+        if ([] === self::$settings) {
             try {
                 $settings = $this->repository
                     ->createQueryBuilder('c')
@@ -79,6 +85,17 @@ class SystemConfig
     public function remove(string $key): void
     {
         $this->repository->remove($key);
-        self::$settings = null;
+        self::$settings = [];
+    }
+
+    public function getCurrency(): ?Currency
+    {
+        $currency = $this->get(self::CURRENCY_CONFIG_PATH);
+
+        if (null === $currency) {
+            return null;
+        }
+
+        return new Currency($this->get(self::CURRENCY_CONFIG_PATH));
     }
 }

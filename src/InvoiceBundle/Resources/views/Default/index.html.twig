@@ -42,7 +42,7 @@
                             {% for status, count in status_list_count %}
                                 <li class="list-group-item">
                                     <span class="badge badge-pill">{{ count }}</span>
-                                    {{ ('invoice.stats.count.' ~ status)|transchoice(count) }}
+                                    {{ ('invoice.stats.count.' ~ status)|trans({'%count%': count}) }}
                                 </li>
                             {% endfor %}
                         </ul>

@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Test\Traits;
 
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
 use Mockery\MockInterface;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 
@@ -26,12 +28,12 @@ trait DoctrineTestTrait
     use EnsureApplicationInstalled;
 
     /**
-     * @var ManagerRegistry|MockInterface
+     * @var ManagerRegistry|Registry|MockInterface
      */
     protected $registry;
 
     /**
-     * @var EntityManager|MockInterface
+     * @var EntityManager|ObjectManager|MockInterface
      */
     protected $em;
 

@@ -20,6 +20,7 @@ use SolidInvoice\CronBundle\Form\Type\CronType;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Form\EventListener\InvoiceUsersSubscriber;
 use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -31,14 +32,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class RecurringInvoiceType extends AbstractType
 {
-    /**
-     * @var Currency
-     */
-    private $currency;
+    private SystemConfig $systemConfig;
 
-    public function __construct(Currency $currency)
+    public function __construct(SystemConfig $systemConfig)
     {
-        $this->currency = $currency;
+        $this->systemConfig = $systemConfig;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -54,7 +52,7 @@ class RecurringInvoiceType extends AbstractType
             ]
         );
 
-        $builder->add('discount', DiscountType::class, ['required' => false, 'label' => 'Discount', 'currency' => $options['currency']->getCode()]);
+        $builder->add('discount', DiscountType::class, ['required' => false, 'label' => 'Discount', 'currency' => $options['currency']]);
 
         $builder->add(
             'items',
@@ -66,7 +64,7 @@ class RecurringInvoiceType extends AbstractType
                 'by_reference' => false,
                 'required' => false,
                 'entry_options' => [
-                    'currency' => $options['currency']->getCode(),
+                    'currency' => $options['currency'],
                 ],
             ]
         );
@@ -115,19 +113,20 @@ class RecurringInvoiceType extends AbstractType
         );
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'recurring_invoice';
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(
-            [
-                'data_class' => RecurringInvoice::class,
-                'currency' => $this->currency,
-            ]
-        )
+        $resolver
+            ->setDefaults(
+                [
+                    'data_class' => RecurringInvoice::class,
+                    'currency' => $this->systemConfig->getCurrency(),
+                ]
+            )
             ->setAllowedTypes('currency', [Currency::class]);
     }
 }

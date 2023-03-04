@@ -37,20 +37,11 @@ abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandl
 {
     use SaveableTrait;
 
-    /**
-     * @var StateMachine
-     */
-    private $invoiceStateMachine;
+    private StateMachine $invoiceStateMachine;
 
-    /**
-     * @var StateMachine
-     */
-    private $recurringInvoiceStateMachine;
+    private StateMachine $recurringInvoiceStateMachine;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
     public function __construct(StateMachine $invoiceStateMachine, StateMachine $recurringInvoiceStateMachine, RouterInterface $router)
     {

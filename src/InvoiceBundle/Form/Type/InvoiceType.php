@@ -18,6 +18,7 @@ use SolidInvoice\CoreBundle\Form\Type\DiscountType;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Form\EventListener\InvoiceUsersSubscriber;
 use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -28,14 +29,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class InvoiceType extends AbstractType
 {
-    /**
-     * @var Currency
-     */
-    private $currency;
+    private SystemConfig $systemConfig;
 
-    public function __construct(Currency $currency)
+    public function __construct(SystemConfig $systemConfig)
     {
-        $this->currency = $currency;
+        $this->systemConfig = $systemConfig;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -51,7 +49,15 @@ class InvoiceType extends AbstractType
             ]
         );
 
-        $builder->add('discount', DiscountType::class, ['required' => false, 'label' => 'Discount', 'currency' => $options['currency']->getCode()]);
+        $builder->add(
+            'discount',
+            DiscountType::class,
+            [
+                'required' => false,
+                'label' => 'Discount',
+                'currency' => $options['currency']
+            ]
+        );
 
         $builder->add(
             'items',
@@ -63,7 +69,7 @@ class InvoiceType extends AbstractType
                 'by_reference' => false,
                 'required' => false,
                 'entry_options' => [
-                    'currency' => $options['currency']->getCode(),
+                    'currency' => $options['currency'],
                 ],
             ]
         );
@@ -77,7 +83,7 @@ class InvoiceType extends AbstractType
         $builder->addEventSubscriber(new InvoiceUsersSubscriber());
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'invoice';
     }
@@ -87,7 +93,7 @@ class InvoiceType extends AbstractType
         $resolver->setDefaults(
             [
                 'data_class' => Invoice::class,
-                'currency' => $this->currency,
+                'currency' => $this->systemConfig->getCurrency()
             ]
         )
             ->setAllowedTypes('currency', [Currency::class]);

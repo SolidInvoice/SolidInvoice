@@ -38,7 +38,7 @@
                                     {{ count }}
                                 </label>
 
-                                {{ ('quote.stats.count.' ~ status)|transchoice(count) }}
+                                {{ ('quote.stats.count.' ~ status)|trans({'%count%': count}) }}
                             </li>
                         {% endfor %}
                     </ul>

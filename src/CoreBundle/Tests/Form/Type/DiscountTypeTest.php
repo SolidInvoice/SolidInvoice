@@ -13,26 +13,32 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Tests\Form\Type;
 
+use Generator;
+use Mockery as M;
 use Money\Currency;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
-use SolidInvoice\MoneyBundle\Entity\Money;
+use SolidInvoice\SettingsBundle\SystemConfig;
+use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\PreloadedExtension;
 
 class DiscountTypeTest extends FormTestCase
 {
-    protected function setUp(): void
+    /**
+     * @return array<FormExtensionInterface>
+     */
+    protected function getExtensions(): array
     {
-        parent::setUp();
+        $systemConfig = M::mock(SystemConfig::class);
 
-        Money::setBaseCurrency('USD');
-    }
+        $systemConfig
+            ->shouldReceive('getCurrency')
+            ->zeroOrMoreTimes()
+            ->andReturn(new Currency('USD'));
 
-    protected function getExtensions()
-    {
         return [
-            new PreloadedExtension([new DiscountType(new Currency('USD'))], []),
+            new PreloadedExtension([new DiscountType($systemConfig)], []),
         ];
     }
 
@@ -52,7 +58,7 @@ class DiscountTypeTest extends FormTestCase
         }
     }
 
-    public function discountProvider()
+    public function discountProvider(): Generator
     {
         yield [Discount::TYPE_PERCENTAGE, $this->faker->numberBetween(0, 100)];
         yield [Discount::TYPE_MONEY, $this->faker->numberBetween(0, 100)];

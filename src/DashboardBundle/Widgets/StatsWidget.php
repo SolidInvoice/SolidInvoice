@@ -29,16 +29,16 @@ use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
 
 class StatsWidget implements WidgetInterface
 {
-    /**
-     * @var ObjectManager
-     */
-    private $manager;
+    private ObjectManager $manager;
 
     public function __construct(ManagerRegistry $registry)
     {
         $this->manager = $registry->getManager();
     }
 
+    /**
+     * @return array<string, int>
+     */
     public function getData(): array
     {
         /** @var ClientRepository $clientRepository */
@@ -61,7 +61,7 @@ class StatsWidget implements WidgetInterface
             'totalClients' => $clientRepository->getTotalClients(ClientStatus::STATUS_ACTIVE),
             'totalQuotes' => $quoteRepository->getTotalQuotes(QuoteGraph::STATUS_PENDING),
             'totalInvoices' => $totalInvoices,
-            'totalIncome' => $paymentRepository->getTotalIncome(null, true),
+            'totalIncome' => $paymentRepository->getTotalIncome(),
         ];
     }
 

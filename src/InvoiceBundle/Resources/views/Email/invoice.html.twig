@@ -127,7 +127,7 @@
                         {{ payment.method.name }}
                     </columns>
                     <columns>
-                        {{ (payment.totalAmount * -1)|formatCurrency(payment.currencyCode) }}
+                        {{ (payment.total * -1)|formatCurrency }}
                     </columns>
                 </row>
             {% endfor %}

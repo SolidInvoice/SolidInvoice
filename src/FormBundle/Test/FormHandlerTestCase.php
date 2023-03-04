@@ -30,9 +30,12 @@ use SolidInvoice\MoneyBundle\Form\Type\CurrencyType;
 use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
 use SolidInvoice\QuoteBundle\Form\Type\ItemType as QuoteItemType;
 use SolidInvoice\QuoteBundle\Form\Type\QuoteType;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidWorx\FormHandler\Test\FormHandlerTestCase as BaseTestCase;
 use Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension;
 use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
+use Symfony\Component\Form\FormExtensionInterface;
+use Symfony\Component\Form\FormTypeExtensionInterface;
 use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -41,10 +44,7 @@ abstract class FormHandlerTestCase extends BaseTestCase
     use DoctrineTestTrait;
     use MockeryPHPUnitIntegration;
 
-    /**
-     * @var Generator
-     */
-    protected $faker;
+    protected Generator $faker;
 
     protected function setUp(): void
     {
@@ -53,21 +53,29 @@ abstract class FormHandlerTestCase extends BaseTestCase
         $this->faker = Factory::create();
     }
 
+    /**
+     * @return array<FormExtensionInterface>
+     */
     protected function getExtensions(): array
     {
-        $currency = new Currency('USD');
+        $systemConfig = M::mock(SystemConfig::class);
+
+        $systemConfig
+            ->shouldReceive('getCurrency')
+            ->zeroOrMoreTimes()
+            ->andReturn(new Currency('USD'));
 
         return [
             new PreloadedExtension(
                 [
-                    new HiddenMoneyType($currency),
+                    new HiddenMoneyType(),
                     new CurrencyType('en_US'),
                     new ContactDetailType($this->registry->getRepository(ContactType::class)),
-                    new InvoiceType($currency),
-                    new QuoteType($currency),
+                    new InvoiceType($systemConfig),
+                    new QuoteType($systemConfig),
                     new InvoiceItemType($this->registry),
                     new QuoteItemType($this->registry),
-                    new DiscountType($currency),
+                    new DiscountType($systemConfig),
                 ],
                 []
             ),
@@ -75,15 +83,25 @@ abstract class FormHandlerTestCase extends BaseTestCase
         ];
     }
 
+    /**
+     * @return array<FormTypeExtensionInterface>
+     */
     protected function getTypeExtensions(): array
     {
         $validator = M::mock(ValidatorInterface::class);
 
         $validator->shouldReceive('validate')->zeroOrMoreTimes()->andReturn([]);
 
+        $systemConfig = M::mock(SystemConfig::class);
+
+        $systemConfig
+            ->shouldReceive('getCurrency')
+            ->zeroOrMoreTimes()
+            ->andReturn(new Currency('USD'));
+
         return [
             new FormHelpExtension(),
-            new MoneyExtension(new Currency('USD')),
+            new MoneyExtension($systemConfig),
             new FormTypeValidatorExtension($validator),
         ];
     }

@@ -14,45 +14,46 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Listener;
 
 use Doctrine\Persistence\ManagerRegistry;
-use Money\Currency;
 use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Credit;
 use SolidInvoice\ClientBundle\Repository\CreditRepository;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvent;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvents;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Model\Status;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use function assert;
 
 class InvoiceCancelListener implements EventSubscriberInterface
 {
-    public static function getSubscribedEvents()
+    private SystemConfig $systemConfig;
+
+    /**
+     * @return array<string, string>
+     */
+    public static function getSubscribedEvents(): array
     {
         return [
             InvoiceEvents::INVOICE_POST_CANCEL => 'onInvoiceCancelled',
         ];
     }
 
-    /**
-     * @var ManagerRegistry
-     */
-    private $registry;
+    private ManagerRegistry $registry;
 
-    /**
-     * @var Currency
-     */
-    private $currency;
-
-    public function __construct(ManagerRegistry $registry, Currency $currency)
+    public function __construct(ManagerRegistry $registry, SystemConfig $systemConfig)
     {
         $this->registry = $registry;
-        $this->currency = $currency;
+        $this->systemConfig = $systemConfig;
     }
 
     public function onInvoiceCancelled(InvoiceEvent $event): void
     {
         $invoice = $event->getInvoice();
+
+        assert($invoice instanceof Invoice);
 
         /** @var PaymentRepository $paymentRepository */
         $paymentRepository = $this->registry->getRepository(Payment::class);
@@ -62,7 +63,7 @@ class InvoiceCancelListener implements EventSubscriberInterface
         $invoice->setBalance($invoice->getTotal());
         $em->persist($invoice);
 
-        $totalPaid = new Money($paymentRepository->getTotalPaidForInvoice($invoice), $invoice->getClient()->getCurrency() ?: $this->currency);
+        $totalPaid = new Money($paymentRepository->getTotalPaidForInvoice($invoice), $invoice->getClient()->getCurrency() ?: $this->systemConfig->getCurrency());
 
         if ($totalPaid->isPositive()) {
             $paymentRepository->updatePaymentStatus($invoice->getPayments(), Status::STATUS_CREDIT);

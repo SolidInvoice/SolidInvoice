@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MoneyBundle\Twig\Extension;
 
-use Money\Currency;
-use Money\Money;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
@@ -27,12 +25,9 @@ class MoneyFormatterExtension extends AbstractExtension
 {
     private MoneyFormatterInterface $formatter;
 
-    private Currency $currency;
-
-    public function __construct(MoneyFormatterInterface $formatter, Currency $currency)
+    public function __construct(MoneyFormatterInterface $formatter)
     {
         $this->formatter = $formatter;
-        $this->currency = $currency;
     }
 
     public function getFunctions(): array
@@ -47,12 +42,7 @@ class MoneyFormatterExtension extends AbstractExtension
     public function getFilters(): array
     {
         return [
-            new TwigFilter('formatCurrency', function ($money, $currency = null): string {
-                if (! $money instanceof Money && is_numeric($money)) {
-                    @trigger_error('Passing a number to "formatCurrency" is deprecated since version 2.0.1 and will be unsupported in version 2.1. Pass a Money instance instead.', E_USER_DEPRECATED);
-                    $money = new Money((int) $money, $currency ? new Currency($currency) : $this->currency);
-                }
-
+            new TwigFilter('formatCurrency', function ($money): string {
                 return $this->formatter->format($money);
             }),
         ];

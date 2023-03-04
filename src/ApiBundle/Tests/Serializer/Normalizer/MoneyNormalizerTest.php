@@ -13,139 +13,56 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Tests\Serializer\Normalizer;
 
+use Mockery as M;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ApiBundle\Serializer\Normalizer\MoneyNormalizer;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class MoneyNormalizerTest extends TestCase
 {
+    use M\Adapter\Phpunit\MockeryPHPUnitIntegration;
+
+    private MoneyNormalizer $normalizer;
+
+    protected function setUp(): void
+    {
+        $systemConfig = M::mock(SystemConfig::class);
+
+        $systemConfig
+            ->shouldReceive('getCurrency')
+            ->zeroOrMoreTimes()
+            ->andReturn(new Currency('USD'));
+
+        $this->normalizer = new MoneyNormalizer(new MoneyFormatter('en', $systemConfig), $systemConfig);
+    }
+
     public function testSupportsNormalization(): void
     {
-        $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
-            public function normalize($object, $format = null, array $context = [])
-            {
-                return $object;
-            }
-
-            public function supportsNormalization($data, $format = null)
-            {
-                return true;
-            }
-
-            public function supportsDenormalization($data, $type, $format = null)
-            {
-                return true;
-            }
-
-            public function denormalize($data, $class, $format = null, array $context = [])
-            {
-                return $data;
-            }
-        };
-
-        $currency = new Currency('USD');
-        $normalizer = new MoneyNormalizer($parentNormalizer, new MoneyFormatter('en', $currency), $currency);
-
-        self::assertTrue($normalizer->supportsNormalization(new Money(100, $currency)));
-        self::assertFalse($normalizer->supportsNormalization(Money::class));
+        self::assertTrue($this->normalizer->supportsNormalization(new Money(100, new Currency('USD'))));
+        self::assertFalse($this->normalizer->supportsNormalization(Money::class));
     }
 
     public function testSupportsDenormalization(): void
     {
-        $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
-            public function normalize($object, $format = null, array $context = [])
-            {
-                return $object;
-            }
-
-            public function supportsNormalization($data, $format = null)
-            {
-                return true;
-            }
-
-            public function supportsDenormalization($data, $type, $format = null)
-            {
-                return true;
-            }
-
-            public function denormalize($data, $class, $format = null, array $context = [])
-            {
-                return $data;
-            }
-        };
-
-        $currency = new Currency('USD');
-        $normalizer = new MoneyNormalizer($parentNormalizer, new MoneyFormatter('en', $currency), $currency);
-
-        self::assertTrue($normalizer->supportsDenormalization(null, Money::class));
-        self::assertFalse($normalizer->supportsDenormalization([], NormalizerInterface::class));
+        self::assertTrue($this->normalizer->supportsDenormalization(null, Money::class));
+        self::assertFalse($this->normalizer->supportsDenormalization([], NormalizerInterface::class));
     }
 
     public function testNormalization(): void
     {
-        $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
-            public function normalize($object, $format = null, array $context = [])
-            {
-                return $object;
-            }
+        $money = new Money(10000, new Currency('USD'));
 
-            public function supportsNormalization($data, $format = null)
-            {
-                return true;
-            }
-
-            public function supportsDenormalization($data, $type, $format = null)
-            {
-                return true;
-            }
-
-            public function denormalize($data, $class, $format = null, array $context = [])
-            {
-                return $data;
-            }
-        };
-
-        $currency = new Currency('USD');
-        $normalizer = new MoneyNormalizer($parentNormalizer, new MoneyFormatter('en', $currency), $currency);
-
-        $money = new Money(10000, $currency);
-
-        self::assertSame('$100.00', $normalizer->normalize($money));
+        self::assertSame('$100.00', $this->normalizer->normalize($money));
     }
 
     public function testDenormalization(): void
     {
-        $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
-            public function normalize($object, $format = null, array $context = [])
-            {
-                return $object;
-            }
+        $money = new Money(10000, new Currency('USD'));
 
-            public function supportsNormalization($data, $format = null)
-            {
-                return true;
-            }
-
-            public function supportsDenormalization($data, $type, $format = null)
-            {
-                return true;
-            }
-
-            public function denormalize($data, $class, $format = null, array $context = [])
-            {
-                return $data;
-            }
-        };
-
-        $currency = new Currency('USD');
-        $normalizer = new MoneyNormalizer($parentNormalizer, new MoneyFormatter('en', $currency), $currency);
-
-        $money = new Money(10000, $currency);
-
-        self::assertEquals($money, $normalizer->denormalize(100, Money::class));
+        self::assertEquals($money, $this->normalizer->denormalize(100, Money::class));
     }
 }

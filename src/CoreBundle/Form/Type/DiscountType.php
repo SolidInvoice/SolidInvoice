@@ -16,6 +16,7 @@ namespace SolidInvoice\CoreBundle\Form\Type;
 use Money\Currency;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Form\Transformer\DiscountTransformer;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -40,20 +41,17 @@ class DiscountType extends AbstractType
         ],
     ];
 
-    /**
-     * @var Currency
-     */
-    private $currency;
+    private SystemConfig $systemConfig;
 
-    public function __construct(Currency $currency)
+    public function __construct(SystemConfig $systemConfig)
     {
-        $this->currency = $currency;
+        $this->systemConfig = $systemConfig;
     }
 
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['types'] = self::DISCOUNT_TYPES;
-        $view->vars['currency'] = $options['currency'];
+        $view->vars['currency'] = $options['currency']->getCode();
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -75,11 +73,11 @@ class DiscountType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefault('data_class', Discount::class);
-        $resolver->setDefault('currency', $this->currency->getCode());
-        $resolver->setAllowedTypes('currency', 'string');
+        $resolver->setDefault('currency', $this->systemConfig->getCurrency());
+        $resolver->setAllowedTypes('currency', [Currency::class]);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'discount';
     }

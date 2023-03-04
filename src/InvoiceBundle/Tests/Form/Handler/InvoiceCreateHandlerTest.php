@@ -22,7 +22,6 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Form\Handler\InvoiceCreateHandler;
 use SolidInvoice\InvoiceBundle\Listener\WorkFlowSubscriber;
 use SolidInvoice\InvoiceBundle\Model\Graph;
-use SolidInvoice\MoneyBundle\Entity\Money;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -36,13 +35,6 @@ use Symfony\Component\Workflow\Transition;
 
 class InvoiceCreateHandlerTest extends FormHandlerTestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        Money::setBaseCurrency('USD');
-    }
-
     public function getHandler()
     {
         $dispatcher = new EventDispatcher();

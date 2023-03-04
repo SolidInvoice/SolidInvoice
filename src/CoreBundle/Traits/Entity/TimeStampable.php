@@ -21,22 +21,18 @@ use Gedmo\Mapping\Annotation as Gedmo;
 trait TimeStampable
 {
     /**
-     * @var DateTimeInterface|null
-     *
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created", type="datetime")
      * @ApiProperty(iri="https://schema.org/DateTime")
      */
-    protected $created;
+    protected ?DateTimeInterface $created = null;
 
     /**
-     * @var DateTimeInterface|null
-     *
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated", type="datetime")
      * @ApiProperty(iri="https://schema.org/DateTime")
      */
-    protected $updated;
+    protected ?DateTimeInterface $updated = null;
 
     /**
      * Returns created.
@@ -53,7 +49,7 @@ trait TimeStampable
      *
      * @return $this
      */
-    public function setCreated(DateTimeInterface $created)
+    public function setCreated(DateTimeInterface $created): self
     {
         $this->created = $created;
 
@@ -75,7 +71,7 @@ trait TimeStampable
      *
      * @return $this
      */
-    public function setUpdated(DateTimeInterface $updated)
+    public function setUpdated(DateTimeInterface $updated): self
     {
         $this->updated = $updated;
 

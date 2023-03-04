@@ -6,20 +6,5 @@ services:
 
     SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface: '@SolidInvoice\MoneyBundle\Formatter\MoneyFormatter'
 
-    currency:
-        class: Money\Currency
-        factory: ['@currency_factory', 'getCurrency']
-        public: true
-
-    Money\Currency:
-        alias: currency
-
-    currency_factory:
-        class: SolidInvoice\MoneyBundle\Factory\CurrencyFactory
-        arguments:
-            $installed: '%env(installed)%'
-        autowire: true
-        lazy: true
-
     SolidInvoice\MoneyBundle\Calculator:
         public: false

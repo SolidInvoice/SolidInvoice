@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Tests\Form\Type;
 
 use Cron\CronExpression;
+use Mockery as M;
 use Money\Currency;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
@@ -21,7 +22,8 @@ use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Form\Type\ItemType;
 use SolidInvoice\InvoiceBundle\Form\Type\RecurringInvoiceType;
-use SolidInvoice\MoneyBundle\Entity\Money;
+use SolidInvoice\SettingsBundle\SystemConfig;
+use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\PreloadedExtension;
 
 class RecurringInvoiceTypeTest extends FormTestCase
@@ -51,8 +53,6 @@ class RecurringInvoiceTypeTest extends FormTestCase
         $object = new RecurringInvoice();
         $object->setFrequency('0 0 * * 0');
 
-        Money::setBaseCurrency('USD');
-
         $data = clone $object;
 
         $object->setTerms($terms);
@@ -68,16 +68,24 @@ class RecurringInvoiceTypeTest extends FormTestCase
         $this->assertFormData($this->factory->create(RecurringInvoiceType::class, $data), $formData, $object);
     }
 
-    protected function getExtensions()
+    /**
+     * @return array<FormExtensionInterface>
+     */
+    protected function getExtensions(): array
     {
-        $currency = new Currency('USD');
+        $systemConfig = M::mock(SystemConfig::class);
 
-        $invoiceType = new RecurringInvoiceType($currency);
+        $systemConfig
+            ->shouldReceive('getCurrency')
+            ->zeroOrMoreTimes()
+            ->andReturn(new Currency('USD'));
+
+        $invoiceType = new RecurringInvoiceType($systemConfig);
         $itemType = new ItemType($this->registry);
 
         return [
             // register the type instances with the PreloadedExtension
-            new PreloadedExtension([$invoiceType, $itemType, new DiscountType($currency)], []),
+            new PreloadedExtension([$invoiceType, $itemType, new DiscountType($systemConfig)], []),
         ];
     }
 }

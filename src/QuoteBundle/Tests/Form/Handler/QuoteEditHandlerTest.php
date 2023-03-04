@@ -21,7 +21,6 @@ use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
 use SolidInvoice\InvoiceBundle\Listener\WorkFlowSubscriber as InvoiceWorkFlowSubscriber;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
-use SolidInvoice\MoneyBundle\Entity\Money;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Form\Handler\QuoteEditHandler;
@@ -54,8 +53,6 @@ class QuoteEditHandlerTest extends FormHandlerTestCase
 
         $this->em->persist($this->quote);
         $this->em->flush();
-
-        Money::setBaseCurrency('USD');
     }
 
     public function getHandler()
@@ -100,8 +97,6 @@ class QuoteEditHandlerTest extends FormHandlerTestCase
 
         $handler = new QuoteEditHandler($router, $stateMachine);
         $handler->setDoctrine($this->registry);
-
-        Money::setBaseCurrency('USD');
 
         return $handler;
     }

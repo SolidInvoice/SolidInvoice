@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Form\Type;
 
+use Money\Currency;
 use Money\Money;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
@@ -97,9 +98,10 @@ class PaymentType extends AbstractType
     {
         $resolver->setRequired(['user', 'preferred_choices']);
         $resolver->setDefault('currency', null);
+        $resolver->setAllowedTypes('currency', ['null', Currency::class]);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'payment';
     }

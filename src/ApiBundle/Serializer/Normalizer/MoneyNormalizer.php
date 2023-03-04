@@ -13,12 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Serializer\Normalizer;
 
-use InvalidArgumentException;
 use Money\Currency;
 use Money\Money;
 use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
-use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -27,51 +26,48 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class MoneyNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    /**
-     * @var MoneyFormatter
-     */
-    private $formatter;
+    private MoneyFormatterInterface $formatter;
 
-    /**
-     * @var NormalizerInterface
-     */
-    private $normalizer;
+    private SystemConfig $systemConfig;
 
-    /**
-     * @var Currency
-     */
-    private $currency;
-
-    public function __construct(NormalizerInterface $normalizer, MoneyFormatterInterface $formatter, Currency $currency)
+    public function __construct(MoneyFormatterInterface $formatter, SystemConfig $systemConfig)
     {
-        if (! $normalizer instanceof DenormalizerInterface) {
-            throw new InvalidArgumentException('The normalizer must implement ' . DenormalizerInterface::class);
-        }
-
         $this->formatter = $formatter;
-        $this->normalizer = $normalizer;
-        $this->currency = $currency;
+        $this->systemConfig = $systemConfig;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    /**
+     * @param string|int $data
+     * @param array<string, mixed> $context
+     */
+    public function denormalize($data, string $type, string $format = null, array $context = []): Money
     {
         // @TODO: Currency should be determined if there is a client added to the context
-        return new Money($data * 100, $this->currency);
+        return new Money($data * 100, $this->systemConfig->getCurrency());
     }
 
-    public function supportsDenormalization($data, $type, $format = null)
+    /**
+     * @param mixed $data
+     */
+    public function supportsDenormalization($data, string $type, string $format = null): bool
     {
         return Money::class === $type || MoneyEntity::class === $type;
     }
 
-    public function normalize($object, $format = null, array $context = [])
+    /**
+     * @param Money $object
+     * @param array<string, mixed> $context
+     */
+    public function normalize($object, string $format = null, array $context = []): string
     {
-        /** @var Money $object */
         return $this->formatter->format($object);
     }
 
-    public function supportsNormalization($data, $format = null)
+    /**
+     * @param mixed $data
+     */
+    public function supportsNormalization($data, string $format = null): bool
     {
-        return is_object($data) && $data instanceof Money;
+        return $data instanceof Money;
     }
 }

@@ -13,36 +13,35 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Action;
 
-use Money\Currency;
+use Exception;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Form\Handler\QuoteEditHandler;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidWorx\FormHandler\FormHandler;
+use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\Request;
 
 final class Edit
 {
-    /**
-     * @var FormHandler
-     */
-    private $handler;
+    private FormHandler $handler;
 
-    /**
-     * @var Currency
-     */
-    private $currency;
+    private SystemConfig $systemConfig;
 
-    public function __construct(FormHandler $handler, Currency $currency)
+    public function __construct(FormHandler $handler, SystemConfig $systemConfig)
     {
         $this->handler = $handler;
-        $this->currency = $currency;
+        $this->systemConfig = $systemConfig;
     }
 
-    public function __invoke(Request $request, Quote $quote)
+    /**
+     * @throws Exception
+     */
+    public function __invoke(Request $request, Quote $quote): FormRequest
     {
         $options = [
             'quote' => $quote,
             'form_options' => [
-                'currency' => $quote->getClient()->getCurrency() ?: $this->currency,
+                'currency' => $quote->getClient()->getCurrency() ?: $this->systemConfig->getCurrency(),
             ],
         ];
 

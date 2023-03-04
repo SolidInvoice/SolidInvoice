@@ -13,11 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Serializer\Normalizer;
 
-use InvalidArgumentException;
-use Money\Currency;
 use SolidInvoice\CoreBundle\Entity\Discount;
-use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
-use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -27,32 +23,9 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class DiscountNormalizer implements NormalizerInterface, DenormalizerInterface
 {
     /**
-     * @var MoneyFormatter
+     * @param array{type: string|null, value: string|int|null} $data
      */
-    private $formatter;
-
-    /**
-     * @var NormalizerInterface
-     */
-    private $normalizer;
-
-    /**
-     * @var Currency
-     */
-    private $currency;
-
-    public function __construct(NormalizerInterface $normalizer, MoneyFormatterInterface $formatter, Currency $currency)
-    {
-        if (! $normalizer instanceof DenormalizerInterface) {
-            throw new InvalidArgumentException('The normalizer must implement ' . DenormalizerInterface::class);
-        }
-
-        $this->formatter = $formatter;
-        $this->normalizer = $normalizer;
-        $this->currency = $currency;
-    }
-
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, string $type, string $format = null, array $context = []): Discount
     {
         $discount = new Discount();
         $discount->setType($data['type'] ?? null);
@@ -61,22 +34,26 @@ class DiscountNormalizer implements NormalizerInterface, DenormalizerInterface
         return $discount;
     }
 
-    public function supportsDenormalization($data, $type, $format = null)
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
         return Discount::class === $type;
     }
 
-    public function normalize($object, $format = null, array $context = [])
+    /**
+     * @param Discount $object
+     * @param array<string, mixed> $context
+     * @return array{type: string, value: string}
+     */
+    public function normalize($object, string $format = null, array $context = []): array
     {
-        /** @var Discount $object */
         return [
             'type' => $object->getType(),
             'value' => $object->getValue(),
         ];
     }
 
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
-        return is_object($data) && $data instanceof Discount;
+        return $data instanceof Discount;
     }
 }

@@ -31,27 +31,16 @@ use Symfony\Component\Workflow\StateMachine;
 
 class PaymentCompleteListener implements EventSubscriberInterface
 {
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
+
+    private ManagerRegistry $registry;
+
+    private StateMachine $stateMachine;
 
     /**
-     * @var ManagerRegistry
+     * @return array<string, string>
      */
-    private $registry;
-
-    /**
-     * @var Currency
-     */
-    private $currency;
-
-    /**
-     * @var StateMachine
-     */
-    private $stateMachine;
-
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             PaymentEvents::PAYMENT_COMPLETE => 'onPaymentComplete',
@@ -61,12 +50,10 @@ class PaymentCompleteListener implements EventSubscriberInterface
     public function __construct(
         StateMachine $stateMachine,
         ManagerRegistry $registry,
-        RouterInterface $router,
-        Currency $currency
+        RouterInterface $router
     ) {
         $this->router = $router;
         $this->registry = $registry;
-        $this->currency = $currency;
         $this->stateMachine = $stateMachine;
     }
 
@@ -79,7 +66,7 @@ class PaymentCompleteListener implements EventSubscriberInterface
             $creditRepository = $this->registry->getRepository(Credit::class);
             $creditRepository->deductCredit(
                 $payment->getClient(),
-                new Money($payment->getTotalAmount(), $this->currency)
+                new Money($payment->getTotalAmount(), new Currency($payment->getCurrencyCode()))
             );
         }
 

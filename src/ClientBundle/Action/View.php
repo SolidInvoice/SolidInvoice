@@ -46,7 +46,7 @@ final class View
                 'payments' => $this->paymentRepository->getPaymentsForClient($client),
                 'total_invoices_pending' => $this->invoiceRepository->getCountByStatus(Graph::STATUS_PENDING, $client),
                 'total_invoices_paid' => $this->invoiceRepository->getCountByStatus(Graph::STATUS_PAID, $client),
-                'total_income' => $this->paymentRepository->getTotalIncome($client),
+                'total_income' => $this->paymentRepository->getTotalIncomeForClient($client),
                 'total_outstanding' => $this->invoiceRepository->getTotalOutstanding($client),
             ]
         );

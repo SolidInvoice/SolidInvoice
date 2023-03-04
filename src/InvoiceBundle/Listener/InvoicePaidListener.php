@@ -14,39 +14,36 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Listener;
 
 use Doctrine\Persistence\ManagerRegistry;
-use Money\Currency;
 use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Credit;
 use SolidInvoice\ClientBundle\Repository\CreditRepository;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
 
 class InvoicePaidListener implements EventSubscriberInterface
 {
-    /**
-     * @var ManagerRegistry
-     */
-    private $registry;
+    private ManagerRegistry $registry;
+
+    private SystemConfig $systemConfig;
 
     /**
-     * @var Currency
+     * @return array<string, string>
      */
-    private $currency;
-
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             'workflow.invoice.entered.paid' => 'onInvoicePaid',
         ];
     }
 
-    public function __construct(ManagerRegistry $registry, Currency $currency)
+    public function __construct(ManagerRegistry $registry, SystemConfig $systemConfig)
     {
         $this->registry = $registry;
-        $this->currency = $currency;
+        $this->systemConfig = $systemConfig;
     }
 
     public function onInvoicePaid(Event $event): void
@@ -59,7 +56,7 @@ class InvoicePaidListener implements EventSubscriberInterface
         /** @var PaymentRepository $paymentRepository */
         $paymentRepository = $em->getRepository(Payment::class);
 
-        $currency = $invoice->getClient()->getCurrency() ?? $this->currency;
+        $currency = $invoice->getClient()->getCurrency() ?? $this->systemConfig->getCurrency();
 
         $invoice->setBalance(new Money(0, $currency));
         $em->persist($invoice);

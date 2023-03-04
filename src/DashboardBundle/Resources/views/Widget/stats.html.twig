@@ -25,7 +25,7 @@
                     <span class="info-box-text">{{ 'dashboard.income_received'|trans }}</span>
                         {% for income in totalIncome %}
                             <span class="info-box-number">
-                                {{ income.totalAmount|formatCurrency(income.currencyCode) }}
+                                {{ income|formatCurrency }}
                             </span>
                         {% else %}
                             <span class="info-box-number">
