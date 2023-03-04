@@ -179,16 +179,21 @@ class PaymentRepository extends ServiceEntityRepository
     }
 
     /**
+     * @deprecated Use getPaymentsByMonth instead
      * @return array<array<int>>
      */
     public function getPaymentsList(DateTime $timestamp = null): array
     {
         $queryBuilder = $this->createQueryBuilder('p');
 
-        $queryBuilder->select('p.totalAmount', 'p.created')
-            ->join('p.method', 'm')
-            ->where('p.created >= :date')
-            ->setParameter('date', $timestamp)
+        $queryBuilder->select('p.totalAmount', 'p.created');
+
+        if (null !== $timestamp) {
+            $queryBuilder->andWhere('p.created >= :date')
+                ->setParameter('date', $timestamp);
+        }
+
+        $queryBuilder
             ->groupBy('p.created')
             ->orderBy('p.created', Criteria::ASC);
 
@@ -240,7 +245,6 @@ class PaymentRepository extends ServiceEntityRepository
                 'p.created',
             ]
         )
-            ->join('p.method', 'm')
             ->where('p.created >= :date')
             ->setParameter('date', new DateTime('-1 Year'))
             ->groupBy('p.created')
@@ -252,7 +256,7 @@ class PaymentRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Payment[]|Collection<Payment> $payments
+     * @param Payment[]|Collection<int, Payment> $payments
      *
      * @return mixed
      */
@@ -290,12 +294,12 @@ class PaymentRepository extends ServiceEntityRepository
             ->join('p.method', 'm');
 
         if (isset($parameters['invoice'])) {
-            $qb->where('p.invoice = :invoice');
+            $qb->andWhere('p.invoice = :invoice');
             $qb->setParameter('invoice', $parameters['invoice']);
         }
 
         if (isset($parameters['client'])) {
-            $qb->where('p.client = :client');
+            $qb->andWhere('p.client = :client');
             $qb->setParameter('client', $parameters['client']);
         }
 
@@ -309,13 +313,17 @@ class PaymentRepository extends ServiceEntityRepository
 
         $currency = $client->getCurrency();
 
+        if ($currency === null) {
+            return;
+        }
+
         $qb = $this->createQueryBuilder('p');
 
         $qb->update()
             ->set('p.currencyCode', ':currency')
             ->where('p.client = :client')
             ->setParameter('client', $client)
-            ->setParameter('currency', $currency);
+            ->setParameter('currency', $currency->getCode());
 
         $qb->getQuery()->execute();
 

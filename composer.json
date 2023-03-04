@@ -139,7 +139,8 @@
         "symfony/panther": "^1.1 || ^2.0",
         "symfony/phpunit-bridge": "^6.2",
         "symfony/web-profiler-bundle": "^5.4",
-        "symplify/easy-coding-standard": "^11.1"
+        "symplify/easy-coding-standard": "^11.1",
+        "zenstruck/foundry": "^1.23"
     },
     "autoload": {
         "psr-4": {

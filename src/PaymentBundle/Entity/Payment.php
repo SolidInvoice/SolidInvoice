@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\PaymentBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -206,7 +205,7 @@ class Payment extends BasePayment implements PaymentInterface
         return $this->completed;
     }
 
-    public function setCompleted(DateTime $completed): self
+    public function setCompleted(DateTimeInterface $completed): self
     {
         $this->completed = $completed;
 

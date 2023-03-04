@@ -56,16 +56,6 @@ parameters:
 			path: src/ApiBundle/Test/ApiTestCase.php
 
 		-
-			message: "#^Property SolidInvoice\\\\ApiBundle\\\\Tests\\\\Serializer\\\\Normalizer\\\\AdditionalContactDetailsNormalizerTest\\:\\:\\$em \\(Doctrine\\\\ORM\\\\EntityManager&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Persistence\\\\ObjectManager\\.$#"
-			count: 1
-			path: src/ApiBundle/Tests/Serializer/Normalizer/AdditionalContactDetailsNormalizerTest.php
-
-		-
-			message: "#^Property SolidInvoice\\\\ApiBundle\\\\Tests\\\\Serializer\\\\Normalizer\\\\AdditionalContactDetailsNormalizerTest\\:\\:\\$registry \\(Doctrine\\\\Persistence\\\\ManagerRegistry&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Registry\\.$#"
-			count: 1
-			path: src/ApiBundle/Tests/Serializer/Normalizer/AdditionalContactDetailsNormalizerTest.php
-
-		-
 			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with 123 and SolidInvoice\\\\ClientBundle\\\\Entity\\\\Credit will always evaluate to false\\.$#"
 			count: 1
 			path: src/ApiBundle/Tests/Serializer/Normalizer/CreditNormalizerTest.php
@@ -531,26 +521,6 @@ parameters:
 			path: src/CoreBundle/Templating/Template.php
 
 		-
-			message: "#^Property SolidInvoice\\\\CoreBundle\\\\Tests\\\\Billing\\\\TotalCalculatorTest\\:\\:\\$em \\(Doctrine\\\\ORM\\\\EntityManager&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Persistence\\\\ObjectManager\\.$#"
-			count: 1
-			path: src/CoreBundle/Tests/Billing/TotalCalculatorTest.php
-
-		-
-			message: "#^Property SolidInvoice\\\\CoreBundle\\\\Tests\\\\Billing\\\\TotalCalculatorTest\\:\\:\\$registry \\(Doctrine\\\\Persistence\\\\ManagerRegistry&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Registry\\.$#"
-			count: 1
-			path: src/CoreBundle/Tests/Billing/TotalCalculatorTest.php
-
-		-
-			message: "#^Property SolidInvoice\\\\CoreBundle\\\\Tests\\\\FormTestCase\\:\\:\\$em \\(Doctrine\\\\ORM\\\\EntityManager&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Persistence\\\\ObjectManager\\.$#"
-			count: 1
-			path: src/CoreBundle/Tests/FormTestCase.php
-
-		-
-			message: "#^Property SolidInvoice\\\\CoreBundle\\\\Tests\\\\FormTestCase\\:\\:\\$registry \\(Doctrine\\\\Persistence\\\\ManagerRegistry&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Registry\\.$#"
-			count: 1
-			path: src/CoreBundle/Tests/FormTestCase.php
-
-		-
 			message: "#^Property SolidInvoice\\\\CoreBundle\\\\Tests\\\\KernelAwareTest\\:\\:\\$container \\(Symfony\\\\Component\\\\DependencyInjection\\\\Container\\) does not accept Symfony\\\\Component\\\\DependencyInjection\\\\ContainerInterface\\.$#"
 			count: 1
 			path: src/CoreBundle/Tests/KernelAwareTest.php
@@ -779,16 +749,6 @@ parameters:
 			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\Tests\\\\DependencyInjection\\\\GridConfigurationTest\\:\\:validConfigProvider\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/DataGridBundle/Tests/DependencyInjection/GridConfigurationTest.php
-
-		-
-			message: "#^Property SolidInvoice\\\\FormBundle\\\\Test\\\\FormHandlerTestCase\\:\\:\\$em \\(Doctrine\\\\ORM\\\\EntityManager&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Persistence\\\\ObjectManager\\.$#"
-			count: 1
-			path: src/FormBundle/Test/FormHandlerTestCase.php
-
-		-
-			message: "#^Property SolidInvoice\\\\FormBundle\\\\Test\\\\FormHandlerTestCase\\:\\:\\$registry \\(Doctrine\\\\Persistence\\\\ManagerRegistry&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Registry\\.$#"
-			count: 1
-			path: src/FormBundle/Test/FormHandlerTestCase.php
 
 		-
 			message: "#^Method SolidInvoice\\\\InstallBundle\\\\Action\\\\Config\\:\\:__invoke\\(\\) has no return type specified\\.$#"
@@ -1134,16 +1094,6 @@ parameters:
 			message: "#^Property SolidInvoice\\\\InvoiceBundle\\\\Tests\\\\Form\\\\Handler\\\\InvoiceEditHandlerTest\\:\\:\\$invoice has no type specified\\.$#"
 			count: 1
 			path: src/InvoiceBundle/Tests/Form/Handler/InvoiceEditHandlerTest.php
-
-		-
-			message: "#^Property SolidInvoice\\\\InvoiceBundle\\\\Tests\\\\Listener\\\\WorkFlowSubscriberTest\\:\\:\\$em \\(Doctrine\\\\ORM\\\\EntityManager&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Persistence\\\\ObjectManager\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Tests/Listener/WorkFlowSubscriberTest.php
-
-		-
-			message: "#^Property SolidInvoice\\\\InvoiceBundle\\\\Tests\\\\Listener\\\\WorkFlowSubscriberTest\\:\\:\\$registry \\(Doctrine\\\\Persistence\\\\ManagerRegistry&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Registry\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Tests/Listener/WorkFlowSubscriberTest.php
 
 		-
 			message: "#^Method SolidInvoice\\\\MailerBundle\\\\Configurator\\\\ConfiguratorInterface\\:\\:configure\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
@@ -1606,11 +1556,6 @@ parameters:
 			path: src/PaymentBundle/Repository/PaymentMethodRepository.php
 
 		-
-			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Repository\\\\PaymentRepository\\:\\:updatePaymentStatus\\(\\) has parameter \\$payments with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection but does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/PaymentBundle/Repository/PaymentRepository.php
-
-		-
 			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Tests\\\\Factory\\\\DependencyInjection\\\\ConfigurationTest\\:\\:getConfiguration\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/PaymentBundle/Tests/Factory/DependencyInjection/ConfigurationTest.php
@@ -1766,16 +1711,6 @@ parameters:
 			path: src/QuoteBundle/Tests/Form/Handler/QuoteEditHandlerTest.php
 
 		-
-			message: "#^Property SolidInvoice\\\\QuoteBundle\\\\Tests\\\\Listener\\\\WorkFlowSubscriberTest\\:\\:\\$em \\(Doctrine\\\\ORM\\\\EntityManager&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Persistence\\\\ObjectManager\\.$#"
-			count: 1
-			path: src/QuoteBundle/Tests/Listener/WorkFlowSubscriberTest.php
-
-		-
-			message: "#^Property SolidInvoice\\\\QuoteBundle\\\\Tests\\\\Listener\\\\WorkFlowSubscriberTest\\:\\:\\$registry \\(Doctrine\\\\Persistence\\\\ManagerRegistry&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Registry\\.$#"
-			count: 1
-			path: src/QuoteBundle/Tests/Listener/WorkFlowSubscriberTest.php
-
-		-
 			message: "#^Method SolidInvoice\\\\SettingsBundle\\\\Action\\\\Index\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/SettingsBundle/Action/Index.php
@@ -1849,16 +1784,6 @@ parameters:
 			message: "#^Method SolidInvoice\\\\SettingsBundle\\\\Repository\\\\SettingsRepository\\:\\:save\\(\\) has parameter \\$settings with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/SettingsBundle/Repository/SettingsRepository.php
-
-		-
-			message: "#^Property SolidInvoice\\\\SettingsBundle\\\\Tests\\\\SystemConfigTest\\:\\:\\$em \\(Doctrine\\\\ORM\\\\EntityManager&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Persistence\\\\ObjectManager\\.$#"
-			count: 1
-			path: src/SettingsBundle/Tests/SystemConfigTest.php
-
-		-
-			message: "#^Property SolidInvoice\\\\SettingsBundle\\\\Tests\\\\SystemConfigTest\\:\\:\\$registry \\(Doctrine\\\\Persistence\\\\ManagerRegistry&Mockery\\\\MockInterface\\) does not accept Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Registry\\.$#"
-			count: 1
-			path: src/SettingsBundle/Tests/SystemConfigTest.php
 
 		-
 			message: "#^Method SolidInvoice\\\\TaxBundle\\\\Action\\\\Add\\:\\:__invoke\\(\\) has no return type specified\\.$#"
