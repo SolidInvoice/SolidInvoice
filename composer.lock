@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2681b522446682d50d09cec962b6759b",
+    "content-hash": "45e54ca1b7cd7118e139114639697d82",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -10155,16 +10155,16 @@
         },
         {
             "name": "symfony/requirements-checker",
-            "version": "v1.1.8",
+            "version": "v2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/requirements-checker.git",
-                "reference": "8e134f691a1ed23e3c03c5415693b3b164c1bcc1"
+                "reference": "cf8893f384348a338157d637e170fe8fb2356016"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/requirements-checker/zipball/8e134f691a1ed23e3c03c5415693b3b164c1bcc1",
-                "reference": "8e134f691a1ed23e3c03c5415693b3b164c1bcc1",
+                "url": "https://api.github.com/repos/symfony/requirements-checker/zipball/cf8893f384348a338157d637e170fe8fb2356016",
+                "reference": "cf8893f384348a338157d637e170fe8fb2356016",
                 "shasum": ""
             },
             "require": {
@@ -10176,7 +10176,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.1.x-dev"
+                    "dev-main": "2.0.x-dev"
                 }
             },
             "autoload": {
@@ -10201,7 +10201,7 @@
             ],
             "support": {
                 "issues": "https://github.com/symfony/requirements-checker/issues",
-                "source": "https://github.com/symfony/requirements-checker/tree/v1.1.8"
+                "source": "https://github.com/symfony/requirements-checker/tree/v2.0.1"
             },
             "funding": [
                 {
@@ -10217,7 +10217,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-09-15T06:25:18+00:00"
+            "time": "2021-11-30T16:18:33+00:00"
         },
         {
             "name": "symfony/routing",
