@@ -46,9 +46,6 @@ class SystemConfig
         }
 
         return $setting->getValue();
-        /*$this->load();
-
-        return self::$settings[$key] ?? null;
     }
 
     /**

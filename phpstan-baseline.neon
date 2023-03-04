@@ -856,11 +856,6 @@ parameters:
 			path: src/InvoiceBundle/Entity/Invoice.php
 
 		-
-			message: "#^Property SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\Invoice\\:\\:\\$uuid \\(Ramsey\\\\Uuid\\\\Uuid\\) does not accept Ramsey\\\\Uuid\\\\UuidInterface\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Entity/Invoice.php
-
-		-
 			message: "#^Instanceof between SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\Invoice\\|null and SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\RecurringInvoice will always evaluate to false\\.$#"
 			count: 1
 			path: src/InvoiceBundle/Entity/Item.php
@@ -1427,11 +1422,6 @@ parameters:
 
 		-
 			message: "#^PHPDoc tag @return with type \\$this\\(SolidInvoice\\\\QuoteBundle\\\\Entity\\\\Quote\\)\\|SolidInvoice\\\\CoreBundle\\\\Traits\\\\Entity\\\\Archivable is not subtype of native type SolidInvoice\\\\QuoteBundle\\\\Entity\\\\Quote\\.$#"
-			count: 1
-			path: src/QuoteBundle/Entity/Quote.php
-
-		-
-			message: "#^Property SolidInvoice\\\\QuoteBundle\\\\Entity\\\\Quote\\:\\:\\$uuid \\(Ramsey\\\\Uuid\\\\Uuid\\) does not accept Ramsey\\\\Uuid\\\\UuidInterface\\.$#"
 			count: 1
 			path: src/QuoteBundle/Entity/Quote.php
 
