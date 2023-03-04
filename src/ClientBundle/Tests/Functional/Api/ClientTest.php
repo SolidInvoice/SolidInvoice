@@ -16,14 +16,12 @@ namespace SolidInvoice\ClientBundle\Tests\Functional\Api;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData;
-use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 
 /**
  * @group functional
  */
 class ClientTest extends ApiTestCase
 {
-
     protected function setUp(): void
     {
         parent::setUp();

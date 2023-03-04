@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 final class CompanySelector
 {
     private SessionInterface $session;
+
     private ManagerRegistry $registry;
 
     public function __construct(SessionInterface $session, ManagerRegistry $registry)

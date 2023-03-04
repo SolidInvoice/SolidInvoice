@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Test;
 
-use SolidInvoice\CoreBundle\Entity\Company;
-use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use const PASSWORD_DEFAULT;
 use SolidInvoice\ApiBundle\ApiTokenManager;
+use SolidInvoice\CoreBundle\Entity\Company;
+use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Component\BrowserKit\AbstractBrowser;
 use Symfony\Component\HttpFoundation\Request;

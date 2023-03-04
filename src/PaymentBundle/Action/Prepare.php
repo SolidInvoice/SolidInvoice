@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Action;
 
-use Symfony\Component\HttpFoundation\Session\Session;
 use const FILTER_VALIDATE_BOOLEAN;
 use DateTime;
 use Exception;
