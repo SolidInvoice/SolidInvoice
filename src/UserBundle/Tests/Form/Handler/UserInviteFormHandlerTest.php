@@ -24,7 +24,6 @@ use SolidInvoice\UserBundle\Form\Handler\UserInviteFormHandler;
 use SolidInvoice\UserBundle\UserInvitation\UserInvitation;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
