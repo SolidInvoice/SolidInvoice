@@ -26,6 +26,8 @@ use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Security;
@@ -55,7 +57,7 @@ final class UserInviteFormHandlerTest extends FormHandlerTestCase
     {
         $handler = new UserInviteFormHandler(
             $this->router,
-            new CompanySelector(new RequestStack(), $this->registry),
+            new CompanySelector(new Session(new MockArraySessionStorage()), $this->registry),
             $this->registry->getRepository(Company::class),
             $this->registry->getRepository(User::class),
             M::mock(Security::class),
