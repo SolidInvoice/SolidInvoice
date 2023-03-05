@@ -24,6 +24,7 @@ use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
+use function iterator_to_array;
 
 class ClientEditFormHandlerTest extends FormHandlerTestCase
 {
@@ -81,7 +82,7 @@ class ClientEditFormHandlerTest extends FormHandlerTestCase
         self::assertSame($this->clientName, $client->getName());
         self::assertInstanceOf(RedirectResponse::class, $response);
         self::assertInstanceOf(FlashResponse::class, $response);
-        self::assertCount(1, $response->getFlash());
+        self::assertCount(1, iterator_to_array($response->getFlash()));
     }
 
     protected function assertResponse(FormRequest $formRequest): void

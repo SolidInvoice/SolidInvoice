@@ -32,13 +32,20 @@ class SystemConfig
      */
     private static array $settings = [];
 
-    public function __construct(SettingsRepository $repository)
+    private ?string $installed;
+
+    public function __construct(?string $installed, SettingsRepository $repository)
     {
         $this->repository = $repository;
+        $this->installed = $installed;
     }
 
     public function get(string $key): ?string
     {
+        if (null === $this->installed) {
+            return null;
+        }
+
         $setting = $this->repository->findOneBy(['key' => $key]);
 
         if (null === $setting) {
