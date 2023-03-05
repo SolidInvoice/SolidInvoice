@@ -144,7 +144,7 @@ class Grid implements GridInterface, JsonSerializable
         $this->parameters = $params;
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             'title' => $this->title,

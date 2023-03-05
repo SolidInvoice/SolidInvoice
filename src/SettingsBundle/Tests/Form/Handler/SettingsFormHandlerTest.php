@@ -25,6 +25,7 @@ use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
+use function iterator_to_array;
 
 final class SettingsFormHandlerTest extends FormHandlerTestCase
 {
@@ -54,7 +55,7 @@ final class SettingsFormHandlerTest extends FormHandlerTestCase
         self::assertSame([
             'system' => [
                 'company' => [
-                    'company_name' => null,
+                    'company_name' => 'four',
                     'logo' => null,
                     'vat_number' => null,
                     'contact_details' => [
@@ -99,7 +100,7 @@ final class SettingsFormHandlerTest extends FormHandlerTestCase
 
         self::assertInstanceOf(RedirectResponse::class, $response);
         self::assertInstanceOf(FlashResponse::class, $response);
-        self::assertCount(1, $response->getFlash());
+        self::assertCount(1, iterator_to_array($response->getFlash()));
     }
 
     protected function assertResponse(FormRequest $formRequest): void
@@ -114,8 +115,10 @@ final class SettingsFormHandlerTest extends FormHandlerTestCase
     {
         return [
             'settings' => [
-                'company' => [
-                    'company_name' => 'four',
+                'system' => [
+                    'company' => [
+                        'company_name' => 'four',
+                    ],
                 ],
             ],
         ];

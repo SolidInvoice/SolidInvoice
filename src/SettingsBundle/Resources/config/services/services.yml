@@ -5,6 +5,8 @@ services:
         autoconfigure: true
 
     SolidInvoice\SettingsBundle\SystemConfig:
+        arguments:
+            $installed: '%env(installed)%'
         lazy: true
 
     settings:

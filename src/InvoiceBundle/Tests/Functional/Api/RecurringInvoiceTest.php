@@ -71,7 +71,7 @@ class RecurringInvoiceTest extends ApiTestCase
             'id' => 2,
             'client' => '/api/clients/1',
             'frequency' => '* * * * *',
-            'dateStart' => date('Y-m-d\T00:00:00+02:00'),
+            'dateStart' => date('Y-m-d\T00:00:00+00:00'),
             'dateEnd' => null,
             'items' => [
                 [
@@ -114,7 +114,7 @@ class RecurringInvoiceTest extends ApiTestCase
             'id' => 1,
             'client' => '/api/clients/1',
             'frequency' => '* * * * *',
-            'dateStart' => '2012-01-01T00:00:00+02:00',
+            'dateStart' => '2012-01-01T00:00:00+00:00',
             'dateEnd' => null,
             'items' => [
                 [
@@ -168,7 +168,7 @@ class RecurringInvoiceTest extends ApiTestCase
             'id' => 1,
             'client' => '/api/clients/1',
             'frequency' => '5 * * * *',
-            'dateStart' => '2012-01-01T00:00:00+02:00',
+            'dateStart' => '2012-01-01T00:00:00+00:00',
             'dateEnd' => null,
             'items' => [
                 [

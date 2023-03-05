@@ -36,6 +36,7 @@ use Symfony\Component\Workflow\Definition;
 use Symfony\Component\Workflow\MarkingStore\MethodMarkingStore;
 use Symfony\Component\Workflow\StateMachine;
 use Symfony\Component\Workflow\Transition;
+use function iterator_to_array;
 
 /**
  * @covers \SolidInvoice\InvoiceBundle\Form\Handler\InvoiceEditHandler
@@ -113,7 +114,7 @@ final class InvoiceEditHandlerTest extends FormHandlerTestCase
         self::assertSame(20.0, $invoice->getDiscount()->getValue());
         self::assertInstanceOf(RedirectResponse::class, $response);
         self::assertInstanceOf(FlashResponse::class, $response);
-        self::assertCount(1, $response->getFlash());
+        self::assertCount(1, iterator_to_array($response->getFlash()));
         self::assertCount(1, $this->em->getRepository(Invoice::class)->findAll());
     }
 
