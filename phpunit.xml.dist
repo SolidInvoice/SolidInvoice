@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!-- http://www.phpunit.de/manual/current/en/appendixes.configuration.html -->
 <phpunit
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
         backupGlobals="false"
         backupStaticAttributes="false"
         colors="true"
@@ -21,44 +22,36 @@
         stopOnFailure="false"
         bootstrap="vendor/autoload.php"
 >
+    <coverage>
+        <include>
+            <directory>src</directory>
+        </include>
+        <exclude>
+            <directory>src/*Bundle/Resources</directory>
+            <directory>src/*Bundle/Tests</directory>
+        </exclude>
+    </coverage>
     <testsuites>
         <testsuite name="SolidInvoice Test Suite">
             <directory>src/*Bundle/Tests</directory>
         </testsuite>
     </testsuites>
-
     <php>
         <ini name="display_errors" value="1" />
         <ini name="error_reporting" value="-1" />
-        <server name="APP_SECRET" value="SomeSecret!@"/>
-        <server name="KERNEL_CLASS" value="SolidInvoice\Kernel"/>
-        <server name="KERNEL_DIR" value="app"/>
-        <server name="SOLIDINVOICE_ENV" value="test"/>
-        <server name="SOLIDINVOICE_DEBUG" value="0"/>
+        <server name="APP_SECRET" value="SomeSecret!@" />
+        <server name="KERNEL_CLASS" value="SolidInvoice\Kernel" />
+        <server name="KERNEL_DIR" value="app" />
+        <server name="SOLIDINVOICE_ENV" value="test" />
+        <server name="SOLIDINVOICE_DEBUG" value="0" />
         <server name="SHELL_VERBOSITY" value="-1" />
-        <server name="SYMFONY_PHPUNIT_VERSION" value="8.5"/>
-        <server name="SYMFONY_PHPUNIT_REMOVE" value="" />
-        <server name="SYMFONY_DEPRECATIONS_HELPER" value="max[direct]=125&amp;max[self]=110"/>
         <server name="PANTHER_NO_HEADLESS" value="0" />
         <server name="PANTHER_ERROR_SCREENSHOT_DIR" value="./var/error-screenshots" />
     </php>
-
     <listeners>
         <listener class="Mockery\Adapter\Phpunit\TestListener"/>
-        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
     </listeners>
-
     <extensions>
         <extension class="Symfony\Component\Panther\ServerExtension"/>
     </extensions>
-
-    <filter>
-        <whitelist>
-            <directory>src</directory>
-            <exclude>
-                <directory>src/*Bundle/Resources</directory>
-                <directory>src/*Bundle/Tests</directory>
-            </exclude>
-        </whitelist>
-    </filter>
 </phpunit>
