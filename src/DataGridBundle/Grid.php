@@ -139,11 +139,17 @@ class Grid implements GridInterface, JsonSerializable
         return $this->title;
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function setParameters(array $params): void
     {
         $this->parameters = $params;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function jsonSerialize(): array
     {
         return [

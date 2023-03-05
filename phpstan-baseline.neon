@@ -586,11 +586,6 @@ parameters:
 			path: src/DataGridBundle/Grid.php
 
 		-
-			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\Grid\\:\\:setParameters\\(\\) has parameter \\$params with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/DataGridBundle/Grid.php
-
-		-
 			message: "#^Property SolidInvoice\\\\DataGridBundle\\\\Grid\\:\\:\\$actions type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/DataGridBundle/Grid.php

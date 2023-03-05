@@ -7,7 +7,6 @@ parameters:
         - src
     bootstrapFiles:
         - vendor/autoload.php
-        - vendor/bin/.phpunit/phpunit-8.5-0/vendor/autoload.php
     excludePaths:
         - src/CoreBundle/Tests/Fixtures/file.php
     symfony:

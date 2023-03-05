@@ -109,7 +109,7 @@ final class SettingsFormHandlerTest extends FormHandlerTestCase
     }
 
     /**
-     * @return array{settings: array{company: array{company_name: string}}}
+     * @return array{settings: array{system: array{company: array{company_name: string}}}}
      */
     public function getFormData(): array
     {
