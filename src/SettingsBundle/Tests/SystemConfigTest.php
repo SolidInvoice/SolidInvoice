@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SettingsBundle\Tests;
 
+use const DATE_ATOM;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Money\Currency;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\SettingsBundle\Entity\Setting;
 use SolidInvoice\SettingsBundle\SystemConfig;
+use function date;
 
 class SystemConfigTest extends TestCase
 {
@@ -27,14 +29,14 @@ class SystemConfigTest extends TestCase
 
     public function testGet(): void
     {
-        $config = new SystemConfig($this->em->getRepository(Setting::class));
+        $config = new SystemConfig(date(DATE_ATOM), $this->em->getRepository(Setting::class));
 
         static::assertSame('SolidInvoice', $config->get('email/from_name'));
     }
 
     public function testGetCurrency(): void
     {
-        $config = new SystemConfig($this->em->getRepository(Setting::class));
+        $config = new SystemConfig(date(DATE_ATOM), $this->em->getRepository(Setting::class));
 
         static::assertInstanceOf(Currency::class, $config->getCurrency());
         static::assertSame('USD', $config->getCurrency()->getCode());
@@ -42,7 +44,7 @@ class SystemConfigTest extends TestCase
 
     public function testGetAll(): void
     {
-        $config = new SystemConfig($this->em->getRepository(Setting::class));
+        $config = new SystemConfig(date(DATE_ATOM), $this->em->getRepository(Setting::class));
 
         self::assertSame([
             'email/from_address' => 'info@solidinvoice.co',
@@ -73,7 +75,7 @@ class SystemConfigTest extends TestCase
 
     public function testInvalidGet(): void
     {
-        $config = new SystemConfig($this->em->getRepository(Setting::class));
+        $config = new SystemConfig(date(DATE_ATOM), $this->em->getRepository(Setting::class));
 
         self::assertNull($config->get('some/invalid/key'));
     }

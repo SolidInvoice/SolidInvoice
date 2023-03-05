@@ -15,6 +15,7 @@ namespace SolidInvoice\ClientBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -244,6 +245,9 @@ class Contact implements Serializable
         return serialize($this->__serialize());
     }
 
+    /**
+     * @return list<string|int|DateTimeInterface|null>
+     */
     public function __serialize(): array
     {
         return [$this->id, $this->firstName, $this->lastName, $this->created, $this->updated];
@@ -257,6 +261,9 @@ class Contact implements Serializable
         $this->__unserialize(unserialize($serialized));
     }
 
+    /**
+     * @param array<string, string|int|DateTimeInterface|null> $data
+     */
     public function __unserialize(array $data): void
     {
         $this->id = $data['id'];
