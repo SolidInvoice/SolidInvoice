@@ -21,6 +21,9 @@ use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\CoreBundle\Test\Traits\SymfonyKernelTrait;
 use SolidInvoice\InstallBundle\Installer\Database\Migration;
 use SolidInvoice\SettingsBundle\SystemConfig;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use function date;
 
 trait EnsureApplicationInstalled
@@ -38,10 +41,14 @@ trait EnsureApplicationInstalled
         $schemaTool = new SchemaTool($entityManager);
         $schemaTool->dropDatabase();
 
+        $request = new Request();
+        $request->setSession(new Session(new MockArraySessionStorage()));
+
         // @phpstan-ignore-next-line Ignore this line in PHPStan, since it sees the Migration service as private
         static::getContainer()->get(Migration::class)->migrate();
         // @phpstan-ignore-next-line Ignore this line in PHPStan, since it sees the SystemConfig service as private
         static::getContainer()->get(SystemConfig::class)->set(SystemConfig::CURRENCY_CONFIG_PATH, 'USD');
+        static::getContainer()->get('request_stack')->push($request);
 
         /** @var VersionRepository $version */
         $version = $entityManager->getRepository(Version::class);
