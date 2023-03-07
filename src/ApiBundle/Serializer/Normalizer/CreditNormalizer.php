@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\ApiBundle\Serializer\Normalizer;
 
 use InvalidArgumentException;
-use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Credit;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
