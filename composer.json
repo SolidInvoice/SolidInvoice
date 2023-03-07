@@ -41,7 +41,7 @@
         "egulias/email-validator": "^3.2",
         "friendsofsymfony/jsrouting-bundle": "^2.5",
         "knplabs/knp-menu-bundle": "^3.2",
-        "moneyphp/money": "3.1.x",
+        "moneyphp/money": "3.3.3",
         "mpdf/mpdf": "^8.0",
         "mpociot/vat-calculator": "^3.1",
         "namshi/notificator": "^5.1",
