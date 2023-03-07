@@ -871,19 +871,9 @@ parameters:
 			path: src/InvoiceBundle/Action/RecurringTransition.php
 
 		-
-			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\Transition\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Action/Transition.php
-
-		-
 			message: "#^Negated boolean expression is always false\\.$#"
 			count: 1
 			path: src/InvoiceBundle/Action/Transition.php
-
-		-
-			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\Transition\\\\Send\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Action/Transition/Send.php
 
 		-
 			message: "#^Negated boolean expression is always false\\.$#"
@@ -1069,31 +1059,6 @@ parameters:
 			message: "#^Call to an undefined method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:getUuid\\(\\)\\.$#"
 			count: 1
 			path: src/InvoiceBundle/Tests/Cloner/InvoiceClonerTest.php
-
-		-
-			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Tests\\\\Form\\\\Handler\\\\InvoiceCreateHandlerTest\\:\\:getFormData\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Tests/Form/Handler/InvoiceCreateHandlerTest.php
-
-		-
-			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Tests\\\\Form\\\\Handler\\\\InvoiceCreateHandlerTest\\:\\:getHandlerOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Tests/Form/Handler/InvoiceCreateHandlerTest.php
-
-		-
-			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Tests\\\\Form\\\\Handler\\\\InvoiceEditHandlerTest\\:\\:getFormData\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Tests/Form/Handler/InvoiceEditHandlerTest.php
-
-		-
-			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Tests\\\\Form\\\\Handler\\\\InvoiceEditHandlerTest\\:\\:getHandlerOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Tests/Form/Handler/InvoiceEditHandlerTest.php
-
-		-
-			message: "#^Property SolidInvoice\\\\InvoiceBundle\\\\Tests\\\\Form\\\\Handler\\\\InvoiceEditHandlerTest\\:\\:\\$invoice has no type specified\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Tests/Form/Handler/InvoiceEditHandlerTest.php
 
 		-
 			message: "#^Method SolidInvoice\\\\MailerBundle\\\\Configurator\\\\ConfiguratorInterface\\:\\:configure\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
@@ -1611,16 +1576,6 @@ parameters:
 			path: src/QuoteBundle/Action/Index.php
 
 		-
-			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\Transition\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/QuoteBundle/Action/Transition.php
-
-		-
-			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\Transition\\\\Send\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/QuoteBundle/Action/Transition/Send.php
-
-		-
 			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Cloner\\\\QuoteCloner\\:\\:addItems\\(\\) return type has no value type specified in iterable type Traversable\\.$#"
 			count: 1
 			path: src/QuoteBundle/Cloner/QuoteCloner.php
@@ -1684,31 +1639,6 @@ parameters:
 			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Repository\\\\QuoteRepository\\:\\:getRecentQuotes\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/QuoteBundle/Repository/QuoteRepository.php
-
-		-
-			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Tests\\\\Form\\\\Handler\\\\QuoteCreateHandlerTest\\:\\:getFormData\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/QuoteBundle/Tests/Form/Handler/QuoteCreateHandlerTest.php
-
-		-
-			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Tests\\\\Form\\\\Handler\\\\QuoteCreateHandlerTest\\:\\:getHandlerOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/QuoteBundle/Tests/Form/Handler/QuoteCreateHandlerTest.php
-
-		-
-			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Tests\\\\Form\\\\Handler\\\\QuoteEditHandlerTest\\:\\:getFormData\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/QuoteBundle/Tests/Form/Handler/QuoteEditHandlerTest.php
-
-		-
-			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Tests\\\\Form\\\\Handler\\\\QuoteEditHandlerTest\\:\\:getHandlerOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/QuoteBundle/Tests/Form/Handler/QuoteEditHandlerTest.php
-
-		-
-			message: "#^Property SolidInvoice\\\\QuoteBundle\\\\Tests\\\\Form\\\\Handler\\\\QuoteEditHandlerTest\\:\\:\\$quote has no type specified\\.$#"
-			count: 1
-			path: src/QuoteBundle/Tests/Form/Handler/QuoteEditHandlerTest.php
 
 		-
 			message: "#^Method SolidInvoice\\\\SettingsBundle\\\\Action\\\\Index\\:\\:__invoke\\(\\) has no return type specified\\.$#"

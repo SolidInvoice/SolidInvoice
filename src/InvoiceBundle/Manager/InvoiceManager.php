@@ -118,6 +118,10 @@ class InvoiceManager implements ContainerAwareInterface
             $invoice->addItem($invoiceItem);
         }
 
+        if ($object instanceof Quote) {
+            $invoice->setQuote($object);
+        }
+
         return $invoice;
     }
 

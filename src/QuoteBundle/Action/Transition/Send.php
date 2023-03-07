@@ -13,39 +13,55 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Action\Transition;
 
+use Generator;
+use JsonException;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\QuoteBundle\Entity\Quote;
-use SolidInvoice\QuoteBundle\Manager\QuoteManager;
+use SolidInvoice\QuoteBundle\Exception\InvalidTransitionException;
+use SolidInvoice\QuoteBundle\Mailer\QuoteMailer;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 final class Send
 {
-    /**
-     * @var QuoteManager
-     */
-    private $manager;
+    private QuoteMailer $mailer;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
-    public function __construct(QuoteManager $manager, RouterInterface $router)
+    public function __construct(QuoteMailer $mailer, RouterInterface $router)
     {
-        $this->manager = $manager;
+        $this->mailer = $mailer;
         $this->router = $router;
     }
 
-    public function __invoke(Request $request, Quote $quote)
+    public function __invoke(Request $request, Quote $quote): RedirectResponse
     {
-        $this->manager->send($quote);
-
         $route = $this->router->generate('_quotes_view', ['id' => $quote->getId()]);
 
+        try {
+            $this->mailer->send($quote);
+        } catch (JsonException | InvalidTransitionException | TransportExceptionInterface $e) {
+            return new class($route, $e->getMessage()) extends RedirectResponse implements FlashResponse {
+
+                private string $message;
+
+                public function __construct(string $route, string $message)
+                {
+                    parent::__construct($route);
+                    $this->message = $message;
+                }
+
+                public function getFlash(): Generator
+                {
+                    yield self::FLASH_ERROR => $this->message;
+                }
+            };
+        }
+
         return new class($route) extends RedirectResponse implements FlashResponse {
-            public function getFlash(): \Generator
+            public function getFlash(): Generator
             {
                 yield self::FLASH_SUCCESS => 'quote.transition.action.sent';
             }

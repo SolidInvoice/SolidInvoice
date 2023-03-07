@@ -1,5 +1,5 @@
 services:
-    SolidInvoice\QuoteBundle\Manager\QuoteManager:
+    SolidInvoice\QuoteBundle\Mailer\QuoteMailer:
         autowire: true
         autoconfigure: true
         arguments:
