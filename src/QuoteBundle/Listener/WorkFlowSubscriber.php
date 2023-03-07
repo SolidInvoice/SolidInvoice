@@ -40,6 +40,7 @@ final class WorkFlowSubscriber implements EventSubscriberInterface
     private ManagerRegistry $registry;
 
     private NotificationManager $notification;
+
     private QuoteMailer $quoteMailer;
 
     public function __construct(
