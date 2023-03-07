@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MoneyBundle\Formatter;
 
-use InvalidArgumentException;
+use Money\Currencies\ISOCurrencies;
 use Money\Currency;
+use Money\Formatter\IntlMoneyFormatter;
 use Money\Money;
 use NumberFormatter;
 use SolidInvoice\SettingsBundle\SystemConfig;
@@ -29,9 +30,11 @@ final class MoneyFormatter implements MoneyFormatterInterface
 {
     private string $locale;
 
-    private NumberFormatter $numberFormatter;
+    private \Money\MoneyFormatter $formatter;
 
     private SystemConfig $systemConfig;
+
+    private NumberFormatter $numberFormatter;
 
     /**
      * @throws MethodArgumentNotImplementedException|MethodArgumentValueNotImplementedException
@@ -45,19 +48,14 @@ final class MoneyFormatter implements MoneyFormatterInterface
         }
 
         $this->numberFormatter->setAttribute(NumberFormatter::FRACTION_DIGITS, 2);
+        $this->formatter = new IntlMoneyFormatter($this->numberFormatter, new ISOCurrencies());
         $this->locale = $locale;
         $this->systemConfig = $systemConfig;
     }
 
-    public function format(?Money $money, ?Currency $currency = null): string
+    public function format(Money $money): string
     {
-        if (!$money instanceof Money) {
-            return $this->numberFormatter->formatCurrency(0, $this->getCurrency($currency));
-        }
-
-        $amount = self::toFloat($money);
-
-        return $this->numberFormatter->formatCurrency($amount, $money->getCurrency()->getCode());
+        return $this->formatter->format($money);
     }
 
     public function getCurrencySymbol($currency = null): string
@@ -97,6 +95,9 @@ final class MoneyFormatter implements MoneyFormatterInterface
         return ((float) $amount->getAmount()) / (10 ** 2);
     }
 
+    /**
+     * @param Currency|string|null $currency
+     */
     private function getCurrency($currency): ?string
     {
         if ($currency instanceof Currency) {
@@ -106,7 +107,7 @@ final class MoneyFormatter implements MoneyFormatterInterface
         if (null === $currency) {
             $currency = $this->systemConfig->getCurrency();
 
-            if (!$currency instanceof Currency) {
+            if (! $currency instanceof Currency) {
                 return null;
             }
 
