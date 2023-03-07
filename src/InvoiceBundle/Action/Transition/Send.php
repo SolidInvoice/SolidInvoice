@@ -28,20 +28,11 @@ final class Send
 {
     use SaveableTrait;
 
-    /**
-     * @var StateMachine
-     */
-    private $stateMachine;
+    private StateMachine $stateMachine;
 
-    /**
-     * @var MailerInterface
-     */
-    private $mailer;
+    private MailerInterface $mailer;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
     public function __construct(StateMachine $stateMachine, MailerInterface $mailer, RouterInterface $router)
     {
@@ -50,7 +41,7 @@ final class Send
         $this->router = $router;
     }
 
-    public function __invoke(Request $request, Invoice $invoice)
+    public function __invoke(Request $request, Invoice $invoice): RedirectResponse
     {
         if (Graph::STATUS_PENDING !== $invoice->getStatus() && $this->stateMachine->can($invoice, Graph::TRANSITION_ACCEPT)) {
             $this->stateMachine->apply($invoice, Graph::TRANSITION_ACCEPT);

@@ -27,15 +27,19 @@ use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Workflow\Definition;
 use Symfony\Component\Workflow\MarkingStore\MethodMarkingStore;
 use Symfony\Component\Workflow\StateMachine;
 use Symfony\Component\Workflow\Transition;
 
-class InvoiceCreateHandlerTest extends FormHandlerTestCase
+/**
+ * @covers \SolidInvoice\InvoiceBundle\Form\Handler\InvoiceCreateHandler
+ */
+final class InvoiceCreateHandlerTest extends FormHandlerTestCase
 {
-    public function getHandler()
+    public function getHandler(): InvoiceCreateHandler
     {
         $dispatcher = new EventDispatcher();
         $notification = M::mock(NotificationManager::class);
@@ -69,16 +73,17 @@ class InvoiceCreateHandlerTest extends FormHandlerTestCase
             ->withAnyArgs()
             ->andReturn('/invoices/1');
 
-        $handler = new InvoiceCreateHandler($stateMachine, $recurringStateMachine, $router);
+        $handler = new InvoiceCreateHandler($stateMachine, $recurringStateMachine, $router, M::mock(MailerInterface::class));
         $handler->setDoctrine($this->registry);
 
         return $handler;
     }
 
+    /**
+     * @param Invoice $invoice
+     */
     protected function assertOnSuccess(?Response $response, FormRequest $form, $invoice): void
     {
-        /** @var Invoice $invoice */
-
         self::assertSame(Graph::STATUS_DRAFT, $invoice->getStatus());
         self::assertInstanceOf(RedirectResponse::class, $response);
         self::assertInstanceOf(FlashResponse::class, $response);
@@ -91,6 +96,9 @@ class InvoiceCreateHandlerTest extends FormHandlerTestCase
         self::assertInstanceOf(Template::class, $formRequest->getResponse());
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function getHandlerOptions(): array
     {
         return [
@@ -101,6 +109,9 @@ class InvoiceCreateHandlerTest extends FormHandlerTestCase
         ];
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getFormData(): array
     {
         return [

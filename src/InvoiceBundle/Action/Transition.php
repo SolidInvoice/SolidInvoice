@@ -42,7 +42,7 @@ final class Transition
         $this->stateMachine = $stateMachine;
     }
 
-    public function __invoke(Request $request, string $action, Invoice $invoice)
+    public function __invoke(Request $request, string $action, Invoice $invoice): RedirectResponse
     {
         if (! $this->stateMachine->can($invoice, $action)) {
             throw new InvalidTransitionException($action);
