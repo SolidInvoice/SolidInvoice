@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MoneyBundle\Formatter;
 
+use InvalidArgumentException;
 use Money\Currency;
 use Money\Money;
 use NumberFormatter;
@@ -48,8 +49,12 @@ final class MoneyFormatter implements MoneyFormatterInterface
         $this->systemConfig = $systemConfig;
     }
 
-    public function format(Money $money): string
+    public function format(?Money $money, ?Currency $currency = null): string
     {
+        if (!$money instanceof Money) {
+            return $this->numberFormatter->formatCurrency(0, $this->getCurrency($currency));
+        }
+
         $amount = self::toFloat($money);
 
         return $this->numberFormatter->formatCurrency($amount, $money->getCurrency()->getCode());
@@ -57,18 +62,10 @@ final class MoneyFormatter implements MoneyFormatterInterface
 
     public function getCurrencySymbol($currency = null): string
     {
-        if ($currency instanceof Currency) {
-            $currency = $currency->getCode();
-        }
+        $currency = $this->getCurrency($currency);
 
         if (null === $currency) {
-            $currency = $this->systemConfig->getCurrency();
-
-            if (! $currency instanceof Currency) {
-                return '';
-            }
-
-            $currency = $currency->getCode();
+            return '';
         }
 
         return Currencies::getSymbol($currency, $this->locale);
@@ -98,5 +95,24 @@ final class MoneyFormatter implements MoneyFormatterInterface
     public static function toFloat(Money $amount): float
     {
         return ((float) $amount->getAmount()) / (10 ** 2);
+    }
+
+    private function getCurrency($currency): ?string
+    {
+        if ($currency instanceof Currency) {
+            $currency = $currency->getCode();
+        }
+
+        if (null === $currency) {
+            $currency = $this->systemConfig->getCurrency();
+
+            if (!$currency instanceof Currency) {
+                return null;
+            }
+
+            $currency = $currency->getCode();
+        }
+
+        return $currency;
     }
 }

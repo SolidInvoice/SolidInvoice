@@ -87,7 +87,7 @@
                 <div class="card-body">
                     <div class="small-box bg-green">
                         <div class="inner">
-                            <h3>{{ total_income(client)|formatCurrency }}</h3>
+                            <h3>{{ total_income(client)|formatCurrency(client.currency) }}</h3>
 
                             <p>{{ "client.stats.income"|trans }}</p>
                         </div>
@@ -100,7 +100,7 @@
 
                     <div class="small-box bg-red">
                         <div class="inner">
-                            <h3>{{ total_outstanding(client)|formatCurrency }}</h3>
+                            <h3>{{ total_outstanding(client)|formatCurrency(client.currency) }}</h3>
 
                             <p>{{ "client.stats.outstanding"|trans }}</p>
                         </div>
