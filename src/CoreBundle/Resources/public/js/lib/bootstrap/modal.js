@@ -224,7 +224,9 @@
         },
 
         removeLoading: function () {
-            this.$loading.remove();
+            if (this.$loading) {
+                this.$loading.remove();
+            }
             this.$loading = null;
             this.isLoading = false;
         },
