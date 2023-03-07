@@ -27,6 +27,7 @@ use SolidWorx\FormHandler\FormRequest;
 use SolidWorx\FormHandler\Options;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -92,7 +93,7 @@ class PaymentMethodSettingsHandler implements FormHandlerInterface, FormHandlerS
 
         $session = $form->getRequest()->getSession();
 
-        if ($session) {
+        if ($session instanceof Session) {
             $session->getFlashBag()->add(FlashResponse::FLASH_SUCCESS, 'payment.method.updated');
         }
 

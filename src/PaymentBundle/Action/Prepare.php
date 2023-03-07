@@ -37,6 +37,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -158,7 +159,11 @@ final class Prepare
                 }
 
                 if (! empty($invalid)) {
-                    $request->getSession()->getFlashbag()->add(FlashResponse::FLASH_DANGER, $invalid);
+                    $session = $request->getSession();
+
+                    if ($session instanceof Session) {
+                        $session->getFlashbag()->add(FlashResponse::FLASH_DANGER, $invalid);
+                    }
 
                     return new Template(
                         '@SolidInvoicePayment/Payment/create.html.twig',

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\ApiBundle\Serializer\Normalizer;
 
 use InvalidArgumentException;
-use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Credit;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -48,7 +47,7 @@ class CreditNormalizer implements NormalizerInterface, DenormalizerInterface
         return Credit::class === $type;
     }
 
-    public function normalize($object, $format = null, array $context = []): Money
+    public function normalize($object, $format = null, array $context = []): object
     {
         /** @var Credit $object */
         return $object->getValue();
