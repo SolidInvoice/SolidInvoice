@@ -28,9 +28,9 @@ export default View.extend({
         this.listenTo(this.model, 'sync', this.render);
     },
     showLoader () {
-        this.$el.modal('loading')
+        this.$el.modalmanager('loading');
     },
     hideLoader () {
-        this.$el.modal('removeLoading')
+        this.$el.modalmanager('removeLoading');
     }
 });

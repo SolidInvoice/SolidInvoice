@@ -40,12 +40,12 @@ export default Module.extend({
 
                 const invoiceView = module._getInvoiceView(fieldData);
 
-                this.hideLoader();
+                clientSelectView.hideLoader();
 
                 module.app.showChildView('invoiceRows', invoiceView);
 
                 // eslint-disable-next-line
-                this.$el.find(this.regions.invoiceForm).attr('action', Router.generate('_invoices_create', { 'client': clientOptions.client }));
+                clientSelectView.$el.find(module.regions.invoiceForm).attr('action', Router.generate('_invoices_create', { 'client': clientOptions.client }));
                 $('.currency-view').html(clientOptions.currency);
 
                 module.app.initialize(module.app.options);
