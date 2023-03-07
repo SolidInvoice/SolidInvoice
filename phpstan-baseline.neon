@@ -1,11 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Return type \\(Money\\\\Money\\) of method SolidInvoice\\\\ApiBundle\\\\Serializer\\\\Normalizer\\\\CreditNormalizer\\:\\:normalize\\(\\) should be compatible with return type \\(array\\|bool\\|float\\|int\\|string\\|null\\) of method Symfony\\\\Component\\\\Serializer\\\\Normalizer\\\\NormalizerInterface\\:\\:normalize\\(\\)$#"
-			count: 1
-			path: src/ApiBundle/Serializer/Normalizer/CreditNormalizer.php
-
-		-
 			message: "#^Method SolidInvoice\\\\ApiBundle\\\\Test\\\\ApiTestCase\\:\\:requestDelete\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/ApiBundle/Test/ApiTestCase.php
@@ -1354,11 +1349,6 @@ parameters:
 			message: "#^Property SolidInvoice\\\\PaymentBundle\\\\Factory\\\\PaymentFactories\\:\\:\\$forms type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/PaymentBundle/Factory/PaymentFactories.php
-
-		-
-			message: "#^If condition is always true\\.$#"
-			count: 1
-			path: src/PaymentBundle/Form/Handler/PaymentMethodSettingsHandler.php
 
 		-
 			message: "#^Negated boolean expression is always false\\.$#"

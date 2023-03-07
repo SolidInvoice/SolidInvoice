@@ -48,7 +48,7 @@ class CreditNormalizer implements NormalizerInterface, DenormalizerInterface
         return Credit::class === $type;
     }
 
-    public function normalize($object, $format = null, array $context = []): Money
+    public function normalize($object, $format = null, array $context = []): object
     {
         /** @var Credit $object */
         return $object->getValue();
