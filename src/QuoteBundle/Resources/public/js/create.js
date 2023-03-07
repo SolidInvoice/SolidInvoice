@@ -25,6 +25,7 @@ export default Module.extend({
     _renderClientSelect (options) {
         const model = new Backbone.Model(options.client),
             viewOptions = { type: 'quote', model: model, 'hideLoader': false },
+            module = this,
             clientSelectView = new ClientSelectView(merge(options, viewOptions));
 
         clientSelectView.on('currency:update', (clientOptions) => {
@@ -33,21 +34,21 @@ export default Module.extend({
             $.getJSON(
                 Router.generate('_quotes_get_fields', { 'currency': clientOptions.currency })
             ).done((fieldData) => {
-                this.collection.each((m) => {
+                module.collection.each((m) => {
                     m.set('fields', fieldData);
                 });
 
-                const quoteView = this._getQuoteView(fieldData);
+                const quoteView = module._getQuoteView(fieldData);
 
-                this.hideLoader();
+                clientSelectView.hideLoader();
 
-                this.app.showChildView('quoteRows', quoteView);
+                module.app.showChildView('quoteRows', quoteView);
 
                 // eslint-disable-next-line
-                this.$el.find(this.regions.quoteForm).attr('action', Router.generate('_quotes_create', { 'client': clientOptions.client }));
+                clientSelectView.$el.find(module.regions.quoteForm).attr('action', Router.generate('_quotes_create', { 'client': clientOptions.client }));
                 $('.currency-view').html(clientOptions.currency);
 
-                this.app.initialize(this.app.options);
+                module.app.initialize(module.app.options);
             });
         });
 
