@@ -48,7 +48,7 @@ class MoneyFormatterExtension extends AbstractExtension
     public function getFilters(): array
     {
         return [
-            new TwigFilter('formatCurrency', function (?Money $money): string {
+            new TwigFilter('formatCurrency', function (?Money $money, ?Currency $currency = null): string {
                 if (null === $money) {
                     if (null !== $currency) {
                         return $this->formatter->format(new Money(0, $currency));
