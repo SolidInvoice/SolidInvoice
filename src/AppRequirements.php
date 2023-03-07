@@ -15,8 +15,8 @@ namespace SolidInvoice;
 
 use Symfony\Requirements\SymfonyRequirements;
 use function sprintf;
-use function str_starts_with;
-use function version_compare;
+use const PHP_VERSION;
+use const PHP_VERSION_ID;
 
 /**
  * @codeCoverageIgnore
@@ -25,7 +25,16 @@ class AppRequirements extends SymfonyRequirements
 {
     public function __construct()
     {
-        parent::__construct(dirname(__DIR__), '5.0.0');
+        $this->addRequirement(
+            PHP_VERSION_ID >= 70415,
+            sprintf('PHP version must be at least %s (%s installed)', '7.4.15', PHP_VERSION),
+            sprintf( 'You are running PHP version "<strong>%s</strong>", but SolidInvoice needs at least PHP "<strong>%s</strong>" to run.
+            Before using SolidInvoice, upgrade your PHP installation, preferably to the latest version.',
+                '7.4.15', PHP_VERSION),
+            sprintf('Install PHP %s or newer (installed version is %s)', '7.4.15', PHP_VERSION)
+        );
+
+        parent::__construct();
 
         $this->addRequirement(
             extension_loaded('openssl'),
@@ -46,33 +55,10 @@ class AppRequirements extends SymfonyRequirements
         );
     }
 
-    public function addRequirement($fulfilled, $testMessage, $helpHtml, $helpText = null): void
-    {
-        if (str_starts_with($testMessage, 'PHP version must be at least ')) {
-            $installedPhpVersion = PHP_VERSION;
-            $phpVersion = '7.4.15';
-
-            parent::addRequirement(
-                version_compare($installedPhpVersion, $phpVersion, '>='),
-                sprintf('PHP version must be at least %s (%s installed)', $phpVersion, $installedPhpVersion),
-                sprintf(
-                    'You are running PHP version "<strong>%s</strong>", but SolidInvoice needs at least PHP "<strong>%s</strong>" to run.
-            Before using SolidInvoice, upgrade your PHP installation, preferably to the latest version.',
-                    $installedPhpVersion,
-                    $phpVersion
-                ),
-                sprintf('Install PHP %s or newer (installed version is %s)', $phpVersion, $installedPhpVersion)
-            );
-            return;
-        }
-
-        parent::addRequirement($fulfilled, $testMessage, $helpHtml, $helpText);
-    }
-
     public function addRecommendation($fulfilled, $testMessage, $helpHtml, $helpText = null): void
     {
         if ('PDO should be installed' === $testMessage || preg_match('#PDO should have some drivers installed#', $testMessage)) {
-            parent::addRequirement($fulfilled, $testMessage, $helpHtml, $helpText);
+            $this->addRequirement($fulfilled, $testMessage, $helpHtml, $helpText);
             return;
         }
 
