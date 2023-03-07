@@ -92,7 +92,7 @@
                                 <dt>{{ "quote.title"|trans({"%id%" : ''}) }}</dt>
                                 <dd>{{ quote.id }}</dd>
                                 <dt>{{ "quote.total"|trans }}</dt>
-                                <dd>{{ quote.total|formatCurrency }}</dd>
+                                <dd>{{ quote.total|formatCurrency(quote.client.currency) }}</dd>
                                 <dt>{{ "quote.created"|trans }}</dt>
                                 <dd>{{ quote.created | date }}</dd>
                             </dl>
@@ -123,7 +123,7 @@
                                         {{ item.description }}
                                     </td>
                                     <td class="column-price">
-                                        {{ item.price|formatCurrency }}
+                                        {{ item.price|formatCurrency(quote.client.currency) }}
                                     </td>
                                     <td class="column-qty">
                                         {{ item.qty }}
@@ -134,7 +134,7 @@
                                         </td>
                                     {% endif %}
                                     <td class="column-total text-right">
-                                        {{ item.total|formatCurrency }}
+                                        {{ item.total|formatCurrency(quote.client.currency) }}
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -147,7 +147,7 @@
                                 </td>
                                 <td class="thick-line text-right">
                                     <div class="quote-sub-total">
-                                        {{ quote.baseTotal|formatCurrency }}
+                                        {{ quote.baseTotal|formatCurrency(quote.client.currency) }}
                                     </div>
                                 </td>
                             </tr>
@@ -159,7 +159,7 @@
                                     </td>
                                     <td class="no-line text-right">
                                         <span class="text-error quote-tax">
-                                            {{ quote.tax|formatCurrency }}
+                                            {{ quote.tax|formatCurrency(quote.client.currency) }}
                                         </span>
                                     </td>
                                 </tr>
@@ -173,7 +173,7 @@
                                     </td>
                                     <td class="no-line text-right">
                                         <span class="text-danger quote-discount">
-                                            -{{ discount(quote)|formatCurrency }}
+                                            -{{ discount(quote)|formatCurrency(quote.client.currency) }}
                                         </span>
                                     </td>
                                 </tr>
@@ -187,7 +187,7 @@
                                 </td>
                                 <td class="no-line text-right">
                                     <div class="quote-total">
-                                        {{ quote.total|formatCurrency }}
+                                        {{ quote.total|formatCurrency(quote.client.currency) }}
                                     </div>
                                 </td>
                             </tr>
