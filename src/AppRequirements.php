@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice;
 
-use Symfony\Requirements\SymfonyRequirements;
-use function sprintf;
 use const PHP_VERSION;
 use const PHP_VERSION_ID;
+use Symfony\Requirements\SymfonyRequirements;
+use function sprintf;
 
 /**
  * @codeCoverageIgnore
@@ -28,9 +28,12 @@ class AppRequirements extends SymfonyRequirements
         $this->addRequirement(
             PHP_VERSION_ID >= 70415,
             sprintf('PHP version must be at least %s (%s installed)', '7.4.15', PHP_VERSION),
-            sprintf( 'You are running PHP version "<strong>%s</strong>", but SolidInvoice needs at least PHP "<strong>%s</strong>" to run.
+            sprintf(
+                'You are running PHP version "<strong>%s</strong>", but SolidInvoice needs at least PHP "<strong>%s</strong>" to run.
             Before using SolidInvoice, upgrade your PHP installation, preferably to the latest version.',
-                '7.4.15', PHP_VERSION),
+                '7.4.15',
+                PHP_VERSION
+            ),
             sprintf('Install PHP %s or newer (installed version is %s)', '7.4.15', PHP_VERSION)
         );
 
