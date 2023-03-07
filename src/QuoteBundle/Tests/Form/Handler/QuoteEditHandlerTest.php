@@ -25,20 +25,25 @@ use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Form\Handler\QuoteEditHandler;
 use SolidInvoice\QuoteBundle\Listener\WorkFlowSubscriber;
+use SolidInvoice\QuoteBundle\Mailer\QuoteMailer;
 use SolidInvoice\QuoteBundle\Model\Graph;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Workflow\Definition;
 use Symfony\Component\Workflow\MarkingStore\MethodMarkingStore;
 use Symfony\Component\Workflow\StateMachine;
 use Symfony\Component\Workflow\Transition;
 
-class QuoteEditHandlerTest extends FormHandlerTestCase
+/**
+ * @covers \SolidInvoice\QuoteBundle\Form\Handler\QuoteEditHandler
+ */
+final class QuoteEditHandlerTest extends FormHandlerTestCase
 {
-    private $quote;
+    private Quote $quote;
 
     protected function setUp(): void
     {
@@ -55,7 +60,7 @@ class QuoteEditHandlerTest extends FormHandlerTestCase
         $this->em->flush();
     }
 
-    public function getHandler()
+    public function getHandler(): QuoteEditHandler
     {
         $dispatcher = new EventDispatcher();
         $notification = M::mock(NotificationManager::class);
@@ -73,12 +78,6 @@ class QuoteEditHandlerTest extends FormHandlerTestCase
             'invoice'
         );
 
-        $dispatcher = new EventDispatcher();
-        $notification = M::mock(NotificationManager::class);
-        $notification->shouldReceive('sendNotification')
-            ->zeroOrMoreTimes();
-
-        $dispatcher->addSubscriber(new WorkFlowSubscriber($this->registry, M::mock(InvoiceManager::class), $invoiceStateMachine, $notification));
         $stateMachine = new StateMachine(
             new Definition(
                 ['draft', 'pending'],
@@ -87,6 +86,21 @@ class QuoteEditHandlerTest extends FormHandlerTestCase
             new MethodMarkingStore(true, 'status'),
             $dispatcher,
             'quote'
+        );
+
+        $dispatcher = new EventDispatcher();
+        $notification = M::mock(NotificationManager::class);
+        $notification->shouldReceive('sendNotification')
+            ->zeroOrMoreTimes();
+
+        $dispatcher->addSubscriber(
+            new WorkFlowSubscriber(
+                $this->registry,
+                M::mock(InvoiceManager::class),
+                $invoiceStateMachine,
+                $notification,
+                new QuoteMailer($stateMachine, M::mock(MailerInterface::class), $notification)
+            )
         );
 
         $router = M::mock(RouterInterface::class);
@@ -101,10 +115,11 @@ class QuoteEditHandlerTest extends FormHandlerTestCase
         return $handler;
     }
 
+    /**
+     * @param Quote $quote
+     */
     protected function assertOnSuccess(?Response $response, FormRequest $form, $quote): void
     {
-        /** @var Quote $quote */
-
         self::assertSame(Graph::STATUS_PENDING, $quote->getStatus());
         self::assertSame(20.0, $quote->getDiscount()->getValue());
         self::assertInstanceOf(RedirectResponse::class, $response);
@@ -118,6 +133,9 @@ class QuoteEditHandlerTest extends FormHandlerTestCase
         self::assertInstanceOf(Template::class, $formRequest->getResponse());
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getFormData(): array
     {
         return [
@@ -131,6 +149,9 @@ class QuoteEditHandlerTest extends FormHandlerTestCase
         ];
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function getHandlerOptions(): array
     {
         return [

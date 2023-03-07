@@ -11,33 +11,26 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace SolidInvoice\QuoteBundle\Manager;
+namespace SolidInvoice\QuoteBundle\Mailer;
 
+use JsonException;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\QuoteBundle\Email\QuoteEmail;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Exception\InvalidTransitionException;
 use SolidInvoice\QuoteBundle\Model\Graph;
 use SolidInvoice\QuoteBundle\Notification\QuoteStatusNotification;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Workflow\StateMachine;
 
-class QuoteManager
+final class QuoteMailer
 {
-    /**
-     * @var StateMachine
-     */
-    private $stateMachine;
+    private StateMachine $stateMachine;
 
-    /**
-     * @var NotificationManager
-     */
-    private $notification;
+    private NotificationManager $notification;
 
-    /**
-     * @var MailerInterface
-     */
-    private $mailer;
+    private MailerInterface $mailer;
 
     public function __construct(
         StateMachine $stateMachine,
@@ -50,14 +43,14 @@ class QuoteManager
     }
 
     /**
-     * @throws InvalidTransitionException
+     * @throws InvalidTransitionException|JsonException
      */
-    private function applyTransition(Quote $quote, string $transition): bool
+    private function applyTransition(Quote $quote): void
     {
-        if ($this->stateMachine->can($quote, $transition)) {
+        if ($this->stateMachine->can($quote, Graph::TRANSITION_SEND)) {
             $oldStatus = $quote->getStatus();
 
-            $this->stateMachine->apply($quote, $transition);
+            $this->stateMachine->apply($quote, Graph::TRANSITION_SEND);
 
             $newStatus = $quote->getStatus();
 
@@ -65,26 +58,24 @@ class QuoteManager
                 'quote' => $quote,
                 'old_status' => $oldStatus,
                 'new_status' => $newStatus,
-                'transition' => $transition,
+                'transition' => Graph::TRANSITION_SEND,
             ];
 
             $notification = new QuoteStatusNotification($parameters);
 
             $this->notification->sendNotification('quote_status_update', $notification);
-
-            return true;
         }
 
-        throw new InvalidTransitionException($transition);
+        throw new InvalidTransitionException(Graph::TRANSITION_SEND);
     }
 
     /**
-     * @throws InvalidTransitionException
+     * @throws InvalidTransitionException|TransportExceptionInterface|JsonException
      */
     public function send(Quote $quote): Quote
     {
         if (Graph::STATUS_DRAFT === $quote->getStatus()) {
-            $this->applyTransition($quote, Graph::TRANSITION_SEND);
+            $this->applyTransition($quote);
         }
 
         $this->mailer->send(new QuoteEmail($quote));

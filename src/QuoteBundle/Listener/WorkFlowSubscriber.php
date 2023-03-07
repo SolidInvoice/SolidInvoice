@@ -14,50 +14,52 @@ declare(strict_types=1);
 namespace SolidInvoice\QuoteBundle\Listener;
 
 use Doctrine\Persistence\ManagerRegistry;
+use JsonException;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\InvoiceBundle\Model\Graph as InvoiceGraph;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\QuoteBundle\Exception\InvalidTransitionException;
+use SolidInvoice\QuoteBundle\Mailer\QuoteMailer;
 use SolidInvoice\QuoteBundle\Model\Graph as QuoteGraph;
 use SolidInvoice\QuoteBundle\Notification\QuoteStatusNotification;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Workflow\Event\Event;
 use Symfony\Component\Workflow\StateMachine;
 
 /**
  * @see \SolidInvoice\QuoteBundle\Tests\Listener\WorkFlowSubscriberTest
  */
-class WorkFlowSubscriber implements EventSubscriberInterface
+final class WorkFlowSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var InvoiceManager
-     */
-    private $invoiceManager;
+    private InvoiceManager $invoiceManager;
 
-    /**
-     * @var StateMachine
-     */
-    private $invoiceStateMachine;
+    private StateMachine $invoiceStateMachine;
 
-    /**
-     * @var ManagerRegistry
-     */
-    private $registry;
+    private ManagerRegistry $registry;
 
-    /**
-     * @var NotificationManager
-     */
-    private $notification;
+    private NotificationManager $notification;
+    private QuoteMailer $quoteMailer;
 
-    public function __construct(ManagerRegistry $registry, InvoiceManager $invoiceManager, StateMachine $invoiceStateMachine, NotificationManager $notification)
-    {
+    public function __construct(
+        ManagerRegistry $registry,
+        InvoiceManager $invoiceManager,
+        StateMachine $invoiceStateMachine,
+        NotificationManager $notification,
+        QuoteMailer $quoteMailer
+    ) {
         $this->invoiceManager = $invoiceManager;
         $this->invoiceStateMachine = $invoiceStateMachine;
         $this->registry = $registry;
         $this->notification = $notification;
+        $this->quoteMailer = $quoteMailer;
     }
 
-    public static function getSubscribedEvents()
+    /**
+     * @return array<string, string>
+     */
+    public static function getSubscribedEvents(): array
     {
         return [
             'workflow.quote.entered.accepted' => 'onQuoteAccepted',
@@ -74,6 +76,9 @@ class WorkFlowSubscriber implements EventSubscriberInterface
         $this->invoiceStateMachine->apply($invoice, InvoiceGraph::TRANSITION_NEW);
     }
 
+    /**
+     * @throws JsonException|InvalidTransitionException|TransportExceptionInterface
+     */
     public function onWorkflowTransitionApplied(Event $event): void
     {
         /** @var Quote $quote */
@@ -87,6 +92,10 @@ class WorkFlowSubscriber implements EventSubscriberInterface
 
         $em->persist($quote);
         $em->flush();
+
+        if (null !== ($transition = $event->getTransition()) && QuoteGraph::TRANSITION_SEND === $transition->getName()) {
+            $this->quoteMailer->send($quote);
+        }
 
         if (QuoteGraph::STATUS_NEW !== $quote->getStatus()) {
             $this->notification->sendNotification('quote_status_update', new QuoteStatusNotification(['quote' => $quote]));

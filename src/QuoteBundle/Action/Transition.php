@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Action;
 
+use Generator;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Exception\InvalidTransitionException;
@@ -20,20 +21,13 @@ use SolidInvoice\QuoteBundle\Model\Graph;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Workflow\Marking;
 use Symfony\Component\Workflow\StateMachine;
 
 final class Transition
 {
-    /**
-     * @var StateMachine
-     */
-    private $stateMachine;
+    private StateMachine $stateMachine;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
     public function __construct(StateMachine $stateMachine, RouterInterface $router)
     {
@@ -41,13 +35,15 @@ final class Transition
         $this->router = $router;
     }
 
-    public function __invoke(Request $request, string $action, Quote $quote)
+    /**
+     * @throws InvalidTransitionException
+     */
+    public function __invoke(Request $request, string $action, Quote $quote): RedirectResponse
     {
         if (! $this->stateMachine->can($quote, $action)) {
             throw new InvalidTransitionException($action);
         }
 
-        /** @var Marking $marking */
         $marking = $this->stateMachine->apply($quote, $action);
 
         $route = $this->router->generate('_quotes_view', ['id' => $quote->getId()]);
@@ -57,10 +53,7 @@ final class Transition
         }
 
         return new class($action, $route) extends RedirectResponse implements FlashResponse {
-            /**
-             * @var string
-             */
-            private $action;
+            private string $action;
 
             public function __construct(string $action, string $route)
             {
@@ -68,7 +61,7 @@ final class Transition
                 parent::__construct($route);
             }
 
-            public function getFlash(): \Generator
+            public function getFlash(): Generator
             {
                 yield self::FLASH_SUCCESS => 'quote.transition.action.' . $this->action;
             }

@@ -22,13 +22,18 @@ use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Listener\WorkFlowSubscriber;
+use SolidInvoice\QuoteBundle\Mailer\QuoteMailer;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Workflow\Event\Event;
 use Symfony\Component\Workflow\Marking;
 use Symfony\Component\Workflow\StateMachine;
 use Symfony\Component\Workflow\Transition;
 use Symfony\Component\Workflow\WorkflowInterface;
 
-class WorkFlowSubscriberTest extends TestCase
+/**
+ * @covers \SolidInvoice\QuoteBundle\Listener\WorkFlowSubscriber
+ */
+final class WorkFlowSubscriberTest extends TestCase
 {
     use DoctrineTestTrait;
     use MockeryPHPUnitIntegration;
@@ -56,7 +61,13 @@ class WorkFlowSubscriberTest extends TestCase
         $notification->shouldReceive('sendNotification')
             ->zeroOrMoreTimes();
 
-        $subscriber = new WorkFlowSubscriber($this->registry, $invoiceManager, $stateMachine, $notification);
+        $subscriber = new WorkFlowSubscriber(
+            $this->registry,
+            $invoiceManager,
+            $stateMachine,
+            $notification,
+            new QuoteMailer($stateMachine, M::mock(MailerInterface::class), $notification)
+        );
 
         $subscriber->onQuoteAccepted(new Event($quote, new Marking(['pending' => 1]), new Transition('archive', 'pending', 'archived'), M::mock(WorkflowInterface::class)));
     }
@@ -72,7 +83,13 @@ class WorkFlowSubscriberTest extends TestCase
         $notification->shouldReceive('sendNotification')
             ->zeroOrMoreTimes();
 
-        $subscriber = new WorkFlowSubscriber($this->registry, $invoiceManager, $stateMachine, $notification);
+        $subscriber = new WorkFlowSubscriber(
+            $this->registry,
+            $invoiceManager,
+            $stateMachine,
+            $notification,
+            new QuoteMailer($stateMachine, M::mock(MailerInterface::class), $notification)
+        );
 
         $subscriber->onWorkflowTransitionApplied(new Event($quote, new Marking(['pending' => 1]), new Transition('archive', 'pending', 'archived'), M::mock(WorkflowInterface::class)));
 
