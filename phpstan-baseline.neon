@@ -1106,16 +1106,6 @@ parameters:
 			path: src/MailerBundle/Factory/MailerConfigFactory.php
 
 		-
-			message: "#^Property SolidInvoice\\\\MailerBundle\\\\Factory\\\\MailerConfigFactory\\:\\:\\$config has no type specified\\.$#"
-			count: 1
-			path: src/MailerBundle/Factory/MailerConfigFactory.php
-
-		-
-			message: "#^Property SolidInvoice\\\\MailerBundle\\\\Factory\\\\MailerConfigFactory\\:\\:\\$inner has no type specified\\.$#"
-			count: 1
-			path: src/MailerBundle/Factory/MailerConfigFactory.php
-
-		-
 			message: "#^Method SolidInvoice\\\\MoneyBundle\\\\Calculator\\:\\:calculateDiscount\\(\\) has parameter \\$entity with no type specified\\.$#"
 			count: 1
 			path: src/MoneyBundle/Calculator.php
