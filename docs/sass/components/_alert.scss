@@ -1,0 +1,38 @@
+@mixin alert($wrapper-class, $background-color, $title-color) {
+  &.#{$wrapper-class} {
+    background: $background-color;
+  }
+
+  &.#{$wrapper-class} {
+    .admonition-title {
+      background: $title-color;
+    }
+  }
+}
+
+.admonition {
+  color: #404040;
+
+  p {
+    padding: 1em;
+  }
+
+  .admonition-title {
+    @include icon;
+    &:before {
+      content: "\f06a";
+      margin-right: 0.2em;
+    }
+
+    color: #FFFFFF;
+    padding: 0.2em 1em;
+    font-weight: bold;
+    margin: 0;
+  }
+
+  @include alert('note', #E7F2fA, #6AB0DE);
+  @include alert('tip', #dbfaf4, #1abc9c);
+  @include alert('warning', #ffedcc, #f0b37e);
+  @include alert('attention', #ffedcc, #f0b37e);
+  @include alert('danger', darken(#fdf3f2, 5), darken(#f29f97, 15));
+}

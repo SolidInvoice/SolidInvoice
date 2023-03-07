@@ -1,0 +1,31 @@
+<footer id="footer">
+    {%- if show_copyright %}
+        <p class="copyright">
+            {%- if hasdoc('copyright') %}
+            {% trans path=pathto('copyright'), copyright=copyright|e %}&copy; <a href="{{ path }}"> {{ copyright }}</a>{% endtrans %}
+            {%- else %}
+                {% trans copyright=copyright|e %}&copy; {{ copyright }}{% endtrans %}
+            {%- endif %}
+        </p>
+    {%- endif %}
+
+    {%- if build_id and build_url %}
+        {% trans build_url=build_url, build_id=build_id %}
+            <span class="build">
+              Build
+                <a href="{{ build_url }}">{{ build_id }}</a>.
+            </span>
+        {% endtrans %}
+    {%- elif commit %}
+        {% trans commit=commit %}
+            <span class="commit">
+          Revision <code>{{ commit }}</code>.
+        </span>
+    {% endtrans %}
+    {%- elif last_updated %}
+        {% trans last_updated=last_updated|e %}Last updated on {{ last_updated }}.{% endtrans %}
+    {%- endif %}
+
+    {%- block extrafooter %} {% endblock %}
+
+</footer>
