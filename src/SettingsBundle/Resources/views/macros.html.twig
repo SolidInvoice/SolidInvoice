@@ -8,31 +8,14 @@
  #}
 
 {% macro settings_section(section, settings, form) %}
-
-    {% import _self as _macro %}
-
-    {% set form_extras %}
-        {% for parent, setting in settings %}
-            {% if setting is iterable %}
-                {{ _macro.settings_section(parent, setting, form[section]) }}
-            {% endif %}
-        {% endfor %}
-    {% endset %}
-
-    {% if not form[section].rendered %}
-        <div class="card mb-3">
-            <div class="card-header">
-                <h3 class="card-title">
-                    {{ section|replace({"_" : " "})|title }}
-                </h3>
-            </div>
-            <div class="card-body">
-
-                {{ form_widget(form[section]) }}
-            </div>
+    <div class="card mb-3">
+        <div class="card-header">
+            <h3 class="card-title">
+                {{ section|replace({"_" : " "})|title }}
+            </h3>
         </div>
-    {% endif %}
-
-    {{ form_extras }}
-
+        <div class="card-body">
+            {{ form_widget(form[section]) }}
+        </div>
+    </div>
 {% endmacro %}
