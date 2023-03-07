@@ -19,6 +19,7 @@ use SolidInvoice\MailerBundle\Configurator\ConfiguratorInterface;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mailer\Transport\TransportInterface;
+use function json_decode;
 
 /**
  * @see \SolidInvoice\MailerBundle\Tests\Factory\MailerConfigFactoryTest
@@ -27,14 +28,14 @@ final class MailerConfigFactory
 {
     private const CONFIG_KEY = 'email/sending_options/provider';
 
-    private $config;
+    private SystemConfig $config;
 
-    private $inner;
+    private Transport $inner;
 
     /**
      * @var ConfiguratorInterface[]
      */
-    private $transports;
+    private iterable $transports;
 
     public function __construct(Transport $inner, SystemConfig $config, iterable $transports)
     {
@@ -48,7 +49,13 @@ final class MailerConfigFactory
      */
     public function fromStrings(): TransportInterface
     {
-        $config = \json_decode($this->config->get(self::CONFIG_KEY), true, 512, JSON_THROW_ON_ERROR);
+        $config = $this->config->get(self::CONFIG_KEY);
+
+        if (null === $config) {
+            return $this->inner->fromString('null://null');
+        }
+
+        $config = json_decode($this->config->get(self::CONFIG_KEY), true, 512, JSON_THROW_ON_ERROR);
         $provider = $config['provider'] ?? '';
 
         foreach ($this->transports as $transport) {

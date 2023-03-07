@@ -20,6 +20,7 @@ use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
+use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Form\Handler\InvoiceEditHandler;
 use SolidInvoice\InvoiceBundle\Listener\WorkFlowSubscriber;
@@ -92,7 +93,12 @@ final class InvoiceEditHandlerTest extends FormHandlerTestCase
             ->withAnyArgs()
             ->andReturn('/invoices/1');
 
-        $handler = new InvoiceEditHandler($stateMachine, $recurringStateMachine, $router, M::mock(MailerInterface::class));
+        $mailer = M::mock(MailerInterface::class);
+        $mailer->shouldReceive('send')
+            ->zeroOrMoreTimes()
+            ->with(M::type(InvoiceEmail::class));
+
+        $handler = new InvoiceEditHandler($stateMachine, $recurringStateMachine, $router, $mailer);
         $handler->setDoctrine($this->registry);
 
         return $handler;
