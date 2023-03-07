@@ -44,7 +44,6 @@ final class Send
             $this->mailer->send($quote);
         } catch (JsonException | InvalidTransitionException | TransportExceptionInterface $e) {
             return new class($route, $e->getMessage()) extends RedirectResponse implements FlashResponse {
-
                 private string $message;
 
                 public function __construct(string $route, string $message)
