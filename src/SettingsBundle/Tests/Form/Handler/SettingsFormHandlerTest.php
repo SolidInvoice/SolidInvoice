@@ -68,12 +68,12 @@ final class SettingsFormHandlerTest extends FormHandlerTestCase
             'quote' => [
                 'email_subject' => null,
                 'bcc_address' => null,
-                'watermark' => true,
+                'watermark' => false,
             ],
             'invoice' => [
                 'email_subject' => null,
                 'bcc_address' => null,
-                'watermark' => true,
+                'watermark' => false,
             ],
             'email' => [
                 'from_name' => null,

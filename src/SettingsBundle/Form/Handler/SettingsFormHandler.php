@@ -23,6 +23,7 @@ use SolidWorx\FormHandler\FormHandlerResponseInterface;
 use SolidWorx\FormHandler\FormHandlerSuccessInterface;
 use SolidWorx\FormHandler\FormRequest;
 use SolidWorx\FormHandler\Options;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -106,7 +107,13 @@ class SettingsFormHandler implements FormHandlerInterface, FormHandlerSuccessInt
         foreach ($this->settingsRepository->findAll() as $setting) {
             $path = '[' . str_replace('/', '][', $setting->getKey()) . ']';
 
-            $propertyAccessor->setValue($settings, $path, $keepObject ? $setting : $setting->getValue());
+            if ($setting->getType() === CheckboxType::class) {
+                $value = $setting->getValue() === '1';
+            } else {
+                $value = $setting->getValue();
+            }
+
+            $propertyAccessor->setValue($settings, $path, $keepObject ? $setting : $value);
         }
 
         return $settings;
