@@ -92,7 +92,7 @@
                                 <dt>{{ "invoice.title"|trans({"%id%" : ''}) }}</dt>
                                 <dd>{{ invoice.id }}</dd>
                                 <dt>{{ "invoice.total"|trans }}</dt>
-                                <dd>{{ invoice.total|formatCurrency }}</dd>
+                                <dd>{{ invoice.total|formatCurrency(invoice.client.currency) }}</dd>
                                 <dt>{{ "invoice.created"|trans }}</dt>
                                 <dd>{{ invoice.created | date }}</dd>
                             </dl>
@@ -123,7 +123,7 @@
                                         {{ item.description }}
                                     </td>
                                     <td class="column-price">
-                                        {{ item.price|formatCurrency }}
+                                        {{ item.price|formatCurrency(invoice.client.currency) }}
                                     </td>
                                     <td class="column-qty">
                                         {{ item.qty }}
@@ -134,7 +134,7 @@
                                         </td>
                                     {% endif %}
                                     <td class="column-total text-right">
-                                        {{ item.total|formatCurrency }}
+                                        {{ item.total|formatCurrency(invoice.client.currency) }}
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -147,7 +147,7 @@
                                 </td>
                                 <td class="thick-line text-right">
                                     <div class="invoice-sub-total">
-                                        {{ invoice.baseTotal|formatCurrency }}
+                                        {{ invoice.baseTotal|formatCurrency(invoice.client.currency) }}
                                     </div>
                                 </td>
                             </tr>
@@ -159,7 +159,7 @@
                                     </td>
                                     <td class="no-line text-right">
                                         <span class="text-error invoice-tax">
-                                            {{ invoice.tax|formatCurrency }}
+                                            {{ invoice.tax|formatCurrency(invoice.client.currency) }}
                                         </span>
                                     </td>
                                 </tr>
@@ -173,7 +173,7 @@
                                     </td>
                                     <td class="no-line text-right">
                                         <span class="text-danger invoice-discount">
-                                            -{{ discount(invoice)|formatCurrency }}
+                                            -{{ discount(invoice)|formatCurrency(invoice.client.currency) }}
                                         </span>
                                     </td>
                                 </tr>
@@ -191,7 +191,7 @@
                                         </td>
                                         <td class="no-line text-right">
                                             <div class="text-danger invoice-total">
-                                                -{{ payment.amount|formatCurrency }}
+                                                -{{ payment.amount|formatCurrency(invoice.client.currency) }}
                                             </div>
                                         </td>
                                     </tr>
@@ -211,9 +211,9 @@
                                 <td class="no-line text-right">
                                     <div class="invoice-total">
                                         {% if invoice.payments is defined and invoice.payments|length > 0 and not invoice.balance.zero %}
-                                            {{ invoice.balance|formatCurrency }}
+                                            {{ invoice.balance|formatCurrency(invoice.client.currency) }}
                                         {% else %}
-                                            {{ invoice.total|formatCurrency }}
+                                            {{ invoice.total|formatCurrency(invoice.client.currency) }}
                                         {% endif %}
                                     </div>
                                 </td>
