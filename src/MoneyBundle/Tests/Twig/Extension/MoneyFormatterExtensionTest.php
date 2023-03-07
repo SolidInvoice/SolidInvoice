@@ -33,13 +33,8 @@ class MoneyFormatterExtensionTest extends TestCase
     {
         $systemConfig = M::mock(SystemConfig::class);
 
-        $systemConfig
-            ->shouldReceive('getCurrency')
-            ->zeroOrMoreTimes()
-            ->andReturn(new Currency('USD'));
-
         $moneyFormatter = new MoneyFormatter('en_US', $systemConfig);
-        $extension = new MoneyFormatterExtension($moneyFormatter);
+        $extension = new MoneyFormatterExtension($moneyFormatter, $systemConfig);
 
         $functions = $extension->getFunctions();
 
@@ -61,7 +56,7 @@ class MoneyFormatterExtensionTest extends TestCase
             ->with($money)
             ->andReturn('$12,00');
 
-        $extension = new MoneyFormatterExtension($moneyFormatter);
+        $extension = new MoneyFormatterExtension($moneyFormatter, M::mock(SystemConfig::class));
 
         $filters = $extension->getFilters();
 

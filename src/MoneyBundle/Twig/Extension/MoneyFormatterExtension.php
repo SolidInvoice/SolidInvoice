@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace SolidInvoice\MoneyBundle\Twig\Extension;
 
 use Money\Currency;
-use SolidInvoice\MoneyBundle\Entity\Money;
+use Money\Money;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -27,9 +28,12 @@ class MoneyFormatterExtension extends AbstractExtension
 {
     private MoneyFormatterInterface $formatter;
 
-    public function __construct(MoneyFormatterInterface $formatter)
+    private SystemConfig $systemConfig;
+
+    public function __construct(MoneyFormatterInterface $formatter, SystemConfig $systemConfig)
     {
         $this->formatter = $formatter;
+        $this->systemConfig = $systemConfig;
     }
 
     public function getFunctions(): array
@@ -45,7 +49,15 @@ class MoneyFormatterExtension extends AbstractExtension
     {
         return [
             new TwigFilter('formatCurrency', function (?Money $money, ?Currency $currency = null): string {
-                return $this->formatter->format($money, $currency);
+                if (null === $money) {
+                    if (null !== $currency) {
+                        return $this->formatter->format(new Money(0, $currency));
+                    }
+
+                    return $this->formatter->format(new Money(0, $this->systemConfig->getCurrency()));
+                }
+
+                return $this->formatter->format($money);
             }),
         ];
     }
