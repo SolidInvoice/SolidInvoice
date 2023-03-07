@@ -15,6 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Form\Handler;
 
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
+use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Form\Type\InvoiceType;
@@ -29,6 +30,7 @@ use SolidWorx\FormHandler\Options;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Workflow\StateMachine;
@@ -43,11 +45,18 @@ abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandl
 
     private RouterInterface $router;
 
-    public function __construct(StateMachine $invoiceStateMachine, StateMachine $recurringInvoiceStateMachine, RouterInterface $router)
-    {
+    private MailerInterface $mailer;
+
+    public function __construct(
+        StateMachine $invoiceStateMachine,
+        StateMachine $recurringInvoiceStateMachine,
+        RouterInterface $router,
+        MailerInterface $mailer
+    ) {
         $this->invoiceStateMachine = $invoiceStateMachine;
         $this->recurringInvoiceStateMachine = $recurringInvoiceStateMachine;
         $this->router = $router;
+        $this->mailer = $mailer;
     }
 
     public function getForm(FormFactoryInterface $factory, Options $options)
@@ -72,6 +81,11 @@ abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandl
         }
 
         $this->save($data);
+
+        if (Graph::STATUS_PENDING === $action && ! $isRecurring) {
+            $this->mailer->send(new InvoiceEmail($data));
+        }
+
         $route = $this->router->generate($isRecurring ? '_invoices_view_recurring' : '_invoices_view', ['id' => $data->getId()]);
 
         return new class($route) extends RedirectResponse implements FlashResponse {

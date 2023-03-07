@@ -15,6 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Tests\Form\Handler;
 
 use Mockery as M;
 use Money\Currency;
+use Money\Money;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
@@ -28,15 +29,19 @@ use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Workflow\Definition;
 use Symfony\Component\Workflow\MarkingStore\MethodMarkingStore;
 use Symfony\Component\Workflow\StateMachine;
 use Symfony\Component\Workflow\Transition;
 
-class InvoiceEditHandlerTest extends FormHandlerTestCase
+/**
+ * @covers \SolidInvoice\InvoiceBundle\Form\Handler\InvoiceEditHandler
+ */
+final class InvoiceEditHandlerTest extends FormHandlerTestCase
 {
-    private $invoice;
+    private Invoice $invoice;
 
     protected function setUp(): void
     {
@@ -48,13 +53,13 @@ class InvoiceEditHandlerTest extends FormHandlerTestCase
         $discount->setType(Discount::TYPE_PERCENTAGE);
         $discount->setValue(10);
         $this->invoice->setDiscount($discount);
-        $this->invoice->setBalance(new \Money\Money(1000, new Currency('USD')));
+        $this->invoice->setBalance(new Money(1000, new Currency('USD')));
 
         $this->em->persist($this->invoice);
         $this->em->flush();
     }
 
-    public function getHandler()
+    public function getHandler(): InvoiceEditHandler
     {
         $dispatcher = new EventDispatcher();
         $notification = M::mock(NotificationManager::class);
@@ -87,16 +92,17 @@ class InvoiceEditHandlerTest extends FormHandlerTestCase
             ->withAnyArgs()
             ->andReturn('/invoices/1');
 
-        $handler = new InvoiceEditHandler($stateMachine, $recurringStateMachine, $router);
+        $handler = new InvoiceEditHandler($stateMachine, $recurringStateMachine, $router, M::mock(MailerInterface::class));
         $handler->setDoctrine($this->registry);
 
         return $handler;
     }
 
+    /**
+     * @param Invoice $invoice
+     */
     protected function assertOnSuccess(?Response $response, FormRequest $form, $invoice): void
     {
-        /** @var Invoice $invoice */
-
         self::assertSame(Graph::STATUS_PENDING, $invoice->getStatus());
         self::assertSame(20.0, $invoice->getDiscount()->getValue());
         self::assertInstanceOf(RedirectResponse::class, $response);
@@ -110,6 +116,9 @@ class InvoiceEditHandlerTest extends FormHandlerTestCase
         self::assertInstanceOf(Template::class, $formRequest->getResponse());
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function getHandlerOptions(): array
     {
         return [
@@ -120,6 +129,9 @@ class InvoiceEditHandlerTest extends FormHandlerTestCase
         ];
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getFormData(): array
     {
         return [
