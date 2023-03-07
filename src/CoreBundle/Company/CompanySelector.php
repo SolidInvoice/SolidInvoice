@@ -17,23 +17,23 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 final class CompanySelector
 {
-    private SessionInterface $session;
-
     private ManagerRegistry $registry;
 
-    public function __construct(SessionInterface $session, ManagerRegistry $registry)
+    private RequestStack $requestStack;
+
+    public function __construct(RequestStack $requestStack, ManagerRegistry $registry)
     {
-        $this->session = $session;
         $this->registry = $registry;
+        $this->requestStack = $requestStack;
     }
 
     public function getCompany(): ?UuidInterface
     {
-        return $this->session->get('companyId');
+        return $this->requestStack->getSession()->get('companyId');
     }
 
     public function switchCompany(UuidInterface $companyId): void
@@ -47,6 +47,6 @@ final class CompanySelector
             ->enable('company')
             ->setParameter('companyId', $companyId->toString(), Types::STRING);
 
-        $this->session->set('companyId', $companyId);
+        $this->requestStack->getSession()->set('companyId', $companyId);
     }
 }
