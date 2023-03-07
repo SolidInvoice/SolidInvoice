@@ -135,7 +135,7 @@ class Discount
                 break;
 
             case self::TYPE_MONEY:
-                $this->setValueMoney(new MoneyEntity(new Money(((int) $value) * 100, new Currency(''))));
+                $this->setValueMoney(new MoneyEntity(new Money(((int) $value) * 100, new Currency('USD'))));
 
                 break;
         }
