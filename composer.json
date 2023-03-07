@@ -46,7 +46,7 @@
         "mpociot/vat-calculator": "^3.1",
         "namshi/notificator": "^5.1",
         "nesbot/carbon": "^2.28",
-        "pagerfanta/pagerfanta": "^2.1",
+        "pagerfanta/pagerfanta": "^3.7",
         "payum/authorize-net-aim": "^1.7",
         "payum/be2bill": "^1.7",
         "payum/core": "^1.7",
