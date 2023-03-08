@@ -16,7 +16,6 @@ namespace SolidInvoice\ClientBundle\Tests\Form\Handler;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Form\Handler\ContactEditFormHandler;
 use SolidInvoice\CoreBundle\Templating\Template;
-use SolidInvoice\CoreBundle\Test\Traits\SymfonyKernelTrait;
 use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\JsonResponse;

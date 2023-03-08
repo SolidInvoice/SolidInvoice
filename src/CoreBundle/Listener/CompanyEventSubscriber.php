@@ -13,15 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Listener;
 
-use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -68,7 +64,7 @@ final class CompanyEventSubscriber implements EventSubscriberInterface
 
         if ($session->has('company')) {
             $this->companySelector->switchCompany($session->get('company'));
-        } else if (!$this->isOnCompanySelectionRoute($request) && null !== $user = $this->security->getUser()) {
+        } elseif (! $this->isOnCompanySelectionRoute($request) && null !== $user = $this->security->getUser()) {
             assert($user instanceof User);
 
             if (count($user->getCompanies()) === 1) {

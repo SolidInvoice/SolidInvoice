@@ -21,9 +21,6 @@ use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\CoreBundle\Test\Traits\SymfonyKernelTrait;
 use SolidInvoice\InstallBundle\Installer\Database\Migration;
 use SolidInvoice\SettingsBundle\SystemConfig;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use function date;
 
 trait EnsureApplicationInstalled
