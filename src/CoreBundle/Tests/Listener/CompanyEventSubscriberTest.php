@@ -21,6 +21,8 @@ use Doctrine\ORM\Query\FilterCollection;
 use Doctrine\Persistence\ManagerRegistry;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use ReflectionClass;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
@@ -99,6 +101,8 @@ final class CompanyEventSubscriberTest extends TestCase
         $user = new User();
         $company = new Company();
         $user->addCompany($company);
+
+        $this->setCompanyId($company, Uuid::uuid1());
 
         $security
             ->shouldReceive('getUser')
@@ -193,6 +197,7 @@ final class CompanyEventSubscriberTest extends TestCase
         $router->shouldNotReceive('generate');
 
         $company = new Company();
+        $this->setCompanyId($company, Uuid::uuid1());
         $filter = $this->expectSwitchCompanyCalls($registry, $company);
 
         $session = new Session(new MockArraySessionStorage());
@@ -269,5 +274,13 @@ final class CompanyEventSubscriberTest extends TestCase
             ->andReturn($company->getId()->toString());
 
         return $filter;
+    }
+
+    private function setCompanyId(Company $company, UuidInterface $id): void
+    {
+        $ref = new ReflectionClass($company);
+        $property = $ref->getProperty('id');
+        $property->setAccessible(true);
+        $property->setValue($company, $id);
     }
 }

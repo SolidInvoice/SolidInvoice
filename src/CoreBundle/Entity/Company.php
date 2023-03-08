@@ -51,7 +51,6 @@ class Company implements Stringable
 
     public function __construct()
     {
-        $this->id = Uuid::uuid4();
         $this->users = new ArrayCollection();
     }
 
