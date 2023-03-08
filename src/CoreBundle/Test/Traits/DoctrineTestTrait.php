@@ -42,8 +42,6 @@ trait DoctrineTestTrait
      */
     public function setupDoctrine(): void
     {
-        static::bootKernel();
-
         $this->registry = static::getContainer()->get('doctrine');
         $this->em = $this->registry->getManager();
     }

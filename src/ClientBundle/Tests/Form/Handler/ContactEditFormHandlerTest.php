@@ -24,8 +24,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ContactEditFormHandlerTest extends FormHandlerTestCase
 {
-    use SymfonyKernelTrait;
-
     private string $firstName;
 
     private string $email;

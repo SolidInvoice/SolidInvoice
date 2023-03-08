@@ -36,6 +36,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Security;
@@ -94,6 +95,9 @@ final class CompanyFormHandler implements FormHandlerInterface, FormHandlerSucce
         $company->addUser($user);
 
         $this->save($company);
+        $request = $form->getRequest();
+        assert($request instanceof Request);
+        $request->getSession()->set('company', $company->getId());
 
         $this->companySelector->switchCompany($company->getId());
 

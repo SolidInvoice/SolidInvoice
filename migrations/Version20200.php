@@ -369,9 +369,6 @@ final class Version20200 extends AbstractMigration implements ContainerAwareInte
         $table->dropPrimaryKey();
         $table->setPrimaryKey(['id', 'company_id']);
 
-        $table->getColumn('company_id')
-            ->setNotnull(false);
-
         return $table;
     }
 }
