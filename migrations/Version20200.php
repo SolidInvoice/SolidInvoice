@@ -15,6 +15,7 @@ namespace DoctrineMigrations;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Table;
@@ -81,6 +82,10 @@ final class Version20200 extends AbstractMigration implements ContainerAwareInte
         if ($this->connection->getDatabasePlatform() instanceof MySQLPlatform) {
             $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS=0');
             $this->connection->executeQuery('SET GLOBAL FOREIGN_KEY_CHECKS=0');
+        }
+
+        if ($this->connection->getDatabasePlatform() instanceof SqlitePlatform) {
+            $this->connection->executeQuery('PRAGMA foreign_keys = OFF');
         }
     }
 
@@ -368,6 +373,10 @@ final class Version20200 extends AbstractMigration implements ContainerAwareInte
 
         $table->dropPrimaryKey();
         $table->setPrimaryKey(['id', 'company_id']);
+
+        if ($this->connection->getDatabasePlatform() instanceof SqlitePlatform) {
+            $table->getColumn('company_id')->setNotnull(false);
+        }
 
         return $table;
     }
