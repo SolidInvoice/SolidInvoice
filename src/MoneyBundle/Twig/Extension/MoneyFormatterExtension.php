@@ -20,6 +20,7 @@ use SolidInvoice\SettingsBundle\SystemConfig;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
+use function is_int;
 
 /**
  * @see \SolidInvoice\MoneyBundle\Tests\Twig\Extension\MoneyFormatterExtensionTest
@@ -48,13 +49,17 @@ class MoneyFormatterExtension extends AbstractExtension
     public function getFilters(): array
     {
         return [
-            new TwigFilter('formatCurrency', function (?Money $money, ?Currency $currency = null): string {
+            new TwigFilter('formatCurrency', function ($money, ?Currency $currency = null): string {
                 if (null === $money) {
                     if (null !== $currency) {
                         return $this->formatter->format(new Money(0, $currency));
                     }
 
                     return $this->formatter->format(new Money(0, $this->systemConfig->getCurrency()));
+                }
+
+                if (is_int($money)) {
+                    return $this->formatter->format(new Money($money, $this->systemConfig->getCurrency()));
                 }
 
                 return $this->formatter->format($money);

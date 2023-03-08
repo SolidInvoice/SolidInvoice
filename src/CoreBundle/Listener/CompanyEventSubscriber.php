@@ -20,15 +20,19 @@ use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Security;
+use function assert;
+use function count;
+use function in_array;
 
 final class CompanyEventSubscriber implements EventSubscriberInterface
 {
-    private ManagerRegistry $doctrine;
-
     private CompanySelector $companySelector;
 
     private RouterInterface $router;
@@ -36,12 +40,10 @@ final class CompanyEventSubscriber implements EventSubscriberInterface
     private Security $security;
 
     public function __construct(
-        ManagerRegistry $doctrine,
         RouterInterface $router,
         CompanySelector $companySelector,
         Security $security
     ) {
-        $this->doctrine = $doctrine;
         $this->companySelector = $companySelector;
         $this->router = $router;
         $this->security = $security;
@@ -50,44 +52,40 @@ final class CompanyEventSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            KernelEvents::REQUEST => ['onKernelRequest', 120],
+            KernelEvents::REQUEST => ['onKernelRequest', 30],
         ];
     }
 
     public function onKernelRequest(RequestEvent $event): void
     {
+        if (! $event->isMainRequest()) {
+            return;
+        }
+
         $request = $event->getRequest();
+        $session = $request->getSession();
+        assert($session instanceof SessionInterface);
 
-        /** @var EntityManagerInterface $em */
-        $em = $this->doctrine->getManager();
-
-        $company = $this->companySelector->getCompany();
-
-        if (
-            null === $company &&
-            '_select_company' !== $request->attributes->get('_route') &&
-            '_switch_company' !== $request->attributes->get('_route') &&
-            '_create_company' !== $request->attributes->get('_route') &&
-            null !== $this->security->getUser()
-        ) {
-            $user = $this->security->getUser();
+        if ($session->has('company')) {
+            $this->companySelector->switchCompany($session->get('company'));
+        } else if (!$this->isOnCompanySelectionRoute($request) && null !== $user = $this->security->getUser()) {
             assert($user instanceof User);
 
             if (count($user->getCompanies()) === 1) {
                 $this->companySelector->switchCompany($user->getCompanies()->first()->getId());
-                $company = $this->companySelector->getCompany();
-            } else {
-                $event->setResponse(new RedirectResponse($this->router->generate('_select_company')));
-                $event->stopPropagation();
-
+                $session->set('company', $user->getCompanies()->first()->getId());
                 return;
             }
-        }
 
-        if (null !== $company) {
-            $em->getFilters()
-                ->enable('company')
-                ->setParameter('companyId', $company->toString(), Types::STRING);
+            $event->setResponse(new RedirectResponse($this->router->generate('_select_company')));
+            $event->stopPropagation();
         }
+    }
+
+    private function isOnCompanySelectionRoute(Request $request): bool
+    {
+        $routeName = $request->attributes->get('_route');
+
+        return in_array($routeName, ['_select_company', '_switch_company', '_create_company'], true);
     }
 }

@@ -58,10 +58,6 @@ trait SymfonyKernelTrait
      */
     protected static function bootKernel(array $options = []): KernelInterface
     {
-        if (static::$booted) {
-            return static::$kernel;
-        }
-
         static::ensureKernelShutdown();
 
         $kernel = static::createKernel($options);

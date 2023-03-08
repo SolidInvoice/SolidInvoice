@@ -14,28 +14,25 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Action;
 
 use Ramsey\Uuid\Uuid;
-use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Security;
 
-class SelectCompany
+final class SelectCompany
 {
-    private CompanySelector $companySelector;
-
     private Security $security;
 
     private RouterInterface $router;
 
     public function __construct(
-        CompanySelector $companySelector,
         Security $security,
         RouterInterface $router
     ) {
-        $this->companySelector = $companySelector;
         $this->security = $security;
         $this->router = $router;
     }
@@ -43,7 +40,7 @@ class SelectCompany
     /**
      * @return Template|RedirectResponse
      */
-    public function __invoke()
+    public function __invoke(Request $request)
     {
         $user = $this->security->getUser();
 
@@ -56,15 +53,14 @@ class SelectCompany
         }
 
         if ($companies->count() === 1) {
-            $this->companySelector->switchCompany($companies->first()->getId());
-
+            $request->getSession()->set('company', $companies->first()->getId());
             return new RedirectResponse($this->router->generate('_dashboard'));
         }
 
         return new Template('@SolidInvoiceCore/company/select.html.twig', ['companies' => $companies]);
     }
 
-    public function switchCompany(string $id): RedirectResponse
+    public function switchCompany(Request $request, string $id): RedirectResponse
     {
         $uuid = Uuid::fromString($id);
 
@@ -74,10 +70,11 @@ class SelectCompany
 
         $companies = $user->getCompanies();
 
-        if ($companies->exists(static fn (int $key, Company $company) => ! $company->getId()->equals($uuid))) {
-            $this->companySelector->switchCompany($uuid);
+        if ($companies->exists(static fn (int $key, Company $company) => $company->getId()->equals($uuid))) {
+            $request->getSession()->set('company', $uuid);
+            return new RedirectResponse($this->router->generate('_dashboard'));
         }
 
-        return new RedirectResponse($this->router->generate('_dashboard'));
+        throw new BadRequestHttpException('Invalid company');
     }
 }

@@ -17,6 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\UserBundle\Entity\User;
@@ -50,6 +51,7 @@ class Company implements Stringable
 
     public function __construct()
     {
+        $this->id = Uuid::uuid4();
         $this->users = new ArrayCollection();
     }
 

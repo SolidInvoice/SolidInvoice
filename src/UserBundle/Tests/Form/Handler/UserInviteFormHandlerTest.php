@@ -55,7 +55,7 @@ final class UserInviteFormHandlerTest extends FormHandlerTestCase
     {
         $handler = new UserInviteFormHandler(
             $this->router,
-            new CompanySelector(new RequestStack(), $this->registry),
+            new CompanySelector($this->registry),
             $this->registry->getRepository(Company::class),
             $this->registry->getRepository(User::class),
             M::mock(Security::class),
