@@ -7,14 +7,14 @@
  # with this source code in the file LICENSE.
  #}
 
-<ul class="navbar-nav">
+<ul class="navbar-nav{{ title|default(null) is empty ? ' w-100' }}">
     <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
     </li>
 </ul>
 
 {% if title|default(null) is not empty %}
-    <h4 style="width: 100%" class="p-1 mt-2">
+    <h4 class="p-1 mt-2 w-100">
         {{ title|raw }}
     </h4>
 {% endif %}
