@@ -6402,16 +6402,16 @@
         },
         {
             "name": "solidworx/form-handler-bundle",
-            "version": "1.2.0",
+            "version": "1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SolidWorx/FormHandlerBundle.git",
-                "reference": "ac7a61ba9470da52d1674c707f916cefb27ae82a"
+                "reference": "ea11ac4f3bc9bae379a55df527dff243caa36c7a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SolidWorx/FormHandlerBundle/zipball/ac7a61ba9470da52d1674c707f916cefb27ae82a",
-                "reference": "ac7a61ba9470da52d1674c707f916cefb27ae82a",
+                "url": "https://api.github.com/repos/SolidWorx/FormHandlerBundle/zipball/ea11ac4f3bc9bae379a55df527dff243caa36c7a",
+                "reference": "ea11ac4f3bc9bae379a55df527dff243caa36c7a",
                 "shasum": ""
             },
             "require": {
@@ -6458,9 +6458,9 @@
             ],
             "support": {
                 "issues": "https://github.com/SolidWorx/FormHandlerBundle/issues",
-                "source": "https://github.com/SolidWorx/FormHandlerBundle/tree/1.2.0"
+                "source": "https://github.com/SolidWorx/FormHandlerBundle/tree/1.2.1"
             },
-            "time": "2020-05-18T14:24:47+00:00"
+            "time": "2023-03-23T07:06:34+00:00"
         },
         {
             "name": "stof/doctrine-extensions-bundle",
