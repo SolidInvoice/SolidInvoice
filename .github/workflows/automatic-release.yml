@@ -12,12 +12,12 @@ jobs:
 
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@c8454efe5d0bdefd25384362fe217428ca277d57
+        uses: step-security/harden-runner@1f99358870fe1c846a3ccba386cc2b2246836776
         with:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
 
       - name: Checkout
-        uses: "actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c"
+        uses: "actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f"
 
       - name: Setup PHP
         uses: shivammathur/setup-php@d30ad8b1843ace22e6698ab99bbafaa747b6bd0d
@@ -34,7 +34,7 @@ jobs:
         uses: docker/setup-qemu-action@e81a89b1732b9c48d79cd809d8d81d79c4647a18
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@f03ac48505955848960e80bbb68046aa35c7b9e7
+        uses: docker/setup-buildx-action@4b4e9c3e2d4531116a6f8ba8e71fc6e2cb6e6c8c
 
       - name: Release
         uses: laminas/automatic-releases@1b61a5fcf90ba3223c85130b7bc2a7f95311e79c
