@@ -22,7 +22,7 @@ final class CompanySelector
 {
     private ManagerRegistry $registry;
 
-    private static ?UuidInterface $companyId = null;
+    private ?UuidInterface $companyId = null;
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -31,7 +31,7 @@ final class CompanySelector
 
     public function getCompany(): ?UuidInterface
     {
-        return self::$companyId;
+        return $this->companyId;
     }
 
     public function switchCompany(UuidInterface $companyId): void
@@ -45,6 +45,6 @@ final class CompanySelector
             ->enable('company')
             ->setParameter('companyId', $companyId->toString(), Types::STRING);
 
-        self::$companyId = $companyId;
+        $this->companyId = $companyId;
     }
 }

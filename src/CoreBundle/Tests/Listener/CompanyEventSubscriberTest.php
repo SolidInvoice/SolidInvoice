@@ -44,14 +44,6 @@ final class CompanyEventSubscriberTest extends TestCase
 {
     use M\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
-    protected function setUp(): void
-    {
-        $reflector = new ReflectionClass(CompanySelector::class);
-        $property = $reflector->getProperty('companyId');
-        $property->setAccessible(true);
-        $property->setValue(null);
-    }
-
     public function testItRedirectsToCompanySelectPageIfACompanyIsNotSetAndUserHasMultipleCompanies(): void
     {
         // Test that it redirects to the company select page if a company is not set and the user has multiple companies
