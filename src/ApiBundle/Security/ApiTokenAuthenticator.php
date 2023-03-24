@@ -15,6 +15,8 @@ namespace SolidInvoice\ApiBundle\Security;
 
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\ApiBundle\Security\Provider\ApiTokenUserProvider;
+use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\UserBundle\Entity\ApiToken;
 use SolidInvoice\UserBundle\Entity\ApiTokenHistory;
 use SolidInvoice\UserBundle\Repository\ApiTokenHistoryRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -34,15 +36,18 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
     private ManagerRegistry $registry;
 
     private TranslatorInterface $translator;
+    private CompanySelector $companySelector;
 
     public function __construct(
         ApiTokenUserProvider $userProvider,
         ManagerRegistry $registry,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        CompanySelector $companySelector
     ) {
         $this->userProvider = $userProvider;
         $this->registry = $registry;
         $this->translator = $translator;
+        $this->companySelector = $companySelector;
     }
 
     public function supports(Request $request): bool
@@ -94,6 +99,12 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
         $repository = $this->registry->getRepository(ApiTokenHistory::class);
 
         $repository->addHistory($history, $apiToken);
+
+        $apiToken = $this->registry->getRepository(ApiToken::class)->findOneBy(['token' => $apiToken]);
+
+        if (null !== $apiToken) {
+            $this->companySelector->switchCompany($apiToken->getCompany()->getId());
+        }
 
         return null;
     }
