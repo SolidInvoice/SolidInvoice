@@ -15,6 +15,7 @@ namespace SolidInvoice\ApiBundle\Test;
 
 use const PASSWORD_DEFAULT;
 use SolidInvoice\ApiBundle\ApiTokenManager;
+use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\UserBundle\Entity\User;
@@ -63,6 +64,8 @@ abstract class ApiTestCase extends PantherTestCase
             $registry->getManager()->flush();
             $users = [$user];
         }
+
+        static::getContainer()->get(CompanySelector::class)->switchCompany($companies[0]->getId());
 
         $tokenManager = new ApiTokenManager($registry);
         $token = $tokenManager->getOrCreate($users[0], 'Functional Test');

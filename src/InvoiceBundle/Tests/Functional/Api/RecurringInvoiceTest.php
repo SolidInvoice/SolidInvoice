@@ -30,8 +30,6 @@ class RecurringInvoiceTest extends ApiTestCase
     {
         parent::setUp();
 
-        self::bootKernel();
-
         $databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
 
         $databaseTool->loadFixtures([

@@ -36,6 +36,7 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
     private ManagerRegistry $registry;
 
     private TranslatorInterface $translator;
+
     private CompanySelector $companySelector;
 
     public function __construct(
