@@ -72,6 +72,6 @@ class AdditionalContactDetailsNormalizer implements NormalizerInterface, Denorma
 
     public function supportsNormalization($data, $format = null)
     {
-        return is_object($data) && $data instanceof AdditionalContactDetail;
+        return $data instanceof AdditionalContactDetail;
     }
 }

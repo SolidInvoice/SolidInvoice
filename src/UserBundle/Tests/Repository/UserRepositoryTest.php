@@ -52,11 +52,9 @@ class UserRepositoryTest extends KernelTestCase
     {
         parent::setUp();
 
-        $kernel = self::bootKernel();
+        $kernel = self::$kernel;
         $this->repository = $kernel->getContainer()->get('doctrine')->getRepository(User::class);
         $this->faker = $this->getFaker();
-
-        self::bootKernel();
 
         $this->databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
     }

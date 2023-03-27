@@ -20,15 +20,13 @@ use SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData;
 /**
  * @group functional
  */
-class ClientTest extends ApiTestCase
+final class ClientTest extends ApiTestCase
 {
     protected function setUp(): void
     {
         parent::setUp();
 
-        self::bootKernel();
-
-        $databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
+        $databaseTool = self::getContainer()->get(DatabaseToolCollection::class)->get();
 
         $databaseTool->loadFixtures([
             LoadData::class,

@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace SolidInvoice\ApiBundle\Test;
 
 use const PASSWORD_DEFAULT;
+use JsonException;
 use SolidInvoice\ApiBundle\ApiTokenManager;
+use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\UserBundle\Entity\User;
@@ -64,12 +66,22 @@ abstract class ApiTestCase extends PantherTestCase
             $users = [$user];
         }
 
+        // @phpstan-ignore-next-line Ignore this line in PHPStan, since it sees the SystemConfig service as private
+        static::getContainer()->get(CompanySelector::class)->switchCompany($companies[0]->getId());
+
         $tokenManager = new ApiTokenManager($registry);
         $token = $tokenManager->getOrCreate($users[0], 'Functional Test');
 
         self::$client->setServerParameter('HTTP_X_API_TOKEN', $token->getToken());
     }
 
+    /**
+     * @param array<string, mixed> $data
+     * @param array<string, string> $headers
+     *
+     * @return array<string, mixed>
+     * @throws JsonException
+     */
     protected function requestPost(string $uri, array $data, array $headers = []): array
     {
         $server = ['CONTENT_TYPE' => 'application/json', 'HTTP_ACCEPT' => 'application/json'];
@@ -87,6 +99,13 @@ abstract class ApiTestCase extends PantherTestCase
         return json_decode($content, true, 512, JSON_THROW_ON_ERROR);
     }
 
+    /**
+     * @param array<string, mixed> $data
+     * @param array<string, string> $headers
+     *
+     * @return array<string, mixed>
+     * @throws JsonException
+     */
     protected function requestPut(string $uri, array $data, array $headers = []): array
     {
         $server = ['CONTENT_TYPE' => 'application/json', 'HTTP_ACCEPT' => 'application/json'];
@@ -104,6 +123,12 @@ abstract class ApiTestCase extends PantherTestCase
         return json_decode($content, true, 512, JSON_THROW_ON_ERROR);
     }
 
+    /**
+     * @param array<string, string> $headers
+     *
+     * @return array<mixed>
+     * @throws JsonException
+     */
     protected function requestGet(string $uri, array $headers = []): array
     {
         $server = ['CONTENT_TYPE' => 'application/json', 'HTTP_ACCEPT' => 'application/json'];
@@ -121,7 +146,10 @@ abstract class ApiTestCase extends PantherTestCase
         return json_decode($content, true, 512, JSON_THROW_ON_ERROR);
     }
 
-    protected function requestDelete(string $uri, array $headers = [])
+    /**
+     * @param array<string,string> $headers
+     */
+    protected function requestDelete(string $uri, array $headers = []): string
     {
         $server = ['CONTENT_TYPE' => 'application/json', 'HTTP_ACCEPT' => 'application/json'];
         foreach ($headers as $key => $value) {

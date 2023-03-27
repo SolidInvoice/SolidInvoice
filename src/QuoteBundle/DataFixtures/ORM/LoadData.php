@@ -17,9 +17,12 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Money\Currency;
 use Money\Money;
+use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\QuoteBundle\Entity\Item;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Model\Graph;
+use function assert;
 
 /**
  * @codeCoverageIgnore
@@ -28,9 +31,15 @@ class LoadData extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
+        $client = $this->getReference('client');
+        assert($client instanceof Client);
+
+        $contact = $this->getReference('contact');
+        assert($contact instanceof Contact);
+
         $quote = new Quote();
-        $quote->setClient($this->getReference('client'));
-        $quote->addUser($this->getReference('contact'));
+        $quote->setClient($client);
+        $quote->addUser($contact);
         $quote->setStatus(Graph::STATUS_DRAFT);
 
         $item = new Item();

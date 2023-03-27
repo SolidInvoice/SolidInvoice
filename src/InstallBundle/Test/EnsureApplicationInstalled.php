@@ -15,6 +15,8 @@ namespace SolidInvoice\InstallBundle\Test;
 
 use DateTimeInterface;
 use Doctrine\ORM\Tools\SchemaTool;
+use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Entity\Version;
 use SolidInvoice\CoreBundle\Repository\VersionRepository;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
@@ -42,6 +44,15 @@ trait EnsureApplicationInstalled
         static::getContainer()->get(Migration::class)->migrate();
         // @phpstan-ignore-next-line Ignore this line in PHPStan, since it sees the SystemConfig service as private
         static::getContainer()->get(SystemConfig::class)->set(SystemConfig::CURRENCY_CONFIG_PATH, 'USD');
+
+        // @phpstan-ignore-next-line Ignore this line in PHPStan, since it sees the SystemConfig service as private
+        static::getContainer()->get(CompanySelector::class)
+            ->switchCompany(
+                static::getContainer()->get('doctrine')
+                    ->getRepository(Company::class)
+                    ->findOneBy([])
+                    ->getId()
+            );
 
         /** @var VersionRepository $version */
         $version = $entityManager->getRepository(Version::class);
