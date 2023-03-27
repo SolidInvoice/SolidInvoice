@@ -636,11 +636,6 @@ parameters:
 			path: src/InstallBundle/Tests/Form/Step/SystemInformationFormTest.php
 
 		-
-			message: "#^Method SolidInvoice\\\\InstallBundle\\\\Tests\\\\Functional\\\\InstallationTest\\:\\:continue\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/InstallBundle/Tests/Functional/InstallationTest.php
-
-		-
 			message: "#^Call to an undefined method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:getId\\(\\)\\.$#"
 			count: 1
 			path: src/InvoiceBundle/Action/CloneInvoice.php
@@ -1814,13 +1809,3 @@ parameters:
 			message: "#^Property SolidInvoice\\\\UserBundle\\\\Tests\\\\Form\\\\Handler\\\\ProfileEditHandlerTest\\:\\:\\$userRepository has no type specified\\.$#"
 			count: 1
 			path: src/UserBundle/Tests/Form/Handler/ProfileEditHandlerTest.php
-
-		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\:\\:getEmail\\(\\)\\.$#"
-			count: 1
-			path: src/UserBundle/Tests/Repository/UserRepositoryTest.php
-
-		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\:\\:getId\\(\\)\\.$#"
-			count: 1
-			path: src/UserBundle/Tests/Repository/UserRepositoryTest.php

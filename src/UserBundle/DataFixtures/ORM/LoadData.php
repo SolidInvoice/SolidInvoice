@@ -16,6 +16,7 @@ namespace SolidInvoice\UserBundle\DataFixtures\ORM;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\UserBundle\Entity\User;
 
 /**
@@ -25,18 +26,24 @@ class LoadData extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
+        $company = $manager->getRepository(Company::class)->findOneBy([]);
+
         $user1 = (new User())
             ->setUsername('test1')
             ->setEmail('test1@test.com')
             ->setPassword('test1')
             ->setConfirmationToken(base64_encode(bin2hex(random_bytes(24))))
-            ->setPasswordRequestedAt(new DateTime());
+            ->setPasswordRequestedAt(new DateTime())
+            ->addCompany($company)
+        ;
 
         $user2 = (new User())
             ->setUsername('test2')
             ->setEmail('test2@test.com')
             ->setPassword('test2')
-            ->setEnabled(true);
+            ->setEnabled(true)
+            ->addCompany($company)
+        ;
 
         $manager->persist($user1);
         $manager->persist($user2);

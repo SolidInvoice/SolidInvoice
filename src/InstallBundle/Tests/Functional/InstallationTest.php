@@ -48,12 +48,6 @@ class InstallationTest extends PantherTestCase
     {
         parent::setUp();
 
-        $dbFile = realpath(static::$defaultOptions['webServerDir'] . '/../') . '/var/db/sqlite.db';
-
-        if (file_exists($dbFile)) {
-            unlink($dbFile);
-        }
-
         unset($_SERVER['locale'], $_ENV['locale'], $_SERVER['installed'], $_ENV['installed']);
     }
 
@@ -116,7 +110,7 @@ class InstallationTest extends PantherTestCase
                 'system_information[currency]' => 'USD',
             ];
 
-            if (0 === (is_countable($crawler->filter('.callout.callout-warning')) ? count($crawler->filter('.callout.callout-warning')) : 0)) {
+            if (0 === count($crawler->filter('.callout.callout-warning'))) {
                 $formData += [
                     'system_information[username]' => 'admin',
                     'system_information[email_address]' => 'foo@bar.com',
@@ -137,7 +131,10 @@ class InstallationTest extends PantherTestCase
         }
     }
 
-    private function continue(Client $client, Crawler $crawler)
+    /**
+     * @throws Exception
+     */
+    private function continue(Client $client, Crawler $crawler): Crawler
     {
         if (0 !== count($crawler->filter('#continue_step'))) {
             return $client->clickLink('Next');

@@ -25,6 +25,15 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ApiFormHandlerTest extends FormHandlerTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        foreach ($this->em->getRepository(ApiToken::class)->findAll() as $user) {
+            $this->em->remove($user);
+        }
+    }
+
     /**
      * @return string|FormHandlerInterface
      */

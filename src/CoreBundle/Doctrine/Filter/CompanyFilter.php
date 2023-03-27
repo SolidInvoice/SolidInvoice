@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Doctrine\Filter;
 
 use Doctrine\DBAL\Exception;
-use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Filter\SQLFilter;
 use SolidInvoice\UserBundle\Entity\User;
@@ -32,15 +31,7 @@ class CompanyFilter extends SQLFilter
                     ->createQueryBuilder()
                     ->select('user_id', 'company_id')
                     ->from('user_company')
-                    ->where('company_id = :company')
-                    ->setParameter(
-                        'company',
-                        Type::getType('uuid_binary_ordered_time')
-                            ->convertToDatabaseValue(
-                                str_replace("'", '', $this->getParameter('companyId')),
-                                $this->getConnection()->getDatabasePlatform()
-                            )
-                    )
+                    ->where('company_id = ' . $this->getParameter('companyId'))
                     ->fetchAllAssociative();
             } catch (Exception $e) {
                 return '';
@@ -58,15 +49,19 @@ class CompanyFilter extends SQLFilter
         }
 
         if ($this->hasParameter('companyId')) {
-            $companyId = Type::getType('uuid_binary_ordered_time')
-                ->convertToDatabaseValue(
-                    str_replace("'", '', $this->getParameter('companyId')),
-                    $this->getConnection()->getDatabasePlatform()
-                );
-
-            return sprintf('%s.company_id = %s', $targetTableAlias, $this->getConnection()->quote($companyId));
+            return sprintf('%s.company_id = %s', $targetTableAlias, $this->getCompanyId());
         }
 
         return '';
+    }
+
+    private function getCompanyId(): string
+    {
+        $companyId = $this->getConnection()->convertToDatabaseValue(
+            str_replace("'", '', $this->getParameter('companyId')),
+            'uuid_binary_ordered_time'
+        );
+
+        return $this->getConnection()->quote($companyId);
     }
 }
