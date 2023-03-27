@@ -15,8 +15,9 @@ namespace SolidInvoice\PaymentBundle\Tests\Functional\Api;
 
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
-use SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData;
+use SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData as LoadClientData;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
+use SolidInvoice\PaymentBundle\DataFixtures\ORM\LoadData as LoadPaymentData;
 
 /**
  * @group functional
@@ -29,13 +30,11 @@ class PaymentTest extends ApiTestCase
     {
         parent::setUp();
 
-        self::bootKernel();
-
         $databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
 
         $databaseTool->loadFixtures([
-            LoadData::class,
-            \SolidInvoice\PaymentBundle\DataFixtures\ORM\LoadData::class,
+            LoadClientData::class,
+            LoadPaymentData::class,
         ], true);
     }
 

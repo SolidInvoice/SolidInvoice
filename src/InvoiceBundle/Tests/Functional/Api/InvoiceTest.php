@@ -14,14 +14,16 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Tests\Functional\Api;
 
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
+use Ramsey\Uuid\Uuid;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
-use SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData;
+use SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData as LoadClientData;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
+use SolidInvoice\InvoiceBundle\DataFixtures\ORM\LoadData as LoadInvoiceData;
 
 /**
  * @group functional
  */
-class InvoiceTest extends ApiTestCase
+final class InvoiceTest extends ApiTestCase
 {
     use EnsureApplicationInstalled;
 
@@ -29,13 +31,11 @@ class InvoiceTest extends ApiTestCase
     {
         parent::setUp();
 
-        self::bootKernel();
-
-        $databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
+        $databaseTool = self::getContainer()->get(DatabaseToolCollection::class)->get();
 
         $databaseTool->loadFixtures([
-            LoadData::class,
-            \SolidInvoice\InvoiceBundle\DataFixtures\ORM\LoadData::class,
+            LoadClientData::class,
+            LoadInvoiceData::class,
         ], true);
     }
 
@@ -60,6 +60,8 @@ class InvoiceTest extends ApiTestCase
         ];
 
         $result = $this->requestPost('/api/invoices', $data);
+
+        self::assertTrue(Uuid::isValid($result['uuid']));
 
         unset($result['uuid']);
 
@@ -103,6 +105,8 @@ class InvoiceTest extends ApiTestCase
     public function testGet(): void
     {
         $data = $this->requestGet('/api/invoices/1');
+
+        self::assertTrue(Uuid::isValid($data['uuid']));
 
         unset($data['uuid']);
 
@@ -156,6 +160,8 @@ class InvoiceTest extends ApiTestCase
                 ],
             ]
         );
+
+        self::assertTrue(Uuid::isValid($data['uuid']));
 
         unset($data['uuid']);
 

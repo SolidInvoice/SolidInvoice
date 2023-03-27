@@ -64,7 +64,7 @@ class CompanyFilter extends SQLFilter
                     $this->getConnection()->getDatabasePlatform()
                 );
 
-            return sprintf('%s.company_id = "%s"', $targetTableAlias, $companyId);
+            return sprintf('%s.company_id = %s', $targetTableAlias, $this->getConnection()->quote($companyId));
         }
 
         return '';

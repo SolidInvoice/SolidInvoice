@@ -26,13 +26,6 @@ class ContactAddFormHandlerTest extends FormHandlerTestCase
 {
     use SymfonyKernelTrait;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        static::bootKernel();
-    }
-
     public function getHandler(): ContactAddFormHandler
     {
         $handler = new ContactAddFormHandler();

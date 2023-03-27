@@ -31,8 +31,6 @@ class ContactEditFormHandlerTest extends FormHandlerTestCase
     {
         parent::setUp();
 
-        static::bootKernel();
-
         $this->firstName = $this->faker->firstName;
         $this->email = $this->faker->email;
     }
@@ -73,7 +71,7 @@ class ContactEditFormHandlerTest extends FormHandlerTestCase
     {
         self::assertInstanceOf(JsonResponse::class, $response);
         self::assertInstanceOf(Contact::class, $data);
-        self::assertCount(2, $this->em->getRepository(Contact::class)->findAll());
+        self::assertCount(1, $this->em->getRepository(Contact::class)->findAll());
         self::assertSame($this->firstName, $data->getFirstName());
         self::assertSame($this->email, $data->getEmail());
     }

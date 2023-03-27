@@ -15,14 +15,16 @@ namespace SolidInvoice\InvoiceBundle\Tests\Functional\Api;
 
 use DateTimeInterface;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
+use Ramsey\Uuid\Uuid;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
-use SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData;
+use SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData as LoadClientData;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
+use SolidInvoice\InvoiceBundle\DataFixtures\ORM\LoadData as LoadInvoiceData;
 
 /**
  * @group functional
  */
-class RecurringInvoiceTest extends ApiTestCase
+final class RecurringInvoiceTest extends ApiTestCase
 {
     use EnsureApplicationInstalled;
 
@@ -30,13 +32,11 @@ class RecurringInvoiceTest extends ApiTestCase
     {
         parent::setUp();
 
-        self::bootKernel();
-
-        $databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
+        $databaseTool = self::getContainer()->get(DatabaseToolCollection::class)->get();
 
         $databaseTool->loadFixtures([
-            LoadData::class,
-            \SolidInvoice\InvoiceBundle\DataFixtures\ORM\LoadData::class,
+            LoadClientData::class,
+            LoadInvoiceData::class,
         ], true);
     }
 
@@ -108,6 +108,8 @@ class RecurringInvoiceTest extends ApiTestCase
     {
         $data = $this->requestGet('/api/recurring_invoices/1');
 
+        self::assertTrue(Uuid::isValid($data['uuid']));
+
         unset($data['uuid']);
 
         self::assertSame([
@@ -161,6 +163,8 @@ class RecurringInvoiceTest extends ApiTestCase
                 ],
             ]
         );
+
+        self::assertTrue(Uuid::isValid($data['uuid']));
 
         unset($data['uuid']);
 

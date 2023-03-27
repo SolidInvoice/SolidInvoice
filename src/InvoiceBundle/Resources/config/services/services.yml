@@ -40,3 +40,6 @@ services:
         tags: ['doctrine.fixture.orm']
 
     SolidInvoice\InvoiceBundle\Schedule\ScheduleBuilder: ~
+
+    SolidInvoice\InvoiceBundle\Api\:
+        resource: '%kernel.project_dir%/src/InvoiceBundle/Api/*'

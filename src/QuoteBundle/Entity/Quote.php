@@ -159,11 +159,12 @@ class Quote
     private $items;
 
     /**
-     * @var Collection<int, Contact>
+     * @var Collection<int, QuoteContact>
      *
-     * @ORM\ManyToMany(targetEntity="SolidInvoice\ClientBundle\Entity\Contact", cascade={"persist"}, fetch="EXTRA_LAZY", inversedBy="quotes")
+     * @ORM\OneToMany(targetEntity=QuoteContact::class, cascade={"persist", "remove"}, mappedBy="quote")
      * @Assert\Count(min=1, minMessage="You need to select at least 1 user to attach to the Quote")
      * @Serialize\Groups({"quote_api", "client_api", "create_quote_api"})
+     * @ApiProperty(writableLink=true)
      */
     private $users;
 
@@ -212,37 +213,49 @@ class Quote
     }
 
     /**
-     * Return users array.
-     *
      * @return Collection<int, Contact>
      */
     public function getUsers(): Collection
     {
-        return $this->users;
+        return $this->users->map(static function (QuoteContact $contact): Contact {
+            return $contact->getContact();
+        });
     }
 
     /**
-     * @param Contact[] $users
+     * @param (Contact|QuoteContact)[] $users
      */
     public function setUsers(array $users): self
     {
-        $this->users = new ArrayCollection($users);
+        $contacts = [];
+        foreach ($users as $user) {
+            if ($user instanceof QuoteContact) {
+                $contacts[] = $user;
+            } elseif ($user instanceof Contact) {
+                $quoteContact = new QuoteContact();
+                $quoteContact->setContact($user);
+                $quoteContact->setQuote($this);
+
+                $contacts[] = $quoteContact;
+            }
+        }
+
+        $this->users = new ArrayCollection($contacts);
 
         return $this;
     }
 
     public function addUser(Contact $user): self
     {
-        $this->users[] = $user;
+        $quoteContact = new QuoteContact();
+        $quoteContact->setContact($user);
+        $quoteContact->setQuote($this);
+
+        $this->users[] = $quoteContact;
 
         return $this;
     }
 
-    /**
-     * Get status.
-     *
-     * @return string
-     */
     public function getStatus(): ?string
     {
         return $this->status;
@@ -397,10 +410,8 @@ class Quote
      */
     public function updateItems(): void
     {
-        if ((is_countable($this->items) ? count($this->items) : 0) > 0) {
-            foreach ($this->items as $item) {
-                $item->setQuote($this);
-            }
+        foreach ($this->items as $item) {
+            $item->setQuote($this);
         }
     }
 

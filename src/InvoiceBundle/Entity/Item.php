@@ -176,7 +176,7 @@ class Item implements ItemInterface
     }
 
     /**
-     * @param Invoice|null $invoice
+     * @param Invoice|RecurringInvoice|null $invoice
      */
     public function setInvoice(?BaseInvoice $invoice): ItemInterface
     {
