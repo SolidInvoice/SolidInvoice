@@ -37,6 +37,7 @@ jobs:
       mysql:
         image: mysql:8.0
         env:
+          MYSQL_ROOT_PASSWORD:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_DATABASE: solidinvoice_test
         ports:
