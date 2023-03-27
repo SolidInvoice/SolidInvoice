@@ -323,12 +323,12 @@ final class PaymentRepositoryTest extends KernelTestCase
         self::assertEquals(
             [
                 new Money(
-                    500123,
-                    new Currency('EUR')
-                ),
-                new Money(
                     500123 * 3,
                     new Currency('USD')
+                ),
+                new Money(
+                    500123,
+                    new Currency('EUR')
                 ),
             ],
             $this

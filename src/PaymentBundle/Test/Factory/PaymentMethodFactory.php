@@ -45,8 +45,8 @@ final class PaymentMethodFactory extends ModelFactory
     {
         return [
             'name' => self::faker()->text(),
-            'gatewayName' => self::faker()->text(),
-            'factoryName' => self::faker()->text(),
+            'gatewayName' => self::faker()->name(),
+            'factoryName' => self::faker()->name(),
             'config' => [],
             'internal' => self::faker()->boolean(),
             'enabled' => self::faker()->boolean(),
