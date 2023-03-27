@@ -319,11 +319,11 @@ class Invoice extends BaseInvoice
     }
 
     /**
-     * @return array<Contact>
+     * @return Collection<int, Contact>
      */
-    public function getUsers(): array
+    public function getUsers(): Collection
     {
-        return $this->users->map(static fn (InvoiceContact $invoiceContact) => $invoiceContact->getContact())->toArray();
+        return $this->users->map(static fn (InvoiceContact $invoiceContact) => $invoiceContact->getContact());
     }
 
     /**

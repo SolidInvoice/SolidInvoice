@@ -108,10 +108,6 @@ final class RecurringInvoiceTest extends ApiTestCase
     {
         $data = $this->requestGet('/api/recurring_invoices/1');
 
-        self::assertTrue(Uuid::isValid($data['uuid']));
-
-        unset($data['uuid']);
-
         self::assertSame([
             'id' => 1,
             'client' => '/api/clients/1',
@@ -163,10 +159,6 @@ final class RecurringInvoiceTest extends ApiTestCase
                 ],
             ]
         );
-
-        self::assertTrue(Uuid::isValid($data['uuid']));
-
-        unset($data['uuid']);
 
         self::assertSame([
             'id' => 1,

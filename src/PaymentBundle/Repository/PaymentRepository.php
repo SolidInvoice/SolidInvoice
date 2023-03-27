@@ -194,7 +194,7 @@ class PaymentRepository extends ServiceEntityRepository
         }
 
         $queryBuilder
-            ->groupBy('p.created')
+            ->groupBy('p.created, p.totalAmount')
             ->orderBy('p.created', Criteria::ASC);
 
         $query = $queryBuilder->getQuery();
@@ -247,7 +247,7 @@ class PaymentRepository extends ServiceEntityRepository
         )
             ->where('p.created >= :date')
             ->setParameter('date', new DateTime('-1 Year'))
-            ->groupBy('p.created')
+            ->groupBy('p.created, p.totalAmount')
             ->orderBy('p.created', Criteria::ASC);
 
         $query = $queryBuilder->getQuery();
