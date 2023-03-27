@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\ApiBundle\Test;
 
 use const PASSWORD_DEFAULT;
+use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
 use JsonException;
 use SolidInvoice\ApiBundle\ApiTokenManager;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
@@ -51,7 +52,10 @@ abstract class ApiTestCase extends PantherTestCase
         /** @var Company[] $companies */
         $companies = $companyRepository->findAll();
 
+        $commit = false;
+
         if ([] === $users) {
+            $commit = true;
             $user = new User();
             $user->setUsername('test')
                 ->setEmail('test@example.com')
@@ -73,6 +77,11 @@ abstract class ApiTestCase extends PantherTestCase
         $token = $tokenManager->getOrCreate($users[0], 'Functional Test');
 
         self::$client->setServerParameter('HTTP_X_API_TOKEN', $token->getToken());
+
+        if ($commit) {
+            StaticDriver::commit();
+            StaticDriver::beginTransaction();
+        }
     }
 
     /**
@@ -116,7 +125,9 @@ abstract class ApiTestCase extends PantherTestCase
         self::$client->request(Request::METHOD_PUT, $uri, [], [], $server, json_encode($data, JSON_THROW_ON_ERROR));
 
         $statusCode = self::$client->getResponse()->getStatusCode();
+
         self::assertSame(200, $statusCode);
+
         $content = self::$client->getResponse()->getContent();
         self::assertJson($content);
 

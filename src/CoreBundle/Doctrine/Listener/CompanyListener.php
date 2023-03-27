@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Doctrine\Listener;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Events;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
@@ -41,7 +41,7 @@ class CompanyListener implements EventSubscriber
     /**
      * Maps additional metadata.
      */
-    public function prePersist(LifecycleEventArgs $eventArgs): void
+    public function prePersist(PrePersistEventArgs $eventArgs): void
     {
         $object = $eventArgs->getObject();
         $em = $eventArgs->getObjectManager();

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Tests\Repository;
 
+use DateTime;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Money\Currency;
@@ -230,11 +231,12 @@ final class PaymentRepositoryTest extends KernelTestCase
     {
         $client = ClientFactory::createOne(['currency' => 'USD']);
 
-        $created = DateTimeImmutable::createFromFormat('Y-m-d', date('Y-m-d'));
-        $completed = DateTimeImmutable::createFromFormat('Y-m-d', date('Y-m-d'));
+        $created = DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
+        $completed = DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
 
-        PaymentFactory::createOne([
-            'invoice' => InvoiceFactory::new(['client' => $client, 'archived' => null]),
+        $invoice = InvoiceFactory::createOne(['client' => $client, 'archived' => null])->disableAutoRefresh();
+        $payment = PaymentFactory::createOne([
+            'invoice' => $invoice,
             'client' => $client,
             'currencyCode' => 'USD',
             'totalAmount' => 500123,
@@ -242,19 +244,19 @@ final class PaymentRepositoryTest extends KernelTestCase
             'message' => 'test',
             'created' => $created,
             'completed' => $completed,
-            'method' => PaymentMethodFactory::createOne(['name' => 'test-payment']),
+            'method' => PaymentMethodFactory::new(['name' => 'test-payment']),
         ]);
 
         self::assertEquals(
             [
                 [
-                    'id' => 1,
+                    'id' => $payment->getId(),
                     'totalAmount' => 500123,
                     'currencyCode' => 'USD',
                     'created' => $created,
                     'completed' => $completed,
                     'status' => Status::STATUS_CAPTURED,
-                    'invoice' => 1,
+                    'invoice' => $invoice->object()->getId(),
                     'method' => 'test-payment',
                     'message' => 'test',
                 ]
@@ -346,10 +348,10 @@ final class PaymentRepositoryTest extends KernelTestCase
             ->create()
             ->disableAutoRefresh();
 
-        $created = DateTimeImmutable::createFromFormat('Y-m-d', date('Y-m-d'));
-        $completed = DateTimeImmutable::createFromFormat('Y-m-d', date('Y-m-d'));
+        $created = DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
+        $completed = DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
 
-        PaymentFactory::createOne([
+        $payment = PaymentFactory::createOne([
             'invoice' => $invoice,
             'client' => $client,
             'currencyCode' => 'USD',
@@ -364,13 +366,13 @@ final class PaymentRepositoryTest extends KernelTestCase
         self::assertEquals(
             [
                 [
-                    'id' => 1,
+                    'id' => $payment->getId(),
                     'totalAmount' => 500123,
                     'currencyCode' => 'USD',
                     'created' => $created,
                     'completed' => $completed,
                     'status' => Status::STATUS_CAPTURED,
-                    'invoice' => 1,
+                    'invoice' => $invoice->object()->getId(),
                     'method' => 'test-payment',
                     'message' => 'test',
                 ]
@@ -463,7 +465,7 @@ final class PaymentRepositoryTest extends KernelTestCase
 
         $this->em->clear();
 
-        $payment = $this->em->getRepository(Payment::class)->find(1);
+        $payment = $this->em->getRepository(Payment::class)->find($payment->getId());
 
         self::assertSame(Status::STATUS_CAPTURED, $payment->getStatus());
     }
@@ -475,10 +477,10 @@ final class PaymentRepositoryTest extends KernelTestCase
             ->create()
             ->disableAutoRefresh();
 
-        $created = DateTimeImmutable::createFromFormat('Y-m-d', date('Y-m-d'));
-        $completed = DateTimeImmutable::createFromFormat('Y-m-d', date('Y-m-d'));
+        $created = DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
+        $completed = DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
 
-        PaymentFactory::createOne([
+        $payment = PaymentFactory::createOne([
             'invoice' => $invoice,
             'client' => $client,
             'currencyCode' => 'USD',
@@ -493,7 +495,7 @@ final class PaymentRepositoryTest extends KernelTestCase
         self::assertEquals(
             [
                 [
-                    'id' => 1,
+                    'id' => $payment->getId(),
                     'totalAmount' => 500123,
                     'currencyCode' => 'USD',
                     'created' => $created,

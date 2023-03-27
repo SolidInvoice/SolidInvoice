@@ -15,7 +15,6 @@ namespace SolidInvoice\InvoiceBundle\Tests\Functional\Api;
 
 use DateTimeInterface;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
-use Ramsey\Uuid\Uuid;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData as LoadClientData;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;

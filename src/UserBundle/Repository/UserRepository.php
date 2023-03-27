@@ -41,7 +41,11 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
 
         $qb->select('COUNT(u.id)');
 
-        return (int) $qb->getQuery()->getSingleScalarResult();
+        try {
+            return (int) $qb->getQuery()->getSingleScalarResult();
+        } catch (NoResultException|NonUniqueResultException $e) {
+            return 0;
+        }
     }
 
     public function loadUserByUsername(string $username): UserInterface

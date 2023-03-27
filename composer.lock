@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fdd6ba1da70bfb9017b700f8b83e13e3",
+    "content-hash": "c8917472372ec186f8a9e0a5a39611ac",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -13223,6 +13223,73 @@
         }
     ],
     "packages-dev": [
+        {
+            "name": "dama/doctrine-test-bundle",
+            "version": "v7.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dmaicher/doctrine-test-bundle.git",
+                "reference": "175b47153609a369117d97d36049b8a8c3b69dc1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dmaicher/doctrine-test-bundle/zipball/175b47153609a369117d97d36049b8a8c3b69dc1",
+                "reference": "175b47153609a369117d97d36049b8a8c3b69dc1",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/dbal": "^3.3",
+                "doctrine/doctrine-bundle": "^2.2.2",
+                "ext-json": "*",
+                "php": "^7.3 || ^8.0",
+                "psr/cache": "^1.0 || ^2.0 || ^3.0",
+                "symfony/cache": "^5.4 || ^6.0",
+                "symfony/framework-bundle": "^5.4 || ^6.0"
+            },
+            "require-dev": {
+                "behat/behat": "^3.0",
+                "doctrine/cache": "^1.12",
+                "phpstan/phpstan": "^1.2",
+                "phpunit/phpunit": "^8.0 || ^9.0 || ^10.0",
+                "symfony/phpunit-bridge": "^6.0",
+                "symfony/process": "^5.4 || ^6.0",
+                "symfony/yaml": "^5.4 || ^6.0"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "7.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "DAMA\\DoctrineTestBundle\\": "src/DAMA/DoctrineTestBundle"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "David Maicher",
+                    "email": "mail@dmaicher.de"
+                }
+            ],
+            "description": "Symfony bundle to isolate doctrine database tests and improve test performance",
+            "keywords": [
+                "doctrine",
+                "isolation",
+                "performance",
+                "symfony",
+                "tests"
+            ],
+            "support": {
+                "issues": "https://github.com/dmaicher/doctrine-test-bundle/issues",
+                "source": "https://github.com/dmaicher/doctrine-test-bundle/tree/v7.2.1"
+            },
+            "time": "2023-02-07T10:02:27+00:00"
+        },
         {
             "name": "dbrekelmans/bdi",
             "version": "1.0.4",

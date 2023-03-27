@@ -8,6 +8,7 @@ services:
         arguments:
             $installed: '%env(installed)%'
         lazy: true
+        public: true
 
     settings:
         alias: SolidInvoice\SettingsBundle\SystemConfig

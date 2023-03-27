@@ -25,16 +25,28 @@ jobs:
       PANTHER_NO_SANDBOX: 1
       PANTHER_CHROME_ARGUMENTS: --disable-dev-shm-usage
       COVERAGE: 0
+      database_driver: pdo_mysql
+      database_host: 127.0.0.1
+      database_port: 3306
+      database_name: solidinvoice
+      database_user: root
+      database_password:
+      database_version: 8.0
 
     services:
       mysql:
-        image: mysql:5.7
+        image: mysql:8.0
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_DATABASE: solidinvoice_test
         ports:
           - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+        options: >-
+            --health-cmd="mysqladmin ping"
+            --health-interval=10s
+            --health-timeout=5s
+            --health-retries=3
+            --entrypoint sh mysql:8.0 -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password"
 
     steps:
       - name: Harden Runner
@@ -57,7 +69,7 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           ini-values: date.timezone=Africa/Johannesburg, opcache.enable=1, opcache.enable_cli=1, opcache.memory_consumption=256, opcache.max_accelerated_files=32531, opcache.interned_strings_buffer=8, opcache.validate_timestamps=0, opcache.save_comments=1, opcache.fast_shutdown=0, memory_limit=-1
-          extensions: intl, gd, opcache, pdo_sqlite, soap, zip, :xdebug
+          extensions: intl, gd, opcache, mysql, pdo_mysql, soap, zip, :xdebug
           coverage: ${{ steps.coverage_driver.outputs.value }}
 
       - uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c
