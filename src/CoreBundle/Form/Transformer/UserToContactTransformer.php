@@ -63,7 +63,8 @@ final class UserToContactTransformer implements DataTransformerInterface
             $users = [];
 
             foreach ($value as $item) {
-                $contact = new ($this->class)();
+                $class = $this->class;
+                $contact = new $class();
                 $contact->setContact($item);
 
                 switch (true) {
