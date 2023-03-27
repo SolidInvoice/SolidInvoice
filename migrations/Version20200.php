@@ -81,7 +81,6 @@ final class Version20200 extends AbstractMigration implements ContainerAwareInte
     {
         if ($this->connection->getDatabasePlatform() instanceof MySQLPlatform) {
             $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS=0');
-            $this->connection->executeQuery('SET GLOBAL FOREIGN_KEY_CHECKS=0');
         }
 
         if ($this->connection->getDatabasePlatform() instanceof SqlitePlatform) {
@@ -287,7 +286,6 @@ final class Version20200 extends AbstractMigration implements ContainerAwareInte
 
         if ($this->connection->getDatabasePlatform() instanceof MySQLPlatform) {
             $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS=1');
-            $this->connection->executeQuery('SET GLOBAL FOREIGN_KEY_CHECKS=1');
         }
     }
 
@@ -295,7 +293,6 @@ final class Version20200 extends AbstractMigration implements ContainerAwareInte
     {
         if ($this->connection->getDatabasePlatform() instanceof MySQLPlatform) {
             $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS=0');
-            $this->connection->executeQuery('SET GLOBAL FOREIGN_KEY_CHECKS=0');
         }
     }
 
@@ -336,7 +333,6 @@ final class Version20200 extends AbstractMigration implements ContainerAwareInte
     {
         if ($this->connection->getDatabasePlatform() instanceof MySQLPlatform) {
             $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS=1');
-            $this->connection->executeQuery('SET GLOBAL FOREIGN_KEY_CHECKS=1');
         }
     }
 
