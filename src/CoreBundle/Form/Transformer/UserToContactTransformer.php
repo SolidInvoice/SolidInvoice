@@ -51,11 +51,20 @@ final class UserToContactTransformer implements DataTransformerInterface
         $this->class = $class;
     }
 
+    /**
+     * @param mixed $value
+     *
+     * @return mixed
+     */
     public function transform($value)
     {
         return $value;
     }
 
+    /**
+     * @param mixed $value
+     * @return array<int, T>|mixed
+     */
     public function reverseTransform($value)
     {
         if (is_iterable($value)) {
