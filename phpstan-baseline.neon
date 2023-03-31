@@ -1,56 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Method SolidInvoice\\\\ApiBundle\\\\Test\\\\ApiTestCase\\:\\:requestDelete\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/ApiBundle/Test/ApiTestCase.php
-
-		-
-			message: "#^Method SolidInvoice\\\\ApiBundle\\\\Test\\\\ApiTestCase\\:\\:requestDelete\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/ApiBundle/Test/ApiTestCase.php
-
-		-
-			message: "#^Method SolidInvoice\\\\ApiBundle\\\\Test\\\\ApiTestCase\\:\\:requestGet\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/ApiBundle/Test/ApiTestCase.php
-
-		-
-			message: "#^Method SolidInvoice\\\\ApiBundle\\\\Test\\\\ApiTestCase\\:\\:requestGet\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/ApiBundle/Test/ApiTestCase.php
-
-		-
-			message: "#^Method SolidInvoice\\\\ApiBundle\\\\Test\\\\ApiTestCase\\:\\:requestPost\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/ApiBundle/Test/ApiTestCase.php
-
-		-
-			message: "#^Method SolidInvoice\\\\ApiBundle\\\\Test\\\\ApiTestCase\\:\\:requestPost\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/ApiBundle/Test/ApiTestCase.php
-
-		-
-			message: "#^Method SolidInvoice\\\\ApiBundle\\\\Test\\\\ApiTestCase\\:\\:requestPost\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/ApiBundle/Test/ApiTestCase.php
-
-		-
-			message: "#^Method SolidInvoice\\\\ApiBundle\\\\Test\\\\ApiTestCase\\:\\:requestPut\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/ApiBundle/Test/ApiTestCase.php
-
-		-
-			message: "#^Method SolidInvoice\\\\ApiBundle\\\\Test\\\\ApiTestCase\\:\\:requestPut\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/ApiBundle/Test/ApiTestCase.php
-
-		-
-			message: "#^Method SolidInvoice\\\\ApiBundle\\\\Test\\\\ApiTestCase\\:\\:requestPut\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/ApiBundle/Test/ApiTestCase.php
-
-		-
 			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with 123 and SolidInvoice\\\\ClientBundle\\\\Entity\\\\Credit will always evaluate to false\\.$#"
 			count: 1
 			path: src/ApiBundle/Tests/Serializer/Normalizer/CreditNormalizerTest.php
@@ -164,26 +114,6 @@ parameters:
 			message: "#^PHPDoc tag @return with type \\$this\\(SolidInvoice\\\\ClientBundle\\\\Entity\\\\Client\\)\\|SolidInvoice\\\\CoreBundle\\\\Traits\\\\Entity\\\\Archivable is not subtype of native type SolidInvoice\\\\ClientBundle\\\\Entity\\\\Client\\.$#"
 			count: 1
 			path: src/ClientBundle/Entity/Client.php
-
-		-
-			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
-			count: 1
-			path: src/ClientBundle/Entity/Contact.php
-
-		-
-			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Entity\\\\Contact\\:\\:getInvoices\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/ClientBundle/Entity/Contact.php
-
-		-
-			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Entity\\\\Contact\\:\\:getQuotes\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/ClientBundle/Entity/Contact.php
-
-		-
-			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Entity\\\\Contact\\:\\:getRecurringInvoices\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/ClientBundle/Entity/Contact.php
 
 		-
 			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Entity\\\\ContactType\\:\\:getOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
@@ -706,11 +636,6 @@ parameters:
 			path: src/InstallBundle/Tests/Form/Step/SystemInformationFormTest.php
 
 		-
-			message: "#^Method SolidInvoice\\\\InstallBundle\\\\Tests\\\\Functional\\\\InstallationTest\\:\\:continue\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/InstallBundle/Tests/Functional/InstallationTest.php
-
-		-
 			message: "#^Call to an undefined method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:getId\\(\\)\\.$#"
 			count: 1
 			path: src/InvoiceBundle/Action/CloneInvoice.php
@@ -826,22 +751,7 @@ parameters:
 			path: src/InvoiceBundle/Entity/BaseInvoice.php
 
 		-
-			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Entity/Invoice.php
-
-		-
 			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\Invoice\\:\\:archive\\(\\) has invalid return type SolidInvoice\\\\CoreBundle\\\\Traits\\\\Entity\\\\Archivable\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Entity/Invoice.php
-
-		-
-			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\Invoice\\:\\:getItems\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/InvoiceBundle/Entity/Invoice.php
-
-		-
-			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\Invoice\\:\\:getUsers\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
 			count: 1
 			path: src/InvoiceBundle/Entity/Invoice.php
 
@@ -851,32 +761,12 @@ parameters:
 			path: src/InvoiceBundle/Entity/Invoice.php
 
 		-
-			message: "#^Instanceof between SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\Invoice\\|null and SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\RecurringInvoice will always evaluate to false\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Entity/Item.php
-
-		-
 			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\RecurringInvoice\\:\\:archive\\(\\) has invalid return type SolidInvoice\\\\CoreBundle\\\\Traits\\\\Entity\\\\Archivable\\.$#"
 			count: 1
 			path: src/InvoiceBundle/Entity/RecurringInvoice.php
 
 		-
-			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\RecurringInvoice\\:\\:getItems\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/InvoiceBundle/Entity/RecurringInvoice.php
-
-		-
-			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\RecurringInvoice\\:\\:getUsers\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/InvoiceBundle/Entity/RecurringInvoice.php
-
-		-
 			message: "#^PHPDoc tag @return with type \\$this\\(SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\RecurringInvoice\\)\\|SolidInvoice\\\\CoreBundle\\\\Traits\\\\Entity\\\\Archivable is not subtype of native type SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\RecurringInvoice\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Entity/RecurringInvoice.php
-
-		-
-			message: "#^Parameter \\#1 \\$invoice of method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\Item\\:\\:setInvoice\\(\\) expects SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\Invoice\\|null, \\$this\\(SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\RecurringInvoice\\) given\\.$#"
 			count: 1
 			path: src/InvoiceBundle/Entity/RecurringInvoice.php
 
@@ -1406,11 +1296,6 @@ parameters:
 			path: src/QuoteBundle/Email/QuoteEmail.php
 
 		-
-			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
-			count: 1
-			path: src/QuoteBundle/Entity/Quote.php
-
-		-
 			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Entity\\\\Quote\\:\\:archive\\(\\) has invalid return type SolidInvoice\\\\CoreBundle\\\\Traits\\\\Entity\\\\Archivable\\.$#"
 			count: 1
 			path: src/QuoteBundle/Entity/Quote.php
@@ -1924,13 +1809,3 @@ parameters:
 			message: "#^Property SolidInvoice\\\\UserBundle\\\\Tests\\\\Form\\\\Handler\\\\ProfileEditHandlerTest\\:\\:\\$userRepository has no type specified\\.$#"
 			count: 1
 			path: src/UserBundle/Tests/Form/Handler/ProfileEditHandlerTest.php
-
-		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\:\\:getEmail\\(\\)\\.$#"
-			count: 1
-			path: src/UserBundle/Tests/Repository/UserRepositoryTest.php
-
-		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\:\\:getId\\(\\)\\.$#"
-			count: 1
-			path: src/UserBundle/Tests/Repository/UserRepositoryTest.php

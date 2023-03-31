@@ -14,14 +14,16 @@ declare(strict_types=1);
 namespace SolidInvoice\QuoteBundle\Tests\Functional\Api;
 
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
+use Ramsey\Uuid\Uuid;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
-use SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData;
+use SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData as LoadClientData;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
+use SolidInvoice\QuoteBundle\DataFixtures\ORM\LoadData as LoadQuoteData;
 
 /**
  * @group functional
  */
-class QuoteTest extends ApiTestCase
+final class QuoteTest extends ApiTestCase
 {
     use EnsureApplicationInstalled;
 
@@ -29,13 +31,11 @@ class QuoteTest extends ApiTestCase
     {
         parent::setUp();
 
-        self::bootKernel();
-
-        $databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
+        $databaseTool = self::getContainer()->get(DatabaseToolCollection::class)->get();
 
         $databaseTool->loadFixtures([
-            LoadData::class,
-            \SolidInvoice\QuoteBundle\DataFixtures\ORM\LoadData::class,
+            LoadClientData::class,
+            LoadQuoteData::class,
         ], true);
     }
 
@@ -60,6 +60,8 @@ class QuoteTest extends ApiTestCase
         ];
 
         $result = $this->requestPost('/api/quotes', $data);
+
+        self::assertTrue(Uuid::isValid($result['uuid']));
 
         unset($result['uuid']);
 
@@ -101,6 +103,8 @@ class QuoteTest extends ApiTestCase
     public function testGet(): void
     {
         $data = $this->requestGet('/api/quotes/1');
+
+        self::assertTrue(Uuid::isValid($data['uuid']));
 
         unset($data['uuid']);
 
@@ -152,6 +156,8 @@ class QuoteTest extends ApiTestCase
                 ],
             ]
         );
+
+        self::assertTrue(Uuid::isValid($data['uuid']));
 
         unset($data['uuid']);
 

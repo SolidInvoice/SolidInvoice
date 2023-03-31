@@ -133,13 +133,14 @@ class Invoice extends BaseInvoice
     protected $items;
 
     /**
-     * @var Collection<int, Contact>
+     * @var Collection<int, InvoiceContact>
      *
-     * @ORM\ManyToMany(targetEntity="SolidInvoice\ClientBundle\Entity\Contact", cascade={"persist"}, fetch="EXTRA_LAZY", inversedBy="invoices")
+     * @ORM\OneToMany(targetEntity=InvoiceContact::class, cascade={"persist", "remove"}, fetch="EXTRA_LAZY", mappedBy="invoice")
      * @Assert\Count(min=1, minMessage="You need to select at least 1 user to attach to the Invoice")
      * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api", "create_invoice_api", "create_recurring_invoice_api"})
+     * @ApiProperty(writableLink=true)
      */
-    protected $users;
+    protected Collection $users;
 
     public function __construct()
     {
@@ -259,7 +260,7 @@ class Invoice extends BaseInvoice
     }
 
     /**
-     * @return Collection|ItemInterface[]
+     * @return Collection<int, Item>
      */
     public function getItems(): Collection
     {
@@ -271,10 +272,8 @@ class Invoice extends BaseInvoice
      */
     public function updateItems(): void
     {
-        if ((is_countable($this->items) ? count($this->items) : 0) > 0) {
-            foreach ($this->items as $item) {
-                $item->setInvoice($this);
-            }
+        foreach ($this->items as $item) {
+            $item->setInvoice($this);
         }
     }
 
@@ -320,28 +319,44 @@ class Invoice extends BaseInvoice
     }
 
     /**
-     * Return users array.
-     *
-     * @return Collection|Contact[]
+     * @return Collection<int, Contact>
      */
     public function getUsers(): Collection
     {
-        return $this->users;
+        return $this->users->map(static fn (InvoiceContact $invoiceContact) => $invoiceContact->getContact());
     }
 
     /**
-     * @param Contact[] $users
+     * @param (Contact|InvoiceContact)[] $users
      */
     public function setUsers(array $users): self
     {
-        $this->users = new ArrayCollection($users);
+        $contacts = [];
+
+        foreach ($users as $user) {
+            if ($user instanceof InvoiceContact) {
+                $contacts[] = $user;
+            } elseif ($user instanceof Contact) {
+                $invoiceContact = new InvoiceContact();
+                $invoiceContact->setContact($user);
+                $invoiceContact->setInvoice($this);
+
+                $contacts[] = $invoiceContact;
+            }
+        }
+
+        $this->users = new ArrayCollection($contacts);
 
         return $this;
     }
 
     public function addUser(Contact $user): self
     {
-        $this->users[] = $user;
+        $invoiceContact = new InvoiceContact();
+        $invoiceContact->setContact($user);
+        $invoiceContact->setInvoice($this);
+
+        $this->users[] = $invoiceContact;
 
         return $this;
     }

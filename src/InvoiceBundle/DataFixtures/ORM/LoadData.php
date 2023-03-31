@@ -17,28 +17,41 @@ use DateTimeImmutable;
 use DateTimeZone;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Exception;
 use Money\Currency;
 use Money\Money;
+use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Item;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Model\Graph;
+use function assert;
 
 /**
  * @codeCoverageIgnore
  */
 class LoadData extends Fixture
 {
+    /**
+     * @throws Exception
+     */
     public function load(ObjectManager $manager): void
     {
         $invoice = new Invoice();
-        $invoice->setClient($this->getReference('client'));
-        $invoice->addUser($this->getReference('contact'));
+        $client = $this->getReference('client');
+        assert($client instanceof Client);
+
+        $contact = $this->getReference('contact');
+        assert($contact instanceof Contact);
+
+        $invoice->setClient($client);
+        $invoice->addUser($contact);
         $invoice->setStatus(Graph::STATUS_DRAFT);
 
         $recurringInvoice = new RecurringInvoice();
-        $recurringInvoice->setClient($this->getReference('client'));
-        $recurringInvoice->addUser($this->getReference('contact'));
+        $recurringInvoice->setClient($client);
+        $recurringInvoice->addUser($contact);
         $recurringInvoice->setStatus(Graph::STATUS_DRAFT);
         $recurringInvoice->setFrequency('* * * * *');
         $recurringInvoice->setDateStart(new DateTimeImmutable('2012-01-01 15:30:00', new DateTimeZone('Europe/Paris')));

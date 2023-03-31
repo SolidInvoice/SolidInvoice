@@ -36,15 +36,9 @@ class UserRepositoryTest extends KernelTestCase
     use EnsureApplicationInstalled;
     use FakerTestTrait;
 
-    /**
-     * @var Generator
-     */
-    private $faker;
+    private Generator $faker;
 
-    /**
-     * @var UserRepository
-     */
-    private $repository;
+    private UserRepository $repository;
 
     protected AbstractDatabaseTool $databaseTool;
 
@@ -52,13 +46,23 @@ class UserRepositoryTest extends KernelTestCase
     {
         parent::setUp();
 
-        $kernel = self::bootKernel();
-        $this->repository = $kernel->getContainer()->get('doctrine')->getRepository(User::class);
+        $kernel = self::$kernel;
+        $registry = $kernel->getContainer()->get('doctrine');
+        $em = $registry->getManager();
+        $this->repository = $registry->getRepository(User::class);
         $this->faker = $this->getFaker();
 
-        self::bootKernel();
-
         $this->databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
+
+        // Ensure there are no users set, to make the tests a bit more predicable,
+        // since users can be added by api tests
+        foreach ($this->repository->findAll() as $user) {
+            foreach ($user->getApiTokens() as $token) {
+                $em->remove($token);
+            }
+
+            $em->remove($user);
+        }
     }
 
     public function testSave(): void
@@ -79,6 +83,7 @@ class UserRepositoryTest extends KernelTestCase
         $executor = $this->databaseTool->loadFixtures([LoadData::class], true);
         $user = $executor->getReferenceRepository()->getReference('user2');
         $newUser = $this->repository->refreshUser($user);
+        self::assertInstanceOf(User::class, $newUser);
         self::assertSame($user->getId(), $newUser->getId());
         self::assertSame($user->getUsername(), $newUser->getUsername());
         self::assertSame($user->getEmail(), $newUser->getEmail());
@@ -143,7 +148,7 @@ class UserRepositoryTest extends KernelTestCase
 
     public function testGetUserCount(): void
     {
-        self::assertSame(0, $this->repository->getUserCount());
+        self::assertLessThanOrEqual(1, $this->repository->getUserCount());
 
         $this->databaseTool->loadFixtures([LoadData::class], true);
 

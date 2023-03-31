@@ -44,11 +44,11 @@ final class ClientFactory extends ModelFactory
     protected function getDefaults(): array
     {
         return [
-            'name' => self::faker()->text(),
+            'name' => self::faker()->company(),
             'website' => self::faker()->url(),
-            'status' => self::faker()->text(),
+            'status' => self::faker()->word(),
             'currency' => self::faker()->currencyCode(),
-            'vatNumber' => self::faker()->text(),
+            'vatNumber' => self::faker()->word(),
             'archived' => self::faker()->boolean(),
             'created' => self::faker()->dateTime(),
             'updated' => self::faker()->dateTime(),

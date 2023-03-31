@@ -28,7 +28,7 @@ final class CronRunCommandTest extends TestCase
 
     public function testCronRunCommand(): void
     {
-        $kernel = self::bootKernel();
+        $kernel = self::$kernel;
         $container = self::getContainer();
 
         $doctrine = $container->get('doctrine');

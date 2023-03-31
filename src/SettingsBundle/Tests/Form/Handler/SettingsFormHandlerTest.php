@@ -29,12 +29,6 @@ use function iterator_to_array;
 
 final class SettingsFormHandlerTest extends FormHandlerTestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-        self::bootKernel();
-    }
-
     public function getHandler(): SettingsFormHandler
     {
         $repository = $this->registry->getRepository(Setting::class);

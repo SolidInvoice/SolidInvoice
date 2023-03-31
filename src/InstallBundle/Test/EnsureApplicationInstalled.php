@@ -14,13 +14,9 @@ declare(strict_types=1);
 namespace SolidInvoice\InstallBundle\Test;
 
 use DateTimeInterface;
-use Doctrine\ORM\Tools\SchemaTool;
-use SolidInvoice\CoreBundle\Entity\Version;
-use SolidInvoice\CoreBundle\Repository\VersionRepository;
-use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
+use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Test\Traits\SymfonyKernelTrait;
-use SolidInvoice\InstallBundle\Installer\Database\Migration;
-use SolidInvoice\SettingsBundle\SystemConfig;
 use function date;
 
 trait EnsureApplicationInstalled
@@ -32,20 +28,16 @@ trait EnsureApplicationInstalled
      */
     public function installApplication(): void
     {
-        $kernel = self::bootKernel();
+        self::bootKernel();
 
-        $entityManager = $kernel->getContainer()->get('doctrine.orm.entity_manager');
-        $schemaTool = new SchemaTool($entityManager);
-        $schemaTool->dropDatabase();
-
-        // @phpstan-ignore-next-line Ignore this line in PHPStan, since it sees the Migration service as private
-        static::getContainer()->get(Migration::class)->migrate();
-        // @phpstan-ignore-next-line Ignore this line in PHPStan, since it sees the SystemConfig service as private
-        static::getContainer()->get(SystemConfig::class)->set(SystemConfig::CURRENCY_CONFIG_PATH, 'USD');
-
-        /** @var VersionRepository $version */
-        $version = $entityManager->getRepository(Version::class);
-        $version->updateVersion(SolidInvoiceCoreBundle::VERSION);
+        // @phpstan-ignore-next-line Ignore this line in PHPStan, since it sees the CompanySelector service as private
+        static::getContainer()->get(CompanySelector::class)
+            ->switchCompany(
+                static::getContainer()->get('doctrine')
+                    ->getRepository(Company::class)
+                    ->findOneBy([])
+                    ->getId()
+            );
 
         $_SERVER['locale'] = $_ENV['locale'] = 'en_US';
         $_SERVER['installed'] = $_ENV['installed'] = date(DateTimeInterface::ATOM);
@@ -54,14 +46,8 @@ trait EnsureApplicationInstalled
     /**
      * @after
      */
-    public function clearDatabase(): void
+    public function clearEnv(): void
     {
-        $kernel = self::bootKernel();
-
-        $entityManager = $kernel->getContainer()->get('doctrine.orm.entity_manager');
-        $schemaTool = new SchemaTool($entityManager);
-        $schemaTool->dropDatabase();
-
         unset($_SERVER['locale'], $_ENV['locale'], $_SERVER['installed'], $_ENV['installed']);
     }
 }

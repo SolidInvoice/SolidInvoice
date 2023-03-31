@@ -25,10 +25,14 @@ use SolidInvoice\CoreBundle\Doctrine\Id\IdGenerator;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Entity\InvoiceContact;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceContact;
 use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\QuoteBundle\Entity\QuoteContact;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
+use function strtolower;
 
 /**
  * @ApiResource(attributes={"normalization_context"={"groups"={"contact_api"}}, "denormalization_context"={"groups"={"contact_api"}}}, collectionOperations={"post"={"method"="POST"}}, iri="https://schema.org/Person")
@@ -106,23 +110,23 @@ class Contact implements Serializable
     private $additionalContactDetails;
 
     /**
-     * @var Collection<int, Invoice>
+     * @var Collection<int, InvoiceContact>
      *
-     * @ORM\ManyToMany(targetEntity="SolidInvoice\InvoiceBundle\Entity\Invoice", cascade={"persist"}, fetch="EXTRA_LAZY", mappedBy="users")
+     * @ORM\OneToMany(targetEntity=InvoiceContact::class, cascade={"persist", "remove"}, mappedBy="contact")
      */
-    private $invoices;
+    private Collection $invoices;
 
     /**
-     * @var Collection<int, RecurringInvoice>
+     * @var Collection<int, RecurringInvoiceContact>
      *
-     * @ORM\ManyToMany(targetEntity="SolidInvoice\InvoiceBundle\Entity\RecurringInvoice", cascade={"persist"}, fetch="EXTRA_LAZY", mappedBy="users")
+     * @ORM\OneToMany(targetEntity=RecurringInvoiceContact::class, cascade={"persist", "remove"}, mappedBy="contact")
      */
     private $recurringInvoices;
 
     /**
-     * @var Collection<int, Quote>
+     * @var Collection<int, QuoteContact>
      *
-     * @ORM\ManyToMany(targetEntity="SolidInvoice\QuoteBundle\Entity\Quote", cascade={"persist"}, fetch="EXTRA_LAZY", mappedBy="users")
+     * @ORM\OneToMany(targetEntity=QuoteContact::class, cascade={"persist", "remove"}, mappedBy="contact")
      */
     private $quotes;
 
@@ -229,11 +233,9 @@ class Contact implements Serializable
     public function getAdditionalContactDetail(string $type): ?AdditionalContactDetail
     {
         $type = strtolower($type);
-        if ((is_countable($this->additionalContactDetails) ? count($this->additionalContactDetails) : 0) > 0) {
-            foreach ($this->additionalContactDetails as $detail) {
-                if (strtolower((string) $detail->getType()) === $type) {
-                    return $detail;
-                }
+        foreach ($this->additionalContactDetails as $detail) {
+            if (strtolower((string) $detail->getType()) === $type) {
+                return $detail;
             }
         }
 
@@ -294,26 +296,26 @@ class Contact implements Serializable
     }
 
     /**
-     * @return Collection|Invoice[]
+     * @return Collection<int, Invoice>
      */
     public function getInvoices(): Collection
     {
-        return $this->invoices;
+        return $this->invoices->map(static fn (InvoiceContact $invoiceContact): Invoice => $invoiceContact->getInvoice());
     }
 
     /**
-     * @return Collection|RecurringInvoice[]
+     * @return Collection<int, RecurringInvoice>
      */
     public function getRecurringInvoices(): Collection
     {
-        return $this->recurringInvoices;
+        return $this->recurringInvoices->map(static fn (RecurringInvoiceContact $recurringInvoiceContact): RecurringInvoice => $recurringInvoiceContact->getRecurringInvoice());
     }
 
     /**
-     * @return Collection|Quote[]
+     * @return Collection<int, Quote>
      */
     public function getQuotes(): Collection
     {
-        return $this->quotes;
+        return $this->quotes->map(static fn (QuoteContact $quoteContact): Quote => $quoteContact->getQuote());
     }
 }

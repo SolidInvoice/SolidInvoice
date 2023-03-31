@@ -51,7 +51,7 @@ final class InvoiceFactory extends ModelFactory
             'uuid' => Uuid::fromString(self::faker()->uuid()),
             'due' => self::faker()->dateTime(),
             'paidDate' => self::faker()->dateTime(),
-            'status' => self::faker()->text(),
+            'status' => self::faker()->word(),
             'terms' => self::faker()->text(),
             'notes' => self::faker()->text(),
             'archived' => self::faker()->boolean(),
