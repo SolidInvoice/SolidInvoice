@@ -16,17 +16,27 @@ namespace SolidInvoice\CoreBundle\Company;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Ramsey\Uuid\Codec\OrderedTimeCodec;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidFactory;
 use Ramsey\Uuid\UuidInterface;
+use function assert;
 
 final class CompanySelector
 {
     private ManagerRegistry $registry;
 
     private ?UuidInterface $companyId = null;
+    private OrderedTimeCodec $codec;
 
     public function __construct(ManagerRegistry $registry)
     {
         $this->registry = $registry;
+
+        $factory = clone Uuid::getFactory();
+        assert($factory instanceof UuidFactory);
+
+        $this->codec = new OrderedTimeCodec($factory->getUuidBuilder());
     }
 
     public function getCompany(): ?UuidInterface
@@ -40,10 +50,12 @@ final class CompanySelector
 
         assert($em instanceof EntityManagerInterface);
 
+        $companyIdBytes = $this->codec->encodeBinary($companyId);
+
         $em
             ->getFilters()
             ->enable('company')
-            ->setParameter('companyId', $companyId->toString(), Types::STRING);
+            ->setParameter('companyId', $companyIdBytes, Types::STRING);
 
         $this->companyId = $companyId;
     }

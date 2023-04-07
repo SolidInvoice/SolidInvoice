@@ -19,6 +19,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
+use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -37,11 +39,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     use TimeStampable;
 
     /**
-     * @var int|null
+     * @var UuidInterface|null
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="uuid_binary_ordered_time")
      * @ORM\Id
-     * @ORM\GeneratedValue()
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
      */
     private $id;
 
@@ -136,8 +139,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * Don't return the salt, and rely on password_hash to generate a salt.
      */
-    public function getSalt(): void
+    public function getSalt(): ?string
     {
+        return null;
     }
 
     /**
@@ -226,7 +230,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->plainPassword = null;
     }
 
-    public function getId()
+    public function getId(): ?UuidInterface
     {
         return $this->id;
     }

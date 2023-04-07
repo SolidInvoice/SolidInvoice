@@ -18,7 +18,6 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Filter\SQLFilter;
 use SolidInvoice\UserBundle\Entity\User;
 use function count;
-use function str_replace;
 
 class CompanyFilter extends SQLFilter
 {
@@ -38,7 +37,17 @@ class CompanyFilter extends SQLFilter
             }
 
             if (count($users) > 0) {
-                return sprintf('%s.id IN (%s)', $targetTableAlias, implode(',', array_column($users, 'user_id')));
+                return sprintf(
+                    '%s.id IN (%s)',
+                    $targetTableAlias,
+                    implode(
+                        ',',
+                        array_map(
+                            fn (string $companyId) => $this->getConnection()->quote($companyId),
+                            array_column($users, 'user_id')
+                        )
+                    )
+                );
             }
 
             return '';
@@ -49,19 +58,9 @@ class CompanyFilter extends SQLFilter
         }
 
         if ($this->hasParameter('companyId')) {
-            return sprintf('%s.company_id = %s', $targetTableAlias, $this->getCompanyId());
+            return sprintf('%s.company_id = %s', $targetTableAlias, $this->getParameter('companyId'));
         }
 
         return '';
-    }
-
-    private function getCompanyId(): string
-    {
-        $companyId = $this->getConnection()->convertToDatabaseValue(
-            str_replace("'", '', $this->getParameter('companyId')),
-            'uuid_binary_ordered_time'
-        );
-
-        return $this->getConnection()->quote($companyId);
     }
 }

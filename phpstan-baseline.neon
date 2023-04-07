@@ -1606,11 +1606,6 @@ parameters:
 			path: src/UserBundle/Entity/User.php
 
 		-
-			message: "#^Method SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:getId\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/UserBundle/Entity/User.php
-
-		-
 			message: "#^Method SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:getPlainPassword\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/UserBundle/Entity/User.php

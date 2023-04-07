@@ -18,10 +18,15 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Ramsey\Uuid\Codec\OrderedTimeCodec;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidFactory;
+use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
+use function assert;
 
 /**
  * @see \SolidInvoice\UserBundle\Tests\Repository\UserRepositoryTest
@@ -102,16 +107,41 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
     }
 
     /**
-     * @param list<int> $users
+     * @param list<string|User|UuidInterface> $users
      *
      * @return float|int|mixed|string
      */
     public function deleteUsers(array $users)
     {
+        $factory = clone Uuid::getFactory();
+        assert($factory instanceof UuidFactory);
+
+        $codec = new OrderedTimeCodec($factory->getUuidBuilder());
+
+        $ids = [];
+
+        foreach ($users as $user) {
+            if ($user instanceof User) {
+
+                foreach($user->getCompanies() as $company) {
+                    $user->removeCompany($company);
+                }
+
+                $ids[] = $codec->encodeBinary($user->getId());
+            } else if ($user instanceof UuidInterface) {
+                $ids[] = $codec->encodeBinary($user);
+            } else {
+                $ids[] = $codec->encodeBinary(Uuid::fromString($user));
+            }
+        }
+
+        $this->getEntityManager()->flush();
+
         $qb = $this->createQueryBuilder('u');
 
         $qb->delete()
-            ->where($qb->expr()->in('u.id', $users));
+            ->where('u.id IN (:users)')
+            ->setParameter('users', $ids);
 
         return $qb->getQuery()
             ->execute();

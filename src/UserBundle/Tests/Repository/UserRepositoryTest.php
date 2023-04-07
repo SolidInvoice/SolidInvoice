@@ -31,7 +31,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @group functional
  */
-class UserRepositoryTest extends KernelTestCase
+final class UserRepositoryTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
     use FakerTestTrait;
@@ -46,13 +46,12 @@ class UserRepositoryTest extends KernelTestCase
     {
         parent::setUp();
 
-        $kernel = self::$kernel;
-        $registry = $kernel->getContainer()->get('doctrine');
+        $registry = self::getContainer()->get('doctrine');
         $em = $registry->getManager();
         $this->repository = $registry->getRepository(User::class);
         $this->faker = $this->getFaker();
 
-        $this->databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
+        $this->databaseTool = self::getContainer()->get(DatabaseToolCollection::class)->get();
 
         // Ensure there are no users set, to make the tests a bit more predicable,
         // since users can be added by api tests
@@ -61,8 +60,16 @@ class UserRepositoryTest extends KernelTestCase
                 $em->remove($token);
             }
 
+            foreach ($user->getCompanies() as $company) {
+                $user->removeCompany($company);
+            }
+
+            $em->flush();
+
             $em->remove($user);
         }
+
+        $em->flush();
     }
 
     public function testSave(): void
@@ -80,7 +87,7 @@ class UserRepositoryTest extends KernelTestCase
 
     public function testRefreshUser(): void
     {
-        $executor = $this->databaseTool->loadFixtures([LoadData::class], true);
+        $executor = $this->databaseTool->loadFixtures([LoadData::class], false);
         $user = $executor->getReferenceRepository()->getReference('user2');
         $newUser = $this->repository->refreshUser($user);
         self::assertInstanceOf(User::class, $newUser);
@@ -165,7 +172,12 @@ class UserRepositoryTest extends KernelTestCase
     {
         $executor = $this->databaseTool->loadFixtures([LoadData::class], true);
 
-        $userIds = [$executor->getReferenceRepository()->getReference('user1')->getId(), $executor->getReferenceRepository()->getReference('user2')->getId()];
+        $referenceRepository = $executor->getReferenceRepository();
+
+        $userIds = [
+            $referenceRepository->getReference('user1'),
+            $referenceRepository->getReference('user2')
+        ];
 
         self::assertSame(2, $this->repository->deleteUsers($userIds));
         self::assertCount(0, $this->repository->findAll());
