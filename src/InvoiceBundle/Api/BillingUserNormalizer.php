@@ -59,10 +59,10 @@ final class BillingUserNormalizer implements ContextAwareDenormalizerInterface, 
     public function supportsNormalization($data, string $format = null, array $context = []): bool
     {
         return is_array($data) && isset($context['resource_class'], $data['users']) && (
-                $context['resource_class'] === Invoice::class ||
-                $context['resource_class'] === RecurringInvoice::class ||
-                $context['resource_class'] === Quote::class
-            ) && is_array($data['users']) && !isset($context[__CLASS__]);
+            $context['resource_class'] === Invoice::class ||
+            $context['resource_class'] === RecurringInvoice::class ||
+            $context['resource_class'] === Quote::class
+        ) && is_array($data['users']) && ! isset($context[__CLASS__]);
     }
 
     public function normalize($object, string $format = null, array $context = [])

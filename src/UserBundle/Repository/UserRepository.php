@@ -122,13 +122,12 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
 
         foreach ($users as $user) {
             if ($user instanceof User) {
-
-                foreach($user->getCompanies() as $company) {
+                foreach ($user->getCompanies() as $company) {
                     $user->removeCompany($company);
                 }
 
                 $ids[] = $codec->encodeBinary($user->getId());
-            } else if ($user instanceof UuidInterface) {
+            } elseif ($user instanceof UuidInterface) {
                 $ids[] = $codec->encodeBinary($user);
             } else {
                 $ids[] = $codec->encodeBinary(Uuid::fromString($user));

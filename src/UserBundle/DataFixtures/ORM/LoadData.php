@@ -28,7 +28,7 @@ class LoadData extends Fixture
     {
         $company = $manager->getRepository(Company::class)->findOneBy([]);
 
-        if (!$company) {
+        if (! $company) {
             throw new \RuntimeException('No company found');
         }
 
