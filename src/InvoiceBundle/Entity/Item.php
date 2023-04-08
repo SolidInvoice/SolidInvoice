@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Money;
 use SolidInvoice\CoreBundle\Doctrine\Id\IdGenerator;
 use SolidInvoice\CoreBundle\Entity\ItemInterface;
@@ -29,7 +28,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="invoice_lines")
  * @ORM\Entity(repositoryClass="SolidInvoice\InvoiceBundle\Repository\ItemRepository")
  * @ORM\HasLifecycleCallbacks()
- * @Gedmo\Loggable
  */
 class Item implements ItemInterface
 {

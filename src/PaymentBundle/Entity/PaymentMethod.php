@@ -16,7 +16,6 @@ namespace SolidInvoice\PaymentBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Payum\Core\Model\GatewayConfigInterface;
 use SolidInvoice\CoreBundle\Doctrine\Id\IdGenerator;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
@@ -29,7 +28,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="payment_methods")
  * @ORM\Entity(repositoryClass="SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository")
  * @UniqueEntity("gatewayName")
- * @Gedmo\Loggable
  */
 class PaymentMethod implements GatewayConfigInterface
 {

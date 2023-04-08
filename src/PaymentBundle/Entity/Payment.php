@@ -16,7 +16,6 @@ namespace SolidInvoice\PaymentBundle\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Currency;
 use Money\Money;
 use Payum\Core\Model\Payment as BasePayment;
@@ -35,7 +34,6 @@ use Traversable;
  * @ApiResource(collectionOperations={"get"={"method"="GET"}}, itemOperations={"get"={"method"="GET"}}, attributes={"normalization_context"={"groups"={"payment_api"}}})
  * @ORM\Table(name="payments")
  * @ORM\Entity(repositoryClass="SolidInvoice\PaymentBundle\Repository\PaymentRepository")
- * @Gedmo\Loggable
  */
 class Payment extends BasePayment implements PaymentInterface
 {

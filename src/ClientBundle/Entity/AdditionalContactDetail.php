@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\ClientBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use SolidInvoice\CoreBundle\Doctrine\Id\IdGenerator;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
@@ -25,7 +24,6 @@ use Symfony\Component\Serializer\Annotation as Serialize;
  *
  * @ORM\Entity()
  * @ORM\Table(name="contact_details")
- * @Gedmo\Loggable
  */
 class AdditionalContactDetail
 {

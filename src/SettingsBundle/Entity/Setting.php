@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\SettingsBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use SolidInvoice\CoreBundle\Doctrine\Id\IdGenerator;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -27,7 +26,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *     }
  * )
  * @ORM\Entity(repositoryClass="SolidInvoice\SettingsBundle\Repository\SettingsRepository")
- * @Gedmo\Loggable
  * @UniqueEntity(fields={"company_id", "key"})
  */
 class Setting

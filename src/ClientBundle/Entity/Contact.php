@@ -19,7 +19,6 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Serializable;
 use SolidInvoice\CoreBundle\Doctrine\Id\IdGenerator;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
@@ -38,7 +37,6 @@ use function strtolower;
  * @ApiResource(attributes={"normalization_context"={"groups"={"contact_api"}}, "denormalization_context"={"groups"={"contact_api"}}}, collectionOperations={"post"={"method"="POST"}}, iri="https://schema.org/Person")
  * @ORM\Table(name="contacts", indexes={@ORM\Index(columns={"email"})})
  * @ORM\Entity(repositoryClass="SolidInvoice\ClientBundle\Repository\ContactRepository")
- * @Gedmo\Loggable
  */
 class Contact implements Serializable
 {

@@ -19,7 +19,6 @@ use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Currency;
 use SolidInvoice\CoreBundle\Doctrine\Id\IdGenerator;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
@@ -44,7 +43,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="SolidInvoice\ClientBundle\Repository\ClientRepository")
  * @ORM\HasLifecycleCallbacks()
  * @UniqueEntity("name")
- * @Gedmo\Loggable
  */
 class Client
 {
