@@ -43,6 +43,8 @@ final class Version20201 extends AbstractMigration
         $quoteContact->addColumn('company_id', 'uuid_binary_ordered_time', ['notnull' => false]);
         $quoteContact->addIndex(['quote_id', 'company_id']);
         $quoteContact->setPrimaryKey(['quote_id', 'contact_id', 'company_id']);
+
+        $schema->dropTable('ext_log_entries');
     }
 
     public function down(Schema $schema): void
@@ -61,5 +63,20 @@ final class Version20201 extends AbstractMigration
         $recurringInvoiceContact->dropPrimaryKey();
         $recurringInvoiceContact->setPrimaryKey(['recurringinvoice_id', 'contact_id']);
         $recurringInvoiceContact->dropColumn('company_id');
+
+        $extLogEntries = $schema->createTable('ext_log_entries');
+        $extLogEntries->addColumn('id', 'integer', ['autoincrement' => true, 'notnull' => true]);
+        $extLogEntries->addColumn('action', 'string', ['length' => 8, 'notnull' => true]);
+        $extLogEntries->addColumn('logged_at', 'datetime', ['notnull' => true]);
+        $extLogEntries->addColumn('object_id', 'string', ['length' => 64, 'notnull' => false]);
+        $extLogEntries->addColumn('object_class', 'string', ['length' => 255, 'notnull' => true]);
+        $extLogEntries->addColumn('version', 'integer', ['notnull' => true]);
+        $extLogEntries->addColumn('data', 'array', ['notnull' => false]);
+        $extLogEntries->addColumn('username', 'string', ['length' => 255, 'notnull' => false]);
+        $extLogEntries->addIndex(['object_class'], 'log_class_lookup_idx');
+        $extLogEntries->addIndex(['logged_at'], 'log_date_lookup_idx');
+        $extLogEntries->addIndex(['username'], 'log_user_lookup_idx');
+        $extLogEntries->addIndex(['object_id', 'object_class', 'version'], 'log_version_lookup_idx');
+        $extLogEntries->addOption('row_format', 'DYNAMIC');
     }
 }

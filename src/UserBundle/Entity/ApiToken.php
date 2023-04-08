@@ -16,7 +16,6 @@ namespace SolidInvoice\UserBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use SolidInvoice\CoreBundle\Doctrine\Id\IdGenerator;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
@@ -27,7 +26,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="SolidInvoice\UserBundle\Repository\ApiTokenRepository")
  * @ORM\Table("api_tokens")
- * @Gedmo\Loggable
  * @UniqueEntity({"name", "user"})
  */
 class ApiToken

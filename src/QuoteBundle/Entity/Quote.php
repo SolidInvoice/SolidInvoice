@@ -20,7 +20,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Money;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -42,7 +41,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(attributes={"normalization_context"={"groups"={"quote_api"}}, "denormalization_context"={"groups"={"create_quote_api"}}})
  * @ORM\Table(name="quotes")
  * @ORM\Entity(repositoryClass="SolidInvoice\QuoteBundle\Repository\QuoteRepository")
- * @Gedmo\Loggable
  * @ORM\HasLifecycleCallbacks()
  */
 class Quote

@@ -21,7 +21,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Money;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -42,7 +41,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(attributes={"normalization_context"={"groups"={"invoice_api"}}, "denormalization_context"={"groups"={"create_invoice_api"}}})
  * @ORM\Table(name="invoices", indexes={@ORM\Index(columns={"quote_id"})})
  * @ORM\Entity(repositoryClass="SolidInvoice\InvoiceBundle\Repository\InvoiceRepository")
- * @Gedmo\Loggable()
  */
 class Invoice extends BaseInvoice
 {

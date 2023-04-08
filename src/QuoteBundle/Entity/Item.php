@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\QuoteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Money;
 use SolidInvoice\CoreBundle\Doctrine\Id\IdGenerator;
 use SolidInvoice\CoreBundle\Entity\ItemInterface;
@@ -29,7 +28,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="quote_lines")
  * @ORM\Entity(repositoryClass="SolidInvoice\QuoteBundle\Repository\ItemRepository")
  * @ORM\HasLifecycleCallbacks()
- * @Gedmo\Loggable
  */
 class Item implements ItemInterface
 {

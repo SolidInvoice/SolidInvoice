@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\ClientBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Money;
 use SolidInvoice\CoreBundle\Doctrine\Id\IdGenerator;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
@@ -26,7 +25,6 @@ use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
  *
  * @ORM\Table(name="client_credit")
  * @ORM\Entity(repositoryClass="SolidInvoice\ClientBundle\Repository\CreditRepository")
- * @Gedmo\Loggable
  */
 class Credit
 {
