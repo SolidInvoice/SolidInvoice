@@ -10001,10 +10001,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["memfs", [\
-      ["npm:3.5.3", {\
-        "packageLocation": "../../../../.yarn/berry/cache/memfs-npm-3.5.3-58186f00bb-10c0.zip/node_modules/memfs/",\
+      ["npm:3.6.0", {\
+        "packageLocation": "../../../../.yarn/berry/cache/memfs-npm-3.6.0-9ba0c79df7-10c0.zip/node_modules/memfs/",\
         "packageDependencies": [\
-          ["memfs", "npm:3.5.3"],\
+          ["memfs", "npm:3.6.0"],\
           ["fs-monkey", "npm:1.0.5"]\
         ],\
         "linkType": "HARD"\
@@ -14533,7 +14533,7 @@ const RAW_RUNTIME_STATE =
           ["webpack-dev-middleware", "virtual:c88e5726e336de13676b9567b8e6ae9b3ce4270191b1001f744bc4c751daf81954bb855062dd12809372094afb2047f1cecd9fc4bcb34b2b8fe0d5d349657458#npm:5.3.3"],\
           ["@types/webpack", null],\
           ["colorette", "npm:2.0.20"],\
-          ["memfs", "npm:3.5.3"],\
+          ["memfs", "npm:3.6.0"],\
           ["mime-types", "npm:2.1.35"],\
           ["range-parser", "npm:1.2.1"],\
           ["schema-utils", "npm:4.2.0"],\
