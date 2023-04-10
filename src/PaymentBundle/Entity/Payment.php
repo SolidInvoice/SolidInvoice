@@ -20,8 +20,9 @@ use Money\Currency;
 use Money\Money;
 use Payum\Core\Model\Payment as BasePayment;
 use Payum\Core\Model\PaymentInterface;
+use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
+use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
-use SolidInvoice\CoreBundle\Doctrine\Id\IdGenerator;
 use SolidInvoice\CoreBundle\Exception\UnexpectedTypeException;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
@@ -41,12 +42,12 @@ class Payment extends BasePayment implements PaymentInterface
     use CompanyAware;
 
     /**
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id", type="uuid_binary_ordered_time")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=IdGenerator::class)
+     * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
      *
-     * @var int|null
+     * @var UuidInterface
      */
     protected $id;
 
@@ -108,12 +109,7 @@ class Payment extends BasePayment implements PaymentInterface
      */
     private $completed;
 
-    /**
-     * Get the id.
-     *
-     * @return int
-     */
-    public function getId(): ?int
+    public function getId(): UuidInterface
     {
         return $this->id;
     }
