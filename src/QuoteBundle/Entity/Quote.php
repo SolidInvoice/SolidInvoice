@@ -21,11 +21,11 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use Money\Money;
+use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
-use SolidInvoice\CoreBundle\Doctrine\Id\IdGenerator;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Entity\ItemInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
@@ -53,12 +53,12 @@ class Quote
     use CompanyAware;
 
     /**
-     * @var int|null
+     * @var UuidInterface
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id", type="uuid_binary_ordered_time")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=IdGenerator::class)
+     * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
      * @Serialize\Groups({"quote_api", "client_api"})
      */
     private $id;
@@ -188,12 +188,7 @@ class Quote
         $this->total = new MoneyEntity();
     }
 
-    /**
-     * Get id.
-     *
-     * @return int
-     */
-    public function getId(): ?int
+    public function getId(): UuidInterface
     {
         return $this->id;
     }
