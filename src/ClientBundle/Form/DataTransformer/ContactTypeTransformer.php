@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Form\DataTransformer;
 
+use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\ClientBundle\Entity\ContactType;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
@@ -22,19 +23,20 @@ class ContactTypeTransformer implements DataTransformerInterface
     /**
      * @var ContactType[]
      */
-    private $types;
+    private array $types;
 
+    /**
+     * @param ContactType[] $types
+     */
     public function __construct(array $types)
     {
         $this->types = $types;
     }
 
     /**
-     * @param ContactType $type
-     *
-     * @return int
+     * @param ?ContactType $type
      */
-    public function transform($type): ?int
+    public function transform($type): ?UuidInterface
     {
         if ($type) {
             return $type->getId();
@@ -57,7 +59,7 @@ class ContactTypeTransformer implements DataTransformerInterface
         }
 
         foreach ($this->types as $type) {
-            if ($type->getId() === (int) $value) {
+            if ($type->getId()->toString() === $value) {
                 return $type;
             }
         }

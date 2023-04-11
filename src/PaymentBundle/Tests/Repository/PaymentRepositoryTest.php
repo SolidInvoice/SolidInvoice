@@ -182,7 +182,7 @@ final class PaymentRepositoryTest extends KernelTestCase
         );
 
         self::assertSame(
-            $client,
+            $client->getId(),
             $queryBuilder->getParameter('client')->getValue()
         );
 
@@ -199,7 +199,7 @@ final class PaymentRepositoryTest extends KernelTestCase
         );
 
         self::assertSame(
-            $invoice,
+            $invoice->getId(),
             $queryBuilder->getParameter('invoice')->getValue()
         );
 
@@ -217,12 +217,12 @@ final class PaymentRepositoryTest extends KernelTestCase
         );
 
         self::assertSame(
-            $client,
+            $client->getId(),
             $queryBuilder->getParameter('client')->getValue()
         );
 
         self::assertSame(
-            $invoice,
+            $invoice->getId(),
             $queryBuilder->getParameter('invoice')->getValue()
         );
     }
@@ -237,7 +237,7 @@ final class PaymentRepositoryTest extends KernelTestCase
         $invoice = InvoiceFactory::createOne(['client' => $client, 'archived' => null])->disableAutoRefresh();
         $payment = PaymentFactory::createOne([
             'invoice' => $invoice,
-            'client' => $client,
+            'client' => $client->object(),
             'currencyCode' => 'USD',
             'totalAmount' => 500123,
             'status' => Status::STATUS_CAPTURED,

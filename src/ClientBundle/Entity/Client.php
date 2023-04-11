@@ -52,6 +52,8 @@ class Client
     use CompanyAware;
 
     /**
+     * @var UuidInterface
+     *
      * @ORM\Column(name="id", type="uuid_binary_ordered_time")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="CUSTOM")

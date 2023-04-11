@@ -20,6 +20,7 @@ use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
+use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Model\Status;
 use SolidInvoice\CoreBundle\Util\ArrayUtil;
@@ -163,7 +164,7 @@ class ClientRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param list<int> $ids
+     * @param list<UuidInterface> $ids
      */
     public function deleteClients(array $ids): void
     {

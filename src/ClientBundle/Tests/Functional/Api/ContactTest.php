@@ -13,10 +13,15 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Tests\Functional\Api;
 
+use Doctrine\Common\DataFixtures\Executor\AbstractExecutor;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
+use Ramsey\Uuid\Uuid;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData;
+use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
+use function assert;
 
 /**
  * @group functional
@@ -25,32 +30,40 @@ class ContactTest extends ApiTestCase
 {
     use EnsureApplicationInstalled;
 
+    private AbstractExecutor $executor;
+
     protected function setUp(): void
     {
         parent::setUp();
 
         $databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
 
-        $databaseTool->loadFixtures([
+        $this->executor = $databaseTool->loadFixtures([
             LoadData::class,
         ], true);
     }
 
     public function testCreate(): void
     {
+        $client = $this->executor->getReferenceRepository()->getReference('client');
+        assert($client instanceof Client);
+
         $data = [
-            'client' => '/api/clients/1',
+            'client' => '/api/clients/' . $client->getId(),
             'firstName' => 'foo bar',
             'email' => 'foo@bar.com',
         ];
 
         $result = $this->requestPost('/api/contacts', $data);
 
+        self::assertTrue(Uuid::isValid($result['id']));
+
+        unset($result['id']);
+
         self::assertSame([
-            'id' => 2,
             'firstName' => 'foo bar',
             'lastName' => null,
-            'client' => '/api/clients/1',
+            'client' => '/api/clients/' . $client->getId(),
             'email' => 'foo@bar.com',
             'additionalContactDetails' => [],
         ], $result);
@@ -58,18 +71,24 @@ class ContactTest extends ApiTestCase
 
     public function testDelete(): void
     {
-        $this->requestDelete('/api/contacts/1');
+        $contact = $this->executor->getReferenceRepository()->getReference('contact');
+        assert($contact instanceof Contact);
+
+        $this->requestDelete('/api/contacts/' . $contact->getId());
     }
 
     public function testGet(): void
     {
-        $data = $this->requestGet('/api/contacts/1');
+        $contact = $this->executor->getReferenceRepository()->getReference('contact');
+        assert($contact instanceof Contact);
+
+        $data = $this->requestGet('/api/contacts/' . $contact->getId());
 
         self::assertSame([
-            'id' => 1,
+            'id' => $contact->getId()->toString(),
             'firstName' => 'Test',
             'lastName' => null,
-            'client' => '/api/clients/1',
+            'client' => '/api/clients/' . $contact->getClient()->getId()->toString(),
             'email' => 'test@example.com',
             'additionalContactDetails' => [],
         ], $data);
@@ -77,13 +96,16 @@ class ContactTest extends ApiTestCase
 
     public function testEdit(): void
     {
-        $data = $this->requestPut('/api/contacts/1', ['firstName' => 'New Test']);
+        $contact = $this->executor->getReferenceRepository()->getReference('contact');
+        assert($contact instanceof Contact);
+
+        $data = $this->requestPut('/api/contacts/' . $contact->getId(), ['firstName' => 'New Test']);
 
         self::assertSame([
-            'id' => 1,
+            'id' => $contact->getId()->toString(),
             'firstName' => 'New Test',
             'lastName' => null,
-            'client' => '/api/clients/1',
+            'client' => '/api/clients/' . $contact->getClient()->getId()->toString(),
             'email' => 'test@example.com',
             'additionalContactDetails' => [],
         ], $data);

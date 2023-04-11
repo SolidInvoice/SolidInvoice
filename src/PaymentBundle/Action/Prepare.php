@@ -188,7 +188,7 @@ final class Prepare
             $payment->setCurrencyCode($money->getCurrency()->getCode());
             $payment->setDescription('');
             $payment->setClient($invoice->getClient());
-            $payment->setNumber($invoice->getId());
+            $payment->setNumber($invoice->getId()->toString());
             $payment->setClientEmail($invoice->getClient()->getContacts()->first()->getEmail());
             $invoice->addPayment($payment);
             $this->save($payment);

@@ -146,21 +146,6 @@ parameters:
 			path: src/ClientBundle/Form/DataTransformer/ContactTypeTransformer.php
 
 		-
-			message: "#^If condition is always true\\.$#"
-			count: 1
-			path: src/ClientBundle/Form/DataTransformer/ContactTypeTransformer.php
-
-		-
-			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Form\\\\DataTransformer\\\\ContactTypeTransformer\\:\\:__construct\\(\\) has parameter \\$types with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/ClientBundle/Form/DataTransformer/ContactTypeTransformer.php
-
-		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 1
-			path: src/ClientBundle/Form/DataTransformer/ContactTypeTransformer.php
-
-		-
 			message: "#^Parameter \\#2 \\$default of method SolidWorx\\\\FormHandler\\\\Options\\:\\:get\\(\\) expects null, SolidInvoice\\\\ClientBundle\\\\Entity\\\\Client given\\.$#"
 			count: 1
 			path: src/ClientBundle/Form/Handler/AbstractClientFormHandler.php
@@ -241,11 +226,6 @@ parameters:
 			path: src/ClientBundle/Tests/Form/Type/ClientTypeTest.php
 
 		-
-			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Tests\\\\Form\\\\Type\\\\ContactDetailTypeTest\\:\\:getExtensions\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/ClientBundle/Tests/Form/Type/ContactDetailTypeTest.php
-
-		-
 			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Tests\\\\Form\\\\Type\\\\ContactTypeTest\\:\\:getExtensions\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/ClientBundle/Tests/Form/Type/ContactTypeTest.php
@@ -309,11 +289,6 @@ parameters:
 			message: "#^Property class@anonymous/CoreBundle/Form/Type/ImageUploadType\\.php\\:28\\:\\:\\$file has no type specified\\.$#"
 			count: 1
 			path: src/CoreBundle/Form/Type/ImageUploadType.php
-
-		-
-			message: "#^Result of && is always true\\.$#"
-			count: 1
-			path: src/CoreBundle/Listener/DoctrineExtensionListener.php
 
 		-
 			message: "#^Call to an undefined method Symfony\\\\Component\\\\HttpFoundation\\\\Session\\\\SessionInterface\\:\\:getFlashBag\\(\\)\\.$#"
@@ -1016,11 +991,6 @@ parameters:
 			path: src/PaymentBundle/Action/Prepare.php
 
 		-
-			message: "#^Parameter \\#1 \\$number of method Payum\\\\Core\\\\Model\\\\Payment\\:\\:setNumber\\(\\) expects string, int\\|null given\\.$#"
-			count: 1
-			path: src/PaymentBundle/Action/Prepare.php
-
-		-
 			message: "#^Parameter \\#1 \\$totalAmount of method Payum\\\\Core\\\\Model\\\\Payment\\:\\:setTotalAmount\\(\\) expects int, string given\\.$#"
 			count: 1
 			path: src/PaymentBundle/Action/Prepare.php
@@ -1052,16 +1022,6 @@ parameters:
 
 		-
 			message: "#^Property SolidInvoice\\\\PaymentBundle\\\\Entity\\\\Payment\\:\\:\\$details type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/PaymentBundle/Entity/Payment.php
-
-		-
-			message: "#^Return type \\(int\\|null\\) of method SolidInvoice\\\\PaymentBundle\\\\Entity\\\\Payment\\:\\:getClientId\\(\\) should be compatible with return type \\(string\\) of method Payum\\\\Core\\\\Model\\\\Payment\\:\\:getClientId\\(\\)$#"
-			count: 1
-			path: src/PaymentBundle/Entity/Payment.php
-
-		-
-			message: "#^Return type \\(int\\|null\\) of method SolidInvoice\\\\PaymentBundle\\\\Entity\\\\Payment\\:\\:getClientId\\(\\) should be compatible with return type \\(string\\) of method Payum\\\\Core\\\\Model\\\\PaymentInterface\\:\\:getClientId\\(\\)$#"
 			count: 1
 			path: src/PaymentBundle/Entity/Payment.php
 
