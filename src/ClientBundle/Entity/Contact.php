@@ -258,7 +258,7 @@ class Contact implements Serializable
     }
 
     /**
-     * @param array<string, string|int|DateTimeInterface|null> $data
+     * @param array<string, string|int|DateTimeInterface|UuidInterface|null> $data
      */
     public function __unserialize(array $data): void
     {

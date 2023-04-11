@@ -70,7 +70,7 @@ class Payment extends BasePayment implements PaymentInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Client", inversedBy="payments")
-     * @ORM\JoinColumn(name="client", fieldName="client")
+     * @ORM\JoinColumn(name="client", fieldName="client", referencedColumnName="id")
      *
      * @var Client|null
      */
@@ -210,14 +210,11 @@ class Payment extends BasePayment implements PaymentInterface
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getClientId(): ?int
+    public function getClientId(): ?string
     {
         $client = $this->getClient();
 
-        return null !== $client ? $client->getId() : null;
+        return null !== $client && null !== $client->getId() ? $client->getId()->toString() : null;
     }
 
     /**

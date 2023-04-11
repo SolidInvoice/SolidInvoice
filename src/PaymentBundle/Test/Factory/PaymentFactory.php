@@ -47,7 +47,6 @@ final class PaymentFactory extends ModelFactory
             'number' => self::faker()->text(),
             'description' => self::faker()->text(),
             'clientEmail' => self::faker()->text(),
-            'clientId' => self::faker()->text(),
             'totalAmount' => self::faker()->randomNumber(),
             'currencyCode' => self::faker()->currencyCode(),
             'details' => [],

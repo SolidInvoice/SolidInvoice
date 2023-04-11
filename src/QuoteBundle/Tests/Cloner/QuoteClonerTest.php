@@ -92,7 +92,6 @@ class QuoteClonerTest extends TestCase
         self::assertSame(Graph::STATUS_DRAFT, $newQuote->getStatus());
 
         self::assertNotSame($quote->getUuid(), $newQuote->getUuid());
-        self::assertNull($newQuote->getId());
 
         self::assertCount(1, $newQuote->getItems());
 

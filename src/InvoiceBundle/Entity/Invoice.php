@@ -51,7 +51,7 @@ class Invoice extends BaseInvoice
     use TimeStampable;
 
     /**
-     * @var UuidInterface
+     * @var ?UuidInterface
      *
      * @ORM\Column(name="id", type="uuid_binary_ordered_time")
      * @ORM\Id()
@@ -72,7 +72,7 @@ class Invoice extends BaseInvoice
     /**
      * @var Client|null
      *
-     * @ORM\ManyToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Client", inversedBy="invoices")
+     * @ORM\ManyToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Client", inversedBy="invoices", cascade={"persist"})
      * @Assert\NotBlank
      * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api", "create_invoice_api", "create_recurring_invoice_api"})
      * @ApiProperty(iri="https://schema.org/Organization")
@@ -149,12 +149,13 @@ class Invoice extends BaseInvoice
         $this->users = new ArrayCollection();
 
         try {
+            $this->id = null;
             $this->setUuid(Uuid::uuid1());
         } catch (Exception $e) {
         }
     }
 
-    public function getId(): UuidInterface
+    public function getId(): ?UuidInterface
     {
         return $this->id;
     }

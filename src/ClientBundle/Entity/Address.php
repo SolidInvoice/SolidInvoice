@@ -103,11 +103,6 @@ class Address
      */
     private $client;
 
-    /**
-     * Get id.
-     *
-     * @return int
-     */
     public function getId(): ?UuidInterface
     {
         return $this->id;
