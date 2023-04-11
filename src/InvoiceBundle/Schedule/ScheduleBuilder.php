@@ -43,7 +43,7 @@ final class ScheduleBuilder implements ScheduleBuilderInterface
 
             $schedule
                 ->addMessage(new CreateInvoiceFromRecurring($recurringInvoice))
-                ->description(sprintf('Create recurring invoice (%d)', $recurringInvoice->getId()))
+                ->description(sprintf('Create recurring invoice (%s)', $recurringInvoice->getId()))
                 ->cron($recurringInvoice->getFrequency())
             ;
         }

@@ -14,16 +14,12 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Entity;
 
 use Money\Money;
+use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\TaxBundle\Entity\Tax;
 
 interface ItemInterface
 {
-    /**
-     * Get id.
-     *
-     * @return int
-     */
-    public function getId(): ?int;
+    public function getId(): UuidInterface;
 
     public function setDescription(string $description): self;
 

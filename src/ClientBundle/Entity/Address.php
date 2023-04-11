@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace SolidInvoice\ClientBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
-use SolidInvoice\CoreBundle\Doctrine\Id\IdGenerator;
+use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
+use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Symfony\Component\Intl\Countries;
@@ -24,7 +24,6 @@ use Symfony\Component\Serializer\Annotation as Serialize;
 /**
  * @ORM\Table(name="addresses")
  * @ORM\Entity()
- * @Gedmo\Loggable
  */
 class Address
 {
@@ -32,12 +31,12 @@ class Address
     use CompanyAware;
 
     /**
-     * @var int|null
+     * @var UuidInterface
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id", type="uuid_binary_ordered_time")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=IdGenerator::class)
+     * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
      * @Serialize\Groups({"client_api"})
      */
     private $id;
@@ -104,12 +103,7 @@ class Address
      */
     private $client;
 
-    /**
-     * Get id.
-     *
-     * @return int
-     */
-    public function getId(): ?int
+    public function getId(): ?UuidInterface
     {
         return $this->id;
     }

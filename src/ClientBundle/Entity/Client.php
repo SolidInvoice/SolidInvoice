@@ -19,9 +19,9 @@ use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Currency;
-use SolidInvoice\CoreBundle\Doctrine\Id\IdGenerator;
+use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
+use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
@@ -44,7 +44,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="SolidInvoice\ClientBundle\Repository\ClientRepository")
  * @ORM\HasLifecycleCallbacks()
  * @UniqueEntity("name")
- * @Gedmo\Loggable
  */
 class Client
 {
@@ -53,12 +52,12 @@ class Client
     use CompanyAware;
 
     /**
-     * @var int|null
+     * @var UuidInterface
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id", type="uuid_binary_ordered_time")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=IdGenerator::class)
+     * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
      * @Serialize\Groups({"client_api"})
      */
     private $id;
@@ -185,12 +184,7 @@ class Client
         $this->addresses = new ArrayCollection();
     }
 
-    /**
-     * Get id.
-     *
-     * @return int
-     */
-    public function getId(): ?int
+    public function getId(): ?UuidInterface
     {
         return $this->id;
     }

@@ -102,7 +102,7 @@ final class ScheduleBuilderTest extends TestCase
 
         foreach ($schedule->all() as $job) {
             self::assertSame('0 0 1 * *', $job->getExpression()->getRawValue());
-            self::assertSame('Create recurring invoice (0)', $job->getDescription());
+            self::assertSame('Create recurring invoice ()', $job->getDescription());
             self::assertSame('MessageTask', $job->getType());
             self::assertInstanceOf(MessageTask::class, $job);
             self::assertInstanceOf(CreateInvoiceFromRecurring::class, $job->getMessage());
@@ -143,14 +143,14 @@ final class ScheduleBuilderTest extends TestCase
         self::assertCount(2, $tasks);
 
         self::assertSame('0 0 1 * *', $tasks[0]->getExpression()->getRawValue());
-        self::assertSame('Create recurring invoice (0)', $tasks[0]->getDescription());
+        self::assertSame('Create recurring invoice ()', $tasks[0]->getDescription());
         self::assertSame('MessageTask', $tasks[0]->getType());
         self::assertInstanceOf(MessageTask::class, $tasks[0]);
         self::assertInstanceOf(CreateInvoiceFromRecurring::class, $tasks[0]->getMessage());
         self::assertSame($recurringInvoice1, $tasks[0]->getMessage()->getRecurringInvoice());
 
         self::assertSame('* * 1 1 1', $tasks[1]->getExpression()->getRawValue());
-        self::assertSame('Create recurring invoice (0)', $tasks[1]->getDescription());
+        self::assertSame('Create recurring invoice ()', $tasks[1]->getDescription());
         self::assertSame('MessageTask', $tasks[1]->getType());
         self::assertInstanceOf(MessageTask::class, $tasks[1]);
         self::assertInstanceOf(CreateInvoiceFromRecurring::class, $tasks[1]->getMessage());

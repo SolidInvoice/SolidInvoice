@@ -16,13 +16,13 @@ namespace SolidInvoice\PaymentBundle\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Currency;
 use Money\Money;
 use Payum\Core\Model\Payment as BasePayment;
 use Payum\Core\Model\PaymentInterface;
+use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
+use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
-use SolidInvoice\CoreBundle\Doctrine\Id\IdGenerator;
 use SolidInvoice\CoreBundle\Exception\UnexpectedTypeException;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
@@ -35,7 +35,6 @@ use Traversable;
  * @ApiResource(collectionOperations={"get"={"method"="GET"}}, itemOperations={"get"={"method"="GET"}}, attributes={"normalization_context"={"groups"={"payment_api"}}})
  * @ORM\Table(name="payments")
  * @ORM\Entity(repositoryClass="SolidInvoice\PaymentBundle\Repository\PaymentRepository")
- * @Gedmo\Loggable
  */
 class Payment extends BasePayment implements PaymentInterface
 {
@@ -43,12 +42,12 @@ class Payment extends BasePayment implements PaymentInterface
     use CompanyAware;
 
     /**
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id", type="uuid_binary_ordered_time")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=IdGenerator::class)
+     * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
      *
-     * @var int|null
+     * @var UuidInterface
      */
     protected $id;
 
@@ -71,7 +70,7 @@ class Payment extends BasePayment implements PaymentInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Client", inversedBy="payments")
-     * @ORM\JoinColumn(name="client", fieldName="client")
+     * @ORM\JoinColumn(name="client", fieldName="client", referencedColumnName="id")
      *
      * @var Client|null
      */
@@ -110,12 +109,7 @@ class Payment extends BasePayment implements PaymentInterface
      */
     private $completed;
 
-    /**
-     * Get the id.
-     *
-     * @return int
-     */
-    public function getId(): ?int
+    public function getId(): UuidInterface
     {
         return $this->id;
     }
@@ -216,14 +210,11 @@ class Payment extends BasePayment implements PaymentInterface
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getClientId(): ?int
+    public function getClientId(): ?string
     {
         $client = $this->getClient();
 
-        return null !== $client ? $client->getId() : null;
+        return null !== $client && null !== $client->getId() ? $client->getId()->toString() : null;
     }
 
     /**

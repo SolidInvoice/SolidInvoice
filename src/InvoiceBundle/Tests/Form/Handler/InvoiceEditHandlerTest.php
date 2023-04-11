@@ -16,6 +16,7 @@ namespace SolidInvoice\InvoiceBundle\Tests\Form\Handler;
 use Mockery as M;
 use Money\Currency;
 use Money\Money;
+use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
@@ -45,12 +46,16 @@ final class InvoiceEditHandlerTest extends FormHandlerTestCase
 {
     private Invoice $invoice;
 
+    private Client $client;
+
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->invoice = new Invoice();
         $this->invoice->setStatus(Graph::STATUS_DRAFT);
+        $this->client = (new Client())->setName('Test');
+        $this->invoice->setClient($this->client);
         $discount = new Discount();
         $discount->setType(Discount::TYPE_PERCENTAGE);
         $discount->setValue(10);
@@ -92,7 +97,7 @@ final class InvoiceEditHandlerTest extends FormHandlerTestCase
         $router->shouldReceive('generate')
             ->zeroOrMoreTimes()
             ->withAnyArgs()
-            ->andReturn('/invoices/1');
+            ->andReturn('/invoices/' . $this->invoice->getId());
 
         $mailer = M::mock(MailerInterface::class);
         $mailer->shouldReceive('send')
@@ -147,6 +152,7 @@ final class InvoiceEditHandlerTest extends FormHandlerTestCase
                     'value' => 20,
                     'type' => Discount::TYPE_PERCENTAGE,
                 ],
+                'client' => $this->client,
             ],
             'save' => 'pending',
         ];

@@ -14,22 +14,31 @@ declare(strict_types=1);
 namespace DoctrineMigrations;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Table;
+use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\Migrations\AbstractMigration;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
-use Ramsey\Uuid\Codec\OrderedTimeCodec;
+use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
 use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidFactory;
-use function assert;
-use function str_repeat;
+use Ramsey\Uuid\UuidInterface;
+use RuntimeException;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use function array_flip;
+use function count;
 
-final class Version20201 extends AbstractMigration
+final class Version20201 extends AbstractMigration implements ContainerAwareInterface
 {
-    private LoggerInterface $logger;
-    private Schema $fromSchema;
+    use ContainerAwareTrait;
+
     private Schema $schema;
+    private Schema $fromSchema;
+    private LoggerInterface $logger;
 
     public function __construct(Connection $connection, LoggerInterface $logger)
     {
@@ -51,78 +60,51 @@ final class Version20201 extends AbstractMigration
     {
         $this->schema = clone $schema;
 
-        $schema->getTable('quote_contact')
+        $this->schema->getTable('quote_contact')
             ->dropPrimaryKey();
 
-        $schema->getTable('invoice_contact')
+        $this->schema->getTable('invoice_contact')
             ->dropPrimaryKey();
 
-        $schema->getTable('recurringinvoice_contact')
+        $this->schema->getTable('recurringinvoice_contact')
             ->dropPrimaryKey();
 
-        $invoiceContact = $schema->getTable('invoice_contact');
+        $invoiceContact = $this->schema->getTable('invoice_contact');
         $invoiceContact->addColumn('company_id', 'uuid_binary_ordered_time', ['notnull' => false]);
         $invoiceContact->addIndex(['invoice_id', 'company_id']);
-        $invoiceContact->setPrimaryKey(['invoice_id', 'contact_id', 'company_id']);
+        //$invoiceContact->setPrimaryKey(['invoice_id', 'contact_id', 'company_id']);
 
-        $recurringInvoiceContact = $schema->getTable('recurringinvoice_contact');
+        $recurringInvoiceContact = $this->schema->getTable('recurringinvoice_contact');
         $recurringInvoiceContact->addColumn('company_id', 'uuid_binary_ordered_time', ['notnull' => false]);
         $recurringInvoiceContact->addIndex(['recurringinvoice_id', 'company_id']);
-        $recurringInvoiceContact->setPrimaryKey(['recurringinvoice_id', 'contact_id', 'company_id']);
+        //$recurringInvoiceContact->setPrimaryKey(['recurringinvoice_id', 'contact_id', 'company_id']);
 
-        $quoteContact = $schema->getTable('quote_contact');
+        $quoteContact = $this->schema->getTable('quote_contact');
         $quoteContact->addColumn('company_id', 'uuid_binary_ordered_time', ['notnull' => false]);
         $quoteContact->addIndex(['quote_id', 'company_id']);
-        $quoteContact->setPrimaryKey(['quote_id', 'contact_id', 'company_id']);
+        //$quoteContact->setPrimaryKey(['quote_id', 'contact_id', 'company_id']);
 
-        $userTable = $this->schema->getTable('users');
-        $userInvitationTable = $this->schema->getTable('user_invitations');
-        $userCompanyTable = $this->schema->getTable('user_company');
-        $apiTokenTable = $this->schema->getTable('api_tokens');
+        $schema->dropTable('ext_log_entries');
 
-        $userTable->addColumn('id__uuid__', 'uuid_binary_ordered_time', ['notnull' => false]);
-        $userInvitationTable->addColumn('invited_by_id__uuid__', 'uuid_binary_ordered_time', ['notnull' => false]);
-        $userCompanyTable->addColumn('user_id__uuid__', 'uuid_binary_ordered_time', ['notnull' => false]);
-        $apiTokenTable->addColumn('user_id__uuid__', 'uuid_binary_ordered_time', ['notnull' => false]);
+        $clientCreditTable = $this->schema->getTable('client_credit');
 
-        $this->persistChanges();
-
-        $factory = clone Uuid::getFactory();
-        assert($factory instanceof UuidFactory);
-
-        $factory->setCodec(new OrderedTimeCodec(
-            $factory->getUuidBuilder(),
-        ));
-
-        $users = $this->connection
-            ->createQueryBuilder()
-            ->select('u.id')
-            ->from('users', 'u')
-            ->fetchAllAssociative();
-
-        foreach ($users as $user) {
-            $userId = $factory->uuid1()->getBytes();
-
-            $this->connection->update('users', ['id__uuid__' => $userId], ['id' => $user['id']]);
-            $this->connection->update('user_invitations', ['invited_by_id__uuid__' => $userId], ['invited_by_id' => $user['id']]);
-            $this->connection->update('user_company', ['user_id__uuid__' => $userId], ['user_id' => $user['id']]);
-            $this->connection->update('api_tokens', ['user_id__uuid__' => $userId], ['user_id' => $user['id']]);
+        foreach ($clientCreditTable->getIndexes() as $index) {
+            if ($index->isUnique() && !$index->isPrimary()) {
+                $clientCreditTable->dropIndex($index->getName());
+            }
         }
 
-        $this->setUuidOnTable($userInvitationTable->getName(), 'invited_by_id__uuid__');
-        $this->setUuidOnTable($userCompanyTable->getName(), 'user_id__uuid__');
-        $this->setUuidOnTable($apiTokenTable->getName(), 'user_id__uuid__');
-        $this->schema->getTable('users')->dropPrimaryKey();
-        $this->schema->getTable('user_company')->dropPrimaryKey();
-        $this->persistChanges();
-        $this->setUuidOnTable($userTable->getName(), 'id__uuid__');
+        foreach ($this->connection->createSchemaManager()->listTables() as $table) {
+            if (
+                $table->hasColumn('company_id') &&
+                $table->hasColumn('id') &&
+                $table->getColumn('id')->getType() instanceof IntegerType
+            ) {
+                $this->migrate($table->getName());
+            }
+        }
 
-        $this->schema->getTable('users')->setPrimaryKey(['id']);
-        $this->schema->getTable('user_company')->setPrimaryKey(['user_id', 'company_id']);
-        $this->persistChanges();
-        $this->schema->getTable('user_invitations')->addForeignKeyConstraint('users', ['invited_by_id'], ['id']);
-        $this->schema->getTable('user_company')->addForeignKeyConstraint('users', ['user_id'], ['id']);
-        $this->schema->getTable('api_tokens')->addForeignKeyConstraint('users', ['user_id'], ['id']);
+        $this->migrate('users');
 
         $this->persistChanges();
     }
@@ -143,8 +125,303 @@ final class Version20201 extends AbstractMigration
         $recurringInvoiceContact->dropPrimaryKey();
         $recurringInvoiceContact->setPrimaryKey(['recurringinvoice_id', 'contact_id']);
         $recurringInvoiceContact->dropColumn('company_id');
+
+        $extLogEntries = $schema->createTable('ext_log_entries');
+        $extLogEntries->addColumn('id', 'integer', ['autoincrement' => true, 'notnull' => true]);
+        $extLogEntries->addColumn('action', 'string', ['length' => 8, 'notnull' => true]);
+        $extLogEntries->addColumn('logged_at', 'datetime', ['notnull' => true]);
+        $extLogEntries->addColumn('object_id', 'string', ['length' => 64, 'notnull' => false]);
+        $extLogEntries->addColumn('object_class', 'string', ['length' => 255, 'notnull' => true]);
+        $extLogEntries->addColumn('version', 'integer', ['notnull' => true]);
+        $extLogEntries->addColumn('data', 'array', ['notnull' => false]);
+        $extLogEntries->addColumn('username', 'string', ['length' => 255, 'notnull' => false]);
+        $extLogEntries->addIndex(['object_class'], 'log_class_lookup_idx');
+        $extLogEntries->addIndex(['logged_at'], 'log_date_lookup_idx');
+        $extLogEntries->addIndex(['username'], 'log_user_lookup_idx');
+        $extLogEntries->addIndex(['object_id', 'object_class', 'version'], 'log_version_lookup_idx');
+        $extLogEntries->addOption('row_format', 'DYNAMIC');
     }
 
+    private function persistChanges(): void
+    {
+        foreach (
+            $this->platform
+                ->getAlterSchemaSQL(
+                    $this
+                        ->connection
+                        ->createSchemaManager()
+                        ->createComparator()
+                        ->compareSchemas($this->fromSchema, $this->schema)
+                ) as $sql
+        ) {
+            $this->logger->log(LogLevel::DEBUG, '{query}', ['query' => $sql]);
+            $this->connection->executeQuery($sql);
+        }
+    }
+
+    /**
+     * @throws Exception|RuntimeException|\Exception
+     */
+    public function migrate(string $tableName, string $uuidColumnName = '__uuid__'): void
+    {
+        $this->write('Migrating ' . $tableName . '.id to UUIDs...');
+        $foreignKeys = $this->getTableForeignKeys($tableName);
+        $this->addUuidFields($tableName, $uuidColumnName, $foreignKeys);
+
+        $this->persistChanges();
+
+        $uuids = $this->generateUuidsToReplaceIds($tableName, $uuidColumnName);
+
+        $this->addUuidsToTablesWithFK($foreignKeys, $uuids);
+        $this->deletePreviousFKs($foreignKeys);
+
+        $this->persistChanges();
+
+        $this->renameNewFKsToPreviousNames($foreignKeys);
+
+        $this->persistChanges();
+
+        $this->dropIdPrimaryKeyAndSetUuidToPrimaryKey($tableName, $uuidColumnName);
+
+        $this->persistChanges();
+
+        $this->restoreConstraintsAndIndexes($tableName, $foreignKeys);
+
+        $this->persistChanges();
+
+        $this->write('Successfully migrated ' . $tableName . '.id to UUIDs!');
+    }
+
+    private function isForeignKeyNullable(Table $table, string $key): bool
+    {
+        foreach ($table->getColumns() as $column) {
+            if ($column->getName() === $key) {
+                return !$column->getNotnull();
+            }
+        }
+
+        throw new RuntimeException('Unable to find ' . $key . 'in ' . $table->getName());
+    }
+
+    /**
+     * @return array<array<string|array<string>>>
+     * @throws Exception|RuntimeException
+     */
+    private function getTableForeignKeys(string $tableName): array
+    {
+        $schemaManager = $this->connection->createSchemaManager();
+
+        $allForeignKeys = [];
+
+        foreach ($schemaManager->listTables() as $table) {
+            $foreignKeys = $schemaManager->listTableForeignKeys($table->getName());
+            foreach ($foreignKeys as $foreignKey) {
+                $key = $foreignKey->getLocalColumns()[0];
+                if ($foreignKey->getForeignTableName() === $tableName) {
+                    $fk = [
+                        'table' => $table->getName(),
+                        'key' => $key,
+                        'tmpKey' => $key . '_to_uuid',
+                        'nullable' => $this->isForeignKeyNullable($table, $key),
+                        'name' => $foreignKey->getName(),
+                        'primaryKey' => $table->getPrimaryKey() ? $table->getPrimaryKey()->getColumns() : [],
+                    ];
+
+                    if ($foreignKey->onDelete()) {
+                        $fk['onDelete'] = $foreignKey->onDelete();
+                    }
+                    $allForeignKeys[] = $fk;
+                }
+            }
+        }
+
+        if (count($allForeignKeys) > 0) {
+            $this->write('-> Detected the following foreign keys :');
+            foreach ($allForeignKeys as $fk) {
+                $this->write('  * ' . $fk['table'] . '.' . $fk['key']);
+            }
+        } else {
+            $this->write('-> 0 foreign key detected.');
+        }
+
+        return $allForeignKeys;
+    }
+
+    /**
+     * @param array<array<string|array<string>>> $foreignKeys
+     * @throws SchemaException
+     */
+    private function addUuidFields(string $tableName, string $uuidColumnName, array $foreignKeys = []): void
+    {
+        $table = $this->schema->getTable($tableName);
+
+        $table->addColumn($uuidColumnName, 'uuid_binary_ordered_time', ['notnull' => true]);
+
+        foreach ($foreignKeys as $fk) {
+            $fkTable = $this->schema->getTable($fk['table']);
+
+            $fkTable->addColumn($fk['tmpKey'], 'uuid_binary_ordered_time', ['notnull' => !$this->foreignColumnShouldBeNullable($fk)]);
+        }
+    }
+
+    /**
+     * @return array<string, array<UuidInterface>>
+     * @throws \Exception
+     */
+    private function generateUuidsToReplaceIds(string $tableName, string $uuidColumnName): array
+    {
+        $idGenerator = new UuidOrderedTimeGenerator();
+
+        $records = $this->connection->createQueryBuilder()
+            ->select('id', 'company_id')
+            ->from($tableName)
+            ->fetchAllAssociative();
+
+        $this->write('-> Generating ' . count($records) . ' UUID(s)...');
+
+        $idToUuidMap = [];
+
+        foreach ($records as $record) {
+            $id = $record['id'];
+            $companyId = $record['company_id'];
+            $uuid = $idGenerator->generateId($this->getEntityManager(), null);
+            $idToUuidMap[$companyId][$id] = $uuid;
+            $this->connection->update(
+                $tableName,
+                [$uuidColumnName => $uuid],
+                ['id' => $id, 'company_id' => $companyId],
+                [$uuidColumnName => 'uuid_binary_ordered_time']
+            );
+        }
+
+        return $idToUuidMap;
+    }
+
+    /**
+     * @param array<array<string|array<string>>> $foreignKeys
+     * @param array<string, array<UuidInterface>> $idToUuidMap
+     * @throws Exception
+     */
+    private function addUuidsToTablesWithFK(array $foreignKeys, array $idToUuidMap): void
+    {
+        $this->write('-> Adding UUIDs to tables with foreign keys...');
+        foreach ($foreignKeys as $fk) {
+            $selectPk = implode(',', $fk['primaryKey']);
+
+            try {
+                $records = $this->connection->createQueryBuilder()
+                    ->select($selectPk . ', ' . $fk['key'], 'company_id')
+                    ->from($fk['table'])
+                    ->fetchAllAssociative();
+            } catch (\Exception $e) {
+                // TODO: Table doesn't have company id yet (E.G invoice_contact), so we need a different way of updating the data
+                $this->write('  * Unable to fetch records from "' . $fk['table'] . '"');
+                continue;
+            }
+
+            $this->write('  * Adding ' . count($records) . ' UUIDs to "' . $fk['table'] . '.' . $fk['key'] . '"');
+
+            foreach ($records as $record) {
+                if ($record[$fk['key']] && Uuid::fromBytes($record['company_id'])->toString() !== '00000000-0000-0000-0000-000000000000') {
+                    $queryPk = array_flip($fk['primaryKey']);
+                    foreach ($queryPk as $key => $value) {
+                        $queryPk[$key] = $record[$key];
+                    }
+
+                    /** @var UuidInterface $uuid */
+                    $uuid = $idToUuidMap[$record['company_id']][$record[$fk['key']]];
+                    $this->connection->update(
+                        $fk['table'],
+                        [
+                            $fk['tmpKey'] => $uuid->toString() !== '00000000-0000-0000-0000-000000000000' ? $uuid : null,
+                        ],
+                        $queryPk + ['company_id' => $record['company_id']],
+                        [
+                            $fk['tmpKey'] => 'uuid_binary_ordered_time',
+                        ]
+                    );
+                }
+            }
+        }
+    }
+
+    /**
+     * @param array<array<string|array<string>>> $foreignKeys
+     * @throws Exception
+     */
+    private function deletePreviousFKs(array $foreignKeys): void
+    {
+        $this->write('-> Deleting previous id foreign keys...');
+        foreach ($foreignKeys as $fk) {
+            $table = $this->schema->getTable($fk['table']);
+
+            $table->removeForeignKey($fk['name']);
+            $table->dropColumn($fk['key']);
+        }
+    }
+
+    /**
+     * @param array<array<string|array<string>>> $foreignKeys
+     * @throws Exception
+     */
+    private function renameNewFKsToPreviousNames(array $foreignKeys): void
+    {
+        $this->write('-> Renaming temporary uuid foreign keys to previous foreign keys names...');
+        foreach ($foreignKeys as $fk) {
+            $table = $this->schema->getTable($fk['table']);
+            $table->dropColumn($fk['tmpKey']);
+
+            $table->addColumn($fk['key'], 'uuid_binary_ordered_time', ['notnull' => !$this->foreignColumnShouldBeNullable($fk)]);
+        }
+    }
+
+    /**
+     * @throws SchemaException|Exception
+     */
+    private function dropIdPrimaryKeyAndSetUuidToPrimaryKey(string $tableName, string $uuidColumnName): void
+    {
+        $this->write('-> Creating the uuid primary key...');
+
+        $table = $this->schema->getTable($tableName);
+        $table->dropPrimaryKey();
+        $table->dropColumn('id');
+
+        $this->persistChanges();
+
+        $table->dropColumn($uuidColumnName);
+        $table->addColumn('id', 'uuid_binary_ordered_time', ['notnull' => true]);
+        $table->setPrimaryKey(['id']);
+    }
+
+    /**
+     * @param array<array<string|array<string>>> $foreignKeys
+     * @throws Exception
+     */
+    private function restoreConstraintsAndIndexes(string $tableName, array $foreignKeys): void
+    {
+        foreach ($foreignKeys as $foreignKey) {
+            $table = $this->schema->getTable($foreignKey['table']);
+
+            if (isset($foreignKey['primaryKey']) && [] !== $foreignKey['primaryKey']) {
+                try {
+                    $table->setPrimaryKey($foreignKey['primaryKey']);
+                } catch (\Exception $e) {
+                }
+            }
+
+            $table->addForeignKeyConstraint(
+                $tableName,
+                [$foreignKey['key']],
+                ['id'],
+                [],
+                $foreignKey['name']
+            );
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
     private function persistChanges(): void
     {
         foreach (
@@ -164,42 +441,43 @@ final class Version20201 extends AbstractMigration
         $this->fromSchema = clone $this->schema;
     }
 
-    private function setUuidOnTable(string $tableName, string $columnName): void
+    private function getEntityManager(): EntityManagerInterface
     {
-        $table = $this->schema->getTable($tableName);
+        return $this->container->get('doctrine.orm.entity_manager');
+    }
 
-        foreach ($table->getForeignKeys() as $foreignKey) {
-            if ($foreignKey->getForeignTableName() === 'users' && $foreignKey->getForeignColumns() === ['id']) {
-                $table->removeForeignKey($foreignKey->getName());
-            }
+    /**
+     * @param array<string, mixed> $foreignKey
+     */
+    private function foreignColumnShouldBeNullable(array $foreignKey): bool
+    {
+        if ($foreignKey['table'] === 'invoice_lines') {
+            return
+                $foreignKey['key'] === 'invoice_id' ||
+                $foreignKey['key'] === 'recurringInvoice_id' ||
+                $foreignKey['key'] === 'tax_id';
         }
 
-        $this->persistChanges();
-
-        $table = $this->schema->getTable($tableName);
-
-        $originalColumnName = str_replace('__uuid__', '', $columnName);
-        $table->dropColumn($originalColumnName);
-        $this->persistChanges();
-        $table = $this->schema->getTable($tableName);
-        $table->addColumn($originalColumnName, 'uuid_binary_ordered_time', ['notnull' => true]);
-
-        $this->persistChanges();
-
-        $records = $this->connection
-            ->createQueryBuilder()
-            ->select('t.' . $columnName)
-            ->from($tableName, 't')
-            ->fetchAllAssociative();
-
-        foreach ($records as $record) {
-            $this->connection->update($tableName, [$originalColumnName => $record[$columnName]], [$columnName => $record[$columnName]]);
+        if ($foreignKey['table'] === 'invoices') {
+            return $foreignKey['key'] === 'quote_id';
         }
 
-        $table = $this->schema->getTable($tableName);
+        if ($foreignKey['table'] === 'quote_lines') {
+            return $foreignKey['key'] === 'quote_id' || $foreignKey['key'] === 'tax_id';
+        }
 
-        $table->dropColumn($columnName);
+        if ($foreignKey['table'] === 'invoice_contact') {
+            return $foreignKey['key'] === 'contact_id' || $foreignKey['key'] === 'invoice_id';
+        }
 
-        $this->persistChanges();
+        if ($foreignKey['table'] === 'quote_contact') {
+            return $foreignKey['key'] === 'contact_id' || $foreignKey['key'] === 'quote_id';
+        }
+
+        if ($foreignKey['table'] === 'recurringinvoice_contact') {
+            return $foreignKey['key'] === 'contact_id' || $foreignKey['key'] === 'recurringinvoice_id';
+        }
+
+        return $foreignKey['nullable'];
     }
 }

@@ -18,7 +18,6 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
 use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Entity\Company;
@@ -30,7 +29,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @ORM\Table(name="users")
  * @ORM\Entity(repositoryClass="SolidInvoice\UserBundle\Repository\UserRepository")
- * @Gedmo\Loggable
  * @UniqueEntity(fields={"email"}, message="This email is already in use. Do you want to log in instead?")
  * @UniqueEntity(fields={"username"}, message="This username is already in use")
  */
