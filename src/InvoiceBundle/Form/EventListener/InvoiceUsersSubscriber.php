@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Form\EventListener;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Form\Transformer\UserToContactTransformer;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
@@ -33,10 +33,13 @@ final class InvoiceUsersSubscriber implements EventSubscriberInterface
 
     private BaseInvoice $invoice;
 
-    public function __construct(FormBuilderInterface $builder, BaseInvoice $invoice)
+    private ManagerRegistry $registry;
+
+    public function __construct(FormBuilderInterface $builder, BaseInvoice $invoice, ManagerRegistry $registry)
     {
         $this->builder = $builder;
         $this->invoice = $invoice;
+        $this->registry = $registry;
     }
 
     /**
@@ -59,15 +62,13 @@ final class InvoiceUsersSubscriber implements EventSubscriberInterface
         }
 
         if ($data instanceof Invoice || $data instanceof RecurringInvoice) {
-            $clientId = is_null($data->getClient()) ? null : $data->getClient()->getId();
+            $clientId = $data->getClient() !== null && $data->getClient()->getId() !== null ? $data->getClient()->getId()->toString() : null;
         } else {
             $clientId = $data['client'] ?? null;
         }
 
         if (! empty($clientId)) {
             $form = $event->getForm();
-
-            $invoice = $this->invoice;
 
             $users = $this->builder->create(
                 'users',
@@ -78,13 +79,9 @@ final class InvoiceUsersSubscriber implements EventSubscriberInterface
                     'expanded' => true,
                     'auto_initialize' => false,
                     'class' => Contact::class,
-                    'query_builder' => function (EntityRepository $repo) use ($clientId) {
-                        return $repo->createQueryBuilder('c')
-                            ->where('c.client = :client')
-                            ->setParameter('client', $clientId);
-                    },
+                    'choices' => $this->registry->getRepository(Contact::class)->findBy(['client' => $clientId]),
                 ]
-            )->addModelTransformer(new UserToContactTransformer($invoice, InvoiceContact::class));
+            )->addModelTransformer(new UserToContactTransformer($this->invoice, InvoiceContact::class));
 
             $form->add($users->getForm());
         }

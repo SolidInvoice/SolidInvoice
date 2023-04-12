@@ -23,6 +23,8 @@ trait EnsureApplicationInstalled
 {
     use SymfonyKernelTrait;
 
+    private Company $company;
+
     /**
      * @before
      */
@@ -30,14 +32,12 @@ trait EnsureApplicationInstalled
     {
         self::bootKernel();
 
+        $this->company = static::getContainer()->get('doctrine')
+            ->getRepository(Company::class)
+            ->findOneBy([]);
+
         // @phpstan-ignore-next-line Ignore this line in PHPStan, since it sees the CompanySelector service as private
-        static::getContainer()->get(CompanySelector::class)
-            ->switchCompany(
-                static::getContainer()->get('doctrine')
-                    ->getRepository(Company::class)
-                    ->findOneBy([])
-                    ->getId()
-            );
+        static::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
 
         $_SERVER['locale'] = $_ENV['locale'] = 'en_US';
         $_SERVER['installed'] = $_ENV['installed'] = date(DateTimeInterface::ATOM);

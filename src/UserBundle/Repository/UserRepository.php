@@ -22,6 +22,7 @@ use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
+use function assert;
 
 /**
  * @see \SolidInvoice\UserBundle\Tests\Repository\UserRepositoryTest
@@ -75,7 +76,9 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $class));
         }
 
-        return $this->loadUserByUsername($user->getUsername());
+        assert($user instanceof User);
+
+        return $this->loadUserByUsername($user->getEmail());
     }
 
     public function supportsClass(string $class): bool
@@ -99,22 +102,6 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
 
         $em->persist($user);
         $em->flush();
-    }
-
-    /**
-     * @param list<int> $users
-     *
-     * @return float|int|mixed|string
-     */
-    public function deleteUsers(array $users)
-    {
-        $qb = $this->createQueryBuilder('u');
-
-        $qb->delete()
-            ->where($qb->expr()->in('u.id', $users));
-
-        return $qb->getQuery()
-            ->execute();
     }
 
     public function clearUserConfirmationToken(User $user): void

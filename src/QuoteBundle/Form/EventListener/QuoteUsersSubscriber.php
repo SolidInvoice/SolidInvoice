@@ -13,17 +13,33 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Form\EventListener;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\ClientBundle\Entity\Contact;
+use SolidInvoice\CoreBundle\Form\Transformer\UserToContactTransformer;
 use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\QuoteBundle\Entity\QuoteContact;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class QuoteUsersSubscriber implements EventSubscriberInterface
 {
+    private FormBuilderInterface $builder;
+
+    private Quote $quote;
+
+    private ManagerRegistry $registry;
+
+    public function __construct(FormBuilderInterface $builder, Quote $quote, ManagerRegistry $registry)
+    {
+        $this->builder = $builder;
+        $this->quote = $quote;
+        $this->registry = $registry;
+    }
+
     public static function getSubscribedEvents(): array
     {
         return [
@@ -41,7 +57,7 @@ class QuoteUsersSubscriber implements EventSubscriberInterface
         }
 
         if ($data instanceof Quote) {
-            $clientId = is_null($data->getClient()) ? null : $data->getClient()->getId();
+            $clientId = $data->getClient() !== null && $data->getClient()->getId() !== null ? $data->getClient()->getId()->toString() : null;
         } else {
             $clientId = $data['client'] ?? null;
         }
@@ -49,21 +65,20 @@ class QuoteUsersSubscriber implements EventSubscriberInterface
         if (! empty($clientId)) {
             $form = $event->getForm();
 
-            $form->add(
+            $users = $this->builder->create(
                 'users',
                 EntityType::class,
                 [
                     'constraints' => new NotBlank(),
                     'multiple' => true,
                     'expanded' => true,
+                    'auto_initialize' => false,
                     'class' => Contact::class,
-                    'query_builder' => function (EntityRepository $repo) use ($clientId) {
-                        return $repo->createQueryBuilder('c')
-                            ->where('c.client = :client')
-                            ->setParameter('client', $clientId);
-                    },
+                    'choices' => $this->registry->getRepository(Contact::class)->findBy(['client' => $clientId]),
                 ]
-            );
+            )->addModelTransformer(new UserToContactTransformer($this->quote, QuoteContact::class));
+
+            $form->add($users->getForm());
         }
     }
 }

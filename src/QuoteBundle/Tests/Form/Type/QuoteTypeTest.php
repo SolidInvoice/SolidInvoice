@@ -56,7 +56,7 @@ class QuoteTypeTest extends FormTestCase
             ->zeroOrMoreTimes()
             ->andReturn(new Currency('USD'));
 
-        $type = new QuoteType($systemConfig);
+        $type = new QuoteType($systemConfig, $this->registry);
         $itemType = new ItemType($this->registry);
 
         return [

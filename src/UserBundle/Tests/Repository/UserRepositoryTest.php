@@ -31,7 +31,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @group functional
  */
-class UserRepositoryTest extends KernelTestCase
+final class UserRepositoryTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
     use FakerTestTrait;
@@ -46,13 +46,12 @@ class UserRepositoryTest extends KernelTestCase
     {
         parent::setUp();
 
-        $kernel = self::$kernel;
-        $registry = $kernel->getContainer()->get('doctrine');
+        $registry = self::getContainer()->get('doctrine');
         $em = $registry->getManager();
         $this->repository = $registry->getRepository(User::class);
         $this->faker = $this->getFaker();
 
-        $this->databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
+        $this->databaseTool = self::getContainer()->get(DatabaseToolCollection::class)->get();
 
         // Ensure there are no users set, to make the tests a bit more predicable,
         // since users can be added by api tests
@@ -61,8 +60,16 @@ class UserRepositoryTest extends KernelTestCase
                 $em->remove($token);
             }
 
+            foreach ($user->getCompanies() as $company) {
+                $user->removeCompany($company);
+            }
+
+            $em->flush();
+
             $em->remove($user);
         }
+
+        $em->flush();
     }
 
     public function testSave(): void
@@ -70,12 +77,28 @@ class UserRepositoryTest extends KernelTestCase
         $user = new User();
         $user->setUsername($this->faker->userName)
             ->setEmail($this->faker->email)
-            ->setPassword($this->faker->password);
+            ->setPassword($this->faker->password)
+            ->addCompany($this->company)
+        ;
 
         $this->repository->save($user);
 
         self::assertNotNull($user->getId());
         self::assertCount(1, $this->repository->findAll());
+    }
+
+    public function testSaveWithoutAnyCompanyLinkedToUser(): void
+    {
+        $user = new User();
+        $user->setUsername($this->faker->userName)
+            ->setEmail($this->faker->email)
+            ->setPassword($this->faker->password)
+        ;
+
+        $this->repository->save($user);
+
+        self::assertNotNull($user->getId());
+        self::assertCount(0, $this->repository->findAll());
     }
 
     public function testRefreshUser(): void
@@ -148,7 +171,7 @@ class UserRepositoryTest extends KernelTestCase
 
     public function testGetUserCount(): void
     {
-        self::assertLessThanOrEqual(1, $this->repository->getUserCount());
+        self::assertSame(0, $this->repository->getUserCount());
 
         $this->databaseTool->loadFixtures([LoadData::class], true);
 
@@ -159,16 +182,6 @@ class UserRepositoryTest extends KernelTestCase
     {
         self::assertFalse($this->repository->supportsClass(self::class));
         self::assertTrue($this->repository->supportsClass(User::class));
-    }
-
-    public function testDeleteUsers(): void
-    {
-        $executor = $this->databaseTool->loadFixtures([LoadData::class], true);
-
-        $userIds = [$executor->getReferenceRepository()->getReference('user1')->getId(), $executor->getReferenceRepository()->getReference('user2')->getId()];
-
-        self::assertSame(2, $this->repository->deleteUsers($userIds));
-        self::assertCount(0, $this->repository->findAll());
     }
 
     public function testClearUserConfirmationToken(): void

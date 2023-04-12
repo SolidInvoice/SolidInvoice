@@ -50,7 +50,7 @@ final class QuoteCloner
         $newQuote->setNotes($quote->getNotes());
         $newQuote->setTotal($quote->getTotal());
         $newQuote->setTerms($quote->getTerms());
-        $newQuote->setUsers($quote->getUsers()->toArray());
+        $newQuote->setUsers($quote->getUsers());
 
         if (null !== $quote->getTax()) {
             $newQuote->setTax($quote->getTax());

@@ -28,6 +28,10 @@ class LoadData extends Fixture
     {
         $company = $manager->getRepository(Company::class)->findOneBy([]);
 
+        if (! $company) {
+            throw new \RuntimeException('No company found');
+        }
+
         $user1 = (new User())
             ->setUsername('test1')
             ->setEmail('test1@test.com')

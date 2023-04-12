@@ -6,11 +6,6 @@ datagrid:
             repository: 'SolidInvoiceUserBundle:User'
             method: getGridQuery
         columns:
-            id:
-                name: id
-                label: ID
-                editable: false
-                cell: integer
             name:
                 name: username
                 label: Username

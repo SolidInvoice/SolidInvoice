@@ -1226,11 +1226,6 @@ parameters:
 			path: src/QuoteBundle/Action/CloneQuote.php
 
 		-
-			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\Create\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/QuoteBundle/Action/Create.php
-
-		-
 			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\Fields\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/QuoteBundle/Action/Fields.php
@@ -1566,11 +1561,6 @@ parameters:
 			path: src/UserBundle/Entity/User.php
 
 		-
-			message: "#^Method SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:getId\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/UserBundle/Entity/User.php
-
-		-
 			message: "#^Method SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:getPlainPassword\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/UserBundle/Entity/User.php
@@ -1702,11 +1692,6 @@ parameters:
 
 		-
 			message: "#^Property SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:\\$plainPassword \\(string\\) does not accept null\\.$#"
-			count: 1
-			path: src/UserBundle/Entity/User.php
-
-		-
-			message: "#^Return type \\(void\\) of method SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:getSalt\\(\\) should be compatible with return type \\(string\\|null\\) of method Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\:\\:getSalt\\(\\)$#"
 			count: 1
 			path: src/UserBundle/Entity/User.php
 
