@@ -1096,11 +1096,6 @@ parameters:
 			path: src/PaymentBundle/Form/Type/PaymentMethodSettingsType.php
 
 		-
-			message: "#^Parameter \\#2 \\$value of method Symfony\\\\Component\\\\Validator\\\\Violation\\\\ConstraintViolationBuilderInterface\\:\\:setParameter\\(\\) expects string, int given\\.$#"
-			count: 1
-			path: src/PaymentBundle/Form/Type/PaymentType.php
-
-		-
 			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\:\\:getSettingsForMethodArray\\(\\)\\.$#"
 			count: 1
 			path: src/PaymentBundle/Manager/PaymentSettingsManager.php
