@@ -104,7 +104,17 @@ final class Version20201 extends AbstractMigration implements ContainerAwareInte
             }
         }
 
-        $this->migrate('users');
+        $this->schema->getTable('user_company')
+            ->addForeignKeyConstraint('users', ['user_id'], ['id']);
+
+        $this->persistChanges();
+
+        $this->migrate('users', false);
+
+        $this->schema->getTable('user_company')
+            ->dropPrimaryKey();
+        $this->schema->getTable('user_company')
+            ->setPrimaryKey(['company_id', 'user_id']);
 
         $this->persistChanges();
     }
@@ -142,37 +152,22 @@ final class Version20201 extends AbstractMigration implements ContainerAwareInte
         $extLogEntries->addOption('row_format', 'DYNAMIC');
     }
 
-    private function persistChanges(): void
-    {
-        foreach (
-            $this->platform
-                ->getAlterSchemaSQL(
-                    $this
-                        ->connection
-                        ->createSchemaManager()
-                        ->createComparator()
-                        ->compareSchemas($this->fromSchema, $this->schema)
-                ) as $sql
-        ) {
-            $this->logger->log(LogLevel::DEBUG, '{query}', ['query' => $sql]);
-            $this->connection->executeQuery($sql);
-        }
-    }
-
     /**
      * @throws Exception|RuntimeException|\Exception
      */
-    public function migrate(string $tableName, string $uuidColumnName = '__uuid__'): void
+    public function migrate(string $tableName, bool $linkCompany = true): void
     {
+        $uuidColumnName = '__uuid__';
+
         $this->write('Migrating ' . $tableName . '.id to UUIDs...');
         $foreignKeys = $this->getTableForeignKeys($tableName);
         $this->addUuidFields($tableName, $uuidColumnName, $foreignKeys);
 
         $this->persistChanges();
 
-        $uuids = $this->generateUuidsToReplaceIds($tableName, $uuidColumnName);
+        $uuids = $this->generateUuidsToReplaceIds($tableName, $uuidColumnName, $linkCompany);
 
-        $this->addUuidsToTablesWithFK($foreignKeys, $uuids);
+        $this->addUuidsToTablesWithFK($foreignKeys, $uuids, $linkCompany);
         $this->deletePreviousFKs($foreignKeys);
 
         $this->persistChanges();
@@ -268,12 +263,18 @@ final class Version20201 extends AbstractMigration implements ContainerAwareInte
      * @return array<string, array<UuidInterface>>
      * @throws \Exception
      */
-    private function generateUuidsToReplaceIds(string $tableName, string $uuidColumnName): array
+    private function generateUuidsToReplaceIds(string $tableName, string $uuidColumnName, bool $linkCompany = true): array
     {
         $idGenerator = new UuidOrderedTimeGenerator();
 
+        $fields = ['id'];
+
+        if ($linkCompany) {
+            $fields[] = 'company_id';
+        }
+
         $records = $this->connection->createQueryBuilder()
-            ->select('id', 'company_id')
+            ->select(...$fields)
             ->from($tableName)
             ->fetchAllAssociative();
 
@@ -283,13 +284,21 @@ final class Version20201 extends AbstractMigration implements ContainerAwareInte
 
         foreach ($records as $record) {
             $id = $record['id'];
-            $companyId = $record['company_id'];
             $uuid = $idGenerator->generateId($this->getEntityManager(), null);
-            $idToUuidMap[$companyId][$id] = $uuid;
+
+            if ($linkCompany) {
+                $companyId = $record['company_id'];
+                $idToUuidMap[$companyId][$id] = $uuid;
+                $updateCriteria = ['id' => $id, 'company_id' => $companyId];
+            } else {
+                $idToUuidMap[$id] = $uuid;
+                $updateCriteria = ['id' => $id];
+            }
+
             $this->connection->update(
                 $tableName,
                 [$uuidColumnName => $uuid],
-                ['id' => $id, 'company_id' => $companyId],
+                $updateCriteria,
                 [$uuidColumnName => 'uuid_binary_ordered_time']
             );
         }
@@ -302,15 +311,21 @@ final class Version20201 extends AbstractMigration implements ContainerAwareInte
      * @param array<string, array<UuidInterface>> $idToUuidMap
      * @throws Exception
      */
-    private function addUuidsToTablesWithFK(array $foreignKeys, array $idToUuidMap): void
+    private function addUuidsToTablesWithFK(array $foreignKeys, array $idToUuidMap, bool $linkCompany = true): void
     {
         $this->write('-> Adding UUIDs to tables with foreign keys...');
         foreach ($foreignKeys as $fk) {
             $selectPk = implode(',', $fk['primaryKey']);
 
             try {
+                $fieldsSelect = [$selectPk . ', ' . $fk['key'], $fk['key']];
+
+                if ($linkCompany) {
+                    $fieldsSelect[] = 'company_id';
+                }
+
                 $records = $this->connection->createQueryBuilder()
-                    ->select($selectPk . ', ' . $fk['key'], 'company_id')
+                    ->select(...$fieldsSelect)
                     ->from($fk['table'])
                     ->fetchAllAssociative();
             } catch (\Exception $e) {
@@ -322,25 +337,38 @@ final class Version20201 extends AbstractMigration implements ContainerAwareInte
             $this->write('  * Adding ' . count($records) . ' UUIDs to "' . $fk['table'] . '.' . $fk['key'] . '"');
 
             foreach ($records as $record) {
-                if ($record[$fk['key']] && Uuid::fromBytes($record['company_id'])->toString() !== '00000000-0000-0000-0000-000000000000') {
-                    $queryPk = array_flip($fk['primaryKey']);
-                    foreach ($queryPk as $key => $value) {
-                        $queryPk[$key] = $record[$key];
-                    }
-
-                    /** @var UuidInterface $uuid */
-                    $uuid = $idToUuidMap[$record['company_id']][$record[$fk['key']]];
-                    $this->connection->update(
-                        $fk['table'],
-                        [
-                            $fk['tmpKey'] => $uuid->toString() !== '00000000-0000-0000-0000-000000000000' ? $uuid : null,
-                        ],
-                        $queryPk + ['company_id' => $record['company_id']],
-                        [
-                            $fk['tmpKey'] => 'uuid_binary_ordered_time',
-                        ]
-                    );
+                if (!$record[$fk['key']]) {
+                    continue;
                 }
+
+                if ($linkCompany && Uuid::fromBytes($record['company_id'])->toString() === '00000000-0000-0000-0000-000000000000') {
+                    continue;
+                }
+
+                $queryPk = array_flip($fk['primaryKey']);
+                foreach ($queryPk as $key => $value) {
+                    $queryPk[$key] = $record[$key];
+                }
+
+                if ($linkCompany) {
+                    $uuid = $idToUuidMap[$record['company_id']][$record[$fk['key']]];
+                    $queryPk['company_id'] = $record['company_id'];
+                } else {
+                    $uuid = $idToUuidMap[$record[$fk['key']]];
+                }
+
+                /** @var UuidInterface $uuid */
+
+                $this->connection->update(
+                    $fk['table'],
+                    [
+                        $fk['tmpKey'] => $uuid->toString() !== '00000000-0000-0000-0000-000000000000' ? $uuid : null,
+                    ],
+                    $queryPk,
+                    [
+                        $fk['tmpKey'] => 'uuid_binary_ordered_time',
+                    ]
+                );
             }
         }
     }

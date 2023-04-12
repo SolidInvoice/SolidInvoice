@@ -1701,11 +1701,6 @@ parameters:
 			path: src/UserBundle/Entity/User.php
 
 		-
-			message: "#^Return type \\(void\\) of method SolidInvoice\\\\UserBundle\\\\Entity\\\\User\\:\\:getSalt\\(\\) should be compatible with return type \\(string\\|null\\) of method Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\:\\:getSalt\\(\\)$#"
-			count: 1
-			path: src/UserBundle/Entity/User.php
-
-		-
 			message: "#^Parameter \\#2 \\$default of method SolidWorx\\\\FormHandler\\\\Options\\:\\:get\\(\\) expects null, string given\\.$#"
 			count: 1
 			path: src/UserBundle/Form/Handler/PasswordChangeHandler.php

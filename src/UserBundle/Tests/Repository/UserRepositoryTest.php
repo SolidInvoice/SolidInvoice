@@ -77,7 +77,9 @@ final class UserRepositoryTest extends KernelTestCase
         $user = new User();
         $user->setUsername($this->faker->userName)
             ->setEmail($this->faker->email)
-            ->setPassword($this->faker->password);
+            ->setPassword($this->faker->password)
+            ->addCompany($this->company)
+        ;
 
         $this->repository->save($user);
 
@@ -85,9 +87,23 @@ final class UserRepositoryTest extends KernelTestCase
         self::assertCount(1, $this->repository->findAll());
     }
 
+    public function testSaveWithoutAnyCompanyLinkedToUser(): void
+    {
+        $user = new User();
+        $user->setUsername($this->faker->userName)
+            ->setEmail($this->faker->email)
+            ->setPassword($this->faker->password)
+        ;
+
+        $this->repository->save($user);
+
+        self::assertNotNull($user->getId());
+        self::assertCount(0, $this->repository->findAll());
+    }
+
     public function testRefreshUser(): void
     {
-        $executor = $this->databaseTool->loadFixtures([LoadData::class], false);
+        $executor = $this->databaseTool->loadFixtures([LoadData::class], true);
         $user = $executor->getReferenceRepository()->getReference('user2');
         $newUser = $this->repository->refreshUser($user);
         self::assertInstanceOf(User::class, $newUser);
@@ -155,7 +171,7 @@ final class UserRepositoryTest extends KernelTestCase
 
     public function testGetUserCount(): void
     {
-        self::assertLessThanOrEqual(1, $this->repository->getUserCount());
+        self::assertSame(0, $this->repository->getUserCount());
 
         $this->databaseTool->loadFixtures([LoadData::class], true);
 
@@ -166,21 +182,6 @@ final class UserRepositoryTest extends KernelTestCase
     {
         self::assertFalse($this->repository->supportsClass(self::class));
         self::assertTrue($this->repository->supportsClass(User::class));
-    }
-
-    public function testDeleteUsers(): void
-    {
-        $executor = $this->databaseTool->loadFixtures([LoadData::class], true);
-
-        $referenceRepository = $executor->getReferenceRepository();
-
-        $userIds = [
-            $referenceRepository->getReference('user1'),
-            $referenceRepository->getReference('user2')
-        ];
-
-        self::assertSame(2, $this->repository->deleteUsers($userIds));
-        self::assertCount(0, $this->repository->findAll());
     }
 
     public function testClearUserConfirmationToken(): void

@@ -18,10 +18,6 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use Ramsey\Uuid\Codec\OrderedTimeCodec;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidFactory;
-use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
@@ -80,7 +76,9 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $class));
         }
 
-        return $this->loadUserByUsername($user->getUsername());
+        assert($user instanceof User);
+
+        return $this->loadUserByUsername($user->getEmail());
     }
 
     public function supportsClass(string $class): bool
@@ -104,46 +102,6 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
 
         $em->persist($user);
         $em->flush();
-    }
-
-    /**
-     * @param list<string|User|UuidInterface> $users
-     *
-     * @return float|int|mixed|string
-     */
-    public function deleteUsers(array $users)
-    {
-        $factory = clone Uuid::getFactory();
-        assert($factory instanceof UuidFactory);
-
-        $codec = new OrderedTimeCodec($factory->getUuidBuilder());
-
-        $ids = [];
-
-        foreach ($users as $user) {
-            if ($user instanceof User) {
-                foreach ($user->getCompanies() as $company) {
-                    $user->removeCompany($company);
-                }
-
-                $ids[] = $codec->encodeBinary($user->getId());
-            } elseif ($user instanceof UuidInterface) {
-                $ids[] = $codec->encodeBinary($user);
-            } else {
-                $ids[] = $codec->encodeBinary(Uuid::fromString($user));
-            }
-        }
-
-        $this->getEntityManager()->flush();
-
-        $qb = $this->createQueryBuilder('u');
-
-        $qb->delete()
-            ->where('u.id IN (:users)')
-            ->setParameter('users', $ids);
-
-        return $qb->getQuery()
-            ->execute();
     }
 
     public function clearUserConfirmationToken(User $user): void
