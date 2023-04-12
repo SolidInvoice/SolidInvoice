@@ -10,7 +10,7 @@
 {{ 'payment.description'|trans({}, 'email') }}
 
 {% if payment.invoice is not empty %}
-    {{ 'payment.details.invoice'|trans({}, 'email') }}: {{ payment.invoice.id }}
+    {{ 'payment.details.invoice'|trans({}, 'email') }}: {{ payment.invoice.invocieId }}
 {% endif %}
 
 {% if payment.client is not empty %}

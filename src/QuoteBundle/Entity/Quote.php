@@ -64,6 +64,11 @@ class Quote
     private $id;
 
     /**
+     * @ORM\Column(name="quote_id", type="string", length=255)
+     */
+    private string $quoteId;
+
+    /**
      * @var UuidInterface
      *
      * @ORM\Column(name="uuid", type="uuid", length=36)
@@ -418,5 +423,15 @@ class Quote
     public function getInvoice(): ?Invoice
     {
         return $this->invoice;
+    }
+
+    public function getQuoteId(): string
+    {
+        return $this->quoteId;
+    }
+
+    public function setQuoteId(string $quoteId): void
+    {
+        $this->quoteId = $quoteId;
     }
 }

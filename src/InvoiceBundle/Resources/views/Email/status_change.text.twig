@@ -10,5 +10,5 @@
 {{ 'invoice.status_change.heading'|trans({}, 'email') }}
 -------------------
 
-{{ 'invoice.status_change.id'|trans({}, 'email') }}: {{ invoice.id }}
+{{ 'invoice.status_change.id'|trans({}, 'email') }}: {{ invoice.invoiceId ?? invoice.id }}
 {{ 'invoice.status_change.status'|trans({}, 'email') }}: {{ invoice.status }}

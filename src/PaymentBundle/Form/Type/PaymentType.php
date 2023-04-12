@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Form\Type;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Money\Currency;
 use Money\Money;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
-use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -31,6 +31,13 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  */
 class PaymentType extends AbstractType
 {
+    private ManagerRegistry $registry;
+
+    public function __construct(ManagerRegistry $registry)
+    {
+        $this->registry = $registry;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
@@ -38,25 +45,7 @@ class PaymentType extends AbstractType
             EntityType::class,
             [
                 'class' => PaymentMethod::class,
-                'query_builder' => function (PaymentMethodRepository $repository) use ($options) {
-                    $queryBuilder = $repository->createQueryBuilder('pm');
-                    $expression = $queryBuilder->expr();
-                    $queryBuilder->where($expression->eq('pm.enabled', 1));
-
-                    // If user is not logged in, exclude internal payment methods
-                    if (null === $options['user']) {
-                        $queryBuilder->andWhere(
-                            $expression->orX(
-                                $expression->neq('pm.internal', 1),
-                                $expression->isNull('pm.internal')
-                            )
-                        );
-                    }
-
-                    $queryBuilder->orderBy($expression->asc('pm.name'));
-
-                    return $queryBuilder;
-                },
+                'choices' => $this->registry->getRepository(PaymentMethod::class)->getAvailablePaymentMethods($options['user'] !== null),
                 'required' => true,
                 'preferred_choices' => $options['preferred_choices'],
                 'constraints' => new Assert\NotBlank(),
@@ -81,7 +70,7 @@ class PaymentType extends AbstractType
                         if ($money->isZero() || $money->isNegative()) {
                             $context->buildViolation('This value should be greater than {{ compared_value }}.')
                                 ->setParameter('{{ value }}', $money->getAmount())
-                                ->setParameter('{{ compared_value }}', 0)
+                                ->setParameter('{{ compared_value }}', '0')
                                 ->addViolation();
                         }
                     }),

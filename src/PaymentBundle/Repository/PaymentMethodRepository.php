@@ -65,4 +65,27 @@ class PaymentMethodRepository extends ServiceEntityRepository
 
         return (int) $queryBuilder->getQuery()->getSingleScalarResult();
     }
+
+    /**
+     * @return PaymentMethod[]
+     */
+    public function getAvailablePaymentMethods(bool $includeInternal): array
+    {
+        $queryBuilder = $this->createQueryBuilder('pm');
+        $expression = $queryBuilder->expr();
+        $queryBuilder->where($expression->eq('pm.enabled', 1));
+
+        if (! $includeInternal) {
+            $queryBuilder->andWhere(
+                $expression->orX(
+                    $expression->neq('pm.internal', 1),
+                    $expression->isNull('pm.internal')
+                )
+            );
+        }
+
+        $queryBuilder->orderBy($expression->asc('pm.name'));
+
+        return $queryBuilder->getQuery()->getResult();
+    }
 }
