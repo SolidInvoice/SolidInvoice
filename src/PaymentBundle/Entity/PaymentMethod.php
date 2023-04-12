@@ -57,7 +57,7 @@ class PaymentMethod implements GatewayConfigInterface
     /**
      * @var string|null
      *
-     * @ORM\Column(name="gateway_name", type="string", length=125, unique=true)
+     * @ORM\Column(name="gateway_name", type="string", length=125)
      */
     private $gatewayName;
 

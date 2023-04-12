@@ -112,11 +112,19 @@ class ViewBilling
             return new RedirectResponse($this->router->generate($options['route'], ['id' => $entity->getId()]));
         }
 
+        $entityId = null;
+
+        if  ($entity instanceof Invoice) {
+            $entityId = $entity->getInvoiceId();
+        } elseif ($entity instanceof Quote) {
+            $entityId = $entity->getQuoteId();
+        }
+
         return new Template(
             '@SolidInvoiceCore/View/' . $options['entity'] . '.html.twig',
             [
                 $options['entity'] => $entity,
-                'title' => $options['entity'] . ' #' . $entity->getId(),
+                'title' => $options['entity'] . ' #' . $entityId,
                 'template' => $options['template'],
             ]
         );

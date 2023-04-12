@@ -22,3 +22,6 @@ services:
 
     SolidInvoice\CoreBundle\Doctrine\Listener\CompanyListener:
         tags: ['doctrine.event_subscriber']
+
+    SolidInvoice\CoreBundle\Doctrine\Listener\IdGeneratorListener:
+        tags: ['doctrine.event_subscriber']

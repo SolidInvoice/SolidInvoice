@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace DoctrineMigrations;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Schema\Schema;
@@ -25,6 +26,7 @@ use Doctrine\Migrations\AbstractMigration;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Ramsey\Uuid\Codec\OrderedTimeCodec;
+use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -128,12 +130,12 @@ final class Version20200 extends AbstractMigration implements ContainerAwareInte
         $companiesTable = $schema->createTable('companies');
         $userCompaniesTable = $schema->createTable('user_company');
 
-        $companiesTable->addColumn('id', 'uuid_binary_ordered_time');
+        $companiesTable->addColumn('id', UuidBinaryOrderedTimeType::NAME);
         $companiesTable->addColumn('name', 'string', ['length' => 255, 'notnull' => true]);
         $companiesTable->setPrimaryKey(['id']);
 
         $userCompaniesTable->addColumn('user_id', 'integer', ['notnull' => true]);
-        $userCompaniesTable->addColumn('company_id', 'uuid_binary_ordered_time', ['notnull' => true]);
+        $userCompaniesTable->addColumn('company_id', UuidBinaryOrderedTimeType::NAME, ['notnull' => true]);
         $userCompaniesTable->setPrimaryKey(['user_id', 'company_id']);
         $userCompaniesTable->addIndex(['user_id']);
         $userCompaniesTable->addIndex(['company_id']);
@@ -195,9 +197,9 @@ final class Version20200 extends AbstractMigration implements ContainerAwareInte
         }
 
         $userInvitationsTable = $schema->createTable('user_invitations');
-        $userInvitationsTable->addColumn('id', 'uuid_binary_ordered_time');
+        $userInvitationsTable->addColumn('id', UuidBinaryOrderedTimeType::NAME);
         $userInvitationsTable->addColumn('invited_by_id', 'integer', ['notnull' => true]);
-        $userInvitationsTable->addColumn('company_id', 'uuid_binary_ordered_time', ['notnull' => true]);
+        $userInvitationsTable->addColumn('company_id', UuidBinaryOrderedTimeType::NAME, ['notnull' => true]);
         $userInvitationsTable->addColumn('email', 'string', ['length' => 255, 'notnull' => true]);
         $userInvitationsTable->addColumn('status', 'string', ['length' => 255, 'notnull' => true]);
         $userInvitationsTable->addColumn('created', 'datetimetz_immutable', ['notnull' => true]);
@@ -337,7 +339,7 @@ final class Version20200 extends AbstractMigration implements ContainerAwareInte
     }
 
     /**
-     * @throws SchemaException
+     * @throws SchemaException|Exception
      */
     private function addCompanyToTable(Schema $schema, string $tableName): Table
     {
@@ -345,7 +347,7 @@ final class Version20200 extends AbstractMigration implements ContainerAwareInte
 
         $table = $schema->getTable($tableName);
 
-        $table->addColumn('company_id', 'uuid_binary_ordered_time', ['notnull' => false]);
+        $table->addColumn('company_id', UuidBinaryOrderedTimeType::NAME, ['notnull' => false]);
         $table->addIndex(['company_id']);
 
         $table->modifyColumn(

@@ -12,7 +12,7 @@
 {% set module = "payment-capture" %}
 {% set moduleData = internal %}
 
-{% block title %}{{ "payment.create.tite"|trans|replace({"%id%" : invoice.id}) }}{% endblock %}
+{% block title %}{{ "payment.create.tite"|trans|replace({"%id%" : invoice.invoiceId}) }}{% endblock %}
 
 {% block content %}
     <div class="row">

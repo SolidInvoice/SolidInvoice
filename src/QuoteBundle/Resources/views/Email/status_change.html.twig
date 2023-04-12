@@ -17,7 +17,7 @@
     {% apply inky_to_html %}
         <row>
             <columns><strong>{{ 'quote.status_change.id'|trans({}, 'email') }}</strong></columns>
-            <columns><a href="{{ url('_quotes_view', {'id' : quote.id}) }}">{{ quote.id }}</a></columns>
+            <columns><a href="{{ url('_quotes_view', {'id' : quote.id}) }}">{{ quote.quoteId }}</a></columns>
         </row>
         <row>
             <columns><strong>{{ 'quote.status_change.new_status'|trans({}, 'email') }}</strong></columns>

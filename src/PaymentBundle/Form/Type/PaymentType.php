@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Form\Type;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Money\Currency;
 use Money\Money;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
@@ -31,6 +32,13 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  */
 class PaymentType extends AbstractType
 {
+    private ManagerRegistry $registry;
+
+    public function __construct(ManagerRegistry $registry)
+    {
+        $this->registry = $registry;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
@@ -38,6 +46,7 @@ class PaymentType extends AbstractType
             EntityType::class,
             [
                 'class' => PaymentMethod::class,
+                'choices' => $this->registry->getRepository(PaymentMethod::class)->getAvailablePaymentMethods($options['user'] !== null),
                 'query_builder' => function (PaymentMethodRepository $repository) use ($options) {
                     $queryBuilder = $repository->createQueryBuilder('pm');
                     $expression = $queryBuilder->expr();

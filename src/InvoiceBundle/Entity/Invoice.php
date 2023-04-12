@@ -62,6 +62,11 @@ class Invoice extends BaseInvoice
     private $id;
 
     /**
+     * @ORM\Column(name="invoice_id", type="string", length=255)
+     */
+    private string $invoiceId;
+
+    /**
      * @var UuidInterface
      *
      * @ORM\Column(name="uuid", type="uuid", length=36)
@@ -369,5 +374,15 @@ class Invoice extends BaseInvoice
             $this->setUuid(Uuid::uuid1());
         } catch (Exception $e) {
         }
+    }
+
+    public function getInvoiceId(): string
+    {
+        return $this->invoiceId;
+    }
+
+    public function setInvoiceId(string $invoiceId): void
+    {
+        $this->invoiceId = $invoiceId;
     }
 }

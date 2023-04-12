@@ -11,7 +11,7 @@
 {% set quotePath = url("_view_quote_external", {"uuid" : quote.uuid}) %}
 
 {%- block title -%}
-    {{ "quote.title"|trans({"%id%" : quote.id}) }}
+    {{ "quote.title"|trans({"%id%" : quote.quoteId}) }}
 {%- endblock -%}
 
 {%- block header -%}
@@ -64,7 +64,7 @@
                 <strong>Quote #</strong>
             </columns>
             <columns>
-                {{ quote.id }}
+                {{ quote.quoteId }}
             </columns>
         </row>
 

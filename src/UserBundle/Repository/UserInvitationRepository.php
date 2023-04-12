@@ -19,6 +19,7 @@ use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use SolidInvoice\UserBundle\Entity\UserInvitation;
 
 /**
@@ -48,7 +49,7 @@ final class UserInvitationRepository extends ServiceEntityRepository
     public function deleteInvitations(array $ids): int
     {
         $platform = $this->_em->getConnection()->getDatabasePlatform();
-        $type = Type::getType('uuid_binary_ordered_time');
+        $type = Type::getType(UuidBinaryOrderedTimeType::NAME);
         $convertId = static fn (string $id) => $type->convertToDatabaseValue($id, $platform);
 
         return $this->createQueryBuilder('u')

@@ -35,10 +35,12 @@ class InvoiceSubjectDecoratorTest extends TestCase
             ->andReturn('New Invoice: #{id}');
 
         $listener = new InvoiceSubjectListener($config);
-        $message = new InvoiceEmail(new Invoice());
+        $invoice = new Invoice();
+        $invoice->setInvoiceId('123');
+        $message = new InvoiceEmail($invoice);
         $listener(new MessageEvent($message, Envelope::create($message), 'smtp'));
 
-        self::assertSame('New Invoice: #', $message->getSubject());
+        self::assertSame('New Invoice: #123', $message->getSubject());
     }
 
     public function testEvents(): void

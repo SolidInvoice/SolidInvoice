@@ -23,7 +23,7 @@ trait EnsureApplicationInstalled
 {
     use SymfonyKernelTrait;
 
-    private Company $company;
+    protected Company $company;
 
     /**
      * @before

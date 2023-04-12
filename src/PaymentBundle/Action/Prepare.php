@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Action;
 
+use SolidInvoice\CoreBundle\Company\CompanySelector;
 use const FILTER_VALIDATE_BOOLEAN;
 use DateTime;
 use Exception;
@@ -75,6 +76,7 @@ final class Prepare
     private RouterInterface $router;
 
     private SystemConfig $systemConfig;
+    private CompanySelector $companySelector;
 
     public function __construct(
         StateMachine $stateMachine,
@@ -86,7 +88,8 @@ final class Prepare
         PaymentFactories $paymentFactories,
         EventDispatcherInterface $eventDispatcher,
         RegistryInterface $payum,
-        RouterInterface $router
+        RouterInterface $router,
+        CompanySelector $companySelector
     ) {
         $this->stateMachine = $stateMachine;
         $this->paymentMethodRepository = $paymentMethodRepository;
@@ -98,6 +101,7 @@ final class Prepare
         $this->payum = $payum;
         $this->router = $router;
         $this->systemConfig = $systemConfig;
+        $this->companySelector = $companySelector;
     }
 
     public function __invoke(Request $request, ?Invoice $invoice)
@@ -109,6 +113,8 @@ final class Prepare
         if (! $this->stateMachine->can($invoice, Graph::TRANSITION_PAY)) {
             throw new Exception('This invoice cannot be paid');
         }
+
+        $this->companySelector->switchCompany($invoice->getCompany()->getId());
 
         if ($this->paymentMethodRepository->getTotalMethodsConfigured($this->authorization->isGranted('IS_AUTHENTICATED_REMEMBERED')) < 1) {
             throw new Exception('No payment methods available');
@@ -124,7 +130,7 @@ final class Prepare
             ],
             [
                 'user' => $this->getUser(),
-                'currency' => null !== $currency ? $currency->getCode() : $this->systemConfig->getCurrency()->getCode(),
+                'currency' => $currency ?? $this->systemConfig->getCurrency(),
                 'preferred_choices' => $preferredChoices,
             ]
         );

@@ -53,7 +53,7 @@
 
 {% block title %}
     {% if invoice is defined %}
-        {{ 'invoice.title'|trans({'%id%' : invoice.id}) }}
+        {{ 'invoice.title'|trans({'%id%' : invoice.invoiceId}) }}
     {% else %}
         {{ (recurring ? "invoice.action.create_recurring" : "invoice.action.create")|trans }}
     {% endif %}

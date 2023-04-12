@@ -15,6 +15,8 @@ namespace SolidInvoice\PaymentBundle\Tests\Form\Type;
 
 use Money\Currency;
 use Money\Money;
+use SolidInvoice\CoreBundle\Form\Type\ImageUploadType;
+use SolidInvoice\CoreBundle\Form\Type\Select2Type;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\PaymentBundle\Form\Type\PaymentType;
 
@@ -35,5 +37,14 @@ class PaymentTypeTest extends FormTestCase
         ];
 
         $this->assertFormData($this->factory->create(PaymentType::class, [], ['currency' => new Currency('USD'), 'preferred_choices' => [], 'user' => null]), $formData, $object);
+    }
+
+    protected function getTypes(): array
+    {
+        $types = parent::getTypes();
+
+        $types[] = new PaymentType($this->registry);
+
+        return $types;
     }
 }

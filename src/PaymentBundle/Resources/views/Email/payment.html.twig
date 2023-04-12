@@ -19,7 +19,7 @@
             <row>
                 <columns><strong>{{ 'payment.details.invoice'|trans({}, 'email') }}</strong></columns>
                 <columns>
-                    <a href="{{ url('_invoices_view', {'id' : payment.invoice.id }) }}">{{ payment.invoice.id }}</a>
+                    <a href="{{ url('_invoices_view', {'id' : payment.invoice.id }) }}">{{ payment.invoice.invoiceId }}</a>
                 </columns>
             </row>
         {% endif %}

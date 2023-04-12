@@ -23,6 +23,7 @@ use Doctrine\Migrations\AbstractMigration;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
+use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -70,21 +71,59 @@ final class Version20201 extends AbstractMigration implements ContainerAwareInte
             ->dropPrimaryKey();
 
         $invoiceContact = $this->schema->getTable('invoice_contact');
-        $invoiceContact->addColumn('company_id', 'uuid_binary_ordered_time', ['notnull' => false]);
+        $invoiceContact->addColumn('company_id', UuidBinaryOrderedTimeType::NAME, ['notnull' => false]);
         $invoiceContact->addIndex(['invoice_id', 'company_id']);
         //$invoiceContact->setPrimaryKey(['invoice_id', 'contact_id', 'company_id']);
 
         $recurringInvoiceContact = $this->schema->getTable('recurringinvoice_contact');
-        $recurringInvoiceContact->addColumn('company_id', 'uuid_binary_ordered_time', ['notnull' => false]);
+        $recurringInvoiceContact->addColumn('company_id', UuidBinaryOrderedTimeType::NAME, ['notnull' => false]);
         $recurringInvoiceContact->addIndex(['recurringinvoice_id', 'company_id']);
         //$recurringInvoiceContact->setPrimaryKey(['recurringinvoice_id', 'contact_id', 'company_id']);
 
         $quoteContact = $this->schema->getTable('quote_contact');
-        $quoteContact->addColumn('company_id', 'uuid_binary_ordered_time', ['notnull' => false]);
+        $quoteContact->addColumn('company_id', UuidBinaryOrderedTimeType::NAME, ['notnull' => false]);
         $quoteContact->addIndex(['quote_id', 'company_id']);
         //$quoteContact->setPrimaryKey(['quote_id', 'contact_id', 'company_id']);
 
         $schema->dropTable('ext_log_entries');
+
+        foreach ($schema->getTable('payment_methods')->getIndexes() as $index) {
+            if ($index->isUnique() && !$index->isPrimary()) {
+                $schema->getTable('payment_methods')->dropIndex($index->getName());
+            }
+        }
+
+        $this->schema
+            ->getTable('invoices')
+            ->addColumn('invoice_id', 'string', ['notnull' => false, 'length' => 255]);
+
+        $this->schema
+            ->getTable('quotes')
+            ->addColumn('quote_id', 'string', ['notnull' => false, 'length' => 255]);
+
+        $this->persistChanges();
+
+        $this
+            ->connection
+            ->createQueryBuilder()
+            ->update('invoices', 'i')
+            ->set('i.invoice_id', 'i.id')
+            ->executeQuery();
+
+        $this
+            ->connection
+            ->createQueryBuilder()
+            ->update('quotes', 'q')
+            ->set('q.quote_id', 'q.id')
+            ->executeQuery();
+
+        $this->schema
+            ->getTable('invoices')
+            ->modifyColumn('invoice_id', ['notnull' => true, 'length' => 255]);
+
+        $this->schema
+            ->getTable('quotes')
+            ->modifyColumn('quote_id', ['notnull' => true, 'length' => 255]);
 
         $clientCreditTable = $this->schema->getTable('client_credit');
 
@@ -250,12 +289,12 @@ final class Version20201 extends AbstractMigration implements ContainerAwareInte
     {
         $table = $this->schema->getTable($tableName);
 
-        $table->addColumn($uuidColumnName, 'uuid_binary_ordered_time', ['notnull' => true]);
+        $table->addColumn($uuidColumnName, UuidBinaryOrderedTimeType::NAME, ['notnull' => true]);
 
         foreach ($foreignKeys as $fk) {
             $fkTable = $this->schema->getTable($fk['table']);
 
-            $fkTable->addColumn($fk['tmpKey'], 'uuid_binary_ordered_time', ['notnull' => !$this->foreignColumnShouldBeNullable($fk)]);
+            $fkTable->addColumn($fk['tmpKey'], UuidBinaryOrderedTimeType::NAME, ['notnull' => !$this->foreignColumnShouldBeNullable($fk)]);
         }
     }
 
@@ -299,7 +338,7 @@ final class Version20201 extends AbstractMigration implements ContainerAwareInte
                 $tableName,
                 [$uuidColumnName => $uuid],
                 $updateCriteria,
-                [$uuidColumnName => 'uuid_binary_ordered_time']
+                [$uuidColumnName => UuidBinaryOrderedTimeType::NAME]
             );
         }
 
@@ -366,7 +405,7 @@ final class Version20201 extends AbstractMigration implements ContainerAwareInte
                     ],
                     $queryPk,
                     [
-                        $fk['tmpKey'] => 'uuid_binary_ordered_time',
+                        $fk['tmpKey'] => UuidBinaryOrderedTimeType::NAME,
                     ]
                 );
             }
@@ -399,7 +438,7 @@ final class Version20201 extends AbstractMigration implements ContainerAwareInte
             $table = $this->schema->getTable($fk['table']);
             $table->dropColumn($fk['tmpKey']);
 
-            $table->addColumn($fk['key'], 'uuid_binary_ordered_time', ['notnull' => !$this->foreignColumnShouldBeNullable($fk)]);
+            $table->addColumn($fk['key'], UuidBinaryOrderedTimeType::NAME, ['notnull' => !$this->foreignColumnShouldBeNullable($fk)]);
         }
     }
 
@@ -417,7 +456,7 @@ final class Version20201 extends AbstractMigration implements ContainerAwareInte
         $this->persistChanges();
 
         $table->dropColumn($uuidColumnName);
-        $table->addColumn('id', 'uuid_binary_ordered_time', ['notnull' => true]);
+        $table->addColumn('id', UuidBinaryOrderedTimeType::NAME, ['notnull' => true]);
         $table->setPrimaryKey(['id']);
     }
 
