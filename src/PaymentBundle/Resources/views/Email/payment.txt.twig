@@ -10,7 +10,7 @@
 {{ 'payment.description'|trans({}, 'email') }}
 
 {% if payment.invoice is not empty %}
-    {{ 'payment.details.invoice'|trans({}, 'email') }}: {{ payment.invoice.invocieId }}
+    {{ 'payment.details.invoice'|trans({}, 'email') }}: {{ payment.invoice.invoiceId }}
 {% endif %}
 
 {% if payment.client is not empty %}
@@ -21,6 +21,6 @@
 
 {{ 'payment.details.currency'|trans({}, 'email') }}: {{ payment.currencyCode }}
 
-{{ 'payment.details.amount'|trans({}, 'email') }}: {{ payment.total|formatCurrency }}
+{{ 'payment.details.amount'|trans({}, 'email') }}: {{ payment.totalAmount|formatCurrency }}
 
 {{ 'payment.details.status'|trans({}, 'email') }}: {{ payment.status }}

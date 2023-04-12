@@ -9,10 +9,10 @@ datagrid:
             route: '_invoices_view'
         columns:
             id:
-                name: id
+                name: invoiceId
                 label: ID
                 editable: false
-                cell: integer
+                cell: string
             status:
                 name: status
                 label: Status

@@ -182,7 +182,7 @@ final class PaymentRepositoryTest extends KernelTestCase
         );
 
         self::assertSame(
-            $client->getId(),
+            $client,
             $queryBuilder->getParameter('client')->getValue()
         );
 
@@ -199,7 +199,7 @@ final class PaymentRepositoryTest extends KernelTestCase
         );
 
         self::assertSame(
-            $invoice->getId(),
+            $invoice,
             $queryBuilder->getParameter('invoice')->getValue()
         );
 
@@ -217,12 +217,12 @@ final class PaymentRepositoryTest extends KernelTestCase
         );
 
         self::assertSame(
-            $client->getId(),
+            $client,
             $queryBuilder->getParameter('client')->getValue()
         );
 
         self::assertSame(
-            $invoice->getId(),
+            $invoice,
             $queryBuilder->getParameter('invoice')->getValue()
         );
     }

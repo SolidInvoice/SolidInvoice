@@ -9,10 +9,10 @@ datagrid:
             route: '_quotes_view'
         columns:
             id:
-                name: id
+                name: quoteId
                 label: ID
                 editable: false
-                cell: integer
+                cell: string
             status:
                 name: status
                 label: Status

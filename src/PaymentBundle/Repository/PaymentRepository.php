@@ -284,12 +284,12 @@ class PaymentRepository extends ServiceEntityRepository
 
         if (isset($parameters['invoice'])) {
             $qb->andWhere('p.invoice = :invoice');
-            $qb->setParameter('invoice', $parameters['invoice']->getId(), UuidBinaryOrderedTimeType::NAME);
+            $qb->setParameter('invoice', $parameters['invoice'], UuidBinaryOrderedTimeType::NAME);
         }
 
         if (isset($parameters['client'])) {
             $qb->andWhere('p.client = :client');
-            $qb->setParameter('client', $parameters['client']->getId(), UuidBinaryOrderedTimeType::NAME);
+            $qb->setParameter('client', $parameters['client'], UuidBinaryOrderedTimeType::NAME);
         }
 
         return $qb;
