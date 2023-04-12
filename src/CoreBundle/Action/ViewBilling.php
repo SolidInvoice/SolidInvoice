@@ -114,7 +114,7 @@ class ViewBilling
 
         $entityId = null;
 
-        if  ($entity instanceof Invoice) {
+        if ($entity instanceof Invoice) {
             $entityId = $entity->getInvoiceId();
         } elseif ($entity instanceof Quote) {
             $entityId = $entity->getQuoteId();

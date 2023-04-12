@@ -15,8 +15,6 @@ namespace SolidInvoice\PaymentBundle\Tests\Form\Type;
 
 use Money\Currency;
 use Money\Money;
-use SolidInvoice\CoreBundle\Form\Type\ImageUploadType;
-use SolidInvoice\CoreBundle\Form\Type\Select2Type;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\PaymentBundle\Form\Type\PaymentType;
 

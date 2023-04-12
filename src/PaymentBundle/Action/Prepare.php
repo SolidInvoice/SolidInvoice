@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Action;
 
-use SolidInvoice\CoreBundle\Company\CompanySelector;
 use const FILTER_VALIDATE_BOOLEAN;
 use DateTime;
 use Exception;
 use Money\Money;
 use Payum\Core\Payum;
 use Payum\Core\Registry\RegistryInterface;
+use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
@@ -76,6 +76,7 @@ final class Prepare
     private RouterInterface $router;
 
     private SystemConfig $systemConfig;
+
     private CompanySelector $companySelector;
 
     public function __construct(

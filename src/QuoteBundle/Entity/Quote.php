@@ -192,6 +192,7 @@ class Quote
         $this->tax = new MoneyEntity();
         $this->total = new MoneyEntity();
     }
+
     public function getId(): ?UuidInterface
     {
         return $this->id;
