@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Form\Type;
 
 use Carbon\CarbonImmutable;
+use Doctrine\Persistence\ManagerRegistry;
 use Money\Currency;
+use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
 use SolidInvoice\CronBundle\Form\Type\CronType;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
@@ -34,9 +36,12 @@ class RecurringInvoiceType extends AbstractType
 {
     private SystemConfig $systemConfig;
 
-    public function __construct(SystemConfig $systemConfig)
+    private ManagerRegistry $registry;
+
+    public function __construct(SystemConfig $systemConfig, ManagerRegistry $registry)
     {
         $this->systemConfig = $systemConfig;
+        $this->registry = $registry;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -49,6 +54,7 @@ class RecurringInvoiceType extends AbstractType
                     'class' => 'select2 client-select',
                 ],
                 'placeholder' => 'invoice.client.choose',
+                'choices' => $this->registry->getRepository(Client::class)->findAll()
             ]
         );
 
@@ -75,7 +81,7 @@ class RecurringInvoiceType extends AbstractType
         $builder->add('baseTotal', HiddenMoneyType::class, ['currency' => $options['currency']]);
         $builder->add('tax', HiddenMoneyType::class, ['currency' => $options['currency']]);
 
-        $builder->addEventSubscriber(new InvoiceUsersSubscriber($builder, $options['data']));
+        $builder->addEventSubscriber(new InvoiceUsersSubscriber($builder, $options['data'], $this->registry));
 
         $builder->add('frequency', CronType::class);
 

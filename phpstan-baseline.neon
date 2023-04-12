@@ -1226,11 +1226,6 @@ parameters:
 			path: src/QuoteBundle/Action/CloneQuote.php
 
 		-
-			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\Create\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/QuoteBundle/Action/Create.php
-
-		-
 			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\Fields\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/QuoteBundle/Action/Fields.php

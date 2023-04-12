@@ -75,7 +75,7 @@ class InvoiceTypeTest extends FormTestCase
             ->zeroOrMoreTimes()
             ->andReturn(new Currency('USD'));
 
-        $invoiceType = new InvoiceType($systemConfig);
+        $invoiceType = new InvoiceType($systemConfig, $this->registry);
         $itemType = new ItemType($this->registry);
 
         return [

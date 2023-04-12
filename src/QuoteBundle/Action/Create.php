@@ -13,25 +13,21 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Action;
 
+use Exception;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Form\Handler\QuoteCreateHandler;
 use SolidWorx\FormHandler\FormHandler;
+use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\Request;
 
 final class Create
 {
-    /**
-     * @var ClientRepository
-     */
-    private $repository;
+    private ClientRepository $repository;
 
-    /**
-     * @var FormHandler
-     */
-    private $handler;
+    private FormHandler $handler;
 
     public function __construct(ClientRepository $repository, FormHandler $handler)
     {
@@ -39,20 +35,23 @@ final class Create
         $this->handler = $handler;
     }
 
+    /**
+     * @return Template|FormRequest
+     * @throws Exception
+     */
     public function __invoke(Request $request, Client $client = null)
     {
         $totalClientsCount = $this->repository->getTotalClients();
         if (0 === $totalClientsCount) {
             return new Template('@SolidInvoiceQuote/Default/empty_clients.html.twig');
-        } elseif (1 === $totalClientsCount && is_null($client)) {
-            $client = $this->repository->findOneBy([]);
-        }
-        if (1 === $totalClientsCount && null === $client) {
-            $client = $this->repository->findOneBy([]);
         }
 
         $quote = new Quote();
         $quote->setClient($client);
+
+        if (1 === $totalClientsCount && null === $client) {
+            $quote->setClient($this->repository->findOneBy([]));
+        }
 
         $options = [
             'quote' => $quote,

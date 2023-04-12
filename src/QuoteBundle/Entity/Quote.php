@@ -216,9 +216,9 @@ class Quote
     }
 
     /**
-     * @param (Contact|QuoteContact)[] $users
+     * @param iterable<Contact|QuoteContact> $users
      */
-    public function setUsers(array $users): self
+    public function setUsers(iterable $users): self
     {
         $contacts = [];
         foreach ($users as $user) {
