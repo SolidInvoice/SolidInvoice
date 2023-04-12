@@ -1,14 +1,24 @@
 <?php
+
 declare(strict_types=1);
+
+/*
+ * This file is part of SolidInvoice project.
+ *
+ * (c) Pierre du Plessis <open-source@solidworx.co>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace SolidInvoice\PaymentBundle\Tests\Payum\Storage;
 
+use Doctrine\Persistence\Mapping\ClassMetadata;
 use Doctrine\Persistence\ObjectManager;
 use LogicException;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use SolidInvoice\PaymentBundle\Payum\Storage\DoctrineStorage;
-use Doctrine\Persistence\Mapping\ClassMetadata;
 use stdClass;
 
 final class DoctrineStorageTest extends TestCase
