@@ -20,6 +20,7 @@ use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\InvoiceContact;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceContact;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -81,7 +82,12 @@ final class InvoiceUsersSubscriber implements EventSubscriberInterface
                     'class' => Contact::class,
                     'choices' => $this->registry->getRepository(Contact::class)->findBy(['client' => $clientId]),
                 ]
-            )->addModelTransformer(new UserToContactTransformer($this->invoice, InvoiceContact::class));
+            )->addModelTransformer(
+                new UserToContactTransformer(
+                    $this->invoice,
+                    $this->invoice instanceof RecurringInvoice ? RecurringInvoiceContact::class : InvoiceContact::class
+                )
+            );
 
             $form->add($users->getForm());
         }
