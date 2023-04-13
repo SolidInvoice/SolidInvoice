@@ -47,26 +47,26 @@ final class QuoteMailer
      */
     private function applyTransition(Quote $quote): void
     {
-        if ($this->stateMachine->can($quote, Graph::TRANSITION_SEND)) {
-            $oldStatus = $quote->getStatus();
-
-            $this->stateMachine->apply($quote, Graph::TRANSITION_SEND);
-
-            $newStatus = $quote->getStatus();
-
-            $parameters = [
-                'quote' => $quote,
-                'old_status' => $oldStatus,
-                'new_status' => $newStatus,
-                'transition' => Graph::TRANSITION_SEND,
-            ];
-
-            $notification = new QuoteStatusNotification($parameters);
-
-            $this->notification->sendNotification('quote_status_update', $notification);
+        if (! $this->stateMachine->can($quote, Graph::TRANSITION_SEND)) {
+            throw new InvalidTransitionException(Graph::TRANSITION_SEND);
         }
 
-        throw new InvalidTransitionException(Graph::TRANSITION_SEND);
+        $oldStatus = $quote->getStatus();
+
+        $this->stateMachine->apply($quote, Graph::TRANSITION_SEND);
+
+        $newStatus = $quote->getStatus();
+
+        $parameters = [
+            'quote' => $quote,
+            'old_status' => $oldStatus,
+            'new_status' => $newStatus,
+            'transition' => Graph::TRANSITION_SEND,
+        ];
+
+        $notification = new QuoteStatusNotification($parameters);
+
+        $this->notification->sendNotification('quote_status_update', $notification);
     }
 
     /**
@@ -76,9 +76,9 @@ final class QuoteMailer
     {
         if (Graph::STATUS_DRAFT === $quote->getStatus()) {
             $this->applyTransition($quote);
+        } else {
+            $this->mailer->send(new QuoteEmail($quote));
         }
-
-        $this->mailer->send(new QuoteEmail($quote));
 
         return $quote;
     }
