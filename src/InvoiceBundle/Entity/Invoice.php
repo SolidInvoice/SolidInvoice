@@ -247,6 +247,10 @@ class Invoice extends BaseInvoice
         $this->items[] = $item;
         $item->setInvoice($this);
 
+        if (isset($this->company)) {
+            $item->setCompany($this->getCompany());
+        }
+
         return $this;
     }
 

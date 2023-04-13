@@ -22,7 +22,7 @@ trait CompanyAware
      * @ORM\ManyToOne(targetEntity=Company::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private Company $company;
+    protected Company $company;
 
     public function getCompany(): Company
     {

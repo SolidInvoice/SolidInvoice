@@ -90,7 +90,7 @@
                         <div class="col-sm-4 invoice-col">
                             <dl class="dl-horizontal">
                                 <dt>{{ "invoice.title"|trans({"%id%" : ''}) }}</dt>
-                                <dd>{{ invoice.invoiceId }}</dd>
+                                <dd>{{ invoice.invoiceId ?? invoice.id }}</dd>
                                 <dt>{{ "invoice.total"|trans }}</dt>
                                 <dd>{{ invoice.total|formatCurrency(invoice.client.currency) }}</dd>
                                 <dt>{{ "invoice.created"|trans }}</dt>
