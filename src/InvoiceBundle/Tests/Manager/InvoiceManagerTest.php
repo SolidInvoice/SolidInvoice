@@ -22,6 +22,7 @@ use Mockery\Mock;
 use Money\Currency;
 use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\InvoiceBundle\Entity\Item as InvoiceItem;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
@@ -115,6 +116,7 @@ class InvoiceManagerTest extends KernelTestCase
         $quote->setTotal(new Money(987, $currency));
         $quote->setClient($client);
         $quote->addItem($item);
+        $quote->setCompany(new Company());
 
         $invoice = $this->manager->createFromQuote($quote);
 
@@ -177,6 +179,7 @@ class InvoiceManagerTest extends KernelTestCase
         $recurringInvoice->setClient($client);
         $recurringInvoice->addItem($item);
         $recurringInvoice->setFrequency('* 0 0 * *');
+        $recurringInvoice->setCompany(new Company());
 
         $invoice = $this->manager->createFromRecurring($recurringInvoice);
 
