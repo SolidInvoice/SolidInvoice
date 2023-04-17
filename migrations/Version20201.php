@@ -38,7 +38,9 @@ final class Version20201 extends AbstractMigration implements ContainerAwareInte
     use ContainerAwareTrait;
 
     private Schema $schema;
+
     private Schema $fromSchema;
+
     private LoggerInterface $logger;
 
     public function __construct(Connection $connection, LoggerInterface $logger)
@@ -88,7 +90,7 @@ final class Version20201 extends AbstractMigration implements ContainerAwareInte
         $schema->dropTable('ext_log_entries');
 
         foreach ($schema->getTable('payment_methods')->getIndexes() as $index) {
-            if ($index->isUnique() && !$index->isPrimary()) {
+            if ($index->isUnique() && ! $index->isPrimary()) {
                 $schema->getTable('payment_methods')->dropIndex($index->getName());
             }
         }
@@ -128,7 +130,7 @@ final class Version20201 extends AbstractMigration implements ContainerAwareInte
         $clientCreditTable = $this->schema->getTable('client_credit');
 
         foreach ($clientCreditTable->getIndexes() as $index) {
-            if ($index->isUnique() && !$index->isPrimary()) {
+            if ($index->isUnique() && ! $index->isPrimary()) {
                 $clientCreditTable->dropIndex($index->getName());
             }
         }
@@ -230,7 +232,7 @@ final class Version20201 extends AbstractMigration implements ContainerAwareInte
     {
         foreach ($table->getColumns() as $column) {
             if ($column->getName() === $key) {
-                return !$column->getNotnull();
+                return ! $column->getNotnull();
             }
         }
 
@@ -294,7 +296,7 @@ final class Version20201 extends AbstractMigration implements ContainerAwareInte
         foreach ($foreignKeys as $fk) {
             $fkTable = $this->schema->getTable($fk['table']);
 
-            $fkTable->addColumn($fk['tmpKey'], UuidBinaryOrderedTimeType::NAME, ['notnull' => !$this->foreignColumnShouldBeNullable($fk)]);
+            $fkTable->addColumn($fk['tmpKey'], UuidBinaryOrderedTimeType::NAME, ['notnull' => ! $this->foreignColumnShouldBeNullable($fk)]);
         }
     }
 
@@ -376,7 +378,7 @@ final class Version20201 extends AbstractMigration implements ContainerAwareInte
             $this->write('  * Adding ' . count($records) . ' UUIDs to "' . $fk['table'] . '.' . $fk['key'] . '"');
 
             foreach ($records as $record) {
-                if (!$record[$fk['key']]) {
+                if (! $record[$fk['key']]) {
                     continue;
                 }
 
@@ -438,7 +440,7 @@ final class Version20201 extends AbstractMigration implements ContainerAwareInte
             $table = $this->schema->getTable($fk['table']);
             $table->dropColumn($fk['tmpKey']);
 
-            $table->addColumn($fk['key'], UuidBinaryOrderedTimeType::NAME, ['notnull' => !$this->foreignColumnShouldBeNullable($fk)]);
+            $table->addColumn($fk['key'], UuidBinaryOrderedTimeType::NAME, ['notnull' => ! $this->foreignColumnShouldBeNullable($fk)]);
         }
     }
 
@@ -519,8 +521,7 @@ final class Version20201 extends AbstractMigration implements ContainerAwareInte
     private function foreignColumnShouldBeNullable(array $foreignKey): bool
     {
         if ($foreignKey['table'] === 'invoice_lines') {
-            return
-                $foreignKey['key'] === 'invoice_id' ||
+            return $foreignKey['key'] === 'invoice_id' ||
                 $foreignKey['key'] === 'recurringInvoice_id' ||
                 $foreignKey['key'] === 'tax_id';
         }

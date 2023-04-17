@@ -13,34 +13,14 @@ declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Schema\SchemaException;
-use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\Migrations\AbstractMigration;
-use Doctrine\ORM\EntityManagerInterface;
-use Psr\Log\LoggerInterface;
-use Psr\Log\LogLevel;
-use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
-use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
-use RuntimeException;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-use function array_flip;
-use function count;
 
 final class Version20202 extends AbstractMigration implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
-
-    public function getDescription(): string
-    {
-        return 'Add uuid to all tables';
-    }
 
     public function up(Schema $schema): void
     {

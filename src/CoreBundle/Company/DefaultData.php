@@ -28,7 +28,6 @@ use SolidInvoice\SettingsBundle\Form\Type\MailTransportType;
 use SolidInvoice\TaxBundle\Form\Type\TaxNumberType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use function date;
 
 final class DefaultData
 {
