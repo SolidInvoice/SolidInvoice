@@ -20,9 +20,9 @@ use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
+use SolidInvoice\SettingsBundle\Form\Type\MailTransportType;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-use SolidInvoice\SettingsBundle\Form\Type\MailTransportType;
 
 final class Version20100 extends AbstractMigration implements ContainerAwareInterface
 {
@@ -119,7 +119,7 @@ final class Version20100 extends AbstractMigration implements ContainerAwareInte
     public function postUp(Schema $schema): void
     {
         try {
-            $this->connection->transactional(function (Connection $connection) {
+            $this->connection->transactional(function (Connection $connection): void {
                 $connection->delete('app_config', ['setting_key' => 'email/sending_options/transport']);
                 $connection->delete('app_config', ['setting_key' => 'email/sending_options/host']);
                 $connection->delete('app_config', ['setting_key' => 'email/sending_options/user']);

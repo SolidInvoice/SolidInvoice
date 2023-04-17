@@ -18,17 +18,20 @@ use Doctrine\Migrations\AbstractMigration;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-final class Version20102 extends AbstractMigration implements ContainerAwareInterface
+final class Version20202 extends AbstractMigration implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
 
     public function up(Schema $schema): void
     {
-        $this->connection
-            ->delete('app_config', ['setting_key' => 'design/system/theme']);
-    }
+        $contactTypes = $schema->getTable('contact_types');
 
-    public function down(Schema $schema): void
-    {
+        foreach ($contactTypes->getIndexes() as $index) {
+            if ($index->isUnique() && $index->getColumns() === ['name']) {
+                $contactTypes->dropIndex($index->getName());
+            }
+        }
+
+        $contactTypes->addUniqueIndex(['name', 'company_id']);
     }
 }
