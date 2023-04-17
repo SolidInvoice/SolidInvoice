@@ -2,7 +2,8 @@
 
     th,
     td {
-        overflow: visible;
+        word-wrap: break-word;
+        white-space: normal;
     }
 
     tr.redirectable {

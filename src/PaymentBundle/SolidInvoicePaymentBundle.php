@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle;
 
+use SolidInvoice\PaymentBundle\DependencyInjection\CompilerPass\PayumStoragePass;
 use SolidInvoice\PaymentBundle\DependencyInjection\PaymentExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -21,6 +22,7 @@ class SolidInvoicePaymentBundle extends Bundle
 {
     public function build(ContainerBuilder $container): void
     {
+        $container->addCompilerPass(new PayumStoragePass());
         $container->registerExtension(new PaymentExtension());
     }
 }

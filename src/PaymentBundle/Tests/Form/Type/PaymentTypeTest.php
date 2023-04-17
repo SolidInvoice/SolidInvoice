@@ -36,4 +36,13 @@ class PaymentTypeTest extends FormTestCase
 
         $this->assertFormData($this->factory->create(PaymentType::class, [], ['currency' => new Currency('USD'), 'preferred_choices' => [], 'user' => null]), $formData, $object);
     }
+
+    protected function getTypes(): array
+    {
+        $types = parent::getTypes();
+
+        $types[] = new PaymentType($this->registry);
+
+        return $types;
+    }
 }

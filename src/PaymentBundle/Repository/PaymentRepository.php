@@ -25,11 +25,12 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Money\Currency;
 use Money\Money;
+use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Model\Status;
-use function is_iterable;
+use function array_map;
 
 /**
  * @extends ServiceEntityRepository<Payment>
@@ -77,7 +78,7 @@ class PaymentRepository extends ServiceEntityRepository
 
         $queryBuilder
             ->where('p.invoice = :invoice')
-            ->setParameter('invoice', $invoice);
+            ->setParameter('invoice', $invoice->getId(), UuidBinaryOrderedTimeType::NAME);
 
         return $queryBuilder->getQuery()->getArrayResult();
     }
@@ -125,7 +126,7 @@ class PaymentRepository extends ServiceEntityRepository
             ->select('SUM(p.totalAmount) as total')
             ->where('p.invoice = :invoice')
             ->andWhere('p.status = :status')
-            ->setParameter('invoice', $invoice)
+            ->setParameter('invoice', $invoice->getId(), UuidBinaryOrderedTimeType::NAME)
             ->setParameter('status', Status::STATUS_CAPTURED);
 
         $query = $queryBuilder->getQuery();
@@ -148,7 +149,7 @@ class PaymentRepository extends ServiceEntityRepository
 
         $queryBuilder
             ->where('p.client = :client')
-            ->setParameter('client', $client);
+            ->setParameter('client', $client->getId(), UuidBinaryOrderedTimeType::NAME);
 
         return $queryBuilder->getQuery()->getArrayResult();
     }
@@ -194,7 +195,7 @@ class PaymentRepository extends ServiceEntityRepository
         }
 
         $queryBuilder
-            ->groupBy('p.created')
+            ->groupBy('p.created, p.totalAmount')
             ->orderBy('p.created', Criteria::ASC);
 
         $query = $queryBuilder->getQuery();
@@ -247,7 +248,7 @@ class PaymentRepository extends ServiceEntityRepository
         )
             ->where('p.created >= :date')
             ->setParameter('date', new DateTime('-1 Year'))
-            ->groupBy('p.created')
+            ->groupBy('p.created, p.totalAmount')
             ->orderBy('p.created', Criteria::ASC);
 
         $query = $queryBuilder->getQuery();
@@ -257,28 +258,16 @@ class PaymentRepository extends ServiceEntityRepository
 
     /**
      * @param Payment[]|Collection<int, Payment> $payments
-     *
-     * @return mixed
      */
-    public function updatePaymentStatus($payments, string $status)
+    public function updatePaymentStatus($payments, string $status): int
     {
-        if (! is_iterable($payments)) {
-            $payments = [$payments];
+        foreach ($payments as $payment) {
+            $payment->setStatus($status);
         }
 
-        if ($payments instanceof Collection) {
-            $payments = $payments->toArray();
-        }
+        $this->getEntityManager()->flush();
 
-        $qb = $this->createQueryBuilder('p');
-
-        $qb->update()
-            ->set('p.status', ':status')
-            ->where('p.id in (:payments)')
-            ->setParameter('status', $status)
-            ->setParameter('payments', $payments);
-
-        return $qb->getQuery()->execute();
+        return count($payments);
     }
 
     /**
@@ -295,12 +284,12 @@ class PaymentRepository extends ServiceEntityRepository
 
         if (isset($parameters['invoice'])) {
             $qb->andWhere('p.invoice = :invoice');
-            $qb->setParameter('invoice', $parameters['invoice']);
+            $qb->setParameter('invoice', $parameters['invoice'], UuidBinaryOrderedTimeType::NAME);
         }
 
         if (isset($parameters['client'])) {
             $qb->andWhere('p.client = :client');
-            $qb->setParameter('client', $parameters['client']);
+            $qb->setParameter('client', $parameters['client'], UuidBinaryOrderedTimeType::NAME);
         }
 
         return $qb;
@@ -322,7 +311,7 @@ class PaymentRepository extends ServiceEntityRepository
         $qb->update()
             ->set('p.currencyCode', ':currency')
             ->where('p.client = :client')
-            ->setParameter('client', $client)
+            ->setParameter('client', $client->getId(), UuidBinaryOrderedTimeType::NAME)
             ->setParameter('currency', $currency->getCode());
 
         $qb->getQuery()->execute();
@@ -338,7 +327,7 @@ class PaymentRepository extends ServiceEntityRepository
             ->where('p.status = :status')
             ->andWhere('p.client = :client')
             ->groupBy('p.currencyCode')
-            ->setParameter('client', $client)
+            ->setParameter('client', $client->getId(), UuidBinaryOrderedTimeType::NAME)
             ->setParameter('status', Status::STATUS_CAPTURED);
 
         $query = $qb->getQuery();

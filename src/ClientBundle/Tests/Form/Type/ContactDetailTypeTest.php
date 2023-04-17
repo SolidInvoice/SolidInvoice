@@ -18,6 +18,7 @@ use SolidInvoice\ClientBundle\Entity\ContactType;
 use SolidInvoice\ClientBundle\Form\Type\ContactDetailType;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
+use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\PreloadedExtension;
 
 class ContactDetailTypeTest extends FormTestCase
@@ -29,21 +30,25 @@ class ContactDetailTypeTest extends FormTestCase
         $faker = Factory::create();
 
         $url = $faker->url;
+        $type = $this->registry->getRepository(ContactType::class)->findOneBy([]);
 
         $formData = [
             'value' => $url,
-            'type' => 1,
+            'type' => $type->getId()->toString(),
         ];
 
         $object = [
             'value' => $url,
-            'type' => $this->registry->getRepository(ContactType::class)->find(1),
+            'type' => $type,
         ];
 
         $this->assertFormData(ContactDetailType::class, $formData, $object);
     }
 
-    protected function getExtensions()
+    /**
+     * @return FormExtensionInterface[]
+     */
+    protected function getExtensions(): array
     {
         $type = new ContactDetailType($this->registry->getRepository(ContactType::class));
 

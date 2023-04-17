@@ -16,9 +16,9 @@ namespace SolidInvoice\PaymentBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Payum\Core\Model\GatewayConfigInterface;
-use SolidInvoice\CoreBundle\Doctrine\Id\IdGenerator;
+use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
+use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -29,7 +29,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="payment_methods")
  * @ORM\Entity(repositoryClass="SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository")
  * @UniqueEntity("gatewayName")
- * @Gedmo\Loggable
  */
 class PaymentMethod implements GatewayConfigInterface
 {
@@ -37,12 +36,12 @@ class PaymentMethod implements GatewayConfigInterface
     use CompanyAware;
 
     /**
-     * @var int|null
+     * @var UuidInterface
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id", type="uuid_binary_ordered_time")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=IdGenerator::class)
+     * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
      */
     private $id;
 
@@ -58,7 +57,7 @@ class PaymentMethod implements GatewayConfigInterface
     /**
      * @var string|null
      *
-     * @ORM\Column(name="gateway_name", type="string", length=125, unique=true)
+     * @ORM\Column(name="gateway_name", type="string", length=125)
      */
     private $gatewayName;
 
@@ -103,12 +102,7 @@ class PaymentMethod implements GatewayConfigInterface
         $this->disable();
     }
 
-    /**
-     * Get id.
-     *
-     * @return int
-     */
-    public function getId(): ?int
+    public function getId(): UuidInterface
     {
         return $this->id;
     }

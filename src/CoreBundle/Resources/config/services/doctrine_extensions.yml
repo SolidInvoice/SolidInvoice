@@ -7,9 +7,3 @@ services:
     Gedmo\Timestampable\TimestampableListener:
         calls:
             - [ setAnnotationReader, [ '@annotation_reader' ] ]
-
-    gedmo.listener.loggable:
-        class: Gedmo\Loggable\LoggableListener
-        public: true
-        calls:
-            - [ setAnnotationReader, [ '@annotation_reader' ] ]

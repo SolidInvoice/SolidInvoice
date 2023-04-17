@@ -19,6 +19,7 @@ use Exception;
 use Money\Money;
 use Payum\Core\Payum;
 use Payum\Core\Registry\RegistryInterface;
+use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
@@ -76,6 +77,8 @@ final class Prepare
 
     private SystemConfig $systemConfig;
 
+    private CompanySelector $companySelector;
+
     public function __construct(
         StateMachine $stateMachine,
         PaymentMethodRepository $paymentMethodRepository,
@@ -86,7 +89,8 @@ final class Prepare
         PaymentFactories $paymentFactories,
         EventDispatcherInterface $eventDispatcher,
         RegistryInterface $payum,
-        RouterInterface $router
+        RouterInterface $router,
+        CompanySelector $companySelector
     ) {
         $this->stateMachine = $stateMachine;
         $this->paymentMethodRepository = $paymentMethodRepository;
@@ -98,6 +102,7 @@ final class Prepare
         $this->payum = $payum;
         $this->router = $router;
         $this->systemConfig = $systemConfig;
+        $this->companySelector = $companySelector;
     }
 
     public function __invoke(Request $request, ?Invoice $invoice)
@@ -109,6 +114,8 @@ final class Prepare
         if (! $this->stateMachine->can($invoice, Graph::TRANSITION_PAY)) {
             throw new Exception('This invoice cannot be paid');
         }
+
+        $this->companySelector->switchCompany($invoice->getCompany()->getId());
 
         if ($this->paymentMethodRepository->getTotalMethodsConfigured($this->authorization->isGranted('IS_AUTHENTICATED_REMEMBERED')) < 1) {
             throw new Exception('No payment methods available');
@@ -124,7 +131,7 @@ final class Prepare
             ],
             [
                 'user' => $this->getUser(),
-                'currency' => null !== $currency ? $currency->getCode() : $this->systemConfig->getCurrency()->getCode(),
+                'currency' => $currency ?? $this->systemConfig->getCurrency(),
                 'preferred_choices' => $preferredChoices,
             ]
         );
@@ -188,7 +195,7 @@ final class Prepare
             $payment->setCurrencyCode($money->getCurrency()->getCode());
             $payment->setDescription('');
             $payment->setClient($invoice->getClient());
-            $payment->setNumber($invoice->getId());
+            $payment->setNumber($invoice->getId()->toString());
             $payment->setClientEmail($invoice->getClient()->getContacts()->first()->getEmail());
             $invoice->addPayment($payment);
             $this->save($payment);

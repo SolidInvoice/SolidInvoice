@@ -14,7 +14,8 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use SolidInvoice\CoreBundle\Doctrine\Id\IdGenerator;
+use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
+use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 
@@ -28,12 +29,12 @@ class ApiTokenHistory
     use CompanyAware;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="uuid_binary_ordered_time")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=IdGenerator::class)
+     * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
      *
-     * @var int|null
+     * @var UuidInterface
      */
     private $id;
 
@@ -80,10 +81,7 @@ class ApiTokenHistory
      */
     private $token;
 
-    /**
-     * @return int
-     */
-    public function getId(): ?int
+    public function getId(): UuidInterface
     {
         return $this->id;
     }

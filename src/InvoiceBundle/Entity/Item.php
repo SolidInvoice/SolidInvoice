@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Money;
-use SolidInvoice\CoreBundle\Doctrine\Id\IdGenerator;
+use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
+use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Entity\ItemInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
@@ -29,7 +29,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="invoice_lines")
  * @ORM\Entity(repositoryClass="SolidInvoice\InvoiceBundle\Repository\ItemRepository")
  * @ORM\HasLifecycleCallbacks()
- * @Gedmo\Loggable
  */
 class Item implements ItemInterface
 {
@@ -37,12 +36,12 @@ class Item implements ItemInterface
     use CompanyAware;
 
     /**
-     * @var int|null
+     * @var UuidInterface
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id", type="uuid_binary_ordered_time")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=IdGenerator::class)
+     * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
      * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api"})
      */
     private $id;
@@ -110,12 +109,7 @@ class Item implements ItemInterface
         $this->price = new MoneyEntity();
     }
 
-    /**
-     * Get id.
-     *
-     * @return int
-     */
-    public function getId(): ?int
+    public function getId(): UuidInterface
     {
         return $this->id;
     }
@@ -176,7 +170,7 @@ class Item implements ItemInterface
     }
 
     /**
-     * @param Invoice|null $invoice
+     * @param Invoice|RecurringInvoice|null $invoice
      */
     public function setInvoice(?BaseInvoice $invoice): ItemInterface
     {

@@ -80,7 +80,7 @@ class RecurringInvoiceTypeTest extends FormTestCase
             ->zeroOrMoreTimes()
             ->andReturn(new Currency('USD'));
 
-        $invoiceType = new RecurringInvoiceType($systemConfig);
+        $invoiceType = new RecurringInvoiceType($systemConfig, $this->registry);
         $itemType = new ItemType($this->registry);
 
         return [

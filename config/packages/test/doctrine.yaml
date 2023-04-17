@@ -1,4 +1,9 @@
 doctrine:
     dbal:
-        driver: 'pdo_sqlite'
-        url: 'sqlite:///%kernel.project_dir%/var/db/sqlite.db'
+        driver: '%env(database_driver)%'
+        host: '%env(database_host)%'
+        port: '%env(int:database_port)%'
+        dbname: '%env(database_name)%_test'
+        user: '%env(database_user)%'
+        password: '%env(database_password)%'
+        server_version: '%env(database_version)%'

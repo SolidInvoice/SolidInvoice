@@ -60,7 +60,7 @@ final class Delete implements AjaxResponse
 
         assert($currentUser instanceof User);
 
-        if (in_array($currentUser->getId(), array_map('intval', $users), true)) {
+        if (in_array($currentUser->getId()->toString(), $users, true)) {
             return $this->json(['message' => "You can't delete the current logged in user"]);
         }
 

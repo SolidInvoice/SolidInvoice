@@ -20,7 +20,7 @@
         convertDeprecationsToExceptions="false"
         processIsolation="false"
         stopOnFailure="false"
-        bootstrap="vendor/autoload.php"
+        bootstrap="tests/bootstrap.php"
 >
     <coverage>
         <include>
@@ -53,5 +53,6 @@
     </listeners>
     <extensions>
         <extension class="Symfony\Component\Panther\ServerExtension"/>
+        <extension class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension" />
     </extensions>
 </phpunit>

@@ -14,10 +14,6 @@ services:
     SolidInvoice\CoreBundle\Listener\:
         resource: '../../../Listener'
 
-    SolidInvoice\CoreBundle\Listener\DoctrineExtensionListener:
-        calls:
-            - [setContainer, ['@service_container']]
-
     SolidInvoice\CoreBundle\Listener\SessionRequestListener:
         arguments:
             $secret: '%env(secret)%'
@@ -25,4 +21,7 @@ services:
     SolidInvoice\CoreBundle\Listener\TemplateListener: ~
 
     SolidInvoice\CoreBundle\Doctrine\Listener\CompanyListener:
+        tags: ['doctrine.event_subscriber']
+
+    SolidInvoice\CoreBundle\Doctrine\Listener\IdGeneratorListener:
         tags: ['doctrine.event_subscriber']

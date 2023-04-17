@@ -17,7 +17,7 @@
     {% apply inky_to_html %}
         <row>
             <columns><strong>{{ 'invoice.status_change.id'|trans({}, 'email') }}</strong></columns>
-            <columns><a href="{{ url('_invoices_view', {'id' : invoice.id}) }}">{{ invoice.id }}</a></columns>
+            <columns><a href="{{ url('_invoices_view', {'id' : invoice.id}) }}">{{ invoice.invoiceId ?? invoice.id }}</a></columns>
         </row>
         <row>
             <columns><strong>{{ 'invoice.status_change.new_status'|trans({}, 'email') }}</strong></columns>

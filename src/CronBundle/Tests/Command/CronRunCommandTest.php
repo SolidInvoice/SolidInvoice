@@ -15,6 +15,7 @@ namespace SolidInvoice\CronBundle\Tests\Command;
 
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
@@ -28,7 +29,7 @@ final class CronRunCommandTest extends TestCase
 
     public function testCronRunCommand(): void
     {
-        $kernel = self::bootKernel();
+        $kernel = self::$kernel;
         $container = self::getContainer();
 
         $doctrine = $container->get('doctrine');
@@ -36,6 +37,7 @@ final class CronRunCommandTest extends TestCase
 
         $entity = new RecurringInvoice();
         $entity
+            ->setClient((new Client())->setName('Test'))
             ->setDateStart(new DateTimeImmutable())
             ->setFrequency('* * * * *')
             ->setStatus('active')
@@ -56,7 +58,7 @@ final class CronRunCommandTest extends TestCase
 
         $output = $commandTester->getDisplay();
         $this->assertStringContainsString('Running 1 due task. (1 total tasks)', $output);
-        $this->assertStringContainsString('Running MessageTask: Create recurring invoice (1)', $output);
+        $this->assertStringContainsString("Running MessageTask: Create recurring invoice ({$entity->getId()})", $output);
         $this->assertStringContainsString('[OK] 1/1 tasks ran, 1 succeeded', $output);
 
         self::assertCount(1, $doctrine->getRepository(Invoice::class)->findAll());

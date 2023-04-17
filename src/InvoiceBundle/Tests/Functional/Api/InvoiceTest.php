@@ -13,39 +13,48 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Functional\Api;
 
+use Doctrine\Common\DataFixtures\Executor\AbstractExecutor;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
+use Ramsey\Uuid\Uuid;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
-use SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData;
+use SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData as LoadClientData;
+use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
+use SolidInvoice\InvoiceBundle\DataFixtures\ORM\LoadData as LoadInvoiceData;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use function assert;
 
 /**
  * @group functional
  */
-class InvoiceTest extends ApiTestCase
+final class InvoiceTest extends ApiTestCase
 {
     use EnsureApplicationInstalled;
+
+    private AbstractExecutor $executor;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        self::bootKernel();
+        $databaseTool = self::getContainer()->get(DatabaseToolCollection::class)->get();
 
-        $databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
-
-        $databaseTool->loadFixtures([
-            LoadData::class,
-            \SolidInvoice\InvoiceBundle\DataFixtures\ORM\LoadData::class,
+        $this->executor = $databaseTool->loadFixtures([
+            LoadClientData::class,
+            LoadInvoiceData::class,
         ], true);
     }
 
     public function testCreate(): void
     {
+        $contact = $this->executor->getReferenceRepository()->getReference('contact');
+        assert($contact instanceof Contact);
+
         $data = [
             'users' => [
-                '/api/contacts/1',
+                '/api/contacts/' . $contact->getId(),
             ],
-            'client' => '/api/clients/1',
+            'client' => '/api/clients/' . $contact->getClient()->getId(),
             'discount' => [
                 'type' => 'percentage',
                 'value' => 10,
@@ -61,17 +70,19 @@ class InvoiceTest extends ApiTestCase
 
         $result = $this->requestPost('/api/invoices', $data);
 
-        unset($result['uuid']);
+        self::assertTrue(Uuid::isValid($result['id']));
+        self::assertTrue(Uuid::isValid($result['uuid']));
+        self::assertTrue(Uuid::isValid($result['items'][0]['id']));
+
+        unset($result['id'], $result['uuid'], $result['items'][0]['id']);
 
         self::assertSame([
-            'id' => 2,
-            'client' => '/api/clients/1',
+            'client' => '/api/clients/' . $contact->getClient()->getId(),
             'balance' => '$90.00',
             'due' => null,
             'paidDate' => null,
             'items' => [
                 [
-                    'id' => 3,
                     'description' => 'Foo Item',
                     'price' => '$100.00',
                     'qty' => 1,
@@ -80,7 +91,7 @@ class InvoiceTest extends ApiTestCase
                 ],
             ],
             'users' => [
-                '/api/contacts/1',
+                '/api/contacts/' . $contact->getId(),
             ],
             'status' => 'draft',
             'total' => '$90.00',
@@ -97,24 +108,29 @@ class InvoiceTest extends ApiTestCase
 
     public function testDelete(): void
     {
-        $this->requestDelete('/api/invoices/1');
+        $invoice = $this->executor->getReferenceRepository()->getReference('invoice');
+        assert($invoice instanceof Invoice);
+
+        $this->requestDelete('/api/invoices/' . $invoice->getId());
     }
 
     public function testGet(): void
     {
-        $data = $this->requestGet('/api/invoices/1');
+        $invoice = $this->executor->getReferenceRepository()->getReference('invoice');
+        assert($invoice instanceof Invoice);
 
-        unset($data['uuid']);
+        $data = $this->requestGet('/api/invoices/' . $invoice->getId());
 
         self::assertSame([
-            'id' => 1,
-            'client' => '/api/clients/1',
+            'id' => $invoice->getId()->toString(),
+            'uuid' => $invoice->getUuid()->toString(),
+            'client' => '/api/clients/' . $invoice->getClient()->getId(),
             'balance' => '$100.00',
             'due' => null,
             'paidDate' => null,
             'items' => [
                 [
-                    'id' => 1,
+                    'id' => $invoice->getItems()->first()->getId()->toString(),
                     'description' => 'Test Item',
                     'price' => '$100.00',
                     'qty' => 1,
@@ -123,7 +139,7 @@ class InvoiceTest extends ApiTestCase
                 ],
             ],
             'users' => [
-                '/api/contacts/1',
+                '/api/contacts/' . $invoice->getUsers()->first()->getId(),
             ],
             'status' => 'draft',
             'total' => '$100.00',
@@ -140,8 +156,11 @@ class InvoiceTest extends ApiTestCase
 
     public function testEdit(): void
     {
+        $invoice = $this->executor->getReferenceRepository()->getReference('invoice');
+        assert($invoice instanceof Invoice);
+
         $data = $this->requestPut(
-            '/api/invoices/1',
+            '/api/invoices/' . $invoice->getId(),
             [
                 'discount' => [
                     'type' => 'percentage',
@@ -157,17 +176,16 @@ class InvoiceTest extends ApiTestCase
             ]
         );
 
-        unset($data['uuid']);
-
         self::assertSame([
-            'id' => 1,
-            'client' => '/api/clients/1',
+            'id' => $invoice->getId()->toString(),
+            'uuid' => $invoice->getUuid()->toString(),
+            'client' => '/api/clients/' . $invoice->getClient()->getId(),
             'balance' => '$90.00',
             'due' => null,
             'paidDate' => null,
             'items' => [
                 [
-                    'id' => 3,
+                    'id' => $invoice->getItems()->first()->getId()->toString(),
                     'description' => 'Foo Item',
                     'price' => '$100.00',
                     'qty' => 1,
@@ -176,7 +194,7 @@ class InvoiceTest extends ApiTestCase
                 ],
             ],
             'users' => [
-                '/api/contacts/1',
+                '/api/contacts/' . $invoice->getUsers()->first()->getId(),
             ],
             'status' => 'draft',
             'total' => '$90.00',

@@ -11,7 +11,7 @@
 {% set invoicePath = url("_view_invoice_external", {"uuid" : invoice.uuid}) %}
 
 {%- block title -%}
-    {{ "invoice.title"|trans({"%id%" : invoice.id}) }}
+    {{ "invoice.title"|trans({"%id%" : invoice.invoiceId}) }}
 {%- endblock -%}
 
 {%- block header -%}
@@ -35,7 +35,7 @@
             {
                 "@context": "http://schema.org",
                 "@type": "Invoice",
-                "accountId": "{{ invoice.id }}",
+                "accountId": "{{ invoice.invoiceId }}",
                 "minimumPaymentDue": {
                     "@type": "PriceSpecification",
                     "price": "{{ invoice.total|formatCurrency }}"
@@ -83,7 +83,7 @@
                 <strong>Invoice #</strong>
             </columns>
             <columns>
-                {{ invoice.id }}
+                {{ invoice.invoiceId }}
             </columns>
         </row>
 

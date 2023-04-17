@@ -13,18 +13,39 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Form\EventListener;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\ClientBundle\Entity\Contact;
+use SolidInvoice\CoreBundle\Form\Transformer\UserToContactTransformer;
+use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Entity\InvoiceContact;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceContact;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class InvoiceUsersSubscriber implements EventSubscriberInterface
+final class InvoiceUsersSubscriber implements EventSubscriberInterface
 {
+    private FormBuilderInterface $builder;
+
+    private BaseInvoice $invoice;
+
+    private ManagerRegistry $registry;
+
+    public function __construct(FormBuilderInterface $builder, BaseInvoice $invoice, ManagerRegistry $registry)
+    {
+        $this->builder = $builder;
+        $this->invoice = $invoice;
+        $this->registry = $registry;
+    }
+
+    /**
+     * @return array<string, string>
+     */
     public static function getSubscribedEvents(): array
     {
         return [
@@ -42,7 +63,7 @@ class InvoiceUsersSubscriber implements EventSubscriberInterface
         }
 
         if ($data instanceof Invoice || $data instanceof RecurringInvoice) {
-            $clientId = is_null($data->getClient()) ? null : $data->getClient()->getId();
+            $clientId = $data->getClient() !== null && $data->getClient()->getId() !== null ? $data->getClient()->getId()->toString() : null;
         } else {
             $clientId = $data['client'] ?? null;
         }
@@ -50,21 +71,25 @@ class InvoiceUsersSubscriber implements EventSubscriberInterface
         if (! empty($clientId)) {
             $form = $event->getForm();
 
-            $form->add(
+            $users = $this->builder->create(
                 'users',
                 EntityType::class,
                 [
                     'constraints' => new NotBlank(),
                     'multiple' => true,
                     'expanded' => true,
+                    'auto_initialize' => false,
                     'class' => Contact::class,
-                    'query_builder' => function (EntityRepository $repo) use ($clientId) {
-                        return $repo->createQueryBuilder('c')
-                            ->where('c.client = :client')
-                            ->setParameter('client', $clientId);
-                    },
+                    'choices' => $this->registry->getRepository(Contact::class)->findBy(['client' => $clientId]),
                 ]
+            )->addModelTransformer(
+                new UserToContactTransformer(
+                    $this->invoice,
+                    $this->invoice instanceof RecurringInvoice ? RecurringInvoiceContact::class : InvoiceContact::class
+                )
             );
+
+            $form->add($users->getForm());
         }
     }
 }

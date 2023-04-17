@@ -13,15 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Form\ViewTransformer;
 
+use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\ClientBundle\Entity\ContactType;
 use Symfony\Component\Form\DataTransformerInterface;
 
 class ContactTypeTransformer implements DataTransformerInterface
 {
-    /**
-     * @var ContactType
-     */
-    private $type;
+    private ContactType $type;
 
     public function __construct(ContactType $type)
     {
@@ -31,7 +29,7 @@ class ContactTypeTransformer implements DataTransformerInterface
     /**
      * @param mixed $value
      */
-    public function transform($value): int
+    public function transform($value): UuidInterface
     {
         return $this->type->getId();
     }

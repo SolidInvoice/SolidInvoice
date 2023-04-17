@@ -21,13 +21,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Money\Money;
+use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
-use SolidInvoice\CoreBundle\Doctrine\Id\IdGenerator;
 use SolidInvoice\CoreBundle\Entity\ItemInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
@@ -42,7 +41,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(attributes={"normalization_context"={"groups"={"invoice_api"}}, "denormalization_context"={"groups"={"create_invoice_api"}}})
  * @ORM\Table(name="invoices", indexes={@ORM\Index(columns={"quote_id"})})
  * @ORM\Entity(repositoryClass="SolidInvoice\InvoiceBundle\Repository\InvoiceRepository")
- * @Gedmo\Loggable()
  */
 class Invoice extends BaseInvoice
 {
@@ -53,15 +51,20 @@ class Invoice extends BaseInvoice
     use TimeStampable;
 
     /**
-     * @var int|null
+     * @var ?UuidInterface
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id", type="uuid_binary_ordered_time")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=IdGenerator::class)
+     * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
      * @Serialize\Groups({"invoice_api", "client_api"})
      */
     private $id;
+
+    /**
+     * @ORM\Column(name="invoice_id", type="string", length=255)
+     */
+    private string $invoiceId;
 
     /**
      * @var UuidInterface
@@ -74,7 +77,7 @@ class Invoice extends BaseInvoice
     /**
      * @var Client|null
      *
-     * @ORM\ManyToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Client", inversedBy="invoices")
+     * @ORM\ManyToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Client", inversedBy="invoices", cascade={"persist"})
      * @Assert\NotBlank
      * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api", "create_invoice_api", "create_recurring_invoice_api"})
      * @ApiProperty(iri="https://schema.org/Organization")
@@ -133,13 +136,14 @@ class Invoice extends BaseInvoice
     protected $items;
 
     /**
-     * @var Collection<int, Contact>
+     * @var Collection<int, InvoiceContact>
      *
-     * @ORM\ManyToMany(targetEntity="SolidInvoice\ClientBundle\Entity\Contact", cascade={"persist"}, fetch="EXTRA_LAZY", inversedBy="invoices")
+     * @ORM\OneToMany(targetEntity=InvoiceContact::class, cascade={"persist", "remove"}, fetch="EXTRA_LAZY", mappedBy="invoice")
      * @Assert\Count(min=1, minMessage="You need to select at least 1 user to attach to the Invoice")
      * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api", "create_invoice_api", "create_recurring_invoice_api"})
+     * @ApiProperty(writableLink=true)
      */
-    protected $users;
+    protected Collection $users;
 
     public function __construct()
     {
@@ -150,17 +154,13 @@ class Invoice extends BaseInvoice
         $this->users = new ArrayCollection();
 
         try {
+            $this->id = null;
             $this->setUuid(Uuid::uuid1());
         } catch (Exception $e) {
         }
     }
 
-    /**
-     * Get id.
-     *
-     * @return int
-     */
-    public function getId(): ?int
+    public function getId(): ?UuidInterface
     {
         return $this->id;
     }
@@ -247,6 +247,10 @@ class Invoice extends BaseInvoice
         $this->items[] = $item;
         $item->setInvoice($this);
 
+        if (isset($this->company)) {
+            $item->setCompany($this->getCompany());
+        }
+
         return $this;
     }
 
@@ -259,7 +263,7 @@ class Invoice extends BaseInvoice
     }
 
     /**
-     * @return Collection|ItemInterface[]
+     * @return Collection<int, Item>
      */
     public function getItems(): Collection
     {
@@ -271,10 +275,8 @@ class Invoice extends BaseInvoice
      */
     public function updateItems(): void
     {
-        if ((is_countable($this->items) ? count($this->items) : 0) > 0) {
-            foreach ($this->items as $item) {
-                $item->setInvoice($this);
-            }
+        foreach ($this->items as $item) {
+            $item->setInvoice($this);
         }
     }
 
@@ -320,28 +322,44 @@ class Invoice extends BaseInvoice
     }
 
     /**
-     * Return users array.
-     *
-     * @return Collection|Contact[]
+     * @return Collection<int, Contact>
      */
     public function getUsers(): Collection
     {
-        return $this->users;
+        return $this->users->map(static fn (InvoiceContact $invoiceContact) => $invoiceContact->getContact());
     }
 
     /**
-     * @param Contact[] $users
+     * @param (Contact|InvoiceContact)[] $users
      */
     public function setUsers(array $users): self
     {
-        $this->users = new ArrayCollection($users);
+        $contacts = [];
+
+        foreach ($users as $user) {
+            if ($user instanceof InvoiceContact) {
+                $contacts[] = $user;
+            } elseif ($user instanceof Contact) {
+                $invoiceContact = new InvoiceContact();
+                $invoiceContact->setContact($user);
+                $invoiceContact->setInvoice($this);
+
+                $contacts[] = $invoiceContact;
+            }
+        }
+
+        $this->users = new ArrayCollection($contacts);
 
         return $this;
     }
 
     public function addUser(Contact $user): self
     {
-        $this->users[] = $user;
+        $invoiceContact = new InvoiceContact();
+        $invoiceContact->setContact($user);
+        $invoiceContact->setInvoice($this);
+
+        $this->users[] = $invoiceContact;
 
         return $this;
     }
@@ -360,5 +378,15 @@ class Invoice extends BaseInvoice
             $this->setUuid(Uuid::uuid1());
         } catch (Exception $e) {
         }
+    }
+
+    public function getInvoiceId(): string
+    {
+        return $this->invoiceId;
+    }
+
+    public function setInvoiceId(string $invoiceId): void
+    {
+        $this->invoiceId = $invoiceId;
     }
 }

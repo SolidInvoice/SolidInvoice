@@ -53,7 +53,7 @@
 
 {% block title %}
     {% if quote is defined %}
-        {{ 'quote.title'|trans({'%id%' : quote.id}) }}
+        {{ 'quote.title'|trans({'%id%' : quote.quoteId}) }}
     {% else %}
         {{ 'quote.create'|trans }}
     {% endif %}

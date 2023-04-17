@@ -13,10 +13,14 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Tests\Functional\Api;
 
+use Doctrine\Common\DataFixtures\Executor\AbstractExecutor;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
-use SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData;
+use SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData as LoadClientData;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
+use SolidInvoice\PaymentBundle\DataFixtures\ORM\LoadData as LoadPaymentData;
+use SolidInvoice\PaymentBundle\Entity\Payment;
+use function assert;
 
 /**
  * @group functional
@@ -25,17 +29,17 @@ class PaymentTest extends ApiTestCase
 {
     use EnsureApplicationInstalled;
 
+    private AbstractExecutor $executor;
+
     protected function setUp(): void
     {
         parent::setUp();
 
-        self::bootKernel();
-
         $databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
 
-        $databaseTool->loadFixtures([
-            LoadData::class,
-            \SolidInvoice\PaymentBundle\DataFixtures\ORM\LoadData::class,
+        $this->executor = $databaseTool->loadFixtures([
+            LoadClientData::class,
+            LoadPaymentData::class,
         ], true);
     }
 
@@ -55,7 +59,10 @@ class PaymentTest extends ApiTestCase
 
     public function testGet(): void
     {
-        $data = $this->requestGet('/api/payments/1');
+        $payment = $this->executor->getReferenceRepository()->getReference('payment');
+        assert($payment instanceof Payment);
+
+        $data = $this->requestGet('/api/payments/' . $payment->getId());
 
         self::assertSame([
             'method' => null,

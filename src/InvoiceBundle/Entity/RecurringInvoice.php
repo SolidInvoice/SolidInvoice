@@ -19,11 +19,10 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
+use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
+use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
-use SolidInvoice\CoreBundle\Doctrine\Id\IdGenerator;
-use SolidInvoice\CoreBundle\Entity\ItemInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Symfony\Component\Serializer\Annotation as Serialize;
@@ -34,7 +33,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository")
  * @ORM\Table(name="recurring_invoices")
  * @ORM\HasLifecycleCallbacks()
- * @Gedmo\Loggable()
  */
 class RecurringInvoice extends BaseInvoice
 {
@@ -42,12 +40,12 @@ class RecurringInvoice extends BaseInvoice
     use TimeStampable;
 
     /**
-     * @var int|null
+     * @var UuidInterface
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id", type="uuid_binary_ordered_time")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=IdGenerator::class)
+     * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
      * @Serialize\Groups({"recurring_invoice_api", "client_api"})
      */
     private $id;
@@ -55,7 +53,7 @@ class RecurringInvoice extends BaseInvoice
     /**
      * @var Client|null
      *
-     * @ORM\ManyToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Client", inversedBy="recurringInvoices")
+     * @ORM\ManyToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Client", inversedBy="recurringInvoices", cascade={"persist"})
      * @Assert\NotBlank
      * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api", "create_invoice_api", "create_recurring_invoice_api"})
      * @ApiProperty(iri="https://schema.org/Organization")
@@ -99,11 +97,12 @@ class RecurringInvoice extends BaseInvoice
     protected $items;
 
     /**
-     * @var Collection<Contact>
+     * @var Collection<RecurringInvoiceContact>
      *
-     * @ORM\ManyToMany(targetEntity="SolidInvoice\ClientBundle\Entity\Contact", cascade={"persist"}, fetch="EXTRA_LAZY", inversedBy="recurringInvoices")
+     * @ORM\OneToMany(targetEntity=RecurringInvoiceContact::class, cascade={"persist", "remove"}, fetch="EXTRA_LAZY", mappedBy="recurringInvoice")
      * @Assert\Count(min=1, minMessage="You need to select at least 1 user to attach to the Invoice")
      * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api", "create_invoice_api", "create_recurring_invoice_api"})
+     * @ApiProperty(writableLink=true)
      */
     protected $users;
 
@@ -114,10 +113,7 @@ class RecurringInvoice extends BaseInvoice
         parent::__construct();
     }
 
-    /**
-     * @return int
-     */
-    public function getId(): ?int
+    public function getId(): ?UuidInterface
     {
         return $this->id;
     }
@@ -190,9 +186,6 @@ class RecurringInvoice extends BaseInvoice
         return $this;
     }
 
-    /**
-     * Add item.
-     */
     public function addItem(Item $item): self
     {
         $this->items[] = $item;
@@ -213,9 +206,7 @@ class RecurringInvoice extends BaseInvoice
     }
 
     /**
-     * Get items.
-     *
-     * @return Collection|ItemInterface[]
+     * @return Collection<int, Item>
      */
     public function getItems(): Collection
     {
@@ -223,28 +214,46 @@ class RecurringInvoice extends BaseInvoice
     }
 
     /**
-     * Return users array.
-     *
-     * @return Collection|Contact[]
+     * @return Collection<int, Contact>
      */
     public function getUsers(): Collection
     {
-        return $this->users;
+        return $this->users->map(static function (RecurringInvoiceContact $user): Contact {
+            return $user->getContact();
+        });
     }
 
     /**
-     * @param Contact[] $users
+     * @param (RecurringInvoiceContact|Contact)[] $users
      */
     public function setUsers(array $users): self
     {
-        $this->users = new ArrayCollection($users);
+        $contacts = [];
+
+        foreach ($users as $user) {
+            if ($user instanceof Contact) {
+                $recurringInvoiceContact = new RecurringInvoiceContact();
+                $recurringInvoiceContact->setContact($user);
+                $recurringInvoiceContact->setRecurringInvoice($this);
+
+                $contacts[] = $recurringInvoiceContact;
+            } elseif ($user instanceof RecurringInvoiceContact) {
+                $contacts[] = $user;
+            }
+        }
+
+        $this->users = new ArrayCollection($contacts);
 
         return $this;
     }
 
     public function addUser(Contact $user): self
     {
-        $this->users[] = $user;
+        $recurringInvoiceContact = new RecurringInvoiceContact();
+        $recurringInvoiceContact->setContact($user);
+        $recurringInvoiceContact->setRecurringInvoice($this);
+
+        $this->users[] = $recurringInvoiceContact;
 
         return $this;
     }

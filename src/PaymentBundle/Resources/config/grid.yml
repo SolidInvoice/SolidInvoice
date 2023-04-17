@@ -8,7 +8,7 @@ datagrid:
                 name: id
                 label: ID
                 editable: false
-                cell: integer
+                cell: string
             invoice:
                 name: invoice
                 label: Invoice
@@ -85,8 +85,9 @@ datagrid:
                 label: Completed
                 editable: false
                 cell: date
+
             total_amount:
-                name: total
+                name: totalAmount
                 label: Total
                 editable: false
                 cell: string

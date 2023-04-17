@@ -21,7 +21,9 @@ use Doctrine\ORM\Query\FilterCollection;
 use Doctrine\Persistence\ManagerRegistry;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
+use Ramsey\Uuid\Codec\OrderedTimeCodec;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidFactory;
 use Ramsey\Uuid\UuidInterface;
 use ReflectionClass;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
@@ -36,6 +38,7 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Security;
+use function assert;
 
 /**
  * @covers \SolidInvoice\CoreBundle\Listener\CompanyEventSubscriber
@@ -233,6 +236,11 @@ final class CompanyEventSubscriberTest extends TestCase
             }
         };
 
+        $factory = clone Uuid::getFactory();
+        assert($factory instanceof UuidFactory);
+
+        $codec = new OrderedTimeCodec($factory->getUuidBuilder());
+
         $registry
             ->shouldReceive('getManager')
             ->once()
@@ -262,7 +270,7 @@ final class CompanyEventSubscriberTest extends TestCase
         $connection
             ->shouldReceive('quote')
             ->once()
-            ->with($company->getId()->toString(), 'string')
+            ->with($codec->encodeBinary($company->getId()), 'string')
             ->andReturn($company->getId()->toString());
 
         return $filter;

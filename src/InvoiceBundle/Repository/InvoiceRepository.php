@@ -22,6 +22,7 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Money\Currency;
 use Money\Money;
+use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Item;
@@ -72,7 +73,7 @@ class InvoiceRepository extends ServiceEntityRepository
 
         if (null !== $client) {
             $qb->andWhere('i.client = :client')
-                ->setParameter('client', $client);
+                ->setParameter('client', $client->getId(), UuidBinaryOrderedTimeType::NAME);
         }
 
         return $qb->getQuery()->getSingleResult($hydrate);
@@ -91,7 +92,7 @@ class InvoiceRepository extends ServiceEntityRepository
 
         if (null !== $client) {
             $qb->andWhere('i.client = :client')
-                ->setParameter('client', $client);
+                ->setParameter('client', $client->getId(), UuidBinaryOrderedTimeType::NAME);
         }
 
         $query = $qb->getQuery();
@@ -124,7 +125,7 @@ class InvoiceRepository extends ServiceEntityRepository
 
         if (null !== $client) {
             $qb->andWhere('i.client = :client')
-                ->setParameter('client', $client);
+                ->setParameter('client', $client->getId(), UuidBinaryOrderedTimeType::NAME);
         }
 
         $query = $qb->getQuery();
@@ -165,7 +166,7 @@ class InvoiceRepository extends ServiceEntityRepository
 
         if (! empty($parameters['client'])) {
             $qb->andWhere('i.client = :client')
-                ->setParameter('client', $parameters['client']);
+                ->setParameter('client', $parameters['client'], UuidBinaryOrderedTimeType::NAME);
         }
 
         return $qb;
@@ -199,7 +200,7 @@ class InvoiceRepository extends ServiceEntityRepository
             ->set('i.balance.currency', ':currency')
             ->set('i.tax.currency', ':currency')
             ->where('i.client = :client')
-            ->setParameter('client', $client)
+            ->setParameter('client', $client->getId(), UuidBinaryOrderedTimeType::NAME)
             ->setParameter('currency', $currency);
 
         if ($qb->getQuery()->execute()) {
@@ -218,7 +219,7 @@ class InvoiceRepository extends ServiceEntityRepository
                             ->getDQL()
                     )
                 )
-                ->setParameter('client', $client)
+                ->setParameter('client', $client->getId(), UuidBinaryOrderedTimeType::NAME)
                 ->setParameter('currency', $currency);
 
             $qbi->getQuery()->execute();
@@ -240,7 +241,7 @@ class InvoiceRepository extends ServiceEntityRepository
         /** @var Invoice[] $invoices */
         $invoices = $this->findBy(['id' => $ids]);
 
-        array_walk($invoices, function (object $entity) use ($em): void {
+        array_walk($invoices, static function (object $entity) use ($em): void {
             $em->remove($entity);
         });
 
@@ -274,7 +275,7 @@ class InvoiceRepository extends ServiceEntityRepository
             ->where('i.status = :status')
             ->andWhere('i.client = :client')
             ->groupBy('i.balance.currency')
-            ->setParameter('client', $client)
+            ->setParameter('client', $client->getId(), UuidBinaryOrderedTimeType::NAME)
             ->setParameter('status', Graph::STATUS_PENDING);
 
         $query = $qb->getQuery();

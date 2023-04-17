@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Form\Type;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Money\Currency;
+use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
 use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
 use SolidInvoice\QuoteBundle\Entity\Quote;
@@ -31,9 +33,12 @@ class QuoteType extends AbstractType
 {
     private SystemConfig $systemConfig;
 
-    public function __construct(SystemConfig $systemConfig)
+    private ManagerRegistry $registry;
+
+    public function __construct(SystemConfig $systemConfig, ManagerRegistry $registry)
     {
         $this->systemConfig = $systemConfig;
+        $this->registry = $registry;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -46,6 +51,7 @@ class QuoteType extends AbstractType
                     'class' => 'select2 client-select',
                 ],
                 'placeholder' => 'quote.client.choose',
+                'choices' => $this->registry->getRepository(Client::class)->findAll()
             ]
         );
 
@@ -80,7 +86,7 @@ class QuoteType extends AbstractType
         $builder->add('baseTotal', HiddenMoneyType::class, ['currency' => $options['currency']]);
         $builder->add('tax', HiddenMoneyType::class, ['currency' => $options['currency']]);
 
-        $builder->addEventSubscriber(new QuoteUsersSubscriber());
+        $builder->addEventSubscriber(new QuoteUsersSubscriber($builder, $options['data'], $this->registry));
     }
 
     public function configureOptions(OptionsResolver $resolver): void

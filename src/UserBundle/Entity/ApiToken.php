@@ -16,8 +16,8 @@ namespace SolidInvoice\UserBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
-use SolidInvoice\CoreBundle\Doctrine\Id\IdGenerator;
+use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
+use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -27,7 +27,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="SolidInvoice\UserBundle\Repository\ApiTokenRepository")
  * @ORM\Table("api_tokens")
- * @Gedmo\Loggable
  * @UniqueEntity({"name", "user"})
  */
 class ApiToken
@@ -36,12 +35,12 @@ class ApiToken
     use CompanyAware;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="uuid_binary_ordered_time")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=IdGenerator::class)
+     * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
      *
-     * @var int|null
+     * @var UuidInterface
      */
     private $id;
 
@@ -81,10 +80,7 @@ class ApiToken
         $this->history = new ArrayCollection();
     }
 
-    /**
-     * @return int
-     */
-    public function getId(): ?int
+    public function getId(): UuidInterface
     {
         return $this->id;
     }
@@ -130,7 +126,8 @@ class ApiToken
     public function addHistory(ApiTokenHistory $history): self
     {
         $this->history[] = $history;
-        $history->setToken($this);
+        $history->setToken($this)
+            ->setCompany($this->getCompany());
 
         return $this;
     }

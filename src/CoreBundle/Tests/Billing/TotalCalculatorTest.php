@@ -17,6 +17,7 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Exception\UnexpectedTypeException;
@@ -232,6 +233,7 @@ class TotalCalculatorTest extends TestCase
     public function testUpdateTotalsWithPayments(): void
     {
         $invoice = new Invoice();
+        $invoice->setClient((new Client())->setName('Test'));
         $invoice->setTotal(new Money(30000, new Currency('USD')));
         $invoice->setBaseTotal(new Money(30000, new Currency('USD')));
         $invoice->setBalance(new Money(30000, new Currency('USD')));

@@ -13,39 +13,48 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Tests\Functional\Api;
 
+use Doctrine\Common\DataFixtures\Executor\AbstractExecutor;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
+use Ramsey\Uuid\Uuid;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
-use SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData;
+use SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData as LoadClientData;
+use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
+use SolidInvoice\QuoteBundle\DataFixtures\ORM\LoadData as LoadQuoteData;
+use SolidInvoice\QuoteBundle\Entity\Quote;
+use function assert;
 
 /**
  * @group functional
  */
-class QuoteTest extends ApiTestCase
+final class QuoteTest extends ApiTestCase
 {
     use EnsureApplicationInstalled;
+
+    private AbstractExecutor $executor;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        self::bootKernel();
+        $databaseTool = self::getContainer()->get(DatabaseToolCollection::class)->get();
 
-        $databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
-
-        $databaseTool->loadFixtures([
-            LoadData::class,
-            \SolidInvoice\QuoteBundle\DataFixtures\ORM\LoadData::class,
+        $this->executor = $databaseTool->loadFixtures([
+            LoadClientData::class,
+            LoadQuoteData::class,
         ], true);
     }
 
     public function testCreate(): void
     {
+        $contact = $this->executor->getReferenceRepository()->getReference('contact');
+        assert($contact instanceof Contact);
+
         $data = [
             'users' => [
-                '/api/contacts/1',
+                '/api/contacts/' . $contact->getId(),
             ],
-            'client' => '/api/clients/1',
+            'client' => '/api/clients/' . $contact->getClient()->getId(),
             'discount' => [
                 'type' => 'percentage',
                 'value' => 10,
@@ -61,12 +70,15 @@ class QuoteTest extends ApiTestCase
 
         $result = $this->requestPost('/api/quotes', $data);
 
-        unset($result['uuid']);
+        self::assertTrue(Uuid::isValid($result['id']));
+        self::assertTrue(Uuid::isValid($result['uuid']));
+        self::assertTrue(Uuid::isValid($result['items'][0]['id']));
+
+        unset($result['id'], $result['uuid'], $result['items'][0]['id']);
 
         self::assertSame([
-            'id' => 2,
             'status' => 'draft',
-            'client' => '/api/clients/1',
+            'client' => '/api/clients/' . $contact->getClient()->getId(),
             'total' => '$90.00',
             'baseTotal' => '$100.00',
             'tax' => '$0.00',
@@ -79,7 +91,6 @@ class QuoteTest extends ApiTestCase
             'due' => null,
             'items' => [
                 [
-                    'id' => 2,
                     'description' => 'Foo Item',
                     'price' => '$100.00',
                     'qty' => 1,
@@ -88,26 +99,31 @@ class QuoteTest extends ApiTestCase
                 ],
             ],
             'users' => [
-                '/api/contacts/1',
+                '/api/contacts/' . $contact->getId(),
             ],
         ], $result);
     }
 
     public function testDelete(): void
     {
-        $this->requestDelete('/api/quotes/1');
+        $quote = $this->executor->getReferenceRepository()->getReference('quote');
+        assert($quote instanceof Quote);
+
+        $this->requestDelete('/api/quotes/' . $quote->getId());
     }
 
     public function testGet(): void
     {
-        $data = $this->requestGet('/api/quotes/1');
+        $quote = $this->executor->getReferenceRepository()->getReference('quote');
+        assert($quote instanceof Quote);
 
-        unset($data['uuid']);
+        $data = $this->requestGet('/api/quotes/' . $quote->getId());
 
         self::assertSame([
-            'id' => 1,
+            'id' => $quote->getId()->toString(),
+            'uuid' => $quote->getUuid()->toString(),
             'status' => 'draft',
-            'client' => '/api/clients/1',
+            'client' => '/api/clients/' . $quote->getClient()->getId(),
             'total' => '$100.00',
             'baseTotal' => '$100.00',
             'tax' => '$0.00',
@@ -120,7 +136,7 @@ class QuoteTest extends ApiTestCase
             'due' => null,
             'items' => [
                 [
-                    'id' => 1,
+                    'id' => $quote->getItems()->first()->getId()->toString(),
                     'description' => 'Test Item',
                     'price' => '$100.00',
                     'qty' => 1,
@@ -129,15 +145,18 @@ class QuoteTest extends ApiTestCase
                 ],
             ],
             'users' => [
-                '/api/contacts/1',
+                '/api/contacts/' . $quote->getUsers()->first()->getId(),
             ],
         ], $data);
     }
 
     public function testEdit(): void
     {
+        $quote = $this->executor->getReferenceRepository()->getReference('quote');
+        assert($quote instanceof Quote);
+
         $data = $this->requestPut(
-            '/api/quotes/1',
+            '/api/quotes/' . $quote->getId()->toString(),
             [
                 'discount' => [
                     'type' => 'percentage',
@@ -153,12 +172,11 @@ class QuoteTest extends ApiTestCase
             ]
         );
 
-        unset($data['uuid']);
-
         self::assertSame([
-            'id' => 1,
+            'id' => $quote->getId()->toString(),
+            'uuid' => $quote->getUuid()->toString(),
             'status' => 'draft',
-            'client' => '/api/clients/1',
+            'client' => '/api/clients/' . $quote->getClient()->getId(),
             'total' => '$90.00',
             'baseTotal' => '$100.00',
             'tax' => '$0.00',
@@ -171,7 +189,7 @@ class QuoteTest extends ApiTestCase
             'due' => null,
             'items' => [
                 [
-                    'id' => 2,
+                    'id' => $quote->getItems()->first()->getId()->toString(),
                     'description' => 'Foo Item',
                     'price' => '$100.00',
                     'qty' => 1,
@@ -180,7 +198,7 @@ class QuoteTest extends ApiTestCase
                 ],
             ],
             'users' => [
-                '/api/contacts/1',
+                '/api/contacts/' . $quote->getUsers()->first()->getId(),
             ],
         ], $data);
     }

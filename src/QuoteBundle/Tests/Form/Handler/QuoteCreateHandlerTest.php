@@ -114,11 +114,11 @@ final class QuoteCreateHandlerTest extends FormHandlerTestCase
     }
 
     /**
-     * @param Quote $quote
+     * @param Quote $data
      */
-    protected function assertOnSuccess(?Response $response, FormRequest $form, $quote): void
+    protected function assertOnSuccess(?Response $response, FormRequest $form, $data): void
     {
-        self::assertSame(Graph::STATUS_DRAFT, $quote->getStatus());
+        self::assertSame(Graph::STATUS_DRAFT, $data->getStatus());
         self::assertInstanceOf(RedirectResponse::class, $response);
         self::assertInstanceOf(FlashResponse::class, $response);
         self::assertCount(1, iterator_to_array($response->getFlash()));
