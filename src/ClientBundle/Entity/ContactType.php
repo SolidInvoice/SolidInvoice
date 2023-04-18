@@ -57,7 +57,7 @@ class ContactType implements Stringable
     private string $type = 'text';
 
     /**
-     * @var array<int, int|string>|null
+     * @var list<int|string|list<int, string>>|null
      *
      * @ORM\Column(name="field_options", type="array", nullable=true)
      * @Serialize\Groups({"none"})
@@ -141,7 +141,7 @@ class ContactType implements Stringable
     }
 
     /**
-     * @return array<int, int|string>|null
+     * @return list<int|string|list<int, string>>|null
      */
     public function getOptions(): ?array
     {
@@ -149,7 +149,7 @@ class ContactType implements Stringable
     }
 
     /**
-     * @param array<int, int|string> $options
+     * @param list<int|string|list<int, string>> $options
      */
     public function setOptions(array $options): self
     {
