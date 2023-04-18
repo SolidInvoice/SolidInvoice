@@ -27,20 +27,11 @@ use function assert;
 
 final class Config
 {
-    /**
-     * @var ConfigWriter
-     */
-    private $configWriter;
+    private ConfigWriter $configWriter;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
-    /**
-     * @var FormFactoryInterface
-     */
-    private $formFactory;
+    private FormFactoryInterface $formFactory;
 
     public function __construct(ConfigWriter $configWriter, RouterInterface $router, FormFactoryInterface $formFactory)
     {
@@ -69,9 +60,7 @@ final class Config
 
         $drivers = array_combine(
             array_map(
-                static function ($value): string {
-                    return sprintf('pdo_%s', $value);
-                },
+                static fn ($value): string => sprintf('pdo_%s', $value),
                 $availableDrivers
             ),
             $availableDrivers

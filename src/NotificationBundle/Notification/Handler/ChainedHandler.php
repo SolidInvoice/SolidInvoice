@@ -20,10 +20,7 @@ use SolidInvoice\NotificationBundle\Notification\ChainedNotificationInterface;
 
 class ChainedHandler implements HandlerInterface
 {
-    /**
-     * @var ManagerInterface
-     */
-    private $manager;
+    private ManagerInterface $manager;
 
     public function __construct(ManagerInterface $manager)
     {

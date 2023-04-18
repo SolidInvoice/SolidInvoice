@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\PaymentBundle\Listener;
 
 use Doctrine\Persistence\ManagerRegistry;
+use Generator;
 use Money\Currency;
 use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Credit;
@@ -70,7 +71,7 @@ class PaymentCompleteListener implements EventSubscriberInterface
             );
         }
 
-        if (null !== $invoice = $event->getPayment()->getInvoice()) {
+        if (($invoice = $event->getPayment()->getInvoice()) instanceof Invoice) {
             $em = $this->registry->getManager();
 
             if (Status::STATUS_CAPTURED === $status && $em->getRepository(Invoice::class)->isFullyPaid($invoice)) {
@@ -90,10 +91,7 @@ class PaymentCompleteListener implements EventSubscriberInterface
 
             $event->setResponse(
                 new class($router->generate('_view_invoice_external', ['uuid' => $invoice->getUuid()]), $status) extends RedirectResponse implements FlashResponse {
-                    /**
-                     * @var string
-                     */
-                    private $status;
+                    private string $status;
 
                     public function __construct(string $route, string $status)
                     {
@@ -102,7 +100,7 @@ class PaymentCompleteListener implements EventSubscriberInterface
                         $this->status = $status;
                     }
 
-                    public function getFlash(): \Generator
+                    public function getFlash(): Generator
                     {
                         yield from PaymentCompleteListener::addFlashMessage($this->status);
                     }
@@ -111,7 +109,7 @@ class PaymentCompleteListener implements EventSubscriberInterface
         }
     }
 
-    public static function addFlashMessage(string $status): \Generator
+    public static function addFlashMessage(string $status): Generator
     {
         switch ($status) {
             case Status::STATUS_CAPTURED:

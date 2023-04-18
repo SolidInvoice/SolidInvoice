@@ -28,9 +28,7 @@ class FileExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('file', function ($file) {
-                return file_get_contents($this->projectDir . '/public/' . ltrim($file, '\\'));
-            }, ['is_safe' => ['css', 'html']]),
+            new TwigFunction('file', fn ($file) => file_get_contents($this->projectDir . '/public/' . ltrim($file, '\\')), ['is_safe' => ['css', 'html']]),
         ];
     }
 }

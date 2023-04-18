@@ -30,14 +30,14 @@ class RecurringInvoiceContact
     /**
      * @ORM\Id()
      * @ORM\ManyToOne(targetEntity=RecurringInvoice::class, inversedBy="users", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="recurringinvoice_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="recurringinvoice_id")
      */
     private RecurringInvoice $recurringInvoice;
 
     /**
      * @ORM\Id()
      * @ORM\ManyToOne(targetEntity=Contact::class, cascade={"persist", "remove"}, inversedBy="recurringInvoices")
-     * @ORM\JoinColumn(name="contact_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="contact_id")
      */
     private Contact $contact;
 

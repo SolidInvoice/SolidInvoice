@@ -27,6 +27,7 @@ use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\SyntaxError;
@@ -79,13 +80,11 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
      */
     public function getGlobals(): array
     {
-        $globals = [
+        return [
             'query' => $this->getQuery(),
             'app_version' => SolidInvoiceCoreBundle::VERSION,
             'app_name' => SolidInvoiceCoreBundle::APP_NAME,
         ];
-
-        return $globals;
     }
 
     /**
@@ -115,13 +114,9 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
     public function getFilters(): array
     {
         return [
-            new TwigFilter('percentage', function ($amount, float $percentage = 0.0): float {
-                return $this->calculator->calculatePercentage($amount, $percentage);
-            }),
+            new TwigFilter('percentage', fn ($amount, float $percentage = 0.0): float => $this->calculator->calculatePercentage($amount, $percentage)),
 
-            new TwigFilter('diff', function (DateTime $date): string {
-                return $this->dateDiff($date);
-            }),
+            new TwigFilter('diff', fn (DateTime $date): string => $this->dateDiff($date)),
 
             new TwigFilter('md5', 'md5'),
         ];
@@ -130,29 +125,21 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('icon', function (string $iconName, array $options = []): string {
-                return $this->displayIcon($iconName, $options);
-            }, ['is_safe' => ['html']]),
+            new TwigFunction('icon', fn (string $iconName, array $options = []): string => $this->displayIcon($iconName, $options), ['is_safe' => ['html']]),
 
-            new TwigFunction('app_logo', function (Environment $env, string $width = 'auto'): string {
-                return $this->displayAppLogo($env, $width);
-            }, ['is_safe' => ['html'], 'needs_environment' => true]),
+            new TwigFunction('app_logo', fn (Environment $env, string $width = 'auto'): string => $this->displayAppLogo($env, $width), ['is_safe' => ['html'], 'needs_environment' => true]),
 
             new TwigFunction('company_name', function (): string {
-                if (null !== $this->security->getUser()) {
+                if ($this->security->getUser() instanceof UserInterface) {
                     return $this->systemConfig->get('system/company/company_name') ?? SolidInvoiceCoreBundle::APP_NAME;
                 }
 
                 return SolidInvoiceCoreBundle::APP_NAME;
             }),
 
-            new TwigFunction('company_id', function (): UuidInterface {
-                return $this->companySelector->getCompany();
-            }),
+            new TwigFunction('company_id', fn (): UuidInterface => $this->companySelector->getCompany()),
 
-            new TwigFunction('can_print_pdf', function (): bool {
-                return $this->pdfGenerator->canPrintPdf();
-            }),
+            new TwigFunction('can_print_pdf', fn (): bool => $this->pdfGenerator->canPrintPdf()),
         ];
     }
 

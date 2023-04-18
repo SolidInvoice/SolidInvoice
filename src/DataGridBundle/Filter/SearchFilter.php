@@ -19,10 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class SearchFilter implements FilterInterface
 {
-    /**
-     * @var array
-     */
-    private $searchFields;
+    private array $searchFields;
 
     public function __construct(array $searchFields)
     {
@@ -37,7 +34,7 @@ class SearchFilter implements FilterInterface
             $expr = $queryBuilder->expr();
 
             $fields = array_map(
-                function ($field) use ($alias) {
+                function ($field) use ($alias): string {
                     if (false !== strpos($field, '.')) {
                         [$alias, $field] = explode('.', $field);
                     }
@@ -47,9 +44,7 @@ class SearchFilter implements FilterInterface
                 $this->searchFields
             );
 
-            $queryBuilder->andWhere(call_user_func_array(function ($x = null) use ($expr): Orx {
-                return $expr->orX($x);
-            }, $fields));
+            $queryBuilder->andWhere(call_user_func_array(fn ($x = null): Orx => $expr->orX($x), $fields));
             $queryBuilder->setParameter('q', '%' . $request->query->get('q') . '%');
         }
     }

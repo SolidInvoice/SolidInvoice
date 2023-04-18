@@ -19,10 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class Index
 {
-    /**
-     * @var FormHandler
-     */
-    private $handler;
+    private FormHandler $handler;
 
     public function __construct(FormHandler $handler)
     {

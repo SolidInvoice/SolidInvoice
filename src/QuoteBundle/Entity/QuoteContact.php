@@ -30,14 +30,14 @@ class QuoteContact
     /**
      * @ORM\Id()
      * @ORM\ManyToOne(targetEntity=Quote::class, inversedBy="users", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="quote_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="quote_id")
      */
     private Quote $quote;
 
     /**
      * @ORM\Id()
      * @ORM\ManyToOne(targetEntity=Contact::class, cascade={"persist", "remove"}, inversedBy="quotes")
-     * @ORM\JoinColumn(name="contact_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="contact_id")
      */
     private Contact $contact;
 

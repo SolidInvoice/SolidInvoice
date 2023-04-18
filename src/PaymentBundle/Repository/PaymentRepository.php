@@ -26,6 +26,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Money\Currency;
 use Money\Money;
 use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
+use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\PaymentBundle\Entity\Payment;
@@ -34,6 +35,7 @@ use function array_map;
 
 /**
  * @extends ServiceEntityRepository<Payment>
+ * @see \SolidInvoice\PaymentBundle\Tests\Repository\PaymentRepositoryTest
  */
 class PaymentRepository extends ServiceEntityRepository
 {
@@ -116,7 +118,7 @@ class PaymentRepository extends ServiceEntityRepository
      */
     public function getTotalPaidForInvoice(Invoice $invoice): int
     {
-        if (! $invoice->getId()) {
+        if (! $invoice->getId() instanceof UuidInterface) {
             return 0;
         }
 
@@ -189,7 +191,7 @@ class PaymentRepository extends ServiceEntityRepository
 
         $queryBuilder->select('p.totalAmount', 'p.created');
 
-        if (null !== $timestamp) {
+        if ($timestamp instanceof DateTime) {
             $queryBuilder->andWhere('p.created >= :date')
                 ->setParameter('date', $timestamp);
         }
@@ -302,7 +304,7 @@ class PaymentRepository extends ServiceEntityRepository
 
         $currency = $client->getCurrency();
 
-        if ($currency === null) {
+        if (! $currency instanceof Currency) {
             return;
         }
 

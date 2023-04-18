@@ -40,51 +40,41 @@ class RecurringInvoice extends BaseInvoice
     use TimeStampable;
 
     /**
-     * @var UuidInterface
-     *
      * @ORM\Column(name="id", type="uuid_binary_ordered_time")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
      * @Serialize\Groups({"recurring_invoice_api", "client_api"})
      */
-    private $id;
+    private ?UuidInterface $id = null;
 
     /**
-     * @var Client|null
-     *
      * @ORM\ManyToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Client", inversedBy="recurringInvoices", cascade={"persist"})
      * @Assert\NotBlank
      * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api", "create_invoice_api", "create_recurring_invoice_api"})
      * @ApiProperty(iri="https://schema.org/Organization")
      */
-    protected $client;
+    protected ?Client $client = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="frequency", type="string", nullable=true)
      * @Serialize\Groups({"recurring_invoice_api", "client_api", "create_recurring_invoice_api"})
      */
-    private $frequency;
+    private ?string $frequency = null;
 
     /**
-     * @var DateTimeInterface
-     *
      * @ORM\Column(name="date_start", type="date_immutable")
      * @Assert\NotBlank(groups={"Recurring"})
      * @Assert\Date(groups={"Recurring"})
      * @Serialize\Groups({"recurring_invoice_api", "client_api", "create_recurring_invoice_api"})
      */
-    private $dateStart;
+    private ?DateTimeInterface $dateStart = null;
 
     /**
-     * @var DateTimeInterface
-     *
      * @ORM\Column(name="date_end", type="date_immutable", nullable=true)
      * @Serialize\Groups({"recurring_invoice_api", "client_api", "create_recurring_invoice_api"})
      */
-    private $dateEnd;
+    private ?DateTimeInterface $dateEnd = null;
 
     /**
      * @var Collection<Item>
@@ -94,7 +84,7 @@ class RecurringInvoice extends BaseInvoice
      * @Assert\Count(min=1, minMessage="You need to add at least 1 item to the Invoice")
      * @Serialize\Groups({"recurring_invoice_api", "client_api", "create_recurring_invoice_api"})
      */
-    protected $items;
+    protected Collection $items;
 
     /**
      * @var Collection<RecurringInvoiceContact>
@@ -104,7 +94,7 @@ class RecurringInvoice extends BaseInvoice
      * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api", "create_invoice_api", "create_recurring_invoice_api"})
      * @ApiProperty(writableLink=true)
      */
-    protected $users;
+    protected Collection $users;
 
     public function __construct()
     {
@@ -118,11 +108,6 @@ class RecurringInvoice extends BaseInvoice
         return $this->id;
     }
 
-    /**
-     * Get Client.
-     *
-     * @return Client
-     */
     public function getClient(): ?Client
     {
         return $this->client;
@@ -135,9 +120,6 @@ class RecurringInvoice extends BaseInvoice
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getFrequency(): ?string
     {
         return $this->frequency;
@@ -150,17 +132,11 @@ class RecurringInvoice extends BaseInvoice
         return $this;
     }
 
-    /**
-     * @return DateTimeInterface
-     */
     public function getDateStart(): ?DateTimeInterface
     {
         return $this->dateStart;
     }
 
-    /**
-     * @param DateTimeInterface $dateStart
-     */
     public function setDateStart(DateTimeInterface $dateStart = null): self
     {
         $this->dateStart = $dateStart;
@@ -168,17 +144,11 @@ class RecurringInvoice extends BaseInvoice
         return $this;
     }
 
-    /**
-     * @return DateTimeInterface
-     */
     public function getDateEnd(): ?DateTimeInterface
     {
         return $this->dateEnd;
     }
 
-    /**
-     * @param DateTimeInterface $dateEnd
-     */
     public function setDateEnd(DateTimeInterface $dateEnd = null): self
     {
         $this->dateEnd = $dateEnd;
@@ -194,9 +164,6 @@ class RecurringInvoice extends BaseInvoice
         return $this;
     }
 
-    /**
-     * Removes an item.
-     */
     public function removeItem(Item $item): self
     {
         $this->items->removeElement($item);
@@ -218,9 +185,7 @@ class RecurringInvoice extends BaseInvoice
      */
     public function getUsers(): Collection
     {
-        return $this->users->map(static function (RecurringInvoiceContact $user): Contact {
-            return $user->getContact();
-        });
+        return $this->users->map(static fn (RecurringInvoiceContact $user): Contact => $user->getContact());
     }
 
     /**

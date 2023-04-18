@@ -71,7 +71,7 @@ class InvoiceRepository extends ServiceEntityRepository
             ->where('i.status = :status')
             ->setParameter('status', $status);
 
-        if (null !== $client) {
+        if ($client instanceof Client) {
             $qb->andWhere('i.client = :client')
                 ->setParameter('client', $client->getId(), UuidBinaryOrderedTimeType::NAME);
         }
@@ -90,7 +90,7 @@ class InvoiceRepository extends ServiceEntityRepository
             ->where('i.status = :status')
             ->setParameter('status', Graph::STATUS_PENDING);
 
-        if (null !== $client) {
+        if ($client instanceof Client) {
             $qb->andWhere('i.client = :client')
                 ->setParameter('client', $client->getId(), UuidBinaryOrderedTimeType::NAME);
         }
@@ -123,7 +123,7 @@ class InvoiceRepository extends ServiceEntityRepository
 
         $qb->setParameter('status', $status);
 
-        if (null !== $client) {
+        if ($client instanceof Client) {
             $qb->andWhere('i.client = :client')
                 ->setParameter('client', $client->getId(), UuidBinaryOrderedTimeType::NAME);
         }

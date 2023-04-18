@@ -29,47 +29,33 @@ class Discount
     public const TYPE_MONEY = 'money';
 
     /**
-     * @var MoneyEntity
-     *
      * @ORM\Embedded(class="SolidInvoice\MoneyBundle\Entity\Money")
      * @Serialize\Groups({"invoice_api", "quote_api", "client_api"})
      */
-    private $valueMoney;
+    private MoneyEntity $valueMoney;
 
     /**
-     * @var float|null
-     *
      * @ORM\Column(name="value_percentage", type="float", nullable=true)
      * @Serialize\Groups({"invoice_api", "quote_api", "client_api"})
      */
-    private $valuePercentage;
+    private ?float $valuePercentage = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="type", type="string", nullable=true)
      * @Serialize\Groups({"invoice_api", "quote_api", "client_api"})
      */
-    private $type = self::TYPE_PERCENTAGE;
+    private ?string $type = self::TYPE_PERCENTAGE;
 
     public function __construct()
     {
         $this->valueMoney = new MoneyEntity();
     }
 
-    /**
-     * @return string
-     */
     public function getType(): ?string
     {
         return $this->type;
     }
 
-    /**
-     * @param string $type
-     *
-     * @return $this
-     */
     public function setType(?string $type): self
     {
         $this->type = $type;
@@ -77,17 +63,11 @@ class Discount
         return $this;
     }
 
-    /**
-     * @return MoneyEntity
-     */
     public function getValueMoney(): ?MoneyEntity
     {
         return $this->valueMoney;
     }
 
-    /**
-     * @return $this
-     */
     public function setValueMoney(MoneyEntity $valueMoney): self
     {
         $this->valueMoney = $valueMoney;
@@ -95,17 +75,11 @@ class Discount
         return $this;
     }
 
-    /**
-     * @return float
-     */
     public function getValuePercentage(): ?float
     {
         return $this->valuePercentage;
     }
 
-    /**
-     * @return $this
-     */
     public function setValuePercentage(float $valuePercentage): self
     {
         $this->valuePercentage = $valuePercentage;
@@ -113,6 +87,9 @@ class Discount
         return $this;
     }
 
+    /**
+     * @return float|Money|null
+     */
     public function getValue()
     {
         switch ($this->getType()) {
@@ -120,12 +97,15 @@ class Discount
                 return $this->getValuePercentage();
 
             case self::TYPE_MONEY:
-                return $this->getValueMoney()->getMoney();
+                return $this->getValueMoney() ? $this->getValueMoney()->getMoney() : null;
         }
 
         return null;
     }
 
+    /**
+     * @param float|Money|null $value
+     */
     public function setValue($value): void
     {
         switch ($this->getType()) {

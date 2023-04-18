@@ -21,15 +21,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class Index
 {
-    /**
-     * @var InvoiceRepository
-     */
-    private $invoiceRepository;
+    private InvoiceRepository $invoiceRepository;
 
-    /**
-     * @var PaymentRepository
-     */
-    private $paymentRepository;
+    private PaymentRepository $paymentRepository;
 
     public function __construct(InvoiceRepository $invoiceRepository, PaymentRepository $paymentRepository)
     {

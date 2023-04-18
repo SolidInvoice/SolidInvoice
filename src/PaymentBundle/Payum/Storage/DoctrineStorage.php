@@ -25,6 +25,7 @@ use function get_class;
  * Overwrite the default DoctrineStorage to support UUIDs.
  * Ramsey/Uuid serializes to a binary string, which causes an error when trying
  * to save the value to the database.
+ * @see \SolidInvoice\PaymentBundle\Tests\Payum\Storage\DoctrineStorageTest
  */
 final class DoctrineStorage extends BaseDoctrineStorage
 {

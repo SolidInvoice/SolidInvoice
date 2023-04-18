@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Tests\Listener\Doctrine;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
@@ -44,9 +44,7 @@ class InvoiceSaveListenerTest extends TestCase
             ->once()
             ->with($entity);
 
-        $listener = new InvoiceSaveListener(new ServiceLocator([TotalCalculator::class => function () use ($calculator) {
-            return $calculator;
-        }]));
+        $listener = new InvoiceSaveListener(new ServiceLocator([TotalCalculator::class => fn () => $calculator]));
         $listener->prePersist(new LifecycleEventArgs($entity, M::mock(EntityManagerInterface::class)));
     }
 
@@ -59,9 +57,7 @@ class InvoiceSaveListenerTest extends TestCase
             ->once()
             ->with($entity);
 
-        $listener = new InvoiceSaveListener(new ServiceLocator([TotalCalculator::class => function () use ($calculator) {
-            return $calculator;
-        }]));
+        $listener = new InvoiceSaveListener(new ServiceLocator([TotalCalculator::class => fn () => $calculator]));
         $listener->prePersist(new LifecycleEventArgs($entity, M::mock(EntityManagerInterface::class)));
     }
 
@@ -73,9 +69,7 @@ class InvoiceSaveListenerTest extends TestCase
             ->once()
             ->with($entity);
 
-        $listener = new InvoiceSaveListener(new ServiceLocator([TotalCalculator::class => function () use ($calculator) {
-            return $calculator;
-        }]));
+        $listener = new InvoiceSaveListener(new ServiceLocator([TotalCalculator::class => fn () => $calculator]));
         $listener->preUpdate(new LifecycleEventArgs($entity, M::mock(EntityManagerInterface::class)));
     }
 
@@ -86,9 +80,7 @@ class InvoiceSaveListenerTest extends TestCase
         $calculator->shouldReceive('calculateTotals')
             ->never();
 
-        $listener = new InvoiceSaveListener(new ServiceLocator([TotalCalculator::class => function () use ($calculator) {
-            return $calculator;
-        }]));
+        $listener = new InvoiceSaveListener(new ServiceLocator([TotalCalculator::class => fn () => $calculator]));
         $listener->prePersist(new LifecycleEventArgs($entity, M::mock(EntityManagerInterface::class)));
     }
 
@@ -99,9 +91,7 @@ class InvoiceSaveListenerTest extends TestCase
         $calculator->shouldReceive('calculateTotals')
             ->never();
 
-        $listener = new InvoiceSaveListener(new ServiceLocator([TotalCalculator::class => function () use ($calculator) {
-            return $calculator;
-        }]));
+        $listener = new InvoiceSaveListener(new ServiceLocator([TotalCalculator::class => fn () => $calculator]));
         $listener->preUpdate(new LifecycleEventArgs($entity, M::mock(EntityManagerInterface::class)));
     }
 }

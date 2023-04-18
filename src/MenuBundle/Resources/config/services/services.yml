@@ -6,8 +6,6 @@ services:
     solidinvoice_menu.renderer:
         class: SolidInvoice\MenuBundle\Renderer
         arguments: ['@request_stack', '@solidinvoice_menu.factory', '@translator', '@twig']
-        calls:
-            - ['setContainer', ['@service_container']]
         tags:
             - { name: knp_menu.renderer, alias: 'solidinvoice' }
 

@@ -29,12 +29,17 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\QuoteBundle\Entity\Quote;
+use Stringable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ApiResource(attributes={"normalization_context"={"groups"={"client_api"}}, "denormalization_context"={"groups"={"client_api"}}}, iri="https://schema.org/Corporation")
+ * @ApiResource(
+ *     attributes={"normalization_context"={"groups"={"client_api"}},
+ *     "denormalization_context"={"groups"={"client_api"}}},
+ *     iri="https://schema.org/Corporation"
+ * )
  * @ORM\Table(
  *     uniqueConstraints={
  *         @ORM\UniqueConstraint(columns={"name", "company_id"})
@@ -45,70 +50,58 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\HasLifecycleCallbacks()
  * @UniqueEntity("name")
  */
-class Client
+class Client implements Stringable
 {
     use Archivable;
     use TimeStampable;
     use CompanyAware;
 
     /**
-     * @var UuidInterface
-     *
      * @ORM\Column(name="id", type="uuid_binary_ordered_time")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
      * @Serialize\Groups({"client_api"})
      */
-    private $id;
+    private ?UuidInterface $id = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="name", type="string", length=125)
      * @Assert\NotBlank()
      * @Assert\Length(max=125)
      * @Serialize\Groups({"client_api"})
-     * @ApiProperty(iri="http://schema.org/name")
+     * @ApiProperty(iri="https://schema.org/name")
      */
-    private $name;
+    private ?string $name = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="website", type="string", length=125, nullable=true)
      * @Assert\Url()
      * @Assert\Length(max=125)
      * @Serialize\Groups({"client_api"})
      * @ApiProperty(iri="https://schema.org/URL")
      */
-    private $website;
+    private ?string $website = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="status", type="string", length=25)
      * @Serialize\Groups({"client_api"})
-     * @ApiProperty(iri="http://schema.org/Text")
+     * @ApiProperty(iri="https://schema.org/Text")
      */
-    private $status;
+    private ?string $status = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="currency", type="string", length=3, nullable=true)
      * @Serialize\Groups({"client_api"})
-     * @ApiProperty(iri="http://schema.org/Text")
+     * @ApiProperty(iri="https://schema.org/Text")
      */
-    private $currency;
+    private ?string $currency = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="vat_number", type="string", nullable=true)
      * @Serialize\Groups({"client_api"})
      */
-    private $vatNumber;
+    private ?string $vatNumber = null;
 
     /**
      * @var Collection<int, Contact>
@@ -118,9 +111,9 @@ class Client
      * @Assert\Count(min=1, minMessage="You need to add at least one contact to this client")
      * @Assert\Valid()
      * @Serialize\Groups({"client_api"})
-     * @ApiProperty(iri="http://schema.org/Person")
+     * @ApiProperty(iri="https://schema.org/Person")
      */
-    private $contacts;
+    private Collection $contacts;
 
     /**
      * @var Collection<int, Quote>
@@ -129,7 +122,7 @@ class Client
      * @ORM\OrderBy({"created" = "DESC"})
      * @ApiSubresource
      */
-    private $quotes;
+    private Collection $quotes;
 
     /**
      * @var Collection<int, Invoice>
@@ -138,7 +131,7 @@ class Client
      * @ORM\OrderBy({"created" = "DESC"})
      * @ApiSubresource
      */
-    private $invoices;
+    private Collection $invoices;
 
     /**
      * @var Collection<int, RecurringInvoice>
@@ -147,7 +140,7 @@ class Client
      * @ORM\OrderBy({"created" = "DESC"})
      * @ApiSubresource
      */
-    private $recurringInvoices;
+    private Collection $recurringInvoices;
 
     /**
      * @var Collection<int, Payment>
@@ -155,7 +148,7 @@ class Client
      * @ORM\OneToMany(targetEntity="SolidInvoice\PaymentBundle\Entity\Payment", mappedBy="client", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ApiSubresource
      */
-    private $payments;
+    private Collection $payments;
 
     /**
      * @var Collection<int, Address>
@@ -163,16 +156,14 @@ class Client
      * @ORM\OneToMany(targetEntity="SolidInvoice\ClientBundle\Entity\Address", mappedBy="client", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Serialize\Groups({"client_api"})
      */
-    private $addresses;
+    private Collection $addresses;
 
     /**
-     * @var Credit|null
-     *
      * @ORM\OneToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Credit", mappedBy="client", fetch="EXTRA_LAZY", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Serialize\Groups({"client_api"})
-     * @ApiProperty(iri="http://schema.org/MonetaryAmount")
+     * @ApiProperty(iri="https://schema.org/MonetaryAmount")
      */
-    private $credit;
+    private ?Credit $credit = null;
 
     public function __construct()
     {
@@ -189,11 +180,6 @@ class Client
         return $this->id;
     }
 
-    /**
-     * Get name.
-     *
-     * @return string
-     */
     public function getName(): ?string
     {
         return $this->name;
@@ -206,11 +192,6 @@ class Client
         return $this;
     }
 
-    /**
-     * Get status.
-     *
-     * @return string
-     */
     public function getStatus(): ?string
     {
         return $this->status;
@@ -223,11 +204,6 @@ class Client
         return $this;
     }
 
-    /**
-     * Get website.
-     *
-     * @return string
-     */
     public function getWebsite(): ?string
     {
         return $this->website;
@@ -240,9 +216,6 @@ class Client
         return $this;
     }
 
-    /**
-     * Add contact.
-     */
     public function addContact(Contact $contact): self
     {
         $this->contacts[] = $contact;
@@ -251,9 +224,6 @@ class Client
         return $this;
     }
 
-    /**
-     * Removes a contact.
-     */
     public function removeContact(Contact $contact): self
     {
         $this->contacts->removeElement($contact);
@@ -262,18 +232,13 @@ class Client
     }
 
     /**
-     * Get contacts.
-     *
-     * @return Collection|Contact[]
+     * @return Collection<int, Contact>
      */
     public function getContacts(): Collection
     {
         return $this->contacts;
     }
 
-    /**
-     * Add quote.
-     */
     public function addQuote(Quote $quote): self
     {
         $this->quotes[] = $quote;
@@ -282,9 +247,6 @@ class Client
         return $this;
     }
 
-    /**
-     * Remove quote.
-     */
     public function removeQuote(Quote $quote): self
     {
         $this->quotes->removeElement($quote);
@@ -293,8 +255,6 @@ class Client
     }
 
     /**
-     * Get quotes.
-     *
      * @return Collection<int, Quote>
      */
     public function getQuotes(): Collection
@@ -302,9 +262,6 @@ class Client
         return $this->quotes;
     }
 
-    /**
-     * Add invoice.
-     */
     public function addInvoice(Invoice $invoice): self
     {
         $this->invoices[] = $invoice;
@@ -313,9 +270,6 @@ class Client
         return $this;
     }
 
-    /**
-     * Remove invoice.
-     */
     public function removeInvoice(Invoice $invoice): self
     {
         $this->invoices->removeElement($invoice);
@@ -324,8 +278,6 @@ class Client
     }
 
     /**
-     * Get invoices.
-     *
      * @return Collection<int, Invoice>
      */
     public function getInvoices(): Collection
@@ -356,9 +308,6 @@ class Client
         return $this->recurringInvoices;
     }
 
-    /**
-     * Add payment.
-     */
     public function addPayment(Payment $payment): self
     {
         $this->payments[] = $payment;
@@ -367,9 +316,6 @@ class Client
         return $this;
     }
 
-    /**
-     * Removes a payment.
-     */
     public function removePayment(Payment $payment): self
     {
         $this->payments->removeElement($payment);
@@ -378,8 +324,6 @@ class Client
     }
 
     /**
-     * Get payments.
-     *
      * @return Collection<int, Payment>
      */
     public function getPayments(): Collection
@@ -389,7 +333,7 @@ class Client
 
     public function addAddress(?Address $address): self
     {
-        if (null !== $address) {
+        if ($address instanceof Address) {
             $this->addresses[] = $address;
             $address->setClient($this);
         }
@@ -397,9 +341,6 @@ class Client
         return $this;
     }
 
-    /**
-     * Removes an address.
-     */
     public function removeAddress(Address $address): self
     {
         $this->addresses->removeElement($address);
@@ -408,8 +349,6 @@ class Client
     }
 
     /**
-     * Get addresses.
-     *
      * @return Collection<int, Address>
      */
     public function getAddresses(): Collection
@@ -417,9 +356,6 @@ class Client
         return $this->addresses;
     }
 
-    /**
-     * @return Credit
-     */
     public function getCredit(): ?Credit
     {
         return $this->credit;
@@ -434,23 +370,14 @@ class Client
 
     /**
      * @ORM\PrePersist()
-     * @ApiProperty(iri="http://schema.org/MonetaryAmount")
      */
     public function setInitialCredit(): void
     {
-        if (null === $this->id) {
+        if (! $this->id instanceof UuidInterface) {
             $credit = new Credit();
             $credit->setClient($this);
             $this->setCredit($credit);
         }
-    }
-
-    /**
-     * Return the client name as a string.
-     */
-    public function __toString(): string
-    {
-        return $this->name;
     }
 
     public function getCurrency(): ?Currency
@@ -465,21 +392,20 @@ class Client
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getVatNumber(): ?string
     {
         return $this->vatNumber;
     }
 
-    /**
-     * @return $this
-     */
     public function setVatNumber(?string $vatNumber): self
     {
         $this->vatNumber = $vatNumber;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 }

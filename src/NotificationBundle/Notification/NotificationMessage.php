@@ -15,15 +15,9 @@ namespace SolidInvoice\NotificationBundle\Notification;
 
 abstract class NotificationMessage implements NotificationMessageInterface
 {
-    /**
-     * @var array
-     */
-    private $parameters;
+    private array $parameters;
 
-    /**
-     * @var array
-     */
-    private $users = [];
+    private array $users = [];
 
     public function __construct(array $parameters = [])
     {

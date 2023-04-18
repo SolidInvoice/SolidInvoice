@@ -22,6 +22,7 @@ use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
 use SolidInvoice\TaxBundle\Entity\Tax;
+use Stringable;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -30,71 +31,57 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="SolidInvoice\QuoteBundle\Repository\ItemRepository")
  * @ORM\HasLifecycleCallbacks()
  */
-class Item implements ItemInterface
+class Item implements ItemInterface, Stringable
 {
     use TimeStampable;
     use CompanyAware;
 
     /**
-     * @var UuidInterface
-     *
      * @ORM\Column(name="id", type="uuid_binary_ordered_time")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
      * @Serialize\Groups({"quote_api", "client_api"})
      */
-    private $id;
+    private ?UuidInterface $id = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="description", type="text")
      * @Assert\NotBlank
      * @Serialize\Groups({"quote_api", "client_api", "create_quote_api"})
      */
-    private $description;
+    private ?string $description = null;
 
     /**
-     * @var MoneyEntity
-     *
      * @ORM\Embedded(class="SolidInvoice\MoneyBundle\Entity\Money")
      * @Assert\NotBlank()
      * @Serialize\Groups({"quote_api", "client_api", "create_quote_api"})
      */
-    private $price;
+    private MoneyEntity $price;
 
     /**
-     * @var float|null
-     *
      * @ORM\Column(name="qty", type="float")
      * @Assert\NotBlank()
      * @Serialize\Groups({"quote_api", "client_api", "create_quote_api"})
      */
-    private $qty;
+    private ?float $qty = null;
 
     /**
-     * @var Quote|null
-     *
      * @ORM\ManyToOne(targetEntity="Quote", inversedBy="items")
      */
-    private $quote;
+    private ?Quote $quote = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="SolidInvoice\TaxBundle\Entity\Tax", inversedBy="quoteItems")
      * @Serialize\Groups({"quote_api", "client_api", "create_quote_api"})
-     *
-     * @var Tax|null
      */
-    private $tax;
+    private ?Tax $tax = null;
 
     /**
-     * @var MoneyEntity
-     *
      * @ORM\Embedded(class="SolidInvoice\MoneyBundle\Entity\Money")
      * @Serialize\Groups({"quote_api", "client_api"})
      */
-    private $total;
+    private MoneyEntity $total;
 
     public function __construct()
     {
@@ -114,11 +101,6 @@ class Item implements ItemInterface
         return $this;
     }
 
-    /**
-     * Get description.
-     *
-     * @return string
-     */
     public function getDescription(): ?string
     {
         return $this->description;
@@ -143,9 +125,6 @@ class Item implements ItemInterface
         return $this;
     }
 
-    /**
-     * @return float
-     */
     public function getQty(): ?float
     {
         return $this->qty;
@@ -158,9 +137,6 @@ class Item implements ItemInterface
         return $this;
     }
 
-    /**
-     * @return Quote
-     */
     public function getQuote(): ?Quote
     {
         return $this->quote;
@@ -178,9 +154,6 @@ class Item implements ItemInterface
         return $this->total->getMoney();
     }
 
-    /**
-     * @return Tax
-     */
     public function getTax(): ?Tax
     {
         return $this->tax;
@@ -194,8 +167,6 @@ class Item implements ItemInterface
     }
 
     /**
-     * PrePersist listener to update the line total.
-     *
      * @ORM\PrePersist
      */
     public function updateTotal(): void
@@ -203,11 +174,8 @@ class Item implements ItemInterface
         $this->total = new MoneyEntity($this->getPrice()->multiply($this->qty));
     }
 
-    /**
-     * Return the item as a string.
-     */
     public function __toString(): string
     {
-        return (string) $this->getDescription();
+        return (string) $this->description;
     }
 }

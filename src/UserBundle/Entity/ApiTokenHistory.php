@@ -33,62 +33,47 @@ class ApiTokenHistory
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
-     *
-     * @var UuidInterface
      */
-    private $id;
+    private ?UuidInterface $id = null;
 
     /**
      * @ORM\Column(type="string")
-     *
-     * @var string|null
      */
-    private $ip;
+    private ?string $ip = null;
 
     /**
      * @ORM\Column(type="string", length=125)
-     *
-     * @var string|null
      */
-    private $resource;
+    private ?string $resource = null;
 
     /**
      * @ORM\Column(type="string", length=25)
-     *
-     * @var string|null
      */
-    private $method;
+    private ?string $method = null;
 
     /**
-     * @ORM\Column(type="array")
+     * @var array<string, mixed>
      *
-     * @var array
+     * @ORM\Column(type="array")
      */
-    private $requestData;
+    private array $requestData = [];
 
     /**
      * @ORM\Column(type="string")
-     *
-     * @var string|null
      */
-    private $userAgent;
+    private ?string $userAgent = null;
 
     /**
-     * @var ApiToken|null
-     *
      * @ORM\ManyToOne(targetEntity="ApiToken", inversedBy="history")
      * @ORM\JoinColumn(name="token_id")
      */
-    private $token;
+    private ?ApiToken $token = null;
 
-    public function getId(): UuidInterface
+    public function getId(): ?UuidInterface
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getIp(): ?string
     {
         return $this->ip;
@@ -101,9 +86,6 @@ class ApiTokenHistory
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getResource(): ?string
     {
         return $this->resource;
@@ -116,9 +98,6 @@ class ApiTokenHistory
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getMethod(): ?string
     {
         return $this->method;
@@ -132,13 +111,16 @@ class ApiTokenHistory
     }
 
     /**
-     * @return array
+     * @return array<string, mixed>
      */
-    public function getRequestData(): ?array
+    public function getRequestData(): array
     {
         return $this->requestData;
     }
 
+    /**
+     * @param array<string, mixed> $requestData
+     */
     public function setRequestData(array $requestData): self
     {
         $this->requestData = $requestData;
@@ -146,9 +128,6 @@ class ApiTokenHistory
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getUserAgent(): ?string
     {
         return $this->userAgent;
@@ -161,9 +140,6 @@ class ApiTokenHistory
         return $this;
     }
 
-    /**
-     * @return ApiToken
-     */
     public function getToken(): ?ApiToken
     {
         return $this->token;

@@ -22,10 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class Add implements AjaxResponse
 {
-    /**
-     * @var FormHandler
-     */
-    private $handler;
+    private FormHandler $handler;
 
     public function __construct(FormHandler $handler)
     {

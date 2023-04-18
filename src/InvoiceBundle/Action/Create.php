@@ -23,15 +23,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class Create
 {
-    /**
-     * @var FormHandler
-     */
-    private $handler;
+    private FormHandler $handler;
 
-    /**
-     * @var ClientRepository
-     */
-    private $clientRepository;
+    private ClientRepository $clientRepository;
 
     public function __construct(FormHandler $handler, ClientRepository $clientRepository)
     {
@@ -45,7 +39,7 @@ final class Create
         if (0 === $totalClientsCount) {
             return new Template('@SolidInvoiceInvoice/Default/empty_clients.html.twig');
         }
-        if (1 === $totalClientsCount && null === $client) {
+        if (1 === $totalClientsCount && ! $client instanceof Client) {
             $client = $this->clientRepository->findOneBy([]);
         }
 

@@ -35,12 +35,8 @@ class BillingExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('billing_fields', function (FormView $form) {
-                return $this->fieldRenderer->render($form, 'children[items].vars[prototype]');
-            }, ['is_safe' => ['html']]),
-            new TwigFunction('discount', function ($entity): Money {
-                return $this->calculator->calculateDiscount($entity);
-            }),
+            new TwigFunction('billing_fields', fn (FormView $form) => $this->fieldRenderer->render($form, 'children[items].vars[prototype]'), ['is_safe' => ['html']]),
+            new TwigFunction('discount', fn ($entity): Money => $this->calculator->calculateDiscount($entity)),
         ];
     }
 }

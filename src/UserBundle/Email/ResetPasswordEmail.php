@@ -18,10 +18,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 final class ResetPasswordEmail extends TemplatedEmail
 {
-    /**
-     * @var UserInterface
-     */
-    private $user;
+    private UserInterface $user;
 
     public function __construct(UserInterface $user)
     {

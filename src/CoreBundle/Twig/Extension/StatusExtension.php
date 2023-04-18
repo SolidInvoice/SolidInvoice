@@ -80,30 +80,22 @@ class StatusExtension extends AbstractExtension
         return [
             new TwigFunction(
                 'invoice_label',
-                function (Environment $environment, string $status = null, $tooltip = null) {
-                    return $this->renderInvoiceStatusLabel($environment, $status, $tooltip);
-                },
+                fn (Environment $environment, string $status = null, $tooltip = null) => $this->renderInvoiceStatusLabel($environment, $status, $tooltip),
                 ['is_safe' => ['html'], 'needs_environment' => true]
             ),
             new TwigFunction(
                 'quote_label',
-                function (Environment $environment, string $status = null, $tooltip = null) {
-                    return $this->renderQuoteStatusLabel($environment, $status, $tooltip);
-                },
+                fn (Environment $environment, string $status = null, $tooltip = null) => $this->renderQuoteStatusLabel($environment, $status, $tooltip),
                 ['is_safe' => ['html'], 'needs_environment' => true]
             ),
             new TwigFunction(
                 'payment_label',
-                function (Environment $environment, string $status = null, $tooltip = null) {
-                    return $this->renderPaymentStatusLabel($environment, $status, $tooltip);
-                },
+                fn (Environment $environment, string $status = null, $tooltip = null) => $this->renderPaymentStatusLabel($environment, $status, $tooltip),
                 ['is_safe' => ['html'], 'needs_environment' => true]
             ),
             new TwigFunction(
                 'client_label',
-                function (Environment $environment, string $status = null, $tooltip = null) {
-                    return $this->renderClientStatusLabel($environment, $status, $tooltip);
-                },
+                fn (Environment $environment, string $status = null, $tooltip = null) => $this->renderClientStatusLabel($environment, $status, $tooltip),
                 ['is_safe' => ['html'], 'needs_environment' => true]
             ),
         ];

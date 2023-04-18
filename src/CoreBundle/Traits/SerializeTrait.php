@@ -44,7 +44,7 @@ trait SerializeTrait
             throw new Exception(sprintf('You need to call %s::setSerializer with a valid %s instance before calling %s', static::class, SerializerInterface::class, __METHOD__));
         }
 
-        if (null === $response) {
+        if (! $response instanceof Response) {
             $response = new JsonResponse('', Response::HTTP_OK, [], true);
         }
 

@@ -21,7 +21,7 @@ class GridRepository
     /**
      * @var GridInterface[]
      */
-    private $grids = [];
+    private array $grids = [];
 
     public function addGrid(string $name, GridInterface $grid): void
     {

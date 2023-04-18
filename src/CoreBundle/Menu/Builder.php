@@ -16,7 +16,6 @@ namespace SolidInvoice\CoreBundle\Menu;
 use InvalidArgumentException;
 use SolidInvoice\MenuBundle\Core\AuthenticatedMenu;
 use SolidInvoice\MenuBundle\ItemInterface;
-use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 

@@ -14,31 +14,25 @@ declare(strict_types=1);
 namespace SolidInvoice\MenuBundle\Core;
 
 use SolidInvoice\MenuBundle\Builder\BuilderInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
 /**
  * @see \SolidInvoice\MenuBundle\Tests\Core\AuthenticatedMenuTest
  */
-class AuthenticatedMenu implements ContainerAwareInterface, BuilderInterface
+class AuthenticatedMenu implements BuilderInterface
 {
-    use ContainerAwareTrait;
+    private AuthorizationCheckerInterface $authorizationChecker;
+
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
+    {
+        $this->authorizationChecker = $authorizationChecker;
+    }
 
     public function validate(): bool
     {
-        if (! $this->container instanceof ContainerInterface) {
-            return false;
-        }
-
         try {
-            $authorizationChecker = $this->container->get('security.authorization_checker');
-
-            assert($authorizationChecker instanceof AuthorizationCheckerInterface);
-
-            return $authorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED');
+            return $this->authorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED');
         } catch (AuthenticationCredentialsNotFoundException $e) {
             return false;
         }

@@ -43,10 +43,7 @@ class InvoiceManagerTest extends KernelTestCase
 {
     use MockeryPHPUnitIntegration;
 
-    /**
-     * @var InvoiceManager
-     */
-    private $manager;
+    private InvoiceManager $manager;
 
     /**
      * @var Mock|EntityManagerInterface
@@ -139,7 +136,7 @@ class InvoiceManagerTest extends KernelTestCase
 
         self::assertSame($item->getTax(), $invoiceItem[0]->getTax());
         self::assertSame($item->getDescription(), $invoiceItem[0]->getDescription());
-        self::assertInstanceOf(\DateTime::class, $invoiceItem[0]->getCreated());
+        self::assertInstanceOf(DateTime::class, $invoiceItem[0]->getCreated());
         self::assertEquals($item->getPrice(), $invoiceItem[0]->getPrice());
         self::assertSame($item->getQty(), $invoiceItem[0]->getQty());
     }
@@ -201,7 +198,7 @@ class InvoiceManagerTest extends KernelTestCase
 
         self::assertSame($item->getTax(), $invoiceItem[0]->getTax());
         self::assertSame('Item Description ' . date('j l F Y'), $invoiceItem[0]->getDescription());
-        self::assertInstanceOf(\DateTime::class, $invoiceItem[0]->getCreated());
+        self::assertInstanceOf(DateTime::class, $invoiceItem[0]->getCreated());
         self::assertEquals($item->getPrice(), $invoiceItem[0]->getPrice());
         self::assertSame($item->getQty(), $invoiceItem[0]->getQty());
     }

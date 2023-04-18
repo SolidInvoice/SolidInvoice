@@ -27,10 +27,7 @@ use SolidInvoice\TaxBundle\Entity\Tax;
  */
 class TotalCalculator
 {
-    /**
-     * @var PaymentRepository
-     */
-    private $paymentRepository;
+    private PaymentRepository $paymentRepository;
 
     public function __construct(PaymentRepository $paymentRepository)
     {
@@ -67,7 +64,7 @@ class TotalCalculator
             $total = $total->add($item->getTotal());
             $subTotal = $subTotal->add($item->getTotal());
 
-            if (null !== $rowTax = $item->getTax()) {
+            if (($rowTax = $item->getTax()) instanceof Tax) {
                 $this->setTax($rowTax, $rowTotal, $subTotal, $total, $tax);
             }
         }

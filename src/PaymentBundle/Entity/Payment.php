@@ -32,7 +32,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Traversable;
 
 /**
- * @ApiResource(collectionOperations={"get"={"method"="GET"}}, itemOperations={"get"={"method"="GET"}}, attributes={"normalization_context"={"groups"={"payment_api"}}})
+ * @ApiResource(
+ *     collectionOperations={"get"={"method"="GET"}},
+ *     itemOperations={"get"={"method"="GET"}},
+ *     attributes={"normalization_context"={"groups"={"payment_api"}}}
+ * )
  * @ORM\Table(name="payments")
  * @ORM\Entity(repositoryClass="SolidInvoice\PaymentBundle\Repository\PaymentRepository")
  */
@@ -46,11 +50,12 @@ class Payment extends BasePayment implements PaymentInterface
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
-     *
-     * @var UuidInterface
      */
-    protected $id;
+    protected ?UuidInterface $id = null;
 
+    /**
+     * @var array<string, string>
+     */
     protected $details;
 
     protected $description;
@@ -63,60 +68,46 @@ class Payment extends BasePayment implements PaymentInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="SolidInvoice\InvoiceBundle\Entity\Invoice", inversedBy="payments")
-     *
-     * @var Invoice|null
      */
-    private $invoice;
+    private ?Invoice $invoice = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Client", inversedBy="payments")
-     * @ORM\JoinColumn(name="client", fieldName="client", referencedColumnName="id")
-     *
-     * @var Client|null
+     * @ORM\JoinColumn(name="client", fieldName="client")
      */
-    private $client;
+    private ?Client $client = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="SolidInvoice\PaymentBundle\Entity\PaymentMethod", inversedBy="payments")
      *
-     * @var PaymentMethod|null
      * @Serialize\Groups({"payment_api", "client_api"})
      */
-    private $method;
+    private ?PaymentMethod $method = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="status", type="string", length=25)
      * @Serialize\Groups({"payment_api", "client_api"})
      */
-    private $status;
+    private ?string $status = null;
 
     /**
      * @ORM\Column(name="message", type="text", nullable=true)
      * @Serialize\Groups({"payment_api", "client_api"})
-     *
-     * @var string|null
      */
-    private $message;
+    private ?string $message = null;
 
     /**
-     * @var DateTimeInterface
-     *
      * @ORM\Column(name="completed", type="datetime", nullable=true)
      * @Assert\DateTime
      * @Serialize\Groups({"payment_api", "client_api"})
      */
-    private $completed;
+    private ?DateTimeInterface $completed = null;
 
-    public function getId(): UuidInterface
+    public function getId(): ?UuidInterface
     {
         return $this->id;
     }
 
-    /**
-     * @return Invoice
-     */
     public function getInvoice(): ?Invoice
     {
         return $this->invoice;
@@ -129,9 +120,6 @@ class Payment extends BasePayment implements PaymentInterface
         return $this;
     }
 
-    /**
-     * @return PaymentMethod
-     */
     public function getMethod(): ?PaymentMethod
     {
         return $this->method;
@@ -144,11 +132,6 @@ class Payment extends BasePayment implements PaymentInterface
         return $this;
     }
 
-    /**
-     * Get status.
-     *
-     * @return string
-     */
     public function getStatus(): ?string
     {
         return $this->status;
@@ -162,9 +145,7 @@ class Payment extends BasePayment implements PaymentInterface
     }
 
     /**
-     * Set details.
-     *
-     * @param array|Traversable $details
+     * @param array<string, string>|Traversable<string> $details
      *
      * @throws UnexpectedTypeException
      */
@@ -183,9 +164,6 @@ class Payment extends BasePayment implements PaymentInterface
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getMessage(): ?string
     {
         return $this->message;
@@ -214,12 +192,9 @@ class Payment extends BasePayment implements PaymentInterface
     {
         $client = $this->getClient();
 
-        return null !== $client && null !== $client->getId() ? $client->getId()->toString() : null;
+        return $client instanceof Client && $client->getId() instanceof UuidInterface ? $client->getId()->toString() : null;
     }
 
-    /**
-     * @return Client
-     */
     public function getClient(): ?Client
     {
         return $this->client;

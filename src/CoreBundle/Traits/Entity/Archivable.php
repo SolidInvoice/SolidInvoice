@@ -19,12 +19,10 @@ use Doctrine\ORM\Mapping as ORM;
 trait Archivable
 {
     /**
-     * @var bool|null
-     *
      * @ORM\Column(type="boolean", name="archived", nullable=true)
      * @ApiProperty(iri="https://schema.org/Boolean")
      */
-    protected $archived;
+    protected ?bool $archived = null;
 
     public function isArchived(): bool
     {

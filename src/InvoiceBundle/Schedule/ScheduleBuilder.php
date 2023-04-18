@@ -14,12 +14,16 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Schedule;
 
 use Carbon\Carbon;
+use DateTimeInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Message\CreateInvoiceFromRecurring;
 use Zenstruck\ScheduleBundle\Schedule;
 use Zenstruck\ScheduleBundle\Schedule\ScheduleBuilder as ScheduleBuilderInterface;
 
+/**
+ * @see \SolidInvoice\InvoiceBundle\Tests\Schedule\ScheduleBuilderTest
+ */
 final class ScheduleBuilder implements ScheduleBuilderInterface
 {
     private ManagerRegistry $registry;
@@ -37,7 +41,7 @@ final class ScheduleBuilder implements ScheduleBuilderInterface
         $recurringInvoices = $invoiceRepository->findBy(['status' => 'active']);
 
         foreach ($recurringInvoices as $recurringInvoice) {
-            if (null !== ($recurringInvoice->getDateEnd()) && ! Carbon::instance($recurringInvoice->getDateEnd())->isFuture()) {
+            if ($recurringInvoice->getDateEnd() instanceof DateTimeInterface && ! Carbon::instance($recurringInvoice->getDateEnd())->isFuture()) {
                 continue;
             }
 

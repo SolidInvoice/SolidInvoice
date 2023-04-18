@@ -20,10 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class Index
 {
-    /**
-     * @var QuoteRepository
-     */
-    private $repository;
+    private QuoteRepository $repository;
 
     public function __construct(QuoteRepository $repository)
     {

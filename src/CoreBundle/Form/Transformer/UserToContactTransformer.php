@@ -28,6 +28,7 @@ use function is_iterable;
 /**
  * @template T of InvoiceContact|QuoteContact|RecurringInvoiceContact
  * @implements DataTransformerInterface<array<int, T>, array<int, T>>
+ * @see \SolidInvoice\CoreBundle\Tests\Form\Transformer\UserToContactTransformerTest
  */
 final class UserToContactTransformer implements DataTransformerInterface
 {
@@ -75,17 +76,17 @@ final class UserToContactTransformer implements DataTransformerInterface
                 $class = $this->class;
                 $contact = new $class();
                 $contact->setContact($item);
-
-                switch (true) {
-                    case $this->entity instanceof Invoice:
-                        $contact->setInvoice($this->entity);
-                        break;
-                    case $this->entity instanceof RecurringInvoice:
-                        $contact->setRecurringInvoice($this->entity);
-                        break;
-                    case $this->entity instanceof Quote:
-                        $contact->setQuote($this->entity);
-                        break;
+                if ($this->entity instanceof Invoice) {
+                    $contact->setInvoice($this->entity);
+                    break;
+                }
+                if ($this->entity instanceof RecurringInvoice) {
+                    $contact->setRecurringInvoice($this->entity);
+                    break;
+                }
+                if ($this->entity instanceof Quote) {
+                    $contact->setQuote($this->entity);
+                    break;
                 }
 
                 $users[] = $contact;

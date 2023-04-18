@@ -21,10 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class Edit implements AjaxResponse
 {
-    /**
-     * @var FormHandler
-     */
-    private $handler;
+    private FormHandler $handler;
 
     public function __construct(FormHandler $handler)
     {

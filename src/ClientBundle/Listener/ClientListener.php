@@ -14,8 +14,11 @@ declare(strict_types=1);
 namespace SolidInvoice\ClientBundle\Listener;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Events;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
+use Doctrine\Persistence\ObjectManager;
+use JsonException;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Credit;
 use SolidInvoice\ClientBundle\Model\Status;
@@ -27,17 +30,17 @@ use SolidInvoice\QuoteBundle\Entity\Quote;
 
 class ClientListener implements EventSubscriber
 {
-    /**
-     * @var NotificationManager
-     */
-    private $notification;
+    private NotificationManager $notification;
 
     public function __construct(NotificationManager $notification)
     {
         $this->notification = $notification;
     }
 
-    public function getSubscribedEvents()
+    /**
+     * @return string[]
+     */
+    public function getSubscribedEvents(): array
     {
         return [
             Events::prePersist,
@@ -46,9 +49,12 @@ class ClientListener implements EventSubscriber
         ];
     }
 
+    /**
+     * @param LifecycleEventArgs<ObjectManager> $event
+     */
     public function prePersist(LifecycleEventArgs $event): void
     {
-        $entity = $event->getEntity();
+        $entity = $event->getObject();
 
         if (! $entity instanceof Client) {
             return;
@@ -59,9 +65,13 @@ class ClientListener implements EventSubscriber
         }
     }
 
+    /**
+     * @param LifecycleEventArgs<ObjectManager> $event
+     * @throws JsonException
+     */
     public function postPersist(LifecycleEventArgs $event): void
     {
-        $entity = $event->getEntity();
+        $entity = $event->getObject();
 
         if (! $entity instanceof Client) {
             return;
@@ -73,19 +83,26 @@ class ClientListener implements EventSubscriber
         $this->notification->sendNotification('client_create', $notification);
     }
 
+    /**
+     * @param LifecycleEventArgs<ObjectManager> $event
+     */
     public function postUpdate(LifecycleEventArgs $event): void
     {
-        $entity = $event->getEntity();
+        $entity = $event->getObject();
 
         if (! $entity instanceof Client) {
             return;
         }
 
-        $entityChangeSet = $event->getEntityManager()->getUnitOfWork()->getEntityChangeSet($entity);
+        $objectManager = $event->getObjectManager();
+
+        assert($objectManager instanceof EntityManagerInterface);
+
+        $entityChangeSet = $objectManager->getUnitOfWork()->getEntityChangeSet($entity);
 
         // Only update the currencies when the client currency changed
         if (array_key_exists('currency', $entityChangeSet)) {
-            $em = $event->getEntityManager();
+            $em = $objectManager;
 
             $em->getRepository(Invoice::class)->updateCurrency($entity);
             $em->getRepository(Quote::class)->updateCurrency($entity);

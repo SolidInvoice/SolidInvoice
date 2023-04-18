@@ -24,15 +24,9 @@ final class MethodList implements AjaxResponse
 {
     use JsonTrait;
 
-    /**
-     * @var PaymentFactories
-     */
-    private $factories;
+    private PaymentFactories $factories;
 
-    /**
-     * @var PaymentMethodRepository
-     */
-    private $repository;
+    private PaymentMethodRepository $repository;
 
     public function __construct(PaymentFactories $factories, PaymentMethodRepository $repository)
     {
@@ -45,9 +39,7 @@ final class MethodList implements AjaxResponse
         $paymentMethods = array_keys($this->factories->getFactories());
 
         $enabledMethods = array_map(
-            function (PaymentMethod $method): string {
-                return strtolower($method->getGatewayName());
-            },
+            fn (PaymentMethod $method): string => strtolower($method->getGatewayName()),
             $this->repository->findBy(['enabled' => 1])
         );
 

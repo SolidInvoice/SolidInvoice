@@ -17,6 +17,7 @@ use Carbon\Carbon;
 use SolidInvoice\QuoteBundle\Entity\Item;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Model\Graph;
+use SolidInvoice\TaxBundle\Entity\Tax;
 use Symfony\Component\Workflow\StateMachine;
 use Traversable;
 
@@ -25,10 +26,7 @@ use Traversable;
  */
 final class QuoteCloner
 {
-    /**
-     * @var StateMachine
-     */
-    private $stateMachine;
+    private StateMachine $stateMachine;
 
     public function __construct(StateMachine $stateMachine)
     {
@@ -56,9 +54,7 @@ final class QuoteCloner
             $newQuote->setTax($quote->getTax());
         }
 
-        array_map(static function (Item $item) use ($newQuote): Quote {
-            return $newQuote->addItem($item);
-        }, iterator_to_array($this->addItems($quote, $now)));
+        array_map(static fn (Item $item): Quote => $newQuote->addItem($item), iterator_to_array($this->addItems($quote, $now)));
 
         $this->stateMachine->apply($newQuote, Graph::TRANSITION_NEW);
 
@@ -75,7 +71,7 @@ final class QuoteCloner
             $invoiceItem->setPrice($item->getPrice());
             $invoiceItem->setQty($item->getQty());
 
-            if (null !== $item->getTax()) {
+            if ($item->getTax() instanceof Tax) {
                 $invoiceItem->setTax($item->getTax());
             }
 

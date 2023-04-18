@@ -15,6 +15,7 @@ namespace SolidInvoice\CoreBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 
@@ -35,7 +36,7 @@ final class CompanyRepository extends ServiceEntityRepository
     {
         $company = $this->companySelector->getCompany();
 
-        if (null !== $company) {
+        if ($company instanceof UuidInterface) {
             $this->createQueryBuilder('c')
                 ->update()
                 ->set('c.name', ':name')

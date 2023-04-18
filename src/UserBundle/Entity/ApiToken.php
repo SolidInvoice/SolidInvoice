@@ -39,25 +39,19 @@ class ApiToken
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
-     *
-     * @var UuidInterface
      */
-    private $id;
+    private ?UuidInterface $id = null;
 
     /**
      * @ORM\Column(type="string", length=125)
      * @Assert\NotBlank()
-     *
-     * @var string|null
      */
-    private $name;
+    private ?string $name = null;
 
     /**
      * @ORM\Column(type="string", length=125)
-     *
-     * @var string|null
      */
-    private $token;
+    private ?string $token = null;
 
     /**
      * @var Collection<int, ApiTokenHistory>
@@ -65,15 +59,13 @@ class ApiToken
      * @ORM\OneToMany(targetEntity="ApiTokenHistory", mappedBy="token", fetch="EXTRA_LAZY", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"created" = "DESC"})
      */
-    private $history;
+    private Collection $history;
 
     /**
-     * @var UserInterface|null
-     *
      * @ORM\ManyToOne(targetEntity="User", inversedBy="apiTokens")
      * @ORM\JoinColumn(name="user_id")
      */
-    private $user;
+    private ?UserInterface $user = null;
 
     public function __construct()
     {
@@ -85,9 +77,6 @@ class ApiToken
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): ?string
     {
         return $this->name;
@@ -100,9 +89,6 @@ class ApiToken
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getToken(): ?string
     {
         return $this->token;

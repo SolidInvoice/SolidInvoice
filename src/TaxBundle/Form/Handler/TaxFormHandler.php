@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\TaxBundle\Form\Handler;
 
+use Generator;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
@@ -37,10 +38,7 @@ class TaxFormHandler implements FormHandlerInterface, FormHandlerSuccessInterfac
 {
     use SaveableTrait;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
     public function __construct(RouterInterface $router)
     {
@@ -59,7 +57,7 @@ class TaxFormHandler implements FormHandlerInterface, FormHandlerSuccessInterfac
         $route = $this->router->generate('_tax_rates');
 
         return new class($route) extends RedirectResponse implements FlashResponse {
-            public function getFlash(): \Generator
+            public function getFlash(): Generator
             {
                 yield FlashResponse::FLASH_SUCCESS => 'Tax rate successfully saved';
             }

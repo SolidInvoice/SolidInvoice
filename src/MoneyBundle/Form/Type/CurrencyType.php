@@ -24,10 +24,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CurrencyType extends AbstractType
 {
-    /**
-     * @var string
-     */
-    private $locale;
+    private string $locale;
 
     public function __construct(string $locale)
     {
@@ -52,9 +49,7 @@ class CurrencyType extends AbstractType
         $currencyList = Currencies::getNames($this->locale);
 
         $collection = (new ArrayCollection(iterator_to_array((new ISOCurrencies())->getIterator())))
-            ->filter(function (Currency $currency) use ($currencyList) {
-                return array_key_exists($currency->getCode(), $currencyList);
-            });
+            ->filter(fn (Currency $currency): bool => array_key_exists($currency->getCode(), $currencyList));
 
         foreach ($collection as $currency) {
             if (empty($currency->getCode())) {
