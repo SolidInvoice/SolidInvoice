@@ -15,7 +15,9 @@ namespace SolidInvoice\SettingsBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
+use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
+use Stringable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -28,7 +30,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity(repositoryClass="SolidInvoice\SettingsBundle\Repository\SettingsRepository")
  * @UniqueEntity(fields={"company_id", "key"})
  */
-class Setting
+class Setting implements Stringable
 {
     use CompanyAware;
 
@@ -37,45 +39,30 @@ class Setting
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
-     *
-     * @var int|null
      */
-    private $id;
+    private ?UuidInterface $id = null;
 
     /**
      * @ORM\Column(name="setting_key", type="string", length=125)
-     *
-     * @var string|null
      */
-    protected $key;
+    protected ?string $key = null;
 
     /**
      * @ORM\Column(name="setting_value", type="text", nullable=true)
-     *
-     * @var string|null
      */
-    protected $value;
+    protected ?string $value = null;
 
     /**
      * @ORM\Column(name="description", type="text", nullable=true)
-     *
-     * @var string|null
      */
-    protected $description;
+    protected ?string $description = null;
 
     /**
      * @ORM\Column(name="field_type", type="string")
-     *
-     * @var string|null
      */
-    protected $type;
+    protected ?string $type = null;
 
-    /**
-     * Get id.
-     *
-     * @return int
-     */
-    public function getId(): ?int
+    public function getId(): ?UuidInterface
     {
         return $this->id;
     }
@@ -93,8 +80,6 @@ class Setting
     }
 
     /**
-     * Get value.
-     *
      * @return mixed
      */
     public function getValue()
@@ -103,8 +88,6 @@ class Setting
     }
 
     /**
-     * Set value.
-     *
      * @param mixed $value
      */
     public function setValue($value): self
@@ -114,21 +97,11 @@ class Setting
         return $this;
     }
 
-    /**
-     * Get description.
-     *
-     * @return string
-     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    /**
-     * Set description.
-     *
-     * @param string $description
-     */
     public function setDescription(?string $description): self
     {
         $this->description = $description;
@@ -136,11 +109,6 @@ class Setting
         return $this;
     }
 
-    /**
-     * Get type.
-     *
-     * @return string
-     */
     public function getType(): ?string
     {
         return $this->type;
@@ -155,6 +123,6 @@ class Setting
 
     public function __toString(): string
     {
-        return $this->value;
+        return (string) $this->value;
     }
 }

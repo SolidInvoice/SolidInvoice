@@ -22,20 +22,11 @@ use Exception;
  */
 class ORMSource implements SourceInterface
 {
-    /**
-     * @var ManagerRegistry
-     */
-    private $registry;
+    private ManagerRegistry $registry;
 
-    /**
-     * @var string
-     */
-    private $repository;
+    private string $repository;
 
-    /**
-     * @var string
-     */
-    private $method;
+    private string $method;
 
     public function __construct(ManagerRegistry $registry, string $repository, string $method)
     {

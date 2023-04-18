@@ -22,6 +22,7 @@ use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
 use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
+use Stringable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -32,94 +33,73 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @UniqueEntity(fields={"email"}, message="This email is already in use. Do you want to log in instead?")
  * @UniqueEntity(fields={"username"}, message="This username is already in use")
  */
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringable
 {
     use TimeStampable;
 
     /**
-     * @var UuidInterface|null
-     *
      * @ORM\Column(type="uuid_binary_ordered_time")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
      */
-    private $id;
+    private ?UuidInterface $id = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="mobile", type="string", nullable=true)
      */
-    private $mobile;
+    private ?string $mobile = null;
 
     /**
      * @var Collection<int, ApiToken>
      *
      * @ORM\OneToMany(targetEntity="ApiToken", mappedBy="user", fetch="EXTRA_LAZY", cascade={"persist", "remove"}, orphanRemoval=true)
      */
-    private $apiTokens;
+    private Collection $apiTokens;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="username", type="string", length=180, unique=true)
      */
-    private $username;
+    private ?string $username = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="email", type="string", length=180, unique=true)
      */
-    private $email;
+    private ?string $email = null;
 
     /**
-     * @var bool|null
-     *
      * @ORM\Column(name="enabled", type="boolean")
      */
-    private $enabled = false;
+    private bool $enabled = false;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="password", type="string")
      */
-    private $password;
+    private ?string $password = null;
+
+    private string $plainPassword = '';
 
     /**
-     * @var string
-     */
-    private $plainPassword;
-
-    /**
-     * @var DateTimeInterface|null
-     *
      * @ORM\Column(name="last_login", type="datetime", nullable=true)
      */
-    private $lastLogin;
+    private ?DateTimeInterface $lastLogin = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="confirmation_token", type="string", length=180, nullable=true, unique=true)
      */
-    private $confirmationToken;
+    private ?string $confirmationToken = null;
 
     /**
-     * @var DateTimeInterface|null
-     *
      * @ORM\Column(name="password_requested_at", type="datetime", nullable=true)
      */
-    private $passwordRequestedAt;
+    private ?DateTimeInterface $passwordRequestedAt = null;
 
     /**
      * @var string[]
      *
      * @ORM\Column(name="roles", type="array")
      */
-    private $roles = [];
+    private array $roles = [];
 
     /**
      * @var Collection<int, Company>
@@ -160,9 +140,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getMobile(): ?string
     {
         return $this->mobile;
@@ -177,10 +154,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __toString(): string
     {
-        return $this->getUsername();
+        return $this->username;
     }
 
-    public function addRole($role)
+    public function addRole(string $role): self
     {
         $role = strtoupper($role);
         if ('ROLE_USER' === $role) {
@@ -194,7 +171,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function serialize()
+    public function serialize(): string
     {
         return serialize([
             $this->password,
@@ -209,7 +186,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         ]);
     }
 
-    public function unserialize($serialized): void
+    public function unserialize(string $serialized): void
     {
         [
             $this->password,
@@ -225,7 +202,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function eraseCredentials(): void
     {
-        $this->plainPassword = null;
+        $this->plainPassword = '';
     }
 
     public function getId(): ?UuidInterface
@@ -233,12 +210,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->id;
     }
 
-    public function getUsername()
+    public function getUsername(): ?string
     {
         return $this->username;
     }
 
-    public function getEmail()
+    public function getEmail(): ?string
     {
         return $this->email;
     }
@@ -248,22 +225,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
-    public function getPlainPassword()
+    public function getPlainPassword(): string
     {
         return $this->plainPassword;
     }
 
-    /**
-     * Gets the last login time.
-     *
-     * @return DateTimeInterface|null
-     */
-    public function getLastLogin()
+    public function getLastLogin(): ?DateTimeInterface
     {
         return $this->lastLogin;
     }
 
-    public function getConfirmationToken()
+    public function getConfirmationToken(): ?string
     {
         return $this->confirmationToken;
     }
@@ -278,17 +250,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
-    public function hasRole($role)
+    public function hasRole(string $role): bool
     {
         return in_array(strtoupper($role), $this->getRoles(), true);
     }
 
-    public function isEnabled()
+    public function isEnabled(): bool
     {
         return $this->enabled;
     }
 
-    public function removeRole($role)
+    public function removeRole(string $role): self
     {
         if (false !== $key = array_search(strtoupper($role), $this->roles, true)) {
             unset($this->roles[$key]);
@@ -298,79 +270,77 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function setUsername($username)
+    public function setUsername(string $username): self
     {
         $this->username = $username;
 
         return $this;
     }
 
-    public function setEmail($email)
+    public function setEmail(string $email): self
     {
         $this->email = $email;
 
         return $this;
     }
 
-    public function setEnabled($boolean)
+    public function setEnabled(bool $enabled): self
     {
-        $this->enabled = (bool) $boolean;
+        $this->enabled = $enabled;
 
         return $this;
     }
 
-    public function setPassword($password)
+    public function setPassword(string $password): self
     {
         $this->password = $password;
 
         return $this;
     }
 
-    public function setPlainPassword($password)
+    public function setPlainPassword(string $password): self
     {
         $this->plainPassword = $password;
 
         return $this;
     }
 
-    public function setLastLogin(DateTime $time = null)
+    public function setLastLogin(?DateTimeInterface $time = null): self
     {
         $this->lastLogin = $time;
 
         return $this;
     }
 
-    public function setConfirmationToken($confirmationToken)
+    public function setConfirmationToken(?string $confirmationToken): self
     {
         $this->confirmationToken = $confirmationToken;
 
         return $this;
     }
 
-    public function setPasswordRequestedAt(DateTime $date = null)
+    public function setPasswordRequestedAt(?DateTimeInterface $date = null): self
     {
         $this->passwordRequestedAt = $date;
 
         return $this;
     }
 
-    /**
-     * Gets the timestamp that the user requested a password reset.
-     *
-     * @return DateTimeInterface|null
-     */
-    public function getPasswordRequestedAt()
+    public function getPasswordRequestedAt(): ?DateTimeInterface
     {
         return $this->passwordRequestedAt;
     }
 
-    public function isPasswordRequestNonExpired($ttl)
+    public function isPasswordRequestNonExpired(int $ttl): bool
     {
         return $this->getPasswordRequestedAt() instanceof DateTime &&
             $this->getPasswordRequestedAt()->getTimestamp() + $ttl > time();
     }
 
-    public function setRoles(array $roles)
+    /**
+     * @param string[] $roles
+     */
+    public function setRoles(array $roles): self
     {
         $this->roles = [];
 

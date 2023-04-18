@@ -14,8 +14,11 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Listener\Doctrine;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
+use Doctrine\Persistence\ObjectManager;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use Symfony\Component\DependencyInjection\ServiceLocator;
@@ -25,17 +28,17 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
  */
 class InvoiceSaveListener implements EventSubscriber
 {
-    /**
-     * @var ServiceLocator
-     */
-    private $serviceLocator;
+    private ServiceLocator $serviceLocator;
 
     public function __construct(ServiceLocator $serviceLocator)
     {
         $this->serviceLocator = $serviceLocator;
     }
 
-    public function getSubscribedEvents()
+    /**
+     * @return string[]
+     */
+    public function getSubscribedEvents(): array
     {
         return [
             Events::prePersist,
@@ -43,24 +46,20 @@ class InvoiceSaveListener implements EventSubscriber
         ];
     }
 
+    /**
+     * @param LifecycleEventArgs<ObjectManager> $event
+     */
     public function preUpdate(LifecycleEventArgs $event): void
     {
-        $entity = $event->getEntity();
-
-        if ($entity instanceof BaseInvoice) {
-            $this->serviceLocator->get(TotalCalculator::class)->calculateTotals($entity);
-            $this->checkDiscount($entity);
-        }
+        $this->calculateTotals($event);
     }
 
+    /**
+     * @param LifecycleEventArgs<ObjectManager> $event
+     */
     public function prePersist(LifecycleEventArgs $event): void
     {
-        $entity = $event->getEntity();
-
-        if ($entity instanceof BaseInvoice) {
-            $this->serviceLocator->get(TotalCalculator::class)->calculateTotals($entity);
-            $this->checkDiscount($entity);
-        }
+        $this->calculateTotals($event);
     }
 
     private function checkDiscount(BaseInvoice $entity): void
@@ -68,6 +67,23 @@ class InvoiceSaveListener implements EventSubscriber
         $discount = $entity->getDiscount();
         if (! $discount->getValue()) {
             $discount->setType(null);
+        }
+    }
+
+    /**
+     * @param LifecycleEventArgs<ObjectManager> $event
+     */
+    private function calculateTotals(LifecycleEventArgs $event): void
+    {
+        $entity = $event->getObject();
+
+        if ($entity instanceof BaseInvoice) {
+            try {
+                $this->serviceLocator->get(TotalCalculator::class)->calculateTotals($entity);
+            } catch (NotFoundExceptionInterface | ContainerExceptionInterface $e) {
+            }
+
+            $this->checkDiscount($entity);
         }
     }
 }

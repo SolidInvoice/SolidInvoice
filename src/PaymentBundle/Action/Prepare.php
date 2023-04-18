@@ -38,10 +38,12 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Workflow\StateMachine;
@@ -107,7 +109,7 @@ final class Prepare
 
     public function __invoke(Request $request, ?Invoice $invoice)
     {
-        if (null === $invoice) {
+        if (! $invoice instanceof Invoice) {
             throw new NotFoundHttpException();
         }
 
@@ -183,7 +185,7 @@ final class Prepare
                 }
             }
 
-            $data['capture_online'] = $data['capture_online'] ?? ! array_key_exists($paymentName, $offlinePaymentFactories);
+            $data['capture_online'] ??= ! array_key_exists($paymentName, $offlinePaymentFactories);
 
             $payment = new Payment();
             $payment->setInvoice($invoice);
@@ -219,7 +221,7 @@ final class Prepare
             $event = new PaymentCompleteEvent($payment);
             $this->eventDispatcher->dispatch($event, PaymentEvents::PAYMENT_COMPLETE);
 
-            if (null !== ($response = $event->getResponse())) {
+            if (($response = $event->getResponse()) instanceof Response) {
                 return $response;
             }
 
@@ -238,7 +240,7 @@ final class Prepare
 
     protected function getUser(): ?UserInterface
     {
-        if (null === $token = $this->tokenStorage->getToken()) {
+        if (! ($token = $this->tokenStorage->getToken()) instanceof TokenInterface) {
             return null;
         }
 

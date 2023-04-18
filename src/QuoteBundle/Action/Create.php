@@ -49,7 +49,7 @@ final class Create
         $quote = new Quote();
         $quote->setClient($client);
 
-        if (1 === $totalClientsCount && null === $client) {
+        if (1 === $totalClientsCount && ! $client instanceof Client) {
             $quote->setClient($this->repository->findOneBy([]));
         }
 

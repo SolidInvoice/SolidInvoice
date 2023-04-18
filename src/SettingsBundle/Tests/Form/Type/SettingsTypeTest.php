@@ -47,21 +47,19 @@ class SettingsTypeTest extends FormTestCase
 
             $value = $this->faker->name;
             $formValue = $value;
-
-            switch (true) {
-                case NotificationType::class === $type:
-                    $value = [
-                        'email' => $this->faker->boolean,
-                        'sms' => $this->faker->boolean,
-                    ];
-
-                    $formValue = json_encode($value, JSON_THROW_ON_ERROR);
-                    break;
-
-                case MailTransportType::class === $type:
-                case ImageUploadType::class === $type:
-                    $value = $formValue = null;
-                    break;
+            if (NotificationType::class === $type) {
+                $value = [
+                    'email' => $this->faker->boolean,
+                    'sms' => $this->faker->boolean,
+                ];
+                $formValue = json_encode($value, JSON_THROW_ON_ERROR);
+                break;
+            }
+            if (MailTransportType::class === $type) {
+            }
+            if (ImageUploadType::class === $type) {
+                $value = $formValue = null;
+                break;
             }
 
             $formData['setting_' . $i] = $value;

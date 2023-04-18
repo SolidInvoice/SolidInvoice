@@ -25,6 +25,7 @@ use SolidInvoice\PaymentBundle\PaymentAction\Request\StatusRequest;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 
 final class Done
@@ -34,17 +35,11 @@ final class Done
     /**
      * @var Payum
      */
-    private $payum;
+    private RegistryInterface $payum;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
+    private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(RegistryInterface $payum, RouterInterface $router, EventDispatcherInterface $eventDispatcher)
     {
@@ -72,7 +67,7 @@ final class Done
         $event = new PaymentCompleteEvent($payment);
         $this->eventDispatcher->dispatch($event, PaymentEvents::PAYMENT_COMPLETE);
 
-        if (null !== ($response = $event->getResponse())) {
+        if (($response = $event->getResponse()) instanceof Response) {
             return $response;
         }
 

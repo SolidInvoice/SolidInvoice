@@ -24,10 +24,7 @@ class PaymentSettingsManager
      */
     protected $repository;
 
-    /**
-     * @var array
-     */
-    private $settings = [];
+    private array $settings = [];
 
     public function __construct(ManagerRegistry $doctrine)
     {

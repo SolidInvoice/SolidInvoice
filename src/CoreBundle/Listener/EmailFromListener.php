@@ -27,15 +27,9 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
  */
 final class EmailFromListener implements EventSubscriberInterface
 {
-    /**
-     * @var SystemConfig
-     */
-    private $config;
+    private SystemConfig $config;
 
-    /**
-     * @var TokenStorageInterface
-     */
-    private $tokenStorage;
+    private TokenStorageInterface $tokenStorage;
 
     public function __construct(SystemConfig $config, TokenStorageInterface $tokenStorage)
     {

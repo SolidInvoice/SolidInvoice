@@ -20,10 +20,7 @@ use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 
 class RecentPaymentsWidget implements WidgetInterface
 {
-    /**
-     * @var ObjectManager
-     */
-    private $manager;
+    private ObjectManager $manager;
 
     public function __construct(ManagerRegistry $registry)
     {

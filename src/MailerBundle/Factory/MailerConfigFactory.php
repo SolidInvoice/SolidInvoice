@@ -49,6 +49,7 @@ final class MailerConfigFactory
      */
     public function fromStrings(): ?TransportInterface
     {
+        $e = null;
         try {
             $mailerConfig = $this->config->get(self::CONFIG_KEY);
 
@@ -58,7 +59,7 @@ final class MailerConfigFactory
 
             $config = json_decode($mailerConfig, true, 512, JSON_THROW_ON_ERROR);
         } catch (JsonException $e) {
-            throw new RuntimeException('Invalid mailer config');
+            throw new RuntimeException('Invalid mailer config', $e->getCode(), $e);
         }
 
         $provider = $config['provider'] ?? '';

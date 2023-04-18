@@ -22,6 +22,7 @@ use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
 use SolidInvoice\TaxBundle\Entity\Tax;
+use Stringable;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -30,78 +31,62 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="SolidInvoice\InvoiceBundle\Repository\ItemRepository")
  * @ORM\HasLifecycleCallbacks()
  */
-class Item implements ItemInterface
+class Item implements ItemInterface, Stringable
 {
     use TimeStampable;
     use CompanyAware;
 
     /**
-     * @var UuidInterface
-     *
      * @ORM\Column(name="id", type="uuid_binary_ordered_time")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
      * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api"})
      */
-    private $id;
+    private ?UuidInterface $id = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="description", type="text")
      * @Assert\NotBlank
      * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api", "create_invoice_api", "create_recurring_invoice_api"})
      */
-    private $description;
+    private ?string $description = null;
 
     /**
-     * @var MoneyEntity
-     *
      * @ORM\Embedded(class="SolidInvoice\MoneyBundle\Entity\Money")
      * @Assert\NotBlank
      * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api", "create_invoice_api", "create_recurring_invoice_api"})
      */
-    private $price;
+    private MoneyEntity $price;
 
     /**
-     * @var float|null
-     *
      * @ORM\Column(name="qty", type="float")
      * @Assert\NotBlank
      * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api", "create_invoice_api", "create_recurring_invoice_api"})
      */
-    private $qty;
+    private ?float $qty = null;
 
     /**
-     * @var Invoice|null
-     *
      * @ORM\ManyToOne(targetEntity="Invoice", inversedBy="items")
      */
-    private $invoice;
+    private ?Invoice $invoice = null;
 
     /**
-     * @var RecurringInvoice|null
-     *
      * @ORM\ManyToOne(targetEntity="RecurringInvoice", inversedBy="items")
      */
-    private $recurringInvoice;
+    private ?RecurringInvoice $recurringInvoice = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="SolidInvoice\TaxBundle\Entity\Tax", inversedBy="invoiceItems")
      * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api", "create_invoice_api", "create_recurring_invoice_api"})
-     *
-     * @var Tax|null
      */
-    private $tax;
+    private ?Tax $tax = null;
 
     /**
-     * @var MoneyEntity
-     *
      * @ORM\Embedded(class="SolidInvoice\MoneyBundle\Entity\Money")
      * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api"})
      */
-    private $total;
+    private MoneyEntity $total;
 
     public function __construct()
     {
@@ -121,19 +106,11 @@ class Item implements ItemInterface
         return $this;
     }
 
-    /**
-     * Get description.
-     *
-     * @return string
-     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    /**
-     * Set the price.
-     */
     public function setPrice(Money $price): ItemInterface
     {
         $this->price = new MoneyEntity($price);
@@ -141,17 +118,11 @@ class Item implements ItemInterface
         return $this;
     }
 
-    /**
-     * Get the price.
-     */
     public function getPrice(): Money
     {
         return $this->price->getMoney();
     }
 
-    /**
-     * Set the qty.
-     */
     public function setQty(float $qty): ItemInterface
     {
         $this->qty = $qty;
@@ -159,11 +130,6 @@ class Item implements ItemInterface
         return $this;
     }
 
-    /**
-     * Get qty.
-     *
-     * @return float
-     */
     public function getQty(): ?float
     {
         return $this->qty;
@@ -195,25 +161,16 @@ class Item implements ItemInterface
         return $this;
     }
 
-    /**
-     * Get the line item total.
-     */
     public function getTotal(): Money
     {
         return $this->total->getMoney();
     }
 
-    /**
-     * @return Tax
-     */
     public function getTax(): ?Tax
     {
         return $this->tax;
     }
 
-    /**
-     * @param Tax $tax
-     */
     public function setTax(?Tax $tax): ItemInterface
     {
         $this->tax = $tax;
@@ -222,8 +179,6 @@ class Item implements ItemInterface
     }
 
     /**
-     * PrePersist listener to update the line total.
-     *
      * @ORM\PrePersist
      */
     public function updateTotal(): void
@@ -231,11 +186,8 @@ class Item implements ItemInterface
         $this->total = new MoneyEntity($this->getPrice()->multiply($this->qty));
     }
 
-    /**
-     * Return the item as a string.
-     */
     public function __toString(): string
     {
-        return (string) $this->getDescription();
+        return (string) $this->description;
     }
 }

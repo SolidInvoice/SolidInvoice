@@ -38,7 +38,7 @@ class ContactTypeTransformer implements DataTransformerInterface
      */
     public function transform($type): ?UuidInterface
     {
-        if ($type) {
+        if ($type instanceof ContactType) {
             return $type->getId();
         }
 

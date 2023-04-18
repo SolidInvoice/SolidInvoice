@@ -21,6 +21,9 @@ use SolidInvoice\CoreBundle\Generator\BillingIdGenerator\AutoIncrementIdGenerato
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 
+/**
+ * @see \SolidInvoice\CoreBundle\Tests\Doctrine\Listener\IdGeneratorListenerTest
+ */
 final class IdGeneratorListener implements EventSubscriber
 {
     private ManagerRegistry $registry;

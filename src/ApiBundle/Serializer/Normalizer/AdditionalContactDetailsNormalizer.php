@@ -30,10 +30,7 @@ class AdditionalContactDetailsNormalizer implements NormalizerInterface, Denorma
      */
     private $normalizer;
 
-    /**
-     * @var ManagerRegistry
-     */
-    private $registry;
+    private ManagerRegistry $registry;
 
     public function __construct(ManagerRegistry $registry, NormalizerInterface $normalizer)
     {

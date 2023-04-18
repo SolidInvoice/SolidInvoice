@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Test\Traits;
 
+use LogicException;
 use SolidInvoice\Kernel;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
@@ -89,7 +90,7 @@ trait SymfonyKernelTrait
 
             return $container;
         } catch (ServiceNotFoundException $e) {
-            throw new \LogicException('Could not find service "test.service_container". Try updating the "framework.test" config to "true".', 0, $e);
+            throw new LogicException('Could not find service "test.service_container". Try updating the "framework.test" config to "true".', 0, $e);
         }
     }
 
@@ -126,7 +127,7 @@ trait SymfonyKernelTrait
      */
     protected static function ensureKernelShutdown(): void
     {
-        if (null !== static::$kernel) {
+        if (static::$kernel instanceof KernelInterface) {
             static::$kernel->boot();
             $container = static::$kernel->getContainer();
             static::$kernel->shutdown();

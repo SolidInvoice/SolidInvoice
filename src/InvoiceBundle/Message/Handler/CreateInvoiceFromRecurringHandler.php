@@ -19,6 +19,9 @@ use SolidInvoice\InvoiceBundle\Model\Graph;
 use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
 use Symfony\Component\Workflow\StateMachine;
 
+/**
+ * @see \SolidInvoice\InvoiceBundle\Tests\Message\Handler\CreateInvoiceFromRecurringHandlerTest
+ */
 final class CreateInvoiceFromRecurringHandler implements MessageSubscriberInterface
 {
     private StateMachine $stateMachine;

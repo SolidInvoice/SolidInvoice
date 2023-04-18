@@ -21,10 +21,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class PaymentReceivedListener implements EventSubscriberInterface
 {
-    /**
-     * @var NotificationManager
-     */
-    private $notification;
+    private NotificationManager $notification;
 
     public static function getSubscribedEvents()
     {

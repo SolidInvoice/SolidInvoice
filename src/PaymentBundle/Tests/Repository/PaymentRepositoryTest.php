@@ -393,7 +393,7 @@ final class PaymentRepositoryTest extends KernelTestCase
             'totalAmount' => 500123,
         ]);
 
-        self::assertEquals(
+        self::assertSame(
             [
                 [
                     strtotime($created->format('Y-m-d')) * 1000,

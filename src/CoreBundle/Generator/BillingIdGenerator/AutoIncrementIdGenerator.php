@@ -21,6 +21,9 @@ use Doctrine\Persistence\ManagerRegistry;
 use function assert;
 use function get_class;
 
+/**
+ * @see \SolidInvoice\CoreBundle\Tests\Generator\BillingIdGenerator\AutoIncrementIdGeneratorTest
+ */
 final class AutoIncrementIdGenerator implements IdGeneratorInterface
 {
     private ManagerRegistry $registry;

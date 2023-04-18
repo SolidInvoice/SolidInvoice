@@ -24,10 +24,7 @@ class YamlFormatCommand extends Command
 {
     protected static $defaultName = 'yaml:format';
 
-    /**
-     * @var string
-     */
-    private $projectDir;
+    private string $projectDir;
 
     public function __construct(string $projectDir)
     {
@@ -47,7 +44,7 @@ class YamlFormatCommand extends Command
             file_put_contents($path, Yaml::dump($yml, PHP_INT_MAX));
         }
 
-        return 0;
+        return (int) Command::SUCCESS;
     }
 
     private function findFiles(): iterable

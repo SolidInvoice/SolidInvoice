@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Action;
 
+use Generator;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -26,15 +27,9 @@ final class Transition
 {
     use SaveableTrait;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
-    /**
-     * @var StateMachine
-     */
-    private $stateMachine;
+    private StateMachine $stateMachine;
 
     public function __construct(RouterInterface $router, StateMachine $stateMachine)
     {
@@ -55,10 +50,7 @@ final class Transition
         $route = $this->router->generate('_invoices_view', ['id' => $invoice->getId()]);
 
         return new class($action, $route) extends RedirectResponse implements FlashResponse {
-            /**
-             * @var string
-             */
-            private $action;
+            private string $action;
 
             public function __construct(string $action, string $route)
             {
@@ -66,7 +58,7 @@ final class Transition
                 parent::__construct($route);
             }
 
-            public function getFlash(): \Generator
+            public function getFlash(): Generator
             {
                 yield self::FLASH_SUCCESS => 'invoice.transition.action.' . $this->action;
             }

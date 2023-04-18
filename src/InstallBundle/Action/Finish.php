@@ -20,10 +20,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 final class Finish
 {
-    /**
-     * @var string
-     */
-    private $projectDir;
+    private string $projectDir;
 
     public function __construct(string $projectDir)
     {

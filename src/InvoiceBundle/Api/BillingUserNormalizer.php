@@ -27,6 +27,9 @@ use function in_array;
 use function is_a;
 use function is_array;
 
+/**
+ * @see \SolidInvoice\InvoiceBundle\Tests\Api\BillingUserNormalizerTest
+ */
 final class BillingUserNormalizer implements ContextAwareDenormalizerInterface, DenormalizerAwareInterface, ContextAwareNormalizerInterface, NormalizerAwareInterface
 {
     use DenormalizerAwareTrait;
@@ -41,7 +44,7 @@ final class BillingUserNormalizer implements ContextAwareDenormalizerInterface, 
 
     public function denormalize($data, $class, $format = null, array $context = [])
     {
-        return $this->denormalizer->denormalize($data, $class, $format, $context + [__CLASS__ => true]);
+        return $this->denormalizer->denormalize($data, $class, $format, $context + [self::class => true]);
     }
 
     public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
@@ -53,7 +56,7 @@ final class BillingUserNormalizer implements ContextAwareDenormalizerInterface, 
                 is_a($type, Quote::class, true)
             ) &&
             ! empty($data['users']) &&
-            ! isset($context[__CLASS__]);
+            ! isset($context[self::class]);
     }
 
     public function supportsNormalization($data, string $format = null, array $context = []): bool
@@ -62,7 +65,7 @@ final class BillingUserNormalizer implements ContextAwareDenormalizerInterface, 
             $context['resource_class'] === Invoice::class ||
             $context['resource_class'] === RecurringInvoice::class ||
             $context['resource_class'] === Quote::class
-        ) && is_array($data['users']) && ! isset($context[__CLASS__]);
+        ) && is_array($data['users']) && ! isset($context[self::class]);
     }
 
     public function normalize($object, string $format = null, array $context = [])
@@ -73,6 +76,6 @@ final class BillingUserNormalizer implements ContextAwareDenormalizerInterface, 
             $object['users'][$i] = $this->iriConverter->getIriFromItem($user);
         }
 
-        return $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
+        return $this->normalizer->normalize($object, $format, $context + [self::class => true]);
     }
 }

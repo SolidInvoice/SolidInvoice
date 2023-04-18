@@ -22,6 +22,7 @@ use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Item;
 use SolidInvoice\QuoteBundle\Entity\Item as QuoteItem;
+use Stringable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -30,7 +31,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="SolidInvoice\TaxBundle\Repository\TaxRepository")
  * @UniqueEntity("name")
  */
-class Tax
+class Tax implements Stringable
 {
     use TimeStampable;
     use CompanyAware;
@@ -40,53 +41,45 @@ class Tax
     public const TYPE_EXCLUSIVE = 'Exclusive';
 
     /**
-     * @var UuidInterface
-     *
      * @ORM\Column(name="id", type="uuid_binary_ordered_time")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
      */
-    private $id;
+    private ?UuidInterface $id = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="name", type="string", length=32)
      * @Assert\NotBlank()
      */
-    private $name;
+    private ?string $name = null;
 
     /**
-     * @var float|null
-     *
      * @ORM\Column(name="rate", type="float", precision=4)
      * @Assert\Type("float")
      * @Assert\NotBlank()
      */
-    private $rate;
+    private ?float $rate = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="tax_type", type="string", length=32)
      * @Assert\NotBlank()
      */
-    private $type;
+    private ?string $type = null;
 
     /**
      * @var Collection<int, Item>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\InvoiceBundle\Entity\Item", mappedBy="tax")
      */
-    private $invoiceItems;
+    private Collection $invoiceItems;
 
     /**
      * @var Collection<int, QuoteItem>
      *
      * @ORM\OneToMany(targetEntity="SolidInvoice\QuoteBundle\Entity\Item", mappedBy="tax")
      */
-    private $quoteItems;
+    private Collection $quoteItems;
 
     public function __construct()
     {
@@ -95,7 +88,7 @@ class Tax
     }
 
     /**
-     * @static
+     * @return array{Inclusive: string, Exclusive: string}
      */
     public static function getTypes(): array
     {
@@ -112,9 +105,6 @@ class Tax
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): ?string
     {
         return $this->name;
@@ -127,9 +117,6 @@ class Tax
         return $this;
     }
 
-    /**
-     * @return float
-     */
     public function getRate(): ?float
     {
         return $this->rate;
@@ -142,9 +129,6 @@ class Tax
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getType(): ?string
     {
         return $this->type;

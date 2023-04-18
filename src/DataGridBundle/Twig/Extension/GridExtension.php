@@ -37,9 +37,7 @@ class GridExtension extends AbstractExtension
         return [
             new TwigFunction(
                 'render_grid',
-                function (Environment $env, string $gridName, array $parameters = []): string {
-                    return $this->renderGrid($env, $gridName, $parameters);
-                },
+                fn (Environment $env, string $gridName, array $parameters = []): string => $this->renderGrid($env, $gridName, $parameters),
                 [
                     'is_safe' => ['html'],
                     'needs_environment' => true,
@@ -47,9 +45,7 @@ class GridExtension extends AbstractExtension
             ),
             new TwigFunction(
                 'render_multiple_grid',
-                function (Environment $env, ...$args): string {
-                    return $this->renderMultipleGrid($env, ...$args);
-                },
+                fn (Environment $env, ...$args): string => $this->renderMultipleGrid($env, ...$args),
                 [
                     'is_safe' => ['html'],
                     'needs_environment' => true,
@@ -67,7 +63,7 @@ class GridExtension extends AbstractExtension
     {
         $grid = $this->repository->find($gridName);
 
-        if (! empty($parameters)) {
+        if ($parameters !== []) {
             $grid->setParameters($parameters);
         }
 

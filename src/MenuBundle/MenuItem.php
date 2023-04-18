@@ -28,9 +28,9 @@ class MenuItem extends BaseItem implements ItemInterface
      */
     public function addChild($child, array $options = []): ItemInterface
     {
-        $options['attributes'] = $options['attributes'] ?? [];
+        $options['attributes'] ??= [];
         $options['attributes']['class'] = ($options['attributes']['class'] ?? '') . ' nav-item';
-        $options['linkAttributes'] = $options['linkAttributes'] ?? [];
+        $options['linkAttributes'] ??= [];
         $options['linkAttributes']['class'] = ($options['linkAttributes']['class'] ?? '') . ' nav-link';
 
         $result = parent::addChild($child, $options);

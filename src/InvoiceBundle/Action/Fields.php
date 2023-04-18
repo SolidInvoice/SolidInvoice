@@ -24,15 +24,9 @@ final class Fields
 {
     use JsonTrait;
 
-    /**
-     * @var FormFactoryInterface
-     */
-    private $factory;
+    private FormFactoryInterface $factory;
 
-    /**
-     * @var FieldRenderer
-     */
-    private $renderer;
+    private FieldRenderer $renderer;
 
     public function __construct(FormFactoryInterface $factory, FieldRenderer $renderer)
     {

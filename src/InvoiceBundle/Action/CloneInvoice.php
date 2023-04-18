@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Action;
 
+use Generator;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\InvoiceBundle\Cloner\InvoiceCloner;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -22,15 +23,9 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class CloneInvoice
 {
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
-    /**
-     * @var InvoiceCloner
-     */
-    private $cloner;
+    private InvoiceCloner $cloner;
 
     public function __construct(RouterInterface $router, InvoiceCloner $cloner)
     {
@@ -45,7 +40,7 @@ final class CloneInvoice
         $route = $this->router->generate('_invoices_view', ['id' => $newInvoice->getId()]);
 
         return new class($route) extends RedirectResponse implements FlashResponse {
-            public function getFlash(): \Generator
+            public function getFlash(): Generator
             {
                 yield FlashResponse::FLASH_SUCCESS => 'invoice.clone.success';
             }

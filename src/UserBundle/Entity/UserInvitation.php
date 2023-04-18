@@ -39,7 +39,7 @@ class UserInvitation
      * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
      * @ORM\Column(type="uuid_binary_ordered_time")
      */
-    private UuidInterface $id;
+    private ?UuidInterface $id = null;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -67,7 +67,7 @@ class UserInvitation
         $this->created = new DateTimeImmutable();
     }
 
-    public function getId(): UuidInterface
+    public function getId(): ?UuidInterface
     {
         return $this->id;
     }

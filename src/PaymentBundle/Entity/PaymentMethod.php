@@ -21,6 +21,7 @@ use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
 use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
+use Stringable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -30,71 +31,59 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository")
  * @UniqueEntity("gatewayName")
  */
-class PaymentMethod implements GatewayConfigInterface
+class PaymentMethod implements GatewayConfigInterface, Stringable
 {
     use TimeStampable;
     use CompanyAware;
 
     /**
-     * @var UuidInterface
-     *
      * @ORM\Column(name="id", type="uuid_binary_ordered_time")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
      */
-    private $id;
+    private ?UuidInterface $id = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="name", type="string", length=125)
      * @Assert\NotBlank
      * @Serialize\Groups({"payment_api"})
      */
-    private $name;
+    private ?string $name = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="gateway_name", type="string", length=125)
      */
-    private $gatewayName;
+    private ?string $gatewayName = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="factory", type="string", length=125)
      */
-    private $factoryName;
+    private ?string $factoryName = null;
 
     /**
-     * @var array
+     * @var array<string, string>
      *
      * @ORM\Column(name="config", type="array", nullable=true)
      */
-    private $config;
+    private array $config = [];
 
     /**
      * @ORM\Column(name="internal", type="boolean", nullable=true)
-     *
-     * @var bool|null
      */
-    private $internal = false;
+    private bool $internal = false;
 
     /**
      * @ORM\Column(name="enabled", type="boolean",  nullable=true)
-     *
-     * @var bool|null
      */
-    private $enabled;
+    private bool $enabled;
 
     /**
      * @var Collection<int, Payment>
      *
      * @ORM\OneToMany(targetEntity="Payment", mappedBy="method", cascade={"persist"})
      */
-    private $payments;
+    private Collection $payments;
 
     public function __construct()
     {
@@ -114,19 +103,11 @@ class PaymentMethod implements GatewayConfigInterface
         return $this;
     }
 
-    /**
-     * Get name.
-     *
-     * @return string
-     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
     public function getGatewayName(): ?string
     {
         return $this->gatewayName;
@@ -142,6 +123,9 @@ class PaymentMethod implements GatewayConfigInterface
         return $this;
     }
 
+    /**
+     * @param array<string, string> $config
+     */
     public function setConfig(array $config): self
     {
         $this->config = $config;
@@ -150,9 +134,7 @@ class PaymentMethod implements GatewayConfigInterface
     }
 
     /**
-     * Get settings.
-     *
-     * @return array
+     * @return ?array<string, string|null>
      */
     public function getConfig(): ?array
     {
@@ -197,9 +179,6 @@ class PaymentMethod implements GatewayConfigInterface
         return $this;
     }
 
-    /**
-     * Add payment.
-     */
     public function addPayment(Payment $payment): self
     {
         $this->payments[] = $payment;
@@ -207,9 +186,6 @@ class PaymentMethod implements GatewayConfigInterface
         return $this;
     }
 
-    /**
-     * Removes a payment.
-     */
     public function removePayment(Payment $payment): self
     {
         $this->payments->removeElement($payment);
@@ -218,8 +194,6 @@ class PaymentMethod implements GatewayConfigInterface
     }
 
     /**
-     * Get payments.
-     *
      * @return Collection<int, Payment>
      */
     public function getPayments(): Collection
@@ -232,16 +206,16 @@ class PaymentMethod implements GatewayConfigInterface
         return $this->factoryName;
     }
 
-    public function setFactoryName($factory): self
+    /**
+     * @param string $name
+     */
+    public function setFactoryName($name): self
     {
-        $this->factoryName = $factory;
+        $this->factoryName = $name;
 
         return $this;
     }
 
-    /**
-     * Return the payment method name as a string.
-     */
     public function __toString(): string
     {
         return $this->name;

@@ -30,9 +30,7 @@ class TaxExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('taxRatesConfigured', function (): bool {
-                return $this->taxRatesConfigured();
-            }),
+            new TwigFunction('taxRatesConfigured', fn (): bool => $this->taxRatesConfigured()),
         ];
     }
 

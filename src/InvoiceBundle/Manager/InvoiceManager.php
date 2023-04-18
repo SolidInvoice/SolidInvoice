@@ -28,6 +28,7 @@ use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Notification\InvoiceStatusNotification;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\TaxBundle\Entity\Tax;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -51,15 +52,9 @@ class InvoiceManager implements ContainerAwareInterface
      */
     protected $dispatcher;
 
-    /**
-     * @var StateMachine
-     */
-    private $stateMachine;
+    private StateMachine $stateMachine;
 
-    /**
-     * @var NotificationManager
-     */
-    private $notification;
+    private NotificationManager $notification;
 
     public function __construct(
         ManagerRegistry $doctrine,
@@ -141,7 +136,7 @@ class InvoiceManager implements ContainerAwareInterface
             $invoiceItem->setPrice($item->getPrice());
             $invoiceItem->setQty($item->getQty());
 
-            if (null !== $item->getTax()) {
+            if ($item->getTax() instanceof Tax) {
                 $invoiceItem->setTax($item->getTax());
             }
 

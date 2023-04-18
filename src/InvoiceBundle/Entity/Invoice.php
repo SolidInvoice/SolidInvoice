@@ -51,15 +51,13 @@ class Invoice extends BaseInvoice
     use TimeStampable;
 
     /**
-     * @var ?UuidInterface
-     *
      * @ORM\Column(name="id", type="uuid_binary_ordered_time")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
      * @Serialize\Groups({"invoice_api", "client_api"})
      */
-    private $id;
+    private ?UuidInterface $id = null;
 
     /**
      * @ORM\Column(name="invoice_id", type="string", length=255)
@@ -67,48 +65,38 @@ class Invoice extends BaseInvoice
     private string $invoiceId;
 
     /**
-     * @var UuidInterface
-     *
      * @ORM\Column(name="uuid", type="uuid", length=36)
      * @Serialize\Groups({"invoice_api", "client_api"})
      */
-    private $uuid;
+    private ?UuidInterface $uuid = null;
 
     /**
-     * @var Client|null
-     *
      * @ORM\ManyToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Client", inversedBy="invoices", cascade={"persist"})
      * @Assert\NotBlank
      * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api", "create_invoice_api", "create_recurring_invoice_api"})
      * @ApiProperty(iri="https://schema.org/Organization")
      */
-    protected $client;
+    protected ?Client $client = null;
 
     /**
-     * @var MoneyEntity
-     *
      * @ORM\Embedded(class="SolidInvoice\MoneyBundle\Entity\Money")
      * @Serialize\Groups({"invoice_api", "client_api"})
      */
-    private $balance;
+    private ?MoneyEntity $balance = null;
 
     /**
-     * @var DateTimeInterface|null
-     *
      * @ORM\Column(name="due", type="date", nullable=true)
      * @Assert\DateTime
      * @Serialize\Groups({"invoice_api", "client_api", "create_invoice_api"})
      */
-    private $due;
+    private ?DateTimeInterface $due = null;
 
     /**
-     * @var DateTimeInterface
-     *
      * @ORM\Column(name="paid_date", type="datetime", nullable=true)
      * @Assert\DateTime
      * @Serialize\Groups({"invoice_api", "client_api"})
      */
-    private $paidDate;
+    private ?DateTime $paidDate = null;
 
     /**
      * @var Collection<int, Payment>
@@ -116,14 +104,12 @@ class Invoice extends BaseInvoice
      * @ORM\OneToMany(targetEntity="SolidInvoice\PaymentBundle\Entity\Payment", mappedBy="invoice", cascade={"persist"}, orphanRemoval=true)
      * @Serialize\Groups({"js"})
      */
-    private $payments;
+    private Collection $payments;
 
     /**
-     * @var Quote|null
-     *
      * @ORM\OneToOne(targetEntity="SolidInvoice\QuoteBundle\Entity\Quote", inversedBy="invoice")
      */
-    private $quote;
+    private ?Quote $quote = null;
 
     /**
      * @var Collection<int, Item>
@@ -133,7 +119,7 @@ class Invoice extends BaseInvoice
      * @Assert\Count(min=1, minMessage="You need to add at least 1 item to the Invoice")
      * @Serialize\Groups({"invoice_api", "client_api", "create_invoice_api"})
      */
-    protected $items;
+    protected Collection $items;
 
     /**
      * @var Collection<int, InvoiceContact>
@@ -154,7 +140,6 @@ class Invoice extends BaseInvoice
         $this->users = new ArrayCollection();
 
         try {
-            $this->id = null;
             $this->setUuid(Uuid::uuid1());
         } catch (Exception $e) {
         }
@@ -177,11 +162,6 @@ class Invoice extends BaseInvoice
         return $this;
     }
 
-    /**
-     * Get Client.
-     *
-     * @return Client
-     */
     public function getClient(): ?Client
     {
         return $this->client;
@@ -206,11 +186,6 @@ class Invoice extends BaseInvoice
         return $this;
     }
 
-    /**
-     * Get due.
-     *
-     * @return DateTimeInterface
-     */
     public function getDue(): ?DateTimeInterface
     {
         return $this->due;
@@ -223,11 +198,6 @@ class Invoice extends BaseInvoice
         return $this;
     }
 
-    /**
-     * Get paidDate.
-     *
-     * @return DateTimeInterface
-     */
     public function getPaidDate(): ?DateTimeInterface
     {
         return $this->paidDate;
@@ -288,9 +258,6 @@ class Invoice extends BaseInvoice
         return $this;
     }
 
-    /**
-     * Removes a payment.
-     */
     public function removePayment(Payment $payment): self
     {
         $this->payments->removeElement($payment);
@@ -299,8 +266,6 @@ class Invoice extends BaseInvoice
     }
 
     /**
-     * Get payments.
-     *
      * @return Collection<int, Payment>
      */
     public function getPayments(): Collection
@@ -366,12 +331,10 @@ class Invoice extends BaseInvoice
 
     public function __clone()
     {
-        if (null !== $this->items) {
-            $items = $this->items;
-            $this->items = new ArrayCollection();
-            foreach ($items as $item) {
-                $this->items->add(clone $item);
-            }
+        $items = $this->items;
+        $this->items = new ArrayCollection();
+        foreach ($items as $item) {
+            $this->items->add(clone $item);
         }
 
         try {

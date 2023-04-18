@@ -38,17 +38,14 @@ class PaymentMethodSettingsHandler implements FormHandlerInterface, FormHandlerS
 {
     use SaveableTrait;
 
-    /**
-     * @var PaymentFactories
-     */
-    private $paymentFactories;
+    private PaymentFactories $paymentFactories;
+
+    private RouterInterface $router;
 
     /**
-     * @var RouterInterface
+     * @var array<string, string|null>
      */
-    private $router;
-
-    private $originalSettings = [];
+    private ?array $originalSettings = [];
 
     public function __construct(PaymentFactories $paymentFactories, RouterInterface $router)
     {
@@ -100,7 +97,7 @@ class PaymentMethodSettingsHandler implements FormHandlerInterface, FormHandlerS
         return null;
     }
 
-    public function getResponse(FormRequest $formRequest)
+    public function getResponse(FormRequest $formRequest): Template
     {
         return new Template(
             '@SolidInvoicePayment/Ajax/loadmethodsettings.html.twig',

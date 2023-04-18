@@ -24,15 +24,9 @@ final class Data implements AjaxResponse
 {
     use SerializeTrait;
 
-    /**
-     * @var GridRepository
-     */
-    private $repository;
+    private GridRepository $repository;
 
-    /**
-     * @var ManagerRegistry
-     */
-    private $registry;
+    private ManagerRegistry $registry;
 
     public function __construct(GridRepository $repository, ManagerRegistry $registry)
     {

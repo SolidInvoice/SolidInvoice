@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Response;
 
+use Generator;
+
 interface FlashResponse
 {
     public const FLASH_SUCCESS = 'success';
@@ -30,7 +32,7 @@ interface FlashResponse
      *
      * E.G yield self::FLASH_SUCCESS => 'my.flash.message'
      *
-     * @return \Generator<string, string>
+     * @return Generator<string, string>
      */
-    public function getFlash(): \Generator;
+    public function getFlash(): Generator;
 }

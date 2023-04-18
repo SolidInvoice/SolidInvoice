@@ -25,11 +25,14 @@ class WidgetFactory
     public const DEFAULT_LOCATION = 'top';
 
     /**
-     * @var SplPriorityQueue[]
+     * @var SplPriorityQueue<int, WidgetInterface>[]
      */
-    private $queues = [];
+    private array $queues = [];
 
-    private $locations = ['top', 'left_column', 'right_column'];
+    /**
+     * @var string[]
+     */
+    private array $locations = ['top', 'left_column', 'right_column'];
 
     public function __construct()
     {
@@ -39,12 +42,9 @@ class WidgetFactory
     }
 
     /**
-     * @param string $location
-     * @param int    $priority
-     *
      * @throws Exception
      */
-    public function add(WidgetInterface $widget, string $location = null, $priority = null): void
+    public function add(WidgetInterface $widget, string $location = null, int $priority = null): void
     {
         $location = $location ?: self::DEFAULT_LOCATION;
 
@@ -56,14 +56,10 @@ class WidgetFactory
     }
 
     /**
-     * @param string $location
+     * @return SplPriorityQueue<int, WidgetInterface>
      */
-    public function get($location): SplPriorityQueue
+    public function get(string $location): SplPriorityQueue
     {
-        if (! isset($this->queues[$location])) {
-            return new SplPriorityQueue();
-        }
-
-        return $this->queues[$location];
+        return $this->queues[$location] ?? new SplPriorityQueue();
     }
 }

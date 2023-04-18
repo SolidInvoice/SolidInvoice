@@ -17,10 +17,7 @@ use Symfony\Component\DependencyInjection\EnvVarLoaderInterface;
 
 final class EnvLoader implements EnvVarLoaderInterface
 {
-    /**
-     * @var string
-     */
-    private $projectDir;
+    private string $projectDir;
 
     public function __construct(string $projectDir)
     {

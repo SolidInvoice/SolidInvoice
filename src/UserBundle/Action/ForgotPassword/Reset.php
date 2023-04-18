@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Action\ForgotPassword;
 
 use SolidInvoice\CoreBundle\Response\FlashResponse;
+use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Form\Handler\PasswordChangeHandler;
 use SolidInvoice\UserBundle\Repository\UserRepository;
 use SolidWorx\FormHandler\FormHandler;
@@ -26,7 +27,7 @@ final class Reset
     {
         $user = $userRepository->findOneBy(['confirmationToken' => $token]);
 
-        if (null === $user) {
+        if (! $user instanceof User) {
             throw new NotFoundHttpException();
         }
 

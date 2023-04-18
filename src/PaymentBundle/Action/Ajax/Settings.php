@@ -23,15 +23,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class Settings implements AjaxResponse
 {
-    /**
-     * @var PaymentFactories
-     */
-    private $factories;
+    private PaymentFactories $factories;
 
-    /**
-     * @var FormHandler
-     */
-    private $handler;
+    private FormHandler $handler;
 
     public function __construct(PaymentFactories $factories, FormHandler $handler)
     {
@@ -46,7 +40,7 @@ final class Settings implements AjaxResponse
     {
         $methodName = $request->attributes->get('method');
 
-        if (null === $paymentMethod) {
+        if (! $paymentMethod instanceof PaymentMethod) {
             $paymentMethod = new PaymentMethod();
             $paymentMethod->setGatewayName($methodName);
             $paymentMethod->setFactoryName($this->factories->getFactory($methodName));

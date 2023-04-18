@@ -32,9 +32,7 @@ class SerializerExtension extends AbstractExtension
     public function getFilters(): array
     {
         return [
-            new TwigFilter('serialize', function ($data, string $format, array $groups = []) {
-                return $this->serializer->serialize($data, $format, ['groups' => $groups]);
-            }),
+            new TwigFilter('serialize', fn ($data, string $format, array $groups = []) => $this->serializer->serialize($data, $format, ['groups' => $groups])),
         ];
     }
 }
