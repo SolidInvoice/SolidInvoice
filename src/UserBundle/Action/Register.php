@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Action;
 
 use Ramsey\Uuid\Uuid;
+use SolidInvoice\UserBundle\Entity\UserInvitation;
 use SolidInvoice\UserBundle\Form\Handler\RegisterFormHandler;
 use SolidInvoice\UserBundle\Repository\UserInvitationRepository;
 use SolidWorx\FormHandler\FormHandler;
@@ -38,7 +39,7 @@ final class Register
         if ($request->query->has('invitation')) {
             $invitation = $this->repository->find(Uuid::fromString($request->query->get('invitation')));
 
-            if (null === $invitation) {
+            if (! $invitation instanceof UserInvitation) {
                 throw new NotFoundHttpException('Invitation is not valid');
             }
         }

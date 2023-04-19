@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SettingsBundle\Form\Handler;
 
+use Generator;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\SettingsBundle\Entity\Setting;
@@ -35,15 +36,9 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class SettingsFormHandler implements FormHandlerInterface, FormHandlerSuccessInterface, FormHandlerResponseInterface
 {
-    /**
-     * @var SettingsRepository
-     */
-    private $settingsRepository;
+    private SettingsRepository $settingsRepository;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
     public function __construct(SettingsRepository $settingsRepository, RouterInterface $router)
     {
@@ -63,7 +58,7 @@ class SettingsFormHandler implements FormHandlerInterface, FormHandlerSuccessInt
         $route = $this->router->generate($form->getRequest()->attributes->get('_route'));
 
         return new class($route) extends RedirectResponse implements FlashResponse {
-            public function getFlash(): \Generator
+            public function getFlash(): Generator
             {
                 yield self::FLASH_SUCCESS => 'settings.saved.success';
             }
@@ -107,11 +102,7 @@ class SettingsFormHandler implements FormHandlerInterface, FormHandlerSuccessInt
         foreach ($this->settingsRepository->findAll() as $setting) {
             $path = '[' . str_replace('/', '][', $setting->getKey()) . ']';
 
-            if ($setting->getType() === CheckboxType::class) {
-                $value = $setting->getValue() === '1';
-            } else {
-                $value = $setting->getValue();
-            }
+            $value = $setting->getType() === CheckboxType::class ? $setting->getValue() === '1' : $setting->getValue();
 
             $propertyAccessor->setValue($settings, $path, $keepObject ? $setting : $value);
         }

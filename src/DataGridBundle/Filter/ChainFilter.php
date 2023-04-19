@@ -21,7 +21,7 @@ class ChainFilter implements FilterInterface
     /**
      * @var FilterInterface[]
      */
-    private $filters = [];
+    private array $filters = [];
 
     public function filter(Request $request, QueryBuilder $queryBuilder): void
     {

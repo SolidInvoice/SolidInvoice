@@ -32,20 +32,11 @@ class Grid implements GridInterface, JsonSerializable
      */
     private $name;
 
-    /**
-     * @var ArrayCollection
-     */
-    private $columns;
+    private ArrayCollection $columns;
 
-    /**
-     * @var SourceInterface
-     */
-    private $source;
+    private SourceInterface $source;
 
-    /**
-     * @var FilterInterface
-     */
-    private $filter;
+    private FilterInterface $filter;
 
     /**
      * @var array
@@ -72,15 +63,12 @@ class Grid implements GridInterface, JsonSerializable
      */
     private $title;
 
-    /**
-     * @var array
-     */
-    private $parameters = [];
+    private array $parameters = [];
 
     /**
      * @var MoneyFormatter
      */
-    private $moneyFormatter;
+    private MoneyFormatterInterface $moneyFormatter;
 
     public function __construct(SourceInterface $source, FilterInterface $filter, array $gridData, MoneyFormatterInterface $moneyFormatter)
     {

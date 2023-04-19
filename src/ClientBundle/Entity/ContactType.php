@@ -19,6 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
 use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
+use Stringable;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -26,57 +27,48 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="contact_types")
  * @ORM\Entity(repositoryClass="SolidInvoice\ClientBundle\Repository\ContactTypeRepository")
  */
-class ContactType
+class ContactType implements Stringable
 {
     use CompanyAware;
 
     /**
-     * @var UuidInterface
-     *
      * @ORM\Column(name="id", type="uuid_binary_ordered_time")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
      * @Serialize\Groups({"client_api", "contact_api"})
      */
-    private $id;
+    private ?UuidInterface $id = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="name", type="string", length=45, unique=true)
      * @Assert\NotBlank()
      * @Assert\Length(max=45)
      * @Serialize\Groups({"client_api", "contact_api"})
      */
-    private $name;
+    private ?string $name = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="type", type="string", length=45)
      * @Assert\NotBlank()
      * @Assert\Length(max=45)
      * @Serialize\Groups({"none"})
      */
-    private $type = 'text';
+    private string $type = 'text';
 
     /**
-     * @var array
+     * @var array<int|string, int|string|list<string>>|null
      *
      * @ORM\Column(name="field_options", type="array", nullable=true)
      * @Serialize\Groups({"none"})
      */
-    private $options;
+    private ?array $options = [];
 
     /**
-     * @var bool|null
-     *
      * @ORM\Column(name="required", type="boolean")
-     * @ORM\Column(name="required", type="boolean", nullable=false)
      * @Serialize\Groups({"none"})
      */
-    private $required = false;
+    private bool $required = false;
 
     /**
      * @var Collection<int, AdditionalContactDetail>
@@ -84,11 +76,8 @@ class ContactType
      * @ORM\OneToMany(targetEntity="AdditionalContactDetail", mappedBy="type", orphanRemoval=true)
      * @Serialize\Groups({"none"})
      */
-    private $details;
+    private Collection $details;
 
-    /**
-     * Constructer.
-     */
     public function __construct()
     {
         $this->details = new ArrayCollection();
@@ -106,19 +95,11 @@ class ContactType
         return $this;
     }
 
-    /**
-     * Get name.
-     *
-     * @return string
-     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * Set the contact type required.
-     */
     public function setRequired(bool $required): self
     {
         $this->required = $required;
@@ -126,17 +107,11 @@ class ContactType
         return $this;
     }
 
-    /**
-     * returns if the contact type is required.
-     */
     public function isRequired(): bool
     {
         return $this->required;
     }
 
-    /**
-     * Add detail.
-     */
     public function addDetail(AdditionalContactDetail $detail): self
     {
         $this->details[] = $detail;
@@ -146,18 +121,13 @@ class ContactType
     }
 
     /**
-     * Get details.
-     *
-     * @return Collection<int, AdditionalContactDetail>|null
+     * @return Collection<int, AdditionalContactDetail>
      */
-    public function getDetails(): ?Collection
+    public function getDetails(): Collection
     {
         return $this->details;
     }
 
-    /**
-     * @return string
-     */
     public function getType(): ?string
     {
         return $this->type;
@@ -171,13 +141,16 @@ class ContactType
     }
 
     /**
-     * @return array
+     * @return array<int|string, int|string|list<string>>
      */
     public function getOptions(): ?array
     {
         return $this->options;
     }
 
+    /**
+     * @param array<int|string, int|string|list<string>> $options
+     */
     public function setOptions(array $options): self
     {
         $this->options = $options;
@@ -185,11 +158,8 @@ class ContactType
         return $this;
     }
 
-    /**
-     * Return the contact type as a string.
-     */
     public function __toString(): string
     {
-        return (string) $this->getName();
+        return (string) $this->name;
     }
 }

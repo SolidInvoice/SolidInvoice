@@ -16,6 +16,7 @@ namespace SolidInvoice\UserBundle\DataFixtures\ORM;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use RuntimeException;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\UserBundle\Entity\User;
 
@@ -28,8 +29,8 @@ class LoadData extends Fixture
     {
         $company = $manager->getRepository(Company::class)->findOneBy([]);
 
-        if (! $company) {
-            throw new \RuntimeException('No company found');
+        if (! $company instanceof Company) {
+            throw new RuntimeException('No company found');
         }
 
         $user1 = (new User())

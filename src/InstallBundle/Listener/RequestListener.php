@@ -26,6 +26,7 @@ use function in_array;
 /**
  * Listener class to intercept requests
  * and redirect to the installer if necessary.
+ * @see \SolidInvoice\InstallBundle\Tests\Listener\RequestListenerTest
  */
 final class RequestListener implements EventSubscriberInterface
 {
@@ -36,7 +37,7 @@ final class RequestListener implements EventSubscriberInterface
      *
      * @var list<string>
      */
-    private array $allowRoutes = [];
+    private array $allowRoutes = self::INSTALL_ROUTES;
 
     /**
      * @var list<string>
@@ -92,7 +93,6 @@ final class RequestListener implements EventSubscriberInterface
         $this->userRepository = $userRepository;
         $this->router = $router;
         $this->installed = $installed;
-        $this->allowRoutes = self::INSTALL_ROUTES;
         $this->debug = $debug;
 
         if ($this->debug) {

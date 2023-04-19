@@ -41,10 +41,10 @@ class WorkFlowSubscriberTest extends TestCase
 
         $subscriber = new WorkFlowSubscriber($this->registry, $notification);
 
-        $invoice = (new Invoice())
-            ->setClient((new Client())->setName('Test'))
-            ->setStatus('pending')
-            ->setBalance(new Money(1200, new Currency('USD')));
+        $invoice = new Invoice();
+        $invoice->setBalance(new Money(1200, new Currency('USD')));
+        $invoice->setClient((new Client())->setName('Test'));
+        $invoice->setStatus('pending');
 
         $subscriber->onWorkflowTransitionApplied(new Event($invoice, new Marking(['pending' => 1]), new Transition('pay', 'pending', 'paid'), M::mock(WorkflowInterface::class)));
         self::assertNotNull($invoice->getPaidDate());
@@ -59,10 +59,10 @@ class WorkFlowSubscriberTest extends TestCase
 
         $subscriber = new WorkFlowSubscriber($this->registry, $notification);
 
-        $invoice = (new Invoice())
-            ->setClient((new Client())->setName('Test'))
-            ->setStatus('pending')
-            ->setBalance(new Money(1200, new Currency('USD')));
+        $invoice = new Invoice();
+        $invoice->setBalance(new Money(1200, new Currency('USD')));
+        $invoice->setClient((new Client())->setName('Test'));
+        $invoice->setStatus('pending');
 
         $subscriber->onWorkflowTransitionApplied(new Event($invoice, new Marking(['pending' => 1]), new Transition('archive', 'pending', 'archived'), M::mock(WorkflowInterface::class)));
 

@@ -21,20 +21,11 @@ use Twig\Environment;
 
 class Factory
 {
-    /**
-     * @var Environment
-     */
-    private $twig;
+    private Environment $twig;
 
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private TranslatorInterface $translator;
 
-    /**
-     * @var SystemConfig
-     */
-    private $settings;
+    private SystemConfig $settings;
 
     public function __construct(Environment $twig, TranslatorInterface $translator, SystemConfig $settings)
     {

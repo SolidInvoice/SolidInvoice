@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Form\Handler;
 
+use Generator;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidWorx\FormHandler\FormRequest;
@@ -42,7 +43,7 @@ class InvoiceEditHandler extends AbstractInvoiceHandler
         $response = parent::onSuccess($form, $invoice);
 
         return new class($response->getTargetUrl()) extends RedirectResponse implements FlashResponse {
-            public function getFlash(): \Generator
+            public function getFlash(): Generator
             {
                 yield self::FLASH_SUCCESS => 'invoice.edit.success';
             }

@@ -17,20 +17,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class Template
 {
-    /**
-     * @var string
-     */
-    private $template;
+    private ?string $template = null;
 
-    /**
-     * @var array
-     */
-    private $params;
+    private array $params;
 
-    /**
-     * @var Response
-     */
-    private $response;
+    private Response $response;
 
     /**
      * @param string $template #Template

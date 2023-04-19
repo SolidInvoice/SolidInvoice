@@ -20,6 +20,7 @@ use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
+use Stringable;
 
 /**
  * SolidInvoice\ClientBundle\Entity\Credit.
@@ -27,7 +28,7 @@ use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
  * @ORM\Table(name="client_credit")
  * @ORM\Entity(repositoryClass="SolidInvoice\ClientBundle\Repository\CreditRepository")
  */
-class Credit
+class Credit implements Stringable
 {
     use TimeStampable;
     use CompanyAware;
@@ -37,23 +38,18 @@ class Credit
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
-     *
-     * @var UuidInterface
      */
-    private $id;
+    private ?UuidInterface $id = null;
 
     /**
      * @ORM\Embedded(class="SolidInvoice\MoneyBundle\Entity\Money")
-     *
-     * @var MoneyEntity
      */
-    private $value;
+    private MoneyEntity $value;
 
     /**
-     * @var Client|null
      * @ORM\OneToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Client", inversedBy="credit")
      */
-    private $client;
+    private ?Client $client = null;
 
     public function __construct()
     {
@@ -65,9 +61,6 @@ class Credit
         return $this->id;
     }
 
-    /**
-     * @return Client
-     */
     public function getClient(): ?Client
     {
         return $this->client;
@@ -85,9 +78,6 @@ class Credit
         return $this->value->getMoney();
     }
 
-    /**
-     * @return $this|Credit
-     */
     public function setValue(Money $value): self
     {
         $this->value = new MoneyEntity($value);

@@ -30,10 +30,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  */
 class ContactDetailType extends AbstractType
 {
-    /**
-     * @var ContactTypeRepository
-     */
-    private $contactTypeRepository;
+    private ContactTypeRepository $contactTypeRepository;
 
     public function __construct(ContactTypeRepository $contactTypeRepository)
     {
@@ -88,11 +85,13 @@ class ContactDetailType extends AbstractType
             if ('email' === strtolower($form->get('type')->getData()->getName())) {
                 return ['Default', 'email'];
             }
+
+            return ['Default', 'not_blank'];
             // @codeCoverageIgnoreEnd
         });
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'contact_detail';
     }

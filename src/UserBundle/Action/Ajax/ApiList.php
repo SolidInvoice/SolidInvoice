@@ -17,20 +17,16 @@ use SolidInvoice\CoreBundle\Traits\SerializeTrait;
 use SolidInvoice\UserBundle\Repository\ApiTokenRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 final class ApiList
 {
     use SerializeTrait;
 
-    /**
-     * @var ApiTokenRepository
-     */
-    private $repository;
+    private ApiTokenRepository $repository;
 
-    /**
-     * @var TokenStorageInterface
-     */
-    private $tokenStorage;
+    private TokenStorageInterface $tokenStorage;
 
     public function __construct(ApiTokenRepository $repository, TokenStorageInterface $tokenStorage)
     {
@@ -41,9 +37,9 @@ final class ApiList
     public function __invoke(Request $request)
     {
         $token = $this->tokenStorage->getToken();
-        $user = null !== $token ? $token->getUser() : null;
+        $user = $token instanceof TokenInterface ? $token->getUser() : null;
 
-        if ($user) {
+        if ($user instanceof UserInterface) {
             $tokens = $this->repository->getApiTokensForUser($user);
 
             return $this->serialize($tokens);

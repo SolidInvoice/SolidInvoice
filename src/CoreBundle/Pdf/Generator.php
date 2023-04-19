@@ -23,15 +23,9 @@ use Psr\Log\LoggerInterface;
  */
 class Generator
 {
-    /**
-     * @var string
-     */
-    private $cacheDir;
+    private string $cacheDir;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
     public function __construct(string $cacheDir, LoggerInterface $logger)
     {

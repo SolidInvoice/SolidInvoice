@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Form\Handler;
 
+use Generator;
+use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
@@ -72,7 +74,7 @@ abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandl
         $action = $form->getRequest()->request->get('save');
         $isRecurring = $form->getOptions()->get('recurring');
 
-        if (! $data->getId()) {
+        if (! $data->getId() instanceof UuidInterface) {
             ($isRecurring ? $this->recurringInvoiceStateMachine : $this->invoiceStateMachine)->apply($data, Graph::TRANSITION_NEW);
         }
 
@@ -89,7 +91,7 @@ abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandl
         $route = $this->router->generate($isRecurring ? '_invoices_view_recurring' : '_invoices_view', ['id' => $data->getId()]);
 
         return new class($route) extends RedirectResponse implements FlashResponse {
-            public function getFlash(): \Generator
+            public function getFlash(): Generator
             {
                 yield self::FLASH_SUCCESS => 'invoice.create.success';
             }

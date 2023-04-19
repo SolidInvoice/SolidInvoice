@@ -46,24 +46,18 @@ class PaymentExtension extends AbstractExtension
 
                 return $paymentMethod->isEnabled();
             }),
-            new TwigFunction('payments_configured', function (bool $includeInternal = true): int {
-                return $this
-                    ->registry
-                    ->getRepository(PaymentMethod::class)
-                    ->getTotalMethodsConfigured($includeInternal);
-            }),
-            new TwigFunction('total_income', function (Client $client): ?Money {
-                return $this
-                    ->registry
-                    ->getRepository(Payment::class)
-                    ->getTotalIncomeForClient($client);
-            }),
-            new TwigFunction('total_outstanding', function (Client $client): ?Money {
-                return $this
-                    ->registry
-                    ->getRepository(Invoice::class)
-                    ->getTotalOutstandingForClient($client);
-            }),
+            new TwigFunction('payments_configured', fn (bool $includeInternal = true): int => $this
+                ->registry
+                ->getRepository(PaymentMethod::class)
+                ->getTotalMethodsConfigured($includeInternal)),
+            new TwigFunction('total_income', fn (Client $client): ?Money => $this
+                ->registry
+                ->getRepository(Payment::class)
+                ->getTotalIncomeForClient($client)),
+            new TwigFunction('total_outstanding', fn (Client $client): ?Money => $this
+                ->registry
+                ->getRepository(Invoice::class)
+                ->getTotalOutstandingForClient($client)),
         ];
     }
 }

@@ -20,10 +20,7 @@ use Symfony\Component\Form\DataTransformerInterface;
 
 class ModelTransformer implements DataTransformerInterface
 {
-    /**
-     * @var Currency
-     */
-    private $currency;
+    private ?Currency $currency = null;
 
     /**
      * @param Currency|string $currency

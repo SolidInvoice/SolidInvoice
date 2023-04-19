@@ -23,53 +23,21 @@ interface ItemInterface
 
     public function setDescription(string $description): self;
 
-    /**
-     * Get description.
-     *
-     * @return string
-     */
     public function getDescription(): ?string;
 
-    /**
-     * Set the price.
-     */
     public function setPrice(Money $price): self;
 
-    /**
-     * Get the price.
-     *
-     * @return Money
-     */
     public function getPrice(): ?Money;
 
-    /**
-     * Set the qty.
-     */
     public function setQty(float $qty): self;
 
-    /**
-     * Get qty.
-     *
-     * @return float
-     */
     public function getQty(): ?float;
 
     public function setTotal(Money $total): self;
 
-    /**
-     * Get the line item total.
-     *
-     * @return Money
-     */
     public function getTotal(): ?Money;
 
-    /**
-     * @return Tax
-     */
     public function getTax(): ?Tax;
 
-    /**
-     * @param Tax $tax
-     */
     public function setTax(?Tax $tax): self;
 }

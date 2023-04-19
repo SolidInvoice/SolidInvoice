@@ -25,15 +25,9 @@ use Twig\Environment;
 
 final class View
 {
-    /**
-     * @var Generator
-     */
-    private $pdfGenerator;
+    private Generator $pdfGenerator;
 
-    /**
-     * @var Environment
-     */
-    private $engine;
+    private Environment $engine;
 
     public function __construct(Generator $pdfGenerator, Environment $twig)
     {

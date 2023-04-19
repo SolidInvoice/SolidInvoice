@@ -26,10 +26,7 @@ use Traversable;
  */
 final class InvoiceCloner
 {
-    /**
-     * @var InvoiceManager
-     */
-    private $invoiceManager;
+    private InvoiceManager $invoiceManager;
 
     public function __construct(InvoiceManager $invoiceManager)
     {
@@ -69,9 +66,7 @@ final class InvoiceCloner
             $newInvoice->setTax($tax);
         }
 
-        array_map(static function (Item $item) use ($newInvoice): BaseInvoice {
-            return $newInvoice->addItem($item);
-        }, iterator_to_array($this->addItems($invoice, $now)));
+        array_map(static fn (Item $item): BaseInvoice => $newInvoice->addItem($item), iterator_to_array($this->addItems($invoice, $now)));
 
         $this->invoiceManager->create($newInvoice);
 

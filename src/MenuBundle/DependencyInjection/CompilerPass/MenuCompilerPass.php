@@ -15,7 +15,6 @@ namespace SolidInvoice\MenuBundle\DependencyInjection\CompilerPass;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
 
 class MenuCompilerPass implements CompilerPassInterface
 {
@@ -35,7 +34,7 @@ class MenuCompilerPass implements CompilerPassInterface
                     'addBuilder',
                     [
                         $container->getDefinition($id)
-                            ->addMethodCall('setContainer', [new Reference('service_container')]),
+                            ->setAutowired(true),
                         $attributes['menu'],
                         $attributes['method'],
                         array_key_exists('priority', $attributes) ? $attributes['priority'] : 0, ]

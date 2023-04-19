@@ -21,15 +21,9 @@ use SolidInvoice\PaymentBundle\Exception\InvalidGatewayException;
  */
 class PaymentFactories
 {
-    /**
-     * @var array
-     */
-    private $factories;
+    private ?array $factories = null;
 
-    /**
-     * @var array
-     */
-    private $forms;
+    private ?array $forms = null;
 
     public function setGatewayFactories(array $factories): void
     {
@@ -54,9 +48,7 @@ class PaymentFactories
 
         return array_filter(
             $this->factories,
-            static function ($factory) use ($type): bool {
-                return $type === $factory;
-            }
+            static fn ($factory): bool => $type === $factory
         );
     }
 

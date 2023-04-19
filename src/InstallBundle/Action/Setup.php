@@ -18,6 +18,7 @@ use DateTimeInterface;
 use Defuse\Crypto\Exception\EnvironmentIsBrokenException;
 use Defuse\Crypto\Key;
 use Doctrine\Persistence\ManagerRegistry;
+use Money\Currency;
 use Mpociot\VatCalculator\VatCalculator;
 use SolidInvoice\CoreBundle\ConfigWriter;
 use SolidInvoice\CoreBundle\Entity\Version;
@@ -90,7 +91,7 @@ final class Setup
         $currency = $this->systemConfig->getCurrency();
         $data = [
             'locale' => $config['locale'] ?? null,
-            'currency' => $currency ? $currency->getCode() : null,
+            'currency' => $currency instanceof Currency ? $currency->getCode() : null,
         ];
 
         return $this->formFactory->create(SystemInformationForm::class, $data, ['userCount' => $this->getUserCount()]);

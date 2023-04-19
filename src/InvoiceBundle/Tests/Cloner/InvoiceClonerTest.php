@@ -101,7 +101,7 @@ class InvoiceClonerTest extends TestCase
     public function testCloneWithRecurring(): void
     {
         $currency = new Currency('USD');
-        $date = new \DateTime('now');
+        $date = new DateTime('now');
 
         $client = new Client();
         $client->setName('Test Client');

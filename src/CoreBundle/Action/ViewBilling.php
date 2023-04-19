@@ -31,20 +31,11 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class ViewBilling
 {
-    /**
-     * @var ManagerRegistry
-     */
-    private $registry;
+    private ManagerRegistry $registry;
 
-    /**
-     * @var AuthorizationCheckerInterface
-     */
-    private $authorizationChecker;
+    private AuthorizationCheckerInterface $authorizationChecker;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
     public function __construct(ManagerRegistry $registry, AuthorizationCheckerInterface $authorizationChecker, RouterInterface $router)
     {

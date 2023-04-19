@@ -18,10 +18,7 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
 final class QuoteEmail extends TemplatedEmail
 {
-    /**
-     * @var Quote
-     */
-    private $quote;
+    private Quote $quote;
 
     public function __construct(Quote $quote)
     {

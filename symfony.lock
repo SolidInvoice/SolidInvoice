@@ -457,9 +457,6 @@
     "symfony/cache": {
         "version": "v5.1.3"
     },
-    "symfony/cache-contracts": {
-        "version": "v2.1.3"
-    },
     "symfony/config": {
         "version": "v4.4.11"
     },
@@ -494,9 +491,6 @@
     "symfony/dependency-injection": {
         "version": "v4.4.11"
     },
-    "symfony/deprecation-contracts": {
-        "version": "v2.1.3"
-    },
     "symfony/doctrine-bridge": {
         "version": "v4.4.11"
     },
@@ -511,9 +505,6 @@
     },
     "symfony/event-dispatcher": {
         "version": "v4.4.11"
-    },
-    "symfony/event-dispatcher-contracts": {
-        "version": "v1.1.9"
     },
     "symfony/expression-language": {
         "version": "v4.4.11"
@@ -571,9 +562,6 @@
     },
     "symfony/http-client": {
         "version": "v5.1.3"
-    },
-    "symfony/http-client-contracts": {
-        "version": "v2.1.3"
     },
     "symfony/http-foundation": {
         "version": "v4.4.11"
@@ -766,9 +754,6 @@
     "symfony/serializer": {
         "version": "v4.4.11"
     },
-    "symfony/service-contracts": {
-        "version": "v2.1.3"
-    },
     "symfony/stopwatch": {
         "version": "v5.1.3"
     },
@@ -801,9 +786,6 @@
             "config/packages/translation.yaml",
             "translations/.gitignore"
         ]
-    },
-    "symfony/translation-contracts": {
-        "version": "v2.1.3"
     },
     "symfony/twig-bridge": {
         "version": "v4.4.11"

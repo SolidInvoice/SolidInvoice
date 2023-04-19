@@ -29,15 +29,9 @@ use Symfony\Component\Workflow\Transition;
  */
 class WorkFlowSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var NotificationManager
-     */
-    private $notification;
+    private NotificationManager $notification;
 
-    /**
-     * @var ManagerRegistry
-     */
-    private $registry;
+    private ManagerRegistry $registry;
 
     public function __construct(ManagerRegistry $registry, NotificationManager $notification)
     {

@@ -35,10 +35,7 @@ use Symfony\Component\Yaml\Yaml;
 
 class GridDefinitionCompilerPass implements CompilerPassInterface
 {
-    /**
-     * @var KernelInterface
-     */
-    private $kernel;
+    private KernelInterface $kernel;
 
     public function __construct(KernelInterface $kernel)
     {

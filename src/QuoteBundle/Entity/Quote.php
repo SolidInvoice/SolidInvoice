@@ -53,15 +53,13 @@ class Quote
     use CompanyAware;
 
     /**
-     * @var UuidInterface
-     *
      * @ORM\Column(name="id", type="uuid_binary_ordered_time")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
      * @Serialize\Groups({"quote_api", "client_api"})
      */
-    private $id;
+    private ?UuidInterface $id = null;
 
     /**
      * @ORM\Column(name="quote_id", type="string", length=255)
@@ -69,87 +67,67 @@ class Quote
     private string $quoteId;
 
     /**
-     * @var UuidInterface
-     *
      * @ORM\Column(name="uuid", type="uuid", length=36)
      * @Serialize\Groups({"quote_api", "client_api"})
      */
-    private $uuid;
+    private ?UuidInterface $uuid = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="status", type="string", length=25)
      * @Serialize\Groups({"quote_api", "client_api"})
      */
-    private $status;
+    private ?string $status = null;
 
     /**
-     * @var Client|null
-     *
      * @ORM\ManyToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Client", inversedBy="quotes")
      * @Assert\NotBlank
      * @Serialize\Groups({"quote_api", "create_quote_api"})
      * @ApiProperty(iri="https://schema.org/Organization")
      */
-    private $client;
+    private ?Client $client = null;
 
     /**
-     * @var MoneyEntity
-     *
      * @ORM\Embedded(class="SolidInvoice\MoneyBundle\Entity\Money")
      * @Serialize\Groups({"quote_api", "client_api"})
      */
-    private $total;
+    private MoneyEntity $total;
 
     /**
-     * @var MoneyEntity
-     *
      * @ORM\Embedded(class="SolidInvoice\MoneyBundle\Entity\Money")
      * @Serialize\Groups({"quote_api", "client_api"})
      */
-    private $baseTotal;
+    private MoneyEntity $baseTotal;
 
     /**
-     * @var MoneyEntity
-     *
      * @ORM\Embedded(class="SolidInvoice\MoneyBundle\Entity\Money")
      * @Serialize\Groups({"quote_api", "client_api"})
      */
-    private $tax;
+    private MoneyEntity $tax;
 
     /**
-     * @var Discount
-     *
      * @ORM\Embedded(class="SolidInvoice\CoreBundle\Entity\Discount")
      * @Serialize\Groups({"quote_api", "client_api", "create_quote_api"})
      */
-    private $discount;
+    private Discount $discount;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="terms", type="text", nullable=true)
      * @Serialize\Groups({"quote_api", "client_api", "create_quote_api"})
      */
-    private $terms;
+    private ?string $terms = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="notes", type="text", nullable=true)
      * @Serialize\Groups({"quote_api", "client_api", "create_quote_api"})
      */
-    private $notes;
+    private ?string $notes = null;
 
     /**
-     * @var DateTimeInterface|null
-     *
      * @ORM\Column(name="due", type="date", nullable=true)
      * @Assert\DateTime
      * @Serialize\Groups({"quote_api", "client_api", "create_quote_api"})
      */
-    private $due;
+    private ?DateTimeInterface $due = null;
 
     /**
      * @var Collection<int, Item>
@@ -159,7 +137,7 @@ class Quote
      * @Assert\Count(min=1, minMessage="You need to add at least 1 item to the Quote")
      * @Serialize\Groups({"quote_api", "client_api", "create_quote_api"})
      */
-    private $items;
+    private Collection $items;
 
     /**
      * @var Collection<int, QuoteContact>
@@ -169,14 +147,12 @@ class Quote
      * @Serialize\Groups({"quote_api", "client_api", "create_quote_api"})
      * @ApiProperty(writableLink=true)
      */
-    private $users;
+    private Collection $users;
 
     /**
-     * @var Invoice|null
-     *
      * @ORM\OneToOne(targetEntity="SolidInvoice\InvoiceBundle\Entity\Invoice", mappedBy="quote")
      */
-    private $invoice;
+    private ?Invoice $invoice = null;
 
     public function __construct()
     {
@@ -215,9 +191,7 @@ class Quote
      */
     public function getUsers(): Collection
     {
-        return $this->users->map(static function (QuoteContact $contact): Contact {
-            return $contact->getContact();
-        });
+        return $this->users->map(static fn (QuoteContact $contact): Contact => $contact->getContact());
     }
 
     /**
@@ -266,11 +240,6 @@ class Quote
         return $this;
     }
 
-    /**
-     * Get Client.
-     *
-     * @return Client
-     */
     public function getClient(): ?Client
     {
         return $this->client;
@@ -319,9 +288,6 @@ class Quote
         return $this;
     }
 
-    /**
-     * @return DateTimeInterface
-     */
     public function getDue(): ?DateTimeInterface
     {
         return $this->due;
@@ -359,9 +325,6 @@ class Quote
         return $this->items;
     }
 
-    /**
-     * @return string
-     */
     public function getTerms(): ?string
     {
         return $this->terms;
@@ -374,9 +337,6 @@ class Quote
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getNotes(): ?string
     {
         return $this->notes;
@@ -402,8 +362,6 @@ class Quote
     }
 
     /**
-     * PrePersist listener to link the items to the quote.
-     *
      * @ORM\PrePersist
      */
     public function updateItems(): void

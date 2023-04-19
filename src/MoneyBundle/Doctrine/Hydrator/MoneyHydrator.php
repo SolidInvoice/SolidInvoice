@@ -21,10 +21,7 @@ use PDO;
 
 class MoneyHydrator extends AbstractHydrator
 {
-    /**
-     * @var Currency
-     */
-    private static $currency;
+    private static ?Currency $currency = null;
 
     public static function setCurrency(Currency $currency): void
     {

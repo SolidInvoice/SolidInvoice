@@ -27,7 +27,7 @@ final class MailTransportType extends AbstractType
     /**
      * @var iterable|ConfiguratorInterface[]|Traversable
      */
-    private $transports;
+    private iterable $transports;
 
     public function __construct(iterable $transports)
     {
@@ -38,9 +38,7 @@ final class MailTransportType extends AbstractType
     {
         $transports = \is_array($this->transports) ? $this->transports : \iterator_to_array($this->transports);
 
-        $choices = \array_map(static function (ConfiguratorInterface $configurator) {
-            return $configurator->getName();
-        }, $transports);
+        $choices = \array_map(static fn (ConfiguratorInterface $configurator) => $configurator->getName(), $transports);
 
         $builder->add(
             'provider',
@@ -94,9 +92,7 @@ final class MailTransportType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'validation_groups' => static function (FormInterface $form) {
-                return ['Default', \strtolower(\str_replace(' ', '_', $form->get('provider')->getData() ?? ''))];
-            },
+            'validation_groups' => static fn (FormInterface $form) => ['Default', \strtolower(\str_replace(' ', '_', $form->get('provider')->getData() ?? ''))],
         ]);
     }
 }

@@ -21,16 +21,12 @@ use Knp\Menu\Matcher\Voter\RouteVoter;
 use Knp\Menu\Renderer\ListRenderer;
 use SolidInvoice\MenuBundle\Builder\MenuBuilder;
 use SplPriorityQueue;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-class Renderer extends ListRenderer implements RendererInterface, ContainerAwareInterface
+class Renderer extends ListRenderer implements RendererInterface
 {
-    use ContainerAwareTrait;
-
     private FactoryInterface $factory;
 
     private Environment $twig;
@@ -89,7 +85,6 @@ class Renderer extends ListRenderer implements RendererInterface, ContainerAware
         }
 
         foreach ($storage as $builder) {
-            $builder->setContainer($this->container);
             $builder->invoke($menu, $options);
         }
 

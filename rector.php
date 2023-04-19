@@ -21,19 +21,18 @@ use Rector\Symfony\Set\SymfonySetList;
 
 return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->paths([__DIR__ . '/src']);
-    $rectorConfig->autoloadPaths([__DIR__ . '/vendor/bin/.phpunit/phpunit/vendor/autoload.php']);
 
     $rectorConfig->importNames();
     $rectorConfig->importShortClasses();
-    $rectorConfig->symfonyContainerXml(__DIR__ . '/var/cache/dev/srcSolidInvoice_KernelDevDebugContainer.xml');
-    $rectorConfig->phpVersion(PhpVersion::PHP_73);
+    $rectorConfig->symfonyContainerXml(__DIR__ . '/var/cache/dev/SolidInvoice_KernelDevDebugContainer.xml');
+    $rectorConfig->phpVersion(PhpVersion::PHP_74);
 
     $rectorConfig->sets([
         // General
         SetList::CODE_QUALITY,
 
         // PHP
-        LevelSetList::UP_TO_PHP_73,
+        LevelSetList::UP_TO_PHP_74,
 
         // PHPUnit
         PHPUnitSetList::PHPUNIT_70,
@@ -48,9 +47,13 @@ return static function (RectorConfig $rectorConfig): void {
         DoctrineSetList::DOCTRINE_25,
         DoctrineSetList::DOCTRINE_COMMON_20,
         DoctrineSetList::DOCTRINE_DBAL_30,
+        DoctrineSetList::DOCTRINE_DBAL_40,
         DoctrineSetList::DOCTRINE_ORM_29,
+        DoctrineSetList::DOCTRINE_ORM_213,
         DoctrineSetList::DOCTRINE_BEHAVIORS_20,
         DoctrineSetList::DOCTRINE_CODE_QUALITY,
+
+        // DoctrineSetList::DOCTRINE_REPOSITORY_AS_SERVICE,
 
         // Symfony
         SymfonySetList::SYMFONY_40,
@@ -67,6 +70,5 @@ return static function (RectorConfig $rectorConfig): void {
         SymfonySetList::SYMFONY_52_VALIDATOR_ATTRIBUTES,
         SymfonySetList::SYMFONY_CODE_QUALITY,
         SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,
-        SymfonySetList::SYMFONY_STRICT,
     ]);
 };

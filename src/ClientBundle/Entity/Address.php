@@ -18,6 +18,7 @@ use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
 use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
+use Stringable;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Serializer\Annotation as Serialize;
 
@@ -25,100 +26,76 @@ use Symfony\Component\Serializer\Annotation as Serialize;
  * @ORM\Table(name="addresses")
  * @ORM\Entity()
  */
-class Address
+class Address implements Stringable
 {
     use TimeStampable;
     use CompanyAware;
 
     /**
-     * @var UuidInterface
-     *
      * @ORM\Column(name="id", type="uuid_binary_ordered_time")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
      * @Serialize\Groups({"client_api"})
      */
-    private $id;
+    private ?UuidInterface $id = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="street1", type="string", nullable=true)
      * @Serialize\Groups({"client_api"})
      */
-    private $street1;
+    private ?string $street1 = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="street2", type="string", nullable=true)
      * @Serialize\Groups({"client_api"})
      */
-    private $street2;
+    private ?string $street2 = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="city", type="string", nullable=true)
      * @Serialize\Groups({"client_api"})
      */
-    private $city;
+    private ?string $city = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="state", type="string", nullable=true)
      * @Serialize\Groups({"client_api"})
      */
-    private $state;
+    private ?string $state = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="zip", type="string", nullable=true)
      * @Serialize\Groups({"client_api"})
      */
-    private $zip;
+    private ?string $zip = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="country", type="string", nullable=true)
      * @Serialize\Groups({"client_api"})
      */
-    private $country;
+    private ?string $country = null;
 
     /**
-     * @var string
-     *
      * @Serialize\Groups({"client_api"})
      */
-    private $countryName;
+    private ?string $countryName = null;
 
     /**
-     * @var Client|null
-     *
      * @ORM\ManyToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Client", inversedBy="addresses")
      */
-    private $client;
+    private ?Client $client = null;
 
     public function getId(): ?UuidInterface
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getStreet1(): ?string
     {
         return $this->street1;
     }
 
-    /**
-     * @param string $street1
-     */
     public function setStreet1(?string $street1): self
     {
         $this->street1 = $street1;
@@ -126,17 +103,11 @@ class Address
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getStreet2(): ?string
     {
         return $this->street2;
     }
 
-    /**
-     * @param string $street2
-     */
     public function setStreet2(?string $street2): self
     {
         $this->street2 = $street2;
@@ -144,17 +115,11 @@ class Address
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getCity(): ?string
     {
         return $this->city;
     }
 
-    /**
-     * @param string $city
-     */
     public function setCity(?string $city): self
     {
         $this->city = $city;
@@ -162,17 +127,11 @@ class Address
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getState(): ?string
     {
         return $this->state;
     }
 
-    /**
-     * @param string $state
-     */
     public function setState(?string $state): self
     {
         $this->state = $state;
@@ -180,17 +139,11 @@ class Address
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getZip(): ?string
     {
         return $this->zip;
     }
 
-    /**
-     * @param string $zip
-     */
     public function setZip(?string $zip): self
     {
         $this->zip = $zip;
@@ -198,25 +151,20 @@ class Address
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getCountry(): ?string
     {
         return $this->country;
     }
 
-    /**
-     * @return string
-     */
     public function getCountryName(): ?string
     {
-        return $this->getCountry() ? Countries::getName($this->getCountry()) : null;
+        if (null === $this->countryName) {
+            $this->countryName = $this->getCountry() ? Countries::getName($this->getCountry()) : null;
+        }
+
+        return $this->countryName;
     }
 
-    /**
-     * @param string $country
-     */
     public function setCountry(?string $country): self
     {
         $this->country = $country;
@@ -224,9 +172,6 @@ class Address
         return $this;
     }
 
-    /**
-     * @return Client
-     */
     public function getClient(): ?Client
     {
         return $this->client;
@@ -239,11 +184,27 @@ class Address
         return $this;
     }
 
+    /**
+     * @param array{street1: ?string, street2: ?string, city: ?string, state: ?string, zip: ?string, country: ?string} $data
+     */
+    public static function fromArray(array $data): self
+    {
+        $address = new self();
+        $address->setStreet1($data['street1'] ?? null);
+        $address->setStreet2($data['street2'] ?? null);
+        $address->setCity($data['city'] ?? null);
+        $address->setState($data['state'] ?? null);
+        $address->setZip($data['zip'] ?? null);
+        $address->setCountry($data['country'] ?? null);
+
+        return $address;
+    }
+
     public function __toString(): string
     {
-        static $countries;
+        static $countries = [];
 
-        if (empty($countries)) {
+        if ([] === $countries) {
             $countries = Countries::getNames();
         }
 
@@ -258,19 +219,6 @@ class Address
             ]
         );
 
-        return trim(implode("\n", $info), ', \t\n\r\0\x0B');
-    }
-
-    public static function fromArray(array $data): self
-    {
-        $address = new self();
-        $address->setStreet1($data['street1'] ?? null);
-        $address->setStreet2($data['street2'] ?? null);
-        $address->setCity($data['city'] ?? null);
-        $address->setState($data['state'] ?? null);
-        $address->setZip($data['zip'] ?? null);
-        $address->setCountry($data['country'] ?? null);
-
-        return $address;
+        return trim(implode("\n", $info), ", \t\n\r\0\x0B");
     }
 }

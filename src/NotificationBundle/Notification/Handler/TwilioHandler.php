@@ -17,19 +17,14 @@ use Namshi\Notificator\Notification\Handler\HandlerInterface;
 use Namshi\Notificator\NotificationInterface;
 use SolidInvoice\NotificationBundle\Notification\TwilioNotification;
 use SolidInvoice\SettingsBundle\SystemConfig;
+use Twilio\Exceptions\TwilioException;
 use Twilio\Rest\Client;
 
 class TwilioHandler implements HandlerInterface
 {
-    /**
-     * @var Client
-     */
-    private $twilio;
+    private Client $twilio;
 
-    /**
-     * @var SystemConfig
-     */
-    private $config;
+    private SystemConfig $config;
 
     public function __construct(Client $twilio, SystemConfig $config)
     {
@@ -37,19 +32,21 @@ class TwilioHandler implements HandlerInterface
         $this->config = $config;
     }
 
-    public function shouldHandle(NotificationInterface $notification)
+    public function shouldHandle(NotificationInterface $notification): bool
     {
         return $notification instanceof TwilioNotification;
     }
 
+    /**
+     * @throws TwilioException
+     */
     public function handle(NotificationInterface $notification): void
     {
         $number = $this->config->get('sms/twilio/number');
 
         if (! empty($number)) {
             /** @var TwilioNotification $notification */
-            $this->twilio
-                ->messages
+            $this->twilio->messages
                 ->create(
                     (string) $notification->getRecipientNumber(),
                     [

@@ -18,7 +18,6 @@ use Mockery as M;
 use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\MenuBundle\Core\AuthenticatedMenu;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
@@ -27,30 +26,18 @@ class AuthenticatedMenuTest extends TestCase
     use MockeryPHPUnitIntegration;
 
     /**
-     * @var MockInterface&ContainerInterface
-     */
-    private $container;
-
-    /**
      * @var MockInterface&AuthorizationCheckerInterface
      */
     private $security;
 
     protected function setUp(): void
     {
-        $this->container = M::mock(ContainerInterface::class);
         $this->security = M::mock(AuthorizationCheckerInterface::class);
     }
 
     public function testValidate(): void
     {
-        $menu = new AuthenticatedMenu();
-        $menu->setContainer($this->container);
-
-        $this->container->shouldReceive('get')
-            ->once()
-            ->withArgs(['security.authorization_checker'])
-            ->andReturn($this->security);
+        $menu = new AuthenticatedMenu($this->security);
 
         $this->security->shouldReceive('isGranted')
             ->once()
@@ -64,13 +51,7 @@ class AuthenticatedMenuTest extends TestCase
 
     public function testValidateFail(): void
     {
-        $menu = new AuthenticatedMenu();
-        $menu->setContainer($this->container);
-
-        $this->container->shouldReceive('get')
-            ->once()
-            ->withArgs(['security.authorization_checker'])
-            ->andReturn($this->security);
+        $menu = new AuthenticatedMenu($this->security);
 
         $this->security->shouldReceive('isGranted')
             ->once()
@@ -84,16 +65,16 @@ class AuthenticatedMenuTest extends TestCase
 
     public function testValidateFailException(): void
     {
-        $menu = new AuthenticatedMenu();
-        $menu->setContainer($this->container);
+        $menu = new AuthenticatedMenu($this->security);
 
-        $this->container->shouldReceive('get')
+        $this->security
+            ->shouldReceive('isGranted')
             ->once()
-            ->withArgs(['security.authorization_checker'])
+            ->withArgs(['IS_AUTHENTICATED_REMEMBERED'])
             ->andThrow(new AuthenticationCredentialsNotFoundException());
 
         self::assertFalse($menu->validate());
 
-        $this->security->shouldNotHaveReceived('isGranted');
+        $this->security->shouldHaveReceived('isGranted')->once()->withArgs(['IS_AUTHENTICATED_REMEMBERED']);
     }
 }

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Form\Handler;
 
+use Generator;
+use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
 use SolidInvoice\QuoteBundle\Entity\Quote;
@@ -35,15 +37,9 @@ abstract class AbstractQuoteHandler implements FormHandlerInterface, FormHandler
 {
     use SaveableTrait;
 
-    /**
-     * @var StateMachine
-     */
-    private $stateMachine;
+    private StateMachine $stateMachine;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
     public function __construct(RouterInterface $router, StateMachine $stateMachine)
     {
@@ -61,7 +57,7 @@ abstract class AbstractQuoteHandler implements FormHandlerInterface, FormHandler
         /** @var Quote $quote */
         $action = $form->getRequest()->request->get('save');
 
-        if (! $quote->getId()) {
+        if (! $quote->getId() instanceof UuidInterface) {
             $this->stateMachine->apply($quote, Graph::TRANSITION_NEW);
         }
 
@@ -74,7 +70,7 @@ abstract class AbstractQuoteHandler implements FormHandlerInterface, FormHandler
         $route = $this->router->generate('_quotes_view', ['id' => $quote->getId()]);
 
         return new class($route) extends RedirectResponse implements FlashResponse {
-            public function getFlash(): \Generator
+            public function getFlash(): Generator
             {
                 yield self::FLASH_SUCCESS => 'quote.action.create.success';
             }

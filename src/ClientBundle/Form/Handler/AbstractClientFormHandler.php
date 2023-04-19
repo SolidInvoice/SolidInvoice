@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Form\Handler;
 
+use Generator;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Form\Type\ClientType;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
@@ -56,7 +57,7 @@ abstract class AbstractClientFormHandler implements FormHandlerInterface, FormHa
         $route = $this->router->generate('_clients_view', ['id' => $contact->getId()]);
 
         return new class($route) extends RedirectResponse implements FlashResponse {
-            public function getFlash(): \Generator
+            public function getFlash(): Generator
             {
                 yield self::FLASH_SUCCESS => 'client.create.success';
             }

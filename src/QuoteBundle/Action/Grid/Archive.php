@@ -26,15 +26,9 @@ final class Archive implements AjaxResponse
 {
     use JsonTrait;
 
-    /**
-     * @var QuoteRepository
-     */
-    private $repository;
+    private QuoteRepository $repository;
 
-    /**
-     * @var StateMachine
-     */
-    private $stateMachine;
+    private StateMachine $stateMachine;
 
     public function __construct(QuoteRepository $repository, StateMachine $stateMachine)
     {

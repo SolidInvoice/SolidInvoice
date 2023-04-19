@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Form\Handler;
 
+use Generator;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\UserBundle\Entity\User;
@@ -81,7 +82,7 @@ class PasswordChangeHandler implements FormHandlerResponseInterface, FormHandler
         $route = $this->router->generate($route);
 
         return new class($route) extends RedirectResponse implements FlashResponse {
-            public function getFlash(): \Generator
+            public function getFlash(): Generator
             {
                 yield self::FLASH_SUCCESS => 'profile.password_change.success';
             }

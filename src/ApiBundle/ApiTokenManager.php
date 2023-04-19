@@ -24,10 +24,7 @@ class ApiTokenManager
 {
     public const TOKEN_LENGTH = 32;
 
-    /**
-     * @var ManagerRegistry
-     */
-    private $registry;
+    private ManagerRegistry $registry;
 
     public function __construct(ManagerRegistry $registry)
     {

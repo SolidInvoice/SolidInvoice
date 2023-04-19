@@ -107,7 +107,7 @@ final class Version20200 extends AbstractMigration implements ContainerAwareInte
 
         $this->connection
             ->insert(
-            'app_config',
+                'app_config',
                 [
                     'setting_key' => 'invoice/watermark',
                     'setting_value' => true,
@@ -118,7 +118,7 @@ final class Version20200 extends AbstractMigration implements ContainerAwareInte
 
         $this->connection
             ->insert(
-            'app_config',
+                'app_config',
                 [
                     'setting_key' => 'quote/watermark',
                     'setting_value' => true,
@@ -183,15 +183,15 @@ final class Version20200 extends AbstractMigration implements ContainerAwareInte
         $this->addCompanyToTable($schema, 'api_tokens');
         $this->addCompanyToTable($schema, 'api_token_history');
 
-        foreach(
+        foreach (
             $this->platform
-            ->getAlterSchemaSQL(
-                $this
-                    ->connection
-                    ->createSchemaManager()
-                    ->createComparator()
-                    ->compareSchemas($originalSchema, $this->toSchema)
-            )  as $sql
+                ->getAlterSchemaSQL(
+                    $this
+                        ->connection
+                        ->createSchemaManager()
+                        ->createComparator()
+                        ->compareSchemas($originalSchema, $this->toSchema)
+                )  as $sql
         ) {
             $this->addSql($sql);
         }
@@ -235,7 +235,6 @@ final class Version20200 extends AbstractMigration implements ContainerAwareInte
             ->setParameter('settingKey', 'system/company/company_name')
             ->fetchOne();
 
-
         $factory = clone Uuid::getFactory();
         assert($factory instanceof UuidFactory);
 
@@ -272,7 +271,7 @@ final class Version20200 extends AbstractMigration implements ContainerAwareInte
             $schema->getTable($tableName)->addForeignKeyConstraint($schema->getTable('companies'), ['company_id'], ['id']);
         }
 
-        foreach(
+        foreach (
             $this->platform
                 ->getAlterSchemaSQL(
                     $this
@@ -297,7 +296,6 @@ final class Version20200 extends AbstractMigration implements ContainerAwareInte
             $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS=0');
         }
     }
-
 
     public function down(Schema $schema): void
     {

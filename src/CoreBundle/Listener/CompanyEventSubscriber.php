@@ -23,10 +23,14 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\User\UserInterface;
 use function assert;
 use function count;
 use function in_array;
 
+/**
+ * @see \SolidInvoice\CoreBundle\Tests\Listener\CompanyEventSubscriberTest
+ */
 final class CompanyEventSubscriber implements EventSubscriberInterface
 {
     private CompanySelector $companySelector;
@@ -64,7 +68,7 @@ final class CompanyEventSubscriber implements EventSubscriberInterface
 
         if ($session->has('company')) {
             $this->companySelector->switchCompany($session->get('company'));
-        } elseif (! $this->isOnCompanySelectionRoute($request) && null !== $user = $this->security->getUser()) {
+        } elseif (! $this->isOnCompanySelectionRoute($request) && ($user = $this->security->getUser()) instanceof UserInterface) {
             assert($user instanceof User);
 
             if (count($user->getCompanies()) === 1) {

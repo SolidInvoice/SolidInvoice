@@ -21,15 +21,9 @@ use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 
 final class View
 {
-    /**
-     * @var PaymentRepository
-     */
-    private $paymentRepository;
+    private PaymentRepository $paymentRepository;
 
-    /**
-     * @var InvoiceRepository
-     */
-    private $invoiceRepository;
+    private InvoiceRepository $invoiceRepository;
 
     public function __construct(PaymentRepository $paymentRepository, InvoiceRepository $invoiceRepository)
     {

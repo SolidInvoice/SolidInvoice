@@ -40,9 +40,7 @@ class MoneyFormatterExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('currencyFormatter', function () {
-                return $this->formatter;
-            }),
+            new TwigFunction('currencyFormatter', fn () => $this->formatter),
         ];
     }
 
@@ -51,7 +49,7 @@ class MoneyFormatterExtension extends AbstractExtension
         return [
             new TwigFilter('formatCurrency', function ($money, ?Currency $currency = null): string {
                 if (null === $money) {
-                    if (null !== $currency) {
+                    if ($currency instanceof Currency) {
                         return $this->formatter->format(new Money(0, $currency));
                     }
 

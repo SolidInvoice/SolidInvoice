@@ -50,8 +50,6 @@ class ArrayUtil
             $return[] = $accessor->getValue($item, $column);
         }
 
-        return array_filter($return, function ($item): bool {
-            return null !== $item;
-        });
+        return array_filter($return, fn ($item): bool => null !== $item);
     }
 }

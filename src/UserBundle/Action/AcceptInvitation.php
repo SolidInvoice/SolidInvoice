@@ -16,6 +16,7 @@ namespace SolidInvoice\UserBundle\Action;
 use Generator;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\UserBundle\Entity\User;
+use SolidInvoice\UserBundle\Entity\UserInvitation;
 use SolidInvoice\UserBundle\Repository\UserInvitationRepository;
 use SolidInvoice\UserBundle\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -44,7 +45,7 @@ final class AcceptInvitation
     {
         $invitation = $this->repository->find($id);
 
-        if (null === $invitation) {
+        if (! $invitation instanceof UserInvitation) {
             throw new NotFoundHttpException('Invitation is not valid');
         }
 

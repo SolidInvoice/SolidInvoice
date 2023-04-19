@@ -23,10 +23,7 @@ final class Validate implements AjaxResponse
 {
     use JsonTrait;
 
-    /**
-     * @var VatCalculator
-     */
-    private $calculator;
+    private VatCalculator $calculator;
 
     public function __construct(VatCalculator $calculator)
     {

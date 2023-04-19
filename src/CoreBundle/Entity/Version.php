@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Stringable;
 
 /**
  * Class Version.
@@ -21,29 +22,19 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="SolidInvoice\CoreBundle\Repository\VersionRepository")
  * @ORM\Table(name="version")
  */
-class Version
+class Version implements Stringable
 {
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="version", type="string", length=125)
      * @ORM\Id
      */
-    private $version;
+    private ?string $version = null;
 
-    /**
-     * @param string $version
-     */
     public function __construct(string $version = null)
     {
         $this->setVersion($version);
     }
 
-    /**
-     * Set version.
-     *
-     * @param string $version
-     */
     public function setVersion(?string $version): self
     {
         $this->version = $version;
@@ -51,19 +42,11 @@ class Version
         return $this;
     }
 
-    /**
-     * Get version.
-     *
-     * @return string
-     */
     public function getVersion(): ?string
     {
         return $this->version;
     }
 
-    /**
-     * Return the version as a string.
-     */
     public function __toString(): string
     {
         return $this->version;

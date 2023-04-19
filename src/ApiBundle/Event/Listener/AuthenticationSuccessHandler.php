@@ -22,10 +22,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerI
 
 class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterface
 {
-    /**
-     * @var ApiTokenManager
-     */
-    private $tokenManager;
+    private ApiTokenManager $tokenManager;
 
     public function __construct(ApiTokenManager $tokenManager)
     {

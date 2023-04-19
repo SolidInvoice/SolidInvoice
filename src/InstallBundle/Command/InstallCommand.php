@@ -42,6 +42,8 @@ class InstallCommand extends Command
 {
     protected static $defaultName = 'app:install';
 
+    protected static $defaultDescription = 'Installs the application';
+
     private ConfigWriter $configWriter;
 
     private string $projectDir;
@@ -79,8 +81,7 @@ class InstallCommand extends Command
 
     protected function configure(): void
     {
-        $this->setDescription('Installs the application')
-            ->addOption('database-driver', null, InputOption::VALUE_REQUIRED, 'The database driver to use', 'pdo_mysql')
+        $this->addOption('database-driver', null, InputOption::VALUE_REQUIRED, 'The database driver to use', 'pdo_mysql')
             ->addOption('database-host', null, InputOption::VALUE_REQUIRED, 'The database host', '127.0.0.1')
             ->addOption('database-port', null, InputOption::VALUE_REQUIRED, 'The database port', 3306)
             ->addOption('database-name', null, InputOption::VALUE_REQUIRED, 'The name of the database to use (will be created if it doesn\'t exist)', 'solidinvoice')
@@ -113,7 +114,7 @@ class InstallCommand extends Command
         $output->writeln('');
         $output->writeln(sprintf('<comment>0 0 * * * php %s/console cron:run -e prod -n</comment>', $this->projectDir));
 
-        return 0;
+        return (int) Command::SUCCESS;
     }
 
     /**
@@ -203,7 +204,7 @@ class InstallCommand extends Command
         /** @var UserRepository $userRepository */
         $userRepository = $this->registry->getRepository(User::class);
         $username = $input->getOption('admin-username');
-        if (null !== $userRepository->findOneBy(['username' => $username])) {
+        if ($userRepository->findOneBy(['username' => $username]) instanceof User) {
             $output->writeln(sprintf('<comment>User %s already exists, skipping creation</comment>', $username));
 
             return;

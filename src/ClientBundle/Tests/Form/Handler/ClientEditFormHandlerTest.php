@@ -28,7 +28,7 @@ use function iterator_to_array;
 
 class ClientEditFormHandlerTest extends FormHandlerTestCase
 {
-    private $clientName;
+    private string $clientName;
 
     protected function setUp(): void
     {

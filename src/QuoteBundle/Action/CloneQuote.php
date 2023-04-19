@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Action;
 
+use Generator;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\QuoteBundle\Cloner\QuoteCloner;
 use SolidInvoice\QuoteBundle\Entity\Quote;
@@ -22,15 +23,9 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class CloneQuote
 {
-    /**
-     * @var QuoteCloner
-     */
-    private $cloner;
+    private QuoteCloner $cloner;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
     public function __construct(QuoteCloner $quoteClonercloner, RouterInterface $router)
     {
@@ -45,7 +40,7 @@ final class CloneQuote
         $route = $this->router->generate('_quotes_view', ['id' => $newQuote->getId()]);
 
         return new class($route) extends RedirectResponse implements FlashResponse {
-            public function getFlash(): \Generator
+            public function getFlash(): Generator
             {
                 yield self::FLASH_SUCCESS => 'quote.clone.success';
             }

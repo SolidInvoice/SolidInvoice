@@ -503,7 +503,7 @@ final class Version20000 extends AbstractMigration
         parent::postUp($schema);
 
         try {
-            $this->connection->transactional(function (Connection $connection) {
+            $this->connection->transactional(function (Connection $connection): void {
                 $date = date('Y-m-d H:i:s');
 
                 $configs = [

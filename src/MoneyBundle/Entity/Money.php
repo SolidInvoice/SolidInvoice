@@ -23,9 +23,9 @@ use Money\Money as BaseMoney;
 class Money
 {
     /**
-     * @ORM\Column(name="amount", type="integer", nullable=true)
+     * @ORM\Column(name="amount", type="string", nullable=true)
      */
-    private ?string $value = '0';
+    private ?string $value = null;
 
     /**
      * @ORM\Column(name="currency", type="string", length=3, nullable=true)
@@ -35,7 +35,7 @@ class Money
     // @TODO: Ensure that a money object is always passed in
     public function __construct(?BaseMoney $money = null)
     {
-        if (null !== $money) {
+        if ($money instanceof BaseMoney) {
             $this->value = $money->getAmount();
             $this->currency = $money->getCurrency()->getCode();
         }
@@ -43,6 +43,6 @@ class Money
 
     public function getMoney(): BaseMoney
     {
-        return new BaseMoney($this->value, new Currency($this->currency ?: 'USD'));
+        return new BaseMoney((int) $this->value, new Currency($this->currency ?: 'USD'));
     }
 }

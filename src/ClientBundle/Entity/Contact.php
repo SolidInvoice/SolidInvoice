@@ -30,55 +30,57 @@ use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceContact;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Entity\QuoteContact;
+use Stringable;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
 use function strtolower;
 
 /**
- * @ApiResource(attributes={"normalization_context"={"groups"={"contact_api"}}, "denormalization_context"={"groups"={"contact_api"}}}, collectionOperations={"post"={"method"="POST"}}, iri="https://schema.org/Person")
+ * @ApiResource(
+ *     attributes={
+ *         "normalization_context"={"groups"={"contact_api"}
+ *     },
+ *     "denormalization_context"={
+ *         "groups"={"contact_api"}}
+ *     },
+ *     collectionOperations={"post"={"method"="POST"}},
+ *     iri="https://schema.org/Person"
+ * )
  * @ORM\Table(name="contacts", indexes={@ORM\Index(columns={"email"})})
  * @ORM\Entity(repositoryClass="SolidInvoice\ClientBundle\Repository\ContactRepository")
  */
-class Contact implements Serializable
+class Contact implements Serializable, Stringable
 {
     use TimeStampable;
     use CompanyAware;
 
     /**
-     * @var UuidInterface
-     *
      * @ORM\Column(name="id", type="uuid_binary_ordered_time")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
      * @Serialize\Groups({"client_api", "contact_api"})
      */
-    private $id;
+    private ?UuidInterface $id = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="firstName", type="string", length=125)
      * @Assert\NotBlank()
      * @Assert\Length(max=125)
      * @Serialize\Groups({"client_api", "contact_api"})
      * @ApiProperty(iri="https://schema.org/givenName")
      */
-    private $firstName;
+    private ?string $firstName = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="lastName", type="string", length=125, nullable=true)
      * @Assert\Length(max=125)
      * @Serialize\Groups({"client_api", "contact_api"})
      * @ApiProperty(iri="https://schema.org/familyName")
      */
-    private $lastName;
+    private ?string $lastName = null;
 
     /**
-     * @var Client|null
-     *
      * @ORM\ManyToOne(targetEntity="Client", inversedBy="contacts")
      * @ORM\JoinColumn(name="client_id")
      * @Serialize\Groups({"contact_api"})
@@ -86,18 +88,16 @@ class Contact implements Serializable
      * @Assert\Valid()
      * @Assert\NotBlank()
      */
-    private $client;
+    private ?Client $client = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="email", type="string", length=255)
      * @Assert\NotBlank()
      * @Assert\Email(mode="strict")
      * @Serialize\Groups({"client_api", "contact_api"})
      * @ApiProperty(iri="https://schema.org/email")
      */
-    private $email;
+    private ?string $email = null;
 
     /**
      * @var Collection<int, AdditionalContactDetail>
@@ -106,7 +106,7 @@ class Contact implements Serializable
      * @Assert\Valid()
      * @Serialize\Groups({"client_api", "contact_api"})
      */
-    private $additionalContactDetails;
+    private Collection $additionalContactDetails;
 
     /**
      * @var Collection<int, InvoiceContact>
@@ -120,14 +120,14 @@ class Contact implements Serializable
      *
      * @ORM\OneToMany(targetEntity=RecurringInvoiceContact::class, cascade={"persist", "remove"}, mappedBy="contact")
      */
-    private $recurringInvoices;
+    private Collection $recurringInvoices;
 
     /**
      * @var Collection<int, QuoteContact>
      *
      * @ORM\OneToMany(targetEntity=QuoteContact::class, cascade={"persist", "remove"}, mappedBy="contact")
      */
-    private $quotes;
+    private Collection $quotes;
 
     public function __construct()
     {
@@ -142,11 +142,6 @@ class Contact implements Serializable
         return $this->id;
     }
 
-    /**
-     * Get firstName.
-     *
-     * @return string
-     */
     public function getFirstName(): ?string
     {
         return $this->firstName;
@@ -159,11 +154,6 @@ class Contact implements Serializable
         return $this;
     }
 
-    /**
-     * Get lastname.
-     *
-     * @return string
-     */
     public function getLastName(): ?string
     {
         return $this->lastName;
@@ -176,11 +166,6 @@ class Contact implements Serializable
         return $this;
     }
 
-    /**
-     * Get client.
-     *
-     * @return Client
-     */
     public function getClient(): ?Client
     {
         return $this->client;
@@ -193,9 +178,6 @@ class Contact implements Serializable
         return $this;
     }
 
-    /**
-     * Add additional detail.
-     */
     public function addAdditionalContactDetail(AdditionalContactDetail $detail): self
     {
         $this->additionalContactDetails->add($detail);
@@ -204,9 +186,6 @@ class Contact implements Serializable
         return $this;
     }
 
-    /**
-     * Removes additional detail from the current contact.
-     */
     public function removeAdditionalContactDetail(AdditionalContactDetail $detail): self
     {
         $this->additionalContactDetails->removeElement($detail);
@@ -215,8 +194,6 @@ class Contact implements Serializable
     }
 
     /**
-     * Get additional details.
-     *
      * @return Collection<int, AdditionalContactDetail>
      */
     public function getAdditionalContactDetails(): Collection
@@ -242,7 +219,7 @@ class Contact implements Serializable
     }
 
     /**
-     * @return list<string|int|DateTimeInterface|null>
+     * @return list<string|DateTimeInterface|UuidInterface|null>
      */
     public function __serialize(): array
     {
@@ -258,7 +235,7 @@ class Contact implements Serializable
     }
 
     /**
-     * @param array<string, string|int|DateTimeInterface|UuidInterface|null> $data
+     * @param array<string, string|DateTimeInterface|UuidInterface|null> $data
      */
     public function __unserialize(array $data): void
     {
@@ -269,14 +246,6 @@ class Contact implements Serializable
         $this->updated = $data['updated'];
     }
 
-    public function __toString(): string
-    {
-        return $this->firstName . ' ' . $this->lastName;
-    }
-
-    /**
-     * @return string
-     */
     public function getEmail(): ?string
     {
         return $this->email;
@@ -302,7 +271,10 @@ class Contact implements Serializable
      */
     public function getRecurringInvoices(): Collection
     {
-        return $this->recurringInvoices->map(static fn (RecurringInvoiceContact $recurringInvoiceContact): RecurringInvoice => $recurringInvoiceContact->getRecurringInvoice());
+        return $this->recurringInvoices
+            ->map(
+                static fn (RecurringInvoiceContact $recurringInvoiceContact): RecurringInvoice => $recurringInvoiceContact->getRecurringInvoice()
+            );
     }
 
     /**
@@ -311,5 +283,10 @@ class Contact implements Serializable
     public function getQuotes(): Collection
     {
         return $this->quotes->map(static fn (QuoteContact $quoteContact): Quote => $quoteContact->getQuote());
+    }
+
+    public function __toString(): string
+    {
+        return $this->firstName . ' ' . $this->lastName;
     }
 }

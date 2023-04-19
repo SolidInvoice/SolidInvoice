@@ -28,15 +28,9 @@ use Twig\Error\SyntaxError;
  */
 class QuotePdfListener implements EventSubscriberInterface
 {
-    /**
-     * @var Generator
-     */
-    private $generator;
+    private Generator $generator;
 
-    /**
-     * @var Environment
-     */
-    private $twig;
+    private Environment $twig;
 
     public function __construct(Generator $generator, Environment $twig)
     {

@@ -35,6 +35,7 @@ services:
 
     Mpociot\VatCalculator\VatCalculator: ~
     SolidInvoice\CoreBundle\Billing\TotalCalculator: ~
+    SolidInvoice\CoreBundle\Company\DefaultData: ~
 
     SolidInvoice\CoreBundle\Pdf\Generator:
         bind:
