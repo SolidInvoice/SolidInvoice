@@ -24,3 +24,5 @@ services:
         tags: ['doctrine.fixture.orm']
 
     SolidInvoice\UserBundle\UserInvitation\UserInvitation: ~
+
+    SolidInvoice\UserBundle\EventSubscriber\UserLoginEventSubscriber: ~
