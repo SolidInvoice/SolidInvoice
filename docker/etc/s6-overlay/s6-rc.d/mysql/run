@@ -1,0 +1,6 @@
+#!/command/execlineb -P
+with-contenv
+
+# Give MySQL 5 seconds to start up
+s6-notifyoncheck -d -s 5000 \
+    /usr/sbin/mysqld
