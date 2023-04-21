@@ -1,0 +1,10 @@
+#!/command/with-contenv bash
+response=$(mysqladmin ping --host=localhost)
+
+if [[ $response == "mysqld is alive" || $response == "" ]]; then
+	exit 0
+else
+	echo "❌ There seems to be a failure in checking the database. Here's the response:"
+	echo $response
+	exit 1
+fi
