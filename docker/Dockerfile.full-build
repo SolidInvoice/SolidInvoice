@@ -30,3 +30,5 @@ RUN PID=$(mysqld &) && \
 COPY docker/etc/s6-overlay /etc/s6-overlay
 
 EXPOSE 3306
+
+VOLUME /var/lib/mysql
