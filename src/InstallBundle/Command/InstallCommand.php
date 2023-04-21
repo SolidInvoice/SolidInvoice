@@ -148,7 +148,6 @@ class InstallCommand extends Command
     private function install(InputInterface $input, OutputInterface $output): void
     {
         if ($this->initDb($input, $output)) {
-
             if (! $input->getOption('skip-user')) {
                 $this->createAdminUser($input, $output);
             }
