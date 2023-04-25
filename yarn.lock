@@ -1230,10 +1230,10 @@
   resolved "https://registry.yarnpkg.com/@sweetalert2/theme-bootstrap-4/-/theme-bootstrap-4-5.0.15.tgz#bede688c13784acf73e01352e00d3e7fb8d69e01"
   integrity sha512-WsGXk67Yz3Txe3lJA4FNqQCKbQQ6yJLpVUknyGcoESVvwHm+UBBlIMHAcKuLvF+WXK9Rbq8gXhpDIU8ISoiPlQ==
 
-"@symfony/webpack-encore@^4.2.0":
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/@symfony/webpack-encore/-/webpack-encore-4.2.0.tgz#1eec87e3fca9a410563511eb557f70461c10cce5"
-  integrity sha512-m0ZGm7vZpmc9pVKE7YBppS1tb9bK8r0qzOvRI2uCK7UfXtzfV3VgXr0VdTAlfmC72vvLKI+s9YJpiesOFbR6Aw==
+"@symfony/webpack-encore@^4.3.0":
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/@symfony/webpack-encore/-/webpack-encore-4.3.0.tgz#2cf025bd9ee33b176cf6c040c5fb610415cc66f8"
+  integrity sha512-YhM6xh+aKmrWS7X7Y2CUDte4wiUm9WIo0w07KTwDLLQnOUdMHRf3wa680WXH/I3oHqD+grFa7BHPpR0sfmoGMQ==
   dependencies:
     "@nuxt/friendly-errors-webpack-plugin" "^2.5.1"
     assets-webpack-plugin "7.0.*"
