@@ -33,7 +33,7 @@ BUILD_DIR="$ROOT_DIR/build"
 DIST_DIR="$BUILD_DIR/dist/"
 
 function generateRelease() {
-    rm -Rf ../build/*
+    rm -Rf build/*
 
     mkdir -p "${BUILD_DIR}"
     mkdir -p "$DIST_DIR"
@@ -59,7 +59,8 @@ function generateRelease() {
     zip -r SolidInvoice-"$VERSION".zip ./
     mv SolidInvoice-"$VERSION".zip "${DIST_DIR}"
 
-    tar -zcvf SolidInvoice-"$VERSION".tar.gz ./
+    touch SolidInvoice-"$VERSION".tar.gz
+    tar --exclude=SolidInvoice-"$VERSION".tar.gz -zcvf SolidInvoice-"$VERSION".tar.gz ./
     mv SolidInvoice-"$VERSION".tar.gz "${DIST_DIR}"
 
     cd ../ && rm -Rf "./SolidInvoice"
