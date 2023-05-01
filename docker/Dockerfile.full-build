@@ -1,0 +1,34 @@
+ARG SOLIDINVOICE_VERSION
+
+FROM solidinvoice/solidinvoice:${SOLIDINVOICE_VERSION}
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+    mysql-server \
+    mysql-common \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
+
+COPY docker/scripts/secure-mysql.sh /usr/local/bin/secure-mysql
+
+RUN PID=$(mysqld &) && \
+    PASSWORD=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-32};echo;) && \
+    sleep 5 && \
+    chmod a+x /usr/local/bin/secure-mysql && \
+    /usr/local/bin/secure-mysql $PASSWORD && \
+    bin/console app:install -n \
+        --database-user=solidinvoice \
+        --database-host=127.0.0.1 \
+        --database-password=$PASSWORD \
+        --locale=en \
+        --currency=ZAR \
+        --admin-username=admin \
+        --admin-password=password \
+        --admin-email=test@example.com && \
+    killall -15 mysqld
+
+COPY docker/etc/s6-overlay /etc/s6-overlay
+
+EXPOSE 3306
+
+VOLUME /var/lib/mysql

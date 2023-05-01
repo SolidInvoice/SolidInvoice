@@ -87,6 +87,7 @@ class InstallCommand extends Command
             ->addOption('database-name', null, InputOption::VALUE_REQUIRED, 'The name of the database to use (will be created if it doesn\'t exist)', 'solidinvoice')
             ->addOption('database-user', null, InputOption::VALUE_REQUIRED, 'The name of the database user')
             ->addOption('database-password', null, InputOption::VALUE_REQUIRED, 'The password for the database user')
+            ->addOption('skip-user', null, InputOption::VALUE_NONE, 'Skip creating the admin user')
             ->addOption('admin-username', null, InputOption::VALUE_REQUIRED, 'The username of the admin user')
             ->addOption('admin-password', null, InputOption::VALUE_REQUIRED, 'The password of admin user')
             ->addOption('admin-email', null, InputOption::VALUE_REQUIRED, 'The email address of admin user')
@@ -122,7 +123,12 @@ class InstallCommand extends Command
      */
     private function validate(InputInterface $input): self
     {
-        $values = ['database-host', 'database-user', 'admin-username', 'admin-password', 'admin-email', 'locale', 'currency'];
+        $values = ['database-host', 'database-user', 'locale', 'currency'];
+
+        if (! $input->getOption('skip-user')) {
+            $values = array_merge($values, ['admin-username', 'admin-password', 'admin-email']);
+        }
+
         foreach ($values as $option) {
             if (null === $input->getOption($option)) {
                 throw new Exception(sprintf('The --%s option needs to be specified', $option));
@@ -142,7 +148,10 @@ class InstallCommand extends Command
     private function install(InputInterface $input, OutputInterface $output): void
     {
         if ($this->initDb($input, $output)) {
-            $this->createAdminUser($input, $output);
+            if (! $input->getOption('skip-user')) {
+                $this->createAdminUser($input, $output);
+            }
+
             $version = SolidInvoiceCoreBundle::VERSION;
             $entityManager = $this->registry->getManager();
 
@@ -246,9 +255,21 @@ class InstallCommand extends Command
         $localeQuestion->setAutocompleterValues($locales);
         $currencyQuestion = new Question('<question>Please enter a currency:</question> ');
         $currencyQuestion->setAutocompleterValues($currencies);
-        $passwordQuestion = new Question('<question>Please enter a password for the admin account:</question> ');
-        $passwordQuestion->setHidden(true);
-        $options = ['database-user' => new Question('<question>Please enter your database user name:</question> '), 'admin-username' => new Question('<question>Please enter a username for the admin account:</question> '), 'admin-password' => $passwordQuestion, 'admin-email' => new Question('<question>Please enter an email address for the admin account:</question> '), 'locale' => $localeQuestion, 'currency' => $currencyQuestion];
+        $options = [
+            'database-user' => new Question('<question>Please enter your database username:</question> '),
+            'locale' => $localeQuestion,
+            'currency' => $currencyQuestion
+        ];
+
+        if (! $input->getOption('skip-user')) {
+            $passwordQuestion = new Question('<question>Please enter a password for the admin account:</question> ');
+            $passwordQuestion->setHidden(true);
+
+            $options['admin-username'] = new Question('<question>Please enter a username for the admin account:</question> ');
+            $options['admin-password'] = $passwordQuestion;
+            $options['admin-email'] = new Question('<question>Please enter an email address for the admin account:</question> ');
+        }
+
         /** @var QuestionHelper $dialog */
         $dialog = $this->getHelper('question');
 

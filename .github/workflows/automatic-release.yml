@@ -22,7 +22,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@cb8f453143149404c7fd670b5f37c91d395b3054
         with:
-          php-version: 7.4
+          php-version: 8.1
           extensions: intl, gd, opcache, mysql, pdo_mysql, soap, zip, :xdebug
           coverage: none
 
@@ -63,11 +63,11 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-      - name: Build and push docker image
+      - name: Build and push standard docker image
         uses: docker/build-push-action@v4
         with:
           push: true
-          context: ./docker
+          context: ./
           file: ./docker/Dockerfile.build
           build-args: |
             SOLIDINVOICE_VERSION=${{ github.event.milestone.title }}
@@ -75,28 +75,16 @@ jobs:
             solidinvoice/solidinvoice:latest
             solidinvoice/solidinvoice:${{ github.event.milestone.title }}
 
-      - name: Create Merge-Up Pull Request
-        uses: laminas/automatic-releases@v1
-        with:
-          command-name: laminas:automatic-releases:create-merge-up-pull-request
-
-      - name: Login to DockerHub
-        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
-        with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-
-      - name: Build and push docker image
+      - name: Build and push full docker image
         uses: docker/build-push-action@v4
         with:
           push: true
-          context: ./docker
-          file: ./docker/Dockerfile.build
+          context: ./
+          file: ./docker/Dockerfile.full-build
           build-args: |
             SOLIDINVOICE_VERSION=${{ github.event.milestone.title }}
           tags: |
-            solidinvoice/solidinvoice:latest
-            solidinvoice/solidinvoice:${{ github.event.milestone.title }}
+            solidinvoice/solidinvoice:${{ github.event.milestone.title }}-full
 
       - name: Create Merge-Up Pull Request
         uses: laminas/automatic-releases@1b61a5fcf90ba3223c85130b7bc2a7f95311e79c
