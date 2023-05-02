@@ -31,11 +31,8 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  */
 class PaymentType extends AbstractType
 {
-    private ManagerRegistry $registry;
-
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(private readonly ManagerRegistry $registry)
     {
-        $this->registry = $registry;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

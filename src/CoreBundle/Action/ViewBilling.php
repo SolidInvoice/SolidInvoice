@@ -31,27 +31,17 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class ViewBilling
 {
-    private ManagerRegistry $registry;
-
-    private AuthorizationCheckerInterface $authorizationChecker;
-
-    private RouterInterface $router;
-
-    public function __construct(ManagerRegistry $registry, AuthorizationCheckerInterface $authorizationChecker, RouterInterface $router)
+    public function __construct(private readonly ManagerRegistry $registry, private readonly AuthorizationCheckerInterface $authorizationChecker, private readonly RouterInterface $router)
     {
-        $this->registry = $registry;
-        $this->authorizationChecker = $authorizationChecker;
-        $this->router = $router;
     }
 
     /**
      * View a quote if not logged in.
      *
-     * @return Template|Response
      *
      * @throws InvalidArgumentException|InvalidParameterException|InvalidUuidStringException|MissingMandatoryParametersException|NotFoundHttpException|RouteNotFoundException
      */
-    public function quoteAction(string $uuid)
+    public function quoteAction(string $uuid): Template|Response
     {
         $options = [
             'repository' => Quote::class,
@@ -67,11 +57,10 @@ class ViewBilling
     /**
      * View a invoice if not logged in.
      *
-     * @return Response|Template
      *
      * @throws InvalidArgumentException|InvalidParameterException|InvalidUuidStringException|MissingMandatoryParametersException|NotFoundHttpException|RouteNotFoundException
      */
-    public function invoiceAction(string $uuid)
+    public function invoiceAction(string $uuid): Response|Template
     {
         $options = [
             'repository' => Invoice::class,
@@ -85,18 +74,16 @@ class ViewBilling
     }
 
     /**
-     * @return Template|Response
-     *
      * @throws NotFoundHttpException|InvalidArgumentException|InvalidUuidStringException|InvalidParameterException|MissingMandatoryParametersException|RouteNotFoundException
      */
-    private function createResponse(array $options)
+    private function createResponse(array $options): Template|Response
     {
         $repository = $this->registry->getRepository($options['repository']);
 
         $entity = $repository->findOneBy(['uuid' => Uuid::fromString($options['uuid'])]);
 
         if (null === $entity) {
-            throw new NotFoundHttpException(sprintf('"%s" with id %s does not exist', ucfirst($options['entity']), $options['uuid']));
+            throw new NotFoundHttpException(sprintf('"%s" with id %s does not exist', ucfirst((string) $options['entity']), $options['uuid']));
         }
 
         if ($this->authorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')) {

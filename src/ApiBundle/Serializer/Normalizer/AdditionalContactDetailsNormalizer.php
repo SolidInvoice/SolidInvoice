@@ -28,18 +28,15 @@ class AdditionalContactDetailsNormalizer implements NormalizerInterface, Denorma
     /**
      * @var NormalizerInterface|DenormalizerInterface
      */
-    private $normalizer;
+    private readonly DenormalizerInterface&NormalizerInterface $normalizer;
 
-    private ManagerRegistry $registry;
-
-    public function __construct(ManagerRegistry $registry, NormalizerInterface $normalizer)
+    public function __construct(private readonly ManagerRegistry $registry, NormalizerInterface $normalizer)
     {
         if (! $normalizer instanceof DenormalizerInterface) {
             throw new InvalidArgumentException('The normalizer must implement ' . DenormalizerInterface::class);
         }
 
         $this->normalizer = $normalizer;
-        $this->registry = $registry;
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])

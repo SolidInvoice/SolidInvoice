@@ -27,17 +27,8 @@ use function assert;
 
 final class Config
 {
-    private ConfigWriter $configWriter;
-
-    private RouterInterface $router;
-
-    private FormFactoryInterface $formFactory;
-
-    public function __construct(ConfigWriter $configWriter, RouterInterface $router, FormFactoryInterface $formFactory)
+    public function __construct(private readonly ConfigWriter $configWriter, private readonly RouterInterface $router, private readonly FormFactoryInterface $formFactory)
     {
-        $this->configWriter = $configWriter;
-        $this->router = $router;
-        $this->formFactory = $formFactory;
     }
 
     public function __invoke(Request $request)

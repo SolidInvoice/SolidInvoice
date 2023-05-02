@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Entity;
 
+use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use DateTimeInterface;
@@ -30,70 +31,61 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(attributes={"normalization_context"={"groups"={"recurring_invoice_api"}}, "denormalization_context"={"groups"={"create_recurring_invoice_api"}}})
- * @ORM\Entity(repositoryClass="SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository")
- * @ORM\Table(name="recurring_invoices")
- * @ORM\HasLifecycleCallbacks()
  */
+#[ORM\Table(name: 'recurring_invoices')]
+#[ORM\Entity(repositoryClass: RecurringInvoiceRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class RecurringInvoice extends BaseInvoice
 {
     use Archivable;
     use TimeStampable;
 
-    /**
-     * @ORM\Column(name="id", type="uuid_binary_ordered_time")
-     * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
-     * @Serialize\Groups({"recurring_invoice_api", "client_api"})
-     */
+    #[ORM\Column(name: 'id', type: 'uuid_binary_ordered_time')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
+    #[Serialize\Groups(['recurring_invoice_api', 'client_api'])]
     private ?UuidInterface $id = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Client", inversedBy="recurringInvoices", cascade={"persist"})
-     * @Assert\NotBlank
-     * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api", "create_invoice_api", "create_recurring_invoice_api"})
      * @ApiProperty(iri="https://schema.org/Organization")
      */
+    #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'recurringInvoices', cascade: ['persist'])]
+    #[Assert\NotBlank]
+    #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
     protected ?Client $client = null;
 
-    /**
-     * @ORM\Column(name="frequency", type="string", nullable=true)
-     * @Serialize\Groups({"recurring_invoice_api", "client_api", "create_recurring_invoice_api"})
-     */
+    #[ORM\Column(name: 'frequency', type: 'string', nullable: true)]
+    #[Serialize\Groups(['recurring_invoice_api', 'client_api', 'create_recurring_invoice_api'])]
     private ?string $frequency = null;
 
-    /**
-     * @ORM\Column(name="date_start", type="date_immutable")
-     * @Assert\NotBlank(groups={"Recurring"})
-     * @Assert\Date(groups={"Recurring"})
-     * @Serialize\Groups({"recurring_invoice_api", "client_api", "create_recurring_invoice_api"})
-     */
+    #[ORM\Column(name: 'date_start', type: 'date_immutable')]
+    #[Assert\NotBlank(groups: ['Recurring'])]
+    #[Assert\Date(groups: ['Recurring'])]
+    #[Serialize\Groups(['recurring_invoice_api', 'client_api', 'create_recurring_invoice_api'])]
     private ?DateTimeInterface $dateStart = null;
 
-    /**
-     * @ORM\Column(name="date_end", type="date_immutable", nullable=true)
-     * @Serialize\Groups({"recurring_invoice_api", "client_api", "create_recurring_invoice_api"})
-     */
+    #[ORM\Column(name: 'date_end', type: 'date_immutable', nullable: true)]
+    #[Serialize\Groups(['recurring_invoice_api', 'client_api', 'create_recurring_invoice_api'])]
     private ?DateTimeInterface $dateEnd = null;
 
     /**
      * @var Collection<Item>
-     *
-     * @ORM\OneToMany(targetEntity="Item", mappedBy="recurringInvoice", cascade={"persist", "remove"}, orphanRemoval=true)
-     * @Assert\Valid()
-     * @Assert\Count(min=1, minMessage="You need to add at least 1 item to the Invoice")
-     * @Serialize\Groups({"recurring_invoice_api", "client_api", "create_recurring_invoice_api"})
      */
+    #[ORM\OneToMany(targetEntity: 'Item', mappedBy: 'recurringInvoice', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[Assert\Valid]
+    #[Assert\Count(min: 1, minMessage: 'You need to add at least 1 item to the Invoice')]
+    #[Serialize\Groups(['recurring_invoice_api', 'client_api', 'create_recurring_invoice_api'])]
     protected Collection $items;
 
     /**
      * @var Collection<RecurringInvoiceContact>
      *
-     * @ORM\OneToMany(targetEntity=RecurringInvoiceContact::class, cascade={"persist", "remove"}, fetch="EXTRA_LAZY", mappedBy="recurringInvoice")
-     * @Assert\Count(min=1, minMessage="You need to select at least 1 user to attach to the Invoice")
-     * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api", "create_invoice_api", "create_recurring_invoice_api"})
      * @ApiProperty(writableLink=true)
      */
+    #[ORM\OneToMany(targetEntity: RecurringInvoiceContact::class, cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY', mappedBy: 'recurringInvoice')]
+    #[Assert\Count(min: 1, minMessage: 'You need to select at least 1 user to attach to the Invoice')]
+    #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
     protected Collection $users;
 
     public function __construct()

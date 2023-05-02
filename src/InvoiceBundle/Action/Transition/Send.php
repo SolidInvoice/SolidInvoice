@@ -29,17 +29,8 @@ final class Send
 {
     use SaveableTrait;
 
-    private StateMachine $stateMachine;
-
-    private MailerInterface $mailer;
-
-    private RouterInterface $router;
-
-    public function __construct(StateMachine $stateMachine, MailerInterface $mailer, RouterInterface $router)
+    public function __construct(private readonly StateMachine $stateMachine, private readonly MailerInterface $mailer, private readonly RouterInterface $router)
     {
-        $this->stateMachine = $stateMachine;
-        $this->mailer = $mailer;
-        $this->router = $router;
     }
 
     public function __invoke(Request $request, Invoice $invoice): RedirectResponse

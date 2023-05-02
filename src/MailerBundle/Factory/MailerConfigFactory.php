@@ -28,20 +28,11 @@ final class MailerConfigFactory
 {
     public const CONFIG_KEY = 'email/sending_options/provider';
 
-    private SystemConfig $config;
-
-    private Transport $inner;
-
     /**
-     * @var ConfiguratorInterface[]
+     * @param ConfiguratorInterface[] $transports
      */
-    private iterable $transports;
-
-    public function __construct(Transport $inner, SystemConfig $config, iterable $transports)
+    public function __construct(private readonly Transport $inner, private readonly SystemConfig $config, private readonly iterable $transports)
     {
-        $this->config = $config;
-        $this->inner = $inner;
-        $this->transports = $transports;
     }
 
     /**

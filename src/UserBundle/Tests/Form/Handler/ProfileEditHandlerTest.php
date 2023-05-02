@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Tests\Form\Handler;
 
+use Mockery\MockInterface;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Mockery as M;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
@@ -30,11 +31,11 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class ProfileEditHandlerTest extends FormHandlerTestCase
 {
-    private $userRepository;
+    private MockInterface&UserRepository $userRepository;
 
-    private $tokenStorage;
+    private MockInterface&TokenStorageInterface $tokenStorage;
 
-    private $router;
+    private MockInterface&RouterInterface $router;
 
     protected function setUp(): void
     {

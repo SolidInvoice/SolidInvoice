@@ -23,42 +23,33 @@ use Symfony\Component\Serializer\Annotation as Serialize;
 
 /**
  * SolidInvoice\ClientBundle\Entity\AdditionalContactDetail.
- *
- * @ORM\Entity()
- * @ORM\Table(name="contact_details")
  */
+#[ORM\Table(name: 'contact_details')]
+#[ORM\Entity]
 class AdditionalContactDetail implements Stringable
 {
     use TimeStampable;
     use CompanyAware;
 
-    /**
-     * @ORM\Column(name="id", type="uuid_binary_ordered_time")
-     * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
-     * @Serialize\Groups({"client_api", "contact_api"})
-     */
+    #[ORM\Column(name: 'id', type: 'uuid_binary_ordered_time')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
+    #[Serialize\Groups(['client_api', 'contact_api'])]
     protected ?UuidInterface $id = null;
 
-    /**
-     * @ORM\Column(name="value", type="text")
-     * @Serialize\Groups({"client_api", "contact_api"})
-     */
+    #[ORM\Column(name: 'value', type: 'text')]
+    #[Serialize\Groups(['client_api', 'contact_api'])]
     protected ?string $value = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="ContactType", inversedBy="details")
-     * @ORM\JoinColumn(name="contact_type_id")
-     * @Serialize\Groups({"client_api", "contact_api"})
-     */
+    #[ORM\ManyToOne(targetEntity: 'ContactType', inversedBy: 'details')]
+    #[ORM\JoinColumn(name: 'contact_type_id')]
+    #[Serialize\Groups(['client_api', 'contact_api'])]
     protected ?ContactType $type = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Contact", inversedBy="additionalContactDetails")
-     * @ORM\JoinColumn(name="contact_id")
-     * @Serialize\Groups({"js"})
-     */
+    #[ORM\ManyToOne(targetEntity: 'Contact', inversedBy: 'additionalContactDetails')]
+    #[ORM\JoinColumn(name: 'contact_id')]
+    #[Serialize\Groups(['js'])]
     private ?Contact $contact = null;
 
     public function getId(): UuidInterface

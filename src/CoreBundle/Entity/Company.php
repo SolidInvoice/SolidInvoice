@@ -23,30 +23,23 @@ use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\UserBundle\Entity\User;
 use Stringable;
 
-/**
- * @ORM\Entity(repositoryClass=CompanyRepository::class)
- * @ORM\Table(name="companies")
- */
+#[ORM\Table(name: 'companies')]
+#[ORM\Entity(repositoryClass: CompanyRepository::class)]
 class Company implements Stringable
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
-     * @ORM\Column(type="uuid_binary_ordered_time", unique=true)
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
+    #[ORM\Column(type: 'uuid_binary_ordered_time', unique: true)]
     private UuidInterface $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private string $name;
 
     /**
      * @var Collection<int, User>
-     *
-     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="companies")
      */
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'companies')]
     private Collection $users;
 
     public function __construct()

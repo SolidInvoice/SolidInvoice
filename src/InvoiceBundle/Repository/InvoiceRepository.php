@@ -59,11 +59,10 @@ class InvoiceRepository extends ServiceEntityRepository
     /**
      * Get the total amount for a specific invoice status.
      *
-     * @param int|string $hydrate
      *
      * @throws NoResultException|NonUniqueResultException
      */
-    public function getTotalByStatus(string $status, Client $client = null, $hydrate = AbstractQuery::HYDRATE_SINGLE_SCALAR): int
+    public function getTotalByStatus(string $status, Client $client = null, int|string $hydrate = AbstractQuery::HYDRATE_SINGLE_SCALAR): int
     {
         $qb = $this->createQueryBuilder('i');
 
@@ -99,7 +98,7 @@ class InvoiceRepository extends ServiceEntityRepository
 
         try {
             return (int) $query->getSingleScalarResult();
-        } catch (NoResultException | NonUniqueResultException $e) {
+        } catch (NoResultException | NonUniqueResultException) {
             return 0;
         }
     }
@@ -109,7 +108,7 @@ class InvoiceRepository extends ServiceEntityRepository
      *
      * @param string|string[] $status
      */
-    public function getCountByStatus($status, Client $client = null): int
+    public function getCountByStatus(string|array $status, Client $client = null): int
     {
         $qb = $this->createQueryBuilder('i');
 
@@ -132,7 +131,7 @@ class InvoiceRepository extends ServiceEntityRepository
 
         try {
             return (int) $query->getSingleScalarResult();
-        } catch (NoResultException | NonUniqueResultException $e) {
+        } catch (NoResultException | NonUniqueResultException) {
             return 0;
         }
     }

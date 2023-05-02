@@ -24,16 +24,12 @@ use function assert;
 
 final class CompanySelector
 {
-    private ManagerRegistry $registry;
-
     private ?UuidInterface $companyId = null;
 
-    private OrderedTimeCodec $codec;
+    private readonly OrderedTimeCodec $codec;
 
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(private readonly ManagerRegistry $registry)
     {
-        $this->registry = $registry;
-
         $factory = clone Uuid::getFactory();
         assert($factory instanceof UuidFactory);
 

@@ -17,11 +17,8 @@ use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 
 final class CreateInvoiceFromRecurring
 {
-    private RecurringInvoice $recurringInvoice;
-
-    public function __construct(RecurringInvoice $recurringInvoice)
+    public function __construct(private readonly RecurringInvoice $recurringInvoice)
     {
-        $this->recurringInvoice = $recurringInvoice;
     }
 
     public function getRecurringInvoice(): RecurringInvoice

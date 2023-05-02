@@ -19,11 +19,8 @@ use Symfony\Component\Form\DataTransformerInterface;
 
 class ContactTypeTransformer implements DataTransformerInterface
 {
-    private ContactType $type;
-
-    public function __construct(ContactType $type)
+    public function __construct(private readonly ContactType $type)
     {
-        $this->type = $type;
     }
 
     /**

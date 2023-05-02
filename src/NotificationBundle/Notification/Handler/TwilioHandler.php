@@ -22,14 +22,8 @@ use Twilio\Rest\Client;
 
 class TwilioHandler implements HandlerInterface
 {
-    private Client $twilio;
-
-    private SystemConfig $config;
-
-    public function __construct(Client $twilio, SystemConfig $config)
+    public function __construct(private readonly Client $twilio, private readonly SystemConfig $config)
     {
-        $this->twilio = $twilio;
-        $this->config = $config;
     }
 
     public function shouldHandle(NotificationInterface $notification): bool
@@ -46,7 +40,7 @@ class TwilioHandler implements HandlerInterface
 
         if (! empty($number)) {
             /** @var TwilioNotification $notification */
-            $this->twilio->messages
+            $this->twilio->getMessages()
                 ->create(
                     (string) $notification->getRecipientNumber(),
                     [

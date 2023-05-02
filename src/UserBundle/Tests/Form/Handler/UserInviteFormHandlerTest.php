@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Tests\Form\Handler;
 
+use Mockery\MockInterface;
 use Mockery as M;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
@@ -35,7 +36,7 @@ final class UserInviteFormHandlerTest extends FormHandlerTestCase
     /**
      * @var RouterInterface&M\MockInterface
      */
-    private $router;
+    private MockInterface&RouterInterface $router;
 
     private string $password;
 
@@ -92,7 +93,7 @@ final class UserInviteFormHandlerTest extends FormHandlerTestCase
         self::assertInstanceOf(FlashResponse::class, $response);
         self::assertSame('/users', $response->getTargetUrl());
         self::assertSame('test', $data->getUserName());
-        self::assertTrue(password_verify($this->password, $data->getPassword()));
+        self::assertTrue(password_verify($this->password, (string) $data->getPassword()));
         self::assertCount(1, $response->getFlash());
         self::assertSame(FlashResponse::FLASH_SUCCESS, $response->getFlash()->key());
     }

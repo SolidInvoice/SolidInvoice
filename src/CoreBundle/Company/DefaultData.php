@@ -29,9 +29,12 @@ use SolidInvoice\TaxBundle\Form\Type\TaxNumberType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
+/**
+ * @see \SolidInvoice\CoreBundle\Tests\Company\DefaultDataTest
+ */
 final class DefaultData
 {
-    private ObjectManager $em;
+    private readonly ObjectManager $em;
 
     public function __construct(ManagerRegistry $registry)
     {

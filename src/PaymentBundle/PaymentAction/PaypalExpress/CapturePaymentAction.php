@@ -38,15 +38,9 @@ class CapturePaymentAction implements ActionInterface, GatewayAwareInterface
      */
     protected $tokenFactory;
 
-    /**
-     * @var MoneyFormatter
-     */
-    private MoneyFormatterInterface $formatter;
-
-    public function __construct(GenericTokenFactoryInterface $tokenFactory, MoneyFormatterInterface $formatter)
+    public function __construct(GenericTokenFactoryInterface $tokenFactory, private readonly MoneyFormatterInterface $formatter)
     {
         $this->tokenFactory = $tokenFactory;
-        $this->formatter = $formatter;
     }
 
     public function execute($request): void

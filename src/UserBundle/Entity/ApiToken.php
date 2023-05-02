@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Entity;
 
+use SolidInvoice\UserBundle\Repository\ApiTokenRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -24,47 +25,36 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="SolidInvoice\UserBundle\Repository\ApiTokenRepository")
- * @ORM\Table("api_tokens")
- * @UniqueEntity({"name", "user"})
- */
+#[ORM\Table('api_tokens')]
+#[ORM\Entity(repositoryClass: ApiTokenRepository::class)]
+#[UniqueEntity(['name', 'user'])]
 class ApiToken
 {
     use TimeStampable;
     use CompanyAware;
 
-    /**
-     * @ORM\Column(type="uuid_binary_ordered_time")
-     * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
-     */
+    #[ORM\Column(type: 'uuid_binary_ordered_time')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
     private ?UuidInterface $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=125)
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(type: 'string', length: 125)]
+    #[Assert\NotBlank]
     private ?string $name = null;
 
-    /**
-     * @ORM\Column(type="string", length=125)
-     */
+    #[ORM\Column(type: 'string', length: 125)]
     private ?string $token = null;
 
     /**
      * @var Collection<int, ApiTokenHistory>
-     *
-     * @ORM\OneToMany(targetEntity="ApiTokenHistory", mappedBy="token", fetch="EXTRA_LAZY", cascade={"persist", "remove"}, orphanRemoval=true)
-     * @ORM\OrderBy({"created" = "DESC"})
      */
+    #[ORM\OneToMany(targetEntity: 'ApiTokenHistory', mappedBy: 'token', fetch: 'EXTRA_LAZY', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OrderBy(['created' => 'DESC'])]
     private Collection $history;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="apiTokens")
-     * @ORM\JoinColumn(name="user_id")
-     */
+    #[ORM\ManyToOne(targetEntity: 'User', inversedBy: 'apiTokens')]
+    #[ORM\JoinColumn(name: 'user_id')]
     private ?UserInterface $user = null;
 
     public function __construct()

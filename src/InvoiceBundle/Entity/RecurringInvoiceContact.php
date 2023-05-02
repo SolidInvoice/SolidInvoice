@@ -19,26 +19,22 @@ use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 
 /**
- * @ORM\Entity()
- * @ORM\Table(name="recurringinvoice_contact")
  * @ApiResource(itemOperations={}, collectionOperations={})
  */
+#[ORM\Table(name: 'recurringinvoice_contact')]
+#[ORM\Entity]
 class RecurringInvoiceContact
 {
     use CompanyAware;
 
-    /**
-     * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=RecurringInvoice::class, inversedBy="users", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="recurringinvoice_id")
-     */
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: RecurringInvoice::class, inversedBy: 'users', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(name: 'recurringinvoice_id')]
     private RecurringInvoice $recurringInvoice;
 
-    /**
-     * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=Contact::class, cascade={"persist", "remove"}, inversedBy="recurringInvoices")
-     * @ORM\JoinColumn(name="contact_id")
-     */
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: Contact::class, cascade: ['persist', 'remove'], inversedBy: 'recurringInvoices')]
+    #[ORM\JoinColumn(name: 'contact_id')]
     private Contact $contact;
 
     public function getRecurringInvoice(): RecurringInvoice

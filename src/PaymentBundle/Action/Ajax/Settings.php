@@ -23,14 +23,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class Settings implements AjaxResponse
 {
-    private PaymentFactories $factories;
-
-    private FormHandler $handler;
-
-    public function __construct(PaymentFactories $factories, FormHandler $handler)
+    public function __construct(private readonly PaymentFactories $factories, private readonly FormHandler $handler)
     {
-        $this->factories = $factories;
-        $this->handler = $handler;
     }
 
     /**
@@ -44,7 +38,7 @@ final class Settings implements AjaxResponse
             $paymentMethod = new PaymentMethod();
             $paymentMethod->setGatewayName($methodName);
             $paymentMethod->setFactoryName($this->factories->getFactory($methodName));
-            $paymentMethod->setName(ucwords(str_replace('_', ' ', $methodName)));
+            $paymentMethod->setName(ucwords(str_replace('_', ' ', (string) $methodName)));
         }
 
         return $this->handler->handle(PaymentMethodSettingsHandler::class, ['payment_method' => $paymentMethod]);

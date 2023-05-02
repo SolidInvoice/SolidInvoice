@@ -25,11 +25,8 @@ use Twig\TwigFunction;
 
 class GridExtension extends AbstractExtension
 {
-    private GridRepository $repository;
-
-    public function __construct(GridRepository $repository)
+    public function __construct(private readonly GridRepository $repository)
     {
-        $this->repository = $repository;
     }
 
     public function getFunctions(): array

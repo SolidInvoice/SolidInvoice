@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SettingsBundle\Entity;
 
+use SolidInvoice\SettingsBundle\Repository\SettingsRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
 use Ramsey\Uuid\UuidInterface;
@@ -20,46 +21,30 @@ use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use Stringable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-/**
- * @ORM\Table(
- *     name="app_config",
- *     uniqueConstraints={
- *         @ORM\UniqueConstraint(columns={"setting_key", "company_id"})
- *     }
- * )
- * @ORM\Entity(repositoryClass="SolidInvoice\SettingsBundle\Repository\SettingsRepository")
- * @UniqueEntity(fields={"company_id", "key"})
- */
+#[ORM\Table(name: 'app_config')]
+#[ORM\UniqueConstraint(columns: ['setting_key', 'company_id'])]
+#[ORM\Entity(repositoryClass: SettingsRepository::class)]
+#[UniqueEntity(fields: ['company_id', 'key'])]
 class Setting implements Stringable
 {
     use CompanyAware;
 
-    /**
-     * @ORM\Column(name="id", type="uuid_binary_ordered_time")
-     * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
-     */
+    #[ORM\Column(name: 'id', type: 'uuid_binary_ordered_time')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
     private ?UuidInterface $id = null;
 
-    /**
-     * @ORM\Column(name="setting_key", type="string", length=125)
-     */
+    #[ORM\Column(name: 'setting_key', type: 'string', length: 125)]
     protected ?string $key = null;
 
-    /**
-     * @ORM\Column(name="setting_value", type="text", nullable=true)
-     */
+    #[ORM\Column(name: 'setting_value', type: 'text', nullable: true)]
     protected ?string $value = null;
 
-    /**
-     * @ORM\Column(name="description", type="text", nullable=true)
-     */
+    #[ORM\Column(name: 'description', type: 'text', nullable: true)]
     protected ?string $description = null;
 
-    /**
-     * @ORM\Column(name="field_type", type="string")
-     */
+    #[ORM\Column(name: 'field_type', type: 'string')]
     protected ?string $type = null;
 
     public function getId(): ?UuidInterface
@@ -87,10 +72,7 @@ class Setting implements Stringable
         return $this->value;
     }
 
-    /**
-     * @param mixed $value
-     */
-    public function setValue($value): self
+    public function setValue(mixed $value): self
     {
         $this->value = $value;
 

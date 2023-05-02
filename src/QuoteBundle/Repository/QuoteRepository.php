@@ -30,8 +30,6 @@ class QuoteRepository extends ServiceEntityRepository
 
     /**
      * Gets total number of quotes.
-     *
-     * @param string $status
      */
     public function getTotalQuotes(string $status = null): int
     {

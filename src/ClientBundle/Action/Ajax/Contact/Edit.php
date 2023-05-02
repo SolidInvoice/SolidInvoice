@@ -21,11 +21,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class Edit implements AjaxResponse
 {
-    private FormHandler $handler;
-
-    public function __construct(FormHandler $handler)
+    public function __construct(private readonly FormHandler $handler)
     {
-        $this->handler = $handler;
     }
 
     public function __invoke(Request $request, Contact $contact)

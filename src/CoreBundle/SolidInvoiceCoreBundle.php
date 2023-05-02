@@ -19,9 +19,9 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class SolidInvoiceCoreBundle extends Bundle
 {
-    public const VERSION = '2.3.0-dev';
+    final public const VERSION = '2.3.0-dev';
 
-    public const APP_NAME = 'SolidInvoice';
+    final public const APP_NAME = 'SolidInvoice';
 
     public function build(ContainerBuilder $container): void
     {

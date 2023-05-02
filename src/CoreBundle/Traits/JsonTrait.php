@@ -19,10 +19,9 @@ use Symfony\Component\HttpFoundation\Response;
 trait JsonTrait
 {
     /**
-     * @param mixed $data
      * @param array<string, string> $headers
      */
-    public function json($data = null, int $status = Response::HTTP_OK, array $headers = [], bool $json = false): JsonResponse
+    public function json(mixed $data = null, int $status = Response::HTTP_OK, array $headers = [], bool $json = false): JsonResponse
     {
         return new JsonResponse($data, $status, $headers, $json);
     }

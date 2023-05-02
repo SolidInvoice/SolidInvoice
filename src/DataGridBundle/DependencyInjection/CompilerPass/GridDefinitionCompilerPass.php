@@ -35,11 +35,8 @@ use Symfony\Component\Yaml\Yaml;
 
 class GridDefinitionCompilerPass implements CompilerPassInterface
 {
-    private KernelInterface $kernel;
-
-    public function __construct(KernelInterface $kernel)
+    public function __construct(private readonly KernelInterface $kernel)
     {
-        $this->kernel = $kernel;
     }
 
     public function process(ContainerBuilder $container): void
@@ -52,7 +49,7 @@ class GridDefinitionCompilerPass implements CompilerPassInterface
         foreach ($this->kernel->getBundles() as $bundle) {
             try {
                 $file = $resourceLocator->locate(sprintf('@%s/Resources/config/grid.yml', $bundle->getName()));
-            } catch (InvalidArgumentException $e) {
+            } catch (InvalidArgumentException) {
                 continue;
             }
 

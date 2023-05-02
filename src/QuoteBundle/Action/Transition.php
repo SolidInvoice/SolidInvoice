@@ -25,14 +25,8 @@ use Symfony\Component\Workflow\StateMachine;
 
 final class Transition
 {
-    private StateMachine $stateMachine;
-
-    private RouterInterface $router;
-
-    public function __construct(StateMachine $stateMachine, RouterInterface $router)
+    public function __construct(private readonly StateMachine $stateMachine, private readonly RouterInterface $router)
     {
-        $this->stateMachine = $stateMachine;
-        $this->router = $router;
     }
 
     /**
@@ -53,11 +47,8 @@ final class Transition
         }
 
         return new class($action, $route) extends RedirectResponse implements FlashResponse {
-            private string $action;
-
-            public function __construct(string $action, string $route)
+            public function __construct(private readonly string $action, string $route)
             {
-                $this->action = $action;
                 parent::__construct($route);
             }
 

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Entity;
 
+use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -26,63 +27,47 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="payment_methods")
- * @ORM\Entity(repositoryClass="SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository")
- * @UniqueEntity("gatewayName")
- */
+#[ORM\Table(name: 'payment_methods')]
+#[ORM\Entity(repositoryClass: PaymentMethodRepository::class)]
+#[UniqueEntity('gatewayName')]
 class PaymentMethod implements GatewayConfigInterface, Stringable
 {
     use TimeStampable;
     use CompanyAware;
 
-    /**
-     * @ORM\Column(name="id", type="uuid_binary_ordered_time")
-     * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
-     */
+    #[ORM\Column(name: 'id', type: 'uuid_binary_ordered_time')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
     private ?UuidInterface $id = null;
 
-    /**
-     * @ORM\Column(name="name", type="string", length=125)
-     * @Assert\NotBlank
-     * @Serialize\Groups({"payment_api"})
-     */
+    #[ORM\Column(name: 'name', type: 'string', length: 125)]
+    #[Assert\NotBlank]
+    #[Serialize\Groups(['payment_api'])]
     private ?string $name = null;
 
-    /**
-     * @ORM\Column(name="gateway_name", type="string", length=125)
-     */
+    #[ORM\Column(name: 'gateway_name', type: 'string', length: 125)]
     private ?string $gatewayName = null;
 
-    /**
-     * @ORM\Column(name="factory", type="string", length=125)
-     */
+    #[ORM\Column(name: 'factory', type: 'string', length: 125)]
     private ?string $factoryName = null;
 
     /**
      * @var array<string, string>
-     *
-     * @ORM\Column(name="config", type="array", nullable=true)
      */
+    #[ORM\Column(name: 'config', type: 'array', nullable: true)]
     private array $config = [];
 
-    /**
-     * @ORM\Column(name="internal", type="boolean", nullable=true)
-     */
+    #[ORM\Column(name: 'internal', type: 'boolean', nullable: true)]
     private bool $internal = false;
 
-    /**
-     * @ORM\Column(name="enabled", type="boolean",  nullable=true)
-     */
+    #[ORM\Column(name: 'enabled', type: 'boolean', nullable: true)]
     private bool $enabled;
 
     /**
      * @var Collection<int, Payment>
-     *
-     * @ORM\OneToMany(targetEntity="Payment", mappedBy="method", cascade={"persist"})
      */
+    #[ORM\OneToMany(targetEntity: 'Payment', mappedBy: 'method', cascade: ['persist'])]
     private Collection $payments;
 
     public function __construct()

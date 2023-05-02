@@ -86,7 +86,7 @@ class TraceLogger implements SQLLogger
             if (isset($trace[$index + 1]['class'])) {
                 $backtrace[$index] .= $trace[$index + 1]['class'];
             } else {
-                $backtrace[$index] .= isset($line['object']) ? get_class($line['object']) : $line['function'];
+                $backtrace[$index] .= isset($line['object']) ? $line['object']::class : $line['function'];
             }
 
             $backtrace[$index] .= '::';

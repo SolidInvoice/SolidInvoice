@@ -27,21 +27,11 @@ use Twig\Environment;
 
 class Renderer extends ListRenderer implements RendererInterface
 {
-    private FactoryInterface $factory;
-
-    private Environment $twig;
-
-    private TranslatorInterface $translator;
-
     /**
      * @throws InvalidArgumentException
      */
-    public function __construct(RequestStack $requestStack, FactoryInterface $factory, TranslatorInterface $translator, Environment $twig)
+    public function __construct(RequestStack $requestStack, private readonly FactoryInterface $factory, private readonly TranslatorInterface $translator, private readonly Environment $twig)
     {
-        $this->factory = $factory;
-        $this->twig = $twig;
-        $this->translator = $translator;
-
         $matcher = new class([new RouteVoter($requestStack)]) extends Matcher {
             public function isCurrent(ItemInterface $item): bool
             {

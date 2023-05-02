@@ -28,11 +28,8 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
  */
 class QuoteSaveListener implements EventSubscriber
 {
-    private ServiceLocator $serviceLocator;
-
-    public function __construct(ServiceLocator $serviceLocator)
+    public function __construct(private readonly ServiceLocator $serviceLocator)
     {
-        $this->serviceLocator = $serviceLocator;
     }
 
     /**
@@ -81,7 +78,7 @@ class QuoteSaveListener implements EventSubscriber
         if ($entity instanceof Quote) {
             try {
                 $this->serviceLocator->get(TotalCalculator::class)->calculateTotals($entity);
-            } catch (NotFoundExceptionInterface | ContainerExceptionInterface $e) {
+            } catch (NotFoundExceptionInterface | ContainerExceptionInterface) {
             }
 
             $this->checkDiscount($entity);

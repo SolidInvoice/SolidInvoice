@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Entity;
 
+use SolidInvoice\UserBundle\Repository\UserRepository;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -27,85 +28,62 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @ORM\Table(name="users")
- * @ORM\Entity(repositoryClass="SolidInvoice\UserBundle\Repository\UserRepository")
- * @UniqueEntity(fields={"email"}, message="This email is already in use. Do you want to log in instead?")
- * @UniqueEntity(fields={"username"}, message="This username is already in use")
- */
+#[ORM\Table(name: 'users')]
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[UniqueEntity(fields: ['email'], message: 'This email is already in use. Do you want to log in instead?')]
+#[UniqueEntity(fields: ['username'], message: 'This username is already in use')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringable
 {
     use TimeStampable;
 
-    /**
-     * @ORM\Column(type="uuid_binary_ordered_time")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
-     */
+    #[ORM\Column(type: 'uuid_binary_ordered_time')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
     private ?UuidInterface $id = null;
 
-    /**
-     * @ORM\Column(name="mobile", type="string", nullable=true)
-     */
+    #[ORM\Column(name: 'mobile', type: 'string', nullable: true)]
     private ?string $mobile = null;
 
     /**
      * @var Collection<int, ApiToken>
-     *
-     * @ORM\OneToMany(targetEntity="ApiToken", mappedBy="user", fetch="EXTRA_LAZY", cascade={"persist", "remove"}, orphanRemoval=true)
      */
+    #[ORM\OneToMany(targetEntity: 'ApiToken', mappedBy: 'user', fetch: 'EXTRA_LAZY', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $apiTokens;
 
-    /**
-     * @ORM\Column(name="username", type="string", length=180, unique=true)
-     */
+    #[ORM\Column(name: 'username', type: 'string', length: 180, unique: true)]
     private ?string $username = null;
 
-    /**
-     * @ORM\Column(name="email", type="string", length=180, unique=true)
-     */
+    #[ORM\Column(name: 'email', type: 'string', length: 180, unique: true)]
     private ?string $email = null;
 
-    /**
-     * @ORM\Column(name="enabled", type="boolean")
-     */
+    #[ORM\Column(name: 'enabled', type: 'boolean')]
     private bool $enabled = false;
 
-    /**
-     * @ORM\Column(name="password", type="string")
-     */
+    #[ORM\Column(name: 'password', type: 'string')]
     private ?string $password = null;
 
     private string $plainPassword = '';
 
-    /**
-     * @ORM\Column(name="last_login", type="datetime", nullable=true)
-     */
+    #[ORM\Column(name: 'last_login', type: 'datetime', nullable: true)]
     private ?DateTimeInterface $lastLogin = null;
 
-    /**
-     * @ORM\Column(name="confirmation_token", type="string", length=180, nullable=true, unique=true)
-     */
+    #[ORM\Column(name: 'confirmation_token', type: 'string', length: 180, nullable: true, unique: true)]
     private ?string $confirmationToken = null;
 
-    /**
-     * @ORM\Column(name="password_requested_at", type="datetime", nullable=true)
-     */
+    #[ORM\Column(name: 'password_requested_at', type: 'datetime', nullable: true)]
     private ?DateTimeInterface $passwordRequestedAt = null;
 
     /**
      * @var string[]
-     *
-     * @ORM\Column(name="roles", type="array")
      */
+    #[ORM\Column(name: 'roles', type: 'array')]
     private array $roles = [];
 
     /**
      * @var Collection<int, Company>
-     *
-     * @ORM\ManyToMany(targetEntity=Company::class, inversedBy="users")
      */
+    #[ORM\ManyToMany(targetEntity: Company::class, inversedBy: 'users')]
     private Collection $companies;
 
     public function __construct()

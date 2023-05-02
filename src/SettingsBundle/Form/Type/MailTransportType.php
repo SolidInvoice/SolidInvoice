@@ -25,13 +25,10 @@ use Traversable;
 final class MailTransportType extends AbstractType
 {
     /**
-     * @var iterable|ConfiguratorInterface[]|Traversable
+     * @param ConfiguratorInterface[]|Traversable $transports
      */
-    private iterable $transports;
-
-    public function __construct(iterable $transports)
+    public function __construct(private readonly iterable $transports)
     {
-        $this->transports = $transports;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -68,7 +65,7 @@ final class MailTransportType extends AbstractType
 
                 return [
                     'provider' => $data['provider'] ?? null,
-                    \str_replace(' ', '-', $data['provider']) => $data['config'] ?? [],
+                    \str_replace(' ', '-', (string) $data['provider']) => $data['config'] ?? [],
                 ];
             }
 
@@ -84,7 +81,7 @@ final class MailTransportType extends AbstractType
                     return null;
                 }
 
-                return json_encode(['provider' => $value['provider'], 'config' => $value[\str_replace(' ', '-', $provider)]], JSON_THROW_ON_ERROR);
+                return json_encode(['provider' => $value['provider'], 'config' => $value[\str_replace(' ', '-', (string) $provider)]], JSON_THROW_ON_ERROR);
             }
         });
     }

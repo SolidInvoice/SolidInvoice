@@ -28,7 +28,7 @@ final class Calculator
     public function calculateDiscount($entity): Money
     {
         if (! $entity instanceof Quote && ! $entity instanceof Invoice) {
-            throw new InvalidArgumentException(sprintf('"%s" expects instance of Quote or Invoice, "%s" given.', __METHOD__, \is_object($entity) ? \get_class($entity) : \gettype($entity)));
+            throw new InvalidArgumentException(sprintf('"%s" expects instance of Quote or Invoice, "%s" given.', __METHOD__, get_debug_type($entity)));
         }
 
         $discount = $entity->getDiscount();

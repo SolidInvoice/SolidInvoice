@@ -28,12 +28,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
  */
 class UpgradeListener implements EventSubscriberInterface
 {
-    private ?string $installed;
-
-    private ManagerRegistry $registry;
-
-    private Migration $migration;
-
     /**
      * @return array<string, list<int|string>>
      */
@@ -44,11 +38,8 @@ class UpgradeListener implements EventSubscriberInterface
         ];
     }
 
-    public function __construct(?string $installed, ManagerRegistry $registry, Migration $migration)
+    public function __construct(private readonly ?string $installed, private readonly ManagerRegistry $registry, private readonly Migration $migration)
     {
-        $this->installed = $installed;
-        $this->registry = $registry;
-        $this->migration = $migration;
     }
 
     public function onKernelRequest(RequestEvent $event): void

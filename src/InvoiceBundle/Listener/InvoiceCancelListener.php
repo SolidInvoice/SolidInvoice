@@ -29,8 +29,6 @@ use function assert;
 
 class InvoiceCancelListener implements EventSubscriberInterface
 {
-    private SystemConfig $systemConfig;
-
     /**
      * @return array<string, string>
      */
@@ -41,12 +39,8 @@ class InvoiceCancelListener implements EventSubscriberInterface
         ];
     }
 
-    private ManagerRegistry $registry;
-
-    public function __construct(ManagerRegistry $registry, SystemConfig $systemConfig)
+    public function __construct(private readonly ManagerRegistry $registry, private readonly SystemConfig $systemConfig)
     {
-        $this->registry = $registry;
-        $this->systemConfig = $systemConfig;
     }
 
     public function onInvoiceCancelled(InvoiceEvent $event): void

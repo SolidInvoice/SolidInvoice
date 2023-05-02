@@ -22,11 +22,8 @@ use Twig\TwigFilter;
  */
 class SerializerExtension extends AbstractExtension
 {
-    private SerializerInterface $serializer;
-
-    public function __construct(SerializerInterface $serializer)
+    public function __construct(private readonly SerializerInterface $serializer)
     {
-        $this->serializer = $serializer;
     }
 
     public function getFilters(): array

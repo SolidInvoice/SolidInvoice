@@ -22,17 +22,8 @@ use Exception;
  */
 class ORMSource implements SourceInterface
 {
-    private ManagerRegistry $registry;
-
-    private string $repository;
-
-    private string $method;
-
-    public function __construct(ManagerRegistry $registry, string $repository, string $method)
+    public function __construct(private readonly ManagerRegistry $registry, private readonly string $repository, private readonly string $method)
     {
-        $this->registry = $registry;
-        $this->repository = $repository;
-        $this->method = $method;
     }
 
     public function fetch(array $parameters = []): QueryBuilder

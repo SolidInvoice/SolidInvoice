@@ -19,26 +19,22 @@ use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 
 /**
- * @ORM\Entity()
- * @ORM\Table(name="quote_contact")
  * @ApiResource(collectionOperations={}, itemOperations={})
  */
+#[ORM\Table(name: 'quote_contact')]
+#[ORM\Entity]
 class QuoteContact
 {
     use CompanyAware;
 
-    /**
-     * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=Quote::class, inversedBy="users", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="quote_id")
-     */
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: Quote::class, inversedBy: 'users', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(name: 'quote_id')]
     private Quote $quote;
 
-    /**
-     * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=Contact::class, cascade={"persist", "remove"}, inversedBy="quotes")
-     * @ORM\JoinColumn(name="contact_id")
-     */
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: Contact::class, cascade: ['persist', 'remove'], inversedBy: 'quotes')]
+    #[ORM\JoinColumn(name: 'contact_id')]
     private Contact $contact;
 
     public function getQuote(): Quote

@@ -25,16 +25,8 @@ use Symfony\Component\Security\Core\Security;
 
 final class SelectCompany
 {
-    private Security $security;
-
-    private RouterInterface $router;
-
-    public function __construct(
-        Security $security,
-        RouterInterface $router
-    ) {
-        $this->security = $security;
-        $this->router = $router;
+    public function __construct(private readonly Security $security, private readonly RouterInterface $router)
+    {
     }
 
     /**

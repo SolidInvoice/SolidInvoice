@@ -22,68 +22,48 @@ use Stringable;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Serializer\Annotation as Serialize;
 
-/**
- * @ORM\Table(name="addresses")
- * @ORM\Entity()
- */
+#[ORM\Table(name: 'addresses')]
+#[ORM\Entity]
 class Address implements Stringable
 {
     use TimeStampable;
     use CompanyAware;
 
-    /**
-     * @ORM\Column(name="id", type="uuid_binary_ordered_time")
-     * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
-     * @Serialize\Groups({"client_api"})
-     */
+    #[ORM\Column(name: 'id', type: 'uuid_binary_ordered_time')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
+    #[Serialize\Groups(['client_api'])]
     private ?UuidInterface $id = null;
 
-    /**
-     * @ORM\Column(name="street1", type="string", nullable=true)
-     * @Serialize\Groups({"client_api"})
-     */
+    #[ORM\Column(name: 'street1', type: 'string', nullable: true)]
+    #[Serialize\Groups(['client_api'])]
     private ?string $street1 = null;
 
-    /**
-     * @ORM\Column(name="street2", type="string", nullable=true)
-     * @Serialize\Groups({"client_api"})
-     */
+    #[ORM\Column(name: 'street2', type: 'string', nullable: true)]
+    #[Serialize\Groups(['client_api'])]
     private ?string $street2 = null;
 
-    /**
-     * @ORM\Column(name="city", type="string", nullable=true)
-     * @Serialize\Groups({"client_api"})
-     */
+    #[ORM\Column(name: 'city', type: 'string', nullable: true)]
+    #[Serialize\Groups(['client_api'])]
     private ?string $city = null;
 
-    /**
-     * @ORM\Column(name="state", type="string", nullable=true)
-     * @Serialize\Groups({"client_api"})
-     */
+    #[ORM\Column(name: 'state', type: 'string', nullable: true)]
+    #[Serialize\Groups(['client_api'])]
     private ?string $state = null;
 
-    /**
-     * @ORM\Column(name="zip", type="string", nullable=true)
-     * @Serialize\Groups({"client_api"})
-     */
+    #[ORM\Column(name: 'zip', type: 'string', nullable: true)]
+    #[Serialize\Groups(['client_api'])]
     private ?string $zip = null;
 
-    /**
-     * @ORM\Column(name="country", type="string", nullable=true)
-     * @Serialize\Groups({"client_api"})
-     */
+    #[ORM\Column(name: 'country', type: 'string', nullable: true)]
+    #[Serialize\Groups(['client_api'])]
     private ?string $country = null;
 
-    /**
-     * @Serialize\Groups({"client_api"})
-     */
+    #[Serialize\Groups(['client_api'])]
     private ?string $countryName = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Client", inversedBy="addresses")
-     */
+    #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'addresses')]
     private ?Client $client = null;
 
     public function getId(): ?UuidInterface

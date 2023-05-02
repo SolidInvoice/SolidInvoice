@@ -21,8 +21,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class PaymentReceivedListener implements EventSubscriberInterface
 {
-    private NotificationManager $notification;
-
     public static function getSubscribedEvents()
     {
         return [
@@ -30,9 +28,8 @@ class PaymentReceivedListener implements EventSubscriberInterface
         ];
     }
 
-    public function __construct(NotificationManager $notification)
+    public function __construct(private readonly NotificationManager $notification)
     {
-        $this->notification = $notification;
     }
 
     public function onPaymentCapture(PaymentCompleteEvent $event): void

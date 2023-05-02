@@ -23,14 +23,8 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 final class ApiCreate implements AjaxResponse
 {
-    private FormHandler $handler;
-
-    private TokenStorageInterface $tokenStorage;
-
-    public function __construct(FormHandler $handler, TokenStorageInterface $tokenStorage)
+    public function __construct(private readonly FormHandler $handler, private readonly TokenStorageInterface $tokenStorage)
     {
-        $this->handler = $handler;
-        $this->tokenStorage = $tokenStorage;
     }
 
     public function __invoke(Request $request): FormRequest

@@ -19,9 +19,9 @@ use Twig\Environment;
 
 class ClientCreateNotification extends NotificationMessage
 {
-    public const HTML_TEMPLATE = '@SolidInvoiceClient/Email/client_create.html.twig';
+    final public const HTML_TEMPLATE = '@SolidInvoiceClient/Email/client_create.html.twig';
 
-    public const TEXT_TEMPLATE = '@SolidInvoiceClient/Email/client_create.text.twig';
+    final public const TEXT_TEMPLATE = '@SolidInvoiceClient/Email/client_create.text.twig';
 
     public function getHtmlContent(Environment $twig): string
     {

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Entity;
 
+use SolidInvoice\InvoiceBundle\Repository\ItemRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Money\Money;
 use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
@@ -26,66 +27,48 @@ use Stringable;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="invoice_lines")
- * @ORM\Entity(repositoryClass="SolidInvoice\InvoiceBundle\Repository\ItemRepository")
- * @ORM\HasLifecycleCallbacks()
- */
+#[ORM\Table(name: 'invoice_lines')]
+#[ORM\Entity(repositoryClass: ItemRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Item implements ItemInterface, Stringable
 {
     use TimeStampable;
     use CompanyAware;
 
-    /**
-     * @ORM\Column(name="id", type="uuid_binary_ordered_time")
-     * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
-     * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api"})
-     */
+    #[ORM\Column(name: 'id', type: 'uuid_binary_ordered_time')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
+    #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api'])]
     private ?UuidInterface $id = null;
 
-    /**
-     * @ORM\Column(name="description", type="text")
-     * @Assert\NotBlank
-     * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api", "create_invoice_api", "create_recurring_invoice_api"})
-     */
+    #[ORM\Column(name: 'description', type: 'text')]
+    #[Assert\NotBlank]
+    #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
     private ?string $description = null;
 
-    /**
-     * @ORM\Embedded(class="SolidInvoice\MoneyBundle\Entity\Money")
-     * @Assert\NotBlank
-     * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api", "create_invoice_api", "create_recurring_invoice_api"})
-     */
+    #[ORM\Embedded(class: MoneyEntity::class)]
+    #[Assert\NotBlank]
+    #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
     private MoneyEntity $price;
 
-    /**
-     * @ORM\Column(name="qty", type="float")
-     * @Assert\NotBlank
-     * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api", "create_invoice_api", "create_recurring_invoice_api"})
-     */
+    #[ORM\Column(name: 'qty', type: 'float')]
+    #[Assert\NotBlank]
+    #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
     private ?float $qty = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Invoice", inversedBy="items")
-     */
+    #[ORM\ManyToOne(targetEntity: 'Invoice', inversedBy: 'items')]
     private ?Invoice $invoice = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="RecurringInvoice", inversedBy="items")
-     */
+    #[ORM\ManyToOne(targetEntity: 'RecurringInvoice', inversedBy: 'items')]
     private ?RecurringInvoice $recurringInvoice = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="SolidInvoice\TaxBundle\Entity\Tax", inversedBy="invoiceItems")
-     * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api", "create_invoice_api", "create_recurring_invoice_api"})
-     */
+    #[ORM\ManyToOne(targetEntity: Tax::class, inversedBy: 'invoiceItems')]
+    #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
     private ?Tax $tax = null;
 
-    /**
-     * @ORM\Embedded(class="SolidInvoice\MoneyBundle\Entity\Money")
-     * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api"})
-     */
+    #[ORM\Embedded(class: MoneyEntity::class)]
+    #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api'])]
     private MoneyEntity $total;
 
     public function __construct()
@@ -135,10 +118,7 @@ class Item implements ItemInterface, Stringable
         return $this->qty;
     }
 
-    /**
-     * @param Invoice|RecurringInvoice|null $invoice
-     */
-    public function setInvoice(?BaseInvoice $invoice): ItemInterface
+    public function setInvoice(Invoice|RecurringInvoice|null $invoice): ItemInterface
     {
         if ($invoice instanceof RecurringInvoice) {
             $this->recurringInvoice = $invoice;
@@ -178,9 +158,7 @@ class Item implements ItemInterface, Stringable
         return $this;
     }
 
-    /**
-     * @ORM\PrePersist
-     */
+    #[ORM\PrePersist]
     public function updateTotal(): void
     {
         $this->total = new MoneyEntity($this->getPrice()->multiply($this->qty));

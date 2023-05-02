@@ -23,14 +23,8 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class CloneRecurringInvoice
 {
-    private RouterInterface $router;
-
-    private InvoiceCloner $cloner;
-
-    public function __construct(RouterInterface $router, InvoiceCloner $cloner)
+    public function __construct(private readonly RouterInterface $router, private readonly InvoiceCloner $cloner)
     {
-        $this->router = $router;
-        $this->cloner = $cloner;
     }
 
     public function __invoke(Request $request, RecurringInvoice $invoice)

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Entity;
 
+use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use DateTime;
@@ -39,9 +40,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(attributes={"normalization_context"={"groups"={"invoice_api"}}, "denormalization_context"={"groups"={"create_invoice_api"}}})
- * @ORM\Table(name="invoices", indexes={@ORM\Index(columns={"quote_id"})})
- * @ORM\Entity(repositoryClass="SolidInvoice\InvoiceBundle\Repository\InvoiceRepository")
  */
+#[ORM\Table(name: 'invoices')]
+#[ORM\Index(columns: ['quote_id'])]
+#[ORM\Entity(repositoryClass: InvoiceRepository::class)]
 class Invoice extends BaseInvoice
 {
     use Archivable;
@@ -50,85 +52,69 @@ class Invoice extends BaseInvoice
     }
     use TimeStampable;
 
-    /**
-     * @ORM\Column(name="id", type="uuid_binary_ordered_time")
-     * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
-     * @Serialize\Groups({"invoice_api", "client_api"})
-     */
+    #[ORM\Column(name: 'id', type: 'uuid_binary_ordered_time')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
+    #[Serialize\Groups(['invoice_api', 'client_api'])]
     private ?UuidInterface $id = null;
 
-    /**
-     * @ORM\Column(name="invoice_id", type="string", length=255)
-     */
+    #[ORM\Column(name: 'invoice_id', type: 'string', length: 255)]
     private string $invoiceId;
 
-    /**
-     * @ORM\Column(name="uuid", type="uuid", length=36)
-     * @Serialize\Groups({"invoice_api", "client_api"})
-     */
+    #[ORM\Column(name: 'uuid', type: 'uuid', length: 36)]
+    #[Serialize\Groups(['invoice_api', 'client_api'])]
     private ?UuidInterface $uuid = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Client", inversedBy="invoices", cascade={"persist"})
-     * @Assert\NotBlank
-     * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api", "create_invoice_api", "create_recurring_invoice_api"})
      * @ApiProperty(iri="https://schema.org/Organization")
      */
+    #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'invoices', cascade: ['persist'])]
+    #[Assert\NotBlank]
+    #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
     protected ?Client $client = null;
 
-    /**
-     * @ORM\Embedded(class="SolidInvoice\MoneyBundle\Entity\Money")
-     * @Serialize\Groups({"invoice_api", "client_api"})
-     */
+    #[ORM\Embedded(class: MoneyEntity::class)]
+    #[Serialize\Groups(['invoice_api', 'client_api'])]
     private ?MoneyEntity $balance = null;
 
-    /**
-     * @ORM\Column(name="due", type="date", nullable=true)
-     * @Assert\DateTime
-     * @Serialize\Groups({"invoice_api", "client_api", "create_invoice_api"})
-     */
+    #[ORM\Column(name: 'due', type: 'date', nullable: true)]
+    #[Assert\DateTime]
+    #[Serialize\Groups(['invoice_api', 'client_api', 'create_invoice_api'])]
     private ?DateTimeInterface $due = null;
 
-    /**
-     * @ORM\Column(name="paid_date", type="datetime", nullable=true)
-     * @Assert\DateTime
-     * @Serialize\Groups({"invoice_api", "client_api"})
-     */
+    #[ORM\Column(name: 'paid_date', type: 'datetime', nullable: true)]
+    #[Assert\DateTime]
+    #[Serialize\Groups(['invoice_api', 'client_api'])]
     private ?DateTime $paidDate = null;
 
     /**
      * @var Collection<int, Payment>
-     *
-     * @ORM\OneToMany(targetEntity="SolidInvoice\PaymentBundle\Entity\Payment", mappedBy="invoice", cascade={"persist"}, orphanRemoval=true)
-     * @Serialize\Groups({"js"})
      */
+    #[ORM\OneToMany(targetEntity: Payment::class, mappedBy: 'invoice', cascade: ['persist'], orphanRemoval: true)]
+    #[Serialize\Groups(['js'])]
     private Collection $payments;
 
-    /**
-     * @ORM\OneToOne(targetEntity="SolidInvoice\QuoteBundle\Entity\Quote", inversedBy="invoice")
-     */
+    #[ORM\OneToOne(targetEntity: Quote::class, inversedBy: 'invoice')]
     private ?Quote $quote = null;
 
     /**
      * @var Collection<int, Item>
-     *
-     * @ORM\OneToMany(targetEntity="Item", mappedBy="invoice", cascade={"persist", "remove"}, orphanRemoval=true)
-     * @Assert\Valid()
-     * @Assert\Count(min=1, minMessage="You need to add at least 1 item to the Invoice")
-     * @Serialize\Groups({"invoice_api", "client_api", "create_invoice_api"})
      */
+    #[ORM\OneToMany(targetEntity: 'Item', mappedBy: 'invoice', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[Assert\Valid]
+    #[Assert\Count(min: 1, minMessage: 'You need to add at least 1 item to the Invoice')]
+    #[Serialize\Groups(['invoice_api', 'client_api', 'create_invoice_api'])]
     protected Collection $items;
 
     /**
      * @var Collection<int, InvoiceContact>
      *
-     * @ORM\OneToMany(targetEntity=InvoiceContact::class, cascade={"persist", "remove"}, fetch="EXTRA_LAZY", mappedBy="invoice")
-     * @Assert\Count(min=1, minMessage="You need to select at least 1 user to attach to the Invoice")
-     * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api", "create_invoice_api", "create_recurring_invoice_api"})
      * @ApiProperty(writableLink=true)
      */
+    #[ORM\OneToMany(targetEntity: InvoiceContact::class, cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY', mappedBy: 'invoice')]
+    #[Assert\Count(min: 1, minMessage: 'You need to select at least 1 user to attach to the Invoice')]
+    #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
     protected Collection $users;
 
     public function __construct()
@@ -141,7 +127,7 @@ class Invoice extends BaseInvoice
 
         try {
             $this->setUuid(Uuid::uuid1());
-        } catch (Exception $e) {
+        } catch (Exception) {
         }
     }
 
@@ -240,9 +226,7 @@ class Invoice extends BaseInvoice
         return $this->items;
     }
 
-    /**
-     * @ORM\PrePersist
-     */
+    #[ORM\PrePersist]
     public function updateItems(): void
     {
         foreach ($this->items as $item) {
@@ -339,7 +323,7 @@ class Invoice extends BaseInvoice
 
         try {
             $this->setUuid(Uuid::uuid1());
-        } catch (Exception $e) {
+        } catch (Exception) {
         }
     }
 
