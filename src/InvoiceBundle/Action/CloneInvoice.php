@@ -23,8 +23,10 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class CloneInvoice
 {
-    public function __construct(private readonly RouterInterface $router, private readonly InvoiceCloner $cloner)
-    {
+    public function __construct(
+        private readonly RouterInterface $router,
+        private readonly InvoiceCloner $cloner
+    ) {
     }
 
     public function __invoke(Request $request, Invoice $invoice)

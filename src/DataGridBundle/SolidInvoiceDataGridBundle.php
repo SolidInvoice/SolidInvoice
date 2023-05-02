@@ -20,8 +20,9 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 class SolidInvoiceDataGridBundle extends Bundle
 {
-    public function __construct(private readonly KernelInterface $kernel)
-    {
+    public function __construct(
+        private readonly KernelInterface $kernel
+    ) {
     }
 
     public function build(ContainerBuilder $container): void

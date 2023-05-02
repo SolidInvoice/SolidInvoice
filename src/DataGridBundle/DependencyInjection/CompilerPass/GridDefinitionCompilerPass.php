@@ -35,8 +35,9 @@ use Symfony\Component\Yaml\Yaml;
 
 class GridDefinitionCompilerPass implements CompilerPassInterface
 {
-    public function __construct(private readonly KernelInterface $kernel)
-    {
+    public function __construct(
+        private readonly KernelInterface $kernel
+    ) {
     }
 
     public function process(ContainerBuilder $container): void

@@ -23,8 +23,9 @@ class ViewTransformer implements DataTransformerInterface
     /**
      * @throws InvalidArgumentException
      */
-    public function __construct(private readonly Currency $currency)
-    {
+    public function __construct(
+        private readonly Currency $currency
+    ) {
     }
 
     public function transform($value)

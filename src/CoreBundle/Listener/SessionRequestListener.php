@@ -31,8 +31,10 @@ class SessionRequestListener implements EventSubscriberInterface
         ];
     }
 
-    public function __construct(protected SessionInterface $session, protected string $secret)
-    {
+    public function __construct(
+        protected SessionInterface $session,
+        protected string $secret
+    ) {
     }
 
     public function onKernelResponse(ResponseEvent $event): void

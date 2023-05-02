@@ -31,8 +31,11 @@ final class MailerConfigFactory
     /**
      * @param ConfiguratorInterface[] $transports
      */
-    public function __construct(private readonly Transport $inner, private readonly SystemConfig $config, private readonly iterable $transports)
-    {
+    public function __construct(
+        private readonly Transport $inner,
+        private readonly SystemConfig $config,
+        private readonly iterable $transports
+    ) {
     }
 
     /**

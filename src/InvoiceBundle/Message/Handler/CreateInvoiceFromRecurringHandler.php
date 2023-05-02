@@ -24,8 +24,10 @@ use Symfony\Component\Workflow\StateMachine;
  */
 final class CreateInvoiceFromRecurringHandler implements MessageSubscriberInterface
 {
-    public function __construct(private readonly InvoiceManager $invoiceManager, private readonly StateMachine $invoiceStateMachine)
-    {
+    public function __construct(
+        private readonly InvoiceManager $invoiceManager,
+        private readonly StateMachine $invoiceStateMachine
+    ) {
     }
 
     /**

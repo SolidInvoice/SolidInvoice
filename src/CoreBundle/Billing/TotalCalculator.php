@@ -27,8 +27,9 @@ use SolidInvoice\TaxBundle\Entity\Tax;
  */
 class TotalCalculator
 {
-    public function __construct(private readonly PaymentRepository $paymentRepository)
-    {
+    public function __construct(
+        private readonly PaymentRepository $paymentRepository
+    ) {
     }
 
     public function calculateTotals($entity): void

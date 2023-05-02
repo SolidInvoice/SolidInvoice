@@ -27,8 +27,11 @@ use function assert;
 
 final class Config
 {
-    public function __construct(private readonly ConfigWriter $configWriter, private readonly RouterInterface $router, private readonly FormFactoryInterface $formFactory)
-    {
+    public function __construct(
+        private readonly ConfigWriter $configWriter,
+        private readonly RouterInterface $router,
+        private readonly FormFactoryInterface $formFactory
+    ) {
     }
 
     public function __invoke(Request $request)

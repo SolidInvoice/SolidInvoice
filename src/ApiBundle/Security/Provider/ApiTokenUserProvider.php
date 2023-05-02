@@ -23,8 +23,10 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class ApiTokenUserProvider implements UserProviderInterface
 {
-    public function __construct(private readonly ApiTokenRepository $tokenRepository, private readonly UserRepositoryInterface $userRepository)
-    {
+    public function __construct(
+        private readonly ApiTokenRepository $tokenRepository,
+        private readonly UserRepositoryInterface $userRepository
+    ) {
     }
 
     public function getUsernameForToken(string $token): ?string

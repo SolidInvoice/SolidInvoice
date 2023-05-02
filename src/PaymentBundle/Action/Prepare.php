@@ -18,7 +18,6 @@ use DateTime;
 use Exception;
 use Money\Money;
 use Payum\Core\Payum;
-use Payum\Core\Registry\RegistryInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;

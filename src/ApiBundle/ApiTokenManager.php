@@ -24,8 +24,9 @@ class ApiTokenManager
 {
     final public const TOKEN_LENGTH = 32;
 
-    public function __construct(private readonly ManagerRegistry $registry)
-    {
+    public function __construct(
+        private readonly ManagerRegistry $registry
+    ) {
     }
 
     public function getOrCreate(User $user, string $name): ApiToken

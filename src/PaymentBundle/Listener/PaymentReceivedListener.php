@@ -28,8 +28,9 @@ class PaymentReceivedListener implements EventSubscriberInterface
         ];
     }
 
-    public function __construct(private readonly NotificationManager $notification)
-    {
+    public function __construct(
+        private readonly NotificationManager $notification
+    ) {
     }
 
     public function onPaymentCapture(PaymentCompleteEvent $event): void

@@ -24,8 +24,9 @@ use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
  */
 final class UserLoginEventSubscriber implements EventSubscriberInterface
 {
-    public function __construct(private readonly EntityManagerInterface $entityManager)
-    {
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager
+    ) {
     }
 
     /**

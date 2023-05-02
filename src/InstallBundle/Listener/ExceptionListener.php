@@ -31,8 +31,11 @@ class ExceptionListener implements EventSubscriberInterface
         ];
     }
 
-    public function __construct(private readonly FlashBagInterface $flashBag, private readonly TranslatorInterface $translator, private readonly RouterInterface $router)
-    {
+    public function __construct(
+        private readonly FlashBagInterface $flashBag,
+        private readonly TranslatorInterface $translator,
+        private readonly RouterInterface $router
+    ) {
     }
 
     public function onKernelException(ExceptionEvent $event): void

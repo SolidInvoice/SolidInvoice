@@ -36,8 +36,10 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class SettingsFormHandler implements FormHandlerInterface, FormHandlerSuccessInterface, FormHandlerResponseInterface
 {
-    public function __construct(private readonly SettingsRepository $settingsRepository, private readonly RouterInterface $router)
-    {
+    public function __construct(
+        private readonly SettingsRepository $settingsRepository,
+        private readonly RouterInterface $router
+    ) {
     }
 
     public function getForm(FormFactoryInterface $factory, Options $options)

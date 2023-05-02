@@ -27,8 +27,9 @@ final class Edit implements AjaxResponse
     use JsonTrait;
     use SaveableTrait;
 
-    public function __construct(private readonly FormFactoryInterface $factory)
-    {
+    public function __construct(
+        private readonly FormFactoryInterface $factory
+    ) {
     }
 
     public function __invoke(Request $request, Address $address)

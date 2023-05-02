@@ -26,8 +26,11 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class InviteUser
 {
-    public function __construct(private readonly FormHandler $formHandler, private readonly SystemConfig $config, private readonly RouterInterface $router)
-    {
+    public function __construct(
+        private readonly FormHandler $formHandler,
+        private readonly SystemConfig $config,
+        private readonly RouterInterface $router
+    ) {
     }
 
     /**

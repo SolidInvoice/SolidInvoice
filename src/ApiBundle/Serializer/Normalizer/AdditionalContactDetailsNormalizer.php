@@ -27,8 +27,10 @@ class AdditionalContactDetailsNormalizer implements NormalizerInterface, Denorma
 {
     private readonly DenormalizerInterface|NormalizerInterface $normalizer;
 
-    public function __construct(private readonly ManagerRegistry $registry, NormalizerInterface $normalizer)
-    {
+    public function __construct(
+        private readonly ManagerRegistry $registry,
+        NormalizerInterface $normalizer
+    ) {
         if (! $normalizer instanceof DenormalizerInterface) {
             throw new InvalidArgumentException('The normalizer must implement ' . DenormalizerInterface::class);
         }

@@ -22,8 +22,9 @@ use SolidInvoice\CoreBundle\Entity\Company;
 
 class CompanyListener implements EventSubscriber
 {
-    public function __construct(private readonly CompanySelector $companySelector)
-    {
+    public function __construct(
+        private readonly CompanySelector $companySelector
+    ) {
     }
 
     /**

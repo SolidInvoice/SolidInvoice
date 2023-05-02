@@ -18,8 +18,9 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
 final class QuoteEmail extends TemplatedEmail
 {
-    public function __construct(private readonly Quote $quote)
-    {
+    public function __construct(
+        private readonly Quote $quote
+    ) {
         parent::__construct();
     }
 

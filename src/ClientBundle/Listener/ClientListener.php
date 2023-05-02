@@ -30,8 +30,9 @@ use SolidInvoice\QuoteBundle\Entity\Quote;
 
 class ClientListener implements EventSubscriber
 {
-    public function __construct(private readonly NotificationManager $notification)
-    {
+    public function __construct(
+        private readonly NotificationManager $notification
+    ) {
     }
 
     /**

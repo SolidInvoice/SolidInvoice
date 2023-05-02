@@ -30,8 +30,9 @@ class Provider implements MenuProviderInterface
      */
     protected array $list = [];
 
-    public function __construct(private readonly FactoryInterface $factory)
-    {
+    public function __construct(
+        private readonly FactoryInterface $factory
+    ) {
     }
 
     public function get(string $name, array $options = []): ItemInterface

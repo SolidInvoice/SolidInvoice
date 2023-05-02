@@ -23,8 +23,10 @@ use Psr\Log\LoggerInterface;
  */
 class Generator
 {
-    public function __construct(private readonly string $cacheDir, private readonly LoggerInterface $logger)
-    {
+    public function __construct(
+        private readonly string $cacheDir,
+        private readonly LoggerInterface $logger
+    ) {
     }
 
     /**

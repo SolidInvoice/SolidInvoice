@@ -22,7 +22,6 @@ use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Capture;
 use Payum\Core\Security\GenericTokenFactoryInterface;
 use SolidInvoice\InvoiceBundle\Entity\Item;
-use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 
@@ -38,8 +37,10 @@ class CapturePaymentAction implements ActionInterface, GatewayAwareInterface
      */
     protected $tokenFactory;
 
-    public function __construct(GenericTokenFactoryInterface $tokenFactory, private readonly MoneyFormatterInterface $formatter)
-    {
+    public function __construct(
+        GenericTokenFactoryInterface $tokenFactory,
+        private readonly MoneyFormatterInterface $formatter
+    ) {
         $this->tokenFactory = $tokenFactory;
     }
 

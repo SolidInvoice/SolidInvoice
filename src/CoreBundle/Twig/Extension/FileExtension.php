@@ -18,8 +18,9 @@ use Twig\TwigFunction;
 
 class FileExtension extends AbstractExtension
 {
-    public function __construct(private readonly string $projectDir)
-    {
+    public function __construct(
+        private readonly string $projectDir
+    ) {
     }
 
     public function getFunctions(): array

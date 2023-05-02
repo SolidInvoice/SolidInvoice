@@ -19,15 +19,15 @@ use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\FilterCollection;
 use Doctrine\Persistence\ManagerRegistry;
 use function assert;
-use function get_class;
 
 /**
  * @see \SolidInvoice\CoreBundle\Tests\Generator\BillingIdGenerator\AutoIncrementIdGeneratorTest
  */
 final class AutoIncrementIdGenerator implements IdGeneratorInterface
 {
-    public function __construct(private readonly ManagerRegistry $registry)
-    {
+    public function __construct(
+        private readonly ManagerRegistry $registry
+    ) {
     }
 
     public function generate(object $entity, string $field): string

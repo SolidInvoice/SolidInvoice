@@ -23,8 +23,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class Create
 {
-    public function __construct(private readonly FormHandler $handler, private readonly ClientRepository $clientRepository)
-    {
+    public function __construct(
+        private readonly FormHandler $handler,
+        private readonly ClientRepository $clientRepository
+    ) {
     }
 
     public function __invoke(Request $request, Client $client = null)

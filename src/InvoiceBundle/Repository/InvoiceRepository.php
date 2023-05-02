@@ -59,7 +59,6 @@ class InvoiceRepository extends ServiceEntityRepository
     /**
      * Get the total amount for a specific invoice status.
      *
-     *
      * @throws NoResultException|NonUniqueResultException
      */
     public function getTotalByStatus(string $status, Client $client = null, int|string $hydrate = AbstractQuery::HYDRATE_SINGLE_SCALAR): int

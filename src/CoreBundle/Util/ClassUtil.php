@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Util;
 
 use PhpToken;
-use function defined;
 
 /**
  * @see \SolidInvoice\CoreBundle\Tests\Util\ClassUtilTest

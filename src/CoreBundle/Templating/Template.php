@@ -22,8 +22,11 @@ class Template
     /**
      * @param string $template #Template
      */
-    public function __construct(private ?string $template = null, private readonly array $params = [], Response $response = null)
-    {
+    public function __construct(
+        private ?string $template = null,
+        private readonly array $params = [],
+        Response $response = null
+    ) {
         $this->response = $response ?: new Response();
     }
 

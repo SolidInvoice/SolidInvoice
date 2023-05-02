@@ -30,8 +30,9 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  */
 class ContactDetailType extends AbstractType
 {
-    public function __construct(private readonly ContactTypeRepository $contactTypeRepository)
-    {
+    public function __construct(
+        private readonly ContactTypeRepository $contactTypeRepository
+    ) {
     }
 
     public function buildView(FormView $view, FormInterface $form, array $options): void

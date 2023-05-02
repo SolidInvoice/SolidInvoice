@@ -28,8 +28,10 @@ use Twig\Error\SyntaxError;
  */
 class InvoicePdfListener implements EventSubscriberInterface
 {
-    public function __construct(private readonly Generator $generator, private readonly Environment $twig)
-    {
+    public function __construct(
+        private readonly Generator $generator,
+        private readonly Environment $twig
+    ) {
     }
 
     /**

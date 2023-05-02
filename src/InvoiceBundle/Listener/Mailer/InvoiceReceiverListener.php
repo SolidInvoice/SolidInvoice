@@ -24,8 +24,9 @@ use Symfony\Component\Mime\Address;
  */
 class InvoiceReceiverListener implements EventSubscriberInterface
 {
-    public function __construct(private readonly SystemConfig $config)
-    {
+    public function __construct(
+        private readonly SystemConfig $config
+    ) {
     }
 
     public function __invoke(MessageEvent $event): void

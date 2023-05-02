@@ -21,7 +21,6 @@ use Exception;
 use JsonSerializable;
 use SolidInvoice\DataGridBundle\Filter\FilterInterface;
 use SolidInvoice\DataGridBundle\Source\SourceInterface;
-use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -61,8 +60,12 @@ class Grid implements GridInterface, JsonSerializable
 
     private array $parameters = [];
 
-    public function __construct(private readonly SourceInterface $source, private readonly FilterInterface $filter, array $gridData, private readonly MoneyFormatterInterface $moneyFormatter)
-    {
+    public function __construct(
+        private readonly SourceInterface $source,
+        private readonly FilterInterface $filter,
+        array $gridData,
+        private readonly MoneyFormatterInterface $moneyFormatter
+    ) {
         $this->title = $gridData['title'];
         $this->name = $gridData['name'];
         $this->columns = new ArrayCollection(array_values($gridData['columns']));

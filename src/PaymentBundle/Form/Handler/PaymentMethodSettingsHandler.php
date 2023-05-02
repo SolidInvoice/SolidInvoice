@@ -43,8 +43,10 @@ class PaymentMethodSettingsHandler implements FormHandlerInterface, FormHandlerS
      */
     private ?array $originalSettings = [];
 
-    public function __construct(private readonly PaymentFactories $paymentFactories, private readonly RouterInterface $router)
-    {
+    public function __construct(
+        private readonly PaymentFactories $paymentFactories,
+        private readonly RouterInterface $router
+    ) {
     }
 
     public function getForm(FormFactoryInterface $factory, Options $options)

@@ -25,8 +25,10 @@ use Twig\Environment;
 
 final class View
 {
-    public function __construct(private readonly Generator $pdfGenerator, private readonly Environment $engine)
-    {
+    public function __construct(
+        private readonly Generator $pdfGenerator,
+        private readonly Environment $engine
+    ) {
     }
 
     /**

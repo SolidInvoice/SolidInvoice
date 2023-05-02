@@ -39,8 +39,11 @@ class RegisterFormHandler implements FormHandlerResponseInterface, FormHandlerIn
 {
     use SaveableTrait;
 
-    public function __construct(private readonly UserPasswordHasherInterface $userPasswordHasher, private readonly RouterInterface $router, private readonly UserInvitationRepository $invitationRepository)
-    {
+    public function __construct(
+        private readonly UserPasswordHasherInterface $userPasswordHasher,
+        private readonly RouterInterface $router,
+        private readonly UserInvitationRepository $invitationRepository
+    ) {
     }
 
     public function getForm(FormFactoryInterface $factory, Options $options)

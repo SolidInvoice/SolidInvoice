@@ -28,8 +28,9 @@ final class CompanySelector
 
     private readonly OrderedTimeCodec $codec;
 
-    public function __construct(private readonly ManagerRegistry $registry)
-    {
+    public function __construct(
+        private readonly ManagerRegistry $registry
+    ) {
         $factory = clone Uuid::getFactory();
         assert($factory instanceof UuidFactory);
 

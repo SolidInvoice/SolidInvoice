@@ -25,8 +25,10 @@ use Symfony\Component\Security\Core\Security;
 
 final class SelectCompany
 {
-    public function __construct(private readonly Security $security, private readonly RouterInterface $router)
-    {
+    public function __construct(
+        private readonly Security $security,
+        private readonly RouterInterface $router
+    ) {
     }
 
     /**

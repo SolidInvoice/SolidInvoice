@@ -24,8 +24,10 @@ final class ApiList
 {
     use SerializeTrait;
 
-    public function __construct(private readonly ApiTokenRepository $repository, private readonly TokenStorageInterface $tokenStorage)
-    {
+    public function __construct(
+        private readonly ApiTokenRepository $repository,
+        private readonly TokenStorageInterface $tokenStorage
+    ) {
     }
 
     public function __invoke(Request $request)

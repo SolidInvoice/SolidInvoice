@@ -19,8 +19,9 @@ use Twig\Environment;
 
 class FieldRenderer
 {
-    public function __construct(private readonly Environment $twig)
-    {
+    public function __construct(
+        private readonly Environment $twig
+    ) {
     }
 
     public function render(FormView $form, string $path = null): array

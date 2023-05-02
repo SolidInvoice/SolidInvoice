@@ -23,8 +23,10 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class CloneQuote
 {
-    public function __construct(private readonly QuoteCloner $cloner, private readonly RouterInterface $router)
-    {
+    public function __construct(
+        private readonly QuoteCloner $cloner,
+        private readonly RouterInterface $router
+    ) {
     }
 
     public function __invoke(Request $request, Quote $quote)

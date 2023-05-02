@@ -36,8 +36,10 @@ class InvoicePaidListener implements EventSubscriberInterface
         ];
     }
 
-    public function __construct(private readonly ManagerRegistry $registry, private readonly SystemConfig $systemConfig)
-    {
+    public function __construct(
+        private readonly ManagerRegistry $registry,
+        private readonly SystemConfig $systemConfig
+    ) {
     }
 
     public function onInvoicePaid(Event $event): void

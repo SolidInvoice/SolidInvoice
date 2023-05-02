@@ -32,8 +32,11 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class InvoiceUsersSubscriber implements EventSubscriberInterface
 {
-    public function __construct(private readonly FormBuilderInterface $builder, private readonly BaseInvoice $invoice, private readonly ManagerRegistry $registry)
-    {
+    public function __construct(
+        private readonly FormBuilderInterface $builder,
+        private readonly BaseInvoice $invoice,
+        private readonly ManagerRegistry $registry
+    ) {
     }
 
     /**

@@ -25,8 +25,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class Create
 {
-    public function __construct(private readonly ClientRepository $repository, private readonly FormHandler $handler)
-    {
+    public function __construct(
+        private readonly ClientRepository $repository,
+        private readonly FormHandler $handler
+    ) {
     }
 
     /**
