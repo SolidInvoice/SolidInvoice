@@ -14,9 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Util;
 
 use ArrayAccess;
-use Exception;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Traversable;
 
 class ArrayUtil
 {

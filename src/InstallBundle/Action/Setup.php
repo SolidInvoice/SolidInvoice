@@ -39,8 +39,15 @@ use Throwable;
 
 final class Setup
 {
-    public function __construct(private readonly PasswordHasherFactoryInterface $passwordHasherFactory, private readonly FormFactoryInterface $formFactory, private readonly ManagerRegistry $doctrine, private readonly ConfigWriter $configWriter, private readonly VatCalculator $vatCalculator, private readonly SystemConfig $systemConfig, private readonly RouterInterface $router)
-    {
+    public function __construct(
+        private readonly PasswordHasherFactoryInterface $passwordHasherFactory,
+        private readonly FormFactoryInterface $formFactory,
+        private readonly ManagerRegistry $doctrine,
+        private readonly ConfigWriter $configWriter,
+        private readonly VatCalculator $vatCalculator,
+        private readonly SystemConfig $systemConfig,
+        private readonly RouterInterface $router
+    ) {
     }
 
     /**

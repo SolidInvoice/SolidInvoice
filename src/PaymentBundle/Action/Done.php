@@ -16,7 +16,6 @@ namespace SolidInvoice\PaymentBundle\Action;
 use DateTime;
 use Payum\Core\Model\Token;
 use Payum\Core\Payum;
-use Payum\Core\Registry\RegistryInterface;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Event\PaymentCompleteEvent;

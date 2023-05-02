@@ -35,8 +35,9 @@ final class BillingUserNormalizer implements ContextAwareDenormalizerInterface, 
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
 
-    public function __construct(private readonly IriConverterInterface $iriConverter)
-    {
+    public function __construct(
+        private readonly IriConverterInterface $iriConverter
+    ) {
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])

@@ -42,8 +42,11 @@ class PaymentCompleteListener implements EventSubscriberInterface
         ];
     }
 
-    public function __construct(private readonly StateMachine $stateMachine, private readonly ManagerRegistry $registry, private readonly RouterInterface $router)
-    {
+    public function __construct(
+        private readonly StateMachine $stateMachine,
+        private readonly ManagerRegistry $registry,
+        private readonly RouterInterface $router
+    ) {
     }
 
     public function onPaymentComplete(PaymentCompleteEvent $event): void
@@ -79,8 +82,10 @@ class PaymentCompleteListener implements EventSubscriberInterface
 
             $event->setResponse(
                 new class($router->generate('_view_invoice_external', ['uuid' => $invoice->getUuid()]), $status) extends RedirectResponse implements FlashResponse {
-                    public function __construct(string $route, private readonly string $status)
-                    {
+                    public function __construct(
+                        string $route,
+                        private readonly string $status
+                    ) {
                         parent::__construct($route);
                     }
 

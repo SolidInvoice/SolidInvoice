@@ -28,8 +28,11 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class Edit
 {
-    public function __construct(private readonly RouterInterface $router, private readonly FormHandler $formHandler, private readonly SystemConfig $systemConfig)
-    {
+    public function __construct(
+        private readonly RouterInterface $router,
+        private readonly FormHandler $formHandler,
+        private readonly SystemConfig $systemConfig
+    ) {
     }
 
     /**

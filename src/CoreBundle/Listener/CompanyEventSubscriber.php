@@ -33,8 +33,11 @@ use function in_array;
  */
 final class CompanyEventSubscriber implements EventSubscriberInterface
 {
-    public function __construct(private readonly RouterInterface $router, private readonly CompanySelector $companySelector, private readonly Security $security)
-    {
+    public function __construct(
+        private readonly RouterInterface $router,
+        private readonly CompanySelector $companySelector,
+        private readonly Security $security
+    ) {
     }
 
     public static function getSubscribedEvents(): array

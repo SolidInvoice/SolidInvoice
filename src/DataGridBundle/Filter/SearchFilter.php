@@ -19,8 +19,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 class SearchFilter implements FilterInterface
 {
-    public function __construct(private readonly array $searchFields)
-    {
+    public function __construct(
+        private readonly array $searchFields
+    ) {
     }
 
     public function filter(Request $request, QueryBuilder $queryBuilder): void

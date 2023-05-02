@@ -20,8 +20,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class Index
 {
-    public function __construct(private readonly QuoteRepository $repository)
-    {
+    public function __construct(
+        private readonly QuoteRepository $repository
+    ) {
     }
 
     public function __invoke(Request $request)

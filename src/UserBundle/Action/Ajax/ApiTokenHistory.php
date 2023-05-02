@@ -21,8 +21,9 @@ use Twig\Environment;
 
 final class ApiTokenHistory implements AjaxResponse
 {
-    public function __construct(private readonly Environment $twig)
-    {
+    public function __construct(
+        private readonly Environment $twig
+    ) {
     }
 
     public function __invoke(Request $request, ApiToken $token)

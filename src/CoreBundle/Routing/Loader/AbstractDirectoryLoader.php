@@ -27,8 +27,10 @@ use Symfony\Component\Routing\RouteCollection;
 
 abstract class AbstractDirectoryLoader extends Loader
 {
-    public function __construct(private readonly FileLocatorInterface $locator, private readonly KernelInterface $kernel)
-    {
+    public function __construct(
+        private readonly FileLocatorInterface $locator,
+        private readonly KernelInterface $kernel
+    ) {
         parent::__construct();
     }
 

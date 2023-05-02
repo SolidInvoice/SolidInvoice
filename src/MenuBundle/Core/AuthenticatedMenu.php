@@ -22,8 +22,9 @@ use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundE
  */
 class AuthenticatedMenu implements BuilderInterface
 {
-    public function __construct(private readonly AuthorizationCheckerInterface $authorizationChecker)
-    {
+    public function __construct(
+        private readonly AuthorizationCheckerInterface $authorizationChecker
+    ) {
     }
 
     public function validate(): bool

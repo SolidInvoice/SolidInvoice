@@ -26,8 +26,9 @@ use Zenstruck\ScheduleBundle\Schedule\ScheduleBuilder as ScheduleBuilderInterfac
  */
 final class ScheduleBuilder implements ScheduleBuilderInterface
 {
-    public function __construct(private readonly ManagerRegistry $registry)
-    {
+    public function __construct(
+        private readonly ManagerRegistry $registry
+    ) {
     }
 
     public function buildSchedule(Schedule $schedule): void

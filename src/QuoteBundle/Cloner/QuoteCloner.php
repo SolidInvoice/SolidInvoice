@@ -26,8 +26,9 @@ use Traversable;
  */
 final class QuoteCloner
 {
-    public function __construct(private readonly StateMachine $stateMachine)
-    {
+    public function __construct(
+        private readonly StateMachine $stateMachine
+    ) {
     }
 
     public function clone(Quote $quote): Quote

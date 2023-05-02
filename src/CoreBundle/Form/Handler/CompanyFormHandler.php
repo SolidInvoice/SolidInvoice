@@ -37,8 +37,12 @@ final class CompanyFormHandler implements FormHandlerInterface, FormHandlerSucce
 {
     use SaveableTrait;
 
-    public function __construct(private readonly Security $security, private readonly CompanySelector $companySelector, private readonly RouterInterface $router, private readonly DefaultData $defaultData)
-    {
+    public function __construct(
+        private readonly Security $security,
+        private readonly CompanySelector $companySelector,
+        private readonly RouterInterface $router,
+        private readonly DefaultData $defaultData
+    ) {
     }
 
     public function getForm(FormFactoryInterface $factory, Options $options): string

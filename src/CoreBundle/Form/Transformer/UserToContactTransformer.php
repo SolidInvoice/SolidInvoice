@@ -15,7 +15,6 @@ namespace SolidInvoice\CoreBundle\Form\Transformer;
 
 use Doctrine\Common\Collections\Collection;
 use SolidInvoice\ClientBundle\Entity\Contact;
-use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\InvoiceContact;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
@@ -35,8 +34,10 @@ final class UserToContactTransformer implements DataTransformerInterface
     /**
      * @param class-string<T> $class
      */
-    public function __construct(private readonly object $entity, private readonly string $class)
-    {
+    public function __construct(
+        private readonly object $entity,
+        private readonly string $class
+    ) {
     }
 
     /**

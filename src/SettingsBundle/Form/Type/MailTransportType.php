@@ -27,8 +27,9 @@ final class MailTransportType extends AbstractType
     /**
      * @param list<ConfiguratorInterface>|Traversable<ConfiguratorInterface> $transports
      */
-    public function __construct(private readonly iterable $transports)
-    {
+    public function __construct(
+        private readonly iterable $transports
+    ) {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

@@ -26,8 +26,10 @@ final class RecurringArchive implements AjaxResponse
 {
     use JsonTrait;
 
-    public function __construct(private readonly RecurringInvoiceRepository $repository, private readonly StateMachine $stateMachine)
-    {
+    public function __construct(
+        private readonly RecurringInvoiceRepository $repository,
+        private readonly StateMachine $stateMachine
+    ) {
     }
 
     public function __invoke(Request $request)

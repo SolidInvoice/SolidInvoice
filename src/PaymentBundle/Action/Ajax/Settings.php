@@ -23,8 +23,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class Settings implements AjaxResponse
 {
-    public function __construct(private readonly PaymentFactories $factories, private readonly FormHandler $handler)
-    {
+    public function __construct(
+        private readonly PaymentFactories $factories,
+        private readonly FormHandler $handler
+    ) {
     }
 
     /**

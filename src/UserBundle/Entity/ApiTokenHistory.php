@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Entity;
 
 use Doctrine\DBAL\Types\Types;
-use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
-use SolidInvoice\UserBundle\Repository\ApiTokenHistoryRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
 use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
+use SolidInvoice\UserBundle\Repository\ApiTokenHistoryRepository;
 
 #[ORM\Table(name: ApiTokenHistory::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: ApiTokenHistoryRepository::class)]

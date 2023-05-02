@@ -27,8 +27,10 @@ final class Transition
 {
     use SaveableTrait;
 
-    public function __construct(private readonly RouterInterface $router, private readonly StateMachine $stateMachine)
-    {
+    public function __construct(
+        private readonly RouterInterface $router,
+        private readonly StateMachine $stateMachine
+    ) {
     }
 
     public function __invoke(Request $request, string $action, Invoice $invoice): RedirectResponse
@@ -44,8 +46,10 @@ final class Transition
         $route = $this->router->generate('_invoices_view', ['id' => $invoice->getId()]);
 
         return new class($action, $route) extends RedirectResponse implements FlashResponse {
-            public function __construct(private readonly string $action, string $route)
-            {
+            public function __construct(
+                private readonly string $action,
+                string $route
+            ) {
                 parent::__construct($route);
             }
 

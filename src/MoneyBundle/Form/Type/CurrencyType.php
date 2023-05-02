@@ -24,8 +24,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CurrencyType extends AbstractType
 {
-    public function __construct(private readonly string $locale)
-    {
+    public function __construct(
+        private readonly string $locale
+    ) {
     }
 
     public function configureOptions(OptionsResolver $resolver): void

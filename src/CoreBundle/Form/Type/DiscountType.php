@@ -41,8 +41,9 @@ class DiscountType extends AbstractType
         ],
     ];
 
-    public function __construct(private readonly SystemConfig $systemConfig)
-    {
+    public function __construct(
+        private readonly SystemConfig $systemConfig
+    ) {
     }
 
     public function buildView(FormView $view, FormInterface $form, array $options): void

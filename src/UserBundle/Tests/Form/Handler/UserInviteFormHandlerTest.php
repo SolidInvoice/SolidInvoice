@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Tests\Form\Handler;
 
-use Mockery\MockInterface;
 use Mockery as M;
+use Mockery\MockInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Response\FlashResponse;

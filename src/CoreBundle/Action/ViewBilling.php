@@ -31,13 +31,15 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class ViewBilling
 {
-    public function __construct(private readonly ManagerRegistry $registry, private readonly AuthorizationCheckerInterface $authorizationChecker, private readonly RouterInterface $router)
-    {
+    public function __construct(
+        private readonly ManagerRegistry $registry,
+        private readonly AuthorizationCheckerInterface $authorizationChecker,
+        private readonly RouterInterface $router
+    ) {
     }
 
     /**
      * View a quote if not logged in.
-     *
      *
      * @throws InvalidArgumentException|InvalidParameterException|InvalidUuidStringException|MissingMandatoryParametersException|NotFoundHttpException|RouteNotFoundException
      */
@@ -56,7 +58,6 @@ class ViewBilling
 
     /**
      * View a invoice if not logged in.
-     *
      *
      * @throws InvalidArgumentException|InvalidParameterException|InvalidUuidStringException|MissingMandatoryParametersException|NotFoundHttpException|RouteNotFoundException
      */

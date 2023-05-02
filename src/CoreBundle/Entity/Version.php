@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Entity;
 
 use Doctrine\DBAL\Types\Types;
-use SolidInvoice\CoreBundle\Repository\VersionRepository;
 use Doctrine\ORM\Mapping as ORM;
+use SolidInvoice\CoreBundle\Repository\VersionRepository;
 use Stringable;
 
 #[ORM\Table(name: Version::TABLE_NAME)]

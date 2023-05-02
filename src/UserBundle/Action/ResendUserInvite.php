@@ -24,8 +24,11 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class ResendUserInvite
 {
-    public function __construct(private readonly UserInvitation $invitation, private readonly UserInvitationRepository $invitationRepository, private readonly RouterInterface $router)
-    {
+    public function __construct(
+        private readonly UserInvitation $invitation,
+        private readonly UserInvitationRepository $invitationRepository,
+        private readonly RouterInterface $router
+    ) {
     }
 
     public function __invoke(string $id): RedirectResponse

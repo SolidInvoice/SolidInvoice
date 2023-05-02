@@ -20,8 +20,9 @@ use Symfony\Component\Mailer\Event\MessageEvent;
 
 class QuoteSubjectListener implements EventSubscriberInterface
 {
-    public function __construct(private readonly SystemConfig $config)
-    {
+    public function __construct(
+        private readonly SystemConfig $config
+    ) {
     }
 
     public function __invoke(MessageEvent $event): void

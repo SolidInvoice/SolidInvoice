@@ -28,8 +28,9 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
  */
 class InvoiceSaveListener implements EventSubscriber
 {
-    public function __construct(private readonly ServiceLocator $serviceLocator)
-    {
+    public function __construct(
+        private readonly ServiceLocator $serviceLocator
+    ) {
     }
 
     /**

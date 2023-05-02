@@ -24,8 +24,10 @@ final class MethodList implements AjaxResponse
 {
     use JsonTrait;
 
-    public function __construct(private readonly PaymentFactories $factories, private readonly PaymentMethodRepository $repository)
-    {
+    public function __construct(
+        private readonly PaymentFactories $factories,
+        private readonly PaymentMethodRepository $repository
+    ) {
     }
 
     public function __invoke(Request $request)

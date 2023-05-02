@@ -23,8 +23,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class Edit
 {
-    public function __construct(private readonly FormHandler $handler, private readonly SystemConfig $systemConfig)
-    {
+    public function __construct(
+        private readonly FormHandler $handler,
+        private readonly SystemConfig $systemConfig
+    ) {
     }
 
     /**

@@ -24,8 +24,10 @@ final class Data implements AjaxResponse
 {
     use SerializeTrait;
 
-    public function __construct(private readonly GridRepository $repository, private readonly ManagerRegistry $registry)
-    {
+    public function __construct(
+        private readonly GridRepository $repository,
+        private readonly ManagerRegistry $registry
+    ) {
     }
 
     public function __invoke(Request $request, string $name): Response

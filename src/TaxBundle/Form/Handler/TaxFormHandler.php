@@ -38,8 +38,9 @@ class TaxFormHandler implements FormHandlerInterface, FormHandlerSuccessInterfac
 {
     use SaveableTrait;
 
-    public function __construct(private readonly RouterInterface $router)
-    {
+    public function __construct(
+        private readonly RouterInterface $router
+    ) {
     }
 
     public function getForm(FormFactoryInterface $factory, Options $options)

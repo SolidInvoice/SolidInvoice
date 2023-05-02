@@ -26,8 +26,10 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class Send
 {
-    public function __construct(private readonly QuoteMailer $mailer, private readonly RouterInterface $router)
-    {
+    public function __construct(
+        private readonly QuoteMailer $mailer,
+        private readonly RouterInterface $router
+    ) {
     }
 
     public function __invoke(Request $request, Quote $quote): RedirectResponse
@@ -38,8 +40,10 @@ final class Send
             $this->mailer->send($quote);
         } catch (JsonException | InvalidTransitionException | TransportExceptionInterface $e) {
             return new class($route, $e->getMessage()) extends RedirectResponse implements FlashResponse {
-                public function __construct(string $route, private readonly string $message)
-                {
+                public function __construct(
+                    string $route,
+                    private readonly string $message
+                ) {
                     parent::__construct($route);
                 }
 

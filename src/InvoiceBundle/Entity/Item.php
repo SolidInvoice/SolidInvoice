@@ -14,15 +14,15 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Entity;
 
 use Doctrine\DBAL\Types\Types;
-use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
-use SolidInvoice\InvoiceBundle\Repository\ItemRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Money\Money;
+use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
 use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Entity\ItemInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
+use SolidInvoice\InvoiceBundle\Repository\ItemRepository;
 use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use Stringable;

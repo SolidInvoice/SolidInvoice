@@ -27,8 +27,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ItemType extends AbstractType
 {
-    public function __construct(private readonly ManagerRegistry $registry)
-    {
+    public function __construct(
+        private readonly ManagerRegistry $registry
+    ) {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

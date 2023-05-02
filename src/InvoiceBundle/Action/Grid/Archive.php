@@ -26,8 +26,10 @@ final class Archive implements AjaxResponse
 {
     use JsonTrait;
 
-    public function __construct(private readonly InvoiceRepository $repository, private readonly StateMachine $stateMachine)
-    {
+    public function __construct(
+        private readonly InvoiceRepository $repository,
+        private readonly StateMachine $stateMachine
+    ) {
     }
 
     public function __invoke(Request $request)

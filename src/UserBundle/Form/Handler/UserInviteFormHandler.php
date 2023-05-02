@@ -46,8 +46,15 @@ class UserInviteFormHandler implements FormHandlerResponseInterface, FormHandler
 {
     use SaveableTrait;
 
-    public function __construct(private readonly RouterInterface $router, private readonly CompanySelector $companySelector, private readonly CompanyRepository $companyRepository, private readonly UserRepository $userRepository, private readonly Security $security, private readonly ValidatorInterface $validator, private readonly SendUserInvitation $userInvitation)
-    {
+    public function __construct(
+        private readonly RouterInterface $router,
+        private readonly CompanySelector $companySelector,
+        private readonly CompanyRepository $companyRepository,
+        private readonly UserRepository $userRepository,
+        private readonly Security $security,
+        private readonly ValidatorInterface $validator,
+        private readonly SendUserInvitation $userInvitation
+    ) {
     }
 
     public function getForm(FormFactoryInterface $factory, Options $options)
@@ -112,8 +119,10 @@ class UserInviteFormHandler implements FormHandlerResponseInterface, FormHandler
         $route = $this->router->generate('_users_list');
 
         return new class($validation, $route) extends RedirectResponse implements FlashResponse {
-            public function __construct(private readonly ConstraintViolationListInterface $validation, string $route)
-            {
+            public function __construct(
+                private readonly ConstraintViolationListInterface $validation,
+                string $route
+            ) {
                 parent::__construct($route);
             }
 

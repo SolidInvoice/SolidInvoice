@@ -39,8 +39,10 @@ class InvoiceCancelListener implements EventSubscriberInterface
         ];
     }
 
-    public function __construct(private readonly ManagerRegistry $registry, private readonly SystemConfig $systemConfig)
-    {
+    public function __construct(
+        private readonly ManagerRegistry $registry,
+        private readonly SystemConfig $systemConfig
+    ) {
     }
 
     public function onInvoiceCancelled(InvoiceEvent $event): void

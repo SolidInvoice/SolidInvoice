@@ -19,7 +19,6 @@ use Payum\Core\Model\Identity;
 use Ramsey\Uuid\UuidInterface;
 use function array_shift;
 use function count;
-use function get_class;
 
 /**
  * Overwrite the default DoctrineStorage to support UUIDs.

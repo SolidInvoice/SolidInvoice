@@ -21,8 +21,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class Index
 {
-    public function __construct(private readonly InvoiceRepository $invoiceRepository, private readonly PaymentRepository $paymentRepository)
-    {
+    public function __construct(
+        private readonly InvoiceRepository $invoiceRepository,
+        private readonly PaymentRepository $paymentRepository
+    ) {
     }
 
     public function __invoke(Request $request)

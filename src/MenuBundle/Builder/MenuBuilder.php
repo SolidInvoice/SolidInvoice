@@ -24,8 +24,10 @@ final class MenuBuilder implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
 
-    public function __construct(protected BuilderInterface $class, protected string $method)
-    {
+    public function __construct(
+        protected BuilderInterface $class,
+        protected string $method
+    ) {
     }
 
     /**

@@ -23,8 +23,9 @@ final class Validate implements AjaxResponse
 {
     use JsonTrait;
 
-    public function __construct(private readonly VatCalculator $calculator)
-    {
+    public function __construct(
+        private readonly VatCalculator $calculator
+    ) {
     }
 
     public function __invoke(Request $request)

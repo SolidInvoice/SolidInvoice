@@ -26,8 +26,11 @@ use Symfony\Component\Workflow\StateMachine;
 
 final class QuoteMailer
 {
-    public function __construct(private readonly StateMachine $stateMachine, private readonly MailerInterface $mailer, private readonly NotificationManager $notification)
-    {
+    public function __construct(
+        private readonly StateMachine $stateMachine,
+        private readonly MailerInterface $mailer,
+        private readonly NotificationManager $notification
+    ) {
     }
 
     /**

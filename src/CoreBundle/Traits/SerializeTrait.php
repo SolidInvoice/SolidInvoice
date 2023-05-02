@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Traits;
 
-use Symfony\Contracts\Service\Attribute\Required;
 use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Contracts\Service\Attribute\Required;
 
 trait SerializeTrait
 {

@@ -20,8 +20,9 @@ use Twig\TwigFunction;
 
 class TaxExtension extends AbstractExtension
 {
-    public function __construct(private readonly ManagerRegistry $registry)
-    {
+    public function __construct(
+        private readonly ManagerRegistry $registry
+    ) {
     }
 
     public function getFunctions(): array

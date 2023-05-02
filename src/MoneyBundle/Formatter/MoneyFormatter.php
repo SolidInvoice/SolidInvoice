@@ -37,8 +37,10 @@ final class MoneyFormatter implements MoneyFormatterInterface
     /**
      * @throws MethodArgumentNotImplementedException|MethodArgumentValueNotImplementedException
      */
-    public function __construct(string $locale, private readonly SystemConfig $systemConfig)
-    {
+    public function __construct(
+        string $locale,
+        private readonly SystemConfig $systemConfig
+    ) {
         try {
             $this->numberFormatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
         } catch (MethodArgumentValueNotImplementedException|MethodArgumentNotImplementedException) {

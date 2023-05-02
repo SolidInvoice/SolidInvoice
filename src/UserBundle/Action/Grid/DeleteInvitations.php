@@ -25,8 +25,9 @@ final class DeleteInvitations implements AjaxResponse
 {
     use JsonTrait;
 
-    public function __construct(private readonly UserInvitationRepository $repository)
-    {
+    public function __construct(
+        private readonly UserInvitationRepository $repository
+    ) {
     }
 
     /**

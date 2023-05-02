@@ -23,8 +23,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class EditRecurring
 {
-    public function __construct(private readonly FormHandler $formHandler, private readonly SystemConfig $systemConfig)
-    {
+    public function __construct(
+        private readonly FormHandler $formHandler,
+        private readonly SystemConfig $systemConfig
+    ) {
     }
 
     /**

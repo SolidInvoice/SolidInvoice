@@ -21,8 +21,10 @@ use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 
 final class View
 {
-    public function __construct(private readonly PaymentRepository $paymentRepository, private readonly InvoiceRepository $invoiceRepository)
-    {
+    public function __construct(
+        private readonly PaymentRepository $paymentRepository,
+        private readonly InvoiceRepository $invoiceRepository
+    ) {
     }
 
     public function __invoke(Client $client): Template

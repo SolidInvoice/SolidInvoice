@@ -26,8 +26,9 @@ use Traversable;
  */
 final class InvoiceCloner
 {
-    public function __construct(private readonly InvoiceManager $invoiceManager)
-    {
+    public function __construct(
+        private readonly InvoiceManager $invoiceManager
+    ) {
     }
 
     public function clone(BaseInvoice $invoice): BaseInvoice

@@ -27,8 +27,9 @@ use function json_decode;
  */
 class SettingsExtension extends AbstractExtension
 {
-    public function __construct(private readonly SystemConfig $config)
-    {
+    public function __construct(
+        private readonly SystemConfig $config
+    ) {
     }
 
     public function getFunctions(): array

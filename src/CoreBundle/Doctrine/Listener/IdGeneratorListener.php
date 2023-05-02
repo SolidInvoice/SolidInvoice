@@ -26,8 +26,9 @@ use SolidInvoice\QuoteBundle\Entity\Quote;
  */
 final class IdGeneratorListener implements EventSubscriber
 {
-    public function __construct(private readonly ManagerRegistry $registry)
-    {
+    public function __construct(
+        private readonly ManagerRegistry $registry
+    ) {
     }
 
     /**

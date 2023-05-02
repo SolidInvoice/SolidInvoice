@@ -27,8 +27,9 @@ use Symfony\Component\Workflow\StateMachine;
  */
 class QuoteCreateListener implements EventSubscriberInterface
 {
-    public function __construct(private readonly StateMachine $stateMachine)
-    {
+    public function __construct(
+        private readonly StateMachine $stateMachine
+    ) {
     }
 
     /**

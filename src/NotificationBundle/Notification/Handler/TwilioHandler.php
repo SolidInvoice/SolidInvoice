@@ -22,8 +22,10 @@ use Twilio\Rest\Client;
 
 class TwilioHandler implements HandlerInterface
 {
-    public function __construct(private readonly Client $twilio, private readonly SystemConfig $config)
-    {
+    public function __construct(
+        private readonly Client $twilio,
+        private readonly SystemConfig $config
+    ) {
     }
 
     public function shouldHandle(NotificationInterface $notification): bool

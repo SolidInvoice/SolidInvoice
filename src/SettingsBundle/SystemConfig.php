@@ -30,8 +30,10 @@ class SystemConfig
      */
     private static array $settings = [];
 
-    public function __construct(private readonly ?string $installed, private readonly SettingsRepository $repository)
-    {
+    public function __construct(
+        private readonly ?string $installed,
+        private readonly SettingsRepository $repository
+    ) {
     }
 
     public function get(string $key): ?string

@@ -38,8 +38,11 @@ class UpgradeListener implements EventSubscriberInterface
         ];
     }
 
-    public function __construct(private readonly ?string $installed, private readonly ManagerRegistry $registry, private readonly Migration $migration)
-    {
+    public function __construct(
+        private readonly ?string $installed,
+        private readonly ManagerRegistry $registry,
+        private readonly Migration $migration
+    ) {
     }
 
     public function onKernelRequest(RequestEvent $event): void
