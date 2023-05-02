@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
+use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -27,29 +29,31 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'payment_methods')]
+#[ORM\Table(name: PaymentMethod::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: PaymentMethodRepository::class)]
 #[UniqueEntity('gatewayName')]
 class PaymentMethod implements GatewayConfigInterface, Stringable
 {
+    final public const TABLE_NAME = 'payment_methods';
+
     use TimeStampable;
     use CompanyAware;
 
-    #[ORM\Column(name: 'id', type: 'uuid_binary_ordered_time')]
+    #[ORM\Column(name: 'id', type: UuidBinaryOrderedTimeType::NAME)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
     private ?UuidInterface $id = null;
 
-    #[ORM\Column(name: 'name', type: 'string', length: 125)]
+    #[ORM\Column(name: 'name', type: Types::STRING, length: 125)]
     #[Assert\NotBlank]
     #[Serialize\Groups(['payment_api'])]
     private ?string $name = null;
 
-    #[ORM\Column(name: 'gateway_name', type: 'string', length: 125)]
+    #[ORM\Column(name: 'gateway_name', type: Types::STRING, length: 125)]
     private ?string $gatewayName = null;
 
-    #[ORM\Column(name: 'factory', type: 'string', length: 125)]
+    #[ORM\Column(name: 'factory', type: Types::STRING, length: 125)]
     private ?string $factoryName = null;
 
     /**
@@ -58,16 +62,16 @@ class PaymentMethod implements GatewayConfigInterface, Stringable
     #[ORM\Column(name: 'config', type: 'array', nullable: true)]
     private array $config = [];
 
-    #[ORM\Column(name: 'internal', type: 'boolean', nullable: true)]
+    #[ORM\Column(name: 'internal', type: Types::BOOLEAN, nullable: true)]
     private bool $internal = false;
 
-    #[ORM\Column(name: 'enabled', type: 'boolean', nullable: true)]
+    #[ORM\Column(name: 'enabled', type: Types::BOOLEAN, nullable: true)]
     private bool $enabled;
 
     /**
      * @var Collection<int, Payment>
      */
-    #[ORM\OneToMany(targetEntity: 'Payment', mappedBy: 'method', cascade: ['persist'])]
+    #[ORM\OneToMany(mappedBy: 'method', targetEntity: Payment::class, cascade: ['persist'])]
     private Collection $payments;
 
     public function __construct()

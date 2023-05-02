@@ -46,15 +46,10 @@ class InvoiceManagerTest extends KernelTestCase
 
     private InvoiceManager $manager;
 
-    /**
-     * @var Mock|EntityManagerInterface
-     */
-    private EntityManagerInterface&MockInterface $entityManager;
-
     protected function setUp(): void
     {
-        $this->entityManager = M::mock(EntityManagerInterface::class);
-        $doctrine = M::mock(ManagerRegistry::class, ['getManager' => $this->entityManager]);
+        $entityManager = M::mock(EntityManagerInterface::class);
+        $doctrine = M::mock(ManagerRegistry::class, ['getManager' => $entityManager]);
         $notification = M::mock(NotificationManager::class);
 
         $notification->shouldReceive('sendNotification')
@@ -74,8 +69,7 @@ class InvoiceManagerTest extends KernelTestCase
 
         $this->manager = new InvoiceManager($doctrine, new EventDispatcher(), $stateMachine, $notification);
 
-        $this
-            ->entityManager
+        $entityManager
             ->shouldReceive('persist', 'flush')
             ->zeroOrMoreTimes();
     }

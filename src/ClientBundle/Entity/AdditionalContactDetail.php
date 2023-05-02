@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
 use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
@@ -21,33 +23,32 @@ use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Stringable;
 use Symfony\Component\Serializer\Annotation as Serialize;
 
-/**
- * SolidInvoice\ClientBundle\Entity\AdditionalContactDetail.
- */
-#[ORM\Table(name: 'contact_details')]
+#[ORM\Table(name: AdditionalContactDetail::TABLE_NAME)]
 #[ORM\Entity]
 class AdditionalContactDetail implements Stringable
 {
+    final public const TABLE_NAME = 'contact_details';
+
     use TimeStampable;
     use CompanyAware;
 
-    #[ORM\Column(name: 'id', type: 'uuid_binary_ordered_time')]
+    #[ORM\Column(name: 'id', type: UuidBinaryOrderedTimeType::NAME)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
     #[Serialize\Groups(['client_api', 'contact_api'])]
     protected ?UuidInterface $id = null;
 
-    #[ORM\Column(name: 'value', type: 'text')]
+    #[ORM\Column(name: 'value', type: Types::TEXT)]
     #[Serialize\Groups(['client_api', 'contact_api'])]
     protected ?string $value = null;
 
-    #[ORM\ManyToOne(targetEntity: 'ContactType', inversedBy: 'details')]
+    #[ORM\ManyToOne(targetEntity: ContactType::class, inversedBy: 'details')]
     #[ORM\JoinColumn(name: 'contact_type_id')]
     #[Serialize\Groups(['client_api', 'contact_api'])]
     protected ?ContactType $type = null;
 
-    #[ORM\ManyToOne(targetEntity: 'Contact', inversedBy: 'additionalContactDetails')]
+    #[ORM\ManyToOne(targetEntity: Contact::class, inversedBy: 'additionalContactDetails')]
     #[ORM\JoinColumn(name: 'contact_id')]
     #[Serialize\Groups(['js'])]
     private ?Contact $contact = null;

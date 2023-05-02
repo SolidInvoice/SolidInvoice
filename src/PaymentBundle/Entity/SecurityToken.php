@@ -16,8 +16,9 @@ namespace SolidInvoice\PaymentBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Payum\Core\Model\Token;
 
-#[ORM\Table(name: 'security_token')]
+#[ORM\Table(name: SecurityToken::TABLE_NAME)]
 #[ORM\Entity]
 class SecurityToken extends Token
 {
+    final public const TABLE_NAME = 'security_token';
 }

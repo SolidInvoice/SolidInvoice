@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
+use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use SolidInvoice\UserBundle\Repository\UserRepository;
 use DateTime;
 use DateTimeInterface;
@@ -28,50 +30,52 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-#[ORM\Table(name: 'users')]
+#[ORM\Table(name: User::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'This email is already in use. Do you want to log in instead?')]
 #[UniqueEntity(fields: ['username'], message: 'This username is already in use')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringable
 {
+    final public const TABLE_NAME = 'users';
+
     use TimeStampable;
 
-    #[ORM\Column(type: 'uuid_binary_ordered_time')]
+    #[ORM\Column(type: UuidBinaryOrderedTimeType::class)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
     private ?UuidInterface $id = null;
 
-    #[ORM\Column(name: 'mobile', type: 'string', nullable: true)]
+    #[ORM\Column(name: 'mobile', type: Types::STRING, nullable: true)]
     private ?string $mobile = null;
 
     /**
      * @var Collection<int, ApiToken>
      */
-    #[ORM\OneToMany(targetEntity: 'ApiToken', mappedBy: 'user', fetch: 'EXTRA_LAZY', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ApiToken::class, cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     private Collection $apiTokens;
 
-    #[ORM\Column(name: 'username', type: 'string', length: 180, unique: true)]
+    #[ORM\Column(name: 'username', type: Types::STRING, length: 180, unique: true)]
     private ?string $username = null;
 
-    #[ORM\Column(name: 'email', type: 'string', length: 180, unique: true)]
+    #[ORM\Column(name: 'email', type: Types::STRING, length: 180, unique: true)]
     private ?string $email = null;
 
-    #[ORM\Column(name: 'enabled', type: 'boolean')]
+    #[ORM\Column(name: 'enabled', type: Types::BOOLEAN)]
     private bool $enabled = false;
 
-    #[ORM\Column(name: 'password', type: 'string')]
+    #[ORM\Column(name: 'password', type: Types::STRING)]
     private ?string $password = null;
 
     private string $plainPassword = '';
 
-    #[ORM\Column(name: 'last_login', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'last_login', type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTimeInterface $lastLogin = null;
 
-    #[ORM\Column(name: 'confirmation_token', type: 'string', length: 180, nullable: true, unique: true)]
+    #[ORM\Column(name: 'confirmation_token', type: Types::STRING, length: 180, unique: true, nullable: true)]
     private ?string $confirmationToken = null;
 
-    #[ORM\Column(name: 'password_requested_at', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'password_requested_at', type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTimeInterface $passwordRequestedAt = null;
 
     /**

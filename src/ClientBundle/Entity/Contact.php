@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
+use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use SolidInvoice\ClientBundle\Repository\ContactRepository;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
@@ -48,15 +50,17 @@ use function strtolower;
  *     iri="https://schema.org/Person"
  * )
  */
-#[ORM\Table(name: 'contacts')]
+#[ORM\Table(name: Contact::TABLE_NAME)]
 #[ORM\Index(columns: ['email'])]
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
 class Contact implements Serializable, Stringable
 {
+    final public const TABLE_NAME = 'contacts';
+
     use TimeStampable;
     use CompanyAware;
 
-    #[ORM\Column(name: 'id', type: 'uuid_binary_ordered_time')]
+    #[ORM\Column(name: 'id', type: UuidBinaryOrderedTimeType::NAME)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
@@ -66,7 +70,7 @@ class Contact implements Serializable, Stringable
     /**
      * @ApiProperty(iri="https://schema.org/givenName")
      */
-    #[ORM\Column(name: 'firstName', type: 'string', length: 125)]
+    #[ORM\Column(name: 'firstName', type: Types::STRING, length: 125)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 125)]
     #[Serialize\Groups(['client_api', 'contact_api'])]
@@ -75,7 +79,7 @@ class Contact implements Serializable, Stringable
     /**
      * @ApiProperty(iri="https://schema.org/familyName")
      */
-    #[ORM\Column(name: 'lastName', type: 'string', length: 125, nullable: true)]
+    #[ORM\Column(name: 'lastName', type: Types::STRING, length: 125, nullable: true)]
     #[Assert\Length(max: 125)]
     #[Serialize\Groups(['client_api', 'contact_api'])]
     private ?string $lastName = null;
@@ -83,7 +87,7 @@ class Contact implements Serializable, Stringable
     /**
      * @ApiProperty(iri="https://schema.org/Organization")
      */
-    #[ORM\ManyToOne(targetEntity: 'Client', inversedBy: 'contacts')]
+    #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'contacts')]
     #[ORM\JoinColumn(name: 'client_id')]
     #[Serialize\Groups(['contact_api'])]
     #[Assert\Valid]
@@ -93,16 +97,16 @@ class Contact implements Serializable, Stringable
     /**
      * @ApiProperty(iri="https://schema.org/email")
      */
-    #[ORM\Column(name: 'email', type: 'string', length: 255)]
+    #[ORM\Column(name: 'email', type: Types::STRING, length: 255)]
     #[Assert\NotBlank]
-    #[Assert\Email(mode: 'strict')]
+    #[Assert\Email(mode: Assert\Email::VALIDATION_MODE_STRICT)]
     #[Serialize\Groups(['client_api', 'contact_api'])]
     private ?string $email = null;
 
     /**
      * @var Collection<int, AdditionalContactDetail>
      */
-    #[ORM\OneToMany(targetEntity: 'AdditionalContactDetail', mappedBy: 'contact', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'contact', targetEntity: AdditionalContactDetail::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[Assert\Valid]
     #[Serialize\Groups(['client_api', 'contact_api'])]
     private readonly Collection $additionalContactDetails;
@@ -110,19 +114,19 @@ class Contact implements Serializable, Stringable
     /**
      * @var Collection<int, InvoiceContact>
      */
-    #[ORM\OneToMany(targetEntity: InvoiceContact::class, cascade: ['persist', 'remove'], mappedBy: 'contact')]
+    #[ORM\OneToMany(mappedBy: 'contact', targetEntity: InvoiceContact::class, cascade: ['persist', 'remove'])]
     private readonly Collection $invoices;
 
     /**
      * @var Collection<int, RecurringInvoiceContact>
      */
-    #[ORM\OneToMany(targetEntity: RecurringInvoiceContact::class, cascade: ['persist', 'remove'], mappedBy: 'contact')]
+    #[ORM\OneToMany(mappedBy: 'contact', targetEntity: RecurringInvoiceContact::class, cascade: ['persist', 'remove'])]
     private readonly Collection $recurringInvoices;
 
     /**
      * @var Collection<int, QuoteContact>
      */
-    #[ORM\OneToMany(targetEntity: QuoteContact::class, cascade: ['persist', 'remove'], mappedBy: 'contact')]
+    #[ORM\OneToMany(mappedBy: 'contact', targetEntity: QuoteContact::class, cascade: ['persist', 'remove'])]
     private readonly Collection $quotes;
 
     public function __construct()
