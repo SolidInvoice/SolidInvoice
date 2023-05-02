@@ -27,11 +27,8 @@ use function json_decode;
  */
 class SettingsExtension extends AbstractExtension
 {
-    private SystemConfig $config;
-
-    public function __construct(SystemConfig $config)
+    public function __construct(private readonly SystemConfig $config)
     {
-        $this->config = $config;
     }
 
     public function getFunctions(): array
@@ -61,7 +58,7 @@ class SettingsExtension extends AbstractExtension
     {
         try {
             $setting = $this->config->get($key);
-        } catch (Exception $e) {
+        } catch (Exception) {
             return $default;
         }
 

@@ -23,11 +23,8 @@ final class Archive implements AjaxResponse
 {
     use JsonTrait;
 
-    private ClientRepository $repository;
-
-    public function __construct(ClientRepository $repository)
+    public function __construct(private readonly ClientRepository $repository)
     {
-        $this->repository = $repository;
     }
 
     public function __invoke(Request $request): JsonResponse

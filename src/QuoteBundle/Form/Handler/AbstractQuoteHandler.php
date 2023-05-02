@@ -37,14 +37,8 @@ abstract class AbstractQuoteHandler implements FormHandlerInterface, FormHandler
 {
     use SaveableTrait;
 
-    private StateMachine $stateMachine;
-
-    private RouterInterface $router;
-
-    public function __construct(RouterInterface $router, StateMachine $stateMachine)
+    public function __construct(private readonly RouterInterface $router, private readonly StateMachine $stateMachine)
     {
-        $this->stateMachine = $stateMachine;
-        $this->router = $router;
     }
 
     public function getForm(FormFactoryInterface $factory, Options $options)

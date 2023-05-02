@@ -22,11 +22,8 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerI
 
 class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterface
 {
-    private ApiTokenManager $tokenManager;
-
-    public function __construct(ApiTokenManager $tokenManager)
+    public function __construct(private readonly ApiTokenManager $tokenManager)
     {
-        $this->tokenManager = $tokenManager;
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token)

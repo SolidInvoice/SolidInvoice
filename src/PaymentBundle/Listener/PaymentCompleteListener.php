@@ -32,12 +32,6 @@ use Symfony\Component\Workflow\StateMachine;
 
 class PaymentCompleteListener implements EventSubscriberInterface
 {
-    private RouterInterface $router;
-
-    private ManagerRegistry $registry;
-
-    private StateMachine $stateMachine;
-
     /**
      * @return array<string, string>
      */
@@ -48,14 +42,8 @@ class PaymentCompleteListener implements EventSubscriberInterface
         ];
     }
 
-    public function __construct(
-        StateMachine $stateMachine,
-        ManagerRegistry $registry,
-        RouterInterface $router
-    ) {
-        $this->router = $router;
-        $this->registry = $registry;
-        $this->stateMachine = $stateMachine;
+    public function __construct(private readonly StateMachine $stateMachine, private readonly ManagerRegistry $registry, private readonly RouterInterface $router)
+    {
     }
 
     public function onPaymentComplete(PaymentCompleteEvent $event): void
@@ -91,13 +79,9 @@ class PaymentCompleteListener implements EventSubscriberInterface
 
             $event->setResponse(
                 new class($router->generate('_view_invoice_external', ['uuid' => $invoice->getUuid()]), $status) extends RedirectResponse implements FlashResponse {
-                    private string $status;
-
-                    public function __construct(string $route, string $status)
+                    public function __construct(string $route, private readonly string $status)
                     {
                         parent::__construct($route);
-
-                        $this->status = $status;
                     }
 
                     public function getFlash(): Generator
@@ -111,57 +95,17 @@ class PaymentCompleteListener implements EventSubscriberInterface
 
     public static function addFlashMessage(string $status): Generator
     {
-        switch ($status) {
-            case Status::STATUS_CAPTURED:
-                yield FlashResponse::FLASH_SUCCESS => 'payment.flash.status.success';
-
-                break;
-
-            case Status::STATUS_CANCELLED:
-                yield FlashResponse::FLASH_DANGER => 'payment.flash.status.cancelled';
-
-                break;
-
-            case Status::STATUS_PENDING:
-                yield FlashResponse::FLASH_WARNING => 'payment.flash.status.pending';
-
-                break;
-
-            case Status::STATUS_EXPIRED:
-                yield FlashResponse::FLASH_DANGER => 'payment.flash.status.expired';
-
-                break;
-
-            case Status::STATUS_FAILED:
-                yield FlashResponse::FLASH_DANGER => 'payment.flash.status.failed';
-
-                break;
-
-            case Status::STATUS_NEW:
-                yield FlashResponse::FLASH_WARNING => 'payment.flash.status.new';
-
-                break;
-
-            case Status::STATUS_SUSPENDED:
-                yield FlashResponse::FLASH_DANGER => 'payment.flash.status.suspended';
-
-                break;
-
-            case Status::STATUS_AUTHORIZED:
-                yield FlashResponse::FLASH_INFO => 'payment.flash.status.authorized';
-
-                break;
-
-            case Status::STATUS_REFUNDED:
-                yield FlashResponse::FLASH_WARNING => 'payment.flash.status.refunded';
-
-                break;
-
-            case Status::STATUS_UNKNOWN:
-            default:
-                yield FlashResponse::FLASH_DANGER => 'payment.flash.status.unknown';
-
-                break;
-        }
+        match ($status) {
+            Status::STATUS_CAPTURED => yield FlashResponse::FLASH_SUCCESS => 'payment.flash.status.success',
+            Status::STATUS_CANCELLED => yield FlashResponse::FLASH_DANGER => 'payment.flash.status.cancelled',
+            Status::STATUS_PENDING => yield FlashResponse::FLASH_WARNING => 'payment.flash.status.pending',
+            Status::STATUS_EXPIRED => yield FlashResponse::FLASH_DANGER => 'payment.flash.status.expired',
+            Status::STATUS_FAILED => yield FlashResponse::FLASH_DANGER => 'payment.flash.status.failed',
+            Status::STATUS_NEW => yield FlashResponse::FLASH_WARNING => 'payment.flash.status.new',
+            Status::STATUS_SUSPENDED => yield FlashResponse::FLASH_DANGER => 'payment.flash.status.suspended',
+            Status::STATUS_AUTHORIZED => yield FlashResponse::FLASH_INFO => 'payment.flash.status.authorized',
+            Status::STATUS_REFUNDED => yield FlashResponse::FLASH_WARNING => 'payment.flash.status.refunded',
+            default => yield FlashResponse::FLASH_DANGER => 'payment.flash.status.unknown',
+        };
     }
 }

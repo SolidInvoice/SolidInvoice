@@ -34,14 +34,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class RecurringInvoiceType extends AbstractType
 {
-    private SystemConfig $systemConfig;
-
-    private ManagerRegistry $registry;
-
-    public function __construct(SystemConfig $systemConfig, ManagerRegistry $registry)
+    public function __construct(private readonly SystemConfig $systemConfig, private readonly ManagerRegistry $registry)
     {
-        $this->systemConfig = $systemConfig;
-        $this->registry = $registry;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

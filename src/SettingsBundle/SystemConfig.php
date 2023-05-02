@@ -23,21 +23,15 @@ use Throwable;
  */
 class SystemConfig
 {
-    public const CURRENCY_CONFIG_PATH = 'system/company/currency';
-
-    private SettingsRepository $repository;
+    final public const CURRENCY_CONFIG_PATH = 'system/company/currency';
 
     /**
      * @var array<string, string>
      */
     private static array $settings = [];
 
-    private ?string $installed;
-
-    public function __construct(?string $installed, SettingsRepository $repository)
+    public function __construct(private readonly ?string $installed, private readonly SettingsRepository $repository)
     {
-        $this->repository = $repository;
-        $this->installed = $installed;
     }
 
     public function get(string $key): ?string
@@ -56,10 +50,9 @@ class SystemConfig
     }
 
     /**
-     * @param mixed $value
      * @throws Throwable
      */
-    public function set(string $path, $value): void
+    public function set(string $path, mixed $value): void
     {
         $this->repository->save([$path => $value]);
         self::$settings = [];
@@ -85,7 +78,7 @@ class SystemConfig
                     ->orderBy('c.key')
                     ->getQuery()
                     ->getArrayResult();
-            } catch (Exception $e) {
+            } catch (Exception) {
                 return;
             }
 

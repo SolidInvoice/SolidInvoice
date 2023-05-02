@@ -27,15 +27,8 @@ use Symfony\Component\Routing\RouteCollection;
 
 abstract class AbstractDirectoryLoader extends Loader
 {
-    private FileLocatorInterface $locator;
-
-    private KernelInterface $kernel;
-
-    public function __construct(FileLocatorInterface $locator, KernelInterface $kernel)
+    public function __construct(private readonly FileLocatorInterface $locator, private readonly KernelInterface $kernel)
     {
-        $this->locator = $locator;
-        $this->kernel = $kernel;
-
         parent::__construct();
     }
 
@@ -65,7 +58,7 @@ abstract class AbstractDirectoryLoader extends Loader
         $inflector = InflectorFactory::create()->build();
 
         /** @var Bundle $bundle */
-        $bundle = $this->kernel->getBundle(substr($resource, 1, strpos($resource, '/') - 1));
+        $bundle = $this->kernel->getBundle(substr((string) $resource, 1, strpos((string) $resource, '/') - 1));
         $namespace = $bundle->getNamespace();
         $bundleName = $inflector->tableize(str_replace('Bundle', '', substr($namespace, strrpos($namespace, '\\') + 1)));
 

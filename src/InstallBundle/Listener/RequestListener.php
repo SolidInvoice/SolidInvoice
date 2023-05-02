@@ -69,14 +69,6 @@ final class RequestListener implements EventSubscriberInterface
         '_profiler_router',
     ];
 
-    private ?string $installed;
-
-    private RouterInterface $router;
-
-    private UserRepositoryInterface $userRepository;
-
-    private bool $debug;
-
     public static function getSubscribedEvents(): array
     {
         return [
@@ -85,16 +77,11 @@ final class RequestListener implements EventSubscriberInterface
     }
 
     public function __construct(
-        RouterInterface $router,
-        UserRepositoryInterface $userRepository,
-        ?string $installed,
-        bool $debug = false
+        private readonly RouterInterface $router,
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly ?string $installed,
+        private readonly bool $debug = false
     ) {
-        $this->userRepository = $userRepository;
-        $this->router = $router;
-        $this->installed = $installed;
-        $this->debug = $debug;
-
         if ($this->debug) {
             $this->allowRoutes = array_merge($this->allowRoutes, self::DEBUG_ROUTES);
         }

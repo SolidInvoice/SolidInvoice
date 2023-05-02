@@ -33,28 +33,8 @@ use Symfony\Component\Workflow\StateMachine;
  */
 final class WorkFlowSubscriber implements EventSubscriberInterface
 {
-    private InvoiceManager $invoiceManager;
-
-    private StateMachine $invoiceStateMachine;
-
-    private ManagerRegistry $registry;
-
-    private NotificationManager $notification;
-
-    private QuoteMailer $quoteMailer;
-
-    public function __construct(
-        ManagerRegistry $registry,
-        InvoiceManager $invoiceManager,
-        StateMachine $invoiceStateMachine,
-        NotificationManager $notification,
-        QuoteMailer $quoteMailer
-    ) {
-        $this->invoiceManager = $invoiceManager;
-        $this->invoiceStateMachine = $invoiceStateMachine;
-        $this->registry = $registry;
-        $this->notification = $notification;
-        $this->quoteMailer = $quoteMailer;
+    public function __construct(private readonly ManagerRegistry $registry, private readonly InvoiceManager $invoiceManager, private readonly StateMachine $invoiceStateMachine, private readonly NotificationManager $notification, private readonly QuoteMailer $quoteMailer)
+    {
     }
 
     /**

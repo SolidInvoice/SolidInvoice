@@ -32,20 +32,8 @@ final class Done
 {
     use SaveableTrait;
 
-    /**
-     * @var Payum
-     */
-    private RegistryInterface $payum;
-
-    private RouterInterface $router;
-
-    private EventDispatcherInterface $eventDispatcher;
-
-    public function __construct(RegistryInterface $payum, RouterInterface $router, EventDispatcherInterface $eventDispatcher)
+    public function __construct(private readonly RegistryInterface $payum, private readonly RouterInterface $router, private readonly EventDispatcherInterface $eventDispatcher)
     {
-        $this->payum = $payum;
-        $this->router = $router;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function __invoke(Request $request)

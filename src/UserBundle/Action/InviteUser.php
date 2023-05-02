@@ -26,17 +26,8 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class InviteUser
 {
-    private FormHandler $formHandler;
-
-    private SystemConfig $config;
-
-    private RouterInterface $router;
-
-    public function __construct(FormHandler $formHandler, SystemConfig $config, RouterInterface $router)
+    public function __construct(private readonly FormHandler $formHandler, private readonly SystemConfig $config, private readonly RouterInterface $router)
     {
-        $this->formHandler = $formHandler;
-        $this->config = $config;
-        $this->router = $router;
     }
 
     /**

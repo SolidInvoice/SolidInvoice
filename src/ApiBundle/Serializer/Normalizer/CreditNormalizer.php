@@ -26,7 +26,7 @@ class CreditNormalizer implements NormalizerInterface, DenormalizerInterface
     /**
      * @var NormalizerInterface|DenormalizerInterface
      */
-    private $normalizer;
+    private readonly DenormalizerInterface&NormalizerInterface $normalizer;
 
     public function __construct(NormalizerInterface $normalizer)
     {

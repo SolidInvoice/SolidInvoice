@@ -17,19 +17,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class Template
 {
-    private ?string $template = null;
-
-    private array $params;
-
-    private Response $response;
+    private readonly Response $response;
 
     /**
      * @param string $template #Template
      */
-    public function __construct(string $template = null, array $params = [], Response $response = null)
+    public function __construct(private ?string $template = null, private readonly array $params = [], Response $response = null)
     {
-        $this->template = $template;
-        $this->params = $params;
         $this->response = $response ?: new Response();
     }
 

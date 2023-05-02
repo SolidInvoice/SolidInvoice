@@ -21,17 +21,8 @@ use Twig\Environment;
 
 class Factory
 {
-    private Environment $twig;
-
-    private TranslatorInterface $translator;
-
-    private SystemConfig $settings;
-
-    public function __construct(Environment $twig, TranslatorInterface $translator, SystemConfig $settings)
+    public function __construct(private readonly Environment $twig, private readonly TranslatorInterface $translator, private readonly SystemConfig $settings)
     {
-        $this->twig = $twig;
-        $this->translator = $translator;
-        $this->settings = $settings;
     }
 
     /**

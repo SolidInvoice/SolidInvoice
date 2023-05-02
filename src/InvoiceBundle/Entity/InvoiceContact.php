@@ -19,26 +19,22 @@ use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 
 /**
- * @ORM\Entity()
- * @ORM\Table(name="invoice_contact")
  * @ApiResource(collectionOperations={}, itemOperations={})
  */
+#[ORM\Table(name: 'invoice_contact')]
+#[ORM\Entity]
 class InvoiceContact
 {
     use CompanyAware;
 
-    /**
-     * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=Invoice::class, inversedBy="users", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="invoice_id")
-     */
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: Invoice::class, inversedBy: 'users', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(name: 'invoice_id')]
     private Invoice $invoice;
 
-    /**
-     * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=Contact::class, cascade={"persist", "remove"}, inversedBy="invoices")
-     * @ORM\JoinColumn(name="contact_id")
-     */
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: Contact::class, cascade: ['persist', 'remove'], inversedBy: 'invoices')]
+    #[ORM\JoinColumn(name: 'contact_id')]
     private Contact $contact;
 
     public function getInvoice(): Invoice

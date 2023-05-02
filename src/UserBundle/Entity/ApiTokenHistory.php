@@ -13,60 +13,46 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Entity;
 
+use SolidInvoice\UserBundle\Repository\ApiTokenHistoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
 use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 
-/**
- * @ORM\Entity(repositoryClass="SolidInvoice\UserBundle\Repository\ApiTokenHistoryRepository")
- * @ORM\Table("api_token_history")
- */
+#[ORM\Table('api_token_history')]
+#[ORM\Entity(repositoryClass: ApiTokenHistoryRepository::class)]
 class ApiTokenHistory
 {
     use TimeStampable;
     use CompanyAware;
 
-    /**
-     * @ORM\Column(type="uuid_binary_ordered_time")
-     * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
-     */
+    #[ORM\Column(type: 'uuid_binary_ordered_time')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
     private ?UuidInterface $id = null;
 
-    /**
-     * @ORM\Column(type="string")
-     */
+    #[ORM\Column(type: 'string')]
     private ?string $ip = null;
 
-    /**
-     * @ORM\Column(type="string", length=125)
-     */
+    #[ORM\Column(type: 'string', length: 125)]
     private ?string $resource = null;
 
-    /**
-     * @ORM\Column(type="string", length=25)
-     */
+    #[ORM\Column(type: 'string', length: 25)]
     private ?string $method = null;
 
     /**
      * @var array<string, mixed>
-     *
-     * @ORM\Column(type="array")
      */
+    #[ORM\Column(type: 'array')]
     private array $requestData = [];
 
-    /**
-     * @ORM\Column(type="string")
-     */
+    #[ORM\Column(type: 'string')]
     private ?string $userAgent = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="ApiToken", inversedBy="history")
-     * @ORM\JoinColumn(name="token_id")
-     */
+    #[ORM\ManyToOne(targetEntity: 'ApiToken', inversedBy: 'history')]
+    #[ORM\JoinColumn(name: 'token_id')]
     private ?ApiToken $token = null;
 
     public function getId(): ?UuidInterface

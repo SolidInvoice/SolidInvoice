@@ -13,21 +13,19 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Entity;
 
+use SolidInvoice\CoreBundle\Repository\VersionRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Stringable;
 
 /**
  * Class Version.
- *
- * @ORM\Entity(repositoryClass="SolidInvoice\CoreBundle\Repository\VersionRepository")
- * @ORM\Table(name="version")
  */
+#[ORM\Table(name: 'version')]
+#[ORM\Entity(repositoryClass: VersionRepository::class)]
 class Version implements Stringable
 {
-    /**
-     * @ORM\Column(name="version", type="string", length=125)
-     * @ORM\Id
-     */
+    #[ORM\Column(name: 'version', type: 'string', length: 125)]
+    #[ORM\Id]
     private ?string $version = null;
 
     public function __construct(string $version = null)

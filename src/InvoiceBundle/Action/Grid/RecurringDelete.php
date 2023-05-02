@@ -23,11 +23,8 @@ final class RecurringDelete implements AjaxResponse
 {
     use JsonTrait;
 
-    private RecurringInvoiceRepository $repository;
-
-    public function __construct(RecurringInvoiceRepository $repository)
+    public function __construct(private readonly RecurringInvoiceRepository $repository)
     {
-        $this->repository = $repository;
     }
 
     public function __invoke(Request $request): JsonResponse

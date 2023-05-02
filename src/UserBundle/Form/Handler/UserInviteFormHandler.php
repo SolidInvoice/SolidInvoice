@@ -46,36 +46,8 @@ class UserInviteFormHandler implements FormHandlerResponseInterface, FormHandler
 {
     use SaveableTrait;
 
-    private RouterInterface $router;
-
-    private CompanySelector $companySelector;
-
-    private CompanyRepository $companyRepository;
-
-    private Security $security;
-
-    private SendUserInvitation $userInvitation;
-
-    private UserRepository $userRepository;
-
-    private ValidatorInterface $validator;
-
-    public function __construct(
-        RouterInterface $router,
-        CompanySelector $companySelector,
-        CompanyRepository $companyRepository,
-        UserRepository $userRepository,
-        Security $security,
-        ValidatorInterface $validator,
-        SendUserInvitation $userInvitation
-    ) {
-        $this->router = $router;
-        $this->companySelector = $companySelector;
-        $this->companyRepository = $companyRepository;
-        $this->security = $security;
-        $this->userInvitation = $userInvitation;
-        $this->userRepository = $userRepository;
-        $this->validator = $validator;
+    public function __construct(private readonly RouterInterface $router, private readonly CompanySelector $companySelector, private readonly CompanyRepository $companyRepository, private readonly UserRepository $userRepository, private readonly Security $security, private readonly ValidatorInterface $validator, private readonly SendUserInvitation $userInvitation)
+    {
     }
 
     public function getForm(FormFactoryInterface $factory, Options $options)
@@ -140,12 +112,9 @@ class UserInviteFormHandler implements FormHandlerResponseInterface, FormHandler
         $route = $this->router->generate('_users_list');
 
         return new class($validation, $route) extends RedirectResponse implements FlashResponse {
-            private ConstraintViolationListInterface $validation;
-
-            public function __construct(ConstraintViolationListInterface $validation, string $route)
+            public function __construct(private readonly ConstraintViolationListInterface $validation, string $route)
             {
                 parent::__construct($route);
-                $this->validation = $validation;
             }
 
             public function getFlash(): Generator

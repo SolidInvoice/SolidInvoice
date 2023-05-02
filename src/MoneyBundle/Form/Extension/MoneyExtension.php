@@ -24,11 +24,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MoneyExtension extends AbstractTypeExtension
 {
-    private SystemConfig $config;
-
-    public function __construct(SystemConfig $config)
+    public function __construct(private readonly SystemConfig $config)
     {
-        $this->config = $config;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

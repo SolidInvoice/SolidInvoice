@@ -28,7 +28,7 @@ class ArrayUtil
      *
      * @throws Exception
      */
-    public static function column($array, $column): array
+    public static function column(iterable $array, $column): array
     {
         if (! is_array($array) && ! $array instanceof Traversable) {
             throw new Exception(sprintf('Array or instance of Traversable expected, "%s" given', gettype($array)));

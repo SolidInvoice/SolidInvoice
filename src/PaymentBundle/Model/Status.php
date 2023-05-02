@@ -15,25 +15,25 @@ namespace SolidInvoice\PaymentBundle\Model;
 
 class Status
 {
-    public const STATUS_UNKNOWN = 'unknown';
+    final public const STATUS_UNKNOWN = 'unknown';
 
-    public const STATUS_FAILED = 'failed';
+    final public const STATUS_FAILED = 'failed';
 
-    public const STATUS_SUSPENDED = 'suspended';
+    final public const STATUS_SUSPENDED = 'suspended';
 
-    public const STATUS_EXPIRED = 'expired';
+    final public const STATUS_EXPIRED = 'expired';
 
-    public const STATUS_PENDING = 'pending';
+    final public const STATUS_PENDING = 'pending';
 
-    public const STATUS_CANCELLED = 'cancelled';
+    final public const STATUS_CANCELLED = 'cancelled';
 
-    public const STATUS_NEW = 'new';
+    final public const STATUS_NEW = 'new';
 
-    public const STATUS_CAPTURED = 'captured';
+    final public const STATUS_CAPTURED = 'captured';
 
-    public const STATUS_AUTHORIZED = 'authorized';
+    final public const STATUS_AUTHORIZED = 'authorized';
 
-    public const STATUS_REFUNDED = 'refunded';
+    final public const STATUS_REFUNDED = 'refunded';
 
-    public const STATUS_CREDIT = 'credit';
+    final public const STATUS_CREDIT = 'credit';
 }

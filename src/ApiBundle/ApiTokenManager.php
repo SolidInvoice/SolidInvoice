@@ -22,13 +22,10 @@ use SolidInvoice\UserBundle\Entity\User;
  */
 class ApiTokenManager
 {
-    public const TOKEN_LENGTH = 32;
+    final public const TOKEN_LENGTH = 32;
 
-    private ManagerRegistry $registry;
-
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(private readonly ManagerRegistry $registry)
     {
-        $this->registry = $registry;
     }
 
     public function getOrCreate(User $user, string $name): ApiToken

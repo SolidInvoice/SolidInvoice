@@ -25,7 +25,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  */
 class SolidInvoicePaymentExtension extends Extension
 {
-    public const NS = 'SolidInvoice\PaymentBundle\Form\Methods';
+    final public const NS = 'SolidInvoice\PaymentBundle\Form\Methods';
 
     public function load(array $configs, ContainerBuilder $container): void
     {

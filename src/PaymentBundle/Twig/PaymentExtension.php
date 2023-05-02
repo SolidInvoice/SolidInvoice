@@ -24,11 +24,8 @@ use Twig\TwigFunction;
 
 class PaymentExtension extends AbstractExtension
 {
-    private ManagerRegistry $registry;
-
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(private readonly ManagerRegistry $registry)
     {
-        $this->registry = $registry;
     }
 
     public function getFunctions(): array

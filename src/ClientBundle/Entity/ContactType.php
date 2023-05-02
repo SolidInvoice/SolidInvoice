@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Entity;
 
+use SolidInvoice\ClientBundle\Repository\ContactTypeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -23,59 +24,47 @@ use Stringable;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="contact_types")
- * @ORM\Entity(repositoryClass="SolidInvoice\ClientBundle\Repository\ContactTypeRepository")
- */
+#[ORM\Table(name: 'contact_types')]
+#[ORM\Entity(repositoryClass: ContactTypeRepository::class)]
 class ContactType implements Stringable
 {
     use CompanyAware;
 
-    /**
-     * @ORM\Column(name="id", type="uuid_binary_ordered_time")
-     * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
-     * @Serialize\Groups({"client_api", "contact_api"})
-     */
+    #[ORM\Column(name: 'id', type: 'uuid_binary_ordered_time')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
+    #[Serialize\Groups(['client_api', 'contact_api'])]
     private ?UuidInterface $id = null;
 
-    /**
-     * @ORM\Column(name="name", type="string", length=45, unique=true)
-     * @Assert\NotBlank()
-     * @Assert\Length(max=45)
-     * @Serialize\Groups({"client_api", "contact_api"})
-     */
+    #[ORM\Column(name: 'name', type: 'string', length: 45, unique: true)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 45)]
+    #[Serialize\Groups(['client_api', 'contact_api'])]
     private ?string $name = null;
 
-    /**
-     * @ORM\Column(name="type", type="string", length=45)
-     * @Assert\NotBlank()
-     * @Assert\Length(max=45)
-     * @Serialize\Groups({"none"})
-     */
+    #[ORM\Column(name: 'type', type: 'string', length: 45)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 45)]
+    #[Serialize\Groups(['none'])]
     private string $type = 'text';
 
     /**
      * @var array<int|string, int|string|list<string>>|null
-     *
-     * @ORM\Column(name="field_options", type="array", nullable=true)
-     * @Serialize\Groups({"none"})
      */
+    #[ORM\Column(name: 'field_options', type: 'array', nullable: true)]
+    #[Serialize\Groups(['none'])]
     private ?array $options = [];
 
-    /**
-     * @ORM\Column(name="required", type="boolean")
-     * @Serialize\Groups({"none"})
-     */
+    #[ORM\Column(name: 'required', type: 'boolean')]
+    #[Serialize\Groups(['none'])]
     private bool $required = false;
 
     /**
      * @var Collection<int, AdditionalContactDetail>
-     *
-     * @ORM\OneToMany(targetEntity="AdditionalContactDetail", mappedBy="type", orphanRemoval=true)
-     * @Serialize\Groups({"none"})
      */
+    #[ORM\OneToMany(targetEntity: 'AdditionalContactDetail', mappedBy: 'type', orphanRemoval: true)]
+    #[Serialize\Groups(['none'])]
     private Collection $details;
 
     public function __construct()

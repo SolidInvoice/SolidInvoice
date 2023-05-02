@@ -39,36 +39,8 @@ use Throwable;
 
 final class Setup
 {
-    private PasswordHasherFactoryInterface $passwordHasherFactory;
-
-    private FormFactoryInterface $formFactory;
-
-    private ManagerRegistry $doctrine;
-
-    private ConfigWriter $configWriter;
-
-    private VatCalculator $vatCalculator;
-
-    private SystemConfig $systemConfig;
-
-    private RouterInterface $router;
-
-    public function __construct(
-        PasswordHasherFactoryInterface $passwordHasherFactory,
-        FormFactoryInterface $formFactory,
-        ManagerRegistry $doctrine,
-        ConfigWriter $configWriter,
-        VatCalculator $vatCalculator,
-        SystemConfig $systemConfig,
-        RouterInterface $router
-    ) {
-        $this->passwordHasherFactory = $passwordHasherFactory;
-        $this->formFactory = $formFactory;
-        $this->doctrine = $doctrine;
-        $this->configWriter = $configWriter;
-        $this->vatCalculator = $vatCalculator;
-        $this->systemConfig = $systemConfig;
-        $this->router = $router;
+    public function __construct(private readonly PasswordHasherFactoryInterface $passwordHasherFactory, private readonly FormFactoryInterface $formFactory, private readonly ManagerRegistry $doctrine, private readonly ConfigWriter $configWriter, private readonly VatCalculator $vatCalculator, private readonly SystemConfig $systemConfig, private readonly RouterInterface $router)
+    {
     }
 
     /**
@@ -109,10 +81,9 @@ final class Setup
     }
 
     /**
-     * @return Template|RedirectResponse
      * @throws EnvironmentIsBrokenException|Throwable
      */
-    public function handleForm(Request $request)
+    public function handleForm(Request $request): Template|RedirectResponse
     {
         $form = $this->getForm();
 

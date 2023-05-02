@@ -24,11 +24,8 @@ use Twig\Environment;
  */
 class TemplateListener implements EventSubscriberInterface
 {
-    private Environment $twig;
-
-    public function __construct(Environment $twig)
+    public function __construct(private readonly Environment $twig)
     {
-        $this->twig = $twig;
     }
 
     public static function getSubscribedEvents(): array

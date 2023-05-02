@@ -31,17 +31,8 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class ProfileEditFormHandler implements FormHandlerResponseInterface, FormHandlerInterface, FormHandlerSuccessInterface
 {
-    private UserRepositoryInterface $userRepository;
-
-    private RouterInterface $router;
-
-    private TokenStorageInterface $tokenStorage;
-
-    public function __construct(UserRepositoryInterface $userRepository, TokenStorageInterface $tokenStorage, RouterInterface $router)
+    public function __construct(private readonly UserRepositoryInterface $userRepository, private readonly TokenStorageInterface $tokenStorage, private readonly RouterInterface $router)
     {
-        $this->userRepository = $userRepository;
-        $this->router = $router;
-        $this->tokenStorage = $tokenStorage;
     }
 
     public function getForm(FormFactoryInterface $factory, Options $options)

@@ -42,7 +42,7 @@ class ApiTokenRepository extends ServiceEntityRepository
         try {
             // The Query::getSingleResult() method throws an exception if there is no record matching the criteria.
             return $q->getSingleScalarResult();
-        } catch (NoResultException | NonUniqueResultException $e) {
+        } catch (NoResultException | NonUniqueResultException) {
             return null;
         }
     }

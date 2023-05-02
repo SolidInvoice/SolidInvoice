@@ -22,7 +22,7 @@ use SplPriorityQueue;
  */
 class WidgetFactory
 {
-    public const DEFAULT_LOCATION = 'top';
+    final public const DEFAULT_LOCATION = 'top';
 
     /**
      * @var SplPriorityQueue<int, WidgetInterface>[]

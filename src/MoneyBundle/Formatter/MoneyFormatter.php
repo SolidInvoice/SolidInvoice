@@ -28,29 +28,26 @@ use Symfony\Component\Intl\Exception\MethodArgumentValueNotImplementedException;
  */
 final class MoneyFormatter implements MoneyFormatterInterface
 {
-    private string $locale;
+    private readonly string $locale;
 
-    private \Money\MoneyFormatter $formatter;
-
-    private SystemConfig $systemConfig;
+    private readonly \Money\MoneyFormatter $formatter;
 
     private NumberFormatter $numberFormatter;
 
     /**
      * @throws MethodArgumentNotImplementedException|MethodArgumentValueNotImplementedException
      */
-    public function __construct(string $locale, SystemConfig $systemConfig)
+    public function __construct(string $locale, private readonly SystemConfig $systemConfig)
     {
         try {
             $this->numberFormatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
-        } catch (MethodArgumentValueNotImplementedException|MethodArgumentNotImplementedException $e) {
+        } catch (MethodArgumentValueNotImplementedException|MethodArgumentNotImplementedException) {
             $this->numberFormatter = new NumberFormatter('en', NumberFormatter::CURRENCY);
         }
 
         $this->numberFormatter->setAttribute(NumberFormatter::FRACTION_DIGITS, 2);
         $this->formatter = new IntlMoneyFormatter($this->numberFormatter, new ISOCurrencies());
         $this->locale = $locale;
-        $this->systemConfig = $systemConfig;
     }
 
     public function format(Money $money): string
@@ -95,10 +92,7 @@ final class MoneyFormatter implements MoneyFormatterInterface
         return ((float) $amount->getAmount()) / (10 ** 2);
     }
 
-    /**
-     * @param Currency|string|null $currency
-     */
-    private function getCurrency($currency): ?string
+    private function getCurrency(Currency|string|null $currency): ?string
     {
         if ($currency instanceof Currency) {
             $currency = $currency->getCode();

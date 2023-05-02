@@ -22,11 +22,8 @@ use SolidInvoice\CoreBundle\Entity\Company;
 
 class CompanyListener implements EventSubscriber
 {
-    private CompanySelector $companySelector;
-
-    public function __construct(CompanySelector $companySelector)
+    public function __construct(private readonly CompanySelector $companySelector)
     {
-        $this->companySelector = $companySelector;
     }
 
     /**
@@ -46,7 +43,7 @@ class CompanyListener implements EventSubscriber
     {
         $object = $eventArgs->getObject();
         $em = $eventArgs->getObjectManager();
-        $metaData = $em->getClassMetadata(get_class($object));
+        $metaData = $em->getClassMetadata($object::class);
 
         if ($metaData->hasAssociation('company')) {
             $repository = $em->getRepository(Company::class);

@@ -52,20 +52,14 @@ class InvoiceManager implements ContainerAwareInterface
      */
     protected $dispatcher;
 
-    private StateMachine $stateMachine;
-
-    private NotificationManager $notification;
-
     public function __construct(
         ManagerRegistry $doctrine,
         EventDispatcherInterface $dispatcher,
-        StateMachine $stateMachine,
-        NotificationManager $notification
+        private readonly StateMachine $stateMachine,
+        private readonly NotificationManager $notification
     ) {
         $this->entityManager = $doctrine->getManager();
         $this->dispatcher = $dispatcher;
-        $this->stateMachine = $stateMachine;
-        $this->notification = $notification;
     }
 
     public function createFromQuote(Quote $quote): Invoice

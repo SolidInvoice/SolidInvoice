@@ -19,9 +19,9 @@ use Twig\Environment;
 
 class PaymentReceivedNotification extends NotificationMessage
 {
-    public const HTML_TEMPLATE = '@SolidInvoicePayment/Email/payment.html.twig';
+    final public const HTML_TEMPLATE = '@SolidInvoicePayment/Email/payment.html.twig';
 
-    public const TEXT_TEMPLATE = '@SolidInvoicePayment/Email/payment.txt.twig';
+    final public const TEXT_TEMPLATE = '@SolidInvoicePayment/Email/payment.txt.twig';
 
     public function getHtmlContent(Environment $twig): string
     {

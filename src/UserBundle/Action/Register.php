@@ -25,11 +25,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 final class Register
 {
-    private UserInvitationRepository $repository;
-
-    public function __construct(UserInvitationRepository $repository)
+    public function __construct(private readonly UserInvitationRepository $repository)
     {
-        $this->repository = $repository;
     }
 
     public function __invoke(Request $request, ToggleInterface $toggle, FormHandler $formHandler): FormRequest

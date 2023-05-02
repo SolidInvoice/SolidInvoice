@@ -17,19 +17,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Money\Currency;
 use Money\Money as BaseMoney;
 
-/**
- * @ORM\Embeddable()
- */
+#[ORM\Embeddable]
 class Money
 {
-    /**
-     * @ORM\Column(name="amount", type="string", nullable=true)
-     */
+    #[ORM\Column(name: 'amount', type: 'string', nullable: true)]
     private ?string $value = null;
 
-    /**
-     * @ORM\Column(name="currency", type="string", length=3, nullable=true)
-     */
+    #[ORM\Column(name: 'currency', type: 'string', length: 3, nullable: true)]
     private ?string $currency = null;
 
     // @TODO: Ensure that a money object is always passed in

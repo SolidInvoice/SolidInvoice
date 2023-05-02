@@ -135,7 +135,7 @@ class PaymentRepository extends ServiceEntityRepository
 
         try {
             return (int) $query->getSingleScalarResult();
-        } catch (NoResultException | NonUniqueResultException $e) {
+        } catch (NoResultException | NonUniqueResultException) {
             return 0;
         }
     }
@@ -261,7 +261,7 @@ class PaymentRepository extends ServiceEntityRepository
     /**
      * @param Payment[]|Collection<int, Payment> $payments
      */
-    public function updatePaymentStatus($payments, string $status): int
+    public function updatePaymentStatus(array|Collection $payments, string $status): int
     {
         foreach ($payments as $payment) {
             $payment->setStatus($status);

@@ -35,7 +35,7 @@ doctrine:
                        dir: '%kernel.project_dir%/src/MoneyBundle/Entity'
                        prefix: 'SolidInvoice\MoneyBundle\Entity'
                        alias: SolidInvoiceMoney
-                       type: annotation
+                       type: attribute
                     payum:
                         is_bundle: false
                         type: xml

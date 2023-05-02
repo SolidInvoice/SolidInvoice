@@ -36,11 +36,8 @@ class ApiFormHandler implements FormHandlerInterface, FormHandlerResponseInterfa
 {
     use SaveableTrait;
 
-    private ApiTokenManager $tokenManager;
-
-    public function __construct(ApiTokenManager $tokenManager)
+    public function __construct(private readonly ApiTokenManager $tokenManager)
     {
-        $this->tokenManager = $tokenManager;
     }
 
     public function getForm(FormFactoryInterface $factory, Options $options)

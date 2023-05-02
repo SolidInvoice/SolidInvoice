@@ -19,11 +19,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class SearchFilter implements FilterInterface
 {
-    private array $searchFields;
-
-    public function __construct(array $searchFields)
+    public function __construct(private readonly array $searchFields)
     {
-        $this->searchFields = $searchFields;
     }
 
     public function filter(Request $request, QueryBuilder $queryBuilder): void
@@ -35,7 +32,7 @@ class SearchFilter implements FilterInterface
 
             $fields = array_map(
                 function ($field) use ($alias): string {
-                    if (false !== strpos($field, '.')) {
+                    if (str_contains($field, '.')) {
                         [$alias, $field] = explode('.', $field);
                     }
 

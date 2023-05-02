@@ -44,7 +44,7 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
 
         try {
             return (int) $qb->getQuery()->getSingleScalarResult();
-        } catch (NoResultException|NonUniqueResultException $e) {
+        } catch (NoResultException|NonUniqueResultException) {
             return 0;
         }
     }
@@ -71,7 +71,7 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
 
     public function refreshUser(UserInterface $user): UserInterface
     {
-        $class = get_class($user);
+        $class = $user::class;
         if (! $this->supportsClass($class)) {
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $class));
         }

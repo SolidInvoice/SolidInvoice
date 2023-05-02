@@ -18,11 +18,8 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
 final class InvoiceEmail extends TemplatedEmail
 {
-    private Invoice $invoice;
-
-    public function __construct(Invoice $invoice)
+    public function __construct(private readonly Invoice $invoice)
     {
-        $this->invoice = $invoice;
         parent::__construct();
     }
 

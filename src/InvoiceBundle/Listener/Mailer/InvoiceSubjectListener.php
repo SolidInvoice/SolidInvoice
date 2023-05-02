@@ -20,11 +20,8 @@ use Symfony\Component\Mailer\Event\MessageEvent;
 
 class InvoiceSubjectListener implements EventSubscriberInterface
 {
-    private SystemConfig $config;
-
-    public function __construct(SystemConfig $config)
+    public function __construct(private readonly SystemConfig $config)
     {
-        $this->config = $config;
     }
 
     public function __invoke(MessageEvent $event): void

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Entity;
 
+use SolidInvoice\ClientBundle\Repository\CreditRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Money\Money;
 use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
@@ -24,31 +25,24 @@ use Stringable;
 
 /**
  * SolidInvoice\ClientBundle\Entity\Credit.
- *
- * @ORM\Table(name="client_credit")
- * @ORM\Entity(repositoryClass="SolidInvoice\ClientBundle\Repository\CreditRepository")
  */
+#[ORM\Table(name: 'client_credit')]
+#[ORM\Entity(repositoryClass: CreditRepository::class)]
 class Credit implements Stringable
 {
     use TimeStampable;
     use CompanyAware;
 
-    /**
-     * @ORM\Column(name="id", type="uuid_binary_ordered_time")
-     * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
-     */
+    #[ORM\Column(name: 'id', type: 'uuid_binary_ordered_time')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
     private ?UuidInterface $id = null;
 
-    /**
-     * @ORM\Embedded(class="SolidInvoice\MoneyBundle\Entity\Money")
-     */
+    #[ORM\Embedded(class: MoneyEntity::class)]
     private MoneyEntity $value;
 
-    /**
-     * @ORM\OneToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Client", inversedBy="credit")
-     */
+    #[ORM\OneToOne(targetEntity: Client::class, inversedBy: 'credit')]
     private ?Client $client = null;
 
     public function __construct()

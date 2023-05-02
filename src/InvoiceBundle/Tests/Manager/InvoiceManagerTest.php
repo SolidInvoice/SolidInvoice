@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Manager;
 
+use Mockery\MockInterface;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -48,7 +49,7 @@ class InvoiceManagerTest extends KernelTestCase
     /**
      * @var Mock|EntityManagerInterface
      */
-    private $entityManager;
+    private EntityManagerInterface&MockInterface $entityManager;
 
     protected function setUp(): void
     {

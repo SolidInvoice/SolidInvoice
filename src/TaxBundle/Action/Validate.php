@@ -23,18 +23,15 @@ final class Validate implements AjaxResponse
 {
     use JsonTrait;
 
-    private VatCalculator $calculator;
-
-    public function __construct(VatCalculator $calculator)
+    public function __construct(private readonly VatCalculator $calculator)
     {
-        $this->calculator = $calculator;
     }
 
     public function __invoke(Request $request)
     {
         try {
             $valid = $this->calculator->isValidVATNumber($request->request->get('vat_number'));
-        } catch (VATCheckUnavailableException $e) {
+        } catch (VATCheckUnavailableException) {
             $valid = false;
         }
 

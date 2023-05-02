@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Util;
 
+use PhpToken;
 use function defined;
 
 /**
@@ -27,7 +28,7 @@ class ClassUtil
     {
         $class = false;
         $namespace = false;
-        $tokens = token_get_all(file_get_contents($file));
+        $tokens = PhpToken::tokenize(file_get_contents($file));
         $count = count($tokens);
 
         foreach ($tokens as $i => $token) {
@@ -35,27 +36,27 @@ class ClassUtil
                 continue;
             }
 
-            if ($class && T_STRING === $token[0]) {
-                return $namespace . '\\' . $token[1];
+            if ($class && $token->is(T_STRING)) {
+                return $namespace . '\\' . $token->text;
             }
 
-            if (true === $namespace && ((defined('T_NAME_QUALIFIED') && T_NAME_QUALIFIED === $token[0]) || T_STRING === $token[0])) {
-                if (defined('T_NAME_QUALIFIED') && T_NAME_QUALIFIED === $token[0]) {
-                    $namespace = $token[1];
+            if (true === $namespace && ((defined('T_NAME_QUALIFIED') && $token->is(T_NAME_QUALIFIED)) || $token->is(T_STRING))) {
+                if (defined('T_NAME_QUALIFIED') && $token->is(T_NAME_QUALIFIED)) {
+                    $namespace = $token->text;
                 } else {
                     $namespace = '';
                     do {
-                        $namespace .= $token[1];
+                        $namespace .= $token->text;
                         $token = $tokens[++$i];
-                    } while ($i < $count && is_array($token) && in_array($token[0], [T_NS_SEPARATOR, T_STRING], true));
+                    } while ($i < $count && in_array($token[0], [T_NS_SEPARATOR, T_STRING], true));
                 }
             }
 
-            if (T_CLASS === $token[0]) {
+            if ($token->is(T_CLASS)) {
                 $class = true;
             }
 
-            if (T_NAMESPACE === $token[0]) {
+            if ($token->is(T_NAMESPACE)) {
                 $namespace = true;
             }
         }

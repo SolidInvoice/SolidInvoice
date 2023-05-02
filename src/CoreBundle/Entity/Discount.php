@@ -19,31 +19,23 @@ use Money\Money;
 use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
 use Symfony\Component\Serializer\Annotation as Serialize;
 
-/**
- * @ORM\Embeddable()
- */
+#[ORM\Embeddable]
 class Discount
 {
-    public const TYPE_PERCENTAGE = 'percentage';
+    final public const TYPE_PERCENTAGE = 'percentage';
 
-    public const TYPE_MONEY = 'money';
+    final public const TYPE_MONEY = 'money';
 
-    /**
-     * @ORM\Embedded(class="SolidInvoice\MoneyBundle\Entity\Money")
-     * @Serialize\Groups({"invoice_api", "quote_api", "client_api"})
-     */
+    #[ORM\Embedded(class: MoneyEntity::class)]
+    #[Serialize\Groups(['invoice_api', 'quote_api', 'client_api'])]
     private MoneyEntity $valueMoney;
 
-    /**
-     * @ORM\Column(name="value_percentage", type="float", nullable=true)
-     * @Serialize\Groups({"invoice_api", "quote_api", "client_api"})
-     */
+    #[ORM\Column(name: 'value_percentage', type: 'float', nullable: true)]
+    #[Serialize\Groups(['invoice_api', 'quote_api', 'client_api'])]
     private ?float $valuePercentage = null;
 
-    /**
-     * @ORM\Column(name="type", type="string", nullable=true)
-     * @Serialize\Groups({"invoice_api", "quote_api", "client_api"})
-     */
+    #[ORM\Column(name: 'type', type: 'string', nullable: true)]
+    #[Serialize\Groups(['invoice_api', 'quote_api', 'client_api'])]
     private ?string $type = self::TYPE_PERCENTAGE;
 
     public function __construct()
@@ -87,26 +79,16 @@ class Discount
         return $this;
     }
 
-    /**
-     * @return float|Money|null
-     */
-    public function getValue()
+    public function getValue(): float|\Money\Money|null
     {
-        switch ($this->getType()) {
-            case self::TYPE_PERCENTAGE:
-                return $this->getValuePercentage();
-
-            case self::TYPE_MONEY:
-                return $this->getValueMoney() ? $this->getValueMoney()->getMoney() : null;
-        }
-
-        return null;
+        return match ($this->getType()) {
+            self::TYPE_PERCENTAGE => $this->getValuePercentage(),
+            self::TYPE_MONEY => $this->getValueMoney() instanceof \SolidInvoice\MoneyBundle\Entity\Money ? $this->getValueMoney()->getMoney() : null,
+            default => null,
+        };
     }
 
-    /**
-     * @param float|Money|null $value
-     */
-    public function setValue($value): void
+    public function setValue(float|\Money\Money|null $value): void
     {
         switch ($this->getType()) {
             case self::TYPE_PERCENTAGE:

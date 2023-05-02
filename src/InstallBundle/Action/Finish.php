@@ -20,11 +20,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 final class Finish
 {
-    private string $projectDir;
-
-    public function __construct(string $projectDir)
+    public function __construct(private readonly string $projectDir)
     {
-        $this->projectDir = $projectDir;
     }
 
     public function __invoke(Request $request): Template

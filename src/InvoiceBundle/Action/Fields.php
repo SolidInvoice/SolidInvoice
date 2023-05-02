@@ -24,14 +24,8 @@ final class Fields
 {
     use JsonTrait;
 
-    private FormFactoryInterface $factory;
-
-    private FieldRenderer $renderer;
-
-    public function __construct(FormFactoryInterface $factory, FieldRenderer $renderer)
+    public function __construct(private readonly FormFactoryInterface $factory, private readonly FieldRenderer $renderer)
     {
-        $this->factory = $factory;
-        $this->renderer = $renderer;
     }
 
     public function __invoke(Request $request, string $currency)

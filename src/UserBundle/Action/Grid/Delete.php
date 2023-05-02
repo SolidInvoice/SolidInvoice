@@ -28,24 +28,8 @@ final class Delete implements AjaxResponse
 {
     use JsonTrait;
 
-    private Security $security;
-
-    private UserRepositoryInterface $userRepository;
-
-    private CompanySelector $companySelector;
-
-    private CompanyRepository $companyRepository;
-
-    public function __construct(
-        UserRepositoryInterface $userRepository,
-        CompanyRepository $companyRepository,
-        Security $security,
-        CompanySelector $companySelector
-    ) {
-        $this->security = $security;
-        $this->userRepository = $userRepository;
-        $this->companySelector = $companySelector;
-        $this->companyRepository = $companyRepository;
+    public function __construct(private readonly UserRepositoryInterface $userRepository, private readonly CompanyRepository $companyRepository, private readonly Security $security, private readonly CompanySelector $companySelector)
+    {
     }
 
     public function __invoke(Request $request): JsonResponse
