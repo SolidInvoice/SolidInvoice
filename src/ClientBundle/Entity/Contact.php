@@ -109,25 +109,25 @@ class Contact implements Serializable, Stringable
     #[ORM\OneToMany(mappedBy: 'contact', targetEntity: AdditionalContactDetail::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[Assert\Valid]
     #[Serialize\Groups(['client_api', 'contact_api'])]
-    private readonly Collection $additionalContactDetails;
+    private Collection $additionalContactDetails;
 
     /**
      * @var Collection<int, InvoiceContact>
      */
     #[ORM\OneToMany(mappedBy: 'contact', targetEntity: InvoiceContact::class, cascade: ['persist', 'remove'])]
-    private readonly Collection $invoices;
+    private Collection $invoices;
 
     /**
      * @var Collection<int, RecurringInvoiceContact>
      */
     #[ORM\OneToMany(mappedBy: 'contact', targetEntity: RecurringInvoiceContact::class, cascade: ['persist', 'remove'])]
-    private readonly Collection $recurringInvoices;
+    private Collection $recurringInvoices;
 
     /**
      * @var Collection<int, QuoteContact>
      */
     #[ORM\OneToMany(mappedBy: 'contact', targetEntity: QuoteContact::class, cascade: ['persist', 'remove'])]
-    private readonly Collection $quotes;
+    private Collection $quotes;
 
     public function __construct()
     {
