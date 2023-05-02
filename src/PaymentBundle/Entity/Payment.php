@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
+use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
 use DateTimeInterface;
@@ -39,14 +41,16 @@ use Traversable;
  *     attributes={"normalization_context"={"groups"={"payment_api"}}}
  * )
  */
-#[ORM\Table(name: 'payments')]
+#[ORM\Table(name: Payment::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: PaymentRepository::class)]
 class Payment extends BasePayment implements PaymentInterface
 {
+    final public const TABLE_NAME = 'payments';
+
     use TimeStampable;
     use CompanyAware;
 
-    #[ORM\Column(name: 'id', type: 'uuid_binary_ordered_time')]
+    #[ORM\Column(name: 'id', type: UuidBinaryOrderedTimeType::NAME)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
@@ -76,15 +80,15 @@ class Payment extends BasePayment implements PaymentInterface
     #[Serialize\Groups(['payment_api', 'client_api'])]
     private ?PaymentMethod $method = null;
 
-    #[ORM\Column(name: 'status', type: 'string', length: 25)]
+    #[ORM\Column(name: 'status', type: Types::STRING, length: 25)]
     #[Serialize\Groups(['payment_api', 'client_api'])]
     private ?string $status = null;
 
-    #[ORM\Column(name: 'message', type: 'text', nullable: true)]
+    #[ORM\Column(name: 'message', type: Types::TEXT, nullable: true)]
     #[Serialize\Groups(['payment_api', 'client_api'])]
     private ?string $message = null;
 
-    #[ORM\Column(name: 'completed', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'completed', type: Types::DATETIME_MUTABLE, nullable: true)]
     #[Assert\DateTime]
     #[Serialize\Groups(['payment_api', 'client_api'])]
     private ?DateTimeInterface $completed = null;

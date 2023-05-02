@@ -15,18 +15,22 @@ namespace SolidInvoice\UserBundle\Entity;
 
 use DateTimeImmutable;
 use DateTimeInterface;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
 use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\UserBundle\Repository\UserInvitationRepository;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-#[ORM\Table(name: 'user_invitations')]
+#[ORM\Table(name: UserInvitation::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: UserInvitationRepository::class)]
 #[UniqueEntity(fields: ['email', 'company'], message: 'users.invitation.exists')]
 class UserInvitation
 {
+    final public const TABLE_NAME = 'user_invitations';
+
     use CompanyAware;
 
     final public const STATUS_PENDING = 'pending';
@@ -34,16 +38,16 @@ class UserInvitation
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
-    #[ORM\Column(type: 'uuid_binary_ordered_time')]
+    #[ORM\Column(type: UuidBinaryOrderedTimeType::NAME)]
     private ?UuidInterface $id = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: Types::STRING, length: 255)]
     private string $email = '';
 
-    #[ORM\Column(type: 'datetimetz_immutable')]
+    #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE)]
     private readonly DateTimeInterface $created;
 
-    #[ORM\Column(type: 'string')]
+    #[ORM\Column(type: Types::STRING)]
     private string $status;
 
     #[ORM\ManyToOne(targetEntity: User::class)]

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Money\Currency;
 use Money\Money;
@@ -30,11 +31,11 @@ class Discount
     #[Serialize\Groups(['invoice_api', 'quote_api', 'client_api'])]
     private MoneyEntity $valueMoney;
 
-    #[ORM\Column(name: 'value_percentage', type: 'float', nullable: true)]
+    #[ORM\Column(name: 'value_percentage', type: Types::FLOAT, nullable: true)]
     #[Serialize\Groups(['invoice_api', 'quote_api', 'client_api'])]
     private ?float $valuePercentage = null;
 
-    #[ORM\Column(name: 'type', type: 'string', nullable: true)]
+    #[ORM\Column(name: 'type', type: Types::STRING, nullable: true)]
     #[Serialize\Groups(['invoice_api', 'quote_api', 'client_api'])]
     private ?string $type = self::TYPE_PERCENTAGE;
 
@@ -79,16 +80,16 @@ class Discount
         return $this;
     }
 
-    public function getValue(): float|\Money\Money|null
+    public function getValue(): float| Money |null
     {
         return match ($this->getType()) {
             self::TYPE_PERCENTAGE => $this->getValuePercentage(),
-            self::TYPE_MONEY => $this->getValueMoney() instanceof \SolidInvoice\MoneyBundle\Entity\Money ? $this->getValueMoney()->getMoney() : null,
+            self::TYPE_MONEY => $this->getValueMoney() instanceof MoneyEntity ? $this->getValueMoney()->getMoney() : null,
             default => null,
         };
     }
 
-    public function setValue(float|\Money\Money|null $value): void
+    public function setValue(float| Money |null $value): void
     {
         switch ($this->getType()) {
             case self::TYPE_PERCENTAGE:
@@ -97,6 +98,7 @@ class Discount
                 break;
 
             case self::TYPE_MONEY:
+                // @TODO: USD should not be hard-coded
                 $this->setValueMoney(new MoneyEntity(new Money(((int) $value) * 100, new Currency('USD'))));
 
                 break;

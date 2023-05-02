@@ -29,27 +29,14 @@ class ClassUtil
         $class = false;
         $namespace = false;
         $tokens = PhpToken::tokenize(file_get_contents($file));
-        $count = count($tokens);
 
-        foreach ($tokens as $i => $token) {
-            if (! is_array($token)) {
-                continue;
-            }
-
+        foreach ($tokens as $token) {
             if ($class && $token->is(T_STRING)) {
                 return $namespace . '\\' . $token->text;
             }
 
-            if (true === $namespace && ((defined('T_NAME_QUALIFIED') && $token->is(T_NAME_QUALIFIED)) || $token->is(T_STRING))) {
-                if (defined('T_NAME_QUALIFIED') && $token->is(T_NAME_QUALIFIED)) {
-                    $namespace = $token->text;
-                } else {
-                    $namespace = '';
-                    do {
-                        $namespace .= $token->text;
-                        $token = $tokens[++$i];
-                    } while ($i < $count && in_array($token[0], [T_NS_SEPARATOR, T_STRING], true));
-                }
+            if (true === $namespace && $token->is(T_NAME_QUALIFIED)) {
+                $namespace = $token->text;
             }
 
             if ($token->is(T_CLASS)) {

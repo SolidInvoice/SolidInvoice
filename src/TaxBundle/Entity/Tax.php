@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\TaxBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
+use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
+use SolidInvoice\InvoiceBundle\Entity\Item as InvoiceItem;
 use SolidInvoice\TaxBundle\Repository\TaxRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -27,11 +30,13 @@ use Stringable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'tax_rates')]
+#[ORM\Table(name: Tax::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: TaxRepository::class)]
 #[UniqueEntity('name')]
 class Tax implements Stringable
 {
+    final public const TABLE_NAME = 'tax_rates';
+
     use TimeStampable;
     use CompanyAware;
 
@@ -39,35 +44,35 @@ class Tax implements Stringable
 
     final public const TYPE_EXCLUSIVE = 'Exclusive';
 
-    #[ORM\Column(name: 'id', type: 'uuid_binary_ordered_time')]
+    #[ORM\Column(name: 'id', type: UuidBinaryOrderedTimeType::NAME)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
     private ?UuidInterface $id = null;
 
-    #[ORM\Column(name: 'name', type: 'string', length: 32)]
+    #[ORM\Column(name: 'name', type: Types::STRING, length: 32)]
     #[Assert\NotBlank]
     private ?string $name = null;
 
-    #[ORM\Column(name: 'rate', type: 'float', precision: 4)]
+    #[ORM\Column(name: 'rate', type: Types::FLOAT, precision: 4)]
     #[Assert\Type('float')]
     #[Assert\NotBlank]
     private ?float $rate = null;
 
-    #[ORM\Column(name: 'tax_type', type: 'string', length: 32)]
+    #[ORM\Column(name: 'tax_type', type: Types::STRING, length: 32)]
     #[Assert\NotBlank]
     private ?string $type = null;
 
     /**
      * @var Collection<int, Item>
      */
-    #[ORM\OneToMany(targetEntity: \SolidInvoice\InvoiceBundle\Entity\Item::class, mappedBy: 'tax')]
+    #[ORM\OneToMany(mappedBy: 'tax', targetEntity: InvoiceItem::class)]
     private Collection $invoiceItems;
 
     /**
      * @var Collection<int, QuoteItem>
      */
-    #[ORM\OneToMany(targetEntity: QuoteItem::class, mappedBy: 'tax')]
+    #[ORM\OneToMany(mappedBy: 'tax', targetEntity: QuoteItem::class)]
     private Collection $quoteItems;
 
     public function __construct()

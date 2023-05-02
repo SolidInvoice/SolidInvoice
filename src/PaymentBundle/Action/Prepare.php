@@ -56,11 +56,25 @@ final class Prepare
 {
     use SaveableTrait;
 
-    public function __construct(private readonly StateMachine $stateMachine, private readonly PaymentMethodRepository $paymentMethodRepository, private readonly AuthorizationCheckerInterface $authorization, private readonly TokenStorageInterface $tokenStorage, private readonly FormFactoryInterface $formFactory, private readonly SystemConfig $systemConfig, private readonly PaymentFactories $paymentFactories, private readonly EventDispatcherInterface $eventDispatcher, private readonly RegistryInterface $payum, private readonly RouterInterface $router, private readonly CompanySelector $companySelector)
-    {
+    public function __construct(
+        private readonly StateMachine $stateMachine,
+        private readonly PaymentMethodRepository $paymentMethodRepository,
+        private readonly AuthorizationCheckerInterface $authorization,
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly FormFactoryInterface $formFactory,
+        private readonly SystemConfig $systemConfig,
+        private readonly PaymentFactories $paymentFactories,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly Payum $payum,
+        private readonly RouterInterface $router,
+        private readonly CompanySelector $companySelector
+    ) {
     }
 
-    public function __invoke(Request $request, ?Invoice $invoice)
+    /**
+     * @throws Exception
+     */
+    public function __invoke(Request $request, ?Invoice $invoice): Template | Response | null
     {
         if (! $invoice instanceof Invoice) {
             throw new NotFoundHttpException();

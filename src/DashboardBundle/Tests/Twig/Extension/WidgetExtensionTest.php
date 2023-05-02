@@ -31,10 +31,7 @@ class WidgetExtensionTest extends TestCase
 
     private WidgetExtension $extension;
 
-    /**
-     * @var Mockery\MockInterface
-     */
-    private MockInterface&WidgetFactory $factory;
+    private MockInterface|WidgetFactory $factory;
 
     protected function setUp(): void
     {

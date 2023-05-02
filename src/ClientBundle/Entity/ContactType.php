@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
+use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use SolidInvoice\ClientBundle\Repository\ContactTypeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -24,26 +26,28 @@ use Stringable;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'contact_types')]
+#[ORM\Table(name: ContactType::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: ContactTypeRepository::class)]
 class ContactType implements Stringable
 {
+    final public const TABLE_NAME = 'contact_types';
+
     use CompanyAware;
 
-    #[ORM\Column(name: 'id', type: 'uuid_binary_ordered_time')]
+    #[ORM\Column(name: 'id', type: UuidBinaryOrderedTimeType::NAME)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
     #[Serialize\Groups(['client_api', 'contact_api'])]
     private ?UuidInterface $id = null;
 
-    #[ORM\Column(name: 'name', type: 'string', length: 45, unique: true)]
+    #[ORM\Column(name: 'name', type: Types::STRING, length: 45, unique: true)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 45)]
     #[Serialize\Groups(['client_api', 'contact_api'])]
     private ?string $name = null;
 
-    #[ORM\Column(name: 'type', type: 'string', length: 45)]
+    #[ORM\Column(name: 'type', type: Types::STRING, length: 45)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 45)]
     #[Serialize\Groups(['none'])]
@@ -56,14 +60,14 @@ class ContactType implements Stringable
     #[Serialize\Groups(['none'])]
     private ?array $options = [];
 
-    #[ORM\Column(name: 'required', type: 'boolean')]
+    #[ORM\Column(name: 'required', type: Types::BOOLEAN)]
     #[Serialize\Groups(['none'])]
     private bool $required = false;
 
     /**
      * @var Collection<int, AdditionalContactDetail>
      */
-    #[ORM\OneToMany(targetEntity: 'AdditionalContactDetail', mappedBy: 'type', orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'type', targetEntity: AdditionalContactDetail::class, orphanRemoval: true)]
     #[Serialize\Groups(['none'])]
     private Collection $details;
 
@@ -132,9 +136,9 @@ class ContactType implements Stringable
     /**
      * @return array<int|string, int|string|list<string>>
      */
-    public function getOptions(): ?array
+    public function getOptions(): array
     {
-        return $this->options;
+        return $this->options ?? [];
     }
 
     /**

@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
 use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
@@ -22,41 +24,43 @@ use Stringable;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Serializer\Annotation as Serialize;
 
-#[ORM\Table(name: 'addresses')]
+#[ORM\Table(name: Address::TABLE_NAME)]
 #[ORM\Entity]
 class Address implements Stringable
 {
+    final public const TABLE_NAME = 'addresses';
+
     use TimeStampable;
     use CompanyAware;
 
-    #[ORM\Column(name: 'id', type: 'uuid_binary_ordered_time')]
+    #[ORM\Column(name: 'id', type: UuidBinaryOrderedTimeType::NAME)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
     #[Serialize\Groups(['client_api'])]
     private ?UuidInterface $id = null;
 
-    #[ORM\Column(name: 'street1', type: 'string', nullable: true)]
+    #[ORM\Column(name: 'street1', type: Types::STRING, nullable: true)]
     #[Serialize\Groups(['client_api'])]
     private ?string $street1 = null;
 
-    #[ORM\Column(name: 'street2', type: 'string', nullable: true)]
+    #[ORM\Column(name: 'street2', type: Types::STRING, nullable: true)]
     #[Serialize\Groups(['client_api'])]
     private ?string $street2 = null;
 
-    #[ORM\Column(name: 'city', type: 'string', nullable: true)]
+    #[ORM\Column(name: 'city', type: Types::STRING, nullable: true)]
     #[Serialize\Groups(['client_api'])]
     private ?string $city = null;
 
-    #[ORM\Column(name: 'state', type: 'string', nullable: true)]
+    #[ORM\Column(name: 'state', type: Types::STRING, nullable: true)]
     #[Serialize\Groups(['client_api'])]
     private ?string $state = null;
 
-    #[ORM\Column(name: 'zip', type: 'string', nullable: true)]
+    #[ORM\Column(name: 'zip', type: Types::STRING, nullable: true)]
     #[Serialize\Groups(['client_api'])]
     private ?string $zip = null;
 
-    #[ORM\Column(name: 'country', type: 'string', nullable: true)]
+    #[ORM\Column(name: 'country', type: Types::STRING, nullable: true)]
     #[Serialize\Groups(['client_api'])]
     private ?string $country = null;
 

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
+use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use SolidInvoice\QuoteBundle\Repository\ItemRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Money\Money;
@@ -27,22 +29,24 @@ use Stringable;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'quote_lines')]
+#[ORM\Table(name: Item::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: ItemRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class Item implements ItemInterface, Stringable
 {
+    final public const TABLE_NAME = 'quote_lines';
+
     use TimeStampable;
     use CompanyAware;
 
-    #[ORM\Column(name: 'id', type: 'uuid_binary_ordered_time')]
+    #[ORM\Column(name: 'id', type: UuidBinaryOrderedTimeType::NAME)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
     #[Serialize\Groups(['quote_api', 'client_api'])]
     private ?UuidInterface $id = null;
 
-    #[ORM\Column(name: 'description', type: 'text')]
+    #[ORM\Column(name: 'description', type: Types::TEXT)]
     #[Assert\NotBlank]
     #[Serialize\Groups(['quote_api', 'client_api', 'create_quote_api'])]
     private ?string $description = null;
@@ -52,12 +56,12 @@ class Item implements ItemInterface, Stringable
     #[Serialize\Groups(['quote_api', 'client_api', 'create_quote_api'])]
     private MoneyEntity $price;
 
-    #[ORM\Column(name: 'qty', type: 'float')]
+    #[ORM\Column(name: 'qty', type: Types::FLOAT)]
     #[Assert\NotBlank]
     #[Serialize\Groups(['quote_api', 'client_api', 'create_quote_api'])]
     private ?float $qty = null;
 
-    #[ORM\ManyToOne(targetEntity: 'Quote', inversedBy: 'items')]
+    #[ORM\ManyToOne(targetEntity: Quote::class, inversedBy: 'items')]
     private ?Quote $quote = null;
 
     #[ORM\ManyToOne(targetEntity: Tax::class, inversedBy: 'quoteItems')]

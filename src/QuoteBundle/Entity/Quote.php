@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
+use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
+use Ramsey\Uuid\Doctrine\UuidType;
 use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
@@ -41,11 +44,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ApiResource(attributes={"normalization_context"={"groups"={"quote_api"}}, "denormalization_context"={"groups"={"create_quote_api"}}})
  */
-#[ORM\Table(name: 'quotes')]
+#[ORM\Table(name: Quote::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: QuoteRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class Quote
 {
+    final public const TABLE_NAME = 'quotes';
+
     use Archivable;
     use QuoteStatusTrait {
         Archivable::isArchived insteadof QuoteStatusTrait;
@@ -53,21 +58,21 @@ class Quote
     use TimeStampable;
     use CompanyAware;
 
-    #[ORM\Column(name: 'id', type: 'uuid_binary_ordered_time')]
+    #[ORM\Column(name: 'id', type: UuidBinaryOrderedTimeType::NAME)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
     #[Serialize\Groups(['quote_api', 'client_api'])]
     private ?UuidInterface $id = null;
 
-    #[ORM\Column(name: 'quote_id', type: 'string', length: 255)]
+    #[ORM\Column(name: 'quote_id', type: Types::STRING, length: 255)]
     private string $quoteId;
 
-    #[ORM\Column(name: 'uuid', type: 'uuid', length: 36)]
+    #[ORM\Column(name: 'uuid', type: UuidType::NAME, length: 36)]
     #[Serialize\Groups(['quote_api', 'client_api'])]
     private ?UuidInterface $uuid = null;
 
-    #[ORM\Column(name: 'status', type: 'string', length: 25)]
+    #[ORM\Column(name: 'status', type: Types::STRING, length: 25)]
     #[Serialize\Groups(['quote_api', 'client_api'])]
     private ?string $status = null;
 
@@ -95,15 +100,15 @@ class Quote
     #[Serialize\Groups(['quote_api', 'client_api', 'create_quote_api'])]
     private Discount $discount;
 
-    #[ORM\Column(name: 'terms', type: 'text', nullable: true)]
+    #[ORM\Column(name: 'terms', type: Types::TEXT, nullable: true)]
     #[Serialize\Groups(['quote_api', 'client_api', 'create_quote_api'])]
     private ?string $terms = null;
 
-    #[ORM\Column(name: 'notes', type: 'text', nullable: true)]
+    #[ORM\Column(name: 'notes', type: Types::TEXT, nullable: true)]
     #[Serialize\Groups(['quote_api', 'client_api', 'create_quote_api'])]
     private ?string $notes = null;
 
-    #[ORM\Column(name: 'due', type: 'date', nullable: true)]
+    #[ORM\Column(name: 'due', type: Types::DATE_MUTABLE, nullable: true)]
     #[Assert\DateTime]
     #[Serialize\Groups(['quote_api', 'client_api', 'create_quote_api'])]
     private ?DateTimeInterface $due = null;
@@ -111,7 +116,7 @@ class Quote
     /**
      * @var Collection<int, Item>
      */
-    #[ORM\OneToMany(targetEntity: 'Item', mappedBy: 'quote', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'quote', targetEntity: Item::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[Assert\Valid]
     #[Assert\Count(min: 1, minMessage: 'You need to add at least 1 item to the Quote')]
     #[Serialize\Groups(['quote_api', 'client_api', 'create_quote_api'])]
@@ -122,12 +127,12 @@ class Quote
      *
      * @ApiProperty(writableLink=true)
      */
-    #[ORM\OneToMany(targetEntity: QuoteContact::class, cascade: ['persist', 'remove'], mappedBy: 'quote')]
+    #[ORM\OneToMany(mappedBy: 'quote', targetEntity: QuoteContact::class, cascade: ['persist', 'remove'])]
     #[Assert\Count(min: 1, minMessage: 'You need to select at least 1 user to attach to the Quote')]
     #[Serialize\Groups(['quote_api', 'client_api', 'create_quote_api'])]
     private Collection $users;
 
-    #[ORM\OneToOne(targetEntity: Invoice::class, mappedBy: 'quote')]
+    #[ORM\OneToOne(mappedBy: 'quote', targetEntity: Invoice::class)]
     private ?Invoice $invoice = null;
 
     public function __construct()

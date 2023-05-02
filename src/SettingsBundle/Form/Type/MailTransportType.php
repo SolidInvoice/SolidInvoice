@@ -25,7 +25,7 @@ use Traversable;
 final class MailTransportType extends AbstractType
 {
     /**
-     * @param ConfiguratorInterface[]|Traversable $transports
+     * @param list<ConfiguratorInterface>|Traversable<ConfiguratorInterface> $transports
      */
     public function __construct(private readonly iterable $transports)
     {
@@ -53,7 +53,7 @@ final class MailTransportType extends AbstractType
 
         $builder->addModelTransformer(new class() implements DataTransformerInterface {
             /**
-             * @return array<string, mixed>
+             * @return null|array<string, mixed>
              */
             public function transform($value): ?array
             {

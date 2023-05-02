@@ -261,7 +261,7 @@ class PaymentRepository extends ServiceEntityRepository
     /**
      * @param Payment[]|Collection<int, Payment> $payments
      */
-    public function updatePaymentStatus(array|Collection $payments, string $status): int
+    public function updatePaymentStatus(iterable $payments, string $status): int
     {
         foreach ($payments as $payment) {
             $payment->setStatus($status);

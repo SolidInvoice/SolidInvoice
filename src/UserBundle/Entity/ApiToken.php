@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
+use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use SolidInvoice\UserBundle\Repository\ApiTokenRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -25,35 +27,37 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table('api_tokens')]
+#[ORM\Table(ApiToken::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: ApiTokenRepository::class)]
 #[UniqueEntity(['name', 'user'])]
 class ApiToken
 {
+    final public const TABLE_NAME = 'api_tokens';
+
     use TimeStampable;
     use CompanyAware;
 
-    #[ORM\Column(type: 'uuid_binary_ordered_time')]
+    #[ORM\Column(type: UuidBinaryOrderedTimeType::NAME)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
     private ?UuidInterface $id = null;
 
-    #[ORM\Column(type: 'string', length: 125)]
+    #[ORM\Column(type: Types::STRING, length: 125)]
     #[Assert\NotBlank]
     private ?string $name = null;
 
-    #[ORM\Column(type: 'string', length: 125)]
+    #[ORM\Column(type: Types::STRING, length: 125)]
     private ?string $token = null;
 
     /**
      * @var Collection<int, ApiTokenHistory>
      */
-    #[ORM\OneToMany(targetEntity: 'ApiTokenHistory', mappedBy: 'token', fetch: 'EXTRA_LAZY', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'token', targetEntity: ApiTokenHistory::class, cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     #[ORM\OrderBy(['created' => 'DESC'])]
     private Collection $history;
 
-    #[ORM\ManyToOne(targetEntity: 'User', inversedBy: 'apiTokens')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'apiTokens')]
     #[ORM\JoinColumn(name: 'user_id')]
     private ?UserInterface $user = null;
 

@@ -32,11 +32,14 @@ final class Done
 {
     use SaveableTrait;
 
-    public function __construct(private readonly RegistryInterface $payum, private readonly RouterInterface $router, private readonly EventDispatcherInterface $eventDispatcher)
-    {
+    public function __construct(
+        private readonly Payum $payum,
+        private readonly RouterInterface $router,
+        private readonly EventDispatcherInterface $eventDispatcher
+    ) {
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response | null
     {
         /** @var Token $token */
         $token = $this->payum->getHttpRequestVerifier()->verify($request);

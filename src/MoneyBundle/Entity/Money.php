@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MoneyBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Money\Currency;
 use Money\Money as BaseMoney;
@@ -20,10 +21,10 @@ use Money\Money as BaseMoney;
 #[ORM\Embeddable]
 class Money
 {
-    #[ORM\Column(name: 'amount', type: 'string', nullable: true)]
+    #[ORM\Column(name: 'amount', type: Types::STRING, nullable: true)]
     private ?string $value = null;
 
-    #[ORM\Column(name: 'currency', type: 'string', length: 3, nullable: true)]
+    #[ORM\Column(name: 'currency', type: Types::STRING, length: 3, nullable: true)]
     private ?string $currency = null;
 
     // @TODO: Ensure that a money object is always passed in
@@ -37,6 +38,7 @@ class Money
 
     public function getMoney(): BaseMoney
     {
+        // @TODO: USD should not be hard-coded
         return new BaseMoney((int) $this->value, new Currency($this->currency ?: 'USD'));
     }
 }

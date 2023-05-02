@@ -21,14 +21,16 @@ use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 /**
  * @ApiResource(collectionOperations={}, itemOperations={})
  */
-#[ORM\Table(name: 'invoice_contact')]
+#[ORM\Table(name: InvoiceContact::TABLE_NAME)]
 #[ORM\Entity]
 class InvoiceContact
 {
+    final public const TABLE_NAME = 'invoice_contact';
+
     use CompanyAware;
 
     #[ORM\Id]
-    #[ORM\ManyToOne(targetEntity: Invoice::class, inversedBy: 'users', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(targetEntity: Invoice::class, cascade: ['persist', 'remove'], inversedBy: 'users')]
     #[ORM\JoinColumn(name: 'invoice_id')]
     private Invoice $invoice;
 

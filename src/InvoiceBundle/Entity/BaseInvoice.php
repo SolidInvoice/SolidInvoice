@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Money\Money;
 use SolidInvoice\CoreBundle\Entity\Discount;
@@ -25,7 +26,7 @@ abstract class BaseInvoice
 {
     use CompanyAware;
 
-    #[ORM\Column(name: 'status', type: 'string', length: 25)]
+    #[ORM\Column(name: 'status', type: Types::STRING, length: 25)]
     #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api'])]
     protected ?string $status = null;
 
@@ -45,11 +46,11 @@ abstract class BaseInvoice
     #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
     protected Discount $discount;
 
-    #[ORM\Column(name: 'terms', type: 'text', nullable: true)]
+    #[ORM\Column(name: 'terms', type: Types::TEXT, nullable: true)]
     #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
     protected ?string $terms = null;
 
-    #[ORM\Column(name: 'notes', type: 'text', nullable: true)]
+    #[ORM\Column(name: 'notes', type: Types::TEXT, nullable: true)]
     #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
     protected ?string $notes = null;
 
