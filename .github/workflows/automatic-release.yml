@@ -22,7 +22,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@cb8f453143149404c7fd670b5f37c91d395b3054
         with:
-          php-version: 8.1
+          php-version: 8.2
           extensions: intl, gd, opcache, mysql, pdo_mysql, soap, zip, :xdebug
           coverage: none
 
