@@ -22,7 +22,7 @@ It's a feature rich elegant online application to ensure that you can always get
 
 ## Requirements
 
-PHP >= 7.4.15 is required. Use the latest version of PHP for best experience.
+PHP >= 8.1 is required. Use the latest version of PHP for best experience.
 
 ## Installation
 
