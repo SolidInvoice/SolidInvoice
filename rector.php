@@ -25,14 +25,14 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->importNames();
     $rectorConfig->importShortClasses();
     $rectorConfig->symfonyContainerXml(__DIR__ . '/var/cache/dev/SolidInvoice_KernelDevDebugContainer.xml');
-    $rectorConfig->phpVersion(PhpVersion::PHP_74);
+    $rectorConfig->phpVersion(PhpVersion::PHP_81);
 
     $rectorConfig->sets([
         // General
         SetList::CODE_QUALITY,
 
         // PHP
-        LevelSetList::UP_TO_PHP_74,
+        LevelSetList::UP_TO_PHP_81,
 
         // PHPUnit
         PHPUnitSetList::PHPUNIT_70,
