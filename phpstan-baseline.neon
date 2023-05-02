@@ -831,7 +831,7 @@ parameters:
 			path: src/PaymentBundle/Form/Type/PaymentMethodSettingsType.php
 
 		-
-			message: "#^PHPDoc type for property class@anonymous/PaymentBundle/Listener/PaymentCompleteListener\\.php\\:81\\:\\:\\$status with type int is incompatible with native type string\\.$#"
+			message: "#^PHPDoc type for property class@anonymous/PaymentBundle/Listener/PaymentCompleteListener\\.php\\:84\\:\\:\\$status with type int is incompatible with native type string\\.$#"
 			count: 1
 			path: src/PaymentBundle/Listener/PaymentCompleteListener.php
 

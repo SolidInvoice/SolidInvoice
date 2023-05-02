@@ -40,7 +40,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     use TimeStampable;
 
-    #[ORM\Column(type: UuidBinaryOrderedTimeType::class)]
+    #[ORM\Column(type: UuidBinaryOrderedTimeType::NAME)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
