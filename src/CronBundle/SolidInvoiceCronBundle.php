@@ -15,6 +15,7 @@ namespace SolidInvoice\CronBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class SolidInvoiceCronBundle extends Bundle
+final class SolidInvoiceCronBundle extends Bundle
 {
+    final public const NAMESPACE = __NAMESPACE__;
 }

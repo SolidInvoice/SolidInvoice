@@ -22,49 +22,43 @@ use SolidInvoice\QuoteBundle\Action\View;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 return static function (RoutingConfigurator $routingConfigurator): void {
-    $routingConfigurator->add('_quotes_index', '/')
+    $routingConfigurator
+        ->add('_quotes_index', '/')
         ->controller(Index::class);
 
-    $routingConfigurator->add('_quotes_create', '/create/{client}')
+    $routingConfigurator
+        ->add('_quotes_create', '/create/{client}')
         ->controller(Create::class)
-        ->defaults([
-        'client' => null,
-    ])
-        ->options([
-        'expose' => true,
-    ]);
+        ->defaults(['client' => null])
+        ->options(['expose' => true]);
 
-    $routingConfigurator->add('_quotes_get_fields', '/fields/get/{currency}')
+    $routingConfigurator
+        ->add('_quotes_get_fields', '/fields/get/{currency}')
         ->controller(Fields::class)
-        ->options([
-        'expose' => true,
-    ]);
+        ->options(['expose' => true]);
 
-    $routingConfigurator->add('_quotes_edit', '/edit/{id}')
+    $routingConfigurator
+        ->add('_quotes_edit', '/edit/{id}')
         ->controller(Edit::class)
-        ->options([
-        'expose' => true,
-    ]);
+        ->options(['expose' => true]);
 
-    $routingConfigurator->add('_quotes_view', '/view/{id}.{_format}')
+    $routingConfigurator
+        ->add('_quotes_view', '/view/{id}.{_format}')
         ->controller(View::class)
-        ->defaults([
-        '_format' => 'html',
-    ])
-        ->requirements([
-        '_format' => 'html|pdf',
-    ])
-        ->options([
-        'expose' => true,
-    ]);
+        ->defaults(['_format' => 'html'])
+        ->requirements(['_format' => 'html|pdf'])
+        ->options(['expose' => true]);
 
-    $routingConfigurator->add('_quotes_clone', '/clone/{id}')
+    $routingConfigurator
+        ->add('_quotes_clone', '/clone/{id}')
         ->controller(CloneQuote::class);
 
-    $routingConfigurator->add('_send_quote', '/action/send/{id}')
+    $routingConfigurator
+        ->add('_send_quote', '/action/send/{id}')
         ->controller(Send::class);
 
-    $routingConfigurator->add('_transition_quote', '/action/{action}/{id}')
+    $routingConfigurator
+        ->add('_transition_quote', '/action/{action}/{id}')
         ->controller(Transition::class);
 
     $routingConfigurator->import('@SolidInvoiceQuoteBundle/Action/Grid', 'grid');

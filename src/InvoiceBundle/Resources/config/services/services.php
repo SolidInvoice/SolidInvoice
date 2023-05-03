@@ -21,7 +21,8 @@ use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
 
-    $services->defaults()
+    $services
+        ->defaults()
         ->autoconfigure()
         ->autowire()
         ->private()
@@ -29,17 +30,23 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->bind('$recurringInvoiceStateMachine', service('state_machine.recurring_invoice'))
     ;
 
-    $services->load(SolidInvoiceInvoiceBundle::NAMESPACE . '\\', dirname(__DIR__, 3))
+    $services
+        ->load(SolidInvoiceInvoiceBundle::NAMESPACE . '\\', dirname(__DIR__, 3))
         ->exclude(dirname(__DIR__, 3) . '/{DependencyInjection,Resources,Tests}');
 
-    $services->load(SolidInvoiceInvoiceBundle::NAMESPACE . '\\Action\\', dirname(__DIR__, 3) . '/Action')
+    $services
+        ->load(SolidInvoiceInvoiceBundle::NAMESPACE . '\\Action\\', dirname(__DIR__, 3) . '/Action')
         ->tag('controller.service_arguments');
 
-    $services->set('solidinvoice_invoice.menu', Builder::class)
-        ->tag('cs_core.menu', [
-        'menu' => 'sidebar',
-        'method' => 'sidebar',
-    ]);
+    $services
+        ->set('solidinvoice_invoice.menu', Builder::class)
+        ->tag(
+            'cs_core.menu',
+            [
+                'menu' => 'sidebar',
+                'method' => 'sidebar',
+            ]
+        );
 
     $services
         ->set(InvoiceSaveListener::class)

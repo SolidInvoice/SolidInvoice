@@ -17,8 +17,10 @@ use SolidInvoice\DashboardBundle\DependencyInjection\Compiler\DashboardWidgetCom
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class SolidInvoiceDashboardBundle extends Bundle
+final class SolidInvoiceDashboardBundle extends Bundle
 {
+    final public const NAMESPACE = __NAMESPACE__;
+
     public function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new DashboardWidgetCompilerPass());

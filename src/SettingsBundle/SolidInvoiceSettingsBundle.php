@@ -15,6 +15,7 @@ namespace SolidInvoice\SettingsBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class SolidInvoiceSettingsBundle extends Bundle
+final class SolidInvoiceSettingsBundle extends Bundle
 {
+    final public const NAMESPACE = __NAMESPACE__;
 }

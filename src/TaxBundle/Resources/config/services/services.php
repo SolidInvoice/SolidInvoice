@@ -11,20 +11,24 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use SolidInvoice\TaxBundle\SolidInvoiceTaxBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
 
-    $services->defaults()
+    $services
+        ->defaults()
         ->autoconfigure()
         ->autowire()
         ->private()
     ;
 
-    $services->load('SolidInvoice\\TaxBundle\\', dirname(__DIR__, 3))
+    $services
+        ->load(SolidInvoiceTaxBundle::NAMESPACE . '\\', dirname(__DIR__, 3))
         ->exclude(dirname(__DIR__, 3) . '/{DependencyInjection,Resources,Tests}');
 
-    $services->load('SolidInvoice\\TaxBundle\\Action\\', dirname(__DIR__, 3) . '/Action')
+    $services
+        ->load(SolidInvoiceTaxBundle::NAMESPACE . '\\Action\\', dirname(__DIR__, 3) . '/Action')
         ->tag('controller.service_arguments');
 };

@@ -15,6 +15,7 @@ use SolidInvoice\DashboardBundle\Action\Index;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 return static function (RoutingConfigurator $routingConfigurator): void {
-    $routingConfigurator->add('_dashboard', '/dashboard')
+    $routingConfigurator
+        ->add('_dashboard', '/dashboard')
         ->controller(Index::class);
 };

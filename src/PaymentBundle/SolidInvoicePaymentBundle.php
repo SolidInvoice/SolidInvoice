@@ -18,8 +18,10 @@ use SolidInvoice\PaymentBundle\DependencyInjection\PaymentExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class SolidInvoicePaymentBundle extends Bundle
+final class SolidInvoicePaymentBundle extends Bundle
 {
+    final public const NAMESPACE = __NAMESPACE__;
+
     public function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new PayumStoragePass());

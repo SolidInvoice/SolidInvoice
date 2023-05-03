@@ -13,24 +13,29 @@ declare(strict_types=1);
 
 use SolidInvoice\CoreBundle\Routing\Loader\AbstractDirectoryLoader;
 use SolidInvoice\DataGridBundle\Routing\Loader\GridRouteLoader;
+use SolidInvoice\DataGridBundle\SolidInvoiceDataGridBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
 
-    $services->defaults()
+    $services
+        ->defaults()
         ->autoconfigure()
         ->autowire()
         ->private()
     ;
 
-    $services->load('SolidInvoice\\DataGridBundle\\', dirname(__DIR__, 3))
+    $services
+        ->load(SolidInvoiceDataGridBundle::NAMESPACE . '\\', dirname(__DIR__, 3))
         ->exclude(dirname(__DIR__, 3) . '/{DependencyInjection,Resources,Tests}');
 
-    $services->load('SolidInvoice\\DataGridBundle\Action\\', dirname(__DIR__, 3) . '/Action')
+    $services
+        ->load(SolidInvoiceDataGridBundle::NAMESPACE . '\\Action\\', dirname(__DIR__, 3) . '/Action')
         ->tag('controller.service_arguments');
 
-    $services->set(GridRouteLoader::class)
+    $services
+        ->set(GridRouteLoader::class)
         ->parent(AbstractDirectoryLoader::class)
         ->tag('routing.loader');
 };

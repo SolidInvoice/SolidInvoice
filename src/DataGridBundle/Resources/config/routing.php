@@ -15,9 +15,8 @@ use SolidInvoice\DataGridBundle\Action\Data;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 return static function (RoutingConfigurator $routingConfigurator): void {
-    $routingConfigurator->add('_grid_data', '/data/{name}')
+    $routingConfigurator
+        ->add('_grid_data', '/data/{name}')
         ->controller(Data::class)
-        ->options([
-        'expose' => true,
-    ]);
+        ->options(['expose' => true]);
 };

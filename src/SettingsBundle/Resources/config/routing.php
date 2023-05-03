@@ -15,6 +15,7 @@ use SolidInvoice\SettingsBundle\Action\Index;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 return static function (RoutingConfigurator $routingConfigurator): void {
-    $routingConfigurator->add('_settings', '/settings')
+    $routingConfigurator
+        ->add('_settings', '/settings')
         ->controller(Index::class);
 };

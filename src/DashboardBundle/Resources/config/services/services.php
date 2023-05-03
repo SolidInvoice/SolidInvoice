@@ -11,56 +11,58 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use SolidInvoice\DashboardBundle\SolidInvoiceDashboardBundle;
 use SolidInvoice\DashboardBundle\Widgets\RecentClientsWidget;
 use SolidInvoice\DashboardBundle\Widgets\RecentInvoicesWidget;
 use SolidInvoice\DashboardBundle\Widgets\RecentPaymentsWidget;
 use SolidInvoice\DashboardBundle\Widgets\RecentQuotesWidget;
 use SolidInvoice\DashboardBundle\Widgets\StatsWidget;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
 
-    $services->defaults()
+    $services
+        ->defaults()
         ->autoconfigure()
         ->autowire()
         ->private()
     ;
 
-    $services->load('SolidInvoice\\DashboardBundle\\', dirname(__DIR__, 3))
+    $services
+        ->load(SolidInvoiceDashboardBundle::NAMESPACE . '\\', dirname(__DIR__, 3))
         ->exclude(dirname(__DIR__, 3) . '/{DependencyInjection,Resources,Tests}');
 
-    $services->set(StatsWidget::class)
-        ->args([service('doctrine')])
+    $services
+        ->set(StatsWidget::class)
         ->tag('dashboard.widget', [
             'priority' => 100,
             'location' => 'top',
         ]);
 
-    $services->set(RecentClientsWidget::class)
-        ->args([service('doctrine')])
+    $services
+        ->set(RecentClientsWidget::class)
         ->tag('dashboard.widget', [
             'priority' => 100,
             'location' => 'left_column',
         ]);
 
-    $services->set(RecentPaymentsWidget::class)
-        ->args([service('doctrine')])
+    $services
+        ->set(RecentPaymentsWidget::class)
         ->tag('dashboard.widget', [
             'priority' => 90,
             'location' => 'left_column',
         ]);
 
-    $services->set(RecentQuotesWidget::class)
-        ->args([service('doctrine')])
+    $services
+        ->set(RecentQuotesWidget::class)
         ->tag('dashboard.widget', [
             'priority' => 100,
             'location' => 'right_column',
         ]);
 
-    $services->set(RecentInvoicesWidget::class)
-        ->args([service('doctrine')])
+    $services
+        ->set(RecentInvoicesWidget::class)
         ->tag('dashboard.widget', [
             'priority' => 90,
             'location' => 'right_column',

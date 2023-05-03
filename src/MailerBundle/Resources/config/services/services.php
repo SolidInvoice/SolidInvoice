@@ -11,17 +11,20 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use SolidInvoice\MailerBundle\SolidInvoiceMailerBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
 
-    $services->defaults()
+    $services
+        ->defaults()
         ->autoconfigure()
         ->autowire()
         ->private()
     ;
 
-    $services->load('SolidInvoice\\MailerBundle\\', dirname(__DIR__, 3))
+    $services
+        ->load(SolidInvoiceMailerBundle::NAMESPACE . '\\', dirname(__DIR__, 3))
         ->exclude(dirname(__DIR__, 3) . '/{DependencyInjection,Resources,Tests}');
 };

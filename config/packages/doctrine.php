@@ -41,10 +41,18 @@ return static function (DoctrineConfig $config): void {
     $entityManagerConfig = $ormConfig->entityManager('default');
 
     $entityManagerConfig
-        ->hydrator('money', MoneyHydrator::class)
-        ->filter('company', CompanyFilter::class)
-        ->filter('archivable', ArchivableFilter::class)
-        ->autoMapping(true);
+        ->autoMapping(true)
+        ->hydrator('money', MoneyHydrator::class);
+
+    $entityManagerConfig
+        ->filter('company')
+        ->enabled(true)
+        ->class(CompanyFilter::class);
+
+    $entityManagerConfig
+        ->filter('archivable')
+        ->enabled(true)
+        ->class(ArchivableFilter::class);
 
     $entityManagerConfig->mapping('SolidInvoiceMoneyBundle')
         ->isBundle(false)

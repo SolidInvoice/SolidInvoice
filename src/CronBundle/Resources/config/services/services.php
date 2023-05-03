@@ -11,6 +11,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use SolidInvoice\CronBundle\SolidInvoiceCronBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -22,6 +23,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->private()
     ;
 
-    $services->load('SolidInvoice\\CronBundle\\', dirname(__DIR__, 3))
+    $services
+        ->load(SolidInvoiceCronBundle::NAMESPACE . '\\', dirname(__DIR__, 3))
         ->exclude(dirname(__DIR__, 3) . '/{DependencyInjection,Resources,Tests}');
 };

@@ -13,25 +13,29 @@ declare(strict_types=1);
 
 use SolidInvoice\UserBundle\Repository\UserRepository;
 use SolidInvoice\UserBundle\Repository\UserRepositoryInterface;
+use SolidInvoice\UserBundle\SolidInvoiceUserBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
 
-    $services->defaults()
+    $services
+        ->defaults()
         ->autoconfigure()
         ->autowire()
-        ->private()
-    ;
+        ->private();
 
-    $services->load('SolidInvoice\\UserBundle\\', dirname(__DIR__, 3))
+    $services
+        ->load(SolidInvoiceUserBundle::NAMESPACE . '\\', dirname(__DIR__, 3))
         ->exclude(dirname(__DIR__, 3) . '/{DependencyInjection,Resources,Tests}');
 
-    $services->load('SolidInvoice\\UserBundle\\Action\\', dirname(__DIR__, 3) . '/Action')
+    $services
+        ->load(SolidInvoiceUserBundle::NAMESPACE . '\\Action\\', dirname(__DIR__, 3) . '/Action')
         ->tag('controller.service_arguments');
 
     $services->alias(UserRepositoryInterface::class, UserRepository::class);
 
-    $services->load('SolidInvoice\\UserBundle\\DataFixtures\\ORM\\', dirname(__DIR__, 3) . '/DataFixtures/ORM/*')
+    $services
+        ->load(SolidInvoiceUserBundle::NAMESPACE . '\\DataFixtures\\ORM\\', dirname(__DIR__, 3) . '/DataFixtures/ORM/*')
         ->tag('doctrine.fixture.orm');
 };

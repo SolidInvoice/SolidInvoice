@@ -18,26 +18,24 @@ use SolidInvoice\TaxBundle\Action\Validate;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 return static function (RoutingConfigurator $routingConfigurator): void {
-    $routingConfigurator->add('_tax_rates', '/rates')
+    $routingConfigurator
+        ->add('_tax_rates', '/rates')
         ->controller(Index::class);
 
-    $routingConfigurator->add('_tax_rates_add', '/rates/add')
+    $routingConfigurator
+        ->add('_tax_rates_add', '/rates/add')
         ->controller(Add::class);
 
-    $routingConfigurator->add('_tax_rates_edit', '/rates/edit/{id}')
+    $routingConfigurator
+        ->add('_tax_rates_edit', '/rates/edit/{id}')
         ->controller(Edit::class)
-        ->options([
-        'expose' => true,
-    ]);
+        ->options(['expose' => true]);
+
+    $routingConfigurator
+        ->add('_tax_number_validate', '/number/validate')
+        ->controller(Validate::class)
+        ->methods(['POST'])
+        ->options(['expose' => true]);
 
     $routingConfigurator->import('@SolidInvoiceTaxBundle/Action/Grid', 'grid');
-
-    $routingConfigurator->add('_tax_number_validate', '/number/validate')
-        ->controller(Validate::class)
-        ->methods([
-        'POST',
-    ])
-        ->options([
-        'expose' => true,
-    ]);
 };

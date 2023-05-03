@@ -12,30 +12,38 @@ declare(strict_types=1);
  */
 
 use SolidInvoice\ClientBundle\Menu\Builder;
+use SolidInvoice\ClientBundle\SolidInvoiceClientBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
 
-    $services->defaults()
+    $services
+        ->defaults()
         ->autoconfigure()
         ->autowire()
         ->private()
     ;
 
-    $services->load('SolidInvoice\\ClientBundle\\', dirname(__DIR__, 3))
+    $services
+        ->load(SolidInvoiceClientBundle::NAMESPACE . '\\', dirname(__DIR__, 3))
         ->exclude(dirname(__DIR__, 3) . '/{DependencyInjection,Resources,Tests}');
 
-    $services->load('SolidInvoice\ClientBundle\Action\\', dirname(__DIR__, 3) . '/Action')
+    $services
+        ->load(SolidInvoiceClientBundle::NAMESPACE . '\\Action\\', dirname(__DIR__, 3) . '/Action')
         ->tag('controller.service_arguments');
 
-    $services->set(Builder::class)
-        ->tag('cs_core.menu', [
-        'menu' => 'sidebar',
-        'method' => 'sidebar',
-    ]);
+    $services
+        ->set(Builder::class)
+        ->tag(
+            'cs_core.menu',
+            [
+                'menu' => 'sidebar',
+                'method' => 'sidebar',
+            ]
+        );
 
     $services
-        ->load('SolidInvoice\ClientBundle\DataFixtures\ORM\\', dirname(__DIR__, 3) . '/DataFixtures/ORM/*')
+        ->load(SolidInvoiceClientBundle::NAMESPACE . '\\DataFixtures\\ORM\\', dirname(__DIR__, 3) . '/DataFixtures/ORM/*')
         ->tag('doctrine.fixture.orm');
 };

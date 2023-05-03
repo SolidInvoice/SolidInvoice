@@ -11,6 +11,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use SolidInvoice\ApiBundle\SolidInvoiceApiBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
@@ -26,6 +27,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->bind('$quoteStateMachine', service('state_machine.quote'))
     ;
 
-    $services->load('SolidInvoice\\ApiBundle\\', dirname(__DIR__, 3))
+    $services
+        ->load(SolidInvoiceApiBundle::NAMESPACE . '\\', dirname(__DIR__, 3))
         ->exclude(dirname(__DIR__, 3) . '/{DependencyInjection,Resources,Tests}');
 };

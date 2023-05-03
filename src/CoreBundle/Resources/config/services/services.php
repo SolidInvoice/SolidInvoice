@@ -16,6 +16,7 @@ use Mpociot\VatCalculator\VatCalculator;
 use SolidInvoice\CoreBundle\Listener\SessionRequestListener;
 use SolidInvoice\CoreBundle\Menu\Builder;
 use SolidInvoice\CoreBundle\Routing\Loader\AbstractDirectoryLoader;
+use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
@@ -25,7 +26,8 @@ use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
 
-    $services->defaults()
+    $services
+        ->defaults()
         ->autowire()
         ->autoconfigure()
         ->private()
@@ -34,20 +36,18 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->bind('$installed', env('installed'))
     ;
 
-    $services->load('SolidInvoice\\CoreBundle\\', dirname(__DIR__, 3))
+    $services
+        ->load(SolidInvoiceCoreBundle::NAMESPACE . '\\', dirname(__DIR__, 3))
         ->exclude(dirname(__DIR__, 3) . '/{DependencyInjection,Resources,Tests}');
 
     $services
-        ->load('SolidInvoice\\CoreBundle\\Action\\', dirname(__DIR__, 3) . '/Action')
+        ->load(SolidInvoiceCoreBundle::NAMESPACE . '\\Action\\', dirname(__DIR__, 3) . '/Action')
         ->autowire(true)
         ->tag('controller.service_arguments');
 
     $services
         ->set(TimestampableListener::class)
-        ->call('setAnnotationReader', [service('annotation_reader')])
-        ->tag('doctrine.event_subscriber', [
-            'connection' => 'default',
-        ]);
+        ->call('setAnnotationReader', [service('annotation_reader')]);
 
     $services
         ->set(SessionRequestListener::class)

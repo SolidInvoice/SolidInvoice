@@ -28,79 +28,71 @@ use SolidInvoice\InvoiceBundle\Action\ViewRecurring;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 return static function (RoutingConfigurator $routingConfigurator): void {
-    $routingConfigurator->add('_invoices_index', '/')
+    $routingConfigurator
+        ->add('_invoices_index', '/')
         ->controller(Index::class);
 
-    $routingConfigurator->add('_invoices_index_recurring', '/recurring')
+    $routingConfigurator
+        ->add('_invoices_index_recurring', '/recurring')
         ->controller(RecurringIndex::class);
 
-    $routingConfigurator->add('_invoices_create', '/create/{client}')
+    $routingConfigurator
+        ->add('_invoices_create', '/create/{client}')
         ->controller(Create::class)
-        ->defaults([
-        'client' => null,
-    ])
-        ->options([
-        'expose' => true,
-    ]);
+        ->defaults(['client' => null])
+        ->options(['expose' => true]);
 
-    $routingConfigurator->add('_invoices_create_recurring', '/recurring/create/{client}')
+    $routingConfigurator
+        ->add('_invoices_create_recurring', '/recurring/create/{client}')
         ->controller(CreateRecurring::class)
-        ->defaults([
-        'client' => null,
-    ])
-        ->options([
-        'expose' => true,
-    ]);
+        ->defaults(['client' => null])
+        ->options(['expose' => true]);
 
-    $routingConfigurator->add('_invoices_get_fields', '/fields/get/{currency}')
+    $routingConfigurator
+        ->add('_invoices_get_fields', '/fields/get/{currency}')
         ->controller(Fields::class)
-        ->options([
-        'expose' => true,
-    ]);
+        ->options(['expose' => true]);
 
-    $routingConfigurator->add('_invoices_edit', '/edit/{id}')
+    $routingConfigurator
+        ->add('_invoices_edit', '/edit/{id}')
         ->controller(Edit::class)
-        ->options([
-        'expose' => true,
-    ]);
+        ->options(['expose' => true]);
 
-    $routingConfigurator->add('_invoices_edit_recurring', '/recurring/edit/{id}')
+    $routingConfigurator
+        ->add('_invoices_edit_recurring', '/recurring/edit/{id}')
         ->controller(EditRecurring::class)
-        ->options([
-        'expose' => true,
-    ]);
+        ->options(['expose' => true]);
 
-    $routingConfigurator->add('_invoices_view', '/view/{id}.{_format}')
+    $routingConfigurator
+        ->add('_invoices_view', '/view/{id}.{_format}')
         ->controller(View::class)
-        ->defaults([
-        '_format' => 'html',
-    ])
-        ->requirements([
-        '_format' => 'html|pdf',
-    ])
-        ->options([
-        'expose' => true,
-    ]);
+        ->defaults(['_format' => 'html'])
+        ->requirements(['_format' => 'html|pdf'])
+        ->options(['expose' => true]);
 
-    $routingConfigurator->add('_invoices_view_recurring', '/recurring/view/{id}')
+    $routingConfigurator
+        ->add('_invoices_view_recurring', '/recurring/view/{id}')
         ->controller(ViewRecurring::class)
-        ->options([
-        'expose' => true,
-    ]);
+        ->options(['expose' => true]);
 
-    $routingConfigurator->add('_invoices_clone', '/clone/{id}')
+    $routingConfigurator
+        ->add('_invoices_clone', '/clone/{id}')
         ->controller(CloneInvoice::class);
 
-    $routingConfigurator->add('_invoices_clone_recurring', '/clone-recurring/{id}')
+    $routingConfigurator
+        ->add('_invoices_clone_recurring', '/clone-recurring/{id}')
         ->controller(CloneRecurringInvoice::class);
 
-    $routingConfigurator->add('_send_invoice', '/action/send/{id}')
+    $routingConfigurator
+        ->add('_send_invoice', '/action/send/{id}')
         ->controller(Send::class);
 
-    $routingConfigurator->add('_action_invoice', '/action/{action}/{id}')
+    $routingConfigurator
+        ->add('_action_invoice', '/action/{action}/{id}')
         ->controller(Transition::class);
 
-    $routingConfigurator->add('_action_recurring_invoice', '/recurring-action/{action}/{id}')
+    $routingConfigurator
+        ->add('_action_recurring_invoice', '/recurring-action/{action}/{id}')
         ->controller(RecurringTransition::class);
 
     $routingConfigurator->import('@SolidInvoiceInvoiceBundle/Action/Grid', 'grid');

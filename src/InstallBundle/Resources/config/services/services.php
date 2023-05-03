@@ -12,6 +12,7 @@ declare(strict_types=1);
  */
 
 use Doctrine\Migrations\DependencyFactory;
+use SolidInvoice\InstallBundle\SolidInvoiceInstallBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
@@ -19,7 +20,8 @@ use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
 
-    $services->defaults()
+    $services
+        ->defaults()
         ->autoconfigure()
         ->autowire()
         ->private()
@@ -28,10 +30,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->bind('$debug', param('kernel.debug'))
     ;
 
-    $services->load('SolidInvoice\\InstallBundle\\', dirname(__DIR__, 3))
+    $services
+        ->load(SolidInvoiceInstallBundle::NAMESPACE . '\\', dirname(__DIR__, 3))
         ->exclude(dirname(__DIR__, 3) . '/{DependencyInjection,Resources,Tests}');
 
-    $services->load('SolidInvoice\\InstallBundle\Action\\', dirname(__DIR__, 3) . '/Action')
+    $services
+        ->load(SolidInvoiceInstallBundle::NAMESPACE . '\\Action\\', dirname(__DIR__, 3) . '/Action')
         ->tag('controller.service_arguments');
 
     $services->alias(DependencyFactory::class, 'doctrine.migrations.dependency_factory');

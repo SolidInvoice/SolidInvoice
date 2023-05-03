@@ -18,35 +18,29 @@ use SolidInvoice\ClientBundle\Action\View;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 return static function (RoutingConfigurator $routingConfigurator): void {
-    $routingConfigurator->add('_clients_index', '/')
+    $routingConfigurator
+        ->add('_clients_index', '/')
         ->controller(Index::class)
-        ->options([
-        'expose' => true,
-    ]);
+        ->options(['expose' => true]);
 
-    $routingConfigurator->add('_clients_add', '/add')
+    $routingConfigurator
+        ->add('_clients_add', '/add')
         ->controller(Add::class)
-        ->options([
-        'expose' => true,
-    ]);
+        ->options(['expose' => true]);
 
-    $routingConfigurator->add('_clients_edit', '/edit/{id}')
+    $routingConfigurator
+        ->add('_clients_edit', '/edit/{id}')
         ->controller(Edit::class)
-        ->options([
-        'expose' => true,
-    ]);
+        ->options(['expose' => true]);
 
-    $routingConfigurator->add('_clients_view', '/view/{id}')
+    $routingConfigurator
+        ->add('_clients_view', '/view/{id}')
         ->controller(View::class)
-        ->options([
-        'expose' => true,
-    ]);
+        ->options(['expose' => true]);
 
     $routingConfigurator->import('@SolidInvoiceClientBundle/Action/Grid', 'grid');
 
     $routingConfigurator->import('@SolidInvoiceClientBundle/Resources/config/routing/ajax.php')
         ->prefix('/xhr')
-        ->options([
-        'expose' => true,
-    ]);
+        ->options(['expose' => true]);
 };
