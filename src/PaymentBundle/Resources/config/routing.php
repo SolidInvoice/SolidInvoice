@@ -18,27 +18,26 @@ use SolidInvoice\PaymentBundle\Action\Settings;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 return static function (RoutingConfigurator $routingConfigurator): void {
-    $routingConfigurator->add('_payments_index', '/')
+    $routingConfigurator
+        ->add('_payments_index', '/')
         ->controller(Index::class);
 
-    $routingConfigurator->add('_payment_settings_index', '/methods')
+    $routingConfigurator
+        ->add('_payment_settings_index', '/methods')
         ->controller(Settings::class)
-        ->options([
-        'expose' => true,
-    ]);
+        ->options(['expose' => true]);
 
-    $routingConfigurator->import('@SolidInvoicePaymentBundle/Resources/config/routing/ajax.php')
+    $routingConfigurator
+        ->import('@SolidInvoicePaymentBundle/Resources/config/routing/ajax.php')
         ->prefix('/xhr')
-        ->options([
-        'expose' => true,
-    ]);
+        ->options(['expose' => true]);
 
-    $routingConfigurator->add('_payments_create', '/create/{uuid}')
+    $routingConfigurator
+        ->add('_payments_create', '/create/{uuid}')
         ->controller(Prepare::class)
-        ->requirements([
-        'uuid' => '[a-zA-Z0-9-]{36}',
-    ]);
+        ->requirements(['uuid' => '[a-zA-Z0-9-]{36}']);
 
-    $routingConfigurator->add('_payments_done', '/done')
+    $routingConfigurator
+        ->add('_payments_done', '/done')
         ->controller(Done::class);
 };

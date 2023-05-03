@@ -28,64 +28,74 @@ use SolidInvoice\UserBundle\Action\Users;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 return static function (RoutingConfigurator $routingConfigurator): void {
-    $routingConfigurator->add('_api_keys_index', '/profile/api')
+    $routingConfigurator
+        ->add('_api_keys_index', '/profile/api')
         ->controller(ApiIndex::class)
-        ->options([
-        'expose' => true,
-    ]);
+        ->options(['expose' => true]);
 
-    $routingConfigurator->import('@SolidInvoiceUserBundle/Resources/config/routing/ajax.php')
+    $routingConfigurator
+        ->import('@SolidInvoiceUserBundle/Resources/config/routing/ajax.php')
         ->prefix('/profile/api/xhr')
-        ->options([
-        'expose' => true,
-    ]);
+        ->options(['expose' => true]);
 
-    $routingConfigurator->add('_users_list', '/users')
+    $routingConfigurator
+        ->add('_users_list', '/users')
         ->controller(Users::class);
 
-    $routingConfigurator->add('_user_invite', '/users/invite')
+    $routingConfigurator
+        ->add('_user_invite', '/users/invite')
         ->controller(InviteUser::class);
 
-    $routingConfigurator->add('_user_resend_invite', '/users/invite/{id}/resend')
+    $routingConfigurator
+        ->add('_user_resend_invite', '/users/invite/{id}/resend')
         ->controller(ResendUserInvite::class)
-        ->options([
-        'expose' => true,
-    ]);
+        ->options(['expose' => true]);
 
-    $routingConfigurator->add('_user_accept_invite', '/invite/accept/{id}')
+    $routingConfigurator
+        ->add('_user_accept_invite', '/invite/accept/{id}')
         ->controller(AcceptInvitation::class);
 
-    $routingConfigurator->import('@SolidInvoiceUserBundle/Action/Grid', 'grid')
+    $routingConfigurator
+        ->import('@SolidInvoiceUserBundle/Action/Grid', 'grid')
         ->prefix('/users');
 
-    $routingConfigurator->add('_login', '/login')
+    $routingConfigurator
+        ->add('_login', '/login')
         ->controller(Login::class);
 
-    $routingConfigurator->add('_register', '/register')
+    $routingConfigurator
+        ->add('_register', '/register')
         ->controller(Register::class);
 
     $routingConfigurator->add('_logout', '/logout');
 
     $routingConfigurator->add('_login_check', '/login-check');
 
-    $routingConfigurator->add('_user_forgot_password', '/forgot-password')
+    $routingConfigurator
+        ->add('_user_forgot_password', '/forgot-password')
         ->controller(Request::class);
 
-    $routingConfigurator->add('_user_forgot_password_send_emal', '/forgot-password/send')
+    $routingConfigurator
+        ->add('_user_forgot_password_send_emal', '/forgot-password/send')
         ->controller(Send::class);
 
-    $routingConfigurator->add('_user_forgot_password_check_email', '/forgot-password/check')
+    $routingConfigurator
+        ->add('_user_forgot_password_check_email', '/forgot-password/check')
         ->controller(Check::class);
 
-    $routingConfigurator->add('_user_password_reset', '/forgot-password/reset/{token}')
+    $routingConfigurator
+        ->add('_user_password_reset', '/forgot-password/reset/{token}')
         ->controller(Reset::class);
 
-    $routingConfigurator->add('_profile', '/profile')
+    $routingConfigurator
+        ->add('_profile', '/profile')
         ->controller(Profile::class);
 
-    $routingConfigurator->add('_edit_profile', '/profile/edit')
+    $routingConfigurator
+        ->add('_edit_profile', '/profile/edit')
         ->controller(EditProfile::class);
 
-    $routingConfigurator->add('_change_password', '/profile/change-password')
+    $routingConfigurator
+        ->add('_change_password', '/profile/change-password')
         ->controller(ChangePassword::class);
 };

@@ -18,28 +18,23 @@ use SolidInvoice\UserBundle\Action\Ajax\ApiTokenHistory;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 return static function (RoutingConfigurator $routingConfigurator): void {
-    $routingConfigurator->add('_xhr_api_keys_list', '/list')
+    $routingConfigurator
+        ->add('_xhr_api_keys_list', '/list')
         ->controller(ApiList::class)
-        ->methods([
-        'GET',
-    ]);
+        ->methods(['GET']);
 
-    $routingConfigurator->add('_xhr_api_keys_create', '/create')
+    $routingConfigurator
+        ->add('_xhr_api_keys_create', '/create')
         ->controller(ApiCreate::class)
-        ->methods([
-        'GET',
-        'POST',
-    ]);
+        ->methods(['GET', 'POST']);
 
-    $routingConfigurator->add('_xhr_api_keys_revoke', '/revoke/{id}')
+    $routingConfigurator
+        ->add('_xhr_api_keys_revoke', '/revoke/{id}')
         ->controller(ApiRevoke::class)
-        ->methods([
-        'DELETE',
-    ]);
+        ->methods(['DELETE']);
 
-    $routingConfigurator->add('_xhr_api_keys_history', '/history/{id}')
+    $routingConfigurator
+        ->add('_xhr_api_keys_history', '/history/{id}')
         ->controller(ApiTokenHistory::class)
-        ->methods([
-        'GET',
-    ]);
+        ->methods(['GET']);
 };

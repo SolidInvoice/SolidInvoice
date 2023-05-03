@@ -17,8 +17,10 @@ use SolidInvoice\MenuBundle\DependencyInjection\CompilerPass\MenuCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class SolidInvoiceMenuBundle extends Bundle
+final class SolidInvoiceMenuBundle extends Bundle
 {
+    final public const NAMESPACE = __NAMESPACE__;
+
     public function build(ContainerBuilder $container): void
     {
         parent::build($container);

@@ -18,8 +18,10 @@ use SolidInvoice\DataGridBundle\DependencyInjection\SolidInvoiceDataGridExtensio
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class SolidInvoiceDataGridBundle extends Bundle
+final class SolidInvoiceDataGridBundle extends Bundle
 {
+    final public const NAMESPACE = __NAMESPACE__;
+
     public function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new GridDefinitionCompilerPass());

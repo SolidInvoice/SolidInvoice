@@ -19,21 +19,24 @@ use SolidInvoice\InstallBundle\Action\SystemRequirements;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 return static function (RoutingConfigurator $routingConfigurator): void {
-    $routingConfigurator->add('_install_check_requirements', '/install')
+    $routingConfigurator
+        ->add('_install_check_requirements', '/install')
         ->controller(SystemRequirements::class);
 
-    $routingConfigurator->add('_install_config', '/install/config')
+    $routingConfigurator
+        ->add('_install_config', '/install/config')
         ->controller(Config::class);
 
-    $routingConfigurator->add('_install_install', '/install/install')
+    $routingConfigurator
+        ->add('_install_install', '/install/install')
         ->controller(Install::class)
-        ->options([
-        'expose' => true,
-    ]);
+        ->options(['expose' => true]);
 
-    $routingConfigurator->add('_install_setup', '/install/setup')
+    $routingConfigurator
+        ->add('_install_setup', '/install/setup')
         ->controller(Setup::class);
 
-    $routingConfigurator->add('_install_finish', '/install/finish')
+    $routingConfigurator
+        ->add('_install_finish', '/install/finish')
         ->controller(Finish::class);
 };

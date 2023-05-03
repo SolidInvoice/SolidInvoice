@@ -14,13 +14,15 @@ declare(strict_types=1);
 use SolidInvoice\QuoteBundle\Form\EventListener\QuoteUsersSubscriber;
 use SolidInvoice\QuoteBundle\Listener\Doctrine\QuoteSaveListener;
 use SolidInvoice\QuoteBundle\Menu\Builder;
+use SolidInvoice\QuoteBundle\SolidInvoiceQuoteBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
 
-    $services->defaults()
+    $services
+        ->defaults()
         ->autoconfigure()
         ->autowire()
         ->private()
@@ -28,13 +30,16 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->bind('$quoteStateMachine', service('state_machine.quote'))
     ;
 
-    $services->load('SolidInvoice\\QuoteBundle\\', dirname(__DIR__, 3))
+    $services
+        ->load(SolidInvoiceQuoteBundle::NAMESPACE . '\\', dirname(__DIR__, 3))
         ->exclude(dirname(__DIR__, 3) . '/{DependencyInjection,Resources,Tests}');
 
-    $services->load('SolidInvoice\\QuoteBundle\\Action\\', dirname(__DIR__, 3) . '/Action')
+    $services
+        ->load(SolidInvoiceQuoteBundle::NAMESPACE . '\\Action\\', dirname(__DIR__, 3) . '/Action')
         ->tag('controller.service_arguments');
 
-    $services->set(Builder::class)
+    $services
+        ->set(Builder::class)
         ->tag(
             'cs_core.menu',
             [
@@ -43,11 +48,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ]
         );
 
-    $services->set(QuoteSaveListener::class)
+    $services
+        ->set(QuoteSaveListener::class)
         ->args([service('solidinvoice.payment.locator')]);
 
     $services
-        ->load('SolidInvoice\\QuoteBundle\\DataFixtures\ORM\\', dirname(__DIR__, 3) . '/DataFixtures/ORM/*')
+        ->load(SolidInvoiceQuoteBundle::NAMESPACE . '\\DataFixtures\ORM\\', dirname(__DIR__, 3) . '/DataFixtures/ORM/*')
         ->tag('doctrine.fixture.orm');
 
     $services->remove(QuoteUsersSubscriber::class);

@@ -16,9 +16,11 @@ use SolidInvoice\PaymentBundle\Action\Ajax\Settings;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 return static function (RoutingConfigurator $routingConfigurator): void {
-    $routingConfigurator->add('_xhr_payments_method_list', '/methods/list')
+    $routingConfigurator
+        ->add('_xhr_payments_method_list', '/methods/list')
         ->controller(MethodList::class);
 
-    $routingConfigurator->add('_xhr_payments_settings', '/settings/{method}')
+    $routingConfigurator
+        ->add('_xhr_payments_settings', '/settings/{method}')
         ->controller(Settings::class);
 };
