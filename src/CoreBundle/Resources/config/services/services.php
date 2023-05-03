@@ -47,7 +47,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services
         ->set(TimestampableListener::class)
-        ->call('setAnnotationReader', [service('annotation_reader')]);
+        ->call('setAnnotationReader', [service('annotation_reader')])
+        ->tag('doctrine.event_subscriber')
+    ;
 
     $services
         ->set(SessionRequestListener::class)
