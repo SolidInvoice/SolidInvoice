@@ -1,8 +1,0 @@
-services:
-    _defaults:
-        public: false
-        autowire: true
-        tags:
-            - { name: form.type }
-
-    SolidInvoice\PaymentBundle\Form\Type\PaymentType: ~

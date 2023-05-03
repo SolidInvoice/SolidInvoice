@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Doctrine\Listener;
 
-use Doctrine\Common\EventSubscriber;
+use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
 use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Events;
 use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 
-class CompanyListener implements EventSubscriber
+class CompanyListener implements EventSubscriberInterface
 {
     public function __construct(
         private readonly CompanySelector $companySelector

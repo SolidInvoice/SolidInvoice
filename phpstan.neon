@@ -4,9 +4,15 @@ includes:
 parameters:
     level: 6
     paths:
+        - config
         - src
     bootstrapFiles:
         - vendor/autoload.php
+    scanFiles:
+        - vendor/symfony/dependency-injection/Loader/Configurator/ContainerConfigurator.php
+    scanDirectories:
+        - var/cache/dev/Symfony/Config
+        - var/cache/test/Symfony/Config
     excludePaths:
         - src/CoreBundle/Tests/Fixtures/file.php
     symfony:

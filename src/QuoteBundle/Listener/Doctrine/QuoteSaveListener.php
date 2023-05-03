@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Listener\Doctrine;
 
-use Doctrine\Common\EventSubscriber;
+use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Persistence\ObjectManager;
@@ -26,7 +26,7 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
 /**
  * @see \SolidInvoice\QuoteBundle\Tests\Listener\Doctrine\QuoteSaveListenerTest
  */
-class QuoteSaveListener implements EventSubscriber
+class QuoteSaveListener implements EventSubscriberInterface
 {
     public function __construct(
         private readonly ServiceLocator $serviceLocator

@@ -43,7 +43,7 @@ class PaymentCompleteListener implements EventSubscriberInterface
     }
 
     public function __construct(
-        private readonly StateMachine $stateMachine,
+        private readonly StateMachine $invoiceStateMachine,
         private readonly ManagerRegistry $registry,
         private readonly RouterInterface $router
     ) {
@@ -66,7 +66,7 @@ class PaymentCompleteListener implements EventSubscriberInterface
             $em = $this->registry->getManager();
 
             if (Status::STATUS_CAPTURED === $status && $em->getRepository(Invoice::class)->isFullyPaid($invoice)) {
-                $this->stateMachine->apply($invoice, Graph::TRANSITION_PAY);
+                $this->invoiceStateMachine->apply($invoice, Graph::TRANSITION_PAY);
             } else {
                 $paymentRepository = $this->registry->getRepository(Payment::class);
                 $invoiceTotal = $invoice->getTotal();
@@ -84,14 +84,14 @@ class PaymentCompleteListener implements EventSubscriberInterface
                 new class($router->generate('_view_invoice_external', ['uuid' => $invoice->getUuid()]), $status) extends RedirectResponse implements FlashResponse {
                     public function __construct(
                         string $route,
-                        private readonly string $status
+                        private readonly string $paymentStatus
                     ) {
                         parent::__construct($route);
                     }
 
                     public function getFlash(): Generator
                     {
-                        yield from PaymentCompleteListener::addFlashMessage($this->status);
+                        yield from PaymentCompleteListener::addFlashMessage($this->paymentStatus);
                     }
                 }
             );

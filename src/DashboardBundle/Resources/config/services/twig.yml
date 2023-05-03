@@ -1,8 +1,0 @@
-services:
-    _defaults:
-        public: false
-        tags:
-            - { name: twig.extension }
-
-    SolidInvoice\DashboardBundle\Twig\Extension\WidgetExtension:
-        arguments: ['@dashboard.widget.factory']

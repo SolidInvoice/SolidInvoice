@@ -39,6 +39,10 @@ class Provider implements MenuProviderInterface
     {
         $root = $this->factory->createItem('root');
 
+        if (! $root instanceof MenuItem) {
+            dd($root);
+        }
+
         assert($root instanceof MenuItem);
 
         foreach ($this->list[$name] as $builder) {

@@ -29,8 +29,6 @@ use SolidInvoice\InvoiceBundle\Notification\InvoiceStatusNotification;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\TaxBundle\Entity\Tax;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Workflow\StateMachine;
 use function str_replace;
@@ -38,24 +36,16 @@ use function str_replace;
 /**
  * @see \SolidInvoice\InvoiceBundle\Tests\Manager\InvoiceManagerTest
  */
-class InvoiceManager implements ContainerAwareInterface
+class InvoiceManager
 {
-    use ContainerAwareTrait;
+    protected ObjectManager $entityManager;
 
-    /**
-     * @var ObjectManager
-     */
-    protected $entityManager;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $dispatcher;
+    protected EventDispatcherInterface $dispatcher;
 
     public function __construct(
         ManagerRegistry $doctrine,
         EventDispatcherInterface $dispatcher,
-        private readonly StateMachine $stateMachine,
+        private readonly StateMachine $invoiceStateMachine,
         private readonly NotificationManager $notification
     ) {
         $this->entityManager = $doctrine->getManager();
@@ -171,10 +161,10 @@ class InvoiceManager implements ContainerAwareInterface
      */
     private function applyTransition(BaseInvoice $invoice, string $transition): bool
     {
-        if ($this->stateMachine->can($invoice, $transition)) {
+        if ($this->invoiceStateMachine->can($invoice, $transition)) {
             $oldStatus = $invoice->getStatus();
 
-            $this->stateMachine->apply($invoice, $transition);
+            $this->invoiceStateMachine->apply($invoice, $transition);
 
             $newStatus = $invoice->getStatus();
 

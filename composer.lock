@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2778b0430d1427ea3680106b7703b4c9",
+    "content-hash": "ce52f9682edcb23330a0487d03a6b6d2",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -5046,16 +5046,16 @@
         },
         {
             "name": "payum/payum-bundle",
-            "version": "2.5.0",
+            "version": "2.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/PayumBundle.git",
-                "reference": "4322a979033a1591ea4985dc22dd8cee8c7566be"
+                "reference": "9e1765add77c32c879d937444c89c3e044d35f21"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/PayumBundle/zipball/4322a979033a1591ea4985dc22dd8cee8c7566be",
-                "reference": "4322a979033a1591ea4985dc22dd8cee8c7566be",
+                "url": "https://api.github.com/repos/Payum/PayumBundle/zipball/9e1765add77c32c879d937444c89c3e044d35f21",
+                "reference": "9e1765add77c32c879d937444c89c3e044d35f21",
                 "shasum": ""
             },
             "require": {
@@ -5144,9 +5144,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Payum/PayumBundle/issues",
-                "source": "https://github.com/Payum/PayumBundle/tree/2.5.0"
+                "source": "https://github.com/Payum/PayumBundle/tree/2.5.1"
             },
-            "time": "2022-07-04T16:56:18+00:00"
+            "time": "2023-05-03T10:39:27+00:00"
         },
         {
             "name": "payum/stripe",

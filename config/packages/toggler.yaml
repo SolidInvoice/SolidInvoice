@@ -1,4 +1,0 @@
-toggler:
-    config:
-        features:
-            allow_registration: '%env(SOLIDINVOICE_ALLOW_REGISTRATION)%'

@@ -14,19 +14,19 @@ declare(strict_types=1);
 namespace SolidInvoice\DataGridBundle;
 
 use SolidInvoice\DataGridBundle\DependencyInjection\CompilerPass\GridDefinitionCompilerPass;
+use SolidInvoice\DataGridBundle\DependencyInjection\SolidInvoiceDataGridExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 class SolidInvoiceDataGridBundle extends Bundle
 {
-    public function __construct(
-        private readonly KernelInterface $kernel
-    ) {
-    }
-
     public function build(ContainerBuilder $container): void
     {
-        $container->addCompilerPass(new GridDefinitionCompilerPass($this->kernel));
+        $container->addCompilerPass(new GridDefinitionCompilerPass());
+    }
+
+    public function getContainerExtension(): SolidInvoiceDataGridExtension
+    {
+        return new SolidInvoiceDataGridExtension();
     }
 }

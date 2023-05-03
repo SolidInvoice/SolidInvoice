@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Doctrine\Listener;
 
-use Doctrine\Common\EventSubscriber;
+use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
 use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\ManagerRegistry;
@@ -24,7 +24,7 @@ use SolidInvoice\QuoteBundle\Entity\Quote;
 /**
  * @see \SolidInvoice\CoreBundle\Tests\Doctrine\Listener\IdGeneratorListenerTest
  */
-final class IdGeneratorListener implements EventSubscriber
+final class IdGeneratorListener implements EventSubscriberInterface
 {
     public function __construct(
         private readonly ManagerRegistry $registry

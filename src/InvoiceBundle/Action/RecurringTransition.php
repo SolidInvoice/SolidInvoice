@@ -29,17 +29,17 @@ final class RecurringTransition
 
     public function __construct(
         private readonly RouterInterface $router,
-        private readonly StateMachine $stateMachine
+        private readonly StateMachine $recurringInvoiceStateMachine
     ) {
     }
 
     public function __invoke(Request $request, string $action, RecurringInvoice $invoice)
     {
-        if (! $this->stateMachine->can($invoice, $action)) {
+        if (! $this->recurringInvoiceStateMachine->can($invoice, $action)) {
             throw new InvalidTransitionException($action);
         }
 
-        $this->stateMachine->apply($invoice, $action);
+        $this->recurringInvoiceStateMachine->apply($invoice, $action);
 
         $this->save($invoice);
 

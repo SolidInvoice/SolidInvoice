@@ -26,9 +26,9 @@ class ImageUploadType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addModelTransformer(new class() implements DataTransformerInterface {
-            private $file;
+            private ?string $file = null;
 
-            public function transform($value)
+            public function transform($value): File
             {
                 if (null !== $value) {
                     $this->file = $value;
@@ -37,14 +37,14 @@ class ImageUploadType extends AbstractType
                 return new File('', false);
             }
 
-            public function reverseTransform($value)
+            public function reverseTransform($value): ?string
             {
                 if (null === $value && null !== $this->file) {
                     return $this->file;
                 }
 
                 if (! $value instanceof UploadedFile) {
-                    return;
+                    return null;
                 }
 
                 if (! $value->isValid()) {
@@ -61,7 +61,7 @@ class ImageUploadType extends AbstractType
         return FileType::class;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'image_upload';
     }

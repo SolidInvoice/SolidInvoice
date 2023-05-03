@@ -27,7 +27,7 @@ use Symfony\Component\Workflow\StateMachine;
 final class QuoteMailer
 {
     public function __construct(
-        private readonly StateMachine $stateMachine,
+        private readonly StateMachine $quoteStateMachine,
         private readonly MailerInterface $mailer,
         private readonly NotificationManager $notification
     ) {
@@ -38,13 +38,13 @@ final class QuoteMailer
      */
     private function applyTransition(Quote $quote): void
     {
-        if (! $this->stateMachine->can($quote, Graph::TRANSITION_SEND)) {
+        if (! $this->quoteStateMachine->can($quote, Graph::TRANSITION_SEND)) {
             throw new InvalidTransitionException(Graph::TRANSITION_SEND);
         }
 
         $oldStatus = $quote->getStatus();
 
-        $this->stateMachine->apply($quote, Graph::TRANSITION_SEND);
+        $this->quoteStateMachine->apply($quote, Graph::TRANSITION_SEND);
 
         $newStatus = $quote->getStatus();
 

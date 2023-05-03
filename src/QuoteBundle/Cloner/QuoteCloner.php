@@ -27,7 +27,7 @@ use Traversable;
 final class QuoteCloner
 {
     public function __construct(
-        private readonly StateMachine $stateMachine
+        private readonly StateMachine $quoteStateMachine
     ) {
     }
 
@@ -54,7 +54,7 @@ final class QuoteCloner
 
         array_map(static fn (Item $item): Quote => $newQuote->addItem($item), iterator_to_array($this->addItems($quote, $now)));
 
-        $this->stateMachine->apply($newQuote, Graph::TRANSITION_NEW);
+        $this->quoteStateMachine->apply($newQuote, Graph::TRANSITION_NEW);
 
         return $newQuote;
     }
