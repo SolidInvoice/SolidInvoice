@@ -28,7 +28,7 @@ final class RecurringArchive implements AjaxResponse
 
     public function __construct(
         private readonly RecurringInvoiceRepository $repository,
-        private readonly StateMachine $stateMachine
+        private readonly StateMachine $recurringInvoiceStateMachine
     ) {
     }
 
@@ -38,11 +38,11 @@ final class RecurringArchive implements AjaxResponse
         $invoices = $this->repository->findBy(['id' => $request->request->get('data')]);
 
         foreach ($invoices as $invoice) {
-            if (! $this->stateMachine->can($invoice, Graph::TRANSITION_ARCHIVE)) {
+            if (! $this->recurringInvoiceStateMachine->can($invoice, Graph::TRANSITION_ARCHIVE)) {
                 throw new InvalidTransitionException('archive');
             }
 
-            $this->stateMachine->apply($invoice, Graph::TRANSITION_ARCHIVE);
+            $this->recurringInvoiceStateMachine->apply($invoice, Graph::TRANSITION_ARCHIVE);
         }
 
         return $this->json([]);

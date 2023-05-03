@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DashboardBundle\DependencyInjection\Compiler;
 
+use SolidInvoice\DashboardBundle\WidgetFactory;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
@@ -21,11 +22,11 @@ class DashboardWidgetCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        if (! $container->hasDefinition('dashboard.widget.factory')) {
+        if (! $container->hasDefinition(WidgetFactory::class)) {
             return;
         }
 
-        $definition = $container->getDefinition('dashboard.widget.factory');
+        $definition = $container->getDefinition(WidgetFactory::class);
         $taggedServices = $container->findTaggedServiceIds('dashboard.widget');
 
         foreach ($taggedServices as $id => $tagAttributes) {

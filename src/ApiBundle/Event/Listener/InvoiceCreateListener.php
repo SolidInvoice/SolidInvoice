@@ -28,7 +28,7 @@ use Symfony\Component\Workflow\StateMachine;
 class InvoiceCreateListener implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly StateMachine $stateMachine
+        private readonly StateMachine $invoiceStateMachine
     ) {
     }
 
@@ -51,6 +51,6 @@ class InvoiceCreateListener implements EventSubscriberInterface
             return;
         }
 
-        $this->stateMachine->apply($invoice, Graph::TRANSITION_NEW);
+        $this->invoiceStateMachine->apply($invoice, Graph::TRANSITION_NEW);
     }
 }

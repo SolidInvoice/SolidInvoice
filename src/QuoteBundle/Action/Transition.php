@@ -26,7 +26,7 @@ use Symfony\Component\Workflow\StateMachine;
 final class Transition
 {
     public function __construct(
-        private readonly StateMachine $stateMachine,
+        private readonly StateMachine $quoteStateMachine,
         private readonly RouterInterface $router
     ) {
     }
@@ -36,11 +36,11 @@ final class Transition
      */
     public function __invoke(Request $request, string $action, Quote $quote): RedirectResponse
     {
-        if (! $this->stateMachine->can($quote, $action)) {
+        if (! $this->quoteStateMachine->can($quote, $action)) {
             throw new InvalidTransitionException($action);
         }
 
-        $marking = $this->stateMachine->apply($quote, $action);
+        $marking = $this->quoteStateMachine->apply($quote, $action);
 
         $route = $this->router->generate('_quotes_view', ['id' => $quote->getId()]);
 

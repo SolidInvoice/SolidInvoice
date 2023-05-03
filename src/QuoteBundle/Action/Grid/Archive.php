@@ -28,7 +28,7 @@ final class Archive implements AjaxResponse
 
     public function __construct(
         private readonly QuoteRepository $repository,
-        private readonly StateMachine $stateMachine
+        private readonly StateMachine $quoteStateMachine
     ) {
     }
 
@@ -40,11 +40,11 @@ final class Archive implements AjaxResponse
         $quotes = $this->repository->findBy(['id' => $data]);
 
         foreach ($quotes as $quote) {
-            if (! $this->stateMachine->can($quote, Graph::TRANSITION_ARCHIVE)) {
+            if (! $this->quoteStateMachine->can($quote, Graph::TRANSITION_ARCHIVE)) {
                 throw new InvalidTransitionException(Graph::TRANSITION_ARCHIVE);
             }
 
-            $this->stateMachine->apply($quote, Graph::TRANSITION_ARCHIVE);
+            $this->quoteStateMachine->apply($quote, Graph::TRANSITION_ARCHIVE);
         }
 
         return $this->json([]);

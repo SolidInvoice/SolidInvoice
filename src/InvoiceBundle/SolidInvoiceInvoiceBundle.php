@@ -17,4 +17,5 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class SolidInvoiceInvoiceBundle extends Bundle
 {
+    final public const NAMESPACE = __NAMESPACE__;
 }

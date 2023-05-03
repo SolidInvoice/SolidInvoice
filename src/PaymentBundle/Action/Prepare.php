@@ -56,7 +56,7 @@ final class Prepare
     use SaveableTrait;
 
     public function __construct(
-        private readonly StateMachine $stateMachine,
+        private readonly StateMachine $invoiceStateMachine,
         private readonly PaymentMethodRepository $paymentMethodRepository,
         private readonly AuthorizationCheckerInterface $authorization,
         private readonly TokenStorageInterface $tokenStorage,
@@ -79,7 +79,7 @@ final class Prepare
             throw new NotFoundHttpException();
         }
 
-        if (! $this->stateMachine->can($invoice, Graph::TRANSITION_PAY)) {
+        if (! $this->invoiceStateMachine->can($invoice, Graph::TRANSITION_PAY)) {
             throw new Exception('This invoice cannot be paid');
         }
 

@@ -28,7 +28,7 @@ class Factory extends MenuFactory
     /**
      * @var SplPriorityQueue<int, ExtensionInterface>
      */
-    protected $extensions;
+    protected SplPriorityQueue $extensions;
 
     public function __construct(UrlGeneratorInterface $generator)
     {

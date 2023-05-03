@@ -1,8 +1,0 @@
-services:
-    _defaults:
-        public: false
-        autowire: true
-        autoconfigure: true
-
-    SolidInvoice\TaxBundle\Twig\Extension\TaxExtension: ~
-    SolidInvoice\TaxBundle\Repository\TaxRepository: ~

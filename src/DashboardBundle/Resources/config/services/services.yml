@@ -1,3 +1,0 @@
-services:
-    dashboard.widget.factory:
-        class: SolidInvoice\DashboardBundle\WidgetFactory

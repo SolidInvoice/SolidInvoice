@@ -20,7 +20,10 @@ use Rector\Set\ValueObject\SetList;
 use Rector\Symfony\Set\SymfonySetList;
 
 return static function (RectorConfig $rectorConfig): void {
-    $rectorConfig->paths([__DIR__ . '/src']);
+    $rectorConfig->paths([
+        __DIR__ . '/src',
+        __DIR__ . '/config',
+    ]);
 
     $rectorConfig->importNames();
     $rectorConfig->importShortClasses();

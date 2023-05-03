@@ -29,17 +29,17 @@ final class Transition
 
     public function __construct(
         private readonly RouterInterface $router,
-        private readonly StateMachine $stateMachine
+        private readonly StateMachine $invoiceStateMachine
     ) {
     }
 
     public function __invoke(Request $request, string $action, Invoice $invoice): RedirectResponse
     {
-        if (! $this->stateMachine->can($invoice, $action)) {
+        if (! $this->invoiceStateMachine->can($invoice, $action)) {
             throw new InvalidTransitionException($action);
         }
 
-        $this->stateMachine->apply($invoice, $action);
+        $this->invoiceStateMachine->apply($invoice, $action);
 
         $this->save($invoice);
 

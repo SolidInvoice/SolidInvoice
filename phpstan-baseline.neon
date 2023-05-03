@@ -226,7 +226,7 @@ parameters:
 			path: src/CoreBundle/Form/Transformer/DiscountTransformer.php
 
 		-
-			message: "#^Property class@anonymous/CoreBundle/Form/Type/ImageUploadType\\.php\\:28\\:\\:\\$file has no type specified\\.$#"
+			message: "#^Property class@anonymous/src/CoreBundle/Form/Type/ImageUploadType\\.php\\:28\\:\\:\\$file has no type specified\\.$#"
 			count: 1
 			path: src/CoreBundle/Form/Type/ImageUploadType.php
 
@@ -337,21 +337,6 @@ parameters:
 
 		-
 			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\DependencyInjection\\\\CompilerPass\\\\GridDefinitionCompilerPass\\:\\:getGridSource\\(\\) has parameter \\$arguments with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/DataGridBundle/DependencyInjection/CompilerPass/GridDefinitionCompilerPass.php
-
-		-
-			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\DependencyInjection\\\\CompilerPass\\\\GridDefinitionCompilerPass\\:\\:processConfiguration\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/DataGridBundle/DependencyInjection/CompilerPass/GridDefinitionCompilerPass.php
-
-		-
-			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\DependencyInjection\\\\CompilerPass\\\\GridDefinitionCompilerPass\\:\\:processConfiguration\\(\\) has parameter \\$grid with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/DataGridBundle/DependencyInjection/CompilerPass/GridDefinitionCompilerPass.php
-
-		-
-			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\DependencyInjection\\\\CompilerPass\\\\GridDefinitionCompilerPass\\:\\:setGridDefinition\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/DataGridBundle/DependencyInjection/CompilerPass/GridDefinitionCompilerPass.php
 
@@ -829,11 +814,6 @@ parameters:
 			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Form\\\\Type\\\\PaymentMethodSettingsType\\:\\:getType\\(\\) has parameter \\$type with no type specified\\.$#"
 			count: 1
 			path: src/PaymentBundle/Form/Type/PaymentMethodSettingsType.php
-
-		-
-			message: "#^PHPDoc type for property class@anonymous/PaymentBundle/Listener/PaymentCompleteListener\\.php\\:84\\:\\:\\$status with type int is incompatible with native type string\\.$#"
-			count: 1
-			path: src/PaymentBundle/Listener/PaymentCompleteListener.php
 
 		-
 			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\:\\:getSettingsForMethodArray\\(\\)\\.$#"

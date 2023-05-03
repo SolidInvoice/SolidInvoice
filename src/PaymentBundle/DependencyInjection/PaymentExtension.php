@@ -30,6 +30,7 @@ class PaymentExtension extends Extension
 
         $factories = [];
         $forms = [];
+
         foreach ($config['gateways'] as $gateway => $gatewayConfig) {
             $factories[$gateway] = $gatewayConfig['factory'];
 
