@@ -6,6 +6,7 @@ use Symfony\Config\TogglerConfig;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
 
 return static function (TogglerConfig $config): void {
-    $config->config()
+    $config
+        ->config()
         ->features('allow_registration', env('SOLIDINVOICE_ALLOW_REGISTRATION'));
 };

@@ -7,13 +7,15 @@ use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 
 return static function (MonologConfig $config): void {
 
-    $config->handler('main')
+    $config
+        ->handler('main')
         ->type('stream')
         ->path(sprintf('%s/%s.log', param('kernel.logs_dir'), param('kernel.environment')))
         ->level('debug')
         ->channels('!event');
 
-    $config->handler('console')
+    $config
+        ->handler('console')
         ->type('console')
         ->processPsr3Messages(false)
         ->channels()

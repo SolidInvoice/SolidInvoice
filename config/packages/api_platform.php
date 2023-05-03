@@ -6,7 +6,8 @@ use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use Symfony\Config\ApiPlatformConfig;
 
 return static function (ApiPlatformConfig $config): void {
-    $config->title(SolidInvoiceCoreBundle::APP_NAME)
+    $config
+        ->title(SolidInvoiceCoreBundle::APP_NAME)
         ->version(SolidInvoiceCoreBundle::VERSION)
         ->showWebby(false);
 

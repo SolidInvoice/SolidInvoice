@@ -5,7 +5,8 @@ declare(strict_types=1);
 use Symfony\Config\MonologConfig;
 
 return static function (MonologConfig $config): void {
-    $config->handler('main')
+    $config
+        ->handler('main')
         ->type('fingers_crossed')
         ->actionLevel('error')
         ->handler('nested')
@@ -13,12 +14,14 @@ return static function (MonologConfig $config): void {
         ->excludedHttpCode(404)
         ->excludedHttpCode(405);
 
-    $config->handler('nested')
+    $config
+        ->handler('nested')
         ->type('stream')
         ->path('%kernel.logs_dir%/%kernel.environment%.log')
         ->level('debug');
 
-    $config->handler('console')
+    $config
+        ->handler('console')
         ->type('console')
         ->processPsr3Messages(false)
         ->channels()

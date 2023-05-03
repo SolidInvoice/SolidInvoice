@@ -12,31 +12,38 @@ use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
 
 return static function (SecurityConfig $config): void {
 
-    $config->passwordHasher(User::class)
+    $config
+        ->passwordHasher(User::class)
         ->algorithm('auto');
 
-    $config->roleHierarchy('ROLE_ADMIN', [])
+    $config
+        ->roleHierarchy('ROLE_ADMIN', [])
         ->roleHierarchy('ROLE_SUPER_ADMIN', ['ROLE_ADMIN', 'ROLE_ALLOWED_TO_SWITCH'])
         ->roleHierarchy('ROLE_CLIENT', ['ROLE_USER'])
         ->roleHierarchy('ROLE_USER', []);
 
-    $config->provider('solidinvoice_user')
+    $config
+        ->provider('solidinvoice_user')
         ->entity()
         ->class(User::class);
 
-    $config->provider('api_token_user_provider')
+    $config
+        ->provider('api_token_user_provider')
         ->id(ApiTokenUserProvider::class);
 
-    $config->firewall('assets')
+    $config
+        ->firewall('assets')
         ->pattern('^/(_(profiler|wdt)|css|images|js)/')
         ->security(false);
 
-    $config->firewall('api_doc')
+    $config
+        ->firewall('api_doc')
         ->pattern('^/api/docs')
         ->lazy(true)
         ->anonymous(true);
 
-    $config->firewall('api_login')
+    $config
+        ->firewall('api_login')
         ->pattern('^/api/login')
         ->stateless(true)
         ->anonymous(true)
@@ -47,14 +54,16 @@ return static function (SecurityConfig $config): void {
             ->successHandler(AuthenticationSuccessHandler::class)
             ->failureHandler(AuthenticationFailHandler::class);
 
-    $config->firewall('api')
+    $config
+        ->firewall('api')
         ->pattern('^/api')
         ->stateless(true)
         ->provider('api_token_user_provider')
         ->guard()
             ->authenticators([ApiTokenAuthenticator::class]);
 
-    $config->firewall('external')
+    $config
+        ->firewall('external')
         ->pattern('^(?:'.
             '/api/docs|'.
             '/install(?:.*)|'.
@@ -69,16 +78,19 @@ return static function (SecurityConfig $config): void {
         ->anonymous(true)
         ->lazy(true);
 
-    $mainFirewallConfig = $config->firewall('main')
+    $mainFirewallConfig = $config
+        ->firewall('main')
         ->pattern('^/');
 
-    $mainFirewallConfig->rememberMe()
+    $mainFirewallConfig
+        ->rememberMe()
         ->secret(env('secret'))
         ->lifetime(3600)
         ->path('/')
         ->domain(null);
 
-    $mainFirewallConfig->formLogin()
+    $mainFirewallConfig
+        ->formLogin()
         ->provider('solidinvoice_user')
         ->csrfTokenGenerator('security.csrf.token_manager')
         ->checkPath('/login-check')
@@ -86,7 +98,8 @@ return static function (SecurityConfig $config): void {
         ->alwaysUseDefaultTargetPath(true)
         ->defaultTargetPath('/select-company');
 
-    $mainFirewallConfig->logout()
+    $mainFirewallConfig
+        ->logout()
         ->path('/logout')
         ->target('/');
 

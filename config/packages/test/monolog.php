@@ -7,7 +7,8 @@ use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 
 return static function (MonologConfig $config): void {
 
-    $config->handler('main')
+    $config
+        ->handler('main')
         ->type('fingers_crossed')
         ->actionLevel('error')
         ->handler('nested')
@@ -15,7 +16,8 @@ return static function (MonologConfig $config): void {
         ->excludedHttpCode(405)
         ->channels('!event');
 
-    $config->handler('nested')
+    $config
+        ->handler('nested')
         ->type('stream')
         ->path(sprintf('%s/%s.log', param('kernel.logs_dir'), param('kernel.environment')))
         ->level('debug');

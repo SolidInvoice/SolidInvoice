@@ -6,19 +6,23 @@ use Symfony\Config\DoctrineConfig;
 
 return static function (DoctrineConfig $config): void {
 
-    $em = $config->orm()
+    $em = $config
+        ->orm()
         ->autoGenerateProxyClasses(false)
         ->entityManager('default');
 
-    $em->metadataCacheDriver()
+    $em
+        ->metadataCacheDriver()
         ->type('pool')
         ->pool('doctrine.system_cache_pool');
 
-    $em->queryCacheDriver()
+    $em
+        ->queryCacheDriver()
         ->type('pool')
         ->pool('doctrine.system_cache_pool');
 
-    $em->resultCacheDriver()
+    $em
+        ->resultCacheDriver()
         ->type('pool')
         ->pool('doctrine.result_cache_pool');
 };
