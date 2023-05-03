@@ -6,7 +6,8 @@ use Symfony\Config\DoctrineConfig;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
 
 return static function (DoctrineConfig $config): void {
-    $config->dbal()
+    $config
+        ->dbal()
         ->connection('default')
         ->driver(env('database_driver'))
         ->host(env('database_host'))
