@@ -15,6 +15,7 @@ namespace SolidInvoice\DashboardBundle\Tests\Twig\Extension;
 
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DashboardBundle\Twig\Extension\WidgetExtension;
 use SolidInvoice\DashboardBundle\WidgetFactory;
@@ -30,10 +31,7 @@ class WidgetExtensionTest extends TestCase
 
     private WidgetExtension $extension;
 
-    /**
-     * @var Mockery\MockInterface
-     */
-    private $factory;
+    private MockInterface|WidgetFactory $factory;
 
     protected function setUp(): void
     {

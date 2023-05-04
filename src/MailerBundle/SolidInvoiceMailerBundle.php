@@ -17,8 +17,10 @@ use SolidInvoice\MailerBundle\DependencyInjection\CompilerPass\MailerTransportCo
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class SolidInvoiceMailerBundle extends Bundle
+final class SolidInvoiceMailerBundle extends Bundle
 {
+    final public const NAMESPACE = __NAMESPACE__;
+
     public function build(ContainerBuilder $container): void
     {
         parent::build($container);

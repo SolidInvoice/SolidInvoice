@@ -22,14 +22,10 @@ use Twig\TwigFunction;
 
 class BillingExtension extends AbstractExtension
 {
-    private FieldRenderer $fieldRenderer;
-
-    private Calculator $calculator;
-
-    public function __construct(FieldRenderer $fieldRenderer, Calculator $calculator)
-    {
-        $this->fieldRenderer = $fieldRenderer;
-        $this->calculator = $calculator;
+    public function __construct(
+        private readonly FieldRenderer $fieldRenderer,
+        private readonly Calculator $calculator
+    ) {
     }
 
     public function getFunctions(): array

@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class SortFilter implements FilterInterface
 {
-    public const DEFAULT_ORDER = 'ASC';
+    final public const DEFAULT_ORDER = 'ASC';
 
     public function filter(Request $request, QueryBuilder $queryBuilder): void
     {

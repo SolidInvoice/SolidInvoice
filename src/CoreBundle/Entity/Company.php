@@ -15,38 +15,33 @@ namespace SolidInvoice\CoreBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
-use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\UserBundle\Entity\User;
 use Stringable;
 
-/**
- * @ORM\Entity(repositoryClass=CompanyRepository::class)
- * @ORM\Table(name="companies")
- */
+#[ORM\Table(name: Company::TABLE_NAME)]
+#[ORM\Entity(repositoryClass: CompanyRepository::class)]
 class Company implements Stringable
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
-     * @ORM\Column(type="uuid_binary_ordered_time", unique=true)
-     */
+    final public const TABLE_NAME = 'companies';
+
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
+    #[ORM\Column(type: 'uuid_binary_ordered_time', unique: true)]
     private UuidInterface $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: Types::STRING, length: 255)]
     private string $name;
 
     /**
      * @var Collection<int, User>
-     *
-     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="companies")
      */
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'companies')]
     private Collection $users;
 
     public function __construct()

@@ -15,6 +15,7 @@ namespace SolidInvoice\QuoteBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class SolidInvoiceQuoteBundle extends Bundle
+final class SolidInvoiceQuoteBundle extends Bundle
 {
+    final public const NAMESPACE = __NAMESPACE__;
 }

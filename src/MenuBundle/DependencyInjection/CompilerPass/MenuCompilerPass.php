@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MenuBundle\DependencyInjection\CompilerPass;
 
+use SolidInvoice\MenuBundle\Provider;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -20,11 +21,11 @@ class MenuCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        if (! $container->hasDefinition('solidinvoice_menu.provider')) {
+        if (! $container->hasDefinition(Provider::class)) {
             return;
         }
 
-        $definition = $container->getDefinition('solidinvoice_menu.provider');
+        $definition = $container->getDefinition(Provider::class);
 
         $taggedServices = $container->findTaggedServiceIds('cs_core.menu');
 

@@ -21,7 +21,6 @@ use Exception;
 use JsonSerializable;
 use SolidInvoice\DataGridBundle\Filter\FilterInterface;
 use SolidInvoice\DataGridBundle\Source\SourceInterface;
-use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -32,11 +31,7 @@ class Grid implements GridInterface, JsonSerializable
      */
     private $name;
 
-    private ArrayCollection $columns;
-
-    private SourceInterface $source;
-
-    private FilterInterface $filter;
+    private readonly ArrayCollection $columns;
 
     /**
      * @var array
@@ -65,23 +60,19 @@ class Grid implements GridInterface, JsonSerializable
 
     private array $parameters = [];
 
-    /**
-     * @var MoneyFormatter
-     */
-    private MoneyFormatterInterface $moneyFormatter;
-
-    public function __construct(SourceInterface $source, FilterInterface $filter, array $gridData, MoneyFormatterInterface $moneyFormatter)
-    {
+    public function __construct(
+        private readonly SourceInterface $source,
+        private readonly FilterInterface $filter,
+        array $gridData,
+        private readonly MoneyFormatterInterface $moneyFormatter
+    ) {
         $this->title = $gridData['title'];
         $this->name = $gridData['name'];
         $this->columns = new ArrayCollection(array_values($gridData['columns']));
-        $this->source = $source;
         $this->actions = $gridData['actions'];
         $this->lineActions = $gridData['line_actions'];
         $this->properties = $gridData['properties'];
         $this->icon = $gridData['icon'];
-        $this->filter = $filter;
-        $this->moneyFormatter = $moneyFormatter;
     }
 
     /**
@@ -98,7 +89,7 @@ class Grid implements GridInterface, JsonSerializable
         $resultSet = $paginator->getQuery()->getArrayResult();
 
         array_walk_recursive($resultSet, function (&$value, $key): void {
-            if (is_string($key) && false !== strpos($key, 'currency')) {
+            if (is_string($key) && str_contains($key, 'currency')) {
                 $value = $this->moneyFormatter->getCurrencySymbol($value);
             }
         });

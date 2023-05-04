@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Traits;
 
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Contracts\Service\Attribute\Required;
 
 trait DoctrineAwareTrait
 {
     protected ?ManagerRegistry $doctrine = null;
 
-    /**
-     * @required
-     */
+    #[Required]
     public function setDoctrine(ManagerRegistry $doctrine): void
     {
         $this->doctrine = $doctrine;

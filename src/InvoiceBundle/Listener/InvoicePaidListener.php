@@ -26,10 +26,6 @@ use Symfony\Component\Workflow\Event\Event;
 
 class InvoicePaidListener implements EventSubscriberInterface
 {
-    private ManagerRegistry $registry;
-
-    private SystemConfig $systemConfig;
-
     /**
      * @return array<string, string>
      */
@@ -40,10 +36,10 @@ class InvoicePaidListener implements EventSubscriberInterface
         ];
     }
 
-    public function __construct(ManagerRegistry $registry, SystemConfig $systemConfig)
-    {
-        $this->registry = $registry;
-        $this->systemConfig = $systemConfig;
+    public function __construct(
+        private readonly ManagerRegistry $registry,
+        private readonly SystemConfig $systemConfig
+    ) {
     }
 
     public function onInvoicePaid(Event $event): void

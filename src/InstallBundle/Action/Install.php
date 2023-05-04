@@ -43,7 +43,7 @@ final class Install
                         $tmpConnection->createSchemaManager()->createDatabase($dbName);
                         $result['success'] = true;
                     } catch (Exception | DBALException $e) {
-                        if (false !== strpos($e->getMessage(), 'database exists') || false !== strpos($e->getMessage(), 'already exists')) {
+                        if (str_contains($e->getMessage(), 'database exists') || str_contains($e->getMessage(), 'already exists')) {
                             $result['success'] = true;
                         } else {
                             $result['success'] = false;

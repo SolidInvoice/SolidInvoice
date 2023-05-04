@@ -1,7 +1,0 @@
-_xhr_payments_method_list:
-    path: '/methods/list'
-    defaults: { _controller: 'SolidInvoice\PaymentBundle\Action\Ajax\MethodList' }
-
-_xhr_payments_settings:
-    path: '/settings/{method}'
-    defaults: { _controller: 'SolidInvoice\PaymentBundle\Action\Ajax\Settings' }

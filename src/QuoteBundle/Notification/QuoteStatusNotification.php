@@ -19,9 +19,9 @@ use Twig\Environment;
 
 class QuoteStatusNotification extends NotificationMessage
 {
-    public const HTML_TEMPLATE = '@SolidInvoiceQuote/Email/status_change.html.twig';
+    final public const HTML_TEMPLATE = '@SolidInvoiceQuote/Email/status_change.html.twig';
 
-    public const TEXT_TEMPLATE = '@SolidInvoiceQuote/Email/status_change.text.twig';
+    final public const TEXT_TEMPLATE = '@SolidInvoiceQuote/Email/status_change.text.twig';
 
     public function getHtmlContent(Environment $twig): string
     {

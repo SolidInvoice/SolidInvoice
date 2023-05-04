@@ -20,14 +20,12 @@ use Symfony\Component\Form\DataTransformerInterface;
 
 class ViewTransformer implements DataTransformerInterface
 {
-    private Currency $currency;
-
     /**
      * @throws InvalidArgumentException
      */
-    public function __construct(Currency $currency)
-    {
-        $this->currency = $currency;
+    public function __construct(
+        private readonly Currency $currency
+    ) {
     }
 
     public function transform($value)

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Util;
 
-use function defined;
+use PhpToken;
 
 /**
  * @see \SolidInvoice\CoreBundle\Tests\Util\ClassUtilTest
@@ -27,35 +27,22 @@ class ClassUtil
     {
         $class = false;
         $namespace = false;
-        $tokens = token_get_all(file_get_contents($file));
-        $count = count($tokens);
+        $tokens = PhpToken::tokenize(file_get_contents($file));
 
-        foreach ($tokens as $i => $token) {
-            if (! is_array($token)) {
-                continue;
+        foreach ($tokens as $token) {
+            if ($class && $token->is(T_STRING)) {
+                return $namespace . '\\' . $token->text;
             }
 
-            if ($class && T_STRING === $token[0]) {
-                return $namespace . '\\' . $token[1];
+            if (true === $namespace && $token->is(T_NAME_QUALIFIED)) {
+                $namespace = $token->text;
             }
 
-            if (true === $namespace && ((defined('T_NAME_QUALIFIED') && T_NAME_QUALIFIED === $token[0]) || T_STRING === $token[0])) {
-                if (defined('T_NAME_QUALIFIED') && T_NAME_QUALIFIED === $token[0]) {
-                    $namespace = $token[1];
-                } else {
-                    $namespace = '';
-                    do {
-                        $namespace .= $token[1];
-                        $token = $tokens[++$i];
-                    } while ($i < $count && is_array($token) && in_array($token[0], [T_NS_SEPARATOR, T_STRING], true));
-                }
-            }
-
-            if (T_CLASS === $token[0]) {
+            if ($token->is(T_CLASS)) {
                 $class = true;
             }
 
-            if (T_NAMESPACE === $token[0]) {
+            if ($token->is(T_NAMESPACE)) {
                 $namespace = true;
             }
         }

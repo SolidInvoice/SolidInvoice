@@ -30,16 +30,18 @@ class Provider implements MenuProviderInterface
      */
     protected array $list = [];
 
-    private FactoryInterface $factory;
-
-    public function __construct(FactoryInterface $factory)
-    {
-        $this->factory = $factory;
+    public function __construct(
+        private readonly FactoryInterface $factory
+    ) {
     }
 
     public function get(string $name, array $options = []): ItemInterface
     {
         $root = $this->factory->createItem('root');
+
+        if (! $root instanceof MenuItem) {
+            dd($root);
+        }
 
         assert($root instanceof MenuItem);
 

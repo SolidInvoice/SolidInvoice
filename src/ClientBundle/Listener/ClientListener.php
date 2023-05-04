@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Listener;
 
-use Doctrine\Common\EventSubscriber;
+use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
@@ -28,13 +28,11 @@ use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 
-class ClientListener implements EventSubscriber
+class ClientListener implements EventSubscriberInterface
 {
-    private NotificationManager $notification;
-
-    public function __construct(NotificationManager $notification)
-    {
-        $this->notification = $notification;
+    public function __construct(
+        private readonly NotificationManager $notification
+    ) {
     }
 
     /**

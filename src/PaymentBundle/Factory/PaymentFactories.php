@@ -36,8 +36,6 @@ class PaymentFactories
     }
 
     /**
-     * @param string $type
-     *
      * @return array
      */
     public function getFactories(string $type = null): ?array

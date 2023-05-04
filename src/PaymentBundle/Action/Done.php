@@ -16,7 +16,6 @@ namespace SolidInvoice\PaymentBundle\Action;
 use DateTime;
 use Payum\Core\Model\Token;
 use Payum\Core\Payum;
-use Payum\Core\Registry\RegistryInterface;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Event\PaymentCompleteEvent;
@@ -32,23 +31,14 @@ final class Done
 {
     use SaveableTrait;
 
-    /**
-     * @var Payum
-     */
-    private RegistryInterface $payum;
-
-    private RouterInterface $router;
-
-    private EventDispatcherInterface $eventDispatcher;
-
-    public function __construct(RegistryInterface $payum, RouterInterface $router, EventDispatcherInterface $eventDispatcher)
-    {
-        $this->payum = $payum;
-        $this->router = $router;
-        $this->eventDispatcher = $eventDispatcher;
+    public function __construct(
+        private readonly Payum $payum,
+        private readonly RouterInterface $router,
+        private readonly EventDispatcherInterface $eventDispatcher
+    ) {
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response | null
     {
         /** @var Token $token */
         $token = $this->payum->getHttpRequestVerifier()->verify($request);

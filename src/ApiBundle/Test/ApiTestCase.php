@@ -105,7 +105,7 @@ abstract class ApiTestCase extends PantherTestCase
         $content = self::$client->getResponse()->getContent();
         self::assertJson($content);
 
-        return json_decode($content, true, 512, JSON_THROW_ON_ERROR);
+        return json_decode((string) $content, true, 512, JSON_THROW_ON_ERROR);
     }
 
     /**
@@ -131,7 +131,7 @@ abstract class ApiTestCase extends PantherTestCase
         $content = self::$client->getResponse()->getContent();
         self::assertJson($content);
 
-        return json_decode($content, true, 512, JSON_THROW_ON_ERROR);
+        return json_decode((string) $content, true, 512, JSON_THROW_ON_ERROR);
     }
 
     /**
@@ -154,7 +154,7 @@ abstract class ApiTestCase extends PantherTestCase
         $content = self::$client->getResponse()->getContent();
         self::assertJson($content);
 
-        return json_decode($content, true, 512, JSON_THROW_ON_ERROR);
+        return json_decode((string) $content, true, 512, JSON_THROW_ON_ERROR);
     }
 
     /**

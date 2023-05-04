@@ -15,6 +15,7 @@ namespace SolidInvoice\MoneyBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class SolidInvoiceMoneyBundle extends Bundle
+final class SolidInvoiceMoneyBundle extends Bundle
 {
+    final public const NAMESPACE = __NAMESPACE__;
 }

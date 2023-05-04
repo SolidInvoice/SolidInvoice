@@ -26,14 +26,10 @@ final class Archive implements AjaxResponse
 {
     use JsonTrait;
 
-    private QuoteRepository $repository;
-
-    private StateMachine $stateMachine;
-
-    public function __construct(QuoteRepository $repository, StateMachine $stateMachine)
-    {
-        $this->repository = $repository;
-        $this->stateMachine = $stateMachine;
+    public function __construct(
+        private readonly QuoteRepository $repository,
+        private readonly StateMachine $quoteStateMachine
+    ) {
     }
 
     public function __invoke(Request $request)
@@ -44,11 +40,11 @@ final class Archive implements AjaxResponse
         $quotes = $this->repository->findBy(['id' => $data]);
 
         foreach ($quotes as $quote) {
-            if (! $this->stateMachine->can($quote, Graph::TRANSITION_ARCHIVE)) {
+            if (! $this->quoteStateMachine->can($quote, Graph::TRANSITION_ARCHIVE)) {
                 throw new InvalidTransitionException(Graph::TRANSITION_ARCHIVE);
             }
 
-            $this->stateMachine->apply($quote, Graph::TRANSITION_ARCHIVE);
+            $this->quoteStateMachine->apply($quote, Graph::TRANSITION_ARCHIVE);
         }
 
         return $this->json([]);

@@ -29,6 +29,7 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('gateways')
                     ->isRequired()
                     ->requiresAtLeastOneElement()
+                    ->useAttributeAsKey('name', true)
                     ->arrayPrototype()
                         ->children()
                             ->scalarNode('factory')

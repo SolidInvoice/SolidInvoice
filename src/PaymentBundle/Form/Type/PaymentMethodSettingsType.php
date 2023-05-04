@@ -73,19 +73,11 @@ class PaymentMethodSettingsType extends AbstractType
 
     private function getType($type)
     {
-        switch ($type) {
-            case 'password':
-                return PasswordType::class;
-
-            case 'choice':
-                return ChoiceType::class;
-
-            case 'checkbox':
-                return CheckboxType::class;
-
-            case 'text':
-            default:
-                return TextType::class;
-        }
+        return match ($type) {
+            'password' => PasswordType::class,
+            'choice' => ChoiceType::class,
+            'checkbox' => CheckboxType::class,
+            default => TextType::class,
+        };
     }
 }

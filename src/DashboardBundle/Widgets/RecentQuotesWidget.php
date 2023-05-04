@@ -20,7 +20,7 @@ use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
 
 class RecentQuotesWidget implements WidgetInterface
 {
-    private ObjectManager $manager;
+    private readonly ObjectManager $manager;
 
     public function __construct(ManagerRegistry $registry)
     {

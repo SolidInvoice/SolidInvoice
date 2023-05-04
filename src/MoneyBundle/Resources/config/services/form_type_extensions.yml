@@ -1,8 +1,0 @@
-services:
-    _defaults:
-        public: false
-
-    SolidInvoice\MoneyBundle\Form\Extension\MoneyExtension:
-        autowire: true
-        tags:
-            - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\MoneyType }

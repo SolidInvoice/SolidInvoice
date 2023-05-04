@@ -1,9 +1,0 @@
-services:
-    _defaults:
-        public: false
-        autowire: true
-        tags:
-            - { name: twig.extension }
-
-    SolidInvoice\SettingsBundle\Twig\Extension\:
-        resource: '../../../Twig/Extension/'

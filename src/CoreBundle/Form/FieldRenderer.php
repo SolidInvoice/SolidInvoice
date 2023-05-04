@@ -19,16 +19,11 @@ use Twig\Environment;
 
 class FieldRenderer
 {
-    private Environment $twig;
-
-    public function __construct(Environment $twig)
-    {
-        $this->twig = $twig;
+    public function __construct(
+        private readonly Environment $twig
+    ) {
     }
 
-    /**
-     * @param string $path
-     */
     public function render(FormView $form, string $path = null): array
     {
         $items = [];

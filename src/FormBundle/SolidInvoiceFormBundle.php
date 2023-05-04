@@ -15,6 +15,7 @@ namespace SolidInvoice\FormBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class SolidInvoiceFormBundle extends Bundle
+final class SolidInvoiceFormBundle extends Bundle
 {
+    final public const NAMESPACE = __NAMESPACE__;
 }

@@ -91,16 +91,6 @@ parameters:
 			path: src/ClientBundle/Action/Index.php
 
 		-
-			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Entity\\\\Client\\:\\:archive\\(\\) has invalid return type SolidInvoice\\\\CoreBundle\\\\Traits\\\\Entity\\\\Archivable\\.$#"
-			count: 1
-			path: src/ClientBundle/Entity/Client.php
-
-		-
-			message: "#^PHPDoc tag @return with type \\$this\\(SolidInvoice\\\\ClientBundle\\\\Entity\\\\Client\\)\\|SolidInvoice\\\\CoreBundle\\\\Traits\\\\Entity\\\\Archivable is not subtype of native type SolidInvoice\\\\ClientBundle\\\\Entity\\\\Client\\.$#"
-			count: 1
-			path: src/ClientBundle/Entity/Client.php
-
-		-
 			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Form\\\\ConstraintBuilder\\:\\:build\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/ClientBundle/Form/ConstraintBuilder.php
@@ -236,11 +226,6 @@ parameters:
 			path: src/CoreBundle/Form/Transformer/DiscountTransformer.php
 
 		-
-			message: "#^Property class@anonymous/CoreBundle/Form/Type/ImageUploadType\\.php\\:28\\:\\:\\$file has no type specified\\.$#"
-			count: 1
-			path: src/CoreBundle/Form/Type/ImageUploadType.php
-
-		-
 			message: "#^Call to an undefined method Symfony\\\\Component\\\\HttpFoundation\\\\Session\\\\SessionInterface\\:\\:getFlashBag\\(\\)\\.$#"
 			count: 1
 			path: src/CoreBundle/Listener/SessionRequestListener.php
@@ -301,39 +286,9 @@ parameters:
 			path: src/CoreBundle/Templating/Template.php
 
 		-
-			message: "#^Property SolidInvoice\\\\CoreBundle\\\\Templating\\\\Template\\:\\:\\$params type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/CoreBundle/Templating/Template.php
-
-		-
 			message: "#^Property SolidInvoice\\\\CoreBundle\\\\Tests\\\\KernelAwareTest\\:\\:\\$container \\(Symfony\\\\Component\\\\DependencyInjection\\\\Container\\) does not accept Symfony\\\\Component\\\\DependencyInjection\\\\ContainerInterface\\.$#"
 			count: 1
 			path: src/CoreBundle/Tests/KernelAwareTest.php
-
-		-
-			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Util\\\\ArrayUtil\\:\\:column\\(\\) has parameter \\$array with no value type specified in iterable type Traversable\\.$#"
-			count: 1
-			path: src/CoreBundle/Util/ArrayUtil.php
-
-		-
-			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Util\\\\ArrayUtil\\:\\:column\\(\\) has parameter \\$array with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/CoreBundle/Util/ArrayUtil.php
-
-		-
-			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Util\\\\ArrayUtil\\:\\:column\\(\\) has parameter \\$array with no value type specified in iterable type array\\|Traversable\\.$#"
-			count: 1
-			path: src/CoreBundle/Util/ArrayUtil.php
-
-		-
-			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Util\\\\ArrayUtil\\:\\:column\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/CoreBundle/Util/ArrayUtil.php
-
-		-
-			message: "#^Result of && is always false\\.$#"
-			count: 1
-			path: src/CoreBundle/Util/ArrayUtil.php
 
 		-
 			message: "#^Method SolidInvoice\\\\DashboardBundle\\\\Widgets\\\\RecentClientsWidget\\:\\:getData\\(\\) return type has no value type specified in iterable type array\\.$#"
@@ -381,27 +336,7 @@ parameters:
 			path: src/DataGridBundle/DependencyInjection/CompilerPass/GridDefinitionCompilerPass.php
 
 		-
-			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\DependencyInjection\\\\CompilerPass\\\\GridDefinitionCompilerPass\\:\\:processConfiguration\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/DataGridBundle/DependencyInjection/CompilerPass/GridDefinitionCompilerPass.php
-
-		-
-			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\DependencyInjection\\\\CompilerPass\\\\GridDefinitionCompilerPass\\:\\:processConfiguration\\(\\) has parameter \\$grid with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/DataGridBundle/DependencyInjection/CompilerPass/GridDefinitionCompilerPass.php
-
-		-
-			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\DependencyInjection\\\\CompilerPass\\\\GridDefinitionCompilerPass\\:\\:setGridDefinition\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/DataGridBundle/DependencyInjection/CompilerPass/GridDefinitionCompilerPass.php
-
-		-
 			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\Filter\\\\SearchFilter\\:\\:__construct\\(\\) has parameter \\$searchFields with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/DataGridBundle/Filter/SearchFilter.php
-
-		-
-			message: "#^Property SolidInvoice\\\\DataGridBundle\\\\Filter\\\\SearchFilter\\:\\:\\$searchFields type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/DataGridBundle/Filter/SearchFilter.php
 
@@ -427,11 +362,6 @@ parameters:
 
 		-
 			message: "#^Property SolidInvoice\\\\DataGridBundle\\\\Grid\\:\\:\\$lineActions type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/DataGridBundle/Grid.php
-
-		-
-			message: "#^Property SolidInvoice\\\\DataGridBundle\\\\Grid\\:\\:\\$moneyFormatter \\(SolidInvoice\\\\MoneyBundle\\\\Formatter\\\\MoneyFormatter\\) does not accept SolidInvoice\\\\MoneyBundle\\\\Formatter\\\\MoneyFormatterInterface\\.$#"
 			count: 1
 			path: src/DataGridBundle/Grid.php
 
@@ -616,36 +546,6 @@ parameters:
 			path: src/InvoiceBundle/Cloner/InvoiceCloner.php
 
 		-
-			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\Invoice\\:\\:archive\\(\\) has invalid return type SolidInvoice\\\\CoreBundle\\\\Traits\\\\Entity\\\\Archivable\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Entity/Invoice.php
-
-		-
-			message: "#^PHPDoc tag @return with type \\$this\\(SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\Invoice\\)\\|SolidInvoice\\\\CoreBundle\\\\Traits\\\\Entity\\\\Archivable is not subtype of native type SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\Invoice\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Entity/Invoice.php
-
-		-
-			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\RecurringInvoice\\:\\:archive\\(\\) has invalid return type SolidInvoice\\\\CoreBundle\\\\Traits\\\\Entity\\\\Archivable\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Entity/RecurringInvoice.php
-
-		-
-			message: "#^PHPDoc tag @return with type \\$this\\(SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\RecurringInvoice\\)\\|SolidInvoice\\\\CoreBundle\\\\Traits\\\\Entity\\\\Archivable is not subtype of native type SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\RecurringInvoice\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Entity/RecurringInvoice.php
-
-		-
-			message: "#^Property SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\RecurringInvoice\\:\\:\\$items with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/InvoiceBundle/Entity/RecurringInvoice.php
-
-		-
-			message: "#^Property SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\RecurringInvoice\\:\\:\\$users with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/InvoiceBundle/Entity/RecurringInvoice.php
-
-		-
 			message: "#^Parameter \\#1 \\$invoice of class SolidInvoice\\\\InvoiceBundle\\\\Email\\\\InvoiceEmail constructor expects SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\Invoice, SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice given\\.$#"
 			count: 1
 			path: src/InvoiceBundle/Listener/Mailer/InvoiceMailerListener.php
@@ -726,11 +626,6 @@ parameters:
 			path: src/MailerBundle/Configurator/SesConfigurator.php
 
 		-
-			message: "#^Method SolidInvoice\\\\MailerBundle\\\\Factory\\\\MailerConfigFactory\\:\\:__construct\\(\\) has parameter \\$transports with no value type specified in iterable type iterable\\.$#"
-			count: 1
-			path: src/MailerBundle/Factory/MailerConfigFactory.php
-
-		-
 			message: "#^Method SolidInvoice\\\\MoneyBundle\\\\Calculator\\:\\:calculateDiscount\\(\\) has parameter \\$entity with no type specified\\.$#"
 			count: 1
 			path: src/MoneyBundle/Calculator.php
@@ -752,11 +647,6 @@ parameters:
 
 		-
 			message: "#^Class SolidInvoice\\\\MoneyBundle\\\\Form\\\\DataTransformer\\\\ModelTransformer implements generic interface Symfony\\\\Component\\\\Form\\\\DataTransformerInterface but does not specify its types\\: T, R$#"
-			count: 1
-			path: src/MoneyBundle/Form/DataTransformer/ModelTransformer.php
-
-		-
-			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
 			count: 1
 			path: src/MoneyBundle/Form/DataTransformer/ModelTransformer.php
 
@@ -816,11 +706,6 @@ parameters:
 			path: src/NotificationBundle/Notification/NotificationMessage.php
 
 		-
-			message: "#^Property SolidInvoice\\\\NotificationBundle\\\\Notification\\\\NotificationMessage\\:\\:\\$parameters type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/NotificationBundle/Notification/NotificationMessage.php
-
-		-
 			message: "#^Property SolidInvoice\\\\NotificationBundle\\\\Notification\\\\NotificationMessage\\:\\:\\$users type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/NotificationBundle/Notification/NotificationMessage.php
@@ -861,32 +746,12 @@ parameters:
 			path: src/PaymentBundle/Action/Ajax/Settings.php
 
 		-
-			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Action\\\\Done\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/PaymentBundle/Action/Done.php
-
-		-
-			message: "#^Property SolidInvoice\\\\PaymentBundle\\\\Action\\\\Done\\:\\:\\$payum \\(Payum\\\\Core\\\\Payum\\) does not accept Payum\\\\Core\\\\Registry\\\\RegistryInterface\\.$#"
-			count: 1
-			path: src/PaymentBundle/Action/Done.php
-
-		-
 			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Action\\\\Index\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/PaymentBundle/Action/Index.php
 
 		-
-			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Action\\\\Prepare\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/PaymentBundle/Action/Prepare.php
-
-		-
 			message: "#^Parameter \\#1 \\$totalAmount of method Payum\\\\Core\\\\Model\\\\Payment\\:\\:setTotalAmount\\(\\) expects int, string given\\.$#"
-			count: 1
-			path: src/PaymentBundle/Action/Prepare.php
-
-		-
-			message: "#^Property SolidInvoice\\\\PaymentBundle\\\\Action\\\\Prepare\\:\\:\\$payum \\(Payum\\\\Core\\\\Payum\\) does not accept Payum\\\\Core\\\\Registry\\\\RegistryInterface\\.$#"
 			count: 1
 			path: src/PaymentBundle/Action/Prepare.php
 
@@ -967,11 +832,6 @@ parameters:
 
 		-
 			message: "#^Parameter \\#1 \\$multiplier of method Money\\\\Money\\:\\:multiply\\(\\) expects float\\|int\\|string, SolidInvoice\\\\CoreBundle\\\\Entity\\\\Discount given\\.$#"
-			count: 1
-			path: src/PaymentBundle/PaymentAction/PaypalExpress/CapturePaymentAction.php
-
-		-
-			message: "#^Property SolidInvoice\\\\PaymentBundle\\\\PaymentAction\\\\PaypalExpress\\\\CapturePaymentAction\\:\\:\\$formatter \\(SolidInvoice\\\\MoneyBundle\\\\Formatter\\\\MoneyFormatter\\) does not accept SolidInvoice\\\\MoneyBundle\\\\Formatter\\\\MoneyFormatterInterface\\.$#"
 			count: 1
 			path: src/PaymentBundle/PaymentAction/PaypalExpress/CapturePaymentAction.php
 
@@ -1096,16 +956,6 @@ parameters:
 			path: src/QuoteBundle/Email/QuoteEmail.php
 
 		-
-			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Entity\\\\Quote\\:\\:archive\\(\\) has invalid return type SolidInvoice\\\\CoreBundle\\\\Traits\\\\Entity\\\\Archivable\\.$#"
-			count: 1
-			path: src/QuoteBundle/Entity/Quote.php
-
-		-
-			message: "#^PHPDoc tag @return with type \\$this\\(SolidInvoice\\\\QuoteBundle\\\\Entity\\\\Quote\\)\\|SolidInvoice\\\\CoreBundle\\\\Traits\\\\Entity\\\\Archivable is not subtype of native type SolidInvoice\\\\QuoteBundle\\\\Entity\\\\Quote\\.$#"
-			count: 1
-			path: src/QuoteBundle/Entity/Quote.php
-
-		-
 			message: "#^Class SolidInvoice\\\\QuoteBundle\\\\Repository\\\\ItemRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#"
 			count: 1
 			path: src/QuoteBundle/Repository/ItemRepository.php
@@ -1184,11 +1034,6 @@ parameters:
 			message: "#^Method SolidInvoice\\\\SettingsBundle\\\\Form\\\\Handler\\\\SettingsFormHandler\\:\\:getSettings\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/SettingsBundle/Form/Handler/SettingsFormHandler.php
-
-		-
-			message: "#^Method SolidInvoice\\\\SettingsBundle\\\\Form\\\\Type\\\\MailTransportType\\:\\:__construct\\(\\) has parameter \\$transports with no value type specified in iterable type iterable\\.$#"
-			count: 1
-			path: src/SettingsBundle/Form/Type/MailTransportType.php
 
 		-
 			message: "#^Class SolidInvoice\\\\SettingsBundle\\\\Repository\\\\SectionRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#"
@@ -1367,20 +1212,5 @@ parameters:
 
 		-
 			message: "#^Method SolidInvoice\\\\UserBundle\\\\Tests\\\\Form\\\\Handler\\\\ProfileEditHandlerTest\\:\\:getFormData\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/UserBundle/Tests/Form/Handler/ProfileEditHandlerTest.php
-
-		-
-			message: "#^Property SolidInvoice\\\\UserBundle\\\\Tests\\\\Form\\\\Handler\\\\ProfileEditHandlerTest\\:\\:\\$router has no type specified\\.$#"
-			count: 1
-			path: src/UserBundle/Tests/Form/Handler/ProfileEditHandlerTest.php
-
-		-
-			message: "#^Property SolidInvoice\\\\UserBundle\\\\Tests\\\\Form\\\\Handler\\\\ProfileEditHandlerTest\\:\\:\\$tokenStorage has no type specified\\.$#"
-			count: 1
-			path: src/UserBundle/Tests/Form/Handler/ProfileEditHandlerTest.php
-
-		-
-			message: "#^Property SolidInvoice\\\\UserBundle\\\\Tests\\\\Form\\\\Handler\\\\ProfileEditHandlerTest\\:\\:\\$userRepository has no type specified\\.$#"
 			count: 1
 			path: src/UserBundle/Tests/Form/Handler/ProfileEditHandlerTest.php

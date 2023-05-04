@@ -27,34 +27,29 @@ final class Transition
 {
     use SaveableTrait;
 
-    private RouterInterface $router;
-
-    private StateMachine $stateMachine;
-
-    public function __construct(RouterInterface $router, StateMachine $stateMachine)
-    {
-        $this->router = $router;
-        $this->stateMachine = $stateMachine;
+    public function __construct(
+        private readonly RouterInterface $router,
+        private readonly StateMachine $invoiceStateMachine
+    ) {
     }
 
     public function __invoke(Request $request, string $action, Invoice $invoice): RedirectResponse
     {
-        if (! $this->stateMachine->can($invoice, $action)) {
+        if (! $this->invoiceStateMachine->can($invoice, $action)) {
             throw new InvalidTransitionException($action);
         }
 
-        $this->stateMachine->apply($invoice, $action);
+        $this->invoiceStateMachine->apply($invoice, $action);
 
         $this->save($invoice);
 
         $route = $this->router->generate('_invoices_view', ['id' => $invoice->getId()]);
 
         return new class($action, $route) extends RedirectResponse implements FlashResponse {
-            private string $action;
-
-            public function __construct(string $action, string $route)
-            {
-                $this->action = $action;
+            public function __construct(
+                private readonly string $action,
+                string $route
+            ) {
                 parent::__construct($route);
             }
 

@@ -18,17 +18,15 @@ use Twig\TwigFunction;
 
 class FileExtension extends AbstractExtension
 {
-    private string $projectDir;
-
-    public function __construct(string $projectDir)
-    {
-        $this->projectDir = $projectDir;
+    public function __construct(
+        private readonly string $projectDir
+    ) {
     }
 
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('file', fn ($file) => file_get_contents($this->projectDir . '/public/' . ltrim($file, '\\')), ['is_safe' => ['css', 'html']]),
+            new TwigFunction('file', fn ($file) => file_get_contents($this->projectDir . '/public/' . ltrim((string) $file, '\\')), ['is_safe' => ['css', 'html']]),
         ];
     }
 }

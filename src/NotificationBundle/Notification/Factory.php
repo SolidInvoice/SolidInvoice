@@ -18,20 +18,15 @@ use SolidInvoice\SettingsBundle\SystemConfig;
 use Swift_Message;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
+use Twilio\Rest\Client;
 
 class Factory
 {
-    private Environment $twig;
-
-    private TranslatorInterface $translator;
-
-    private SystemConfig $settings;
-
-    public function __construct(Environment $twig, TranslatorInterface $translator, SystemConfig $settings)
-    {
-        $this->twig = $twig;
-        $this->translator = $translator;
-        $this->settings = $settings;
+    public function __construct(
+        private readonly Environment $twig,
+        private readonly TranslatorInterface $translator,
+        private readonly SystemConfig $settings
+    ) {
     }
 
     /**
@@ -62,5 +57,10 @@ class Factory
     public function createSmsNotification(string $cellphone, NotificationMessageInterface $message): NotificationInterface
     {
         return new TwilioNotification($cellphone, $message->getTextContent($this->twig));
+    }
+
+    public static function createTwilioClient(SystemConfig $config): Client
+    {
+        return new Client($config->get('sms/twilio/sid'), $config->get('sms/twilio/token'));
     }
 }

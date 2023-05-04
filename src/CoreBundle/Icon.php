@@ -15,11 +15,11 @@ namespace SolidInvoice\CoreBundle;
 
 class Icon
 {
-    public const CLIENT = 'group';
+    final public const CLIENT = 'group';
 
-    public const INVOICE = 'file-text-o';
+    final public const INVOICE = 'file-text-o';
 
-    public const QUOTE = 'file-text-o';
+    final public const QUOTE = 'file-text-o';
 
-    public const PAYMENT = 'credit-card';
+    final public const PAYMENT = 'credit-card';
 }

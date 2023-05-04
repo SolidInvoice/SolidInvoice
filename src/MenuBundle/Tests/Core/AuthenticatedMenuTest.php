@@ -25,10 +25,7 @@ class AuthenticatedMenuTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    /**
-     * @var MockInterface&AuthorizationCheckerInterface
-     */
-    private $security;
+    private MockInterface&AuthorizationCheckerInterface $security;
 
     protected function setUp(): void
     {

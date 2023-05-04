@@ -19,23 +19,20 @@ use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\FilterCollection;
 use Doctrine\Persistence\ManagerRegistry;
 use function assert;
-use function get_class;
 
 /**
  * @see \SolidInvoice\CoreBundle\Tests\Generator\BillingIdGenerator\AutoIncrementIdGeneratorTest
  */
 final class AutoIncrementIdGenerator implements IdGeneratorInterface
 {
-    private ManagerRegistry $registry;
-
-    public function __construct(ManagerRegistry $registry)
-    {
-        $this->registry = $registry;
+    public function __construct(
+        private readonly ManagerRegistry $registry
+    ) {
     }
 
     public function generate(object $entity, string $field): string
     {
-        $em = $this->registry->getManagerForClass(get_class($entity));
+        $em = $this->registry->getManagerForClass($entity::class);
         assert($em instanceof EntityManager);
 
         $filters = $em->getFilters();
@@ -45,12 +42,12 @@ final class AutoIncrementIdGenerator implements IdGeneratorInterface
 
         try {
             $lastId = $this->registry
-                ->getRepository(get_class($entity))
+                ->getRepository($entity::class)
                 ->createQueryBuilder('e')
                 ->select('MAX(e.' . $field . ')')
                 ->getQuery()
                 ->getSingleScalarResult();
-        } catch (NonUniqueResultException|NoResultException $e) {
+        } catch (NonUniqueResultException|NoResultException) {
             $lastId = 0;
         } finally {
             $filters->enable('archivable');

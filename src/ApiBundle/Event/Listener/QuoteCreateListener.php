@@ -27,11 +27,9 @@ use Symfony\Component\Workflow\StateMachine;
  */
 class QuoteCreateListener implements EventSubscriberInterface
 {
-    private StateMachine $stateMachine;
-
-    public function __construct(StateMachine $stateMachine)
-    {
-        $this->stateMachine = $stateMachine;
+    public function __construct(
+        private readonly StateMachine $quoteStateMachine
+    ) {
     }
 
     /**
@@ -53,6 +51,6 @@ class QuoteCreateListener implements EventSubscriberInterface
             return;
         }
 
-        $this->stateMachine->apply($quote, Graph::TRANSITION_NEW);
+        $this->quoteStateMachine->apply($quote, Graph::TRANSITION_NEW);
     }
 }

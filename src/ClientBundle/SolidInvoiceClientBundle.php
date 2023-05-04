@@ -15,6 +15,7 @@ namespace SolidInvoice\ClientBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class SolidInvoiceClientBundle extends Bundle
+final class SolidInvoiceClientBundle extends Bundle
 {
+    final public const NAMESPACE = __NAMESPACE__;
 }

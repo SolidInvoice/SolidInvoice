@@ -19,11 +19,9 @@ use Symfony\Component\Mailer\MailerInterface;
 
 final class UserInvitation
 {
-    private MailerInterface $mailer;
-
-    public function __construct(MailerInterface $mailer)
-    {
-        $this->mailer = $mailer;
+    public function __construct(
+        private readonly MailerInterface $mailer
+    ) {
     }
 
     public function sendUserInvitation(UserInvitationEntity $invitation): void

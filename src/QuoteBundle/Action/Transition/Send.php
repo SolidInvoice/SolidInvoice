@@ -26,14 +26,10 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class Send
 {
-    private QuoteMailer $mailer;
-
-    private RouterInterface $router;
-
-    public function __construct(QuoteMailer $mailer, RouterInterface $router)
-    {
-        $this->mailer = $mailer;
-        $this->router = $router;
+    public function __construct(
+        private readonly QuoteMailer $mailer,
+        private readonly RouterInterface $router
+    ) {
     }
 
     public function __invoke(Request $request, Quote $quote): RedirectResponse
@@ -44,12 +40,11 @@ final class Send
             $this->mailer->send($quote);
         } catch (JsonException | InvalidTransitionException | TransportExceptionInterface $e) {
             return new class($route, $e->getMessage()) extends RedirectResponse implements FlashResponse {
-                private string $message;
-
-                public function __construct(string $route, string $message)
-                {
+                public function __construct(
+                    string $route,
+                    private readonly string $message
+                ) {
                     parent::__construct($route);
-                    $this->message = $message;
                 }
 
                 public function getFlash(): Generator

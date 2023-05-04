@@ -21,16 +21,11 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 class ContactTypeTransformer implements DataTransformerInterface
 {
     /**
-     * @var ContactType[]
-     */
-    private array $types;
-
-    /**
      * @param ContactType[] $types
      */
-    public function __construct(array $types)
-    {
-        $this->types = $types;
+    public function __construct(
+        private readonly array $types
+    ) {
     }
 
     /**

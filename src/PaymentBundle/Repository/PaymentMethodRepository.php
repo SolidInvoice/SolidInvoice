@@ -35,7 +35,7 @@ class PaymentMethodRepository extends ServiceEntityRepository
 
         try {
             $settings = $queryBuilder->getQuery()->getSingleResult();
-        } catch (NoResultException $e) {
+        } catch (NoResultException) {
             return [];
         }
 

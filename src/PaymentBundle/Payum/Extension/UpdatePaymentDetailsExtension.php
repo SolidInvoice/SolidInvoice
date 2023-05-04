@@ -24,11 +24,9 @@ use SolidInvoice\PaymentBundle\Entity\Payment;
 
 class UpdatePaymentDetailsExtension implements ExtensionInterface
 {
-    private ManagerRegistry $registry;
-
-    public function __construct(ManagerRegistry $registry)
-    {
-        $this->registry = $registry;
+    public function __construct(
+        private readonly ManagerRegistry $registry
+    ) {
     }
 
     public function onPreExecute(Context $context): void
