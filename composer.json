@@ -87,7 +87,7 @@
         "symfony/intl": "^5.4",
         "symfony/mailchimp-mailer": "^5.4",
         "symfony/mailer": "^5.4",
-        "symfony/mailgun-mailer": "^5.4",
+        "symfony/mailgun-mailer": "^6.2",
         "symfony/messenger": "^5.4",
         "symfony/mime": "^5.4",
         "symfony/monolog-bundle": "^3.7",
