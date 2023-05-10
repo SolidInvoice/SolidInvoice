@@ -78,15 +78,12 @@ final class UserToContactTransformer implements DataTransformerInterface
                 $contact->setContact($item);
                 if ($this->entity instanceof Invoice) {
                     $contact->setInvoice($this->entity);
-                    break;
                 }
                 if ($this->entity instanceof RecurringInvoice) {
                     $contact->setRecurringInvoice($this->entity);
-                    break;
                 }
                 if ($this->entity instanceof Quote) {
                     $contact->setQuote($this->entity);
-                    break;
                 }
 
                 $users[] = $contact;
