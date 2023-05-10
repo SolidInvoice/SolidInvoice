@@ -22,9 +22,7 @@ RUN PID=$(mysqld &) && \
         --database-password=$PASSWORD \
         --locale=en \
         --currency=ZAR \
-        --admin-username=admin \
-        --admin-password=password \
-        --admin-email=test@example.com && \
+        --skip-user && \
     killall -15 mysqld
 
 COPY docker/etc/s6-overlay /etc/s6-overlay
