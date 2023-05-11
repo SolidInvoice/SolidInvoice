@@ -76,7 +76,6 @@ class ItemType extends AbstractType
                 'tax',
                 TaxEntityType::class,
                 [
-                    'class' => Tax::class,
                     'placeholder' => 'No Tax',
                     'attr' => [
                         'class' => 'select2 input-mini invoice-item-tax',
@@ -94,7 +93,8 @@ class ItemType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefault('data_class', Item::class)
+        $resolver
+            ->setDefault('data_class', Item::class)
             ->setRequired('currency')
             ->setAllowedTypes('currency', [Currency::class]);
     }

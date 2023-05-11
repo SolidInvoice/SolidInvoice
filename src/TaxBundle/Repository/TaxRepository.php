@@ -51,18 +51,7 @@ class TaxRepository extends ServiceEntityRepository
 
     public function taxRatesConfigured(): bool
     {
-        return $this->getTotal() > 0;
-    }
-
-    /**
-     * Gets an array of all the available tax rates.
-     */
-    public function getTotal(): int
-    {
-        $queryBuilder = $this->createQueryBuilder('t')
-            ->select('COUNT(t.id)');
-
-        return (int) $queryBuilder->getQuery()->getSingleScalarResult();
+        return $this->count([]) > 0;
     }
 
     public function getGridQuery(): QueryBuilder

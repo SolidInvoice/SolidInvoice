@@ -111,11 +111,6 @@ parameters:
 			path: src/ClientBundle/Form/ConstraintBuilder.php
 
 		-
-			message: "#^Class SolidInvoice\\\\ClientBundle\\\\Form\\\\DataTransformer\\\\ContactTypeTransformer implements generic interface Symfony\\\\Component\\\\Form\\\\DataTransformerInterface but does not specify its types\\: T, R$#"
-			count: 1
-			path: src/ClientBundle/Form/DataTransformer/ContactTypeTransformer.php
-
-		-
 			message: "#^Parameter \\#2 \\$default of method SolidWorx\\\\FormHandler\\\\Options\\:\\:get\\(\\) expects null, SolidInvoice\\\\ClientBundle\\\\Entity\\\\Client given\\.$#"
 			count: 1
 			path: src/ClientBundle/Form/Handler/AbstractClientFormHandler.php
@@ -129,11 +124,6 @@ parameters:
 			message: "#^Negated boolean expression is always false\\.$#"
 			count: 1
 			path: src/ClientBundle/Form/Handler/AbstractContactFormHandler.php
-
-		-
-			message: "#^Class SolidInvoice\\\\ClientBundle\\\\Form\\\\ViewTransformer\\\\ContactTypeTransformer implements generic interface Symfony\\\\Component\\\\Form\\\\DataTransformerInterface but does not specify its types\\: T, R$#"
-			count: 1
-			path: src/ClientBundle/Form/ViewTransformer/ContactTypeTransformer.php
 
 		-
 			message: "#^Class SolidInvoice\\\\ClientBundle\\\\Repository\\\\ContactRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#"

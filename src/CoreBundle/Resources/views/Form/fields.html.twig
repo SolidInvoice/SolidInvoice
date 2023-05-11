@@ -14,17 +14,13 @@
     {% for attrname, attrvalue in attr %}{% if attrname in ['placeholder', 'title'] %}{{ attrname }}="{{ attrvalue|trans({}, translation_domain) }}" {% else %}{{ attrname }}="{{ attrvalue }}" {% endif %}{% endfor %}
 {%- endblock widget_attributes %}
 
-{% block form_widget_simple -%}{{ parent() }}{% if help is defined and help is not empty %}<span class="help-{{ help_type }}"><small>{{ help|trans|nl2br }}</small></span>{% endif %}{%- endblock form_widget_simple %}
-
-{% block form_row -%}
-    <div class="form-group{% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %}">
-        {{ form_label(form) }}
-        {{ form_widget(form) }}
-        {#{% if help is defined and help is not empty %}
-            <span class="help-{{ help_type }}"><small>{{ help|trans|nl2br }}</small></span>
-        {% endif %}#}
-    </div>
-{%- endblock form_row %}
+{% block form_help -%}
+    {%- if help is not empty -%}
+        <div class="alert alert-info mt-2">
+            {{ parent()|replace({'text-muted': ''})|raw }}
+        </div>
+    {%- endif -%}
+{%- endblock form_help %}
 
 {% block checkbox_widget -%}
     {{ parent() }}
@@ -75,7 +71,7 @@
     {% include "@SolidInvoiceClient/Form/contacts.html.twig" %}
 {% endblock contact_widget %}
 
-{% block tax_field_widget -%}
+{#{% block tax_field_widget -%}
     {% if expanded %}
         {{- block('choice_widget_expanded') -}}
     {% else %}
@@ -98,7 +94,7 @@
             {{ block('tax_choice_widget_options') }}
         </select>
     {% endif %}
-{%- endblock %}
+{%- endblock %}#}
 
 {% block tax_number_widget -%}
     <div class="input-group">

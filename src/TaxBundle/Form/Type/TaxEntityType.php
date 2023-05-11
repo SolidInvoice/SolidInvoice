@@ -13,23 +13,47 @@ declare(strict_types=1);
 
 namespace SolidInvoice\TaxBundle\Form\Type;
 
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use SolidInvoice\CoreBundle\Form\DataTransformer\EntityUuidTransformer;
+use SolidInvoice\TaxBundle\Entity\Tax;
+use SolidInvoice\TaxBundle\Repository\TaxRepository;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use function array_combine;
 
-class TaxEntityType extends AbstractType
+final class TaxEntityType extends AbstractType
 {
-    public function getParent(): string
+    private TaxRepository $repository;
+
+    public function __construct(TaxRepository $repository)
     {
-        return EntityType::class;
+        $this->repository = $repository;
     }
 
     /**
-     * Returns the name of this type.
-     *
-     * @return string The name of this type
+     * @param array<string, mixed> $options
      */
-    public function getBlockPrefix()
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        return 'tax_field';
+        $builder->addModelTransformer(new EntityUuidTransformer($this->repository->findAll()));
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $values = $this->repository->findAll();
+
+        $resolver->setDefault(
+            'choices',
+            array_combine(
+                $values,
+                array_map(static fn (Tax $tax) => $tax->getId()->toString(), $values),
+            )
+        );
+    }
+
+    public function getParent(): string
+    {
+        return ChoiceType::class;
     }
 }
