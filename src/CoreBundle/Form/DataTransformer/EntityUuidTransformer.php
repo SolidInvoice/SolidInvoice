@@ -11,22 +11,25 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace SolidInvoice\ClientBundle\Form\DataTransformer;
+namespace SolidInvoice\CoreBundle\Form\DataTransformer;
 
 use Ramsey\Uuid\UuidInterface;
-use SolidInvoice\ClientBundle\Entity\ContactType;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
+use function method_exists;
 
-class ContactTypeTransformer implements DataTransformerInterface
+/**
+ * @implements DataTransformerInterface<int, object|string>
+ */
+final class EntityUuidTransformer implements DataTransformerInterface
 {
     /**
-     * @var ContactType[]
+     * @var object[]
      */
     private array $types;
 
     /**
-     * @param ContactType[] $types
+     * @param object[] $types
      */
     public function __construct(array $types)
     {
@@ -34,25 +37,25 @@ class ContactTypeTransformer implements DataTransformerInterface
     }
 
     /**
-     * @param ?ContactType $type
+     * @param ?object $value
      */
-    public function transform($type): ?UuidInterface
+    public function transform($value): ?UuidInterface
     {
-        if ($type instanceof ContactType) {
-            return $type->getId();
+        if (is_object($value) && method_exists($value, 'getId')) {
+            return $value->getId();
         }
 
         return null;
     }
 
     /**
-     * @param string $value
+     * @param object|string $value
      *
-     * @return ContactType
+     * @return object
      *
      * @throws TransformationFailedException
      */
-    public function reverseTransform($value): ?ContactType
+    public function reverseTransform($value): ?object
     {
         if ('' === $value) {
             return null;
@@ -64,6 +67,6 @@ class ContactTypeTransformer implements DataTransformerInterface
             }
         }
 
-        throw new TransformationFailedException('Invalid contact type');
+        throw new TransformationFailedException('Invalid value');
     }
 }

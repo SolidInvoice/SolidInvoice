@@ -38,10 +38,7 @@ class Select2Type extends AbstractType
         return ChoiceType::class;
     }
 
-    /**
-     * @return string
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'select2';
     }

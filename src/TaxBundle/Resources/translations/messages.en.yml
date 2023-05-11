@@ -3,7 +3,9 @@ tax:
         title: 'Tax Rates'
         add: 'Add Tax Rate'
         save: Save
-        explanation: "Inclusive: Tax is included in the item price\nExclusive: Tax is calculated on the item price"
+        explanation: |
+            <b>Inclusive</b>: The Tax is already included in the item price<br />
+            <b>Exclusive</b>: Tax is calculated on top of the item price
         type:
             select: Select
     inclusive: Inclusive

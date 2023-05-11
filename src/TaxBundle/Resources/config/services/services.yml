@@ -1,0 +1,9 @@
+services:
+
+    _defaults:
+        public: false
+        autowire: true
+        autoconfigure: true
+
+    SolidInvoice\TaxBundle\Repository\TaxRepository: ~
+    SolidInvoice\TaxBundle\Form\Type\TaxEntityType: ~

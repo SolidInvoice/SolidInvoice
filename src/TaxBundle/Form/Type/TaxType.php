@@ -36,6 +36,7 @@ class TaxType extends AbstractType
             [
                 'choices' => array_map('ucwords', Tax::getTypes()),
                 'help' => 'tax.rates.explanation',
+                'help_html' => true,
                 'placeholder' => 'tax.rates.type.select',
             ]
         );

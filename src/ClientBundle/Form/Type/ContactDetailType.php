@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Form\Type;
 
-use SolidInvoice\ClientBundle\Form\DataTransformer\ContactTypeTransformer;
 use SolidInvoice\ClientBundle\Repository\ContactTypeRepository;
+use SolidInvoice\CoreBundle\Form\DataTransformer\EntityUuidTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -55,7 +55,7 @@ class ContactDetailType extends AbstractType
                         ],
                     ]
                 )
-                ->addModelTransformer(new ContactTypeTransformer($this->contactTypeRepository->findAll()))
+                ->addModelTransformer(new EntityUuidTransformer($this->contactTypeRepository->findAll()))
         );
 
         $builder->add(

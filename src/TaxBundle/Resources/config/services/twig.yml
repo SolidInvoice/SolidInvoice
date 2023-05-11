@@ -5,4 +5,3 @@ services:
         autoconfigure: true
 
     SolidInvoice\TaxBundle\Twig\Extension\TaxExtension: ~
-    SolidInvoice\TaxBundle\Repository\TaxRepository: ~
