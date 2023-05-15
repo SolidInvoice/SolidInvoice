@@ -77,7 +77,7 @@ datagrid:
                 name: id
                 label: ID
                 editable: false
-                cell: integer
+                cell: string
             name:
                 name: name
                 label: Name
