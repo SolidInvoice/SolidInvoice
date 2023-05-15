@@ -229,7 +229,7 @@ class InvoiceRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param list<int> $ids
+     * @param list<string> $ids
      */
     public function deleteInvoices(array $ids): void
     {
@@ -238,10 +238,8 @@ class InvoiceRepository extends ServiceEntityRepository
 
         $em = $this->getEntityManager();
 
-        /** @var Invoice[] $invoices */
-        $invoices = $this->findBy(['id' => $ids]);
-
-        array_walk($invoices, static function (object $entity) use ($em): void {
+        array_walk($ids, function (string $id) use ($em): void {
+            $entity = $this->find($id);
             $em->remove($entity);
         });
 
