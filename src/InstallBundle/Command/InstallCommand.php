@@ -34,7 +34,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
-use Symfony\Component\Intl\Currencies;
 use Symfony\Component\Intl\Locales;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -91,8 +90,7 @@ class InstallCommand extends Command
             ->addOption('admin-username', null, InputOption::VALUE_REQUIRED, 'The username of the admin user')
             ->addOption('admin-password', null, InputOption::VALUE_REQUIRED, 'The password of admin user')
             ->addOption('admin-email', null, InputOption::VALUE_REQUIRED, 'The email address of admin user')
-            ->addOption('locale', null, InputOption::VALUE_REQUIRED, 'The locale to use')
-            ->addOption('currency', null, InputOption::VALUE_REQUIRED, 'The currency to use');
+            ->addOption('locale', null, InputOption::VALUE_REQUIRED, 'The locale to use');
     }
 
     /**
@@ -123,7 +121,7 @@ class InstallCommand extends Command
      */
     private function validate(InputInterface $input): self
     {
-        $values = ['database-host', 'database-user', 'locale', 'currency'];
+        $values = ['database-host', 'database-user', 'locale'];
 
         if (! $input->getOption('skip-user')) {
             $values = array_merge($values, ['admin-username', 'admin-password', 'admin-email']);
@@ -136,10 +134,6 @@ class InstallCommand extends Command
         }
         if (! array_key_exists($locale = $input->getOption('locale'), Locales::getNames())) {
             throw new InvalidArgumentException(sprintf('The locale "%s" is invalid', $locale));
-        }
-
-        if (! array_key_exists($currency = $input->getOption('currency'), Currencies::getNames())) {
-            throw new InvalidArgumentException(sprintf('The currency "%s" is invalid', $currency));
         }
 
         return $this;
@@ -237,7 +231,7 @@ class InstallCommand extends Command
     private function saveConfig(InputInterface $input): self
     {
         // Don't update installed here, in case something goes wrong with the rest of the installation process
-        $config = ['database_driver' => $input->getOption('database-driver'), 'database_host' => $input->getOption('database-host'), 'database_port' => $input->getOption('database-port'), 'database_name' => $input->getOption('database-name'), 'database_user' => $input->getOption('database-user'), 'database_password' => $input->getOption('database-password'), 'locale' => $input->getOption('locale'), 'currency' => $input->getOption('currency'), 'secret' => Key::createNewRandomKey()->saveToAsciiSafeString()];
+        $config = ['database_driver' => $input->getOption('database-driver'), 'database_host' => $input->getOption('database-host'), 'database_port' => $input->getOption('database-port'), 'database_name' => $input->getOption('database-name'), 'database_user' => $input->getOption('database-user'), 'database_password' => $input->getOption('database-password'), 'locale' => $input->getOption('locale'), 'secret' => Key::createNewRandomKey()->saveToAsciiSafeString()];
         $this->configWriter->dump($config);
 
         return $this;
@@ -249,16 +243,12 @@ class InstallCommand extends Command
             throw new ApplicationInstalledException();
         }
 
-        $currencies = array_keys(Currencies::getNames());
         $locales = array_keys(Locales::getNames());
         $localeQuestion = new Question('<question>Please enter a locale:</question> ');
         $localeQuestion->setAutocompleterValues($locales);
-        $currencyQuestion = new Question('<question>Please enter a currency:</question> ');
-        $currencyQuestion->setAutocompleterValues($currencies);
         $options = [
             'database-user' => new Question('<question>Please enter your database username:</question> '),
             'locale' => $localeQuestion,
-            'currency' => $currencyQuestion
         ];
 
         if (! $input->getOption('skip-user')) {

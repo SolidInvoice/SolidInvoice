@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\InstallBundle\Form\Step;
 
 use SolidInvoice\CoreBundle\Form\Type\Select2Type;
-use SolidInvoice\MoneyBundle\Form\Type\CurrencyType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -57,15 +56,6 @@ class SystemInformationForm extends AbstractType
                 ]
             );
         }
-
-        $builder->add(
-            'currency',
-            CurrencyType::class,
-            [
-                'constraints' => new NotBlank(['message' => 'Please select a currency']),
-                'placeholder' => 'Please select a currency',
-            ]
-        );
 
         if (0 === $options['userCount']) {
             $builder->add(

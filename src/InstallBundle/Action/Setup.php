@@ -18,7 +18,6 @@ use DateTimeInterface;
 use Defuse\Crypto\Exception\EnvironmentIsBrokenException;
 use Defuse\Crypto\Key;
 use Doctrine\Persistence\ManagerRegistry;
-use Money\Currency;
 use Mpociot\VatCalculator\VatCalculator;
 use SolidInvoice\CoreBundle\ConfigWriter;
 use SolidInvoice\CoreBundle\Entity\Version;
@@ -26,7 +25,6 @@ use SolidInvoice\CoreBundle\Repository\VersionRepository;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\InstallBundle\Form\Step\SystemInformationForm;
-use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -49,8 +47,6 @@ final class Setup
 
     private VatCalculator $vatCalculator;
 
-    private SystemConfig $systemConfig;
-
     private RouterInterface $router;
 
     public function __construct(
@@ -59,7 +55,6 @@ final class Setup
         ManagerRegistry $doctrine,
         ConfigWriter $configWriter,
         VatCalculator $vatCalculator,
-        SystemConfig $systemConfig,
         RouterInterface $router
     ) {
         $this->passwordHasherFactory = $passwordHasherFactory;
@@ -67,7 +62,6 @@ final class Setup
         $this->doctrine = $doctrine;
         $this->configWriter = $configWriter;
         $this->vatCalculator = $vatCalculator;
-        $this->systemConfig = $systemConfig;
         $this->router = $router;
     }
 
@@ -88,10 +82,8 @@ final class Setup
     {
         $config = $this->configWriter->getConfigValues();
 
-        $currency = $this->systemConfig->getCurrency();
         $data = [
             'locale' => $config['locale'] ?? null,
-            'currency' => $currency instanceof Currency ? $currency->getCode() : null,
         ];
 
         return $this->formFactory->create(SystemInformationForm::class, $data, ['userCount' => $this->getUserCount()]);
@@ -174,7 +166,7 @@ final class Setup
     }
 
     /**
-     * @param array{locale: string, currency?: string} $data
+     * @param array{locale: string} $data
      *
      * @throws EnvironmentIsBrokenException
      * @throws Throwable
@@ -205,8 +197,6 @@ final class Setup
             $em->persist($tax);
             $em->flush();
         }
-
-        $this->systemConfig->set(SystemConfig::CURRENCY_CONFIG_PATH, $data['currency'] ?? '');
     }
 
     private function render(FormInterface $form): Template
