@@ -120,7 +120,7 @@ class ClientRepository extends ServiceEntityRepository
         foreach ($ids as $id) {
             $client = $this->find($id);
 
-            if (!$client instanceof Client) {
+            if (! $client instanceof Client) {
                 continue;
             }
 
@@ -146,7 +146,7 @@ class ClientRepository extends ServiceEntityRepository
         foreach ($ids as $id) {
             $client = $this->find($id);
 
-            if (!$client instanceof Client) {
+            if (! $client instanceof Client) {
                 continue;
             }
 
