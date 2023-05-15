@@ -23,7 +23,10 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
+use function array_intersect;
+use function array_map;
 use function assert;
+use function Symfony\Component\String\u;
 
 final class Config
 {
@@ -51,19 +54,19 @@ final class Config
 
     private function getForm(): FormInterface
     {
-        $availableDrivers = PDO::getAvailableDrivers();
+        $availablePdoDrivers = array_intersect(
+            array_map(static fn (string $driver) => "pdo_$driver", PDO::getAvailableDrivers()),
+            DriverManager::getAvailableDrivers()
+        );
 
         // We can't support sqlite at the moment, since it requires a physical file
-        if (in_array('sqlite', $availableDrivers, true)) {
-            unset($availableDrivers[array_search('sqlite', $availableDrivers, true)]);
+        if (in_array('pdo_sqlite', $availablePdoDrivers, true)) {
+            unset($availablePdoDrivers[array_search('pdo_sqlite', $availablePdoDrivers, true)]);
         }
 
         $drivers = array_combine(
-            array_map(
-                static fn ($value): string => sprintf('pdo_%s', $value),
-                $availableDrivers
-            ),
-            $availableDrivers
+            $availablePdoDrivers,
+            array_map(static fn (string $driver) => u($driver)->replace('pdo_', '')->title()->toString(), $availablePdoDrivers)
         );
 
         $config = $this->configWriter->getConfigValues();
