@@ -56,12 +56,8 @@ function generateRelease() {
 
     chmod a+w config
 
-    zip -r SolidInvoice-"$VERSION".zip ./
-    mv SolidInvoice-"$VERSION".zip "${DIST_DIR}"
-
-    touch SolidInvoice-"$VERSION".tar.gz
-    tar --exclude=SolidInvoice-"$VERSION".tar.gz -zcvf SolidInvoice-"$VERSION".tar.gz ./
-    mv SolidInvoice-"$VERSION".tar.gz "${DIST_DIR}"
+    zip -r "${DIST_DIR}/SolidInvoice-$VERSION".zip ./
+    tar -czf "${DIST_DIR}/SolidInvoice-$VERSION".tar.gz ./
 
     cd ../ && rm -Rf "./SolidInvoice"
 }
