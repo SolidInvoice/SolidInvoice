@@ -90,7 +90,7 @@ datagrid:
                 name: id
                 label: ID
                 editable: false
-                cell: integer
+                cell: string
             status:
                 name: status
                 label: Status
@@ -147,7 +147,7 @@ datagrid:
                 name: id
                 label: ID
                 editable: false
-                cell: integer
+                cell: string
             status:
                 name: status
                 label: Status
@@ -240,7 +240,7 @@ datagrid:
                 name: id
                 label: ID
                 editable: false
-                cell: integer
+                cell: string
             status:
                 name: status
                 label: Status
