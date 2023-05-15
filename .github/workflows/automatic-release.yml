@@ -12,17 +12,17 @@ jobs:
 
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@1f99358870fe1c846a3ccba386cc2b2246836776
+        uses: step-security/harden-runner@128a63446a954579617e875aaab7d2978154e969
         with:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
 
       - name: Checkout
-        uses: "actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f"
+        uses: "actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab"
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@d30ad8b1843ace22e6698ab99bbafaa747b6bd0d
+        uses: shivammathur/setup-php@cb8f453143149404c7fd670b5f37c91d395b3054
         with:
-          php-version: 8.1
+          php-version: 8.2
           extensions: intl, gd, opcache, mysql, pdo_mysql, soap, zip, :xdebug
           coverage: none
 
@@ -37,7 +37,7 @@ jobs:
         uses: docker/setup-buildx-action@4b4e9c3e2d4531116a6f8ba8e71fc6e2cb6e6c8c
 
       - name: Release
-        uses: laminas/automatic-releases@1b61a5fcf90ba3223c85130b7bc2a7f95311e79c
+        uses: laminas/automatic-releases@12dde9b998d13e6721e5d000cf0c6a513ebdb98b
         with:
           command-name: laminas:automatic-releases:release
         env:
@@ -47,7 +47,7 @@ jobs:
           "GIT_AUTHOR_EMAIL": ${{ secrets.GIT_AUTHOR_EMAIL }}
 
       - name: Build Release Artifact
-        run: "./scripts/build_dist.sh $(git rev-parse --abbrev-ref HEAD) ${{ github.event.milestone.title }}"
+        run: "./scripts/build_dist.sh ${{ github.event.milestone.title }} ${{ github.event.milestone.title }}"
 
       - name: Upload Release Artifact
         uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844
@@ -87,7 +87,7 @@ jobs:
             solidinvoice/solidinvoice:${{ github.event.milestone.title }}-full
 
       - name: Create Merge-Up Pull Request
-        uses: laminas/automatic-releases@1b61a5fcf90ba3223c85130b7bc2a7f95311e79c
+        uses: laminas/automatic-releases@12dde9b998d13e6721e5d000cf0c6a513ebdb98b
         with:
           command-name: laminas:automatic-releases:create-merge-up-pull-request
         env:
@@ -97,7 +97,7 @@ jobs:
           "GIT_AUTHOR_EMAIL": ${{ secrets.GIT_AUTHOR_EMAIL }}
 
       - name: Create new milestones
-        uses: laminas/automatic-releases@1b61a5fcf90ba3223c85130b7bc2a7f95311e79c
+        uses: laminas/automatic-releases@12dde9b998d13e6721e5d000cf0c6a513ebdb98b
         with:
           command-name: laminas:automatic-releases:create-milestones
         env:

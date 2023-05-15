@@ -24,12 +24,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ExceptionListener implements EventSubscriberInterface
 {
-    private FlashBagInterface $flashBag;
-
-    private TranslatorInterface $translator;
-
-    private RouterInterface $router;
-
     public static function getSubscribedEvents()
     {
         return [
@@ -37,11 +31,11 @@ class ExceptionListener implements EventSubscriberInterface
         ];
     }
 
-    public function __construct(FlashBagInterface $flashBag, TranslatorInterface $translator, RouterInterface $router)
-    {
-        $this->flashBag = $flashBag;
-        $this->translator = $translator;
-        $this->router = $router;
+    public function __construct(
+        private readonly FlashBagInterface $flashBag,
+        private readonly TranslatorInterface $translator,
+        private readonly RouterInterface $router
+    ) {
     }
 
     public function onKernelException(ExceptionEvent $event): void

@@ -23,10 +23,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class CreditNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    /**
-     * @var NormalizerInterface|DenormalizerInterface
-     */
-    private $normalizer;
+    private readonly DenormalizerInterface|NormalizerInterface $normalizer;
 
     public function __construct(NormalizerInterface $normalizer)
     {
@@ -37,9 +34,9 @@ class CreditNormalizer implements NormalizerInterface, DenormalizerInterface
         $this->normalizer = $normalizer;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, $type, $format = null, array $context = [])
     {
-        return $this->normalizer->denormalize($data, $class, $format, $context);
+        return $this->normalizer->denormalize($data, $type, $format, $context);
     }
 
     public function supportsDenormalization($data, $type, $format = null): bool

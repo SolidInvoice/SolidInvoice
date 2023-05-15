@@ -25,12 +25,11 @@ use SolidInvoice\CoreBundle\Entity\Company;
  */
 final class CompanyRepository extends ServiceEntityRepository
 {
-    private CompanySelector $companySelector;
-
-    public function __construct(ManagerRegistry $registry, CompanySelector $companySelector)
-    {
+    public function __construct(
+        ManagerRegistry $registry,
+        private readonly CompanySelector $companySelector
+    ) {
         parent::__construct($registry, Company::class);
-        $this->companySelector = $companySelector;
     }
 
     public function updateCompanyName(string $value): void

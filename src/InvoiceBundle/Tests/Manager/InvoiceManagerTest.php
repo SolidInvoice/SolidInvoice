@@ -18,7 +18,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
-use Mockery\Mock;
 use Money\Currency;
 use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Client;
@@ -45,15 +44,10 @@ class InvoiceManagerTest extends KernelTestCase
 
     private InvoiceManager $manager;
 
-    /**
-     * @var Mock|EntityManagerInterface
-     */
-    private $entityManager;
-
     protected function setUp(): void
     {
-        $this->entityManager = M::mock(EntityManagerInterface::class);
-        $doctrine = M::mock(ManagerRegistry::class, ['getManager' => $this->entityManager]);
+        $entityManager = M::mock(EntityManagerInterface::class);
+        $doctrine = M::mock(ManagerRegistry::class, ['getManager' => $entityManager]);
         $notification = M::mock(NotificationManager::class);
 
         $notification->shouldReceive('sendNotification')
@@ -73,8 +67,7 @@ class InvoiceManagerTest extends KernelTestCase
 
         $this->manager = new InvoiceManager($doctrine, new EventDispatcher(), $stateMachine, $notification);
 
-        $this
-            ->entityManager
+        $entityManager
             ->shouldReceive('persist', 'flush')
             ->zeroOrMoreTimes();
     }

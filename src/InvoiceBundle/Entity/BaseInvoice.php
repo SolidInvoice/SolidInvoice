@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Money\Money;
 use SolidInvoice\CoreBundle\Entity\Discount;
@@ -20,53 +21,37 @@ use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
 use Symfony\Component\Serializer\Annotation as Serialize;
 
-/**
- * @ORM\MappedSuperclass()
- */
+#[ORM\MappedSuperclass]
 abstract class BaseInvoice
 {
     use CompanyAware;
 
-    /**
-     * @ORM\Column(name="status", type="string", length=25)
-     * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api"})
-     */
+    #[ORM\Column(name: 'status', type: Types::STRING, length: 25)]
+    #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api'])]
     protected ?string $status = null;
 
-    /**
-     * @ORM\Embedded(class="SolidInvoice\MoneyBundle\Entity\Money")
-     * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api"})
-     */
+    #[ORM\Embedded(class: MoneyEntity::class)]
+    #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api'])]
     protected MoneyEntity $total;
 
-    /**
-     * @ORM\Embedded(class="SolidInvoice\MoneyBundle\Entity\Money")
-     * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api"})
-     */
+    #[ORM\Embedded(class: MoneyEntity::class)]
+    #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api'])]
     protected MoneyEntity $baseTotal;
 
-    /**
-     * @ORM\Embedded(class="SolidInvoice\MoneyBundle\Entity\Money")
-     * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api"})
-     */
+    #[ORM\Embedded(class: MoneyEntity::class)]
+    #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api'])]
     protected MoneyEntity $tax;
 
-    /**
-     * @ORM\Embedded(class="SolidInvoice\CoreBundle\Entity\Discount")
-     * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api", "create_invoice_api", "create_recurring_invoice_api"})
-     */
+    #[ORM\Embedded(class: Discount::class)]
+    #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
     protected Discount $discount;
 
-    /**
-     * @ORM\Column(name="terms", type="text", nullable=true)
-     * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api", "create_invoice_api", "create_recurring_invoice_api"})
-     */
+    #[ORM\Column(name: 'terms', type: Types::TEXT, nullable: true)]
+    #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
     protected ?string $terms = null;
 
-    /**
-     * @ORM\Column(name="notes", type="text", nullable=true)
-     * @Serialize\Groups({"invoice_api", "recurring_invoice_api", "client_api", "create_invoice_api", "create_recurring_invoice_api"})
-     */
+    #[ORM\Column(name: 'notes', type: Types::TEXT, nullable: true)]
+    #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
     protected ?string $notes = null;
 
     public function __construct()

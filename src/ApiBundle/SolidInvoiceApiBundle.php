@@ -15,6 +15,7 @@ namespace SolidInvoice\ApiBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class SolidInvoiceApiBundle extends Bundle
+final class SolidInvoiceApiBundle extends Bundle
 {
+    final public const NAMESPACE = __NAMESPACE__;
 }

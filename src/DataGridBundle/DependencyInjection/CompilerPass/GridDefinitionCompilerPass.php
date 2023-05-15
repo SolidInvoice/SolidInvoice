@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\DependencyInjection\CompilerPass;
 
-use InvalidArgumentException;
-use SolidInvoice\DataGridBundle\DependencyInjection\GridConfiguration;
 use SolidInvoice\DataGridBundle\Filter\ChainFilter;
 use SolidInvoice\DataGridBundle\Filter\PaginateFilter;
 use SolidInvoice\DataGridBundle\Filter\SearchFilter;
@@ -23,73 +21,36 @@ use SolidInvoice\DataGridBundle\Grid;
 use SolidInvoice\DataGridBundle\Repository\GridRepository;
 use SolidInvoice\DataGridBundle\Source\ORMSource;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
-use Symfony\Component\Config\Definition\Processor;
-use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\HttpKernel\Config\FileLocator;
-use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\Yaml\Yaml;
 
 class GridDefinitionCompilerPass implements CompilerPassInterface
 {
-    private KernelInterface $kernel;
-
-    public function __construct(KernelInterface $kernel)
-    {
-        $this->kernel = $kernel;
-    }
-
     public function process(ContainerBuilder $container): void
     {
-        $resourceLocator = new FileLocator($this->kernel);
         $definition = $container->getDefinition(GridRepository::class);
 
-        $configs = [];
-
-        foreach ($this->kernel->getBundles() as $bundle) {
-            try {
-                $file = $resourceLocator->locate(sprintf('@%s/Resources/config/grid.yml', $bundle->getName()));
-            } catch (InvalidArgumentException $e) {
-                continue;
-            }
-
-            $container->addResource(new FileResource($file));
-
-            $grid = Yaml::parse(file_get_contents($file));
-
-            $config = $this->processConfiguration($grid);
-
-            $this->setGridDefinition($definition, $config);
+        foreach ($container->getParameter('grid.definitions') as $name => $config) {
+            $this->setGridDefinition($definition, $name, $config);
         }
-
-        $container->setParameter('grid.definitions', $configs);
     }
 
-    private function processConfiguration(array $grid)
+    /**
+     * @param array<string, string|list<string|bool>> $gridConfig
+     */
+    private function setGridDefinition(Definition $gridService, string $name, array $gridConfig): void
     {
-        $process = new Processor();
-        $config = new GridConfiguration();
+        $gridDefinition = new Definition(Grid::class);
 
-        return $process->processConfiguration($config, $grid);
-    }
+        $gridConfig['name'] = $name;
+        $gridDefinition->addArgument($this->getGridSource($gridConfig['source']));
+        $gridDefinition->addArgument($this->getFilterService($gridConfig));
+        $gridDefinition->addArgument($gridConfig);
+        $gridDefinition->addArgument(new Reference(MoneyFormatter::class));
 
-    private function setGridDefinition(Definition $gridService, array $config): void
-    {
-        foreach ($config as $gridName => $gridConfig) {
-            $gridDefinition = new Definition(Grid::class);
-
-            $gridConfig['name'] = $gridName;
-
-            $gridDefinition->addArgument($this->getGridSource($gridConfig['source']));
-            $gridDefinition->addArgument($this->getFilterService($gridConfig));
-            $gridDefinition->addArgument($gridConfig);
-            $gridDefinition->addArgument(new Reference(MoneyFormatter::class));
-
-            $gridService->addMethodCall('addGrid', [$gridName, $gridDefinition]);
-        }
+        $gridService->addMethodCall('addGrid', [$name, $gridDefinition]);
     }
 
     private function getGridSource(array $arguments): Definition
@@ -103,12 +64,12 @@ class GridDefinitionCompilerPass implements CompilerPassInterface
     {
         $definition = new Definition(ChainFilter::class);
 
-        if (true === $gridData['properties']['sortable']) {
+        if (true === ($gridData['properties']['sortable'] ?? true)) {
             $sortFilter = new Definition(SortFilter::class);
             $definition->addMethodCall('addFilter', [$sortFilter]);
         }
 
-        if (true === $gridData['properties']['sortable']) {
+        if (true === ($gridData['properties']['paginate'] ?? true)) {
             $paginateFilter = new Definition(PaginateFilter::class);
             $definition->addMethodCall('addFilter', [$paginateFilter]);
         }

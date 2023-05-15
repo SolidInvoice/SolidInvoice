@@ -13,74 +13,63 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Money\Money;
+use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
 use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Entity\ItemInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
+use SolidInvoice\QuoteBundle\Repository\ItemRepository;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use Stringable;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="quote_lines")
- * @ORM\Entity(repositoryClass="SolidInvoice\QuoteBundle\Repository\ItemRepository")
- * @ORM\HasLifecycleCallbacks()
- */
+#[ORM\Table(name: Item::TABLE_NAME)]
+#[ORM\Entity(repositoryClass: ItemRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Item implements ItemInterface, Stringable
 {
+    final public const TABLE_NAME = 'quote_lines';
+
     use TimeStampable;
     use CompanyAware;
 
-    /**
-     * @ORM\Column(name="id", type="uuid_binary_ordered_time")
-     * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
-     * @Serialize\Groups({"quote_api", "client_api"})
-     */
+    #[ORM\Column(name: 'id', type: UuidBinaryOrderedTimeType::NAME)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
+    #[Serialize\Groups(['quote_api', 'client_api'])]
     private ?UuidInterface $id = null;
 
-    /**
-     * @ORM\Column(name="description", type="text")
-     * @Assert\NotBlank
-     * @Serialize\Groups({"quote_api", "client_api", "create_quote_api"})
-     */
+    #[ORM\Column(name: 'description', type: Types::TEXT)]
+    #[Assert\NotBlank]
+    #[Serialize\Groups(['quote_api', 'client_api', 'create_quote_api'])]
     private ?string $description = null;
 
-    /**
-     * @ORM\Embedded(class="SolidInvoice\MoneyBundle\Entity\Money")
-     * @Assert\NotBlank()
-     * @Serialize\Groups({"quote_api", "client_api", "create_quote_api"})
-     */
+    #[ORM\Embedded(class: MoneyEntity::class)]
+    #[Assert\NotBlank]
+    #[Serialize\Groups(['quote_api', 'client_api', 'create_quote_api'])]
     private MoneyEntity $price;
 
-    /**
-     * @ORM\Column(name="qty", type="float")
-     * @Assert\NotBlank()
-     * @Serialize\Groups({"quote_api", "client_api", "create_quote_api"})
-     */
+    #[ORM\Column(name: 'qty', type: Types::FLOAT)]
+    #[Assert\NotBlank]
+    #[Serialize\Groups(['quote_api', 'client_api', 'create_quote_api'])]
     private ?float $qty = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Quote", inversedBy="items")
-     */
+    #[ORM\ManyToOne(targetEntity: Quote::class, inversedBy: 'items')]
     private ?Quote $quote = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="SolidInvoice\TaxBundle\Entity\Tax", inversedBy="quoteItems")
-     * @Serialize\Groups({"quote_api", "client_api", "create_quote_api"})
-     */
+    #[ORM\ManyToOne(targetEntity: Tax::class, inversedBy: 'quoteItems')]
+    #[Serialize\Groups(['quote_api', 'client_api', 'create_quote_api'])]
     private ?Tax $tax = null;
 
-    /**
-     * @ORM\Embedded(class="SolidInvoice\MoneyBundle\Entity\Money")
-     * @Serialize\Groups({"quote_api", "client_api"})
-     */
+    #[ORM\Embedded(class: MoneyEntity::class)]
+    #[Serialize\Groups(['quote_api', 'client_api'])]
     private MoneyEntity $total;
 
     public function __construct()
@@ -166,9 +155,7 @@ class Item implements ItemInterface, Stringable
         return $this;
     }
 
-    /**
-     * @ORM\PrePersist
-     */
+    #[ORM\PrePersist]
     public function updateTotal(): void
     {
         $this->total = new MoneyEntity($this->getPrice()->multiply($this->qty));

@@ -33,20 +33,11 @@ use function in_array;
  */
 final class CompanyEventSubscriber implements EventSubscriberInterface
 {
-    private CompanySelector $companySelector;
-
-    private RouterInterface $router;
-
-    private Security $security;
-
     public function __construct(
-        RouterInterface $router,
-        CompanySelector $companySelector,
-        Security $security
+        private readonly RouterInterface $router,
+        private readonly CompanySelector $companySelector,
+        private readonly Security $security
     ) {
-        $this->companySelector = $companySelector;
-        $this->router = $router;
-        $this->security = $security;
     }
 
     public static function getSubscribedEvents(): array

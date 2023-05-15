@@ -26,17 +26,11 @@ use Twig\Environment;
 
 final class View
 {
-    private PaymentRepository $paymentRepository;
-
-    private Generator $pdfGenerator;
-
-    private Environment $twig;
-
-    public function __construct(PaymentRepository $paymentRepository, Generator $pdfGenerator, Environment $twig)
-    {
-        $this->paymentRepository = $paymentRepository;
-        $this->pdfGenerator = $pdfGenerator;
-        $this->twig = $twig;
+    public function __construct(
+        private readonly PaymentRepository $paymentRepository,
+        private readonly Generator $pdfGenerator,
+        private readonly Environment $twig
+    ) {
     }
 
     /**

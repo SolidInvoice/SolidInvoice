@@ -25,49 +25,50 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class AdditionalContactDetailsNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    /**
-     * @var NormalizerInterface|DenormalizerInterface
-     */
-    private $normalizer;
+    private readonly DenormalizerInterface|NormalizerInterface $normalizer;
 
-    private ManagerRegistry $registry;
-
-    public function __construct(ManagerRegistry $registry, NormalizerInterface $normalizer)
-    {
+    public function __construct(
+        private readonly ManagerRegistry $registry,
+        NormalizerInterface $normalizer
+    ) {
         if (! $normalizer instanceof DenormalizerInterface) {
             throw new InvalidArgumentException('The normalizer must implement ' . DenormalizerInterface::class);
         }
 
         $this->normalizer = $normalizer;
-        $this->registry = $registry;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, $type, $format = null, array $context = [])
     {
         $data['type'] = [
             'name' => $data['type'],
         ];
 
         /** @var AdditionalContactDetail $detail */
-        $detail = $this->normalizer->denormalize($data, $class, $format, $context);
+        $detail = $this->normalizer->denormalize($data, $type, $format, $context);
         $repository = $this->registry->getRepository(ContactType::class);
         $detail->setType($repository->findOneBy(['name' => $detail->getType()->getName()]));
 
         return $detail;
     }
 
-    public function supportsDenormalization($data, $type, $format = null)
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
         return AdditionalContactDetail::class === $type;
     }
 
-    public function normalize($object, $format = null, array $context = [])
+    /**
+     * @param AdditionalContactDetail $object
+     * @param string|null $format
+     * @param array<string, mixed> $context
+     * @return array<string, string>
+     */
+    public function normalize($object, $format = null, array $context = []): array
     {
-        /** @var AdditionalContactDetail $object */
         return ['type' => $object->getType()->getName(), 'value' => $object->getValue()];
     }
 
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof AdditionalContactDetail;
     }

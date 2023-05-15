@@ -17,11 +17,9 @@ use Symfony\Component\DependencyInjection\EnvVarLoaderInterface;
 
 final class EnvLoader implements EnvVarLoaderInterface
 {
-    private string $projectDir;
-
-    public function __construct(string $projectDir)
-    {
-        $this->projectDir = $projectDir;
+    public function __construct(
+        private readonly string $projectDir
+    ) {
     }
 
     public function loadEnvVars(): array

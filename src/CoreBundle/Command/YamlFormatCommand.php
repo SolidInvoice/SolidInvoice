@@ -24,12 +24,9 @@ class YamlFormatCommand extends Command
 {
     protected static $defaultName = 'yaml:format';
 
-    private string $projectDir;
-
-    public function __construct(string $projectDir)
-    {
-        $this->projectDir = $projectDir;
-
+    public function __construct(
+        private readonly string $projectDir
+    ) {
         parent::__construct();
     }
 

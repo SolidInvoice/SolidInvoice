@@ -16,7 +16,7 @@
     ],
     "homepage": "https://solidinvoice.co",
     "require": {
-        "php": ">=7.4",
+        "php": ">=8.1",
         "ext-curl": "*",
         "ext-gd": "*",
         "ext-intl": "*",
@@ -69,7 +69,7 @@
         "symfony/amazon-mailer": "^5.4",
         "symfony/config": "^5.4",
         "symfony/console": "^5.4",
-        "symfony/contracts": "^2.5",
+        "symfony/contracts": "*",
         "symfony/dependency-injection": "^5.4",
         "symfony/doctrine-bridge": "^5.4",
         "symfony/dotenv": "^5.4",
@@ -87,7 +87,7 @@
         "symfony/intl": "^5.4",
         "symfony/mailchimp-mailer": "^5.4",
         "symfony/mailer": "^5.4",
-        "symfony/mailgun-mailer": "^5.4",
+        "symfony/mailgun-mailer": "^6.2",
         "symfony/messenger": "^5.4",
         "symfony/mime": "^5.4",
         "symfony/monolog-bundle": "^3.7",
@@ -161,13 +161,13 @@
         },
         "bin-dir": "bin",
         "platform": {
-            "php": "7.4.15"
+            "php": "8.1"
         },
         "sort-packages": true
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.2-dev"
+            "dev-master": "2.3-dev"
         },
         "symfony": {
             "allow-contrib": true

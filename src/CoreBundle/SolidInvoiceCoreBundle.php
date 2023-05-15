@@ -17,11 +17,13 @@ use SolidInvoice\CoreBundle\DependencyInjection\Compiler\DbalLoggerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class SolidInvoiceCoreBundle extends Bundle
+final class SolidInvoiceCoreBundle extends Bundle
 {
-    public const VERSION = '2.2.3';
+    final public const VERSION = '2.3.0-dev';
 
-    public const APP_NAME = 'SolidInvoice';
+    final public const APP_NAME = 'SolidInvoice';
+
+    final public const NAMESPACE = __NAMESPACE__;
 
     public function build(ContainerBuilder $container): void
     {

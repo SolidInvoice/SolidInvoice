@@ -24,11 +24,9 @@ use Twig\TwigFunction;
  */
 class WidgetExtension extends AbstractExtension
 {
-    private WidgetFactory $widgetFactory;
-
-    public function __construct(WidgetFactory $widgetFactory)
-    {
-        $this->widgetFactory = $widgetFactory;
+    public function __construct(
+        private readonly WidgetFactory $widgetFactory
+    ) {
     }
 
     public function getFunctions(): array

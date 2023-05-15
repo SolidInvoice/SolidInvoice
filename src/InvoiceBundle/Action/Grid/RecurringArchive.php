@@ -26,14 +26,10 @@ final class RecurringArchive implements AjaxResponse
 {
     use JsonTrait;
 
-    private RecurringInvoiceRepository $repository;
-
-    private StateMachine $stateMachine;
-
-    public function __construct(RecurringInvoiceRepository $repository, StateMachine $stateMachine)
-    {
-        $this->repository = $repository;
-        $this->stateMachine = $stateMachine;
+    public function __construct(
+        private readonly RecurringInvoiceRepository $repository,
+        private readonly StateMachine $recurringInvoiceStateMachine
+    ) {
     }
 
     public function __invoke(Request $request)
@@ -42,11 +38,11 @@ final class RecurringArchive implements AjaxResponse
         $invoices = $this->repository->findBy(['id' => $request->request->get('data')]);
 
         foreach ($invoices as $invoice) {
-            if (! $this->stateMachine->can($invoice, Graph::TRANSITION_ARCHIVE)) {
+            if (! $this->recurringInvoiceStateMachine->can($invoice, Graph::TRANSITION_ARCHIVE)) {
                 throw new InvalidTransitionException('archive');
             }
 
-            $this->stateMachine->apply($invoice, Graph::TRANSITION_ARCHIVE);
+            $this->recurringInvoiceStateMachine->apply($invoice, Graph::TRANSITION_ARCHIVE);
         }
 
         return $this->json([]);

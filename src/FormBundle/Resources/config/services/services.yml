@@ -1,4 +1,0 @@
-services:
-
-    SolidWorx\FormHandler\FormHandler:
-        alias: solidworx.form_handler

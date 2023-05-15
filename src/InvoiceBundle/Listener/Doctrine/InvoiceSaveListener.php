@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Listener\Doctrine;
 
-use Doctrine\Common\EventSubscriber;
+use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Persistence\ObjectManager;
@@ -26,13 +26,11 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
 /**
  * @see \SolidInvoice\InvoiceBundle\Tests\Listener\Doctrine\InvoiceSaveListenerTest
  */
-class InvoiceSaveListener implements EventSubscriber
+class InvoiceSaveListener implements EventSubscriberInterface
 {
-    private ServiceLocator $serviceLocator;
-
-    public function __construct(ServiceLocator $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
+    public function __construct(
+        private readonly ServiceLocator $serviceLocator
+    ) {
     }
 
     /**
@@ -80,7 +78,7 @@ class InvoiceSaveListener implements EventSubscriber
         if ($entity instanceof BaseInvoice) {
             try {
                 $this->serviceLocator->get(TotalCalculator::class)->calculateTotals($entity);
-            } catch (NotFoundExceptionInterface | ContainerExceptionInterface $e) {
+            } catch (NotFoundExceptionInterface | ContainerExceptionInterface) {
             }
 
             $this->checkDiscount($entity);

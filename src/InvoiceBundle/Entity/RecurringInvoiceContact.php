@@ -17,28 +17,27 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
+use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceContactRepository;
 
 /**
- * @ORM\Entity()
- * @ORM\Table(name="recurringinvoice_contact")
  * @ApiResource(itemOperations={}, collectionOperations={})
  */
+#[ORM\Table(name: RecurringInvoiceContact::TABLE_NAME)]
+#[ORM\Entity(repositoryClass: RecurringInvoiceContactRepository::class)]
 class RecurringInvoiceContact
 {
+    final public const TABLE_NAME = 'recurringinvoice_contact';
+
     use CompanyAware;
 
-    /**
-     * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=RecurringInvoice::class, inversedBy="users", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="recurringinvoice_id")
-     */
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: RecurringInvoice::class, cascade: ['persist', 'remove'], inversedBy: 'users')]
+    #[ORM\JoinColumn(name: 'recurringinvoice_id')]
     private RecurringInvoice $recurringInvoice;
 
-    /**
-     * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=Contact::class, cascade={"persist", "remove"}, inversedBy="recurringInvoices")
-     * @ORM\JoinColumn(name="contact_id")
-     */
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: Contact::class, cascade: ['persist', 'remove'], inversedBy: 'recurringInvoices')]
+    #[ORM\JoinColumn(name: 'contact_id')]
     private Contact $contact;
 
     public function getRecurringInvoice(): RecurringInvoice

@@ -18,10 +18,13 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Money\Currency;
+use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
 use Ramsey\Uuid\UuidInterface;
+use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
@@ -40,129 +43,122 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     "denormalization_context"={"groups"={"client_api"}}},
  *     iri="https://schema.org/Corporation"
  * )
- * @ORM\Table(
- *     uniqueConstraints={
- *         @ORM\UniqueConstraint(columns={"name", "company_id"})
- *     },
- *     name="clients"
- * )
- * @ORM\Entity(repositoryClass="SolidInvoice\ClientBundle\Repository\ClientRepository")
- * @ORM\HasLifecycleCallbacks()
- * @UniqueEntity("name")
  */
+#[ORM\Table(name: Client::TABLE_NAME)]
+#[ORM\UniqueConstraint(columns: ['name', 'company_id'])]
+#[ORM\Entity(repositoryClass: ClientRepository::class)]
+#[ORM\HasLifecycleCallbacks]
+#[UniqueEntity('name')]
 class Client implements Stringable
 {
+    final public const TABLE_NAME = 'clients';
+
     use Archivable;
     use TimeStampable;
     use CompanyAware;
 
-    /**
-     * @ORM\Column(name="id", type="uuid_binary_ordered_time")
-     * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
-     * @Serialize\Groups({"client_api"})
-     */
+    #[ORM\Column(name: 'id', type: UuidBinaryOrderedTimeType::NAME)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
+    #[Serialize\Groups(['client_api'])]
     private ?UuidInterface $id = null;
 
     /**
-     * @ORM\Column(name="name", type="string", length=125)
-     * @Assert\NotBlank()
-     * @Assert\Length(max=125)
-     * @Serialize\Groups({"client_api"})
      * @ApiProperty(iri="https://schema.org/name")
      */
+    #[ORM\Column(name: 'name', type: Types::STRING, length: 125)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 125)]
+    #[Serialize\Groups(['client_api'])]
     private ?string $name = null;
 
     /**
-     * @ORM\Column(name="website", type="string", length=125, nullable=true)
-     * @Assert\Url()
-     * @Assert\Length(max=125)
-     * @Serialize\Groups({"client_api"})
      * @ApiProperty(iri="https://schema.org/URL")
      */
+    #[ORM\Column(name: 'website', type: Types::STRING, length: 125, nullable: true)]
+    #[Assert\Url]
+    #[Assert\Length(max: 125)]
+    #[Serialize\Groups(['client_api'])]
     private ?string $website = null;
 
     /**
-     * @ORM\Column(name="status", type="string", length=25)
-     * @Serialize\Groups({"client_api"})
      * @ApiProperty(iri="https://schema.org/Text")
      */
+    #[ORM\Column(name: 'status', type: Types::STRING, length: 25)]
+    #[Serialize\Groups(['client_api'])]
     private ?string $status = null;
 
     /**
-     * @ORM\Column(name="currency", type="string", length=3, nullable=true)
-     * @Serialize\Groups({"client_api"})
      * @ApiProperty(iri="https://schema.org/Text")
      */
+    #[ORM\Column(name: 'currency', type: Types::STRING, length: 3, nullable: true)]
+    #[Serialize\Groups(['client_api'])]
     private ?string $currency = null;
 
-    /**
-     * @ORM\Column(name="vat_number", type="string", nullable=true)
-     * @Serialize\Groups({"client_api"})
-     */
+    #[ORM\Column(name: 'vat_number', type: Types::STRING, nullable: true)]
+    #[Serialize\Groups(['client_api'])]
     private ?string $vatNumber = null;
 
     /**
      * @var Collection<int, Contact>
      *
-     * @ORM\OneToMany(targetEntity="Contact", mappedBy="client", fetch="EXTRA_LAZY", cascade={"persist", "remove"}, orphanRemoval=true)
-     * @ORM\OrderBy({"firstName" = "ASC"})
-     * @Assert\Count(min=1, minMessage="You need to add at least one contact to this client")
-     * @Assert\Valid()
-     * @Serialize\Groups({"client_api"})
      * @ApiProperty(iri="https://schema.org/Person")
      */
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Contact::class, cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
+    #[ORM\OrderBy(['firstName' => 'ASC'])]
+    #[Assert\Count(min: 1, minMessage: 'You need to add at least one contact to this client')]
+    #[Assert\Valid]
+    #[Serialize\Groups(['client_api'])]
     private Collection $contacts;
 
     /**
      * @var Collection<int, Quote>
      *
-     * @ORM\OneToMany(targetEntity="SolidInvoice\QuoteBundle\Entity\Quote", mappedBy="client", fetch="EXTRA_LAZY", cascade={"remove"}, orphanRemoval=true)
-     * @ORM\OrderBy({"created" = "DESC"})
      * @ApiSubresource
      */
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Quote::class, cascade: ['remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
+    #[ORM\OrderBy(['created' => 'DESC'])]
     private Collection $quotes;
 
     /**
      * @var Collection<int, Invoice>
      *
-     * @ORM\OneToMany(targetEntity="SolidInvoice\InvoiceBundle\Entity\Invoice", mappedBy="client", fetch="EXTRA_LAZY", cascade={"remove"}, orphanRemoval=true)
-     * @ORM\OrderBy({"created" = "DESC"})
      * @ApiSubresource
      */
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Invoice::class, cascade: ['remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
+    #[ORM\OrderBy(['created' => 'DESC'])]
     private Collection $invoices;
 
     /**
      * @var Collection<int, RecurringInvoice>
      *
-     * @ORM\OneToMany(targetEntity="SolidInvoice\InvoiceBundle\Entity\RecurringInvoice", mappedBy="client", fetch="EXTRA_LAZY", cascade={"remove"}, orphanRemoval=true)
-     * @ORM\OrderBy({"created" = "DESC"})
      * @ApiSubresource
      */
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: RecurringInvoice::class, cascade: ['remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
+    #[ORM\OrderBy(['created' => 'DESC'])]
     private Collection $recurringInvoices;
 
     /**
      * @var Collection<int, Payment>
      *
-     * @ORM\OneToMany(targetEntity="SolidInvoice\PaymentBundle\Entity\Payment", mappedBy="client", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ApiSubresource
      */
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Payment::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $payments;
 
     /**
      * @var Collection<int, Address>
-     *
-     * @ORM\OneToMany(targetEntity="SolidInvoice\ClientBundle\Entity\Address", mappedBy="client", cascade={"persist", "remove"}, orphanRemoval=true)
-     * @Serialize\Groups({"client_api"})
      */
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Address::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[Serialize\Groups(['client_api'])]
     private Collection $addresses;
 
     /**
-     * @ORM\OneToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Credit", mappedBy="client", fetch="EXTRA_LAZY", cascade={"persist", "remove"}, orphanRemoval=true)
-     * @Serialize\Groups({"client_api"})
      * @ApiProperty(iri="https://schema.org/MonetaryAmount")
      */
+    #[ORM\OneToOne(mappedBy: 'client', targetEntity: Credit::class, cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
+    #[Serialize\Groups(['client_api'])]
     private ?Credit $credit = null;
 
     public function __construct()
@@ -368,9 +364,7 @@ class Client implements Stringable
         return $this;
     }
 
-    /**
-     * @ORM\PrePersist()
-     */
+    #[ORM\PrePersist]
     public function setInitialCredit(): void
     {
         if (! $this->id instanceof UuidInterface) {

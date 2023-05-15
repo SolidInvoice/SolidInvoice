@@ -29,7 +29,7 @@ trait SaveableTrait
      *
      * @throws Exception
      */
-    public function save($entity, bool $flush = true): void
+    public function save(mixed $entity, bool $flush = true): void
     {
         if (! $this->doctrine) {
             throw new Exception(sprintf('You need to call %s::setDoctrine with a valid %s instance before calling %s', static::class, ManagerRegistry::class, __METHOD__));

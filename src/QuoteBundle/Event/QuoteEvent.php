@@ -23,9 +23,6 @@ class QuoteEvent extends Event
      */
     protected $quote;
 
-    /**
-     * @param Quote $quote
-     */
     public function __construct(Quote $quote = null)
     {
         $this->quote = $quote;

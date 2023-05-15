@@ -141,7 +141,7 @@ final class UserRepositoryTest extends KernelTestCase
         };
 
         $this->expectException(UnsupportedUserException::class);
-        $this->expectExceptionMessage(sprintf('Instances of "%s" are not supported.', get_class($user)));
+        $this->expectExceptionMessage(sprintf('Instances of "%s" are not supported.', $user::class));
         $this->repository->refreshUser($user);
     }
 

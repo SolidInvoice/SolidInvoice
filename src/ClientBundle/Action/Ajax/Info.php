@@ -28,17 +28,11 @@ final class Info implements AjaxResponse
 {
     use JsonTrait;
 
-    private Environment $twig;
-
-    private MoneyFormatterInterface $formatter;
-
-    private SystemConfig $systemConfig;
-
-    public function __construct(Environment $twig, MoneyFormatterInterface $formatter, SystemConfig $systemConfig)
-    {
-        $this->twig = $twig;
-        $this->formatter = $formatter;
-        $this->systemConfig = $systemConfig;
+    public function __construct(
+        private readonly Environment $twig,
+        private readonly MoneyFormatterInterface $formatter,
+        private readonly SystemConfig $systemConfig
+    ) {
     }
 
     /**

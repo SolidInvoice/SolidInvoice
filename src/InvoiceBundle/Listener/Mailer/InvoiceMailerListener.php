@@ -24,11 +24,9 @@ use Symfony\Component\Mailer\MailerInterface;
  */
 class InvoiceMailerListener implements EventSubscriberInterface
 {
-    private MailerInterface $mailer;
-
-    public function __construct(MailerInterface $mailer)
-    {
-        $this->mailer = $mailer;
+    public function __construct(
+        private readonly MailerInterface $mailer
+    ) {
     }
 
     public static function getSubscribedEvents(): array

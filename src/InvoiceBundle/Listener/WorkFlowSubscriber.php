@@ -29,14 +29,10 @@ use Symfony\Component\Workflow\Transition;
  */
 class WorkFlowSubscriber implements EventSubscriberInterface
 {
-    private NotificationManager $notification;
-
-    private ManagerRegistry $registry;
-
-    public function __construct(ManagerRegistry $registry, NotificationManager $notification)
-    {
-        $this->registry = $registry;
-        $this->notification = $notification;
+    public function __construct(
+        private readonly ManagerRegistry $registry,
+        private readonly NotificationManager $notification
+    ) {
     }
 
     public static function getSubscribedEvents()

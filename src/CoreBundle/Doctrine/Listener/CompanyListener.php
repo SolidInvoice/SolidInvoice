@@ -13,20 +13,18 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Doctrine\Listener;
 
-use Doctrine\Common\EventSubscriber;
+use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
 use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Events;
 use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 
-class CompanyListener implements EventSubscriber
+class CompanyListener implements EventSubscriberInterface
 {
-    private CompanySelector $companySelector;
-
-    public function __construct(CompanySelector $companySelector)
-    {
-        $this->companySelector = $companySelector;
+    public function __construct(
+        private readonly CompanySelector $companySelector
+    ) {
     }
 
     /**
@@ -46,7 +44,7 @@ class CompanyListener implements EventSubscriber
     {
         $object = $eventArgs->getObject();
         $em = $eventArgs->getObjectManager();
-        $metaData = $em->getClassMetadata(get_class($object));
+        $metaData = $em->getClassMetadata($object::class);
 
         if ($metaData->hasAssociation('company')) {
             $repository = $em->getRepository(Company::class);

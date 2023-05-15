@@ -27,14 +27,10 @@ final class Credit implements AjaxResponse
 {
     use JsonTrait;
 
-    private CreditRepository $repository;
-
-    private SystemConfig $systemConfig;
-
-    public function __construct(CreditRepository $repository, SystemConfig $systemConfig)
-    {
-        $this->repository = $repository;
-        $this->systemConfig = $systemConfig;
+    public function __construct(
+        private readonly CreditRepository $repository,
+        private readonly SystemConfig $systemConfig
+    ) {
     }
 
     public function get(Client $client): JsonResponse

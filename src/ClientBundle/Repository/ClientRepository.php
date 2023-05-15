@@ -53,7 +53,7 @@ class ClientRepository extends ServiceEntityRepository
 
         try {
             return (int) $query->getSingleScalarResult();
-        } catch (NoResultException | NonUniqueResultException $e) {
+        } catch (NoResultException | NonUniqueResultException) {
             return 0;
         }
     }

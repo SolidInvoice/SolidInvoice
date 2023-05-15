@@ -30,11 +30,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ItemType extends AbstractType
 {
-    private ManagerRegistry $registry;
-
-    public function __construct(ManagerRegistry $registry)
-    {
-        $this->registry = $registry;
+    public function __construct(
+        private readonly ManagerRegistry $registry
+    ) {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

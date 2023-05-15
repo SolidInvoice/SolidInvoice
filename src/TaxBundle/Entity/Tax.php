@@ -15,70 +15,64 @@ namespace SolidInvoice\TaxBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
 use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Item;
+use SolidInvoice\InvoiceBundle\Entity\Item as InvoiceItem;
 use SolidInvoice\QuoteBundle\Entity\Item as QuoteItem;
+use SolidInvoice\TaxBundle\Repository\TaxRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="tax_rates")
- * @ORM\Entity(repositoryClass="SolidInvoice\TaxBundle\Repository\TaxRepository")
- * @UniqueEntity("name")
- */
+#[ORM\Table(name: Tax::TABLE_NAME)]
+#[ORM\Entity(repositoryClass: TaxRepository::class)]
+#[UniqueEntity('name')]
 class Tax implements Stringable
 {
+    final public const TABLE_NAME = 'tax_rates';
+
     use TimeStampable;
     use CompanyAware;
 
-    public const TYPE_INCLUSIVE = 'Inclusive';
+    final public const TYPE_INCLUSIVE = 'Inclusive';
 
-    public const TYPE_EXCLUSIVE = 'Exclusive';
+    final public const TYPE_EXCLUSIVE = 'Exclusive';
 
-    /**
-     * @ORM\Column(name="id", type="uuid_binary_ordered_time")
-     * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
-     */
+    #[ORM\Column(name: 'id', type: UuidBinaryOrderedTimeType::NAME)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
     private ?UuidInterface $id = null;
 
-    /**
-     * @ORM\Column(name="name", type="string", length=32)
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(name: 'name', type: Types::STRING, length: 32)]
+    #[Assert\NotBlank]
     private ?string $name = null;
 
-    /**
-     * @ORM\Column(name="rate", type="float", precision=4)
-     * @Assert\Type("float")
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(name: 'rate', type: Types::FLOAT, precision: 4)]
+    #[Assert\Type('float')]
+    #[Assert\NotBlank]
     private ?float $rate = null;
 
-    /**
-     * @ORM\Column(name="tax_type", type="string", length=32)
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(name: 'tax_type', type: Types::STRING, length: 32)]
+    #[Assert\NotBlank]
     private ?string $type = null;
 
     /**
      * @var Collection<int, Item>
-     *
-     * @ORM\OneToMany(targetEntity="SolidInvoice\InvoiceBundle\Entity\Item", mappedBy="tax")
      */
+    #[ORM\OneToMany(mappedBy: 'tax', targetEntity: InvoiceItem::class)]
     private Collection $invoiceItems;
 
     /**
      * @var Collection<int, QuoteItem>
-     *
-     * @ORM\OneToMany(targetEntity="SolidInvoice\QuoteBundle\Entity\Item", mappedBy="tax")
      */
+    #[ORM\OneToMany(mappedBy: 'tax', targetEntity: QuoteItem::class)]
     private Collection $quoteItems;
 
     public function __construct()

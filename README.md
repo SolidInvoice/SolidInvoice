@@ -20,15 +20,9 @@ It's a feature rich elegant online application to ensure that you can always get
 * Receive Notifications either via text message, email or through HipChat
 * More to come
 
-## Demo
-
-<img src="https://dopd56xbeo74f.cloudfront.net/images/banner.png" />
-
-[https://demo.solidinvoice.co/](https://demo.solidinvoice.co/)
-
 ## Requirements
 
-PHP >= 7.4.15 is required. Use the latest version of PHP for best experience.
+PHP >= 8.1 is required. Use the latest version of PHP for best experience.
 
 ## Installation
 
@@ -75,8 +69,8 @@ php composer.phar install
 The final step is to install the Node packages, and compile all the assets
 
 ```bash
-npm install
-npm run dev
+yarn install
+yarn dev
 ```
 
 Now you should have a fully working copy of SolidInvoice.
@@ -84,7 +78,7 @@ Now you should have a fully working copy of SolidInvoice.
 If you want to run SolidInvoice in production mode, some additional steps is required:
 
 ```bash
-npm run build
+yarn build
 ```
 
 ## Contributing
