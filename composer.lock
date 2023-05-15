@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b9db9f85baffb8094415e1a8b0b4d0e0",
+    "content-hash": "f542d0bc50350a51241e89af4e3e21d1",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -11925,38 +11925,40 @@
         },
         {
             "name": "symfony/workflow",
-            "version": "v5.4.21",
+            "version": "v6.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/workflow.git",
-                "reference": "96ec1843a27c7d3574bd521b807aa18101e31764"
+                "reference": "d3b73e52ccd2b3682a612d2718ba7123fa37e3d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/workflow/zipball/96ec1843a27c7d3574bd521b807aa18101e31764",
-                "reference": "96ec1843a27c7d3574bd521b807aa18101e31764",
+                "url": "https://api.github.com/repos/symfony/workflow/zipball/d3b73e52ccd2b3682a612d2718ba7123fa37e3d2",
+                "reference": "d3b73e52ccd2b3682a612d2718ba7123fa37e3d2",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.5",
-                "symfony/polyfill-php80": "^1.15"
+                "php": ">=8.1"
             },
             "conflict": {
-                "symfony/event-dispatcher": "<4.4"
+                "symfony/event-dispatcher": "<5.4"
             },
             "require-dev": {
                 "psr/log": "^1|^2|^3",
-                "symfony/dependency-injection": "^4.4|^5.0|^6.0",
-                "symfony/event-dispatcher": "^4.4|^5.0|^6.0",
-                "symfony/expression-language": "^4.4|^5.0|^6.0",
-                "symfony/security-core": "^4.4|^5.0|^6.0",
-                "symfony/validator": "^4.4|^5.0|^6.0"
+                "symfony/dependency-injection": "^5.4|^6.0",
+                "symfony/event-dispatcher": "^5.4|^6.0",
+                "symfony/expression-language": "^5.4|^6.0",
+                "symfony/security-core": "^5.4|^6.0",
+                "symfony/validator": "^5.4|^6.0"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
                     "Symfony\\Component\\Workflow\\": ""
-                }
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -11987,7 +11989,7 @@
                 "workflow"
             ],
             "support": {
-                "source": "https://github.com/symfony/workflow/tree/v5.4.21"
+                "source": "https://github.com/symfony/workflow/tree/v6.2.7"
             },
             "funding": [
                 {
@@ -12003,7 +12005,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-02-24T08:13:13+00:00"
+            "time": "2023-02-24T10:42:00+00:00"
         },
         {
             "name": "symfony/yaml",

@@ -108,7 +108,7 @@
         "symfony/twig-bundle": "^5.4",
         "symfony/validator": "^5.4",
         "symfony/webpack-encore-bundle": "^1.8",
-        "symfony/workflow": "^5.4",
+        "symfony/workflow": "^6.2",
         "symfony/yaml": "^5.4",
         "tijsverkoyen/css-to-inline-styles": "^2.2",
         "twig/cssinliner-extra": "^3.4",
