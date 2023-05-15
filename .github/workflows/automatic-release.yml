@@ -47,7 +47,7 @@ jobs:
           "GIT_AUTHOR_EMAIL": ${{ secrets.GIT_AUTHOR_EMAIL }}
 
       - name: Build Release Artifact
-        run: "./scripts/build_dist.sh ${{ github.event.milestone.title }}" ${{ github.event.milestone.title }}"
+        run: "./scripts/build_dist.sh ${{ github.event.milestone.title }} ${{ github.event.milestone.title }}"
 
       - name: Upload Release Artifact
         uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844
