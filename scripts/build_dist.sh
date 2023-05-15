@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
+set -euxo pipefail
 
 # This script is used to build the distribution archives for SolidInvoice.
 
@@ -56,7 +56,7 @@ function generateRelease() {
 
     chmod a+w config
 
-    zip -r "${DIST_DIR}/SolidInvoice-$VERSION".zip ./
+    zip -qr "${DIST_DIR}/SolidInvoice-$VERSION".zip ./
     tar -czf "${DIST_DIR}/SolidInvoice-$VERSION".tar.gz ./
 
     cd ../ && rm -Rf "./SolidInvoice"
