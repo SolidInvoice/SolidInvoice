@@ -25,6 +25,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class Install
 {
+    /**
+     * @return JsonResponse|Template
+     */
     public function __invoke(Request $request, ManagerRegistry $doctrine, Migration $migration)
     {
         if ($request->request->has('action')) {
