@@ -33,10 +33,7 @@ final class Delete implements AjaxResponse
 
     public function __invoke(Request $request): JsonResponse
     {
-        /** @var UuidInterface[] $ids */
-        $ids = (array) $request->request->get('data');
-
-        $this->repository->deleteClients($ids);
+        $this->repository->deleteClients($request->request->all('data'));
 
         return $this->json([]);
     }

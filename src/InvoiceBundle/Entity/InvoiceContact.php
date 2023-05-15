@@ -29,14 +29,14 @@ class InvoiceContact
 
     /**
      * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=Invoice::class, inversedBy="users", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=Invoice::class, inversedBy="users", cascade={"persist"})
      * @ORM\JoinColumn(name="invoice_id")
      */
     private Invoice $invoice;
 
     /**
      * @ORM\Id()
-     * @ORM\ManyToOne(targetEntity=Contact::class, cascade={"persist", "remove"}, inversedBy="invoices")
+     * @ORM\ManyToOne(targetEntity=Contact::class, cascade={"persist"}, inversedBy="invoices")
      * @ORM\JoinColumn(name="contact_id")
      */
     private Contact $contact;

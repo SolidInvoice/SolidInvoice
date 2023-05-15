@@ -20,10 +20,10 @@ use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
-use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Model\Status;
 use SolidInvoice\CoreBundle\Util\ArrayUtil;
+use function array_walk;
 
 /**
  * @extends ServiceEntityRepository<Client>
@@ -35,9 +35,6 @@ class ClientRepository extends ServiceEntityRepository
         parent::__construct($registry, Client::class);
     }
 
-    /**
-     * Gets total number of clients.
-     */
     public function getTotalClients(string $status = null): int
     {
         $qb = $this->createQueryBuilder('c');
@@ -59,8 +56,6 @@ class ClientRepository extends ServiceEntityRepository
     }
 
     /**
-     * Gets the most recent created clients.
-     *
      * @return Client[]
      */
     public function getRecentClients(int $limit = 5): array
@@ -116,21 +111,21 @@ class ClientRepository extends ServiceEntityRepository
     }
 
     /**
-     * Archives a list of clients.
-     *
      * @param list<int> $ids
      */
     public function archiveClients(array $ids): void
     {
-        // @TODO: Validate that we have an array of integers and valid client IDs
-
-        /** @var Client[] $clients */
-        $clients = $this->findBy(['id' => $ids]);
-
         $em = $this->getEntityManager();
 
-        foreach ($clients as $client) {
-            $client->setArchived(true)
+        foreach ($ids as $id) {
+            $client = $this->find($id);
+
+            if (!$client instanceof Client) {
+                continue;
+            }
+
+            $client
+                ->setArchived(true)
                 ->setStatus(Status::STATUS_ARCHIVED);
 
             $em->persist($client);
@@ -148,11 +143,15 @@ class ClientRepository extends ServiceEntityRepository
 
         $em->getFilters()->disable('archivable');
 
-        /** @var Client[] $clients */
-        $clients = $this->findBy(['id' => $ids]);
+        foreach ($ids as $id) {
+            $client = $this->find($id);
 
-        foreach ($clients as $client) {
-            $client->setArchived(null)
+            if (!$client instanceof Client) {
+                continue;
+            }
+
+            $client
+                ->setArchived(null)
                 ->setStatus(Status::STATUS_ACTIVE);
 
             $em->persist($client);
@@ -164,7 +163,7 @@ class ClientRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param list<UuidInterface> $ids
+     * @param list<string> $ids
      */
     public function deleteClients(array $ids): void
     {
@@ -172,10 +171,8 @@ class ClientRepository extends ServiceEntityRepository
 
         $em->getFilters()->disable('archivable');
 
-        /** @var Client[] $clients */
-        $clients = $this->findBy(['id' => $ids]);
-
-        array_walk($clients, static function (object $entity) use ($em): void {
+        array_walk($ids, function (string $id) use ($em): void {
+            $entity = $this->find($id);
             $em->remove($entity);
         });
 
@@ -186,6 +183,6 @@ class ClientRepository extends ServiceEntityRepository
 
     public function delete(Client $client): void
     {
-        $this->deleteClients([$client->getId()]);
+        $this->getEntityManager()->remove($client);
     }
 }
