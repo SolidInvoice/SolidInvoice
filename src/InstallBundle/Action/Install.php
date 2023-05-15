@@ -15,16 +15,19 @@ namespace SolidInvoice\InstallBundle\Action;
 
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception as DBALException;
-use Doctrine\Migrations\Exception\MigrationException;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\InstallBundle\Installer\Database\Migration;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Throwable;
 
 final class Install
 {
+    /**
+     * @return Template|JsonResponse
+     */
     public function __invoke(Request $request, ManagerRegistry $doctrine, Migration $migration)
     {
         if ($request->request->has('action')) {
@@ -57,7 +60,7 @@ final class Install
                         $migration->migrate();
 
                         $result['success'] = true;
-                    } catch (MigrationException $e) {
+                    } catch (Throwable $e) {
                         $result['success'] = false;
                         $result['message'] = $e->getMessage();
                     }
