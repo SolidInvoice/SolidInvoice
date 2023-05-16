@@ -57,7 +57,7 @@ final class SelectCompany
             return new RedirectResponse($this->router->generate('_dashboard'));
         }
 
-        return new Template('@SolidInvoiceCore/company/select.html.twig', ['companies' => $companies]);
+        return new Template('@SolidInvoiceCore/Company/select.html.twig', ['companies' => $companies]);
     }
 
     public function switchCompany(Request $request, string $id): RedirectResponse
