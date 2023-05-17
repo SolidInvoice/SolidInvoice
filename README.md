@@ -91,10 +91,17 @@ SolidInvoice is open-sourced software licensed under the [MIT license](http://op
 
 Please see the [LICENSE](LICENSE) file for the full license.
 
-## Donate
+## Sponsor
 
 Thank you for supporting the project!
 
-[![Paypal](https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EQLK2P3VBW2LC)
+<a class="btn" aria-label="Sponsor @SolidInvoice" href="/sponsors/SolidInvoice?o=esc">
+    <span>Sponsor @SolidInvoice</span>
+</a>
+
+### Thank you to the following sponsors:
+
+* JetBrains (PHPStorm License)
+* Docker (Docker Hub Subscription)
 
 [1]: http://getcomposer.org
