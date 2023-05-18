@@ -16,7 +16,6 @@ use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Credit;
 use SolidInvoice\ClientBundle\Repository\CreditRepository;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
-use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;

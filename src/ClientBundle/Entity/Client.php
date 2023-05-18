@@ -22,7 +22,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Money\Currency;
 use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
 use Ramsey\Uuid\UuidInterface;
-use SolidInvoice\CoreBundle\Company\Currency as DefaultCurrency;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
@@ -387,7 +386,7 @@ class Client implements Stringable
 
     public function getCurrency(): Currency
     {
-        if (!isset($this->currency) && null !== $this->currencyCode) {
+        if (! isset($this->currency) && null !== $this->currencyCode) {
             $this->currency = new Currency($this->currencyCode);
         }
 

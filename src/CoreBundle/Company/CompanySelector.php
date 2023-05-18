@@ -31,6 +31,7 @@ final class CompanySelector
     private ?UuidInterface $companyId = null;
 
     private OrderedTimeCodec $codec;
+
     private SystemConfig $config;
 
     public function __construct(ManagerRegistry $registry, SystemConfig $config)
