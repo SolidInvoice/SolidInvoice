@@ -22,6 +22,7 @@ use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\Intl\Currencies;
 use Symfony\Component\Intl\Exception\MethodArgumentNotImplementedException;
 use Symfony\Component\Intl\Exception\MethodArgumentValueNotImplementedException;
+use Throwable;
 use function is_string;
 
 /**
@@ -61,10 +62,19 @@ final class MoneyFormatter implements MoneyFormatterInterface
 
     /**
      * @param Currency|string|null $currency
+     * @throws Throwable
      */
-    public function getCurrencySymbol($currency = null): string
+    public function getCurrencySymbol($currency = null, bool $catch = false): string
     {
-        return Currencies::getSymbol($this->getCurrency($currency), $this->locale);
+        try {
+            return Currencies::getSymbol($this->getCurrency($currency), $this->locale);
+        } catch (Throwable $e) {
+            if (true === $catch) {
+                return '';
+            }
+
+            throw $e;
+        }
     }
 
     public function getThousandSeparator(): string
