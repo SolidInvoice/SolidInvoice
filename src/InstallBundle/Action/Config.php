@@ -55,7 +55,7 @@ final class Config
     private function getForm(): FormInterface
     {
         $availablePdoDrivers = array_intersect(
-            array_map(static fn (string $driver) => "pdo_$driver", PDO::getAvailableDrivers()),
+            array_map(static fn (string $driver) => "pdo_{$driver}", PDO::getAvailableDrivers()),
             DriverManager::getAvailableDrivers()
         );
 
