@@ -17,6 +17,7 @@ use Cron\CronExpression;
 use Mockery as M;
 use Money\Currency;
 use Money\Money;
+use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
@@ -31,11 +32,15 @@ class RecurringInvoiceTypeTest extends FormTestCase
 {
     public function testSubmit(): void
     {
+        $client = (new Client())->setCompany($this->company)->setCurrencyCode('USD');
+
+        $this->registry->getManager()->persist($client);
+
         $notes = $this->faker->text;
         $terms = $this->faker->text;
         $discountValue = $this->faker->numberBetween(0, 100);
         $formData = [
-            'client' => null,
+            'client' => $client,
             'discount' => [
                 'value' => $discountValue,
                 'type' => Discount::TYPE_PERCENTAGE,
@@ -53,6 +58,7 @@ class RecurringInvoiceTypeTest extends FormTestCase
 
         $object = new RecurringInvoice();
         $object->setFrequency('0 0 * * 0');
+        $object->setClient($client);
 
         $data = clone $object;
 

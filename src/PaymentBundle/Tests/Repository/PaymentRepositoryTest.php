@@ -109,7 +109,7 @@ final class PaymentRepositoryTest extends KernelTestCase
 
     public function testGetTotalIncomeForClient(): void
     {
-        $client = ClientFactory::createOne(['currency' => 'USD']);
+        $client = ClientFactory::createOne(['currencyCode' => 'USD']);
 
         PaymentFactory::createOne([
             'invoice' => InvoiceFactory::new(['client' => $client]),
@@ -136,11 +136,11 @@ final class PaymentRepositoryTest extends KernelTestCase
 
     public function testGetTotalIncomeForClientWithNoPayments(): void
     {
-        $client = ClientFactory::createOne(['currency' => 'USD']);
+        $client = ClientFactory::createOne(['currencyCode' => 'USD']);
 
         PaymentFactory::createOne([
             'invoice' => InvoiceFactory::new(['client' => $client]),
-            'client' => ClientFactory::createOne(['currency' => 'USD']),
+            'client' => ClientFactory::createOne(['currencyCode' => 'USD']),
             'currencyCode' => 'USD',
             'totalAmount' => 500123,
             'status' => Status::STATUS_CAPTURED
@@ -229,7 +229,7 @@ final class PaymentRepositoryTest extends KernelTestCase
 
     public function testGetPaymentsForClient(): void
     {
-        $client = ClientFactory::createOne(['currency' => 'USD']);
+        $client = ClientFactory::createOne(['currencyCode' => 'USD']);
 
         $created = DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
         $completed = DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
@@ -270,7 +270,7 @@ final class PaymentRepositoryTest extends KernelTestCase
 
     public function testGetTotalIncome(): void
     {
-        $client = ClientFactory::createOne(['currency' => 'USD']);
+        $client = ClientFactory::createOne(['currencyCode' => 'USD']);
 
         PaymentFactory::createMany(3, [
             'invoice' => InvoiceFactory::new(['client' => $client]),
@@ -299,7 +299,7 @@ final class PaymentRepositoryTest extends KernelTestCase
 
     public function testGetTotalIncomeWithMultipleCurrencies(): void
     {
-        $client = ClientFactory::createOne(['currency' => 'USD']);
+        $client = ClientFactory::createOne(['currencyCode' => 'USD']);
 
         PaymentFactory::createMany(3, [
             'invoice' => InvoiceFactory::new(['client' => $client]),
@@ -309,7 +309,7 @@ final class PaymentRepositoryTest extends KernelTestCase
             'status' => Status::STATUS_CAPTURED
         ]);
 
-        $client = ClientFactory::createOne(['currency' => 'EUR']);
+        $client = ClientFactory::createOne(['currencyCode' => 'EUR']);
 
         PaymentFactory::createOne([
             'invoice' => InvoiceFactory::new(['client' => $client]),
@@ -325,12 +325,12 @@ final class PaymentRepositoryTest extends KernelTestCase
         self::assertEquals(
             [
                 new Money(
-                    500123 * 3,
-                    new Currency('USD')
-                ),
-                new Money(
                     500123,
                     new Currency('EUR')
+                ),
+                new Money(
+                    500123 * 3,
+                    new Currency('USD')
                 ),
             ],
             $this
@@ -342,7 +342,7 @@ final class PaymentRepositoryTest extends KernelTestCase
 
     public function testGetPaymentsForInvoice(): void
     {
-        $client = ClientFactory::createOne(['currency' => 'USD']);
+        $client = ClientFactory::createOne(['currencyCode' => 'USD']);
 
         $invoice = InvoiceFactory::new(['client' => $client, 'archived' => null])
             ->create()
@@ -415,7 +415,7 @@ final class PaymentRepositoryTest extends KernelTestCase
             'client' => $client,
         ]);
 
-        $client->setCurrency('EUR');
+        $client->setCurrencyCode('EUR');
 
         $this
             ->em
@@ -472,7 +472,7 @@ final class PaymentRepositoryTest extends KernelTestCase
 
     public function testGetRecentPayments(): void
     {
-        $client = ClientFactory::createOne(['currency' => 'USD', 'archived' => null]);
+        $client = ClientFactory::createOne(['currencyCode' => 'USD', 'archived' => null]);
         $invoice = InvoiceFactory::new(['client' => $client, 'archived' => null])
             ->create()
             ->disableAutoRefresh();

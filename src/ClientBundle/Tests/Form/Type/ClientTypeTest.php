@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Tests\Form\Type;
 
+use Money\Currency;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\ContactType;
 use SolidInvoice\ClientBundle\Form\Type\ClientType;
@@ -32,7 +33,7 @@ class ClientTypeTest extends FormTestCase
         $formData = [
             'name' => $company,
             'website' => $url,
-            'currency' => $currencyCode,
+            'currencyCode' => $currencyCode,
             'contacts' => [],
             'addresses' => [],
         ];
@@ -40,12 +41,15 @@ class ClientTypeTest extends FormTestCase
         $object = new Client();
         $object->setName($company);
         $object->setWebsite($url);
-        $object->setCurrency($currencyCode);
+        $object->setCurrencyCode($currencyCode);
 
         $this->assertFormData(ClientType::class, $formData, $object);
     }
 
-    protected function getExtensions()
+    /**
+     * @return PreloadedExtension[]
+     */
+    protected function getExtensions(): array
     {
         // create a type instance with the mocked dependencies
         $type = new ContactDetailType($this->registry->getRepository(ContactType::class));

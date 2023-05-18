@@ -19,6 +19,8 @@ use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Persistence\ObjectManager;
 use JsonException;
+use Money\Currency;
+use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Credit;
 use SolidInvoice\ClientBundle\Model\Status;
@@ -27,14 +29,18 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\SettingsBundle\SystemConfig;
 
 class ClientListener implements EventSubscriber
 {
     private NotificationManager $notification;
 
-    public function __construct(NotificationManager $notification)
+    private SystemConfig $config;
+
+    public function __construct(NotificationManager $notification, SystemConfig $config)
     {
         $this->notification = $notification;
+        $this->config = $config;
     }
 
     /**
@@ -46,6 +52,7 @@ class ClientListener implements EventSubscriber
             Events::prePersist,
             Events::postPersist,
             Events::postUpdate,
+            Events::postLoad,
         ];
     }
 
@@ -62,6 +69,33 @@ class ClientListener implements EventSubscriber
 
         if (! $entity->getId() && ! $entity->getStatus()) {
             $entity->setStatus(Status::STATUS_ACTIVE);
+
+            if ($entity->getCurrencyCode() === null) {
+                $entity->setCurrency($this->config->getCurrency());
+            }
+
+            $credit = new Credit();
+            $credit->setClient($entity);
+            $credit->setValue(new Money(0, $entity->getCurrency()));
+            $entity->setCredit($credit);
+        }
+    }
+
+    /**
+     * @param LifecycleEventArgs<ObjectManager> $event
+     */
+    public function postLoad(LifecycleEventArgs $event): void
+    {
+        $entity = $event->getObject();
+
+        if (! $entity instanceof Client) {
+            return;
+        }
+
+        if (null === $entity->getCurrencyCode()) {
+            $entity->setCurrency($this->config->getCurrency());
+        } else {
+            $entity->setCurrency(new Currency($entity->getCurrencyCode()));
         }
     }
 

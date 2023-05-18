@@ -44,7 +44,7 @@ class TotalCalculator
 
         if ($entity instanceof Invoice) {
             $totalPaid = $this->paymentRepository->getTotalPaidForInvoice($entity);
-            $entity->setBalance($entity->getTotal()->subtract(new Money($totalPaid, $entity->getTotal()->getCurrency())));
+            $entity->setBalance($entity->getTotal()->subtract(new Money($totalPaid, $entity->getClient()->getCurrency())));
         }
     }
 
@@ -52,9 +52,9 @@ class TotalCalculator
     {
         /** @var BaseInvoice|Quote $entity */
 
-        $total = new Money(0, $entity->getTotal()->getCurrency());
-        $subTotal = new Money(0, $entity->getTotal()->getCurrency());
-        $tax = new Money(0, $entity->getTotal()->getCurrency());
+        $total = new Money(0, $entity->getClient()->getCurrency());
+        $subTotal = new Money(0, $entity->getClient()->getCurrency());
+        $tax = new Money(0, $entity->getClient()->getCurrency());
 
         foreach ($entity->getItems() as $item) {
             $item->setTotal($item->getPrice()->multiply($item->getQty()));

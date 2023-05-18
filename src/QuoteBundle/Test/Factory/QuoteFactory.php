@@ -9,39 +9,40 @@
  * with this source code in the file LICENSE.
  */
 
-namespace SolidInvoice\InvoiceBundle\Test\Factory;
+namespace SolidInvoice\QuoteBundle\Test\Factory;
 
 use Money\Currency;
 use Money\Money;
 use Ramsey\Uuid\Uuid;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
-use SolidInvoice\InvoiceBundle\Entity\Invoice;
-use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
+use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
+use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
 
 /**
- * @extends ModelFactory<Invoice>
+ * @extends ModelFactory<Quote>
  *
- * @method static Invoice|Proxy createOne(array $attributes = [])
- * @method static Invoice[]|Proxy[] createMany(int $number, array|callable $attributes = [])
- * @method static Invoice[]|Proxy[] createSequence(array|callable $sequence)
- * @method static Invoice|Proxy find(object|array|mixed $criteria)
- * @method static Invoice|Proxy findOrCreate(array $attributes)
- * @method static Invoice|Proxy first(string $sortedField = 'id')
- * @method static Invoice|Proxy last(string $sortedField = 'id')
- * @method static Invoice|Proxy random(array $attributes = [])
- * @method static Invoice|Proxy randomOrCreate(array $attributes = [])
- * @method static Invoice[]|Proxy[] all()
- * @method static Invoice[]|Proxy[] findBy(array $attributes)
- * @method static Invoice[]|Proxy[] randomSet(int $number, array $attributes = [])
- * @method static Invoice[]|Proxy[] randomRange(int $min, int $max, array $attributes = [])
- * @method static InvoiceRepository|RepositoryProxy repository()
- * @method Invoice|Proxy create(array|callable $attributes = [])
+ * @method static Quote|Proxy createOne(array $attributes = [])
+ * @method static Quote[]|Proxy[] createMany(int $number, array|callable $attributes = [])
+ * @method static Quote[]|Proxy[] createSequence(array|callable $sequence)
+ * @method static Quote|Proxy find(object|array|mixed $criteria)
+ * @method static Quote|Proxy findOrCreate(array $attributes)
+ * @method static Quote|Proxy first(string $sortedField = 'id')
+ * @method static Quote|Proxy last(string $sortedField = 'id')
+ * @method static Quote|Proxy random(array $attributes = [])
+ * @method static Quote|Proxy randomOrCreate(array $attributes = [])
+ * @method static Quote[]|Proxy[] all()
+ * @method static Quote[]|Proxy[] findBy(array $attributes)
+ * @method static Quote[]|Proxy[] randomSet(int $number, array $attributes = [])
+ * @method static Quote[]|Proxy[] randomRange(int $min, int $max, array $attributes = [])
+ * @method static QuoteRepository|RepositoryProxy repository()
+ * @method Quote|Proxy create(array|callable $attributes = [])
  */
-final class InvoiceFactory extends ModelFactory
+final class QuoteFactory extends ModelFactory
 {
     /**
      * @return array<string, mixed>
@@ -50,16 +51,15 @@ final class InvoiceFactory extends ModelFactory
     {
         return [
             'client' => ClientFactory::new(),
+            'company' => CompanyFactory::new(),
             'uuid' => Uuid::fromString(self::faker()->uuid()),
             'due' => self::faker()->dateTime(),
-            'paidDate' => self::faker()->dateTime(),
             'status' => self::faker()->word(),
             'terms' => self::faker()->text(),
             'notes' => self::faker()->text(),
             'archived' => self::faker()->boolean(),
             'created' => self::faker()->dateTime(),
             'updated' => self::faker()->dateTime(),
-            'balance' => new Money(self::faker()->randomNumber(), new Currency(self::faker()->currencyCode())),
             'total' => new Money(self::faker()->randomNumber(), new Currency(self::faker()->currencyCode())),
             'baseTotal' => new Money(self::faker()->randomNumber(), new Currency(self::faker()->currencyCode())),
             'tax' => new Money(self::faker()->randomNumber(), new Currency(self::faker()->currencyCode())),
@@ -72,6 +72,6 @@ final class InvoiceFactory extends ModelFactory
 
     protected static function getClass(): string
     {
-        return Invoice::class;
+        return Quote::class;
     }
 }

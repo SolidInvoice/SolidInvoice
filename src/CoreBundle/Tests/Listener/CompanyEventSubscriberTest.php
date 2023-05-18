@@ -20,6 +20,7 @@ use Doctrine\ORM\Query\Filter\SQLFilter;
 use Doctrine\ORM\Query\FilterCollection;
 use Doctrine\Persistence\ManagerRegistry;
 use Mockery as M;
+use Money\Currency;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Codec\OrderedTimeCodec;
 use Ramsey\Uuid\Uuid;
@@ -29,6 +30,7 @@ use ReflectionClass;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Listener\CompanyEventSubscriber;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -52,7 +54,7 @@ final class CompanyEventSubscriberTest extends TestCase
         // Test that it redirects to the company select page if a company is not set and the user has multiple companies
 
         $router = M::mock(RouterInterface::class);
-        $companySelector = new CompanySelector(M::mock(ManagerRegistry::class));
+        $companySelector = new CompanySelector(M::mock(ManagerRegistry::class), M::mock(SystemConfig::class));
         $security = M::mock(Security::class);
 
         $user = new User();
@@ -90,8 +92,14 @@ final class CompanyEventSubscriberTest extends TestCase
         $router = M::mock(RouterInterface::class);
         $registry = M::mock(ManagerRegistry::class);
         $security = M::mock(Security::class);
+        $config = M::mock(SystemConfig::class);
 
-        $companySelector = new CompanySelector($registry);
+        $config
+            ->shouldReceive('getCurrency')
+            ->once()
+            ->andReturn(new Currency('USD'));
+
+        $companySelector = new CompanySelector($registry, $config);
 
         $user = new User();
         $company = new Company();
@@ -130,7 +138,7 @@ final class CompanyEventSubscriberTest extends TestCase
         // Test that it continues the request when a company is not set and the user is on a company select page
 
         $router = M::mock(RouterInterface::class);
-        $companySelector = new CompanySelector(M::mock(ManagerRegistry::class));
+        $companySelector = new CompanySelector(M::mock(ManagerRegistry::class), M::mock(SystemConfig::class));
         $security = M::mock(Security::class);
 
         $security->shouldNotReceive('getUser');
@@ -156,7 +164,7 @@ final class CompanyEventSubscriberTest extends TestCase
         // Test that it continues execution when no company is set and no user is logged in
 
         $router = M::mock(RouterInterface::class);
-        $companySelector = new CompanySelector(M::mock(ManagerRegistry::class));
+        $companySelector = new CompanySelector(M::mock(ManagerRegistry::class), M::mock(SystemConfig::class));
         $security = M::mock(Security::class);
 
         $security
@@ -185,7 +193,13 @@ final class CompanyEventSubscriberTest extends TestCase
         $registry = M::mock(ManagerRegistry::class);
         $security = M::mock(Security::class);
 
-        $companySelector = new CompanySelector($registry);
+        $config = M::mock(SystemConfig::class);
+        $config
+            ->shouldReceive('getCurrency')
+            ->once()
+            ->andReturn(new Currency('USD'));
+
+        $companySelector = new CompanySelector($registry, $config);
 
         $security->shouldNotReceive('getUser');
 

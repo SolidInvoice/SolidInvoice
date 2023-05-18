@@ -20,15 +20,12 @@ use SolidInvoice\ClientBundle\Repository\CreditRepository;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
-use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
 
 class InvoicePaidListener implements EventSubscriberInterface
 {
     private ManagerRegistry $registry;
-
-    private SystemConfig $systemConfig;
 
     /**
      * @return array<string, string>
@@ -40,10 +37,9 @@ class InvoicePaidListener implements EventSubscriberInterface
         ];
     }
 
-    public function __construct(ManagerRegistry $registry, SystemConfig $systemConfig)
+    public function __construct(ManagerRegistry $registry)
     {
         $this->registry = $registry;
-        $this->systemConfig = $systemConfig;
     }
 
     public function onInvoicePaid(Event $event): void
@@ -56,7 +52,7 @@ class InvoicePaidListener implements EventSubscriberInterface
         /** @var PaymentRepository $paymentRepository */
         $paymentRepository = $em->getRepository(Payment::class);
 
-        $currency = $invoice->getClient()->getCurrency() ?? $this->systemConfig->getCurrency();
+        $currency = $invoice->getClient()->getCurrency();
 
         $invoice->setBalance(new Money(0, $currency));
         $em->persist($invoice);

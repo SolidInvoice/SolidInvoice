@@ -15,6 +15,7 @@ namespace SolidInvoice\SettingsBundle;
 
 use Doctrine\DBAL\Exception;
 use Money\Currency;
+use RuntimeException;
 use SolidInvoice\SettingsBundle\Repository\SettingsRepository;
 use Throwable;
 
@@ -99,14 +100,14 @@ class SystemConfig
         self::$settings = [];
     }
 
-    public function getCurrency(): ?Currency
+    public function getCurrency(): Currency
     {
         $currency = $this->get(self::CURRENCY_CONFIG_PATH);
 
         if (null === $currency) {
-            return null;
+            throw new RuntimeException('No currency set');
         }
 
-        return new Currency($this->get(self::CURRENCY_CONFIG_PATH));
+        return new Currency($currency);
     }
 }

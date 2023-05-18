@@ -19,6 +19,7 @@ use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Form\Handler\UserInviteFormHandler;
 use SolidInvoice\UserBundle\UserInvitation\UserInvitation;
@@ -54,7 +55,7 @@ final class UserInviteFormHandlerTest extends FormHandlerTestCase
     {
         $handler = new UserInviteFormHandler(
             $this->router,
-            new CompanySelector($this->registry),
+            new CompanySelector($this->registry, M::mock(SystemConfig::class)),
             $this->registry->getRepository(Company::class),
             $this->registry->getRepository(User::class),
             M::mock(Security::class),

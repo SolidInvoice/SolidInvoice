@@ -22,9 +22,9 @@ export default Module.extend({
         'invoiceRows': '#invoice-items',
         'invoiceForm': '#invoice-create-form'
     },
-    _renderClientSelect (options) {
+    _renderClientSelect (options, recurring) {
         const model = new Backbone.Model(options.client),
-            viewOptions = { type: 'invoice', model: model, 'hideLoader': false },
+            viewOptions = { type: 'invoice', model: model, 'hideLoader': false, recurring },
             module = this,
             clientSelectView = new ClientSelectView(merge(options, viewOptions));
 
@@ -67,23 +67,13 @@ export default Module.extend({
 
     },
     initialize (options) {
-        const discountModel = new DiscountModel(),
-            $recurring = $('#invoice_recurring'),
-            $recurringInfo = $('.recurring-info');
+        const discountModel = new DiscountModel();
 
         this.footerRowModel = new FooterRowModel();
 
         this.footerRowModel.set('hasTax', options.tax);
 
-        $recurring.on('change', () => {
-            $recurringInfo.toggleClass('d-none');
-        });
-
-        if ($recurring.is(':checked')) {
-            $recurringInfo.removeClass('d-none');
-        }
-
-        this._renderClientSelect(options);
+        this._renderClientSelect(options, 0 !== $('#recurring_invoice_frequency').length);
 
         let models = [];
 

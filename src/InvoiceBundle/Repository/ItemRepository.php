@@ -41,7 +41,7 @@ class ItemRepository extends ServiceEntityRepository
 
             /** @var Invoice $invoice */
             foreach ($query->execute() as $invoice) {
-                $invoice->setTotal($invoice->getBaseTotal() + $invoice->getTax());
+                $invoice->setTotal($invoice->getBaseTotal()->add($invoice->getTax()));
                 $invoice->setTax(null);
                 $this->getEntityManager()->persist($invoice);
             }

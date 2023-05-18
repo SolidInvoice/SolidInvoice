@@ -113,7 +113,7 @@ class Item implements ItemInterface, Stringable
         return $this;
     }
 
-    public function getPrice(): Money
+    public function getPrice(): ?Money
     {
         return $this->price->getMoney();
     }

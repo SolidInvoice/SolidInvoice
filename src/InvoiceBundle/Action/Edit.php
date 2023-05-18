@@ -19,7 +19,6 @@ use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Form\Handler\InvoiceEditHandler;
 use SolidInvoice\InvoiceBundle\Model\Graph;
-use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidWorx\FormHandler\FormHandler;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -32,13 +31,10 @@ final class Edit
 
     private RouterInterface $router;
 
-    private SystemConfig $systemConfig;
-
-    public function __construct(RouterInterface $router, FormHandler $formHandler, SystemConfig $systemConfig)
+    public function __construct(RouterInterface $router, FormHandler $formHandler)
     {
         $this->router = $router;
         $this->formHandler = $formHandler;
-        $this->systemConfig = $systemConfig;
     }
 
     /**
@@ -61,7 +57,7 @@ final class Edit
         $options = [
             'invoice' => $invoice,
             'form_options' => [
-                'currency' => $invoice->getClient()->getCurrency() ?: $this->systemConfig->getCurrency(),
+                'currency' => $invoice->getClient()->getCurrency(),
             ],
         ];
 

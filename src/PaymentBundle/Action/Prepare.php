@@ -33,7 +33,6 @@ use SolidInvoice\PaymentBundle\Factory\PaymentFactories;
 use SolidInvoice\PaymentBundle\Form\Type\PaymentType;
 use SolidInvoice\PaymentBundle\Model\Status;
 use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
-use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -77,8 +76,6 @@ final class Prepare
 
     private RouterInterface $router;
 
-    private SystemConfig $systemConfig;
-
     private CompanySelector $companySelector;
 
     public function __construct(
@@ -87,7 +84,6 @@ final class Prepare
         AuthorizationCheckerInterface $authorization,
         TokenStorageInterface $tokenStorage,
         FormFactoryInterface $formFactory,
-        SystemConfig $systemConfig,
         PaymentFactories $paymentFactories,
         EventDispatcherInterface $eventDispatcher,
         RegistryInterface $payum,
@@ -103,10 +99,13 @@ final class Prepare
         $this->eventDispatcher = $eventDispatcher;
         $this->payum = $payum;
         $this->router = $router;
-        $this->systemConfig = $systemConfig;
         $this->companySelector = $companySelector;
     }
 
+    /**
+     * @return Template|Response|null
+     * @throws Exception
+     */
     public function __invoke(Request $request, ?Invoice $invoice)
     {
         if (! $invoice instanceof Invoice) {
@@ -125,7 +124,6 @@ final class Prepare
 
         $preferredChoices = $this->paymentMethodRepository->findBy(['gatewayName' => 'credit']);
 
-        $currency = $invoice->getClient()->getCurrency();
         $form = $this->formFactory->create(
             PaymentType::class,
             [
@@ -133,7 +131,7 @@ final class Prepare
             ],
             [
                 'user' => $this->getUser(),
-                'currency' => $currency ?? $this->systemConfig->getCurrency(),
+                'currency' => $invoice->getClient()->getCurrency(),
                 'preferred_choices' => $preferredChoices,
             ]
         );

@@ -16,6 +16,8 @@ namespace SolidInvoice\CoreBundle\Form;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\SyntaxError;
 
 class FieldRenderer
 {
@@ -27,7 +29,9 @@ class FieldRenderer
     }
 
     /**
-     * @param string $path
+     * @return array<string, string>
+     *
+     * @throws LoaderError|SyntaxError
      */
     public function render(FormView $form, string $path = null): array
     {

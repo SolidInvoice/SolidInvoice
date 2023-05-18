@@ -64,7 +64,7 @@ final class ClientTest extends ApiTestCase
             'name' => 'Dummy User',
             'website' => null,
             'status' => 'active',
-            'currency' => null,
+            'currency' => 'USD',
             'vatNumber' => null,
             'contacts' => [
                 [
@@ -99,7 +99,7 @@ final class ClientTest extends ApiTestCase
             'name' => 'Test',
             'website' => null,
             'status' => 'active',
-            'currency' => null,
+            'currency' => 'USD',
             'vatNumber' => null,
             'contacts' => [
                 [
@@ -127,7 +127,7 @@ final class ClientTest extends ApiTestCase
             'name' => 'New Test',
             'website' => null,
             'status' => 'active',
-            'currency' => null,
+            'currency' => 'USD',
             'vatNumber' => null,
             'contacts' => [
                 [
