@@ -11,13 +11,18 @@
 
 use SolidInvoice\Kernel;
 
-$_SERVER['APP_RUNTIME_OPTIONS'] = [
+$runtimeOptions = [
     'env_var_name' => 'SOLIDINVOICE_ENV',
     'debug_var_name' => 'SOLIDINVOICE_DEBUG'
 ];
 
+$_SERVER['APP_RUNTIME_OPTIONS'] = $runtimeOptions;
+
 require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
 
-return static function (array $context) {
-    return new Kernel($context['SOLIDINVOICE_ENV'], (bool) $context['SOLIDINVOICE_DEBUG']);
+return static function (array $context) use ($runtimeOptions) {
+    $environment = $context[$runtimeOptions['env_var_name']] ?? null;
+    $debug = isset($context[$runtimeOptions['debug_var_name']]) ? (bool) $context[$runtimeOptions['debug_var_name']] : false;
+
+    return new Kernel($environment, $debug);
 };
