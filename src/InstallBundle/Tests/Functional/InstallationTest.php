@@ -107,7 +107,6 @@ class InstallationTest extends PantherTestCase
 
             $formData = [
                 'system_information[locale]' => 'en',
-                'system_information[currency]' => 'USD',
             ];
 
             if (0 === count($crawler->filter('.callout.callout-warning'))) {

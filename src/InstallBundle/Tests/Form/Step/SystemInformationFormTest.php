@@ -28,7 +28,6 @@ class SystemInformationFormTest extends FormTestCase
             'username' => $this->faker->userName,
             'email_address' => $this->faker->email,
             'password' => null,
-            'currency' => 'USD',
         ];
 
         $this->assertFormData($this->factory->create(SystemInformationForm::class, null, ['userCount' => 0]), $formData, $formData);
