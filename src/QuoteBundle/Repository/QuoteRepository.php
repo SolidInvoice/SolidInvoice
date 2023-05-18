@@ -15,11 +15,14 @@ namespace SolidInvoice\QuoteBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\QuoteBundle\Entity\Item;
 use SolidInvoice\QuoteBundle\Entity\Quote;
+use function array_walk;
 
 class QuoteRepository extends ServiceEntityRepository
 {
@@ -28,11 +31,6 @@ class QuoteRepository extends ServiceEntityRepository
         parent::__construct($registry, Quote::class);
     }
 
-    /**
-     * Gets total number of quotes.
-     *
-     * @param string $status
-     */
     public function getTotalQuotes(string $status = null): int
     {
         $qb = $this->createQueryBuilder('q');
@@ -46,15 +44,17 @@ class QuoteRepository extends ServiceEntityRepository
 
         $query = $qb->getQuery();
 
-        return (int) $query->getSingleScalarResult();
+        try {
+            return (int) $query->getSingleScalarResult();
+        } catch (NoResultException | NonUniqueResultException $e) {
+            return 0;
+        }
     }
 
     /**
-     * Gets the most recent created quotes.
-     *
-     * @param int $limit
+     * @return Quote[]
      */
-    public function getRecentQuotes($limit = 5): array
+    public function getRecentQuotes(int $limit = 5): array
     {
         $qb = $this->createQueryBuilder('q');
 
@@ -68,6 +68,9 @@ class QuoteRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    /**
+     * @param array{client?: string} $parameters
+     */
     public function getGridQuery(array $parameters = []): QueryBuilder
     {
         $qb = $this->createQueryBuilder('q');
@@ -139,7 +142,7 @@ class QuoteRepository extends ServiceEntityRepository
     }
 
     /**
-     * Delete multiple quotes based on IDs.
+     * @param list<string> $ids
      */
     public function deleteQuotes(array $ids): void
     {
@@ -148,10 +151,8 @@ class QuoteRepository extends ServiceEntityRepository
 
         $em = $this->getEntityManager();
 
-        /** @var Quote[] $quotes */
-        $quotes = $this->findBy(['id' => $ids]);
-
-        array_walk($quotes, function (object $entity) use ($em): void {
+        array_walk($ids, function (string $id) use ($em): void {
+            $entity = $this->find($id);
             $em->remove($entity);
         });
 

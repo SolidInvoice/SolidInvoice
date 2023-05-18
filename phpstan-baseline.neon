@@ -511,11 +511,6 @@ parameters:
 			path: src/InstallBundle/Action/Config.php
 
 		-
-			message: "#^Method SolidInvoice\\\\InstallBundle\\\\Action\\\\Install\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/InstallBundle/Action/Install.php
-
-		-
 			message: "#^Call to an undefined method Symfony\\\\Component\\\\Console\\\\Helper\\\\HelperInterface\\:\\:formatBlock\\(\\)\\.$#"
 			count: 1
 			path: src/InstallBundle/Command/InstallCommand.php
@@ -1107,21 +1102,6 @@ parameters:
 
 		-
 			message: "#^Class SolidInvoice\\\\QuoteBundle\\\\Repository\\\\QuoteRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#"
-			count: 1
-			path: src/QuoteBundle/Repository/QuoteRepository.php
-
-		-
-			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Repository\\\\QuoteRepository\\:\\:deleteQuotes\\(\\) has parameter \\$ids with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/QuoteBundle/Repository/QuoteRepository.php
-
-		-
-			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Repository\\\\QuoteRepository\\:\\:getGridQuery\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/QuoteBundle/Repository/QuoteRepository.php
-
-		-
-			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Repository\\\\QuoteRepository\\:\\:getRecentQuotes\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/QuoteBundle/Repository/QuoteRepository.php
 

@@ -32,7 +32,7 @@ final class Delete implements AjaxResponse
 
     public function __invoke(Request $request): JsonResponse
     {
-        $this->repository->deleteInvoices((array) $request->request->get('data'));
+        $this->repository->deleteInvoices($request->request->all('data'));
 
         return $this->json([]);
     }

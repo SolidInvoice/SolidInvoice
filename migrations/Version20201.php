@@ -148,12 +148,14 @@ final class Version20201 extends AbstractMigration implements ContainerAwareInte
         $this->schema->getTable('user_company')
             ->addForeignKeyConstraint('users', ['user_id'], ['id']);
 
+        $this->schema
+            ->getTable('user_company')
+            ->dropPrimaryKey();
+
         $this->persistChanges();
 
         $this->migrate('users', false);
 
-        $this->schema->getTable('user_company')
-            ->dropPrimaryKey();
         $this->schema->getTable('user_company')
             ->setPrimaryKey(['company_id', 'user_id']);
 
