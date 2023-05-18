@@ -17,6 +17,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
+use SolidInvoice\CoreBundle\Entity\Company;
 
 /**
  * @codeCoverageIgnore
@@ -27,6 +28,8 @@ class LoadData extends Fixture
     {
         $client = new Client();
         $client->setName('Test');
+        $client->setCurrencyCode('USD');
+        $client->setCompany($manager->getRepository(Company::class)->findOneBy([]));
 
         $contact = new Contact();
         $contact->setFirstName('Test');

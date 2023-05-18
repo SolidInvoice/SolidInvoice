@@ -19,7 +19,6 @@ use SolidInvoice\ClientBundle\Repository\CreditRepository;
 use SolidInvoice\CoreBundle\Response\AjaxResponse;
 use SolidInvoice\CoreBundle\Traits\JsonTrait;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
-use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -29,12 +28,9 @@ final class Credit implements AjaxResponse
 
     private CreditRepository $repository;
 
-    private SystemConfig $systemConfig;
-
-    public function __construct(CreditRepository $repository, SystemConfig $systemConfig)
+    public function __construct(CreditRepository $repository)
     {
         $this->repository = $repository;
-        $this->systemConfig = $systemConfig;
     }
 
     public function get(Client $client): JsonResponse
@@ -45,8 +41,8 @@ final class Credit implements AjaxResponse
     public function put(Request $request, Client $client): JsonResponse
     {
         $value = new Money(
-            ((json_decode($request->getContent() ?? '[]', true, 512, JSON_THROW_ON_ERROR)['credit'] ?? 0) * 100),
-            $client->getCurrency() ?? $this->systemConfig->getCurrency()
+            ((json_decode($request->getContent() ?: '[]', true, 512, JSON_THROW_ON_ERROR)['credit'] ?? 0) * 100),
+            $client->getCurrency()
         );
 
         $this->repository->addCredit($client, $value);

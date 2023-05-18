@@ -13,7 +13,9 @@ export default ItemView.extend({
         'click @ui.clientChange': 'clientChange',
         'change @ui.clientSelect': 'clientSelect'
     },
-    initialize () {
+    initialize (a, b, c) {
+        console.log({ a, b, c });
+
         this.template = () => {
             return this.getOption('clientForm');
         };
@@ -47,6 +49,16 @@ export default ItemView.extend({
             (data) => {
                 this.$('#client-select-container').html(data.content);
                 this._toggleContactInfo(true);
+
+                history.replaceState(
+                    {},
+                    '',
+                    Router.generate(
+                        this.getOption('recurring') ?
+                        '_invoices_create_recurring' :
+                        `_${this.getOption('type')}s_create`,
+                        { client: val })
+                );
 
                 if (this.options.hideLoader) {
                     this.hideLoader();

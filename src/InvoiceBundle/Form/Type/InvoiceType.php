@@ -86,7 +86,9 @@ class InvoiceType extends AbstractType
         $builder->add('baseTotal', HiddenMoneyType::class, ['currency' => $options['currency']]);
         $builder->add('tax', HiddenMoneyType::class, ['currency' => $options['currency']]);
 
-        $builder->addEventSubscriber(new InvoiceUsersSubscriber($builder, $options['data'], $this->registry));
+        if (array_key_exists('data', $options) && $options['data'] instanceof Invoice) {
+            $builder->addEventSubscriber(new InvoiceUsersSubscriber($builder, $options['data'], $this->registry));
+        }
     }
 
     public function getBlockPrefix(): string

@@ -17,7 +17,6 @@ use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Response\AjaxResponse;
 use SolidInvoice\CoreBundle\Traits\JsonTrait;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
-use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Twig\Environment;
 use Twig\Error\LoaderError;
@@ -32,13 +31,10 @@ final class Info implements AjaxResponse
 
     private MoneyFormatterInterface $formatter;
 
-    private SystemConfig $systemConfig;
-
-    public function __construct(Environment $twig, MoneyFormatterInterface $formatter, SystemConfig $systemConfig)
+    public function __construct(Environment $twig, MoneyFormatterInterface $formatter)
     {
         $this->twig = $twig;
         $this->formatter = $formatter;
-        $this->systemConfig = $systemConfig;
     }
 
     /**
@@ -54,12 +50,10 @@ final class Info implements AjaxResponse
             ]
         );
 
-        $currency = $client->getCurrency() ?? $this->systemConfig->getCurrency();
-
         return $this->json([
             'content' => $content,
-            'currency' => $currency->getCode(),
-            'currency_format' => $this->formatter->getCurrencySymbol($currency),
+            'currency' => $client->getCurrency(),
+            'currency_format' => $this->formatter->getCurrencySymbol($client->getCurrency()),
         ]);
     }
 }

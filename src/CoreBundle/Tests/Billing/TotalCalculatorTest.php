@@ -18,6 +18,7 @@ use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Exception\UnexpectedTypeException;
@@ -35,6 +36,19 @@ class TotalCalculatorTest extends TestCase
     use DoctrineTestTrait;
     use MockeryPHPUnitIntegration;
 
+    private Client $client;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->client = new Client();
+        $this->client->setName('Test');
+        $this->client->setCompany($this->company);
+
+        $this->em->persist($this->client);
+    }
+
     public function testOnlyAcceptsQuotesOrInvoices(): void
     {
         $updater = new TotalCalculator($this->em->getRepository(Payment::class));
@@ -49,6 +63,7 @@ class TotalCalculatorTest extends TestCase
         $updater = new TotalCalculator($this->em->getRepository(Payment::class));
 
         $invoice = new Invoice();
+        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD', 'company' => $this->company])->object());
         $invoice->setTotal(new Money(0, new Currency('USD')));
         $item = new Item();
         $item->setQty(1)
@@ -67,6 +82,7 @@ class TotalCalculatorTest extends TestCase
         $updater = new TotalCalculator($this->em->getRepository(Payment::class));
 
         $invoice = new Invoice();
+        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD', 'company' => $this->company])->object());
         $invoice->setTotal(new Money(0, new Currency('USD')));
         $item = new Item();
         $item->setQty(2)
@@ -85,6 +101,7 @@ class TotalCalculatorTest extends TestCase
         $updater = new TotalCalculator($this->em->getRepository(Payment::class));
 
         $invoice = new Invoice();
+        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD', 'company' => $this->company])->object());
         $invoice->setTotal(new Money(0, new Currency('USD')));
         $item = new Item();
         $item->setQty(2)
@@ -107,6 +124,7 @@ class TotalCalculatorTest extends TestCase
         $updater = new TotalCalculator($this->em->getRepository(Payment::class));
 
         $invoice = new Invoice();
+        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD', 'company' => $this->company])->object());
         $invoice->setTotal(new Money(0, new Currency('USD')));
         $item = new Item();
         $item->setQty(2)
@@ -133,6 +151,7 @@ class TotalCalculatorTest extends TestCase
             ->setRate(20);
 
         $invoice = new Invoice();
+        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD', 'company' => $this->company])->object());
         $invoice->setTotal(new Money(0, new Currency('USD')));
         $item = new Item();
         $item->setQty(2)
@@ -158,6 +177,7 @@ class TotalCalculatorTest extends TestCase
             ->setRate(20);
 
         $invoice = new Invoice();
+        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD', 'company' => $this->company])->object());
         $invoice->setTotal(new Money(0, new Currency('USD')));
         $item = new Item();
         $item->setQty(2)
@@ -183,6 +203,7 @@ class TotalCalculatorTest extends TestCase
             ->setRate(20);
 
         $invoice = new Invoice();
+        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD', 'company' => $this->company])->object());
         $invoice->setTotal(new Money(0, new Currency('USD')));
         $item = new Item();
         $item->setQty(2)
@@ -211,6 +232,7 @@ class TotalCalculatorTest extends TestCase
             ->setRate(20);
 
         $invoice = new Invoice();
+        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD', 'company' => $this->company])->object());
         $invoice->setTotal(new Money(0, new Currency('USD')));
         $item = new Item();
         $item->setQty(2)
@@ -233,7 +255,7 @@ class TotalCalculatorTest extends TestCase
     public function testUpdateTotalsWithPayments(): void
     {
         $invoice = new Invoice();
-        $invoice->setClient((new Client())->setName('Test'));
+        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD', 'company' => $this->company])->object());
         $invoice->setTotal(new Money(30000, new Currency('USD')));
         $invoice->setBaseTotal(new Money(30000, new Currency('USD')));
         $invoice->setBalance(new Money(30000, new Currency('USD')));

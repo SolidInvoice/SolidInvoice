@@ -23,14 +23,11 @@ use SolidInvoice\InvoiceBundle\Event\InvoiceEvents;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Model\Status;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
-use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use function assert;
 
 class InvoiceCancelListener implements EventSubscriberInterface
 {
-    private SystemConfig $systemConfig;
-
     /**
      * @return array<string, string>
      */
@@ -43,10 +40,9 @@ class InvoiceCancelListener implements EventSubscriberInterface
 
     private ManagerRegistry $registry;
 
-    public function __construct(ManagerRegistry $registry, SystemConfig $systemConfig)
+    public function __construct(ManagerRegistry $registry)
     {
         $this->registry = $registry;
-        $this->systemConfig = $systemConfig;
     }
 
     public function onInvoiceCancelled(InvoiceEvent $event): void
@@ -63,7 +59,7 @@ class InvoiceCancelListener implements EventSubscriberInterface
         $invoice->setBalance($invoice->getTotal());
         $em->persist($invoice);
 
-        $totalPaid = new Money($paymentRepository->getTotalPaidForInvoice($invoice), $invoice->getClient()->getCurrency() ?: $this->systemConfig->getCurrency());
+        $totalPaid = new Money($paymentRepository->getTotalPaidForInvoice($invoice), $invoice->getClient()->getCurrency());
 
         if ($totalPaid->isPositive()) {
             $paymentRepository->updatePaymentStatus($invoice->getPayments(), Status::STATUS_CREDIT);

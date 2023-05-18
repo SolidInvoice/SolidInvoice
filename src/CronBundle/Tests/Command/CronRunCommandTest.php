@@ -37,7 +37,7 @@ final class CronRunCommandTest extends TestCase
 
         $entity = new RecurringInvoice();
         $entity
-            ->setClient((new Client())->setName('Test'))
+            ->setClient((new Client())->setName('Test')->setCurrencyCode('USD'))
             ->setDateStart(new DateTimeImmutable())
             ->setFrequency('* * * * *')
             ->setStatus('active')

@@ -33,7 +33,11 @@ final class Calculator
 
         $discount = $entity->getDiscount();
 
-        $invoiceTotal = $entity->getBaseTotal()->add($entity->getTax());
+        if (null !== $entity->getTax()) {
+            $invoiceTotal = $entity->getBaseTotal()->add($entity->getTax());
+        } else {
+            $invoiceTotal = $entity->getBaseTotal();
+        }
 
         if (Discount::TYPE_PERCENTAGE === $discount->getType()) {
             return new Money($this->calculatePercentage($invoiceTotal, $discount->getValue()), $invoiceTotal->getCurrency());

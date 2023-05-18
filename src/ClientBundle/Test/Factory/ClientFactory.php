@@ -13,6 +13,7 @@ namespace SolidInvoice\ClientBundle\Test\Factory;
 
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
+use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
@@ -47,11 +48,12 @@ final class ClientFactory extends ModelFactory
             'name' => self::faker()->company(),
             'website' => self::faker()->url(),
             'status' => self::faker()->word(),
-            'currency' => self::faker()->currencyCode(),
+            'currencyCode' => self::faker()->currencyCode(),
             'vatNumber' => self::faker()->word(),
             'archived' => self::faker()->boolean(),
             'created' => self::faker()->dateTime(),
             'updated' => self::faker()->dateTime(),
+            'company' => CompanyFactory::new(),
         ];
     }
 

@@ -34,7 +34,7 @@ class ClientType extends AbstractType
         $builder->add('website', UrlType::class, ['required' => false]);
 
         $builder->add(
-            'currency',
+            'currencyCode',
             CurrencyType::class,
             [
                 'placeholder' => 'client.form.currency.empty_value',

@@ -49,6 +49,8 @@ final class InvoiceCreateHandlerTest extends FormHandlerTestCase
 
         $this->client = new Client();
         $this->client->setName('Test');
+        $this->client->setCompany($this->company);
+        $this->client->setCurrencyCode('USD');
 
         $this->em->persist($this->client);
     }

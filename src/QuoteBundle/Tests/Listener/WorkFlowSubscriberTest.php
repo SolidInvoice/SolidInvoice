@@ -16,6 +16,7 @@ namespace SolidInvoice\QuoteBundle\Tests\Listener;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
@@ -74,7 +75,9 @@ final class WorkFlowSubscriberTest extends TestCase
 
     public function testOnWorkflowTransitionApplied(): void
     {
-        $quote = (new Quote())->setStatus('pending');
+        $quote = (new Quote())
+            ->setClient(ClientFactory::createOne()->object())
+            ->setStatus('pending');
 
         $invoiceManager = M::mock(InvoiceManager::class);
         $stateMachine = M::mock(StateMachine::class);

@@ -18,6 +18,7 @@ use SolidInvoice\CoreBundle\Form\FieldRenderer;
 use SolidInvoice\CoreBundle\Traits\JsonTrait;
 use SolidInvoice\QuoteBundle\Form\Type\QuoteType;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 final class Fields
@@ -34,7 +35,7 @@ final class Fields
         $this->renderer = $renderer;
     }
 
-    public function __invoke(Request $request, string $currency)
+    public function __invoke(Request $request, string $currency): JsonResponse
     {
         $form = $this->factory->create(QuoteType::class, null, ['currency' => new Currency($currency)]);
 

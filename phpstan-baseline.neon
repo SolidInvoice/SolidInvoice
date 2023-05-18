@@ -76,11 +76,6 @@ parameters:
 			path: src/ClientBundle/Action/Ajax/Contact/Edit.php
 
 		-
-			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
-			count: 1
-			path: src/ClientBundle/Action/Ajax/Credit.php
-
-		-
 			message: "#^Call to an undefined method Symfony\\\\Component\\\\HttpFoundation\\\\Session\\\\SessionInterface\\:\\:getFlashBag\\(\\)\\.$#"
 			count: 1
 			path: src/ClientBundle/Action/Ajax/Delete.php
@@ -176,11 +171,6 @@ parameters:
 			path: src/ClientBundle/Tests/Form/Handler/ContactEditFormHandlerTest.php
 
 		-
-			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Tests\\\\Form\\\\Type\\\\ClientTypeTest\\:\\:getExtensions\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/ClientBundle/Tests/Form/Type/ClientTypeTest.php
-
-		-
 			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Action\\\\ViewBilling\\:\\:createResponse\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/CoreBundle/Action/ViewBilling.php
@@ -214,11 +204,6 @@ parameters:
 			message: "#^Method SolidInvoice\\\\CoreBundle\\\\ConfigWriter\\:\\:getConfigValues\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/CoreBundle/ConfigWriter.php
-
-		-
-			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Form\\\\FieldRenderer\\:\\:render\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/CoreBundle/Form/FieldRenderer.php
 
 		-
 			message: "#^Class SolidInvoice\\\\CoreBundle\\\\Form\\\\Transformer\\\\DiscountTransformer implements generic interface Symfony\\\\Component\\\\Form\\\\DataTransformerInterface but does not specify its types\\: T, R$#"
@@ -641,17 +626,7 @@ parameters:
 			path: src/InvoiceBundle/Manager/InvoiceManager.php
 
 		-
-			message: "#^Binary operation \"\\+\" between Money\\\\Money and Money\\\\Money results in an error\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Repository/ItemRepository.php
-
-		-
 			message: "#^Class SolidInvoice\\\\InvoiceBundle\\\\Repository\\\\ItemRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#"
-			count: 1
-			path: src/InvoiceBundle/Repository/ItemRepository.php
-
-		-
-			message: "#^Parameter \\#1 \\$tax of method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:setTax\\(\\) expects Money\\\\Money, null given\\.$#"
 			count: 1
 			path: src/InvoiceBundle/Repository/ItemRepository.php
 
@@ -861,11 +836,6 @@ parameters:
 			path: src/PaymentBundle/Action/Index.php
 
 		-
-			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Action\\\\Prepare\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/PaymentBundle/Action/Prepare.php
-
-		-
 			message: "#^Parameter \\#1 \\$totalAmount of method Payum\\\\Core\\\\Model\\\\Payment\\:\\:setTotalAmount\\(\\) expects int, string given\\.$#"
 			count: 1
 			path: src/PaymentBundle/Action/Prepare.php
@@ -1054,11 +1024,6 @@ parameters:
 			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\CloneQuote\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/QuoteBundle/Action/CloneQuote.php
-
-		-
-			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\Fields\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/QuoteBundle/Action/Fields.php
 
 		-
 			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\Grid\\\\Archive\\:\\:__invoke\\(\\) has no return type specified\\.$#"
