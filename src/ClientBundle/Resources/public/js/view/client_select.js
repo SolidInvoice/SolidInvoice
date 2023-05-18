@@ -13,9 +13,7 @@ export default ItemView.extend({
         'click @ui.clientChange': 'clientChange',
         'change @ui.clientSelect': 'clientSelect'
     },
-    initialize (a, b, c) {
-        console.log({ a, b, c });
-
+    initialize () {
         this.template = () => {
             return this.getOption('clientForm');
         };
