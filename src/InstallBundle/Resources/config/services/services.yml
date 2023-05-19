@@ -13,5 +13,3 @@ services:
             - '@doctrine.migrations.dependency_factory'
 
     SolidInvoice\InstallBundle\Command\InstallCommand: ~
-
-    SolidInvoice\InstallBundle\Twig\Extension\InstallationExtension: ~

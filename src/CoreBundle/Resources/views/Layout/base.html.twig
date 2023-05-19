@@ -33,10 +33,7 @@
         {% endif %}
     {% endblock stylesheets %}
 
-    {% if app_is_installed() %}
-        {% include '@SolidInvoiceCore/_partials/scripts.html.twig' %}
-    {% endif %}
-
+    {% include '@SolidInvoiceCore/_partials/scripts.html.twig' %}
 </head>
 <body class="skin-solidinvoice-default sidebar-mini hold-transition {{ body_class|default('') }}">
     <div class="wrapper">
