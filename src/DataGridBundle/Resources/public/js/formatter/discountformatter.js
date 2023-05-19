@@ -7,15 +7,11 @@
  * with this source code in the file LICENSE.
  */
 
-import { assignIn, isUndefined, noop, toLower } from 'lodash';
+import { isUndefined, toLower } from 'lodash';
 import Accounting from 'accounting';
 import Backgrid from 'backgrid';
 
-const DiscountFormatter = Backgrid.DiscountFormatter = noop;
-
-DiscountFormatter.prototype = new Backgrid.CellFormatter();
-
-assignIn(DiscountFormatter.prototype, {
+Backgrid.DiscountFormatter = {
     fromRaw (rawData, model) {
         if (!isUndefined(model.get('discount.type'))) {
             let discountType = model.get('discount.type');
@@ -44,6 +40,6 @@ assignIn(DiscountFormatter.prototype, {
     toRaw (formattedData) {
         return formattedData;
     }
-});
+};
 
-export default DiscountFormatter;
+export default Backgrid.DiscountFormatter;

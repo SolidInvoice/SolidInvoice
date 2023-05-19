@@ -68,6 +68,15 @@ Encore
             }
         };
     })
+
+    .configureDevServerOptions(options => {
+         options.server = {
+             type: 'https',
+             options: {
+                 pfx: path.join(process.env.HOME, '.symfony5/certs/default.p12'),
+             }
+         }
+     })
 ;
 
 const pagesDir = path.resolve(__dirname, 'assets/js/pages');

@@ -96,7 +96,7 @@ export default MnObject.extend({
 
         const $gridContainer = $(container.render().el);
 
-        $(element).append(container.render().el);
+        $(element).append($gridContainer);
 
         $('.grid', $gridContainer).html(grid.render().el);
 
