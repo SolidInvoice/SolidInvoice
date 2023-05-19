@@ -8,13 +8,10 @@
  */
 
 import Backgrid from 'backgrid';
-import { assignIn, isObject, isUndefined, noop } from 'lodash';
+import { isObject, isUndefined } from 'lodash';
 import Accounting from 'accounting';
 
-const MoneyFormatter = Backgrid.MoneyFormatter = noop;
-
-MoneyFormatter.prototype = new Backgrid.CellFormatter();
-assignIn(MoneyFormatter.prototype, {
+Backgrid.MoneyFormatter = {
     fromRaw (rawData) {
         if (!isUndefined(rawData)) {
             if (isObject(rawData)) {
@@ -27,6 +24,6 @@ assignIn(MoneyFormatter.prototype, {
     toRaw (formattedData) {
         return Accounting.unformat(formattedData);
     }
-});
+};
 
-export default MoneyFormatter;
+export default Backgrid.MoneyFormatter;

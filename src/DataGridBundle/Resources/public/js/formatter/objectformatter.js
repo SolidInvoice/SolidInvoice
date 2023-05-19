@@ -8,13 +8,9 @@
  */
 
 import Backgrid from 'backgrid';
-import { assignIn, isUndefined, noop } from 'lodash';
+import { isUndefined } from 'lodash';
 
-const ObjectFormatter = Backgrid.ObjectFormatter = noop;
-
-ObjectFormatter.prototype = new Backgrid.CellFormatter();
-
-assignIn(ObjectFormatter.prototype, {
+Backgrid.ObjectFormatter = {
     fromRaw (rawData) {
         if (!isUndefined(rawData)) {
             return rawData.name;
@@ -23,6 +19,6 @@ assignIn(ObjectFormatter.prototype, {
     toRaw (formattedData) {
         return formattedData;
     }
-});
+};
 
-export default ObjectFormatter;
+export default Backgrid.ObjectFormatter;
