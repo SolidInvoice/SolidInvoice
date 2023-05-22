@@ -17,7 +17,6 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
-use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\CoreBundle\Entity\Discount;
@@ -35,19 +34,6 @@ class TotalCalculatorTest extends TestCase
 {
     use DoctrineTestTrait;
     use MockeryPHPUnitIntegration;
-
-    private Client $client;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->client = new Client();
-        $this->client->setName('Test');
-        $this->client->setCompany($this->company);
-
-        $this->em->persist($this->client);
-    }
 
     public function testOnlyAcceptsQuotesOrInvoices(): void
     {
