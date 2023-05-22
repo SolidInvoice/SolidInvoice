@@ -29,10 +29,7 @@ use function iterator_to_array;
 
 class ClientCreateFormHandlerTest extends FormHandlerTestCase
 {
-    /**
-     * @return string|FormHandlerInterface
-     */
-    public function getHandler()
+    public function getHandler(): ClientCreateFormHandler
     {
         $this->registry->getRepository(Client::class);
         $router = M::mock(RouterInterface::class);
@@ -48,11 +45,15 @@ class ClientCreateFormHandlerTest extends FormHandlerTestCase
         return $handler;
     }
 
+    /**
+     * @return array{client: array{name: string, currency: string}}
+     */
     public function getFormData(): array
     {
         return [
             'client' => [
-                'name' => $this->faker->company,
+                'name' => $this->faker->company(),
+                'currency' => $this->faker->currencyCode()
             ],
         ];
     }
