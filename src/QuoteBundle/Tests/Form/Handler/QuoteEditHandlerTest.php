@@ -53,7 +53,9 @@ final class QuoteEditHandlerTest extends FormHandlerTestCase
 
         $client = (new Client())
             ->setName($this->faker->name)
-            ->setCompany($this->company);
+            ->setCurrencyCode('USD')
+            ->setCompany($this->company)
+        ;
 
         $this->quote = new Quote();
         $this->quote->setStatus(Graph::STATUS_DRAFT);
