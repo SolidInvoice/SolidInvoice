@@ -71,6 +71,7 @@ jobs:
             qc-results-prod.s3.eu-west-1.amazonaws.com:443
             raw.githubusercontent.com:443
             registry-1.docker.io:443
+            auth.docker.io:443
             registry.npmjs.org:443
             resources.jetbrains.com:443
             schemastore.org:443
