@@ -10,13 +10,13 @@ jobs:
 
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@v2.4.0
+        uses: step-security/harden-runner@128a63446a954579617e875aaab7d2978154e969
         with:
           disable-sudo: true
           egress-policy: block
           allowed-endpoints: >
             github.com:443
 
-      - uses: actions/checkout@v3
-      - uses: symfonycorp/security-checker-action@v4
+      - uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f
+      - uses: symfonycorp/security-checker-action@258311ef7ac571f1310780ef3d79fc5abef642b5
 
