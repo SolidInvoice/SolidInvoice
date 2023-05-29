@@ -1,7 +1,6 @@
 name: "CodeQL"
 
 on:
-  push:
   pull_request:
   schedule:
     - cron: '26 23 * * 2'
@@ -80,7 +79,7 @@ jobs:
         uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f
 
       - name: 'Qodana Scan'
-        uses: JetBrains/qodana-action@main
+        uses: JetBrains/qodana-action@@v2023.1.1
         env:
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
 
