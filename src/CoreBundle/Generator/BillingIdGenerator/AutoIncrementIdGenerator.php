@@ -47,7 +47,7 @@ final class AutoIncrementIdGenerator implements IdGeneratorInterface
             $lastId = $this->registry
                 ->getRepository(get_class($entity))
                 ->createQueryBuilder('e')
-                ->select('MAX(e.' . $field . ')')
+                ->select('MAX(ABS(e.' . $field . '))')
                 ->getQuery()
                 ->getSingleScalarResult();
         } catch (NonUniqueResultException|NoResultException $e) {
