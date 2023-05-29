@@ -74,7 +74,7 @@
         "symfony/doctrine-bridge": "^5.4",
         "symfony/dotenv": "^5.4",
         "symfony/event-dispatcher": "^5.4",
-        "symfony/expression-language": "^5.4",
+        "symfony/expression-language": "^6.2",
         "symfony/filesystem": "^5.4",
         "symfony/finder": "^5.4",
         "symfony/flex": "^1.19",
