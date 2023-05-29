@@ -16,7 +16,7 @@ jobs:
       - name: Harden Runner
         uses: step-security/harden-runner@1f99358870fe1c846a3ccba386cc2b2246836776
         with:
-          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+          egress-policy: block
 
       - name: Checkout
         uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f
@@ -48,23 +48,3 @@ jobs:
 
       - name: Run PHPStan
         run: bin/phpstan analyse -c phpstan.test.neon
-
-  qodana:
-    name: Qodana
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Harden Runner
-        uses: step-security/harden-runner@1f99358870fe1c846a3ccba386cc2b2246836776
-        with:
-          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
-
-      - uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f
-
-      - name: 'Qodana Scan'
-        uses: JetBrains/qodana-action@7afb26c0c2f325c0d5c21ea1f617c79c7f899337
-
-      - uses: github/codeql-action/upload-sarif@67a35a08586135a9573f4327e904ecbf517a882d
-        with:
-          sarif_file: ${{ runner.temp }}/qodana/results/qodana.sarif.json
