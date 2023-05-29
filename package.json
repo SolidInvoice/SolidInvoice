@@ -30,7 +30,7 @@
         "@babel/preset-env": "^7.21.5",
         "@symfony/webpack-encore": "^4.3.0",
         "babel-loader": "^9.1.2",
-        "cloudinary": "^1.36.4",
+        "cloudinary": "^1.37.0",
         "eslint": "^8.41.0",
         "eslint-loader": "^4.0.2",
         "eslint-plugin-backbone": "^2.1.1",
