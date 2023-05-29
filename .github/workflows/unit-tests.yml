@@ -46,7 +46,7 @@ jobs:
 
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@v2.4.0
+        uses: step-security/harden-runner@128a63446a954579617e875aaab7d2978154e969
         with:
           egress-policy: block
           allowed-endpoints: >
@@ -63,9 +63,9 @@ jobs:
             uploader.codecov.io:443
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f
 
-      - uses: haya14busa/action-cond@v1
+      - uses: haya14busa/action-cond@1d6e8a12b20cdb4f1954feef9aa475b9c390cab5
         id: coverage_driver
         with:
           cond: ${{ matrix.coverage }}
@@ -73,14 +73,14 @@ jobs:
           if_false: none
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@d30ad8b1843ace22e6698ab99bbafaa747b6bd0d
         with:
           php-version: ${{ matrix.php }}
           ini-values: date.timezone=Africa/Johannesburg, opcache.enable=1, opcache.enable_cli=1, opcache.memory_consumption=256, opcache.max_accelerated_files=32531, opcache.interned_strings_buffer=8, opcache.validate_timestamps=0, opcache.save_comments=1, opcache.fast_shutdown=0, memory_limit=-1
           extensions: intl, gd, opcache, mysql, pdo_mysql, soap, zip, :xdebug
           coverage: ${{ steps.coverage_driver.outputs.value }}
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c
         with:
           node-version: 14
 
@@ -89,7 +89,7 @@ jobs:
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
       - name: Cache dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8
         with:
           path: ${{ steps.composercache.outputs.dir }}
           key: ${{ runner.os }}-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json composer.lock') }}
@@ -138,7 +138,7 @@ jobs:
           verbose: true # optional (default = false)
 
       - name: Add comment to PR with failure screenshots
-        uses: actions/github-script@v6
+        uses: actions/github-script@98814c53be79b1d30f795b907e553d8679345975
         if: ${{ failure() }}
         env:
             CLOUDINARY_URL: cloudinary://${{ secrets.CLOUDINARY_API_KEY }}:${{ secrets.CLOUDINARY_API_SECRET }}@${{ secrets.CLOUDINARY_CLOUD_NAME }}
