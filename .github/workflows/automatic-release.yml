@@ -12,9 +12,22 @@ jobs:
 
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@1f99358870fe1c846a3ccba386cc2b2246836776
+        uses: step-security/harden-runner@128a63446a954579617e875aaab7d2978154e969
         with:
           egress-policy: block
+          allowed-endpoints: >
+            api.github.com:443
+            archive.ubuntu.com:80
+            auth.docker.io:443
+            github.com:443
+            objects.githubusercontent.com:443
+            packagist.org:443
+            ppa.launchpadcontent.net:443
+            production.cloudflare.docker.com:443
+            registry-1.docker.io:443
+            registry.yarnpkg.com:443
+            security.ubuntu.com:80
+            uploads.github.com:443
 
       - name: Checkout
         uses: "actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f"
