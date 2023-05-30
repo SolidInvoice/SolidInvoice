@@ -80,7 +80,7 @@
         "symfony/flex": "^1.19",
         "symfony/form": "^5.4",
         "symfony/framework-bundle": "^5.4",
-        "symfony/google-mailer": "^5.4",
+        "symfony/google-mailer": "^6.2",
         "symfony/http-client": "^5.4",
         "symfony/http-foundation": "^5.4",
         "symfony/http-kernel": "^5.4",
