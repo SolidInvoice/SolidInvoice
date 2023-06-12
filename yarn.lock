@@ -2546,13 +2546,13 @@ cloudinary-core@2.13.0:
   resolved "https://registry.yarnpkg.com/cloudinary-core/-/cloudinary-core-2.13.0.tgz#b59f90871b6c708c3d0735b9be47ac08181c57fb"
   integrity sha512-Nt0Q5I2FtenmJghtC4YZ3MZZbGg1wLm84SsxcuVwZ83OyJqG9CNIGp86CiI6iDv3QobaqBUpOT7vg+HqY5HxEA==
 
-cloudinary@^1.37.0:
-  version "1.37.0"
-  resolved "https://registry.yarnpkg.com/cloudinary/-/cloudinary-1.37.0.tgz#26daefc8794e397d21350242d075eca05d744ece"
-  integrity sha512-hCAb3kU2nqjaHxDHxh+bi691A6LEuF68A2jHvYR5wDhDxx5qNRJLYqABbmxP6TQJriJd0Tq309fZvzBXkTW6sw==
+cloudinary@^1.37.1:
+  version "1.37.1"
+  resolved "https://registry.yarnpkg.com/cloudinary/-/cloudinary-1.37.1.tgz#d9805c4b8934e994b9e177355c733fe4f2ff7c01"
+  integrity sha512-zik0wsNm+4A3lDrS7SDPskKsKceM8MG+DBK7DWEhoQsHkLm/BdJbNWR6JtJCTGImnANi5Md4t3P+G6DZ+92gVg==
   dependencies:
     cloudinary-core "2.13.0"
-    core-js "3.30.1"
+    core-js "3.30.2"
     lodash "4.17.21"
     q "1.5.1"
   optionalDependencies:
@@ -2701,10 +2701,10 @@ core-js-compat@^3.30.1, core-js-compat@^3.30.2:
   dependencies:
     browserslist "^4.21.5"
 
-core-js@3.30.1:
-  version "3.30.1"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.30.1.tgz#fc9c5adcc541d8e9fa3e381179433cbf795628ba"
-  integrity sha512-ZNS5nbiSwDTq4hFosEDqm65izl2CWmLz0hARJMyNQBgkUZMIF51cQiMvIQKA6hvuaeWxQDP3hEedM1JZIgTldQ==
+core-js@3.30.2:
+  version "3.30.2"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.30.2.tgz#6528abfda65e5ad728143ea23f7a14f0dcf503fc"
+  integrity sha512-uBJiDmwqsbJCWHAwjrx3cvjbMXP7xD72Dmsn5LOJpiRmE3WbBbN5rCqQ2Qh6Ek6/eOrjlWngEynBWo4VxerQhg==
 
 core-util-is@~1.0.0:
   version "1.0.3"
