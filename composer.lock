@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e1e647ba5553f8785101ba1a1064dd56",
+    "content-hash": "de109df62fb27fe461a8352fce88db7d",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -12527,16 +12527,16 @@
         },
         {
             "name": "twilio/sdk",
-            "version": "6.42.2",
+            "version": "7.4.1",
             "source": {
                 "type": "git",
                 "url": "git@github.com:twilio/twilio-php.git",
-                "reference": "a86746d7e5d88e0406fe002768c4007f5cb26174"
+                "reference": "427baa8472006bf0ec6aa1bc79be10ae37b2389f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twilio/twilio-php/zipball/a86746d7e5d88e0406fe002768c4007f5cb26174",
-                "reference": "a86746d7e5d88e0406fe002768c4007f5cb26174",
+                "url": "https://api.github.com/repos/twilio/twilio-php/zipball/427baa8472006bf0ec6aa1bc79be10ae37b2389f",
+                "reference": "427baa8472006bf0ec6aa1bc79be10ae37b2389f",
                 "shasum": ""
             },
             "require": {
@@ -12544,7 +12544,7 @@
             },
             "require-dev": {
                 "guzzlehttp/guzzle": "^6.3 || ^7.0",
-                "phpunit/phpunit": ">=7.0"
+                "phpunit/phpunit": ">=7.0 < 10"
             },
             "suggest": {
                 "guzzlehttp/guzzle": "An HTTP client to execute the API requests"
@@ -12572,7 +12572,7 @@
                 "sms",
                 "twilio"
             ],
-            "time": "2022-10-05T18:22:45+00:00"
+            "time": "2023-05-18T07:58:57+00:00"
         },
         {
             "name": "webmozart/assert",
