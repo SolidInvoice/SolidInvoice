@@ -51,7 +51,7 @@ jobs:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
 
       - name: Checkout
-        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9
 
       - uses: haya14busa/action-cond@1d6e8a12b20cdb4f1954feef9aa475b9c390cab5
         id: coverage_driver
@@ -61,7 +61,7 @@ jobs:
           if_false: none
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@cb8f453143149404c7fd670b5f37c91d395b3054
+        uses: shivammathur/setup-php@c5fc0d8281aba02c7fda07d3a70cc5371548067d
         with:
           php-version: ${{ matrix.php }}
           ini-values: date.timezone=Africa/Johannesburg, opcache.enable=1, opcache.enable_cli=1, opcache.memory_consumption=256, opcache.max_accelerated_files=32531, opcache.interned_strings_buffer=8, opcache.validate_timestamps=0, opcache.save_comments=1, opcache.fast_shutdown=0, memory_limit=-1

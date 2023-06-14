@@ -19,10 +19,10 @@ jobs:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
 
       - name: Checkout
-        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@cb8f453143149404c7fd670b5f37c91d395b3054
+        uses: shivammathur/setup-php@c5fc0d8281aba02c7fda07d3a70cc5371548067d
         with:
           php-version: 8.1
           ini-values: date.timezone=Europe/Paris, opcache.enable=1, opcache.enable_cli=1, opcache.memory_consumption=256, opcache.max_accelerated_files=32531, opcache.interned_strings_buffer=8, opcache.validate_timestamps=0, opcache.save_comments=1, opcache.fast_shutdown=0
@@ -60,11 +60,11 @@ jobs:
         with:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
 
-      - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+      - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9
 
       - name: 'Qodana Scan'
         uses: JetBrains/qodana-action@61b94e7e3a716dcb9e2030cfd79cd46149d56c26
 
-      - uses: github/codeql-action/upload-sarif@29b1f65c5e92e24fe6b6647da1eaabe529cec70f
+      - uses: github/codeql-action/upload-sarif@cdcdbb579706841c47f7063dda365e292e5cad7a
         with:
           sarif_file: ${{ runner.temp }}/qodana/results/qodana.sarif.json

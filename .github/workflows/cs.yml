@@ -17,10 +17,10 @@ jobs:
         with:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
 
-      - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+      - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@cb8f453143149404c7fd670b5f37c91d395b3054
+        uses: shivammathur/setup-php@c5fc0d8281aba02c7fda07d3a70cc5371548067d
         with:
           php-version: 8.1
           extensions: intl, gd, opcache, mysql, pdo_mysql
@@ -54,10 +54,10 @@ jobs:
         with:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
 
-      - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+      - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@cb8f453143149404c7fd670b5f37c91d395b3054
+        uses: shivammathur/setup-php@c5fc0d8281aba02c7fda07d3a70cc5371548067d
         with:
           php-version: 8.1
 
@@ -85,7 +85,7 @@ jobs:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
 
       - name: Checkout Code
-        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9
         with:
           fetch-depth: 0
 

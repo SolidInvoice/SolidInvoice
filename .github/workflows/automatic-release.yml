@@ -17,10 +17,10 @@ jobs:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
 
       - name: Checkout
-        uses: "actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab"
+        uses: "actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9"
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@cb8f453143149404c7fd670b5f37c91d395b3054
+        uses: shivammathur/setup-php@c5fc0d8281aba02c7fda07d3a70cc5371548067d
         with:
           php-version: 8.2
           extensions: intl, gd, opcache, mysql, pdo_mysql, soap, zip, :xdebug
@@ -31,10 +31,10 @@ jobs:
           node-version: 14
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@e81a89b1732b9c48d79cd809d8d81d79c4647a18
+        uses: docker/setup-qemu-action@2b82ce82d56a2a04d2637cd93a637ae1b359c0a7
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@4b4e9c3e2d4531116a6f8ba8e71fc6e2cb6e6c8c
+        uses: docker/setup-buildx-action@6a58db7e0d21ca03e6c44877909e80e45217eed2
 
       - name: Release
         uses: laminas/automatic-releases@12dde9b998d13e6721e5d000cf0c6a513ebdb98b

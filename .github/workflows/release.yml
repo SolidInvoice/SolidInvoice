@@ -27,12 +27,12 @@ jobs:
       - uses: FranzDiebold/github-env-vars-action@5be1a823971b42aea2115f6d742484ab9a314bb6
 
       - name: Checkout code
-        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9
         with:
          path: solidinvoice
 
       - name: Install PHP
-        uses: shivammathur/setup-php@cb8f453143149404c7fd670b5f37c91d395b3054
+        uses: shivammathur/setup-php@c5fc0d8281aba02c7fda07d3a70cc5371548067d
         with:
           coverage: none
           extensions: curl, gd, intl, opcache, json, openssl, pdo, soap, xsl, :xdebug
