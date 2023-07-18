@@ -19,6 +19,7 @@ parameters:
 
     env(installed): ~
 
+    env(SENTRY_DSN): ~
     env(SOLIDINVOICE_ALLOW_REGISTRATION): '0'
 
 services:
