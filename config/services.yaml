@@ -20,3 +20,7 @@ parameters:
     env(installed): ~
 
     env(SOLIDINVOICE_ALLOW_REGISTRATION): '0'
+
+services:
+    Monolog\Processor\PsrLogMessageProcessor:
+        tags: { name: monolog.processor, handler: sentry }
