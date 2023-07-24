@@ -63,7 +63,7 @@ jobs:
       - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9
 
       - name: 'Qodana Scan'
-        uses: JetBrains/qodana-action@61b94e7e3a716dcb9e2030cfd79cd46149d56c26
+        uses: JetBrains/qodana-action@77f0ff0c702065648df9fd0340a48919dca5a1ff
 
       - uses: github/codeql-action/upload-sarif@cdcdbb579706841c47f7063dda365e292e5cad7a
         with:
