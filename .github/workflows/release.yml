@@ -27,7 +27,7 @@ jobs:
       - uses: FranzDiebold/github-env-vars-action@5be1a823971b42aea2115f6d742484ab9a314bb6
 
       - name: Checkout code
-        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744
         with:
          path: solidinvoice
 
