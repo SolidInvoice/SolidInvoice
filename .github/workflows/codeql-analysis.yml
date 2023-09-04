@@ -1,10 +1,7 @@
 name: "CodeQL"
 
 on:
-  push:
-    branches: [ 2.2.x ]
   pull_request:
-    branches: [ 2.2.x ]
   schedule:
     - cron: '26 23 * * 2'
 
@@ -27,9 +24,13 @@ jobs:
 
     steps:
     - name: Harden Runner
-      uses: step-security/harden-runner@1f99358870fe1c846a3ccba386cc2b2246836776
+      uses: step-security/harden-runner@128a63446a954579617e875aaab7d2978154e969
       with:
-        egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+        disable-sudo: true
+        egress-policy: block
+        allowed-endpoints: >
+          api.github.com:443
+          github.com:443
 
     - name: Checkout repository
       uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f
@@ -50,21 +51,38 @@ jobs:
       actions: read  # for github/codeql-action/init to get workflow details
       contents: read  # for actions/checkout to fetch code
       security-events: write  # for github/codeql-action/autobuild to send a status report
-    
+
     name: Qodana
     runs-on: ubuntu-latest
-    
+
     steps:
-    
       - name: Harden Runner
-        uses: step-security/harden-runner@1f99358870fe1c846a3ccba386cc2b2246836776
+        uses: step-security/harden-runner@128a63446a954579617e875aaab7d2978154e969
         with:
-          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+          disable-sudo: true
+          egress-policy: block
+          allowed-endpoints: >
+            api.qodana.cloud:443
+            github.com:443
+            objects.githubusercontent.com:443
+            prod.fus.aws.intellij.net:443
+            production.cloudflare.docker.com:443
+            qc-results-prod.s3.eu-west-1.amazonaws.com:443
+            raw.githubusercontent.com:443
+            registry-1.docker.io:443
+            auth.docker.io:443
+            registry.npmjs.org:443
+            resources.jetbrains.com:443
+            schemastore.org:443
 
       - name: Checkout repository
         uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f
 
       - name: 'Qodana Scan'
-        uses: JetBrains/qodana-action@main
+        uses: JetBrains/qodana-action@61b94e7e3a716dcb9e2030cfd79cd46149d56c26
         env:
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
+
+      - uses: github/codeql-action/upload-sarif@67a35a08586135a9573f4327e904ecbf517a882d
+        with:
+          sarif_file: ${{ runner.temp }}/qodana/results/qodana.sarif.json
