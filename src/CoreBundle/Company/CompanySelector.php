@@ -70,7 +70,7 @@ final class CompanySelector
         try {
             Currency::set($this->config->getCurrency());
         } catch (RuntimeException $e) {
-            dump('Failed Setting Currency', $e);
+            var_dump('Failed Setting Currency', $e);
             // Currency is not set, so we can't set it here
         }
     }

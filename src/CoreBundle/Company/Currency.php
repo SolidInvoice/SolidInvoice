@@ -16,6 +16,8 @@ namespace SolidInvoice\CoreBundle\Company;
 use Money\Currency as MoneyCurrency;
 use function debug_backtrace;
 use function dump;
+use function var_dump;
+use const DEBUG_BACKTRACE_PROVIDE_OBJECT;
 
 final class Currency
 {
@@ -23,7 +25,7 @@ final class Currency
 
     public static function set(MoneyCurrency $currency): void
     {
-        dump('Setting Currency', $currency, debug_backtrace());
+        var_dump('Setting Currency', $currency, debug_backtrace(~DEBUG_BACKTRACE_PROVIDE_OBJECT));
         self::$currency = $currency;
     }
 
