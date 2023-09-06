@@ -67,6 +67,7 @@ class SystemConfig
         $setting = $this->repository->findOneBy(['key' => $key]);
 
         VarDumper::dump($setting);
+        VarDumper::dump($this->repository->findAll());
 
         if (null === $setting) {
             return null;
