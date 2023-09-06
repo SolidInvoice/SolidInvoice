@@ -37,6 +37,9 @@ final class MailerConfigFactory
      */
     private iterable $transports;
 
+    /**
+     * @param iterable<ConfiguratorInterface> $transports
+     */
     public function __construct(Transport $inner, SystemConfig $config, iterable $transports)
     {
         $this->config = $config;
@@ -45,16 +48,15 @@ final class MailerConfigFactory
     }
 
     /**
-     * @throws JsonException
+     * @param list<string> $dsns
      */
-    public function fromStrings(): ?TransportInterface
+    public function fromStrings(array $dsns = []): ?TransportInterface
     {
-        $e = null;
         try {
             $mailerConfig = $this->config->get(self::CONFIG_KEY);
 
             if (null === $mailerConfig) {
-                return $this->inner->fromString('null://null');
+                return $this->inner->fromStrings($dsns);
             }
 
             $config = json_decode($mailerConfig, true, 512, JSON_THROW_ON_ERROR);
