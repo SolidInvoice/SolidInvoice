@@ -81,6 +81,8 @@ final class CompanySelector
             var_dump($dumper->dump($cloner->cloneVar($var), true));
         });
 
+        VarDumper::dump($this->config->getAll());
+
         try {
             Currency::set($this->config->getCurrency());
         } catch (RuntimeException $e) {
