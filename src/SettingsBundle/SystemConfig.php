@@ -17,7 +17,12 @@ use Doctrine\DBAL\Exception;
 use Money\Currency;
 use RuntimeException;
 use SolidInvoice\SettingsBundle\Repository\SettingsRepository;
+use Symfony\Component\VarDumper\Caster\ReflectionCaster;
+use Symfony\Component\VarDumper\Cloner\VarCloner;
+use Symfony\Component\VarDumper\Dumper\CliDumper;
+use Symfony\Component\VarDumper\VarDumper;
 use Throwable;
+use function var_dump;
 
 /**
  * @see \SolidInvoice\SettingsBundle\Tests\SystemConfigTest
@@ -43,11 +48,25 @@ class SystemConfig
 
     public function get(string $key): ?string
     {
+        $cloner = new VarCloner();
+        $cloner->addCasters(ReflectionCaster::UNSET_CLOSURE_FILE_INFO);
+        $dumper = new CliDumper();
+
+        VarDumper::setHandler(function ($var) use ($cloner, $dumper) {
+            var_dump($dumper->dump($cloner->cloneVar($var), true));
+        });
+
+        VarDumper::dump($this->installed);
+
         if (null === $this->installed) {
             return null;
         }
 
+        VarDumper::dump($key);
+
         $setting = $this->repository->findOneBy(['key' => $key]);
+
+        VarDumper::dump($setting);
 
         if (null === $setting) {
             return null;
@@ -102,6 +121,8 @@ class SystemConfig
 
     public function getCurrency(): Currency
     {
+
+
         $currency = $this->get(self::CURRENCY_CONFIG_PATH);
 
         if (null === $currency) {
