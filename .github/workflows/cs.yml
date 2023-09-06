@@ -101,6 +101,8 @@ jobs:
             api.github.com:443
             github.com:443
             registry.yarnpkg.com:443
+            pipelinesghubeus2.actions.githubusercontent.com:443
+            54.185.253.63:443
 
       - name: Checkout Code
         uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f
