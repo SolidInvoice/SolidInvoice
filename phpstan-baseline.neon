@@ -681,11 +681,6 @@ parameters:
 			path: src/MailerBundle/Configurator/SesConfigurator.php
 
 		-
-			message: "#^Method SolidInvoice\\\\MailerBundle\\\\Factory\\\\MailerConfigFactory\\:\\:__construct\\(\\) has parameter \\$transports with no value type specified in iterable type iterable\\.$#"
-			count: 1
-			path: src/MailerBundle/Factory/MailerConfigFactory.php
-
-		-
 			message: "#^Method SolidInvoice\\\\MoneyBundle\\\\Calculator\\:\\:calculateDiscount\\(\\) has parameter \\$entity with no type specified\\.$#"
 			count: 1
 			path: src/MoneyBundle/Calculator.php
