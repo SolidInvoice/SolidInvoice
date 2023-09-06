@@ -43,7 +43,7 @@ class WorkFlowSubscriberTest extends TestCase
 
         $invoice = new Invoice();
         $invoice->setBalance(new Money(1200, new Currency('USD')));
-        $invoice->setClient((new Client())->setName('Test'));
+        $invoice->setClient((new Client())->setName('Test')->setCurrencyCode('USD'));
         $invoice->setStatus('pending');
 
         $subscriber->onWorkflowTransitionApplied(new Event($invoice, new Marking(['pending' => 1]), new Transition('pay', 'pending', 'paid'), M::mock(WorkflowInterface::class)));
@@ -61,7 +61,7 @@ class WorkFlowSubscriberTest extends TestCase
 
         $invoice = new Invoice();
         $invoice->setBalance(new Money(1200, new Currency('USD')));
-        $invoice->setClient((new Client())->setName('Test'));
+        $invoice->setClient((new Client())->setName('Test')->setCurrencyCode('USD'));
         $invoice->setStatus('pending');
 
         $subscriber->onWorkflowTransitionApplied(new Event($invoice, new Marking(['pending' => 1]), new Transition('archive', 'pending', 'archived'), M::mock(WorkflowInterface::class)));

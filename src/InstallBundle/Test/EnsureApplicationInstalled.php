@@ -32,15 +32,15 @@ trait EnsureApplicationInstalled
     {
         self::bootKernel();
 
+        $_SERVER['locale'] = $_ENV['locale'] = 'en_US';
+        $_SERVER['installed'] = $_ENV['installed'] = date(DateTimeInterface::ATOM);
+
         $this->company = static::getContainer()->get('doctrine')
             ->getRepository(Company::class)
             ->findOneBy([]);
 
         // @phpstan-ignore-next-line Ignore this line in PHPStan, since it sees the CompanySelector service as private
         static::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
-
-        $_SERVER['locale'] = $_ENV['locale'] = 'en_US';
-        $_SERVER['installed'] = $_ENV['installed'] = date(DateTimeInterface::ATOM);
     }
 
     /**

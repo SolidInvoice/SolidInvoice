@@ -48,6 +48,16 @@ export default ItemView.extend({
                 this.$('#client-select-container').html(data.content);
                 this._toggleContactInfo(true);
 
+                history.replaceState(
+                    {},
+                    '',
+                    Router.generate(
+                        this.getOption('recurring') ?
+                        '_invoices_create_recurring' :
+                        `_${this.getOption('type')}s_create`,
+                        { client: val })
+                );
+
                 if (this.options.hideLoader) {
                     this.hideLoader();
                 }

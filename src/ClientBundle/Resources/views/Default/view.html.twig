@@ -56,7 +56,9 @@
 
                         {% if client.currency %}
                             <li class="list-group-item">
-                                <b>{{ icon('money') }} {{ 'client.view.currency'|trans }}</b> <span class="float-right">{{ client.currency }}</span>
+                                <b>{{ icon('money') }} {{ 'client.view.currency'|trans }}</b> <span class="float-right">
+                                    {{ client.currencyCode is empty ? 'System Default' : client.currencyCode }}
+                                </span>
                             </li>
                         {% endif %}
 

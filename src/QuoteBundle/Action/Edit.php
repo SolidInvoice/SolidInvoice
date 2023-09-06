@@ -16,7 +16,6 @@ namespace SolidInvoice\QuoteBundle\Action;
 use Exception;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Form\Handler\QuoteEditHandler;
-use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidWorx\FormHandler\FormHandler;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,12 +24,9 @@ final class Edit
 {
     private FormHandler $handler;
 
-    private SystemConfig $systemConfig;
-
-    public function __construct(FormHandler $handler, SystemConfig $systemConfig)
+    public function __construct(FormHandler $handler)
     {
         $this->handler = $handler;
-        $this->systemConfig = $systemConfig;
     }
 
     /**
@@ -41,7 +37,7 @@ final class Edit
         $options = [
             'quote' => $quote,
             'form_options' => [
-                'currency' => $quote->getClient()->getCurrency() ?: $this->systemConfig->getCurrency(),
+                'currency' => $quote->getClient()->getCurrency(),
             ],
         ];
 

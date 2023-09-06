@@ -75,6 +75,10 @@ class Credit implements Stringable
 
     public function getValue(): Money
     {
+        if ($this->value->getCurrency() === null) {
+            $this->value->setCurrency($this->client->getCurrency()->getCode());
+        }
+
         return $this->value->getMoney();
     }
 

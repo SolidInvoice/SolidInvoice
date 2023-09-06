@@ -171,6 +171,12 @@ class Invoice extends BaseInvoice
     {
         $this->client = $client;
 
+        if ($client instanceof Client && null !== $client->getCurrencyCode()) {
+            $this->total->setCurrency($client->getCurrency()->getCode());
+            $this->baseTotal->setCurrency($client->getCurrency()->getCode());
+            $this->tax->setCurrency($client->getCurrency()->getCode());
+        }
+
         return $this;
     }
 

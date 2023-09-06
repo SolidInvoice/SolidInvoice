@@ -9,7 +9,7 @@
         "locale": "{{ app.request.locale|split('_')[0] }}",
         "accounting": {
             "currency": {
-                "symbol": "{{ currencyFormatter().currencySymbol(currency is defined  ? currency : null) }}",
+                "symbol": "{{ currencyFormatter().currencySymbol(currency is defined  ? currency : null, true) }}",
                 "format": "{{ currencyFormatter().pattern }}",
                 "decimal": "{{ currencyFormatter().decimalSeparator }}",
                 "thousand": "{{ currencyFormatter().thousandSeparator }}",

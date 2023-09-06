@@ -25,6 +25,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function array_key_exists;
 
 /**
  * @see \SolidInvoice\QuoteBundle\Tests\Form\Type\QuoteTypeTest
@@ -86,7 +87,9 @@ class QuoteType extends AbstractType
         $builder->add('baseTotal', HiddenMoneyType::class, ['currency' => $options['currency']]);
         $builder->add('tax', HiddenMoneyType::class, ['currency' => $options['currency']]);
 
-        $builder->addEventSubscriber(new QuoteUsersSubscriber($builder, $options['data'], $this->registry));
+        if (array_key_exists('data', $options) && $options['data'] instanceof Quote) {
+            $builder->addEventSubscriber(new QuoteUsersSubscriber($builder, $options['data'], $this->registry));
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void

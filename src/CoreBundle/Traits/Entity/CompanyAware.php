@@ -19,7 +19,7 @@ use SolidInvoice\CoreBundle\Entity\Company;
 trait CompanyAware
 {
     /**
-     * @ORM\ManyToOne(targetEntity=Company::class)
+     * @ORM\ManyToOne(targetEntity=Company::class, cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     protected Company $company;

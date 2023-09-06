@@ -61,6 +61,7 @@ jobs:
             repo.packagist.org:443
             storage.googleapis.com:443
             uploader.codecov.io:443
+            54.185.253.63:443
 
       - name: Checkout
         uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f
@@ -111,7 +112,7 @@ jobs:
 
       - name: Run test suite
         run: |
-          mkdir -p build/logs
+         mkdir -p build/logs
           if [ "$COVERAGE" = '1' ]; then
             bin/phpunit --coverage-clover build/logs/clover.xml
           else

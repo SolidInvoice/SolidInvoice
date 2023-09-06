@@ -20,7 +20,6 @@ use SolidInvoice\ClientBundle\Model\Status;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
-use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,10 +28,7 @@ use function iterator_to_array;
 
 class ClientCreateFormHandlerTest extends FormHandlerTestCase
 {
-    /**
-     * @return string|FormHandlerInterface
-     */
-    public function getHandler()
+    public function getHandler(): ClientCreateFormHandler
     {
         $this->registry->getRepository(Client::class);
         $router = M::mock(RouterInterface::class);
@@ -48,11 +44,15 @@ class ClientCreateFormHandlerTest extends FormHandlerTestCase
         return $handler;
     }
 
+    /**
+     * @return array{client: array{name: string, currency: string}}
+     */
     public function getFormData(): array
     {
         return [
             'client' => [
-                'name' => $this->faker->company,
+                'name' => $this->faker->company(),
+                'currency' => $this->faker->currencyCode()
             ],
         ];
     }

@@ -79,7 +79,7 @@ class Quote
     private ?string $status = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Client", inversedBy="quotes")
+     * @ORM\ManyToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Client", inversedBy="quotes", cascade={"persist"})
      * @Assert\NotBlank
      * @Serialize\Groups({"quote_api", "create_quote_api"})
      * @ApiProperty(iri="https://schema.org/Organization")
@@ -249,10 +249,16 @@ class Quote
     {
         $this->client = $client;
 
+        if ($client instanceof Client && null !== $client->getCurrencyCode()) {
+            $this->total->setCurrency($client->getCurrency()->getCode());
+            $this->baseTotal->setCurrency($client->getCurrency()->getCode());
+            $this->tax->setCurrency($client->getCurrency()->getCode());
+        }
+
         return $this;
     }
 
-    public function getTotal(): Money
+    public function getTotal(): ?Money
     {
         return $this->total->getMoney();
     }
@@ -264,7 +270,7 @@ class Quote
         return $this;
     }
 
-    public function getBaseTotal(): Money
+    public function getBaseTotal(): ?Money
     {
         return $this->baseTotal->getMoney();
     }
@@ -349,7 +355,7 @@ class Quote
         return $this;
     }
 
-    public function getTax(): Money
+    public function getTax(): ?Money
     {
         return $this->tax->getMoney();
     }

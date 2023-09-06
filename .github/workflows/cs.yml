@@ -21,6 +21,7 @@ jobs:
             github.com:443
             objects.githubusercontent.com:443
             packagist.org:443
+            54.185.253.63:443
 
       - uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f
 

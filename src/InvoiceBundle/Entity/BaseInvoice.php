@@ -149,14 +149,14 @@ abstract class BaseInvoice
         return $this;
     }
 
-    public function getTax(): Money
+    public function getTax(): ?Money
     {
         return $this->tax->getMoney();
     }
 
-    public function setTax(Money $tax): self
+    public function setTax(?Money $tax = null): self
     {
-        $this->tax = new MoneyEntity($tax);
+        $this->tax = $tax ? new MoneyEntity($tax) : null;
 
         return $this;
     }

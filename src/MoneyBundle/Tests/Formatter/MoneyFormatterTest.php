@@ -49,6 +49,7 @@ class MoneyFormatterTest extends TestCase
         $formatter = new MoneyFormatter($locale, $systemConfig);
 
         self::assertSame($symbol, $formatter->getCurrencySymbol());
+        self::assertSame($symbol, $formatter->getCurrencySymbol($currency));
     }
 
     /**

@@ -16,7 +16,6 @@ namespace SolidInvoice\InvoiceBundle\Action;
 use Exception;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Form\Handler\InvoiceEditHandler;
-use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidWorx\FormHandler\FormHandler;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,12 +24,9 @@ final class EditRecurring
 {
     private FormHandler $formHandler;
 
-    private SystemConfig $systemConfig;
-
-    public function __construct(FormHandler $formHandler, SystemConfig $systemConfig)
+    public function __construct(FormHandler $formHandler)
     {
         $this->formHandler = $formHandler;
-        $this->systemConfig = $systemConfig;
     }
 
     /**
@@ -42,7 +38,7 @@ final class EditRecurring
             'invoice' => $invoice,
             'recurring' => true,
             'form_options' => [
-                'currency' => $invoice->getClient()->getCurrency() ?: $this->systemConfig->getCurrency(),
+                'currency' => $invoice->getClient()->getCurrency(),
             ],
         ];
 

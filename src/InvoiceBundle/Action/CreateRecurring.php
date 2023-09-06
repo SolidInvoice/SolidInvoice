@@ -48,7 +48,7 @@ final class CreateRecurring
 
         $options = [
             'invoice' => $invoice,
-            'form_options' => ($client && $currency = $client->getCurrency()) ? ['currency' => $currency] : [],
+            'form_options' => $client instanceof Client ? ['currency' => $client->getCurrency()] : [],
             'recurring' => true,
         ];
 

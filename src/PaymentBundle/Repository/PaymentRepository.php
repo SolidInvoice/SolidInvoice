@@ -304,10 +304,6 @@ class PaymentRepository extends ServiceEntityRepository
 
         $currency = $client->getCurrency();
 
-        if (! $currency instanceof Currency) {
-            return;
-        }
-
         $qb = $this->createQueryBuilder('p');
 
         $qb->update()

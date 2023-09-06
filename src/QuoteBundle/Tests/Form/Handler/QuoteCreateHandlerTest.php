@@ -15,6 +15,7 @@ namespace SolidInvoice\QuoteBundle\Tests\Form\Handler;
 
 use Mockery as M;
 use Money\Currency;
+use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
@@ -43,6 +44,20 @@ use function iterator_to_array;
  */
 final class QuoteCreateHandlerTest extends FormHandlerTestCase
 {
+    private Client $client;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->client = new Client();
+        $this->client->setName('Test');
+        $this->client->setCompany($this->company);
+        $this->client->setCurrencyCode('USD');
+
+        $this->em->persist($this->client);
+    }
+
     public function getHandler(): QuoteCreateHandler
     {
         $dispatcher = new EventDispatcher();
@@ -109,6 +124,7 @@ final class QuoteCreateHandlerTest extends FormHandlerTestCase
                     'value' => 20,
                     'type' => 'percentage',
                 ],
+                'client' => $this->client->getId()->toString(),
             ],
         ];
     }
@@ -136,7 +152,7 @@ final class QuoteCreateHandlerTest extends FormHandlerTestCase
     protected function getHandlerOptions(): array
     {
         return [
-            'quote' => new Quote(),
+            'quote' => (new Quote())->setClient($this->client),
             'form_options' => [
                 'currency' => new Currency('USD'),
             ],

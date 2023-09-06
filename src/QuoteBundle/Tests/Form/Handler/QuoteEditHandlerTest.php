@@ -15,6 +15,7 @@ namespace SolidInvoice\QuoteBundle\Tests\Form\Handler;
 
 use Mockery as M;
 use Money\Currency;
+use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
@@ -50,13 +51,21 @@ final class QuoteEditHandlerTest extends FormHandlerTestCase
     {
         parent::setUp();
 
+        $client = (new Client())
+            ->setName($this->faker->name)
+            ->setCurrencyCode('USD')
+            ->setCompany($this->company)
+        ;
+
         $this->quote = new Quote();
         $this->quote->setStatus(Graph::STATUS_DRAFT);
+        $this->quote->setClient($client);
         $discount = new Discount();
         $discount->setType(Discount::TYPE_PERCENTAGE);
         $discount->setValue(1);
         $this->quote->setDiscount($discount);
 
+        $this->em->persist($client);
         $this->em->persist($this->quote);
         $this->em->flush();
     }
@@ -145,6 +154,7 @@ final class QuoteEditHandlerTest extends FormHandlerTestCase
                     'value' => 20,
                     'type' => Discount::TYPE_PERCENTAGE,
                 ],
+                'client' => $this->quote->getClient()->getId()->toString(),
             ],
             'save' => 'pending',
         ];

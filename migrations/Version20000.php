@@ -534,7 +534,7 @@ final class Version20000 extends AbstractMigration
                     ['setting_key' => 'email/sending_options/password', 'setting_value' => null, 'description' => null, 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\PasswordType'],
                     ['setting_key' => 'email/sending_options/port', 'setting_value' => null, 'description' => null, 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\TextType'],
                     ['setting_key' => 'email/sending_options/encryption', 'setting_value' => null, 'description' => null, 'field_type' => 'SolidInvoice\SettingsBundle\Form\Type\MailEncryptionType'],
-                    ['setting_key' => 'system/company/currency', 'setting_value' => null, 'description' => null, 'field_type' => 'SolidInvoice\MoneyBundle\Form\Type\CurrencyType'],
+                    ['setting_key' => 'system/company/currency', 'setting_value' => 'USD', 'description' => null, 'field_type' => 'SolidInvoice\MoneyBundle\Form\Type\CurrencyType'],
                 ];
 
                 foreach ($configs as $config) {

@@ -92,10 +92,14 @@ class Client implements Stringable
 
     /**
      * @ORM\Column(name="currency", type="string", length=3, nullable=true)
-     * @Serialize\Groups({"client_api"})
-     * @ApiProperty(iri="https://schema.org/Text")
      */
-    private ?string $currency = null;
+    private ?string $currencyCode = null;
+
+    /**
+     * @ApiProperty(iri="https://schema.org/Text")
+     * @Serialize\Groups({"client_api"})
+     */
+    private Currency $currency;
 
     /**
      * @ORM\Column(name="vat_number", type="string", nullable=true)
@@ -368,24 +372,28 @@ class Client implements Stringable
         return $this;
     }
 
-    /**
-     * @ORM\PrePersist()
-     */
-    public function setInitialCredit(): void
+    public function getCurrencyCode(): ?string
     {
-        if (! $this->id instanceof UuidInterface) {
-            $credit = new Credit();
-            $credit->setClient($this);
-            $this->setCredit($credit);
+        return $this->currencyCode;
+    }
+
+    public function setCurrencyCode(?string $currencyCode): self
+    {
+        $this->currencyCode = $currencyCode;
+
+        return $this;
+    }
+
+    public function getCurrency(): Currency
+    {
+        if (! isset($this->currency) && null !== $this->currencyCode) {
+            $this->currency = new Currency($this->currencyCode);
         }
+
+        return $this->currency;
     }
 
-    public function getCurrency(): ?Currency
-    {
-        return null !== $this->currency ? new Currency($this->currency) : null;
-    }
-
-    public function setCurrency(?string $currency): self
+    public function setCurrency(Currency $currency): self
     {
         $this->currency = $currency;
 
