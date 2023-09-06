@@ -23,6 +23,8 @@ use Ramsey\Uuid\UuidInterface;
 use RuntimeException;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use function assert;
+use function debug_backtrace;
+use function dump;
 
 final class CompanySelector
 {
@@ -68,6 +70,7 @@ final class CompanySelector
         try {
             Currency::set($this->config->getCurrency());
         } catch (RuntimeException $e) {
+            dump('Failed Setting Currency', $e);
             // Currency is not set, so we can't set it here
         }
     }

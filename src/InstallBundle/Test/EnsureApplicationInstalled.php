@@ -18,6 +18,8 @@ use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Test\Traits\SymfonyKernelTrait;
 use function date;
+use function debug_backtrace;
+use function dump;
 
 trait EnsureApplicationInstalled
 {
@@ -35,6 +37,8 @@ trait EnsureApplicationInstalled
         $this->company = static::getContainer()->get('doctrine')
             ->getRepository(Company::class)
             ->findOneBy([]);
+
+        dump('Install Application[Company]', $this->company, debug_backtrace());
 
         // @phpstan-ignore-next-line Ignore this line in PHPStan, since it sees the CompanySelector service as private
         static::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
