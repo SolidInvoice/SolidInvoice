@@ -22,15 +22,7 @@ use Ramsey\Uuid\UuidFactory;
 use Ramsey\Uuid\UuidInterface;
 use RuntimeException;
 use SolidInvoice\SettingsBundle\SystemConfig;
-use Symfony\Component\VarDumper\Caster\ReflectionCaster;
-use Symfony\Component\VarDumper\Cloner\VarCloner;
-use Symfony\Component\VarDumper\Dumper\CliDumper;
-use Symfony\Component\VarDumper\VarDumper;
 use function assert;
-use function debug_backtrace;
-use function dump;
-use function get_debug_type;
-use function var_dump;
 
 final class CompanySelector
 {
@@ -73,22 +65,9 @@ final class CompanySelector
 
         $this->companyId = $companyId;
 
-        $cloner = new VarCloner();
-        $cloner->addCasters(ReflectionCaster::UNSET_CLOSURE_FILE_INFO);
-        $dumper = new CliDumper();
-
-        VarDumper::setHandler(function ($var) use ($cloner, $dumper) {
-            var_dump($dumper->dump($cloner->cloneVar($var), true));
-        });
-
-        VarDumper::dump($this->config->getAll());
-
         try {
             Currency::set($this->config->getCurrency());
         } catch (RuntimeException $e) {
-            VarDumper::dump('Failed Setting Currency');
-            VarDumper::dump($e);
-            VarDumper::dump($this->config);
             // Currency is not set, so we can't set it here
         }
     }

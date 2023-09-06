@@ -41,7 +41,7 @@ class Money
         }
     }
 
-    public function getMoney(): ?BaseMoney
+    public function getMoney(): BaseMoney
     {
         return new BaseMoney((int) $this->value, $this->currency ? new Currency($this->currency) : \SolidInvoice\CoreBundle\Company\Currency::get());
     }

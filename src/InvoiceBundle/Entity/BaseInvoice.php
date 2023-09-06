@@ -89,7 +89,7 @@ abstract class BaseInvoice
         return $this;
     }
 
-    public function getTotal(): ?Money
+    public function getTotal(): Money
     {
         return $this->total->getMoney();
     }
@@ -101,7 +101,7 @@ abstract class BaseInvoice
         return $this;
     }
 
-    public function getBaseTotal(): ?Money
+    public function getBaseTotal(): Money
     {
         return $this->baseTotal->getMoney();
     }
