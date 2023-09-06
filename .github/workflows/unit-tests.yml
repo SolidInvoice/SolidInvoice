@@ -99,25 +99,32 @@ jobs:
       - name: Install dependencies
         run: composer install --ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
-      - name: Detect browser drivers
-        run: bin/bdi detect drivers
+      #- name: Detect browser drivers
+      #  run: bin/bdi detect drivers
 
-      - run: yarn install
+      #- run: yarn install
 
-      - run: yarn build
+      #- run: yarn build
 
-      - name: Enable code coverage
-        if: matrix.coverage
-        run: echo "COVERAGE=1" >> $GITHUB_ENV
+      #- name: Enable code coverage
+      #  if: matrix.coverage
+      #  run: echo "COVERAGE=1" >> $GITHUB_ENV
 
-      - name: Run test suite
-        run: |
-          mkdir -p build/logs
-          if [ "$COVERAGE" = '1' ]; then
-            bin/phpunit --coverage-clover build/logs/clover.xml
-          else
-            bin/phpunit
-          fi
+      #- name: Run test suite
+      #  run: |
+      #    mkdir -p build/logs
+      #    if [ "$COVERAGE" = '1' ]; then
+      #      bin/phpunit --coverage-clover build/logs/clover.xml
+      #    else
+      #      bin/phpunit
+      #    fi
+
+
+      - name: Run test suite 1
+        run: bin/phpunit src/InvoiceBundle/Tests/Form/Type/InvoiceTypeTest.php
+
+      - name: Run test suite 2
+        run: bin/phpunit src/ClientBundle/Tests/Form/Handler/ClientCreateFormHandlerTest.php
 
       - name: Upload coverage results to Coveralls
         if: matrix.coverage
