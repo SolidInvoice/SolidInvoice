@@ -26,6 +26,7 @@ final class ResetPasswordEmail extends TemplatedEmail
 
         $this->user = $user;
         $this->to($user->getEmail());
+        $this->subject('Password Reset Request');
     }
 
     public function getHtmlTemplate(): string
