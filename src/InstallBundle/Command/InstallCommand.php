@@ -75,7 +75,7 @@ class InstallCommand extends Command
 
     public function isEnabled(): bool
     {
-        return null === $this->installed;
+        return null === $this->installed || '' === $this->installed;
     }
 
     protected function configure(): void

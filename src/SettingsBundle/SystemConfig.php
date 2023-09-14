@@ -43,7 +43,7 @@ class SystemConfig
 
     public function get(string $key): ?string
     {
-        if (null === $this->installed) {
+        if (null === $this->installed || '' === $this->installed) {
             return null;
         }
 
