@@ -674,9 +674,6 @@
     "symfony/panther": {
         "version": "v0.7.1"
     },
-    "symfony/polyfill": {
-        "version": "v1.21.0"
-    },
     "symfony/polyfill-ctype": {
         "version": "v1.18.1"
     },
