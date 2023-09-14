@@ -1,5 +1,15 @@
 <?php
+
 declare(strict_types=1);
+
+/*
+ * This file is part of SolidInvoice project.
+ *
+ * (c) Pierre du Plessis <open-source@solidworx.co>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace SolidInvoice\CronBundle\EventSubscriber;
 
@@ -39,12 +49,12 @@ final class CronScheduleEventSubscriber implements EventSubscriberInterface
 
         $monitorSchedule = MonitorSchedule::interval(1, MonitorScheduleUnit::minute());
 
-        $monitorConfig = new MonitorConfig($monitorSchedule,
+        $monitorConfig = new MonitorConfig(
+            $monitorSchedule,
             2, // check-in margin in minutes
             5, // max runtime in minutes
         );
 
-        // 🟡 Notify Sentry your job is running:
         $this->checkInId = captureCheckIn(
             self::MONITOR_SLUG,
             CheckInStatus::inProgress(),
@@ -67,5 +77,7 @@ final class CronScheduleEventSubscriber implements EventSubscriberInterface
             null,
             $this->checkInId
         );
+
+        $this->checkInId = null;
     }
 }
