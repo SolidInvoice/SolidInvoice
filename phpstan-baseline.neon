@@ -191,16 +191,6 @@ parameters:
 			path: src/CoreBundle/Command/YamlFormatCommand.php
 
 		-
-			message: "#^Method SolidInvoice\\\\CoreBundle\\\\ConfigWriter\\:\\:dump\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/CoreBundle/ConfigWriter.php
-
-		-
-			message: "#^Method SolidInvoice\\\\CoreBundle\\\\ConfigWriter\\:\\:getConfigValues\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/CoreBundle/ConfigWriter.php
-
-		-
 			message: "#^Class SolidInvoice\\\\CoreBundle\\\\Form\\\\Transformer\\\\DiscountTransformer implements generic interface Symfony\\\\Component\\\\Form\\\\DataTransformerInterface but does not specify its types\\: T, R$#"
 			count: 1
 			path: src/CoreBundle/Form/Transformer/DiscountTransformer.php

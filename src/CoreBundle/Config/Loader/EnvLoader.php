@@ -14,24 +14,38 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Config\Loader;
 
 use Symfony\Component\DependencyInjection\EnvVarLoaderInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 final class EnvLoader implements EnvVarLoaderInterface
 {
     private string $projectDir;
+    private Filesystem $fileSystem;
 
     public function __construct(string $projectDir)
     {
         $this->projectDir = $projectDir;
+        $this->fileSystem = new Filesystem();
     }
 
     public function loadEnvVars(): array
     {
-        $envFile = $this->projectDir . '/config/env.php';
+        $fileName = 'env.php';
 
-        if (! \file_exists($envFile)) {
-            return [];
+        $newEnvPath = $this->projectDir . '/config/env';
+
+        if ($this->fileSystem->exists("$newEnvPath/$fileName")) {
+            return require "$newEnvPath/$fileName";
         }
 
-        return require $envFile;
+        $oldEnvFile = $this->projectDir . '/config/env.php';
+
+        if ($this->fileSystem->exists($oldEnvFile)) {
+            $this->fileSystem->mkdir($newEnvPath);
+            $this->fileSystem->rename($oldEnvFile, "$newEnvPath/$fileName");
+
+            return require "$newEnvPath/$fileName";
+        }
+
+        return [];
     }
 }

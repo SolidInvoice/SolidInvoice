@@ -54,7 +54,7 @@ RUN cd /tmp && mkdir solidinvoice && cd solidinvoice && \
     cd /tmp && rm -rf solidinvoice && \
     sed -i '/session.cookie_secure/d' /etc/php/current_version/fpm/pool.d/y-override-php-defaults.conf
 
-VOLUME /var/www/html/config
+VOLUME /var/www/html/config/env
 
 EXPOSE 80
 EXPOSE 443
