@@ -19,6 +19,7 @@ use Symfony\Component\Filesystem\Filesystem;
 final class EnvLoader implements EnvVarLoaderInterface
 {
     private string $projectDir;
+
     private Filesystem $fileSystem;
 
     public function __construct(string $projectDir)
@@ -33,17 +34,17 @@ final class EnvLoader implements EnvVarLoaderInterface
 
         $newEnvPath = $this->projectDir . '/config/env';
 
-        if ($this->fileSystem->exists("$newEnvPath/$fileName")) {
-            return require "$newEnvPath/$fileName";
+        if ($this->fileSystem->exists("{$newEnvPath}/{$fileName}")) {
+            return require "{$newEnvPath}/{$fileName}";
         }
 
         $oldEnvFile = $this->projectDir . '/config/env.php';
 
         if ($this->fileSystem->exists($oldEnvFile)) {
             $this->fileSystem->mkdir($newEnvPath);
-            $this->fileSystem->rename($oldEnvFile, "$newEnvPath/$fileName");
+            $this->fileSystem->rename($oldEnvFile, "{$newEnvPath}/{$fileName}");
 
-            return require "$newEnvPath/$fileName";
+            return require "{$newEnvPath}/{$fileName}";
         }
 
         return [];
