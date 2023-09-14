@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\ORMException;
@@ -59,7 +60,7 @@ class VersionRepository extends ServiceEntityRepository
 
         try {
             return $qb->getQuery()->getSingleScalarResult();
-        } catch (NoResultException|NonUniqueResultException $e) {
+        } catch (NoResultException|NonUniqueResultException|Exception $e) {
             return '0.0.0';
         }
     }

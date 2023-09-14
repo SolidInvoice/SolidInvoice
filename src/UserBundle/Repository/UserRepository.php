@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
@@ -44,7 +45,7 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
 
         try {
             return (int) $qb->getQuery()->getSingleScalarResult();
-        } catch (NoResultException|NonUniqueResultException $e) {
+        } catch (NoResultException|NonUniqueResultException|Exception $e) {
             return 0;
         }
     }

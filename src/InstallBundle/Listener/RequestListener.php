@@ -113,7 +113,7 @@ final class RequestListener implements EventSubscriberInterface
         $session = $request->getSession();
         $route = $request->get('_route');
 
-        if (null !== $this->installed) {
+        if (null !== $this->installed && '' !== $this->installed) {
             // If the application is installed, but we don't have any users
             // Redirect to the setup page
             if ($this->userRepository->getUserCount() === 0) {
