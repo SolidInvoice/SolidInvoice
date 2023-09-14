@@ -123,7 +123,7 @@ class InstallationTest extends PantherTestCase
             self::assertStringContainsString('/install/finish', $client->getCurrentURL());
             self::assertStringContainsString('You have successfully installed SolidInvoice!', $crawler->html());
         } finally {
-            $configFile = realpath(static::$defaultOptions['webServerDir'] . '/../') . '/config/env.php';
+            $configFile = realpath(static::$defaultOptions['webServerDir'] . '/../') . '/config/env/env.php';
             if (file_exists($configFile)) {
                 unlink($configFile);
             }
