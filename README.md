@@ -95,5 +95,6 @@ We extend our gratitude to all the sponsors who support this project!
 
 * JetBrains (PHPStorm License)
 * Docker (Docker Hub Subscription)
+* Sentry (Sponsored Business plan)
 
 [1]: http://getcomposer.org
