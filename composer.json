@@ -168,9 +168,6 @@
         "sort-packages": true
     },
     "extra": {
-        "branch-alias": {
-            "dev-master": "2.2-dev"
-        },
         "symfony": {
             "allow-contrib": true
         }
