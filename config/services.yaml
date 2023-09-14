@@ -20,6 +20,7 @@ parameters:
     env(installed): ~
 
     env(SENTRY_DSN): ~
+    env(SENTRY_SEND_DEFAULT_PII): false
     env(MAILER_DSN): 'null://null'
     env(SOLIDINVOICE_ALLOW_REGISTRATION): '0'
 
