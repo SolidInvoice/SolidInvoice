@@ -49,6 +49,14 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@f95db51fddba0c2d1ec667646a06c2ce06100226
 
+      - name: Install jq
+        run: sudo apt-get install jq
+
+      - name: Bump version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: "./scripts/bump_version.sh ${{ github.event.milestone.title }}"
+
       - name: Release
         uses: laminas/automatic-releases@12dde9b998d13e6721e5d000cf0c6a513ebdb98b
         with:
@@ -118,3 +126,8 @@ jobs:
           "SIGNING_SECRET_KEY": ${{ secrets.SIGNING_SECRET_KEY }}
           "GIT_AUTHOR_NAME": ${{ secrets.GIT_AUTHOR_NAME }}
           "GIT_AUTHOR_EMAIL": ${{ secrets.GIT_AUTHOR_EMAIL }}
+
+      - name: Bump version to next dev
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: "./scripts/bump_version_dev.sh
