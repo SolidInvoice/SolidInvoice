@@ -30,7 +30,7 @@ class InstallationTest extends PantherTestCase
 {
     public static function setUpBeforeClass(): void
     {
-        $configFile = realpath(static::$defaultOptions['webServerDir'] . '/../') . '/config/env.php';
+        $configFile = realpath(static::$defaultOptions['webServerDir'] . '/../') . '/config/env/env.php';
         if (file_exists($configFile)) {
             rename($configFile, $configFile . '.tmp');
         }
@@ -38,7 +38,7 @@ class InstallationTest extends PantherTestCase
 
     public static function tearDownAfterClass(): void
     {
-        $configFile = realpath(static::$defaultOptions['webServerDir'] . '/../') . '/config/env.php';
+        $configFile = realpath(static::$defaultOptions['webServerDir'] . '/../') . '/config/env/env.php';
         if (file_exists($configFile . '.tmp')) {
             rename($configFile . '.tmp', $configFile);
         }
