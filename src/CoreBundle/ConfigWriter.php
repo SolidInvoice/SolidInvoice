@@ -25,11 +25,13 @@ class ConfigWriter
     public function __construct(string $projectDir)
     {
         $this->fileSystem = new Filesystem();
-        $this->configFile = $projectDir . '/config/env.php';
+        $this->configFile = $projectDir . '/config/env/env.php';
     }
 
     /**
-     * Dumps an array into the parameters.yml file.
+     * Dumps an array into the env config file.
+     *
+     * @param array<string, mixed> $config
      */
     public function dump(array $config): void
     {
@@ -42,6 +44,8 @@ class ConfigWriter
 
     /**
      * Get all values from the config file.
+     *
+     * @return array<string, mixed>
      *
      * @throws RuntimeException
      */
