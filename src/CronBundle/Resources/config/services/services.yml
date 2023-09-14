@@ -4,3 +4,4 @@ services:
         autowire: true
 
     SolidInvoice\CronBundle\Command\CronRunCommand: ~
+    SolidInvoice\CronBundle\EventSubscriber\CronScheduleEventSubscriber: ~
