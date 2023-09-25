@@ -19,7 +19,7 @@ jobs:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
 
       - name: Checkout
-        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744
+        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608
 
       - name: Setup PHP
         uses: shivammathur/setup-php@c5fc0d8281aba02c7fda07d3a70cc5371548067d
@@ -60,7 +60,7 @@ jobs:
         with:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
 
-      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744
+      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608
 
       - name: 'Qodana Scan'
         uses: JetBrains/qodana-action@77f0ff0c702065648df9fd0340a48919dca5a1ff
