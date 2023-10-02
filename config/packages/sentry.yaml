@@ -8,6 +8,12 @@ sentry:
 monolog:
     handlers:
         sentry:
+            type: fingers_crossed
+            action_level: !php/const Monolog\Logger::ERROR
+            handler: sentry_main
+            excluded_http_codes: [ 404, 405 ]
+            buffer_size: 50
+        sentry_main:
             type: sentry
             level: !php/const Monolog\Logger::ERROR
             hub_id: Sentry\State\HubInterface
