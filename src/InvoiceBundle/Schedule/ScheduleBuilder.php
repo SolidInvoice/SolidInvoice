@@ -37,14 +37,17 @@ final class ScheduleBuilder implements ScheduleBuilderInterface
     {
         $invoiceRepository = $this->registry->getRepository(RecurringInvoice::class);
 
-        /** @var RecurringInvoice[] $recurringInvoices */
-        $recurringInvoices = $invoiceRepository->findBy(['status' => 'active']);
+        $qb = $invoiceRepository->createQueryBuilder('r');
 
-        foreach ($recurringInvoices as $recurringInvoice) {
-            if ($recurringInvoice->getDateEnd() instanceof DateTimeInterface && ! Carbon::instance($recurringInvoice->getDateEnd())->isFuture()) {
-                continue;
-            }
+        $qb
+            ->select('r')
+            ->where('r.status = :status')
+            ->andWhere('r.dateEnd IS NULL OR r.dateEnd > :now')
+            ->setParameter('status', 'active')
+            ->setParameter('now', Carbon::now())
+        ;
 
+        foreach ($qb->getQuery()->toIterable() as $recurringInvoice) {
             $schedule
                 ->addMessage(new CreateInvoiceFromRecurring($recurringInvoice))
                 ->description(sprintf('Create recurring invoice (%s)', $recurringInvoice->getId()))
