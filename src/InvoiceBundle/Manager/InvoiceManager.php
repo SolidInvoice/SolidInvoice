@@ -15,8 +15,10 @@ namespace SolidInvoice\InvoiceBundle\Manager;
 
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
+use JsonException;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Item;
@@ -42,27 +44,25 @@ class InvoiceManager implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
 
-    /**
-     * @var ObjectManager
-     */
-    protected $entityManager;
+    protected ObjectManager $entityManager;
+    protected ManagerRegistry $registry;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $dispatcher;
+    protected EventDispatcherInterface $dispatcher;
 
     private StateMachine $stateMachine;
 
     private NotificationManager $notification;
 
     public function __construct(
-        ManagerRegistry $doctrine,
+        ManagerRegistry          $doctrine,
         EventDispatcherInterface $dispatcher,
-        StateMachine $stateMachine,
-        NotificationManager $notification
+        StateMachine             $stateMachine,
+        NotificationManager      $notification
     ) {
-        $this->entityManager = $doctrine->getManager();
+        $this->registry = $doctrine;
+        $manager = $this->registry->getManager();
+        assert($manager instanceof EntityManagerInterface);
+        $this->entityManager = $manager;
         $this->dispatcher = $dispatcher;
         $this->stateMachine = $stateMachine;
         $this->notification = $notification;
@@ -151,12 +151,17 @@ class InvoiceManager implements ContainerAwareInterface
     }
 
     /**
-     * @throws InvalidTransitionException
+     * @throws InvalidTransitionException|JsonException
      */
     public function create(BaseInvoice $invoice): BaseInvoice
     {
         // Set the invoice status as new and save, before we transition to the correct status
         $invoice->setStatus(Graph::STATUS_NEW);
+
+        if ($this->entityManager instanceof EntityManagerInterface && !$this->entityManager->isOpen()) {
+            $this->entityManager = $this->registry->resetManager();
+        }
+
         $this->entityManager->persist($invoice);
         $this->entityManager->flush();
 
@@ -173,7 +178,7 @@ class InvoiceManager implements ContainerAwareInterface
     }
 
     /**
-     * @throws InvalidTransitionException
+     * @throws InvalidTransitionException|JsonException
      */
     private function applyTransition(BaseInvoice $invoice, string $transition): bool
     {
