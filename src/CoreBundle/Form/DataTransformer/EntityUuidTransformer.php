@@ -49,7 +49,7 @@ final class EntityUuidTransformer implements DataTransformerInterface
     }
 
     /**
-     * @param object|string $value
+     * @param object|string|null $value
      *
      * @return object
      *
