@@ -17,7 +17,6 @@ use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\ClientBundle\Entity\ContactType;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
-use function method_exists;
 
 /**
  * @implements DataTransformerInterface<int, object|string>
