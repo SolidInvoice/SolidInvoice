@@ -37,15 +37,16 @@
         {{ 'client.contact.details.extra'|trans }}
     </h5>
 
-    {% set total = form.additionalContactDetails.children|length %}
+    {% set total = form.additionalContactDetails|length %}
     <div class="prototype-widget client_contacts" data-counter="{{ total > 0 ? total : 0 }}">
-	{% for widget in form.additionalContactDetails.children %}
+        {% for widget in form.additionalContactDetails %}
             {{ form_row(widget, {'child' : true}) }}
         {% endfor %}
 
         {{ additional_details|replace({'__contact_details_prototype__' : total})|raw }}
     </div>
 
+    {{ form_errors(form.additionalContactDetails) }}
     {{ form_errors(form) }}
 
     {% if allow_delete %}
