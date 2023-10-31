@@ -21,10 +21,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class SessionRequestListener implements EventSubscriberInterface
 {
-    protected SessionInterface $session;
-
-    protected string $secret;
-
     /**
      * @return array<string, string>
      */
@@ -35,10 +31,10 @@ class SessionRequestListener implements EventSubscriberInterface
         ];
     }
 
-    public function __construct(SessionInterface $session, string $secret)
-    {
-        $this->session = $session;
-        $this->secret = $secret;
+    public function __construct(
+        protected SessionInterface $session,
+        protected string $secret
+    ) {
     }
 
     public function onKernelResponse(ResponseEvent $event): void

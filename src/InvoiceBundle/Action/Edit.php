@@ -27,14 +27,10 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class Edit
 {
-    private FormHandler $formHandler;
-
-    private RouterInterface $router;
-
-    public function __construct(RouterInterface $router, FormHandler $formHandler)
-    {
-        $this->router = $router;
-        $this->formHandler = $formHandler;
+    public function __construct(
+        private readonly RouterInterface $router,
+        private readonly FormHandler $formHandler,
+    ) {
     }
 
     /**

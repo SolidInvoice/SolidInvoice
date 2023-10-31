@@ -37,14 +37,10 @@ abstract class AbstractQuoteHandler implements FormHandlerInterface, FormHandler
 {
     use SaveableTrait;
 
-    private StateMachine $stateMachine;
-
-    private RouterInterface $router;
-
-    public function __construct(RouterInterface $router, StateMachine $stateMachine)
-    {
-        $this->stateMachine = $stateMachine;
-        $this->router = $router;
+    public function __construct(
+        private readonly RouterInterface $router,
+        private readonly StateMachine $quoteStateMachine
+    ) {
     }
 
     public function getForm(FormFactoryInterface $factory, Options $options)
@@ -58,11 +54,11 @@ abstract class AbstractQuoteHandler implements FormHandlerInterface, FormHandler
         $action = $form->getRequest()->request->get('save');
 
         if (! $quote->getId() instanceof UuidInterface) {
-            $this->stateMachine->apply($quote, Graph::TRANSITION_NEW);
+            $this->quoteStateMachine->apply($quote, Graph::TRANSITION_NEW);
         }
 
         if (Graph::STATUS_PENDING === $action) {
-            $this->stateMachine->apply($quote, Graph::TRANSITION_SEND);
+            $this->quoteStateMachine->apply($quote, Graph::TRANSITION_SEND);
         }
 
         $this->save($quote);

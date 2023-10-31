@@ -18,13 +18,11 @@ use Symfony\Component\Filesystem\Filesystem;
 
 final class EnvLoader implements EnvVarLoaderInterface
 {
-    private string $projectDir;
-
     private Filesystem $fileSystem;
 
-    public function __construct(string $projectDir)
-    {
-        $this->projectDir = $projectDir;
+    public function __construct(
+        private readonly string $projectDir
+    ) {
         $this->fileSystem = new Filesystem();
     }
 

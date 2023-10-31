@@ -6,101 +6,95 @@
     <br>
 </p>
 
-SolidInvoice is a simple open source invoicing application aimed to help small businesses and freelancers manage their day-to-day billing.
-It's a feature rich elegant online application to ensure that you can always get paid on time.
+SolidInvoice is a sophisticated open-source invoicing application designed to assist small businesses and freelancers in efficiently managing their daily billing operations. With its comprehensive range of features, this elegant online platform ensures that you receive timely payments.
 
-## Features
+## Key Features
 
-* Clients and Contacts management
-* Create and manage Quotes
-* Create and manage Invoices
-* Accept payments online
-* Tax and discount handling
-* RESTful API
-* Receive Notifications either via text message, email or through HipChat
-* More to come
+- Robust clients and contacts management system
+- Creation and management of quotes
+- Generation and oversight of invoices
+- Seamless online payment acceptance
+- Effective handling of taxes and discounts
+- RESTful API for integration with other systems
+- Receive notifications through various channels, including text messages, emails, or HipChat
+- Future enhancements planned
 
-## Demo
+## System Requirements
 
-<img src="https://dopd56xbeo74f.cloudfront.net/images/banner.png" />
+SolidInvoice requires PHP version 8.1 or later for optimal performance. It is recommended to use the latest available version of PHP.
 
-[https://demo.solidinvoice.co/](https://demo.solidinvoice.co/)
-
-## Requirements
-
-PHP >= 7.4.15 is required. Use the latest version of PHP for best experience.
-
-## Installation
+## Installation Options
 
 ### Docker
 
-Docker makes it really easy to get started as quickly as possible in running SolidInvoice.
-
-The docker image is available at [https://hub.docker.com/r/solidinvoice/solidinvoice/](https://hub.docker.com/r/solidinvoice/solidinvoice/) with instructions on how to get started.
+Getting started with SolidInvoice is quick and simple using Docker. The Docker image can be found at [https://hub.docker.com/r/solidinvoice/solidinvoice/](https://hub.docker.com/r/solidinvoice/solidinvoice/), along with instructions on how to begin.
 
 ### Archived Package
 
-Download the latest release from [https://github.com/SolidInvoice/SolidInvoice/releases](https://github.com/SolidInvoice/SolidInvoice/releases) in either `zip` or `tar.gz` format,
-and extract the contents of the archive under your webserver directory.
+To install SolidInvoice from an archived package, download the latest release in either the `zip` or `tar.gz` format from [https://github.com/SolidInvoice/SolidInvoice/releases](https://github.com/SolidInvoice/SolidInvoice/releases). Extract the contents of the archive into the appropriate directory within your web server.
 
-### For developers
+### Installation for Developers
 
-To install from source, you first need to clone the repository, then you need [composer][1] in order to install all the dependencies.
+If you prefer to install SolidInvoice from the source code, follow these steps:
 
-To clone the repository, issue the following command. Remember to clone the repository to the path you want, that is accessible from your webserver.
-
+1. Clone the repository by executing the following command:
 ```bash
 git clone https://github.com/SolidInvoice/SolidInvoice.git
 ```
+Ensure that you choose a destination path accessible from your web server.
 
-Then go into the repository directory
-
+2. Navigate to the cloned repository:
 ```bash
 cd SolidInvoice
 ```
 
-Now you need to get composer
-
+3. Obtain Composer, a dependency management tool, by running:
 ```bash
 curl -s http://getcomposer.org/installer | php
 ```
 
-When composer is finished downloading, you can install the required dependencies:
-
+4. Once Composer has finished downloading, install the required dependencies:
 ```bash
 php composer.phar install
 ```
 
-
-The final step is to install the Node packages, and compile all the assets
-
+5. Install the necessary Node packages and compile all assets:
 ```bash
-npm install
-npm run dev
+yarn install
+yarn dev
 ```
 
-Now you should have a fully working copy of SolidInvoice.
+At this point, SolidInvoice should be fully functional.
 
-If you want to run SolidInvoice in production mode, some additional steps is required:
+For production environments, follow these additional steps:
 
+1. Build the project and optimize it for production:
 ```bash
-npm run build
+yarn build
 ```
 
-## Contributing
+2. Deploy the optimized version of SolidInvoice.
 
-See [CONTRIBUTING](CONTRIBUTING.md)
+## Contribution Guidelines
+
+For information on contributing to the project, please refer to the [CONTRIBUTING](CONTRIBUTING.md) file.
 
 ## License
 
-SolidInvoice is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+SolidInvoice is licensed under the MIT license, an open-source software license. For detailed information, please consult the [LICENSE](LICENSE) file.
 
-Please see the [LICENSE](LICENSE) file for the full license.
+## Sponsorship
 
-## Donate
+We extend our gratitude to all the sponsors who support this project!
 
-Thank you for supporting the project!
+<a class="btn" aria-label="Sponsor @SolidInvoice" href="/sponsors/SolidInvoice?o=esc">
+    <span>Sponsor @SolidInvoice</span>
+</a>
 
-[![Paypal](https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EQLK2P3VBW2LC)
+### Thank you to the following sponsors:
+
+* JetBrains (PHPStorm License)
+* Docker (Docker Hub Subscription)
+* Sentry (Sponsored Business plan)
 
 [1]: http://getcomposer.org

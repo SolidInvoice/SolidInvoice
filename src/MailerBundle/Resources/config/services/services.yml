@@ -1,7 +1,0 @@
-services:
-    _defaults:
-        autowire: true
-        autoconfigure: true
-
-    SolidInvoice\MailerBundle\Configurator\:
-        resource: '../../Configurator/'

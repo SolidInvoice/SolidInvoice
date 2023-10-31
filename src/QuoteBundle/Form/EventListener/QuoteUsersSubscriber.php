@@ -29,17 +29,11 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class QuoteUsersSubscriber implements EventSubscriberInterface
 {
-    private FormBuilderInterface $builder;
-
-    private Quote $quote;
-
-    private ManagerRegistry $registry;
-
-    public function __construct(FormBuilderInterface $builder, Quote $quote, ManagerRegistry $registry)
-    {
-        $this->builder = $builder;
-        $this->quote = $quote;
-        $this->registry = $registry;
+    public function __construct(
+        private readonly FormBuilderInterface $builder,
+        private readonly Quote $quote,
+        private readonly ManagerRegistry $registry
+    ) {
     }
 
     public static function getSubscribedEvents(): array

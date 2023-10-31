@@ -15,11 +15,13 @@ namespace SolidInvoice\PaymentBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use DateTimeInterface;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Money\Currency;
 use Money\Money;
 use Payum\Core\Model\Payment as BasePayment;
 use Payum\Core\Model\PaymentInterface;
+use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
 use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
@@ -27,6 +29,7 @@ use SolidInvoice\CoreBundle\Exception\UnexpectedTypeException;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
 use Traversable;
@@ -37,20 +40,20 @@ use Traversable;
  *     itemOperations={"get"={"method"="GET"}},
  *     attributes={"normalization_context"={"groups"={"payment_api"}}}
  * )
- * @ORM\Table(name="payments")
- * @ORM\Entity(repositoryClass="SolidInvoice\PaymentBundle\Repository\PaymentRepository")
  */
+#[ORM\Table(name: Payment::TABLE_NAME)]
+#[ORM\Entity(repositoryClass: PaymentRepository::class)]
 class Payment extends BasePayment implements PaymentInterface
 {
+    final public const TABLE_NAME = 'payments';
+
     use TimeStampable;
     use CompanyAware;
 
-    /**
-     * @ORM\Column(name="id", type="uuid_binary_ordered_time")
-     * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=UuidOrderedTimeGenerator::class)
-     */
+    #[ORM\Column(name: 'id', type: UuidBinaryOrderedTimeType::NAME)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
     protected ?UuidInterface $id = null;
 
     /**
@@ -66,41 +69,28 @@ class Payment extends BasePayment implements PaymentInterface
 
     protected $clientId;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="SolidInvoice\InvoiceBundle\Entity\Invoice", inversedBy="payments")
-     */
+    #[ORM\ManyToOne(targetEntity: Invoice::class, inversedBy: 'payments')]
     private ?Invoice $invoice = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="SolidInvoice\ClientBundle\Entity\Client", inversedBy="payments")
-     * @ORM\JoinColumn(name="client", fieldName="client")
-     */
+    #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'payments')]
+    #[ORM\JoinColumn(name: 'client', fieldName: 'client')]
     private ?Client $client = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="SolidInvoice\PaymentBundle\Entity\PaymentMethod", inversedBy="payments")
-     *
-     * @Serialize\Groups({"payment_api", "client_api"})
-     */
+    #[ORM\ManyToOne(targetEntity: PaymentMethod::class, inversedBy: 'payments')]
+    #[Serialize\Groups(['payment_api', 'client_api'])]
     private ?PaymentMethod $method = null;
 
-    /**
-     * @ORM\Column(name="status", type="string", length=25)
-     * @Serialize\Groups({"payment_api", "client_api"})
-     */
+    #[ORM\Column(name: 'status', type: Types::STRING, length: 25)]
+    #[Serialize\Groups(['payment_api', 'client_api'])]
     private ?string $status = null;
 
-    /**
-     * @ORM\Column(name="message", type="text", nullable=true)
-     * @Serialize\Groups({"payment_api", "client_api"})
-     */
+    #[ORM\Column(name: 'message', type: Types::TEXT, nullable: true)]
+    #[Serialize\Groups(['payment_api', 'client_api'])]
     private ?string $message = null;
 
-    /**
-     * @ORM\Column(name="completed", type="datetime", nullable=true)
-     * @Assert\DateTime
-     * @Serialize\Groups({"payment_api", "client_api"})
-     */
+    #[ORM\Column(name: 'completed', type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Assert\DateTime]
+    #[Serialize\Groups(['payment_api', 'client_api'])]
     private ?DateTimeInterface $completed = null;
 
     public function getId(): ?UuidInterface

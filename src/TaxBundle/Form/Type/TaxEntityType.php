@@ -31,9 +31,6 @@ final class TaxEntityType extends AbstractType
         $this->repository = $repository;
     }
 
-    /**
-     * @param array<string, mixed> $options
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addModelTransformer(new EntityUuidTransformer($this->repository->findAll()));
@@ -46,7 +43,7 @@ final class TaxEntityType extends AbstractType
         $resolver->setDefault(
             'choices',
             array_combine(
-                $values,
+                array_map(static fn (Tax $tax) => $tax->__toString(), $values),
                 array_map(static fn (Tax $tax) => $tax->getId()->toString(), $values),
             )
         );

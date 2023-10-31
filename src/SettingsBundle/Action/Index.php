@@ -19,11 +19,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class Index
 {
-    private FormHandler $handler;
-
-    public function __construct(FormHandler $handler)
-    {
-        $this->handler = $handler;
+    public function __construct(
+        private readonly FormHandler $handler
+    ) {
     }
 
     public function __invoke(Request $request)

@@ -45,12 +45,11 @@ final class Send
             $route = $router->generate('_user_forgot_password');
 
             return new class($route, $e->getMessage()) extends RedirectResponse implements FlashResponse {
-                private string $message;
-
-                public function __construct(string $route, string $message)
-                {
+                public function __construct(
+                    string $route,
+                    private readonly string $message
+                ) {
                     parent::__construct($route);
-                    $this->message = $message;
                 }
 
                 public function getFlash(): Generator

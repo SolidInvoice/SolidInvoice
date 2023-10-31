@@ -109,9 +109,8 @@ abstract class FormTestCase extends TypeTestCase
     /**
      * @param string|FormInterface $form
      * @param array<string, mixed> $formData
-     * @param mixed $object
      */
-    protected function assertFormData($form, array $formData, $object): void
+    protected function assertFormData($form, array $formData, mixed $object): void
     {
         self::assertNotEmpty($formData);
 

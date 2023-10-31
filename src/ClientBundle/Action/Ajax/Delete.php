@@ -25,17 +25,11 @@ final class Delete implements AjaxResponse
 {
     use JsonTrait;
 
-    private ClientRepository $clientRepository;
-
-    private SessionInterface $session;
-
-    private TranslatorInterface $translator;
-
-    public function __construct(ClientRepository $clientRepository, SessionInterface $session, TranslatorInterface $translator)
-    {
-        $this->clientRepository = $clientRepository;
-        $this->session = $session;
-        $this->translator = $translator;
+    public function __construct(
+        private readonly ClientRepository $clientRepository,
+        private readonly SessionInterface $session,
+        private readonly TranslatorInterface $translator
+    ) {
     }
 
     public function __invoke(Client $client): Response

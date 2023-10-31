@@ -46,7 +46,7 @@ class VersionRepository extends ServiceEntityRepository
             $entityManager->persist($entity);
 
             $entityManager->flush();
-        } catch (ORMException $e) {
+        } catch (ORMException) {
             // noop
         }
     }
@@ -60,7 +60,7 @@ class VersionRepository extends ServiceEntityRepository
 
         try {
             return $qb->getQuery()->getSingleScalarResult();
-        } catch (NoResultException|NonUniqueResultException|Exception $e) {
+        } catch (NoResultException|NonUniqueResultException|Exception) {
             return '0.0.0';
         }
     }

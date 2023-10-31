@@ -24,16 +24,11 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 final class EntityUuidTransformer implements DataTransformerInterface
 {
     /**
-     * @var object[]
-     */
-    private array $types;
-
-    /**
      * @param object[] $types
      */
-    public function __construct(array $types)
-    {
-        $this->types = $types;
+    public function __construct(
+        private readonly array $types
+    ) {
     }
 
     /**

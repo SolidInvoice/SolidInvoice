@@ -26,14 +26,10 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class MoneyNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    private MoneyFormatterInterface $formatter;
-
-    private SystemConfig $systemConfig;
-
-    public function __construct(MoneyFormatterInterface $formatter, SystemConfig $systemConfig)
-    {
-        $this->formatter = $formatter;
-        $this->systemConfig = $systemConfig;
+    public function __construct(
+        private readonly MoneyFormatterInterface $formatter,
+        private readonly SystemConfig $systemConfig
+    ) {
     }
 
     /**

@@ -29,7 +29,7 @@ use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
 
 class StatsWidget implements WidgetInterface
 {
-    private ObjectManager $manager;
+    private readonly ObjectManager $manager;
 
     public function __construct(ManagerRegistry $registry)
     {

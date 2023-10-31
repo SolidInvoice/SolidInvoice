@@ -24,7 +24,7 @@ jobs:
 
     steps:
     - name: Harden Runner
-      uses: step-security/harden-runner@128a63446a954579617e875aaab7d2978154e969
+      uses: step-security/harden-runner@8ca2b8b2ece13480cda6dacd3511b49857a23c09
       with:
         disable-sudo: true
         egress-policy: block
@@ -34,18 +34,18 @@ jobs:
           54.185.253.63:443
 
     - name: Checkout repository
-      uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f
+      uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744
 
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@67a35a08586135a9573f4327e904ecbf517a882d
+      uses: github/codeql-action/init@cdcdbb579706841c47f7063dda365e292e5cad7a
       with:
         languages: ${{ matrix.language }}
 
     - name: Autobuild
-      uses: github/codeql-action/autobuild@67a35a08586135a9573f4327e904ecbf517a882d
+      uses: github/codeql-action/autobuild@cdcdbb579706841c47f7063dda365e292e5cad7a
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@67a35a08586135a9573f4327e904ecbf517a882d
+      uses: github/codeql-action/analyze@cdcdbb579706841c47f7063dda365e292e5cad7a
 
   #qodana:
   #  permissions:
@@ -58,7 +58,7 @@ jobs:
   #
   #  steps:
   #    - name: Harden Runner
-  #      uses: step-security/harden-runner@128a63446a954579617e875aaab7d2978154e969
+  #      uses: step-security/harden-runner@8ca2b8b2ece13480cda6dacd3511b49857a23c09
   #      with:
   #        disable-sudo: true
   #        egress-policy: block
@@ -77,7 +77,7 @@ jobs:
   #          schemastore.org:443
   #
   #    - name: Checkout repository
-  #      uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f
+  #      uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744
   #
   #    - name: 'Qodana Scan'
   #      uses: JetBrains/qodana-action@61b94e7e3a716dcb9e2030cfd79cd46149d56c26

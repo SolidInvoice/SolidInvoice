@@ -31,24 +31,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ApiTokenAuthenticator extends AbstractGuardAuthenticator
 {
-    protected ApiTokenUserProvider $userProvider;
-
-    private ManagerRegistry $registry;
-
-    private TranslatorInterface $translator;
-
-    private CompanySelector $companySelector;
-
     public function __construct(
-        ApiTokenUserProvider $userProvider,
-        ManagerRegistry $registry,
-        TranslatorInterface $translator,
-        CompanySelector $companySelector
+        protected ApiTokenUserProvider $userProvider,
+        private readonly ManagerRegistry $registry,
+        private readonly TranslatorInterface $translator,
+        private readonly CompanySelector $companySelector
     ) {
-        $this->userProvider = $userProvider;
-        $this->registry = $registry;
-        $this->translator = $translator;
-        $this->companySelector = $companySelector;
     }
 
     public function supports(Request $request): bool

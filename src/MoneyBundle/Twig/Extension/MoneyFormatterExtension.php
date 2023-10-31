@@ -27,14 +27,10 @@ use function is_int;
  */
 class MoneyFormatterExtension extends AbstractExtension
 {
-    private MoneyFormatterInterface $formatter;
-
-    private SystemConfig $systemConfig;
-
-    public function __construct(MoneyFormatterInterface $formatter, SystemConfig $systemConfig)
-    {
-        $this->formatter = $formatter;
-        $this->systemConfig = $systemConfig;
+    public function __construct(
+        private readonly MoneyFormatterInterface $formatter,
+        private readonly SystemConfig $systemConfig
+    ) {
     }
 
     public function getFunctions(): array

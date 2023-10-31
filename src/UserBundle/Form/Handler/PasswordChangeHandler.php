@@ -36,20 +36,12 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class PasswordChangeHandler implements FormHandlerResponseInterface, FormHandlerInterface, FormHandlerSuccessInterface
 {
-    private UserRepositoryInterface $userRepository;
-
-    private RouterInterface $router;
-
-    private TokenStorageInterface $tokenStorage;
-
-    private UserPasswordHasherInterface $userPasswordHasher;
-
-    public function __construct(UserRepositoryInterface $userRepository, UserPasswordHasherInterface $userPasswordHasher, TokenStorageInterface $tokenStorage, RouterInterface $router)
-    {
-        $this->userRepository = $userRepository;
-        $this->router = $router;
-        $this->tokenStorage = $tokenStorage;
-        $this->userPasswordHasher = $userPasswordHasher;
+    public function __construct(
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly UserPasswordHasherInterface $userPasswordHasher,
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly RouterInterface $router
+    ) {
     }
 
     public function getForm(FormFactoryInterface $factory, Options $options)

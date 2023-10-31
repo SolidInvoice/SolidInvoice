@@ -26,18 +26,16 @@ use Traversable;
  */
 final class InvoiceCloner
 {
-    private InvoiceManager $invoiceManager;
-
-    public function __construct(InvoiceManager $invoiceManager)
-    {
-        $this->invoiceManager = $invoiceManager;
+    public function __construct(
+        private readonly InvoiceManager $invoiceManager
+    ) {
     }
 
     public function clone(BaseInvoice $invoice): BaseInvoice
     {
         // We don't use 'clone', since cloning an invoice will clone all the item id's and nested values.
         // Rather set it manually
-        $class = \get_class($invoice);
+        $class = $invoice::class;
         /** @var RecurringInvoice|Invoice $newInvoice */
         $newInvoice = new $class();
 

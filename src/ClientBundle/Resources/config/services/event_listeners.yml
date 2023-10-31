@@ -1,4 +1,0 @@
-services:
-    SolidInvoice\ClientBundle\Listener\ClientListener:
-        autowire: true
-        tags: ['doctrine.event_subscriber']

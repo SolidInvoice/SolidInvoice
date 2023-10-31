@@ -43,33 +43,14 @@ class InstallCommand extends Command
 
     protected static $defaultDescription = 'Installs the application';
 
-    private ConfigWriter $configWriter;
-
-    private string $projectDir;
-
-    private ?string $installed;
-
-    private Migration $migration;
-
-    private ManagerRegistry $registry;
-
-    private UserPasswordHasherInterface $userPasswordHasher;
-
     public function __construct(
-        ConfigWriter $configWriter,
-        Migration $migration,
-        ManagerRegistry $registry,
-        UserPasswordHasherInterface $userPasswordHasher,
-        string $projectDir,
-        ?string $installed
+        private readonly ConfigWriter $configWriter,
+        private readonly Migration $migration,
+        private readonly ManagerRegistry $registry,
+        private readonly UserPasswordHasherInterface $userPasswordHasher,
+        private readonly string $projectDir,
+        private readonly ?string $installed
     ) {
-        $this->configWriter = $configWriter;
-        $this->projectDir = $projectDir;
-        $this->installed = $installed;
-        $this->migration = $migration;
-        $this->registry = $registry;
-        $this->userPasswordHasher = $userPasswordHasher;
-
         parent::__construct();
     }
 
@@ -124,7 +105,7 @@ class InstallCommand extends Command
         $values = ['database-host', 'database-user', 'locale'];
 
         if (! $input->getOption('skip-user')) {
-            $values = array_merge($values, ['admin-username', 'admin-password', 'admin-email']);
+            $values = [...$values, 'admin-username', 'admin-password', 'admin-email'];
         }
 
         foreach ($values as $option) {
@@ -183,7 +164,7 @@ class InstallCommand extends Command
             $tmpConnection->createSchemaManager()->createDatabase($dbName);
             $output->writeln(sprintf('<info>Created database %s</info>', $dbName));
         } catch (Exception $e) {
-            if (false !== strpos($e->getMessage(), 'database exists')) {
+            if (str_contains($e->getMessage(), 'database exists')) {
                 if ($output->getVerbosity() >= OutputInterface::VERBOSITY_DEBUG) {
                     $output->writeln(sprintf('<info>Database %s already exists</info>', $dbName));
                 }

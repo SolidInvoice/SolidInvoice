@@ -1,7 +1,0 @@
-services:
-    _defaults:
-        autowire: true
-        tags:
-            - { name: form.type }
-
-    SolidInvoice\CoreBundle\Form\Type\DiscountType: ~

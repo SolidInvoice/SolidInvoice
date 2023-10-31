@@ -21,6 +21,7 @@ RUN PID=$(mysqld &) && \
         --database-host=127.0.0.1 \
         --database-password=$PASSWORD \
         --locale=en \
+        --currency=ZAR \
         --skip-user && \
     killall -15 mysqld
 

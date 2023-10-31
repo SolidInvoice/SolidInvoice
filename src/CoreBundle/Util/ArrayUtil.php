@@ -14,26 +14,17 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Util;
 
 use ArrayAccess;
-use Exception;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Traversable;
 
 class ArrayUtil
 {
     /**
-     * Returns a specific column from an array.
+     * @param array<string, mixed> $array
      *
-     * @param array|\Traversable $array
-     * @param string             $column
-     *
-     * @throws Exception
+     * @return array<int, mixed>
      */
-    public static function column($array, $column): array
+    public static function column(iterable $array, string $column): array
     {
-        if (! is_array($array) && ! $array instanceof Traversable) {
-            throw new Exception(sprintf('Array or instance of Traversable expected, "%s" given', gettype($array)));
-        }
-
         if (is_array($array[array_key_first($array)])) {
             return array_column($array, $column);
         }

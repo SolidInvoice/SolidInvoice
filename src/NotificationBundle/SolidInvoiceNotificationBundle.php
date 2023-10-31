@@ -17,8 +17,10 @@ use SolidInvoice\NotificationBundle\DependencyInjection\CompilerPass\Notificatio
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class SolidInvoiceNotificationBundle extends Bundle
+final class SolidInvoiceNotificationBundle extends Bundle
 {
+    final public const NAMESPACE = __NAMESPACE__;
+
     public function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new NotificationHandlerCompilerPass());

@@ -38,19 +38,15 @@ class PaymentMethodSettingsHandler implements FormHandlerInterface, FormHandlerS
 {
     use SaveableTrait;
 
-    private PaymentFactories $paymentFactories;
-
-    private RouterInterface $router;
-
     /**
      * @var array<string, string|null>
      */
     private ?array $originalSettings = [];
 
-    public function __construct(PaymentFactories $paymentFactories, RouterInterface $router)
-    {
-        $this->paymentFactories = $paymentFactories;
-        $this->router = $router;
+    public function __construct(
+        private readonly PaymentFactories $paymentFactories,
+        private readonly RouterInterface $router
+    ) {
     }
 
     public function getForm(FormFactoryInterface $factory, Options $options)

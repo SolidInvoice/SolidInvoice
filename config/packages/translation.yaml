@@ -1,5 +1,0 @@
-framework:
-    default_locale: '%env(locale)%'
-    translator:
-        fallbacks:
-            - en

@@ -55,64 +55,33 @@ final class Prepare
 {
     use SaveableTrait;
 
-    private StateMachine $stateMachine;
-
-    private PaymentMethodRepository $paymentMethodRepository;
-
-    private AuthorizationCheckerInterface $authorization;
-
-    private TokenStorageInterface $tokenStorage;
-
-    private FormFactoryInterface $formFactory;
-
-    private PaymentFactories $paymentFactories;
-
-    private EventDispatcherInterface $eventDispatcher;
-
     /**
-     * @var Payum
+     * @param Payum $payum
      */
-    private RegistryInterface $payum;
-
-    private RouterInterface $router;
-
-    private CompanySelector $companySelector;
-
     public function __construct(
-        StateMachine $stateMachine,
-        PaymentMethodRepository $paymentMethodRepository,
-        AuthorizationCheckerInterface $authorization,
-        TokenStorageInterface $tokenStorage,
-        FormFactoryInterface $formFactory,
-        PaymentFactories $paymentFactories,
-        EventDispatcherInterface $eventDispatcher,
-        RegistryInterface $payum,
-        RouterInterface $router,
-        CompanySelector $companySelector
+        private readonly StateMachine $invoiceStateMachine,
+        private readonly PaymentMethodRepository $paymentMethodRepository,
+        private readonly AuthorizationCheckerInterface $authorization,
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly FormFactoryInterface $formFactory,
+        private readonly PaymentFactories $paymentFactories,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly RegistryInterface $payum,
+        private readonly RouterInterface $router,
+        private readonly CompanySelector $companySelector
     ) {
-        $this->stateMachine = $stateMachine;
-        $this->paymentMethodRepository = $paymentMethodRepository;
-        $this->authorization = $authorization;
-        $this->tokenStorage = $tokenStorage;
-        $this->formFactory = $formFactory;
-        $this->paymentFactories = $paymentFactories;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->payum = $payum;
-        $this->router = $router;
-        $this->companySelector = $companySelector;
     }
 
     /**
-     * @return Template|Response|null
      * @throws Exception
      */
-    public function __invoke(Request $request, ?Invoice $invoice)
+    public function __invoke(Request $request, ?Invoice $invoice): Template | Response | null
     {
         if (! $invoice instanceof Invoice) {
             throw new NotFoundHttpException();
         }
 
-        if (! $this->stateMachine->can($invoice, Graph::TRANSITION_PAY)) {
+        if (! $this->invoiceStateMachine->can($invoice, Graph::TRANSITION_PAY)) {
             throw new Exception('This invoice cannot be paid');
         }
 

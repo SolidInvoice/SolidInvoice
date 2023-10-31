@@ -22,23 +22,14 @@ use SolidInvoice\UserBundle\Entity\User;
 
 class NotificationManager
 {
-    private Factory $factory;
-
-    private ManagerInterface $notification;
-
-    private SystemConfig $settings;
-
-    private ObjectManager $entityManager;
+    private readonly ObjectManager $entityManager;
 
     public function __construct(
-        Factory $factory,
-        SystemConfig $settings,
-        ManagerInterface $notification,
+        private readonly Factory $factory,
+        private readonly SystemConfig $settings,
+        private readonly ManagerInterface $notification,
         ManagerRegistry $doctrine
     ) {
-        $this->factory = $factory;
-        $this->notification = $notification;
-        $this->settings = $settings;
         $this->entityManager = $doctrine->getManager();
     }
 

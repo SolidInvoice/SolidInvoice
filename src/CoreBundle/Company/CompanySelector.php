@@ -26,23 +26,18 @@ use function assert;
 
 final class CompanySelector
 {
-    private ManagerRegistry $registry;
-
     private ?UuidInterface $companyId = null;
 
-    private OrderedTimeCodec $codec;
+    private readonly OrderedTimeCodec $codec;
 
-    private SystemConfig $config;
-
-    public function __construct(ManagerRegistry $registry, SystemConfig $config)
-    {
-        $this->registry = $registry;
-
+    public function __construct(
+        private readonly ManagerRegistry $registry,
+        private readonly SystemConfig $config,
+    ) {
         $factory = clone Uuid::getFactory();
         assert($factory instanceof UuidFactory);
 
         $this->codec = new OrderedTimeCodec($factory->getUuidBuilder());
-        $this->config = $config;
     }
 
     public function getCompany(): ?UuidInterface
@@ -67,7 +62,7 @@ final class CompanySelector
 
         try {
             Currency::set($this->config->getCurrency());
-        } catch (RuntimeException $e) {
+        } catch (RuntimeException) {
             // Currency is not set, so we can't set it here
         }
     }

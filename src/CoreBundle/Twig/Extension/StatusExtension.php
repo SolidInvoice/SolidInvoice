@@ -106,7 +106,7 @@ class StatusExtension extends AbstractExtension
      *
      * @throws Exception
      */
-    public function renderInvoiceStatusLabel(Environment $environment, string $status = null, string $tooltip = null)
+    public function renderInvoiceStatusLabel(Environment $environment, string $status = null, string $tooltip = null): string|array
     {
         if (null === $status) {
             return $this->getAllStatusLabels($environment, $this->invoiceLabelMap);
@@ -142,10 +142,8 @@ class StatusExtension extends AbstractExtension
 
     /**
      * Return the status converted into a label string.
-     *
-     * @param mixed  $object
      */
-    private function renderStatusLabel(Environment $environment, $object, string $tooltip = null): string
+    private function renderStatusLabel(Environment $environment, mixed $object, string $tooltip = null): string
     {
         if (is_array($object) && array_key_exists('status_label', $object) && array_key_exists('status', $object)) {
             $object = [
@@ -168,7 +166,7 @@ class StatusExtension extends AbstractExtension
      *
      * @throws Exception
      */
-    public function renderQuoteStatusLabel(Environment $environment, string $status = null, string $tooltip = null)
+    public function renderQuoteStatusLabel(Environment $environment, string $status = null, string $tooltip = null): string|array
     {
         if (null === $status) {
             return $this->getAllStatusLabels($environment, $this->quoteLabelMap);
@@ -191,7 +189,7 @@ class StatusExtension extends AbstractExtension
      *
      * @throws Exception
      */
-    public function renderPaymentStatusLabel(Environment $environment, string $status = null, string $tooltip = null)
+    public function renderPaymentStatusLabel(Environment $environment, string $status = null, string $tooltip = null): string|array
     {
         if (null === $status) {
             return $this->getAllStatusLabels($environment, $this->paymentLabelMap);
@@ -214,7 +212,7 @@ class StatusExtension extends AbstractExtension
      *
      * @throws Exception
      */
-    public function renderClientStatusLabel(Environment $environment, string $status = null, string $tooltip = null)
+    public function renderClientStatusLabel(Environment $environment, string $status = null, string $tooltip = null): string|array
     {
         if (null === $status) {
             return $this->getAllStatusLabels($environment, $this->clientLabelMap);

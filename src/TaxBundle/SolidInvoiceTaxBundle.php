@@ -15,6 +15,7 @@ namespace SolidInvoice\TaxBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class SolidInvoiceTaxBundle extends Bundle
+final class SolidInvoiceTaxBundle extends Bundle
 {
+    final public const NAMESPACE = __NAMESPACE__;
 }

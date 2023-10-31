@@ -18,9 +18,9 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class ConfigWriter
 {
-    private Filesystem $fileSystem;
+    private readonly Filesystem $fileSystem;
 
-    private string $configFile;
+    private readonly string $configFile;
 
     public function __construct(string $projectDir)
     {

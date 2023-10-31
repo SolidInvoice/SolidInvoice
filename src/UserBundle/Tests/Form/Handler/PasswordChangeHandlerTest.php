@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Tests\Form\Handler;
 
 use Mockery as M;
+use Mockery\MockInterface;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
 use SolidInvoice\UserBundle\Entity\User;
@@ -33,19 +34,19 @@ final class PasswordChangeHandlerTest extends FormHandlerTestCase
     /**
      * @var UserRepository&M\MockInterface
      */
-    private $userRepository;
+    private MockInterface&UserRepository $userRepository;
 
     private UserPasswordHasher $userPasswordHasher;
 
     /**
      * @var TokenStorageInterface&M\MockInterface
      */
-    private $tokenStorage;
+    private MockInterface&TokenStorageInterface $tokenStorage;
 
     /**
      * @var RouterInterface&M\MockInterface
      */
-    private $router;
+    private MockInterface&RouterInterface $router;
 
     private string $password;
 
@@ -79,7 +80,7 @@ final class PasswordChangeHandlerTest extends FormHandlerTestCase
         self::assertInstanceOf(RedirectResponse::class, $response);
         self::assertInstanceOf(FlashResponse::class, $response);
         self::assertSame('profile', $response->getTargetUrl());
-        self::assertTrue(password_verify($this->password, $data->getPassword()));
+        self::assertTrue(password_verify($this->password, (string) $data->getPassword()));
         self::assertSame(FlashResponse::FLASH_SUCCESS, $response->getFlash()->key());
     }
 

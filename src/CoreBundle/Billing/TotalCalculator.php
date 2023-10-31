@@ -27,11 +27,9 @@ use SolidInvoice\TaxBundle\Entity\Tax;
  */
 class TotalCalculator
 {
-    private PaymentRepository $paymentRepository;
-
-    public function __construct(PaymentRepository $paymentRepository)
-    {
-        $this->paymentRepository = $paymentRepository;
+    public function __construct(
+        private readonly PaymentRepository $paymentRepository
+    ) {
     }
 
     public function calculateTotals($entity): void
@@ -79,10 +77,7 @@ class TotalCalculator
         $entity->setTax($tax);
     }
 
-    /**
-     * @param BaseInvoice|Quote $entity
-     */
-    private function setDiscount($entity, Money $total): Money
+    private function setDiscount(BaseInvoice|Quote $entity, Money $total): Money
     {
         $discount = $entity->getDiscount();
 

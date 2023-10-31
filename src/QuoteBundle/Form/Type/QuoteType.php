@@ -32,14 +32,10 @@ use function array_key_exists;
  */
 class QuoteType extends AbstractType
 {
-    private SystemConfig $systemConfig;
-
-    private ManagerRegistry $registry;
-
-    public function __construct(SystemConfig $systemConfig, ManagerRegistry $registry)
-    {
-        $this->systemConfig = $systemConfig;
-        $this->registry = $registry;
+    public function __construct(
+        private readonly SystemConfig $systemConfig,
+        private readonly ManagerRegistry $registry
+    ) {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

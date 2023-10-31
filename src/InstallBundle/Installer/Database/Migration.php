@@ -19,11 +19,9 @@ use Doctrine\Migrations\Query\Query;
 
 final class Migration
 {
-    private DependencyFactory $migrationDependencyFactory;
-
-    public function __construct(DependencyFactory $migrationDependencyFactory)
-    {
-        $this->migrationDependencyFactory = $migrationDependencyFactory;
+    public function __construct(
+        private readonly DependencyFactory $migrationDependencyFactory
+    ) {
     }
 
     /**

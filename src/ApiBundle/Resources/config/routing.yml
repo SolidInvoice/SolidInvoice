@@ -1,6 +1,0 @@
-api_login_check:
-    path: /login
-
-api:
-    resource: '.'
-    type:     'api_platform'
