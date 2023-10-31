@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Form\Type;
 
+use SolidInvoice\ClientBundle\Entity\ContactType as ContactTypeEntity;
 use SolidInvoice\ClientBundle\Repository\ContactTypeRepository;
 use SolidInvoice\CoreBundle\Form\DataTransformer\EntityUuidTransformer;
 use Symfony\Component\Form\AbstractType;
@@ -53,6 +54,9 @@ class ContactDetailType extends AbstractType
                         'attr' => [
                             'class' => 'input-group-select-val',
                         ],
+                        'constraints' => [
+                            new NotBlank(['groups' => 'not_blank_type', 'message' => 'The contact detail type cannot be empty']),
+                        ],
                     ]
                 )
                 ->addModelTransformer(new EntityUuidTransformer($this->contactTypeRepository->findAll()))
@@ -75,7 +79,13 @@ class ContactDetailType extends AbstractType
     {
         $resolver->setDefault('validation_groups', function (FormInterface $form) {
             // @codeCoverageIgnoreStart
-            $type = $form->get('type')->getData()->getName();
+            $contactDetailsType = $form->get('type')->getData();
+
+            if (! $contactDetailsType instanceof ContactTypeEntity) {
+                return ['Default', 'not_blank_type'];
+            }
+
+            $type = $contactDetailsType->getName();
             $value = $form->get('value')->getData();
 
             if (! empty($type) && empty($value)) {
