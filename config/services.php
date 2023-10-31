@@ -41,6 +41,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $parameters->set('env(SOLIDINVOICE_ALLOW_REGISTRATION)', '0');
 
+    $parameters->set('env(SENTRY_DSN)', null);
+
     $parameters->set('env(SENTRY_SEND_DEFAULT_PII)', '0');
 
     $containerConfigurator->services()
