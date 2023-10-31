@@ -41,6 +41,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $parameters->set('env(SOLIDINVOICE_ALLOW_REGISTRATION)', '0');
 
+    $parameters->set('env(SENTRY_SEND_DEFAULT_PII)', '0');
+
     $containerConfigurator->services()
         ->set(Monolog\Processor\PsrLogMessageProcessor::class)
         ->tag('monolog.processor', ['handler' => 'sentry']);
