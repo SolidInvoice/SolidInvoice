@@ -19,6 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Contracts\Service\ResetInterface;
+use Zenstruck\Foundry\Test\TestState;
 use function assert;
 
 /**
@@ -50,6 +51,7 @@ trait SymfonyKernelTrait
         static::ensureKernelShutdown();
         static::$kernel = null;
         static::$booted = false;
+        TestState::shutdownFoundry();
     }
 
     /**
@@ -101,20 +103,20 @@ trait SymfonyKernelTrait
     {
         if (isset($options['environment'])) {
             $env = $options['environment'];
-        } elseif (isset($_ENV['APP_ENV'])) {
-            $env = $_ENV['APP_ENV'];
-        } elseif (isset($_SERVER['APP_ENV'])) {
-            $env = $_SERVER['APP_ENV'];
+        } elseif (isset($_ENV['SOLIDINVOICE_ENV'])) {
+            $env = $_ENV['SOLIDINVOICE_ENV'];
+        } elseif (isset($_SERVER['SOLIDINVOICE_ENV'])) {
+            $env = $_SERVER['SOLIDINVOICE_ENV'];
         } else {
             $env = 'test';
         }
 
         if (isset($options['debug'])) {
             $debug = $options['debug'];
-        } elseif (isset($_ENV['APP_DEBUG'])) {
-            $debug = $_ENV['APP_DEBUG'];
-        } elseif (isset($_SERVER['APP_DEBUG'])) {
-            $debug = $_SERVER['APP_DEBUG'];
+        } elseif (isset($_ENV['SOLIDINVOICE_DEBUG'])) {
+            $debug = $_ENV['SOLIDINVOICE_DEBUG'];
+        } elseif (isset($_SERVER['SOLIDINVOICE_DEBUG'])) {
+            $debug = $_SERVER['SOLIDINVOICE_DEBUG'];
         } else {
             $debug = true;
         }

@@ -35,6 +35,7 @@ class ConfigurationTest extends TestCase
                 'payment' => [
                     'gateways' => [
                         'one' => [
+                            'name' => 'one',
                             'factory' => 'one',
                             'form' => 'two',
                         ],
@@ -51,6 +52,7 @@ class ConfigurationTest extends TestCase
                 'payment' => [
                     'gateways' => [
                         'one' => [
+                            'name' => 'one',
                             'factory' => 'one',
                         ],
                     ],
@@ -78,6 +80,7 @@ class ConfigurationTest extends TestCase
                 'payment' => [
                     'gateways' => [
                         'one' => [
+                            'name' => 'one',
                             'factory' => '',
                         ],
                     ],
@@ -94,6 +97,7 @@ class ConfigurationTest extends TestCase
                 'payment' => [
                     'gateways' => [
                         'one' => [
+                            'name' => 'one',
                             'factory' => 'one',
                             'form' => null,
                         ],
