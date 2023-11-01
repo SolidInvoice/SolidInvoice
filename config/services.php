@@ -43,7 +43,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $parameters->set('env(SENTRY_DSN)', null);
 
-    $parameters->set('env(MAILER_DSN)', null);
+    $parameters->set('env(MAILER_DSN)', '');
 
     $parameters->set('env(SENTRY_SEND_DEFAULT_PII)', '0');
 
