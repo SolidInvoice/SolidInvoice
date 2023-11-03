@@ -41,7 +41,7 @@ jobs:
 
       - uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c
         with:
-          node-version: 14
+          node-version-file: .nvmrc
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@2b82ce82d56a2a04d2637cd93a637ae1b359c0a7

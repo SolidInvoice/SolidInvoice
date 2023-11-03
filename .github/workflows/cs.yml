@@ -111,7 +111,7 @@ jobs:
 
       - uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c
         with:
-          node-version: 14
+          node-version-file: .nvmrc
 
       - run: yarn install
 
