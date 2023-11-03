@@ -45,6 +45,7 @@ class InvoiceManager implements ContainerAwareInterface
     use ContainerAwareTrait;
 
     protected ObjectManager $entityManager;
+
     protected ManagerRegistry $registry;
 
     protected EventDispatcherInterface $dispatcher;
@@ -54,10 +55,10 @@ class InvoiceManager implements ContainerAwareInterface
     private NotificationManager $notification;
 
     public function __construct(
-        ManagerRegistry          $doctrine,
+        ManagerRegistry $doctrine,
         EventDispatcherInterface $dispatcher,
-        StateMachine             $stateMachine,
-        NotificationManager      $notification
+        StateMachine $stateMachine,
+        NotificationManager $notification
     ) {
         $this->registry = $doctrine;
         $manager = $this->registry->getManager();
@@ -158,7 +159,7 @@ class InvoiceManager implements ContainerAwareInterface
         // Set the invoice status as new and save, before we transition to the correct status
         $invoice->setStatus(Graph::STATUS_NEW);
 
-        if ($this->entityManager instanceof EntityManagerInterface && !$this->entityManager->isOpen()) {
+        if ($this->entityManager instanceof EntityManagerInterface && ! $this->entityManager->isOpen()) {
             $this->entityManager = $this->registry->resetManager();
         }
 
