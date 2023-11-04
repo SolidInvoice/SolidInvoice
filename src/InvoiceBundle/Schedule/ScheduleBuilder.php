@@ -34,7 +34,8 @@ final class ScheduleBuilder implements ScheduleBuilderInterface
 
     public function buildSchedule(Schedule $schedule): void
     {
-        $invoiceRepository = $this->registry->getRepository(RecurringInvoice::class);
+        $invoiceRepository = $this->registry
+            ->getRepository(RecurringInvoice::class);
 
         $qb = $invoiceRepository->createQueryBuilder('r');
 
@@ -42,6 +43,7 @@ final class ScheduleBuilder implements ScheduleBuilderInterface
             ->select('r')
             ->where('r.status = :status')
             ->andWhere('r.dateEnd IS NULL OR r.dateEnd > :now')
+            ->andWhere('r.dateStart <= :now')
             ->setParameter('status', 'active')
             ->setParameter('now', Carbon::now())
         ;
