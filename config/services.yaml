@@ -14,7 +14,7 @@ parameters:
     env(mailer_port): ~
     env(mailer_encryption): ~
 
-    env(locale): 'en_US'
+    env(locale): 'en'
     env(secret): 'SecretToken'
 
     env(installed): ~
