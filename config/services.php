@@ -21,7 +21,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters->set('env(mailer_password)', null);
     $parameters->set('env(mailer_port)', null);
     $parameters->set('env(mailer_encryption)', null);
-    $parameters->set('env(locale)', 'en_US');
+    $parameters->set('env(locale)', 'en');
     $parameters->set('env(secret)', 'SecretToken');
     $parameters->set('env(installed)', null);
     $parameters->set('env(SOLIDINVOICE_ALLOW_REGISTRATION)', '0');
