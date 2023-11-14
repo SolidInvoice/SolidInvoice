@@ -131,7 +131,7 @@
         "dama/doctrine-test-bundle": "^7.2",
         "dbrekelmans/bdi": "^1.0",
         "doctrine/doctrine-fixtures-bundle": "^3.3",
-        "ergebnis/composer-normalize": "^2.20",
+        "ergebnis/composer-normalize": "^2.28",
         "hautelook/alice-bundle": "^2.9",
         "laminas/laminas-zendframework-bridge": "^1.6",
         "liip/test-fixtures-bundle": "^2.4",
@@ -185,7 +185,7 @@
         },
         "symfony": {
             "allow-contrib": true,
-             "require": "^5.4"
+            "require": "^5.4"
         }
     },
     "scripts": {
