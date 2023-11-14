@@ -50,8 +50,10 @@ use Symfony\Component\Validator\Constraints as Assert;
     uriTemplate: '/clients/{id}/invoices.{_format}',
     operations: [new GetCollection()],
     uriVariables: [
-        'id' => new Link(fromClass: Client::class,
-            identifiers: ['id'])
+        'id' => new Link(
+            fromClass: Client::class,
+            identifiers: ['id']
+        )
     ],
     status: 200,
     normalizationContext: [
@@ -83,7 +85,6 @@ class Invoice extends BaseInvoice
     #[ORM\Column(name: 'uuid', type: UuidType::NAME, length: 36)]
     #[Serialize\Groups(['invoice_api', 'client_api'])]
     private ?UuidInterface $uuid = null;
-
 
     #[ApiProperty(iris: ['https://schema.org/Organization'])]
     #[ORM\ManyToOne(targetEntity: Client::class, cascade: ['persist'], inversedBy: 'invoices')]

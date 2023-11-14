@@ -88,7 +88,6 @@ class Quote
     #[Serialize\Groups(['quote_api', 'client_api'])]
     private ?string $status = null;
 
-
     #[ApiProperty(iris: ['https://schema.org/Organization'])]
     #[ORM\ManyToOne(targetEntity: Client::class, cascade: ['persist'], inversedBy: 'quotes')]
     #[Assert\NotBlank]

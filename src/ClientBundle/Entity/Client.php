@@ -56,14 +56,12 @@ class Client implements Stringable
     #[Serialize\Groups(['client_api'])]
     private ?UuidInterface $id = null;
 
-
     #[ApiProperty(iris: ['https://schema.org/name'])]
     #[ORM\Column(name: 'name', type: Types::STRING, length: 125)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 125)]
     #[Serialize\Groups(['client_api'])]
     private ?string $name = null;
-
 
     #[ApiProperty(iris: ['https://schema.org/URL'])]
     #[ORM\Column(name: 'website', type: Types::STRING, length: 125, nullable: true)]
@@ -72,7 +70,6 @@ class Client implements Stringable
     #[Serialize\Groups(['client_api'])]
     private ?string $website = null;
 
-
     #[ApiProperty(iris: ['https://schema.org/Text'])]
     #[ORM\Column(name: 'status', type: Types::STRING, length: 25)]
     #[Serialize\Groups(['client_api'])]
@@ -80,7 +77,6 @@ class Client implements Stringable
 
     #[ORM\Column(name: 'currency', type: Types::STRING, length: 3, nullable: true)]
     private ?string $currencyCode = null;
-
 
     #[ApiProperty(iris: ['https://schema.org/Text'])]
     #[Serialize\Groups(['client_api'])]
@@ -134,7 +130,6 @@ class Client implements Stringable
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Address::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[Serialize\Groups(['client_api'])]
     private Collection $addresses;
-
 
     #[ApiProperty(iris: ['https://schema.org/MonetaryAmount'])]
     #[ORM\OneToOne(mappedBy: 'client', targetEntity: Credit::class, cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]

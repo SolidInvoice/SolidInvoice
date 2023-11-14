@@ -57,7 +57,8 @@ use function strtolower;
     ],
     denormalizationContext: [
         'groups' => ['contact_api']
-    ])]
+    ]
+)]
 #[ORM\Table(name: Contact::TABLE_NAME)]
 #[ORM\Index(columns: ['email'])]
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
@@ -75,7 +76,6 @@ class Contact implements Serializable, Stringable
     #[Serialize\Groups(['client_api', 'contact_api'])]
     private ?UuidInterface $id = null;
 
-
     #[ApiProperty(iris: ['https://schema.org/givenName'])]
     #[ORM\Column(name: 'firstName', type: Types::STRING, length: 125)]
     #[Assert\NotBlank]
@@ -83,13 +83,11 @@ class Contact implements Serializable, Stringable
     #[Serialize\Groups(['client_api', 'contact_api'])]
     private ?string $firstName = null;
 
-
     #[ApiProperty(iris: ['https://schema.org/familyName'])]
     #[ORM\Column(name: 'lastName', type: Types::STRING, length: 125, nullable: true)]
     #[Assert\Length(max: 125)]
     #[Serialize\Groups(['client_api', 'contact_api'])]
     private ?string $lastName = null;
-
 
     #[ApiProperty(iris: ['https://schema.org/Organization'])]
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'contacts')]
@@ -98,7 +96,6 @@ class Contact implements Serializable, Stringable
     #[Assert\Valid]
     #[Assert\NotBlank]
     private ?Client $client = null;
-
 
     #[ApiProperty(iris: ['https://schema.org/email'])]
     #[ORM\Column(name: 'email', type: Types::STRING, length: 255)]
