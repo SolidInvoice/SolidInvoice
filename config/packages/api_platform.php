@@ -9,7 +9,9 @@ return static function (ApiPlatformConfig $config): void {
     $config
         ->title(SolidInvoiceCoreBundle::APP_NAME)
         ->version(SolidInvoiceCoreBundle::VERSION)
-        ->showWebby(false);
+        ->showWebby(false)
+        ->metadataBackwardCompatibilityLayer(false)
+    ;
 
     $config
         ->formats('jsonld')
