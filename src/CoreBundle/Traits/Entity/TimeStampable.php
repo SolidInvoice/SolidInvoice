@@ -23,14 +23,14 @@ trait TimeStampable
     /**
      * @Gedmo\Timestampable(on="create")
      */
-    #[ApiProperty(iris: ["https://schema.org/DateTime"])]
+    #[ApiProperty(iris: ['https://schema.org/DateTime'])]
     #[ORM\Column(name: 'created', type: 'datetime')]
     protected ?DateTimeInterface $created = null;
 
     /**
      * @Gedmo\Timestampable(on="update")
      */
-    #[ApiProperty(iris: ["https://schema.org/DateTime"])]
+    #[ApiProperty(iris: ['https://schema.org/DateTime'])]
     #[ORM\Column(name: 'updated', type: 'datetime')]
     protected ?DateTimeInterface $updated = null;
 
