@@ -13,7 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -34,15 +37,19 @@ use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
 use Traversable;
 
-/**
- * @ApiResource(
- *     collectionOperations={"get"={"method"="GET"}},
- *     itemOperations={"get"={"method"="GET"}},
- *     attributes={"normalization_context"={"groups"={"payment_api"}}}
- * )
- */
 #[ORM\Table(name: Payment::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: PaymentRepository::class)]
+#[ApiResource(
+    uriTemplate: '/clients/{id}/payments.{_format}',
+    operations: [new Get(), new GetCollection()],
+    uriVariables: [
+        'id' => new Link(fromClass: Client::class, identifiers: ['id'])
+    ],
+    status: 200,
+    normalizationContext: [
+        'groups' => ['payment_api']
+    ]
+)]
 class Payment extends BasePayment implements PaymentInterface
 {
     final public const TABLE_NAME = 'payments';
