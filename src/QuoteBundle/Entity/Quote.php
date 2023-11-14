@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Entity;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -41,16 +43,26 @@ use SolidInvoice\QuoteBundle\Traits\QuoteStatusTrait;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(attributes={"normalization_context"={"groups"={"quote_api"}}, "denormalization_context"={"groups"={"create_quote_api"}}})
- */
 #[ORM\Table(name: Quote::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: QuoteRepository::class)]
 #[ORM\HasLifecycleCallbacks]
+#[ApiResource(
+    uriTemplate: '/clients/{id}/quotes.{_format}',
+    operations: [new GetCollection()],
+    uriVariables: [
+        'id' => new Link(fromClass: Client::class, identifiers: ['id'])
+    ],
+    status: 200,
+    normalizationContext: [
+        'groups' => ['quote_api']
+    ],
+    denormalizationContext: [
+        'groups' => ['create_quote_api']
+    ],
+)]
 class Quote
 {
     final public const TABLE_NAME = 'quotes';
-
     use Archivable;
     use QuoteStatusTrait {
         Archivable::isArchived insteadof QuoteStatusTrait;
@@ -76,9 +88,8 @@ class Quote
     #[Serialize\Groups(['quote_api', 'client_api'])]
     private ?string $status = null;
 
-    /**
-     * @ApiProperty(iri="https://schema.org/Organization")
-     */
+
+    #[ApiProperty(iris: ['https://schema.org/Organization'])]
     #[ORM\ManyToOne(targetEntity: Client::class, cascade: ['persist'], inversedBy: 'quotes')]
     #[Assert\NotBlank]
     #[Serialize\Groups(['quote_api', 'create_quote_api'])]
@@ -123,10 +134,9 @@ class Quote
     private Collection $items;
 
     /**
-     * @var Collection<int, QuoteContact>
-     *
-     * @ApiProperty(writableLink=true)
+     * @var \Collection<int,\QuoteContact>
      */
+    #[ApiProperty(writableLink: true)]
     #[ORM\OneToMany(mappedBy: 'quote', targetEntity: QuoteContact::class, cascade: ['persist', 'remove'])]
     #[Assert\Count(min: 1, minMessage: 'You need to select at least 1 user to attach to the Quote')]
     #[Serialize\Groups(['quote_api', 'client_api', 'create_quote_api'])]
@@ -144,7 +154,6 @@ class Quote
             $this->setUuid(Uuid::uuid1());
         } catch (Exception) {
         }
-
         $this->baseTotal = new MoneyEntity();
         $this->tax = new MoneyEntity();
         $this->total = new MoneyEntity();
@@ -163,7 +172,6 @@ class Quote
     public function setUuid(UuidInterface $uuid): self
     {
         $this->uuid = $uuid;
-
         return $this;
     }
 
@@ -188,13 +196,10 @@ class Quote
                 $quoteContact = new QuoteContact();
                 $quoteContact->setContact($user);
                 $quoteContact->setQuote($this);
-
                 $contacts[] = $quoteContact;
             }
         }
-
         $this->users = new ArrayCollection($contacts);
-
         return $this;
     }
 
@@ -203,9 +208,7 @@ class Quote
         $quoteContact = new QuoteContact();
         $quoteContact->setContact($user);
         $quoteContact->setQuote($this);
-
         $this->users[] = $quoteContact;
-
         return $this;
     }
 
@@ -217,7 +220,6 @@ class Quote
     public function setStatus(string $status): self
     {
         $this->status = $status;
-
         return $this;
     }
 
@@ -229,13 +231,11 @@ class Quote
     public function setClient(?Client $client): self
     {
         $this->client = $client;
-
         if ($client instanceof Client && null !== $client->getCurrencyCode()) {
             $this->total->setCurrency($client->getCurrency()->getCode());
             $this->baseTotal->setCurrency($client->getCurrency()->getCode());
             $this->tax->setCurrency($client->getCurrency()->getCode());
         }
-
         return $this;
     }
 
@@ -247,7 +247,6 @@ class Quote
     public function setTotal(Money $total): self
     {
         $this->total = new MoneyEntity($total);
-
         return $this;
     }
 
@@ -259,7 +258,6 @@ class Quote
     public function setBaseTotal(Money $baseTotal): self
     {
         $this->baseTotal = new MoneyEntity($baseTotal);
-
         return $this;
     }
 
@@ -271,7 +269,6 @@ class Quote
     public function setDiscount(Discount $discount): self
     {
         $this->discount = $discount;
-
         return $this;
     }
 
@@ -283,7 +280,6 @@ class Quote
     public function setDue(DateTimeInterface $due): self
     {
         $this->due = $due;
-
         return $this;
     }
 
@@ -292,7 +288,6 @@ class Quote
         assert($item instanceof Item);
         $this->items[] = $item;
         $item->setQuote($this);
-
         return $this;
     }
 
@@ -300,7 +295,6 @@ class Quote
     {
         $this->items->removeElement($item);
         $item->setQuote();
-
         return $this;
     }
 
@@ -320,7 +314,6 @@ class Quote
     public function setTerms(?string $terms): self
     {
         $this->terms = $terms;
-
         return $this;
     }
 
@@ -332,7 +325,6 @@ class Quote
     public function setNotes(?string $notes): self
     {
         $this->notes = $notes;
-
         return $this;
     }
 
@@ -344,7 +336,6 @@ class Quote
     public function setTax(Money $tax): self
     {
         $this->tax = new MoneyEntity($tax);
-
         return $this;
     }
 
@@ -359,7 +350,6 @@ class Quote
     public function setInvoice(Invoice $invoice): self
     {
         $this->invoice = $invoice;
-
         return $this;
     }
 

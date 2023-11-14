@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Entity;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -31,16 +33,26 @@ use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(attributes={"normalization_context"={"groups"={"recurring_invoice_api"}}, "denormalization_context"={"groups"={"create_recurring_invoice_api"}}})
- */
 #[ORM\Table(name: RecurringInvoice::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: RecurringInvoiceRepository::class)]
 #[ORM\HasLifecycleCallbacks]
+#[ApiResource(
+    uriTemplate: '/clients/{id}/recurring_invoices.{_format}',
+    operations: [new GetCollection()],
+    uriVariables: [
+        'id' => new Link(fromClass: Client::class, identifiers: ['id'])
+    ],
+    status: 200,
+    normalizationContext: [
+        'groups' => ['recurring_invoice_api']
+    ],
+    denormalizationContext: [
+        'groups' => ['create_recurring_invoice_api']
+    ],
+)]
 class RecurringInvoice extends BaseInvoice
 {
     final public const TABLE_NAME = 'recurring_invoices';
-
     use Archivable;
     use TimeStampable;
 
@@ -51,9 +63,8 @@ class RecurringInvoice extends BaseInvoice
     #[Serialize\Groups(['recurring_invoice_api', 'client_api'])]
     private ?UuidInterface $id = null;
 
-    /**
-     * @ApiProperty(iri="https://schema.org/Organization")
-     */
+
+    #[ApiProperty(iris: ['https://schema.org/Organization'])]
     #[ORM\ManyToOne(targetEntity: Client::class, cascade: ['persist'], inversedBy: 'recurringInvoices')]
     #[Assert\NotBlank]
     #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
@@ -84,9 +95,8 @@ class RecurringInvoice extends BaseInvoice
 
     /**
      * @var Collection<int, RecurringInvoiceContact>
-     *
-     * @ApiProperty(writableLink=true)
      */
+    #[ApiProperty(writableLink: true)]
     #[ORM\OneToMany(mappedBy: 'recurringInvoice', targetEntity: RecurringInvoiceContact::class, cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY')]
     #[Assert\Count(min: 1, minMessage: 'You need to select at least 1 user to attach to the Invoice')]
     #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]

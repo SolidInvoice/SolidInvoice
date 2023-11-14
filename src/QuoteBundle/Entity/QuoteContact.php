@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 
-/**
- * @ApiResource(collectionOperations={}, itemOperations={})
- */
+#[ApiResource(operations: [])]
 #[ORM\Table(name: QuoteContact::TABLE_NAME)]
 #[ORM\Entity]
 class QuoteContact
