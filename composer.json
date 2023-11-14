@@ -110,6 +110,7 @@
         "symfony/serializer": "^5.4",
         "symfony/swiftmailer-bundle": "^3.4",
         "symfony/translation": "^5.4",
+        "symfony/twig-bridge": "^5.4",
         "symfony/twig-bundle": "^5.4",
         "symfony/validator": "^5.4",
         "symfony/webpack-encore-bundle": "^1.8",
@@ -183,7 +184,8 @@
             "dev-master": "2.3-dev"
         },
         "symfony": {
-            "allow-contrib": true
+            "allow-contrib": true,
+             "require": "^5.4"
         }
     },
     "scripts": {
