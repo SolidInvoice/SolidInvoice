@@ -39,7 +39,7 @@ class ViewTransformer implements DataTransformerInterface
 
     public function reverseTransform($value): Money
     {
-        if (!is_numeric($value)) {
+        if (! is_numeric($value)) {
             $value = 0;
         }
 
