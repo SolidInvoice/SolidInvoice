@@ -31,10 +31,10 @@ class ViewTransformer implements DataTransformerInterface
     public function transform($value)
     {
         if ($value instanceof Money) {
-            return $value->getAmount() / 100;
+            return (float) ($value->getAmount() / 100);
         }
 
-        return 0;
+        return 0.0;
     }
 
     public function reverseTransform($value): Money
@@ -43,6 +43,6 @@ class ViewTransformer implements DataTransformerInterface
             $value = 0;
         }
 
-        return new Money(((int) $value * 100), $this->currency);
+        return new Money($value * 100, $this->currency);
     }
 }
