@@ -1,11 +1,20 @@
 <?php
 
+/*
+ * This file is part of SolidInvoice project.
+ *
+ * (c) Pierre du Plessis <open-source@solidworx.co>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace SolidInvoice\MoneyBundle\Tests\Form\DataTransformer;
 
 use Money\Currency;
 use Money\Money;
-use SolidInvoice\MoneyBundle\Form\DataTransformer\ViewTransformer;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\MoneyBundle\Form\DataTransformer\ViewTransformer;
 
 /**
  * @covers \SolidInvoice\MoneyBundle\Form\DataTransformer\ViewTransformer
@@ -18,7 +27,7 @@ final class ViewTransformerTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->currency = new Currency("USD");
+        $this->currency = new Currency('USD');
         $this->viewTransformer = new ViewTransformer($this->currency);
     }
 
