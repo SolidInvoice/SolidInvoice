@@ -280,9 +280,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         return $this;
     }
 
-    public function setPlainPassword(string $password): self
+    public function setPlainPassword(?string $password): self
     {
-        $this->plainPassword = $password;
+        $this->plainPassword = (string) $password;
 
         return $this;
     }
