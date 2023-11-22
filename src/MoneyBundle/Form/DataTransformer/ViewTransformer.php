@@ -30,7 +30,7 @@ class ViewTransformer implements DataTransformerInterface
         $this->currency = $currency;
     }
 
-    public function transform($value)
+    public function transform($value): float
     {
         if ($value instanceof Money) {
             return (float) ($value->getAmount() / 100);
