@@ -55,6 +55,9 @@ final class ViewTransformerTest extends TestCase
         self::assertSame($expected, $value);
     }
 
+    /**
+     * @return iterable<array<float|int|null>>
+     */
     public function reverseTransformDataProvider(): iterable
     {
         yield [null, 0];
@@ -72,6 +75,9 @@ final class ViewTransformerTest extends TestCase
         yield [0.99, 99];
     }
 
+    /**
+     * @return iterable<array<Money|string|float|null>>
+     */
     public function transformDataProvider(): iterable
     {
         yield [null, 0.0];
