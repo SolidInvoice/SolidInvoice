@@ -2224,42 +2224,6 @@
             "time": "2023-06-01T07:04:22+00:00"
         },
         {
-            "name": "fp/klarna-invoice",
-            "version": "0.1.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/formapro/KlarnaInvoice.git",
-                "reference": "c0aebad0be069d875619a2ef2455c29e667ed27a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/formapro/KlarnaInvoice/zipball/c0aebad0be069d875619a2ef2455c29e667ed27a",
-                "reference": "c0aebad0be069d875619a2ef2455c29e667ed27a",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.2.16",
-                "phpxmlrpc/phpxmlrpc": "~3.0|~4.0"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "Klarna.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "description": "It unofficial repo of Klarna Invoice service with Composer added. We use it with https://github.com/Payum/KlarnaInvoice",
-            "homepage": "http://developers.klarna.com",
-            "support": {
-                "issues": "https://github.com/formapro/KlarnaInvoice/issues",
-                "source": "https://github.com/formapro/KlarnaInvoice/tree/0.1.2"
-            },
-            "time": "2015-09-03T08:23:32+00:00"
-        },
-        {
             "name": "friendsofphp/proxy-manager-lts",
             "version": "v1.0.16",
             "source": {
@@ -4450,17 +4414,17 @@
         },
         {
             "name": "payum/authorize-net-aim",
-            "version": "1.7.3",
+            "version": "1.7.4",
             "target-dir": "Payum/AuthorizeNet/Aim",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/AuthorizeNetAim.git",
-                "reference": "b8518f3e14cae9f9b1ec46009ffa1f478204ef9c"
+                "reference": "429ff74ddc49acebf3ddd27989eb38e8846354cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/AuthorizeNetAim/zipball/b8518f3e14cae9f9b1ec46009ffa1f478204ef9c",
-                "reference": "b8518f3e14cae9f9b1ec46009ffa1f478204ef9c",
+                "url": "https://api.github.com/repos/Payum/AuthorizeNetAim/zipball/429ff74ddc49acebf3ddd27989eb38e8846354cf",
+                "reference": "429ff74ddc49acebf3ddd27989eb38e8846354cf",
                 "shasum": ""
             },
             "require": {
@@ -4509,23 +4473,23 @@
                 "payment"
             ],
             "support": {
-                "source": "https://github.com/Payum/AuthorizeNetAim/tree/1.7.3"
+                "source": "https://github.com/Payum/AuthorizeNetAim/tree/1.7.4"
             },
-            "time": "2021-05-17T19:26:36+00:00"
+            "time": "2023-12-07T11:06:53+00:00"
         },
         {
             "name": "payum/be2bill",
-            "version": "1.7.3",
+            "version": "1.7.4",
             "target-dir": "Payum/Be2Bill",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/Be2Bill.git",
-                "reference": "95d3aa5be379a8417a500be2f4b527f23b5f0a3c"
+                "reference": "52592f8fb194368ce564e577406fab7fe10a5635"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/Be2Bill/zipball/95d3aa5be379a8417a500be2f4b527f23b5f0a3c",
-                "reference": "95d3aa5be379a8417a500be2f4b527f23b5f0a3c",
+                "url": "https://api.github.com/repos/Payum/Be2Bill/zipball/52592f8fb194368ce564e577406fab7fe10a5635",
+                "reference": "52592f8fb194368ce564e577406fab7fe10a5635",
                 "shasum": ""
             },
             "require": {
@@ -4573,23 +4537,23 @@
                 "payment"
             ],
             "support": {
-                "source": "https://github.com/Payum/Be2Bill/tree/1.7.3"
+                "source": "https://github.com/Payum/Be2Bill/tree/1.7.4"
             },
-            "time": "2021-05-17T19:26:36+00:00"
+            "time": "2023-11-06T09:43:01+00:00"
         },
         {
             "name": "payum/core",
-            "version": "1.7.3",
+            "version": "1.7.4",
             "target-dir": "Payum/Core",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/Core.git",
-                "reference": "37b75090d77245569c481c4b9240a9cf01e0e8c8"
+                "reference": "77f621c2bec49dcb2c148b5a01e07d074564e283"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/Core/zipball/37b75090d77245569c481c4b9240a9cf01e0e8c8",
-                "reference": "37b75090d77245569c481c4b9240a9cf01e0e8c8",
+                "url": "https://api.github.com/repos/Payum/Core/zipball/77f621c2bec49dcb2c148b5a01e07d074564e283",
+                "reference": "77f621c2bec49dcb2c148b5a01e07d074564e283",
                 "shasum": ""
             },
             "require": {
@@ -4691,9 +4655,9 @@
                 "withdrawal"
             ],
             "support": {
-                "source": "https://github.com/Payum/Core/tree/1.7.3"
+                "source": "https://github.com/Payum/Core/tree/1.7.4"
             },
-            "time": "2022-07-04T09:47:14+00:00"
+            "time": "2023-11-06T09:43:01+00:00"
         },
         {
             "name": "payum/iso4217",
@@ -4765,17 +4729,17 @@
         },
         {
             "name": "payum/klarna-checkout",
-            "version": "1.7.3",
+            "version": "1.7.4",
             "target-dir": "Payum/Klarna/Checkout",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/KlarnaCheckout.git",
-                "reference": "29dbe9d7268bee6bef1024c027c09b4a2bc467d6"
+                "reference": "5dd7d6d466b5a8a150a30d277fa3696c75e0ae68"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/KlarnaCheckout/zipball/29dbe9d7268bee6bef1024c027c09b4a2bc467d6",
-                "reference": "29dbe9d7268bee6bef1024c027c09b4a2bc467d6",
+                "url": "https://api.github.com/repos/Payum/KlarnaCheckout/zipball/5dd7d6d466b5a8a150a30d277fa3696c75e0ae68",
+                "reference": "5dd7d6d466b5a8a150a30d277fa3696c75e0ae68",
                 "shasum": ""
             },
             "require": {
@@ -4823,28 +4787,28 @@
                 "payment"
             ],
             "support": {
-                "source": "https://github.com/Payum/KlarnaCheckout/tree/1.7.3"
+                "source": "https://github.com/Payum/KlarnaCheckout/tree/1.7.4"
             },
-            "time": "2021-05-17T19:26:36+00:00"
+            "time": "2023-11-06T09:43:01+00:00"
         },
         {
             "name": "payum/klarna-invoice",
-            "version": "1.7.3",
+            "version": "1.7.4",
             "target-dir": "Payum/Klarna/Invoice",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/KlarnaInvoice.git",
-                "reference": "e75925fb28ca2dedb0b043b1e86887c471f4f0b5"
+                "reference": "e53348d6f3bbc15a44d74f5f83f1d14cfbe5d0be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/KlarnaInvoice/zipball/e75925fb28ca2dedb0b043b1e86887c471f4f0b5",
-                "reference": "e75925fb28ca2dedb0b043b1e86887c471f4f0b5",
+                "url": "https://api.github.com/repos/Payum/KlarnaInvoice/zipball/e53348d6f3bbc15a44d74f5f83f1d14cfbe5d0be",
+                "reference": "e53348d6f3bbc15a44d74f5f83f1d14cfbe5d0be",
                 "shasum": ""
             },
             "require": {
-                "fp/klarna-invoice": "0.1.*",
-                "payum/core": "^1.5"
+                "payum/core": "^1.5",
+                "solidworx/klarna-invoice": "0.2.*"
             },
             "require-dev": {
                 "payum/core": "^1.5",
@@ -4887,23 +4851,23 @@
                 "payment"
             ],
             "support": {
-                "source": "https://github.com/Payum/KlarnaInvoice/tree/1.7.3"
+                "source": "https://github.com/Payum/KlarnaInvoice/tree/1.7.4"
             },
-            "time": "2021-05-17T19:26:36+00:00"
+            "time": "2023-12-07T11:06:53+00:00"
         },
         {
             "name": "payum/offline",
-            "version": "1.7.3",
+            "version": "1.7.4",
             "target-dir": "Payum/Offline",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/Offline.git",
-                "reference": "0600b0eb3cff8f19a351a0b3c7d29743c9cdbb20"
+                "reference": "1b980f5ed4805d6a2b048b84b88ece973de64d36"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/Offline/zipball/0600b0eb3cff8f19a351a0b3c7d29743c9cdbb20",
-                "reference": "0600b0eb3cff8f19a351a0b3c7d29743c9cdbb20",
+                "url": "https://api.github.com/repos/Payum/Offline/zipball/1b980f5ed4805d6a2b048b84b88ece973de64d36",
+                "reference": "1b980f5ed4805d6a2b048b84b88ece973de64d36",
                 "shasum": ""
             },
             "require": {
@@ -4951,23 +4915,23 @@
                 "payment"
             ],
             "support": {
-                "source": "https://github.com/Payum/Offline/tree/1.7.3"
+                "source": "https://github.com/Payum/Offline/tree/1.7.4"
             },
-            "time": "2021-05-17T19:26:36+00:00"
+            "time": "2023-11-06T09:43:01+00:00"
         },
         {
             "name": "payum/payex",
-            "version": "1.7.3",
+            "version": "1.7.4",
             "target-dir": "Payum/Payex",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/Payex.git",
-                "reference": "5a854bb533fbdd865569d63fa2e29ed5cbdc4c0d"
+                "reference": "bab24653b56513ef19b5f7780f8748cb9198c4a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/Payex/zipball/5a854bb533fbdd865569d63fa2e29ed5cbdc4c0d",
-                "reference": "5a854bb533fbdd865569d63fa2e29ed5cbdc4c0d",
+                "url": "https://api.github.com/repos/Payum/Payex/zipball/bab24653b56513ef19b5f7780f8748cb9198c4a1",
+                "reference": "bab24653b56513ef19b5f7780f8748cb9198c4a1",
                 "shasum": ""
             },
             "require": {
@@ -5017,23 +4981,23 @@
                 "payment"
             ],
             "support": {
-                "source": "https://github.com/Payum/Payex/tree/1.7.3"
+                "source": "https://github.com/Payum/Payex/tree/1.7.4"
             },
-            "time": "2021-05-17T19:26:36+00:00"
+            "time": "2023-11-06T09:43:01+00:00"
         },
         {
             "name": "payum/paypal-express-checkout-nvp",
-            "version": "1.7.3",
+            "version": "1.7.4",
             "target-dir": "Payum/Paypal/ExpressCheckout/Nvp",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/PaypalExpressCheckoutNvp.git",
-                "reference": "79d2c3535bd528fd963a9ab4c3ce4b087101ab57"
+                "reference": "c846f343b1fc2591860f2f715fcf653c4a6d1b2d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/PaypalExpressCheckoutNvp/zipball/79d2c3535bd528fd963a9ab4c3ce4b087101ab57",
-                "reference": "79d2c3535bd528fd963a9ab4c3ce4b087101ab57",
+                "url": "https://api.github.com/repos/Payum/PaypalExpressCheckoutNvp/zipball/c846f343b1fc2591860f2f715fcf653c4a6d1b2d",
+                "reference": "c846f343b1fc2591860f2f715fcf653c4a6d1b2d",
                 "shasum": ""
             },
             "require": {
@@ -5084,23 +5048,23 @@
                 "recurring payment"
             ],
             "support": {
-                "source": "https://github.com/Payum/PaypalExpressCheckoutNvp/tree/1.7.3"
+                "source": "https://github.com/Payum/PaypalExpressCheckoutNvp/tree/1.7.4"
             },
-            "time": "2021-05-17T19:26:36+00:00"
+            "time": "2023-12-07T11:06:53+00:00"
         },
         {
             "name": "payum/paypal-pro-checkout-nvp",
-            "version": "1.7.3",
+            "version": "1.7.4",
             "target-dir": "Payum/Paypal/ProCheckout/Nvp",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/PaypalProCheckoutNvp.git",
-                "reference": "2c3cb5597c3db0dc3dc399d7447eaa2764e8006b"
+                "reference": "ad1a78b4d99a10c1841552f1f9f82b550097cea9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/PaypalProCheckoutNvp/zipball/2c3cb5597c3db0dc3dc399d7447eaa2764e8006b",
-                "reference": "2c3cb5597c3db0dc3dc399d7447eaa2764e8006b",
+                "url": "https://api.github.com/repos/Payum/PaypalProCheckoutNvp/zipball/ad1a78b4d99a10c1841552f1f9f82b550097cea9",
+                "reference": "ad1a78b4d99a10c1841552f1f9f82b550097cea9",
                 "shasum": ""
             },
             "require": {
@@ -5153,22 +5117,22 @@
                 "pro checkout"
             ],
             "support": {
-                "source": "https://github.com/Payum/PaypalProCheckoutNvp/tree/1.7.3"
+                "source": "https://github.com/Payum/PaypalProCheckoutNvp/tree/1.7.4"
             },
-            "time": "2021-05-17T19:26:36+00:00"
+            "time": "2023-12-07T11:06:53+00:00"
         },
         {
             "name": "payum/payum-bundle",
-            "version": "2.5.0",
+            "version": "2.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/PayumBundle.git",
-                "reference": "4322a979033a1591ea4985dc22dd8cee8c7566be"
+                "reference": "a10faf18eabc9066ea1e10de0d6b81f77ba0646a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/PayumBundle/zipball/4322a979033a1591ea4985dc22dd8cee8c7566be",
-                "reference": "4322a979033a1591ea4985dc22dd8cee8c7566be",
+                "url": "https://api.github.com/repos/Payum/PayumBundle/zipball/a10faf18eabc9066ea1e10de0d6b81f77ba0646a",
+                "reference": "a10faf18eabc9066ea1e10de0d6b81f77ba0646a",
                 "shasum": ""
             },
             "require": {
@@ -5257,23 +5221,23 @@
             ],
             "support": {
                 "issues": "https://github.com/Payum/PayumBundle/issues",
-                "source": "https://github.com/Payum/PayumBundle/tree/2.5.0"
+                "source": "https://github.com/Payum/PayumBundle/tree/2.5.2"
             },
-            "time": "2022-07-04T16:56:18+00:00"
+            "time": "2023-08-16T15:46:43+00:00"
         },
         {
             "name": "payum/stripe",
-            "version": "1.7.3",
+            "version": "1.7.4",
             "target-dir": "Payum/Stripe",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/Stripe.git",
-                "reference": "4e94d9699e5b2e0fe7a3dc0d99fb05da7cc34f9c"
+                "reference": "f8e18b9b9ad270b72ffd619a34e444b52cb5147c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/Stripe/zipball/4e94d9699e5b2e0fe7a3dc0d99fb05da7cc34f9c",
-                "reference": "4e94d9699e5b2e0fe7a3dc0d99fb05da7cc34f9c",
+                "url": "https://api.github.com/repos/Payum/Stripe/zipball/f8e18b9b9ad270b72ffd619a34e444b52cb5147c",
+                "reference": "f8e18b9b9ad270b72ffd619a34e444b52cb5147c",
                 "shasum": ""
             },
             "require": {
@@ -5326,9 +5290,9 @@
                 "subscription"
             ],
             "support": {
-                "source": "https://github.com/Payum/Stripe/tree/1.7.3"
+                "source": "https://github.com/Payum/Stripe/tree/1.7.4"
             },
-            "time": "2021-12-03T21:21:39+00:00"
+            "time": "2023-11-06T09:43:01+00:00"
         },
         {
             "name": "php-http/client-common",
@@ -7095,6 +7059,41 @@
                 "source": "https://github.com/SolidWorx/FormHandlerBundle/tree/1.2.1"
             },
             "time": "2023-03-23T07:06:34+00:00"
+        },
+        {
+            "name": "solidworx/klarna-invoice",
+            "version": "0.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SolidWorx/KlarnaInvoice.git",
+                "reference": "a9a8efdda0a99eafd11ade43431e3c14e89a50d1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SolidWorx/KlarnaInvoice/zipball/a9a8efdda0a99eafd11ade43431e3c14e89a50d1",
+                "reference": "a9a8efdda0a99eafd11ade43431e3c14e89a50d1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.16",
+                "phpxmlrpc/phpxmlrpc": "~3.0|~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "Klarna.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "The unofficial repo of Klarna Invoice service with Composer added. We use it with https://github.com/Payum/KlarnaInvoice",
+            "homepage": "https://docs.klarna.com/",
+            "support": {
+                "source": "https://github.com/SolidWorx/KlarnaInvoice/tree/0.2.0"
+            },
+            "time": "2023-12-07T10:55:41+00:00"
         },
         {
             "name": "solidworx/toggler",

@@ -149,9 +149,6 @@
     "egulias/email-validator": {
         "version": "2.1.18"
     },
-    "fp/klarna-invoice": {
-        "version": "0.1.2"
-    },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.3"
     },
