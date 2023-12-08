@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Schedule;
 
 use Carbon\Carbon;
-use DateTimeInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Message\CreateInvoiceFromRecurring;
@@ -35,16 +34,21 @@ final class ScheduleBuilder implements ScheduleBuilderInterface
 
     public function buildSchedule(Schedule $schedule): void
     {
-        $invoiceRepository = $this->registry->getRepository(RecurringInvoice::class);
+        $invoiceRepository = $this->registry
+            ->getRepository(RecurringInvoice::class);
 
-        /** @var RecurringInvoice[] $recurringInvoices */
-        $recurringInvoices = $invoiceRepository->findBy(['status' => 'active']);
+        $qb = $invoiceRepository->createQueryBuilder('r');
 
-        foreach ($recurringInvoices as $recurringInvoice) {
-            if ($recurringInvoice->getDateEnd() instanceof DateTimeInterface && ! Carbon::instance($recurringInvoice->getDateEnd())->isFuture()) {
-                continue;
-            }
+        $qb
+            ->select('r')
+            ->where('r.status = :status')
+            ->andWhere('r.dateEnd IS NULL OR r.dateEnd > :now')
+            ->andWhere('r.dateStart <= :now')
+            ->setParameter('status', 'active')
+            ->setParameter('now', Carbon::now())
+        ;
 
+        foreach ($qb->getQuery()->toIterable() as $recurringInvoice) {
             $schedule
                 ->addMessage(new CreateInvoiceFromRecurring($recurringInvoice))
                 ->description(sprintf('Create recurring invoice (%s)', $recurringInvoice->getId()))
