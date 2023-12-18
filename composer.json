@@ -39,7 +39,7 @@
         "doctrine/orm": "^2.13",
         "dragonmantank/cron-expression": "^3.3",
         "egulias/email-validator": "^3.2",
-        "friendsofsymfony/jsrouting-bundle": "^2.5",
+        "friendsofsymfony/jsrouting-bundle": "^3.4",
         "knplabs/knp-menu-bundle": "^3.2",
         "moneyphp/money": "3.3.3",
         "mpdf/mpdf": "^8.0",
