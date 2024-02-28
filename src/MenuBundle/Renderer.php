@@ -54,7 +54,7 @@ class Renderer extends ListRenderer implements RendererInterface
         if (isset($options['attr'])) {
             $item->setChildrenAttributes($options['attr']);
         } else {
-            $item->setChildrenAttributes(['class' => 'nav nav-pills nav-sidebar flex-column']);
+            $item->setChildrenAttributes(['class' => 'navbar-nav pt-lg-3']);
         }
 
         return parent::render($item, $options);
@@ -75,7 +75,7 @@ class Renderer extends ListRenderer implements RendererInterface
         if (isset($options['attr'])) {
             $menu->setChildrenAttributes($options['attr']);
         } else {
-            $menu->setChildrenAttributes(['class' => 'nav nav-pills nav-sidebar flex-column']);
+            $menu->setChildrenAttributes(['class' => 'navbar-nav pt-lg-3']);
         }
 
         foreach ($storage as $builder) {

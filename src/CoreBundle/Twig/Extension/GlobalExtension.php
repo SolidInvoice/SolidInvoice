@@ -16,6 +16,7 @@ namespace SolidInvoice\CoreBundle\Twig\Extension;
 use Carbon\Carbon;
 use DateTime;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Pdf\Generator;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\MoneyBundle\Calculator;
@@ -125,12 +126,12 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
     /**
      * @throws InvalidArgumentException|ServiceCircularReferenceException|ServiceNotFoundException|LoaderError|SyntaxError
      */
-    public function displayAppLogo(Environment $env, string $width = 'auto', bool $showDefault = true): string
+    public function displayAppLogo(Environment $env, string $width = 'auto', ?Company $company = null, bool $showDefault = false): string
     {
         $logo = $showDefault ? self::DEFAULT_LOGO : null;
 
         if ($this->installed) {
-            $logo = $this->systemConfig->get('system/company/logo');
+            $logo = $this->systemConfig->get('system/company/logo', $company);
 
             if (null === $logo) {
                 $logo = $showDefault ? self::DEFAULT_LOGO : null;

@@ -8,83 +8,114 @@
  #}
 
 <div class="col-sm-9">
-    <div class="row">
+    <div class="row row-cards">
         <div class="col-sm-6">
-            <div class="info-box elevation-1">
-                <span class="info-box-icon bg-blue elevation-1">{{ icon('group') }}</span>
-                <div class="info-box-content">
-                    <span class="info-box-text">{{ 'dashboard.active_clients'|trans }}</span>
-                    <span class="info-box-number">{{ totalClients }}</span>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6">
-            <div class="info-box elevation-1">
-                <span class="info-box-icon bg-green elevation-1">{{ icon('money') }}</span>
-                <div class="info-box-content">
-                    <span class="info-box-text">{{ 'dashboard.income_received'|trans }}</span>
-                        {% for income in totalIncome %}
-                            <span class="info-box-number">
-                                {{ income|formatCurrency }}
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="bg-primary text-white avatar">
+                              {{ icon('group') }}
                             </span>
-                        {% else %}
-                            <span class="info-box-number">
-                                {{ 0|formatCurrency }}
+                        </div>
+                        <div class="col">
+                            <div class="font-weight-medium">
+                                {{ totalClients }} {{ 'dashboard.active_clients'|trans }}
+                            </div>
+                            {#<div class="text-secondary">
+                                12 waiting payments
+                            </div>#}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="bg-green text-white avatar">
+                              {{ icon('money') }}
                             </span>
-                        {% endfor %}
-                    </span>
+                        </div>
+                        <div class="col">
+                            <div class="font-weight-medium">
+                                {{ 'dashboard.income_received'|trans }}
+                            </div>
+                            <div class="text-secondary">
+                                {% for income in totalIncome %}
+                                    {{ income|formatCurrency }}
+                                {% else %}
+                                    {{ 0|formatCurrency }}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="col-sm-6">
-            <div class="info-box elevation-1">
-                <span class="info-box-icon bg-yellow elevation-1">{{ icon('file-text-o') }}</span>
-                <div class="info-box-content">
-                    <span class="info-box-text">{{ 'dashboard.pending_quotes'|trans }}</span>
-                    <span class="info-box-number">{{ totalQuotes }}</span>
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="bg-warning text-white avatar">
+                              {{ icon('file-text-o') }}
+                            </span>
+                        </div>
+                        <div class="col">
+                            <div class="font-weight-medium">
+                                {{ totalQuotes }} {{ 'dashboard.pending_quotes'|trans }}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="col-sm-6">
-            <div class="info-box elevation-1">
-                <span class="info-box-icon bg-red elevation-1">{{ icon('file-text-o') }}</span>
-                <div class="info-box-content">
-                    <span class="info-box-text">{{ 'dashboard.outstanding_invoices'|trans }}</span>
-                    <span class="info-box-number">{{ totalInvoices }}</span>
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="bg-danger text-white avatar">
+                              {{ icon('file-text-o') }}
+                            </span>
+                        </div>
+                        <div class="col">
+                            <div class="font-weight-medium">
+                                {{ totalInvoices }} {{ 'dashboard.outstanding_invoices'|trans }}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <div class="col-sm-3">
-    <ul class="list-group">
-        <li class="list-group-item">
-            {{ icon('list') }} {{ 'dashboard.quick_nav.title'|trans }}
-        </li>
-        <li class="list-group-item">
-            <a href="{{ path('_clients_index') }}">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">
+                {{ icon('list') }} {{ 'dashboard.quick_nav.title'|trans }}
+            </h3>
+        </div>
+        <div class="list-group list-group-flush">
+            <a href="{{ path('_clients_index') }}" class="list-group-item list-group-item-action">
                 {{ icon('group') }} {{ 'dashboard.quick_nav.clients'|trans }}
             </a>
-        </li>
-        <li class="list-group-item">
-            <a href="{{ path('_quotes_index') }}">
+            <a href="{{ path('_quotes_index') }}" class="list-group-item list-group-item-action">
                 {{ icon('file-text-o') }} {{ 'dashboard.quick_nav.quotes'|trans }}
             </a>
-        </li>
-        <li class="list-group-item">
-            <a href="{{ path('_invoices_index') }}">
+            <a href="{{ path('_invoices_index') }}" class="list-group-item list-group-item-action">
                 {{ icon('file-text-o') }} {{ 'dashboard.quick_nav.invoices'|trans }}
             </a>
-        </li>
-        <li class="list-group-item">
-            <a href="{{ path('_profile') }}">
+            <a href="{{ path('_profile') }}" class="list-group-item list-group-item-action">
                 {{ icon('user') }} {{ 'dashboard.quick_nav.profile'|trans }}
             </a>
-        </li>
-        <li class="list-group-item">
-            <a href="{{ path('_settings') }}">
+            <a href="{{ path('_settings') }}" class="list-group-item list-group-item-action">
                 {{ icon('cog') }} {{ 'dashboard.quick_nav.settings'|trans }}
             </a>
-        </li>
-    </ul>
+        </div>
+    </div>
 </div>

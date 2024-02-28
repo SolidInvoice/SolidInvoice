@@ -7,66 +7,99 @@
  # with this source code in the file LICENSE.
  #}
 
-<ul class="navbar-nav{{ title|default(null) is empty ? ' w-100' }}">
+{#<ul class="navbar-nav{{ title|default(null) is empty ? ' w-100' }}">
     <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
     </li>
-</ul>
+</ul>#}
 
-{% if title|default(null) is not empty %}
+{#{% if title|default(null) is not empty %}
     <h4 class="p-1 mt-2 w-100">
         {{ title|raw }}
     </h4>
-{% endif %}
+{% endif %}#}
 
 {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-    <div class="btn-group float-right">
-        <button class="btn btn-sm dropdown-toggle m-0" type="button" data-toggle="dropdown">
-            {{ company_name() }} <b class="caret"></b>
-        </button>
-        <ul class="dropdown-menu" role="menu">
-            {% set availableCompanies = app.user.companies|filter(v => v.id != company_id()) %}
-            {% for company in availableCompanies %}
-                <li class="nav-item">
-                    <a href="{{ path('_switch_company', {'id': company.id}) }}" class="nav-link">
-                        {{ company }}
+    <header class="navbar navbar-expand-sm d-print-none">
+        <div class="container-xl">
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="navbar-nav flex-row order-md-last">
+
+                <div class="nav-item dropdown">
+                    <button class="btn btn-default d-flex dropdown-toggle" data-bs-toggle="dropdown" aria-label="Open user menu">
+                        {{ company_name() }} <b class="caret"></b>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                        {% set availableCompanies = app.user.companies|filter(v => not v.id.equals(company_id())) %}
+                        {% for company in availableCompanies %}
+                            <a href="{{ path('_switch_company', {'id': company.id}) }}" class="dropdown-item">
+                                {{ company }}
+                            </a>
+                        {% endfor %}
+
+                        {% if availableCompanies|length > 0 %}
+                            <div class="dropdown-divider">
+                            </div>
+                        {% endif %}
+
+                        <a href="{{ path('_create_company') }}" class="dropdown-item">
+                            {{ icon('plus') }}&nbsp;{{ 'Add Company'|trans }}
+                        </a>
+                    </div>
+                </div>
+
+                <div class="nav-item dropdown mx-4">
+                    <button class="btn btn-primary d-flex dropdown-toggle" data-bs-toggle="dropdown" aria-label="Open create menu">
+                        {{ icon('plus') }}&nbsp;{{ 'menu.button.create'|trans }} <b class="caret"></b>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                        <a href="{{ path('_clients_add') }}" class="dropdown-item">
+                            {{ icon('user-plus') }}&nbsp;{{ 'dashboard.create.client'|trans }}
+                        </a>
+                        <a href="{{ path('_quotes_create') }}" class="dropdown-item">
+                            {{ icon('file-text-o') }}&nbsp;{{ 'dashboard.create.quote'|trans }}
+                        </a>
+                        <a href="{{ path('_invoices_create') }}" class="dropdown-item">
+                            {{ icon('file-text-o') }}&nbsp;{{ 'dashboard.create.invoice'|trans }}
+                        </a>
+                    </div>
+                </div>
+
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
+                        <span class="avatar avatar-sm">
+                            {{ icon('user') }}
+                        </span>
+                        <div class="d-none d-xl-block ps-2">
+                            <div>{{ app.user.email }}</div>
+                            {#{% if app.user.email is not same as(app.user.username) %}
+                                <div class="mt-1 small text-secondary">{{ app.user.username }}</div>
+                            {% endif %}#}
+                        </div>
                     </a>
-                </li>
-            {% endfor %}
+                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                        <a href="{{ path('_profile') }}" class="dropdown-item">
+                            {{ icon('user') }}&nbsp;
+                            {{ 'Profile'|trans }}
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="{{ path('_api_keys_index') }}" class="dropdown-item">
+                            {{ icon('lock') }}&nbsp;{{ 'API Keys'|trans }}
+                        </a>
+                        <a href="{{ path('_logout') }}" class="dropdown-item">
+                            {{ icon('power-off') }}&nbsp;
+                            {{ 'Logout'|trans }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div>
+            </div>
+        </div>
 
-            {% if availableCompanies|length > 0 %}
-                <li class="dropdown-divider">
-                </li>
-            {% endif %}
-
-            <li class="nav-item">
-                <a href="{{ path('_create_company') }}" class="nav-link">
-                    {{ icon('plus') }} {{ 'Add Company'|trans }}
-                </a>
-            </li>
-        </ul>
-    </div>
-    &nbsp;&nbsp;
-    <div class="btn-group float-right" id="top-menu-create-button">
-        <button class="btn btn-info btn-sm dropdown-toggle m-0" type="button" data-toggle="dropdown">
-            {{ icon('plus') }} {{ 'menu.button.create'|trans }} <b class="caret"></b>
-        </button>
-        <ul class="dropdown-menu" role="menu">
-            <li class="nav-item">
-                <a href="{{ path('_clients_add') }}" class="nav-link">
-                    {{ icon('user-plus') }} {{ 'dashboard.create.client'|trans }}
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ path('_quotes_create') }}" class="nav-link">
-                    {{ icon('file-text-o') }} {{ 'dashboard.create.quote'|trans }}
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ path('_invoices_create') }}" class="nav-link">
-                    {{ icon('file-text-o') }} {{ 'dashboard.create.invoice'|trans }}
-                </a>
-            </li>
-        </ul>
-    </div>
+    </header>
 {% endif %}
