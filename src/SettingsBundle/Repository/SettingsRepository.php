@@ -90,4 +90,21 @@ class SettingsRepository extends ServiceEntityRepository
 
         return $result;
     }
+
+    public function getSetting(string $key, ?Company $company): ?Setting
+    {
+        $em = $this->getEntityManager();
+        $filters = $em->getFilters();
+        if ($company instanceof Company) {
+            $filters->disable('company');
+        }
+
+        try {
+            return $this->findOneBy(['key' => $key, 'company' => $company]);
+        } finally {
+            if ($company instanceof Company) {
+                $filters->enable('company');
+            }
+        }
+    }
 }
