@@ -1,12 +1,4 @@
 parameters:
-    env(database_driver): 'pdo_mysql'
-    env(database_host): '127.0.0.1'
-    env(database_port): '3306'
-    env(database_name): 'solidinvoice'
-    env(database_user): 'root'
-    env(database_password): ~
-    env(database_version): '1.0'
-
     env(mailer_transport): 'sendmail'
     env(mailer_host): '127.0.0.1'
     env(mailer_user): ~

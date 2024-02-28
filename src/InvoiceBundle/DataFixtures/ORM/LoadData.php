@@ -38,7 +38,7 @@ class LoadData extends Fixture
      */
     public function load(ObjectManager $manager): void
     {
-        $invoice = new Invoice();
+        /*$invoice = new Invoice();
         $client = $this->getReference('client');
         assert($client instanceof Client);
 
@@ -77,6 +77,6 @@ class LoadData extends Fixture
         $manager->persist($recurringItem);
         $manager->persist($invoice);
         $manager->persist($recurringInvoice);
-        $manager->flush();
+        $manager->flush();*/
     }
 }

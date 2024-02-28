@@ -49,6 +49,8 @@ class Company implements Stringable
      */
     private Collection $users;
 
+    public string $defaultCurrency;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();

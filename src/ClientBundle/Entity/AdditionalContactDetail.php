@@ -95,7 +95,7 @@ class AdditionalContactDetail implements Stringable
         return $this->contact;
     }
 
-    public function setContact(Contact $contact): self
+    public function setContact(?Contact $contact): self
     {
         $this->contact = $contact;
 

@@ -16,6 +16,7 @@ namespace SolidInvoice\CoreBundle\Doctrine\Filter;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Filter\SQLFilter;
 use SolidInvoice\UserBundle\Entity\User;
+use function sprintf;
 
 class CompanyFilter extends SQLFilter
 {

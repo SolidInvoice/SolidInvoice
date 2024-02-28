@@ -47,6 +47,7 @@ final class CompanyFactory extends ModelFactory
     {
         return [
             'name' => self::faker()->company(),
+            'defaultCurrency' => self::faker()->currencyCode(),
         ];
     }
 

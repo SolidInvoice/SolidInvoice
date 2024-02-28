@@ -45,12 +45,12 @@ final class ClientFactory extends ModelFactory
     protected function getDefaults(): array
     {
         return [
-            'name' => self::faker()->company(),
-            'website' => self::faker()->url(),
-            'status' => self::faker()->word(),
+            'name' => self::faker()->domainName(),
+            'website' => self::faker()->boolean() ? self::faker()->url() : '',
+            'status' => 'active',
             'currencyCode' => self::faker()->currencyCode(),
             'vatNumber' => self::faker()->word(),
-            'archived' => self::faker()->boolean(),
+            'archived' => self::faker()->boolean(10) ? true : null,
             'created' => self::faker()->dateTime(),
             'updated' => self::faker()->dateTime(),
             'company' => CompanyFactory::new(),

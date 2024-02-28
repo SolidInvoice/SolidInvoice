@@ -171,7 +171,7 @@ class Contact implements Serializable, Stringable
         return $this->client;
     }
 
-    public function setClient(Client $client): self
+    public function setClient(?Client $client): self
     {
         $this->client = $client;
 
