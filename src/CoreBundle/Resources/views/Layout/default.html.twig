@@ -24,7 +24,7 @@
 {% endblock header %}
 
 {% block footer %}
-    <small>{{ "powered_by"|trans }} <a href="http://solidinvoice.co">{{ constant('SolidInvoice\\CoreBundle\\SolidInvoiceCoreBundle::APP_NAME') }}</a> - {{ app_version }}</small>
+    <small>{{ "powered_by"|trans }} <a href="https://solidinvoice.co">{{ constant('SolidInvoice\\CoreBundle\\SolidInvoiceCoreBundle::APP_NAME') }}</a> - {{ app_version }}</small>
 {% endblock footer %}
 
 {% block body_bottom %}
@@ -32,14 +32,23 @@
 {% endblock body_bottom %}
 
 {% block body %}
-    <aside class="main-sidebar sidebar-dark-primary elevation-4">
-        <a class="brand-link" href="{{ url('_dashboard') }}">
-            {{ app_logo() }}
+    <aside class="navbar navbar-vertical navbar-expand-lg" data-bs-theme="dark">
+        <div class="container-fluid">
 
-            <span class="brand-text font-weight-light">
-                {{ company_name() }}
-            </span>
-        </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu" aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <h1 class="navbar-brand navbar-brand-autodark">
+                <a href="{{ url('_dashboard') }}">
+                    {{ app_logo() }}
+                </a>
+                <a class="brand-link" href="{{ url('_dashboard') }}">
+                    <span class="brand-text font-weight-light">
+                        {{ company_name() }}
+                    </span>
+                </a>
+            </h1>
 
         <section class="sidebar">
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
@@ -52,27 +61,50 @@
                 </div>
             </div>
 
-            {{ knp_menu_render('sidebar', {}, 'solidinvoice') }}
+                {{ knp_menu_render('sidebar', {}, 'solidinvoice') }}
 
-            {% if block('sidebar') is defined %}
-                <nav class="mt-2">
-                    {{ block('sidebar') }}
-                </nav>
-            {% endif %}
-        </section>
+                {% if block('sidebar') is defined %}
+                    <nav class="mt-2">
+                        {{ block('sidebar') }}
+                    </nav>
+                {% endif %}
+            </div>
+        </div>
     </aside>
+    {{ block('header') }}
 
-    <div class="content-wrapper">
+    <div class="page-wrapper">
+        <div class="page-header d-print-none">
+            <div class="container-xl">
+                <div class="row g-2 align-items-center">
+                    <div class="col">
+                        {% if block('title')|default(null) is not empty %}
+                            {#<div class="page-pretitle">
+                                {{ block('title')|raw }}
+                            </div>#}
+                            <h2 class="page-title">
+                                {{ block('title')|raw }}
+                            </h2>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
         {% if block('heading') is defined and block('heading')|trim is not empty %}
             <section class="content-header">
                 {{  block('heading') }}
             </section>
         {% endif %}
 
-        <section class="content pt-4">
-            {% include "@SolidInvoiceCore/flash.html.twig" %}
+        <section class="page-body">
+            <div class="container-xl d-flex flex-column justify-content-center">
+                {% include "@SolidInvoiceCore/flash.html.twig" %}
 
-            {{ block('content') is defined ? block('content') }}
+                {{ block('content') is defined ? block('content') }}
+            </div>
         </section>
     </div>
 {% endblock body %}

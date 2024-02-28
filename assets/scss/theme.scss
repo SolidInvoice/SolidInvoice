@@ -4,9 +4,9 @@
 @import '~bootstrap/scss/variables';
 @import '~bootstrap/scss/mixins';
 @import 'colors';
-@import '~admin-lte/build/scss/variables';
-@import '~admin-lte/build/scss/variables-alt';
-@import '~admin-lte/build/scss/mixins';
+// @import '~admin-lte/build/scss/variables';
+// @import '~admin-lte/build/scss/variables-alt';
+// @import '~admin-lte/build/scss/mixins';
 
 $light-blue: #1E88E7; /* Primary */
 $red: #BF2600; /* Danger */
@@ -38,7 +38,7 @@ $theme-header-height: 70px;
 $theme-header-padding: 15px;
 $screen-header-collapse: map.get($grid-breakpoints, md) !default;
 
-@import '~admin-lte/build/scss/main-header';
+/*@import '~admin-lte/build/scss/main-header';
 @import '~admin-lte/build/scss/main-sidebar';
 @import '~admin-lte/build/scss/sidebar-mini';
 @import '~admin-lte/build/scss/control-sidebar';
@@ -60,21 +60,22 @@ $screen-header-collapse: map.get($grid-breakpoints, md) !default;
 @import '~admin-lte/build/scss/carousel';
 @import '~admin-lte/build/scss/modals';
 @import '~admin-lte/build/scss/social-widgets';
-
+*/
 /* PAGES
 //-------------------------------------------------------- */
-@import '~admin-lte/build/scss/pages/login_and_register';
-@import '~admin-lte/build/scss/pages/invoice';
-@import '~admin-lte/build/scss/pages/profile';
+// @import '~admin-lte/build/scss/pages/login_and_register';
+// @import '~admin-lte/build/scss/pages/invoice';
+// @import '~admin-lte/build/scss/pages/profile';
 
 /* Plugins
 //-------------------------------------------------------- */
-@import '~admin-lte/build/scss/plugins/mixins';
+// @import '~admin-lte/build/scss/plugins/mixins';
+// @import '~admin-lte/build/scss/plugins/select2';
 
 /* Miscellaneous
 //-------------------------------------------------------- */
-@import '~admin-lte/build/scss/miscellaneous';
-@import '~admin-lte/build/scss/print';
+// @import '~admin-lte/build/scss/miscellaneous';
+// @import '~admin-lte/build/scss/print';
 
 .loading-spinner {
     width: 200px;

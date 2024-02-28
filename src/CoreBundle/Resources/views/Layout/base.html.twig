@@ -19,7 +19,7 @@
     <title>{{ block('page_title') is defined  ? block('page_title') : (block('title') is defined ? block('title')) }}</title>
 
     <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
 
     <link rel="icon" type="image/x-icon" href="{{ asset('/favicon.ico') }}" />
     <link rel="shortcut icon" type="image/png" href="{{ asset('/favicon.ico') }}"/>
@@ -30,16 +30,16 @@
         {{ encore_entry_link_tags('core') }}
     {% endblock stylesheets %}
 </head>
-<body class="skin-solidinvoice-default sidebar-mini hold-transition {{ body_class|default('') }}">
-    <div class="wrapper">
+<body class="layout-fluid">
+    <div class="page">
         {{ block('body_top') is defined ? block('body_top') }}
         <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
 
-        {% if block('header') is defined %}
+        {#{% if block('header') is defined %}
             <nav class="main-header navbar navbar-expand navbar-white navbar-light">
                 {{ block('header') }}
             </nav>
-        {% endif %}
+        {% endif %}#}
 
         {{ block('body') is defined ? block('body') }}
 
