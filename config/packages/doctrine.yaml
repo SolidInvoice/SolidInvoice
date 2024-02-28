@@ -1,12 +1,6 @@
 doctrine:
     dbal:
-        driver: '%env(database_driver)%'
-        host: '%env(database_host)%'
-        port: '%env(int:database_port)%'
-        dbname: '%env(database_name)%'
-        user: '%env(database_user)%'
-        password: '%env(database_password)%'
-        server_version: '%env(database_version)%'
+        url: '%env(DATABASE_URL)%'
         charset: UTF8
         types:
             uuid: Ramsey\Uuid\Doctrine\UuidType

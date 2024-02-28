@@ -20,12 +20,14 @@ use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
 use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use Stringable;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="contact_types")
  * @ORM\Entity(repositoryClass="SolidInvoice\ClientBundle\Repository\ContactTypeRepository")
+ * @UniqueEntity(fields={"name", "company"})
  */
 class ContactType implements Stringable
 {
@@ -41,7 +43,7 @@ class ContactType implements Stringable
     private ?UuidInterface $id = null;
 
     /**
-     * @ORM\Column(name="name", type="string", length=45, unique=true)
+     * @ORM\Column(name="name", type="string", length=45)
      * @Assert\NotBlank()
      * @Assert\Length(max=45)
      * @Serialize\Groups({"client_api", "contact_api"})

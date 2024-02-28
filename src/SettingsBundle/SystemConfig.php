@@ -105,7 +105,8 @@ class SystemConfig
         $currency = $this->get(self::CURRENCY_CONFIG_PATH);
 
         if (null === $currency) {
-            throw new RuntimeException('No currency set');
+            //throw new RuntimeException('No currency set');
+            $currency = 'USD';
         }
 
         return new Currency($currency);

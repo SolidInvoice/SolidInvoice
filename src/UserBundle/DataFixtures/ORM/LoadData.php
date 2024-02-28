@@ -13,48 +13,37 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\DataFixtures\ORM;
 
-use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use RuntimeException;
-use SolidInvoice\CoreBundle\Entity\Company;
-use SolidInvoice\UserBundle\Entity\User;
+use SolidInvoice\CoreBundle\DataFixtures\LoadData as CoreFixture;
+use SolidInvoice\UserBundle\Test\Factory\UserFactory;
+use Symfony\Component\PasswordHasher\Hasher\NativePasswordHasher;
 
 /**
  * @codeCoverageIgnore
  */
-class LoadData extends Fixture
+class LoadData extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        $company = $manager->getRepository(Company::class)->findOneBy([]);
+        UserFactory::createMany(20);
+        UserFactory::createOne(
+            [
+                'username' => 'test@example.com',
+                'email' => 'test@example.com',
+                'password' => (new NativePasswordHasher())->hash('Password1'),
+            ]
+        );
+    }
 
-        if (! $company instanceof Company) {
-            throw new RuntimeException('No company found');
-        }
-
-        $user1 = (new User())
-            ->setUsername('test1')
-            ->setEmail('test1@test.com')
-            ->setPassword('test1')
-            ->setConfirmationToken(base64_encode(bin2hex(random_bytes(24))))
-            ->setPasswordRequestedAt(new DateTime())
-            ->addCompany($company)
-        ;
-
-        $user2 = (new User())
-            ->setUsername('test2')
-            ->setEmail('test2@test.com')
-            ->setPassword('test2')
-            ->setEnabled(true)
-            ->addCompany($company)
-        ;
-
-        $manager->persist($user1);
-        $manager->persist($user2);
-        $manager->flush();
-
-        $this->setReference('user1', $user1);
-        $this->setReference('user2', $user2);
+    /**
+     * @return list<class-string>
+     */
+    public function getDependencies(): array
+    {
+        return [
+            CoreFixture::class,
+        ];
     }
 }

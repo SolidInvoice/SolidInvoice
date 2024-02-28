@@ -61,7 +61,7 @@ final class CompanySelector
         $em
             ->getFilters()
             ->enable('company')
-            ->setParameter('companyId', $companyIdBytes, Types::STRING);
+            ->setParameter('companyId', $companyIdBytes, Types::BINARY);
 
         $this->companyId = $companyId;
 

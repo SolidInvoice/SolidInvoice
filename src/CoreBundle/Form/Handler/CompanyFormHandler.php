@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Form\Handler;
 
 use SolidInvoice\CoreBundle\Company\CompanySelector;
-use SolidInvoice\CoreBundle\Company\DefaultData;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Form\Type\CompanyType;
 use SolidInvoice\CoreBundle\Templating\Template;
@@ -43,18 +42,14 @@ final class CompanyFormHandler implements FormHandlerInterface, FormHandlerSucce
 
     private Security $security;
 
-    private DefaultData $defaultData;
-
     public function __construct(
         Security $security,
         CompanySelector $companySelector,
-        RouterInterface $router,
-        DefaultData $defaultData
+        RouterInterface $router
     ) {
         $this->security = $security;
         $this->companySelector = $companySelector;
         $this->router = $router;
-        $this->defaultData = $defaultData;
     }
 
     public function getForm(FormFactoryInterface $factory, Options $options): string
@@ -84,6 +79,7 @@ final class CompanyFormHandler implements FormHandlerInterface, FormHandlerSucce
         $company = new Company();
         $company->setName($data['name']);
         $company->addUser($user);
+        $company->defaultCurrency = $data['currency'];
 
         $this->save($company);
         $request = $form->getRequest();
@@ -91,8 +87,6 @@ final class CompanyFormHandler implements FormHandlerInterface, FormHandlerSucce
         $request->getSession()->set('company', $company->getId());
 
         $this->companySelector->switchCompany($company->getId());
-
-        $this->defaultData->__invoke($company, $data);
 
         return new RedirectResponse($this->router->generate('_dashboard'));
     }
