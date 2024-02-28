@@ -87,7 +87,7 @@ SolidInvoice is licensed under the MIT license, an open-source software license.
 
 We extend our gratitude to all the sponsors who support this project!
 
-<a class="btn" aria-label="Sponsor @SolidInvoice" href="/sponsors/SolidInvoice?o=esc">
+<a class="btn" aria-label="Sponsor @SolidInvoice" href="https://github.com/sponsors/SolidInvoice?o=esc">
     <span>Sponsor @SolidInvoice</span>
 </a>
 
