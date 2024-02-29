@@ -34,7 +34,8 @@ const RAW_RUNTIME_STATE =
           ["@fortawesome/fontawesome-free", "npm:6.4.2"],\
           ["@hotwired/stimulus", "npm:3.2.2"],\
           ["@symfony/stimulus-bridge", "virtual:00012fc8130319f649b187d6507fa3a187eb8ac451650b221c8bfca55d2f26fdc57fa3b94125ef8167213dc6caef410e833b3f362ad6a9615adec5b66ef88535#npm:3.2.2"],\
-          ["@symfony/ux-dropzone", "virtual:00012fc8130319f649b187d6507fa3a187eb8ac451650b221c8bfca55d2f26fdc57fa3b94125ef8167213dc6caef410e833b3f362ad6a9615adec5b66ef88535#file:vendor/symfony/ux-dropzone/assets#vendor/symfony/ux-dropzone/assets::hash=46057d&locator=solidinvoice%40workspace%3A."],\
+          ["@symfony/stimulus-bundle", "virtual:00012fc8130319f649b187d6507fa3a187eb8ac451650b221c8bfca55d2f26fdc57fa3b94125ef8167213dc6caef410e833b3f362ad6a9615adec5b66ef88535#file:vendor/symfony/stimulus-bundle/assets#vendor/symfony/stimulus-bundle/assets::hash=09b15e&locator=solidinvoice%40workspace%3A."],\
+          ["@symfony/ux-dropzone", "virtual:00012fc8130319f649b187d6507fa3a187eb8ac451650b221c8bfca55d2f26fdc57fa3b94125ef8167213dc6caef410e833b3f362ad6a9615adec5b66ef88535#file:vendor/symfony/ux-dropzone/assets#vendor/symfony/ux-dropzone/assets::hash=9212d5&locator=solidinvoice%40workspace%3A."],\
           ["@symfony/webpack-encore", "virtual:00012fc8130319f649b187d6507fa3a187eb8ac451650b221c8bfca55d2f26fdc57fa3b94125ef8167213dc6caef410e833b3f362ad6a9615adec5b66ef88535#npm:4.6.1"],\
           ["accounting", "npm:0.4.1"],\
           ["admin-lte", "https://github.com/ColorlibHQ/AdminLTE.git#commit=7748b38a6e7afc2415975b9c41adab4e1733d330"],\
@@ -3046,18 +3047,44 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["@symfony/ux-dropzone", [\
-      ["file:vendor/symfony/ux-dropzone/assets#vendor/symfony/ux-dropzone/assets::hash=46057d&locator=solidinvoice%40workspace%3A.", {\
-        "packageLocation": "../../../../.yarn/berry/cache/@symfony-ux-dropzone-file-422216e41d-10c0.zip/node_modules/@symfony/ux-dropzone/",\
+    ["@symfony/stimulus-bundle", [\
+      ["file:vendor/symfony/stimulus-bundle/assets#vendor/symfony/stimulus-bundle/assets::hash=09b15e&locator=solidinvoice%40workspace%3A.", {\
+        "packageLocation": "../../../../.yarn/berry/cache/@symfony-stimulus-bundle-file-334422ef4d-10c0.zip/node_modules/@symfony/stimulus-bundle/",\
         "packageDependencies": [\
-          ["@symfony/ux-dropzone", "file:vendor/symfony/ux-dropzone/assets#vendor/symfony/ux-dropzone/assets::hash=46057d&locator=solidinvoice%40workspace%3A."]\
+          ["@symfony/stimulus-bundle", "file:vendor/symfony/stimulus-bundle/assets#vendor/symfony/stimulus-bundle/assets::hash=09b15e&locator=solidinvoice%40workspace%3A."]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:00012fc8130319f649b187d6507fa3a187eb8ac451650b221c8bfca55d2f26fdc57fa3b94125ef8167213dc6caef410e833b3f362ad6a9615adec5b66ef88535#file:vendor/symfony/ux-dropzone/assets#vendor/symfony/ux-dropzone/assets::hash=46057d&locator=solidinvoice%40workspace%3A.", {\
-        "packageLocation": "./.yarn/__virtual__/@symfony-ux-dropzone-virtual-d0f71b69d2/5/.yarn/berry/cache/@symfony-ux-dropzone-file-422216e41d-10c0.zip/node_modules/@symfony/ux-dropzone/",\
+      ["virtual:00012fc8130319f649b187d6507fa3a187eb8ac451650b221c8bfca55d2f26fdc57fa3b94125ef8167213dc6caef410e833b3f362ad6a9615adec5b66ef88535#file:vendor/symfony/stimulus-bundle/assets#vendor/symfony/stimulus-bundle/assets::hash=09b15e&locator=solidinvoice%40workspace%3A.", {\
+        "packageLocation": "./.yarn/__virtual__/@symfony-stimulus-bundle-virtual-cb52868386/5/.yarn/berry/cache/@symfony-stimulus-bundle-file-334422ef4d-10c0.zip/node_modules/@symfony/stimulus-bundle/",\
         "packageDependencies": [\
-          ["@symfony/ux-dropzone", "virtual:00012fc8130319f649b187d6507fa3a187eb8ac451650b221c8bfca55d2f26fdc57fa3b94125ef8167213dc6caef410e833b3f362ad6a9615adec5b66ef88535#file:vendor/symfony/ux-dropzone/assets#vendor/symfony/ux-dropzone/assets::hash=46057d&locator=solidinvoice%40workspace%3A."],\
+          ["@symfony/stimulus-bundle", "virtual:00012fc8130319f649b187d6507fa3a187eb8ac451650b221c8bfca55d2f26fdc57fa3b94125ef8167213dc6caef410e833b3f362ad6a9615adec5b66ef88535#file:vendor/symfony/stimulus-bundle/assets#vendor/symfony/stimulus-bundle/assets::hash=09b15e&locator=solidinvoice%40workspace%3A."],\
+          ["@hotwired/stimulus", "npm:3.2.2"],\
+          ["@symfony/stimulus-bridge", "virtual:00012fc8130319f649b187d6507fa3a187eb8ac451650b221c8bfca55d2f26fdc57fa3b94125ef8167213dc6caef410e833b3f362ad6a9615adec5b66ef88535#npm:3.2.2"],\
+          ["@types/hotwired__stimulus", null],\
+          ["@types/symfony__stimulus-bridge", null]\
+        ],\
+        "packagePeers": [\
+          "@hotwired/stimulus",\
+          "@symfony/stimulus-bridge",\
+          "@types/hotwired__stimulus",\
+          "@types/symfony__stimulus-bridge"\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@symfony/ux-dropzone", [\
+      ["file:vendor/symfony/ux-dropzone/assets#vendor/symfony/ux-dropzone/assets::hash=9212d5&locator=solidinvoice%40workspace%3A.", {\
+        "packageLocation": "../../../../.yarn/berry/cache/@symfony-ux-dropzone-file-f2dae03ad9-10c0.zip/node_modules/@symfony/ux-dropzone/",\
+        "packageDependencies": [\
+          ["@symfony/ux-dropzone", "file:vendor/symfony/ux-dropzone/assets#vendor/symfony/ux-dropzone/assets::hash=9212d5&locator=solidinvoice%40workspace%3A."]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:00012fc8130319f649b187d6507fa3a187eb8ac451650b221c8bfca55d2f26fdc57fa3b94125ef8167213dc6caef410e833b3f362ad6a9615adec5b66ef88535#file:vendor/symfony/ux-dropzone/assets#vendor/symfony/ux-dropzone/assets::hash=9212d5&locator=solidinvoice%40workspace%3A.", {\
+        "packageLocation": "./.yarn/__virtual__/@symfony-ux-dropzone-virtual-7732de2573/5/.yarn/berry/cache/@symfony-ux-dropzone-file-f2dae03ad9-10c0.zip/node_modules/@symfony/ux-dropzone/",\
+        "packageDependencies": [\
+          ["@symfony/ux-dropzone", "virtual:00012fc8130319f649b187d6507fa3a187eb8ac451650b221c8bfca55d2f26fdc57fa3b94125ef8167213dc6caef410e833b3f362ad6a9615adec5b66ef88535#file:vendor/symfony/ux-dropzone/assets#vendor/symfony/ux-dropzone/assets::hash=9212d5&locator=solidinvoice%40workspace%3A."],\
           ["@hotwired/stimulus", "npm:3.2.2"],\
           ["@types/hotwired__stimulus", null]\
         ],\
@@ -12272,7 +12299,8 @@ const RAW_RUNTIME_STATE =
           ["@fortawesome/fontawesome-free", "npm:6.4.2"],\
           ["@hotwired/stimulus", "npm:3.2.2"],\
           ["@symfony/stimulus-bridge", "virtual:00012fc8130319f649b187d6507fa3a187eb8ac451650b221c8bfca55d2f26fdc57fa3b94125ef8167213dc6caef410e833b3f362ad6a9615adec5b66ef88535#npm:3.2.2"],\
-          ["@symfony/ux-dropzone", "virtual:00012fc8130319f649b187d6507fa3a187eb8ac451650b221c8bfca55d2f26fdc57fa3b94125ef8167213dc6caef410e833b3f362ad6a9615adec5b66ef88535#file:vendor/symfony/ux-dropzone/assets#vendor/symfony/ux-dropzone/assets::hash=46057d&locator=solidinvoice%40workspace%3A."],\
+          ["@symfony/stimulus-bundle", "virtual:00012fc8130319f649b187d6507fa3a187eb8ac451650b221c8bfca55d2f26fdc57fa3b94125ef8167213dc6caef410e833b3f362ad6a9615adec5b66ef88535#file:vendor/symfony/stimulus-bundle/assets#vendor/symfony/stimulus-bundle/assets::hash=09b15e&locator=solidinvoice%40workspace%3A."],\
+          ["@symfony/ux-dropzone", "virtual:00012fc8130319f649b187d6507fa3a187eb8ac451650b221c8bfca55d2f26fdc57fa3b94125ef8167213dc6caef410e833b3f362ad6a9615adec5b66ef88535#file:vendor/symfony/ux-dropzone/assets#vendor/symfony/ux-dropzone/assets::hash=9212d5&locator=solidinvoice%40workspace%3A."],\
           ["@symfony/webpack-encore", "virtual:00012fc8130319f649b187d6507fa3a187eb8ac451650b221c8bfca55d2f26fdc57fa3b94125ef8167213dc6caef410e833b3f362ad6a9615adec5b66ef88535#npm:4.6.1"],\
           ["accounting", "npm:0.4.1"],\
           ["admin-lte", "https://github.com/ColorlibHQ/AdminLTE.git#commit=7748b38a6e7afc2415975b9c41adab4e1733d330"],\
