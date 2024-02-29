@@ -1552,6 +1552,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@hotwired/stimulus-webpack-helpers@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "@hotwired/stimulus-webpack-helpers@npm:1.0.1"
+  peerDependencies:
+    "@hotwired/stimulus": ">= 3.0"
+  checksum: 2575b44cf625df2d6853996d0c0f39527114875f81184d078886f603a5652331894a84fb6ded1bd7ff3e18667e955d6388794ae912ce61d2682c5079f9dd1950
+  languageName: node
+  linkType: hard
+
+"@hotwired/stimulus@npm:^3.0.0":
+  version: 3.2.2
+  resolution: "@hotwired/stimulus@npm:3.2.2"
+  checksum: 3793919e353d28424f57d07e6b634bf6e8821c227acfa2a608aaa8bdfe7e80479acef12705168ca866f3c231399f4a939fb0cd089aaae04c406b3d885a3b35ea
+  languageName: node
+  linkType: hard
+
 "@humanwhocodes/config-array@npm:^0.11.13":
   version: 0.11.13
   resolution: "@humanwhocodes/config-array@npm:0.11.13"
@@ -1780,9 +1796,33 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@symfony/webpack-encore@npm:^4.3.0":
-  version: 4.5.0
-  resolution: "@symfony/webpack-encore@npm:4.5.0"
+"@symfony/stimulus-bridge@npm:^3.2.2":
+  version: 3.2.2
+  resolution: "@symfony/stimulus-bridge@npm:3.2.2"
+  dependencies:
+    "@hotwired/stimulus-webpack-helpers": "npm:^1.0.1"
+    "@types/webpack-env": "npm:^1.16.4"
+    acorn: "npm:^8.0.5"
+    loader-utils: "npm:^2.0.0"
+    schema-utils: "npm:^3.0.0"
+  peerDependencies:
+    "@hotwired/stimulus": ^3.0
+  checksum: 3ba997685b45eaf7214807847d9626835011641a580286fc9c90c595da2c3d6cda67b358e15dca0d95c719941fd4074b77655902dd2dc710850ac8840fb5d266
+  languageName: node
+  linkType: hard
+
+"@symfony/ux-dropzone@file:vendor/symfony/ux-dropzone/assets::locator=solidinvoice%40workspace%3A.":
+  version: 1.1.0
+  resolution: "@symfony/ux-dropzone@file:vendor/symfony/ux-dropzone/assets#vendor/symfony/ux-dropzone/assets::hash=46057d&locator=solidinvoice%40workspace%3A."
+  peerDependencies:
+    "@hotwired/stimulus": ^3.0.0
+  checksum: 221dc251faed166f28f3702c46b23d89bf1971eefc4f0ce00c8740f757bbadc446e8249a4b7e5351ab692c3f175e02db375342d9647ceaa0c9cbb95b4f79cb9a
+  languageName: node
+  linkType: hard
+
+"@symfony/webpack-encore@npm:^4.6.0":
+  version: 4.6.1
+  resolution: "@symfony/webpack-encore@npm:4.6.1"
   dependencies:
     "@nuxt/friendly-errors-webpack-plugin": "npm:^2.5.1"
     assets-webpack-plugin: "npm:7.0.*"
@@ -1825,7 +1865,7 @@ __metadata:
     postcss: ^8.3.0
     postcss-loader: ^7.0.0
     sass: ^1.17.0
-    sass-loader: ^13.0.0
+    sass-loader: ^13.0.0 || ^14.0.0
     stylus: ^0.58.1
     stylus-loader: ^7.0.0
     ts-loader: ^9.0.0
@@ -1901,7 +1941,7 @@ __metadata:
       optional: true
   bin:
     encore: bin/encore.js
-  checksum: 3bfd8d57497641598148994f5df48bb5f0aa44ae5a0e2519a1fa10fd6429d1afed81d8115bd3d8934b2b34da3d1adf0665a68ebfb2b4c1c3a48116db332fbb6a
+  checksum: f8006c36205098f4ca29b04d127d447126d1b673ee8cb6279d0a9ce0b3c466a1eae0c2bddd9eda0441257e288417e67c5f55fa1226414b919c1a8782a712f290
   languageName: node
   linkType: hard
 
@@ -2190,6 +2230,13 @@ __metadata:
   dependencies:
     "@types/node": "npm:*"
   checksum: 6221a27a244396dd1b6aaf25dfea23531cae7141670feb78da90feed0c7c7ba2fbd744b8ac77c7475b36c5a22ae12d07828da3dc1461f6144902509f3b7306c0
+  languageName: node
+  linkType: hard
+
+"@types/webpack-env@npm:^1.16.4":
+  version: 1.18.4
+  resolution: "@types/webpack-env@npm:1.18.4"
+  checksum: 3fa77dbff0ed71685404576b0a1cf74587567fe2ee1cfd11d56d6eefcab7a61e4c9ead0eced264e289d2cf0fc74296dbd55ed6c95774fe0fd6264d156c5a59f0
   languageName: node
   linkType: hard
 
@@ -2552,6 +2599,15 @@ __metadata:
   bin:
     acorn: bin/acorn
   checksum: bd0b2c2b0f334bbee48828ff897c12bd2eb5898d03bf556dcc8942022cec795ac5bb5b6b585e2de687db6231faf07e096b59a361231dd8c9344d5df5f7f0e526
+  languageName: node
+  linkType: hard
+
+"acorn@npm:^8.0.5":
+  version: 8.11.3
+  resolution: "acorn@npm:8.11.3"
+  bin:
+    acorn: bin/acorn
+  checksum: 3ff155f8812e4a746fee8ecff1f227d527c4c45655bb1fad6347c3cb58e46190598217551b1500f18542d2bbe5c87120cb6927f5a074a59166fbdd9468f0a299
   languageName: node
   linkType: hard
 
@@ -8868,7 +8924,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"schema-utils@npm:^3.1.1, schema-utils@npm:^3.2.0":
+"schema-utils@npm:^3.0.0, schema-utils@npm:^3.1.1, schema-utils@npm:^3.2.0":
   version: 3.3.0
   resolution: "schema-utils@npm:3.3.0"
   dependencies:
@@ -9212,7 +9268,10 @@ __metadata:
     "@babel/plugin-syntax-dynamic-import": "npm:^7.8.3"
     "@babel/preset-env": "npm:^7.22.4"
     "@fortawesome/fontawesome-free": "npm:^6.4.0"
-    "@symfony/webpack-encore": "npm:^4.3.0"
+    "@hotwired/stimulus": "npm:^3.0.0"
+    "@symfony/stimulus-bridge": "npm:^3.2.2"
+    "@symfony/ux-dropzone": "file:vendor/symfony/ux-dropzone/assets"
+    "@symfony/webpack-encore": "npm:^4.6.0"
     accounting: "npm:^0.4.1"
     admin-lte: "git+https://github.com/ColorlibHQ/AdminLTE.git#7748b38a6e7afc2415975b9c41adab4e1733d330"
     babel-loader: "npm:^9.1.2"
