@@ -15,6 +15,27 @@ SolidInvoice is a sophisticated open-source invoicing application designed to as
 - Receive notifications through various channels, including text messages, emails, or HipChat
 - Future enhancements planned
 
+## Screenshots
+
+![Screenshot 2024-02-29 at 13 52 44](https://github.com/SolidInvoice/SolidInvoice/assets/144858/efdb4dc1-5b5f-4fa6-a90e-bd6d1bac186a)
+
+<hr />
+
+![Screenshot 2024-02-29 at 13 53 22](https://github.com/SolidInvoice/SolidInvoice/assets/144858/b89c1239-2455-48ef-9ee0-47b78cf69483)
+
+<hr />
+
+![Screenshot 2024-02-29 at 13 54 36](https://github.com/SolidInvoice/SolidInvoice/assets/144858/a04e2aad-ee98-4615-9096-e16d647534f5)
+
+<hr />
+
+![Screenshot 2024-02-29 at 13 56 14](https://github.com/SolidInvoice/SolidInvoice/assets/144858/bbd16da6-61ed-4b20-8a12-f78b1a20c39f)
+
+<hr />
+
+![Screenshot 2024-02-29 at 13 56 52](https://github.com/SolidInvoice/SolidInvoice/assets/144858/fcc7e26e-6c58-4706-9891-1b00df371873)
+
+
 ## System Requirements
 
 SolidInvoice requires PHP version 8.1 or later for optimal performance. It is recommended to use the latest available version of PHP.
