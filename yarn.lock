@@ -1796,7 +1796,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@symfony/stimulus-bridge@npm:^3.2.2":
+"@symfony/stimulus-bridge@npm:^3.2.0":
   version: 3.2.2
   resolution: "@symfony/stimulus-bridge@npm:3.2.2"
   dependencies:
@@ -1811,12 +1811,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@symfony/ux-dropzone@file:vendor/symfony/ux-dropzone/assets::locator=solidinvoice%40workspace%3A.":
-  version: 1.1.0
-  resolution: "@symfony/ux-dropzone@file:vendor/symfony/ux-dropzone/assets#vendor/symfony/ux-dropzone/assets::hash=46057d&locator=solidinvoice%40workspace%3A."
+"@symfony/stimulus-bundle@file:vendor/symfony/stimulus-bundle/assets::locator=solidinvoice%40workspace%3A.":
+  version: 1.0.0
+  resolution: "@symfony/stimulus-bundle@file:vendor/symfony/stimulus-bundle/assets#vendor/symfony/stimulus-bundle/assets::hash=09b15e&locator=solidinvoice%40workspace%3A."
   peerDependencies:
     "@hotwired/stimulus": ^3.0.0
-  checksum: 221dc251faed166f28f3702c46b23d89bf1971eefc4f0ce00c8740f757bbadc446e8249a4b7e5351ab692c3f175e02db375342d9647ceaa0c9cbb95b4f79cb9a
+    "@symfony/stimulus-bridge": ^3.2.0
+  checksum: 2789d09d47d1630c09de11ed402605fea9c566c37d968fde53b43edfc25a2c7ed4f98d9b0b354ff7f7b9996f8a6720980c14a55c38cb67228e92baf183059662
+  languageName: node
+  linkType: hard
+
+"@symfony/ux-dropzone@file:vendor/symfony/ux-dropzone/assets::locator=solidinvoice%40workspace%3A.":
+  version: 1.1.0
+  resolution: "@symfony/ux-dropzone@file:vendor/symfony/ux-dropzone/assets#vendor/symfony/ux-dropzone/assets::hash=9212d5&locator=solidinvoice%40workspace%3A."
+  peerDependencies:
+    "@hotwired/stimulus": ^3.0.0
+  checksum: 1d5dcfb143c07c3cae915b3443618c1eab81421413119d844dee8a74683a2d45fe17571a6953a21a7370f94c844f76856cc9d8c2d557fbde62dd3eed364d4bb2
   languageName: node
   linkType: hard
 
@@ -9269,7 +9279,8 @@ __metadata:
     "@babel/preset-env": "npm:^7.22.4"
     "@fortawesome/fontawesome-free": "npm:^6.4.0"
     "@hotwired/stimulus": "npm:^3.0.0"
-    "@symfony/stimulus-bridge": "npm:^3.2.2"
+    "@symfony/stimulus-bridge": "npm:^3.2.0"
+    "@symfony/stimulus-bundle": "file:vendor/symfony/stimulus-bundle/assets"
     "@symfony/ux-dropzone": "file:vendor/symfony/ux-dropzone/assets"
     "@symfony/webpack-encore": "npm:^4.6.0"
     accounting: "npm:^0.4.1"
