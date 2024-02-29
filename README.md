@@ -1,10 +1,6 @@
-<p align="center">
-    <a href="https://github.com/SolidInvoice/SolidInvoice" target="_blank">
-        <img src="https://avatars.githubusercontent.com/u/25333451?s=200&v=4" height="100px">
-    </a>
-    <h1 align="center">SolidInvoice</h1>
-    <br>
-</p>
+<h1 align="center">SolidInvoice</h1>
+
+![Screenshot 2024-02-29 at 13 40 04](https://github.com/SolidInvoice/SolidInvoice/assets/144858/6f45c11d-d73e-423e-be4a-30cdf2fe819d)
 
 SolidInvoice is a sophisticated open-source invoicing application designed to assist small businesses and freelancers in efficiently managing their daily billing operations. With its comprehensive range of features, this elegant online platform ensures that you receive timely payments.
 
