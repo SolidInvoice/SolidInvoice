@@ -16,10 +16,10 @@ namespace SolidInvoice\CoreBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\UX\Dropzone\Form\DropzoneType;
 
 class ImageUploadType extends AbstractType
 {
@@ -58,7 +58,7 @@ class ImageUploadType extends AbstractType
 
     public function getParent(): string
     {
-        return FileType::class;
+        return DropzoneType::class;
     }
 
     public function getBlockPrefix(): string

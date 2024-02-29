@@ -18,10 +18,15 @@ import 'select2';
 import 'jquery-placeholder';
 import 'regenerator-runtime/runtime';
 
+import { startStimulusApp } from '@symfony/stimulus-bridge';
+
+
 const Application = MnApplication.extend({
     module: null,
     regions: {},
     initialize (options) {
+
+        startStimulusApp();
 
         this.regions = options.regions;
 
@@ -108,7 +113,7 @@ const Application = MnApplication.extend({
             'template': () => {
                 return content.render.apply(content).$el;
             }
-        }) );
+        }))();
 
         view.render.apply(view);
 
@@ -138,9 +143,9 @@ export default function(module) {
                 if (isFunction(action)) {
                     app.on(event, action);
                 } else if (includes(functionsIn(module), action)) {
-                    app.on(event, module[action])
+                    app.on(event, module[action]);
                 } else {
-                    throw `Callback specified for event ${event} is not a valid callback`
+                    throw `Callback specified for event ${event} is not a valid callback`;
                 }
             });
         }

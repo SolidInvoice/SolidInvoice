@@ -15,7 +15,6 @@ namespace SolidInvoice\CoreBundle\Twig\Extension;
 
 use Carbon\Carbon;
 use DateTime;
-use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Pdf\Generator;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
@@ -93,9 +92,9 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
     public function getFilters(): array
     {
         return [
-            new TwigFilter('percentage', fn ($amount, float $percentage = 0.0): float => $this->calculator->calculatePercentage($amount, $percentage)),
+            new TwigFilter('percentage', $this->calculator->calculatePercentage(...)),
 
-            new TwigFilter('diff', fn (DateTime $date): string => $this->dateDiff($date)),
+            new TwigFilter('diff', $this->dateDiff(...)),
 
             new TwigFilter('md5', 'md5'),
         ];
@@ -104,9 +103,9 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('icon', fn (string $iconName, array $options = []): string => $this->displayIcon($iconName, $options), ['is_safe' => ['html']]),
+            new TwigFunction('icon', $this->displayIcon(...), ['is_safe' => ['html']]),
 
-            new TwigFunction('app_logo', fn (Environment $env, string $width = 'auto'): string => $this->displayAppLogo($env, $width), ['is_safe' => ['html'], 'needs_environment' => true]),
+            new TwigFunction('app_logo', $this->displayAppLogo(...), ['is_safe' => ['html'], 'needs_environment' => true]),
 
             new TwigFunction('company_name', function (): string {
                 if ($this->security->getUser() instanceof UserInterface) {
@@ -116,25 +115,29 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
                 return SolidInvoiceCoreBundle::APP_NAME;
             }),
 
-            new TwigFunction('company_id', fn (): UuidInterface => $this->companySelector->getCompany()),
+            new TwigFunction('company_id', $this->companySelector->getCompany(...)),
 
-            new TwigFunction('can_print_pdf', fn (): bool => $this->pdfGenerator->canPrintPdf()),
+            new TwigFunction('can_print_pdf', $this->pdfGenerator->canPrintPdf(...)),
         ];
     }
 
     /**
      * @throws InvalidArgumentException|ServiceCircularReferenceException|ServiceNotFoundException|LoaderError|SyntaxError
      */
-    public function displayAppLogo(Environment $env, string $width = 'auto'): string
+    public function displayAppLogo(Environment $env, string $width = 'auto', bool $showDefault = true): string
     {
-        $logo = self::DEFAULT_LOGO;
+        $logo = $showDefault ? self::DEFAULT_LOGO : null;
 
         if ($this->installed) {
             $logo = $this->systemConfig->get('system/company/logo');
 
             if (null === $logo) {
-                $logo = self::DEFAULT_LOGO;
+                $logo = $showDefault ? self::DEFAULT_LOGO : null;
             }
+        }
+
+        if (null === $logo) {
+            return '';
         }
 
         [$type, $logo] = explode('|', $logo);

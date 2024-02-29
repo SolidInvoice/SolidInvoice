@@ -75,8 +75,10 @@ Encore
              options: {
                  pfx: path.join(process.env.HOME, '.symfony5/certs/default.p12'),
              }
-         }
+         };
      })
+
+    .enableStimulusBridge('./assets/controllers.json')
 ;
 
 const pagesDir = path.resolve(__dirname, 'assets/js/pages');

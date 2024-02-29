@@ -208,3 +208,18 @@
         </div>
     </div>
 {% endblock discount_row %}
+
+{% block image_upload_widget %}
+    {%- if compound is defined and compound -%}
+        {%- set element = 'fieldset' -%}
+    {%- endif -%}
+    {%- set widget_attr = {} -%}
+    {%- if help is not empty -%}
+        {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}
+    {%- endif -%}
+    <{{ element|default('div') }}{% with {attr: row_attr|merge({class: (row_attr.class|default('') ~ ' form-group')|trim})} %}{{ block('attributes') }}{% endwith %}{{ stimulus_controller('logo_upload') }}>
+    {{ app_logo(width=100, showDefault=false) }}
+    {{- form_widget(form, widget_attr) -}}
+    {{- form_help(form) -}}
+    </{{ element|default('div') }}>
+{% endblock image_upload_widget %}
