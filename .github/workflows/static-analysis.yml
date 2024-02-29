@@ -49,7 +49,7 @@ jobs:
         run: composer install --ansi --no-interaction --no-progress --prefer-dist
 
       - name: Warm up cache
-        run: bin/console cache:clear -n -vvv
+        run: bin/console cache:clear -n -vvv -e test
 
       - name: Run PHPStan
         run: bin/phpstan analyse -c phpstan.test.neon
