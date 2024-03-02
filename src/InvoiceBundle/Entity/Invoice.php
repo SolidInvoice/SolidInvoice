@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Entity;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -41,16 +43,27 @@ use SolidInvoice\QuoteBundle\Entity\Quote;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(attributes={"normalization_context"={"groups"={"invoice_api"}}, "denormalization_context"={"groups"={"create_invoice_api"}}})
- */
 #[ORM\Table(name: Invoice::TABLE_NAME)]
 #[ORM\Index(columns: ['quote_id'])]
 #[ORM\Entity(repositoryClass: InvoiceRepository::class)]
+#[ApiResource(
+    uriTemplate: '/clients/{id}/invoices.{_format}',
+    operations: [new GetCollection()],
+    uriVariables: [
+        'id' => new Link(fromClass: Client::class,
+            identifiers: ['id'])
+    ],
+    status: 200,
+    normalizationContext: [
+        'groups' => ['invoice_api']
+    ],
+    denormalizationContext: [
+        'groups' => ['create_invoice_api']
+    ],
+)]
 class Invoice extends BaseInvoice
 {
     final public const TABLE_NAME = 'invoices';
-
     use Archivable;
     use InvoiceStatusTrait {
         Archivable::isArchived insteadof InvoiceStatusTrait;
@@ -71,9 +84,8 @@ class Invoice extends BaseInvoice
     #[Serialize\Groups(['invoice_api', 'client_api'])]
     private ?UuidInterface $uuid = null;
 
-    /**
-     * @ApiProperty(iri="https://schema.org/Organization")
-     */
+
+    #[ApiProperty(iris: ['https://schema.org/Organization'])]
     #[ORM\ManyToOne(targetEntity: Client::class, cascade: ['persist'], inversedBy: 'invoices')]
     #[Assert\NotBlank]
     #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
@@ -113,10 +125,9 @@ class Invoice extends BaseInvoice
     protected Collection $items;
 
     /**
-     * @var Collection<int, InvoiceContact>
-     *
-     * @ApiProperty(writableLink=true)
+     * @var \Collection<int,\InvoiceContact>
      */
+    #[ApiProperty(writableLink: true)]
     #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: InvoiceContact::class, cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY')]
     #[Assert\Count(min: 1, minMessage: 'You need to select at least 1 user to attach to the Invoice')]
     #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
@@ -125,11 +136,9 @@ class Invoice extends BaseInvoice
     public function __construct()
     {
         parent::__construct();
-
         $this->payments = new ArrayCollection();
         $this->items = new ArrayCollection();
         $this->users = new ArrayCollection();
-
         try {
             $this->setUuid(Uuid::uuid1());
         } catch (Exception) {
@@ -149,7 +158,6 @@ class Invoice extends BaseInvoice
     public function setUuid(UuidInterface $uuid): self
     {
         $this->uuid = $uuid;
-
         return $this;
     }
 
@@ -161,13 +169,11 @@ class Invoice extends BaseInvoice
     public function setClient(?Client $client): self
     {
         $this->client = $client;
-
         if ($client instanceof Client && null !== $client->getCurrencyCode()) {
             $this->total->setCurrency($client->getCurrency()->getCode());
             $this->baseTotal->setCurrency($client->getCurrency()->getCode());
             $this->tax->setCurrency($client->getCurrency()->getCode());
         }
-
         return $this;
     }
 
@@ -179,7 +185,6 @@ class Invoice extends BaseInvoice
     public function setBalance(Money $balance): self
     {
         $this->balance = new MoneyEntity($balance);
-
         return $this;
     }
 
@@ -191,7 +196,6 @@ class Invoice extends BaseInvoice
     public function setDue(DateTimeInterface $due): self
     {
         $this->due = $due;
-
         return $this;
     }
 
@@ -203,21 +207,17 @@ class Invoice extends BaseInvoice
     public function setPaidDate(DateTime $paidDate): self
     {
         $this->paidDate = $paidDate;
-
         return $this;
     }
 
     public function addItem(ItemInterface $item): self
     {
         assert($item instanceof Item);
-
         $this->items[] = $item;
         $item->setInvoice($this);
-
         if (isset($this->company)) {
             $item->setCompany($this->getCompany());
         }
-
         return $this;
     }
 
@@ -225,7 +225,6 @@ class Invoice extends BaseInvoice
     {
         $this->items->removeElement($item);
         $item->setInvoice(null);
-
         return $this;
     }
 
@@ -249,14 +248,12 @@ class Invoice extends BaseInvoice
     {
         $this->payments[] = $payment;
         $payment->setInvoice($this);
-
         return $this;
     }
 
     public function removePayment(Payment $payment): self
     {
         $this->payments->removeElement($payment);
-
         return $this;
     }
 
@@ -277,7 +274,6 @@ class Invoice extends BaseInvoice
     {
         $this->quote = $quote;
         $quote->setInvoice($this);
-
         return $this;
     }
 
@@ -295,7 +291,6 @@ class Invoice extends BaseInvoice
     public function setUsers(array $users): self
     {
         $contacts = [];
-
         foreach ($users as $user) {
             if ($user instanceof InvoiceContact) {
                 $contacts[] = $user;
@@ -303,13 +298,10 @@ class Invoice extends BaseInvoice
                 $invoiceContact = new InvoiceContact();
                 $invoiceContact->setContact($user);
                 $invoiceContact->setInvoice($this);
-
                 $contacts[] = $invoiceContact;
             }
         }
-
         $this->users = new ArrayCollection($contacts);
-
         return $this;
     }
 
@@ -318,9 +310,7 @@ class Invoice extends BaseInvoice
         $invoiceContact = new InvoiceContact();
         $invoiceContact->setContact($user);
         $invoiceContact->setInvoice($this);
-
         $this->users[] = $invoiceContact;
-
         return $this;
     }
 
@@ -331,7 +321,6 @@ class Invoice extends BaseInvoice
         foreach ($items as $item) {
             $this->items->add(clone $item);
         }
-
         try {
             $this->setUuid(Uuid::uuid1());
         } catch (Exception) {

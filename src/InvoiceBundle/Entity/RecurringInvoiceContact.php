@@ -13,15 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceContactRepository;
 
-/**
- * @ApiResource(itemOperations={}, collectionOperations={})
- */
+#[ApiResource(operations: [])]
 #[ORM\Table(name: RecurringInvoiceContact::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: RecurringInvoiceContactRepository::class)]
 class RecurringInvoiceContact

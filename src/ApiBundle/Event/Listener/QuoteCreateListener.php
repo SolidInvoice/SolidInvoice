@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Event\Listener;
 
-use ApiPlatform\Core\EventListener\EventPriorities;
+use ApiPlatform\Symfony\EventListener\EventPriorities;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Model\Graph;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

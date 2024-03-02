@@ -13,8 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Entity;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -38,18 +43,21 @@ use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
 use function strtolower;
 
-/**
- * @ApiResource(
- *     attributes={
- *         "normalization_context"={"groups"={"contact_api"}
- *     },
- *     "denormalization_context"={
- *         "groups"={"contact_api"}}
- *     },
- *     collectionOperations={"post"={"method"="POST"}},
- *     iri="https://schema.org/Person"
- * )
- */
+#[ApiResource(
+    types: ['https://schema.org/Person'],
+    operations: [
+        new Get(),
+        new Put(),
+        new Patch(),
+        new Delete(),
+        new Post()
+    ],
+    normalizationContext: [
+        'groups' => ['contact_api']
+    ],
+    denormalizationContext: [
+        'groups' => ['contact_api']
+    ])]
 #[ORM\Table(name: Contact::TABLE_NAME)]
 #[ORM\Index(columns: ['email'])]
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
@@ -67,26 +75,23 @@ class Contact implements Serializable, Stringable
     #[Serialize\Groups(['client_api', 'contact_api'])]
     private ?UuidInterface $id = null;
 
-    /**
-     * @ApiProperty(iri="https://schema.org/givenName")
-     */
+
+    #[ApiProperty(iris: ['https://schema.org/givenName'])]
     #[ORM\Column(name: 'firstName', type: Types::STRING, length: 125)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 125)]
     #[Serialize\Groups(['client_api', 'contact_api'])]
     private ?string $firstName = null;
 
-    /**
-     * @ApiProperty(iri="https://schema.org/familyName")
-     */
+
+    #[ApiProperty(iris: ['https://schema.org/familyName'])]
     #[ORM\Column(name: 'lastName', type: Types::STRING, length: 125, nullable: true)]
     #[Assert\Length(max: 125)]
     #[Serialize\Groups(['client_api', 'contact_api'])]
     private ?string $lastName = null;
 
-    /**
-     * @ApiProperty(iri="https://schema.org/Organization")
-     */
+
+    #[ApiProperty(iris: ['https://schema.org/Organization'])]
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'contacts')]
     #[ORM\JoinColumn(name: 'client_id')]
     #[Serialize\Groups(['contact_api'])]
@@ -94,9 +99,8 @@ class Contact implements Serializable, Stringable
     #[Assert\NotBlank]
     private ?Client $client = null;
 
-    /**
-     * @ApiProperty(iri="https://schema.org/email")
-     */
+
+    #[ApiProperty(iris: ['https://schema.org/email'])]
     #[ORM\Column(name: 'email', type: Types::STRING, length: 255)]
     #[Assert\NotBlank]
     #[Assert\Email(mode: Assert\Email::VALIDATION_MODE_STRICT)]

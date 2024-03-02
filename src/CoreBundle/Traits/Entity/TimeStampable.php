@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Traits\Entity;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Metadata\ApiProperty;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -22,15 +22,15 @@ trait TimeStampable
 {
     /**
      * @Gedmo\Timestampable(on="create")
-     * @ApiProperty(iri="https://schema.org/DateTime")
      */
+    #[ApiProperty(iris: ["https://schema.org/DateTime"])]
     #[ORM\Column(name: 'created', type: 'datetime')]
     protected ?DateTimeInterface $created = null;
 
     /**
      * @Gedmo\Timestampable(on="update")
-     * @ApiProperty(iri="https://schema.org/DateTime")
      */
+    #[ApiProperty(iris: ["https://schema.org/DateTime"])]
     #[ORM\Column(name: 'updated', type: 'datetime')]
     protected ?DateTimeInterface $updated = null;
 
