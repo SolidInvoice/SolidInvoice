@@ -64,7 +64,7 @@ jobs:
             54.185.253.63:443
 
       - name: Checkout
-        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744
+        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
 
       - uses: haya14busa/action-cond@1d6e8a12b20cdb4f1954feef9aa475b9c390cab5
         id: coverage_driver
