@@ -29,7 +29,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@8872c784b04a1420e81191df5d64fbd59d3d3033
         with:
-          php-version: 8.1
+          php-version: 8.3
           ini-values: date.timezone=Europe/Paris, opcache.enable=1, opcache.enable_cli=1, opcache.memory_consumption=256, opcache.max_accelerated_files=32531, opcache.interned_strings_buffer=8, opcache.validate_timestamps=0, opcache.save_comments=1, opcache.fast_shutdown=0
           extensions: intl, gd, opcache, mysql, pdo_mysql
 
