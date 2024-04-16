@@ -19,6 +19,7 @@ use InvalidArgumentException;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\SettingsBundle\Entity\Setting;
 use Throwable;
+use function is_array;
 
 class SettingsRepository extends ServiceEntityRepository
 {
@@ -32,8 +33,11 @@ class SettingsRepository extends ServiceEntityRepository
      */
     public function save(array $settings): void
     {
+        $settings = $this->flatten($settings);
+        $entityManager = $this->getEntityManager();
+
         try {
-            $this->_em->transactional(function () use ($settings): void {
+            $entityManager->transactional(function () use ($settings): void {
                 foreach ($settings as $key => $value) {
                     $this->createQueryBuilder('s')
                         ->update()
@@ -50,8 +54,13 @@ class SettingsRepository extends ServiceEntityRepository
                 }
             });
         } finally {
-            // Clear the repository, to not keep previous setting values
-            $this->clear();
+            // Detach the entities, to not keep previous setting values
+            $unitOfWork = $entityManager->getUnitOfWork();
+            $entities = $unitOfWork->getIdentityMap()[Setting::class] ?? [];
+
+            foreach ($entities as $entity) {
+                $entityManager->detach($entity);
+            }
         }
     }
 
@@ -59,5 +68,24 @@ class SettingsRepository extends ServiceEntityRepository
     {
         $this->_em->remove($this->findOneBy(['key' => $key]));
         $this->_em->flush();
+    }
+
+    /**
+     * @param array<string, mixed> $array
+     * @return array<string, mixed>
+     */
+    private function flatten(array $array, string $prefix = ''): array
+    {
+        $result = [];
+
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                $result = [...$result, ...$this->flatten($value, $prefix . $key . '/')];
+            } else {
+                $result[$prefix . $key] = $value;
+            }
+        }
+
+        return $result;
     }
 }

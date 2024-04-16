@@ -1,0 +1,46 @@
+{% from "@SolidInvoiceSettings/macros.html.twig" import settings_section %}
+
+<section class="row"{{ attributes }}>
+    <aside class="col-3">
+        <div class="card sticky-top">
+            <div class="card-body">
+                <ul class="nav nav-pills nav-sidebar flex-column sidebar-menu" role="tablist">
+                    {% for settingsSection, setting in appSettings %}
+                        <li class="nav-item">
+                            <a href="#{{ section }}" data-action="live#update:prevent" data-model="section" data-value="{{ settingsSection }}" class="nav-link{{ settingsSection is same as section ? ' active' }}">
+                                {{ icon('cog') }}
+                                <p>{{ settingsSection|trans|title }}</p>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </aside>
+
+    <section class="col-9">
+        {{ form_start(form, {
+            attr: {
+                'data-action': 'live#action:prevent',
+                'data-live-action-param': 'prevent|files|save'
+            }
+        }) }}
+        <div class="tab-content">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        {{ section|replace({"_" : " "})|title }}
+                    </h3>
+                </div>
+                <div class="card-body">
+                    {{ form_widget(form) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer form-actions">
+            <button type="submit" class="btn btn-success">{{ icon('save') }} {{ "settings.save"|trans }}</button>
+        </div>
+        {{ form_end(form) }}
+    </section>
+</section>

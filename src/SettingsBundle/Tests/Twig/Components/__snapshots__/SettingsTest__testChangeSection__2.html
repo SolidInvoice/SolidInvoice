@@ -1,0 +1,91 @@
+<html><body>
+<section class="row" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="Settings" data-live-url-value="/_components/Settings" data-live-query-mapping-value='{"section":{"name":"section"}}' data-live-props-value='{"section":"invoice","formName":"settings","settings":{"company":{"company_name":"SolidInvoice","logo":"","vat_number":"","contact_details":{"email":"","phone_number":"","address":{"street1":"","street2":"","city":"","state":"","zip":"","country":""}},"currency":"USD"},"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"7DRnC0FoqnyKFY9lXDoBZoAjTrToIGeTfg\/K2mkG9zI="}' data-live-csrf-value="">
+    <aside class="col-3">
+        <div class="card sticky-top">
+            <div class="card-body">
+                <ul class="nav nav-pills nav-sidebar flex-column sidebar-menu" role="tablist">
+                                            <li class="nav-item">
+                            <a href="#invoice" data-action="live#update:prevent" data-model="section" data-value="system" class="nav-link">
+                                <i class="fa fa-cog"></i>
+                                <p>System</p>
+                            </a>
+                        </li>
+                                            <li class="nav-item">
+                            <a href="#invoice" data-action="live#update:prevent" data-model="section" data-value="quote" class="nav-link">
+                                <i class="fa fa-cog"></i>
+                                <p>Quote</p>
+                            </a>
+                        </li>
+                                            <li class="nav-item">
+                            <a href="#invoice" data-action="live#update:prevent" data-model="section" data-value="invoice" class="nav-link active">
+                                <i class="fa fa-cog"></i>
+                                <p>Invoice</p>
+                            </a>
+                        </li>
+                                            <li class="nav-item">
+                            <a href="#invoice" data-action="live#update:prevent" data-model="section" data-value="email" class="nav-link">
+                                <i class="fa fa-cog"></i>
+                                <p>Email</p>
+                            </a>
+                        </li>
+                                            <li class="nav-item">
+                            <a href="#invoice" data-action="live#update:prevent" data-model="section" data-value="sms" class="nav-link">
+                                <i class="fa fa-cog"></i>
+                                <p>Sms</p>
+                            </a>
+                        </li>
+                                            <li class="nav-item">
+                            <a href="#invoice" data-action="live#update:prevent" data-model="section" data-value="notification" class="nav-link">
+                                <i class="fa fa-cog"></i>
+                                <p>Notification</p>
+                            </a>
+                        </li>
+                                    </ul>
+            </div>
+        </div>
+    </aside>
+
+    <section class="col-9">
+        <form name="settings" method="post" data-model="norender|*" data-action="live#action:prevent" data-live-action-param="prevent|files|save">
+        <div class="tab-content">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        Invoice
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div id="settings" data-model="norender|*">
+<div class="form-group">                
+            <label class="control-label" for="settings_email_subject">Email subject</label><input type="text" id="settings_email_subject" name="settings[email_subject]" aria-describedby="settings_email_subject_help" class="form-control" value="New Invoice - #{id}"><div class="alert alert-info mt-2">
+            <small id="settings_email_subject_help" class="form-text ">To include the id of the invoice in the subject, add the placeholder {id} where you want the id</small>
+        </div>
+</div>
+<div class="form-group">                
+            <label class="control-label" for="settings_bcc_address">Bcc address</label><input type="email" id="settings_bcc_address" name="settings[bcc_address]" aria-describedby="settings_bcc_address_help" class="form-control"><div class="alert alert-info mt-2">
+            <small id="settings_bcc_address_help" class="form-text ">Send BCC copy of invoice to this address</small>
+        </div>
+</div>
+<div class="form-group">
+<div class="form-check">        <input type="checkbox" id="settings_watermark" name="settings[watermark]" aria-describedby="settings_watermark_help" class="form-check-input" value="1" checked>
+        <label class="form-check-label" for="settings_watermark">Watermark</label>
+</div>
+
+            <span class="help-inline"><small>Display a watermark on the invoice with the status</small></span>
+    <div class="alert alert-info mt-2">
+            <small id="settings_watermark_help" class="form-text ">Display a watermark on the invoice with the status</small>
+        </div>
+</div>
+<input type="hidden" id="settings__token" name="settings[_token]">
+</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer form-actions">
+            <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Save</button>
+        </div>
+        </form>
+    </section>
+</section>
+</body></html>

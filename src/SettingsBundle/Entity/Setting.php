@@ -18,6 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
 use Ramsey\Uuid\UuidInterface;
+use Serializable;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\SettingsBundle\Repository\SettingsRepository;
 use Stringable;
@@ -27,7 +28,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\UniqueConstraint(columns: ['setting_key', 'company_id'])]
 #[ORM\Entity(repositoryClass: SettingsRepository::class)]
 #[UniqueEntity(fields: ['company_id', 'key'])]
-class Setting implements Stringable
+class Setting implements Stringable, Serializable
 {
     final public const TABLE_NAME = 'app_config';
 
@@ -110,5 +111,37 @@ class Setting implements Stringable
     public function __toString(): string
     {
         return (string) $this->value;
+    }
+
+    public function __serialize(): array
+    {
+        return [
+            $this->id,
+            $this->key,
+            $this->value,
+            $this->description,
+            $this->type,
+        ];
+    }
+
+    public function __unserialize(array $data): void
+    {
+        [
+            $this->id,
+            $this->key,
+            $this->value,
+            $this->description,
+            $this->type,
+        ] = $data;
+    }
+
+    public function serialize(): string
+    {
+        return serialize($this->__serialize());
+    }
+
+    public function unserialize(string $data): void
+    {
+        $this->__unserialize(unserialize($data));
     }
 }

@@ -18,15 +18,10 @@ import 'select2';
 import 'jquery-placeholder';
 import 'regenerator-runtime/runtime';
 
-import { startStimulusApp } from '@symfony/stimulus-bridge';
-
-
 const Application = MnApplication.extend({
     module: null,
     regions: {},
     initialize (options) {
-
-        startStimulusApp();
 
         this.regions = options.regions;
 
