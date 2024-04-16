@@ -41,7 +41,7 @@ abstract class ApiTestCase extends PantherTestCase
 
         self::$client = static::createClient();
 
-        $registry = self::$kernel->getContainer()->get('doctrine');
+        $registry = self::getContainer()->get('doctrine');
 
         $userRepository = $registry->getRepository(User::class);
         $companyRepository = $registry->getRepository(Company::class);
