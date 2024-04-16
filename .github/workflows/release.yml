@@ -37,7 +37,7 @@ jobs:
           coverage: none
           extensions: curl, gd, intl, opcache, json, openssl, pdo, soap, xsl, :xdebug
           ini-values: memory_limit=-1
-          php-version: 8.1
+          php-version: 8.3
 
       - name: Install PHP dependencies
         run: composer install --ansi --no-interaction --no-progress --no-suggest --prefer-dist --no-dev -o -a
