@@ -105,11 +105,9 @@ jobs:
 
       - uses: ramsey/composer-install@v3
 
-      - uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d
-        with:
-          node-version-file: .nvmrc
+      - uses: oven-sh/setup-bun@v1
 
-      - run: yarn install
+      - run: bun install
 
       - name: Super-Linter
         uses: github/super-linter/slim@45fc0d88288beee4701c62761281edfee85655d7

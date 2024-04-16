@@ -8,7 +8,7 @@ source "${NVM_DIR}/nvm.sh"
 
 composer install
 
-nvm exec yarn install
-nvm exec yarn build
+nvm exec bun install
+nvm exec bun run build
 
 symfony server:start --allow-http

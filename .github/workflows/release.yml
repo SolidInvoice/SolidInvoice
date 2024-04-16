@@ -43,6 +43,8 @@ jobs:
         run: composer install --ansi --no-interaction --no-progress --no-suggest --prefer-dist --no-dev -o -a
         working-directory: solidinvoice
 
+      - uses: oven-sh/setup-bun@v1
+
       - name: Set ENV Variables
         run: |
           echo SOLIDINVOICE_ENV=$SOLIDINVOICE_ENV > .env
@@ -50,11 +52,11 @@ jobs:
         working-directory: solidinvoice
 
       - name: Install JS dependencies
-        run: yarn install
+        run: bun install
         working-directory: solidinvoice
 
       - name: Build Assets
-        run: yarn build
+        run: bun run build
         working-directory: solidinvoice
 
       - name: Cleanup files

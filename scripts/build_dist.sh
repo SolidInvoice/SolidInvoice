@@ -46,8 +46,8 @@ function generateRelease() {
 
     composer config --no-plugins allow-plugins.symfony/flex true
     composer install -o -n --no-dev -vvv
-    yarn --pure-lockfile
-    yarn build
+    bun install
+    bun run build
     rm -Rf node_modules .env .git
     chmod -R 0777 var
 

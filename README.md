@@ -75,10 +75,10 @@ curl -s http://getcomposer.org/installer | php
 php composer.phar install
 ```
 
-5. Install the necessary Node packages and compile all assets:
+5. Install the necessary Node packages and compile all assets with [Bun](https://bun.sh):
 ```bash
-yarn install
-yarn dev
+bun install
+bun run dev
 ```
 
 At this point, SolidInvoice should be fully functional.
@@ -87,7 +87,7 @@ For production environments, follow these additional steps:
 
 1. Build the project and optimize it for production:
 ```bash
-yarn build
+bun run build
 ```
 
 2. Deploy the optimized version of SolidInvoice.

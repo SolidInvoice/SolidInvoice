@@ -5,9 +5,6 @@ ENV TERM xterm
 ENV COMPOSER_ALLOW_SUPERUSER 1
 ENV COMPOSER_HTACCESS_PROTECT 0
 ENV COMPOSER_NO_INTERACTION 1
-ENV NVM_DIR /root/.nvm
-ENV NVM_VERSION 0.39.1
-ENV NODE_VERSION 14
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -66,11 +63,7 @@ RUN apt-get update && \
         curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.deb.sh' | bash && \
         apt-get install symfony-cli && \
         symfony local:server:ca:install && \
-        mkdir -p $NVM_DIR && \
-        curl -o- "https://raw.githubusercontent.com/creationix/nvm/v${NVM_VERSION}/install.sh" | bash && \
-        source "$NVM_DIR/nvm.sh" && \
-        nvm install ${NODE_VERSION} && nvm use ${NODE_VERSION} && \
-        npm install --global yarn && \
+        curl -fsSL https://bun.sh/install | bash && \
         echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && locale-gen && \
         apt-get clean
 
