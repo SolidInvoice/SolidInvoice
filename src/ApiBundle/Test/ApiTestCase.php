@@ -59,6 +59,7 @@ abstract class ApiTestCase extends PantherTestCase
             $user = new User();
             $user->setUsername('test')
                 ->setEmail('test@example.com')
+                ->setEnabled(true)
                 ->setPassword(password_hash('Password1', PASSWORD_DEFAULT));
 
             foreach ($companies as $company) {

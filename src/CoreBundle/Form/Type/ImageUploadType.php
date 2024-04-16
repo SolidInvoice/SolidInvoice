@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Form\Type;
 
+use SolidInvoice\SettingsBundle\Entity\Setting;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
@@ -30,8 +31,8 @@ class ImageUploadType extends AbstractType
 
             public function transform($value): File
             {
-                if (null !== $value) {
-                    $this->file = $value;
+                if ($value instanceof Setting) {
+                    $this->file = $value->getValue();
                 }
 
                 return new File('', false);

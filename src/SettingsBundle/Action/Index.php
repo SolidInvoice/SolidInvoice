@@ -13,19 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SettingsBundle\Action;
 
-use SolidInvoice\SettingsBundle\Form\Handler\SettingsFormHandler;
-use SolidWorx\FormHandler\FormHandler;
+use SolidInvoice\CoreBundle\Templating\Template;
 use Symfony\Component\HttpFoundation\Request;
 
 final class Index
 {
-    public function __construct(
-        private readonly FormHandler $handler
-    ) {
-    }
-
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Template
     {
-        return $this->handler->handle(SettingsFormHandler::class);
+        return new Template('@SolidInvoiceSettings/Settings/index.html.twig');
     }
 }

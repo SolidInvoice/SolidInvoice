@@ -1,0 +1,157 @@
+<html><body>
+<section class="row" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="Settings" data-live-url-value="/_components/Settings" data-live-query-mapping-value='{"section":{"name":"section"}}' data-live-props-value='{"section":"email","formName":"settings","settings":{"company":{"company_name":"SolidInvoice","logo":"","vat_number":"","contact_details":{"email":"","phone_number":"","address":{"street1":"","street2":"","city":"","state":"","zip":"","country":""}},"currency":"USD"},"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"u9\/uetvk4hbIlZNciCHa9dyCcTctP1Xp4oZ0oUFkQt4="}' data-live-csrf-value="">
+    <aside class="col-3">
+        <div class="card sticky-top">
+            <div class="card-body">
+                <ul class="nav nav-pills nav-sidebar flex-column sidebar-menu" role="tablist">
+                                            <li class="nav-item">
+                            <a href="#email" data-action="live#update:prevent" data-model="section" data-value="system" class="nav-link">
+                                <i class="fa fa-cog"></i>
+                                <p>System</p>
+                            </a>
+                        </li>
+                                            <li class="nav-item">
+                            <a href="#email" data-action="live#update:prevent" data-model="section" data-value="quote" class="nav-link">
+                                <i class="fa fa-cog"></i>
+                                <p>Quote</p>
+                            </a>
+                        </li>
+                                            <li class="nav-item">
+                            <a href="#email" data-action="live#update:prevent" data-model="section" data-value="invoice" class="nav-link">
+                                <i class="fa fa-cog"></i>
+                                <p>Invoice</p>
+                            </a>
+                        </li>
+                                            <li class="nav-item">
+                            <a href="#email" data-action="live#update:prevent" data-model="section" data-value="email" class="nav-link active">
+                                <i class="fa fa-cog"></i>
+                                <p>Email</p>
+                            </a>
+                        </li>
+                                            <li class="nav-item">
+                            <a href="#email" data-action="live#update:prevent" data-model="section" data-value="sms" class="nav-link">
+                                <i class="fa fa-cog"></i>
+                                <p>Sms</p>
+                            </a>
+                        </li>
+                                            <li class="nav-item">
+                            <a href="#email" data-action="live#update:prevent" data-model="section" data-value="notification" class="nav-link">
+                                <i class="fa fa-cog"></i>
+                                <p>Notification</p>
+                            </a>
+                        </li>
+                                    </ul>
+            </div>
+        </div>
+    </aside>
+
+    <section class="col-9">
+        <form name="settings" method="post" data-model="norender|*" data-action="live#action:prevent" data-live-action-param="prevent|files|save">
+        <div class="tab-content">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        Email
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div id="settings" data-model="norender|*">
+<div class="form-group">                
+            <label class="control-label" for="settings_from_name">From name</label><input type="text" id="settings_from_name" name="settings[from_name]" class="form-control" value="SolidInvoice">
+</div>
+<div class="form-group">                
+            <label class="control-label" for="settings_from_address">From address</label><input type="text" id="settings_from_address" name="settings[from_address]" class="form-control" value="info@solidinvoice.co">
+</div>
+<fieldset class="form-group">                
+    <div id="settings_sending_options"><fieldset class="form-group">                
+    <div id="settings_sending_options_provider">
+<div class="form-group">    
+            <label class="control-label" for="settings_sending_options_provider_provider">Mail Provider</label><select id="settings_sending_options_provider_provider" name="settings[sending_options][provider][provider]" data-controller="mailsettings" class="form-control"><option value="">Choose Mail Provider</option>
+<option value="Gmail">Gmail</option>
+<option value="Mailchimp Mandrill">Mailchimp Mandrill</option>
+<option value="Mailgun">Mailgun</option>
+<option value="Postmark">Postmark</option>
+<option value="Sendgrid">Sendgrid</option>
+<option value="Amazon SES">Amazon SES</option>
+<option value="SMTP">SMTP</option></select>
+</div>
+<fieldset class="mb-0 form-group">                
+    <div id="settings_sending_options_provider_Gmail" class="d-none">
+<div class="form-group">                
+            <label class="control-label" for="settings_sending_options_provider_Gmail_username">Username</label><input type="text" id="settings_sending_options_provider_Gmail_username" name="settings[sending_options][provider][Gmail][username]" class="form-control">
+</div>
+<div class="form-group">                
+            <label class="control-label" for="settings_sending_options_provider_Gmail_password">Password</label><input type="password" id="settings_sending_options_provider_Gmail_password" name="settings[sending_options][provider][Gmail][password]" class="form-control">
+</div>
+</div>
+</fieldset>
+<fieldset class="mb-0 form-group">                
+    <div id="settings_sending_options_provider_Mailchimp-Mandrill" class="d-none"><div class="form-group">                
+            <label class="control-label" for="settings_sending_options_provider_Mailchimp-Mandrill_key">Key</label><input type="text" id="settings_sending_options_provider_Mailchimp-Mandrill_key" name="settings[sending_options][provider][Mailchimp-Mandrill][key]" class="form-control">
+</div></div>
+</fieldset>
+<fieldset class="mb-0 form-group">                
+    <div id="settings_sending_options_provider_Mailgun" class="d-none">
+<div class="form-group">                
+            <label class="control-label" for="settings_sending_options_provider_Mailgun_domain">Domain</label><input type="text" id="settings_sending_options_provider_Mailgun_domain" name="settings[sending_options][provider][Mailgun][domain]" class="form-control">
+</div>
+<div class="form-group">                
+            <label class="control-label" for="settings_sending_options_provider_Mailgun_key">Key</label><input type="text" id="settings_sending_options_provider_Mailgun_key" name="settings[sending_options][provider][Mailgun][key]" class="form-control">
+</div>
+</div>
+</fieldset>
+<fieldset class="mb-0 form-group">                
+    <div id="settings_sending_options_provider_Postmark" class="d-none"><div class="form-group">                
+            <label class="control-label" for="settings_sending_options_provider_Postmark_key">Key</label><input type="text" id="settings_sending_options_provider_Postmark_key" name="settings[sending_options][provider][Postmark][key]" class="form-control">
+</div></div>
+</fieldset>
+<fieldset class="mb-0 form-group">                
+    <div id="settings_sending_options_provider_Sendgrid" class="d-none"><div class="form-group">                
+            <label class="control-label" for="settings_sending_options_provider_Sendgrid_key">Key</label><input type="text" id="settings_sending_options_provider_Sendgrid_key" name="settings[sending_options][provider][Sendgrid][key]" class="form-control">
+</div></div>
+</fieldset>
+<fieldset class="mb-0 form-group">                
+    <div id="settings_sending_options_provider_Amazon-SES" class="d-none">
+<div class="form-group">                
+            <label class="control-label" for="settings_sending_options_provider_Amazon-SES_accessKey">Access key</label><input type="text" id="settings_sending_options_provider_Amazon-SES_accessKey" name="settings[sending_options][provider][Amazon-SES][accessKey]" class="form-control">
+</div>
+<div class="form-group">                
+            <label class="control-label" for="settings_sending_options_provider_Amazon-SES_accessSecret">Access secret</label><input type="password" id="settings_sending_options_provider_Amazon-SES_accessSecret" name="settings[sending_options][provider][Amazon-SES][accessSecret]" class="form-control">
+</div>
+<div class="form-group">                
+            <label class="control-label" for="settings_sending_options_provider_Amazon-SES_region">Region</label><input type="text" id="settings_sending_options_provider_Amazon-SES_region" name="settings[sending_options][provider][Amazon-SES][region]" placeholder="eu-west-1" class="form-control">
+</div>
+</div>
+</fieldset>
+<fieldset class="mb-0 form-group">                
+    <div id="settings_sending_options_provider_SMTP" class="d-none">
+<div class="form-group">                
+            <label class="control-label" for="settings_sending_options_provider_SMTP_host">Host</label><input type="text" id="settings_sending_options_provider_SMTP_host" name="settings[sending_options][provider][SMTP][host]" class="form-control">
+</div>
+<div class="form-group">                
+            <label class="control-label" for="settings_sending_options_provider_SMTP_port">Port</label><input type="number" id="settings_sending_options_provider_SMTP_port" name="settings[sending_options][provider][SMTP][port]" class="form-control">
+</div>
+<div class="form-group">                
+            <label class="control-label" for="settings_sending_options_provider_SMTP_user">User</label><input type="text" id="settings_sending_options_provider_SMTP_user" name="settings[sending_options][provider][SMTP][user]" class="form-control">
+</div>
+<div class="form-group">                
+            <label class="control-label" for="settings_sending_options_provider_SMTP_password">Password</label><input type="password" id="settings_sending_options_provider_SMTP_password" name="settings[sending_options][provider][SMTP][password]" class="form-control">
+</div>
+</div>
+</fieldset>
+</div>
+</fieldset></div>
+</fieldset>
+<input type="hidden" id="settings__token" name="settings[_token]">
+</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer form-actions">
+            <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Save</button>
+        </div>
+        </form>
+    </section>
+</section>
+</body></html>

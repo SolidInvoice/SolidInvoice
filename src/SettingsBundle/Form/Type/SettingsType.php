@@ -39,6 +39,7 @@ class SettingsType extends AbstractType
                 [
                     'help' => $setting->getDescription(),
                     'required' => false,
+                    'data' => $setting->getValue(),
                 ]
             );
         }
