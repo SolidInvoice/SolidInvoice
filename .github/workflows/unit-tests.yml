@@ -85,19 +85,7 @@ jobs:
         with:
           node-version-file: .nvmrc
 
-      - name: Get composer cache directory
-        id: composercache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - name: Cache dependencies
-        uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84
-        with:
-          path: ${{ steps.composercache.outputs.dir }}
-          key: ${{ runner.os }}-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json composer.lock') }}
-          restore-keys: ${{ runner.os }}-php-${{ matrix.php }}-composer-
-
-      - name: Install dependencies
-        run: composer install --ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      - uses: ramsey/composer-install@v3
 
       - name: Detect browser drivers
         run: bin/bdi detect drivers
