@@ -81,18 +81,16 @@ jobs:
           extensions: intl, gd, opcache, mysql, pdo_mysql, soap, zip, :xdebug
           coverage: ${{ steps.coverage_driver.outputs.value }}
 
-      - uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d
-        with:
-          node-version-file: .nvmrc
+      - uses: oven-sh/setup-bun@v1
 
       - uses: ramsey/composer-install@v3
 
       - name: Detect browser drivers
         run: bin/bdi detect drivers
 
-      - run: yarn install
+      - run: bun install
 
-      - run: yarn build
+      - run: bun run build
 
       - name: Enable code coverage
         if: matrix.coverage

@@ -29,6 +29,8 @@ node_modules
 .phpunit.result.cache
 .env
 yarn-error.log
+yarn.lock
+package-lock.json
 /vendor-bin/**/vendor
 /drivers
 
