@@ -38,5 +38,7 @@ jobs:
       - name: Warm up cache
         run: bin/console cache:clear -n -vvv -e test
 
+      - run: ls -la var/cache/test
+
       - name: Run PHPStan
         run: bin/phpstan analyse -c phpstan.test.neon
