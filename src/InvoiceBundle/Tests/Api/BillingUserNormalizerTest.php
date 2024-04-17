@@ -113,7 +113,7 @@ final class BillingUserNormalizerTest extends TestCase
         $iri = '/some/iri';
         $this->iriConverter
             ->expects(self::once())
-            ->method('getIriFromItem')
+            ->method('getIriFromResource')
             ->with($user)
             ->willReturn($iri);
 

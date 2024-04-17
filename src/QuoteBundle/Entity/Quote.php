@@ -133,7 +133,7 @@ class Quote
     private Collection $items;
 
     /**
-     * @var \Collection<int,\QuoteContact>
+     * @var Collection<int,QuoteContact>
      */
     #[ApiProperty(writableLink: true)]
     #[ORM\OneToMany(mappedBy: 'quote', targetEntity: QuoteContact::class, cascade: ['persist', 'remove'])]
