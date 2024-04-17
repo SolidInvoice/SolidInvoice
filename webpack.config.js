@@ -1,7 +1,9 @@
 const Encore = require('@symfony/webpack-encore'),
     path = require('path'),
     { execSync } = require('child_process'),
-    fs = require('fs');
+    fs = require('fs'),
+    { codecovWebpackPlugin } = require('@codecov/webpack-plugin')
+;
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
@@ -86,6 +88,12 @@ Encore
 
     .enableStimulusBridge('./assets/controllers.json')
     .enableTypeScriptLoader()
+
+    .addPlugin(codecovWebpackPlugin({
+        enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
+        bundleName: 'solidinvoice-webpack-bundle',
+        uploadToken: process.env.CODECOV_TOKEN,
+    }))
 ;
 
 const pagesDir = path.resolve(__dirname, 'assets/js/pages');
