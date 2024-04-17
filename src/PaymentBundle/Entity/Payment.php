@@ -14,9 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\PaymentBundle\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Link;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -40,12 +37,6 @@ use Traversable;
 #[ORM\Table(name: Payment::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: PaymentRepository::class)]
 #[ApiResource(
-    uriTemplate: '/clients/{id}/payments.{_format}',
-    operations: [new Get(), new GetCollection()],
-    uriVariables: [
-        'id' => new Link(fromClass: Client::class, identifiers: ['id'])
-    ],
-    status: 200,
     normalizationContext: [
         'groups' => ['payment_api']
     ]
