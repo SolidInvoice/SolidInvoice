@@ -1,6 +1,10 @@
 name: Unit Tests
 
-on: [ pull_request ]
+on:
+    pull_request:
+    push:
+        branches:
+            - 2.3.x
 
 jobs:
   unit:
