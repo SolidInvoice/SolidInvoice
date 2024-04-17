@@ -51,6 +51,8 @@ final class SettingsTest extends KernelTestCase
     {
         parent::setUp();
 
+        $_SERVER['secret'] = $_ENV['secret'] = '$ecretf0rt3st';
+
         $this->ensureSessionIsSet();
 
         $this->csrfTokenManager = $this->createMock(CsrfTokenManagerInterface::class);
