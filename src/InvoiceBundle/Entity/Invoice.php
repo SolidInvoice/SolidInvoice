@@ -126,7 +126,7 @@ class Invoice extends BaseInvoice
     protected Collection $items;
 
     /**
-     * @var \Collection<int,\InvoiceContact>
+     * @var Collection<int,InvoiceContact>
      */
     #[ApiProperty(writableLink: true)]
     #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: InvoiceContact::class, cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY')]

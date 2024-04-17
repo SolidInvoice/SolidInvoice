@@ -105,7 +105,6 @@ jobs:
             bin/phpunit
           fi
 
-
       - name: Upload coverage results to Codecov
         uses: codecov/codecov-action@84508663e988701840491b86de86b666e8a86bed
         if: matrix.coverage

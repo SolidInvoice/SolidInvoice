@@ -71,7 +71,7 @@ final class BillingUserNormalizer implements ContextAwareDenormalizerInterface, 
         $users = $object['users'];
 
         foreach ($users as $i => $user) {
-            $object['users'][$i] = $this->iriConverter->getIriFromItem($user);
+            $object['users'][$i] = $this->iriConverter->getIriFromResource($user);
         }
 
         return $this->normalizer->normalize($object, $format, $context + [self::class => true]);
