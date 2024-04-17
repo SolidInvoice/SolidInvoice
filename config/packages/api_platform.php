@@ -39,6 +39,8 @@ return static function (ApiPlatformConfig $config): void {
         ->name('X-API-TOKEN')
         ->type('header')->toArray();
 
+    $config->defaults()
+        ->formats(['json']);
 
     $config->description(<<<'DESC'
 SolidInvoice is a simple open source invoicing application aimed to help small businesses and freelancers manage their day-to-day billing.
