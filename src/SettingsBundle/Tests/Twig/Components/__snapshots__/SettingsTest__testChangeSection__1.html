@@ -64,9 +64,9 @@
 </div>
 <fieldset class="form-group">                
     <div id="settings_sending_options"><fieldset class="form-group">                
-    <div id="settings_sending_options_provider">
+    <div id="settings_sending_options_provider" data-controller="mailsettings">
 <div class="form-group">    
-            <label class="control-label" for="settings_sending_options_provider_provider">Mail Provider</label><select id="settings_sending_options_provider_provider" name="settings[sending_options][provider][provider]" data-controller="mailsettings" class="form-control"><option value="">Choose Mail Provider</option>
+            <label class="control-label" for="settings_sending_options_provider_provider">Mail Provider</label><select id="settings_sending_options_provider_provider" name="settings[sending_options][provider][provider]" data-mailsettings-target="provider" class="form-control"><option value="">Choose Mail Provider</option>
 <option value="Gmail">Gmail</option>
 <option value="Mailchimp Mandrill">Mailchimp Mandrill</option>
 <option value="Mailgun">Mailgun</option>
@@ -75,8 +75,8 @@
 <option value="Amazon SES">Amazon SES</option>
 <option value="SMTP">SMTP</option></select>
 </div>
-<fieldset class="mb-0 form-group">                
-    <div id="settings_sending_options_provider_Gmail" class="d-none">
+<fieldset class="mb-0 provider-Gmail d-none form-group" data-provider="Gmail">                
+    <div id="settings_sending_options_provider_Gmail">
 <div class="form-group">                
             <label class="control-label" for="settings_sending_options_provider_Gmail_username">Username</label><input type="text" id="settings_sending_options_provider_Gmail_username" name="settings[sending_options][provider][Gmail][username]" class="form-control">
 </div>
@@ -85,13 +85,13 @@
 </div>
 </div>
 </fieldset>
-<fieldset class="mb-0 form-group">                
-    <div id="settings_sending_options_provider_Mailchimp-Mandrill" class="d-none"><div class="form-group">                
+<fieldset class="mb-0 provider-Mailchimp-Mandrill d-none form-group" data-provider="Mailchimp-Mandrill">                
+    <div id="settings_sending_options_provider_Mailchimp-Mandrill"><div class="form-group">                
             <label class="control-label" for="settings_sending_options_provider_Mailchimp-Mandrill_key">Key</label><input type="text" id="settings_sending_options_provider_Mailchimp-Mandrill_key" name="settings[sending_options][provider][Mailchimp-Mandrill][key]" class="form-control">
 </div></div>
 </fieldset>
-<fieldset class="mb-0 form-group">                
-    <div id="settings_sending_options_provider_Mailgun" class="d-none">
+<fieldset class="mb-0 provider-Mailgun d-none form-group" data-provider="Mailgun">                
+    <div id="settings_sending_options_provider_Mailgun">
 <div class="form-group">                
             <label class="control-label" for="settings_sending_options_provider_Mailgun_domain">Domain</label><input type="text" id="settings_sending_options_provider_Mailgun_domain" name="settings[sending_options][provider][Mailgun][domain]" class="form-control">
 </div>
@@ -100,18 +100,18 @@
 </div>
 </div>
 </fieldset>
-<fieldset class="mb-0 form-group">                
-    <div id="settings_sending_options_provider_Postmark" class="d-none"><div class="form-group">                
+<fieldset class="mb-0 provider-Postmark d-none form-group" data-provider="Postmark">                
+    <div id="settings_sending_options_provider_Postmark"><div class="form-group">                
             <label class="control-label" for="settings_sending_options_provider_Postmark_key">Key</label><input type="text" id="settings_sending_options_provider_Postmark_key" name="settings[sending_options][provider][Postmark][key]" class="form-control">
 </div></div>
 </fieldset>
-<fieldset class="mb-0 form-group">                
-    <div id="settings_sending_options_provider_Sendgrid" class="d-none"><div class="form-group">                
+<fieldset class="mb-0 provider-Sendgrid d-none form-group" data-provider="Sendgrid">                
+    <div id="settings_sending_options_provider_Sendgrid"><div class="form-group">                
             <label class="control-label" for="settings_sending_options_provider_Sendgrid_key">Key</label><input type="text" id="settings_sending_options_provider_Sendgrid_key" name="settings[sending_options][provider][Sendgrid][key]" class="form-control">
 </div></div>
 </fieldset>
-<fieldset class="mb-0 form-group">                
-    <div id="settings_sending_options_provider_Amazon-SES" class="d-none">
+<fieldset class="mb-0 provider-Amazon-SES d-none form-group" data-provider="Amazon-SES">                
+    <div id="settings_sending_options_provider_Amazon-SES">
 <div class="form-group">                
             <label class="control-label" for="settings_sending_options_provider_Amazon-SES_accessKey">Access key</label><input type="text" id="settings_sending_options_provider_Amazon-SES_accessKey" name="settings[sending_options][provider][Amazon-SES][accessKey]" class="form-control">
 </div>
@@ -123,8 +123,8 @@
 </div>
 </div>
 </fieldset>
-<fieldset class="mb-0 form-group">                
-    <div id="settings_sending_options_provider_SMTP" class="d-none">
+<fieldset class="mb-0 provider-SMTP d-none form-group" data-provider="SMTP">                
+    <div id="settings_sending_options_provider_SMTP">
 <div class="form-group">                
             <label class="control-label" for="settings_sending_options_provider_SMTP_host">Host</label><input type="text" id="settings_sending_options_provider_SMTP_host" name="settings[sending_options][provider][SMTP][host]" class="form-control">
 </div>

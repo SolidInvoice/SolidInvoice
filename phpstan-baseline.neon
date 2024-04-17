@@ -911,11 +911,6 @@ parameters:
 			path: src/QuoteBundle/Repository/QuoteRepository.php
 
 		-
-			message: "#^Method SolidInvoice\\\\SettingsBundle\\\\Action\\\\Index\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/SettingsBundle/Action/Index.php
-
-		-
 			message: "#^Method SolidInvoice\\\\SettingsBundle\\\\Collection\\\\ConfigCollection\\:\\:add\\(\\) has parameter \\$settings with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/SettingsBundle/Collection/ConfigCollection.php
@@ -946,21 +941,6 @@ parameters:
 			path: src/SettingsBundle/Collection/ConfigCollection.php
 
 		-
-			message: "#^Method SolidInvoice\\\\SettingsBundle\\\\Form\\\\Handler\\\\SettingsFormHandler\\:\\:flatten\\(\\) has parameter \\$array with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/SettingsBundle/Form/Handler/SettingsFormHandler.php
-
-		-
-			message: "#^Method SolidInvoice\\\\SettingsBundle\\\\Form\\\\Handler\\\\SettingsFormHandler\\:\\:flatten\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/SettingsBundle/Form/Handler/SettingsFormHandler.php
-
-		-
-			message: "#^Method SolidInvoice\\\\SettingsBundle\\\\Form\\\\Handler\\\\SettingsFormHandler\\:\\:getSettings\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/SettingsBundle/Form/Handler/SettingsFormHandler.php
-
-		-
 			message: "#^Class SolidInvoice\\\\SettingsBundle\\\\Repository\\\\SectionRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#"
 			count: 1
 			path: src/SettingsBundle/Repository/SectionRepository.php
@@ -979,6 +959,16 @@ parameters:
 			message: "#^Method SolidInvoice\\\\SettingsBundle\\\\Repository\\\\SettingsRepository\\:\\:save\\(\\) has parameter \\$settings with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/SettingsBundle/Repository/SettingsRepository.php
+
+		-
+			message: "#^Service \"session\" is not registered in the container\\.$#"
+			count: 3
+			path: src/SettingsBundle/Tests/Twig/Components/SettingsTest.php
+
+		-
+			message: "#^Method SolidInvoice\\\\SettingsBundle\\\\Twig\\\\Components\\\\Settings\\:\\:getDataModelValue\\(\\) is unused\\.$#"
+			count: 1
+			path: src/SettingsBundle/Twig/Components/Settings.php
 
 		-
 			message: "#^Method SolidInvoice\\\\TaxBundle\\\\Action\\\\Add\\:\\:__invoke\\(\\) has no return type specified\\.$#"

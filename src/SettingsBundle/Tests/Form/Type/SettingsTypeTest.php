@@ -22,6 +22,7 @@ use SolidInvoice\SettingsBundle\Form\Type\SettingsType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\UX\StimulusBundle\Helper\StimulusHelper;
 
 class SettingsTypeTest extends FormTestCase
 {
@@ -53,12 +54,9 @@ class SettingsTypeTest extends FormTestCase
                     'sms' => $this->faker->boolean,
                 ];
                 $formValue = json_encode($value, JSON_THROW_ON_ERROR);
-                break;
             }
-            if (MailTransportType::class === $type) {
-            }
+
             if (ImageUploadType::class === $type) {
-                $value = $formValue = null;
                 break;
             }
 
@@ -79,7 +77,7 @@ class SettingsTypeTest extends FormTestCase
     {
         $extensions = parent::getTypes();
 
-        $extensions[] = new MailTransportType([]);
+        $extensions[] = new MailTransportType([], new StimulusHelper(null));
 
         return $extensions;
     }
