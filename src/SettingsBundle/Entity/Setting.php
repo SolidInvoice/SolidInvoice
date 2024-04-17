@@ -69,10 +69,7 @@ class Setting implements Stringable, Serializable
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getValue()
+    public function getValue(): ?string
     {
         return $this->value;
     }
@@ -124,6 +121,9 @@ class Setting implements Stringable, Serializable
         ];
     }
 
+    /**
+     * @param array{0: UuidInterface|null, 1: string|null, 2: string|null, 3: string|null, 4: string|null} $data
+     */
     public function __unserialize(array $data): void
     {
         [

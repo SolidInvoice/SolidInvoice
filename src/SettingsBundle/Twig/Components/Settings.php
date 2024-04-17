@@ -53,6 +53,10 @@ final class Settings extends AbstractController
         $this->section = key($this->getAppSettings());
     }
 
+    /**
+     * @param bool $useObject
+     * @return array<string, string|bool>
+     */
     #[ExposeInTemplate]
     public function getAppSettings(bool $useObject = false): array
     {
@@ -84,7 +88,7 @@ final class Settings extends AbstractController
         $this->resetForm();
     }
 
-    private function getDataModelValue(): ?string
+    private function getDataModelValue(): string
     {
         return 'norender|*';
     }
