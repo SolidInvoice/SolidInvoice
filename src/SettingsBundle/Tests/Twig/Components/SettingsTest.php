@@ -58,9 +58,6 @@ final class SettingsTest extends KernelTestCase
         self::getContainer()
             ->set('.container.private.security.csrf.token_manager', $this->csrfTokenManager);
 
-        self::getContainer()
-            ->set(CsrfTokenManagerInterface::class, $this->csrfTokenManager);
-
         $this->client = self::getContainer()->get('test.client');
         $this->client->disableReboot();
 
