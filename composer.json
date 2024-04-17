@@ -107,7 +107,7 @@
         "symfony/requirements-checker": "^2.0",
         "symfony/routing": "^5.4",
         "symfony/runtime": "^5.4",
-        "symfony/security-bundle": "^5.4",
+        "symfony/security-bundle": "^6.1",
         "symfony/sendgrid-mailer": "^5.4",
         "symfony/serializer": "^5.4",
         "symfony/stimulus-bundle": "^2.15",
