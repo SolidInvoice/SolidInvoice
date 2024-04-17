@@ -54,7 +54,6 @@ final class Settings extends AbstractController
     }
 
     /**
-     * @param bool $useObject
      * @return array<string, string|bool>
      */
     #[ExposeInTemplate]
