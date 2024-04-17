@@ -130,6 +130,7 @@
         "zenstruck/schedule-bundle": "^1.5"
     },
     "require-dev": {
+        "captainhook/captainhook-phar": "^5.23",
         "dama/doctrine-test-bundle": "^7.2",
         "dbrekelmans/bdi": "^1.0",
         "doctrine/doctrine-fixtures-bundle": "^3.3",
@@ -173,7 +174,8 @@
             "phpstan/extension-installer": true,
             "symfony/flex": true,
             "symfony/runtime": true,
-            "php-http/discovery": true
+            "php-http/discovery": true,
+            "captainhook/captainhook-phar": true
         },
         "bin-dir": "bin",
         "platform": {
