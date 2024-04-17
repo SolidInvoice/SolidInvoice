@@ -15,8 +15,6 @@ namespace SolidInvoice\InvoiceBundle\Entity;
 
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Link;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -37,12 +35,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: RecurringInvoiceRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[ApiResource(
-    uriTemplate: '/clients/{id}/recurring_invoices.{_format}',
-    operations: [new GetCollection()],
-    uriVariables: [
-        'id' => new Link(fromClass: Client::class, identifiers: ['id'])
-    ],
-    status: 200,
     normalizationContext: [
         'groups' => ['recurring_invoice_api']
     ],
