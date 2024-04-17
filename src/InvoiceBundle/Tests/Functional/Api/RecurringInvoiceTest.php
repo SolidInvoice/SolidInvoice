@@ -30,8 +30,6 @@ use function assert;
  */
 final class RecurringInvoiceTest extends ApiTestCase
 {
-    use EnsureApplicationInstalled;
-
     private AbstractExecutor $executor;
 
     protected function setUp(): void

@@ -25,10 +25,8 @@ use function assert;
 /**
  * @group functional
  */
-class PaymentTest extends ApiTestCase
+final class PaymentTest extends ApiTestCase
 {
-    use EnsureApplicationInstalled;
-
     private AbstractExecutor $executor;
 
     protected function setUp(): void

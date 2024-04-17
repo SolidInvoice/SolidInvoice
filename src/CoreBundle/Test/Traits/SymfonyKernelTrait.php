@@ -63,9 +63,8 @@ trait SymfonyKernelTrait
     {
         static::ensureKernelShutdown();
 
-        $kernel = static::createKernel($options);
-        $kernel->boot();
-        static::$kernel = $kernel;
+        static::$kernel = static::createKernel($options);
+        static::$kernel->boot();
         static::$booted = true;
 
         return static::$kernel;
@@ -87,7 +86,7 @@ trait SymfonyKernelTrait
 
         try {
             // @phpstan-ignore-next-line
-            $container = self::$kernel->getContainer()->get('test.service_container');
+            $container = static::$kernel->getContainer()->get('test.service_container');
             assert($container instanceof ContainerInterface);
 
             return $container;
