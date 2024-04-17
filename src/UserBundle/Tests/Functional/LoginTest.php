@@ -14,15 +14,12 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Tests\Functional;
 
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
-use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 
 /**
  * @group functional
  */
 final class LoginTest extends ApiTestCase
 {
-    use EnsureApplicationInstalled;
-
     public function testRedirectToLoginPage(): void
     {
         $client = self::createClient();

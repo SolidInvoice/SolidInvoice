@@ -29,8 +29,6 @@ use function assert;
  */
 final class InvoiceTest extends ApiTestCase
 {
-    use EnsureApplicationInstalled;
-
     private AbstractExecutor $executor;
 
     protected function setUp(): void
