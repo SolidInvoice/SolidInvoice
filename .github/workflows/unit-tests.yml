@@ -107,22 +107,16 @@ jobs:
             bin/phpunit
           fi
 
-      - name: Upload coverage results to Coveralls
-        if: matrix.coverage
-        uses: coverallsapp/github-action@3dfc5567390f6fa9267c0ee9c251e4c8c3f18949
-        with:
-            github-token: ${{ secrets.GITHUB_TOKEN }}
-            file: build/logs/clover.xml
 
       - name: Upload coverage results to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@84508663e988701840491b86de86b666e8a86bed
         if: matrix.coverage
         with:
+          token: ${{ secrets.CODECOV_TOKEN }}
           files: build/logs/clover.xml
-          flags: unittests # optional
-          name: codecov-umbrella # optional
-          fail_ci_if_error: true # optional (default = false)
-          verbose: true # optional (default = false)
+          flags: unittests
+          fail_ci_if_error: true
+          verbose: true
 
       - name: Add comment to PR with failure screenshots
         uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410
