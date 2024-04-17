@@ -15,8 +15,6 @@ namespace SolidInvoice\InvoiceBundle\Entity;
 
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Link;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -47,15 +45,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Index(columns: ['quote_id'])]
 #[ORM\Entity(repositoryClass: InvoiceRepository::class)]
 #[ApiResource(
-    uriTemplate: '/clients/{id}/invoices.{_format}',
-    operations: [new GetCollection()],
-    uriVariables: [
-        'id' => new Link(
-            fromClass: Client::class,
-            identifiers: ['id']
-        )
-    ],
-    status: 200,
     normalizationContext: [
         'groups' => ['invoice_api']
     ],
