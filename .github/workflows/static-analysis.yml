@@ -18,15 +18,16 @@ jobs:
         with:
           egress-policy: block
           allowed-endpoints: >
-            api.github.com:443
             github.com:443
+            api.github.com:443
             objects.githubusercontent.com:443
             packagist.org:443
             repo.packagist.org:443
-            codecov.io:443q
             registry.yarnpkg.com:443
-            uploader.codecov.io:443
             registry.npmjs.org:443
+            codecov.io:443
+            api.codecov.io:443
+            uploader.codecov.io:443
 
       - name: Checkout
         uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
