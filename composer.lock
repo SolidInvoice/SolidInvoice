@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7615ef1f1ee16478c6155f1cf2293e27",
+    "content-hash": "b21c0b94ad4e95820fb15593f2690efb",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -14229,7 +14229,7 @@
             "version": "6.42.2",
             "source": {
                 "type": "git",
-                "url": "git@github.com:twilio/twilio-php.git",
+                "url": "https://github.com/twilio/twilio-php.git",
                 "reference": "a86746d7e5d88e0406fe002768c4007f5cb26174"
             },
             "dist": {
