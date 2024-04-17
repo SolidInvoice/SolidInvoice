@@ -93,5 +93,9 @@
   "engines": {
     "node": ">=18.0.0"
   },
-  "packageManager": "bun@1.1.0"
+  "packageManager": "bun@1.1.0",
+  "trustedDependencies": [
+    "@fortawesome/fontawesome-free",
+    "core-js-pure"
+  ]
 }
