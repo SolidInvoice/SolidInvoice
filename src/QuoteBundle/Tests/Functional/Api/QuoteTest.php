@@ -19,7 +19,6 @@ use Ramsey\Uuid\Uuid;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData as LoadClientData;
 use SolidInvoice\ClientBundle\Entity\Contact;
-use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\QuoteBundle\DataFixtures\ORM\LoadData as LoadQuoteData;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use function assert;

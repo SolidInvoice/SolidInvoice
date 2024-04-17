@@ -17,7 +17,6 @@ use Doctrine\Common\DataFixtures\Executor\AbstractExecutor;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData as LoadClientData;
-use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\PaymentBundle\DataFixtures\ORM\LoadData as LoadPaymentData;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use function assert;

@@ -20,7 +20,6 @@ use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
-use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use function assert;
 
 /**
