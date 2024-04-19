@@ -130,4 +130,4 @@ jobs:
       - name: Bump version to next dev
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: "./scripts/bump_version_dev.sh
+        run: "./scripts/bump_version_dev.sh"
