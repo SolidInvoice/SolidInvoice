@@ -14,7 +14,7 @@
                 "action": "\\CaptainHook\\App\\Hook\\PHP\\Action\\Linting"
             },
             {
-                "action": "bin/ecs check --fix"
+                "action": "bin/ecs check"
             }
         ]
     },
