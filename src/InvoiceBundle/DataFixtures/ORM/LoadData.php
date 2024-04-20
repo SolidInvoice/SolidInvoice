@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\DataFixtures\ORM;
 
+use Brick\Math\BigInteger;
 use DateTimeImmutable;
 use DateTimeZone;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Exception;
-use Money\Currency;
-use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -58,13 +57,13 @@ class LoadData extends Fixture
 
         $item = new Item();
         $item->setQty(1);
-        $item->setPrice(new Money(10000, new Currency('USD')));
+        $item->setPrice(BigInteger::of(10000));
         $item->setDescription('Test Item');
         $invoice->addItem($item);
 
         $recurringItem = new Item();
         $recurringItem->setQty(1);
-        $recurringItem->setPrice(new Money(10000, new Currency('USD')));
+        $recurringItem->setPrice(BigInteger::of(10000));
         $recurringItem->setDescription('Test Item');
         $recurringInvoice->addItem($recurringItem);
 

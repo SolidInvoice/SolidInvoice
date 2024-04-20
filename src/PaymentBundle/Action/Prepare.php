@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\PaymentBundle\Action;
 
 use const FILTER_VALIDATE_BOOLEAN;
+use Brick\Math\BigInteger;
 use DateTime;
 use Exception;
 use Money\Money;
@@ -112,8 +113,7 @@ final class Prepare
         if ($form->isSubmitted() && $form->isValid()) {
             $paymentFactories = $this->paymentFactories->getFactories($form->getData()['payment_method']->getFactoryName());
             $data = $form->getData();
-            /** @var Money $amount */
-            $amount = $data['amount'];
+            $amount = BigInteger::of($data['amount']);
 
             /** @var PaymentMethod $paymentMethod */
             $paymentMethod = $data['payment_method'];
@@ -128,9 +128,9 @@ final class Prepare
                 $clientCredit = $invoice->getClient()->getCredit()->getValue();
 
                 $invalid = '';
-                if ($amount->greaterThan($clientCredit)) {
+                if ($amount->isGreaterThan($clientCredit)) {
                     $invalid = 'payment.create.exception.not_enough_credit';
-                } elseif ($amount->greaterThan($invoice->getBalance())) {
+                } elseif ($amount->isGreaterThan($invoice->getBalance())) {
                     $invalid = 'payment.create.exception.amount_exceeds_balance';
                 }
 

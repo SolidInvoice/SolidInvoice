@@ -13,11 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Tests\Serializer\Normalizer;
 
-use Money\Currency;
-use Money\Money;
+use Brick\Math\BigInteger;
+use Brick\Math\Exception\MathException;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ApiBundle\Serializer\Normalizer\CreditNormalizer;
 use SolidInvoice\ClientBundle\Entity\Credit;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -83,6 +84,10 @@ class CreditNormalizerTest extends TestCase
         self::assertFalse($normalizer->supportsDenormalization([], NormalizerInterface::class));
     }
 
+    /**
+     * @throws MathException
+     * @throws ExceptionInterface
+     */
     public function testNormalization(): void
     {
         $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
@@ -110,10 +115,9 @@ class CreditNormalizerTest extends TestCase
         $normalizer = new CreditNormalizer($parentNormalizer);
 
         $credit = new Credit();
-        $money = new Money(10000, new Currency('USD'));
-        $credit->setValue($money);
+        $credit->setValue(10000);
 
-        self::assertEquals($money, $normalizer->normalize($credit));
+        self::assertEquals(BigInteger::of(10000), $normalizer->normalize($credit));
     }
 
     public function testDenormalization(): void

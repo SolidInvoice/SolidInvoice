@@ -165,7 +165,7 @@
                                 </tr>
                             {% endif %}
 
-                            {% if invoice.discount.type is not empty %}
+                            {% if invoice.hasDiscount %}
                                 <tr>
                                     <td class="no-line"></td>
                                     <td colspan="{{ footerSpan }}" class="no-line text-right">

@@ -16,7 +16,6 @@ namespace SolidInvoice\InvoiceBundle\Tests\Form\Type;
 use Cron\CronExpression;
 use Mockery as M;
 use Money\Currency;
-use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
@@ -51,7 +50,7 @@ class RecurringInvoiceTypeTest extends FormTestCase
             'total' => 0,
             'baseTotal' => 0,
             'tax' => 0,
-            'frequency' => (string) CronExpression::factory('@weekly'),
+            'frequency' => (string) new CronExpression('@weekly'),
             'date_start' => $this->faker->dateTime,
             'date_end' => $this->faker->dateTime,
         ];
@@ -68,9 +67,6 @@ class RecurringInvoiceTypeTest extends FormTestCase
         $discount->setType(Discount::TYPE_PERCENTAGE);
         $discount->setValue($discountValue);
         $object->setDiscount($discount);
-        $object->setTotal(new Money(0, new Currency('USD')));
-        $object->setTax(new Money(0, new Currency('USD')));
-        $object->setBaseTotal(new Money(0, new Currency('USD')));
 
         $this->assertFormData($this->factory->create(RecurringInvoiceType::class, $data), $formData, $object);
     }

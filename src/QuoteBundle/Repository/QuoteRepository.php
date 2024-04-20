@@ -20,7 +20,6 @@ use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\ClientBundle\Entity\Client;
-use SolidInvoice\QuoteBundle\Entity\Item;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use function array_walk;
 
@@ -97,48 +96,6 @@ class QuoteRepository extends ServiceEntityRepository
             ->where('q.archived is not null');
 
         return $qb;
-    }
-
-    public function updateCurrency(Client $client): void
-    {
-        $filters = $this->getEntityManager()->getFilters();
-        $filters->disable('archivable');
-
-        $currency = $client->getCurrency();
-
-        $qb = $this->createQueryBuilder('q');
-
-        $qb->update()
-            ->set('q.total.currency', ':currency')
-            ->set('q.baseTotal.currency', ':currency')
-            ->set('q.tax.currency', ':currency')
-            ->where('q.client = :client')
-            ->setParameter('client', $client)
-            ->setParameter('currency', $currency);
-
-        if ($qb->getQuery()->execute()) {
-            $qbi = $this->getEntityManager()->createQueryBuilder();
-
-            $qbi->update()
-                ->from(Item::class, 'qt')
-                ->set('qt.price.currency', ':currency')
-                ->set('qt.total.currency', ':currency')
-                ->where(
-                    $qbi->expr()->in(
-                        'qt.quote',
-                        $this->createQueryBuilder('q')
-                            ->select('q.id')
-                            ->where('q.client = :client')
-                            ->getDQL()
-                    )
-                )
-                ->setParameter('client', $client)
-                ->setParameter('currency', $currency);
-
-            $qbi->getQuery()->execute();
-        }
-
-        $filters->enable('archivable');
     }
 
     /**

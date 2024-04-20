@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Entity;
 
-use Money\Money;
+use Brick\Math\BigInteger;
 use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\TaxBundle\Entity\Tax;
 
@@ -25,17 +25,17 @@ interface ItemInterface
 
     public function getDescription(): ?string;
 
-    public function setPrice(Money $price): self;
+    public function setPrice(BigInteger|float|int|string $price): self;
 
-    public function getPrice(): ?Money;
+    public function getPrice(): BigInteger;
 
     public function setQty(float $qty): self;
 
     public function getQty(): ?float;
 
-    public function setTotal(Money $total): self;
+    public function setTotal(BigInteger|float|int|string $total): self;
 
-    public function getTotal(): ?Money;
+    public function getTotal(): BigInteger;
 
     public function getTax(): ?Tax;
 

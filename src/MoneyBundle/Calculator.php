@@ -13,8 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MoneyBundle;
 
+use Brick\Math\BigDecimal;
+use Brick\Math\BigInteger;
+use Brick\Math\BigNumber;
+use Brick\Math\Exception\MathException;
 use InvalidArgumentException;
-use Money\Money;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
@@ -25,7 +28,10 @@ use SolidInvoice\QuoteBundle\Entity\Quote;
  */
 final class Calculator
 {
-    public function calculateDiscount($entity): Money
+    /**
+     * @throws MathException
+     */
+    public function calculateDiscount($entity): BigDecimal
     {
         if (! $entity instanceof Quote && ! $entity instanceof Invoice) {
             throw new InvalidArgumentException(sprintf('"%s" expects instance of Quote or Invoice, "%s" given.', __METHOD__, get_debug_type($entity)));
@@ -33,29 +39,24 @@ final class Calculator
 
         $discount = $entity->getDiscount();
 
-        if (null !== $entity->getTax()) {
-            $invoiceTotal = $entity->getBaseTotal()->add($entity->getTax());
-        } else {
-            $invoiceTotal = $entity->getBaseTotal();
-        }
+        $invoiceTotal = $entity->getBaseTotal()->plus($entity->getTax());
 
         if (Discount::TYPE_PERCENTAGE === $discount->getType()) {
-            return new Money($this->calculatePercentage($invoiceTotal, $discount->getValue()), $invoiceTotal->getCurrency());
+            return BigDecimal::of($this->calculatePercentage($invoiceTotal, $discount->getValue()));
         }
 
-        return $discount->getValue();
+        return $discount->getValue()->toBigDecimal();
     }
 
-    public function calculatePercentage($amount, float $percentage = 0.0): float
+    /**
+     * @throws MathException
+     */
+    public function calculatePercentage(BigInteger|int|float|string $amount, float $percentage = 0.0): float
     {
         if ($percentage < 0) {
             $percentage *= 100;
         }
 
-        if ($amount instanceof Money) {
-            return MoneyFormatter::toFloat($amount->multiply($percentage));
-        }
-
-        return ($amount * $percentage) / 100;
+        return MoneyFormatter::toFloat(BigNumber::of($amount)->multipliedBy($percentage));
     }
 }

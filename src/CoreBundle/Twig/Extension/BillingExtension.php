@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Twig\Extension;
 
-use Money\Money;
+use Brick\Math\BigDecimal;
 use SolidInvoice\CoreBundle\Form\FieldRenderer;
 use SolidInvoice\MoneyBundle\Calculator;
 use Symfony\Component\Form\FormView;
@@ -32,7 +32,7 @@ class BillingExtension extends AbstractExtension
     {
         return [
             new TwigFunction('billing_fields', fn (FormView $form) => $this->fieldRenderer->render($form, 'children[items].vars[prototype]'), ['is_safe' => ['html']]),
-            new TwigFunction('discount', fn ($entity): Money => $this->calculator->calculateDiscount($entity)),
+            new TwigFunction('discount', fn ($entity): BigDecimal => $this->calculator->calculateDiscount($entity)),
         ];
     }
 }

@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Manager;
 
+use Brick\Math\Exception\MathException;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
+use JsonException;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Item;
@@ -52,11 +54,17 @@ class InvoiceManager
         $this->dispatcher = $dispatcher;
     }
 
+    /**
+     * @throws MathException
+     */
     public function createFromQuote(Quote $quote): Invoice
     {
         return $this->createFromObject($quote);
     }
 
+    /**
+     * @throws MathException
+     */
     public function createFromRecurring(RecurringInvoice $recurringInvoice): Invoice
     {
         $invoice = $this->createFromObject($recurringInvoice);
@@ -89,6 +97,9 @@ class InvoiceManager
         return $invoice;
     }
 
+    /**
+     * @throws MathException
+     */
     private function createFromObject($object): Invoice
     {
         /** @var RecurringInvoice|Quote $object */
@@ -136,6 +147,7 @@ class InvoiceManager
 
     /**
      * @throws InvalidTransitionException
+     * @throws JsonException
      */
     public function create(BaseInvoice $invoice): BaseInvoice
     {
@@ -157,9 +169,9 @@ class InvoiceManager
     }
 
     /**
-     * @throws InvalidTransitionException
+     * @throws InvalidTransitionException|\JsonException
      */
-    private function applyTransition(BaseInvoice $invoice, string $transition): bool
+    private function applyTransition(BaseInvoice $invoice, string $transition): void
     {
         if ($this->invoiceStateMachine->can($invoice, $transition)) {
             $oldStatus = $invoice->getStatus();
@@ -182,7 +194,7 @@ class InvoiceManager
                 $this->notification->sendNotification('invoice_status_update', $notification);
             }
 
-            return true;
+            return;
         }
 
         throw new InvalidTransitionException($transition);

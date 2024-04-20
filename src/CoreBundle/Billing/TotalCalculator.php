@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Billing;
 
-use Money\Money;
+use Brick\Math\BigInteger;
+use Brick\Math\Exception\MathException;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Exception\UnexpectedTypeException;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
@@ -32,6 +33,9 @@ class TotalCalculator
     ) {
     }
 
+    /**
+     * @throws MathException
+     */
     public function calculateTotals($entity): void
     {
         if (! $entity instanceof BaseInvoice && ! $entity instanceof Quote) {
@@ -42,28 +46,39 @@ class TotalCalculator
 
         if ($entity instanceof Invoice) {
             $totalPaid = $this->paymentRepository->getTotalPaidForInvoice($entity);
-            $entity->setBalance($entity->getTotal()->subtract(new Money($totalPaid, $entity->getClient()->getCurrency())));
+            $entity->setBalance($entity->getTotal()->minus($totalPaid));
         }
     }
 
+    /**
+     * @throws MathException
+     */
     private function updateTotal($entity): void
     {
         /** @var BaseInvoice|Quote $entity */
 
-        $total = new Money(0, $entity->getClient()->getCurrency());
-        $subTotal = new Money(0, $entity->getClient()->getCurrency());
-        $tax = new Money(0, $entity->getClient()->getCurrency());
+        $total = BigInteger::zero();
+        $subTotal = BigInteger::zero();
+        $tax = BigInteger::zero();
 
         foreach ($entity->getItems() as $item) {
-            $item->setTotal($item->getPrice()->multiply($item->getQty()));
+            $item->setTotal($item->getPrice()->multipliedBy($item->getQty()));
 
             $rowTotal = $item->getTotal();
 
-            $total = $total->add($item->getTotal());
-            $subTotal = $subTotal->add($item->getTotal());
+            $total = $total->plus($item->getTotal());
+            $subTotal = $subTotal->plus($item->getTotal());
 
             if (($rowTax = $item->getTax()) instanceof Tax) {
-                $this->setTax($rowTax, $rowTotal, $subTotal, $total, $tax);
+                if (Tax::TYPE_INCLUSIVE === $rowTax->getType()) {
+                    $taxAmount = $rowTotal->toBigDecimal()->dividedBy(($rowTax->getRate() / 100) + 1)->minus($rowTotal)->negated();
+                    $subTotal = $subTotal->minus($taxAmount);
+                } else {
+                    $taxAmount = $rowTotal->toBigDecimal()->multipliedBy($rowTax->getRate() / 100);
+                    $total = $total->plus($taxAmount);
+                }
+
+                $tax = $tax->plus($taxAmount);
             }
         }
 
@@ -77,30 +92,19 @@ class TotalCalculator
         $entity->setTax($tax);
     }
 
-    private function setDiscount(BaseInvoice|Quote $entity, Money $total): Money
+    /**
+     * @throws MathException
+     */
+    private function setDiscount(BaseInvoice|Quote $entity, BigInteger $total): BigInteger
     {
         $discount = $entity->getDiscount();
 
-        $discountValue = null;
         if (Discount::TYPE_PERCENTAGE === $discount->getType()) {
-            $discountValue = $total->multiply(((float) $discount->getValuePercentage()) / 100);
+            $discountValue = $total->toBigDecimal()->multipliedBy(((float) $discount->getValuePercentage()) / 100);
         } else {
-            $discountValue = $discount->getValueMoney()->getMoney();
+            $discountValue = $discount->getValueMoney();
         }
 
-        return $total->subtract($discountValue);
-    }
-
-    private function setTax(Tax $rowTax, Money $rowTotal, Money &$subTotal, Money &$total, Money &$tax): void
-    {
-        if (Tax::TYPE_INCLUSIVE === $rowTax->getType()) {
-            $taxAmount = $rowTotal->divide(($rowTax->getRate() / 100) + 1)->subtract($rowTotal)->multiply(-1);
-            $subTotal = $subTotal->subtract($taxAmount);
-        } else {
-            $taxAmount = $rowTotal->multiply($rowTax->getRate() / 100);
-            $total = $total->add($taxAmount);
-        }
-
-        $tax = $tax->add($taxAmount);
+        return $total->minus($discountValue);
     }
 }

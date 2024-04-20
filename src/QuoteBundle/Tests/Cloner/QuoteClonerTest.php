@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Tests\Cloner;
 
+use Brick\Math\BigInteger;
+use Brick\Math\Exception\MathException;
 use DateTime;
 use Money\Currency;
-use Money\Money;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Entity\Discount;
@@ -32,6 +33,9 @@ use Symfony\Component\Workflow\Transition;
 
 class QuoteClonerTest extends TestCase
 {
+    /**
+     * @throws MathException
+     */
     public function testClone(): void
     {
         $currency = new Currency('USD');
@@ -50,20 +54,20 @@ class QuoteClonerTest extends TestCase
         $item->setTax($tax);
         $item->setDescription('Item Description');
         $item->setCreated(new DateTime('now'));
-        $item->setPrice(new Money(120, $currency));
+        $item->setPrice(BigInteger::of(120));
         $item->setQty(10);
-        $item->setTotal(new Money((12 * 10), $currency));
+        $item->setTotal(BigInteger::of(120 * 10));
 
         $quote = new Quote();
-        $quote->setBaseTotal(new Money(123, $currency));
+        $quote->setBaseTotal(BigInteger::of(123));
         $discount = new Discount();
         $discount->setType(Discount::TYPE_PERCENTAGE);
         $discount->setValue(12);
         $quote->setDiscount($discount);
         $quote->setNotes('Notes');
-        $quote->setTax(new Money(432, $currency));
+        $quote->setTax(BigInteger::of(432));
         $quote->setTerms('Terms');
-        $quote->setTotal(new Money(987, $currency));
+        $quote->setTotal(BigInteger::of(987));
         $quote->setClient($client);
         $quote->addItem($item);
 

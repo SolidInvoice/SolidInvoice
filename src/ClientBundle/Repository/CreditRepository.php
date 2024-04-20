@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Repository;
 
+use Brick\Math\BigInteger;
+use Brick\Math\Exception\MathException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Credit;
 
@@ -26,20 +27,26 @@ class CreditRepository extends ServiceEntityRepository
         parent::__construct($registry, Credit::class);
     }
 
-    public function addCredit(Client $client, Money $amount): Credit
+    /**
+     * @throws MathException
+     */
+    public function addCredit(Client $client, BigInteger|float|int|string $amount): Credit
     {
         $credit = $client->getCredit();
 
-        $credit->setValue($credit->getValue()->add($amount));
+        $credit->setValue($credit->getValue()->plus($amount));
 
         return $this->save($credit);
     }
 
-    public function deductCredit(Client $client, Money $amount): Credit
+    /**
+     * @throws MathException
+     */
+    public function deductCredit(Client $client, BigInteger|float|int|string $amount): Credit
     {
         $credit = $client->getCredit();
 
-        $credit->setValue($credit->getValue()->subtract($amount));
+        $credit->setValue($credit->getValue()->minus($amount));
 
         return $this->save($credit);
     }
@@ -51,23 +58,5 @@ class CreditRepository extends ServiceEntityRepository
         $entityManager->flush();
 
         return $credit;
-    }
-
-    public function updateCurrency(Client $client): void
-    {
-        $filters = $this->getEntityManager()->getFilters();
-        $filters->disable('archivable');
-
-        $qb = $this->createQueryBuilder('c');
-
-        $qb->update()
-            ->set('c.value.currency', ':currency')
-            ->where('c.client = :client')
-            ->setParameter('currency', $client->getCurrency())
-            ->setParameter('client', $client);
-
-        $qb->getQuery()->execute();
-
-        $filters->enable('archivable');
     }
 }

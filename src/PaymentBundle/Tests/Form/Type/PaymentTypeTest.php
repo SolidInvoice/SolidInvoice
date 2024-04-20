@@ -13,13 +13,17 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Tests\Form\Type;
 
+use Brick\Math\BigInteger;
+use Brick\Math\Exception\MathException;
 use Money\Currency;
-use Money\Money;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\PaymentBundle\Form\Type\PaymentType;
 
 class PaymentTypeTest extends FormTestCase
 {
+    /**
+     * @throws MathException
+     */
     public function testSubmit(): void
     {
         $paymentMethod = $this->faker->name;
@@ -31,7 +35,7 @@ class PaymentTypeTest extends FormTestCase
         ];
 
         $object = [
-            'amount' => new Money($amount * 100, new Currency('USD')),
+            'amount' => BigInteger::of($amount * 100),
         ];
 
         $this->assertFormData($this->factory->create(PaymentType::class, [], ['currency' => new Currency('USD'), 'preferred_choices' => [], 'user' => null]), $formData, $object);

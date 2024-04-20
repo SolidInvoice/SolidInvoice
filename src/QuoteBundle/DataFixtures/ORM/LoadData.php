@@ -13,10 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\DataFixtures\ORM;
 
+use Brick\Math\BigInteger;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Money\Currency;
-use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\QuoteBundle\Entity\Item;
@@ -44,7 +43,7 @@ class LoadData extends Fixture
 
         $item = new Item();
         $item->setQty(1);
-        $item->setPrice(new Money(10000, new Currency('USD')));
+        $item->setPrice(BigInteger::of(10000));
         $item->setDescription('Test Item');
         $quote->addItem($item);
 

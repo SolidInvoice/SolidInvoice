@@ -76,9 +76,9 @@ final class QuoteTest extends ApiTestCase
         self::assertSame([
             'status' => 'draft',
             'client' => '/api/clients/' . $contact->getClient()->getId(),
-            'total' => '$90.00',
-            'baseTotal' => '$100.00',
-            'tax' => '$0.00',
+            'total' => 90,
+            'baseTotal' => 100,
+            'tax' => 0,
             'discount' => [
                 'type' => 'percentage',
                 'value' => 10,
@@ -89,10 +89,10 @@ final class QuoteTest extends ApiTestCase
             'items' => [
                 [
                     'description' => 'Foo Item',
-                    'price' => '$100.00',
+                    'price' => 100,
                     'qty' => 1,
                     'tax' => null,
-                    'total' => '$100.00',
+                    'total' => 100,
                 ],
             ],
             'users' => [
@@ -121,12 +121,12 @@ final class QuoteTest extends ApiTestCase
             'uuid' => $quote->getUuid()->toString(),
             'status' => 'draft',
             'client' => '/api/clients/' . $quote->getClient()->getId(),
-            'total' => '$100.00',
-            'baseTotal' => '$100.00',
-            'tax' => '$0.00',
+            'total' => 100,
+            'baseTotal' => 100,
+            'tax' => 0,
             'discount' => [
                 'type' => null,
-                'value' => null,
+                'value' => 0,
             ],
             'terms' => null,
             'notes' => null,
@@ -135,10 +135,10 @@ final class QuoteTest extends ApiTestCase
                 [
                     'id' => $quote->getItems()->first()->getId()->toString(),
                     'description' => 'Test Item',
-                    'price' => '$100.00',
+                    'price' => 100,
                     'qty' => 1,
                     'tax' => null,
-                    'total' => '$100.00',
+                    'total' => 100,
                 ],
             ],
             'users' => [
@@ -174,9 +174,9 @@ final class QuoteTest extends ApiTestCase
             'uuid' => $quote->getUuid()->toString(),
             'status' => 'draft',
             'client' => '/api/clients/' . $quote->getClient()->getId(),
-            'total' => '$90.00',
-            'baseTotal' => '$100.00',
-            'tax' => '$0.00',
+            'total' => 90,
+            'baseTotal' => 100,
+            'tax' => 0,
             'discount' => [
                 'type' => 'percentage',
                 'value' => 10,
@@ -188,10 +188,10 @@ final class QuoteTest extends ApiTestCase
                 [
                     'id' => $quote->getItems()->first()->getId()->toString(),
                     'description' => 'Foo Item',
-                    'price' => '$100.00',
+                    'price' => 100,
                     'qty' => 1,
                     'tax' => null,
-                    'total' => '$100.00',
+                    'total' => 100,
                 ],
             ],
             'users' => [

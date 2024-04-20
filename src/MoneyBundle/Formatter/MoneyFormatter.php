@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MoneyBundle\Formatter;
 
+use Brick\Math\BigInteger;
+use Brick\Math\Exception\MathException;
+use Brick\Math\RoundingMode;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency;
 use Money\Formatter\IntlMoneyFormatter;
@@ -60,10 +63,9 @@ final class MoneyFormatter implements MoneyFormatterInterface
     }
 
     /**
-     * @param Currency|string|null $currency
      * @throws Throwable
      */
-    public function getCurrencySymbol($currency = null, bool $catch = false): string
+    public function getCurrencySymbol(Currency|string|null $currency = null, bool $catch = false): string
     {
         try {
             return Currencies::getSymbol($this->getCurrency($currency), $this->locale);
@@ -97,9 +99,15 @@ final class MoneyFormatter implements MoneyFormatterInterface
         return '%s%v';
     }
 
-    public static function toFloat(Money $amount): float
+    /**
+     * @throws MathException
+     */
+    public static function toFloat(BigInteger $amount): float
     {
-        return ((float) $amount->getAmount()) / (10 ** 2);
+        return $amount
+            ->toBigDecimal()
+            ->dividedBy(100, 2, RoundingMode::HALF_EVEN)
+            ->toFloat();
     }
 
     private function getCurrency(Currency|string|null $currency): string

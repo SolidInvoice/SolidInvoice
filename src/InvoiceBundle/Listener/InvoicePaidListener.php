@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Listener;
 
+use Brick\Math\Exception\MathException;
 use Doctrine\Persistence\ManagerRegistry;
-use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Credit;
 use SolidInvoice\ClientBundle\Repository\CreditRepository;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -40,6 +40,9 @@ class InvoicePaidListener implements EventSubscriberInterface
     ) {
     }
 
+    /**
+     * @throws MathException
+     */
     public function onInvoicePaid(Event $event): void
     {
         /** @var Invoice $invoice */
@@ -50,19 +53,16 @@ class InvoicePaidListener implements EventSubscriberInterface
         /** @var PaymentRepository $paymentRepository */
         $paymentRepository = $em->getRepository(Payment::class);
 
-        $currency = $invoice->getClient()->getCurrency();
-
-        $invoice->setBalance(new Money(0, $currency));
         $em->persist($invoice);
 
-        $totalPaid = new Money($paymentRepository->getTotalPaidForInvoice($invoice), $currency);
+        $totalPaid = $paymentRepository->getTotalPaidForInvoice($invoice);
 
-        if ($totalPaid->greaterThan($invoice->getTotal())) {
+        if ($totalPaid->isGreaterThan($invoice->getTotal())) {
             $client = $invoice->getClient();
 
             /** @var CreditRepository $creditRepository */
             $creditRepository = $em->getRepository(Credit::class);
-            $creditRepository->addCredit($client, $totalPaid->subtract($invoice->getTotal()));
+            $creditRepository->addCredit($client, $totalPaid->minus($invoice->getTotal()));
         }
 
         $em->flush();

@@ -13,16 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MoneyBundle\Formatter;
 
+use Brick\Math\BigInteger;
 use Money\Currency;
-use Money\Money;
 use Money\MoneyFormatter;
 
 interface MoneyFormatterInterface extends MoneyFormatter
 {
-    /**
-     * @param Currency|string $currency
-     */
-    public function getCurrencySymbol($currency = null): string;
+    public function getCurrencySymbol(Currency|string $currency = null): string;
 
     public function getThousandSeparator(): string;
 
@@ -30,5 +27,5 @@ interface MoneyFormatterInterface extends MoneyFormatter
 
     public function getPattern(): string;
 
-    public static function toFloat(Money $amount): float;
+    public static function toFloat(BigInteger $amount): float;
 }

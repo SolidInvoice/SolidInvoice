@@ -13,13 +13,16 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Tests\Form\Type;
 
-use Money\Currency;
-use Money\Money;
+use Brick\Math\BigInteger;
+use Brick\Math\Exception\MathException;
 use SolidInvoice\ClientBundle\Form\Type\CreditType;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 
 class CreditTypeTest extends FormTestCase
 {
+    /**
+     * @throws MathException
+     */
     public function testSubmit(): void
     {
         $amount = $this->faker->numberBetween(0, 10000);
@@ -29,7 +32,7 @@ class CreditTypeTest extends FormTestCase
         ];
 
         $object = [
-            'amount' => new Money($amount * 100, new Currency('USD')),
+            'amount' => BigInteger::of($amount * 100),
         ];
 
         $this->assertFormData(CreditType::class, $formData, $object);

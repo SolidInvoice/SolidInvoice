@@ -11,8 +11,8 @@
 
 namespace SolidInvoice\InvoiceBundle\Test\Factory;
 
-use Money\Currency;
-use Money\Money;
+use Brick\Math\BigInteger;
+use Brick\Math\Exception\MathException;
 use Ramsey\Uuid\Uuid;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
@@ -45,6 +45,7 @@ final class InvoiceFactory extends ModelFactory
 {
     /**
      * @return array<string, mixed>
+     * @throws MathException
      */
     protected function getDefaults(): array
     {
@@ -59,13 +60,13 @@ final class InvoiceFactory extends ModelFactory
             'archived' => self::faker()->boolean(),
             'created' => self::faker()->dateTime(),
             'updated' => self::faker()->dateTime(),
-            'balance' => new Money(self::faker()->randomNumber(), new Currency(self::faker()->currencyCode())),
-            'total' => new Money(self::faker()->randomNumber(), new Currency(self::faker()->currencyCode())),
-            'baseTotal' => new Money(self::faker()->randomNumber(), new Currency(self::faker()->currencyCode())),
-            'tax' => new Money(self::faker()->randomNumber(), new Currency(self::faker()->currencyCode())),
+            'balance' => BigInteger::of(self::faker()->randomNumber()),
+            'total' => BigInteger::of(self::faker()->randomNumber()),
+            'baseTotal' => BigInteger::of(self::faker()->randomNumber()),
+            'tax' => BigInteger::of(self::faker()->randomNumber()),
             'discount' => (new Discount())
                 ->setType(self::faker()->text())
-                ->setValueMoney(new \SolidInvoice\MoneyBundle\Entity\Money(new Money(self::faker()->randomNumber(), new Currency(self::faker()->currencyCode()))))
+                ->setValueMoney(BigInteger::of(self::faker()->randomNumber()))
                 ->setValuePercentage(self::faker()->randomFloat()),
         ];
     }

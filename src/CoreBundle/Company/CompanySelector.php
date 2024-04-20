@@ -20,8 +20,6 @@ use Ramsey\Uuid\Codec\OrderedTimeCodec;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
 use Ramsey\Uuid\UuidInterface;
-use RuntimeException;
-use SolidInvoice\SettingsBundle\SystemConfig;
 use function assert;
 
 final class CompanySelector
@@ -31,8 +29,7 @@ final class CompanySelector
     private readonly OrderedTimeCodec $codec;
 
     public function __construct(
-        private readonly ManagerRegistry $registry,
-        private readonly SystemConfig $config,
+        private readonly ManagerRegistry $registry
     ) {
         $factory = clone Uuid::getFactory();
         assert($factory instanceof UuidFactory);
@@ -59,11 +56,5 @@ final class CompanySelector
             ->setParameter('companyId', $companyIdBytes, Types::STRING);
 
         $this->companyId = $companyId;
-
-        try {
-            Currency::set($this->config->getCurrency());
-        } catch (RuntimeException) {
-            // Currency is not set, so we can't set it here
-        }
     }
 }

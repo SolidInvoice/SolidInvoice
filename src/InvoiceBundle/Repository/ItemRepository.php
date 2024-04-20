@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Repository;
 
+use Brick\Math\BigInteger;
+use Brick\Math\Exception\MathException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -28,6 +30,7 @@ class ItemRepository extends ServiceEntityRepository
 
     /**
      * Removes all tax rates from invoices.
+     * @throws MathException
      */
     public function removeTax(Tax $tax): void
     {
@@ -41,8 +44,8 @@ class ItemRepository extends ServiceEntityRepository
 
             /** @var Invoice $invoice */
             foreach ($query->execute() as $invoice) {
-                $invoice->setTotal($invoice->getBaseTotal()->add($invoice->getTax()));
-                $invoice->setTax(null);
+                $invoice->setTotal($invoice->getBaseTotal()->plus($invoice->getTax()));
+                $invoice->setTax(BigInteger::zero());
                 $this->getEntityManager()->persist($invoice);
             }
 

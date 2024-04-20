@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Twig;
 
+use Brick\Math\BigInteger;
 use Doctrine\Persistence\ManagerRegistry;
-use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\PaymentBundle\Entity\Payment;
@@ -48,11 +48,11 @@ class PaymentExtension extends AbstractExtension
                 ->registry
                 ->getRepository(PaymentMethod::class)
                 ->getTotalMethodsConfigured($includeInternal)),
-            new TwigFunction('total_income', fn (Client $client): ?Money => $this
+            new TwigFunction('total_income', fn (Client $client): BigInteger => $this
                 ->registry
                 ->getRepository(Payment::class)
                 ->getTotalIncomeForClient($client)),
-            new TwigFunction('total_outstanding', fn (Client $client): ?Money => $this
+            new TwigFunction('total_outstanding', fn (Client $client): BigInteger => $this
                 ->registry
                 ->getRepository(Invoice::class)
                 ->getTotalOutstandingForClient($client)),

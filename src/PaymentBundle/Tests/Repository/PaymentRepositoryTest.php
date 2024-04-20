@@ -13,11 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Tests\Repository;
 
+use Brick\Math\BigInteger;
+use Brick\Math\Exception\MathException;
 use DateTime;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
-use Money\Currency;
-use Money\Money;
+use Doctrine\ORM\Exception\NotSupported;
+use Doctrine\Persistence\Mapping\MappingException;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
@@ -38,6 +40,9 @@ final class PaymentRepositoryTest extends KernelTestCase
     use DoctrineTestTrait;
     use Factories;
 
+    /**
+     * @throws NotSupported
+     */
     public function testGetTotalPaidForInvoice(): void
     {
         $client = ClientFactory::createOne();
@@ -52,15 +57,18 @@ final class PaymentRepositoryTest extends KernelTestCase
         PaymentFactory::assert()
             ->count(1);
 
-        self::assertSame(
-            500123,
+        self::assertTrue(
             $this
                 ->em
                 ->getRepository(Payment::class)
                 ->getTotalPaidForInvoice($invoice->object())
+                ->isEqualTo(500123)
         );
     }
 
+    /**
+     * @throws NotSupported
+     */
     public function testGetTotalPaidForInvoiceWithNoCapturedPayments(): void
     {
         $client = ClientFactory::createOne();
@@ -75,15 +83,18 @@ final class PaymentRepositoryTest extends KernelTestCase
         PaymentFactory::assert()
             ->count(1);
 
-        self::assertSame(
-            0,
+        self::assertTrue(
             $this
                 ->em
                 ->getRepository(Payment::class)
                 ->getTotalPaidForInvoice($invoice->object())
+                ->isEqualTo(0)
         );
     }
 
+    /**
+     * @throws NotSupported
+     */
     public function testGetTotalPaidForInvoiceWithDifferentInvoice(): void
     {
         $client = ClientFactory::createOne();
@@ -98,15 +109,18 @@ final class PaymentRepositoryTest extends KernelTestCase
         PaymentFactory::assert()
             ->count(1);
 
-        self::assertSame(
-            0,
+        self::assertTrue(
             $this
                 ->em
                 ->getRepository(Payment::class)
                 ->getTotalPaidForInvoice($invoice[1]->object())
+                ->isEqualTo(0)
         );
     }
 
+    /**
+     * @throws NotSupported
+     */
     public function testGetTotalIncomeForClient(): void
     {
         $client = ClientFactory::createOne(['currencyCode' => 'USD']);
@@ -122,18 +136,18 @@ final class PaymentRepositoryTest extends KernelTestCase
         PaymentFactory::assert()
             ->count(1);
 
-        self::assertEquals(
-            new Money(
-                500123,
-                new Currency('USD')
-            ),
+        self::assertTrue(
             $this
                 ->em
                 ->getRepository(Payment::class)
                 ->getTotalIncomeForClient($client->object())
+                ->isEqualTo(500123)
         );
     }
 
+    /**
+     * @throws NotSupported
+     */
     public function testGetTotalIncomeForClientWithNoPayments(): void
     {
         $client = ClientFactory::createOne(['currencyCode' => 'USD']);
@@ -149,14 +163,18 @@ final class PaymentRepositoryTest extends KernelTestCase
         PaymentFactory::assert()
             ->count(1);
 
-        self::assertNull(
+        self::assertTrue(
             $this
                 ->em
                 ->getRepository(Payment::class)
                 ->getTotalIncomeForClient($client->object())
+                ->isZero()
         );
     }
 
+    /**
+     * @throws NotSupported
+     */
     public function testGetGridQuery(): void
     {
         $queryBuilder = $this
@@ -227,6 +245,9 @@ final class PaymentRepositoryTest extends KernelTestCase
         );
     }
 
+    /**
+     * @throws NotSupported
+     */
     public function testGetPaymentsForClient(): void
     {
         $client = ClientFactory::createOne(['currencyCode' => 'USD']);
@@ -268,6 +289,10 @@ final class PaymentRepositoryTest extends KernelTestCase
         );
     }
 
+    /**
+     * @throws NotSupported
+     * @throws MathException
+     */
     public function testGetTotalIncome(): void
     {
         $client = ClientFactory::createOne(['currencyCode' => 'USD']);
@@ -280,15 +305,21 @@ final class PaymentRepositoryTest extends KernelTestCase
             'status' => Status::STATUS_CAPTURED
         ]);
 
+        PaymentFactory::createMany(2, [
+            'invoice' => InvoiceFactory::new(['client' => $client]),
+            'client' => ClientFactory::createOne(['currencyCode' => 'EUR']),
+            'currencyCode' => 'EUR',
+            'totalAmount' => 500123,
+            'status' => Status::STATUS_CAPTURED
+        ]);
+
         PaymentFactory::assert()
-            ->count(3);
+            ->count(5);
 
         self::assertEquals(
             [
-                new Money(
-                    500123 * 3,
-                    new Currency('USD')
-                ),
+                'USD' => BigInteger::of(500123 * 3),
+                'EUR' => BigInteger::of(500123 * 2),
             ],
             $this
                 ->em
@@ -297,6 +328,10 @@ final class PaymentRepositoryTest extends KernelTestCase
         );
     }
 
+    /**
+     * @throws MathException
+     * @throws NotSupported
+     */
     public function testGetTotalIncomeWithMultipleCurrencies(): void
     {
         $client = ClientFactory::createOne(['currencyCode' => 'USD']);
@@ -324,14 +359,8 @@ final class PaymentRepositoryTest extends KernelTestCase
 
         self::assertEquals(
             [
-                new Money(
-                    500123 * 3,
-                    new Currency('USD')
-                ),
-                new Money(
-                    500123,
-                    new Currency('EUR')
-                ),
+                'USD' => BigInteger::of(500123 * 3),
+                'EUR' => BigInteger::of(500123),
             ],
             $this
                 ->em
@@ -340,6 +369,9 @@ final class PaymentRepositoryTest extends KernelTestCase
         );
     }
 
+    /**
+     * @throws NotSupported
+     */
     public function testGetPaymentsForInvoice(): void
     {
         $client = ClientFactory::createOne(['currencyCode' => 'USD']);
@@ -407,30 +439,9 @@ final class PaymentRepositoryTest extends KernelTestCase
         );
     }
 
-    public function testUpdateCurrency(): void
-    {
-        $client = ClientFactory::createOne()->object();
-
-        PaymentFactory::createMany(3, [
-            'client' => $client,
-        ]);
-
-        $client->setCurrencyCode('EUR');
-
-        $this
-            ->em
-            ->getRepository(Payment::class)
-            ->updateCurrency($client);
-
-        $this->em->clear();
-
-        $payments = $this->em->getRepository(Payment::class)->findAll();
-
-        foreach ($payments as $payment) {
-            self::assertSame('EUR', $payment->getCurrencyCode());
-        }
-    }
-
+    /**
+     * @throws NotSupported
+     */
     public function testGetPaymentsByMonth(): void
     {
         $created = new DateTimeImmutable();
@@ -451,6 +462,10 @@ final class PaymentRepositoryTest extends KernelTestCase
         );
     }
 
+    /**
+     * @throws MappingException
+     * @throws NotSupported
+     */
     public function testUpdatePaymentStatus(): void
     {
         /** @var Payment $payment */
@@ -470,6 +485,10 @@ final class PaymentRepositoryTest extends KernelTestCase
         self::assertSame(Status::STATUS_CAPTURED, $payment->getStatus());
     }
 
+    /**
+     * @throws NotSupported
+     * @throws MathException
+     */
     public function testGetRecentPayments(): void
     {
         $client = ClientFactory::createOne(['currencyCode' => 'USD', 'archived' => null]);
@@ -506,7 +525,7 @@ final class PaymentRepositoryTest extends KernelTestCase
                     'client_id' => $client->getId(),
                     'client' => $client->getName(),
                     'message' => 'test',
-                    'amount' => new Money(500123, new Currency('USD'))
+                    'amount' => BigInteger::of(500123)
                 ]
             ],
             $this

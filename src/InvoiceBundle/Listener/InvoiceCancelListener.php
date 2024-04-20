@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Listener;
 
+use Brick\Math\Exception\MathException;
 use Doctrine\Persistence\ManagerRegistry;
-use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Credit;
 use SolidInvoice\ClientBundle\Repository\CreditRepository;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -43,6 +43,9 @@ class InvoiceCancelListener implements EventSubscriberInterface
     ) {
     }
 
+    /**
+     * @throws MathException
+     */
     public function onInvoiceCancelled(InvoiceEvent $event): void
     {
         $invoice = $event->getInvoice();
@@ -57,7 +60,7 @@ class InvoiceCancelListener implements EventSubscriberInterface
         $invoice->setBalance($invoice->getTotal());
         $em->persist($invoice);
 
-        $totalPaid = new Money($paymentRepository->getTotalPaidForInvoice($invoice), $invoice->getClient()->getCurrency());
+        $totalPaid = $paymentRepository->getTotalPaidForInvoice($invoice);
 
         if ($totalPaid->isPositive()) {
             $paymentRepository->updatePaymentStatus($invoice->getPayments(), Status::STATUS_CREDIT);
