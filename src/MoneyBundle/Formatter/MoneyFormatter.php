@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\MoneyBundle\Formatter;
 
 use Brick\Math\BigInteger;
+use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
 use Brick\Math\RoundingMode;
 use Money\Currencies\ISOCurrencies;
@@ -102,7 +103,7 @@ final class MoneyFormatter implements MoneyFormatterInterface
     /**
      * @throws MathException
      */
-    public static function toFloat(BigInteger $amount): float
+    public static function toFloat(BigNumber $amount): float
     {
         return $amount
             ->toBigDecimal()

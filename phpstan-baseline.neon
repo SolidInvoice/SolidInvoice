@@ -576,16 +576,6 @@ parameters:
 			path: src/MoneyBundle/Calculator.php
 
 		-
-			message: "#^Method SolidInvoice\\\\MoneyBundle\\\\Calculator\\:\\:calculatePercentage\\(\\) has parameter \\$amount with no type specified\\.$#"
-			count: 1
-			path: src/MoneyBundle/Calculator.php
-
-		-
-			message: "#^Parameter \\#1 \\$amount of class Money\\\\Money constructor expects int\\|string, float given\\.$#"
-			count: 1
-			path: src/MoneyBundle/Calculator.php
-
-		-
 			message: "#^Method SolidInvoice\\\\MoneyBundle\\\\Doctrine\\\\Hydrator\\\\MoneyHydrator\\:\\:hydrateRowData\\(\\) with return type void returns false but should not return anything\\.$#"
 			count: 1
 			path: src/MoneyBundle/Doctrine/Hydrator/MoneyHydrator.php
@@ -776,11 +766,6 @@ parameters:
 			path: src/PaymentBundle/Manager/PaymentSettingsManager.php
 
 		-
-			message: "#^Parameter \\#1 \\$multiplier of method Money\\\\Money\\:\\:multiply\\(\\) expects float\\|int\\|string, SolidInvoice\\\\CoreBundle\\\\Entity\\\\Discount given\\.$#"
-			count: 1
-			path: src/PaymentBundle/PaymentAction/PaypalExpress/CapturePaymentAction.php
-
-		-
 			message: "#^Property Payum\\\\Core\\\\Request\\\\BaseGetStatus\\:\\:\\$status \\(int\\) does not accept string\\.$#"
 			count: 10
 			path: src/PaymentBundle/PaymentAction/Request/StatusRequest.php
@@ -897,11 +882,6 @@ parameters:
 
 		-
 			message: "#^Class SolidInvoice\\\\QuoteBundle\\\\Repository\\\\ItemRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#"
-			count: 1
-			path: src/QuoteBundle/Repository/ItemRepository.php
-
-		-
-			message: "#^Parameter \\#1 \\$tax of method SolidInvoice\\\\QuoteBundle\\\\Entity\\\\Quote\\:\\:setTax\\(\\) expects Money\\\\Money, null given\\.$#"
 			count: 1
 			path: src/QuoteBundle/Repository/ItemRepository.php
 
