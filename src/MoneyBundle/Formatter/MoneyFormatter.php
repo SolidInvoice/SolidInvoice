@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MoneyBundle\Formatter;
 
-use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
 use Brick\Math\RoundingMode;
