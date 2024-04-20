@@ -59,13 +59,6 @@ return static function (DoctrineConfig $config): void {
         ->enabled(true)
         ->class(ArchivableFilter::class);
 
-    $entityManagerConfig->mapping('SolidInvoiceMoneyBundle')
-        ->isBundle(false)
-        ->dir(param('kernel.project_dir') . '/src/MoneyBundle/Entity')
-        ->prefix('SolidInvoice\MoneyBundle\Entity')
-        ->alias('SolidInvoiceMoney')
-        ->type('attribute');
-
     $entityManagerConfig->mapping('payum')
         ->isBundle(false)
         ->type('xml')
