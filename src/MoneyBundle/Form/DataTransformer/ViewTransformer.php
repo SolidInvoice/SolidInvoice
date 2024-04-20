@@ -15,7 +15,9 @@ namespace SolidInvoice\MoneyBundle\Form\DataTransformer;
 
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\DivisionByZeroException;
+use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NumberFormatException;
+use Brick\Math\Exception\RoundingNecessaryException;
 use InvalidArgumentException;
 use Money\Currency;
 use Money\Money;
@@ -41,8 +43,10 @@ class ViewTransformer implements DataTransformerInterface
     }
 
     /**
-     * @throws NumberFormatException
      * @throws DivisionByZeroException
+     * @throws RoundingNecessaryException
+     * @throws MathException
+     * @throws NumberFormatException
      */
     public function reverseTransform($value): Money
     {
@@ -50,6 +54,6 @@ class ViewTransformer implements DataTransformerInterface
             $value = 0;
         }
 
-        return new Money(BigNumber::of($value)->multipliedBy(100)->toInt(), $this->currency);
+        return new Money(BigNumber::of($value)->toBigDecimal()->multipliedBy(100)->toInt(), $this->currency);
     }
 }
