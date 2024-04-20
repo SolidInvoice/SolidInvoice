@@ -586,11 +586,6 @@ parameters:
 			path: src/MoneyBundle/Form/DataTransformer/ModelTransformer.php
 
 		-
-			message: "#^Binary operation \"/\" between string and 100 results in an error\\.$#"
-			count: 1
-			path: src/MoneyBundle/Form/DataTransformer/ViewTransformer.php
-
-		-
 			message: "#^Class SolidInvoice\\\\MoneyBundle\\\\Form\\\\DataTransformer\\\\ViewTransformer implements generic interface Symfony\\\\Component\\\\Form\\\\DataTransformerInterface but does not specify its types\\: T, R$#"
 			count: 1
 			path: src/MoneyBundle/Form/DataTransformer/ViewTransformer.php
@@ -684,11 +679,6 @@ parameters:
 			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Action\\\\Index\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/PaymentBundle/Action/Index.php
-
-		-
-			message: "#^Parameter \\#1 \\$totalAmount of method Payum\\\\Core\\\\Model\\\\Payment\\:\\:setTotalAmount\\(\\) expects int, string given\\.$#"
-			count: 1
-			path: src/PaymentBundle/Action/Prepare.php
 
 		-
 			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Action\\\\Settings\\:\\:__invoke\\(\\) has no return type specified\\.$#"
