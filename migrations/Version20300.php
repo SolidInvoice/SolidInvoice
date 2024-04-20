@@ -121,7 +121,7 @@ final class Version20300 extends AbstractMigration implements ContainerAwareInte
         $this->setColumnType($schema, 'quote_contact', 'company_id', UuidBinaryOrderedTimeType::NAME);
 
         $contactTypes->dropIndex('UNIQ_741A993F5E237E06979B1AD6');
-        $contactTypes->addUniqueIndex(['name']);
+        $contactTypes->addUniqueIndex(['name', 'company_id']);
 
         $clientCredit->dropIndex('FK_4967254D19EB6921');
         $clientCredit->addUniqueIndex(['client_id']);
