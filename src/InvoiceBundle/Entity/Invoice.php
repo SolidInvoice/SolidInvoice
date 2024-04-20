@@ -78,6 +78,7 @@ class Invoice extends BaseInvoice
 
     #[ApiProperty(iris: ['https://schema.org/Organization'])]
     #[ORM\ManyToOne(targetEntity: Client::class, cascade: ['persist'], inversedBy: 'invoices')]
+    #[ORM\JoinColumn(name: 'client_id', referencedColumnName: 'id', nullable: false)]
     #[Assert\NotBlank]
     #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
     protected ?Client $client = null;
