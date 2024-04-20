@@ -14,8 +14,8 @@ Backgrid.Extension.MoneyCell = Backgrid.StringCell.extend({
         this.$el.empty();
 
         const name = this.column.get('name'),
-            value = this.model.get(name + '.value'),
-            currency = this.model.get(name + '.currency');
+            value = this.model.get(name),
+            currency = this.model.get('client')?.currencyCode;
 
         if (currency) {
             this.$el.text(this.formatter.fromRaw({ 'value': value, 'currency': currency }, this.model));

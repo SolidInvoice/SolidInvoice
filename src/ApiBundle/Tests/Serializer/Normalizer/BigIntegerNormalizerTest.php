@@ -54,7 +54,7 @@ final class BigIntegerNormalizerTest extends TestCase
      */
     public function testNormalization(): void
     {
-        self::assertEquals(1, $this->normalizer->normalize(BigInteger::of(100)));
+        self::assertEquals(100, $this->normalizer->normalize(BigInteger::of(100)));
     }
 
     /**
@@ -62,7 +62,7 @@ final class BigIntegerNormalizerTest extends TestCase
      */
     public function testDenormalization(): void
     {
-        self::assertEquals(BigInteger::of(1000000), $this->normalizer->denormalize(10000, BigNumber::class));
-        self::assertEquals(BigInteger::of(1000010), $this->normalizer->denormalize(10000.1, BigNumber::class));
+        self::assertEquals(BigInteger::of(10000), $this->normalizer->denormalize(10000, BigNumber::class));
+        self::assertEquals(BigNumber::of(10000.1), $this->normalizer->denormalize(10000.1, BigNumber::class));
     }
 }

@@ -231,7 +231,7 @@ class InvoiceRepository extends ServiceEntityRepository
         $query = $qb->getQuery();
 
         try {
-            return BigInteger::of($query->getSingleScalarResult());
+            return BigInteger::of((string) $query->getSingleScalarResult());
         } catch (MathException | NoResultException | NonUniqueResultException) {
             return BigInteger::zero();
         }
