@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Action\Ajax;
 
-use Brick\Math\BigInteger;
+use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
 use JsonException;
 use SolidInvoice\ClientBundle\Entity\Client;
@@ -44,7 +44,10 @@ final class Credit implements AjaxResponse
      */
     public function put(Request $request, Client $client): JsonResponse
     {
-        $value = BigInteger::of(((json_decode($request->getContent() ?: '[]', true, 512, JSON_THROW_ON_ERROR)['credit'] ?? 0) * 100));
+        $value = BigNumber::of(((json_decode($request->getContent() ?: '[]', true, 512, JSON_THROW_ON_ERROR)['credit'] ?? 0)))
+            ->toBigDecimal()
+            ->multipliedBy(100)
+            ->toBigInteger();
 
         $this->repository->addCredit($client, $value);
 

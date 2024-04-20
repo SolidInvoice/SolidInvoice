@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Form\Type;
 
+use Brick\Math\BigNumber;
 use Doctrine\Persistence\ManagerRegistry;
 use Money\Currency;
-use Money\Money;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -62,10 +62,10 @@ class PaymentType extends AbstractType
                 'currency' => $options['currency'],
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Callback(function (Money $money, ExecutionContextInterface $context): void {
-                        if ($money->isZero() || $money->isNegative()) {
+                    new Assert\Callback(function (BigNumber $value, ExecutionContextInterface $context): void {
+                        if ($value->isZero() || $value->isNegative()) {
                             $context->buildViolation('This value should be greater than {{ compared_value }}.')
-                                ->setParameter('{{ value }}', $money->getAmount())
+                                ->setParameter('{{ value }}', (string) $value->toBigDecimal()->toFloat())
                                 ->setParameter('{{ compared_value }}', '0')
                                 ->addViolation();
                         }

@@ -15,7 +15,6 @@ namespace SolidInvoice\ApiBundle\Serializer\Normalizer;
 
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
-use Brick\Math\RoundingMode;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use function is_a;
@@ -30,7 +29,11 @@ class BigIntegerNormalizer implements NormalizerInterface, DenormalizerInterface
      */
     public function denormalize($data, string $type, string $format = null, array $context = []): BigNumber
     {
-        return BigNumber::of($data)->toBigDecimal()->multipliedBy(100)->toBigInteger();
+        if ($context['api_denormalize'] ?? false) {
+            return BigNumber::of($data)->toBigDecimal()->multipliedBy(100);
+        }
+
+        return BigNumber::of($data);
     }
 
     public function supportsDenormalization($data, $type, $format = null): bool
@@ -45,7 +48,11 @@ class BigIntegerNormalizer implements NormalizerInterface, DenormalizerInterface
      */
     public function normalize($object, string $format = null, array $context = []): float
     {
-        return $object->toBigDecimal()->dividedBy(100, 2, RoundingMode::HALF_EVEN)->toFloat();
+        if (isset($context['api_attribute'])) {
+            return $object->toBigDecimal()->dividedBy(100, 2)->toFloat();
+        }
+
+        return $object->toBigDecimal()->toFloat();
     }
 
     public function supportsNormalization($data, $format = null): bool

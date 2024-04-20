@@ -15,9 +15,9 @@ namespace SolidInvoice\PaymentBundle\Action;
 
 use const FILTER_VALIDATE_BOOLEAN;
 use Brick\Math\BigInteger;
+use Brick\Math\BigNumber;
 use DateTime;
 use Exception;
-use Money\Money;
 use Payum\Core\Payum;
 use Payum\Core\Registry\RegistryInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
@@ -158,13 +158,13 @@ final class Prepare
             $payment->setInvoice($invoice);
             $payment->setStatus(Status::STATUS_NEW);
             $payment->setMethod($data['payment_method']);
-            /** @var Money $money */
-            $money = $data['amount'];
-            $payment->setTotalAmount($money->getAmount());
-            $payment->setCurrencyCode($money->getCurrency()->getCode());
+            /** @var BigNumber $value */
+            $value = $data['amount'];
+            $payment->setTotalAmount($value->toInt());
+            $payment->setCurrencyCode($invoice->getClient()->getCurrency()->getCode());
             $payment->setDescription('');
             $payment->setClient($invoice->getClient());
-            $payment->setNumber($invoice->getId()->toString());
+            $payment->setNumber($invoice->getId()?->toString());
             $payment->setClientEmail($invoice->getClient()->getContacts()->first()->getEmail());
             $invoice->addPayment($payment);
             $this->save($payment);

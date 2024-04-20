@@ -33,10 +33,16 @@ class ViewTransformer implements DataTransformerInterface
     ) {
     }
 
+    /**
+     * @throws DivisionByZeroException
+     * @throws RoundingNecessaryException
+     * @throws MathException
+     * @throws NumberFormatException
+     */
     public function transform($value): float
     {
         if ($value instanceof Money) {
-            return (float) ($value->getAmount() / 100);
+            return BigNumber::of($value->getAmount())->toBigDecimal()->dividedBy(100, 2)->toFloat();
         }
 
         return 0.0;

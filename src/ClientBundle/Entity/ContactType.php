@@ -23,11 +23,14 @@ use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\ClientBundle\Repository\ContactTypeRepository;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use Stringable;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: ContactType::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: ContactTypeRepository::class)]
+#[ORM\UniqueConstraint(columns: ['name', 'company_id'])]
+#[UniqueEntity(fields: ['name', 'company'])]
 class ContactType implements Stringable
 {
     final public const TABLE_NAME = 'contact_types';
@@ -41,7 +44,7 @@ class ContactType implements Stringable
     #[Serialize\Groups(['client_api', 'contact_api'])]
     private ?UuidInterface $id = null;
 
-    #[ORM\Column(name: 'name', type: Types::STRING, length: 45, unique: true)]
+    #[ORM\Column(name: 'name', type: Types::STRING, length: 45)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 45)]
     #[Serialize\Groups(['client_api', 'contact_api'])]
