@@ -177,5 +177,4 @@ final class Version20300 extends AbstractMigration implements ContainerAwareInte
             ->setType(Type::getType($type))
             ->setNotnull(true);
     }
-
 }
