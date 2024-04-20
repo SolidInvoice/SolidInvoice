@@ -15,13 +15,14 @@ namespace SolidInvoice\QuoteBundle\Entity;
 
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use Brick\Math\BigInteger;
+use Brick\Math\Exception\MathException;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
-use Money\Money;
 use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
 use Ramsey\Uuid\Doctrine\UuidType;
@@ -29,13 +30,13 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
+use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Entity\ItemInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
-use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
 use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
 use SolidInvoice\QuoteBundle\Traits\QuoteStatusTrait;
 use Symfony\Component\Serializer\Annotation as Serialize;
@@ -86,17 +87,17 @@ class Quote
     #[Serialize\Groups(['quote_api', 'create_quote_api'])]
     private ?Client $client = null;
 
-    #[ORM\Embedded(class: MoneyEntity::class)]
+    #[ORM\Column(name: 'total_amount', type: BigIntegerType::NAME)]
     #[Serialize\Groups(['quote_api', 'client_api'])]
-    private MoneyEntity $total;
+    private BigInteger $total;
 
-    #[ORM\Embedded(class: MoneyEntity::class)]
+    #[ORM\Column(name: 'baseTotal_amount', type: BigIntegerType::NAME)]
     #[Serialize\Groups(['quote_api', 'client_api'])]
-    private MoneyEntity $baseTotal;
+    private BigInteger $baseTotal;
 
-    #[ORM\Embedded(class: MoneyEntity::class)]
+    #[ORM\Column(name: 'tax_amount', type: BigIntegerType::NAME)]
     #[Serialize\Groups(['quote_api', 'client_api'])]
-    private MoneyEntity $tax;
+    private BigInteger $tax;
 
     #[ORM\Embedded(class: Discount::class)]
     #[Serialize\Groups(['quote_api', 'client_api', 'create_quote_api'])]
@@ -145,9 +146,9 @@ class Quote
             $this->setUuid(Uuid::uuid1());
         } catch (Exception) {
         }
-        $this->baseTotal = new MoneyEntity();
-        $this->tax = new MoneyEntity();
-        $this->total = new MoneyEntity();
+        $this->baseTotal = BigInteger::zero();
+        $this->tax = BigInteger::zero();
+        $this->total = BigInteger::zero();
     }
 
     public function getId(): ?UuidInterface
@@ -222,33 +223,37 @@ class Quote
     public function setClient(?Client $client): self
     {
         $this->client = $client;
-        if ($client instanceof Client && null !== $client->getCurrencyCode()) {
-            $this->total->setCurrency($client->getCurrency()->getCode());
-            $this->baseTotal->setCurrency($client->getCurrency()->getCode());
-            $this->tax->setCurrency($client->getCurrency()->getCode());
-        }
+
         return $this;
     }
 
-    public function getTotal(): ?Money
+    public function getTotal(): BigInteger
     {
-        return $this->total->getMoney();
+        return $this->total;
     }
 
-    public function setTotal(Money $total): self
+    /**
+     * @throws MathException
+     */
+    public function setTotal(BigInteger|float|int|string $total): self
     {
-        $this->total = new MoneyEntity($total);
+        $this->total = BigInteger::of($total);
+
         return $this;
     }
 
-    public function getBaseTotal(): ?Money
+    public function getBaseTotal(): BigInteger
     {
-        return $this->baseTotal->getMoney();
+        return $this->baseTotal;
     }
 
-    public function setBaseTotal(Money $baseTotal): self
+    /**
+     * @throws MathException
+     */
+    public function setBaseTotal(BigInteger|float|int|string $baseTotal): self
     {
-        $this->baseTotal = new MoneyEntity($baseTotal);
+        $this->baseTotal = BigInteger::of($baseTotal);
+
         return $this;
     }
 
@@ -319,14 +324,18 @@ class Quote
         return $this;
     }
 
-    public function getTax(): ?Money
+    public function getTax(): BigInteger
     {
-        return $this->tax->getMoney();
+        return $this->tax;
     }
 
-    public function setTax(Money $tax): self
+    /**
+     * @throws MathException
+     */
+    public function setTax(BigInteger|float|int|string $tax): self
     {
-        $this->tax = new MoneyEntity($tax);
+        $this->tax = BigInteger::of($tax);
+
         return $this;
     }
 

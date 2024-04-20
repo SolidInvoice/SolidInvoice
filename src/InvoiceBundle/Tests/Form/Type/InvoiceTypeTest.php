@@ -15,7 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Tests\Form\Type;
 
 use Mockery as M;
 use Money\Currency;
-use Money\Money;
+use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
@@ -33,8 +33,9 @@ class InvoiceTypeTest extends FormTestCase
         $notes = $this->faker->text;
         $terms = $this->faker->text;
         $discountValue = $this->faker->numberBetween(0, 100);
+        $client = ClientFactory::createOne()->object();
         $formData = [
-            'client' => null,
+            'client' => $client->getId()->toString(),
             'discount' => [
                 'value' => $discountValue,
                 'type' => Discount::TYPE_PERCENTAGE,
@@ -48,6 +49,7 @@ class InvoiceTypeTest extends FormTestCase
         ];
 
         $object = new Invoice();
+        $object->setClient($client);
         $data = clone $object;
         $data->setUuid($object->getUuid());
 
@@ -57,9 +59,6 @@ class InvoiceTypeTest extends FormTestCase
         $discount->setType(Discount::TYPE_PERCENTAGE);
         $discount->setValue($discountValue);
         $object->setDiscount($discount);
-        $object->setTotal(new Money(0, new Currency('USD')));
-        $object->setTax(new Money(0, new Currency('USD')));
-        $object->setBaseTotal(new Money(0, new Currency('USD')));
 
         $this->assertFormData($this->factory->create(InvoiceType::class, $data), $formData, $object);
     }

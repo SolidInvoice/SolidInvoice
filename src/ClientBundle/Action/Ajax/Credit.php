@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Action\Ajax;
 
-use Money\Money;
+use Brick\Math\BigInteger;
+use Brick\Math\Exception\MathException;
+use JsonException;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\CreditRepository;
 use SolidInvoice\CoreBundle\Response\AjaxResponse;
@@ -36,18 +38,22 @@ final class Credit implements AjaxResponse
         return $this->toJson($client);
     }
 
+    /**
+     * @throws MathException
+     * @throws JsonException
+     */
     public function put(Request $request, Client $client): JsonResponse
     {
-        $value = new Money(
-            ((json_decode($request->getContent() ?: '[]', true, 512, JSON_THROW_ON_ERROR)['credit'] ?? 0) * 100),
-            $client->getCurrency()
-        );
+        $value = BigInteger::of(((json_decode($request->getContent() ?: '[]', true, 512, JSON_THROW_ON_ERROR)['credit'] ?? 0) * 100));
 
         $this->repository->addCredit($client, $value);
 
         return $this->toJson($client);
     }
 
+    /**
+     * @throws MathException
+     */
     private function toJson(Client $client): JsonResponse
     {
         return $this->json(

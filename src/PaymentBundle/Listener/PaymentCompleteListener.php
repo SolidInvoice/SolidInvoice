@@ -13,10 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Listener;
 
+use Brick\Math\Exception\MathException;
 use Doctrine\Persistence\ManagerRegistry;
 use Generator;
-use Money\Currency;
-use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Credit;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -49,16 +48,19 @@ class PaymentCompleteListener implements EventSubscriberInterface
     ) {
     }
 
+    /**
+     * @throws MathException
+     */
     public function onPaymentComplete(PaymentCompleteEvent $event): void
     {
         $payment = $event->getPayment();
         $status = (string) $payment->getStatus();
 
-        if ('credit' === $payment->getMethod()->getGatewayName()) {
+        if ('credit' === $payment->getMethod()?->getGatewayName()) {
             $creditRepository = $this->registry->getRepository(Credit::class);
             $creditRepository->deductCredit(
                 $payment->getClient(),
-                new Money($payment->getTotalAmount(), new Currency($payment->getCurrencyCode()))
+                $payment->getTotalAmount(),
             );
         }
 
@@ -70,8 +72,8 @@ class PaymentCompleteListener implements EventSubscriberInterface
             } else {
                 $paymentRepository = $this->registry->getRepository(Payment::class);
                 $invoiceTotal = $invoice->getTotal();
-                $totalPaid = new Money($paymentRepository->getTotalPaidForInvoice($invoice), $invoiceTotal->getCurrency());
-                $invoice->setBalance($invoiceTotal->subtract($totalPaid));
+                $totalPaid = $paymentRepository->getTotalPaidForInvoice($invoice);
+                $invoice->setBalance($invoiceTotal->minus($totalPaid));
 
                 $em = $this->registry->getManager();
                 $em->persist($invoice);

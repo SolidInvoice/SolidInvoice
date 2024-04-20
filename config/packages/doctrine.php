@@ -6,6 +6,7 @@ use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use Ramsey\Uuid\Doctrine\UuidType;
 use SolidInvoice\CoreBundle\Doctrine\Filter\ArchivableFilter;
 use SolidInvoice\CoreBundle\Doctrine\Filter\CompanyFilter;
+use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use SolidInvoice\MoneyBundle\Doctrine\Hydrator\MoneyHydrator;
 use Symfony\Config\DoctrineConfig;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
@@ -35,6 +36,10 @@ return static function (DoctrineConfig $config): void {
     $dbalConfig
         ->type(UuidBinaryOrderedTimeType::NAME)
         ->class(UuidBinaryOrderedTimeType::class);
+
+    $dbalConfig
+        ->type(BigIntegerType::NAME)
+        ->class(BigIntegerType::class);
 
     $ormConfig->autoGenerateProxyClasses(param('kernel.debug'));
 

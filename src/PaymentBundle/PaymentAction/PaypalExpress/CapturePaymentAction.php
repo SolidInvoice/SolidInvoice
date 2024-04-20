@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\PaymentAction\PaypalExpress;
 
+use Brick\Math\Exception\MathException;
 use Exception;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
@@ -21,9 +22,11 @@ use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Capture;
 use Payum\Core\Security\GenericTokenFactoryInterface;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Item;
-use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
+use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
 use SolidInvoice\PaymentBundle\Entity\Payment;
+use function assert;
 
 /**
  * @deprecated This action is not used anymore and will be removed in a future version
@@ -39,11 +42,14 @@ class CapturePaymentAction implements ActionInterface, GatewayAwareInterface
 
     public function __construct(
         GenericTokenFactoryInterface $tokenFactory,
-        private readonly MoneyFormatterInterface $formatter
     ) {
         $this->tokenFactory = $tokenFactory;
     }
 
+    /**
+     * @throws MathException
+     * @throws Exception
+     */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -56,34 +62,35 @@ class CapturePaymentAction implements ActionInterface, GatewayAwareInterface
         }
 
         $invoice = $payment->getInvoice();
+        assert($invoice instanceof Invoice);
 
         $details = [];
 
         $details['PAYMENTREQUEST_0_INVNUM'] = $invoice->getId() . '-' . $payment->getId();
         $details['PAYMENTREQUEST_0_CURRENCYCODE'] = $payment->getCurrencyCode();
-        $details['PAYMENTREQUEST_0_AMT'] = number_format($this->formatter->toFloat($invoice->getTotal()), 2);
-        $details['PAYMENTREQUEST_0_ITEMAMT'] = number_format($this->formatter->toFloat($invoice->getTotal()), 2);
+        $details['PAYMENTREQUEST_0_AMT'] = number_format(MoneyFormatter::toFloat($invoice->getTotal()), 2);
+        $details['PAYMENTREQUEST_0_ITEMAMT'] = number_format(MoneyFormatter::toFloat($invoice->getTotal()), 2);
 
         $counter = 0;
         foreach ($invoice->getItems() as $item) {
             /** @var Item $item */
             $details['L_PAYMENTREQUEST_0_NAME' . $counter] = $item->getDescription();
-            $details['L_PAYMENTREQUEST_0_AMT' . $counter] = number_format($this->formatter->toFloat($item->getPrice()), 2);
+            $details['L_PAYMENTREQUEST_0_AMT' . $counter] = number_format(MoneyFormatter::toFloat($item->getPrice()), 2);
             $details['L_PAYMENTREQUEST_0_QTY' . $counter] = $item->getQty();
 
             ++$counter;
         }
 
         if ($invoice->getDiscount()->getValue()) {
-            $discount = $invoice->getBaseTotal()->multiply($invoice->getDiscount());
+            $discount = $invoice->getBaseTotal()->multipliedBy($invoice->getDiscount()->getValue());
             $details['L_PAYMENTREQUEST_0_NAME' . $counter] = 'Discount';
-            $details['L_PAYMENTREQUEST_0_AMT' . $counter] = '-' . number_format($this->formatter->toFloat($discount), 2);
+            $details['L_PAYMENTREQUEST_0_AMT' . $counter] = '-' . number_format(MoneyFormatter::toFloat($discount), 2);
             $details['L_PAYMENTREQUEST_0_QTY' . $counter] = 1;
         }
 
         if (null !== $tax = $invoice->getTax()) {
             $details['L_PAYMENTREQUEST_0_NAME' . $counter] = 'Tax Total';
-            $details['L_PAYMENTREQUEST_0_AMT' . $counter] = number_format($this->formatter->toFloat($tax), 2);
+            $details['L_PAYMENTREQUEST_0_AMT' . $counter] = number_format(MoneyFormatter::toFloat($tax), 2);
             $details['L_PAYMENTREQUEST_0_QTY' . $counter] = 1;
         }
 

@@ -14,12 +14,9 @@ declare(strict_types=1);
 namespace SolidInvoice\MoneyBundle\Tests\Twig\Extension;
 
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery as M;
 use Money\Currency;
-use Money\Money;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
-use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
 use SolidInvoice\MoneyBundle\Twig\Extension\MoneyFormatterExtension;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Twig\TwigFilter;
@@ -31,7 +28,7 @@ class MoneyFormatterExtensionTest extends TestCase
 
     public function testGetFunctions(): void
     {
-        $systemConfig = M::mock(SystemConfig::class);
+        $systemConfig = $this->createMock(SystemConfig::class);
 
         $moneyFormatter = new MoneyFormatter('en_US', $systemConfig);
         $extension = new MoneyFormatterExtension($moneyFormatter, $systemConfig);
@@ -47,16 +44,15 @@ class MoneyFormatterExtensionTest extends TestCase
 
     public function testGetFilters(): void
     {
-        $money = new Money(1200, new Currency('USD'));
+        $systemConfig = $this->createMock(SystemConfig::class);
 
-        $moneyFormatter = M::mock(MoneyFormatterInterface::class);
-        $moneyFormatter
-            ->shouldReceive('format')
-            ->once()
-            ->with($money)
-            ->andReturn('$12,00');
+        $systemConfig
+            ->expects(self::once())
+            ->method('getCurrency')
+            ->willReturn(new Currency('USD'));
 
-        $extension = new MoneyFormatterExtension($moneyFormatter, M::mock(SystemConfig::class));
+        $moneyFormatter = new MoneyFormatter('en_US', $systemConfig);
+        $extension = new MoneyFormatterExtension($moneyFormatter, $systemConfig);
 
         $filters = $extension->getFilters();
 
@@ -64,6 +60,6 @@ class MoneyFormatterExtensionTest extends TestCase
 
         self::assertInstanceOf(TwigFilter::class, $filters[0]);
         self::assertSame('formatCurrency', $filters[0]->getName());
-        self::assertSame('$12,00', call_user_func($filters[0]->getCallable(), $money));
+        self::assertSame('$12.00', call_user_func($filters[0]->getCallable(), 1200));
     }
 }

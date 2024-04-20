@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MoneyBundle\Form\DataTransformer;
 
+use Brick\Math\BigInteger;
+use Brick\Math\Exception\MathException;
 use InvalidArgumentException;
 use Money\Currency;
 use Money\Money;
@@ -38,6 +40,9 @@ class ModelTransformer implements DataTransformerInterface
         }
     }
 
+    /**
+     * @throws MathException
+     */
     public function transform($value)
     {
         if (null === $value) {
@@ -48,19 +53,18 @@ class ModelTransformer implements DataTransformerInterface
             return $value;
         }
 
-        return new Money((int) ($value * 100), $this->currency);
+        return new Money(BigInteger::of($value)->toInt(), $this->currency);
     }
 
+    /**
+     * @throws MathException
+     */
     public function reverseTransform($value)
     {
         if ($value instanceof Money) {
-            return $value;
+            return BigInteger::of($value->getAmount());
         }
 
-        if (is_int($value)) {
-            return new Money($value, $this->currency);
-        }
-
-        return 0;
+        return BigInteger::of($value->getAmount());
     }
 }

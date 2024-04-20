@@ -13,19 +13,17 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Repository;
 
+use Brick\Math\BigInteger;
+use Brick\Math\Exception\MathException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
-use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use Money\Currency;
-use Money\Money;
 use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
-use SolidInvoice\InvoiceBundle\Entity\Item;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 
@@ -42,26 +40,25 @@ class InvoiceRepository extends ServiceEntityRepository
     /**
      * Get the total amount for paid invoices.
      *
+     * @throws MathException
      * @deprecated This function is deprecated, and the one in PaymentRepository should be used instead
-     *
-     * @throws NoResultException|NonUniqueResultException
      */
-    public function getTotalIncome(Client $client = null): int
+    public function getTotalIncome(Client $client = null): BigInteger
     {
         @trigger_error(
             'This function is deprecated, and the one in PaymentRepository should be used instead',
             E_USER_DEPRECATED
         );
 
-        return $this->getTotalByStatus(Graph::STATUS_PAID, $client, 'money');
+        return $this->getTotalByStatus(Graph::STATUS_PAID, $client);
     }
 
     /**
      * Get the total amount for a specific invoice status.
      *
-     * @throws NoResultException|NonUniqueResultException
+     * @throws MathException
      */
-    public function getTotalByStatus(string $status, Client $client = null, int|string $hydrate = AbstractQuery::HYDRATE_SINGLE_SCALAR): int
+    public function getTotalByStatus(string $status, Client $client = null): BigInteger
     {
         $qb = $this->createQueryBuilder('i');
 
@@ -74,7 +71,11 @@ class InvoiceRepository extends ServiceEntityRepository
                 ->setParameter('client', $client->getId(), UuidBinaryOrderedTimeType::NAME);
         }
 
-        return $qb->getQuery()->getSingleResult($hydrate);
+        try {
+            return BigInteger::of($qb->getQuery()->getSingleResult());
+        } catch (NoResultException | NonUniqueResultException) {
+            return BigInteger::zero();
+        }
     }
 
     /**
@@ -84,7 +85,7 @@ class InvoiceRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('i');
 
-        $qb->select('SUM(i.balance.value)')
+        $qb->select('SUM(i.balance)')
             ->where('i.status = :status')
             ->setParameter('status', Graph::STATUS_PENDING);
 
@@ -107,7 +108,7 @@ class InvoiceRepository extends ServiceEntityRepository
      *
      * @param string|string[] $status
      */
-    public function getCountByStatus(string|array $status, Client $client = null): int
+    public function getCountByStatus(string | array $status, Client $client = null): int
     {
         $qb = $this->createQueryBuilder('i');
 
@@ -183,49 +184,6 @@ class InvoiceRepository extends ServiceEntityRepository
         return $qb;
     }
 
-    public function updateCurrency(Client $client): void
-    {
-        $filters = $this->getEntityManager()->getFilters();
-        $filters->disable('archivable');
-
-        $currency = $client->getCurrency();
-
-        $qb = $this->createQueryBuilder('i');
-
-        $qb->update()
-            ->set('i.total.currency', ':currency')
-            ->set('i.baseTotal.currency', ':currency')
-            ->set('i.balance.currency', ':currency')
-            ->set('i.tax.currency', ':currency')
-            ->where('i.client = :client')
-            ->setParameter('client', $client->getId(), UuidBinaryOrderedTimeType::NAME)
-            ->setParameter('currency', $currency);
-
-        if ($qb->getQuery()->execute()) {
-            $qbi = $this->getEntityManager()->createQueryBuilder();
-
-            $qbi->update()
-                ->from(Item::class, 'it')
-                ->set('it.price.currency', ':currency')
-                ->set('it.total.currency', ':currency')
-                ->where(
-                    $qbi->expr()->in(
-                        'it.invoice',
-                        $this->createQueryBuilder('i')
-                            ->select('i.id')
-                            ->where('i.client = :client')
-                            ->getDQL()
-                    )
-                )
-                ->setParameter('client', $client->getId(), UuidBinaryOrderedTimeType::NAME)
-                ->setParameter('currency', $currency);
-
-            $qbi->getQuery()->execute();
-        }
-
-        $filters->enable('archivable');
-    }
-
     /**
      * @param list<string> $ids
      */
@@ -253,35 +211,29 @@ class InvoiceRepository extends ServiceEntityRepository
     {
         $invoiceTotal = $invoice->getTotal();
 
-        $totalPaid = new Money(
-            $this->getEntityManager()
-                ->getRepository(Payment::class)
-                ->getTotalPaidForInvoice($invoice),
-            $invoiceTotal->getCurrency()
-        );
+        $totalPaid = $this->getEntityManager()
+            ->getRepository(Payment::class)
+            ->getTotalPaidForInvoice($invoice);
 
-        return $totalPaid->equals($invoiceTotal) || $totalPaid->greaterThan($invoiceTotal);
+        return $totalPaid->isEqualTo($invoiceTotal) || $totalPaid->isGreaterThan($invoiceTotal);
     }
 
-    public function getTotalOutstandingForClient(Client $client): ?Money
+    public function getTotalOutstandingForClient(Client $client): BigInteger
     {
         $qb = $this->createQueryBuilder('i');
 
-        $qb->select('SUM(i.balance.value) as total, i.balance.currency as currency')
+        $qb->select('SUM(i.balance) as total')
             ->where('i.status = :status')
             ->andWhere('i.client = :client')
-            ->groupBy('i.balance.currency')
             ->setParameter('client', $client->getId(), UuidBinaryOrderedTimeType::NAME)
             ->setParameter('status', Graph::STATUS_PENDING);
 
         $query = $qb->getQuery();
 
-        $result = $query->getArrayResult();
-
-        if ([] === $result) {
-            return null;
+        try {
+            return BigInteger::of($query->getSingleScalarResult());
+        } catch (MathException | NoResultException | NonUniqueResultException) {
+            return BigInteger::zero();
         }
-
-        return new Money($result[0]['total'], new Currency($result[0]['currency']));
     }
 }

@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Entity;
 
+use Brick\Math\BigInteger;
+use Brick\Math\Exception\MathException;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Money\Currency;
-use Money\Money;
-use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
+use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use Symfony\Component\Serializer\Annotation as Serialize;
 
 #[ORM\Embeddable]
@@ -27,9 +27,9 @@ class Discount
 
     final public const TYPE_MONEY = 'money';
 
-    #[ORM\Embedded(class: MoneyEntity::class)]
+    #[ORM\Column(name: 'valueMoney_amount', type: BigIntegerType::NAME)]
     #[Serialize\Groups(['invoice_api', 'quote_api', 'client_api'])]
-    private MoneyEntity $valueMoney;
+    private BigInteger $valueMoney;
 
     #[ORM\Column(name: 'value_percentage', type: Types::FLOAT, nullable: true)]
     #[Serialize\Groups(['invoice_api', 'quote_api', 'client_api'])]
@@ -41,7 +41,7 @@ class Discount
 
     public function __construct()
     {
-        $this->valueMoney = new MoneyEntity();
+        $this->valueMoney = BigInteger::zero();
     }
 
     public function getType(): ?string
@@ -56,14 +56,17 @@ class Discount
         return $this;
     }
 
-    public function getValueMoney(): ?MoneyEntity
+    public function getValueMoney(): BigInteger
     {
         return $this->valueMoney;
     }
 
-    public function setValueMoney(MoneyEntity $valueMoney): self
+    /**
+     * @throws MathException
+     */
+    public function setValueMoney(BigInteger|float|int|string $valueMoney): self
     {
-        $this->valueMoney = $valueMoney;
+        $this->valueMoney = BigInteger::of($valueMoney);
 
         return $this;
     }
@@ -80,27 +83,27 @@ class Discount
         return $this;
     }
 
-    public function getValue(): float| Money |null
+    public function getValue(): float | BigInteger
     {
         return match ($this->getType()) {
-            self::TYPE_PERCENTAGE => $this->getValuePercentage(),
-            self::TYPE_MONEY => $this->getValueMoney() instanceof MoneyEntity ? $this->getValueMoney()->getMoney() : null,
-            default => null,
+            self::TYPE_PERCENTAGE => $this->getValuePercentage() ?? 0.0,
+            self::TYPE_MONEY => $this->getValueMoney(),
+            default => BigInteger::zero(),
         };
     }
 
-    public function setValue(float| Money |null $value): void
+    /**
+     * @throws MathException
+     */
+    public function setValue(float | BigInteger $value): void
     {
         switch ($this->getType()) {
             case self::TYPE_PERCENTAGE:
                 $this->setValuePercentage((float) $value);
-
                 break;
 
             case self::TYPE_MONEY:
-                // @TODO: USD should not be hard-coded
-                $this->setValueMoney(new MoneyEntity(new Money(((int) $value) * 100, new Currency('USD'))));
-
+                $this->setValueMoney($value);
                 break;
         }
     }

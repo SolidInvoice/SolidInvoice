@@ -13,9 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Tests\Billing;
 
+use Brick\Math\BigInteger;
+use Brick\Math\Exception\MathException;
+use Doctrine\ORM\Exception\NotSupported;
+use Doctrine\ORM\Exception\ORMException;
+use Doctrine\ORM\OptimisticLockException;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Money\Currency;
-use Money\Money;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
@@ -44,54 +47,63 @@ class TotalCalculatorTest extends TestCase
         $updater->calculateTotals(new stdClass());
     }
 
+    /**
+     * @throws MathException
+     * @throws NotSupported
+     */
     public function testUpdateWithSingleItem(): void
     {
         $updater = new TotalCalculator($this->em->getRepository(Payment::class));
 
         $invoice = new Invoice();
         $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD', 'company' => $this->company])->object());
-        $invoice->setTotal(new Money(0, new Currency('USD')));
         $item = new Item();
         $item->setQty(1)
-            ->setPrice(new Money(15000, new Currency('USD')));
+            ->setPrice(15000);
         $invoice->addItem($item);
 
         $updater->calculateTotals($invoice);
 
-        self::assertEquals(new Money(15000, new Currency('USD')), $invoice->getTotal());
-        self::assertEquals(new Money(15000, new Currency('USD')), $invoice->getBalance());
-        self::assertEquals(new Money(15000, new Currency('USD')), $invoice->getBaseTotal());
+        self::assertEquals(BigInteger::of(15000), $invoice->getTotal());
+        self::assertEquals(BigInteger::of(15000), $invoice->getBalance());
+        self::assertEquals(BigInteger::of(15000), $invoice->getBaseTotal());
     }
 
+    /**
+     * @throws MathException
+     * @throws NotSupported
+     */
     public function testUpdateWithSingleItemAndMultipleQtys(): void
     {
         $updater = new TotalCalculator($this->em->getRepository(Payment::class));
 
         $invoice = new Invoice();
         $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD', 'company' => $this->company])->object());
-        $invoice->setTotal(new Money(0, new Currency('USD')));
         $item = new Item();
         $item->setQty(2)
-            ->setPrice(new Money(15000, new Currency('USD')));
+            ->setPrice(15000);
         $invoice->addItem($item);
 
         $updater->calculateTotals($invoice);
 
-        self::assertEquals(new Money(30000, new Currency('USD')), $invoice->getTotal());
-        self::assertEquals(new Money(30000, new Currency('USD')), $invoice->getBalance());
-        self::assertEquals(new Money(30000, new Currency('USD')), $invoice->getBaseTotal());
+        self::assertEquals(BigInteger::of(30000), $invoice->getTotal());
+        self::assertEquals(BigInteger::of(30000), $invoice->getBalance());
+        self::assertEquals(BigInteger::of(30000), $invoice->getBaseTotal());
     }
 
+    /**
+     * @throws MathException
+     * @throws NotSupported
+     */
     public function testUpdateWithPercentageDiscount(): void
     {
         $updater = new TotalCalculator($this->em->getRepository(Payment::class));
 
         $invoice = new Invoice();
         $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD', 'company' => $this->company])->object());
-        $invoice->setTotal(new Money(0, new Currency('USD')));
         $item = new Item();
         $item->setQty(2)
-            ->setPrice(new Money(15000, new Currency('USD')));
+            ->setPrice(15000);
         $invoice->addItem($item);
         $discount = new Discount();
         $discount->setType(Discount::TYPE_PERCENTAGE);
@@ -100,21 +112,24 @@ class TotalCalculatorTest extends TestCase
 
         $updater->calculateTotals($invoice);
 
-        self::assertEquals(new Money(25500, new Currency('USD')), $invoice->getTotal());
-        self::assertEquals(new Money(25500, new Currency('USD')), $invoice->getBalance());
-        self::assertEquals(new Money(30000, new Currency('USD')), $invoice->getBaseTotal());
+        self::assertEquals(BigInteger::of(25500), $invoice->getTotal());
+        self::assertEquals(BigInteger::of(25500), $invoice->getBalance());
+        self::assertEquals(BigInteger::of(30000), $invoice->getBaseTotal());
     }
 
+    /**
+     * @throws MathException
+     * @throws NotSupported
+     */
     public function testUpdateWithMonetaryDiscount(): void
     {
         $updater = new TotalCalculator($this->em->getRepository(Payment::class));
 
         $invoice = new Invoice();
-        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD', 'company' => $this->company])->object());
-        $invoice->setTotal(new Money(0, new Currency('USD')));
+        $invoice->setClient(ClientFactory::createOne(['company' => $this->company])->object());
         $item = new Item();
         $item->setQty(2)
-            ->setPrice(new Money(15000, new Currency('USD')));
+            ->setPrice(15000);
         $invoice->addItem($item);
         $discount = new Discount();
         $discount->setType(Discount::TYPE_MONEY);
@@ -123,11 +138,15 @@ class TotalCalculatorTest extends TestCase
 
         $updater->calculateTotals($invoice);
 
-        self::assertEquals(new Money(22000, new Currency('USD')), $invoice->getTotal());
-        self::assertEquals(new Money(22000, new Currency('USD')), $invoice->getBalance());
-        self::assertEquals(new Money(30000, new Currency('USD')), $invoice->getBaseTotal());
+        self::assertEquals(BigInteger::of(29920), $invoice->getTotal());
+        self::assertEquals(BigInteger::of(29920), $invoice->getBalance());
+        self::assertEquals(BigInteger::of(30000), $invoice->getBaseTotal());
     }
 
+    /**
+     * @throws MathException
+     * @throws NotSupported
+     */
     public function testUpdateWithTaxIncl(): void
     {
         $updater = new TotalCalculator($this->em->getRepository(Payment::class));
@@ -138,22 +157,25 @@ class TotalCalculatorTest extends TestCase
 
         $invoice = new Invoice();
         $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD', 'company' => $this->company])->object());
-        $invoice->setTotal(new Money(0, new Currency('USD')));
         $item = new Item();
         $item->setQty(2)
-            ->setPrice(new Money(15000, new Currency('USD')))
+            ->setPrice(15000)
             ->setTax($tax);
 
         $invoice->addItem($item);
 
         $updater->calculateTotals($invoice);
 
-        self::assertEquals(new Money(30000, new Currency('USD')), $invoice->getTotal());
-        self::assertEquals(new Money(30000, new Currency('USD')), $invoice->getBalance());
-        self::assertEquals(new Money(25000, new Currency('USD')), $invoice->getBaseTotal());
-        self::assertEquals(new Money(5000, new Currency('USD')), $invoice->getTax());
+        self::assertEquals(BigInteger::of(30000), $invoice->getTotal());
+        self::assertEquals(BigInteger::of(30000), $invoice->getBalance());
+        self::assertEquals(BigInteger::of(25000), $invoice->getBaseTotal());
+        self::assertEquals(BigInteger::of(5000), $invoice->getTax());
     }
 
+    /**
+     * @throws MathException
+     * @throws NotSupported
+     */
     public function testUpdateWithTaxExcl(): void
     {
         $updater = new TotalCalculator($this->em->getRepository(Payment::class));
@@ -164,22 +186,25 @@ class TotalCalculatorTest extends TestCase
 
         $invoice = new Invoice();
         $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD', 'company' => $this->company])->object());
-        $invoice->setTotal(new Money(0, new Currency('USD')));
         $item = new Item();
         $item->setQty(2)
-            ->setPrice(new Money(15000, new Currency('USD')))
+            ->setPrice(15000)
             ->setTax($tax);
 
         $invoice->addItem($item);
 
         $updater->calculateTotals($invoice);
 
-        self::assertEquals(new Money(36000, new Currency('USD')), $invoice->getTotal());
-        self::assertEquals(new Money(36000, new Currency('USD')), $invoice->getBalance());
-        self::assertEquals(new Money(30000, new Currency('USD')), $invoice->getBaseTotal());
-        self::assertEquals(new Money(6000, new Currency('USD')), $invoice->getTax());
+        self::assertEquals(BigInteger::of(36000), $invoice->getTotal());
+        self::assertEquals(BigInteger::of(36000), $invoice->getBalance());
+        self::assertEquals(BigInteger::of(30000), $invoice->getBaseTotal());
+        self::assertEquals(BigInteger::of(6000), $invoice->getTax());
     }
 
+    /**
+     * @throws MathException
+     * @throws NotSupported
+     */
     public function testUpdateWithTaxInclAndPercentageDiscount(): void
     {
         $updater = new TotalCalculator($this->em->getRepository(Payment::class));
@@ -190,10 +215,9 @@ class TotalCalculatorTest extends TestCase
 
         $invoice = new Invoice();
         $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD', 'company' => $this->company])->object());
-        $invoice->setTotal(new Money(0, new Currency('USD')));
         $item = new Item();
         $item->setQty(2)
-            ->setPrice(new Money(15000, new Currency('USD')))
+            ->setPrice(15000)
             ->setTax($tax);
         $invoice->addItem($item);
         $discount = new Discount();
@@ -203,12 +227,16 @@ class TotalCalculatorTest extends TestCase
 
         $updater->calculateTotals($invoice);
 
-        self::assertEquals(new Money(25500, new Currency('USD')), $invoice->getTotal());
-        self::assertEquals(new Money(25500, new Currency('USD')), $invoice->getBalance());
-        self::assertEquals(new Money(25000, new Currency('USD')), $invoice->getBaseTotal());
-        self::assertEquals(new Money(5000, new Currency('USD')), $invoice->getTax());
+        self::assertEquals(BigInteger::of(25500), $invoice->getTotal());
+        self::assertEquals(BigInteger::of(25500), $invoice->getBalance());
+        self::assertEquals(BigInteger::of(25000), $invoice->getBaseTotal());
+        self::assertEquals(BigInteger::of(5000), $invoice->getTax());
     }
 
+    /**
+     * @throws MathException
+     * @throws NotSupported
+     */
     public function testUpdateWithTaxExclAndMonetaryDiscount(): void
     {
         $updater = new TotalCalculator($this->em->getRepository(Payment::class));
@@ -219,10 +247,9 @@ class TotalCalculatorTest extends TestCase
 
         $invoice = new Invoice();
         $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD', 'company' => $this->company])->object());
-        $invoice->setTotal(new Money(0, new Currency('USD')));
         $item = new Item();
         $item->setQty(2)
-            ->setPrice(new Money(15000, new Currency('USD')))
+            ->setPrice(15000)
             ->setTax($tax);
         $invoice->addItem($item);
         $discount = new Discount();
@@ -232,23 +259,29 @@ class TotalCalculatorTest extends TestCase
 
         $updater->calculateTotals($invoice);
 
-        self::assertEquals(new Money(28000, new Currency('USD')), $invoice->getTotal());
-        self::assertEquals(new Money(28000, new Currency('USD')), $invoice->getBalance());
-        self::assertEquals(new Money(30000, new Currency('USD')), $invoice->getBaseTotal());
-        self::assertEquals(new Money(6000, new Currency('USD')), $invoice->getTax());
+        self::assertEquals(BigInteger::of(35920), $invoice->getTotal());
+        self::assertEquals(BigInteger::of(35920), $invoice->getBalance());
+        self::assertEquals(BigInteger::of(30000), $invoice->getBaseTotal());
+        self::assertEquals(BigInteger::of(6000), $invoice->getTax());
     }
 
+    /**
+     * @throws ORMException
+     * @throws OptimisticLockException
+     * @throws MathException
+     * @throws NotSupported
+     */
     public function testUpdateTotalsWithPayments(): void
     {
         $invoice = new Invoice();
         $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD', 'company' => $this->company])->object());
-        $invoice->setTotal(new Money(30000, new Currency('USD')));
-        $invoice->setBaseTotal(new Money(30000, new Currency('USD')));
-        $invoice->setBalance(new Money(30000, new Currency('USD')));
+        $invoice->setTotal(30000);
+        $invoice->setBaseTotal(30000);
+        $invoice->setBalance(30000);
         $invoice->setStatus(Graph::STATUS_PENDING);
         $item = new Item();
         $item->setQty(2)
-            ->setPrice(new Money(15000, new Currency('USD')))
+            ->setPrice(15000)
             ->setDescription('foobar');
         $invoice->addItem($item);
 
@@ -264,8 +297,8 @@ class TotalCalculatorTest extends TestCase
 
         $updater->calculateTotals($invoice);
 
-        self::assertEquals(new Money(30000, new Currency('USD')), $invoice->getTotal());
-        self::assertEquals(new Money(29000, new Currency('USD')), $invoice->getBalance());
-        self::assertEquals(new Money(30000, new Currency('USD')), $invoice->getBaseTotal());
+        self::assertEquals(BigInteger::of(30000), $invoice->getTotal());
+        self::assertEquals(BigInteger::of(29000), $invoice->getBalance());
+        self::assertEquals(BigInteger::of(30000), $invoice->getBaseTotal());
     }
 }

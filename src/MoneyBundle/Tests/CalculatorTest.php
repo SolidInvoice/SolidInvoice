@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MoneyBundle\Tests;
 
+use Brick\Math\BigDecimal;
+use Brick\Math\Exception\MathException;
 use InvalidArgumentException;
-use Money\Currency;
-use Money\Money;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -23,6 +23,9 @@ use SolidInvoice\MoneyBundle\Calculator;
 
 class CalculatorTest extends TestCase
 {
+    /**
+     * @throws MathException
+     */
     public function testCalculateDiscountWithInvalidEntity(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -31,6 +34,9 @@ class CalculatorTest extends TestCase
         $calculator->calculateDiscount('');
     }
 
+    /**
+     * @throws MathException
+     */
     public function testCalculateDiscount(): void
     {
         $calculator = new Calculator();
@@ -39,11 +45,14 @@ class CalculatorTest extends TestCase
         $discount->setType(Discount::TYPE_PERCENTAGE);
         $discount->setValue(10);
         $entity->setDiscount($discount);
-        $entity->setBaseTotal(new Money(20000, new Currency('USD')));
+        $entity->setBaseTotal(20000);
 
-        self::assertEquals(new Money(2000, new Currency('USD')), $calculator->calculateDiscount($entity));
+        self::assertEquals(BigDecimal::of(2000.0), $calculator->calculateDiscount($entity));
     }
 
+    /**
+     * @throws MathException
+     */
     public function testCalculateDiscountPercentage(): void
     {
         $calculator = new Calculator();
@@ -52,16 +61,19 @@ class CalculatorTest extends TestCase
         $discount->setType(Discount::TYPE_MONEY);
         $discount->setValue(35);
         $entity->setDiscount($discount);
-        $entity->setBaseTotal(new Money(200, new Currency('USD')));
+        $entity->setBaseTotal(200);
 
-        self::assertEquals(new Money(3500, new Currency('USD')), $calculator->calculateDiscount($entity));
+        self::assertEquals(BigDecimal::of(35), $calculator->calculateDiscount($entity));
     }
 
+    /**
+     * @throws MathException
+     */
     public function testCalculatePercentage(): void
     {
         $calculator = new Calculator();
         self::assertSame(0.0, $calculator->calculatePercentage(100));
         self::assertSame(24.0, $calculator->calculatePercentage(200, 12));
-        self::assertSame(40.0, $calculator->calculatePercentage(new Money(200, new Currency('USD')), 20));
+        self::assertSame(40.0, $calculator->calculatePercentage(200, 20));
     }
 }

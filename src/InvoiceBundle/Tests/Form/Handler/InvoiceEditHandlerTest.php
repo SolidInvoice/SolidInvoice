@@ -13,9 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Form\Handler;
 
+use Brick\Math\Exception\MathException;
+use Doctrine\ORM\Exception\NotSupported;
+use Doctrine\ORM\Exception\ORMException;
+use Doctrine\ORM\OptimisticLockException;
 use Mockery as M;
 use Money\Currency;
-use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
@@ -48,6 +51,11 @@ final class InvoiceEditHandlerTest extends FormHandlerTestCase
 
     private Client $client;
 
+    /**
+     * @throws OptimisticLockException
+     * @throws ORMException
+     * @throws MathException
+     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -60,7 +68,7 @@ final class InvoiceEditHandlerTest extends FormHandlerTestCase
         $discount->setType(Discount::TYPE_PERCENTAGE);
         $discount->setValue(10);
         $this->invoice->setDiscount($discount);
-        $this->invoice->setBalance(new Money(1000, new Currency('USD')));
+        $this->invoice->setBalance(1000);
 
         $this->em->persist($this->invoice);
         $this->em->flush();
@@ -112,6 +120,7 @@ final class InvoiceEditHandlerTest extends FormHandlerTestCase
 
     /**
      * @param Invoice $invoice
+     * @throws NotSupported
      */
     protected function assertOnSuccess(?Response $response, FormRequest $form, $invoice): void
     {

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Cloner;
 
+use Brick\Math\Exception\MathException;
 use Carbon\Carbon;
 use SolidInvoice\QuoteBundle\Entity\Item;
 use SolidInvoice\QuoteBundle\Entity\Quote;
@@ -31,6 +32,9 @@ final class QuoteCloner
     ) {
     }
 
+    /**
+     * @throws MathException
+     */
     public function clone(Quote $quote): Quote
     {
         // We don't use 'clone', since cloning a quote will clone all the item id's and nested values.
@@ -59,6 +63,9 @@ final class QuoteCloner
         return $newQuote;
     }
 
+    /**
+     * @throws MathException
+     */
     private function addItems(Quote $quote, Carbon $now): Traversable
     {
         foreach ($quote->getItems() as $item) {

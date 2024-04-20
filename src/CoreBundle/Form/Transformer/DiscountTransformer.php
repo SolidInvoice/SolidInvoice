@@ -13,13 +13,22 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Form\Transformer;
 
+use Brick\Math\BigInteger;
+use Brick\Math\Exception\MathException;
 use Money\Money;
 use Symfony\Component\Form\DataTransformerInterface;
 
 class DiscountTransformer implements DataTransformerInterface
 {
+    /**
+     * @throws MathException
+     */
     public function transform($value): ?int
     {
+        if ($value instanceof BigInteger) {
+            return $value->toInt();
+        }
+
         if (! $value instanceof Money) {
             return null !== $value ? (int) $value : $value;
         }

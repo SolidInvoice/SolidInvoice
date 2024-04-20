@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Tests\Form\Type;
 
 use Money\Currency;
-use Money\Money;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\InvoiceBundle\Entity\Item;
 use SolidInvoice\InvoiceBundle\Form\Type\ItemType;
@@ -40,7 +39,7 @@ class ItemTypeTest extends FormTestCase
         $object = new Item();
         $object->setDescription($description);
         $object->setQty($qty);
-        $object->setPrice(new Money($price * 100, $currency));
+        $object->setPrice($price * 100);
 
         $this->assertFormData($this->factory->create(ItemType::class, null, ['currency' => $currency]), $formData, $object);
     }

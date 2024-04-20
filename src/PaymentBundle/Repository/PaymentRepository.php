@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Repository;
 
+use Brick\Math\BigInteger;
+use Brick\Math\Exception\MathException;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -23,8 +25,6 @@ use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use Money\Currency;
-use Money\Money;
 use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
@@ -47,7 +47,8 @@ class PaymentRepository extends ServiceEntityRepository
     /**
      * Gets the total income that was received.
      *
-     * @return Money[]
+     * @return BigInteger[]
+     * @throws MathException
      */
     public function getTotalIncome(): array
     {
@@ -63,7 +64,7 @@ class PaymentRepository extends ServiceEntityRepository
         $results = [];
 
         foreach ($query->getArrayResult() as $result) {
-            $results[] = new Money($result['total'], new Currency($result['currencyCode']));
+            $results[$result['currencyCode']] = BigInteger::of($result['total']);
         }
 
         return $results;
@@ -116,10 +117,10 @@ class PaymentRepository extends ServiceEntityRepository
     /**
      * Returns an array of all the payments for an invoice.
      */
-    public function getTotalPaidForInvoice(Invoice $invoice): int
+    public function getTotalPaidForInvoice(Invoice $invoice): BigInteger
     {
         if (! $invoice->getId() instanceof UuidInterface) {
-            return 0;
+            return BigInteger::zero();
         }
 
         $queryBuilder = $this->createQueryBuilder('p');
@@ -134,9 +135,9 @@ class PaymentRepository extends ServiceEntityRepository
         $query = $queryBuilder->getQuery();
 
         try {
-            return (int) $query->getSingleScalarResult();
-        } catch (NoResultException | NonUniqueResultException) {
-            return 0;
+            return BigInteger::of((int) $query->getSingleScalarResult());
+        } catch (NoResultException | NonUniqueResultException | MathException) {
+            return BigInteger::zero();
         }
     }
 
@@ -159,7 +160,8 @@ class PaymentRepository extends ServiceEntityRepository
     /**
      * Gets the most recent created payments.
      *
-     * @return array<string, array<string|int|DateTimeInterface|Money>>
+     * @return array<string, array<string|int|DateTimeInterface|BigInteger>>
+     * @throws MathException
      */
     public function getRecentPayments(int $limit = 5): array
     {
@@ -175,7 +177,7 @@ class PaymentRepository extends ServiceEntityRepository
             ->setMaxResults($limit);
 
         return array_map(static function (array $payment): array {
-            $payment['amount'] = new Money($payment['totalAmount'], new Currency($payment['currencyCode']));
+            $payment['amount'] = BigInteger::of($payment['totalAmount']);
 
             return $payment;
         }, $qb->getQuery()->getArrayResult());
@@ -297,27 +299,10 @@ class PaymentRepository extends ServiceEntityRepository
         return $qb;
     }
 
-    public function updateCurrency(Client $client): void
-    {
-        $filters = $this->getEntityManager()->getFilters();
-        $filters->disable('archivable');
-
-        $currency = $client->getCurrency();
-
-        $qb = $this->createQueryBuilder('p');
-
-        $qb->update()
-            ->set('p.currencyCode', ':currency')
-            ->where('p.client = :client')
-            ->setParameter('client', $client->getId(), UuidBinaryOrderedTimeType::NAME)
-            ->setParameter('currency', $currency->getCode());
-
-        $qb->getQuery()->execute();
-
-        $filters->enable('archivable');
-    }
-
-    public function getTotalIncomeForClient(Client $client): ?Money
+    /**
+     * @throws MathException
+     */
+    public function getTotalIncomeForClient(Client $client): BigInteger
     {
         $qb = $this->createQueryBuilder('p');
 
@@ -333,9 +318,9 @@ class PaymentRepository extends ServiceEntityRepository
         $result = $query->getResult();
 
         if ([] === $result) {
-            return null;
+            return BigInteger::zero();
         }
 
-        return new Money($result[0]['total'], new Currency($result[0]['currencyCode']));
+        return BigInteger::of($result[0]['total']);
     }
 }

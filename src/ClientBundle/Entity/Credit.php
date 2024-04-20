@@ -13,15 +13,16 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Entity;
 
+use Brick\Math\BigInteger;
+use Brick\Math\Exception\MathException;
 use Doctrine\ORM\Mapping as ORM;
-use Money\Money;
 use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
 use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\ClientBundle\Repository\CreditRepository;
+use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
-use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
 use Stringable;
 
 #[ORM\Table(name: Credit::TABLE_NAME)]
@@ -39,15 +40,15 @@ class Credit implements Stringable
     #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
     private ?UuidInterface $id = null;
 
-    #[ORM\Embedded(class: MoneyEntity::class)]
-    private MoneyEntity $value;
+    #[ORM\Column(name: 'value_amount', type: BigIntegerType::NAME)]
+    private BigInteger $value;
 
     #[ORM\OneToOne(inversedBy: 'credit', targetEntity: Client::class)]
     private ?Client $client = null;
 
     public function __construct()
     {
-        $this->value = new MoneyEntity();
+        $this->value = BigInteger::zero();
     }
 
     public function getId(): UuidInterface
@@ -67,24 +68,23 @@ class Credit implements Stringable
         return $this;
     }
 
-    public function getValue(): Money
+    public function getValue(): BigInteger
     {
-        if ($this->value->getCurrency() === null) {
-            $this->value->setCurrency($this->client->getCurrency()->getCode());
-        }
-
-        return $this->value->getMoney();
+        return $this->value;
     }
 
-    public function setValue(Money $value): self
+    /**
+     * @throws MathException
+     */
+    public function setValue(BigInteger|float|int|string $value): self
     {
-        $this->value = new MoneyEntity($value);
+        $this->value = BigInteger::of($value);
 
         return $this;
     }
 
     public function __toString(): string
     {
-        return $this->value->getMoney()->getAmount();
+        return (string) $this->value->toInt();
     }
 }

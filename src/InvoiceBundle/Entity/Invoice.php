@@ -15,6 +15,8 @@ namespace SolidInvoice\InvoiceBundle\Entity;
 
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use Brick\Math\BigInteger;
+use Brick\Math\Exception\MathException;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -22,7 +24,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
-use Money\Money;
 use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
 use Ramsey\Uuid\Doctrine\UuidType;
@@ -30,12 +31,12 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
+use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use SolidInvoice\CoreBundle\Entity\ItemInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\InvoiceBundle\Traits\InvoiceStatusTrait;
-use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use Symfony\Component\Serializer\Annotation as Serialize;
@@ -81,9 +82,9 @@ class Invoice extends BaseInvoice
     #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
     protected ?Client $client = null;
 
-    #[ORM\Embedded(class: MoneyEntity::class)]
+    #[ORM\Column(name: 'balance_amount', type: BigIntegerType::NAME)]
     #[Serialize\Groups(['invoice_api', 'client_api'])]
-    private ?MoneyEntity $balance = null;
+    private BigInteger $balance;
 
     #[ORM\Column(name: 'due', type: Types::DATE_MUTABLE, nullable: true)]
     #[Assert\DateTime]
@@ -126,9 +127,12 @@ class Invoice extends BaseInvoice
     public function __construct()
     {
         parent::__construct();
+
         $this->payments = new ArrayCollection();
         $this->items = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->balance = BigInteger::zero();
+
         try {
             $this->setUuid(Uuid::uuid1());
         } catch (Exception) {
@@ -151,30 +155,30 @@ class Invoice extends BaseInvoice
         return $this;
     }
 
-    public function getClient(): ?Client
+    public function getClient(): Client
     {
         return $this->client;
     }
 
-    public function setClient(?Client $client): self
+    public function setClient(Client $client): self
     {
         $this->client = $client;
-        if ($client instanceof Client && null !== $client->getCurrencyCode()) {
-            $this->total->setCurrency($client->getCurrency()->getCode());
-            $this->baseTotal->setCurrency($client->getCurrency()->getCode());
-            $this->tax->setCurrency($client->getCurrency()->getCode());
-        }
+
         return $this;
     }
 
-    public function getBalance(): Money
+    public function getBalance(): BigInteger
     {
-        return $this->balance->getMoney();
+        return $this->balance;
     }
 
-    public function setBalance(Money $balance): self
+    /**
+     * @throws MathException
+     */
+    public function setBalance(BigInteger|float|int|string $balance): self
     {
-        $this->balance = new MoneyEntity($balance);
+        $this->balance = BigInteger::of($balance);
+
         return $this;
     }
 

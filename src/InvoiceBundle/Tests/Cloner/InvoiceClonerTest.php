@@ -13,11 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Cloner;
 
+use Brick\Math\Exception\MathException;
 use DateTime;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
-use Money\Currency;
-use Money\Money;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Entity\Discount;
@@ -32,13 +31,14 @@ class InvoiceClonerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
+    /**
+     * @throws MathException
+     */
     public function testClone(): void
     {
-        $currency = new Currency('USD');
-
         $client = new Client();
         $client->setName('Test Client');
-        $client->setWebsite('http://example.com');
+        $client->setWebsite('https://example.com');
         $client->setCreated(new DateTime('NOW'));
 
         $tax = new Tax();
@@ -50,20 +50,20 @@ class InvoiceClonerTest extends TestCase
         $item->setTax($tax);
         $item->setDescription('Item Description');
         $item->setCreated(new DateTime('now'));
-        $item->setPrice(new Money(120, $currency));
+        $item->setPrice(120);
         $item->setQty(10);
-        $item->setTotal(new Money((12 * 10), $currency));
+        $item->setTotal(120 * 10);
 
         $invoice = new Invoice();
-        $invoice->setBaseTotal(new Money(123, $currency));
+        $invoice->setBaseTotal(123);
         $discount = new Discount();
         $discount->setType(Discount::TYPE_PERCENTAGE);
         $discount->setValue(12);
         $invoice->setDiscount($discount);
         $invoice->setNotes('Notes');
-        $invoice->setTax(new Money(432, $currency));
+        $invoice->setTax(432);
         $invoice->setTerms('Terms');
-        $invoice->setTotal(new Money(987, $currency));
+        $invoice->setTotal(987);
         $invoice->setClient($client);
         $invoice->addItem($item);
 
@@ -100,7 +100,6 @@ class InvoiceClonerTest extends TestCase
 
     public function testCloneWithRecurring(): void
     {
-        $currency = new Currency('USD');
         $date = new DateTime('now');
 
         $client = new Client();
@@ -117,20 +116,20 @@ class InvoiceClonerTest extends TestCase
         $item->setTax($tax);
         $item->setDescription('Item Description');
         $item->setCreated(new DateTime('now'));
-        $item->setPrice(new Money(120, $currency));
+        $item->setPrice(120);
         $item->setQty(10);
-        $item->setTotal(new Money((12 * 10), $currency));
+        $item->setTotal(120 * 10);
 
         $invoice = new RecurringInvoice();
-        $invoice->setBaseTotal(new Money(123, $currency));
+        $invoice->setBaseTotal(123);
         $discount = new Discount();
         $discount->setType(Discount::TYPE_PERCENTAGE);
         $discount->setValue(12);
         $invoice->setDiscount($discount);
         $invoice->setNotes('Notes');
-        $invoice->setTax(new Money(432, $currency));
+        $invoice->setTax(432);
         $invoice->setTerms('Terms');
-        $invoice->setTotal(new Money(987, $currency));
+        $invoice->setTotal(987);
         $invoice->setClient($client);
         $invoice->addItem($item);
         $invoice->setFrequency('* * * * *');

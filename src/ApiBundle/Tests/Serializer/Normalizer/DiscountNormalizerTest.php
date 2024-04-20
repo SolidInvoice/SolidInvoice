@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Tests\Serializer\Normalizer;
 
-use Money\Currency;
-use Money\Money;
+use Brick\Math\BigInteger;
+use Brick\Math\Exception\MathException;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ApiBundle\Serializer\Normalizer\DiscountNormalizer;
 use SolidInvoice\CoreBundle\Entity\Discount;
@@ -41,13 +41,16 @@ class DiscountNormalizerTest extends TestCase
         self::assertFalse($this->normalizer->supportsDenormalization([], NormalizerInterface::class));
     }
 
+    /**
+     * @throws MathException
+     */
     public function testNormalization(): void
     {
         $discount = new Discount();
         $discount->setType(Discount::TYPE_MONEY);
         $discount->setValue(100);
 
-        self::assertEquals(['type' => 'money', 'value' => new Money(10000, new Currency('USD'))], $this->normalizer->normalize($discount));
+        self::assertEquals(['type' => 'money', 'value' => BigInteger::of(100)], $this->normalizer->normalize($discount));
     }
 
     public function testDenormalization(): void

@@ -13,16 +13,17 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Entity;
 
+use Brick\Math\BigInteger;
+use Brick\Math\Exception\MathException;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Money\Money;
 use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
 use Ramsey\Uuid\UuidInterface;
+use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use SolidInvoice\CoreBundle\Entity\ItemInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
-use SolidInvoice\MoneyBundle\Entity\Money as MoneyEntity;
 use SolidInvoice\QuoteBundle\Repository\ItemRepository;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use Stringable;
@@ -51,10 +52,10 @@ class Item implements ItemInterface, Stringable
     #[Serialize\Groups(['quote_api', 'client_api', 'create_quote_api'])]
     private ?string $description = null;
 
-    #[ORM\Embedded(class: MoneyEntity::class)]
+    #[ORM\Column(name: 'price_amount', type: BigIntegerType::NAME)]
     #[Assert\NotBlank]
     #[Serialize\Groups(['quote_api', 'client_api', 'create_quote_api'])]
-    private MoneyEntity $price;
+    private BigInteger $price;
 
     #[ORM\Column(name: 'qty', type: Types::FLOAT)]
     #[Assert\NotBlank]
@@ -68,14 +69,14 @@ class Item implements ItemInterface, Stringable
     #[Serialize\Groups(['quote_api', 'client_api', 'create_quote_api'])]
     private ?Tax $tax = null;
 
-    #[ORM\Embedded(class: MoneyEntity::class)]
+    #[ORM\Column(name: 'total_amount', type: BigIntegerType::NAME)]
     #[Serialize\Groups(['quote_api', 'client_api'])]
-    private MoneyEntity $total;
+    private BigInteger $total;
 
     public function __construct()
     {
-        $this->total = new MoneyEntity();
-        $this->price = new MoneyEntity();
+        $this->total = BigInteger::zero();
+        $this->price = BigInteger::zero();
     }
 
     public function getId(): UuidInterface
@@ -95,16 +96,19 @@ class Item implements ItemInterface, Stringable
         return $this->description;
     }
 
-    public function setPrice(Money $price): ItemInterface
+    /**
+     * @throws MathException
+     */
+    public function setPrice(BigInteger|float|int|string $price): ItemInterface
     {
-        $this->price = new MoneyEntity($price);
+        $this->price = BigInteger::of($price);
 
         return $this;
     }
 
-    public function getPrice(): ?Money
+    public function getPrice(): BigInteger
     {
-        return $this->price->getMoney();
+        return $this->price;
     }
 
     public function setQty(float $qty): ItemInterface
@@ -131,16 +135,19 @@ class Item implements ItemInterface, Stringable
         return $this->quote;
     }
 
-    public function setTotal(Money $total): ItemInterface
+    /**
+     * @throws MathException
+     */
+    public function setTotal(BigInteger|float|int|string $total): ItemInterface
     {
-        $this->total = new MoneyEntity($total);
+        $this->total = BigInteger::of($total);
 
         return $this;
     }
 
-    public function getTotal(): Money
+    public function getTotal(): BigInteger
     {
-        return $this->total->getMoney();
+        return $this->total;
     }
 
     public function getTax(): ?Tax
@@ -158,7 +165,7 @@ class Item implements ItemInterface, Stringable
     #[ORM\PrePersist]
     public function updateTotal(): void
     {
-        $this->total = new MoneyEntity($this->getPrice()->multiply($this->qty));
+        $this->total = $this->getPrice()->multipliedBy($this->qty);
     }
 
     public function __toString(): string

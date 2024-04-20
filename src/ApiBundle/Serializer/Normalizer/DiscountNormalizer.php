@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Serializer\Normalizer;
 
-use Money\Money;
+use Brick\Math\BigInteger;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -43,7 +43,7 @@ class DiscountNormalizer implements NormalizerInterface, DenormalizerInterface
     /**
      * @param Discount $object
      * @param array<string, mixed> $context
-     * @return array{type: string, value: float|Money|null}
+     * @return array{type: string, value: BigInteger|int|float|string|null}
      */
     public function normalize($object, string $format = null, array $context = []): array
     {

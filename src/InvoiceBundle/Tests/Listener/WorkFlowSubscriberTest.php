@@ -15,8 +15,6 @@ namespace SolidInvoice\InvoiceBundle\Tests\Listener;
 
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
-use Money\Currency;
-use Money\Money;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
@@ -42,7 +40,7 @@ class WorkFlowSubscriberTest extends TestCase
         $subscriber = new WorkFlowSubscriber($this->registry, $notification);
 
         $invoice = new Invoice();
-        $invoice->setBalance(new Money(1200, new Currency('USD')));
+        $invoice->setBalance(1200);
         $invoice->setClient((new Client())->setName('Test')->setCurrencyCode('USD'));
         $invoice->setStatus('pending');
 
@@ -60,7 +58,7 @@ class WorkFlowSubscriberTest extends TestCase
         $subscriber = new WorkFlowSubscriber($this->registry, $notification);
 
         $invoice = new Invoice();
-        $invoice->setBalance(new Money(1200, new Currency('USD')));
+        $invoice->setBalance(1200);
         $invoice->setClient((new Client())->setName('Test')->setCurrencyCode('USD'));
         $invoice->setStatus('pending');
 

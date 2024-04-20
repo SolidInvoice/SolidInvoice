@@ -14,21 +14,16 @@ declare(strict_types=1);
 namespace SolidInvoice\ClientBundle\Listener;
 
 use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Persistence\ObjectManager;
 use JsonException;
 use Money\Currency;
-use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Credit;
 use SolidInvoice\ClientBundle\Model\Status;
 use SolidInvoice\ClientBundle\Notification\ClientCreateNotification;
-use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
-use SolidInvoice\PaymentBundle\Entity\Payment;
-use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\SettingsBundle\SystemConfig;
 
 class ClientListener implements EventSubscriberInterface
@@ -47,7 +42,6 @@ class ClientListener implements EventSubscriberInterface
         return [
             Events::prePersist,
             Events::postPersist,
-            Events::postUpdate,
             Events::postLoad,
         ];
     }
@@ -72,7 +66,6 @@ class ClientListener implements EventSubscriberInterface
 
             $credit = new Credit();
             $credit->setClient($entity);
-            $credit->setValue(new Money(0, $entity->getCurrency()));
             $entity->setCredit($credit);
         }
     }
@@ -111,33 +104,5 @@ class ClientListener implements EventSubscriberInterface
         $notification = new ClientCreateNotification(['client' => $entity]);
 
         $this->notification->sendNotification('client_create', $notification);
-    }
-
-    /**
-     * @param LifecycleEventArgs<ObjectManager> $event
-     */
-    public function postUpdate(LifecycleEventArgs $event): void
-    {
-        $entity = $event->getObject();
-
-        if (! $entity instanceof Client) {
-            return;
-        }
-
-        $objectManager = $event->getObjectManager();
-
-        assert($objectManager instanceof EntityManagerInterface);
-
-        $entityChangeSet = $objectManager->getUnitOfWork()->getEntityChangeSet($entity);
-
-        // Only update the currencies when the client currency changed
-        if (array_key_exists('currency', $entityChangeSet)) {
-            $em = $objectManager;
-
-            $em->getRepository(Invoice::class)->updateCurrency($entity);
-            $em->getRepository(Quote::class)->updateCurrency($entity);
-            $em->getRepository(Payment::class)->updateCurrency($entity);
-            $em->getRepository(Credit::class)->updateCurrency($entity);
-        }
     }
 }
