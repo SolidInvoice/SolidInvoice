@@ -62,25 +62,10 @@ return static function (SecurityConfig $config): void {
         ->guard()
             ->authenticators([ApiTokenAuthenticator::class]);
 
-    $config
-        ->firewall('external')
-        ->pattern('^(?:'.
-            '/api/docs|'.
-            '/install(?:.*)|'.
-            '/(?:login|register)$|'.
-            '/invite/accept/[a-zA-Z0-9-]{36}$|'.
-            '/forgot-password(?:.*)$'.
-            '^/view/(quote|invoice)/([a-zA-Z0-9-]{36})|'.
-            '^/payments/create/([a-zA-Z0-9-]{36})|'.
-            '^/payment/(capture|notify|done)/(.*)|'.
-            '^/payments/done$'.
-        ')')
-        ->anonymous(true)
-        ->lazy(true);
-
     $mainFirewallConfig = $config
         ->firewall('main')
-        ->pattern('^/');
+        ->pattern('^/')
+        ->lazy(true);
 
     $mainFirewallConfig
         ->rememberMe()
@@ -103,11 +88,9 @@ return static function (SecurityConfig $config): void {
         ->path('/logout')
         ->target('/');
 
-    $accessControl = $config->accessControl();
-
-    $accessControl
+    $config->accessControl()
         ->path('^(?:'.
-            '/view/(?:quote|invoice)/[a-zA-Z0-9-]{36}$|'.
+            '/view/(quote|invoice)/[a-zA-Z0-9-]{36}$|'.
             '/(?:login|register|resetting)$|'.
             '/install(?:.*)|'.
             '/invite/accept/[a-zA-Z0-9-]{36}$|'.
@@ -115,5 +98,10 @@ return static function (SecurityConfig $config): void {
             '/payment/capture/(?:.*)|'.
             '/payments/done$'.
         ')')
-        ->roles(['IS_AUTHENTICATED_ANONYMOUSLY']);
+        ->roles(['PUBLIC_ACCESS']);
+
+    $config->accessControl()
+        ->path('^/')
+        ->roles(['ROLE_USER'])
+    ;
 };
