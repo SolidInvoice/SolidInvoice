@@ -45,6 +45,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Workflow\StateMachine;
 use function array_key_exists;
@@ -88,7 +89,14 @@ final class Prepare
 
         $this->companySelector->switchCompany($invoice->getCompany()->getId());
 
-        if ($this->paymentMethodRepository->getTotalMethodsConfigured($this->authorization->isGranted('IS_AUTHENTICATED_REMEMBERED')) < 1) {
+        $isAuthenticated = false;
+
+        try {
+            $isAuthenticated = $this->authorization->isGranted('IS_AUTHENTICATED_REMEMBERED');
+        } catch (AuthenticationCredentialsNotFoundException) {
+        }
+
+        if ($this->paymentMethodRepository->getTotalMethodsConfigured($isAuthenticated) < 1) {
             throw new Exception('No payment methods available');
         }
 

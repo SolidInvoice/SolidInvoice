@@ -28,6 +28,7 @@ use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
 class ViewBilling
 {
@@ -87,8 +88,11 @@ class ViewBilling
             throw new NotFoundHttpException(sprintf('"%s" with id %s does not exist', ucfirst((string) $options['entity']), $options['uuid']));
         }
 
-        if ($this->authorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            return new RedirectResponse($this->router->generate($options['route'], ['id' => $entity->getId()]));
+        try {
+            if ($this->authorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+                return new RedirectResponse($this->router->generate($options['route'], ['id' => $entity->getId()]));
+            }
+        } catch (AuthenticationCredentialsNotFoundException) {
         }
 
         $entityId = null;
