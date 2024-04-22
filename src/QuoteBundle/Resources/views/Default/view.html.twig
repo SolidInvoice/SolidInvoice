@@ -45,9 +45,17 @@
                     </a>
                 {% endif %}
 
-                <a href="{{ path('_send_quote', {'id' : quote.id}) }}" class="btn btn-info">
-                    {{ icon('envelope', ['o']) }} {{ "quote.view.toolbar.send"|trans }}
-                </a>
+                {% if quote.status not in ['declined', 'cancelled'] %}
+                    <a href="{{ path('_send_quote', {'id' : quote.id}) }}" class="btn btn-info">
+                        {{ icon('envelope', ['o']) }} {{ (quote.status not in ['pending'] ? "Publish and Send" : "quote.view.toolbar.send")|trans }}
+                    </a>
+                {% endif %}
+
+                {% if workflow_can(quote, 'publish') %}
+                    <a href="{{ path('_transition_quote', {'action' : 'publish', 'id' : quote.id}) }}" class="btn btn-primary">
+                        {{ icon('check') }} {{ "Publish"|trans }}
+                    </a>
+                {% endif %}
 
                 {% if workflow_can(quote, 'cancel') %}
                     <a href="{{ path('_transition_quote', {'action': 'cancel', 'id' : quote.id}) }}" class="btn btn-warning">

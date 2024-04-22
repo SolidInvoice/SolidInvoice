@@ -19,6 +19,8 @@ final class Graph
 
     public const TRANSITION_SEND = 'send';
 
+    public const TRANSITION_PUBLISH = 'publish';
+
     public const TRANSITION_CANCEL = 'cancel';
 
     public const TRANSITION_DECLINE = 'decline';
