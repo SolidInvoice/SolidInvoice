@@ -34,9 +34,9 @@
                     </a>
                 {% endif %}
 
-                {% if invoice.status not in ['cancelled'] %}
+                {% if invoice.status in ['pending', 'draft', 'overdue'] %}
                     <a href="{{ path('_send_invoice', {'id' : invoice.id}) }}" class="btn btn-info">
-                        {{ icon('envelope-o') }} {{ (invoice.status not in ['pending'] ? "Publish and Send" : "invoice.view.toolbar.send")|trans }}
+                        {{ icon('envelope-o') }} {{ (invoice.status in ['draft'] ? "invoice.view.toolbar.send" : "Publish and Send")|trans }}
                     </a>
                 {% endif %}
 

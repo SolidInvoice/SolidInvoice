@@ -367,4 +367,10 @@ class Quote
     {
         $this->quoteId = $quoteId;
     }
+
+    public function setId(UuidInterface $uuid): self
+    {
+        $this->id = $uuid;
+        return $this;
+    }
 }
