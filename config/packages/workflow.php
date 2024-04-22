@@ -227,6 +227,15 @@ return static function (FrameworkConfig $config): void {
 
     $quoteWorkflow
         ->transition()
+        ->name(QuoteGraph::TRANSITION_PUBLISH)
+        ->from([
+            QuoteGraph::STATUS_NEW,
+            QuoteGraph::STATUS_DRAFT,
+        ])
+        ->to([QuoteGraph::STATUS_PENDING]);
+
+    $quoteWorkflow
+        ->transition()
         ->name(QuoteGraph::TRANSITION_CANCEL)
         ->from([
             QuoteGraph::STATUS_DRAFT,

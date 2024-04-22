@@ -66,6 +66,8 @@ quote:
             cancel: 'Quote Cancelled'
             reopen: 'Quote Re-Opened'
             sent: 'Quote Sent'
+            publish: 'Quote Published'
+            send: 'Quote Sent'
     archive:
         success: 'Quote Archived'
     grid:
