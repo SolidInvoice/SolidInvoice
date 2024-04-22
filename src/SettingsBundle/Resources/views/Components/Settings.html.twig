@@ -7,7 +7,7 @@
                 <ul class="nav nav-pills nav-sidebar flex-column sidebar-menu" role="tablist">
                     {% for settingsSection, setting in appSettings %}
                         <li class="nav-item">
-                            <a href="#{{ section }}" data-action="live#update:prevent" data-model="section" data-value="{{ settingsSection }}" class="nav-link{{ settingsSection is same as section ? ' active' }}">
+                            <a href="{{ path('_settings', {section: settingsSection}) }}" class="nav-link{{ settingsSection is same as section ? ' active' }}">
                                 {{ icon('cog') }}
                                 <p>{{ settingsSection|trans|title }}</p>
                             </a>
