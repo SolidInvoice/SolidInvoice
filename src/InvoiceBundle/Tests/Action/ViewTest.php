@@ -11,26 +11,23 @@
 
 namespace SolidInvoice\InvoiceBundle\Tests\Action;
 
-use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 use Ramsey\Uuid\Uuid;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Pdf\Generator;
-use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Action\View;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Item;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
-use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
+use SolidInvoice\PaymentBundle\Entity\Payment;
 use Spatie\Snapshots\MatchesSnapshots;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
 
-final class ViewTest extends TestCase
+final class ViewTest extends KernelTestCase
 {
-    use EnsureApplicationInstalled;
     use MatchesSnapshots;
 
     /**
@@ -39,25 +36,27 @@ final class ViewTest extends TestCase
     public function testView(string $status): void
     {
         $request = Request::createFromGlobals();
-        $requestStack = self::getContainer()->get(RequestStack::class);
+        $requestStack = self::getContainer()->get('request_stack');
         $requestStack->push($request);
 
-        self::getContainer()->get(TokenStorageInterface::class);
+        self::getContainer()->get('security.token_storage');
 
         $twig = self::getContainer()->get('twig');
 
         $action = new View(
-            self::getContainer()->get(PaymentRepository::class),
-            self::getContainer()->get(Generator::class),
+            self::getContainer()->get('doctrine')->getRepository(Payment::class),
+            new Generator('', new NullLogger()),
             $twig
         );
 
-        $client = ClientFactory::createOne([
-            'currencyCode' => 'USD',
-            'name' => 'Johnston PLC',
-            'website' => 'https://www.example.com',
-            'vatNumber' => 'GB123456789',
-        ])->object();
+        $client = ClientFactory::new()
+            ->withoutPersisting()
+            ->create([
+                'currencyCode' => 'USD',
+                'name' => 'Johnston PLC',
+                'website' => 'https://www.example.com',
+                'vatNumber' => 'GB123456789',
+            ])->object();
 
         /** @var Invoice $invoice */
         $invoice = InvoiceFactory::new()
@@ -95,6 +94,9 @@ final class ViewTest extends TestCase
         $this->assertMatchesHtmlSnapshot($response);
     }
 
+    /**
+     * @return iterable<array{0: string}>
+     */
     public function invoiceStatusProvider(): iterable
     {
         $reflectionClass = new \ReflectionClass(Graph::class);
