@@ -1,0 +1,190 @@
+<html><body>
+<div class="float-right no-print mt-3">
+        <div class="btn-toolbar" role="toolbar">
+            <div class="btn-group mr-2" role="group">
+                                <a href="/invoices/clone/181aaf4a-0097-11ef-9b64-5a2cf21a5680" class="btn btn-secondary">
+                    <i class="fa fa-clone"></i> Clone
+                </a>
+
+                                    <a href="/payments/create/181aaf4a-0097-11ef-9b64-5a2cf21a5680" class="btn btn-primary">
+                        <i class="fa fa-credit-card"></i> Pay Now
+                    </a>
+                
+                                    <a href="/invoices/action/send/181aaf4a-0097-11ef-9b64-5a2cf21a5680" class="btn btn-info">
+                        <i class="fa fa-envelope-o"></i> Publish and Send
+                    </a>
+                
+                
+                
+                                    <a href="/invoices/action/cancel/181aaf4a-0097-11ef-9b64-5a2cf21a5680" class="btn btn-warning">
+                        <i class="fa fa-ban"></i> Cancel
+                    </a>
+                
+                                    <a href="/invoices/edit/181aaf4a-0097-11ef-9b64-5a2cf21a5680" class="btn btn-secondary">
+                        <i class="fa fa-edit"></i> Edit
+                    </a>
+                            </div>
+        </div>
+    </div>
+
+    <br class="clear">
+    <br class="clear">
+
+    
+
+<div class="widget" id="invoice-create">
+    <div class="s invoice">
+        <div class="card-body">
+            
+                <div class="col-12">
+                                            <h2 class="page-header">
+                            Invoice #INV-2021-0001 
+<span class="badge badge-pill bg-red">Overdue</span>
+                        </h2>
+                                        <div class="row invoice-info">
+                        <div class="col-sm-4 invoice-col">
+                            From:
+                            <h4>SolidInvoice</h4>
+
+                                                        
+                                                        
+                                                        
+                                                                                </div>
+                        <div class="col-sm-4 invoice-col">
+                            To:
+                            <h4>Johnston PLC</h4>
+                                                            <p>
+                                    <a href="https://www.example.com" rel="external" target="_blank">
+                                        https://www.example.com
+                                    </a>
+                                </p>
+                            
+                                                            <p>
+                                    <strong>Vat Number:</strong> GB123456789
+                                </p>
+                            
+                                                        <p>
+                                                            </p>
+                        </div>
+                        <div class="col-sm-4 invoice-col">
+                            <dl class="dl-horizontal">
+                                <dt>Invoice #</dt>
+                                <dd>INV-2021-0001</dd>
+                                <dt>Total</dt>
+                                <dd>$1.00</dd>
+                                <dt>Created</dt>
+                                <dd>September 1, 2021 00:00</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            
+                            <div class="col-12">
+                    <div class="table-responsive">
+                        <table id="invoice-rows" class="table table-condensed">
+                            <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Price</th>
+                                <th>Qty</th>
+                                                                <th class="text-right">Total</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                                            <tr>
+                                    <td class="column-description">
+                                        Test Item
+                                    </td>
+                                    <td class="column-price">
+                                        $1.00
+                                    </td>
+                                    <td class="column-qty">
+                                        1
+                                    </td>
+                                                                        <td class="column-total text-right">
+                                        $0.00
+                                    </td>
+                                </tr>
+                                                        </tbody>
+                            <tfoot>
+                            <tr>
+                                <td class="no-line"></td>
+                                <td colspan="2" class="thick-line text-right">
+                                    <strong>Sub-Total</strong>
+                                </td>
+                                <td class="thick-line text-right">
+                                    <div class="invoice-sub-total">
+                                        $1.00
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                                                                                                                <tr>
+                                <td class="no-line"></td>
+                                <td colspan="2" class="no-line text-right">
+                                    <strong>
+                                                                                    Total
+                                                                            </strong>
+                                </td>
+                                <td class="no-line text-right">
+                                    <div class="invoice-total">
+                                                                                    $1.00
+                                                                            </div>
+                                </td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            
+                                                            <div class="col-6">
+                        <strong>Terms</strong>
+                        <p class="text-muted well well-sm no-shadow">
+                            Test Terms
+                        </p>
+                    </div>
+                            
+
+                            <div class="col-6 no-print">
+                    <strong>Notes</strong>
+                    <p class="text-muted well well-sm no-shadow">
+                        Test Notes
+                    </p>
+                </div>
+            
+            <div class="row no-print">
+                <div class="col-12">
+                    <div class="btn-group">
+                        <a href="javascript:window.print()" class="btn btn-secondary"><i class="fa fa-print"></i> Print</a>
+                                                    <a href="/invoices/view/181aaf4a-0097-11ef-9b64-5a2cf21a5680.pdf" target="_blank" class="btn btn-secondary"><i class="fa fa-file-pdf-o"></i> PDF</a>
+                                            </div>
+                </div>
+            </div>
+                </div>
+    </div>
+</div>
+
+    
+    <div class="modal fade" id="payment-modal" tabindex="-1" role="dialog" aria-labelledby="payment-modal-label" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="payment-modal-label">Add Payment</h4>
+            </div>
+            <div class="modal-body">
+                <p>Do you want to capture a payment for this invoice?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Cancel
+                </button>
+                <a href="/invoices/action/pay/181aaf4a-0097-11ef-9b64-5a2cf21a5680" class="btn btn-success">
+                    <i class="fa fa-money"></i> Mark Paid
+                </a>
+                <a href="/payments/create/181aaf4a-0097-11ef-9b64-5a2cf21a5680" class="btn btn-primary">
+                    <i class="fa fa-credit-card"></i> Capture Payment
+                </a>
+            </div>
+        </div>
+    </div>
+</body></html>
