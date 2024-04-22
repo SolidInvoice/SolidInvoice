@@ -32,7 +32,7 @@ jobs:
          path: solidinvoice
 
       - name: Install PHP
-        uses: shivammathur/setup-php@8872c784b04a1420e81191df5d64fbd59d3d3033
+        uses: shivammathur/setup-php@efffd0e4f2504f936fcfe3b69293d31ce0e2fd7a
         with:
           coverage: none
           extensions: curl, gd, intl, opcache, json, openssl, pdo, soap, xsl, :xdebug
