@@ -36,16 +36,22 @@
 
                 {% if invoice.status not in ['cancelled'] %}
                     <a href="{{ path('_send_invoice', {'id' : invoice.id}) }}" class="btn btn-info">
-                        {{ icon('envelope-o') }} {{ "invoice.view.toolbar.send"|trans }}
+                        {{ icon('envelope-o') }} {{ (invoice.status not in ['pending'] ? "Publish and Send" : "invoice.view.toolbar.send")|trans }}
+                    </a>
+                {% endif %}
+
+                {% if workflow_can(invoice, 'accept') %}
+                    <a href="{{ path('_action_invoice', {'action' : 'accept', 'id' : invoice.id}) }}" class="btn btn-primary">
+                        {{ icon('check') }} {{ "Publish"|trans }}
                     </a>
                 {% endif %}
 
                 {% if workflow_can(invoice, 'reopen') %}
-
                     <a href="{{ path('_action_invoice', {'action' : 'reopen', 'id' : invoice.id}) }}" class="btn btn-secondary">
                         {{ icon('reply') }} {{ "invoice.view.toolbar.reopen"|trans }}
                     </a>
                 {% endif %}
+
                 {% if workflow_can(invoice, 'cancel') %}
                     <a href="{{ path('_action_invoice', {'action' : 'cancel', 'id' : invoice.id}) }}"
                        class="btn btn-warning">
