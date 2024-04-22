@@ -12,6 +12,7 @@
 namespace SolidInvoice\QuoteBundle\Tests\Action;
 
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 use Ramsey\Uuid\Uuid;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
@@ -24,8 +25,6 @@ use SolidInvoice\QuoteBundle\Model\Graph;
 use SolidInvoice\QuoteBundle\Test\Factory\QuoteFactory;
 use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
 
 final class ViewTest extends TestCase
 {
@@ -38,15 +37,15 @@ final class ViewTest extends TestCase
     public function testView(string $status): void
     {
         $request = Request::createFromGlobals();
-        $requestStack = self::getContainer()->get(RequestStack::class);
+        $requestStack = self::getContainer()->get('request_stack');
         $requestStack->push($request);
 
-        self::getContainer()->get(TokenStorageInterface::class);
+        self::getContainer()->get('security.token_storage');
 
         $twig = self::getContainer()->get('twig');
 
         $action = new View(
-            self::getContainer()->get(Generator::class),
+            new Generator('', new NullLogger()),
             $twig
         );
 
@@ -92,6 +91,9 @@ final class ViewTest extends TestCase
         $this->assertMatchesHtmlSnapshot($response);
     }
 
+    /**
+     * @return iterable<array{0: string}>
+     */
     public function quoteStatusProvider(): iterable
     {
         $reflectionClass = new \ReflectionClass(Graph::class);
