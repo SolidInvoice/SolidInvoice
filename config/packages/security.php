@@ -43,6 +43,11 @@ return static function (SecurityConfig $config): void {
         ->anonymous(true);
 
     $config
+        ->firewall('installation')
+        ->pattern('^/install')
+        ->anonymous(true);
+
+    $config
         ->firewall('api_login')
         ->pattern('^/api/login')
         ->stateless(true)
@@ -65,7 +70,8 @@ return static function (SecurityConfig $config): void {
     $mainFirewallConfig = $config
         ->firewall('main')
         ->pattern('^/')
-        ->lazy(true);
+        ->lazy(true)
+    ;
 
     $mainFirewallConfig
         ->rememberMe()
@@ -91,7 +97,7 @@ return static function (SecurityConfig $config): void {
     $config->accessControl()
         ->path('^(?:'.
             '/view/(quote|invoice)/[a-zA-Z0-9-]{36}$|'.
-            '/(?:login|register|resetting)$|'.
+            '/(login|register|resetting)$|'.
             '/install(?:.*)|'.
             '/invite/accept/[a-zA-Z0-9-]{36}$|'.
             '/payments/create/[a-zA-Z0-9-]{36}$|'.
