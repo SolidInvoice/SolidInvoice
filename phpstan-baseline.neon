@@ -826,6 +826,11 @@ parameters:
 			path: src/PaymentBundle/Tests/Factory/DependencyInjection/ConfigurationTest.php
 
 		-
+			message: "#^Service \"SolidInvoice\\\\PaymentBundle\\\\Factory\\\\PaymentFactories\" is private\\.$#"
+			count: 1
+			path: src/PaymentBundle/Tests/Twig/Components/PaymentSettingsTest.php
+
+		-
 			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\CloneQuote\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/QuoteBundle/Action/CloneQuote.php

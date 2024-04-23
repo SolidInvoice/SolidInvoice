@@ -24,7 +24,4 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services->set(ConfigWriter::class)
         ->public();
-
-    $services->set(PaymentFactories::class)
-        ->public();
 };
