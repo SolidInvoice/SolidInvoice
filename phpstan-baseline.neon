@@ -246,6 +246,11 @@ parameters:
 			path: src/CoreBundle/Templating/Template.php
 
 		-
+			message: "#^Service \"session\" is not registered in the container\\.$#"
+			count: 1
+			path: src/CoreBundle/Test/LiveComponentTest.php
+
+		-
 			message: "#^Property SolidInvoice\\\\CoreBundle\\\\Tests\\\\KernelAwareTest\\:\\:\\$container \\(Symfony\\\\Component\\\\DependencyInjection\\\\Container\\) does not accept Symfony\\\\Component\\\\DependencyInjection\\\\ContainerInterface\\.$#"
 			count: 1
 			path: src/CoreBundle/Tests/KernelAwareTest.php
@@ -666,21 +671,6 @@ parameters:
 			path: src/NotificationBundle/Notification/NotificationMessageInterface.php
 
 		-
-			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Action\\\\Ajax\\\\MethodList\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/PaymentBundle/Action/Ajax/MethodList.php
-
-		-
-			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Action\\\\Ajax\\\\Settings\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/PaymentBundle/Action/Ajax/Settings.php
-
-		-
-			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Action\\\\Index\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/PaymentBundle/Action/Index.php
-
-		-
 			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Action\\\\Settings\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/PaymentBundle/Action/Settings.php
@@ -836,16 +826,6 @@ parameters:
 			path: src/PaymentBundle/Tests/Factory/DependencyInjection/ConfigurationTest.php
 
 		-
-			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Tests\\\\Form\\\\Handler\\\\PaymentMethodSettingsHandlerTest\\:\\:getFormData\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/PaymentBundle/Tests/Form/Handler/PaymentMethodSettingsHandlerTest.php
-
-		-
-			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Tests\\\\Form\\\\Handler\\\\PaymentMethodSettingsHandlerTest\\:\\:getHandlerOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/PaymentBundle/Tests/Form/Handler/PaymentMethodSettingsHandlerTest.php
-
-		-
 			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\CloneQuote\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/QuoteBundle/Action/CloneQuote.php
@@ -932,7 +912,7 @@ parameters:
 
 		-
 			message: "#^Service \"session\" is not registered in the container\\.$#"
-			count: 3
+			count: 2
 			path: src/SettingsBundle/Tests/Twig/Components/SettingsTest.php
 
 		-

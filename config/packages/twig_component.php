@@ -10,5 +10,6 @@ return static function (TwigComponentConfig $config): void {
         ->anonymousTemplateDirectory('components/')
         ->controllersJson(param('kernel.project_dir').'/assets/js/controllers.json')
         ->defaults('SolidInvoice\SettingsBundle\Twig\Components\\', '@SolidInvoiceSettings/Components')
+        ->defaults('SolidInvoice\PaymentBundle\Twig\Components\\', '@SolidInvoicePayment/Components')
     ;
 };

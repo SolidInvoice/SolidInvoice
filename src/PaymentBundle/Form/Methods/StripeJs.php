@@ -39,7 +39,7 @@ class StripeJs extends AbstractType
         );
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'stripe_js';
     }

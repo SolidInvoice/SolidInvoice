@@ -1,0 +1,55 @@
+<html><body>
+<div id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="PaymentSettings" data-live-url-value="/_components/PaymentSettings" data-live-query-mapping-value='{"method":{"name":"method"}}' data-live-props-value='{"method":"be2bill_direct","formName":"payment_methods","payment_methods":{"name":"Be2bill Direct","enabled":null,"internal":null,"config":{"identifier":"","password":"","sandbox":null},"save":null,"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"noOJJk8B8mVvMIqWyuSBSPBiRV2\/zcRftux\/rVo+Ens="}' data-live-csrf-value="">
+    <div class="card">
+        <div class="card-header with-border">
+            <h3 class="card-title">
+                Be2 bill direct
+            </h3>
+        </div>
+
+        <div class="card-body">
+            <form name="payment_methods" method="post" data-model="on(change)|*" data-action="live#action:prevent" data-live-action-param="save">
+                <div id="payment_methods" data-model="on(change)|*">
+<div class="form-group">                
+                                <label class="control-label required required" for="payment_methods_name">Name</label><input type="text" id="payment_methods_name" name="payment_methods[name]" data-required="required" maxlength="125" class="form-control" value="Be2bill Direct">
+</div>
+<div class="form-group">
+<div class="custom-control custom-switch">        <input type="checkbox" id="payment_methods_enabled" name="payment_methods[enabled]" class="custom-control-input" value="1">
+        <label class="switch-custom custom-control-label" for="payment_methods_enabled">Enabled</label>
+</div>
+
+    </div>
+<div class="form-group">
+<div class="custom-control custom-switch">        <input type="checkbox" id="payment_methods_internal" name="payment_methods[internal]" aria-describedby="payment_methods_internal_help" class="custom-control-input" value="1">
+        <label class="switch-custom custom-control-label" for="payment_methods_internal">Internal use only</label>
+</div>
+
+            <span class="help-block"><small>Selecting this option, will make this payment option only available for internal use. Clients won't be able to select the method to complete a payment.</small></span>
+    <div class="alert alert-info mt-2">
+            <small id="payment_methods_internal_help" class="form-text ">Selecting this option, will make this payment option only available for internal use. Clients won't be able to select the method to complete a payment.</small>
+        </div>
+</div>
+<fieldset class="form-group">                
+    <div id="payment_methods_config">
+<div class="form-group">                
+                                <label class="control-label required required" for="payment_methods_config_identifier">Identifier</label><input type="text" id="payment_methods_config_identifier" name="payment_methods[config][identifier]" data-required="required" class="form-control">
+</div>
+<div class="form-group">                
+                                <label class="control-label required required" for="payment_methods_config_password">Password</label><input type="password" id="payment_methods_config_password" name="payment_methods[config][password]" data-required="required" class="form-control">
+</div>
+<div class="form-group">
+<div class="form-check">        <input type="checkbox" id="payment_methods_config_sandbox" name="payment_methods[config][sandbox]" class="form-check-input" value="1">
+        <label class="form-check-label" for="payment_methods_config_sandbox">Sandbox</label>
+</div>
+
+    </div>
+</div>
+</fieldset>
+<div class="form-group"><button type="submit" id="payment_methods_save" name="payment_methods[save]" class="btn-success btn">Save</button></div>
+<input type="hidden" id="payment_methods__token" name="payment_methods[_token]">
+</div>
+            </form>
+        </div>
+    </div>
+</div>
+</body></html>
