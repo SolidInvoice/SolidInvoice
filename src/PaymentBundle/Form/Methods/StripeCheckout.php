@@ -39,7 +39,7 @@ class StripeCheckout extends AbstractType
         );
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'stripe_checkout';
     }

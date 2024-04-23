@@ -1,0 +1,110 @@
+<?php
+
+/*
+ * This file is part of SolidInvoice project.
+ *
+ * (c) Pierre du Plessis <open-source@solidworx.co>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace SolidInvoice\CoreBundle\Test;
+
+use const PASSWORD_DEFAULT;
+use PHPUnit\Framework\MockObject\MockObject;
+use SolidInvoice\CoreBundle\Entity\Company;
+use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
+use SolidInvoice\UserBundle\Entity\User;
+use Spatie\Snapshots\MatchesSnapshots;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\UX\LiveComponent\Test\InteractsWithLiveComponents;
+use function assert;
+use function current;
+use function password_hash;
+
+abstract class LiveComponentTest extends KernelTestCase
+{
+    use InteractsWithLiveComponents;
+    use EnsureApplicationInstalled;
+    use MatchesSnapshots;
+
+    protected KernelBrowser $client;
+
+    protected MockObject&CsrfTokenManagerInterface $csrfTokenManager;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $_SERVER['secret'] = $_ENV['secret'] = '$ecretf0rt3st';
+
+        $this->ensureSessionIsSet();
+
+        $this->csrfTokenManager = $this->createMock(CsrfTokenManagerInterface::class);
+
+        self::getContainer()
+            ->set('.container.private.security.csrf.token_manager', $this->csrfTokenManager);
+
+        $this->client = self::getContainer()->get('test.client');
+        $this->client->disableReboot();
+
+        $this->csrfTokenManager
+            ->method('isTokenValid')
+            ->willReturn(true);
+    }
+
+    protected function ensureSessionIsSet(): void
+    {
+        $request = new Request();
+        $session = self::getContainer()->get('session');
+        assert($session instanceof Session);
+
+        $request->setSession($session);
+        self::getContainer()->get('request_stack')->push($request);
+    }
+
+    protected function getUser(): User
+    {
+        $registry = self::getContainer()->get('doctrine');
+
+        $userRepository = $registry->getRepository(User::class);
+        $companyRepository = $registry->getRepository(Company::class);
+
+        /** @var User[] $users */
+        $users = $userRepository->findAll();
+
+        /** @var Company[] $companies */
+        $companies = $companyRepository->findAll();
+
+        if ([] === $users) {
+            $user = new User();
+            $user->setUsername('test')
+                ->setEmail('test@example.com')
+                ->setEnabled(true)
+                ->setPassword(password_hash('Password1', PASSWORD_DEFAULT));
+
+            foreach ($companies as $company) {
+                $user->addCompany($company);
+            }
+
+            $registry->getManager()->persist($user);
+            $registry->getManager()->flush();
+            $users = [$user];
+        }
+
+        return current($users);
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        $this->client->getKernel()->shutdown();
+        $this->client->getKernel()->boot();
+    }
+}

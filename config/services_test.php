@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use SolidInvoice\CoreBundle\ConfigWriter;
 use SolidInvoice\InstallBundle\Installer\Database\Migration;
+use SolidInvoice\PaymentBundle\Factory\PaymentFactories;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -22,5 +23,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->public();
 
     $services->set(ConfigWriter::class)
+        ->public();
+
+    $services->set(PaymentFactories::class)
         ->public();
 };

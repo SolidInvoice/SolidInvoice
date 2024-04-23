@@ -28,11 +28,6 @@ return static function (RoutingConfigurator $routingConfigurator): void {
         ->options(['expose' => true]);
 
     $routingConfigurator
-        ->import('@SolidInvoicePaymentBundle/Resources/config/routing/ajax.php')
-        ->prefix('/xhr')
-        ->options(['expose' => true]);
-
-    $routingConfigurator
         ->add('_payments_create', '/create/{uuid}')
         ->controller(Prepare::class)
         ->requirements(['uuid' => '[a-zA-Z0-9-]{36}']);

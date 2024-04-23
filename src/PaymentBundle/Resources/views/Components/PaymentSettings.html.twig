@@ -1,0 +1,20 @@
+<div {{ attributes }}>
+    <div class="card">
+        <div class="card-header with-border">
+            <h3 class="card-title">
+                {{ method|title|humanize }}
+            </h3>
+        </div>
+
+        <div class="card-body">
+            {{ form_start(form, {
+                attr: {
+                    'data-action': 'live#action:prevent',
+                    'data-live-action-param': 'save'
+                }
+            }) }}
+                {{ form_widget(form) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>

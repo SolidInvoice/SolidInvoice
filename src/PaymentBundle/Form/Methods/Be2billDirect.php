@@ -36,6 +36,7 @@ class Be2billDirect extends AbstractType
             'password',
             PasswordType::class,
             [
+                'always_empty' => false,
                 'constraints' => new NotBlank(),
             ]
         );
@@ -49,7 +50,7 @@ class Be2billDirect extends AbstractType
         );
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'be2bill_direct';
     }

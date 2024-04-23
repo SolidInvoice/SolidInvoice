@@ -48,7 +48,7 @@ class AuthorizeNetAim extends AbstractType
         );
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'authorize_net_aim';
     }

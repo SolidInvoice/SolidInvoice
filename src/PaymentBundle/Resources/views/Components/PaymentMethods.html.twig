@@ -1,0 +1,34 @@
+<div {{ attributes }}>
+    {% include "@SolidInvoiceCore/flash.html.twig" %}
+    <section class="row">
+        <aside class="col-3">
+            <div class="card">
+                <div class="card-body">
+                    <ul class="nav nav-pills nav-sidebar flex-column sidebar-menu" role="tablist">
+                        {% for state in ['enabled', 'disabled'] %}
+                            {% if paymentMethods[state]|length > 0 %}
+                                <li class="nav-header nav-item first">
+                                    <span> <p>{{ state|title }} Methods</p></span>
+                                </li>
+                                {% for method in paymentMethods[state] %}
+                                    <li class="nav-item">
+                                        <a href="?method={{ method }}" aria-controls="{{ method }}" data-method="{{ method }}" class="nav-link{{ method is same as(this.method) ? ' active' }}">
+                                            {{ icon(state == 'enabled' ? 'check-circle'  : 'times-circle') }}
+
+                                            <span class="icon">
+                                                {{ method|humanize|title }}
+                                            </span>
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </aside>
+        <section class="col-9">
+            <twig:PaymentSettings method="{{ this.method }}" />
+        </section>
+    </section>
+</div>
