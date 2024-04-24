@@ -30,7 +30,6 @@ use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\PaymentBundle\Event\PaymentCompleteEvent;
 use SolidInvoice\PaymentBundle\Event\PaymentEvents;
-use SolidInvoice\PaymentBundle\Factory\PaymentFactories;
 use SolidInvoice\PaymentBundle\Form\Type\PaymentType;
 use SolidInvoice\PaymentBundle\Model\Status;
 use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
@@ -67,7 +66,6 @@ final class Prepare
         private readonly AuthorizationCheckerInterface $authorization,
         private readonly TokenStorageInterface $tokenStorage,
         private readonly FormFactoryInterface $formFactory,
-        private readonly PaymentFactories $paymentFactories,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly RegistryInterface $payum,
         private readonly RouterInterface $router,
@@ -160,7 +158,7 @@ final class Prepare
                 }
             }
 
-            $data['capture_online'] ??= ! in_array($offlinePaymentGateways, $paymentName, true);
+            $data['capture_online'] ??= ! in_array($paymentName, $offlinePaymentGateways, true);
 
             $payment = new Payment();
             $payment->setInvoice($invoice);

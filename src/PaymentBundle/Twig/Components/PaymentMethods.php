@@ -11,6 +11,7 @@
 
 namespace SolidInvoice\PaymentBundle\Twig\Components;
 
+use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\PaymentBundle\Factory\PaymentFactories;
 use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -42,7 +43,7 @@ final class PaymentMethods extends AbstractController
     }
 
     /**
-     * @return array{enabled: string[], disabled: string[]}
+     * @return list<PaymentMethod>
      */
     #[ExposeInTemplate]
     public function paymentMethods(): array
