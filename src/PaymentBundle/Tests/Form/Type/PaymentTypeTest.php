@@ -18,6 +18,7 @@ use Brick\Math\Exception\MathException;
 use Money\Currency;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\PaymentBundle\Form\Type\PaymentType;
+use Symfony\UX\StimulusBundle\Helper\StimulusHelper;
 
 class PaymentTypeTest extends FormTestCase
 {
@@ -45,7 +46,7 @@ class PaymentTypeTest extends FormTestCase
     {
         $types = parent::getTypes();
 
-        $types[] = new PaymentType($this->registry);
+        $types[] = new PaymentType($this->registry, new StimulusHelper(null));
 
         return $types;
     }
