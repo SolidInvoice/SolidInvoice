@@ -9,9 +9,6 @@
 
 {% extends '@SolidInvoiceCore/Layout/' ~ (app.user is not empty ? 'default' : 'default_no_nav') ~ '.html.twig' %}
 
-{% set module = "payment-capture" %}
-{% set moduleData = internal %}
-
 {% block title %}{{ "payment.create.tite"|trans|replace({"%id%" : invoice.invoiceId}) }}{% endblock %}
 
 {% block content %}

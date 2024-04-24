@@ -2,7 +2,7 @@
     <div class="card">
         <div class="card-header with-border">
             <h3 class="card-title">
-                {{ method|title|humanize }}
+                {{ paymentMethod.name|default('Add New Payment Method') }}
             </h3>
         </div>
 

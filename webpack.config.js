@@ -37,7 +37,6 @@ Encore
         'SolidInvoiceDataGrid': path.resolve(__dirname, 'src/DataGridBundle/Resources/public'),
         'SolidInvoiceInvoice': path.resolve(__dirname, 'src/InvoiceBundle/Resources/public'),
         'SolidInvoiceMailer': path.resolve(__dirname, 'src/MailerBundle/Resources/public'),
-        'SolidInvoicePayment': path.resolve(__dirname, 'src/PaymentBundle/Resources/public'),
         'SolidInvoiceQuote': path.resolve(__dirname, 'src/QuoteBundle/Resources/public'),
         'SolidInvoiceTax': path.resolve(__dirname, 'src/TaxBundle/Resources/public'),
         'SolidInvoiceUser': path.resolve(__dirname, 'src/UserBundle/Resources/public'),
@@ -89,7 +88,7 @@ Encore
     .enableTypeScriptLoader()
 
     .addPlugin(codecovWebpackPlugin({
-        enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
+        enableBundleAnalysis: Encore.isProduction() && process.env.CODECOV_TOKEN !== undefined,
         bundleName: 'solidinvoice-webpack-bundle',
         uploadToken: process.env.CODECOV_TOKEN,
     }))

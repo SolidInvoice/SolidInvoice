@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Factory;
 
-use Exception;
 use SolidInvoice\PaymentBundle\Exception\InvalidGatewayException;
 
 /**
@@ -35,9 +34,6 @@ class PaymentFactories
         $this->forms = $gateForms;
     }
 
-    /**
-     * @return array
-     */
     public function getFactories(string $type = null): ?array
     {
         if (null === $type) {
@@ -50,18 +46,13 @@ class PaymentFactories
         );
     }
 
-    /**
-     * @return string
-     */
     public function getForm(string $gateway): ?string
     {
         return $this->forms[$gateway] ?? null;
     }
 
     /**
-     * @return string
-     *
-     * @throws Exception
+     * @throws InvalidGatewayException
      */
     public function getFactory(string $gateway): ?string
     {
@@ -74,6 +65,6 @@ class PaymentFactories
 
     public function isOffline(string $gateway): bool
     {
-        return isset($this->factories[$gateway]) && 'offline' === $this->factories[$gateway];
+        return (isset($this->factories[$gateway]) && 'offline' === $this->factories[$gateway]) || 'offline' === $gateway;
     }
 }

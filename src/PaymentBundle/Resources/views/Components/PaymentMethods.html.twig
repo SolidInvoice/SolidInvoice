@@ -4,31 +4,38 @@
         <aside class="col-3">
             <div class="card">
                 <div class="card-body">
+                    <div class="text-center mb-4">
+                        <a href="?method=custom" class="btn btn-outline-success">
+                            {{ icon('plus-circle') }} Add Payment Method
+                        </a>
+                    </div>
                     <ul class="nav nav-pills nav-sidebar flex-column sidebar-menu" role="tablist">
-                        {% for state in ['enabled', 'disabled'] %}
-                            {% if paymentMethods[state]|length > 0 %}
-                                <li class="nav-header nav-item first">
-                                    <span> <p>{{ state|title }} Methods</p></span>
-                                </li>
-                                {% for method in paymentMethods[state] %}
-                                    <li class="nav-item">
-                                        <a href="?method={{ method }}" aria-controls="{{ method }}" data-method="{{ method }}" class="nav-link{{ method is same as(this.method) ? ' active' }}">
-                                            {{ icon(state == 'enabled' ? 'check-circle'  : 'times-circle') }}
+                        <li class="nav-header nav-item first">
+                            <span> <p>Available Payment Methods</p></span>
+                        </li>
+                        {% for method in paymentMethods %}
+                            <li class="nav-item">
+                                <a href="?method={{ method.gatewayName }}" aria-controls="{{ method.gatewayName }}" data-method="{{ method.gatewayName }}" class="nav-link{{ method.gatewayName is same as(this.method) ? ' active' }}">
+                                    {% if method.isEnabled == 'enabled' %}
+                                        {{ icon('check-circle', ['text-success']) }}
+                                    {% else %}
+                                        {{ icon('times-circle') }}
+                                    {% endif %}
 
-                                            <span class="icon">
-                                                {{ method|humanize|title }}
-                                            </span>
-                                        </a>
-                                    </li>
-                                {% endfor %}
-                            {% endif %}
+                                    <span class="icon">
+                                        {{ method.name }}
+                                    </span>
+                                </a>
+                            </li>
                         {% endfor %}
                     </ul>
                 </div>
             </div>
         </aside>
         <section class="col-9">
-            <twig:PaymentSettings method="{{ this.method }}" />
+            {% if this.method is not empty %}
+                <twig:PaymentSettings method="{{ this.method }}" />
+            {% endif %}
         </section>
     </section>
 </div>

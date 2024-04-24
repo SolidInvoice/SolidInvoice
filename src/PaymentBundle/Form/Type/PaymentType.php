@@ -25,33 +25,45 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\UX\StimulusBundle\Helper\StimulusHelper;
 
 /**
  * @see \SolidInvoice\PaymentBundle\Tests\Form\Type\PaymentTypeTest
  */
 class PaymentType extends AbstractType
 {
+    private const STIMULUS_CONTROLLER = 'capture_payment';
+
     public function __construct(
-        private readonly ManagerRegistry $registry
+        private readonly ManagerRegistry $registry,
+        private readonly StimulusHelper $stimulusHelper,
     ) {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $paymentMethodRepository = $this->registry->getRepository(PaymentMethod::class);
+
+        $attributes = $this->stimulusHelper->createStimulusAttributes();
+        $attributes->addTarget(self::STIMULUS_CONTROLLER, 'paymentMethod');
+
         $builder->add(
             'payment_method',
             EntityType::class,
             [
                 'class' => PaymentMethod::class,
-                'choices' => $this->registry->getRepository(PaymentMethod::class)->getAvailablePaymentMethods($options['user'] !== null),
+                'choices' => $paymentMethodRepository->getAvailablePaymentMethods($options['user'] !== null),
                 'required' => true,
                 'preferred_choices' => $options['preferred_choices'],
                 'constraints' => new Assert\NotBlank(),
                 'placeholder' => 'Choose Payment Method',
-                'choice_attr' => fn (PaymentMethod $paymentMethod) => ['data-gateway' => $paymentMethod->getGatewayName()],
-                'attr' => [
-                    'class' => 'select2',
-                ],
+                'choice_attr' => fn (PaymentMethod $paymentMethod) => ['data-offline' => $paymentMethod->isOffline()],
+                'attr' => array_merge(
+                    [
+                        'class' => 'select2',
+                    ],
+                    $attributes->toArray(),
+                ),
             ]
         );
 
@@ -75,14 +87,21 @@ class PaymentType extends AbstractType
         );
 
         if (null !== $options['user']) {
-            $builder->add('capture_online', CheckboxType::class, ['data' => true]);
+            $attributes = $this->stimulusHelper->createStimulusAttributes();
+            $attributes->addTarget(self::STIMULUS_CONTROLLER, 'captureOnline');
+
+            $builder->add('capture_online', CheckboxType::class, ['data' => true, 'row_attr' => $attributes->toArray()]);
         }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
+        $attributes = $this->stimulusHelper->createStimulusAttributes();
+        $attributes->addController(self::STIMULUS_CONTROLLER);
+
         $resolver->setRequired(['user', 'preferred_choices']);
         $resolver->setDefault('currency', null);
+        $resolver->setDefault('attr', $attributes->toArray());
         $resolver->setAllowedTypes('currency', ['null', Currency::class]);
     }
 

@@ -48,8 +48,9 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Workflow\StateMachine;
-use function array_key_exists;
+use function array_map;
 use function filter_var;
+use function in_array;
 
 // @TODO: Refactor this class to make it cleaner
 
@@ -102,6 +103,11 @@ final class Prepare
 
         $preferredChoices = $this->paymentMethodRepository->findBy(['gatewayName' => 'credit']);
 
+        $offlinePaymentGateways = array_map(
+            static fn (PaymentMethod $paymentMethod) => $paymentMethod->getGatewayName(),
+            $this->paymentMethodRepository->findBy(['factoryName' => 'offline'])
+        );
+
         $form = $this->formFactory->create(
             PaymentType::class,
             [
@@ -116,10 +122,7 @@ final class Prepare
 
         $form->handleRequest($request);
 
-        $offlinePaymentFactories = $this->paymentFactories->getFactories('offline');
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $paymentFactories = $this->paymentFactories->getFactories($form->getData()['payment_method']->getFactoryName());
             $data = $form->getData();
             $amount = BigInteger::of($data['amount']);
 
@@ -128,10 +131,7 @@ final class Prepare
 
             $paymentName = $paymentMethod->getGatewayName();
 
-            if (! array_key_exists($paymentName, $paymentFactories)) {
-                throw new Exception('Invalid payment method');
-            }
-
+            // @TODO: credit should be a gateway on it's own
             if ('credit' === $paymentName) {
                 $clientCredit = $invoice->getClient()->getCredit()->getValue();
 
@@ -154,13 +154,13 @@ final class Prepare
                         [
                             'form' => $form->createView(),
                             'invoice' => $invoice,
-                            'internal' => array_keys($offlinePaymentFactories),
+                            'internal' => $offlinePaymentGateways,
                         ]
                     );
                 }
             }
 
-            $data['capture_online'] ??= ! array_key_exists($paymentName, $offlinePaymentFactories);
+            $data['capture_online'] ??= ! in_array($offlinePaymentGateways, $paymentName, true);
 
             $payment = new Payment();
             $payment->setInvoice($invoice);
@@ -208,7 +208,7 @@ final class Prepare
             [
                 'form' => $form->createView(),
                 'invoice' => $invoice,
-                'internal' => \array_keys($offlinePaymentFactories),
+                'internal' => $offlinePaymentGateways,
             ]
         );
     }

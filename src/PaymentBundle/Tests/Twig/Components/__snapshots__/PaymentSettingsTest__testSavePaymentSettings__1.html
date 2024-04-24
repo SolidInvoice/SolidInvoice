@@ -1,29 +1,12 @@
-<html><body>
-<div id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="PaymentSettings" data-live-url-value="/_components/PaymentSettings" data-live-events-to-emit-value='[{"event":"paymentMethodUpdated","data":[],"target":"up","componentName":null}]' data-live-query-mapping-value='{"method":{"name":"method"}}' data-live-props-value='{"method":"cash","formName":"payment_methods","payment_methods":{"name":"Test Cash","enabled":null,"save":null,"_token":""},"isValidated":true,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"XfR\/9j9LUX9f18HA4bnUiiY2Ijz0MA\/b7rI60V8z0C8="}' data-live-csrf-value="">
-    <div class="card">
-        <div class="card-header with-border">
-            <h3 class="card-title">
-                Cash
-            </h3>
-        </div>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="refresh" content="0;url='/payments/methods?method=test-cash'">
 
-        <div class="card-body">
-            <form name="payment_methods" method="post" data-model="on(change)|*" data-action="live#action:prevent" data-live-action-param="save">
-                <div id="payment_methods" data-model="on(change)|*">
-<div class="form-group">                
-                                <label class="control-label required required" for="payment_methods_name">Name</label><input type="text" id="payment_methods_name" name="payment_methods[name]" data-required="required" maxlength="125" class="form-control" value="Test Cash">
-</div>
-<div class="form-group">
-<div class="custom-control custom-switch">        <input type="checkbox" id="payment_methods_enabled" name="payment_methods[enabled]" class="custom-control-input" value="1">
-        <label class="switch-custom custom-control-label" for="payment_methods_enabled">Enabled</label>
-</div>
-
-    </div>
-<div class="form-group"><button type="submit" id="payment_methods_save" name="payment_methods[save]" class="btn-success btn">Save</button></div>
-<input type="hidden" id="payment_methods__token" name="payment_methods[_token]">
-</div>
-            </form>
-        </div>
-    </div>
-</div>
-</body></html>
+        <title>Redirecting to /payments/methods?method=test-cash</title>
+    </head>
+    <body>
+        Redirecting to <a href="/payments/methods?method=test-cash">/payments/methods?method=test-cash</a>.
+    </body>
+</html>
