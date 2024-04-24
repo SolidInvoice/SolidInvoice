@@ -28,6 +28,7 @@ use Stringable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
+use function array_key_exists;
 
 #[ORM\Table(name: PaymentMethod::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: PaymentMethodRepository::class)]
@@ -80,7 +81,7 @@ class PaymentMethod implements GatewayConfigInterface, Stringable
         $this->disable();
     }
 
-    public function getId(): UuidInterface
+    public function getId(): ?UuidInterface
     {
         return $this->id;
     }
@@ -127,7 +128,15 @@ class PaymentMethod implements GatewayConfigInterface, Stringable
      */
     public function getConfig(): ?array
     {
-        return $this->config;
+        $config = $this->config;
+
+        if (array_key_exists('sandbox', $config)) {
+            $config['sandbox'] = filter_var($config['sandbox'], FILTER_VALIDATE_BOOLEAN);
+        }
+
+        $config['factory'] = $this->factoryName;
+
+        return $config;
     }
 
     public function isInternal(): bool

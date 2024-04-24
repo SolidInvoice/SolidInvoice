@@ -88,4 +88,10 @@ class PaymentMethodRepository extends ServiceEntityRepository
 
         return $queryBuilder->getQuery()->getResult();
     }
+
+    public function delete(PaymentMethod $uuid): void
+    {
+        $this->getEntityManager()->remove($uuid);
+        $this->getEntityManager()->flush();
+    }
 }
