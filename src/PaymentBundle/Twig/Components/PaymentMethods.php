@@ -43,7 +43,7 @@ final class PaymentMethods extends AbstractController
     }
 
     /**
-     * @return list<PaymentMethod>
+     * @return list<PaymentMethod|null>
      */
     #[ExposeInTemplate]
     public function paymentMethods(): array
