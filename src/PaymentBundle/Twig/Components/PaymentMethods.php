@@ -15,11 +15,11 @@ use SolidInvoice\PaymentBundle\Factory\PaymentFactories;
 use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
-use Symfony\UX\LiveComponent\Attribute\LiveListener;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 use Symfony\UX\TwigComponent\Attribute\PreMount;
+use function array_keys;
 
 #[AsLiveComponent(name: 'PaymentMethods')]
 final class PaymentMethods extends AbstractController
@@ -45,9 +45,19 @@ final class PaymentMethods extends AbstractController
      * @return array{enabled: string[], disabled: string[]}
      */
     #[ExposeInTemplate]
-    #[LiveListener('paymentMethodUpdated')]
     public function paymentMethods(): array
     {
         return $this->repository->findBy([], ['name' => 'ASC']);
+    }
+
+    /**
+     * @return array<string>
+     */
+    #[ExposeInTemplate]
+    public function availablePaymentMethods(): array
+    {
+        $factories = $this->factories->getFactories();
+        unset($factories['credit']);
+        return array_keys($factories);
     }
 }

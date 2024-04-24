@@ -111,9 +111,10 @@ final class PaymentSettingsTest extends LiveComponentTest
         self::assertSame('payex-test', $paymentMethod->getGatewayName());
         self::assertTrue($paymentMethod->isEnabled());
         self::assertSame([
+            'factory' => 'payex',
             'account_number' => '12345',
             'encryption_key' => 'foo-bar-baz',
-            'sandbox' => '1',
+            'sandbox' => true,
         ], $paymentMethod->getConfig());
 
         $this->assertMatchesHtmlSnapshot($component->render()->toString());

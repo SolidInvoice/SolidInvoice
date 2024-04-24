@@ -5,9 +5,16 @@
             <div class="card">
                 <div class="card-body">
                     <div class="text-center mb-4">
-                        <a href="?method=custom" class="btn btn-outline-success">
-                            {{ icon('plus-circle') }} Add Payment Method
-                        </a>
+                        <div class="dropdown">
+                            <a href="#" class="btn btn-outline-success dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                                {{ icon('plus-circle') }} Add Payment Method
+                            </a>
+                            <div class="dropdown-menu">
+                                {% for method in availablePaymentMethods %}
+                                        <a class="dropdown-item" href="?method={{ method }}">{{ method|humanize|title }}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
                     </div>
                     <ul class="nav nav-pills nav-sidebar flex-column sidebar-menu" role="tablist">
                         <li class="nav-header nav-item first">

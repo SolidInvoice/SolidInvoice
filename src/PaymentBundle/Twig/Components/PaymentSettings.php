@@ -27,17 +27,16 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
-use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
+use function assert;
 
 #[AsLiveComponent(name: 'PaymentSettings')]
 final class PaymentSettings extends AbstractController
 {
     use DefaultActionTrait;
     use ComponentWithFormTrait;
-    use ComponentToolsTrait;
 
     public function __construct(
         private readonly PaymentFactories $factories,
@@ -45,13 +44,8 @@ final class PaymentSettings extends AbstractController
     ) {
     }
 
-    #[LiveProp(writable: true, updateFromParent: true, onUpdated: 'onMethodUpdate', url: true)]
+    #[LiveProp(writable: true, updateFromParent: true, url: true)]
     public string $method = '';
-
-    public function onMethodUpdate(): void
-    {
-        $this->resetForm();
-    }
 
     #[ExposeInTemplate]
     public function paymentMethod(): PaymentMethod
@@ -108,8 +102,27 @@ final class PaymentSettings extends AbstractController
 
         $session->getFlashBag()->add(FlashResponse::FLASH_SUCCESS, 'payment.method.updated');
 
-        $this->emitUp('paymentMethodUpdated');
-
         return $this->redirectToRoute('_payment_settings_index', ['method' => $paymentMethod->getGatewayName()]);
+    }
+
+    #[LiveAction]
+    public function delete(RequestStack $requestStack): Response
+    {
+        $session = $requestStack->getSession();
+        assert($session instanceof Session);
+
+        $paymentMethod = $this->paymentMethod();
+
+        if (count($paymentMethod->getPayments()) > 0) {
+            $session->getFlashBag()->add(FlashResponse::FLASH_ERROR, 'Unable to delete payment method as there are payments associated with it');
+
+            return $this->redirectToRoute('_payment_settings_index', ['method' => $paymentMethod->getGatewayName()]);
+        }
+
+        $this->repository->delete($paymentMethod);
+
+        $session->getFlashBag()->add(FlashResponse::FLASH_INFO, 'Payment method deleted');
+
+        return $this->redirectToRoute('_payment_settings_index');
     }
 }

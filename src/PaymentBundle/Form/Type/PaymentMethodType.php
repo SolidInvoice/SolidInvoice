@@ -15,7 +15,6 @@ namespace SolidInvoice\PaymentBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -48,16 +47,6 @@ class PaymentMethodType extends AbstractType
         if (null !== $options['config']) {
             $builder->add('config', $options['config']);
         }
-
-        $builder->add(
-            'save',
-            SubmitType::class,
-            [
-                'attr' => [
-                    'class' => 'btn-success',
-                ],
-            ]
-        );
     }
 
     public function configureOptions(OptionsResolver $resolver): void
