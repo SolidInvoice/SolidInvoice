@@ -11,7 +11,6 @@
 
 namespace SolidInvoice\PaymentBundle\Twig\Components;
 
-use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\PaymentBundle\Factory\PaymentFactories;
 use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,11 +20,6 @@ use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 use Symfony\UX\TwigComponent\Attribute\PreMount;
-use function array_diff;
-use function array_intersect;
-use function array_keys;
-use function array_map;
-use function strtolower;
 
 #[AsLiveComponent(name: 'PaymentMethods')]
 final class PaymentMethods extends AbstractController
@@ -44,9 +38,7 @@ final class PaymentMethods extends AbstractController
     #[PreMount]
     public function preMount(): void
     {
-        $paymentMethods = $this->paymentMethods();
-
-        $this->method = $this->method ?: ($paymentMethods['enabled'][0] ?? $paymentMethods['disabled'][0] ?? '');
+        $this->method = $this->method ?: $this->paymentMethods()[0]?->getGatewayName() ?? '';
     }
 
     /**
@@ -56,22 +48,6 @@ final class PaymentMethods extends AbstractController
     #[LiveListener('paymentMethodUpdated')]
     public function paymentMethods(): array
     {
-        $paymentMethods = array_keys($this->factories->getFactories());
-
-        $enabledMethods = array_map(
-            static fn (PaymentMethod $method): string => strtolower($method->getGatewayName()),
-            $this->repository->findBy(['enabled' => 1])
-        );
-
-        $enabled = array_intersect($paymentMethods, $enabledMethods);
-        $disabled = array_diff($paymentMethods, $enabledMethods);
-
-        sort($enabled);
-        sort($disabled);
-
-        return [
-            'enabled' => $enabled,
-            'disabled' => $disabled,
-        ];
+        return $this->repository->findBy([], ['name' => 'ASC']);
     }
 }

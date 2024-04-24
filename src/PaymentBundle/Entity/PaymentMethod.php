@@ -205,6 +205,11 @@ class PaymentMethod implements GatewayConfigInterface, Stringable
         return $this;
     }
 
+    public function isOffline(): bool
+    {
+        return 'offline' === $this->factoryName;
+    }
+
     public function __toString(): string
     {
         return $this->name;

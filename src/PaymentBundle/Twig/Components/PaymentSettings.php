@@ -21,15 +21,16 @@ use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
-use function str_replace;
-use function ucwords;
+use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
 #[AsLiveComponent(name: 'PaymentSettings')]
 final class PaymentSettings extends AbstractController
@@ -44,40 +45,61 @@ final class PaymentSettings extends AbstractController
     ) {
     }
 
-    #[LiveProp(writable: true, updateFromParent: true, url: true)]
+    #[LiveProp(writable: true, updateFromParent: true, onUpdated: 'onMethodUpdate', url: true)]
     public string $method = '';
+
+    public function onMethodUpdate(): void
+    {
+        $this->resetForm();
+    }
+
+    #[ExposeInTemplate]
+    public function paymentMethod(): PaymentMethod
+    {
+        $paymentMethod = $this->repository->findOneBy(['gatewayName' => $this->method]);
+
+        if (! $paymentMethod instanceof PaymentMethod) {
+            $paymentMethod = new PaymentMethod();
+            $paymentMethod->setFactoryName($this->factories->getFactory($this->method));
+            $paymentMethod->setInternal($this->factories->isOffline($this->method));
+        }
+
+        return $paymentMethod;
+    }
 
     /**
      * @throws Exception
      */
     protected function instantiateForm(): FormInterface
     {
-        $paymentMethod = $this->repository->findOneBy(['gatewayName' => $this->method]);
-
-        if (! $paymentMethod instanceof PaymentMethod) {
-            $paymentMethod = new PaymentMethod();
-            $paymentMethod->setGatewayName($this->method);
-            $paymentMethod->setFactoryName($this->factories->getFactory($this->method));
-            $paymentMethod->setName(ucwords(str_replace('_', ' ', $this->method)));
-        }
+        $paymentMethod = $this->paymentMethod();
+        $factory = $paymentMethod->getFactoryName();
 
         return $this->createForm(
             PaymentMethodType::class,
             $paymentMethod,
             [
-                'config' => $this->factories->getForm($this->method),
-                'internal' => $this->factories->isOffline($this->method),
+                'config' => $this->factories->getForm($factory),
+                'internal' => $factory === 'offline',
             ]
         );
     }
 
     #[LiveAction]
-    public function save(EntityManagerInterface $entityManager, RequestStack $requestStack): void
+    public function save(EntityManagerInterface $entityManager, RequestStack $requestStack): Response
     {
         $this->submitForm();
 
         /** @var PaymentMethod $paymentMethod */
         $paymentMethod = $this->getForm()->getData();
+
+        $paymentMethod->setGatewayName(
+            (new AsciiSlugger())
+                ->slug($paymentMethod->getName())
+                ->lower()
+                ->toString()
+        );
+
         $entityManager->persist($paymentMethod);
         $entityManager->flush();
 
@@ -87,5 +109,7 @@ final class PaymentSettings extends AbstractController
         $session->getFlashBag()->add(FlashResponse::FLASH_SUCCESS, 'payment.method.updated');
 
         $this->emitUp('paymentMethodUpdated');
+
+        return $this->redirectToRoute('_payment_settings_index', ['method' => $paymentMethod->getGatewayName()]);
     }
 }

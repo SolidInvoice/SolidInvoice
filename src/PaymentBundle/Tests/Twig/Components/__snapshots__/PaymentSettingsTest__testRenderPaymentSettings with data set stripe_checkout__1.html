@@ -1,9 +1,9 @@
 <html><body>
-<div id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="PaymentSettings" data-live-url-value="/_components/PaymentSettings" data-live-query-mapping-value='{"method":{"name":"method"}}' data-live-props-value='{"method":"stripe_checkout","formName":"payment_methods","payment_methods":{"name":"Stripe Checkout","enabled":null,"internal":null,"config":{"publishable_key":"","secret_key":""},"save":null,"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"IBqQAg17cWIPV4Lb3iZz6T+fpEAzry8cPSBSCrIVWdU="}' data-live-csrf-value="">
+<div id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="PaymentSettings" data-live-url-value="/_components/PaymentSettings" data-live-query-mapping-value='{"method":{"name":"method"}}' data-live-props-value='{"method":"stripe_checkout","formName":"payment_methods","payment_methods":{"name":"","enabled":null,"internal":null,"config":{"publishable_key":"","secret_key":""},"save":null,"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"BhvnHVOnIp0OPx9keLTosJnfHhusH0i8QD6bIYNsErA="}' data-live-csrf-value="">
     <div class="card">
         <div class="card-header with-border">
             <h3 class="card-title">
-                Stripe checkout
+                Add New Payment Method
             </h3>
         </div>
 
@@ -11,7 +11,7 @@
             <form name="payment_methods" method="post" data-model="on(change)|*" data-action="live#action:prevent" data-live-action-param="save">
                 <div id="payment_methods" data-model="on(change)|*">
 <div class="form-group">                
-                                <label class="control-label required required" for="payment_methods_name">Name</label><input type="text" id="payment_methods_name" name="payment_methods[name]" data-required="required" maxlength="125" class="form-control" value="Stripe Checkout">
+                                <label class="control-label required required" for="payment_methods_name">Name</label><input type="text" id="payment_methods_name" name="payment_methods[name]" data-required="required" maxlength="125" class="form-control">
 </div>
 <div class="form-group">
 <div class="custom-control custom-switch">        <input type="checkbox" id="payment_methods_enabled" name="payment_methods[enabled]" class="custom-control-input" value="1">

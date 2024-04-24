@@ -61,10 +61,18 @@ final class PaymentSettingsTest extends LiveComponentTest
             'enabled' => false,
         ])->call('save');
 
-        $paymentMethod = $paymentMethodRepository->findOneBy(['gatewayName' => 'cash']);
+        $paymentMethod = $paymentMethodRepository->findOneBy(['gatewayName' => 'test-cash']);
 
         self::assertSame('Test Cash', $paymentMethod->getName());
         self::assertFalse($paymentMethod->isEnabled());
+
+        $this->assertMatchesHtmlSnapshot($component->render()->toString());
+
+        $component = $this->createLiveComponent(
+            name: PaymentSettings::class,
+            data: ['method' => 'test-cash'],
+            client: $this->client,
+        )->actingAs($this->getUser());
 
         $this->assertMatchesHtmlSnapshot($component->render()->toString());
     }
@@ -96,17 +104,25 @@ final class PaymentSettingsTest extends LiveComponentTest
             'enabled' => true,
         ])->call('save');
 
-        $paymentMethod = $paymentMethodRepository->findOneBy(['gatewayName' => 'payex']);
+        $paymentMethod = $paymentMethodRepository->findOneBy(['gatewayName' => 'payex-test']);
 
         self::assertSame('Payex Test', $paymentMethod->getName());
         self::assertSame('payex', $paymentMethod->getFactoryName());
-        self::assertSame('payex', $paymentMethod->getGatewayName());
+        self::assertSame('payex-test', $paymentMethod->getGatewayName());
         self::assertTrue($paymentMethod->isEnabled());
         self::assertSame([
             'account_number' => '12345',
             'encryption_key' => 'foo-bar-baz',
             'sandbox' => '1',
         ], $paymentMethod->getConfig());
+
+        $this->assertMatchesHtmlSnapshot($component->render()->toString());
+
+        $component = $this->createLiveComponent(
+            name: PaymentSettings::class,
+            data: ['method' => 'payex-test'],
+            client: $this->client,
+        )->actingAs($this->getUser());
 
         $this->assertMatchesHtmlSnapshot($component->render()->toString());
     }
