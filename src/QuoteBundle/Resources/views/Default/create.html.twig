@@ -133,7 +133,10 @@
 {% block form_buttons %}
     <div class="float-left">
         <button type="submit" class="btn btn-success" name="save" value="pending">
-            {{ icon('envelope', ['o']) }} {{ "quote.save.send"|trans }}
+            {{ icon('envelope') }} {{ "quote.save.send"|trans }}
+        </button>
+        <button type="submit" class="btn btn-info" name="save" value="publish">
+            {{ icon('check') }} {{ "Publish"|trans }}
         </button>
     </div>
     <div class="float-right">
