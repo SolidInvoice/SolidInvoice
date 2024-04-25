@@ -61,6 +61,10 @@ abstract class AbstractQuoteHandler implements FormHandlerInterface, FormHandler
             $this->quoteStateMachine->apply($quote, Graph::TRANSITION_SEND);
         }
 
+        if ('publish' === $action) {
+            $this->quoteStateMachine->apply($quote, Graph::TRANSITION_PUBLISH);
+        }
+
         $this->save($quote);
 
         $route = $this->router->generate('_quotes_view', ['id' => $quote->getId()]);
