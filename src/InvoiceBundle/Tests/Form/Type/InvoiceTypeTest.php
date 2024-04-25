@@ -18,11 +18,13 @@ use Money\Currency;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
+use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Form\Type\InvoiceType;
 use SolidInvoice\InvoiceBundle\Form\Type\ItemType;
 use SolidInvoice\SettingsBundle\SystemConfig;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\PreloadedExtension;
 
@@ -75,7 +77,7 @@ class InvoiceTypeTest extends FormTestCase
             ->zeroOrMoreTimes()
             ->andReturn(new Currency('USD'));
 
-        $invoiceType = new InvoiceType($systemConfig, $this->registry);
+        $invoiceType = new InvoiceType($systemConfig, $this->registry, new BillingIdGenerator(new ServiceLocator([]), $systemConfig));
         $itemType = new ItemType($this->registry);
 
         return [

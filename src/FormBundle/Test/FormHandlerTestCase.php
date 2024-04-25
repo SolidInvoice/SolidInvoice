@@ -22,6 +22,7 @@ use SolidInvoice\ClientBundle\Entity\ContactType;
 use SolidInvoice\ClientBundle\Form\Type\ContactDetailType;
 use SolidInvoice\CoreBundle\Form\Extension\FormHelpExtension;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
+use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\InvoiceBundle\Form\Type\InvoiceType;
 use SolidInvoice\InvoiceBundle\Form\Type\ItemType as InvoiceItemType;
@@ -33,6 +34,7 @@ use SolidInvoice\QuoteBundle\Form\Type\QuoteType;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidWorx\FormHandler\Test\FormHandlerTestCase as BaseTestCase;
 use Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
 use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\FormTypeExtensionInterface;
@@ -71,7 +73,7 @@ abstract class FormHandlerTestCase extends BaseTestCase
                     new HiddenMoneyType(),
                     new CurrencyType('en_US'),
                     new ContactDetailType($this->registry->getRepository(ContactType::class)),
-                    new InvoiceType($systemConfig, $this->registry),
+                    new InvoiceType($systemConfig, $this->registry, new BillingIdGenerator(new ServiceLocator([]), $systemConfig)),
                     new QuoteType($systemConfig, $this->registry),
                     new InvoiceItemType($this->registry),
                     new QuoteItemType($this->registry),

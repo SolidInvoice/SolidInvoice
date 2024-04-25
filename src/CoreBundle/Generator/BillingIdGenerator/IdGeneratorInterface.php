@@ -13,7 +13,19 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 
+use Symfony\Component\Form\FormTypeInterface;
+
 interface IdGeneratorInterface
 {
-    public function generate(object $entity, string $field): string;
+    public static function getName(): string;
+
+    /**
+     * @return class-string<FormTypeInterface>|null
+     */
+    public function getConfigurationFormType(): ?string;
+
+    /**
+     * @param array<string, mixed> $options
+     */
+    public function generate(object $entity, array $options): string;
 }
