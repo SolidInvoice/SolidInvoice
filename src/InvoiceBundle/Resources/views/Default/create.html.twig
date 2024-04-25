@@ -179,6 +179,11 @@
         <button type="submit" class="btn btn-success" name="save" value="pending">
             {{ icon('envelope', ['o']) }} {{ (recurring ? "invoice.save.enable" : "invoice.save.send")|trans }}
         </button>
+        {% if not recurring %}
+            <button type="submit" class="btn btn-info" name="save" value="publish">
+                {{ icon('check') }} {{ "Save Invoice"|trans }}
+            </button>
+        {% endif %}
     </div>
     <div class="float-right">
         <button type="submit" class="btn btn-primary" name="save" value="save">
