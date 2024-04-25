@@ -74,7 +74,7 @@ abstract class FormHandlerTestCase extends BaseTestCase
                     new CurrencyType('en_US'),
                     new ContactDetailType($this->registry->getRepository(ContactType::class)),
                     new InvoiceType($systemConfig, $this->registry, new BillingIdGenerator(new ServiceLocator([]), $systemConfig)),
-                    new QuoteType($systemConfig, $this->registry),
+                    new QuoteType($systemConfig, $this->registry, new BillingIdGenerator(new ServiceLocator([]), $systemConfig)),
                     new InvoiceItemType($this->registry),
                     new QuoteItemType($this->registry),
                     new DiscountType($systemConfig),

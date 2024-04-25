@@ -71,7 +71,7 @@ class Quote
     private ?UuidInterface $id = null;
 
     #[ORM\Column(name: 'quote_id', type: Types::STRING, length: 255)]
-    private string $quoteId;
+    private string $quoteId = '';
 
     #[ORM\Column(name: 'uuid', type: UuidType::NAME, length: 36)]
     #[Serialize\Groups(['quote_api', 'client_api'])]

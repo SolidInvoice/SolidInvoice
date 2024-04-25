@@ -14,9 +14,13 @@ declare(strict_types=1);
 namespace SolidInvoice\QuoteBundle\Form\Type;
 
 use Doctrine\Persistence\ManagerRegistry;
+use JsonException;
 use Money\Currency;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
+use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Form\EventListener\QuoteUsersSubscriber;
@@ -34,10 +38,16 @@ class QuoteType extends AbstractType
 {
     public function __construct(
         private readonly SystemConfig $systemConfig,
-        private readonly ManagerRegistry $registry
+        private readonly ManagerRegistry $registry,
+        private readonly BillingIdGenerator $billingIdGenerator,
     ) {
     }
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws JsonException
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
@@ -76,6 +86,9 @@ class QuoteType extends AbstractType
                 ],
             ]
         );
+
+        $data = $options['data']?->getQuoteId() ?: $this->billingIdGenerator->generate($options['data'] ?? new Quote(), ['field' => 'quoteId']);
+        $builder->add('quoteId', null, ['data' => $data]);
 
         $builder->add('terms');
         $builder->add('notes', null, ['help' => 'Notes will not be visible to the client']);

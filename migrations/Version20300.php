@@ -210,6 +210,48 @@ final class Version20300 extends AbstractMigration implements ContainerAwareInte
                         'field_type' => TextType::class,
                     ]
                 );
+
+            $this
+                ->connection
+                ->insert(
+                    'app_config',
+                    [
+                        'id' => $codec->encodeBinary(Uuid::uuid1()),
+                        'company_id' => $company['id'],
+                        'setting_key' => 'quote/id_generation/strategy',
+                        'setting_value' => 'auto_increment',
+                        'description' => '',
+                        'field_type' => BillingIdConfigurationType::class,
+                    ]
+                );
+
+            $this
+                ->connection
+                ->insert(
+                    'app_config',
+                    [
+                        'id' => $codec->encodeBinary(Uuid::uuid1()),
+                        'company_id' => $company['id'],
+                        'setting_key' => 'quote/id_generation/id_prefix',
+                        'setting_value' => '',
+                        'description' => 'Example: QUOT-',
+                        'field_type' => TextType::class,
+                    ]
+                );
+
+            $this
+                ->connection
+                ->insert(
+                    'app_config',
+                    [
+                        'id' => $codec->encodeBinary(Uuid::uuid1()),
+                        'company_id' => $company['id'],
+                        'setting_key' => 'quote/id_generation/id_suffix',
+                        'setting_value' => '',
+                        'description' => 'Example: -QUOT',
+                        'field_type' => TextType::class,
+                    ]
+                );
         }
     }
 

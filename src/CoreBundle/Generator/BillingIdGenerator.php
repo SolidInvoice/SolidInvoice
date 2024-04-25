@@ -15,6 +15,8 @@ use JsonException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator\IdGeneratorInterface;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\DependencyInjection\Attribute\TaggedLocator;
 use Symfony\Component\DependencyInjection\ServiceLocator;
@@ -37,14 +39,20 @@ final class BillingIdGenerator
      */
     public function generate(object $entity, array $options = [], ?string $strategy = null): string
     {
-        $strategy ??= $this->config->get('invoice/id_generation/strategy');
+        $settingSection = match (true) {
+            $entity instanceof Invoice => 'invoice',
+            $entity instanceof Quote => 'quote',
+            default => throw new \InvalidArgumentException('Invalid entity type'),
+        };
+
+        $strategy ??= $this->config->get($settingSection . '/id_generation/strategy');
         $invoiceId = $this->generators->get($strategy)->generate($entity, $options);
 
         return sprintf(
             '%s%s%s',
-            $this->config->get('invoice/id_generation/prefix') ?? '',
+            $this->config->get($settingSection . '/id_generation/prefix') ?? '',
             $invoiceId,
-            $this->config->get('invoice/id_generation/suffix') ?? ''
+            $this->config->get($settingSection . '/id_generation/suffix') ?? ''
         );
     }
 }
