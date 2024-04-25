@@ -89,6 +89,35 @@
                                     {{ block('form_discount') is defined ? block('form_discount') }}
                                 </div>
                             </div>
+
+                            <div class="row mb-4">
+                                <div class="col-6"{{ stimulus_controller('billing-id') }}>
+                                    <span {{ stimulus_target('billing-id', 'info') }}>
+                                        <span class="h5">
+                                            {{ 'Invoice #'|trans }}<span {{ stimulus_target('billing-id', 'value') }}>{{ form.invoiceId.vars.data }}</span>
+                                        </span>
+                                        {% if editInvoiceId is not defined or editInvoiceId is not same as(false) %}
+                                            <a href="#" {{ stimulus_action('billing-id', 'edit') }}>{{ icon('pencil') }}</a>
+                                        {% endif %}
+                                    </span>
+
+                                    <div class="d-none" {{ stimulus_target('billing-id', 'form') }}>
+
+                                        {{ form_label(form.invoiceId) }}
+                                        <div class="input-group mb-3">
+                                            {{ form_widget(form.invoiceId) }}
+                                            <div class="input-group-append">
+                                                <button class="btn btn-outline-secondary" type="button" {{ stimulus_action('billing-id', 'save') }} title="{{ 'Save'|trans }}" rel="tooltip">
+                                                    {{ icon('save') }}
+                                                </button>
+                                                <button class="btn btn-outline-secondary" type="button" {{ stimulus_action('billing-id', 'cancel') }} title="{{ 'Cancel'|trans }}" rel="tooltip">
+                                                    {{ icon('cancel') }}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div id="invoice-items">

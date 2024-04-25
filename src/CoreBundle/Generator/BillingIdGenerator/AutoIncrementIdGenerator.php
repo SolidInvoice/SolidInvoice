@@ -30,7 +30,17 @@ final class AutoIncrementIdGenerator implements IdGeneratorInterface
     ) {
     }
 
-    public function generate(object $entity, string $field): string
+    public static function getName(): string
+    {
+        return 'auto_increment';
+    }
+
+    public function getConfigurationFormType(): ?string
+    {
+        return null;
+    }
+
+    public function generate(object $entity, array $options): string
     {
         $em = $this->registry->getManagerForClass($entity::class);
         assert($em instanceof EntityManager);
@@ -44,7 +54,7 @@ final class AutoIncrementIdGenerator implements IdGeneratorInterface
             $lastId = $this->registry
                 ->getRepository($entity::class)
                 ->createQueryBuilder('e')
-                ->select('MAX(ABS(e.' . $field . '))')
+                ->select('MAX(ABS(e.' . $options['field'] . '))')
                 ->getQuery()
                 ->getSingleScalarResult();
         } catch (NonUniqueResultException|NoResultException) {

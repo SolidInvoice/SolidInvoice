@@ -15,8 +15,12 @@ namespace SolidInvoice\InvoiceBundle\Form\Type;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Money\Currency;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\CoreBundle\Form\Type\BillingIdConfigurationType;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
+use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Form\EventListener\InvoiceUsersSubscriber;
 use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
@@ -33,10 +37,15 @@ class InvoiceType extends AbstractType
 {
     public function __construct(
         private readonly SystemConfig $systemConfig,
-        private readonly ManagerRegistry $registry
+        private readonly ManagerRegistry $registry,
+        private readonly BillingIdGenerator $billingIdGenerator,
     ) {
     }
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
@@ -75,6 +84,10 @@ class InvoiceType extends AbstractType
                 ],
             ]
         );
+
+        $data = $options['data']?->getInvoiceId() ?: $this->billingIdGenerator->generate($options['data'] ?? new Invoice(), ['field' => 'invoiceId']);
+        $builder->add('invoiceId', null, ['data' => $data]);
+        $builder->add('foo', BillingIdConfigurationType::class, ['mapped' => false]);
 
         $builder->add('terms');
         $builder->add('notes', null, ['help' => 'Notes will not be visible to the client']);

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\DependencyInjection;
 
+use SolidInvoice\CoreBundle\Generator\BillingIdGenerator\IdGeneratorInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
@@ -29,5 +30,9 @@ class SolidInvoiceCoreExtension extends Extension
     {
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->import('services/*.php');
+
+        $container->registerForAutoconfiguration(IdGeneratorInterface::class)
+            ->addTag(IdGeneratorInterface::class)
+        ;
     }
 }

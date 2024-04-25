@@ -70,7 +70,7 @@ class Invoice extends BaseInvoice
     private ?UuidInterface $id = null;
 
     #[ORM\Column(name: 'invoice_id', type: Types::STRING, length: 255)]
-    private string $invoiceId;
+    private string $invoiceId = '';
 
     #[ORM\Column(name: 'uuid', type: UuidType::NAME, length: 36)]
     #[Serialize\Groups(['invoice_api', 'client_api'])]
