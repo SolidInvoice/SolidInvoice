@@ -66,7 +66,7 @@ abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandl
             ($isRecurring ? $this->recurringInvoiceStateMachine : $this->invoiceStateMachine)->apply($data, Graph::TRANSITION_NEW);
         }
 
-        if (Graph::STATUS_PENDING === $action) {
+        if (Graph::STATUS_PENDING === $action || 'publish' === $action) {
             ($isRecurring ? $this->recurringInvoiceStateMachine : $this->invoiceStateMachine)->apply($data, $isRecurring ? Graph::TRANSITION_ACTIVATE : Graph::TRANSITION_ACCEPT);
         }
 

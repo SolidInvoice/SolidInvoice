@@ -35,7 +35,10 @@ class WorkFlowSubscriber implements EventSubscriberInterface
     ) {
     }
 
-    public static function getSubscribedEvents()
+    /**
+     * @return array<string, string>
+     */
+    public static function getSubscribedEvents(): array
     {
         return [
             'workflow.invoice.entered' => 'onWorkflowTransitionApplied',
