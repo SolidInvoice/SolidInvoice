@@ -16,8 +16,8 @@ use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\SettingsBundle\SystemConfig;
-use stdClass;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 
 /**
@@ -67,7 +67,7 @@ final class BillingIdGeneratorTest extends TestCase
             $systemConfig,
         );
 
-        self::assertSame('10', $generator->generate(new stdClass()));
+        self::assertSame('10', $generator->generate(new Invoice()));
     }
 
     /**
@@ -111,7 +111,7 @@ final class BillingIdGeneratorTest extends TestCase
             $systemConfig,
         );
 
-        self::assertSame('100', $generator->generate(new stdClass(), [], 'random_number'));
+        self::assertSame('100', $generator->generate(new Invoice(), [], 'random_number'));
     }
 
     public function testGenerateWithPrefixAndSuffix(): void
@@ -151,6 +151,6 @@ final class BillingIdGeneratorTest extends TestCase
             $systemConfig,
         );
 
-        self::assertSame('INV-10-00', $generator->generate(new stdClass()));
+        self::assertSame('INV-10-00', $generator->generate(new Invoice()));
     }
 }

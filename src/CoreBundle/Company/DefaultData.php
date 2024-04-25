@@ -72,7 +72,7 @@ final class DefaultData
             ['setting_key' => 'invoice/email_subject', 'setting_value' => 'New Invoice - #{id}', 'description' => 'To include the id of the invoice in the subject, add the placeholder {id} where you want the id', 'field_type' => TextType::class],
             ['setting_key' => 'invoice/id_generation/strategy', 'setting_value' => 'auto_increment', 'description' => '', 'field_type' => BillingIdConfigurationType::class],
             ['setting_key' => 'invoice/id_generation/id_prefix', 'setting_value' => '', 'description' => 'Example: INV-', 'field_type' => TextType::class],
-            ['setting_key' => 'invoice/id_generation/id_suffix', 'setting_value' => '', 'description' => 'Example: INV-', 'field_type' => TextType::class],
+            ['setting_key' => 'invoice/id_generation/id_suffix', 'setting_value' => '', 'description' => 'Example: -INV', 'field_type' => TextType::class],
 
             // Notification
             ['setting_key' => 'notification/client_create', 'setting_value' => '{"email":true,"sms":false}', 'description' => null, 'field_type' => NotificationType::class],
@@ -83,6 +83,9 @@ final class DefaultData
             // Quote
             ['setting_key' => 'quote/bcc_address', 'setting_value' => null, 'description' => 'Send BCC copy of quote to this address', 'field_type' => EmailType::class],
             ['setting_key' => 'quote/email_subject', 'setting_value' => 'New Quotation - #{id}', 'description' => 'To include the id of the quote in the subject, add the placeholder {id} where you want the id', 'field_type' => TextType::class],
+            ['setting_key' => 'quote/id_generation/strategy', 'setting_value' => 'auto_increment', 'description' => '', 'field_type' => BillingIdConfigurationType::class],
+            ['setting_key' => 'quote/id_generation/id_prefix', 'setting_value' => '', 'description' => 'Example: QUOT-', 'field_type' => TextType::class],
+            ['setting_key' => 'quote/id_generation/id_suffix', 'setting_value' => '', 'description' => 'Example: -QUOT', 'field_type' => TextType::class],
 
             // SMS
             ['setting_key' => 'sms/twilio/number', 'setting_value' => null, 'description' => null, 'field_type' => TextType::class],

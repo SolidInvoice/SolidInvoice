@@ -43,6 +43,7 @@ class InvoiceTypeTest extends FormTestCase
                 'type' => Discount::TYPE_PERCENTAGE,
             ],
             'items' => [],
+            'invoiceId' => '10',
             'notes' => $notes,
             'terms' => $terms,
             'total' => 0,
@@ -52,6 +53,7 @@ class InvoiceTypeTest extends FormTestCase
 
         $object = new Invoice();
         $object->setClient($client);
+        $object->setInvoiceId('10');
         $data = clone $object;
         $data->setUuid($object->getUuid());
 
@@ -77,7 +79,17 @@ class InvoiceTypeTest extends FormTestCase
             ->zeroOrMoreTimes()
             ->andReturn(new Currency('USD'));
 
-        $invoiceType = new InvoiceType($systemConfig, $this->registry, new BillingIdGenerator(new ServiceLocator([]), $systemConfig));
+        $systemConfig
+            ->shouldReceive('get')
+            ->zeroOrMoreTimes()
+            ->andReturn('random_number');
+
+        $invoiceType = new InvoiceType($systemConfig, $this->registry, new BillingIdGenerator(new ServiceLocator(['random_number' => static fn () => new class() {
+            public function generate(): string
+            {
+                return '10';
+            }
+        }]), $systemConfig));
         $itemType = new ItemType($this->registry);
 
         return [

@@ -16,11 +16,13 @@ namespace SolidInvoice\QuoteBundle\Tests\Form\Type;
 use Mockery as M;
 use Money\Currency;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
+use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Form\Type\ItemType;
 use SolidInvoice\QuoteBundle\Form\Type\QuoteType;
 use SolidInvoice\SettingsBundle\SystemConfig;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\PreloadedExtension;
 
@@ -31,6 +33,7 @@ class QuoteTypeTest extends FormTestCase
         $formData = [
             'client' => null,
             'discount' => 12,
+            'quoteId' => '10',
             'items' => [],
             'terms' => '',
             'notes' => '',
@@ -56,7 +59,17 @@ class QuoteTypeTest extends FormTestCase
             ->zeroOrMoreTimes()
             ->andReturn(new Currency('USD'));
 
-        $type = new QuoteType($systemConfig, $this->registry);
+        $systemConfig
+            ->shouldReceive('get')
+            ->zeroOrMoreTimes()
+            ->andReturn('random_number');
+
+        $type = new QuoteType($systemConfig, $this->registry, new BillingIdGenerator(new ServiceLocator(['random_number' => static fn () => new class() {
+            public function generate(): string
+            {
+                return '10';
+            }
+        }]), $systemConfig));
         $itemType = new ItemType($this->registry);
 
         return [
