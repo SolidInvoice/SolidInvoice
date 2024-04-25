@@ -18,10 +18,15 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\Migrations\AbstractMigration;
+use Ramsey\Uuid\Codec\OrderedTimeCodec;
 use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidFactory;
 use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
+use SolidInvoice\CoreBundle\Form\Type\BillingIdConfigurationType;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 final class Version20300 extends AbstractMigration implements ContainerAwareInterface
 {
@@ -152,6 +157,60 @@ final class Version20300 extends AbstractMigration implements ContainerAwareInte
 
         $userInvitations->dropPrimaryKey();
         $userInvitations->setPrimaryKey(['id']);
+
+        // Add settings to all existing companies
+        $companies = $this
+            ->connection
+            ->createQueryBuilder()
+            ->select('id')
+            ->from('companies')
+            ->executeQuery();
+
+        $codec = new OrderedTimeCodec((new UuidFactory())->getUuidBuilder());
+
+        foreach ($companies->iterateAssociative() as $company) {
+            $this
+                ->connection
+                ->insert(
+                    'app_config',
+                    [
+                        'id' => $codec->encodeBinary(Uuid::uuid1()),
+                        'company_id' => $company['id'],
+                        'setting_key' => 'invoice/id_generation/strategy',
+                        'setting_value' => 'auto_increment',
+                        'description' => '',
+                        'field_type' => BillingIdConfigurationType::class,
+                    ]
+                );
+
+            $this
+                ->connection
+                ->insert(
+                    'app_config',
+                    [
+                        'id' => $codec->encodeBinary(Uuid::uuid1()),
+                        'company_id' => $company['id'],
+                        'setting_key' => 'invoice/id_generation/id_prefix',
+                        'setting_value' => '',
+                        'description' => 'Example: INV-',
+                        'field_type' => TextType::class,
+                    ]
+                );
+
+            $this
+                ->connection
+                ->insert(
+                    'app_config',
+                    [
+                        'id' => $codec->encodeBinary(Uuid::uuid1()),
+                        'company_id' => $company['id'],
+                        'setting_key' => 'invoice/id_generation/id_suffix',
+                        'setting_value' => '',
+                        'description' => 'Example: -INV',
+                        'field_type' => TextType::class,
+                    ]
+                );
+        }
     }
 
     /**
