@@ -22,6 +22,7 @@ use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\InvoiceBundle\DataFixtures\ORM\LoadData as LoadInvoiceData;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use function assert;
+use function date;
 
 /**
  * @group functional
@@ -77,6 +78,7 @@ final class InvoiceTest extends ApiTestCase
             'client' => '/api/clients/' . $contact->getClient()->getId(),
             'balance' => 90,
             'due' => null,
+            'invoiceDate' => date('Y-m-d\T00:00:00+02:00'),
             'paidDate' => null,
             'items' => [
                 [
@@ -124,6 +126,7 @@ final class InvoiceTest extends ApiTestCase
             'client' => '/api/clients/' . $invoice->getClient()->getId(),
             'balance' => 100,
             'due' => null,
+            'invoiceDate' => date('Y-m-d\T00:00:00+02:00'),
             'paidDate' => null,
             'items' => [
                 [
@@ -179,6 +182,7 @@ final class InvoiceTest extends ApiTestCase
             'client' => '/api/clients/' . $invoice->getClient()->getId(),
             'balance' => 90,
             'due' => null,
+            'invoiceDate' => date('Y-m-d\T00:00:00+02:00'),
             'paidDate' => null,
             'items' => [
                 [

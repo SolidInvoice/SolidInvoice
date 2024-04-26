@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Form\Handler;
 
+use DateTimeImmutable;
 use Doctrine\ORM\Exception\NotSupported;
 use Mockery as M;
 use Money\Currency;
@@ -156,6 +157,7 @@ final class InvoiceCreateHandlerTest extends FormHandlerTestCase
                     'type' => 'percentage',
                 ],
                 'invoiceId' => '10',
+                'invoiceDate' => new DateTimeImmutable(),
                 'client' => $this->client->getId()->toString(),
             ],
         ];

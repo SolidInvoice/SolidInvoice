@@ -17,6 +17,7 @@ use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
 use Ramsey\Uuid\Codec\OrderedTimeCodec;
 use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
@@ -31,6 +32,34 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 final class Version20300 extends AbstractMigration implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
+
+    public function preUp(Schema $schema): void
+    {
+        $this
+            ->connection
+            ->update('client_credit', ['value_amount' => 0], ['value_amount' => null]);
+        $this
+            ->connection
+            ->update('invoices', ['discount_valueMoney_amount' => 0], ['discount_valueMoney_amount' => null]);
+        $this
+            ->connection
+            ->update('quotes', ['discount_valueMoney_amount' => 0], ['discount_valueMoney_amount' => null]);
+        $this
+            ->connection
+            ->update('recurring_invoices', ['discount_valueMoney_amount' => 0], ['discount_valueMoney_amount' => null]);
+
+        $this
+            ->connection
+            ->delete('invoice_contact', ['company_id' => null]);
+
+        $this
+            ->connection
+            ->delete('quote_contact', ['company_id' => null]);
+
+        $this
+            ->connection
+            ->delete('recurringinvoice_contact', ['company_id' => null]);
+    }
 
     public function up(Schema $schema): void
     {
@@ -136,13 +165,13 @@ final class Version20300 extends AbstractMigration implements ContainerAwareInte
         $invoices->addUniqueIndex(['quote_id']);
         $invoices->addIndex(['quote_id']);
 
-        $recurringInvoiceContact->setPrimaryKey(['recurringinvoice_id', 'contact_id']);
+        //$recurringInvoiceContact->setPrimaryKey(['recurringinvoice_id', 'contact_id']);
         $recurringInvoiceContact->addForeignKeyConstraint('companies', ['company_id'], ['id']);
 
+        //$invoiceContact->setPrimaryKey(['invoice_id', 'contact_id', 'company_id']);
         $invoiceContact->addForeignKeyConstraint('companies', ['company_id'], ['id']);
-        $invoiceContact->setPrimaryKey(['invoice_id', 'contact_id']);
 
-        $quoteContact->setPrimaryKey(['quote_id', 'contact_id']);
+        //$quoteContact->setPrimaryKey(['quote_id', 'contact_id', 'company_id']);
         $quoteContact->addForeignKeyConstraint('companies', ['company_id'], ['id']);
 
         $users->addUniqueIndex(['email']);
@@ -158,6 +187,11 @@ final class Version20300 extends AbstractMigration implements ContainerAwareInte
         $userInvitations->dropPrimaryKey();
         $userInvitations->setPrimaryKey(['id']);
 
+        $invoices->addColumn('invoice_date', Types::DATE_IMMUTABLE, ['notnull' => false]);
+    }
+
+    public function postUp(Schema $schema): void
+    {
         // Add settings to all existing companies
         $companies = $this
             ->connection
@@ -253,6 +287,11 @@ final class Version20300 extends AbstractMigration implements ContainerAwareInte
                     ]
                 );
         }
+
+        // Set invoice date as created date for all existing invoices
+        $this
+            ->connection
+            ->executeStatement('UPDATE invoices SET invoice_date = created');
     }
 
     /**

@@ -85,7 +85,7 @@
                                 <div class="col-6" id="client-info">
                                 </div>
 
-                                <div class="col-6 text-right" id="discount">
+                                <div class="offset-3 col-3 text-right" id="discount">
                                     {{ block('form_discount') is defined ? block('form_discount') }}
                                 </div>
                             </div>
@@ -116,6 +116,13 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="col-3">
+                                    {{ form_row(form.invoiceDate) }}
+                                </div>
+
+                                <div class="col-3">
+                                    {{ form_row(form.due) }}
                                 </div>
                             </div>
                         </div>

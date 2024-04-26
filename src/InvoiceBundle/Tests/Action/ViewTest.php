@@ -11,8 +11,10 @@
 
 namespace SolidInvoice\InvoiceBundle\Tests\Action;
 
+use DateTimeImmutable;
 use Psr\Log\NullLogger;
 use Ramsey\Uuid\Uuid;
+use ReflectionClass;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Pdf\Generator;
@@ -70,7 +72,7 @@ final class ViewTest extends KernelTestCase
                 'total' => '100.00',
                 'balance' => '100.00',
                 'baseTotal' => '100.00',
-                'created' => new \DateTimeImmutable('2021-09-01'),
+                'created' => new DateTimeImmutable('2021-09-01'),
                 'items' => [
                     (new Item())
                         ->setDescription('Test Item')
@@ -80,6 +82,7 @@ final class ViewTest extends KernelTestCase
                 'terms' => 'Test Terms',
                 'notes' => 'Test Notes',
                 'discount' => new Discount(),
+                'due' => new DateTimeImmutable('2021-09-30'),
                 'tax' => 0,
             ])
             ->object();
@@ -131,7 +134,7 @@ final class ViewTest extends KernelTestCase
                 'total' => '100.00',
                 'balance' => '100.00',
                 'baseTotal' => '100.00',
-                'created' => new \DateTimeImmutable('2021-09-01'),
+                'created' => new DateTimeImmutable('2021-09-01'),
                 'items' => [
                     (new Item())
                         ->setDescription('Test Item')
@@ -141,6 +144,7 @@ final class ViewTest extends KernelTestCase
                 'terms' => 'Test Terms',
                 'notes' => 'Test Notes',
                 'discount' => new Discount(),
+                'due' => new DateTimeImmutable('2021-09-30'),
                 'tax' => 0,
             ])
             ->object();
@@ -170,7 +174,7 @@ final class ViewTest extends KernelTestCase
      */
     public function invoiceStatusProvider(): iterable
     {
-        $reflectionClass = new \ReflectionClass(Graph::class);
+        $reflectionClass = new ReflectionClass(Graph::class);
 
         foreach ($reflectionClass->getConstants() as $constant => $value) {
             if ($value !== Graph::STATUS_NEW && str_starts_with($constant, 'STATUS_')) {

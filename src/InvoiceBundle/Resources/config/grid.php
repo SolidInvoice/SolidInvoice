@@ -65,9 +65,15 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                     'cell' => 'string',
                     'formatter' => 'discount',
                 ],
-                'created' => [
-                    'name' => 'created',
-                    'label' => 'Created',
+                'invoiceDate' => [
+                    'name' => 'invoiceDate',
+                    'label' => 'Invoice Date',
+                    'editable' => false,
+                    'cell' => 'date',
+                ],
+                'due_date' => [
+                    'name' => 'due',
+                    'label' => 'Due Date',
                     'editable' => false,
                     'cell' => 'date',
                 ],
