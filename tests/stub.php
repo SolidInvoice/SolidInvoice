@@ -23,7 +23,6 @@ interface KernelInterface
 
 namespace Symfony\Bundle\FrameworkBundle\Test;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 class KernelTestCase
@@ -34,7 +33,7 @@ class KernelTestCase
     protected static $kernel;
 
     /**
-     * @var ContainerInterface|null
+     * @var TestContainer
      */
     protected static $container;
 

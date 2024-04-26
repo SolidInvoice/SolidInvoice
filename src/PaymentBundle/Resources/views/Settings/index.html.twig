@@ -11,21 +11,6 @@
 
 {% block title %}{{ 'payment.methods.title'|trans }}{% endblock title %}
 
-{% set module = "payments-settings" %}
-
 {% block content %}
-    <section class="row">
-        <aside class="col-3">
-            <div class="card">
-                <div class="card-body">
-                    <ul class="nav nav-pills nav-sidebar flex-column sidebar-menu" role="tablist" id="payment-method-tabs">
-                    </ul>
-                </div>
-            </div>
-        </aside>
-        <section class="col-9">
-            <div id="payment-method-settings">
-            </div>
-        </section>
-    </section>
+    <twig:PaymentMethods />
 {% endblock %}

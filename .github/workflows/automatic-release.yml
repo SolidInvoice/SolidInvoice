@@ -30,10 +30,10 @@ jobs:
             uploads.github.com:443
 
       - name: Checkout
-        uses: "actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633"
+        uses: "actions/checkout@1d96c772d19495a3b5c517cd2bc0cb401ea0529f"
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@8872c784b04a1420e81191df5d64fbd59d3d3033
+        uses: shivammathur/setup-php@efffd0e4f2504f936fcfe3b69293d31ce0e2fd7a
         with:
           php-version: 8.3
           extensions: intl, gd, opcache, mysql, pdo_mysql, soap, zip, :xdebug
@@ -47,7 +47,7 @@ jobs:
         uses: docker/setup-qemu-action@68827325e0b33c7199eb31dd4e31fbe9023e06e3
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@f95db51fddba0c2d1ec667646a06c2ce06100226
+        uses: docker/setup-buildx-action@d70bba72b1f3fd22344832f00baa16ece964efeb
 
       - name: Install jq
         run: sudo apt-get install jq

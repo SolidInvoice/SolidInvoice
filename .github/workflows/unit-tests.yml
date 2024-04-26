@@ -68,7 +68,7 @@ jobs:
             54.185.253.63:443
 
       - name: Checkout
-        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
+        uses: actions/checkout@1d96c772d19495a3b5c517cd2bc0cb401ea0529f
 
       - uses: haya14busa/action-cond@94f77f7a80cd666cb3155084e428254fea4281fd
         id: coverage_driver
@@ -78,7 +78,7 @@ jobs:
           if_false: none
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@8872c784b04a1420e81191df5d64fbd59d3d3033
+        uses: shivammathur/setup-php@efffd0e4f2504f936fcfe3b69293d31ce0e2fd7a
         with:
           php-version: ${{ matrix.php }}
           ini-values: date.timezone=Africa/Johannesburg, opcache.enable=1, opcache.enable_cli=1, opcache.memory_consumption=256, opcache.max_accelerated_files=32531, opcache.interned_strings_buffer=8, opcache.validate_timestamps=0, opcache.save_comments=1, opcache.fast_shutdown=0, memory_limit=-1

@@ -1,0 +1,48 @@
+<div {{ attributes }}>
+    {% include "@SolidInvoiceCore/flash.html.twig" %}
+    <section class="row">
+        <aside class="col-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <div class="dropdown">
+                            <a href="#" class="btn btn-outline-success dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                                {{ icon('plus-circle') }} Add Payment Method
+                            </a>
+                            <div class="dropdown-menu">
+                                {% for method in availablePaymentMethods %}
+                                        <a class="dropdown-item" href="?method={{ method }}">{{ method|humanize|title }}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="nav nav-pills nav-sidebar flex-column sidebar-menu" role="tablist">
+                        <li class="nav-header nav-item first">
+                            <span> <p>Available Payment Methods</p></span>
+                        </li>
+                        {% for method in paymentMethods %}
+                            <li class="nav-item">
+                                <a href="?method={{ method.gatewayName }}" aria-controls="{{ method.gatewayName }}" data-method="{{ method.gatewayName }}" class="nav-link{{ method.gatewayName is same as(this.method) ? ' active' }}">
+                                    {% if method.isEnabled == 'enabled' %}
+                                        {{ icon('check-circle', ['text-success']) }}
+                                    {% else %}
+                                        {{ icon('times-circle') }}
+                                    {% endif %}
+
+                                    <span class="icon">
+                                        {{ method.name }}
+                                    </span>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </aside>
+        <section class="col-9">
+            {% if this.method is not empty %}
+                <twig:PaymentSettings method="{{ this.method }}" />
+            {% endif %}
+        </section>
+    </section>
+</div>

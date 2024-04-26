@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class Index
 {
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Template
     {
         return new Template('@SolidInvoicePayment/Default/index.html.twig');
     }

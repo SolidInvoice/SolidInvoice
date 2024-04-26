@@ -36,6 +36,7 @@ class Payex extends AbstractType
             'encryption_key',
             PasswordType::class,
             [
+                'always_empty' => false,
                 'constraints' => new NotBlank(),
             ]
         );
@@ -49,7 +50,7 @@ class Payex extends AbstractType
         );
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'payex';
     }

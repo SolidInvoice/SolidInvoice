@@ -1,0 +1,103 @@
+<html><body>
+<div id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="PaymentMethods" data-live-url-value="/_components/PaymentMethods" data-live-query-mapping-value='{"method":{"name":"method"}}' data-live-props-value='{"method":"bank_transfer","@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"RLZYvYRIxJ3KZ5OAefmFfoZhWJMFhJqIkd3EOgpyov4="}' data-live-csrf-value="">
+    
+    <section class="row">
+        <aside class="col-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <div class="dropdown">
+                            <a href="#" class="btn btn-outline-success dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                                <i class="fa fa-plus-circle"></i> Add Payment Method
+                            </a>
+                            <div class="dropdown-menu">
+                                                                        <a class="dropdown-item" href="?method=custom">Custom</a>
+                                                                        <a class="dropdown-item" href="?method=cash">Cash</a>
+                                                                        <a class="dropdown-item" href="?method=bank_transfer">Bank Transfer</a>
+                                                                        <a class="dropdown-item" href="?method=paypal_express_checkout">Paypal Express Checkout</a>
+                                                                        <a class="dropdown-item" href="?method=paypal_pro_checkout">Paypal Pro Checkout</a>
+                                                                        <a class="dropdown-item" href="?method=stripe_checkout">Stripe Checkout</a>
+                                                                        <a class="dropdown-item" href="?method=stripe_js">Stripe Js</a>
+                                                                        <a class="dropdown-item" href="?method=klarna_invoice">Klarna Invoice</a>
+                                                                        <a class="dropdown-item" href="?method=klarna_checkout">Klarna Checkout</a>
+                                                                        <a class="dropdown-item" href="?method=be2bill_offsite">Be2Bill Offsite</a>
+                                                                        <a class="dropdown-item" href="?method=be2bill_direct">Be2Bill Direct</a>
+                                                                        <a class="dropdown-item" href="?method=authorize_net_aim">Authorize Net Aim</a>
+                                                                        <a class="dropdown-item" href="?method=payex">Payex</a>
+                                                            </div>
+                        </div>
+                    </div>
+                    <ul class="nav nav-pills nav-sidebar flex-column sidebar-menu" role="tablist">
+                        <li class="nav-header nav-item first">
+                            <span> <p>Available Payment Methods</p></span>
+                        </li>
+                                                    <li class="nav-item">
+                                <a href="?method=bank_transfer" aria-controls="bank_transfer" data-method="bank_transfer" class="nav-link active">
+                                                                            <i class="fa fa-check-circle text-success"></i>
+                                    
+                                    <span class="icon">
+                                        Bank Transfer
+                                    </span>
+                                </a>
+                            </li>
+                                                    <li class="nav-item">
+                                <a href="?method=cash" aria-controls="cash" data-method="cash" class="nav-link">
+                                                                            <i class="fa fa-check-circle text-success"></i>
+                                    
+                                    <span class="icon">
+                                        Cash
+                                    </span>
+                                </a>
+                            </li>
+                                                    <li class="nav-item">
+                                <a href="?method=credit" aria-controls="credit" data-method="credit" class="nav-link">
+                                                                            <i class="fa fa-check-circle text-success"></i>
+                                    
+                                    <span class="icon">
+                                        Credit
+                                    </span>
+                                </a>
+                            </li>
+                                            </ul>
+                </div>
+            </div>
+        </aside>
+        <section class="col-9">
+                            <div data-controller="live" data-live-name-value="PaymentSettings" data-live-url-value="/_components/PaymentSettings" id="live-1079301195-0" data-live-query-mapping-value='{"method":{"name":"method"}}' data-live-fingerprint-value="UUvG2xGimEs/YVpJfVx6AdOM3hBdb0zuBpO9l6BTToo=" data-live-props-value='{"method":"bank_transfer","formName":"payment_methods","payment_methods":{"name":"Bank Transfer","enabled":"1","_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"live-1079301195-0"},"@checksum":"gsU+ly2bfcMlGIiuwphXZ\/YrJtp+qs0j6dJe4U1FXgM="}' data-live-csrf-value="">
+    <div class="card">
+        <div class="card-header with-border">
+            <h3 class="card-title">
+                Bank Transfer
+            </h3>
+        </div>
+
+        <div class="card-body">
+            <form name="payment_methods" method="post" data-model="on(change)|*" data-action="live#action:prevent" data-live-action-param="save">
+                <div id="payment_methods" data-model="on(change)|*">
+<div class="form-group">                
+                                <label class="control-label required required" for="payment_methods_name">Name</label><input type="text" id="payment_methods_name" name="payment_methods[name]" data-required="required" maxlength="125" class="form-control" value="Bank Transfer">
+</div>
+<div class="form-group"><div class="custom-control custom-switch">        <input type="checkbox" id="payment_methods_enabled" name="payment_methods[enabled]" class="custom-control-input" value="1" checked>
+        <label class="switch-custom custom-control-label" for="payment_methods_enabled">Enabled</label>
+</div></div>
+<input type="hidden" id="payment_methods__token" name="payment_methods[_token]">
+</div>
+
+                <div class="form-group">
+                    <button data-loading="addAttribute(disabled)" type="submit" class="btn-success btn">
+                        <i class="fa fa-save"></i> Save
+                    </button>
+
+                                            <button data-loading="addAttribute(disabled)" type="button" class="btn-danger btn float-right" data-action="live#action" data-live-action-param="delete">
+                            <i class="fa fa-trash"></i> Delete
+                        </button>
+                                    </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+                    </section>
+    </section>
+</div>
+</body></html>

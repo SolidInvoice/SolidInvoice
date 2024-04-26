@@ -22,14 +22,6 @@
     {%- endif -%}
 {%- endblock form_help %}
 
-{% block checkbox_widget -%}
-    {{ parent() }}
-
-    {% if help is defined and help is not empty %}
-        <span class="help-{{ help_type }}"><small>{{ help|trans|nl2br }}</small></span>
-    {% endif %}
-{%- endblock checkbox_widget %}
-
 {% block notification_widget -%}
     <strong>{{ label|default(name)|humanize|title }}</strong>
     {% if help is defined and help is not empty %}

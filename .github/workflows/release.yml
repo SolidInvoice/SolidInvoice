@@ -24,15 +24,15 @@ jobs:
         with:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
 
-      - uses: FranzDiebold/github-env-vars-action@5be1a823971b42aea2115f6d742484ab9a314bb6
+      - uses: FranzDiebold/github-env-vars-action@1791216cd180e6578dd1d67fb8d2852b883a5f53
 
       - name: Checkout code
-        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
+        uses: actions/checkout@1d96c772d19495a3b5c517cd2bc0cb401ea0529f
         with:
          path: solidinvoice
 
       - name: Install PHP
-        uses: shivammathur/setup-php@8872c784b04a1420e81191df5d64fbd59d3d3033
+        uses: shivammathur/setup-php@efffd0e4f2504f936fcfe3b69293d31ce0e2fd7a
         with:
           coverage: none
           extensions: curl, gd, intl, opcache, json, openssl, pdo, soap, xsl, :xdebug

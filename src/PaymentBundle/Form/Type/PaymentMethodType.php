@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\PaymentBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -28,12 +28,12 @@ class PaymentMethodType extends AbstractType
     {
         $builder->add('name');
 
-        $builder->add('enabled', null, ['required' => false, 'label_attr' => ['class' => 'switch-custom']]);
+        $builder->add('enabled', CheckboxType::class, ['required' => false, 'label_attr' => ['class' => 'switch-custom']]);
 
         if (false === $options['internal']) {
             $builder->add(
                 'internal',
-                null,
+                CheckboxType::class,
                 [
                     'label_attr' => ['class' => 'switch-custom'],
                     'label' => 'payment.form.label.internal',
@@ -47,16 +47,6 @@ class PaymentMethodType extends AbstractType
         if (null !== $options['config']) {
             $builder->add('config', $options['config']);
         }
-
-        $builder->add(
-            'save',
-            SubmitType::class,
-            [
-                'attr' => [
-                    'class' => 'btn-success',
-                ],
-            ]
-        );
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -80,7 +70,7 @@ class PaymentMethodType extends AbstractType
         );
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'payment_methods';
     }

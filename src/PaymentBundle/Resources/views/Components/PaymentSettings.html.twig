@@ -1,0 +1,32 @@
+<div {{ attributes }}>
+    <div class="card">
+        <div class="card-header with-border">
+            <h3 class="card-title">
+                {{ paymentMethod.name|default('Add New ' ~ this.method|humanize|title ~ ' Payment Method') }}
+            </h3>
+        </div>
+
+        <div class="card-body">
+            {{ form_start(form, {
+                attr: {
+                    'data-action': 'live#action:prevent',
+                    'data-live-action-param': 'save'
+                }
+            }) }}
+                {{ form_widget(form) }}
+
+                <div class="form-group">
+                    <button data-loading="addAttribute(disabled)" type="submit" class="btn-success btn">
+                        {{ icon('save') }} Save
+                    </button>
+
+                    {% if paymentMethod.id is not empty %}
+                        <button data-loading="addAttribute(disabled)" type="button" class="btn-danger btn float-right" data-action="live#action" data-live-action-param="delete">
+                            {{ icon('trash') }} Delete
+                        </button>
+                    {% endif %}
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>

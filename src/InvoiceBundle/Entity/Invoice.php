@@ -331,4 +331,11 @@ class Invoice extends BaseInvoice
     {
         $this->invoiceId = $invoiceId;
     }
+
+    public function setId(UuidInterface $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 }

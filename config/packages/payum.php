@@ -46,6 +46,11 @@ return static function (PayumConfig $config, PaymentConfig $paymentConfig, Conta
 
     $paymentConfig
         ->gateways()
+        ->name('custom')
+        ->factory('offline');
+
+    $paymentConfig
+        ->gateways()
         ->name('cash')
         ->factory('offline');
 

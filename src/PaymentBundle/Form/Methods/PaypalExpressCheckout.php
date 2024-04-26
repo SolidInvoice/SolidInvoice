@@ -37,6 +37,7 @@ class PaypalExpressCheckout extends AbstractType
             PasswordType::class,
             [
                 // 'help' => 'payment.settings.password.hint',
+                'always_empty' => false,
                 'constraints' => new NotBlank(), // @TODO: This constraint should only be added when saving for the first time
             ]
         );
@@ -58,7 +59,7 @@ class PaypalExpressCheckout extends AbstractType
         );
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'paypal_express_checkout';
     }

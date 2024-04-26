@@ -51,7 +51,6 @@ return static function (FrameworkConfig $config): void {
         ->from([
             InvoiceGraph::STATUS_NEW,
             InvoiceGraph::STATUS_DRAFT,
-            InvoiceGraph::STATUS_OVERDUE,
         ])
         ->to([InvoiceGraph::STATUS_PENDING]);
 
@@ -220,6 +219,15 @@ return static function (FrameworkConfig $config): void {
     $quoteWorkflow
         ->transition()
         ->name(QuoteGraph::TRANSITION_SEND)
+        ->from([
+            QuoteGraph::STATUS_NEW,
+            QuoteGraph::STATUS_DRAFT,
+        ])
+        ->to([QuoteGraph::STATUS_PENDING]);
+
+    $quoteWorkflow
+        ->transition()
+        ->name(QuoteGraph::TRANSITION_PUBLISH)
         ->from([
             QuoteGraph::STATUS_NEW,
             QuoteGraph::STATUS_DRAFT,
