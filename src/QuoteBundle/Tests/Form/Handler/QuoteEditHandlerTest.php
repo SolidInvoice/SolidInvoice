@@ -64,6 +64,7 @@ final class QuoteEditHandlerTest extends FormHandlerTestCase
         $discount->setType(Discount::TYPE_PERCENTAGE);
         $discount->setValue(1);
         $this->quote->setDiscount($discount);
+        $this->quote->setQuoteId('10');
 
         $this->em->persist($client);
         $this->em->persist($this->quote);
@@ -155,6 +156,7 @@ final class QuoteEditHandlerTest extends FormHandlerTestCase
                     'type' => Discount::TYPE_PERCENTAGE,
                 ],
                 'client' => $this->quote->getClient()->getId()->toString(),
+                'quoteId' => '10',
             ],
             'save' => 'pending',
         ];

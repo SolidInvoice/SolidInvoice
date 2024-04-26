@@ -69,6 +69,7 @@ final class InvoiceEditHandlerTest extends FormHandlerTestCase
         $discount->setValue(10);
         $this->invoice->setDiscount($discount);
         $this->invoice->setBalance(1000);
+        $this->invoice->setInvoiceId('10');
 
         $this->em->persist($this->invoice);
         $this->em->flush();
@@ -162,6 +163,7 @@ final class InvoiceEditHandlerTest extends FormHandlerTestCase
                     'type' => Discount::TYPE_PERCENTAGE,
                 ],
                 'client' => $this->client,
+                'invoiceId' => '10',
             ],
             'save' => 'pending',
         ];
