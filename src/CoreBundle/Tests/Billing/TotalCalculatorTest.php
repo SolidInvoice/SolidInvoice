@@ -19,7 +19,6 @@ use Doctrine\ORM\Exception\NotSupported;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\CoreBundle\Entity\Discount;
@@ -32,11 +31,14 @@ use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Model\Status;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use stdClass;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Zenstruck\Foundry\Test\Factories;
 
-class TotalCalculatorTest extends TestCase
+class TotalCalculatorTest extends KernelTestCase
 {
     use DoctrineTestTrait;
     use MockeryPHPUnitIntegration;
+    use Factories;
 
     public function testOnlyAcceptsQuotesOrInvoices(): void
     {
