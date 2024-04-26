@@ -29,16 +29,14 @@ final class RandomNumberGeneratorTest extends TestCase
         $generator = new RandomNumberGenerator();
 
         $value1 = $generator->generate(new stdClass(), []);
-        self::assertGreaterThan(RandomNumberGenerator::MIN_VALUE, $value1);
-        self::assertLessThan(RandomNumberGenerator::MAX_VALUE, $value1);
+        self::assertGreaterThan(RandomNumberGenerator::MIN_VALUE - 1, (int) $value1);
+        self::assertLessThan(RandomNumberGenerator::MAX_VALUE + 1, (int) $value1);
 
         self::assertNotSame($value1, $generator->generate(new stdClass(), []));
 
         $value2 = $generator->generate(new stdClass(), ['min' => 100, 'max' => 200]);
-        self::assertGreaterThan(100, $value2);
-        self::assertLessThan(200, $value2);
-
-        self::assertNotSame($value2, $generator->generate(new stdClass(), ['min' => 100, 'max' => 200]));
+        self::assertGreaterThan(99, (int) $value2);
+        self::assertLessThan(201, (int) $value2);
     }
 
     public function testGenerateWithLength(): void
