@@ -27,12 +27,9 @@ use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\PreloadedExtension;
-use Zenstruck\Foundry\Test\Factories;
 
 class InvoiceTypeTest extends FormTestCase
 {
-    use Factories;
-
     public function testSubmit(): void
     {
         $notes = $this->faker->text;
