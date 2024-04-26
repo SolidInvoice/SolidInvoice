@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Tests\Form\Handler;
 
 use Brick\Math\Exception\MathException;
+use DateTimeImmutable;
 use Doctrine\ORM\Exception\NotSupported;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
@@ -164,6 +165,7 @@ final class InvoiceEditHandlerTest extends FormHandlerTestCase
                 ],
                 'client' => $this->client,
                 'invoiceId' => '10',
+                'invoiceDate' => new DateTimeImmutable(),
             ],
             'save' => 'pending',
         ];

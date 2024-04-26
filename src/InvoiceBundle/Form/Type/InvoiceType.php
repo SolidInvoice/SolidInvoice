@@ -91,6 +91,8 @@ class InvoiceType extends AbstractType
         $builder->add('total', HiddenMoneyType::class, ['currency' => $options['currency']]);
         $builder->add('baseTotal', HiddenMoneyType::class, ['currency' => $options['currency']]);
         $builder->add('tax', HiddenMoneyType::class, ['currency' => $options['currency']]);
+        $builder->add('invoiceDate', null, ['widget' => 'single_text']);
+        $builder->add('due', null, ['widget' => 'single_text', 'label' => 'Due Date', 'required' => false]);
 
         if (array_key_exists('data', $options) && $options['data'] instanceof Invoice) {
             $builder->addEventSubscriber(new InvoiceUsersSubscriber($builder, $options['data'], $this->registry));

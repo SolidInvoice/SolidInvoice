@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Form\Type;
 
+use DateTimeImmutable;
 use Mockery as M;
 use Money\Currency;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
@@ -48,6 +49,7 @@ class InvoiceTypeTest extends FormTestCase
             'terms' => $terms,
             'total' => 0,
             'baseTotal' => 0,
+            'invoiceDate' => new DateTimeImmutable(),
             'tax' => 0,
         ];
 

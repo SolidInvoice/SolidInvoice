@@ -18,6 +18,7 @@ use ApiPlatform\Metadata\ApiResource;
 use Brick\Math\BigInteger;
 use Brick\Math\Exception\MathException;
 use DateTime;
+use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -81,16 +82,21 @@ class Invoice extends BaseInvoice
     #[ORM\JoinColumn(name: 'client_id', referencedColumnName: 'id', nullable: false)]
     #[Assert\NotBlank]
     #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
-    protected ?Client $client = null;
+    private ?Client $client = null;
 
     #[ORM\Column(name: 'balance_amount', type: BigIntegerType::NAME)]
     #[Serialize\Groups(['invoice_api', 'client_api'])]
     private BigInteger $balance;
 
     #[ORM\Column(name: 'due', type: Types::DATE_MUTABLE, nullable: true)]
-    #[Assert\DateTime]
+    #[Assert\Type(type: DateTimeInterface::class)]
     #[Serialize\Groups(['invoice_api', 'client_api', 'create_invoice_api'])]
     private ?DateTimeInterface $due = null;
+
+    #[ORM\Column(name: 'invoice_date', type: Types::DATE_IMMUTABLE, nullable: false)]
+    #[Assert\Type(type: DateTimeInterface::class)]
+    #[Serialize\Groups(['invoice_api', 'client_api', 'create_invoice_api'])]
+    private DateTimeInterface $invoiceDate;
 
     #[ORM\Column(name: 'paid_date', type: Types::DATETIME_MUTABLE, nullable: true)]
     #[Assert\DateTime]
@@ -114,7 +120,7 @@ class Invoice extends BaseInvoice
     #[Assert\Valid]
     #[Assert\Count(min: 1, minMessage: 'You need to add at least 1 item to the Invoice')]
     #[Serialize\Groups(['invoice_api', 'client_api', 'create_invoice_api'])]
-    protected Collection $items;
+    private Collection $items;
 
     /**
      * @var Collection<int,InvoiceContact>
@@ -123,7 +129,7 @@ class Invoice extends BaseInvoice
     #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: InvoiceContact::class, cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY')]
     #[Assert\Count(min: 1, minMessage: 'You need to select at least 1 user to attach to the Invoice')]
     #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
-    protected Collection $users;
+    private Collection $users;
 
     public function __construct()
     {
@@ -133,6 +139,7 @@ class Invoice extends BaseInvoice
         $this->items = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->balance = BigInteger::zero();
+        $this->invoiceDate = new DateTimeImmutable();
 
         try {
             $this->setUuid(Uuid::uuid1());
@@ -156,12 +163,12 @@ class Invoice extends BaseInvoice
         return $this;
     }
 
-    public function getClient(): Client
+    public function getClient(): ?Client
     {
         return $this->client;
     }
 
-    public function setClient(Client $client): self
+    public function setClient(?Client $client): self
     {
         $this->client = $client;
 
@@ -188,7 +195,7 @@ class Invoice extends BaseInvoice
         return $this->due;
     }
 
-    public function setDue(DateTimeInterface $due): self
+    public function setDue(?DateTimeInterface $due): self
     {
         $this->due = $due;
         return $this;
@@ -335,6 +342,18 @@ class Invoice extends BaseInvoice
     public function setId(UuidInterface $id): self
     {
         $this->id = $id;
+
+        return $this;
+    }
+
+    public function getInvoiceDate(): DateTimeInterface
+    {
+        return $this->invoiceDate;
+    }
+
+    public function setInvoiceDate(DateTimeInterface $invoiceDate): self
+    {
+        $this->invoiceDate = $invoiceDate;
 
         return $this;
     }

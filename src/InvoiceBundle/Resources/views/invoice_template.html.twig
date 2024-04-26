@@ -87,14 +87,22 @@
                                 {% endfor %}
                             </p>
                         </div>
-                        <div class="col-sm-4 invoice-col">
+                        <div class="col-sm-2 invoice-col">
                             <dl class="dl-horizontal">
                                 <dt>{{ "invoice.title"|trans({"%id%" : ''}) }}</dt>
                                 <dd>{{ invoice.invoiceId ?? invoice.id }}</dd>
                                 <dt>{{ "invoice.total"|trans }}</dt>
                                 <dd>{{ invoice.total|formatCurrency(invoice.client.currency) }}</dd>
-                                <dt>{{ "invoice.created"|trans }}</dt>
-                                <dd>{{ invoice.created | date }}</dd>
+                            </dl>
+                        </div>
+                        <div class="col-sm-2 invoice-col">
+                            <dl class="dl-horizontal">
+                                <dt>{{ "Invoice Date"|trans }}</dt>
+                                <dd>{{ invoice.invoiceDate | date('d F Y') }}</dd>
+                                {% if invoice.due is not empty %}
+                                    <dt>{{ "Due Date"|trans }}</dt>
+                                    <dd>{{ invoice.due | date('d F Y') }}</dd>
+                                {% endif %}
                             </dl>
                         </div>
                     </div>
