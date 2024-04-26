@@ -74,6 +74,28 @@
             <small id="settings_watermark_help" class="form-text ">Display a watermark on the invoice with the status</small>
         </div>
 </div>
+<fieldset class="form-group">                
+    <div id="settings_id_generation">
+<div class="form-group">                
+            <label class="control-label" for="settings_id_generation_strategy">Strategy</label><select id="settings_id_generation_strategy" name="settings[id_generation][strategy]" class="form-control"><option value=""></option>
+<option value="auto_increment">Auto Increment</option>
+<option value="random_number" selected>Random Number</option>
+<option value="timestamp">Timestamp</option>
+<option value="ulid">Ulid</option>
+<option value="uuid">Uuid</option></select>
+</div>
+<div class="form-group">                
+            <label class="control-label" for="settings_id_generation_id_prefix">Id prefix</label><input type="text" id="settings_id_generation_id_prefix" name="settings[id_generation][id_prefix]" aria-describedby="settings_id_generation_id_prefix_help" class="form-control"><div class="alert alert-info mt-2">
+            <small id="settings_id_generation_id_prefix_help" class="form-text ">Example: INV-</small>
+        </div>
+</div>
+<div class="form-group">                
+            <label class="control-label" for="settings_id_generation_id_suffix">Id suffix</label><input type="text" id="settings_id_generation_id_suffix" name="settings[id_generation][id_suffix]" aria-describedby="settings_id_generation_id_suffix_help" class="form-control"><div class="alert alert-info mt-2">
+            <small id="settings_id_generation_id_suffix_help" class="form-text ">Example: -INV</small>
+        </div>
+</div>
+</div>
+</fieldset>
 <input type="hidden" id="settings__token" name="settings[_token]">
 </div>
                 </div>

@@ -25,11 +25,13 @@ use SolidInvoice\QuoteBundle\Model\Graph;
 use SolidInvoice\QuoteBundle\Test\Factory\QuoteFactory;
 use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Component\HttpFoundation\Request;
+use Zenstruck\Foundry\Test\Factories;
 
 final class ViewTest extends TestCase
 {
     use EnsureApplicationInstalled;
     use MatchesSnapshots;
+    use Factories;
 
     /**
      * @dataProvider quoteStatusProvider

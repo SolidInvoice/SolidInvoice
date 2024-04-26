@@ -88,6 +88,7 @@ final class SettingsTest extends LiveComponentTest
         $this->settingsComponent->set('section', 'invoice');
 
         $this->settingsComponent->set('settings.email_subject', 'invoice subject');
+        $this->settingsComponent->set('settings.id_generation.strategy', 'random_number');
         $this->settingsComponent->call('save');
 
         $setting = self::getContainer()
