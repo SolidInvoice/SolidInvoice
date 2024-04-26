@@ -25,10 +25,12 @@ use SolidInvoice\PaymentBundle\Entity\Payment;
 use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Zenstruck\Foundry\Test\Factories;
 
 final class ViewTest extends KernelTestCase
 {
     use MatchesSnapshots;
+    use Factories;
 
     /**
      * @dataProvider invoiceStatusProvider
