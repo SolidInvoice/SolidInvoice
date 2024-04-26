@@ -11,7 +11,6 @@
 
 namespace SolidInvoice\QuoteBundle\Tests\Action;
 
-use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use Ramsey\Uuid\Uuid;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
@@ -24,10 +23,11 @@ use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Model\Graph;
 use SolidInvoice\QuoteBundle\Test\Factory\QuoteFactory;
 use Spatie\Snapshots\MatchesSnapshots;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Zenstruck\Foundry\Test\Factories;
 
-final class ViewTest extends TestCase
+final class ViewTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
     use MatchesSnapshots;
