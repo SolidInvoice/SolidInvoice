@@ -42,8 +42,7 @@ class InvoiceType extends AbstractType
     }
 
     /**
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface|NotFoundExceptionInterface|\JsonException
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

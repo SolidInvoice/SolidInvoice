@@ -13,19 +13,34 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Form\Handler;
 
+use Doctrine\ORM\Exception\NotSupported;
 use Mockery as M;
 use Money\Currency;
 use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\ClientBundle\Entity\ContactType;
+use SolidInvoice\ClientBundle\Form\Type\ContactDetailType;
+use SolidInvoice\CoreBundle\Form\Type\DiscountType;
+use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
+use SolidInvoice\CoreBundle\Generator\BillingIdGenerator\IdGeneratorInterface;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Form\Handler\InvoiceCreateHandler;
+use SolidInvoice\InvoiceBundle\Form\Type\InvoiceType;
+use SolidInvoice\InvoiceBundle\Form\Type\ItemType as InvoiceItemType;
 use SolidInvoice\InvoiceBundle\Listener\WorkFlowSubscriber;
 use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidInvoice\MoneyBundle\Form\Type\CurrencyType;
+use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidWorx\FormHandler\FormRequest;
+use Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Form\FormExtensionInterface;
+use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
@@ -97,10 +112,12 @@ final class InvoiceCreateHandlerTest extends FormHandlerTestCase
 
     /**
      * @param Invoice $invoice
+     * @throws NotSupported
      */
     protected function assertOnSuccess(?Response $response, FormRequest $form, $invoice): void
     {
         self::assertSame(Graph::STATUS_DRAFT, $invoice->getStatus());
+        self::assertSame('10', $invoice->getInvoiceId());
         self::assertInstanceOf(RedirectResponse::class, $response);
         self::assertInstanceOf(FlashResponse::class, $response);
         self::assertCount(1, iterator_to_array($response->getFlash()));
@@ -138,8 +155,62 @@ final class InvoiceCreateHandlerTest extends FormHandlerTestCase
                     'value' => 20,
                     'type' => 'percentage',
                 ],
+                'invoiceId' => '10',
                 'client' => $this->client->getId()->toString(),
             ],
+        ];
+    }
+
+    /**
+     * @return array<FormExtensionInterface>
+     */
+    protected function getExtensions(): array
+    {
+        $systemConfig = M::mock(SystemConfig::class);
+
+        $systemConfig
+            ->shouldReceive('getCurrency')
+            ->zeroOrMoreTimes()
+            ->andReturn(new Currency('USD'));
+
+        $systemConfig
+            ->shouldReceive('get')
+            ->once()
+            ->with('invoice/id_generation/strategy')
+            ->andReturn('random_number');
+
+        $systemConfig
+            ->shouldReceive('get')
+            ->once()
+            ->with('invoice/id_generation/prefix')
+            ->andReturn('');
+
+        $systemConfig
+            ->shouldReceive('get')
+            ->once()
+            ->with('invoice/id_generation/suffix')
+            ->andReturn('');
+
+        $randomNumberGenerator = M::mock(IdGeneratorInterface::class);
+        $randomNumberGenerator
+            ->shouldReceive('generate')
+            ->once()
+            ->withAnyArgs()
+            ->andReturn('10');
+
+        return [
+            new PreloadedExtension(
+                [
+                    new HiddenMoneyType(),
+                    new CurrencyType('en_US'),
+                    new ContactDetailType($this->registry->getRepository(ContactType::class)),
+                    new InvoiceType($systemConfig, $this->registry, new BillingIdGenerator(new ServiceLocator(['random_number' => static fn () => $randomNumberGenerator]), $systemConfig)),
+                    new InvoiceItemType($this->registry),
+                    new DiscountType($systemConfig),
+                ],
+                []
+            ),
+            new DoctrineOrmExtension($this->registry),
         ];
     }
 }

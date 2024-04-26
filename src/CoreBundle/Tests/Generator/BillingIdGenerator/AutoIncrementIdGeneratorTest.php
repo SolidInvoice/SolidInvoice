@@ -43,19 +43,19 @@ final class AutoIncrementIdGeneratorTest extends KernelTestCase
     {
         $client = ClientFactory::new([]);
 
-        InvoiceFactory::createOne(['client' => $client]);
+        InvoiceFactory::createOne(['client' => $client, 'invoiceId' => '1']);
 
         $generator = new AutoIncrementIdGenerator(self::getContainer()->get('doctrine'));
 
         self::assertSame('2', $generator->generate(new Invoice(), ['field' => 'invoiceId']));
 
-        InvoiceFactory::createOne(['client' => $client]);
+        InvoiceFactory::createOne(['client' => $client, 'invoiceId' => '2']);
 
         self::assertSame('3', $generator->generate(new Invoice(), ['field' => 'invoiceId']));
 
-        InvoiceFactory::createMany(5, ['client' => $client]);
+        InvoiceFactory::createOne(['client' => $client, 'invoiceId' => '101']);
 
-        self::assertSame('8', $generator->generate(new Invoice(), ['field' => 'invoiceId']));
+        self::assertSame('102', $generator->generate(new Invoice(), ['field' => 'invoiceId']));
         self::assertSame('1', $generator->generate(new Quote(), ['field' => 'quoteId']));
     }
 }
