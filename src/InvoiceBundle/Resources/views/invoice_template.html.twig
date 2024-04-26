@@ -179,7 +179,7 @@
                                 </tr>
                             {% endif %}
                             {% set paid = 0 %}
-                            {% if invoice.payments is defined and invoice.payments|length > 0 and not invoice.balance.isZero %}
+                            {% if invoice.payments|length > 0 and not invoice.balance.isZero %}
                                 {% for payment in invoice.payments|filter((v) => v.status == 'captured') %}
                                     <tr>
                                         <td class="no-line"></td>
