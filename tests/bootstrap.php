@@ -53,4 +53,4 @@ if (false === (bool) $_SERVER['SOLIDINVOICE_DEBUG']) {
     $version->updateVersion(SolidInvoiceCoreBundle::VERSION);
 
     $kernel->shutdown();
-});*/
+})();*/
