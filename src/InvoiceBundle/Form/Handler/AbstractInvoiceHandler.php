@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Form\Handler;
 
+use Brick\Math\Exception\MathException;
 use Generator;
 use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
@@ -32,6 +33,7 @@ use SolidWorx\FormHandler\FormHandlerResponseInterface;
 use SolidWorx\FormHandler\FormHandlerSuccessInterface;
 use SolidWorx\FormHandler\FormRequest;
 use SolidWorx\FormHandler\Options;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormErrorIterator;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -102,6 +104,10 @@ abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandl
             ->setAllowedTypes('recurring', 'boolean');
     }
 
+    /**
+     * @param FormErrorIterator<FormError> $errors
+     * @throws MathException
+     */
     public function onFail(FormRequest $formRequest, FormErrorIterator $errors, $data = null): ?Response
     {
         $invoice = $formRequest->getOptions()->get('invoice');
