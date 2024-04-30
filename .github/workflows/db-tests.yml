@@ -171,11 +171,13 @@ jobs:
         uses: actions/checkout@1d96c772d19495a3b5c517cd2bc0cb401ea0529f
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@efffd0e4f2504f936fcfe3b69293d31ce0e2fd7a
+        uses: shivammathur/setup-php@c665c7a15b5295c2488ac8a87af9cb806cd72198
         with:
           php-version: 8.2
           ini-values: date.timezone=Africa/Johannesburg, opcache.enable=1, opcache.enable_cli=1, opcache.memory_consumption=256, opcache.max_accelerated_files=32531, opcache.interned_strings_buffer=8, opcache.validate_timestamps=0, opcache.save_comments=1, opcache.fast_shutdown=0, memory_limit=-1, zend.assertions=1
           extensions: intl, gd, opcache, ${{ matrix.db.driver }}, zip, :xdebug
+        env:
+          fail-fast: true
 
       - uses: ramsey/composer-install@v3
 
