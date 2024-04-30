@@ -13,11 +13,17 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Cloner;
 
+use Brick\Math\Exception\MathException;
 use Carbon\Carbon;
+use JsonException;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Item;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\InvoiceBundle\Exception\InvalidTransitionException;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use Traversable;
 
@@ -27,10 +33,18 @@ use Traversable;
 final class InvoiceCloner
 {
     public function __construct(
-        private readonly InvoiceManager $invoiceManager
+        private readonly InvoiceManager $invoiceManager,
+        private readonly BillingIdGenerator $billingIdGenerator,
     ) {
     }
 
+    /**
+     * @throws NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
+     * @throws JsonException
+     * @throws InvalidTransitionException
+     * @throws MathException
+     */
     public function clone(BaseInvoice $invoice): BaseInvoice
     {
         // We don't use 'clone', since cloning an invoice will clone all the item id's and nested values.
@@ -58,6 +72,9 @@ final class InvoiceCloner
             $newInvoice->setDateStart($invoice->getDateStart());
             $newInvoice->setDateEnd($invoice->getDateEnd());
             $newInvoice->setFrequency($invoice->getFrequency());
+        } elseif ($invoice instanceof Invoice) {
+            $newInvoice->setDue($invoice->getDue());
+            $newInvoice->setInvoiceId($this->billingIdGenerator->generate($newInvoice));
         }
 
         if (null !== $tax = $invoice->getTax()) {

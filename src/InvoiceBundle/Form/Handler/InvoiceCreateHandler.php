@@ -26,6 +26,7 @@ class InvoiceCreateHandler extends AbstractInvoiceHandler
         return new Template(
             '@SolidInvoiceInvoice/Default/create.html.twig',
             [
+                'invoice' => $formRequest->getOptions()->get('invoice'),
                 'form' => $formRequest->getForm()->createView(),
                 'recurring' => $formRequest->getOptions()->get('recurring'),
             ]

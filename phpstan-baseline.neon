@@ -521,26 +521,6 @@ parameters:
 			path: src/InvoiceBundle/Repository/ItemRepository.php
 
 		-
-			message: "#^Call to an undefined method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:getClient\\(\\)\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Tests/Cloner/InvoiceClonerTest.php
-
-		-
-			message: "#^Call to an undefined method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:getId\\(\\)\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Tests/Cloner/InvoiceClonerTest.php
-
-		-
-			message: "#^Call to an undefined method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:getItems\\(\\)\\.$#"
-			count: 2
-			path: src/InvoiceBundle/Tests/Cloner/InvoiceClonerTest.php
-
-		-
-			message: "#^Call to an undefined method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:getUuid\\(\\)\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Tests/Cloner/InvoiceClonerTest.php
-
-		-
 			message: "#^Method SolidInvoice\\\\MailerBundle\\\\Configurator\\\\ConfiguratorInterface\\:\\:configure\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/MailerBundle/Configurator/ConfiguratorInterface.php
@@ -579,16 +559,6 @@ parameters:
 			message: "#^Method SolidInvoice\\\\MoneyBundle\\\\Calculator\\:\\:calculateDiscount\\(\\) has parameter \\$entity with no type specified\\.$#"
 			count: 1
 			path: src/MoneyBundle/Calculator.php
-
-		-
-			message: "#^Method SolidInvoice\\\\MoneyBundle\\\\Doctrine\\\\Hydrator\\\\MoneyHydrator\\:\\:hydrateRowData\\(\\) with return type void returns false but should not return anything\\.$#"
-			count: 1
-			path: src/MoneyBundle/Doctrine/Hydrator/MoneyHydrator.php
-
-		-
-			message: "#^Class SolidInvoice\\\\MoneyBundle\\\\Form\\\\DataTransformer\\\\ModelTransformer implements generic interface Symfony\\\\Component\\\\Form\\\\DataTransformerInterface but does not specify its types\\: T, R$#"
-			count: 1
-			path: src/MoneyBundle/Form/DataTransformer/ModelTransformer.php
 
 		-
 			message: "#^Class SolidInvoice\\\\MoneyBundle\\\\Form\\\\DataTransformer\\\\ViewTransformer implements generic interface Symfony\\\\Component\\\\Form\\\\DataTransformerInterface but does not specify its types\\: T, R$#"

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Repository;
 
 use Brick\Math\BigInteger;
+use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
@@ -43,7 +44,7 @@ class InvoiceRepository extends ServiceEntityRepository
      * @throws MathException
      * @deprecated This function is deprecated, and the one in PaymentRepository should be used instead
      */
-    public function getTotalIncome(Client $client = null): BigInteger
+    public function getTotalIncome(Client $client = null): BigNumber
     {
         @trigger_error(
             'This function is deprecated, and the one in PaymentRepository should be used instead',
@@ -58,7 +59,7 @@ class InvoiceRepository extends ServiceEntityRepository
      *
      * @throws MathException
      */
-    public function getTotalByStatus(string $status, Client $client = null): BigInteger
+    public function getTotalByStatus(string $status, Client $client = null): BigNumber
     {
         $qb = $this->createQueryBuilder('i');
 
@@ -72,7 +73,7 @@ class InvoiceRepository extends ServiceEntityRepository
         }
 
         try {
-            return BigInteger::of($qb->getQuery()->getSingleResult());
+            return BigNumber::of($qb->getQuery()->getSingleResult());
         } catch (NoResultException | NonUniqueResultException) {
             return BigInteger::zero();
         }

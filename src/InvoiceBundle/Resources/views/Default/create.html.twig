@@ -7,7 +7,7 @@
  # with this source code in the file LICENSE.
  #}
 
-{% set items = form.items.vars.prototype|keys %}
+{#{% set items = form.items.vars.prototype|keys %}
 {% set formData = {} %}
 {% set module = 'invoice-create' %}
 {% set currency = form.client.vars.data ? form.client.vars.data.currency : null %}
@@ -43,11 +43,11 @@
     'fieldData': billing_fields(form),
     'formData': formData,
     'tax': taxRatesConfigured(),
-} %}
+} %}#}
 
 {% set serializationGroups = ['client_api'] %}
 
-{% form_theme form with ['@SolidInvoiceCore/Form/fields.html.twig', _self] %}
+{#{% form_theme form with ['@SolidInvoiceCore/Form/fields.html.twig', _self] %}#}
 
 {% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
@@ -59,7 +59,7 @@
     {% endif %}
 {% endblock %}
 
-{% block form_row %}
+{#{% block form_row %}
     {% if prototype is not defined %}
         <div class="form-group{% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %}">
             {{ form_label(form) }}
@@ -67,9 +67,14 @@
             {{ form_errors(form) }}
         </div>
     {% endif %}
-{% endblock %}
+{% endblock %}#}
 
 {% block content %}
+    <twig:CreateInvoice :form="form" :invoice="invoice" />
+{% endblock content %}
+
+{% block no %}
+
     {{ form_start(form, {'attr' : {'id' : 'invoice-create-form'} }) }}
 
     {{ form_errors(form) }}
@@ -86,12 +91,12 @@
                                 </div>
 
                                 <div class="offset-3 col-3 text-right" id="discount">
-                                    {{ block('form_discount') is defined ? block('form_discount') }}
+                                    {{ form_row(form.discount) }}
                                 </div>
                             </div>
 
                             <div class="row mb-4">
-                                <div class="col-6"{{ stimulus_controller('billing-id') }}>
+                                <div class="col-6" {{ stimulus_controller('billing-id') }}>
                                     <span {{ stimulus_target('billing-id', 'info') }}>
                                         <span class="h5">
                                             {{ 'Invoice #'|trans }}<span {{ stimulus_target('billing-id', 'value') }}>{{ form.invoiceId.vars.data }}</span>
@@ -192,7 +197,7 @@
 
     {{ form_rest(form) }}
     {{ form_end(form) }}
-{% endblock content %}
+{% endblock no %}
 
 {% block form_client %}
     <div id="client-select">

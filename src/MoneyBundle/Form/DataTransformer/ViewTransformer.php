@@ -13,26 +13,17 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MoneyBundle\Form\DataTransformer;
 
+use Brick\Math\BigDecimal;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
-use InvalidArgumentException;
-use Money\Currency;
-use Money\Money;
+use Brick\Math\RoundingMode;
 use Symfony\Component\Form\DataTransformerInterface;
 
 class ViewTransformer implements DataTransformerInterface
 {
-    /**
-     * @throws InvalidArgumentException
-     */
-    public function __construct(
-        private readonly Currency $currency
-    ) {
-    }
-
     /**
      * @throws DivisionByZeroException
      * @throws RoundingNecessaryException
@@ -41,11 +32,11 @@ class ViewTransformer implements DataTransformerInterface
      */
     public function transform($value): float
     {
-        if ($value instanceof Money) {
-            return BigNumber::of($value->getAmount())->toBigDecimal()->dividedBy(100, 2)->toFloat();
+        if ($value === null) {
+            return 0.0;
         }
 
-        return 0.0;
+        return BigNumber::of($value)->toBigDecimal()->dividedBy(100, 2, RoundingMode::HALF_EVEN)->toFloat();
     }
 
     /**
@@ -54,12 +45,12 @@ class ViewTransformer implements DataTransformerInterface
      * @throws MathException
      * @throws NumberFormatException
      */
-    public function reverseTransform($value): Money
+    public function reverseTransform($value): BigNumber
     {
-        if (! is_numeric($value)) {
-            $value = 0;
+        if ('' === $value || null === $value) {
+            return BigDecimal::zero();
         }
 
-        return new Money(BigNumber::of($value)->toBigDecimal()->multipliedBy(100)->toInt(), $this->currency);
+        return BigNumber::of($value)->toBigDecimal()->multipliedBy(100);
     }
 }

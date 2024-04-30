@@ -14,9 +14,10 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Form\DataTransformer;
 
 use Ramsey\Uuid\UuidInterface;
-use SolidInvoice\ClientBundle\Entity\ContactType;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
+use function is_object;
+use function method_exists;
 
 /**
  * @implements DataTransformerInterface<int, object|string>
@@ -36,7 +37,7 @@ final class EntityUuidTransformer implements DataTransformerInterface
      */
     public function transform($value): ?UuidInterface
     {
-        if ($value instanceof ContactType) {
+        if (is_object($value) && method_exists($value, 'getId')) {
             return $value->getId();
         }
 
@@ -45,10 +46,6 @@ final class EntityUuidTransformer implements DataTransformerInterface
 
     /**
      * @param object|string|null $value
-     *
-     * @return object
-     *
-     * @throws TransformationFailedException
      */
     public function reverseTransform($value): ?object
     {

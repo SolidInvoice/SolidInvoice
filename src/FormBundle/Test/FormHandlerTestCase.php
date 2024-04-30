@@ -39,7 +39,10 @@ use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
 use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\FormTypeExtensionInterface;
 use Symfony\Component\Form\PreloadedExtension;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\UX\Autocomplete\Form\AutocompleteChoiceTypeExtension;
+use Symfony\UX\Autocomplete\Form\ParentEntityAutocompleteType;
 
 abstract class FormHandlerTestCase extends BaseTestCase
 {
@@ -78,10 +81,16 @@ abstract class FormHandlerTestCase extends BaseTestCase
                     new InvoiceItemType($this->registry),
                     new QuoteItemType($this->registry),
                     new DiscountType($systemConfig),
+                    new ParentEntityAutocompleteType($this->createMock(UrlGeneratorInterface::class)),
                 ],
-                []
+                [
+                    [
+                        new AutocompleteChoiceTypeExtension(),
+                    ]
+                ]
             ),
             new DoctrineOrmExtension($this->registry),
+
         ];
     }
 
@@ -105,6 +114,7 @@ abstract class FormHandlerTestCase extends BaseTestCase
             new FormHelpExtension(),
             new MoneyExtension($systemConfig),
             new FormTypeValidatorExtension($validator),
+            new AutocompleteChoiceTypeExtension(),
         ];
     }
 }

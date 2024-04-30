@@ -173,7 +173,8 @@
     <label for="{{ form.value.vars.id }}">{{ label }}</label>
     <div class="form-group multiple-form-group input-group">
         {{ form_widget(form.value) }}
-        <div class="input-group-btn input-group-select">
+        {{ form_widget(form.type) }}
+        {#<div class="input-group-btn input-group-select">
             <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
             <span class="concept" id="discount-display">
                 {% if form.type.vars.value == 'money' %}
@@ -197,7 +198,7 @@
                 {% endfor %}
             </ul>
             {{ form_widget(form.type) }}
-        </div>
+        </div>#}
     </div>
 {% endblock discount_row %}
 
@@ -209,7 +210,7 @@
     {%- if help is not empty -%}
         {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}
     {%- endif -%}
-    <{{ element|default('div') }}{% with {attr: row_attr|merge({class: (row_attr.class|default('') ~ ' form-group')|trim})} %}{{ block('attributes') }}{% endwith %}{{ stimulus_controller('logo_upload') }}>
+    <{{ element|default('div') }}{% with {attr: row_attr|merge({class: (row_attr.class|default('') ~ ' form-group')|trim})} %}{{ block('attributes') }}{% endwith %} {{ stimulus_controller('logo_upload') }}>
     {{ app_logo(width=100, showDefault=false) }}
     {{- form_widget(form, widget_attr) -}}
     {{- form_help(form) -}}

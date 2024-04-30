@@ -15,7 +15,8 @@ namespace SolidInvoice\QuoteBundle\Entity;
 
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
-use Brick\Math\BigInteger;
+use Brick\Math\BigDecimal;
+use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -89,15 +90,15 @@ class Quote
 
     #[ORM\Column(name: 'total_amount', type: BigIntegerType::NAME)]
     #[Serialize\Groups(['quote_api', 'client_api'])]
-    private BigInteger $total;
+    private BigNumber $total;
 
     #[ORM\Column(name: 'baseTotal_amount', type: BigIntegerType::NAME)]
     #[Serialize\Groups(['quote_api', 'client_api'])]
-    private BigInteger $baseTotal;
+    private BigNumber $baseTotal;
 
     #[ORM\Column(name: 'tax_amount', type: BigIntegerType::NAME)]
     #[Serialize\Groups(['quote_api', 'client_api'])]
-    private BigInteger $tax;
+    private BigNumber $tax;
 
     #[ORM\Embedded(class: Discount::class)]
     #[Serialize\Groups(['quote_api', 'client_api', 'create_quote_api'])]
@@ -146,9 +147,9 @@ class Quote
             $this->setUuid(Uuid::uuid1());
         } catch (Exception) {
         }
-        $this->baseTotal = BigInteger::zero();
-        $this->tax = BigInteger::zero();
-        $this->total = BigInteger::zero();
+        $this->baseTotal = BigDecimal::zero();
+        $this->tax = BigDecimal::zero();
+        $this->total = BigDecimal::zero();
     }
 
     public function getId(): ?UuidInterface
@@ -227,7 +228,7 @@ class Quote
         return $this;
     }
 
-    public function getTotal(): BigInteger
+    public function getTotal(): BigNumber
     {
         return $this->total;
     }
@@ -235,14 +236,14 @@ class Quote
     /**
      * @throws MathException
      */
-    public function setTotal(BigInteger|float|int|string $total): self
+    public function setTotal(BigNumber|float|int|string $total): self
     {
-        $this->total = BigInteger::of($total);
+        $this->total = BigNumber::of($total);
 
         return $this;
     }
 
-    public function getBaseTotal(): BigInteger
+    public function getBaseTotal(): BigNumber
     {
         return $this->baseTotal;
     }
@@ -250,9 +251,9 @@ class Quote
     /**
      * @throws MathException
      */
-    public function setBaseTotal(BigInteger|float|int|string $baseTotal): self
+    public function setBaseTotal(BigNumber|float|int|string $baseTotal): self
     {
-        $this->baseTotal = BigInteger::of($baseTotal);
+        $this->baseTotal = BigNumber::of($baseTotal);
 
         return $this;
     }
@@ -324,7 +325,7 @@ class Quote
         return $this;
     }
 
-    public function getTax(): BigInteger
+    public function getTax(): BigNumber
     {
         return $this->tax;
     }
@@ -332,9 +333,9 @@ class Quote
     /**
      * @throws MathException
      */
-    public function setTax(BigInteger|float|int|string $tax): self
+    public function setTax(BigNumber|float|int|string $tax): self
     {
-        $this->tax = BigInteger::of($tax);
+        $this->tax = BigNumber::of($tax);
 
         return $this;
     }

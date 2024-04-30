@@ -19,6 +19,7 @@ use Mockery as M;
 use Money\Currency;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\ContactType;
+use SolidInvoice\ClientBundle\Form\ClientAutocompleteType;
 use SolidInvoice\ClientBundle\Form\Type\ContactDetailType;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
@@ -40,16 +41,21 @@ use SolidWorx\FormHandler\FormRequest;
 use Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Workflow\Definition;
 use Symfony\Component\Workflow\MarkingStore\MethodMarkingStore;
 use Symfony\Component\Workflow\StateMachine;
 use Symfony\Component\Workflow\Transition;
+use Symfony\UX\Autocomplete\Form\AutocompleteChoiceTypeExtension;
+use Symfony\UX\Autocomplete\Form\ParentEntityAutocompleteType;
 use function iterator_to_array;
 
 /**
@@ -209,8 +215,18 @@ final class InvoiceCreateHandlerTest extends FormHandlerTestCase
                     new InvoiceType($systemConfig, $this->registry, new BillingIdGenerator(new ServiceLocator(['random_number' => static fn () => $randomNumberGenerator]), $systemConfig)),
                     new InvoiceItemType($this->registry),
                     new DiscountType($systemConfig),
+                    new ParentEntityAutocompleteType($this->createMock(UrlGeneratorInterface::class)),
+                    new ClientAutocompleteType(),
+                    new ParentEntityAutocompleteType($this->createMock(UrlGeneratorInterface::class)),
                 ],
-                []
+                [
+                    ChoiceType::class => [
+                        new AutocompleteChoiceTypeExtension(),
+                    ],
+                    TextType::class => [
+                        new AutocompleteChoiceTypeExtension(),
+                    ],
+                ]
             ),
             new DoctrineOrmExtension($this->registry),
         ];

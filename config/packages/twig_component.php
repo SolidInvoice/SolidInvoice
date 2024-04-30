@@ -11,5 +11,6 @@ return static function (TwigComponentConfig $config): void {
         ->controllersJson(param('kernel.project_dir').'/assets/js/controllers.json')
         ->defaults('SolidInvoice\SettingsBundle\Twig\Components\\', '@SolidInvoiceSettings/Components')
         ->defaults('SolidInvoice\PaymentBundle\Twig\Components\\', '@SolidInvoicePayment/Components')
+        ->defaults('SolidInvoice\InvoiceBundle\Twig\Components\\', '@SolidInvoiceInvoice/Components')
     ;
 };

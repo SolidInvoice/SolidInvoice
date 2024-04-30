@@ -13,19 +13,30 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Message\Handler;
 
-use PHPUnit\Framework\TestCase;
+use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\ORM\Configuration;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\FilterCollection;
+use Psr\Log\NullLogger;
+use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\CoreBundle\Doctrine\Filter\CompanyFilter;
+use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\InvoiceBundle\Message\CreateInvoiceFromRecurring;
 use SolidInvoice\InvoiceBundle\Message\Handler\CreateInvoiceFromRecurringHandler;
 use SolidInvoice\InvoiceBundle\Model\Graph;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Workflow\StateMachine;
+use Zenstruck\Foundry\Test\Factories;
 use function iterator_to_array;
 
 /** @covers \SolidInvoice\InvoiceBundle\Message\Handler\CreateInvoiceFromRecurringHandler */
-final class CreateInvoiceFromRecurringHandlerTest extends TestCase
+final class CreateInvoiceFromRecurringHandlerTest extends KernelTestCase
 {
+    use Factories;
+
     public function testGetHandledMessages(): void
     {
         self::assertSame(
@@ -39,10 +50,16 @@ final class CreateInvoiceFromRecurringHandlerTest extends TestCase
     public function testHandler(): void
     {
         $recurringInvoice = new RecurringInvoice();
+        $recurringInvoice->setCompany(CompanyFactory::createOne()->object());
         $invoice = new Invoice();
+        $configuration = new Configuration();
 
         $invoiceManager = $this->createMock(InvoiceManager::class);
         $invoiceStateMachine = $this->createMock(StateMachine::class);
+        $registry = $this->createMock(Registry::class);
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+
+        $configuration->addFilter('company', CompanyFilter::class);
 
         $invoiceManager->expects(self::once())
             ->method('createFromRecurring')
@@ -57,7 +74,21 @@ final class CreateInvoiceFromRecurringHandlerTest extends TestCase
             ->method('apply')
             ->with($invoice, Graph::TRANSITION_ACCEPT);
 
-        $handler = new CreateInvoiceFromRecurringHandler($invoiceManager, $invoiceStateMachine);
-        $handler(new CreateInvoiceFromRecurring(new RecurringInvoice()));
+        $registry->expects(self::once())
+            ->method('getManager')
+            ->willReturn($entityManager);
+
+        $entityManager->expects(self::once())
+            ->method('getConfiguration')
+            ->willReturn($configuration);
+
+        $filters = new FilterCollection($entityManager);
+
+        $entityManager->expects(self::exactly(2))
+            ->method('getFilters')
+            ->willReturn($filters);
+
+        $handler = new CreateInvoiceFromRecurringHandler($invoiceManager, $invoiceStateMachine, new CompanySelector($registry), new NullLogger());
+        $handler(new CreateInvoiceFromRecurring($recurringInvoice));
     }
 }

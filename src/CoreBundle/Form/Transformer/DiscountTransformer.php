@@ -13,31 +13,42 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Form\Transformer;
 
-use Brick\Math\BigInteger;
+use Brick\Math\BigNumber;
+use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\MathException;
-use Money\Money;
+use Brick\Math\Exception\NumberFormatException;
+use Brick\Math\Exception\RoundingNecessaryException;
+use Brick\Math\RoundingMode;
 use Symfony\Component\Form\DataTransformerInterface;
 
 class DiscountTransformer implements DataTransformerInterface
 {
     /**
+     * @throws DivisionByZeroException
+     * @throws RoundingNecessaryException
      * @throws MathException
+     * @throws NumberFormatException
      */
-    public function transform($value): ?int
+    public function transform($value): float
     {
-        if ($value instanceof BigInteger) {
-            return $value->toInt();
+        if ($value === null) {
+            return 0.0;
         }
 
-        if (! $value instanceof Money) {
-            return null !== $value ? (int) $value : $value;
-        }
-
-        return ((int) $value->getAmount()) / 100;
+        return BigNumber::of($value)->toBigDecimal()->dividedBy(100, 2, RoundingMode::HALF_EVEN)->toFloat();
     }
 
-    public function reverseTransform($value): string
+    /**
+     * @throws DivisionByZeroException
+     * @throws RoundingNecessaryException
+     * @throws MathException
+     * @throws NumberFormatException
+     */
+    public function reverseTransform($value): BigNumber
     {
-        return $value;
+        return BigNumber::of($value)
+            ->toBigDecimal()
+            ->multipliedBy(100)
+        ;
     }
 }

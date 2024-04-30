@@ -11,8 +11,12 @@
 
 namespace SolidInvoice\MoneyBundle\Tests\Form\DataTransformer;
 
-use Money\Currency;
-use Money\Money;
+use Brick\Math\BigDecimal;
+use Brick\Math\BigNumber;
+use Brick\Math\Exception\DivisionByZeroException;
+use Brick\Math\Exception\MathException;
+use Brick\Math\Exception\NumberFormatException;
+use Brick\Math\Exception\RoundingNecessaryException;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\MoneyBundle\Form\DataTransformer\ViewTransformer;
 
@@ -23,12 +27,9 @@ final class ViewTransformerTest extends TestCase
 {
     private ViewTransformer $viewTransformer;
 
-    private Currency $currency;
-
     protected function setUp(): void
     {
-        $this->currency = new Currency('USD');
-        $this->viewTransformer = new ViewTransformer($this->currency);
+        $this->viewTransformer = new ViewTransformer();
     }
 
     /**
@@ -36,19 +37,19 @@ final class ViewTransformerTest extends TestCase
      */
     public function testReverseTransform(?float $value, int $expected): void
     {
-        $expectedResult = new Money($expected, $this->currency);
         $result = $this->viewTransformer->reverseTransform($value);
 
-        self::assertTrue($result->equals($expectedResult));
+        self::assertTrue($result->isEqualTo($expected));
     }
 
     /**
-     * @param Money|string|null $money
-     * @param int|float $expected
-     *
+     * @throws DivisionByZeroException
+     * @throws MathException
+     * @throws NumberFormatException
+     * @throws RoundingNecessaryException
      * @dataProvider transformDataProvider
      */
-    public function testTransformsMoneyObjectToFloat($money, $expected): void
+    public function testTransformsMoneyObjectToFloat(BigNumber|string|int|float|null $money, float | int $expected): void
     {
         $value = $this->viewTransformer->transform($money);
 
@@ -76,18 +77,19 @@ final class ViewTransformerTest extends TestCase
     }
 
     /**
-     * @return iterable<array<Money|string|float|null>>
+     * @return iterable<array<string|float|null>>
+     * @throws MathException
      */
     public function transformDataProvider(): iterable
     {
         yield [null, 0.0];
-        yield ['something else', 0.0];
-        yield [1.0, 0.0];
-        yield [new Money(1500, new Currency('USD')), 15.0];
-        yield [new Money(1000, new Currency('USD')), 10.0];
-        yield [new Money(100, new Currency('USD')), 1.0];
-        yield [new Money(10, new Currency('USD')), 0.10];
-        yield [new Money(1, new Currency('USD')), 0.01];
-        yield [new Money(0, new Currency('USD')), 0.0];
+        yield [1.0, 0.01];
+        yield ['10.0', 0.10];
+        yield [BigDecimal::of(1500), 15.0];
+        yield [BigDecimal::of(1000), 10.0];
+        yield [BigDecimal::of(100), 1.0];
+        yield [BigDecimal::of(10), 0.10];
+        yield [BigDecimal::of(1), 0.01];
+        yield [BigDecimal::of(0), 0.0];
     }
 }

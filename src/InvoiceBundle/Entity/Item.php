@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Entity;
 
 use Brick\Math\BigInteger;
+use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
+use Brick\Math\Exception\RoundingNecessaryException;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
@@ -55,12 +57,12 @@ class Item implements ItemInterface, Stringable
     #[ORM\Column(name: 'price_amount', type: BigIntegerType::NAME)]
     #[Assert\NotBlank]
     #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
-    private BigInteger $price;
+    private BigNumber $price;
 
     #[ORM\Column(name: 'qty', type: Types::FLOAT)]
     #[Assert\NotBlank]
     #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
-    private ?float $qty = null;
+    private ?float $qty = 1;
 
     #[ORM\ManyToOne(targetEntity: Invoice::class, inversedBy: 'items')]
     private ?Invoice $invoice = null;
@@ -74,7 +76,7 @@ class Item implements ItemInterface, Stringable
 
     #[ORM\Column(name: 'total_amount', type: BigIntegerType::NAME)]
     #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api'])]
-    private BigInteger $total;
+    private BigNumber $total;
 
     public function __construct()
     {
@@ -102,14 +104,14 @@ class Item implements ItemInterface, Stringable
     /**
      * @throws MathException
      */
-    public function setPrice(BigInteger|float|int|string $price): ItemInterface
+    public function setPrice(BigNumber|float|int|string $price): ItemInterface
     {
-        $this->price = BigInteger::of($price);
+        $this->price = BigNumber::of($price);
 
         return $this;
     }
 
-    public function getPrice(): BigInteger
+    public function getPrice(): BigNumber
     {
         return $this->price;
     }
@@ -145,16 +147,20 @@ class Item implements ItemInterface, Stringable
     /**
      * @throws MathException
      */
-    public function setTotal(BigInteger|float|int|string $total): ItemInterface
+    public function setTotal(BigNumber|float|int|string $total): ItemInterface
     {
-        $this->total = BigInteger::of($total);
+        $this->total = BigNumber::of($total);
 
         return $this;
     }
 
-    public function getTotal(): BigInteger
+    /**
+     * @throws MathException
+     * @throws RoundingNecessaryException
+     */
+    public function getTotal(): BigNumber
     {
-        return $this->total;
+        return $this->price->toBigDecimal()->multipliedBy($this->qty);
     }
 
     public function getTax(): ?Tax
@@ -175,7 +181,7 @@ class Item implements ItemInterface, Stringable
     #[ORM\PrePersist]
     public function updateTotal(): void
     {
-        $this->total = $this->getPrice()->multipliedBy($this->qty);
+        $this->total = $this->getPrice()->toBigDecimal()->multipliedBy($this->qty);
     }
 
     public function __toString(): string

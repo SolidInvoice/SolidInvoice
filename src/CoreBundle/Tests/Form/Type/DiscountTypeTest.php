@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Tests\Form\Type;
 
+use Brick\Math\BigDecimal;
 use Generator;
 use Mockery as M;
 use Money\Currency;
@@ -52,7 +53,7 @@ class DiscountTypeTest extends FormTestCase
 
             $object = new Discount();
             $object->setType($discountItem[0]);
-            $object->setValue($discountItem[1]);
+            $object->setValue(BigDecimal::of($discountItem[1])->multipliedBy(100));
 
             $this->assertFormData(DiscountType::class, $formData, $object);
         }

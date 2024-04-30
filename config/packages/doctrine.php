@@ -46,8 +46,7 @@ return static function (DoctrineConfig $config): void {
     $entityManagerConfig = $ormConfig->entityManager('default');
 
     $entityManagerConfig
-        ->autoMapping(true)
-        ->hydrator('money', MoneyHydrator::class);
+        ->autoMapping(true);
 
     $entityManagerConfig
         ->filter('company')

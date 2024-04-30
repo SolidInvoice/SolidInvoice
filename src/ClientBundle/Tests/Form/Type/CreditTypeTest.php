@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Tests\Form\Type;
 
-use Brick\Math\BigInteger;
+use Brick\Math\BigDecimal;
 use Brick\Math\Exception\MathException;
 use SolidInvoice\ClientBundle\Form\Type\CreditType;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
@@ -32,7 +32,7 @@ class CreditTypeTest extends FormTestCase
         ];
 
         $object = [
-            'amount' => BigInteger::of($amount * 100),
+            'amount' => BigDecimal::of($amount * 100),
         ];
 
         $this->assertFormData(CreditType::class, $formData, $object);

@@ -69,14 +69,14 @@ final class ViewTest extends KernelTestCase
             ->create([
                 'client' => $client,
                 'status' => $status,
-                'total' => '100.00',
-                'balance' => '100.00',
-                'baseTotal' => '100.00',
+                'total' => 100,
+                'balance' => 100,
+                'baseTotal' => 100,
                 'created' => new DateTimeImmutable('2021-09-01'),
                 'items' => [
                     (new Item())
                         ->setDescription('Test Item')
-                        ->setPrice('100.00')
+                        ->setPrice(100)
                         ->setQty(1),
                 ],
                 'terms' => 'Test Terms',
@@ -132,14 +132,14 @@ final class ViewTest extends KernelTestCase
             ->create([
                 'client' => $client,
                 'status' => 'paid',
-                'total' => '100.00',
-                'balance' => '100.00',
-                'baseTotal' => '100.00',
+                'total' => 100,
+                'balance' => 100,
+                'baseTotal' => 100,
                 'created' => new DateTimeImmutable('2021-09-01'),
                 'items' => [
                     (new Item())
                         ->setDescription('Test Item')
-                        ->setPrice('100.00')
+                        ->setPrice(100)
                         ->setQty(1),
                 ],
                 'terms' => 'Test Terms',
@@ -152,7 +152,7 @@ final class ViewTest extends KernelTestCase
             ->object();
 
         $payment = new Payment();
-        $payment->setTotalAmount(10000);
+        $payment->setTotalAmount(100);
         $payment->setMethod((new PaymentMethod())->setName('Credit Card'));
         $payment->setStatus('captured');
         $payment->setCurrencyCode('USD');

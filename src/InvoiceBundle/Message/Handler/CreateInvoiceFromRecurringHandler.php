@@ -13,6 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Message\Handler;
 
+use Brick\Math\Exception\MathException;
+use JsonException;
+use Psr\Log\LoggerInterface;
+use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\InvoiceBundle\Exception\InvalidTransitionException;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\InvoiceBundle\Message\CreateInvoiceFromRecurring;
 use SolidInvoice\InvoiceBundle\Model\Graph;
@@ -26,7 +31,9 @@ final class CreateInvoiceFromRecurringHandler implements MessageSubscriberInterf
 {
     public function __construct(
         private readonly InvoiceManager $invoiceManager,
-        private readonly StateMachine $invoiceStateMachine
+        private readonly StateMachine $invoiceStateMachine,
+        private readonly CompanySelector $companySelector,
+        private LoggerInterface $logger,
     ) {
     }
 
@@ -43,9 +50,15 @@ final class CreateInvoiceFromRecurringHandler implements MessageSubscriberInterf
     public function __invoke(CreateInvoiceFromRecurring $message): void
     {
         $invoice = $message->getRecurringInvoice();
-        $newInvoice = $this->invoiceManager->createFromRecurring($invoice);
-        $this->invoiceManager->create($newInvoice);
 
-        $this->invoiceStateMachine->apply($newInvoice, Graph::TRANSITION_ACCEPT);
+        $this->companySelector->switchCompany($invoice->getCompany()->getId());
+
+        try {
+            $newInvoice = $this->invoiceManager->createFromRecurring($invoice);
+            $this->invoiceManager->create($newInvoice);
+            $this->invoiceStateMachine->apply($newInvoice, Graph::TRANSITION_ACCEPT);
+        } catch (MathException | InvalidTransitionException | JsonException $e) {
+            $this->logger->error('An error occurred while creating invoice from recurring', ['exception' => $e]);
+        }
     }
 }

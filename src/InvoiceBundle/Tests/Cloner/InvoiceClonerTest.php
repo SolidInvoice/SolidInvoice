@@ -20,12 +20,15 @@ use Mockery as M;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Entity\Discount;
+use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\InvoiceBundle\Cloner\InvoiceCloner;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Item;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\TaxBundle\Entity\Tax;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 
 class InvoiceClonerTest extends TestCase
 {
@@ -70,9 +73,30 @@ class InvoiceClonerTest extends TestCase
         $invoiceManager = M::mock(InvoiceManager::class);
         $invoiceManager->shouldReceive('create');
 
-        $invoiceCloner = new InvoiceCloner($invoiceManager);
+        $systemConfig = M::mock(SystemConfig::class);
+
+        $systemConfig->shouldReceive('get')
+            ->once()
+            ->with('invoice/id_generation/strategy')
+            ->andReturn('random_number');
+
+        $systemConfig->shouldReceive('get')
+            ->once()
+            ->with('invoice/id_generation/prefix')
+            ->andReturn('');
+
+        $systemConfig->shouldReceive('get')
+            ->once()
+            ->with('invoice/id_generation/suffix')
+            ->andReturn('');
+
+        $invoiceCloner = new InvoiceCloner($invoiceManager, new BillingIdGenerator(new ServiceLocator([
+            'random_number' => fn () => new BillingIdGenerator\RandomNumberGenerator(),
+        ]), $systemConfig));
 
         $newInvoice = $invoiceCloner->clone($invoice);
+
+        self::assertInstanceOf(Invoice::class, $newInvoice);
 
         self::assertEquals($invoice->getTotal(), $newInvoice->getTotal());
         self::assertEquals($invoice->getBaseTotal(), $newInvoice->getBaseTotal());
@@ -85,6 +109,7 @@ class InvoiceClonerTest extends TestCase
 
         self::assertNotSame($invoice->getUuid(), $newInvoice->getUuid());
         self::assertNull($newInvoice->getId());
+        self::assertNotEquals($invoice->getInvoiceId(), $newInvoice->getInvoiceId());
 
         self::assertCount(1, $newInvoice->getItems());
 
@@ -138,7 +163,7 @@ class InvoiceClonerTest extends TestCase
         $invoiceManager = M::mock(InvoiceManager::class);
         $invoiceManager->shouldReceive('create');
 
-        $invoiceCloner = new InvoiceCloner($invoiceManager);
+        $invoiceCloner = new InvoiceCloner($invoiceManager, new BillingIdGenerator(new ServiceLocator([]), $this->createMock(SystemConfig::class)));
 
         /** @var RecurringInvoice $newInvoice */
         $newInvoice = $invoiceCloner->clone($invoice);

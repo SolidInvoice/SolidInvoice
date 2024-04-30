@@ -11,7 +11,7 @@
 
 namespace SolidInvoice\QuoteBundle\Tests\Form\Type;
 
-use Brick\Math\BigInteger;
+use Brick\Math\BigDecimal;
 use Brick\Math\Exception\MathException;
 use Money\Currency;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
@@ -42,7 +42,7 @@ final class ItemTypeTest extends FormTestCase
         $object = new Item();
         $object->setDescription($description);
         $object->setQty($qty);
-        $object->setPrice(BigInteger::of($price)->multipliedBy(100));
+        $object->setPrice(BigDecimal::of($price)->multipliedBy(100));
 
         $this->assertFormData($this->factory->create(ItemType::class, null, ['currency' => $currency]), $formData, $object);
     }

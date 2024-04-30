@@ -16,6 +16,7 @@ namespace SolidInvoice\InvoiceBundle\Entity;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use Brick\Math\BigInteger;
+use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
 use DateTime;
 use DateTimeImmutable;
@@ -86,7 +87,7 @@ class Invoice extends BaseInvoice
 
     #[ORM\Column(name: 'balance_amount', type: BigIntegerType::NAME)]
     #[Serialize\Groups(['invoice_api', 'client_api'])]
-    private BigInteger $balance;
+    private BigNumber $balance;
 
     #[ORM\Column(name: 'due', type: Types::DATE_MUTABLE, nullable: true)]
     #[Assert\Type(type: DateTimeInterface::class)]
@@ -175,7 +176,7 @@ class Invoice extends BaseInvoice
         return $this;
     }
 
-    public function getBalance(): BigInteger
+    public function getBalance(): BigNumber
     {
         return $this->balance;
     }
@@ -183,9 +184,9 @@ class Invoice extends BaseInvoice
     /**
      * @throws MathException
      */
-    public function setBalance(BigInteger|float|int|string $balance): self
+    public function setBalance(BigNumber|float|int|string $balance): self
     {
-        $this->balance = BigInteger::of($balance);
+        $this->balance = BigNumber::of($balance);
 
         return $this;
     }

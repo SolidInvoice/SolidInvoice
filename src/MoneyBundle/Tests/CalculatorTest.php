@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\MoneyBundle\Tests;
 
 use Brick\Math\BigDecimal;
+use Brick\Math\BigInteger;
 use Brick\Math\Exception\MathException;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
@@ -63,7 +64,7 @@ class CalculatorTest extends TestCase
         $entity->setDiscount($discount);
         $entity->setBaseTotal(200);
 
-        self::assertEquals(BigDecimal::of(35), $calculator->calculateDiscount($entity));
+        self::assertEquals(BigInteger::of(35), $calculator->calculateDiscount($entity));
     }
 
     /**
