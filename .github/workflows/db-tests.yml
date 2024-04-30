@@ -9,7 +9,7 @@ env:
 
 jobs:
   migrations:
-    name: DB (${{ mysql.db.name }} ${{ matrix.db.driver }} ${{ matrix.db.version }})
+    name: DB (${{ matrix.db.name }} ${{ matrix.db.driver }} ${{ matrix.db.version }})
 
     runs-on: ubuntu-latest
 
