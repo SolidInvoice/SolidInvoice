@@ -24,7 +24,7 @@ jobs:
               - "5.7"
               - "8.0"
               - "8.3"
-            image: mysql:${{ matrix.db.version }}
+            image: mysql
             port: 3306
 
           - name: MariaDB
@@ -41,7 +41,7 @@ jobs:
               - 11.1  # STS (Aug 2024)
               - 11.2  # STS (Nov 2024)
               - 11.3  # STS (Feb 2025)
-            image: mariadb:${{ matrix.db.version }}
+            image: mariadb
             port: 3306
 
           - name: PostgreSQL
@@ -52,7 +52,7 @@ jobs:
               - 10
               - 15
               - 16
-            image: postgres:${{ matrix.db.version }}
+            image: postgres
             port: 5432
 
           - name: Oracle
@@ -62,15 +62,23 @@ jobs:
             version:
               - "18"
               - "21"
+            image: gvenzl/oracle-xe
+            port: 1521
+
+          - name: Oracle 23+
+            driver:
+              - oci8
+              - pdo_oci8
+            version:
               - "23"
-            image: gvenzl/oracle-${{ matrix.db.version < 23 && 'xe' || 'free'  }}:${{ matrix.db.version }}
+            image: gvenzl/oracle-free
             port: 1521
 
       fail-fast: false
 
     services:
       db:
-        image: ${{ matrix.db.image }}
+        image: ${{ matrix.db.image }}:${{ matrix.db.version }}
         env:
           ORACLE_PASSWORD: solidinvoice
           MYSQL_ROOT_PASSWORD: solidinvoice
