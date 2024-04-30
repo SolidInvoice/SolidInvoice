@@ -1,11 +1,9 @@
 import $ from 'jquery';
 import ItemView from 'SolidInvoiceCore/js/view';
-import Template from 'SolidInvoiceInvoice/templates/row.hbs';
 import Accounting from 'accounting';
 import { split } from 'lodash';
 
 export default ItemView.extend({
-    template: Template,
     tagName: 'tr',
     ui: {
         removeItem: '.remove-item',
