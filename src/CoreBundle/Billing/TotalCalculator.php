@@ -69,7 +69,7 @@ class TotalCalculator
         $tax = BigDecimal::zero();
 
         foreach ($entity->getItems() as $item) {
-            $item->setTotal($item->getPrice()->toBigDecimal()->multipliedBy($item->getQty()));
+            $item->updateTotal();
 
             $rowTotal = $item->getTotal();
 

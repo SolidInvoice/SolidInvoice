@@ -21,6 +21,7 @@ use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\ContactType;
 use SolidInvoice\ClientBundle\Form\ClientAutocompleteType;
 use SolidInvoice\ClientBundle\Form\Type\ContactDetailType;
+use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator\IdGeneratorInterface;
@@ -111,7 +112,13 @@ final class InvoiceCreateHandlerTest extends FormHandlerTestCase
             ->withAnyArgs()
             ->andReturn('/invoices/1');
 
-        $handler = new InvoiceCreateHandler($stateMachine, $recurringStateMachine, $router, M::mock(MailerInterface::class));
+        $handler = new InvoiceCreateHandler(
+            $stateMachine,
+            $recurringStateMachine,
+            $router,
+            M::mock(MailerInterface::class),
+            M::mock(TotalCalculator::class),
+        );
         $handler->setDoctrine($this->registry);
 
         return $handler;
