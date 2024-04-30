@@ -12,7 +12,6 @@
 namespace SolidInvoice\InvoiceBundle\Tests\Twig\Components;
 
 use Brick\Math\Exception\MathException;
-use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\Uuid;
 use SolidInvoice\CoreBundle\Test\LiveComponentTest;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -61,7 +60,7 @@ final class CreateInvoiceTest extends LiveComponentTest
      */
     public function testCreateInvoiceWithTaxRates(): void
     {
-        $em = self::getContainer()->get(EntityManagerInterface::class);
+        $em = self::getContainer()->get('doctrine')->getManager();
 
         $tax = (new Tax())
             ->setName('VAT')
