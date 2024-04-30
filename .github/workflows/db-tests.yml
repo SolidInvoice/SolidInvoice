@@ -1,0 +1,117 @@
+name: DB Tests
+
+on:
+    pull_request:
+
+env:
+  SOLIDINVOICE_ENV: test
+  SOLIDINVOICE_DEBUG: 0
+
+jobs:
+  migrations:
+    name: DB (${{ mysql.db.name }} ${{ matrix.db.driver }} ${{ matrix.db.version }})
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        db:
+          - name: MySQL
+            driver:
+              - mysqli
+              - pdo_mysql
+            version:
+              - "5.7"
+              - "8.0"
+              - "8.3"
+            image: mysql:${{ matrix.db.version }}
+            port: 3306
+
+          - name: MariaDB
+            driver:
+              - mysqli
+              - pdo_mysql
+            version:
+              # keep in sync with https://mariadb.org/about/#maintenance-policy
+              - 10.4  # Oldest version supported by DBAL, LTS (Jun 2024)
+              - 10.5  # LTS (Jun 2025)
+              - 10.6  # LTS (Jul 2026)
+              - 10.11 # LTS (Feb 2028)
+              - 11.0  # STS (Jun 2024)
+              - 11.1  # STS (Aug 2024)
+              - 11.2  # STS (Nov 2024)
+              - 11.3  # STS (Feb 2025)
+            image: mariadb:${{ matrix.db.version }}
+            port: 3306
+
+          - name: PostgreSQL
+            driver:
+              - pgsql
+              - pdo_pgsql
+            version:
+              - 10
+              - 15
+              - 16
+            image: postgres:${{ matrix.db.version }}
+            port: 5432
+
+          - name: Oracle
+            driver:
+              - oci8
+              - pdo_oci8
+            version:
+              - "18"
+              - "21"
+              - "23"
+            image: gvenzl/oracle-${{ matrix.db.version < 23 && 'xe' || 'free'  }}:${{ matrix.db.version }}
+            port: 1521
+
+      fail-fast: false
+
+    services:
+      db:
+        image: ${{ matrix.db.image }}
+        env:
+          ORACLE_PASSWORD: solidinvoice
+          MYSQL_ROOT_PASSWORD: solidinvoice
+          MYSQL_DATABASE: solidinvoice
+          POSTGRES_PASSWORD: solidinvoice
+        ports:
+          - "3306:${{ matrix.db.port }}"
+
+    env:
+      database_driver: pdo_mysql
+      database_host: 127.0.0.1
+      database_port: 3306
+      database_name: solidinvoice
+      database_user: ${{ matrix.db.name == 'Oracle' && 'system' || matrix.db.name == 'PostgreSQL' && 'postgres' || 'root' }}
+      database_password: solidinvoice
+      database_version: ${{ matrix.db.version }}
+
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142
+        with:
+          egress-policy: block
+          allowed-endpoints: >
+            api.github.com:443
+            github.com:443
+            objects.githubusercontent.com:443
+
+      - name: Checkout
+        uses: actions/checkout@1d96c772d19495a3b5c517cd2bc0cb401ea0529f
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@efffd0e4f2504f936fcfe3b69293d31ce0e2fd7a
+        with:
+          php-version: 8.2
+          ini-values: date.timezone=Africa/Johannesburg, opcache.enable=1, opcache.enable_cli=1, opcache.memory_consumption=256, opcache.max_accelerated_files=32531, opcache.interned_strings_buffer=8, opcache.validate_timestamps=0, opcache.save_comments=1, opcache.fast_shutdown=0, memory_limit=-1, zend.assertions=1
+          extensions: intl, gd, opcache, ${{ matrix.db.driver }}, zip, :xdebug
+
+      - uses: ramsey/composer-install@v3
+
+      - name: Create Database
+        run: bin/console doctrine:database:create
+
+      - name: Run Migrations
+        run: bin/console doctrine:migrations:migrate --no-interaction
