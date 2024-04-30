@@ -114,6 +114,7 @@
         "symfony/twig-bridge": "^5.4.31",
         "symfony/twig-bundle": "^5.4",
         "symfony/uid": "^5.4",
+        "symfony/ux-autocomplete": "^2.12",
         "symfony/ux-dropzone": "*",
         "symfony/ux-live-component": "^2.15",
         "symfony/validator": "^5.4",

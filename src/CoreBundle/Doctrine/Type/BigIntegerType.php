@@ -11,8 +11,9 @@
 
 namespace SolidInvoice\CoreBundle\Doctrine\Type;
 
-use Brick\Math\BigInteger;
+use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
+use Brick\Math\RoundingMode;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
@@ -39,7 +40,7 @@ final class BigIntegerType extends Type
         }
 
         try {
-            return BigInteger::of($value);
+            return BigNumber::of($value);
         } catch (MathException $e) {
             throw ConversionException::conversionFailedSerialization($value, $this->getName(), $e::class, $e);
         }
@@ -51,9 +52,9 @@ final class BigIntegerType extends Type
             return null;
         }
 
-        if ($value instanceof BigInteger) {
+        if ($value instanceof BigNumber) {
             try {
-                return $value->toInt();
+                return $value->toScale(0, RoundingMode::HALF_EVEN)->toInt();
             } catch (MathException $e) {
                 throw ConversionException::conversionFailedSerialization($value, $this->getName(), $e::class, $e);
             }

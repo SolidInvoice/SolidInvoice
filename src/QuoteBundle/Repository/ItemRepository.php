@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Repository;
 
+use Brick\Math\BigDecimal;
 use Brick\Math\BigInteger;
 use Brick\Math\Exception\MathException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -45,7 +46,10 @@ class ItemRepository extends ServiceEntityRepository
 
             /** @var Quote $quote */
             foreach ($query->execute() as $quote) {
-                $quote->setTotal($quote->getBaseTotal()->plus($quote->getTax()));
+                $baseTotal = $quote->getBaseTotal();
+                assert($baseTotal instanceof BigInteger || $baseTotal instanceof BigDecimal);
+
+                $quote->setTotal($baseTotal->plus($quote->getTax()));
                 $quote->setTax(BigInteger::zero());
                 $this->getEntityManager()->persist($quote);
             }

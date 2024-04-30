@@ -61,7 +61,7 @@ final class InvoiceUsersSubscriber implements EventSubscriberInterface
         if ($data instanceof Invoice || $data instanceof RecurringInvoice) {
             $clientId = $data->getClient() instanceof Client && $data->getClient()->getId() instanceof UuidInterface ? $data->getClient()->getId()->toString() : null;
         } else {
-            $clientId = $data['client'] ?? null;
+            $clientId = $data['client']['autocomplete'] ?? null;
         }
 
         if (! empty($clientId)) {

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Form\Type;
 
+use Brick\Math\BigDecimal;
 use DateTimeImmutable;
 use Mockery as M;
 use Money\Currency;
@@ -26,8 +27,12 @@ use SolidInvoice\InvoiceBundle\Form\Type\InvoiceType;
 use SolidInvoice\InvoiceBundle\Form\Type\ItemType;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\DependencyInjection\ServiceLocator;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\PreloadedExtension;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\UX\Autocomplete\Form\AutocompleteChoiceTypeExtension;
+use Symfony\UX\Autocomplete\Form\ParentEntityAutocompleteType;
 
 class InvoiceTypeTest extends FormTestCase
 {
@@ -63,8 +68,11 @@ class InvoiceTypeTest extends FormTestCase
         $object->setNotes($notes);
         $discount = new Discount();
         $discount->setType(Discount::TYPE_PERCENTAGE);
-        $discount->setValue($discountValue);
+        $discount->setValue(BigDecimal::of($discountValue)->multipliedBy(100));
         $object->setDiscount($discount);
+        $object->setTotal(BigDecimal::zero());
+        $object->setBaseTotal(BigDecimal::zero());
+        $object->setTax(BigDecimal::zero());
 
         $this->assertFormData($this->factory->create(InvoiceType::class, $data), $formData, $object);
     }
@@ -96,7 +104,16 @@ class InvoiceTypeTest extends FormTestCase
 
         return [
             // register the type instances with the PreloadedExtension
-            new PreloadedExtension([$invoiceType, $itemType, new DiscountType($systemConfig)], []),
+            new PreloadedExtension([
+                $invoiceType,
+                $itemType,
+                new DiscountType($systemConfig),
+                new ParentEntityAutocompleteType($this->createMock(UrlGeneratorInterface::class)),
+            ], [
+                ChoiceType::class => [
+                    new AutocompleteChoiceTypeExtension(),
+                ],
+            ]),
         ];
     }
 }

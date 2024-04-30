@@ -255,7 +255,7 @@ final class PaymentRepositoryTest extends KernelTestCase
         $created = DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
         $completed = DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
 
-        $invoice = InvoiceFactory::createOne(['client' => $client, 'archived' => null])->disableAutoRefresh();
+        $invoice = InvoiceFactory::createOne(['client' => $client, 'archived' => null, 'invoiceId' => 'INV-FOO'])->disableAutoRefresh();
         $payment = PaymentFactory::createOne([
             'invoice' => $invoice,
             'client' => $client->object(),
@@ -277,7 +277,7 @@ final class PaymentRepositoryTest extends KernelTestCase
                     'created' => $created,
                     'completed' => $completed,
                     'status' => Status::STATUS_CAPTURED,
-                    'invoice' => $invoice->object()->getId(),
+                    'invoice' => 'INV-FOO',
                     'method' => 'test-payment',
                     'message' => 'test',
                 ]
@@ -376,7 +376,7 @@ final class PaymentRepositoryTest extends KernelTestCase
     {
         $client = ClientFactory::createOne(['currencyCode' => 'USD']);
 
-        $invoice = InvoiceFactory::new(['client' => $client, 'archived' => null])
+        $invoice = InvoiceFactory::new(['client' => $client, 'archived' => null, 'invoiceId' => 'INV-FOO'])
             ->create()
             ->disableAutoRefresh();
 
@@ -404,7 +404,7 @@ final class PaymentRepositoryTest extends KernelTestCase
                     'created' => $created,
                     'completed' => $completed,
                     'status' => Status::STATUS_CAPTURED,
-                    'invoice' => $invoice->object()->getId(),
+                    'invoice' => 'INV-FOO',
                     'method' => 'test-payment',
                     'message' => 'test',
                 ]
@@ -492,7 +492,7 @@ final class PaymentRepositoryTest extends KernelTestCase
     public function testGetRecentPayments(): void
     {
         $client = ClientFactory::createOne(['currencyCode' => 'USD', 'archived' => null]);
-        $invoice = InvoiceFactory::new(['client' => $client, 'archived' => null])
+        $invoice = InvoiceFactory::new(['client' => $client, 'archived' => null, 'invoiceId' => 'INV-FOO'])
             ->create()
             ->disableAutoRefresh();
 
@@ -520,7 +520,7 @@ final class PaymentRepositoryTest extends KernelTestCase
                     'created' => $created,
                     'completed' => $completed,
                     'status' => Status::STATUS_CAPTURED,
-                    'invoice' => $invoice->object()->getId(),
+                    'invoice' => 'INV-FOO',
                     'method' => 'test-payment',
                     'client_id' => $client->getId(),
                     'client' => $client->getName(),

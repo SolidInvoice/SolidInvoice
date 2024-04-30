@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace SolidInvoice\PaymentBundle\Action;
 
 use const FILTER_VALIDATE_BOOLEAN;
-use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
+use Brick\Math\RoundingMode;
 use DateTime;
 use Exception;
 use Payum\Core\Payum;
@@ -122,7 +122,7 @@ final class Prepare
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $amount = BigInteger::of($data['amount']);
+            $amount = BigNumber::of($data['amount']);
 
             /** @var PaymentMethod $paymentMethod */
             $paymentMethod = $data['payment_method'];
@@ -166,7 +166,7 @@ final class Prepare
             $payment->setMethod($data['payment_method']);
             /** @var BigNumber $value */
             $value = $data['amount'];
-            $payment->setTotalAmount($value->toInt());
+            $payment->setTotalAmount($value->toBigDecimal()->toScale(2, RoundingMode::HALF_EVEN)->toInt());
             $payment->setCurrencyCode($invoice->getClient()->getCurrency()->getCode());
             $payment->setDescription('');
             $payment->setClient($invoice->getClient());

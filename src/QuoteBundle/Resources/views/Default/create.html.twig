@@ -88,7 +88,7 @@
                 </div>
 
                 <div class="row mb-4">
-                    <div class="col-6"{{ stimulus_controller('billing-id') }}>
+                    <div class="col-6" {{ stimulus_controller('billing-id') }}>
                         <span {{ stimulus_target('billing-id', 'info') }}>
                             <span class="h5">
                                 {{ 'Quote #'|trans }}<span {{ stimulus_target('billing-id', 'value') }}>{{ form.quoteId.vars.data }}</span>

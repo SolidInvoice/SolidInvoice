@@ -106,7 +106,7 @@ final class MoneyFormatter implements MoneyFormatterInterface
     {
         return $amount
             ->toBigDecimal()
-            ->dividedBy(100, 2, RoundingMode::HALF_EVEN)
+            //->dividedBy(100, 2, RoundingMode::HALF_EVEN)
             ->toFloat();
     }
 

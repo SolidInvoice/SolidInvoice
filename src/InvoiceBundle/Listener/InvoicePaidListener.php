@@ -15,6 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Listener;
 
 use Brick\Math\Exception\MathException;
 use Doctrine\Persistence\ManagerRegistry;
+use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Credit;
 use SolidInvoice\ClientBundle\Repository\CreditRepository;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -55,9 +56,10 @@ class InvoicePaidListener implements EventSubscriberInterface
 
         $em->persist($invoice);
 
-        $totalPaid = $paymentRepository->getTotalPaidForInvoice($invoice);
+        $totalPaid = $paymentRepository->getTotalPaidForInvoice($invoice)->toBigDecimal();
 
         if ($totalPaid->isGreaterThan($invoice->getTotal())) {
+            /** @var Client $client */
             $client = $invoice->getClient();
 
             /** @var CreditRepository $creditRepository */

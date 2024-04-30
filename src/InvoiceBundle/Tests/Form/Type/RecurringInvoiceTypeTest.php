@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Form\Type;
 
+use Brick\Math\BigDecimal;
 use Cron\CronExpression;
 use Mockery as M;
 use Money\Currency;
@@ -39,7 +40,9 @@ class RecurringInvoiceTypeTest extends FormTestCase
         $terms = $this->faker->text;
         $discountValue = $this->faker->numberBetween(0, 100);
         $formData = [
-            'client' => $client,
+            'client' => [
+                'autocomplete' => $client->getId()->toString(),
+            ],
             'discount' => [
                 'value' => $discountValue,
                 'type' => Discount::TYPE_PERCENTAGE,
@@ -65,7 +68,7 @@ class RecurringInvoiceTypeTest extends FormTestCase
         $object->setNotes($notes);
         $discount = new Discount();
         $discount->setType(Discount::TYPE_PERCENTAGE);
-        $discount->setValue($discountValue);
+        $discount->setValue(BigDecimal::of($discountValue)->multipliedBy(100));
         $object->setDiscount($discount);
 
         $this->assertFormData($this->factory->create(RecurringInvoiceType::class, $data), $formData, $object);

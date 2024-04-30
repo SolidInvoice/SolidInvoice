@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Entity;
 
-use Brick\Math\BigInteger;
+use Brick\Math\BigDecimal;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
 use Doctrine\DBAL\Types\Types;
@@ -34,15 +34,15 @@ abstract class BaseInvoice
 
     #[ORM\Column(name: 'total_amount', type: BigIntegerType::NAME)]
     #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api'])]
-    protected BigInteger $total;
+    protected BigNumber $total;
 
     #[ORM\Column(name: 'baseTotal_amount', type: BigIntegerType::NAME)]
     #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api'])]
-    protected BigInteger $baseTotal;
+    protected BigNumber $baseTotal;
 
     #[ORM\Column(name: 'tax_amount', type: BigIntegerType::NAME)]
     #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api'])]
-    protected BigInteger $tax;
+    protected BigNumber $tax;
 
     #[ORM\Embedded(class: Discount::class)]
     #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
@@ -59,9 +59,9 @@ abstract class BaseInvoice
     public function __construct()
     {
         $this->discount = new Discount();
-        $this->baseTotal = BigInteger::zero();
-        $this->tax = BigInteger::zero();
-        $this->total = BigInteger::zero();
+        $this->baseTotal = BigDecimal::zero();
+        $this->tax = BigDecimal::zero();
+        $this->total = BigDecimal::zero();
     }
 
     public function getStatus(): ?string
@@ -76,7 +76,7 @@ abstract class BaseInvoice
         return $this;
     }
 
-    public function getTotal(): BigInteger
+    public function getTotal(): BigNumber
     {
         return $this->total;
     }
@@ -84,14 +84,14 @@ abstract class BaseInvoice
     /**
      * @throws MathException
      */
-    public function setTotal(BigInteger|float|int|string $total): self
+    public function setTotal(BigNumber|float|int|string $total): self
     {
-        $this->total = BigInteger::of($total);
+        $this->total = BigNumber::of($total);
 
         return $this;
     }
 
-    public function getBaseTotal(): BigInteger
+    public function getBaseTotal(): BigNumber
     {
         return $this->baseTotal;
     }
@@ -99,9 +99,9 @@ abstract class BaseInvoice
     /**
      * @throws MathException
      */
-    public function setBaseTotal(BigInteger|float|int|string $baseTotal): self
+    public function setBaseTotal(BigNumber|float|int|string $baseTotal): self
     {
-        $this->baseTotal = BigInteger::of($baseTotal);
+        $this->baseTotal = BigNumber::of($baseTotal);
 
         return $this;
     }
@@ -150,7 +150,7 @@ abstract class BaseInvoice
         return $this;
     }
 
-    public function getTax(): BigInteger
+    public function getTax(): BigNumber
     {
         return $this->tax;
     }
@@ -158,9 +158,9 @@ abstract class BaseInvoice
     /**
      * @throws MathException
      */
-    public function setTax(BigInteger|float|int|string $tax): self
+    public function setTax(BigNumber|float|int|string $tax): self
     {
-        $this->tax = BigInteger::of($tax);
+        $this->tax = BigNumber::of($tax);
 
         return $this;
     }

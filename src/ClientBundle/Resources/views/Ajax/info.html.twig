@@ -13,7 +13,7 @@
             <h4>
                 {{ client.name }}
                 <small>
-                    (<a href="#" id="client-select-change">{{ "change"|trans }}</a>)
+                    (<a href="#" data-action="live#action:prevent" data-live-action-param="clearClient">{{ "change"|trans }}</a>)
                 </small>
             </h4>
         </legend>

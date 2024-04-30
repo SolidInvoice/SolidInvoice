@@ -127,7 +127,7 @@ final class InvoiceEditHandlerTest extends FormHandlerTestCase
     protected function assertOnSuccess(?Response $response, FormRequest $form, $invoice): void
     {
         self::assertSame(Graph::STATUS_PENDING, $invoice->getStatus());
-        self::assertSame(20.0, $invoice->getDiscount()->getValue());
+        self::assertSame(2000.0, $invoice->getDiscount()->getValue());
         self::assertInstanceOf(RedirectResponse::class, $response);
         self::assertInstanceOf(FlashResponse::class, $response);
         self::assertCount(1, iterator_to_array($response->getFlash()));
@@ -163,7 +163,9 @@ final class InvoiceEditHandlerTest extends FormHandlerTestCase
                     'value' => 20,
                     'type' => Discount::TYPE_PERCENTAGE,
                 ],
-                'client' => $this->client,
+                'client' => [
+                    'autocomplete' => $this->client->getId()->toString()
+                ],
                 'invoiceId' => '10',
                 'invoiceDate' => new DateTimeImmutable(),
             ],

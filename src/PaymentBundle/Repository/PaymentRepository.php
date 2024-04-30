@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\PaymentBundle\Repository;
 
 use Brick\Math\BigInteger;
+use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
 use DateTime;
 use DateTimeInterface;
@@ -102,7 +103,7 @@ class PaymentRepository extends ServiceEntityRepository
                 'p.created',
                 'p.completed',
                 'p.status',
-                'i.id as invoice',
+                'i.invoiceId as invoice',
                 'm.name as method',
                 'p.message',
             ]
@@ -117,7 +118,7 @@ class PaymentRepository extends ServiceEntityRepository
     /**
      * Returns an array of all the payments for an invoice.
      */
-    public function getTotalPaidForInvoice(Invoice $invoice): BigInteger
+    public function getTotalPaidForInvoice(Invoice $invoice): BigNumber
     {
         if (! $invoice->getId() instanceof UuidInterface) {
             return BigInteger::zero();
@@ -135,7 +136,7 @@ class PaymentRepository extends ServiceEntityRepository
         $query = $queryBuilder->getQuery();
 
         try {
-            return BigInteger::of((int) $query->getSingleScalarResult());
+            return BigNumber::of((int) $query->getSingleScalarResult());
         } catch (NoResultException | NonUniqueResultException | MathException) {
             return BigInteger::zero();
         }

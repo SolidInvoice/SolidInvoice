@@ -13,12 +13,15 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Billing;
 
+use Brick\Math\BigDecimal;
 use Brick\Math\BigInteger;
+use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
-use SolidInvoice\CoreBundle\Entity\Discount;
+use Brick\Math\RoundingMode;
 use SolidInvoice\CoreBundle\Exception\UnexpectedTypeException;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\MoneyBundle\Calculator;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\TaxBundle\Entity\Tax;
@@ -29,7 +32,8 @@ use SolidInvoice\TaxBundle\Entity\Tax;
 class TotalCalculator
 {
     public function __construct(
-        private readonly PaymentRepository $paymentRepository
+        private readonly PaymentRepository $paymentRepository,
+        private readonly Calculator $calculator,
     ) {
     }
 
@@ -46,7 +50,10 @@ class TotalCalculator
 
         if ($entity instanceof Invoice) {
             $totalPaid = $this->paymentRepository->getTotalPaidForInvoice($entity);
-            $entity->setBalance($entity->getTotal()->minus($totalPaid));
+            $total = $entity->getTotal();
+            assert($total instanceof BigDecimal || $total instanceof BigInteger);
+
+            $entity->setBalance($total->minus($totalPaid));
         }
     }
 
@@ -57,12 +64,12 @@ class TotalCalculator
     {
         /** @var BaseInvoice|Quote $entity */
 
-        $total = BigInteger::zero();
-        $subTotal = BigInteger::zero();
-        $tax = BigInteger::zero();
+        $total = BigDecimal::zero();
+        $subTotal = BigDecimal::zero();
+        $tax = BigDecimal::zero();
 
         foreach ($entity->getItems() as $item) {
-            $item->setTotal($item->getPrice()->multipliedBy($item->getQty()));
+            $item->setTotal($item->getPrice()->toBigDecimal()->multipliedBy($item->getQty()));
 
             $rowTotal = $item->getTotal();
 
@@ -71,7 +78,7 @@ class TotalCalculator
 
             if (($rowTax = $item->getTax()) instanceof Tax) {
                 if (Tax::TYPE_INCLUSIVE === $rowTax->getType()) {
-                    $taxAmount = $rowTotal->toBigDecimal()->dividedBy(($rowTax->getRate() / 100) + 1)->minus($rowTotal)->negated();
+                    $taxAmount = $rowTotal->toBigDecimal()->dividedBy(($rowTax->getRate() / 100) + 1, 2, RoundingMode::HALF_EVEN)->minus($rowTotal)->negated();
                     $subTotal = $subTotal->minus($taxAmount);
                 } else {
                     $taxAmount = $rowTotal->toBigDecimal()->multipliedBy($rowTax->getRate() / 100);
@@ -95,16 +102,8 @@ class TotalCalculator
     /**
      * @throws MathException
      */
-    private function setDiscount(BaseInvoice|Quote $entity, BigInteger $total): BigInteger
+    private function setDiscount(BaseInvoice|Quote $entity, BigDecimal|BigInteger $total): BigNumber
     {
-        $discount = $entity->getDiscount();
-
-        if (Discount::TYPE_PERCENTAGE === $discount->getType()) {
-            $discountValue = $total->toBigDecimal()->multipliedBy(((float) $discount->getValuePercentage()) / 100);
-        } else {
-            $discountValue = $discount->getValueMoney();
-        }
-
-        return $total->minus($discountValue);
+        return $total->minus($this->calculator->calculateDiscount($entity));
     }
 }

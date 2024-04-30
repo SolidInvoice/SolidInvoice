@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\MoneyBundle\Twig\Extension;
 
 use Brick\Math\BigNumber;
+use Brick\Math\RoundingMode;
 use Money\Currency;
 use Money\Money;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
@@ -21,6 +22,7 @@ use SolidInvoice\SettingsBundle\SystemConfig;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
+use function is_string;
 
 /**
  * @see \SolidInvoice\MoneyBundle\Tests\Twig\Extension\MoneyFormatterExtensionTest
@@ -43,8 +45,35 @@ class MoneyFormatterExtension extends AbstractExtension
     public function getFilters(): array
     {
         return [
-            new TwigFilter('formatCurrency', function (BigNumber|int|float|string $value, ?Currency $currency = null): string {
-                return $this->formatter->format(new Money(BigNumber::of($value)->toBigInteger()->toInt(), $currency ?? $this->systemConfig->getCurrency()));
+            new TwigFilter('formatCurrency', function (BigNumber|int|float|string $value, Currency|string|null $currency = null): string {
+                if (is_string($currency) && $currency !== '') {
+                    $currency = new Currency($currency);
+                }
+
+                //return $this->formatter->format(new Money((string) BigNumber::of($value)->toScale(0, RoundingMode::HALF_EVEN), $currency ?? $this->systemConfig->getCurrency()));
+
+                $value = BigNumber::of($value)->toBigDecimal();
+
+                if ($value->getScale() > 0) {
+                    $value = $value->toScale(0, RoundingMode::HALF_EVEN);
+                }
+
+                try {
+                    return $this
+                        ->formatter
+                        ->format(
+                            new Money(
+                                (string) $value
+                                    //->toBigDecimal()
+                                    //->multipliedBy(100)
+                                    //->toScale(0, RoundingMode::HALF_EVEN)
+                                ,
+                                $currency ?? $this->systemConfig->getCurrency()
+                            )
+                        );
+                } catch (\Throwable $e) {
+                    dd($e, $value, (string) $value);
+                }
             }),
         ];
     }

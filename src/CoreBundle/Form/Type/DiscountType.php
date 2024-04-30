@@ -18,7 +18,7 @@ use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Form\Transformer\DiscountTransformer;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -54,7 +54,22 @@ class DiscountType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('type', HiddenType::class, ['empty_data' => 'percentage', 'placeholder' => 'percentage', 'attr' => ['class' => 'discount-type']]);
+        $builder->add(
+            'type',
+            ChoiceType::class,
+            [
+                /*'empty_data' => 'percentage',
+                'placeholder' => 'percentage',*/
+                'attr' => [
+                    'class' => 'discount-type'
+                ],
+                'choices' => [
+                    '%' => 'percentage',
+                    $options['currency']->getCode() => 'money',
+                ],
+            ]
+        );
+
         $builder->add(
             'value',
             TextType::class,

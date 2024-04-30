@@ -1,0 +1,190 @@
+<html><body>
+<div id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="CreateInvoice" data-live-url-value="/_components/CreateInvoice" data-live-props-value='{"formData":[],"formName":"invoice","invoice":{"client":{"autocomplete":""},"discount":{"type":"percentage","value":0},"items":[],"invoiceId":"1","terms":"","notes":"","total":0,"baseTotal":0,"tax":0,"invoiceDate":"2024-04-30","due":"","_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"Jtr408OKPhMeUxJVGoC6XzOjlfJPljml8sKxcYnoqgk="}' data-live-csrf-value="">
+    
+    <form name="invoice" method="post" data-model="on(change)|*">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <section class="invoice">
+
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div>
+                                        <div class="form-group">                        
+                                <label class="control-label required required" for="invoice_client_autocomplete">Client</label>
+    <select id="invoice_client_autocomplete" name="invoice[client][autocomplete]" data-required="required" class="client-select form-control" data-controller="symfony--ux-autocomplete--autocomplete" data-symfony--ux-autocomplete--autocomplete-url-value="/autocomplete/client_autocomplete_type" data-symfony--ux-autocomplete--autocomplete-max-results-value="10" data-symfony--ux-autocomplete--autocomplete-no-results-found-text-value="No results found" data-symfony--ux-autocomplete--autocomplete-no-more-results-text-value="No more results" data-symfony--ux-autocomplete--autocomplete-preload-value="focus" required="1"><option value="" selected>Choose a client</option></select>
+</div>
+                                    </div>
+                                                                    </div>
+
+                                <div class="col-3 offset-3 text-right">
+                                        <label for="invoice_discount_value">Discount</label>
+    <div class="form-group multiple-form-group input-group">
+        <input type="text" id="invoice_discount_value" name="invoice[discount][value]" class="discount-value form-control" value="0">
+        <select id="invoice_discount_type" name="invoice[discount][type]" class="discount-type form-control"><option value="percentage" selected>%</option>
+<option value="money">USD</option></select>
+            </div>
+
+                                </div>
+                            </div>
+
+                            <div class="row mb-4">
+                                <div class="col-6 pt-4" data-controller="billing-id">
+                                    <span data-billing-id-target="info">
+                                        <span class="h4">
+                                            Invoice #<span data-billing-id-target="value">1</span>
+                                        </span>
+                                                                                    <a href="#" data-action="billing-id#edit"><i class="fa fa-pencil"></i></a>
+                                                                            </span>
+
+                                    <div class="d-none" data-billing-id-target="form">
+
+                                                        
+                                <label class="control-label required required" for="invoice_invoiceId">Invoice id</label>
+                                        <div class="input-group mb-3">
+                                            <input type="text" id="invoice_invoiceId" name="invoice[invoiceId]" data-required="required" maxlength="255" class="form-control" value="1">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-outline-secondary" type="button" data-action="billing-id#save" title="Save" rel="tooltip">
+                                                    <i class="fa fa-save"></i>
+                                                </button>
+                                                <button class="btn btn-outline-secondary" type="button" data-action="billing-id#cancel" title="Cancel" rel="tooltip">
+                                                    <i class="fa fa-cancel"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="form-group">                
+                                <label class="control-label required required" for="invoice_invoiceDate">Invoice date</label><input type="date" id="invoice_invoiceDate" name="invoice[invoiceDate]" data-required="required" class="form-control" value="2024-04-30">
+</div>
+                                </div>
+
+                                <div class="col-3">
+                                    <div class="form-group">    
+            <label class="control-label" for="invoice_due">Due Date</label><input type="date" id="invoice_due" name="invoice[due]" class="form-control">
+</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row invoice-container">
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title"><strong>Invoice Summary</strong></h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-condensed">
+                                                <thead>
+                                                <tr>
+                                                    <th>
+                                                        Description
+                                                    </th>
+                                                    <th>
+                                                        Price
+                                                    </th>
+                                                    <th>
+                                                        Qty
+                                                    </th>
+                                                                                                        <th class="text-right">Total</th>
+                                                    <th></th>
+                                                </tr>
+                                                </thead>
+                                                <tr>
+                                                                                                    
+                                                </tr>
+<tfoot>
+                                                <tr>
+                                                    <td colspan="3" class="thick-line text-right"><strong>SubTotal</strong></td>
+                                                    <td class="thick-line text-right">
+                                                        <div class="sub-total">
+                                                            $0.00
+                                                        </div>
+                                                    </td>
+                                                    <td class="thick-line">
+                                                    </td>
+                                                </tr>
+                                                                                                <tr>
+                                                    <td colspan="3" class="no-line text-right"><strong>Discount</strong></td>
+                                                    <td class="no-line text-right">
+                                                        <span class="text-danger discount">
+                                                            $0.00
+                                                        </span>
+                                                    </td>
+                                                    <td class="no-line">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="3" class="no-line text-right"><strong>Total</strong></td>
+                                                    <td class="no-line text-right">
+                                                        <div class="total">
+                                                            $0.00
+                                                        </div>
+                                                    </td>
+                                                    <td class="no-line"></td>
+                                                </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col add-item-col">
+                                <button type="button" id="invoice_items_add" name="invoice[items][add]" data-action="live#action" data-live-action-param="addCollectionItem" data-live-name-param="invoice[items]" class="add-item btn">+ Add Item</button>
+                            </div>
+                        </div>
+
+
+                        <br class="clear">
+
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">                
+            <label class="control-label" for="invoice_terms">Terms</label><textarea id="invoice_terms" name="invoice[terms]" class="form-control"></textarea>
+</div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">                
+            <label class="control-label" for="invoice_notes">Notes</label><textarea id="invoice_notes" name="invoice[notes]" aria-describedby="invoice_notes_help" class="form-control"></textarea><div class="alert alert-info mt-2">
+            <small id="invoice_notes_help" class="form-text ">Notes will not be visible to the client</small>
+        </div>
+</div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <div class="float-left">
+                                <button type="submit" class="btn btn-success" name="save" value="pending">
+                                    <i class="fa fa-envelope o"></i> Save and Send
+                                </button>
+                                <button type="submit" class="btn btn-info" name="save" value="publish">
+                                    <i class="fa fa-check"></i> Save Invoice
+                                </button>
+                            </div>
+                            <div class="float-right">
+                                <button type="submit" class="btn btn-primary" name="save" value="save">
+                                    <i class="fa fa-save"></i> Save as Draft
+                                </button>
+                            </div>
+
+                            <br class="clear">
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+    <fieldset class="form-group">                
+    <div id="invoice_items"></div>
+</fieldset>
+<input type="hidden" id="invoice_total" name="invoice[total]" value="0"><input type="hidden" id="invoice_baseTotal" name="invoice[baseTotal]" value="0"><input type="hidden" id="invoice_tax" name="invoice[tax]" value="0"><input type="hidden" id="invoice__token" name="invoice[_token]">
+</form>
+</div>
+</body></html>

@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Doctrine\ORM\EntityManagerInterface;
 use SolidInvoice\CoreBundle\ConfigWriter;
 use SolidInvoice\InstallBundle\Installer\Database\Migration;
 use SolidInvoice\PaymentBundle\Factory\PaymentFactories;
@@ -23,5 +24,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->public();
 
     $services->set(ConfigWriter::class)
+        ->public();
+
+    $services->set(EntityManagerInterface::class)
         ->public();
 };

@@ -1,5 +1,15 @@
 {
     "controllers": {
+        "@symfony/ux-autocomplete": {
+            "autocomplete": {
+                "enabled": true,
+                "fetch": "eager",
+                "autoimport": {
+                    "tom-select/dist/css/tom-select.default.css": false,
+                    "tom-select/dist/css/tom-select.bootstrap4.css": true
+                }
+            }
+        },
         "@symfony/ux-dropzone": {
             "dropzone": {
                 "enabled": true,

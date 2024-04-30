@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\ClientBundle\Entity;
 
 use Brick\Math\BigInteger;
+use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
@@ -41,7 +42,7 @@ class Credit implements Stringable
     private ?UuidInterface $id = null;
 
     #[ORM\Column(name: 'value_amount', type: BigIntegerType::NAME)]
-    private BigInteger $value;
+    private BigNumber $value;
 
     #[ORM\OneToOne(inversedBy: 'credit', targetEntity: Client::class)]
     private ?Client $client = null;
@@ -68,7 +69,7 @@ class Credit implements Stringable
         return $this;
     }
 
-    public function getValue(): BigInteger
+    public function getValue(): BigNumber
     {
         return $this->value;
     }
@@ -76,9 +77,9 @@ class Credit implements Stringable
     /**
      * @throws MathException
      */
-    public function setValue(BigInteger|float|int|string $value): self
+    public function setValue(BigNumber|float|int|string $value): self
     {
-        $this->value = BigInteger::of($value);
+        $this->value = BigNumber::of($value);
 
         return $this;
     }

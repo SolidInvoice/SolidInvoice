@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Entity;
 
+use Brick\Math\BigDecimal;
 use Brick\Math\BigInteger;
+use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -29,7 +31,7 @@ class Discount
 
     #[ORM\Column(name: 'valueMoney_amount', type: BigIntegerType::NAME)]
     #[Serialize\Groups(['invoice_api', 'quote_api', 'client_api'])]
-    private BigInteger $valueMoney;
+    private BigNumber $valueMoney;
 
     #[ORM\Column(name: 'value_percentage', type: Types::FLOAT, nullable: true)]
     #[Serialize\Groups(['invoice_api', 'quote_api', 'client_api'])]
@@ -56,7 +58,7 @@ class Discount
         return $this;
     }
 
-    public function getValueMoney(): BigInteger
+    public function getValueMoney(): BigNumber
     {
         return $this->valueMoney;
     }
@@ -64,9 +66,9 @@ class Discount
     /**
      * @throws MathException
      */
-    public function setValueMoney(BigInteger|float|int|string $valueMoney): self
+    public function setValueMoney(BigNumber|float|int|string $valueMoney): self
     {
-        $this->valueMoney = BigInteger::of($valueMoney);
+        $this->valueMoney = BigNumber::of($valueMoney);
 
         return $this;
     }
@@ -83,7 +85,7 @@ class Discount
         return $this;
     }
 
-    public function getValue(): float | BigInteger
+    public function getValue(): float | BigNumber
     {
         return match ($this->getType()) {
             self::TYPE_PERCENTAGE => $this->getValuePercentage() ?? 0.0,
@@ -95,15 +97,17 @@ class Discount
     /**
      * @throws MathException
      */
-    public function setValue(float | BigInteger $value): void
+    public function setValue(BigNumber|float|int|string $value): void
     {
         switch ($this->getType()) {
             case self::TYPE_PERCENTAGE:
-                $this->setValuePercentage((float) $value);
+                $this->setValuePercentage(BigNumber::of($value)->toBigDecimal()->toFloat());
+                $this->setValueMoney(BigDecimal::zero());
                 break;
 
             case self::TYPE_MONEY:
-                $this->setValueMoney($value);
+                $this->setValuePercentage(0.0);
+                $this->setValueMoney(BigNumber::of($value));
                 break;
         }
     }

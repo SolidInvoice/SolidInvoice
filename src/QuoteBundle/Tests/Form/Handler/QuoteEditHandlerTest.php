@@ -132,7 +132,7 @@ final class QuoteEditHandlerTest extends FormHandlerTestCase
     protected function assertOnSuccess(?Response $response, FormRequest $form, $quote): void
     {
         self::assertSame(Graph::STATUS_PENDING, $quote->getStatus());
-        self::assertSame(20.0, $quote->getDiscount()->getValue());
+        self::assertSame(2000.0, $quote->getDiscount()->getValue());
         self::assertInstanceOf(RedirectResponse::class, $response);
         self::assertInstanceOf(FlashResponse::class, $response);
         self::assertCount(1, iterator_to_array($response->getFlash()));

@@ -13,12 +13,15 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Repository;
 
+use Brick\Math\BigDecimal;
 use Brick\Math\BigInteger;
+use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Credit;
+use function assert;
 
 class CreditRepository extends ServiceEntityRepository
 {
@@ -30,11 +33,14 @@ class CreditRepository extends ServiceEntityRepository
     /**
      * @throws MathException
      */
-    public function addCredit(Client $client, BigInteger|float|int|string $amount): Credit
+    public function addCredit(Client $client, BigNumber|float|int|string $amount): Credit
     {
         $credit = $client->getCredit();
 
-        $credit->setValue($credit->getValue()->plus($amount));
+        $value = $credit->getValue();
+        assert($value instanceof BigInteger || $value instanceof BigDecimal);
+
+        $credit->setValue($value->plus($amount));
 
         return $this->save($credit);
     }
@@ -42,11 +48,14 @@ class CreditRepository extends ServiceEntityRepository
     /**
      * @throws MathException
      */
-    public function deductCredit(Client $client, BigInteger|float|int|string $amount): Credit
+    public function deductCredit(Client $client, BigNumber|float|int|string $amount): Credit
     {
         $credit = $client->getCredit();
 
-        $credit->setValue($credit->getValue()->minus($amount));
+        $value = $credit->getValue();
+        assert($value instanceof BigInteger || $value instanceof BigDecimal);
+
+        $credit->setValue($value->minus($amount));
 
         return $this->save($credit);
     }
