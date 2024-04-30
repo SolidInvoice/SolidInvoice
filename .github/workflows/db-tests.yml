@@ -15,65 +15,126 @@ jobs:
 
     strategy:
       matrix:
-        db:
-          - name: MySQL
-            driver:
-              - mysqli
-              - pdo_mysql
-            version:
-              - "5.7"
-              - "8.0"
-              - "8.3"
-            image: mysql
-            port: 3306
-
-          - name: MariaDB
-            driver:
-              - mysqli
-              - pdo_mysql
-            version:
-              # keep in sync with https://mariadb.org/about/#maintenance-policy
-              - 10.4  # Oldest version supported by DBAL, LTS (Jun 2024)
-              - 10.5  # LTS (Jun 2025)
-              - 10.6  # LTS (Jul 2026)
-              - 10.11 # LTS (Feb 2028)
-              - 11.0  # STS (Jun 2024)
-              - 11.1  # STS (Aug 2024)
-              - 11.2  # STS (Nov 2024)
-              - 11.3  # STS (Feb 2025)
-            image: mariadb
-            port: 3306
-
-          - name: PostgreSQL
-            driver:
-              - pgsql
-              - pdo_pgsql
-            version:
-              - 10
-              - 15
-              - 16
-            image: postgres
-            port: 5432
-
-          - name: Oracle
-            driver:
-              - oci8
-              - pdo_oci8
-            version:
-              - "18"
-              - "21"
-            image: gvenzl/oracle-xe
-            port: 1521
-
-          - name: Oracle 23+
-            driver:
-              - oci8
-              - pdo_oci8
-            version:
-              - "23"
-            image: gvenzl/oracle-free
-            port: 1521
-
+        include:
+            - db:
+                name: MySQL
+                driver: pdo_mysql
+                version: 5.7
+                image: mysql
+                port: 3306
+                user: root
+            - db:
+                name: MySQL
+                driver: pdo_mysql
+                version: 8.0
+                image: mysql
+                port: 3306
+                user: root
+            - db:
+                name: MySQL
+                driver: pdo_mysql
+                version: 8.3
+                image: mysql
+                port: 3306
+                user: root
+            - db:
+                name: MariaDB
+                driver: pdo_mysql
+                version: 10.4
+                image: mariadb
+                port: 3306
+                user: root
+            - db:
+                name: MariaDB
+                driver: pdo_mysql
+                version: 10.5
+                image: mariadb
+                port: 3306
+                user: root
+            - db:
+                name: MariaDB
+                driver: pdo_mysql
+                version: 10.6
+                image: mariadb
+                port: 3306
+                user: root
+            - db:
+                name: MariaDB
+                driver: pdo_mysql
+                version: 10.11
+                image: mariadb
+                port: 3306
+                user: root
+            - db:
+                name: MariaDB
+                driver: pdo_mysql
+                version: 11.0
+                image: mariadb
+                port: 3306
+                user: root
+            - db:
+                name: MariaDB
+                driver: pdo_mysql
+                version: 11.1
+                image: mariadb
+                port: 3306
+                user: root
+            - db:
+                name: MariaDB
+                driver: pdo_mysql
+                version: 11.2
+                image: mariadb
+                port: 3306
+                user: root
+            - db:
+                name: MariaDB
+                driver: pdo_mysql
+                version: 11.3
+                image: mariadb
+                port: 3306
+                user: root
+            - db:
+                name: PostgreSQL
+                driver: pdo_pgsql
+                version: 10
+                image: postgres
+                port: 5432
+                user: postgres
+            - db:
+                name: PostgreSQL
+                driver: pdo_pgsql
+                version: 15
+                image: postgres
+                port: 5432
+                user: postgres
+            - db:
+                name: PostgreSQL
+                driver: pdo_pgsql
+                version: 16
+                image: postgres
+                port: 5432
+                user: postgres
+            - db:
+                name: Oracle
+                driver: pdo_oci8
+                version: 18
+                image: gvenzl/oracle-xe
+                port: 1521
+                user: system
+            - db:
+                name: Oracle
+                driver: pdo_oci8
+                version: 21
+                image: gvenzl/oracle-xe
+                port: 1521
+                user: system
+            - db:
+                name: Oracle
+                driver: oci8
+                version: 23
+                image: gvenzl/oracle-free
+                port: 1521
+                user: system
       fail-fast: false
 
     services:
@@ -85,14 +146,14 @@ jobs:
           MYSQL_DATABASE: solidinvoice
           POSTGRES_PASSWORD: solidinvoice
         ports:
-          - "3306:${{ matrix.db.port }}"
+          - "${{ matrix.db.port }}:${{ matrix.db.port }}"
 
     env:
-      database_driver: pdo_mysql
+      database_driver: ${{ matrix.db.driver }}
       database_host: 127.0.0.1
-      database_port: 3306
+      database_port: ${{ matrix.db.port }}
       database_name: solidinvoice
-      database_user: ${{ matrix.db.name == 'Oracle' && 'system' || matrix.db.name == 'PostgreSQL' && 'postgres' || 'root' }}
+      database_user: ${{ matrix.db.user }}
       database_password: solidinvoice
       database_version: ${{ matrix.db.version }}
 
