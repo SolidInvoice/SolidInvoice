@@ -32,6 +32,8 @@ final class Version20000 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
+        $this->skipIf(! $this->platform instanceof MySQLPlatform, 'Migration can only be executed safely on "mysql".');
+
         $this->schema = $schema;
 
         $this->createTable(

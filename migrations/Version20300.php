@@ -49,6 +49,8 @@ final class Version20300 extends AbstractMigration
 
     public function preUp(Schema $schema): void
     {
+        $this->skipIf(! $this->platform instanceof MySQLPlatform, 'Migration can only be executed safely on "mysql".');
+
         $this->connection
             ->update('client_credit', ['value_amount' => 0], ['value_amount' => null]);
 
@@ -87,6 +89,8 @@ final class Version20300 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
+        $this->skipIf(! $this->platform instanceof MySQLPlatform, 'Migration can only be executed safely on "mysql".');
+
         $recurringInvoices = $schema->getTable('recurring_invoices');
         $invoices = $schema->getTable('invoices');
         $quotes = $schema->getTable('quotes');
