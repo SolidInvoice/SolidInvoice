@@ -162,6 +162,7 @@ final class ViewTest extends KernelTestCase
         $invoice->setId($uuid)
             ->setUuid($uuid)
             ->setInvoiceId('INV-2021-0001')
+            ->updateItems()
         ;
 
         $template = $action($request, $invoice);

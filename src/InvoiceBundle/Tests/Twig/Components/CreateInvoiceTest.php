@@ -42,8 +42,8 @@ final class CreateInvoiceTest extends LiveComponentTest
     public function testCreateInvoiceWithMultipleLines(): void
     {
         $invoice = new Invoice();
-        $invoice->addItem((new Item())->setPrice(10000)->setQty(1));
-        $invoice->addItem((new Item())->setPrice(10000)->setQty(1));
+        $invoice->addItem((new Item())->setPrice(10000)->setQty(1))->updateItems();
+        $invoice->addItem((new Item())->setPrice(10000)->setQty(1))->updateItems();
 
         $component = $this->createLiveComponent(
             name: CreateInvoice::class,
@@ -77,7 +77,7 @@ final class CreateInvoiceTest extends LiveComponentTest
         $em->flush();
 
         $invoice = new Invoice();
-        $invoice->addItem((new Item())->setPrice(10000)->setQty(1));
+        $invoice->addItem((new Item())->setPrice(10000)->setQty(1))->updateItems();
 
         $component = $this->createLiveComponent(
             name: CreateInvoice::class,

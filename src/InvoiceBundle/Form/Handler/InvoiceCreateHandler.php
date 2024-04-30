@@ -21,7 +21,7 @@ use SolidWorx\FormHandler\FormRequest;
  */
 class InvoiceCreateHandler extends AbstractInvoiceHandler
 {
-    public function getResponse(FormRequest $formRequest)
+    public function getResponse(FormRequest $formRequest): Template
     {
         return new Template(
             '@SolidInvoiceInvoice/Default/create.html.twig',

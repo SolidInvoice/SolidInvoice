@@ -21,6 +21,7 @@ use Doctrine\ORM\OptimisticLockException;
 use Mockery as M;
 use Money\Currency;
 use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
@@ -114,7 +115,13 @@ final class InvoiceEditHandlerTest extends FormHandlerTestCase
             ->zeroOrMoreTimes()
             ->with(M::type(InvoiceEmail::class));
 
-        $handler = new InvoiceEditHandler($stateMachine, $recurringStateMachine, $router, $mailer);
+        $handler = new InvoiceEditHandler(
+            $stateMachine,
+            $recurringStateMachine,
+            $router,
+            $mailer,
+            M::mock(TotalCalculator::class),
+        );
         $handler->setDoctrine($this->registry);
 
         return $handler;

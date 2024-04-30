@@ -335,9 +335,11 @@ class Invoice extends BaseInvoice
         return $this->invoiceId;
     }
 
-    public function setInvoiceId(string $invoiceId): void
+    public function setInvoiceId(string $invoiceId): self
     {
         $this->invoiceId = $invoiceId;
+
+        return $this;
     }
 
     public function setId(UuidInterface $id): self

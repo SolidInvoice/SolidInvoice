@@ -15,20 +15,24 @@ namespace SolidInvoice\InvoiceBundle\Form\Handler;
 
 use Generator;
 use Ramsey\Uuid\UuidInterface;
+use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
+use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Form\Type\InvoiceType;
 use SolidInvoice\InvoiceBundle\Form\Type\RecurringInvoiceType;
 use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidWorx\FormHandler\FormHandlerFailInterface;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormHandlerOptionsResolver;
 use SolidWorx\FormHandler\FormHandlerResponseInterface;
 use SolidWorx\FormHandler\FormHandlerSuccessInterface;
 use SolidWorx\FormHandler\FormRequest;
 use SolidWorx\FormHandler\Options;
+use Symfony\Component\Form\FormErrorIterator;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,7 +41,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Workflow\StateMachine;
 
-abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandlerResponseInterface, FormHandlerSuccessInterface, FormHandlerOptionsResolver
+abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandlerResponseInterface, FormHandlerSuccessInterface, FormHandlerOptionsResolver, FormHandlerFailInterface
 {
     use SaveableTrait;
 
@@ -45,7 +49,8 @@ abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandl
         private readonly StateMachine $invoiceStateMachine,
         private readonly StateMachine $recurringInvoiceStateMachine,
         private readonly RouterInterface $router,
-        private readonly MailerInterface $mailer
+        private readonly MailerInterface $mailer,
+        private readonly TotalCalculator $totalCalculator,
     ) {
     }
 
@@ -95,5 +100,15 @@ abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandl
             ->setDefault('recurring', false)
             ->setAllowedTypes('form_options', 'array')
             ->setAllowedTypes('recurring', 'boolean');
+    }
+
+    public function onFail(FormRequest $formRequest, FormErrorIterator $errors, $data = null): ?Response
+    {
+        $invoice = $formRequest->getOptions()->get('invoice');
+        assert($invoice instanceof BaseInvoice);
+
+        $this->totalCalculator->calculateTotals($invoice);
+
+        return null;
     }
 }
