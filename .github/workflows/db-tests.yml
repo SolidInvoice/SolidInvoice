@@ -116,21 +116,21 @@ jobs:
                 user: postgres
             - db:
                 name: Oracle
-                driver: pdo_oci8
+                driver: pdo_oci
                 version: 18
                 image: gvenzl/oracle-xe
                 port: 1521
                 user: system
             - db:
                 name: Oracle
-                driver: pdo_oci8
+                driver: pdo_oci
                 version: 21
                 image: gvenzl/oracle-xe
                 port: 1521
                 user: system
             - db:
                 name: Oracle
-                driver: oci8
+                driver: pdo_oci
                 version: 23
                 image: gvenzl/oracle-free
                 port: 1521
@@ -155,7 +155,7 @@ jobs:
       database_name: solidinvoice
       database_user: ${{ matrix.db.user }}
       database_password: solidinvoice
-      database_version: ${{ matrix.db.version }}
+      database_version: ${{ matrix.db.name == 'MariaDB' && 'mariadb-' }}${{ matrix.db.version }}
 
     steps:
       - name: Harden Runner
