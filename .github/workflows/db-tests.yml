@@ -135,6 +135,14 @@ jobs:
                 image: gvenzl/oracle-free
                 port: 1521
                 user: system
+            - db:
+                name: SQLServer
+                driver: pdo_sqlsrv
+                version: 2019
+                image: mcr.microsoft.com/mssql/server
+                port: 1433
+                user: sa
+
       fail-fast: false
 
     services:
@@ -145,6 +153,9 @@ jobs:
           MYSQL_ROOT_PASSWORD: solidinvoice
           MYSQL_DATABASE: solidinvoice
           POSTGRES_PASSWORD: solidinvoice
+          ACCEPT_EULA: "Y"
+          SA_PASSWORD: "solidinvoice"
+          MSSQL_COLLATION: "Latin1_General_100_CI_AS_SC_UTF8"
         ports:
           - "${{ matrix.db.port }}:${{ matrix.db.port }}"
 
@@ -175,7 +186,7 @@ jobs:
         with:
           php-version: 8.2
           ini-values: date.timezone=Africa/Johannesburg, opcache.enable=1, opcache.enable_cli=1, opcache.memory_consumption=256, opcache.max_accelerated_files=32531, opcache.interned_strings_buffer=8, opcache.validate_timestamps=0, opcache.save_comments=1, opcache.fast_shutdown=0, memory_limit=-1, zend.assertions=1
-          extensions: intl, gd, opcache, ${{ matrix.db.driver }}, zip, :xdebug
+          extensions: intl, gd, opcache, ${{ matrix.db.driver == 'pdo_sqlsrv' && 'pdo_sql_srv-5.10.0beta1' || '' }}, {{ matrix.db.driver == 'pdo_sqlsrv' && 'pdo_sql_srv-5.10.0beta1' || '' }}, zip, :xdebug
         env:
           fail-fast: true
 
