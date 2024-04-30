@@ -50,30 +50,15 @@ class MoneyFormatterExtension extends AbstractExtension
                     $currency = new Currency($currency);
                 }
 
-                //return $this->formatter->format(new Money((string) BigNumber::of($value)->toScale(0, RoundingMode::HALF_EVEN), $currency ?? $this->systemConfig->getCurrency()));
-
                 $value = BigNumber::of($value)->toBigDecimal();
 
                 if ($value->getScale() > 0) {
                     $value = $value->toScale(0, RoundingMode::HALF_EVEN);
                 }
 
-                try {
-                    return $this
-                        ->formatter
-                        ->format(
-                            new Money(
-                                (string) $value
-                                    //->toBigDecimal()
-                                    //->multipliedBy(100)
-                                    //->toScale(0, RoundingMode::HALF_EVEN)
-                                ,
-                                $currency ?? $this->systemConfig->getCurrency()
-                            )
-                        );
-                } catch (\Throwable $e) {
-                    dd($e, $value, (string) $value);
-                }
+                return $this
+                    ->formatter
+                    ->format(new Money((string) $value, $currency ?? $this->systemConfig->getCurrency()));
             }),
         ];
     }
