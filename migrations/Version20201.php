@@ -15,6 +15,7 @@ namespace DoctrineMigrations;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Table;
@@ -52,6 +53,8 @@ final class Version20201 extends AbstractMigration implements ContainerAwareInte
 
     public function preUp(Schema $schema): void
     {
+        $this->skipIf(! $this->platform instanceof MySQLPlatform, 'Migration can only be executed safely on "mysql".');
+
         // Trigger DB introspection to get the schema at the current state
         // otherwise this only happens after the migration is applied which
         // means we can't compare the schema before and after the migration
@@ -61,6 +64,8 @@ final class Version20201 extends AbstractMigration implements ContainerAwareInte
 
     public function up(Schema $schema): void
     {
+        $this->skipIf(! $this->platform instanceof MySQLPlatform, 'Migration can only be executed safely on "mysql".');
+
         $this->schema = clone $schema;
 
         $this->schema->getTable('quote_contact')

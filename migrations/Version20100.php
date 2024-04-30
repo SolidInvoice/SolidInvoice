@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace DoctrineMigrations;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Table;
@@ -32,6 +33,8 @@ final class Version20100 extends AbstractMigration implements ContainerAwareInte
 
     public function up(Schema $schema): void
     {
+        $this->skipIf(! $this->platform instanceof MySQLPlatform, 'Migration can only be executed safely on "mysql".');
+
         $this->schema = $schema;
         $schema->dropTable('ext_translations');
 

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -24,6 +25,8 @@ final class Version20102 extends AbstractMigration implements ContainerAwareInte
 
     public function up(Schema $schema): void
     {
+        $this->skipIf(! $this->platform instanceof MySQLPlatform, 'Migration can only be executed safely on "mysql".');
+
         $this->connection
             ->delete('app_config', ['setting_key' => 'design/system/theme']);
     }

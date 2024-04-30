@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace DoctrineMigrations;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\Migrations\AbstractMigration;
@@ -25,6 +26,8 @@ final class Version20000 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
+        $this->skipIf(! $this->platform instanceof MySQLPlatform, 'Migration can only be executed safely on "mysql".');
+
         $this->schema = $schema;
 
         $this->createTable(
