@@ -155,7 +155,7 @@ jobs:
       database_name: solidinvoice
       database_user: ${{ matrix.db.user }}
       database_password: solidinvoice
-      database_version: ${{ matrix.db.name == 'MariaDB' && 'mariadb-' }}${{ matrix.db.version }}
+      database_version: ${{ matrix.db.name == 'MariaDB' && 'mariadb-' }}${{ matrix.db.version }}${{ matrix.db.name == 'MariaDB' && '.0' }}
 
     steps:
       - name: Harden Runner
