@@ -63,31 +63,6 @@
     {% include "@SolidInvoiceClient/Form/contacts.html.twig" %}
 {% endblock contact_widget %}
 
-{#{% block tax_field_widget -%}
-    {% if expanded %}
-        {{- block('choice_widget_expanded') -}}
-    {% else %}
-        {% set attr = attr|merge({'class': attr.class|default('') ~ ' form-control'}) %}
-        {% if required and placeholder is none and not placeholder_in_choices %}
-            {% set required = false %}
-        {% endif %}
-        <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
-            {% if placeholder is not none %}
-                <option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ placeholder|trans({}, translation_domain) }}</option>
-            {% endif %}
-            {% if preferred_choices|length > 0 %}
-                {% set options = preferred_choices %}
-                {{ block('choice_widget_options') }}
-                {% if choices|length > 0 and separator is not none %}
-                    <option disabled="disabled">{{ separator }}</option>
-                {% endif %}
-            {% endif %}
-            {% set options = choices %}
-            {{ block('tax_choice_widget_options') }}
-        </select>
-    {% endif %}
-{%- endblock %}#}
-
 {% block tax_number_widget -%}
     <div class="input-group">
         {{ form_widget(form) }}
@@ -174,31 +149,6 @@
     <div class="form-group multiple-form-group input-group">
         {{ form_widget(form.value) }}
         {{ form_widget(form.type) }}
-        {#<div class="input-group-btn input-group-select">
-            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
-            <span class="concept" id="discount-display">
-                {% if form.type.vars.value == 'money' %}
-                    <span class="currency-view">{{ currency }}</span>
-                {% else %}
-                    %
-                {% endif %}
-            </span> <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" role="menu">
-                {% for type in form.vars.types %}
-                    <li class="nav-item">
-                        <a href="#" class="nav-link discount-types{% if type.name == form.type.vars.value %} d-none{% endif %}" data-symbol="{{ type.symbol }}" data-name="{{ type.name }}">
-                            {% if type.name == constant('SolidInvoice\\CoreBundle\\Entity\\Discount::TYPE_MONEY') %}
-                                <span class="currency-view">{{ currency }}</span>
-                            {% else %}
-                                {{ type.symbol }}
-                            {% endif %}
-                        </a>
-                    </li>
-                {% endfor %}
-            </ul>
-            {{ form_widget(form.type) }}
-        </div>#}
     </div>
 {% endblock discount_row %}
 

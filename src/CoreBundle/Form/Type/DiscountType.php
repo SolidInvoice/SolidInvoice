@@ -58,8 +58,6 @@ class DiscountType extends AbstractType
             'type',
             ChoiceType::class,
             [
-                /*'empty_data' => 'percentage',
-                'placeholder' => 'percentage',*/
                 'attr' => [
                     'class' => 'discount-type'
                 ],
