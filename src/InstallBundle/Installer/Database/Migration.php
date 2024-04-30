@@ -46,7 +46,7 @@ final class Migration
 
         $schemaTool = new SchemaTool($em);
 
-        $schemaTool->createSchema($tables);
+        $schemaTool->updateSchema($tables);
 
         $now = new DateTimeImmutable();
 
