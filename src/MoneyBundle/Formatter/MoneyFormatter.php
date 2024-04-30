@@ -15,7 +15,6 @@ namespace SolidInvoice\MoneyBundle\Formatter;
 
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
-use Brick\Math\RoundingMode;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency;
 use Money\Formatter\IntlMoneyFormatter;
@@ -106,7 +105,6 @@ final class MoneyFormatter implements MoneyFormatterInterface
     {
         return $amount
             ->toBigDecimal()
-            //->dividedBy(100, 2, RoundingMode::HALF_EVEN)
             ->toFloat();
     }
 
