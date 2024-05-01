@@ -15,7 +15,6 @@ namespace SolidInvoice\QuoteBundle\Tests\Listener;
 
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
-use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -24,20 +23,23 @@ use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Listener\WorkFlowSubscriber;
 use SolidInvoice\QuoteBundle\Mailer\QuoteMailer;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Workflow\Event\Event;
 use Symfony\Component\Workflow\Marking;
 use Symfony\Component\Workflow\StateMachine;
 use Symfony\Component\Workflow\Transition;
 use Symfony\Component\Workflow\WorkflowInterface;
+use Zenstruck\Foundry\Test\Factories;
 
 /**
  * @covers \SolidInvoice\QuoteBundle\Listener\WorkFlowSubscriber
  */
-final class WorkFlowSubscriberTest extends TestCase
+final class WorkFlowSubscriberTest extends KernelTestCase
 {
     use DoctrineTestTrait;
     use MockeryPHPUnitIntegration;
+    use Factories;
 
     public function testOnQuoteAccepted(): void
     {
