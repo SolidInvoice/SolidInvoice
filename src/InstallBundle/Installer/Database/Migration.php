@@ -26,9 +26,6 @@ final class Migration
     ) {
     }
 
-    /**
-     * @throws ToolsException
-     */
     public function migrate(): void
     {
         $metadataStorage = $this->migrationDependencyFactory->getMetadataStorage();
@@ -46,7 +43,7 @@ final class Migration
 
         $schemaTool = new SchemaTool($em);
 
-        $schemaTool->updateSchema($tables);
+        $schemaTool->updateSchema($tables, true);
 
         $now = new DateTimeImmutable();
 
