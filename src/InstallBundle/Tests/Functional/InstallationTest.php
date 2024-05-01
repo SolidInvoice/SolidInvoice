@@ -75,6 +75,11 @@ class InstallationTest extends PantherTestCase
 
         try {
             // Configuration page
+
+            // use a random database name to ensure installation process
+            // can create the database and schema
+            $dbName = bin2hex(random_bytes(5));
+
             $crawler = $client->submitForm(
                 'Next',
                 [
@@ -82,14 +87,14 @@ class InstallationTest extends PantherTestCase
                     'config_step[database_config][host]' => getenv('database_host') ?: '127.0.0.1',
                     'config_step[database_config][user]' => 'root',
                     'config_step[database_config][password]' => '',
-                    'config_step[database_config][name]' => 'solidinvoice_test',
+                    'config_step[database_config][name]' => $dbName,
                 ]
             );
 
             self::assertStringContainsString('/install/install', $crawler->getUri());
 
             $kernel = self::bootKernel();
-            self::assertSame('solidinvoice_test', $kernel->getContainer()->getParameter('env(database_name)'));
+            self::assertSame($dbName, $kernel->getContainer()->getParameter('env(database_name)'));
 
             // Wait for installation steps to be completed
             $time = microtime(true);

@@ -17,7 +17,6 @@ use DateTimeImmutable;
 use Doctrine\Migrations\DependencyFactory;
 use Doctrine\Migrations\Version\ExecutionResult;
 use Doctrine\ORM\Tools\SchemaTool;
-use Doctrine\ORM\Tools\ToolsException;
 
 final class Migration
 {
