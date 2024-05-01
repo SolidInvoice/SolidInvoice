@@ -120,7 +120,7 @@ jobs:
           verbose: true
 
       - name: Add comment to PR with failure screenshots
-        uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea
         if: ${{ failure() }}
         env:
             CLOUDINARY_URL: cloudinary://${{ secrets.CLOUDINARY_API_KEY }}:${{ secrets.CLOUDINARY_API_SECRET }}@${{ secrets.CLOUDINARY_CLOUD_NAME }}
