@@ -421,11 +421,6 @@ parameters:
 			path: src/InstallBundle/Command/InstallCommand.php
 
 		-
-			message: "#^Method SolidInvoice\\\\InstallBundle\\\\Tests\\\\Form\\\\Step\\\\SystemInformationFormTest\\:\\:getExtensions\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/InstallBundle/Tests/Form/Step/SystemInformationFormTest.php
-
-		-
 			message: "#^Call to an undefined method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:getId\\(\\)\\.$#"
 			count: 1
 			path: src/InvoiceBundle/Action/CloneInvoice.php
