@@ -716,11 +716,6 @@ parameters:
 			path: src/PaymentBundle/Form/Type/PaymentMethodSettingsType.php
 
 		-
-			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Form\\\\Type\\\\PaymentMethodSettingsType\\:\\:getType\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/PaymentBundle/Form/Type/PaymentMethodSettingsType.php
-
-		-
 			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Form\\\\Type\\\\PaymentMethodSettingsType\\:\\:getType\\(\\) has parameter \\$type with no type specified\\.$#"
 			count: 1
 			path: src/PaymentBundle/Form/Type/PaymentMethodSettingsType.php
