@@ -83,6 +83,7 @@ final class ViewTest extends KernelTestCase
                 'notes' => 'Test Notes',
                 'discount' => new Discount(),
                 'due' => new DateTimeImmutable('2021-09-30'),
+                'invoiceDate' => new DateTimeImmutable('2021-09-30'),
                 'tax' => 0,
             ])
             ->object();
@@ -145,6 +146,7 @@ final class ViewTest extends KernelTestCase
                 'notes' => 'Test Notes',
                 'discount' => new Discount(),
                 'due' => new DateTimeImmutable('2021-09-30'),
+                'invoiceDate' => new DateTimeImmutable('2021-09-30'),
                 'tax' => 0,
             ])
             ->object();
