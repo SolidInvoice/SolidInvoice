@@ -33,7 +33,7 @@ class SystemInformationFormTest extends FormTestCase
         $this->assertFormData($this->factory->create(SystemInformationForm::class, null, ['userCount' => 0]), $formData, $formData);
     }
 
-    protected function getExtensions()
+    protected function getExtensions(): array
     {
         return [
             new PreloadedExtension([new CurrencyType('en')], []),
