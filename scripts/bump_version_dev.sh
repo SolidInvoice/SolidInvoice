@@ -4,7 +4,7 @@
 if [ -n "$GITHUB_ACTIONS" ]; then
   git config --local user.email "action@github.com"
   git config --local user.name "GitHub Action"
-  git remote set-url origin https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+  git remote set-url origin https://"${GITHUB_ACTOR}":"${GITHUB_TOKEN}"@github.com/"${GITHUB_REPOSITORY}".git
 fi
 
 # File path
@@ -18,11 +18,11 @@ bump_version() {
   local increment=$3
 
   IFS='.' read -ra parts <<< "$version"
-  ((parts[$field]+=increment))
+  ((parts[field]+=increment))
 
-  if [ $field -lt 2 ]; then
+  if [ "$field" -lt 2 ]; then
     for i in $(seq $((field+1)) 2); do
-      parts[$i]=0
+      parts[i]=0
     done
   fi
 
@@ -36,11 +36,11 @@ current_version=$(awk -F\' '/public const VERSION/ {print $2}' $FILE)
 clean_version="${current_version%-dev}"
 
 # Bump to next dev version
-dev_version=$(bump_version $clean_version 2 1)-dev
+dev_version=$(bump_version "$clean_version" 2 1)-dev
 
 # Update file with next dev version
 sed -i "s/public const VERSION = '.*';/public const VERSION = '$dev_version';/" $FILE
-jq --arg version "$dev_version" '.version=$version' --indent 4 $PACKAGE_JSON > tmp.json && mv tmp.json $PACKAGE_JSON
+jq --arg version "$dev_version" '.version=$version' --indent 2 $PACKAGE_JSON > tmp.json && mv tmp.json $PACKAGE_JSON
 
 git add $FILE $PACKAGE_JSON
 git commit -m "Bump to dev version $dev_version"
