@@ -1,19 +1,13 @@
 <html><body>
-<section class="row" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="Settings" data-live-url-value="/_components/Settings" data-live-query-mapping-value='{"section":{"name":"section"}}' data-live-props-value='{"section":"email","formName":"settings","settings":{"company":{"company_name":"SolidInvoice","logo":"","vat_number":"","contact_details":{"email":"","phone_number":"","address":{"street1":"","street2":"","city":"","state":"","zip":"","country":""}},"currency":"USD"},"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"R5baPGpKwxj6uuntuNbaRaDyaoLAuLx4jJb6R\/VrfHw="}' data-live-csrf-value="">
+<section class="row" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="Settings" data-live-url-value="/_components/Settings" data-live-query-mapping-value='{"section":{"name":"section"}}' data-live-props-value='{"section":"email","formName":"settings","settings":{"company":{"logo":"","company_name":"SolidInvoice","contact_details":{"address":{"street1":"","street2":"","city":"","state":"","zip":"","country":""},"email":"","phone_number":""},"currency":"USD","vat_number":""},"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"R5baPGpKwxj6uuntuNbaRaDyaoLAuLx4jJb6R\/VrfHw="}' data-live-csrf-value="">
     <aside class="col-3">
         <div class="card sticky-top">
             <div class="card-body">
                 <ul class="nav nav-pills nav-sidebar flex-column sidebar-menu" role="tablist">
                                             <li class="nav-item">
-                            <a href="/settings?section=system" class="nav-link">
+                            <a href="/settings?section=email" class="nav-link active">
                                 <i class="fa fa-cog"></i>
-                                <p>System</p>
-                            </a>
-                        </li>
-                                            <li class="nav-item">
-                            <a href="/settings?section=quote" class="nav-link">
-                                <i class="fa fa-cog"></i>
-                                <p>Quote</p>
+                                <p>Email</p>
                             </a>
                         </li>
                                             <li class="nav-item">
@@ -23,9 +17,15 @@
                             </a>
                         </li>
                                             <li class="nav-item">
-                            <a href="/settings?section=email" class="nav-link active">
+                            <a href="/settings?section=notification" class="nav-link">
                                 <i class="fa fa-cog"></i>
-                                <p>Email</p>
+                                <p>Notification</p>
+                            </a>
+                        </li>
+                                            <li class="nav-item">
+                            <a href="/settings?section=quote" class="nav-link">
+                                <i class="fa fa-cog"></i>
+                                <p>Quote</p>
                             </a>
                         </li>
                                             <li class="nav-item">
@@ -35,9 +35,9 @@
                             </a>
                         </li>
                                             <li class="nav-item">
-                            <a href="/settings?section=notification" class="nav-link">
+                            <a href="/settings?section=system" class="nav-link">
                                 <i class="fa fa-cog"></i>
-                                <p>Notification</p>
+                                <p>System</p>
                             </a>
                         </li>
                                     </ul>
@@ -57,10 +57,10 @@
                 <div class="card-body">
                     <div id="settings" data-model="norender|*">
 <div class="form-group">                
-            <label class="control-label" for="settings_from_name">From name</label><input type="text" id="settings_from_name" name="settings[from_name]" class="form-control" value="SolidInvoice">
+            <label class="control-label" for="settings_from_address">From address</label><input type="text" id="settings_from_address" name="settings[from_address]" class="form-control" value="info@solidinvoice.co">
 </div>
 <div class="form-group">                
-            <label class="control-label" for="settings_from_address">From address</label><input type="text" id="settings_from_address" name="settings[from_address]" class="form-control" value="info@solidinvoice.co">
+            <label class="control-label" for="settings_from_name">From name</label><input type="text" id="settings_from_name" name="settings[from_name]" class="form-control" value="SolidInvoice">
 </div>
 <fieldset class="form-group">                
     <div id="settings_sending_options"><fieldset class="form-group">                

@@ -94,7 +94,7 @@ class InstallationTest extends PantherTestCase
             self::assertStringContainsString('/install/install', $crawler->getUri());
 
             $kernel = self::bootKernel();
-            self::assertSame($dbName, $kernel->getContainer()->getParameter('env(database_name)'));
+            self::assertSame('solidinvoice_test', $kernel->getContainer()->getParameter('env(database_name)'));
 
             // Wait for installation steps to be completed
             $time = microtime(true);

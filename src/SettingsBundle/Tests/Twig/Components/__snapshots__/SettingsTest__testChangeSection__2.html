@@ -1,19 +1,13 @@
 <html><body>
-<section class="row" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="Settings" data-live-url-value="/_components/Settings" data-live-query-mapping-value='{"section":{"name":"section"}}' data-live-props-value='{"section":"invoice","formName":"settings","settings":{"company":{"company_name":"SolidInvoice","logo":"","vat_number":"","contact_details":{"email":"","phone_number":"","address":{"street1":"","street2":"","city":"","state":"","zip":"","country":""}},"currency":"USD"},"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"D5pDB6Nn86puS5NcOWszhTNgmJmsB5\/kqS6GtyY8lBI="}' data-live-csrf-value="">
+<section class="row" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="Settings" data-live-url-value="/_components/Settings" data-live-query-mapping-value='{"section":{"name":"section"}}' data-live-props-value='{"section":"invoice","formName":"settings","settings":{"company":{"logo":"","company_name":"SolidInvoice","contact_details":{"address":{"street1":"","street2":"","city":"","state":"","zip":"","country":""},"email":"","phone_number":""},"currency":"USD","vat_number":""},"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"D5pDB6Nn86puS5NcOWszhTNgmJmsB5\/kqS6GtyY8lBI="}' data-live-csrf-value="">
     <aside class="col-3">
         <div class="card sticky-top">
             <div class="card-body">
                 <ul class="nav nav-pills nav-sidebar flex-column sidebar-menu" role="tablist">
                                             <li class="nav-item">
-                            <a href="/settings?section=system" class="nav-link">
+                            <a href="/settings?section=email" class="nav-link">
                                 <i class="fa fa-cog"></i>
-                                <p>System</p>
-                            </a>
-                        </li>
-                                            <li class="nav-item">
-                            <a href="/settings?section=quote" class="nav-link">
-                                <i class="fa fa-cog"></i>
-                                <p>Quote</p>
+                                <p>Email</p>
                             </a>
                         </li>
                                             <li class="nav-item">
@@ -23,9 +17,15 @@
                             </a>
                         </li>
                                             <li class="nav-item">
-                            <a href="/settings?section=email" class="nav-link">
+                            <a href="/settings?section=notification" class="nav-link">
                                 <i class="fa fa-cog"></i>
-                                <p>Email</p>
+                                <p>Notification</p>
+                            </a>
+                        </li>
+                                            <li class="nav-item">
+                            <a href="/settings?section=quote" class="nav-link">
+                                <i class="fa fa-cog"></i>
+                                <p>Quote</p>
                             </a>
                         </li>
                                             <li class="nav-item">
@@ -35,9 +35,9 @@
                             </a>
                         </li>
                                             <li class="nav-item">
-                            <a href="/settings?section=notification" class="nav-link">
+                            <a href="/settings?section=system" class="nav-link">
                                 <i class="fa fa-cog"></i>
-                                <p>Notification</p>
+                                <p>System</p>
                             </a>
                         </li>
                                     </ul>
@@ -56,28 +56,19 @@
                 </div>
                 <div class="card-body">
                     <div id="settings" data-model="norender|*">
-<div class="form-group">                
-            <label class="control-label" for="settings_email_subject">Email subject</label><input type="text" id="settings_email_subject" name="settings[email_subject]" aria-describedby="settings_email_subject_help" class="form-control" value="New Invoice - #{id}"><div class="alert alert-info mt-2">
-            <small id="settings_email_subject_help" class="form-text ">To include the id of the invoice in the subject, add the placeholder {id} where you want the id</small>
-        </div>
-</div>
-<div class="form-group">                
+<div class="form-group">
             <label class="control-label" for="settings_bcc_address">Bcc address</label><input type="email" id="settings_bcc_address" name="settings[bcc_address]" aria-describedby="settings_bcc_address_help" class="form-control"><div class="alert alert-info mt-2">
             <small id="settings_bcc_address_help" class="form-text ">Send BCC copy of invoice to this address</small>
         </div>
 </div>
 <div class="form-group">
-<div class="form-check">        
-        <input type="checkbox" id="settings_watermark" name="settings[watermark]" aria-describedby="settings_watermark_help" class="form-check-input" value="1" checked>
-        <label class="form-check-label" for="settings_watermark">Watermark</label>
-</div>
-<div class="alert alert-info mt-2">
-            <small id="settings_watermark_help" class="form-text ">Display a watermark on the invoice with the status</small>
+            <label class="control-label" for="settings_email_subject">Email subject</label><input type="text" id="settings_email_subject" name="settings[email_subject]" aria-describedby="settings_email_subject_help" class="form-control" value="New Invoice - #{id}"><div class="alert alert-info mt-2">
+            <small id="settings_email_subject_help" class="form-text ">To include the id of the invoice in the subject, add the placeholder {id} where you want the id</small>
         </div>
 </div>
-<fieldset class="form-group">                
+<fieldset class="form-group">
     <div id="settings_id_generation">
-<div class="form-group">                
+<div class="form-group">
             <label class="control-label" for="settings_id_generation_strategy">Strategy</label><select id="settings_id_generation_strategy" name="settings[id_generation][strategy]" class="form-control"><option value=""></option>
 <option value="auto_increment" selected>Auto Increment</option>
 <option value="random_number">Random Number</option>
@@ -85,12 +76,12 @@
 <option value="ulid">Ulid</option>
 <option value="uuid">Uuid</option></select>
 </div>
-<div class="form-group">                
+<div class="form-group">
             <label class="control-label" for="settings_id_generation_id_prefix">Id prefix</label><input type="text" id="settings_id_generation_id_prefix" name="settings[id_generation][id_prefix]" aria-describedby="settings_id_generation_id_prefix_help" class="form-control"><div class="alert alert-info mt-2">
             <small id="settings_id_generation_id_prefix_help" class="form-text ">Example: INV-</small>
         </div>
 </div>
-<div class="form-group">                
+<div class="form-group">
             <label class="control-label" for="settings_id_generation_id_suffix">Id suffix</label><input type="text" id="settings_id_generation_id_suffix" name="settings[id_generation][id_suffix]" aria-describedby="settings_id_generation_id_suffix_help" class="form-control"><div class="alert alert-info mt-2">
             <small id="settings_id_generation_id_suffix_help" class="form-text ">Example: -INV</small>
         </div>
