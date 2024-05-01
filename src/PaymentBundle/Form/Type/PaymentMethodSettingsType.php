@@ -66,12 +66,12 @@ class PaymentMethodSettingsType extends AbstractType
         $resolver->setRequired(['settings']);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'method_settings';
     }
 
-    private function getType($type)
+    private function getType($type): string
     {
         return match ($type) {
             'password' => PasswordType::class,
