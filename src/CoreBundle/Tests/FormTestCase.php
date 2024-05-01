@@ -30,24 +30,32 @@ use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormExtensionInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\Form\FormTypeExtensionInterface;
+use Symfony\Component\Form\FormTypeGuesserInterface;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\PreloadedExtension;
-use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-abstract class FormTestCase extends TypeTestCase
+abstract class FormTestCase extends KernelTestCase
 {
     use DoctrineTestTrait;
     use MockeryPHPUnitIntegration;
 
     protected Generator $faker;
+
+    protected FormBuilder $builder;
+
+    protected EventDispatcherInterface $dispatcher;
+
+    protected FormFactoryInterface $factory;
 
     /**
      * @throws Exception
@@ -62,6 +70,7 @@ abstract class FormTestCase extends TypeTestCase
             ->addExtensions($this->getInternalExtension())
             ->addTypeExtensions($this->getTypedExtensions())
             ->addTypes($this->getTypes())
+            ->addTypeGuessers($this->getTypeGuessers())
             ->getFormFactory();
 
         $this->dispatcher = M::mock(EventDispatcherInterface::class);
@@ -152,4 +161,28 @@ abstract class FormTestCase extends TypeTestCase
     }
 
     abstract public function testSubmit(): void;
+
+    /**
+     * @return array<FormExtensionInterface>
+     */
+    protected function getExtensions(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return array<FormTypeExtensionInterface>
+     */
+    protected function getTypeExtensions(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return array<FormTypeGuesserInterface>
+     */
+    protected function getTypeGuessers(): array
+    {
+        return [];
+    }
 }

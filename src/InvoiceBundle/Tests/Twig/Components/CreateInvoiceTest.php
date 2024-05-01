@@ -12,6 +12,7 @@
 namespace SolidInvoice\InvoiceBundle\Tests\Twig\Components;
 
 use Brick\Math\Exception\MathException;
+use DateTimeImmutable;
 use Ramsey\Uuid\Uuid;
 use SolidInvoice\CoreBundle\Test\LiveComponentTest;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -41,7 +42,7 @@ final class CreateInvoiceTest extends LiveComponentTest
      */
     public function testCreateInvoiceWithMultipleLines(): void
     {
-        $invoice = new Invoice();
+        $invoice = (new Invoice())->setInvoiceDate(new DateTimeImmutable('2021-01-01'));
         $invoice->addItem((new Item())->setPrice(10000)->setQty(1))->updateItems();
         $invoice->addItem((new Item())->setPrice(10000)->setQty(1))->updateItems();
 
@@ -76,7 +77,7 @@ final class CreateInvoiceTest extends LiveComponentTest
 
         $em->flush();
 
-        $invoice = new Invoice();
+        $invoice = (new Invoice())->setInvoiceDate(new DateTimeImmutable('2021-01-01'));
         $invoice->addItem((new Item())->setPrice(10000)->setQty(1))->updateItems();
 
         $component = $this->createLiveComponent(

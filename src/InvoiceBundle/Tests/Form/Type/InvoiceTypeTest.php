@@ -33,9 +33,12 @@ use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\UX\Autocomplete\Form\AutocompleteChoiceTypeExtension;
 use Symfony\UX\Autocomplete\Form\ParentEntityAutocompleteType;
+use Zenstruck\Foundry\Test\Factories;
 
 class InvoiceTypeTest extends FormTestCase
 {
+    use Factories;
+
     public function testSubmit(): void
     {
         $notes = $this->faker->text;
