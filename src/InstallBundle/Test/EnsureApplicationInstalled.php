@@ -70,6 +70,6 @@ trait EnsureApplicationInstalled
      */
     public function clearEnv(): void
     {
-        unset($_SERVER['locale'], $_ENV['locale'], $_SERVER['installed'], $_ENV['installed']);
+        //unset($_SERVER['locale'], $_ENV['locale'], $_SERVER['installed'], $_ENV['installed']);
     }
 }
