@@ -31,6 +31,10 @@ trait EnsureApplicationInstalled
      */
     public function installApplication(): void
     {
+        if (self::$booted) {
+            return;
+        }
+
         self::bootKernel();
 
         $_SERVER['locale'] = $_ENV['locale'] = 'en_US';
@@ -68,6 +72,6 @@ trait EnsureApplicationInstalled
      */
     public function clearEnv(): void
     {
-        unset($_SERVER['locale'], $_ENV['locale'], $_SERVER['installed'], $_ENV['installed']);
+        //unset($_SERVER['locale'], $_ENV['locale'], $_SERVER['installed'], $_ENV['installed']);
     }
 }
