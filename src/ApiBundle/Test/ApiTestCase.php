@@ -21,9 +21,12 @@ use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\UserBundle\Entity\User;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\BrowserKit\AbstractBrowser;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Panther\PantherTestCase;
+use function class_exists;
 use function password_hash;
 
 /**
@@ -39,7 +42,17 @@ abstract class ApiTestCase extends PantherTestCase
     {
         parent::setUp();
 
-        self::$client = static::createClient();
+        try {
+            /** @var KernelBrowser $client */
+            self::$client = self::getContainer()->get('test.client');
+        } catch (ServiceNotFoundException $e) {
+            if (class_exists(KernelBrowser::class)) {
+                throw new \LogicException('You cannot create the client used in functional tests if the "framework.test" config is not set to true.');
+            }
+            throw new \LogicException('You cannot create the client used in functional tests if the BrowserKit component is not available. Try running "composer require symfony/browser-kit"');
+        }
+
+        //self::$client = static::createClient();
 
         $registry = self::getContainer()->get('doctrine');
 
@@ -52,10 +65,10 @@ abstract class ApiTestCase extends PantherTestCase
         /** @var Company[] $companies */
         $companies = $companyRepository->findAll();
 
-        $commit = false;
+        //$commit = false;
 
         if ([] === $users) {
-            $commit = true;
+            //$commit = true;
             $user = new User();
             $user->setEmail('test@example.com')
                 ->setEnabled(true)
@@ -77,10 +90,10 @@ abstract class ApiTestCase extends PantherTestCase
 
         self::$client->setServerParameter('HTTP_X_API_TOKEN', $token->getToken());
 
-        if ($commit) {
+        /*if ($commit) {
             StaticDriver::commit();
             StaticDriver::beginTransaction();
-        }
+        }*/
     }
 
     /**
