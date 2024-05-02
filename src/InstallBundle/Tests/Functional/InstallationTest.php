@@ -13,14 +13,18 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Tests\Functional;
 
+use Doctrine\DBAL\Connection;
+use Doctrine\Persistence\ManagerRegistry;
 use Exception;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Panther\Client;
 use Symfony\Component\Panther\PantherTestCase;
+use function bin2hex;
 use function count;
 use function file_exists;
+use function random_bytes;
 use function realpath;
-use function rename;
 use function unlink;
 
 /**
@@ -28,32 +32,46 @@ use function unlink;
  */
 class InstallationTest extends PantherTestCase
 {
-    public static function setUpBeforeClass(): void
-    {
-        $configFile = realpath(static::$defaultOptions['webServerDir'] . '/../') . '/config/env/env.php';
-        if (file_exists($configFile)) {
-            rename($configFile, $configFile . '.tmp');
-        }
-    }
-
-    public static function tearDownAfterClass(): void
-    {
-        $configFile = realpath(static::$defaultOptions['webServerDir'] . '/../') . '/config/env/env.php';
-        if (file_exists($configFile . '.tmp')) {
-            rename($configFile . '.tmp', $configFile);
-        }
-    }
+    private bool $hasEnvFile = false;
 
     protected function setUp(): void
     {
+        $fs = new Filesystem();
+        $configFile = realpath(static::$defaultOptions['webServerDir'] . '/../') . '/config/env/env.php';
+        if ($fs->exists($configFile)) {
+            $fs->rename($configFile, $configFile . '.tmp');
+            $this->hasEnvFile = true;
+        }
+
         parent::setUp();
 
         unset($_SERVER['locale'], $_ENV['locale'], $_SERVER['installed'], $_ENV['installed']);
     }
 
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        $fs = new Filesystem();
+
+        $configFile = realpath(static::$defaultOptions['webServerDir'] . '/../') . '/config/env/env.php';
+        if ($fs->exists($configFile . '.tmp')) {
+            $fs->rename($configFile . '.tmp', $configFile);
+        }
+
+        if (! $this->hasEnvFile && $fs->exists($configFile)) {
+            $fs->remove($configFile);
+        }
+    }
+
     public function testItRedirectsToInstallationPage(): void
     {
-        $client = self::createPantherClient();
+        $client = self::createPantherClient([
+            'env' => [
+                'SOLIDINVOICE_ENV' => 'test',
+                'SOLIDINVOIE_DEBUG' => '0',
+            ],
+        ]);
 
         $crawler = $client->request('GET', '/');
 
@@ -62,7 +80,12 @@ class InstallationTest extends PantherTestCase
 
     public function testApplicationInstallation(): void
     {
-        $client = self::createPantherClient();
+        $client = self::createPantherClient([
+            'env' => [
+                'SOLIDINVOICE_ENV' => 'test',
+                'SOLIDINVOIE_DEBUG' => '0',
+            ],
+        ]);
 
         $crawler = $client->request('GET', '/install');
 
@@ -72,6 +95,10 @@ class InstallationTest extends PantherTestCase
         $this->continue($client, $crawler);
 
         self::assertStringContainsString('/install/config', $client->getCurrentURL());
+
+        // use a random database name to ensure installation process
+        // can create the database and schema
+        $dbName = 'test_' . bin2hex(random_bytes(5));
 
         try {
             // Configuration page
@@ -94,7 +121,9 @@ class InstallationTest extends PantherTestCase
             self::assertStringContainsString('/install/install', $crawler->getUri());
 
             $kernel = self::bootKernel();
-            self::assertSame('solidinvoice_test', $kernel->getContainer()->getParameter('env(database_name)'));
+            self::assertSame($dbName, (function () {
+                return $this->getEnv('database_name');
+            })(...)->call($kernel->getContainer()));
 
             // Wait for installation steps to be completed
             $time = microtime(true);
@@ -131,6 +160,20 @@ class InstallationTest extends PantherTestCase
             $configFile = realpath(static::$defaultOptions['webServerDir'] . '/../') . '/config/env/env.php';
             if (file_exists($configFile)) {
                 unlink($configFile);
+            }
+
+            /** @var ManagerRegistry $doctrine */
+            $doctrine = self::getContainer()->get('doctrine');
+
+            /** @var Connection $conn */
+            $conn = $doctrine->getConnection();
+
+            try {
+                $conn
+                    ->createSchemaManager()
+                    ->dropDatabase($dbName);
+            } catch (\Doctrine\DBAL\Exception $e) {
+                // Database doesn't exist
             }
         }
     }
