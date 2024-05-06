@@ -110,7 +110,7 @@
         "symfony/serializer": "^5.4",
         "symfony/stimulus-bundle": "^2.15",
         "symfony/swiftmailer-bundle": "^3.4",
-        "symfony/translation": "^5.4",
+        "symfony/translation": "^6.4",
         "symfony/twig-bridge": "^5.4.31",
         "symfony/twig-bundle": "^5.4",
         "symfony/uid": "^5.4",
