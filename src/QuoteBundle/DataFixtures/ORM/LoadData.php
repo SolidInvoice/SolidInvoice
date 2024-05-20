@@ -31,7 +31,7 @@ class LoadData extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $client = $this->getReference('client');
+        /*$client = $this->getReference('client');
         assert($client instanceof Client);
 
         $contact = $this->getReference('contact');
@@ -53,6 +53,6 @@ class LoadData extends Fixture
 
         $manager->persist($item);
         $manager->persist($quote);
-        $manager->flush();
+        $manager->flush();*/
     }
 }

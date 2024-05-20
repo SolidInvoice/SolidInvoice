@@ -25,7 +25,7 @@ class LoadData extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $payment = new Payment();
+        /*$payment = new Payment();
         $payment->setClient($this->getReference('client'));
         $payment->setDescription('Payment');
         $payment->setStatus(Status::STATUS_CAPTURED);
@@ -33,6 +33,6 @@ class LoadData extends Fixture
         $this->setReference('payment', $payment);
 
         $manager->persist($payment);
-        $manager->flush();
+        $manager->flush();*/
     }
 }

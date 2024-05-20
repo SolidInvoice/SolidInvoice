@@ -44,8 +44,8 @@ final class DefaultData
     public function __invoke(Company $company, array $data): void
     {
         $this->createAppConfig($company, $data);
-        $this->createContactTypes();
-        $this->createPaymentMethods();
+        $this->createContactTypes($company);
+        $this->createPaymentMethods($company);
 
         $this->em->flush();
     }
@@ -85,12 +85,13 @@ final class DefaultData
             $settingEntity->setValue($setting['setting_value']);
             $settingEntity->setDescription($setting['description']);
             $settingEntity->setType($setting['field_type']);
+            $settingEntity->setCompany($company);
 
             $this->em->persist($settingEntity);
         }
     }
 
-    private function createContactTypes(): void
+    private function createContactTypes(Company $company): void
     {
         $contactTypes = [
             [
@@ -121,12 +122,13 @@ final class DefaultData
             $contactTypeEntity->setRequired($contactType['required']);
             $contactTypeEntity->setType($contactType['type']);
             $contactTypeEntity->setOptions($contactType['field_options']);
+            $contactTypeEntity->setCompany($company);
 
             $this->em->persist($contactTypeEntity);
         }
     }
 
-    private function createPaymentMethods(): void
+    private function createPaymentMethods(Company $company): void
     {
         $paymentMethods = [
             [
@@ -165,6 +167,7 @@ final class DefaultData
             $paymentMethodEntity->setFactoryName($paymentMethod['factory']);
             $paymentMethodEntity->setCreated(new DateTime());
             $paymentMethodEntity->setUpdated(new DateTime());
+            $paymentMethodEntity->setCompany($company);
 
             $this->em->persist($paymentMethodEntity);
         }
