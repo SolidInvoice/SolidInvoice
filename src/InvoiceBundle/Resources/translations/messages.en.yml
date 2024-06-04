@@ -121,3 +121,5 @@ invoice:
             list: 'List Recurring Invoices'
             create: 'Create Recurring Invoice'
             view: 'View Recurring Invoice'
+
+invoice_status_update: 'Invoice Status Update'

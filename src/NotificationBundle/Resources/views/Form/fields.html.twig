@@ -1,0 +1,9 @@
+{% block notification_transport_setting_widget %}
+    {{ form_row(form.name) }}
+
+    {{ form_row(form.transport) }}
+
+    {% if form.settings is defined %}
+        {{ form_row(form.settings) }}
+    {% endif %}
+{% endblock notification_transport_setting_widget %}

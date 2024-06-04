@@ -11,15 +11,15 @@
 
 {{ 'client.create.details.id'|trans({}, 'email') }}: {{ client.id }}
 {{ 'client.create.details.name'|trans({}, 'email') }}: {{ client.name }}
-
-{% if client.website is not empty %}
+{% if client.website is not empty -%}
     {{ 'client.create.details.website'|trans({}, 'email') }}: {{ client.website }}
-{% endif %}
+{%- endif %}
+
 {{ 'client.create.contacts.heading'|trans({}, 'email') }}
 ------------
 
 {% for contact in client.contacts %}
     {{ 'client.create.contacts.name'|trans({}, 'email') }}: {{ contact.firstName }} {{ contact.lastName }}
 
-    {{ 'client.contact.details.email'|trans }}:{{ contact.email }}
+    {{ 'client.contact.details.email'|trans }}: {{ contact.email }}
 {% endfor %}

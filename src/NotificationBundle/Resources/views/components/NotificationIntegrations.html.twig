@@ -1,0 +1,54 @@
+<div {{ attributes }}>
+    {% include "@SolidInvoiceCore/flash.html.twig" %}
+    <section class="row">
+        <aside class="col-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <div class="dropdown">
+                            <a href="#" class="btn btn-outline-success dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                                {{ icon('plus-circle') }} Add Notification Integration
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="?action=add&type=texter">{{ 'SMS'|trans }}</a>
+                                <a class="dropdown-item" href="?action=add&type=chatter">{{ 'Chat'|trans }}</a>
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="nav nav-pills nav-sidebar flex-column sidebar-menu" role="tablist">
+                        {% if enabledIntegrations|length > 0 %}
+                            <li class="nav-header nav-item first">
+                                <span> <p>Current Integrations</p></span>
+                            </li>
+                        {% endif %}
+                        {% for integration in enabledIntegrations %}
+                            <li class="nav-item">
+                                <a href="?action=edit&setting={{ integration.id }}" aria-controls="{{ integration.name }}" data-method="{{ integration.name }}" class="nav-link{{ integration.id is same as(app.request.query.get('setting')) ? ' active' }}">
+                                    {{ icon('check-circle', ['text-success']) }}
+
+                                    <span class="icon">
+                                        {{ integration.name }}
+                                    </span>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </aside>
+        <section class="col-8">
+            {% if this.action is not empty %}
+                <twig:NotificationTransportConfiguration :setting="integration" />
+            {% else %}
+                <div class="callout callout-info">
+                    <h5>
+                        {{ 'Configure notification integrations'|trans }}
+                    </h5>
+                    <p>
+                        {{ 'Add and configure notification integrations to send notifications.'|trans }}
+                    </p>
+                </div>
+            {% endif %}
+        </section>
+    </section>
+</div>

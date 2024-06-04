@@ -220,11 +220,18 @@ class Contact implements Serializable, Stringable
     }
 
     /**
-     * @return list<string|DateTimeInterface|UuidInterface|null>
+     * @return array<string, string|DateTimeInterface|UuidInterface|null>
      */
     public function __serialize(): array
     {
-        return [$this->id, $this->firstName, $this->lastName, $this->created, $this->updated];
+        return [
+            'id' => $this->id,
+            'firstName' => $this->firstName,
+            'lastName' => $this->lastName,
+            'email' => $this->email,
+            'created' => $this->created,
+            'updated' => $this->updated
+        ];
     }
 
     /**
@@ -243,6 +250,7 @@ class Contact implements Serializable, Stringable
         $this->id = $data['id'];
         $this->firstName = $data['firstName'];
         $this->lastName = $data['lastName'];
+        $this->email = $data['email'];
         $this->created = $data['created'];
         $this->updated = $data['updated'];
     }

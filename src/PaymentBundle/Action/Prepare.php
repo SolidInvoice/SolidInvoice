@@ -26,6 +26,7 @@ use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\PaymentBundle\Event\PaymentCompleteEvent;
@@ -69,15 +70,18 @@ final class Prepare
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly RegistryInterface $payum,
         private readonly RouterInterface $router,
-        private readonly CompanySelector $companySelector
+        private readonly CompanySelector $companySelector,
+        private readonly InvoiceRepository $invoiceRepository,
     ) {
     }
 
     /**
      * @throws Exception
      */
-    public function __invoke(Request $request, ?Invoice $invoice): Template | Response | null
+    public function __invoke(Request $request, string $uuid): Template | Response | null
     {
+        $invoice = $this->invoiceRepository->findOneBy(['uuid' => $uuid]);
+
         if (! $invoice instanceof Invoice) {
             throw new NotFoundHttpException();
         }

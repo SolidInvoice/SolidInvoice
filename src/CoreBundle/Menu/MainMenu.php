@@ -89,6 +89,17 @@ class MainMenu
         );
     }
 
+    public static function integrations(ItemInterface $item): ItemInterface
+    {
+        return $item->addChild(
+            'menu.top.integrations',
+            [
+                'route' => '_notification_integration',
+                'extras' => ['icon' => 'bell'],
+            ],
+        );
+    }
+
     public static function tax(ItemInterface $item): ItemInterface
     {
         return $item->addChild(

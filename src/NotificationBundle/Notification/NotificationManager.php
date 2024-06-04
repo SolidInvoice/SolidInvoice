@@ -13,60 +13,66 @@ declare(strict_types=1);
 
 namespace SolidInvoice\NotificationBundle\Notification;
 
-use Doctrine\ORM\EntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Persistence\ObjectManager;
-use Namshi\Notificator\ManagerInterface;
-use SolidInvoice\SettingsBundle\SystemConfig;
-use SolidInvoice\UserBundle\Entity\User;
+use ReflectionObject;
+use SolidInvoice\NotificationBundle\Attribute\AsNotification;
+use SolidInvoice\NotificationBundle\Configurator\ConfiguratorInterface;
+use SolidInvoice\NotificationBundle\Exception\InvalidNotificationMessageException;
+use SolidInvoice\NotificationBundle\Repository\UserNotificationRepository;
+use Symfony\Component\DependencyInjection\Attribute\TaggedLocator;
+use Symfony\Component\DependencyInjection\ServiceLocator;
+use Symfony\Component\Notifier\NotifierInterface;
+use Symfony\Component\Notifier\Recipient\Recipient;
 
-class NotificationManager
+final class NotificationManager
 {
-    private readonly ObjectManager $entityManager;
-
     public function __construct(
-        private readonly Factory $factory,
-        private readonly SystemConfig $settings,
-        private readonly ManagerInterface $notification,
-        ManagerRegistry $doctrine
+        private readonly NotifierInterface $notifier,
+        private readonly UserNotificationRepository $userNotificationRepository,
+        #[TaggedLocator(tag: ConfiguratorInterface::DI_TAG, defaultIndexMethod: 'getName')] private readonly ServiceLocator $transportConfigurations,
     ) {
-        $this->entityManager = $doctrine->getManager();
     }
 
-    public function sendNotification(string $event, NotificationMessageInterface $message): void
+    public function sendNotification(NotificationMessage $message): void
     {
-        /** @var EntityRepository $repository */
-        $repository = $this->entityManager->getRepository(User::class);
+        $attributes = (new ReflectionObject($message))->getAttributes(AsNotification::class);
 
-        $message->setUsers($repository->findAll());
-
-        $notification = new ChainedNotification();
-
-        // @TODO: Settings should automatically be decoded
-        $json = $this->settings->get(sprintf('notification/%s', $event));
-
-        if (null === $json) {
-            return;
+        if ($attributes === []) {
+            throw new InvalidNotificationMessageException(sprintf(
+                'The notification message "%s" must have the %s set.',
+                $message::class,
+                AsNotification::class,
+            ));
         }
 
-        $settings = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
+        $event = $attributes[0]->getArguments()['name'] ?? null;
 
-        if ((bool) $settings['email']) {
-            $notification->addNotification($this->factory->createEmailNotification($message));
-        }
+        $userNotifications = $this->userNotificationRepository->findBy(['event' => $event]);
 
-        if ((bool) $settings['sms']) {
-            foreach ($message->getUsers() as $user) {
-                if (null === $user->getMobile()) {
-                    continue;
-                }
+        foreach ($userNotifications as $userNotification) {
+            $channels = [];
 
-                $notification->addNotification(
-                    $this->factory->createSmsNotification($user->getMobile(), $message)
+            if ($userNotification->isEmail()) {
+                $channels[] = 'email';
+            }
+
+            foreach ($userNotification->getTransports() as $transport) {
+                $transportConfiguration = $this->transportConfigurations->get($transport->getTransport());
+                assert($transportConfiguration instanceof ConfiguratorInterface);
+
+                $channels[] = sprintf(
+                    '%s/%s',
+                    match ($transportConfiguration::getType()) {
+                        'texter' => 'sms',
+                        'chatter' => 'chat',
+                        default => $transportConfiguration::getType(),
+                    },
+                    $transport->getId()->toString(),
                 );
             }
-        }
 
-        $this->notification->trigger($notification);
+            $message->channels($channels);
+
+            $this->notifier->send($message, new Recipient($userNotification->getUser()->getEmail(), (string) $userNotification->getUser()->getMobile()));
+        }
     }
 }

@@ -7,6 +7,7 @@ menu:
         logout: Logout
         system: 'System <b class="caret"></b>'
         settings: Settings
+        integrations: Integrations
         tax: 'Tax Rates'
         users: 'Users'
 exception:

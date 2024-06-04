@@ -13,36 +13,68 @@ declare(strict_types=1);
 
 namespace SolidInvoice\NotificationBundle\Notification;
 
-abstract class NotificationMessage implements NotificationMessageInterface
+use Symfony\Bridge\Twig\Mime\NotificationEmail;
+use Symfony\Component\Notifier\Message\ChatMessage;
+use Symfony\Component\Notifier\Message\EmailMessage;
+use Symfony\Component\Notifier\Notification\ChatNotificationInterface;
+use Symfony\Component\Notifier\Notification\EmailNotificationInterface;
+use Symfony\Component\Notifier\Notification\Notification;
+use Symfony\Component\Notifier\Recipient\EmailRecipientInterface;
+use Symfony\Component\Notifier\Recipient\RecipientInterface;
+use Twig\Environment;
+
+abstract class NotificationMessage extends Notification implements EmailNotificationInterface, ChatNotificationInterface
 {
-    private array $users = [];
+    /**
+     * @var array<string, mixed>
+     */
+    private array $parameters;
 
-    public function __construct(
-        private array $parameters = []
-    ) {
-    }
-
-    public function setUsers(array $users)
+    /**
+     * @param array<string, mixed> $parameters
+     */
+    public function __construct(array $parameters = [], string $subject = '', array $channels = [])
     {
-        $this->users = $users;
+        $this->parameters = $parameters;
 
-        return $this;
+        parent::__construct($subject, $channels);
     }
 
-    public function getUsers(): array
-    {
-        return $this->users;
-    }
-
+    /**
+     * @return array<string, mixed>
+     */
     public function getParameters(): array
     {
         return $this->parameters;
     }
 
-    public function setParameters(array $parameters)
+    /**
+     * @param array<string, mixed> $parameters
+     */
+    public function setParameters(array $parameters): static
     {
         $this->parameters = $parameters;
 
         return $this;
+    }
+
+    abstract public function getTextContent(Environment $twig): string;
+
+    public function asEmailMessage(EmailRecipientInterface $recipient, ?string $transport = null): EmailMessage
+    {
+        $message = EmailMessage::fromNotification($this, $recipient);
+
+        $email = $message->getMessage();
+
+        if ($email instanceof NotificationEmail) {
+            $email->markAsPublic();
+        }
+
+        return $message;
+    }
+
+    public function asChatMessage(RecipientInterface $recipient, ?string $transport = null): ChatMessage
+    {
+        return ChatMessage::fromNotification($this);
     }
 }

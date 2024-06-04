@@ -17,7 +17,6 @@ use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Persistence\ObjectManager;
-use JsonException;
 use Money\Currency;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Credit;
@@ -26,7 +25,7 @@ use SolidInvoice\ClientBundle\Notification\ClientCreateNotification;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\SettingsBundle\SystemConfig;
 
-class ClientListener implements EventSubscriberInterface
+final class ClientListener implements EventSubscriberInterface
 {
     public function __construct(
         private readonly NotificationManager $notification,
@@ -90,7 +89,6 @@ class ClientListener implements EventSubscriberInterface
 
     /**
      * @param LifecycleEventArgs<ObjectManager> $event
-     * @throws JsonException
      */
     public function postPersist(LifecycleEventArgs $event): void
     {
@@ -101,8 +99,6 @@ class ClientListener implements EventSubscriberInterface
         }
 
         // client is created
-        $notification = new ClientCreateNotification(['client' => $entity]);
-
-        $this->notification->sendNotification('client_create', $notification);
+        $this->notification->sendNotification(new ClientCreateNotification(['client' => $entity]));
     }
 }

@@ -25,6 +25,8 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
 use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use SolidInvoice\CoreBundle\Form\Type\BillingIdConfigurationType;
+use SolidInvoice\NotificationBundle\Entity\TransportSetting;
+use SolidInvoice\NotificationBundle\Entity\UserNotification;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -188,6 +190,36 @@ final class Version20300 extends AbstractMigration implements ContainerAwareInte
         $userInvitations->setPrimaryKey(['id']);
 
         $invoices->addColumn('invoice_date', Types::DATE_IMMUTABLE, ['notnull' => false]);
+
+        $transportSettingsTable = $schema->createTable(TransportSetting::TABLE_NAME);
+
+        $transportSettingsTable->addColumn('id', UuidBinaryOrderedTimeType::NAME);
+        $transportSettingsTable->addColumn('name', Types::STRING, ['length' => 255]);
+        $transportSettingsTable->addColumn('transport', Types::STRING, ['length' => 255]);
+        $transportSettingsTable->addColumn('settings', Types::JSON);
+        $transportSettingsTable->addColumn('user_id', UuidBinaryOrderedTimeType::NAME);
+        $transportSettingsTable->addColumn('company_id', UuidBinaryOrderedTimeType::NAME);
+        $transportSettingsTable->setPrimaryKey(['id']);
+        $transportSettingsTable->addForeignKeyConstraint('users', ['user_id'], ['id']);
+        $transportSettingsTable->addForeignKeyConstraint('companies', ['company_id'], ['id']);
+
+        $userNotificationTable = $schema->createTable(UserNotification::TABLE_NAME);
+        $userNotificationTable->addColumn('id', UuidBinaryOrderedTimeType::NAME);
+        $userNotificationTable->addColumn('user_id', UuidBinaryOrderedTimeType::NAME);
+        $userNotificationTable->addColumn('company_id', UuidBinaryOrderedTimeType::NAME);
+        $userNotificationTable->addColumn('event', Types::STRING, ['length' => 255]);
+        $userNotificationTable->addColumn('email', Types::BOOLEAN);
+        $userNotificationTable->setPrimaryKey(['id']);
+        $userNotificationTable->addForeignKeyConstraint('users', ['user_id'], ['id']);
+        $userNotificationTable->addForeignKeyConstraint('companies', ['company_id'], ['id']);
+
+        $userNotificationTransports = $schema->createTable('usernotification_transportsetting');
+
+        $userNotificationTransports->addColumn('usernotification_id', UuidBinaryOrderedTimeType::NAME);
+        $userNotificationTransports->addColumn('transportsetting_id', UuidBinaryOrderedTimeType::NAME);
+        $userNotificationTransports->setPrimaryKey(['usernotification_id', 'transportsetting_id']);
+        $userNotificationTransports->addForeignKeyConstraint(UserNotification::TABLE_NAME, ['usernotification_id'], ['id'], ['onDelete' => 'CASCADE']);
+        $userNotificationTransports->addForeignKeyConstraint(TransportSetting::TABLE_NAME, ['transportsetting_id'], ['id'], ['onDelete' => 'CASCADE']);
     }
 
     public function postUp(Schema $schema): void

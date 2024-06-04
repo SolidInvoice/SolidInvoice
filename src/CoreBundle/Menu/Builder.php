@@ -45,6 +45,7 @@ class Builder extends AuthenticatedMenu
         $menu->addHeader('System');
         MainMenu::tax($menu);
         MainMenu::users($menu);
+        MainMenu::integrations($menu);
         MainMenu::settings($menu);
         MainMenu::api($menu);
     }

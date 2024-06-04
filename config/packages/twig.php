@@ -10,6 +10,7 @@ return static function (TwigConfig $config): void {
         ->debug(param('kernel.debug'))
         ->strictVariables(param('kernel.debug'))
         ->formThemes([
+            '@SolidInvoiceNotification/Form/fields.html.twig',
             '@SolidInvoiceCore/Form/fields.html.twig',
         ]);
 };

@@ -13,263 +13,394 @@ declare(strict_types=1);
 
 namespace SolidInvoice\NotificationBundle\Tests;
 
-use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Persistence\ObjectManager;
-use Doctrine\Persistence\ObjectRepository;
-use Hamcrest\Core\IsInstanceOf;
+use Hamcrest\Core\IsEqual;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
-use Namshi\Notificator\Manager;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Test\Traits\FakerTestTrait;
-use SolidInvoice\NotificationBundle\Notification\ChainedNotification;
-use SolidInvoice\NotificationBundle\Notification\Factory;
+use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
+use SolidInvoice\NotificationBundle\Attribute\AsNotification;
+use SolidInvoice\NotificationBundle\Configurator\ConfiguratorInterface;
+use SolidInvoice\NotificationBundle\Entity\TransportSetting;
+use SolidInvoice\NotificationBundle\Entity\UserNotification;
+use SolidInvoice\NotificationBundle\Exception\InvalidNotificationMessageException;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
-use SolidInvoice\NotificationBundle\Notification\NotificationMessageInterface;
-use SolidInvoice\NotificationBundle\Notification\SwiftMailerNotification;
-use SolidInvoice\NotificationBundle\Notification\TwilioNotification;
-use SolidInvoice\SettingsBundle\SystemConfig;
+use SolidInvoice\NotificationBundle\Notification\NotificationMessage;
 use SolidInvoice\UserBundle\Entity\User;
+use Symfony\Component\DependencyInjection\ServiceLocator;
+use Symfony\Component\Notifier\NotifierInterface;
+use Symfony\Component\Notifier\Recipient\Recipient;
+use Symfony\Component\Notifier\Transport\Dsn;
+use Twig\Environment;
 
-class NotificationManagerTest extends TestCase
+/**
+ * @covers \SolidInvoice\NotificationBundle\Notification\NotificationManager
+ */
+final class NotificationManagerTest extends TestCase
 {
+    use EnsureApplicationInstalled;
     use FakerTestTrait;
     use MockeryPHPUnitIntegration;
 
+    private NotificationManager $notificationManager;
+
+    private NotifierInterface | M\MockInterface $notifier;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->notifier = M::mock(NotifierInterface::class);
+
+        $this->notificationManager = new NotificationManager(
+            $this->notifier,
+            static::getContainer()->get('doctrine')->getRepository(UserNotification::class),
+            new ServiceLocator([]),
+        );
+    }
+
+    public function testMessageWithoutAttribute(): void
+    {
+        $class = new class() extends NotificationMessage {
+            public function getTextContent(Environment $twig): string
+            {
+                return '';
+            }
+        };
+
+        $this->expectException(InvalidNotificationMessageException::class);
+        $this->expectExceptionMessage('The notification message "' . $class::class . '" must have the ' . AsNotification::class . ' set.');
+
+        $this->notificationManager->sendNotification($class);
+    }
+
     public function testSendEmailNotification(): void
     {
-        $factory = M::mock(Factory::class);
-        $settings = M::mock(SystemConfig::class);
-        $manager = M::mock(Manager::class);
-        $doctrine = M::mock(ManagerRegistry::class);
-        $em = M::mock(ObjectManager::class);
-        $doctrine->shouldReceive('getManager')
-            ->once()
-            ->andReturn($em);
+        $class = new #[AsNotification(name: 'test_event')] class extends NotificationMessage {
+            public function getTextContent(Environment $twig): string
+            {
+                return '';
+            }
+        };
 
-        $users = [];
+        $email = $this->getFaker()->email();
 
-        $user1 = new User();
-        $users[] = $user1;
+        $user = (new User())
+            ->setUsername($email)
+            ->setEmail($email)
+            ->setPassword('password');
 
-        $repository = M::mock(ObjectRepository::class);
+        $userNotification = (new UserNotification())
+            ->setEvent('test_event')
+            ->setEmail(true)
+            ->setUser($user);
 
-        $em->shouldReceive('getRepository')
-            ->once()
-            ->with(User::class)
-            ->andReturn($repository);
+        $em = static::getContainer()->get('doctrine.orm.entity_manager');
+        $em->persist($userNotification);
+        $em->persist($user);
+        $em->flush();
 
-        $repository->shouldReceive('findAll')
-            ->once()
-            ->andReturn($users);
+        $this->notifier
+            ->expects('send')
+            ->with($class, IsEqual::equalTo(new Recipient($email, '')))
+            ->once();
 
-        $settings->shouldReceive('get')
-            ->once()
-            ->with('notification/create_invoice')
-            ->andReturn('{"email": true, "sms": false}');
-
-        $messageText = $this->getFaker()->text;
-        $message = M::mock(NotificationMessageInterface::class);
-
-        $message->shouldReceive('setUsers')
-            ->with($users);
-
-        $factory->shouldReceive('createEmailNotification')
-            ->once()
-            ->with($message)
-            ->andReturn(new SwiftMailerNotification($messageText));
-
-        $manager->shouldReceive('trigger')
-            ->once()
-            ->with(IsInstanceOf::anInstanceOf(ChainedNotification::class));
-
-        $notificationManager = new NotificationManager($factory, $settings, $manager, $doctrine);
-        $notificationManager->sendNotification('create_invoice', $message);
+        $this->notificationManager->sendNotification($class);
+        self::assertSame(['email'], $class->getChannels(new Recipient($email, '')));
     }
 
-    public function testSendSmsNotification(): void
+    public function testSendNotificationWithNoUsers(): void
     {
-        $factory = M::mock(Factory::class);
-        $settings = M::mock(SystemConfig::class);
-        $manager = M::mock(Manager::class);
-        $doctrine = M::mock(ManagerRegistry::class);
-        $em = M::mock(ObjectManager::class);
-        $doctrine->shouldReceive('getManager')
-            ->once()
-            ->andReturn($em);
+        $class = new #[AsNotification(name: 'test_event')] class extends NotificationMessage {
+            public function getTextContent(Environment $twig): string
+            {
+                return '';
+            }
+        };
 
-        $users = [];
+        $email = $this->getFaker()->email();
 
-        $phoneNumber1 = $this->getFaker()->phoneNumber;
-        $phoneNumber2 = $this->getFaker()->phoneNumber;
-        $user1 = new User();
-        $user1->setMobile($phoneNumber1);
-        $user2 = new User();
-        $user2->setMobile($phoneNumber2);
-        $users[] = $user1;
-        $users[] = $user2;
+        $this->notifier
+            ->expects('send')
+            ->never();
 
-        $repository = M::mock(ObjectRepository::class);
-
-        $em->shouldReceive('getRepository')
-            ->once()
-            ->with(User::class)
-            ->andReturn($repository);
-
-        $repository->shouldReceive('findAll')
-            ->once()
-            ->andReturn($users);
-
-        $settings->shouldReceive('get')
-            ->once()
-            ->with('notification/create_invoice')
-            ->andReturn('{"email": false, "sms": true}');
-
-        $messageText = $this->getFaker()->text;
-        $message = M::mock(NotificationMessageInterface::class);
-
-        $message->shouldReceive('setUsers')
-            ->with($users);
-
-        $message->shouldReceive('getUsers')
-            ->andReturn($users);
-
-        $factory->shouldReceive('createSmsNotification')
-            ->once()
-            ->with($phoneNumber1, $message)
-            ->andReturn(new TwilioNotification($phoneNumber1, $messageText));
-
-        $factory->shouldReceive('createSmsNotification')
-            ->once()
-            ->with($phoneNumber2, $message)
-            ->andReturn(new TwilioNotification($phoneNumber2, $messageText));
-
-        $manager->shouldReceive('trigger')
-            ->once()
-            ->with(IsInstanceOf::anInstanceOf(ChainedNotification::class));
-
-        $notificationManager = new NotificationManager($factory, $settings, $manager, $doctrine);
-        $notificationManager->sendNotification('create_invoice', $message);
+        $this->notificationManager->sendNotification($class);
+        self::assertSame([], $class->getChannels(new Recipient($email, '')));
     }
 
-    public function testSendSmsNotificationToSpecificUsers(): void
+    public function testSendWithNoTransports(): void
     {
-        $factory = M::mock(Factory::class);
-        $settings = M::mock(SystemConfig::class);
-        $manager = M::mock(Manager::class);
-        $doctrine = M::mock(ManagerRegistry::class);
-        $em = M::mock(ObjectManager::class);
-        $doctrine->shouldReceive('getManager')
-            ->once()
-            ->andReturn($em);
+        $class = new #[AsNotification(name: 'test_event')] class extends NotificationMessage {
+            public function getTextContent(Environment $twig): string
+            {
+                return '';
+            }
+        };
 
-        $users = [];
+        $email = $this->getFaker()->email();
 
-        $phoneNumber = $this->getFaker()->phoneNumber;
-        $user1 = new User();
-        $user1->setMobile($phoneNumber);
-        $user2 = new User();
-        $users[] = $user1;
-        $users[] = $user2;
+        $user = (new User())
+            ->setUsername($email)
+            ->setEmail($email)
+            ->setPassword('password');
 
-        $repository = M::mock(ObjectRepository::class);
+        $userNotification = (new UserNotification())
+            ->setEvent('test_event')
+            ->setEmail(false)
+            ->setUser($user);
 
-        $em->shouldReceive('getRepository')
-            ->once()
-            ->with(User::class)
-            ->andReturn($repository);
+        $em = static::getContainer()->get('doctrine.orm.entity_manager');
+        $em->persist($userNotification);
+        $em->persist($user);
+        $em->flush();
 
-        $repository->shouldReceive('findAll')
-            ->once()
-            ->andReturn($users);
+        $this->notifier
+            ->expects('send')
+            ->with($class, IsEqual::equalTo(new Recipient($email, '')))
+            ->once();
 
-        $settings->shouldReceive('get')
-            ->once()
-            ->with('notification/create_invoice')
-            ->andReturn('{"email": false, "sms": true}');
-
-        $messageText = $this->getFaker()->text;
-        $message = M::mock(NotificationMessageInterface::class);
-
-        $message->shouldReceive('setUsers')
-            ->with($users);
-
-        $message->shouldReceive('getUsers')
-            ->andReturn($users);
-
-        $factory->shouldReceive('createSmsNotification')
-            ->once()
-            ->with($phoneNumber, $message)
-            ->andReturn(new TwilioNotification($phoneNumber, $messageText));
-
-        $manager->shouldReceive('trigger')
-            ->once()
-            ->with(IsInstanceOf::anInstanceOf(ChainedNotification::class));
-
-        $notificationManager = new NotificationManager($factory, $settings, $manager, $doctrine);
-        $notificationManager->sendNotification('create_invoice', $message);
+        $this->notificationManager->sendNotification($class);
+        self::assertSame([], $class->getChannels(new Recipient($email, '')));
     }
 
-    public function testSendNotification(): void
+    public function testSendTransportNotification(): void
     {
-        $factory = M::mock(Factory::class);
-        $settings = M::mock(SystemConfig::class);
-        $manager = M::mock(Manager::class);
-        $doctrine = M::mock(ManagerRegistry::class);
-        $em = M::mock(ObjectManager::class);
-        $doctrine->shouldReceive('getManager')
+        $class = new #[AsNotification(name: 'test_event')] class extends NotificationMessage {
+            public function getTextContent(Environment $twig): string
+            {
+                return '';
+            }
+        };
+
+        $email = $this->getFaker()->email();
+
+        $user = (new User())
+            ->setUsername($email)
+            ->setEmail($email)
+            ->setPassword('password');
+
+        $transportSetting = (new TransportSetting())
+            ->setName('Test Foo')
+            ->setTransport('FooBar')
+            ->setUser($user);
+
+        $userNotification = (new UserNotification())
+            ->setEvent('test_event')
+            ->setEmail(false)
+            ->setUser($user)
+            ->addTransport($transportSetting);
+
+        $em = static::getContainer()->get('doctrine.orm.entity_manager');
+        $em->persist($user);
+        $em->persist($transportSetting);
+        $em->persist($userNotification);
+        $em->flush();
+
+        $this->notifier
+            ->expects('send')
+            ->with($class, IsEqual::equalTo(new Recipient($email, '')))
+            ->once();
+
+        $configurator = M::mock(ConfiguratorInterface::class);
+        $configurator
+            ->expects('getType')
             ->once()
-            ->andReturn($em);
+            ->andReturn('chatter');
 
-        $users = [];
+        $notificationManager = new NotificationManager(
+            $this->notifier,
+            static::getContainer()->get('doctrine')->getRepository(UserNotification::class),
+            new ServiceLocator(['FooBar' => static fn () => $configurator]),
+        );
 
-        $phoneNumber = $this->getFaker()->phoneNumber;
-        $user1 = new User();
-        $user1->setMobile($phoneNumber);
-        $user2 = new User();
-        $users[] = $user1;
-        $users[] = $user2;
+        $notificationManager->sendNotification($class);
+        self::assertSame(['chat/' . $transportSetting->getId()->toString()], $class->getChannels(new Recipient($email, '')));
+    }
 
-        $repository = M::mock(ObjectRepository::class);
+    public function testSendTransportNotificationWithMultipleUsers(): void
+    {
+        $class = new #[AsNotification(name: 'test_event')] class extends NotificationMessage {
+            public function getTextContent(Environment $twig): string
+            {
+                return '';
+            }
+        };
 
-        $em->shouldReceive('getRepository')
-            ->once()
-            ->with(User::class)
-            ->andReturn($repository);
+        $email1 = $this->getFaker()->email();
+        $email2 = $this->getFaker()->email();
 
-        $repository->shouldReceive('findAll')
-            ->once()
-            ->andReturn($users);
+        $user1 = (new User())
+            ->setUsername($email1)
+            ->setEmail($email1)
+            ->setPassword('password');
+        $user2 = (new User())
+            ->setUsername($email2)
+            ->setEmail($email2)
+            ->setPassword('password');
 
-        $settings->shouldReceive('get')
-            ->once()
-            ->with('notification/create_invoice')
-            ->andReturn('{"email": true, "sms": true}');
+        $transportSetting1 = (new TransportSetting())
+            ->setName('Test Foo')
+            ->setTransport('FooBar')
+            ->setUser($user1);
+        $transportSetting2 = (new TransportSetting())
+            ->setName('Test Foo')
+            ->setTransport('FooBar')
+            ->setUser($user2);
 
-        $messageText = $this->getFaker()->text;
-        $message = M::mock(NotificationMessageInterface::class);
+        $userNotification1 = (new UserNotification())
+            ->setEvent('test_event')
+            ->setEmail(false)
+            ->setUser($user1)
+            ->addTransport($transportSetting1);
+        $userNotification2 = (new UserNotification())
+            ->setEvent('test_event')
+            ->setEmail(false)
+            ->setUser($user2)
+            ->addTransport($transportSetting2);
 
-        $message->shouldReceive('setUsers')
-            ->with($users);
+        $em = static::getContainer()->get('doctrine.orm.entity_manager');
+        $em->persist($user1);
+        $em->persist($user2);
+        $em->persist($transportSetting1);
+        $em->persist($transportSetting2);
+        $em->persist($userNotification1);
+        $em->persist($userNotification2);
+        $em->flush();
 
-        $message->shouldReceive('getUsers')
-            ->andReturn($users);
+        $this->notifier
+            ->expects('send')
+            ->with($class, IsEqual::equalTo(new Recipient($email1, '')))
+            ->once();
 
-        $factory->shouldReceive('createEmailNotification')
-            ->once()
-            ->with($message)
-            ->andReturn(new SwiftMailerNotification($messageText));
+        $this->notifier
+            ->expects('send')
+            ->with($class, IsEqual::equalTo(new Recipient($email2, '')))
+            ->once();
 
-        $factory->shouldReceive('createSmsNotification')
-            ->once()
-            ->with($phoneNumber, $message)
-            ->andReturn(new TwilioNotification($phoneNumber, $messageText));
+        $configurator = M::mock(ConfiguratorInterface::class);
+        $configurator
+            ->expects('getType')
+            ->twice()
+            ->andReturn('chatter');
 
-        $manager->shouldReceive('trigger')
-            ->once()
-            ->with(IsInstanceOf::anInstanceOf(ChainedNotification::class));
+        $notificationManager = new NotificationManager(
+            $this->notifier,
+            static::getContainer()->get('doctrine')->getRepository(UserNotification::class),
+            new ServiceLocator(['FooBar' => static fn () => $configurator]),
+        );
 
-        $notificationManager = new NotificationManager($factory, $settings, $manager, $doctrine);
-        $notificationManager->sendNotification('create_invoice', $message);
+        $notificationManager->sendNotification($class);
+        self::assertSame(['chat/' . $transportSetting2->getId()->toString()], $class->getChannels(new Recipient($email2, '')));
+    }
+
+    public function testSendMultipleTransportNotification(): void
+    {
+        $class = new #[AsNotification(name: 'test_event')] class extends NotificationMessage {
+            public function getTextContent(Environment $twig): string
+            {
+                return '';
+            }
+        };
+
+        $email = $this->getFaker()->email();
+
+        $user = (new User())
+            ->setUsername($email)
+            ->setEmail($email)
+            ->setPassword('password');
+
+        $transportSetting = (new TransportSetting())
+            ->setName('Test Foo')
+            ->setTransport('FooBar')
+            ->setUser($user)
+        ;
+
+        $transportSetting2 = (new TransportSetting())
+            ->setName('Test Foos')
+            ->setTransport('FooBars')
+            ->setUser($user)
+        ;
+
+        $userNotification = (new UserNotification())
+            ->setEvent('test_event')
+            ->setEmail(true)
+            ->setUser($user)
+            ->addTransport($transportSetting)
+            ->addTransport($transportSetting2)
+        ;
+
+        $em = static::getContainer()->get('doctrine.orm.entity_manager');
+        $em->persist($user);
+        $em->persist($transportSetting);
+        $em->persist($transportSetting2);
+        $em->persist($userNotification);
+        $em->flush();
+
+        $this->notifier
+            ->expects('send')
+            ->with($class, IsEqual::equalTo(new Recipient($email, '')))
+            ->once();
+
+        $configurator = new class() implements ConfiguratorInterface {
+            public static function getName(): string
+            {
+                return 'Test Foo';
+            }
+
+            public static function getType(): string
+            {
+                return 'chatter';
+            }
+
+            public function getForm(): string
+            {
+                return '';
+            }
+
+            public function configure(array $config): Dsn
+            {
+                return new Dsn('');
+            }
+        };
+
+        $configurator2 = new class() implements ConfiguratorInterface {
+            public static function getName(): string
+            {
+                return 'Test Foo';
+            }
+
+            public static function getType(): string
+            {
+                return 'texter';
+            }
+
+            public function getForm(): string
+            {
+                return '';
+            }
+
+            public function configure(array $config): Dsn
+            {
+                return new Dsn('');
+            }
+        };
+
+        $notificationManager = new NotificationManager(
+            $this->notifier,
+            static::getContainer()->get('doctrine')->getRepository(UserNotification::class),
+            new ServiceLocator(['FooBar' => static fn () => $configurator, 'FooBars' => static fn () => $configurator2]),
+        );
+
+        $notificationManager->sendNotification($class);
+        self::assertSame(
+            [
+                'email',
+                'chat/' . $transportSetting->getId()->toString(),
+                'sms/' . $transportSetting2->getId()->toString(),
+            ],
+            $class->getChannels(
+                new Recipient($email, '')
+            )
+        );
     }
 }

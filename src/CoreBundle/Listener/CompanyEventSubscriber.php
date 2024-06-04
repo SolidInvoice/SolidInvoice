@@ -43,7 +43,7 @@ final class CompanyEventSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            KernelEvents::REQUEST => ['onKernelRequest', 30],
+            KernelEvents::REQUEST => ['onKernelRequest', 7],
         ];
     }
 

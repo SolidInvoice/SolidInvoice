@@ -43,7 +43,7 @@
 
         <row>
             <columns><strong>{{ 'payment.details.amount'|trans({}, 'email') }}</strong></columns>
-            <columns>{{ payment.totalAmount|formatCurrency }}</columns>
+            <columns>{{ payment.totalAmount|formatCurrency(payment.currencyCode) }}</columns>
         </row>
 
         <row>
