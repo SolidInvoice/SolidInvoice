@@ -48,6 +48,7 @@
     "fos-router": "./vendor/friendsofsymfony/jsrouting-bundle/Resources/",
     "handlebars-loader": "^1.7.3",
     "jasmine": "^5.0.0",
+    "postcss": "^8.4.38",
     "postcss-scss": "^4.0.6",
     "sass": "^1.63.3",
     "sass-loader": "^13.3.2",
