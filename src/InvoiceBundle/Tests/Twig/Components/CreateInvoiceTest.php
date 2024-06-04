@@ -30,7 +30,7 @@ final class CreateInvoiceTest extends LiveComponentTest
         $component = $this->createLiveComponent(
             name: CreateInvoice::class,
             data: [
-                'invoice' => new Invoice(),
+                'invoice' => (new Invoice())->setInvoiceDate(new DateTimeImmutable('2021-01-01')),
             ]
         )->actingAs($this->getUser());
 
