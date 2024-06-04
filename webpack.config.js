@@ -41,7 +41,6 @@ Encore
         'SolidInvoiceQuote': path.resolve(__dirname, 'src/QuoteBundle/Resources/public'),
         'SolidInvoiceTax': path.resolve(__dirname, 'src/TaxBundle/Resources/public'),
         'SolidInvoiceUser': path.resolve(__dirname, 'src/UserBundle/Resources/public'),
-        'fos_js': path.resolve(__dirname, 'public/bundles/fosjsrouting/js'),
         'translator': path.resolve(__dirname, 'src/CoreBundle/Resources/public/js/extend/translator'),
     })
 
