@@ -19,6 +19,9 @@ use SolidInvoice\NotificationBundle\Form\Type\Transport\SmscType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
 
+/**
+ * @codeCoverageIgnore
+ */
 final class SmscConfigurator implements ConfiguratorInterface
 {
     public static function getName(): string

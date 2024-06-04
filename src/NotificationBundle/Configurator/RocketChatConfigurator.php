@@ -19,6 +19,9 @@ use SolidInvoice\NotificationBundle\Form\Type\Transport\RocketChatType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
 
+/**
+ * @codeCoverageIgnore
+ */
 final class RocketChatConfigurator implements ConfiguratorInterface
 {
     public static function getName(): string

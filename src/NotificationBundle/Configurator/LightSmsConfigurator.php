@@ -19,6 +19,9 @@ use SolidInvoice\NotificationBundle\Form\Type\Transport\LightSmsType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
 
+/**
+ * @codeCoverageIgnore
+ */
 final class LightSmsConfigurator implements ConfiguratorInterface
 {
     public static function getName(): string

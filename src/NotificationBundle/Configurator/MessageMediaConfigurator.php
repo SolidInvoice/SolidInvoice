@@ -19,6 +19,9 @@ use SolidInvoice\NotificationBundle\Form\Type\Transport\MessageMediaType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
 
+/**
+ * @codeCoverageIgnore
+ */
 final class MessageMediaConfigurator implements ConfiguratorInterface
 {
     public static function getName(): string

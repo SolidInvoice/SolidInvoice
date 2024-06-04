@@ -19,6 +19,9 @@ use SolidInvoice\NotificationBundle\Form\Type\Transport\TwilioType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
 
+/**
+ * @codeCoverageIgnore
+ */
 final class TwilioConfigurator implements ConfiguratorInterface
 {
     public static function getName(): string
