@@ -11,7 +11,7 @@ import $ from 'jquery';
 import Module from 'SolidInvoiceCore/js/module';
 import Backbone from 'backbone';
 import Alert from 'SolidInvoiceCore/js/alert';
-import Router from 'router';
+import Routing from 'fos-router';
 import Translator from 'translator';
 import InfoView from './view/info';
 import ClientCredit from './credit';
@@ -35,7 +35,7 @@ export default Module.extend({
 
         addressCollection.on('remove', () => {
             addressCollection
-                .fetch({ reset: true, url: Router.generate('_xhr_clients_address_list', { 'id': options.id }) })
+                .fetch({ reset: true, url: Routing.generate('_xhr_clients_address_list', { 'id': options.id }) })
                 .done(() => {
                         layoutView.model.set('addresses', addressCollection.toArray());
                         options.addresses = layoutView.model.get('addresses');
@@ -88,7 +88,7 @@ export default Module.extend({
                     'dataType': 'json',
                     'method': 'delete'
                 }).done(() => {
-                    window.document.location = Router.generate('_clients_index');
+                    window.document.location = Routing.generate('_clients_index');
                 });
             }
         });

@@ -1,5 +1,5 @@
 import { isObject, isUndefined } from 'lodash';
-import Router from 'router';
+import Routing from 'fos-router';
 
 export default function(route, context) {
     let params = {};
@@ -12,5 +12,5 @@ export default function(route, context) {
         params = context.hash;
     }
 
-    return Router.generate(route, params);
+    return Routing.generate(route, params);
 }

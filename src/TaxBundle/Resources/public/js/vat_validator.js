@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import Router from 'router';
+import Routing from 'fos-router';
 
 export default (element) => {
     let $el = $(element),
@@ -20,7 +20,7 @@ export default (element) => {
         $el.html('<i class="fas fa-spin fa-refresh"></i>');
 
         $.ajax({
-            'url': Router.generate('_tax_number_validate'),
+            'url': Routing.generate('_tax_number_validate'),
             'data': { 'vat_number': $input.val() },
             'method': 'POST'
         }).done((result) => {

@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import Module from 'SolidInvoiceCore/js/module';
 import Backbone from 'backbone';
-import Router from 'router';
+import Routing from 'fos-router';
 import { CollectionView, View } from 'backbone.marionette';
 import Template from '../../templates/empty_tokens.hbs';
 import TokenView from './view/token';
@@ -15,11 +15,11 @@ export default Module.extend({
     collection: null,
     initialize () {
         const collection = Backbone.Collection.extend({
-            url: Router.generate('_xhr_api_keys_list'),
+            url: Routing.generate('_xhr_api_keys_list'),
             model: Backbone.Model.extend({
                 defaults: {},
                 destroy (options) {
-                    const opts = assignIn({ url: Router.generate('_xhr_api_keys_revoke', { 'id': this.id }) }, options || {});
+                    const opts = assignIn({ url: Routing.generate('_xhr_api_keys_revoke', { 'id': this.id }) }, options || {});
                     return Backbone.Model.prototype.destroy.call(this, opts);
                 }
             })
@@ -44,7 +44,7 @@ export default Module.extend({
         event.preventDefault();
 
         const modal = new CreateModal({
-            route: Router.generate('_xhr_api_keys_create')
+            route: Routing.generate('_xhr_api_keys_create')
         });
 
         this.listenTo(modal, 'ajax:response', (response) => {

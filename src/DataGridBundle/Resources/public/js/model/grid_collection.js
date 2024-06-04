@@ -1,4 +1,4 @@
-import Router from 'router';
+import Routing from 'fos-router';
 import PageableCollection from 'backbone.paginator';
 
 export default PageableCollection.extend({
@@ -9,7 +9,7 @@ export default PageableCollection.extend({
         this.parameters = parameters;
     },
     url () {
-        return Router.generate('_grid_data', { 'name': this.name, 'parameters': this.parameters });
+        return Routing.generate('_grid_data', { 'name': this.name, 'parameters': this.parameters });
     },
 
     // Initial pagination states

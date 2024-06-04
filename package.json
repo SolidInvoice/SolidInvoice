@@ -45,6 +45,7 @@
     "eslint-plugin-lodash": "^7.4.0",
     "eslint-plugin-no-jquery": "^2.7.0",
     "eslint-webpack-plugin": "^4.0.1",
+    "fos-router": "./vendor/friendsofsymfony/jsrouting-bundle/Resources/",
     "handlebars-loader": "^1.7.3",
     "jasmine": "^5.0.0",
     "postcss-scss": "^4.0.6",

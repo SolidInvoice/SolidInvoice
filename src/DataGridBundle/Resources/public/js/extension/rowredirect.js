@@ -9,7 +9,7 @@
 
 import $ from 'jquery';
 import Backgrid from 'backgrid';
-import Router from 'router';
+import Routing from 'fos-router';
 
 export default {
     row(route) {
@@ -29,7 +29,7 @@ export default {
                     return;
                 }
 
-                window.location = Router.generate(route, { 'id': this.model.get('id') });
+                window.location = Routing.generate(route, { 'id': this.model.get('id') });
             }
         });
     },
