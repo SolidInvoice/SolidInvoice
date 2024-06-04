@@ -18,6 +18,7 @@ namespace SolidInvoice\NotificationBundle\Configurator;
 use SolidInvoice\NotificationBundle\Form\Type\Transport\TelnyxType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
+use function urlencode;
 
 /**
  * @codeCoverageIgnore
@@ -44,6 +45,6 @@ final class TelnyxConfigurator implements ConfiguratorInterface
      */
     public function configure(array $config): Dsn
     {
-        return new Dsn(sprintf('telnyx://%s@default?from=%s&amp;messaging_profile_id=%s', $config['api_key'], $config['from'], $config['messaging_profile_id']));
+        return new Dsn(sprintf('telnyx://%s@default?from=%s&amp;messaging_profile_id=%s', urlencode($config['api_key']), urlencode($config['from']), urlencode($config['messaging_profile_id'])));
     }
 }

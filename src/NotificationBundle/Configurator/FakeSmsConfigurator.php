@@ -18,6 +18,7 @@ namespace SolidInvoice\NotificationBundle\Configurator;
 use SolidInvoice\NotificationBundle\Form\Type\Transport\FakeSmsType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
+use function urlencode;
 
 /**
  * @codeCoverageIgnore
@@ -44,6 +45,6 @@ final class FakeSmsConfigurator implements ConfiguratorInterface
      */
     public function configure(array $config): Dsn
     {
-        return new Dsn(sprintf('fakesms+email://%s?to=%s&amp;from=%s', $config['mailer_service_id'], $config['to'], $config['from']));
+        return new Dsn(sprintf('fakesms+email://%s?to=%s&amp;from=%s', urlencode($config['mailer_service_id']), urlencode($config['to']), urlencode($config['from'])));
     }
 }

@@ -18,6 +18,7 @@ namespace SolidInvoice\NotificationBundle\Configurator;
 use SolidInvoice\NotificationBundle\Form\Type\Transport\MercureType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
+use function urlencode;
 
 /**
  * @codeCoverageIgnore
@@ -44,6 +45,6 @@ final class MercureConfigurator implements ConfiguratorInterface
      */
     public function configure(array $config): Dsn
     {
-        return new Dsn(sprintf('mercure://%s?topic=%s', $config['hub_id'], $config['topic']));
+        return new Dsn(sprintf('mercure://%s?topic=%s', urlencode($config['hub_id']), urlencode($config['topic'])));
     }
 }

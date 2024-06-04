@@ -18,6 +18,7 @@ namespace SolidInvoice\NotificationBundle\Configurator;
 use SolidInvoice\NotificationBundle\Form\Type\Transport\RocketChatType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
+use function urlencode;
 
 /**
  * @codeCoverageIgnore
@@ -44,6 +45,6 @@ final class RocketChatConfigurator implements ConfiguratorInterface
      */
     public function configure(array $config): Dsn
     {
-        return new Dsn(sprintf('rocketchat://%s@%s?channel=%s', $config['token'], $config['endpoint'], $config['channel']));
+        return new Dsn(sprintf('rocketchat://%s@%s?channel=%s', urlencode($config['token']), urlencode($config['endpoint']), urlencode($config['channel'])));
     }
 }

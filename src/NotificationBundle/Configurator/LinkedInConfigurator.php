@@ -18,6 +18,7 @@ namespace SolidInvoice\NotificationBundle\Configurator;
 use SolidInvoice\NotificationBundle\Form\Type\Transport\LinkedInType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
+use function urlencode;
 
 /**
  * @codeCoverageIgnore
@@ -44,6 +45,6 @@ final class LinkedInConfigurator implements ConfiguratorInterface
      */
     public function configure(array $config): Dsn
     {
-        return new Dsn(sprintf('linkedin://%s:%s@default', $config['token'], $config['user_id']));
+        return new Dsn(sprintf('linkedin://%s:%s@default', urlencode($config['token']), urlencode($config['user_id'])));
     }
 }

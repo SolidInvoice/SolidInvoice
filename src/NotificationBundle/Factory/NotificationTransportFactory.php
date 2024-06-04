@@ -19,6 +19,7 @@ use SolidInvoice\NotificationBundle\Notification\Transports;
 use SolidInvoice\NotificationBundle\Repository\TransportSettingRepository;
 use Symfony\Component\DependencyInjection\Attribute\TaggedLocator;
 use Symfony\Component\DependencyInjection\ServiceLocator;
+use Symfony\Component\Notifier\Exception\UnsupportedSchemeException;
 use Symfony\Component\Notifier\Transport;
 use Symfony\Component\Notifier\Transport\Dsn;
 use Symfony\Component\Notifier\Transport\TransportInterface;
@@ -61,7 +62,11 @@ final class NotificationTransportFactory
             $configurator = $this->transportConfigurations->get($setting->getTransport());
             assert($configurator instanceof ConfiguratorInterface);
 
-            $transports[$setting->getId()->toString()] = $this->transport->fromDsnObject($configurator->configure($setting->getSettings()));
+            try {
+                $transports[$setting->getId()->toString()] = $this->transport->fromDsnObject($configurator->configure($setting->getSettings()));
+            } catch (UnsupportedSchemeException) {
+                continue;
+            }
         }
 
         return new Transports($transports);

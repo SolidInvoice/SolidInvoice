@@ -18,6 +18,7 @@ namespace SolidInvoice\NotificationBundle\Configurator;
 use SolidInvoice\NotificationBundle\Form\Type\Transport\SlackType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
+use function urlencode;
 
 /**
  * @codeCoverageIgnore
@@ -44,6 +45,6 @@ final class SlackConfigurator implements ConfiguratorInterface
      */
     public function configure(array $config): Dsn
     {
-        return new Dsn(sprintf('slack://%s@default?channel=%s', $config['token'], $config['channel']));
+        return new Dsn(sprintf('slack://%s@default?channel=%s', urlencode($config['token']), urlencode($config['channel'])));
     }
 }

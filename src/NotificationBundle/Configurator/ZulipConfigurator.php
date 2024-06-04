@@ -18,6 +18,7 @@ namespace SolidInvoice\NotificationBundle\Configurator;
 use SolidInvoice\NotificationBundle\Form\Type\Transport\ZulipType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
+use function urlencode;
 
 /**
  * @codeCoverageIgnore
@@ -44,6 +45,6 @@ final class ZulipConfigurator implements ConfiguratorInterface
      */
     public function configure(array $config): Dsn
     {
-        return new Dsn(sprintf('zulip://%s:%s@%s?channel=%s', $config['email'], $config['token'], $config['host'], $config['channel']));
+        return new Dsn(sprintf('zulip://%s:%s@%s?channel=%s', urlencode($config['email']), urlencode($config['token']), urlencode($config['host']), urlencode($config['channel'])));
     }
 }

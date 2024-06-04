@@ -18,6 +18,7 @@ namespace SolidInvoice\NotificationBundle\Configurator;
 use SolidInvoice\NotificationBundle\Form\Type\Transport\GoogleChatType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
+use function urlencode;
 
 /**
  * @codeCoverageIgnore
@@ -44,6 +45,6 @@ final class GoogleChatConfigurator implements ConfiguratorInterface
      */
     public function configure(array $config): Dsn
     {
-        return new Dsn(sprintf('googlechat://%s:%s@default/%s?thread_key=%s', $config['access_key'], $config['access_token'], $config['space'], $config['thread_key']));
+        return new Dsn(sprintf('googlechat://%s:%s@default/%s?thread_key=%s', urlencode($config['access_key']), urlencode($config['access_token']), urlencode($config['space']), urlencode($config['thread_key'])));
     }
 }

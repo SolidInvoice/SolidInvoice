@@ -18,6 +18,7 @@ namespace SolidInvoice\NotificationBundle\Configurator;
 use SolidInvoice\NotificationBundle\Form\Type\Transport\MessageMediaType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
+use function urlencode;
 
 /**
  * @codeCoverageIgnore
@@ -44,6 +45,6 @@ final class MessageMediaConfigurator implements ConfiguratorInterface
      */
     public function configure(array $config): Dsn
     {
-        return new Dsn(sprintf('messagemedia://%s:%s@default?from=%s', $config['api_key'], $config['api_secret'], $config['from']));
+        return new Dsn(sprintf('messagemedia://%s:%s@default?from=%s', urlencode($config['api_key']), urlencode($config['api_secret']), urlencode($config['from'])));
     }
 }

@@ -18,6 +18,7 @@ namespace SolidInvoice\NotificationBundle\Configurator;
 use SolidInvoice\NotificationBundle\Form\Type\Transport\SinchType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
+use function urlencode;
 
 /**
  * @codeCoverageIgnore
@@ -44,6 +45,6 @@ final class SinchConfigurator implements ConfiguratorInterface
      */
     public function configure(array $config): Dsn
     {
-        return new Dsn(sprintf('sinch://%s:%s@default?from=%s', $config['account_id'], $config['auth_token'], $config['from']));
+        return new Dsn(sprintf('sinch://%s:%s@default?from=%s', urlencode($config['account_id']), urlencode($config['auth_token']), urlencode($config['from'])));
     }
 }

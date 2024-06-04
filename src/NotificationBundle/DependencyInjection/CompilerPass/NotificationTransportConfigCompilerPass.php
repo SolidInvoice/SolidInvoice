@@ -23,16 +23,16 @@ final class NotificationTransportConfigCompilerPass implements CompilerPassInter
 {
     public function process(ContainerBuilder $container): void
     {
-        foreach (['chatter.transport_factory', 'chatter.transport_factory'] as $factory) {
+        foreach (['chatter.transport_factory', 'texter.transport_factory'] as $factory) {
             if (! $container->hasDefinition($factory)) {
                 continue;
             }
 
             $definition = new Definition(NotificationTransportFactory::class);
             $definition->setDecoratedService($factory);
-            $definition->addArgument(new Reference(NotificationTransportFactory::class . '.inner'));
+            $definition->addArgument(new Reference($factory . NotificationTransportFactory::class . '.inner'));
             $definition->setAutowired(true);
-            $container->setDefinition(NotificationTransportFactory::class, $definition);
+            $container->setDefinition($factory . NotificationTransportFactory::class, $definition);
         }
     }
 }

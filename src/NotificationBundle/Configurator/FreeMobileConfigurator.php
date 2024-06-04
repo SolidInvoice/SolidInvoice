@@ -18,6 +18,7 @@ namespace SolidInvoice\NotificationBundle\Configurator;
 use SolidInvoice\NotificationBundle\Form\Type\Transport\FreeMobileType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
+use function urlencode;
 
 /**
  * @codeCoverageIgnore
@@ -44,6 +45,6 @@ final class FreeMobileConfigurator implements ConfiguratorInterface
      */
     public function configure(array $config): Dsn
     {
-        return new Dsn(sprintf('freemobile://%s:%s@default?phone=%s', $config['login'], $config['api_key'], $config['phone']));
+        return new Dsn(sprintf('freemobile://%s:%s@default?phone=%s', urlencode($config['login']), urlencode($config['api_key']), urlencode($config['phone'])));
     }
 }

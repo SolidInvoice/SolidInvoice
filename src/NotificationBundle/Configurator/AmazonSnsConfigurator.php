@@ -18,6 +18,7 @@ namespace SolidInvoice\NotificationBundle\Configurator;
 use SolidInvoice\NotificationBundle\Form\Type\Transport\AmazonSnsType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
+use function urlencode;
 
 /**
  * @codeCoverageIgnore
@@ -44,6 +45,6 @@ final class AmazonSnsConfigurator implements ConfiguratorInterface
      */
     public function configure(array $config): Dsn
     {
-        return new Dsn(sprintf('sns://%s:%s@default?region=%s', $config['access_key'], $config['secret_key'], $config['region']));
+        return new Dsn(sprintf('sns://%s:%s@default?region=%s', urlencode($config['access_key']), urlencode($config['secret_key']), urlencode($config['region'])));
     }
 }

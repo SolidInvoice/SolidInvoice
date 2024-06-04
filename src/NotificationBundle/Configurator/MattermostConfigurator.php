@@ -18,6 +18,7 @@ namespace SolidInvoice\NotificationBundle\Configurator;
 use SolidInvoice\NotificationBundle\Form\Type\Transport\MattermostType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
+use function urlencode;
 
 /**
  * @codeCoverageIgnore
@@ -44,6 +45,6 @@ final class MattermostConfigurator implements ConfiguratorInterface
      */
     public function configure(array $config): Dsn
     {
-        return new Dsn(sprintf('mattermost://%s@%s/%s?channel=%s', $config['access_token'], $config['host'], $config['path'], $config['channel']));
+        return new Dsn(sprintf('mattermost://%s@%s/%s?channel=%s', urlencode($config['access_token']), urlencode($config['host']), urlencode($config['path']), urlencode($config['channel'])));
     }
 }
