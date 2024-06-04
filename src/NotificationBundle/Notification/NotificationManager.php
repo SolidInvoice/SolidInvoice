@@ -23,7 +23,7 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Notifier\NotifierInterface;
 use Symfony\Component\Notifier\Recipient\Recipient;
 
-final class NotificationManager
+class NotificationManager
 {
     public function __construct(
         private readonly NotifierInterface $notifier,
