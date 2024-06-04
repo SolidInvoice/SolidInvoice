@@ -14,30 +14,21 @@ declare(strict_types=1);
 namespace SolidInvoice\ClientBundle\Action;
 
 use SolidInvoice\ClientBundle\Entity\Client;
-use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 final class View
 {
     public function __construct(
         private readonly PaymentRepository $paymentRepository,
         private readonly InvoiceRepository $invoiceRepository,
-        private readonly ClientRepository $clientRepository,
     ) {
     }
 
-    public function __invoke(string $id): Template
+    public function __invoke(Client $client): Template
     {
-        $client = $this->clientRepository->find($id);
-
-        if (! $client instanceof Client) {
-            throw new NotFoundHttpException();
-        }
-
         return new Template(
             '@SolidInvoiceClient/Default/view.html.twig',
             [

@@ -50,7 +50,6 @@ final class ViewTest extends KernelTestCase
 
         $action = new View(
             self::getContainer()->get('doctrine')->getRepository(Payment::class),
-            self::getContainer()->get('doctrine')->getRepository(Invoice::class),
             new Generator('', new NullLogger()),
             $twig
         );
@@ -95,7 +94,7 @@ final class ViewTest extends KernelTestCase
             ->setInvoiceId('INV-2021-0001')
         ;
 
-        $template = $action($request, $invoice->getId()->toString());
+        $template = $action($request, $invoice);
 
         $response = $twig->resolveTemplate($template->getTemplate())->renderBlock('content', $template->getParams());
 
@@ -114,7 +113,6 @@ final class ViewTest extends KernelTestCase
 
         $action = new View(
             self::getContainer()->get('doctrine')->getRepository(Payment::class),
-            self::getContainer()->get('doctrine')->getRepository(Invoice::class),
             new Generator('', new NullLogger()),
             $twig
         );
@@ -167,7 +165,7 @@ final class ViewTest extends KernelTestCase
             ->updateItems()
         ;
 
-        $template = $action($request, $invoice->getId()->toString());
+        $template = $action($request, $invoice);
 
         $response = $twig->resolveTemplate($template->getTemplate())->renderBlock('content', $template->getParams());
 
