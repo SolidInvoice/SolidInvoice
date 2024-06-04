@@ -21,9 +21,9 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\UX\LiveComponent\Test\InteractsWithLiveComponents;
-use function assert;
 use function current;
 use function password_hash;
 
@@ -48,7 +48,7 @@ abstract class LiveComponentTest extends KernelTestCase
         $this->csrfTokenManager = $this->createMock(CsrfTokenManagerInterface::class);
 
         self::getContainer()
-            ->set('.container.private.security.csrf.token_manager', $this->csrfTokenManager);
+            ->set('security.csrf.token_manager', $this->csrfTokenManager);
 
         $this->client = self::getContainer()->get('test.client');
         $this->client->disableReboot();
@@ -61,8 +61,8 @@ abstract class LiveComponentTest extends KernelTestCase
     protected function ensureSessionIsSet(): void
     {
         $request = new Request();
-        $session = self::getContainer()->get('session');
-        assert($session instanceof Session);
+        $session = new Session(new MockFileSessionStorage());
+        $session->start();
 
         $request->setSession($session);
         self::getContainer()->get('request_stack')->push($request);

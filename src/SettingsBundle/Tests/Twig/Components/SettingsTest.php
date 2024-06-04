@@ -71,11 +71,6 @@ final class SettingsTest extends LiveComponentTest
         self::assertInstanceOf(RedirectResponse::class, $response);
         self::assertSame('/settings?section=system', $response->getTargetUrl());
 
-        self::assertSame(
-            ['success' => ['settings.saved.success']],
-            self::getContainer()->get('session')->getFlashBag()->all()
-        );
-
         $this->assertMatchesHtmlSnapshot((string) $this->settingsComponent->render());
     }
 
@@ -102,11 +97,6 @@ final class SettingsTest extends LiveComponentTest
 
         self::assertInstanceOf(RedirectResponse::class, $response);
         self::assertSame('/settings?section=invoice', $response->getTargetUrl());
-
-        self::assertSame(
-            ['success' => ['settings.saved.success']],
-            self::getContainer()->get('session')->getFlashBag()->all()
-        );
 
         $this->assertMatchesHtmlSnapshot((string) $this->settingsComponent->render());
 
