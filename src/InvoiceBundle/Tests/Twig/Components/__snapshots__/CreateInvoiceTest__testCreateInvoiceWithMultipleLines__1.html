@@ -1,5 +1,5 @@
 <html><body>
-<div id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="CreateInvoice" data-live-url-value="/_components/CreateInvoice" data-live-props-value='{"formData":[],"formName":"invoice","invoice":{"client":{"autocomplete":""},"discount":{"type":"percentage","value":0},"items":[{"description":"","price":"100.00","qty":"1"},{"description":"","price":"100.00","qty":"1"}],"invoiceId":"1","terms":"","notes":"","total":0,"baseTotal":0,"tax":0,"invoiceDate":"2021-01-01","due":"","_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"XGWYejExJXMokOd8cY3yN6vPcuh2q0OZS\/zIxV7XE4s="}' data-live-csrf-value="">
+<div id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="CreateInvoice" data-live-url-value="/_components/CreateInvoice" data-live-props-value='{"formData":[],"formName":"invoice","invoice":{"client":"","discount":{"type":"percentage","value":0},"items":[{"description":"","price":"100.00","qty":"1"},{"description":"","price":"100.00","qty":"1"}],"invoiceId":"1","terms":"","notes":"","total":0,"baseTotal":0,"tax":0,"invoiceDate":"2021-01-01","due":"","_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"0f7sbjgH9aHQGd4zi+MpEu+t3U7F7SRMM+ZLArDJGIQ="}' data-live-csrf-value="">
     
     <form name="invoice" method="post" data-model="on(change)|*">
     <div class="row">
@@ -13,9 +13,9 @@
                                 <div class="col-6">
                                     <div>
                                         <div class="form-group">                        
-                                <label class="control-label required required" for="invoice_client_autocomplete">Client</label>
-    <select id="invoice_client_autocomplete" name="invoice[client][autocomplete]" data-required="required" class="client-select form-control" data-controller="symfony--ux-autocomplete--autocomplete" data-symfony--ux-autocomplete--autocomplete-url-value="/autocomplete/client_autocomplete_type" data-symfony--ux-autocomplete--autocomplete-max-results-value="10" data-symfony--ux-autocomplete--autocomplete-no-results-found-text-value="No results found" data-symfony--ux-autocomplete--autocomplete-no-more-results-text-value="No more results" data-symfony--ux-autocomplete--autocomplete-preload-value="focus" required="1"><option value="" selected>Choose a client</option></select>
-</div>
+                                <label class="control-label required required" for="invoice_client">Client</label>
+            <select id="invoice_client" name="invoice[client]" data-required="required" class="client-select form-control" data-controller="symfony--ux-autocomplete--autocomplete" data-symfony--ux-autocomplete--autocomplete-url-value="/autocomplete/client_autocomplete_type" data-symfony--ux-autocomplete--autocomplete-max-results-value="10" data-symfony--ux-autocomplete--autocomplete-loading-more-text-value="Loading more results..." data-symfony--ux-autocomplete--autocomplete-no-results-found-text-value="No results found" data-symfony--ux-autocomplete--autocomplete-no-more-results-text-value="No more results" data-symfony--ux-autocomplete--autocomplete-preload-value="focus" data-action="live#$render"><option value="" selected>Choose a client</option></select>
+    </div>
                                     </div>
                                                                     </div>
 
@@ -111,7 +111,7 @@
                                                         
                                                     </td>
                                                     <td class="column-qty">
-                                                        <input type="text" id="invoice_items_0_qty" name="invoice[items][0][qty]" class="input-mini invoice-item-qty form-control" value="1">
+                                                        <input type="text" id="invoice_items_0_qty" name="invoice[items][0][qty]" class="input-mini invoice-item-qty form-control" inputmode="decimal" value="1">
                                                         
                                                     </td>
                                                                                                         <td class="column-total text-right">
@@ -136,7 +136,7 @@
                                                         
                                                     </td>
                                                     <td class="column-qty">
-                                                        <input type="text" id="invoice_items_1_qty" name="invoice[items][1][qty]" class="input-mini invoice-item-qty form-control" value="1">
+                                                        <input type="text" id="invoice_items_1_qty" name="invoice[items][1][qty]" class="input-mini invoice-item-qty form-control" inputmode="decimal" value="1">
                                                         
                                                     </td>
                                                                                                         <td class="column-total text-right">
