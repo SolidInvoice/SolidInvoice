@@ -11,7 +11,7 @@ import ItemView from 'SolidInvoiceCore/js/view';
 import $ from 'jquery';
 import Template from '../../templates/action.hbs';
 import { has, isEmpty, map } from 'lodash';
-import Router from 'router';
+import Routing from 'fos-router';
 import Alert from 'SolidInvoiceCore/js/alert';
 
 export default ItemView.extend({
@@ -43,7 +43,7 @@ export default ItemView.extend({
 
         const models = map(grid.getSelectedModels(), 'id'),
             promise = $.ajax({
-                url: Router.generate(this.model.get('action')),
+                url: Routing.generate(this.model.get('action')),
                 data: { 'data': models },
                 method: 'POST'
             });

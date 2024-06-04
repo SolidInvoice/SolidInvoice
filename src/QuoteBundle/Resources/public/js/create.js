@@ -10,7 +10,7 @@ import Collection from 'SolidInvoiceCore/js/billing/model/collection';
 import FooterView from 'SolidInvoiceCore/js/billing/view/footer';
 import QuoteView from './view';
 import Discount from 'SolidInvoiceCore/js/billing/view/discount';
-import Router from 'router';
+import Routing from 'fos-router';
 import Accounting from 'accounting';
 
 export default Module.extend({
@@ -32,7 +32,7 @@ export default Module.extend({
             Accounting.settings.currency.symbol = clientOptions.currency_format;
 
             $.getJSON(
-                Router.generate('_quotes_get_fields', { 'currency': clientOptions.currency })
+                Routing.generate('_quotes_get_fields', { 'currency': clientOptions.currency })
             ).done((fieldData) => {
                 module.collection.each((m) => {
                     m.set('fields', fieldData);
@@ -45,7 +45,7 @@ export default Module.extend({
                 module.app.showChildView('quoteRows', quoteView);
 
                 // eslint-disable-next-line
-                clientSelectView.$el.find(module.regions.quoteForm).attr('action', Router.generate('_quotes_create', { 'client': clientOptions.client }));
+                clientSelectView.$el.find(module.regions.quoteForm).attr('action', Routing.generate('_quotes_create', { 'client': clientOptions.client }));
                 $('.currency-view').html(clientOptions.currency);
 
                 module.app.initialize(module.app.options);

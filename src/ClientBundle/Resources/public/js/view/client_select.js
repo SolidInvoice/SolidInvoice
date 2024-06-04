@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import ItemView from 'SolidInvoiceCore/js/view';
 import { isEmpty, isUndefined } from 'lodash';
-import Router from 'router';
+import Routing from 'fos-router';
 
 export default ItemView.extend({
     clientForm: null,
@@ -43,7 +43,7 @@ export default ItemView.extend({
         this.showLoader();
 
         $.getJSON(
-            Router.generate('_xhr_clients_info', { id: val, type: this.getOption('type') }),
+            Routing.generate('_xhr_clients_info', { id: val, type: this.getOption('type') }),
             (data) => {
                 this.$('#client-select-container').html(data.content);
                 this._toggleContactInfo(true);
@@ -51,7 +51,7 @@ export default ItemView.extend({
                 history.replaceState(
                     {},
                     '',
-                    Router.generate(
+                    Routing.generate(
                         this.getOption('recurring') ?
                         '_invoices_create_recurring' :
                         `_${this.getOption('type')}s_create`,

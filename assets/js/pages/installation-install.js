@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import Router from 'router';
+import Routing from 'fos-router';
 import Translator from 'translator';
 import { startsWith } from 'lodash';
 
@@ -14,7 +14,7 @@ function ajaxStep (action, callback) {
 
     $step.append($clone.append(iconBusy));
 
-    const route = ( startsWith(window.location.pathname, '/app.php') ? '/app.php' : '' ) + Router.generate('_install_install');
+    const route = ( startsWith(window.location.pathname, '/app.php') ? '/app.php' : '' ) + Routing.generate('_install_install');
 
     $.post(route, { 'action': action }).done((response) => {
         if (true === response.success) {
