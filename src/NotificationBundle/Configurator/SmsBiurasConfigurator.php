@@ -19,6 +19,9 @@ use SolidInvoice\NotificationBundle\Form\Type\Transport\SmsBiurasType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
 
+/**
+ * @codeCoverageIgnore
+ */
 final class SmsBiurasConfigurator implements ConfiguratorInterface
 {
     public static function getName(): string

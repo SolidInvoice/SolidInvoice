@@ -19,6 +19,9 @@ use SolidInvoice\NotificationBundle\Form\Type\Transport\SinchType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
 
+/**
+ * @codeCoverageIgnore
+ */
 final class SinchConfigurator implements ConfiguratorInterface
 {
     public static function getName(): string

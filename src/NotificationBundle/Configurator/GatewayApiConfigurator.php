@@ -19,6 +19,9 @@ use SolidInvoice\NotificationBundle\Form\Type\Transport\GatewayApiType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
 
+/**
+ * @codeCoverageIgnore
+ */
 final class GatewayApiConfigurator implements ConfiguratorInterface
 {
     public static function getName(): string

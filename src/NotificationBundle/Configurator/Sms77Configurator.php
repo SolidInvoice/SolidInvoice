@@ -19,6 +19,9 @@ use SolidInvoice\NotificationBundle\Form\Type\Transport\Sms77Type;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
 
+/**
+ * @codeCoverageIgnore
+ */
 final class Sms77Configurator implements ConfiguratorInterface
 {
     public static function getName(): string

@@ -19,6 +19,9 @@ use SolidInvoice\NotificationBundle\Form\Type\Transport\YunpianType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
 
+/**
+ * @codeCoverageIgnore
+ */
 final class YunpianConfigurator implements ConfiguratorInterface
 {
     public static function getName(): string
