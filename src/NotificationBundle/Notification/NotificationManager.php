@@ -25,10 +25,14 @@ use Symfony\Component\Notifier\Recipient\Recipient;
 
 class NotificationManager
 {
+    /**
+     * @param ServiceLocator<ConfiguratorInterface> $transportConfigurations
+     */
     public function __construct(
         private readonly NotifierInterface $notifier,
         private readonly UserNotificationRepository $userNotificationRepository,
-        #[TaggedLocator(tag: ConfiguratorInterface::DI_TAG, defaultIndexMethod: 'getName')] private readonly ServiceLocator $transportConfigurations,
+        #[TaggedLocator(tag: ConfiguratorInterface::DI_TAG, defaultIndexMethod: 'getName')]
+        private readonly ServiceLocator $transportConfigurations,
     ) {
     }
 

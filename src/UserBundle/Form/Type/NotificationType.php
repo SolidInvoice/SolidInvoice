@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Form\Type;
 
+use SolidInvoice\NotificationBundle\Notification\NotificationMessage;
 use Symfony\Component\DependencyInjection\Attribute\TaggedLocator;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Form\AbstractType;
@@ -20,6 +21,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 final class NotificationType extends AbstractType
 {
+    /**
+     * @param ServiceLocator<NotificationMessage> $notificationList
+     */
     public function __construct(
         #[TaggedLocator('solid_invoice_notification.notification', 'name')]
         private readonly ServiceLocator $notificationList,

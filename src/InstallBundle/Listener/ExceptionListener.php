@@ -16,6 +16,7 @@ namespace SolidInvoice\InstallBundle\Listener;
 use SolidInvoice\InstallBundle\Exception\ApplicationInstalledException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
@@ -41,7 +42,9 @@ class ExceptionListener implements EventSubscriberInterface
         $exception = $event->getThrowable();
 
         if ($exception instanceof ApplicationInstalledException) {
-            $event->getRequest()->getSession()->getFlashBag()->add('error', $this->translator->trans($exception->getMessage()));
+            $session = $event->getRequest()->getSession();
+            assert($session instanceof Session);
+            $session->getFlashBag()->add('error', $this->translator->trans($exception->getMessage()));
 
             $event->setResponse(new RedirectResponse($this->router->generate('_home')));
             $event->stopPropagation();

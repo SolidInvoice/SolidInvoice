@@ -130,7 +130,7 @@ final class UserRepositoryTest extends KernelTestCase
                 return null;
             }
 
-            public function getUsername(): string
+            public function getUserIdentifier(): string
             {
                 return '';
             }

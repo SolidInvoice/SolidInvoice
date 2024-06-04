@@ -25,6 +25,7 @@ use SolidInvoice\QuoteBundle\Test\Factory\QuoteFactory;
 use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Twig\Environment;
 use Zenstruck\Foundry\Test\Factories;
 
 final class ViewTest extends KernelTestCase
@@ -42,9 +43,7 @@ final class ViewTest extends KernelTestCase
         $requestStack = self::getContainer()->get('request_stack');
         $requestStack->push($request);
 
-        self::getContainer()->get('security.token_storage');
-
-        $twig = self::getContainer()->get('twig');
+        $twig = self::getContainer()->get(Environment::class);
 
         $action = new View(
             new Generator('', new NullLogger()),

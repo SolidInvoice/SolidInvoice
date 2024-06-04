@@ -13,15 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Listener\Doctrine;
 
+use Brick\Math\Exception\MathException;
 use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Persistence\ObjectManager;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\QuoteBundle\Entity\Quote;
-use Symfony\Component\DependencyInjection\ServiceLocator;
 
 /**
  * @see \SolidInvoice\QuoteBundle\Tests\Listener\Doctrine\QuoteSaveListenerTest
@@ -29,7 +27,7 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
 class QuoteSaveListener implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly ServiceLocator $serviceLocator
+        private readonly TotalCalculator $totalCalculator
     ) {
     }
 
@@ -78,8 +76,8 @@ class QuoteSaveListener implements EventSubscriberInterface
 
         if ($entity instanceof Quote) {
             try {
-                $this->serviceLocator->get(TotalCalculator::class)->calculateTotals($entity);
-            } catch (NotFoundExceptionInterface | ContainerExceptionInterface) {
+                $this->totalCalculator->calculateTotals($entity);
+            } catch (MathException) {
             }
 
             $this->checkDiscount($entity);

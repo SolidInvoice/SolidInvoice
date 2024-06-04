@@ -31,8 +31,9 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\UX\Autocomplete\Checksum\ChecksumCalculator;
 use Symfony\UX\Autocomplete\Form\AutocompleteChoiceTypeExtension;
-use Symfony\UX\Autocomplete\Form\ParentEntityAutocompleteType;
+use Symfony\UX\Autocomplete\Form\BaseEntityAutocompleteType;
 use Zenstruck\Foundry\Test\Factories;
 
 class InvoiceTypeTest extends FormTestCase
@@ -111,10 +112,10 @@ class InvoiceTypeTest extends FormTestCase
                 $invoiceType,
                 $itemType,
                 new DiscountType($systemConfig),
-                new ParentEntityAutocompleteType($this->createMock(UrlGeneratorInterface::class)),
+                new BaseEntityAutocompleteType($this->createMock(UrlGeneratorInterface::class)),
             ], [
                 ChoiceType::class => [
-                    new AutocompleteChoiceTypeExtension(),
+                    new AutocompleteChoiceTypeExtension(new ChecksumCalculator('abc')),
                 ],
             ]),
         ];

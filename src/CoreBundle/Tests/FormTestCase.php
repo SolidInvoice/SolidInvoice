@@ -42,6 +42,7 @@ use Symfony\Component\Form\FormTypeExtensionInterface;
 use Symfony\Component\Form\FormTypeGuesserInterface;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\PreloadedExtension;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 abstract class FormTestCase extends KernelTestCase
@@ -86,7 +87,10 @@ abstract class FormTestCase extends KernelTestCase
     {
         $validator = M::mock(ValidatorInterface::class);
 
-        $validator->shouldReceive('validate')->zeroOrMoreTimes()->andReturn([]);
+        $validator
+            ->shouldReceive('validate')
+            ->zeroOrMoreTimes()
+            ->andReturn(new ConstraintViolationList());
 
         $systemConfig = M::mock(SystemConfig::class);
 

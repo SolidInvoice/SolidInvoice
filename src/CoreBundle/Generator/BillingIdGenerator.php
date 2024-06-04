@@ -11,9 +11,8 @@
 
 namespace SolidInvoice\CoreBundle\Generator;
 
-use JsonException;
+use InvalidArgumentException;
 use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator\IdGeneratorInterface;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\QuoteBundle\Entity\Quote;
@@ -23,6 +22,9 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
 
 final class BillingIdGenerator
 {
+    /**
+     * @param ServiceLocator<IdGeneratorInterface> $generators
+     */
     public function __construct(
         #[TaggedLocator(IdGeneratorInterface::class, defaultIndexMethod: 'getName')]
         private readonly ServiceLocator $generators,
@@ -34,15 +36,13 @@ final class BillingIdGenerator
      * @param array<string, mixed> $options
      *
      * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     * @throws JsonException
      */
     public function generate(object $entity, array $options = [], ?string $strategy = null): string
     {
         $settingSection = match (true) {
             $entity instanceof Invoice => 'invoice',
             $entity instanceof Quote => 'quote',
-            default => throw new \InvalidArgumentException('Invalid entity type'),
+            default => throw new InvalidArgumentException('Invalid entity type'),
         };
 
         $strategy ??= $this->config->get($settingSection . '/id_generation/strategy');

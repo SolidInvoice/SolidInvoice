@@ -24,6 +24,9 @@ use function str_replace;
 
 final class BillingIdConfigurationType extends AbstractType
 {
+    /**
+     * @param ServiceLocator<IdGeneratorInterface> $generators
+     */
     public function __construct(
         #[TaggedLocator(IdGeneratorInterface::class, defaultIndexMethod: 'getName')]
         private readonly ServiceLocator $generators,

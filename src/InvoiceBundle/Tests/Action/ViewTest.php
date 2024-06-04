@@ -44,8 +44,6 @@ final class ViewTest extends KernelTestCase
         $requestStack = self::getContainer()->get('request_stack');
         $requestStack->push($request);
 
-        self::getContainer()->get('security.token_storage');
-
         $twig = self::getContainer()->get('twig');
 
         $action = new View(

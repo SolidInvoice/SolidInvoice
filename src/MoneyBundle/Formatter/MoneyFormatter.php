@@ -22,8 +22,8 @@ use Money\Money;
 use NumberFormatter;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\Intl\Currencies;
-use Symfony\Component\Intl\Exception\MethodArgumentNotImplementedException;
-use Symfony\Component\Intl\Exception\MethodArgumentValueNotImplementedException;
+use Symfony\Polyfill\Intl\Icu\Exception\MethodArgumentNotImplementedException;
+use Symfony\Polyfill\Intl\Icu\Exception\MethodArgumentValueNotImplementedException;
 use Throwable;
 use function is_string;
 

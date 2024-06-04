@@ -12,14 +12,12 @@ declare(strict_types=1);
  */
 
 use Payum\Core\Registry\RegistryInterface;
-use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\PaymentBundle\Menu\Builder;
 use SolidInvoice\PaymentBundle\PaymentAction\Offline\StatusAction;
 use SolidInvoice\PaymentBundle\PaymentAction\PaypalExpress\PaymentDetailsStatusAction;
 use SolidInvoice\PaymentBundle\Payum\Extension\UpdatePaymentDetailsExtension;
 use SolidInvoice\PaymentBundle\SolidInvoicePaymentBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use Symfony\Component\DependencyInjection\ServiceLocator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -66,15 +64,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set(UpdatePaymentDetailsExtension::class)
         ->public()
         ->tag('payum.extension', ['all' => true]);
-
-    $services
-        ->set('solidinvoice.payment.locator', ServiceLocator::class)
-        ->tag('container.service_locator')
-        ->args([
-            [
-                TotalCalculator::class => service(TotalCalculator::class),
-            ],
-        ]);
 
     $services
         ->load(SolidInvoicePaymentBundle::NAMESPACE . '\\DataFixtures\ORM\\', dirname(__DIR__, 3) . '/DataFixtures/ORM/*')

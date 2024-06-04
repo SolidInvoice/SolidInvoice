@@ -71,7 +71,6 @@ abstract class ApiTestCase extends PantherTestCase
             $users = [$user];
         }
 
-        // @phpstan-ignore-next-line Ignore this line in PHPStan, since it sees the SystemConfig service as private
         static::getContainer()->get(CompanySelector::class)->switchCompany($companies[0]->getId());
 
         $tokenManager = new ApiTokenManager($registry);

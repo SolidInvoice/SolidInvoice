@@ -15,6 +15,8 @@ namespace SolidInvoice\CoreBundle\Test\Traits;
 
 use LogicException;
 use SolidInvoice\Kernel;
+use Symfony\Bundle\FrameworkBundle\Test\TestContainer;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -78,7 +80,7 @@ trait SymfonyKernelTrait
      *
      * Using this method is the best way to get a container from your test code.
      */
-    protected static function getContainer(): ContainerInterface
+    protected static function getContainer(): TestContainer
     {
         if (! static::$booted) {
             static::bootKernel();
@@ -87,7 +89,7 @@ trait SymfonyKernelTrait
         try {
             // @phpstan-ignore-next-line
             $container = static::$kernel->getContainer()->get('test.service_container');
-            assert($container instanceof ContainerInterface);
+            assert($container instanceof TestContainer);
 
             return $container;
         } catch (ServiceNotFoundException $e) {
