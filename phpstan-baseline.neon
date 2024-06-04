@@ -241,11 +241,6 @@ parameters:
 			path: src/CoreBundle/Templating/Template.php
 
 		-
-			message: "#^Service \"session\" is not registered in the container\\.$#"
-			count: 1
-			path: src/CoreBundle/Test/LiveComponentTest.php
-
-		-
 			message: "#^Property SolidInvoice\\\\CoreBundle\\\\Tests\\\\KernelAwareTest\\:\\:\\$container \\(Symfony\\\\Component\\\\DependencyInjection\\\\Container\\) does not accept Symfony\\\\Component\\\\DependencyInjection\\\\ContainerInterface\\.$#"
 			count: 1
 			path: src/CoreBundle/Tests/KernelAwareTest.php
@@ -789,11 +784,6 @@ parameters:
 			message: "#^Method SolidInvoice\\\\SettingsBundle\\\\Repository\\\\SettingsRepository\\:\\:save\\(\\) has parameter \\$settings with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/SettingsBundle/Repository/SettingsRepository.php
-
-		-
-			message: "#^Service \"session\" is not registered in the container\\.$#"
-			count: 2
-			path: src/SettingsBundle/Tests/Twig/Components/SettingsTest.php
 
 		-
 			message: "#^Method SolidInvoice\\\\SettingsBundle\\\\Twig\\\\Components\\\\Settings\\:\\:getDataModelValue\\(\\) is unused\\.$#"
