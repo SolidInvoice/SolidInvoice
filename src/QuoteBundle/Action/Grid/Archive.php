@@ -20,7 +20,7 @@ use SolidInvoice\QuoteBundle\Exception\InvalidTransitionException;
 use SolidInvoice\QuoteBundle\Model\Graph;
 use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Workflow\StateMachine;
+use Symfony\Component\Workflow\WorkflowInterface;
 
 final class Archive implements AjaxResponse
 {
@@ -28,7 +28,7 @@ final class Archive implements AjaxResponse
 
     public function __construct(
         private readonly QuoteRepository $repository,
-        private readonly StateMachine $quoteStateMachine
+        private readonly WorkflowInterface $quoteStateMachine
     ) {
     }
 

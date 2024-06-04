@@ -32,7 +32,7 @@ use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Workflow\StateMachine;
+use Symfony\Component\Workflow\WorkflowInterface;
 use function str_replace;
 
 /**
@@ -47,7 +47,7 @@ class InvoiceManager
     public function __construct(
         ManagerRegistry $doctrine,
         EventDispatcherInterface $dispatcher,
-        private readonly StateMachine $invoiceStateMachine,
+        private readonly WorkflowInterface $invoiceStateMachine,
         private readonly NotificationManager $notification
     ) {
         $this->entityManager = $doctrine->getManager();

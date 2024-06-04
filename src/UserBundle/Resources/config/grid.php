@@ -11,6 +11,8 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use SolidInvoice\UserBundle\Entity\User;
+use SolidInvoice\UserBundle\Entity\UserInvitation;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -19,7 +21,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'title' => 'Users',
             'icon' => 'user',
             'source' => [
-                'repository' => 'SolidInvoiceUserBundle:User',
+                'repository' => User::class,
                 'method' => 'getGridQuery',
             ],
             'columns' => [
@@ -68,7 +70,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'title' => 'Invitations',
             'icon' => 'envelope',
             'source' => [
-                'repository' => 'SolidInvoiceUserBundle:UserInvitation',
+                'repository' => UserInvitation::class,
                 'method' => 'getGridQuery',
             ],
             'columns' => [

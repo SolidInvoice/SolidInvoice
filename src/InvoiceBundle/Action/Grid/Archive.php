@@ -20,7 +20,7 @@ use SolidInvoice\InvoiceBundle\Exception\InvalidTransitionException;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Workflow\StateMachine;
+use Symfony\Component\Workflow\WorkflowInterface;
 
 final class Archive implements AjaxResponse
 {
@@ -28,7 +28,7 @@ final class Archive implements AjaxResponse
 
     public function __construct(
         private readonly InvoiceRepository $repository,
-        private readonly StateMachine $invoiceStateMachine
+        private readonly WorkflowInterface $invoiceStateMachine
     ) {
     }
 

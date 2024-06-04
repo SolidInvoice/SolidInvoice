@@ -22,7 +22,7 @@ use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\InvoiceBundle\Message\CreateInvoiceFromRecurring;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
-use Symfony\Component\Workflow\StateMachine;
+use Symfony\Component\Workflow\WorkflowInterface;
 
 /**
  * @see \SolidInvoice\InvoiceBundle\Tests\Message\Handler\CreateInvoiceFromRecurringHandlerTest
@@ -31,7 +31,7 @@ final class CreateInvoiceFromRecurringHandler implements MessageSubscriberInterf
 {
     public function __construct(
         private readonly InvoiceManager $invoiceManager,
-        private readonly StateMachine $invoiceStateMachine,
+        private readonly WorkflowInterface $invoiceStateMachine,
         private readonly CompanySelector $companySelector,
         private LoggerInterface $logger,
     ) {

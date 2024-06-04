@@ -22,12 +22,12 @@ use SolidInvoice\QuoteBundle\Model\Graph;
 use SolidInvoice\QuoteBundle\Notification\QuoteStatusNotification;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Workflow\StateMachine;
+use Symfony\Component\Workflow\WorkflowInterface;
 
 final class QuoteMailer
 {
     public function __construct(
-        private readonly StateMachine $quoteStateMachine,
+        private readonly WorkflowInterface $quoteStateMachine,
         private readonly MailerInterface $mailer,
         private readonly NotificationManager $notification
     ) {

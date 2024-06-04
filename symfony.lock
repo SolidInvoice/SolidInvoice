@@ -379,18 +379,6 @@
             "config/packages/ramsey_uuid_doctrine.yaml"
         ]
     },
-    "sensio/framework-extra-bundle": {
-        "version": "6.2",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "5.2",
-            "ref": "fb7e19da7f013d0d422fa9bce16f5c510e27609b"
-        },
-        "files": [
-            "config/packages/sensio_framework_extra.yaml"
-        ]
-    },
     "sentry/sentry-symfony": {
         "version": "4.8",
         "recipe": {
@@ -1137,6 +1125,18 @@
             "version": "5.0",
             "ref": "10af129fcac6d00ffc9bb23d039d997dee35e657"
         }
+    },
+    "symfony/uid": {
+        "version": "6.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "6.2",
+            "ref": "d294ad4add3e15d7eb1bae0221588ca89b38e558"
+        },
+        "files": [
+            "config/packages/uid.yaml"
+        ]
     },
     "symfony/ux-autocomplete": {
         "version": "2.12",

@@ -145,28 +145,27 @@ final class UserRepositoryTest extends KernelTestCase
         $this->repository->refreshUser($user);
     }
 
-    public function testLoadUserByUsername(): void
+    public function testLoadUserByIdentifier(): void
     {
         $this->databaseTool->loadFixtures([LoadData::class], true);
-        self::assertInstanceOf(User::class, $this->repository->loadUserByUsername('test2'));
-        self::assertInstanceOf(User::class, $this->repository->loadUserByUsername('test2@test.com'));
+        self::assertInstanceOf(User::class, $this->repository->loadUserByIdentifier('test2@test.com'));
     }
 
-    public function testLoadUserByUsernameWithDisabledUser(): void
+    public function testLoadUserByIdentifierWithDisabledUser(): void
     {
         $this->databaseTool->loadFixtures([LoadData::class], true);
         $this->expectException(UserNotFoundException::class);
         $this->expectExceptionMessage('User "test1" does not exist.');
-        $this->repository->loadUserByUsername('test1');
+        $this->repository->loadUserByIdentifier('test1');
     }
 
-    public function testLoadUserByUsernameWithInvalidUser(): void
+    public function testLoadUserByIdentifierWithInvalidUser(): void
     {
         $username = $this->faker->userName;
         $this->databaseTool->loadFixtures([LoadData::class], true);
         $this->expectException(UserNotFoundException::class);
         $this->expectExceptionMessage('User "' . $username . '" does not exist.');
-        $this->repository->loadUserByUsername($username);
+        $this->repository->loadUserByIdentifier($username);
     }
 
     public function testGetUserCount(): void

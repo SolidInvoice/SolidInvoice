@@ -19,7 +19,7 @@ use SolidInvoice\QuoteBundle\Entity\Item;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Model\Graph;
 use SolidInvoice\TaxBundle\Entity\Tax;
-use Symfony\Component\Workflow\StateMachine;
+use Symfony\Component\Workflow\WorkflowInterface;
 use Traversable;
 
 /**
@@ -28,7 +28,7 @@ use Traversable;
 final class QuoteCloner
 {
     public function __construct(
-        private readonly StateMachine $quoteStateMachine
+        private readonly WorkflowInterface $quoteStateMachine
     ) {
     }
 

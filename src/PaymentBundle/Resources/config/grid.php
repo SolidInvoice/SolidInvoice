@@ -11,13 +11,14 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use SolidInvoice\PaymentBundle\Entity\Payment;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->extension('datagrid', [
         'payment_grid' => [
             'source' => [
-                'repository' => 'SolidInvoicePaymentBundle:Payment',
+                'repository' => Payment::class,
                 'method' => 'getGridQuery',
             ],
             'columns' => [
@@ -97,7 +98,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ],
         'invoice_payment_grid' => [
             'source' => [
-                'repository' => 'SolidInvoicePaymentBundle:Payment',
+                'repository' => Payment::class,
                 'method' => 'getGridQuery',
             ],
             'columns' => [
@@ -146,7 +147,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ],
         'client_payment_grid' => [
             'source' => [
-                'repository' => 'SolidInvoicePaymentBundle:Payment',
+                'repository' => Payment::class,
                 'method' => 'getGridQuery',
             ],
             'columns' => [

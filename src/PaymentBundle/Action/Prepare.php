@@ -47,7 +47,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Workflow\StateMachine;
+use Symfony\Component\Workflow\WorkflowInterface;
 use function array_map;
 use function filter_var;
 use function in_array;
@@ -62,7 +62,7 @@ final class Prepare
      * @param Payum $payum
      */
     public function __construct(
-        private readonly StateMachine $invoiceStateMachine,
+        private readonly WorkflowInterface $invoiceStateMachine,
         private readonly PaymentMethodRepository $paymentMethodRepository,
         private readonly AuthorizationCheckerInterface $authorization,
         private readonly TokenStorageInterface $tokenStorage,

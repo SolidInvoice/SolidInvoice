@@ -11,6 +11,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use SolidInvoice\QuoteBundle\Entity\Quote;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -19,7 +20,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'title' => 'Active Quotes',
             'icon' => 'check',
             'source' => [
-                'repository' => 'SolidInvoiceQuoteBundle:Quote',
+                'repository' => Quote::class,
                 'method' => 'getGridQuery',
             ],
             'properties' => [
@@ -118,7 +119,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'title' => 'Archived Quotes',
             'icon' => 'archive',
             'source' => [
-                'repository' => 'SolidInvoiceQuoteBundle:Quote',
+                'repository' => Quote::class,
                 'method' => 'getArchivedGridQuery',
             ],
             'properties' => [

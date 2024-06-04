@@ -26,7 +26,7 @@ use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\Workflow\StateMachine;
+use Symfony\Component\Workflow\WorkflowInterface;
 
 class InvoiceCreateListenerTest extends TestCase
 {
@@ -42,7 +42,7 @@ class InvoiceCreateListenerTest extends TestCase
     {
         $entity = new Invoice();
 
-        $stateMachine = M::mock(StateMachine::class);
+        $stateMachine = M::mock(WorkflowInterface::class);
         $stateMachine->shouldReceive('apply')
             ->once()
             ->with($entity, Graph::TRANSITION_NEW);
@@ -54,7 +54,7 @@ class InvoiceCreateListenerTest extends TestCase
 
     public function testSkipIfNotMainRequest(): void
     {
-        $stateMachine = M::mock(StateMachine::class);
+        $stateMachine = M::mock(WorkflowInterface::class);
         $stateMachine->shouldReceive('apply')
             ->never();
 
@@ -65,7 +65,7 @@ class InvoiceCreateListenerTest extends TestCase
 
     public function testSkipIfInvoiceAlreadyHasAStatus(): void
     {
-        $stateMachine = M::mock(StateMachine::class);
+        $stateMachine = M::mock(WorkflowInterface::class);
         $stateMachine->shouldReceive('apply')
             ->never();
 
@@ -79,7 +79,7 @@ class InvoiceCreateListenerTest extends TestCase
 
     public function testSkipIfNoInvoiceIsPassed(): void
     {
-        $stateMachine = M::mock(StateMachine::class);
+        $stateMachine = M::mock(WorkflowInterface::class);
         $stateMachine->shouldReceive('apply')
             ->never();
 
@@ -91,7 +91,7 @@ class InvoiceCreateListenerTest extends TestCase
 
     public function testSkipIfNotPostRequest(): void
     {
-        $stateMachine = M::mock(StateMachine::class);
+        $stateMachine = M::mock(WorkflowInterface::class);
         $stateMachine->shouldReceive('apply')
             ->never();
 

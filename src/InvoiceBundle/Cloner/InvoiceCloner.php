@@ -74,7 +74,7 @@ final class InvoiceCloner
             $newInvoice->setFrequency($invoice->getFrequency());
         } elseif ($invoice instanceof Invoice) {
             $newInvoice->setDue($invoice->getDue());
-            $newInvoice->setInvoiceId($this->billingIdGenerator->generate($newInvoice));
+            $newInvoice->setInvoiceId($this->billingIdGenerator->generate($newInvoice, ['field' => 'invoiceId']));
         }
 
         if (null !== $tax = $invoice->getTax()) {

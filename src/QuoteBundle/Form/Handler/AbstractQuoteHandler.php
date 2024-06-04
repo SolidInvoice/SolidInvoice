@@ -31,7 +31,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Workflow\StateMachine;
+use Symfony\Component\Workflow\WorkflowInterface;
 
 abstract class AbstractQuoteHandler implements FormHandlerInterface, FormHandlerResponseInterface, FormHandlerSuccessInterface, FormHandlerOptionsResolver
 {
@@ -39,7 +39,7 @@ abstract class AbstractQuoteHandler implements FormHandlerInterface, FormHandler
 
     public function __construct(
         private readonly RouterInterface $router,
-        private readonly StateMachine $quoteStateMachine
+        private readonly WorkflowInterface $quoteStateMachine
     ) {
     }
 

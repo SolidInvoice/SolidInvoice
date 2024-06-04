@@ -26,7 +26,7 @@ use SolidInvoice\QuoteBundle\Notification\QuoteStatusNotification;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Workflow\Event\Event;
-use Symfony\Component\Workflow\StateMachine;
+use Symfony\Component\Workflow\WorkflowInterface;
 
 /**
  * @see \SolidInvoice\QuoteBundle\Tests\Listener\WorkFlowSubscriberTest
@@ -36,7 +36,7 @@ final class WorkFlowSubscriber implements EventSubscriberInterface
     public function __construct(
         private readonly ManagerRegistry $registry,
         private readonly InvoiceManager $invoiceManager,
-        private readonly StateMachine $invoiceStateMachine,
+        private readonly WorkflowInterface $invoiceStateMachine,
         private readonly NotificationManager $notification,
         private readonly QuoteMailer $quoteMailer
     ) {
