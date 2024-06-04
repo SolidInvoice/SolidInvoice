@@ -26,6 +26,9 @@ use function strtolower;
 
 final class TransportSettingType extends AbstractType
 {
+    /**
+     * @param ServiceLocator<ConfiguratorInterface> $transportConfigurations
+     */
     public function __construct(
         #[TaggedLocator(tag: ConfiguratorInterface::DI_TAG, defaultIndexMethod: 'getName')]
         private readonly ServiceLocator $transportConfigurations

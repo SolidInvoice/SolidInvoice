@@ -28,6 +28,9 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class NotificationTransportFactory
 {
+    /**
+     * @param ServiceLocator<ConfiguratorInterface> $transportConfigurations
+     */
     public function __construct(
         private readonly Transport $transport,
         private readonly TransportSettingRepository $transportSettingRepository,

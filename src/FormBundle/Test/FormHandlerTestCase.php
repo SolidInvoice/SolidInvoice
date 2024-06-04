@@ -40,7 +40,9 @@ use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\FormTypeExtensionInterface;
 use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\UX\Autocomplete\Checksum\ChecksumCalculator;
 use Symfony\UX\Autocomplete\Form\AutocompleteChoiceTypeExtension;
 use Symfony\UX\Autocomplete\Form\ParentEntityAutocompleteType;
 
@@ -85,7 +87,9 @@ abstract class FormHandlerTestCase extends BaseTestCase
                 ],
                 [
                     [
-                        new AutocompleteChoiceTypeExtension(),
+                        new AutocompleteChoiceTypeExtension(
+                            new ChecksumCalculator('abc')
+                        ),
                     ]
                 ]
             ),
@@ -101,7 +105,10 @@ abstract class FormHandlerTestCase extends BaseTestCase
     {
         $validator = M::mock(ValidatorInterface::class);
 
-        $validator->shouldReceive('validate')->zeroOrMoreTimes()->andReturn([]);
+        $validator
+            ->shouldReceive('validate')
+            ->zeroOrMoreTimes()
+            ->andReturn(new ConstraintViolationList());
 
         $systemConfig = M::mock(SystemConfig::class);
 
@@ -114,7 +121,9 @@ abstract class FormHandlerTestCase extends BaseTestCase
             new FormHelpExtension(),
             new MoneyExtension($systemConfig),
             new FormTypeValidatorExtension($validator),
-            new AutocompleteChoiceTypeExtension(),
+            new AutocompleteChoiceTypeExtension(
+                new ChecksumCalculator('abc')
+            ),
         ];
     }
 }

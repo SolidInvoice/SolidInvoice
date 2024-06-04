@@ -76,11 +76,6 @@ parameters:
 			path: src/ClientBundle/Action/Ajax/Contact/Edit.php
 
 		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\HttpFoundation\\\\Session\\\\SessionInterface\\:\\:getFlashBag\\(\\)\\.$#"
-			count: 1
-			path: src/ClientBundle/Action/Ajax/Delete.php
-
-		-
 			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Index\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/ClientBundle/Action/Index.php
@@ -711,11 +706,6 @@ parameters:
 			path: src/PaymentBundle/Tests/Factory/DependencyInjection/ConfigurationTest.php
 
 		-
-			message: "#^Service \"SolidInvoice\\\\PaymentBundle\\\\Factory\\\\PaymentFactories\" is private\\.$#"
-			count: 1
-			path: src/PaymentBundle/Tests/Twig/Components/PaymentSettingsTest.php
-
-		-
 			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\CloneQuote\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/QuoteBundle/Action/CloneQuote.php
@@ -959,11 +949,6 @@ parameters:
 			message: "#^Method SolidInvoice\\\\UserBundle\\\\Tests\\\\Form\\\\Handler\\\\ApiFormHandlerTest\\:\\:getHandlerOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/UserBundle/Tests/Form/Handler/ApiFormHandlerTest.php
-
-		-
-			message: "#^Method SolidInvoice\\\\UserBundle\\\\Tests\\\\Form\\\\Handler\\\\KernelExecutor\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/UserBundle/Tests/Form/Handler/ProfileEditHandlerTest.php
 
 		-
 			message: "#^Method SolidInvoice\\\\UserBundle\\\\Tests\\\\Form\\\\Handler\\\\ProfileEditHandlerTest\\:\\:getFormData\\(\\) return type has no value type specified in iterable type array\\.$#"

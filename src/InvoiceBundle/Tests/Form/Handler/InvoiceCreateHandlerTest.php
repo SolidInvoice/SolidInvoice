@@ -55,6 +55,7 @@ use Symfony\Component\Workflow\Definition;
 use Symfony\Component\Workflow\MarkingStore\MethodMarkingStore;
 use Symfony\Component\Workflow\StateMachine;
 use Symfony\Component\Workflow\Transition;
+use Symfony\UX\Autocomplete\Checksum\ChecksumCalculator;
 use Symfony\UX\Autocomplete\Form\AutocompleteChoiceTypeExtension;
 use Symfony\UX\Autocomplete\Form\ParentEntityAutocompleteType;
 use function iterator_to_array;
@@ -228,10 +229,10 @@ final class InvoiceCreateHandlerTest extends FormHandlerTestCase
                 ],
                 [
                     ChoiceType::class => [
-                        new AutocompleteChoiceTypeExtension(),
+                        new AutocompleteChoiceTypeExtension(new ChecksumCalculator('abc')),
                     ],
                     TextType::class => [
-                        new AutocompleteChoiceTypeExtension(),
+                        new AutocompleteChoiceTypeExtension(new ChecksumCalculator('abc')),
                     ],
                 ]
             ),

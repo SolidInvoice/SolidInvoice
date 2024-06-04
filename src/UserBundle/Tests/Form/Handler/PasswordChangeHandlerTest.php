@@ -26,7 +26,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactory;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
+use Symfony\Component\Security\Core\Authentication\Token\NullToken;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 final class PasswordChangeHandlerTest extends FormHandlerTestCase
@@ -67,7 +67,7 @@ final class PasswordChangeHandlerTest extends FormHandlerTestCase
         $this->tokenStorage->shouldReceive('getToken')
             ->once()
             ->withNoArgs()
-            ->andReturn(new AnonymousToken($this->faker->sha1, 'anon.'));
+            ->andReturn(new NullToken());
     }
 
     public function getHandler(): PasswordChangeHandler

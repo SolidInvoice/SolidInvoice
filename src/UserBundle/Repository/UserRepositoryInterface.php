@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Repository;
 
+use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -21,6 +22,8 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
  * @method findOneBy(array $criteria = [])
  * @method UserInterface|null find(int $id, int|null $lockMode = null, string|null $lockVersion = null)
  * @method save(UserInterface $user)
+ *
+ * @extends UserProviderInterface<User>
  */
 interface UserRepositoryInterface extends UserProviderInterface, UserLoaderInterface
 {

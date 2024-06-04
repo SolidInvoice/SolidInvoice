@@ -15,6 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\NotificationBundle\Entity\TransportSetting;
 use SolidInvoice\NotificationBundle\Entity\UserNotification as UserNotificationEntity;
+use SolidInvoice\NotificationBundle\Notification\NotificationMessage;
 use SolidInvoice\NotificationBundle\Repository\TransportSettingRepository;
 use SolidInvoice\NotificationBundle\Repository\UserNotificationRepository;
 use SolidInvoice\UserBundle\Entity\User;
@@ -46,6 +47,9 @@ final class UserNotification extends AbstractController
      */
     public array $notificationList = [];
 
+    /**
+     * @param ServiceLocator<NotificationMessage> $notificationList
+     */
     public function __construct(
         private readonly UserNotificationRepository $userNotificationRepository,
         private readonly TransportSettingRepository $transportSettingRepository,

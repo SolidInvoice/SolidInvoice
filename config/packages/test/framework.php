@@ -8,7 +8,7 @@ return static function (FrameworkConfig $config): void {
     $config
         ->test(true)
         ->session()
-        ->storageId('session.storage.mock_file');
+        ->storageFactoryId('session.storage.factory.mock_file');
 
     $config
         ->profiler()

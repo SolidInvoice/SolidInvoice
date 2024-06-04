@@ -12,7 +12,6 @@ declare(strict_types=1);
  */
 
 use SolidInvoice\InvoiceBundle\Form\EventListener\InvoiceUsersSubscriber;
-use SolidInvoice\InvoiceBundle\Listener\Doctrine\InvoiceSaveListener;
 use SolidInvoice\InvoiceBundle\Menu\Builder;
 use SolidInvoice\InvoiceBundle\SolidInvoiceInvoiceBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -47,10 +46,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 'method' => 'sidebar',
             ]
         );
-
-    $services
-        ->set(InvoiceSaveListener::class)
-        ->args([service('solidinvoice.payment.locator')]);
 
     $services
         ->load(SolidInvoiceInvoiceBundle::NAMESPACE . '\\DataFixtures\ORM\\', dirname(__DIR__, 3) . '/DataFixtures/ORM/*')

@@ -43,7 +43,6 @@ class MenuBuilderTest extends TestCase
 
         $menuBuilder->invoke($item);
 
-        // @phpstan-ignore-next-line
         $builder->shouldHaveReceived('something', [$item, []]);
     }
 
@@ -64,7 +63,6 @@ class MenuBuilderTest extends TestCase
 
         $menuBuilder->invoke($item);
 
-        // @phpstan-ignore-next-line
         $builder->shouldNotHaveReceived('something', [$item, []]);
     }
 
@@ -85,7 +83,6 @@ class MenuBuilderTest extends TestCase
 
         $menuBuilder->invoke($item);
 
-        // @phpstan-ignore-next-line
         $builder->shouldNotHaveReceived('something', [$item, []]);
     }
 }

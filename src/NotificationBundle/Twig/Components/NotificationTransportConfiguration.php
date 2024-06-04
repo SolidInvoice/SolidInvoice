@@ -42,6 +42,9 @@ final class NotificationTransportConfiguration extends AbstractController
     #[LiveProp(writable: true, updateFromParent: true, url: true)]
     public ?string $type = null;
 
+    /**
+     * @param ServiceLocator<ConfiguratorInterface> $transportConfigurations
+     */
     public function __construct(
         #[TaggedLocator(tag: ConfiguratorInterface::DI_TAG, defaultIndexMethod: 'getName')]
         private readonly ServiceLocator $transportConfigurations

@@ -12,7 +12,6 @@ declare(strict_types=1);
  */
 
 use SolidInvoice\QuoteBundle\Form\EventListener\QuoteUsersSubscriber;
-use SolidInvoice\QuoteBundle\Listener\Doctrine\QuoteSaveListener;
 use SolidInvoice\QuoteBundle\Menu\Builder;
 use SolidInvoice\QuoteBundle\SolidInvoiceQuoteBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -47,10 +46,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 'method' => 'sidebar',
             ]
         );
-
-    $services
-        ->set(QuoteSaveListener::class)
-        ->args([service('solidinvoice.payment.locator')]);
 
     $services
         ->load(SolidInvoiceQuoteBundle::NAMESPACE . '\\DataFixtures\ORM\\', dirname(__DIR__, 3) . '/DataFixtures/ORM/*')
