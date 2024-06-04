@@ -57,7 +57,7 @@ use Symfony\Component\Workflow\StateMachine;
 use Symfony\Component\Workflow\Transition;
 use Symfony\UX\Autocomplete\Checksum\ChecksumCalculator;
 use Symfony\UX\Autocomplete\Form\AutocompleteChoiceTypeExtension;
-use Symfony\UX\Autocomplete\Form\ParentEntityAutocompleteType;
+use Symfony\UX\Autocomplete\Form\BaseEntityAutocompleteType;
 use function iterator_to_array;
 
 /**
@@ -223,9 +223,8 @@ final class InvoiceCreateHandlerTest extends FormHandlerTestCase
                     new InvoiceType($systemConfig, $this->registry, new BillingIdGenerator(new ServiceLocator(['random_number' => static fn () => $randomNumberGenerator]), $systemConfig)),
                     new InvoiceItemType($this->registry),
                     new DiscountType($systemConfig),
-                    new ParentEntityAutocompleteType($this->createMock(UrlGeneratorInterface::class)),
+                    new BaseEntityAutocompleteType($this->createMock(UrlGeneratorInterface::class)),
                     new ClientAutocompleteType(),
-                    new ParentEntityAutocompleteType($this->createMock(UrlGeneratorInterface::class)),
                 ],
                 [
                     ChoiceType::class => [
