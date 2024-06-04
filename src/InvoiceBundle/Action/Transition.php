@@ -18,8 +18,10 @@ use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Exception\InvalidTransitionException;
+use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Workflow\StateMachine;
 
@@ -29,12 +31,19 @@ final class Transition
 
     public function __construct(
         private readonly RouterInterface $router,
-        private readonly StateMachine $invoiceStateMachine
+        private readonly StateMachine $invoiceStateMachine,
+        private readonly InvoiceRepository $invoiceRepository,
     ) {
     }
 
-    public function __invoke(Request $request, string $action, Invoice $invoice): RedirectResponse
+    public function __invoke(Request $request, string $action, string $id): RedirectResponse
     {
+        $invoice = $this->invoiceRepository->find($id);
+
+        if (! $invoice instanceof Invoice) {
+            throw new NotFoundHttpException();
+        }
+
         if (! $this->invoiceStateMachine->can($invoice, $action)) {
             throw new InvalidTransitionException($action);
         }

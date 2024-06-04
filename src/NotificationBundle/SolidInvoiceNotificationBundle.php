@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\NotificationBundle;
 
-use SolidInvoice\NotificationBundle\DependencyInjection\CompilerPass\NotificationHandlerCompilerPass;
+use SolidInvoice\NotificationBundle\DependencyInjection\CompilerPass\NotificationTransportConfigCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -23,6 +23,6 @@ final class SolidInvoiceNotificationBundle extends Bundle
 
     public function build(ContainerBuilder $container): void
     {
-        $container->addCompilerPass(new NotificationHandlerCompilerPass());
+        $container->addCompilerPass(new NotificationTransportConfigCompilerPass());
     }
 }

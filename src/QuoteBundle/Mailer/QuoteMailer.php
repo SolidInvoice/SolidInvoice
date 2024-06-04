@@ -55,9 +55,7 @@ final class QuoteMailer
             'transition' => Graph::TRANSITION_SEND,
         ];
 
-        $notification = new QuoteStatusNotification($parameters);
-
-        $this->notification->sendNotification('quote_status_update', $notification);
+        $this->notification->sendNotification(new QuoteStatusNotification($parameters));
     }
 
     /**

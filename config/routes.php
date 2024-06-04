@@ -34,6 +34,9 @@ return static function (RoutingConfigurator $routingConfigurator): void {
     $routingConfigurator->import('@SolidInvoiceUserBundle/Resources/config/routing.php')
         ->prefix('/');
 
+    $routingConfigurator->import('@SolidInvoiceNotificationBundle/Resources/config/routing.php')
+        ->prefix('/notifications');
+
     $routingConfigurator->import('@SolidInvoiceDataGridBundle/Resources/config/routing.php')
         ->prefix('/grid');
 };

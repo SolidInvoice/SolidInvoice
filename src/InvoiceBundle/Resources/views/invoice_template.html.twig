@@ -7,7 +7,7 @@
  # with this source code in the file LICENSE.
  #}
 
-{% set footerSpan = invoice.tax.positive ? 3 : 2 %}
+{% set footerSpan = invoice.tax.positive ? 4 : 3 %}
 
 <div class="{{ containerClass is defined ? containerClass : 'widget' }}" id="invoice-create">
     <div class="invoice">
@@ -149,7 +149,6 @@
                             </tbody>
                             <tfoot>
                             <tr>
-                                <td class="no-line"></td>
                                 <td colspan="{{ footerSpan }}" class="thick-line text-right">
                                     <strong>{{ 'invoice.subtotal'|trans }}</strong>
                                 </td>
@@ -161,7 +160,6 @@
                             </tr>
                             {% if invoice.tax.positive %}
                                 <tr>
-                                    <td class="no-line"></td>
                                     <td colspan="{{ footerSpan }}" class="no-line text-right">
                                         <strong>{{ 'invoice.tax'|trans }}</strong>
                                     </td>
@@ -175,7 +173,6 @@
 
                             {% if invoice.hasDiscount %}
                                 <tr>
-                                    <td class="no-line"></td>
                                     <td colspan="{{ footerSpan }}" class="no-line text-right">
                                         <strong>{{ 'invoice.discount'|trans }}</strong>
                                     </td>
@@ -190,7 +187,6 @@
                             {% if invoice.payments|length > 0 and not invoice.balance.isZero %}
                                 {% for payment in invoice.payments|filter((v) => v.status == 'captured') %}
                                     <tr>
-                                        <td class="no-line"></td>
                                         <td colspan="{{ footerSpan }}" class="no-line text-right">
                                             <strong>
                                                 Payment:
@@ -206,7 +202,6 @@
                                 {% endfor %}
                             {% endif %}
                             <tr>
-                                <td class="no-line"></td>
                                 <td colspan="{{ footerSpan }}" class="no-line text-right">
                                     <strong>
                                         {% if invoice.payments is defined and invoice.payments|length > 0 and not invoice.balance.isZero %}

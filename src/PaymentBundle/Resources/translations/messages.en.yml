@@ -54,3 +54,5 @@ payment:
     settings:
         password:
             hint: 'Keep this empty to keep the existing value'
+
+payment_made: 'Payment has been received'

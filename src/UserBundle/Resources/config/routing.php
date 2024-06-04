@@ -19,6 +19,7 @@ use SolidInvoice\UserBundle\Action\ForgotPassword\Request;
 use SolidInvoice\UserBundle\Action\ForgotPassword\Reset;
 use SolidInvoice\UserBundle\Action\ForgotPassword\Send;
 use SolidInvoice\UserBundle\Action\InviteUser;
+use SolidInvoice\UserBundle\Action\Notifications;
 use SolidInvoice\UserBundle\Action\Profile;
 use SolidInvoice\UserBundle\Action\Register;
 use SolidInvoice\UserBundle\Action\ResendUserInvite;
@@ -98,4 +99,8 @@ return static function (RoutingConfigurator $routingConfigurator): void {
     $routingConfigurator
         ->add('_change_password', '/profile/change-password')
         ->controller(ChangePassword::class);
+
+    $routingConfigurator
+        ->add('_profile_notifications', '/profile/notifications')
+        ->controller(Notifications::class);
 };

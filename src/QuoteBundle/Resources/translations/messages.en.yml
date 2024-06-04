@@ -92,3 +92,5 @@ status: Status
 client: Client
 search: Search
 title: 'messages'
+
+quote_status_update: 'Quote Status Update'

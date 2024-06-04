@@ -21,6 +21,6 @@
 
 {{ 'payment.details.currency'|trans({}, 'email') }}: {{ payment.currencyCode }}
 
-{{ 'payment.details.amount'|trans({}, 'email') }}: {{ payment.totalAmount|formatCurrency }}
+{{ 'payment.details.amount'|trans({}, 'email') }}: {{ payment.totalAmount|formatCurrency(payment.currencyCode) }}
 
 {{ 'payment.details.status'|trans({}, 'email') }}: {{ payment.status }}

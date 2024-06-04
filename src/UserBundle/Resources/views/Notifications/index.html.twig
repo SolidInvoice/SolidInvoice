@@ -1,0 +1,25 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
+
+{% block title %}{{ 'Notifications' }}{% endblock title %}
+
+{% block content %}
+    <section class="row">
+        <aside class="col-4">
+            {% include '@SolidInvoiceUser/Profile/_partial/nav.html.twig' with {'menuItem': 'notification'} %}
+
+        </aside>
+        <section class="col-8">
+            <twig:UserNotification />
+        </section>
+    </section>
+</div>
+{% endblock content %}

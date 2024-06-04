@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Symfony\Config\SwiftmailerConfig;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
 
-return static function (SwiftmailerConfig $config): void {
+/*return static function (SwiftmailerConfig $config): void {
     $config
         ->defaultMailer('default')
         ->mailer('default')
@@ -17,4 +17,6 @@ return static function (SwiftmailerConfig $config): void {
             ->port(env('mailer_port'))
             ->spool()
             ->type('memory');
-};
+};*/
+
+return static fn () => null;

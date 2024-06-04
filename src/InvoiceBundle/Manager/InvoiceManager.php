@@ -174,24 +174,22 @@ class InvoiceManager
     private function applyTransition(BaseInvoice $invoice, string $transition): void
     {
         if ($this->invoiceStateMachine->can($invoice, $transition)) {
-            $oldStatus = $invoice->getStatus();
-
-            $this->invoiceStateMachine->apply($invoice, $transition);
-
-            $newStatus = $invoice->getStatus();
-
-            $parameters = [
-                'invoice' => $invoice,
-                'old_status' => $oldStatus,
-                'new_status' => $newStatus,
-                'transition' => $transition,
-            ];
-
             // Do not send status updates for new invoices
             if (Graph::TRANSITION_NEW !== $transition) {
-                $notification = new InvoiceStatusNotification($parameters);
+                $oldStatus = $invoice->getStatus();
 
-                $this->notification->sendNotification('invoice_status_update', $notification);
+                $this->invoiceStateMachine->apply($invoice, $transition);
+
+                $newStatus = $invoice->getStatus();
+
+                $parameters = [
+                    'invoice' => $invoice,
+                    'old_status' => $oldStatus,
+                    'new_status' => $newStatus,
+                    'transition' => $transition,
+                ];
+
+                $this->notification->sendNotification(new InvoiceStatusNotification($parameters));
             }
 
             return;

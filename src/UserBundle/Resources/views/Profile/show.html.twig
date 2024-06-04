@@ -9,76 +9,89 @@
 
 {% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
-{% block title %}{{ "profile.show.title"|trans({"%username%" : app.user.username}) }}{% endblock title %}
+{% block title %}{{ "profile.show.title"|trans({"%username%" : app.user.userIdentifier}) }}{% endblock title %}
 
 {% block content %}
-    <div class="card card-primary">
-        <div class="card-body">
-            <table class="table table-striped">
-                <tbody>
-                    <tr>
-                        <th>
-                            {{ 'profile.show.username'|trans }}
-                        </th>
-                        <td>
-                            {{ app.user.username }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ 'profile.show.email'|trans }}
-                        </th>
-                        <td>
-                            {{ app.user.email }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ 'profile.show.mobile'|trans }}
-                        </th>
-                        <td>
-                            {{ app.user.mobile }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ 'profile.show.last_login'|trans }}
-                        </th>
-                        <td>
-                            {{ app.user.lastLogin|date }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ 'profile.show.enabled'|trans }}
-                        </th>
-                        <td>
-                            {% if app.user.enabled %}
-                                <span class="badge badge-pill bg-green">{{ 'profile.show.yes'|trans }}</span>
-                            {% else %}
-                                <span class="badge badge-pill bg-red">{{ 'profile.show.no'|trans }}</span>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ 'profile.show.roles'|trans }}
-                        </th>
-                        <td>
-                            {{ app.user.roles|join(', ') }}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+    <section class="row">
+        <aside class="col-4">
+            {% include '@SolidInvoiceUser/Profile/_partial/nav.html.twig' with {menuItem: 'profile'} %}
+        </aside>
+        <section class="col-8">
+            <div class="card card-outline card-primary">
+                <div class="card-header with-border">
+                    <h3 class="card-title">
+                        {{ "profile.show.title"|trans({"%username%" : app.user.userIdentifier}) }}
+                    </h3>
+                </div>
+                <div class="card-body p-0 border-0">
+                    <table class="table table-striped">
+                        <tbody>
+                        <tr>
+                            <th>
+                                {{ 'profile.show.username'|trans }}
+                            </th>
+                            <td>
+                                {{ app.user.userIdentifier }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                {{ 'profile.show.email'|trans }}
+                            </th>
+                            <td>
+                                {{ app.user.email }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                {{ 'profile.show.mobile'|trans }}
+                            </th>
+                            <td>
+                                {{ app.user.mobile }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                {{ 'profile.show.last_login'|trans }}
+                            </th>
+                            <td>
+                                {{ app.user.lastLogin|date }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                {{ 'profile.show.enabled'|trans }}
+                            </th>
+                            <td>
+                                {% if app.user.enabled %}
+                                    <span class="badge badge-pill bg-green">{{ 'profile.show.yes'|trans }}</span>
+                                {% else %}
+                                    <span class="badge badge-pill bg-red">{{ 'profile.show.no'|trans }}</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                {{ 'profile.show.roles'|trans }}
+                            </th>
+                            <td>
+                                {{ app.user.roles|join(', ') }}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-        <div class="card-footer">
-            <a href="{{ path('_edit_profile') }}" class="btn btn-primary">
-                {{ icon('user') }} {{ 'profile.show.update_profile'|trans }}
-            </a>
-            <a href="{{ path('_change_password') }}" class="btn btn-info">
-                {{ icon('key') }} {{ 'profile.show.change_password'|trans }}
-            </a>
-        </div>
-    </div>
+                <div class="card-footer">
+                    <a href="{{ path('_edit_profile') }}" class="btn btn-primary">
+                        {{ icon('user') }} {{ 'profile.show.update_profile'|trans }}
+                    </a>
+                    <a href="{{ path('_change_password') }}" class="btn btn-info">
+                        {{ icon('key') }} {{ 'profile.show.change_password'|trans }}
+                    </a>
+                </div>
+            </div>
+        </section>
+    </section>
+</div>
 {% endblock content %}

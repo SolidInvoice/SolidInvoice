@@ -84,7 +84,7 @@ final class WorkFlowSubscriber implements EventSubscriberInterface
         }
 
         if (QuoteGraph::STATUS_NEW !== $quote->getStatus()) {
-            $this->notification->sendNotification('quote_status_update', new QuoteStatusNotification(['quote' => $quote]));
+            $this->notification->sendNotification(new QuoteStatusNotification(['quote' => $quote]));
         }
     }
 }

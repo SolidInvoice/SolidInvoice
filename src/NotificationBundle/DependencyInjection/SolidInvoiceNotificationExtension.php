@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\NotificationBundle\DependencyInjection;
 
+use SolidInvoice\NotificationBundle\Attribute\AsNotification;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -31,5 +33,9 @@ class SolidInvoiceNotificationExtension extends Extension
     {
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->import('services/*.php');
+
+        $container->registerAttributeForAutoconfiguration(AsNotification::class, static function (ChildDefinition $definition, AsNotification $notification, \Reflector $reflector): void {
+            $definition->addTag('solid_invoice_notification.notification', ['name' => $notification->name]);
+        });
     }
 }
