@@ -18,6 +18,7 @@ namespace SolidInvoice\NotificationBundle\Configurator;
 use SolidInvoice\NotificationBundle\Form\Type\Transport\MessageBirdType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
+use function urlencode;
 
 /**
  * @codeCoverageIgnore
@@ -44,6 +45,6 @@ final class MessageBirdConfigurator implements ConfiguratorInterface
      */
     public function configure(array $config): Dsn
     {
-        return new Dsn(sprintf('messagebird://%s@default?from=%s', $config['token'], $config['from']));
+        return new Dsn(sprintf('messagebird://%s@default?from=%s', urlencode($config['token']), urlencode($config['from'])));
     }
 }

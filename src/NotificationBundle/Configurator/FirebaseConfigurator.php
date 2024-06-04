@@ -18,6 +18,7 @@ namespace SolidInvoice\NotificationBundle\Configurator;
 use SolidInvoice\NotificationBundle\Form\Type\Transport\FirebaseType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
+use function urlencode;
 
 /**
  * @codeCoverageIgnore
@@ -44,6 +45,6 @@ final class FirebaseConfigurator implements ConfiguratorInterface
      */
     public function configure(array $config): Dsn
     {
-        return new Dsn(sprintf('firebase://%s:%s@default', $config['username'], $config['password']));
+        return new Dsn(sprintf('firebase://%s:%s@default', urlencode($config['username']), urlencode($config['password'])));
     }
 }

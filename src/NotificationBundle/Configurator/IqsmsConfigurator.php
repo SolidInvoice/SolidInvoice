@@ -18,6 +18,7 @@ namespace SolidInvoice\NotificationBundle\Configurator;
 use SolidInvoice\NotificationBundle\Form\Type\Transport\IqsmsType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
+use function urlencode;
 
 /**
  * @codeCoverageIgnore
@@ -44,6 +45,6 @@ final class IqsmsConfigurator implements ConfiguratorInterface
      */
     public function configure(array $config): Dsn
     {
-        return new Dsn(sprintf('iqsms://%s:%s@default?from=%s', $config['login'], $config['password'], $config['from']));
+        return new Dsn(sprintf('iqsms://%s:%s@default?from=%s', urlencode($config['login']), urlencode($config['password']), urlencode($config['from'])));
     }
 }

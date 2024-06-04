@@ -18,6 +18,7 @@ namespace SolidInvoice\NotificationBundle\Configurator;
 use SolidInvoice\NotificationBundle\Form\Type\Transport\DiscordType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
+use function urlencode;
 
 /**
  * @codeCoverageIgnore
@@ -44,6 +45,6 @@ final class DiscordConfigurator implements ConfiguratorInterface
      */
     public function configure(array $config): Dsn
     {
-        return new Dsn(sprintf('discord://%s@default?webhook_id=%s', $config['token'], $config['id']));
+        return new Dsn(sprintf('discord://%s@default?webhook_id=%s', urlencode($config['token']), urlencode($config['id'])));
     }
 }

@@ -18,6 +18,7 @@ namespace SolidInvoice\NotificationBundle\Configurator;
 use SolidInvoice\NotificationBundle\Form\Type\Transport\TwilioType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
+use function urlencode;
 
 /**
  * @codeCoverageIgnore
@@ -44,6 +45,6 @@ final class TwilioConfigurator implements ConfiguratorInterface
      */
     public function configure(array $config): Dsn
     {
-        return new Dsn(sprintf('twilio://%s:%s@default?from=%s', $config['sid'], $config['token'], $config['from']));
+        return new Dsn(sprintf('twilio://%s:%s@default?from=%s', urlencode($config['sid']), urlencode($config['token']), urlencode($config['from'])));
     }
 }

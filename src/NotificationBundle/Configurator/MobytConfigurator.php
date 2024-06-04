@@ -18,6 +18,7 @@ namespace SolidInvoice\NotificationBundle\Configurator;
 use SolidInvoice\NotificationBundle\Form\Type\Transport\MobytType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
+use function urlencode;
 
 /**
  * @codeCoverageIgnore
@@ -44,6 +45,6 @@ final class MobytConfigurator implements ConfiguratorInterface
      */
     public function configure(array $config): Dsn
     {
-        return new Dsn(sprintf('mobyt://%s:%s@default?from=%s', $config['user_key'], $config['access_token'], $config['from']));
+        return new Dsn(sprintf('mobyt://%s:%s@default?from=%s', urlencode($config['user_key']), urlencode($config['access_token']), urlencode($config['from'])));
     }
 }

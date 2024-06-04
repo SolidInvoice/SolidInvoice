@@ -18,6 +18,7 @@ namespace SolidInvoice\NotificationBundle\Configurator;
 use SolidInvoice\NotificationBundle\Form\Type\Transport\EsendexType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
+use function urlencode;
 
 /**
  * @codeCoverageIgnore
@@ -44,6 +45,6 @@ final class EsendexConfigurator implements ConfiguratorInterface
      */
     public function configure(array $config): Dsn
     {
-        return new Dsn(sprintf('esendex://%s:%s@default?accountreference=%s&amp;from=%s', $config['user_name'], $config['password'], $config['account_reference'], $config['from']));
+        return new Dsn(sprintf('esendex://%s:%s@default?accountreference=%s&amp;from=%s', urlencode($config['user_name']), urlencode($config['password']), urlencode($config['account_reference']), urlencode($config['from'])));
     }
 }

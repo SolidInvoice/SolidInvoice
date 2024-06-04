@@ -18,6 +18,7 @@ namespace SolidInvoice\NotificationBundle\Configurator;
 use SolidInvoice\NotificationBundle\Form\Type\Transport\VonageType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
+use function urlencode;
 
 /**
  * @codeCoverageIgnore
@@ -44,6 +45,6 @@ final class VonageConfigurator implements ConfiguratorInterface
      */
     public function configure(array $config): Dsn
     {
-        return new Dsn(sprintf('vonage://%s:%s@default?from=%s', $config['key'], $config['secret'], $config['from']));
+        return new Dsn(sprintf('vonage://%s:%s@default?from=%s', urlencode($config['key']), urlencode($config['secret']), urlencode($config['from'])));
     }
 }

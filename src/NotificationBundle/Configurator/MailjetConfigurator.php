@@ -18,6 +18,7 @@ namespace SolidInvoice\NotificationBundle\Configurator;
 use SolidInvoice\NotificationBundle\Form\Type\Transport\MailjetType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
+use function urlencode;
 
 /**
  * @codeCoverageIgnore
@@ -44,6 +45,6 @@ final class MailjetConfigurator implements ConfiguratorInterface
      */
     public function configure(array $config): Dsn
     {
-        return new Dsn(sprintf('mailjet://%s@default?from=%s', $config['token'], $config['from']));
+        return new Dsn(sprintf('mailjet://%s@default?from=%s', urlencode($config['token']), urlencode($config['from'])));
     }
 }

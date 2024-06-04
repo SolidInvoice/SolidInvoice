@@ -18,6 +18,7 @@ namespace SolidInvoice\NotificationBundle\Configurator;
 use SolidInvoice\NotificationBundle\Form\Type\Transport\InfobipType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
+use function urlencode;
 
 /**
  * @codeCoverageIgnore
@@ -44,6 +45,6 @@ final class InfobipConfigurator implements ConfiguratorInterface
      */
     public function configure(array $config): Dsn
     {
-        return new Dsn(sprintf('infobip://%s@%s?from=%s', $config['auth_token'], $config['host'], $config['from']));
+        return new Dsn(sprintf('infobip://%s@%s?from=%s', urlencode($config['auth_token']), urlencode($config['host']), urlencode($config['from'])));
     }
 }

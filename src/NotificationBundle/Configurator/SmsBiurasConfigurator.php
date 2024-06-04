@@ -18,6 +18,7 @@ namespace SolidInvoice\NotificationBundle\Configurator;
 use SolidInvoice\NotificationBundle\Form\Type\Transport\SmsBiurasType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
+use function urlencode;
 
 /**
  * @codeCoverageIgnore
@@ -44,6 +45,6 @@ final class SmsBiurasConfigurator implements ConfiguratorInterface
      */
     public function configure(array $config): Dsn
     {
-        return new Dsn(sprintf('smsbiuras://%s:%s@default?from=%s&amp;test_mode=%s', $config['uid'], $config['api_key'], $config['from'], $config['test_mode']));
+        return new Dsn(sprintf('smsbiuras://%s:%s@default?from=%s&amp;test_mode=%s', urlencode($config['uid']), urlencode($config['api_key']), urlencode($config['from']), urlencode($config['test_mode'])));
     }
 }

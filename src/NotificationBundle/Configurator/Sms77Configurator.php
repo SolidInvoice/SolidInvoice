@@ -18,6 +18,7 @@ namespace SolidInvoice\NotificationBundle\Configurator;
 use SolidInvoice\NotificationBundle\Form\Type\Transport\Sms77Type;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
+use function urlencode;
 
 /**
  * @codeCoverageIgnore
@@ -44,6 +45,6 @@ final class Sms77Configurator implements ConfiguratorInterface
      */
     public function configure(array $config): Dsn
     {
-        return new Dsn(sprintf('sms77://%s@default?from=%s', $config['api_key'], $config['from']));
+        return new Dsn(sprintf('sms77://%s@default?from=%s', urlencode($config['api_key']), urlencode($config['from'])));
     }
 }

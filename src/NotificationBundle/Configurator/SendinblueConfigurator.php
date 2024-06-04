@@ -18,6 +18,7 @@ namespace SolidInvoice\NotificationBundle\Configurator;
 use SolidInvoice\NotificationBundle\Form\Type\Transport\SendinblueType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
+use function urlencode;
 
 /**
  * @codeCoverageIgnore
@@ -44,6 +45,6 @@ final class SendinblueConfigurator implements ConfiguratorInterface
      */
     public function configure(array $config): Dsn
     {
-        return new Dsn(sprintf('sendinblue://%s@default?sender=%s', $config['api_key'], $config['phone']));
+        return new Dsn(sprintf('sendinblue://%s@default?sender=%s', urlencode($config['api_key']), urlencode($config['phone'])));
     }
 }

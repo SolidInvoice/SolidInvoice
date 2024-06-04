@@ -18,6 +18,7 @@ namespace SolidInvoice\NotificationBundle\Configurator;
 use SolidInvoice\NotificationBundle\Form\Type\Transport\OvhCloudType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
+use function urlencode;
 
 /**
  * @codeCoverageIgnore
@@ -44,6 +45,6 @@ final class OvhCloudConfigurator implements ConfiguratorInterface
      */
     public function configure(array $config): Dsn
     {
-        return new Dsn(sprintf('ovhcloud://%s:%s@default?consumer_key=%s&amp;service_name=%s', $config['application_key'], $config['application_secret'], $config['consumer_key'], $config['service_name']));
+        return new Dsn(sprintf('ovhcloud://%s:%s@default?consumer_key=%s&amp;service_name=%s', urlencode($config['application_key']), urlencode($config['application_secret']), urlencode($config['consumer_key']), urlencode($config['service_name'])));
     }
 }

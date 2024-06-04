@@ -18,6 +18,7 @@ namespace SolidInvoice\NotificationBundle\Configurator;
 use SolidInvoice\NotificationBundle\Form\Type\Transport\ClickatellType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
+use function urlencode;
 
 /**
  * @codeCoverageIgnore
@@ -44,6 +45,6 @@ final class ClickatellConfigurator implements ConfiguratorInterface
      */
     public function configure(array $config): Dsn
     {
-        return new Dsn(sprintf('clickatell://%s@default?from=%s', $config['access_token'], $config['from']));
+        return new Dsn(sprintf('clickatell://%s@default?from=%s', urlencode($config['access_token']), urlencode($config['from'])));
     }
 }

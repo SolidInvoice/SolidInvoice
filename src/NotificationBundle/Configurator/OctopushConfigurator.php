@@ -18,6 +18,7 @@ namespace SolidInvoice\NotificationBundle\Configurator;
 use SolidInvoice\NotificationBundle\Form\Type\Transport\OctopushType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
+use function urlencode;
 
 /**
  * @codeCoverageIgnore
@@ -44,6 +45,6 @@ final class OctopushConfigurator implements ConfiguratorInterface
      */
     public function configure(array $config): Dsn
     {
-        return new Dsn(sprintf('octopush://%s:%s@default?from=%s&amp;type=%s', $config['userlogin'], $config['apikey'], $config['from'], $config['type']));
+        return new Dsn(sprintf('octopush://%s:%s@default?from=%s&amp;type=%s', urlencode($config['userlogin']), urlencode($config['apikey']), urlencode($config['from']), urlencode($config['type'])));
     }
 }

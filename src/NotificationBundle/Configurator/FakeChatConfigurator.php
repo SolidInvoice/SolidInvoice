@@ -18,6 +18,7 @@ namespace SolidInvoice\NotificationBundle\Configurator;
 use SolidInvoice\NotificationBundle\Form\Type\Transport\FakeChatType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
+use function urlencode;
 
 /**
  * @codeCoverageIgnore
@@ -44,6 +45,6 @@ final class FakeChatConfigurator implements ConfiguratorInterface
      */
     public function configure(array $config): Dsn
     {
-        return new Dsn(sprintf('fakechat+email://default?to=%s&amp;from=%s', $config['to'], $config['from']));
+        return new Dsn(sprintf('fakechat+email://default?to=%s&amp;from=%s', urlencode($config['to']), urlencode($config['from'])));
     }
 }

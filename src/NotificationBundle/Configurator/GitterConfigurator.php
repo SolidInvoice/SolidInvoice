@@ -18,6 +18,7 @@ namespace SolidInvoice\NotificationBundle\Configurator;
 use SolidInvoice\NotificationBundle\Form\Type\Transport\GitterType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
+use function urlencode;
 
 /**
  * @codeCoverageIgnore
@@ -44,6 +45,6 @@ final class GitterConfigurator implements ConfiguratorInterface
      */
     public function configure(array $config): Dsn
     {
-        return new Dsn(sprintf('gitter://%s@default?room_id=%s', $config['token'], $config['room_id']));
+        return new Dsn(sprintf('gitter://%s@default?room_id=%s', urlencode($config['token']), urlencode($config['room_id'])));
     }
 }

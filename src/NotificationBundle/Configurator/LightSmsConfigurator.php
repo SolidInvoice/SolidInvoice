@@ -18,6 +18,7 @@ namespace SolidInvoice\NotificationBundle\Configurator;
 use SolidInvoice\NotificationBundle\Form\Type\Transport\LightSmsType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
+use function urlencode;
 
 /**
  * @codeCoverageIgnore
@@ -44,6 +45,6 @@ final class LightSmsConfigurator implements ConfiguratorInterface
      */
     public function configure(array $config): Dsn
     {
-        return new Dsn(sprintf('lightsms://%s:%s@default?from=%s', $config['login'], $config['token'], $config['phone']));
+        return new Dsn(sprintf('lightsms://%s:%s@default?from=%s', urlencode($config['login']), urlencode($config['token']), urlencode($config['phone'])));
     }
 }
