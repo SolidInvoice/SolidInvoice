@@ -15,7 +15,6 @@ namespace SolidInvoice\CoreBundle\Listener;
 
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
@@ -31,12 +30,6 @@ class SessionRequestListener implements EventSubscriberInterface
         ];
     }
 
-    public function __construct(
-        protected SessionInterface $session,
-        protected string $secret
-    ) {
-    }
-
     public function onKernelResponse(ResponseEvent $event): void
     {
         if (! $event->isMainRequest()) {
@@ -46,7 +39,7 @@ class SessionRequestListener implements EventSubscriberInterface
         $response = $event->getResponse();
 
         if ($response instanceof FlashResponse) {
-            $flashBag = $this->session->getFlashBag();
+            $flashBag = $event->getRequest()->getSession()->getFlashBag();
             foreach ($response->getFlash() as $type => $message) {
                 // Default to info for undefined types
                 $flashBag->add($type, $message);

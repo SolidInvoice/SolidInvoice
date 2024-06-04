@@ -21,7 +21,7 @@ use SolidInvoice\InvoiceBundle\Exception\InvalidTransitionException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Workflow\StateMachine;
+use Symfony\Component\Workflow\WorkflowInterface;
 
 final class RecurringTransition
 {
@@ -29,7 +29,7 @@ final class RecurringTransition
 
     public function __construct(
         private readonly RouterInterface $router,
-        private readonly StateMachine $recurringInvoiceStateMachine
+        private readonly WorkflowInterface $recurringInvoiceStateMachine
     ) {
     }
 

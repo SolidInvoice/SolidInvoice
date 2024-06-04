@@ -40,22 +40,21 @@ return static function (SecurityConfig $config): void {
         ->firewall('api_doc')
         ->pattern('^/api/docs')
         ->lazy(true)
-        ->anonymous(true);
+        ->security(false);
 
     $config
         ->firewall('installation')
         ->pattern('^/install')
-        ->anonymous(true);
+        ->security(false);
 
     $config
         ->firewall('api_login')
         ->pattern('^/api/login')
         ->stateless(true)
-        ->anonymous(true)
+        ->security(false)
         ->formLogin()
             ->provider('api_token_user_provider')
             ->checkPath('/api/login')
-            ->requirePreviousSession(false)
             ->successHandler(AuthenticationSuccessHandler::class)
             ->failureHandler(AuthenticationFailHandler::class);
 
@@ -64,8 +63,7 @@ return static function (SecurityConfig $config): void {
         ->pattern('^/api')
         ->stateless(true)
         ->provider('api_token_user_provider')
-        ->guard()
-            ->authenticators([ApiTokenAuthenticator::class]);
+        ->customAuthenticators([ApiTokenAuthenticator::class]);
 
     $mainFirewallConfig = $config
         ->firewall('main')
@@ -83,7 +81,7 @@ return static function (SecurityConfig $config): void {
     $mainFirewallConfig
         ->formLogin()
         ->provider('solidinvoice_user')
-        ->csrfTokenGenerator('security.csrf.token_manager')
+        ->enableCsrf(true)
         ->checkPath('/login-check')
         ->loginPath('/login')
         ->alwaysUseDefaultTargetPath(true)

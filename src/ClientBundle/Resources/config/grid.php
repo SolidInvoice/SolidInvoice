@@ -11,6 +11,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use SolidInvoice\ClientBundle\Entity\Client;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -19,7 +20,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'title' => 'Active Clients',
             'icon' => 'check',
             'source' => [
-                'repository' => 'SolidInvoiceClientBundle:Client',
+                'repository' => Client::class,
                 'method' => 'getGridQuery',
             ],
             'properties' => [
@@ -103,7 +104,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'title' => 'Archived Clients',
             'icon' => 'archive',
             'source' => [
-                'repository' => 'SolidInvoiceClientBundle:Client',
+                'repository' => Client::class,
                 'method' => 'getArchivedGridQuery',
             ],
             'properties' => [

@@ -21,12 +21,12 @@ use SolidInvoice\QuoteBundle\Model\Graph;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Workflow\StateMachine;
+use Symfony\Component\Workflow\WorkflowInterface;
 
 final class Transition
 {
     public function __construct(
-        private readonly StateMachine $quoteStateMachine,
+        private readonly WorkflowInterface $quoteStateMachine,
         private readonly RouterInterface $router
     ) {
     }

@@ -21,7 +21,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationFailureHandlerI
 
 class AuthenticationFailHandler implements AuthenticationFailureHandlerInterface
 {
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
     {
         $data = [
             'code' => Response::HTTP_UNAUTHORIZED,

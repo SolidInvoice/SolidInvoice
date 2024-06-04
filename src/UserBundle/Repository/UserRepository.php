@@ -24,6 +24,7 @@ use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use function assert;
+use function sprintf;
 
 /**
  * @see \SolidInvoice\UserBundle\Tests\Repository\UserRepositoryTest
@@ -79,7 +80,7 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
 
         assert($user instanceof User);
 
-        return $this->loadUserByUsername($user->getEmail());
+        return $this->loadUserByIdentifier($user->getEmail());
     }
 
     public function supportsClass(string $class): bool
@@ -111,5 +112,24 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
             ->setPasswordRequestedAt(null);
 
         $this->save($user);
+    }
+
+    public function loadUserByIdentifier(string $identifier): UserInterface
+    {
+        $q = $this
+            ->createQueryBuilder('u')
+            ->select('u')
+            ->where('(u.email = :email)')
+            ->andWhere('u.enabled = :enabled')
+            ->setParameter('email', $identifier)
+            ->setParameter('enabled', true)
+            ->getQuery();
+
+        try {
+            // The Query::getSingleResult() method throws an exception if there is no record matching the criteria.
+            return $q->getSingleResult();
+        } catch (NoResultException|NonUniqueResultException $e) {
+            throw new UserNotFoundException(sprintf('User "%s" does not exist.', $identifier), 0, $e);
+        }
     }
 }

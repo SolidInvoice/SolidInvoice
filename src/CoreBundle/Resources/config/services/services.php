@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 use Gedmo\Timestampable\TimestampableListener;
 use Mpociot\VatCalculator\VatCalculator;
-use SolidInvoice\CoreBundle\Listener\SessionRequestListener;
 use SolidInvoice\CoreBundle\Menu\Builder;
 use SolidInvoice\CoreBundle\Routing\Loader\AbstractDirectoryLoader;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
@@ -38,7 +37,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services
         ->load(SolidInvoiceCoreBundle::NAMESPACE . '\\', dirname(__DIR__, 3))
-        ->exclude(dirname(__DIR__, 3) . '/{DependencyInjection,Resources,Tests}');
+        ->exclude(dirname(__DIR__, 3) . '/{DependencyInjection,Entity,Resources,Tests}');
 
     $services
         ->load(SolidInvoiceCoreBundle::NAMESPACE . '\\Action\\', dirname(__DIR__, 3) . '/Action')
@@ -50,10 +49,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->call('setAnnotationReader', [service('annotation_reader')])
         ->tag('doctrine.event_subscriber')
     ;
-
-    $services
-        ->set(SessionRequestListener::class)
-        ->arg('$secret', env('secret'));
 
     $services->set(CssToInlineStyles::class);
 

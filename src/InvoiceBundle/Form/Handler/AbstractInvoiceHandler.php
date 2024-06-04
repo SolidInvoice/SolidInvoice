@@ -41,15 +41,15 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Workflow\StateMachine;
+use Symfony\Component\Workflow\WorkflowInterface;
 
 abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandlerResponseInterface, FormHandlerSuccessInterface, FormHandlerOptionsResolver, FormHandlerFailInterface
 {
     use SaveableTrait;
 
     public function __construct(
-        private readonly StateMachine $invoiceStateMachine,
-        private readonly StateMachine $recurringInvoiceStateMachine,
+        private readonly WorkflowInterface $invoiceStateMachine,
+        private readonly WorkflowInterface $recurringInvoiceStateMachine,
         private readonly RouterInterface $router,
         private readonly MailerInterface $mailer,
         private readonly TotalCalculator $totalCalculator,

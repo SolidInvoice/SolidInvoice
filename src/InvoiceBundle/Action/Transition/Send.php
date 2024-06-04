@@ -23,14 +23,14 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Workflow\StateMachine;
+use Symfony\Component\Workflow\WorkflowInterface;
 
 final class Send
 {
     use SaveableTrait;
 
     public function __construct(
-        private readonly StateMachine $invoiceStateMachine,
+        private readonly WorkflowInterface $invoiceStateMachine,
         private readonly MailerInterface $mailer,
         private readonly RouterInterface $router
     ) {

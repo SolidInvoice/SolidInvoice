@@ -27,7 +27,7 @@ use SolidInvoice\PaymentBundle\Model\Status;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Workflow\StateMachine;
+use Symfony\Component\Workflow\WorkflowInterface;
 
 class PaymentCompleteListener implements EventSubscriberInterface
 {
@@ -42,7 +42,7 @@ class PaymentCompleteListener implements EventSubscriberInterface
     }
 
     public function __construct(
-        private readonly StateMachine $invoiceStateMachine,
+        private readonly WorkflowInterface $invoiceStateMachine,
         private readonly ManagerRegistry $registry,
         private readonly RouterInterface $router
     ) {

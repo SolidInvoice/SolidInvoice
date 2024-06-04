@@ -24,15 +24,17 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
+use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
+use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
+use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class ApiTokenAuthenticator extends AbstractGuardAuthenticator
+class ApiTokenAuthenticator extends AbstractAuthenticator
 {
     public function __construct(
-        protected ApiTokenUserProvider $userProvider,
+        private readonly ApiTokenUserProvider $userProvider,
         private readonly ManagerRegistry $registry,
         private readonly TranslatorInterface $translator,
         private readonly CompanySelector $companySelector
@@ -44,37 +46,9 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
         return $request->headers->has('X-API-TOKEN') || $request->query->has('token');
     }
 
-    public function getCredentials(Request $request): string
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        return $request->headers->get('X-API-TOKEN', $request->query->get('token'));
-    }
-
-    /**
-     * @param string $credentials
-     */
-    public function getUser($credentials, UserProviderInterface $userProvider): ?UserInterface
-    {
-        assert($userProvider instanceof ApiTokenUserProvider);
-
-        $username = $userProvider->getUsernameForToken($credentials);
-
-        if (! $username) {
-            return null;
-        }
-
-        return $userProvider->loadUserByUsername($username);
-    }
-
-    public function checkCredentials($credentials, UserInterface $user): bool
-    {
-        // In case of an API token, no credential check is needed.
-        // Return `true` to cause authentication success
-        return true;
-    }
-
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey): ?Response
-    {
-        $apiToken = $this->getCredentials($request);
+        $apiToken = $request->headers->get('X-API-TOKEN', $request->query->get('token'));
 
         $history = new ApiTokenHistory();
 
@@ -107,18 +81,22 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
         return new JsonResponse($data, Response::HTTP_UNAUTHORIZED);
     }
 
-    public function start(Request $request, AuthenticationException $authException = null): Response
+    public function authenticate(Request $request): Passport
     {
-        $data = [
-            // @TODO: translate this message
-            'message' => 'Authentication Required'
-        ];
+        $apiToken = $request->headers->get('X-API-TOKEN', $request->query->get('token'));
 
-        return new JsonResponse($data, Response::HTTP_UNAUTHORIZED);
-    }
+        if (null === $apiToken) {
+            // The token header was empty, authentication fails with HTTP Status
+            // Code 401 "Unauthorized"
+            throw new CustomUserMessageAuthenticationException('No API token provided');
+        }
 
-    public function supportsRememberMe(): bool
-    {
-        return false;
+        $userIdentifier = $this->userProvider->getUsernameForToken($apiToken);
+
+        if (! $userIdentifier) {
+            throw new CustomUserMessageAuthenticationException('Invalid API token');
+        }
+
+        return new SelfValidatingPassport(new UserBadge($userIdentifier));
     }
 }

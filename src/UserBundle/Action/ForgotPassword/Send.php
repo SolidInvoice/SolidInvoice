@@ -39,7 +39,7 @@ final class Send
         $username = $request->request->get('username');
 
         try {
-            $user = $userRepository->loadUserByUsername($username);
+            $user = $userRepository->loadUserByIdentifier($username);
             assert($user instanceof User);
         } catch (UserNotFoundException $e) {
             $route = $router->generate('_user_forgot_password');

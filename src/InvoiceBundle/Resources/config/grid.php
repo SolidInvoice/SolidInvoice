@@ -11,6 +11,8 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -19,7 +21,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'title' => 'Active Invoices',
             'icon' => 'check',
             'source' => [
-                'repository' => 'SolidInvoiceInvoiceBundle:Invoice',
+                'repository' => Invoice::class,
                 'method' => 'getGridQuery',
             ],
             'properties' => [
@@ -124,7 +126,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'title' => 'Archived Invoices',
             'icon' => 'archive',
             'source' => [
-                'repository' => 'SolidInvoiceInvoiceBundle:Invoice',
+                'repository' => Invoice::class,
                 'method' => 'getArchivedGridQuery',
             ],
             'properties' => [
@@ -196,7 +198,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'title' => 'Recurring Invoices',
             'icon' => 'sync-alt',
             'source' => [
-                'repository' => 'SolidInvoiceInvoiceBundle:RecurringInvoice',
+                'repository' => RecurringInvoice::class,
                 'method' => 'getRecurringGridQuery',
             ],
             'properties' => [
@@ -313,7 +315,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'title' => 'Archived Recurring Invoices',
             'icon' => 'archive',
             'source' => [
-                'repository' => 'SolidInvoiceInvoiceBundle:RecurringInvoice',
+                'repository' => RecurringInvoice::class,
                 'method' => 'getArchivedGridQuery',
             ],
             'properties' => [

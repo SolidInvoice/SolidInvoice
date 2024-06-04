@@ -20,7 +20,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Workflow\StateMachine;
+use Symfony\Component\Workflow\WorkflowInterface;
 
 /**
  * @see \SolidInvoice\ApiBundle\Tests\Event\Listener\QuoteCreateListenerTest
@@ -28,7 +28,7 @@ use Symfony\Component\Workflow\StateMachine;
 class QuoteCreateListener implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly StateMachine $quoteStateMachine
+        private readonly WorkflowInterface $quoteStateMachine
     ) {
     }
 

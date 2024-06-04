@@ -18,7 +18,7 @@ use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Response\AjaxResponse;
 use SolidInvoice\CoreBundle\Traits\JsonTrait;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class Delete implements AjaxResponse
@@ -27,16 +27,15 @@ final class Delete implements AjaxResponse
 
     public function __construct(
         private readonly ClientRepository $clientRepository,
-        private readonly SessionInterface $session,
         private readonly TranslatorInterface $translator
     ) {
     }
 
-    public function __invoke(Client $client): Response
+    public function __invoke(Client $client, Session $session): Response
     {
         $this->clientRepository->delete($client);
 
-        $this->session->getFlashBag()->add('success', $this->translator->trans('client.delete_success'));
+        $session->getFlashBag()->add('success', $this->translator->trans('client.delete_success'));
 
         return $this->json(['status' => 'success']);
     }
