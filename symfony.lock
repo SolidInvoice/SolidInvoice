@@ -1292,9 +1292,6 @@
     "twig/twig": {
         "version": "v2.13.1"
     },
-    "twilio/sdk": {
-        "version": "5.42.2"
-    },
     "willdurand/js-translation-bundle": {
         "version": "2.0",
         "recipe": {
