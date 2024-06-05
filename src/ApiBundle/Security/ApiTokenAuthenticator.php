@@ -66,7 +66,7 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
             /** @var ApiTokenHistoryRepository $repository */
             $repository = $this->registry->getRepository(ApiTokenHistory::class);
 
-            $repository->addHistory($history, $apiToken->getToken());
+            $repository->addHistory($history, $apiToken);
         }
 
         return null;

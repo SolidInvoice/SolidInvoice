@@ -25,6 +25,18 @@ final class Migration
     ) {
     }
 
+    public function isUpToDate(): bool
+    {
+        $statusCalculator = $this->migrationDependencyFactory->getMigrationStatusCalculator();
+
+        $executedUnavailableMigrations = $statusCalculator->getExecutedUnavailableMigrations();
+        $newMigrations = $statusCalculator->getNewMigrations();
+        $newMigrationsCount = count($newMigrations);
+        $executedUnavailableMigrationsCount = count($executedUnavailableMigrations);
+
+        return $newMigrationsCount === 0 && $executedUnavailableMigrationsCount === 0;
+    }
+
     public function migrate(): void
     {
         $metadataStorage = $this->migrationDependencyFactory->getMetadataStorage();

@@ -28,7 +28,8 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Zenstruck\Foundry\Persistence\Proxy;
 use Zenstruck\Foundry\Test\Factories;
 use function array_map;
-use function assert;
+use SolidInvoice\ClientBundle\Entity\Contact;
+use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 
 /**
  * @group functional
