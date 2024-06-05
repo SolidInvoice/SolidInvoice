@@ -23,9 +23,6 @@ class ResponseEvent extends Event
      */
     protected $response;
 
-    /**
-     * @return Response
-     */
     public function getResponse(): ?Response
     {
         return $this->response;

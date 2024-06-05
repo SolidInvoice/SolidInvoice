@@ -36,8 +36,6 @@ trait TimeStampable
 
     /**
      * Returns created.
-     *
-     * @return DateTimeInterface
      */
     public function getCreated(): ?DateTimeInterface
     {
@@ -58,8 +56,6 @@ trait TimeStampable
 
     /**
      * Returns updated.
-     *
-     * @return DateTimeInterface
      */
     public function getUpdated(): ?DateTimeInterface
     {
