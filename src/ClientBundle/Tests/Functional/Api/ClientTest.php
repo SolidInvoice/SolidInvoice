@@ -75,7 +75,7 @@ final class ClientTest extends ApiTestCase
                 ],
             ],
             'addresses' => [],
-            'credit' => 0,
+            'credit' => '0',
         ], $result);
     }
 
@@ -111,7 +111,7 @@ final class ClientTest extends ApiTestCase
                 ],
             ],
             'addresses' => [],
-            'credit' => 0,
+            'credit' => '0',
         ], $data);
     }
 
@@ -139,7 +139,7 @@ final class ClientTest extends ApiTestCase
                 ],
             ],
             'addresses' => [],
-            'credit' => 0,
+            'credit' => '0',
         ], $data);
     }
 }

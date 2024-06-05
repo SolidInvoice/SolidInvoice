@@ -51,7 +51,7 @@ profile:
 security:
     login:
         login: Login
-        username: 'Username or Email'
+        username: 'Email Address'
         password: Password
         remember: 'Keep me logged in'
         forgot_password: 'Forgot Password'
@@ -91,7 +91,7 @@ change_password:
 forgot_password:
     request:
         submit: 'Reset Password'
-        username: 'Username or email address'
+        username: 'Email address'
     check_email: |
         An email has been sent. It contains a link you must click to reset your password.
         Note: You can only request a new password once within %tokenLifetime% hours.

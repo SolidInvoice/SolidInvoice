@@ -44,7 +44,7 @@ use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\UX\Autocomplete\Checksum\ChecksumCalculator;
 use Symfony\UX\Autocomplete\Form\AutocompleteChoiceTypeExtension;
-use Symfony\UX\Autocomplete\Form\ParentEntityAutocompleteType;
+use Symfony\UX\Autocomplete\Form\BaseEntityAutocompleteType;
 
 abstract class FormHandlerTestCase extends BaseTestCase
 {
@@ -83,7 +83,7 @@ abstract class FormHandlerTestCase extends BaseTestCase
                     new InvoiceItemType($this->registry),
                     new QuoteItemType($this->registry),
                     new DiscountType($systemConfig),
-                    new ParentEntityAutocompleteType($this->createMock(UrlGeneratorInterface::class)),
+                    new BaseEntityAutocompleteType($this->createMock(UrlGeneratorInterface::class)),
                 ],
                 [
                     [

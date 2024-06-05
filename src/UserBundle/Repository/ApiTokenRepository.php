@@ -33,7 +33,7 @@ class ApiTokenRepository extends ServiceEntityRepository
     {
         $q = $this
             ->createQueryBuilder('t')
-            ->select('u.username')
+            ->select('u.email')
             ->join('t.user', 'u')
             ->where('t.token = :token')
             ->setParameter('token', $token)

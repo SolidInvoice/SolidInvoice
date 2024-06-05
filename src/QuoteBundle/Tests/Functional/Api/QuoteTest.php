@@ -54,12 +54,12 @@ final class QuoteTest extends ApiTestCase
             'client' => '/api/clients/' . $contact->getClient()->getId(),
             'discount' => [
                 'type' => 'percentage',
-                'value' => 10,
+                'value' => 10.0,
             ],
             'items' => [
                 [
-                    'price' => 100,
-                    'qty' => 1,
+                    'price' => 100.0,
+                    'qty' => 1.0,
                     'description' => 'Foo Item',
                 ],
             ],
@@ -76,12 +76,12 @@ final class QuoteTest extends ApiTestCase
         self::assertSame([
             'status' => 'draft',
             'client' => '/api/clients/' . $contact->getClient()->getId(),
-            'total' => 90,
-            'baseTotal' => 100,
-            'tax' => 0,
+            'total' => 90.0,
+            'baseTotal' => 100.0,
+            'tax' => 0.0,
             'discount' => [
                 'type' => 'percentage',
-                'value' => 10,
+                'value' => 10.0,
             ],
             'terms' => null,
             'notes' => null,
@@ -89,10 +89,10 @@ final class QuoteTest extends ApiTestCase
             'items' => [
                 [
                     'description' => 'Foo Item',
-                    'price' => 100,
-                    'qty' => 1,
+                    'price' => 100.0,
+                    'qty' => 1.0,
                     'tax' => null,
-                    'total' => 100,
+                    'total' => 100.0,
                 ],
             ],
             'users' => [
@@ -121,12 +121,12 @@ final class QuoteTest extends ApiTestCase
             'uuid' => $quote->getUuid()->toString(),
             'status' => 'draft',
             'client' => '/api/clients/' . $quote->getClient()->getId(),
-            'total' => 100,
-            'baseTotal' => 100,
-            'tax' => 0,
+            'total' => 100.0,
+            'baseTotal' => 100.0,
+            'tax' => 0.0,
             'discount' => [
                 'type' => null,
-                'value' => 0,
+                'value' => 0.0,
             ],
             'terms' => null,
             'notes' => null,
@@ -135,10 +135,10 @@ final class QuoteTest extends ApiTestCase
                 [
                     'id' => $quote->getItems()->first()->getId()->toString(),
                     'description' => 'Test Item',
-                    'price' => 100,
-                    'qty' => 1,
+                    'price' => 100.0,
+                    'qty' => 1.0,
                     'tax' => null,
-                    'total' => 100,
+                    'total' => 100.0,
                 ],
             ],
             'users' => [
@@ -157,12 +157,12 @@ final class QuoteTest extends ApiTestCase
             [
                 'discount' => [
                     'type' => 'percentage',
-                    'value' => 10,
+                    'value' => 10.0,
                 ],
                 'items' => [
                     [
-                        'price' => 100,
-                        'qty' => 1,
+                        'price' => 100.0,
+                        'qty' => 1.0,
                         'description' => 'Foo Item',
                     ],
                 ],
@@ -174,12 +174,12 @@ final class QuoteTest extends ApiTestCase
             'uuid' => $quote->getUuid()->toString(),
             'status' => 'draft',
             'client' => '/api/clients/' . $quote->getClient()->getId(),
-            'total' => 90,
-            'baseTotal' => 100,
-            'tax' => 0,
+            'total' => 90.0,
+            'baseTotal' => 100.0,
+            'tax' => 0.0,
             'discount' => [
                 'type' => 'percentage',
-                'value' => 10,
+                'value' => 10.0,
             ],
             'terms' => null,
             'notes' => null,
@@ -188,10 +188,10 @@ final class QuoteTest extends ApiTestCase
                 [
                     'id' => $quote->getItems()->first()->getId()->toString(),
                     'description' => 'Foo Item',
-                    'price' => 100,
-                    'qty' => 1,
+                    'price' => 100.0,
+                    'qty' => 1.0,
                     'tax' => null,
-                    'total' => 100,
+                    'total' => 100.0,
                 ],
             ],
             'users' => [
