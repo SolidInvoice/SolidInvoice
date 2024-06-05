@@ -28,8 +28,6 @@ trait Archivable
     }
 
     /**
-     * @param bool $archived
-     *
      * @return $this
      */
     public function setArchived(?bool $archived)
