@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Menu;
 
 use InvalidArgumentException;
-use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\MenuBundle\Core\AuthenticatedMenu;
 use SolidInvoice\MenuBundle\ItemInterface;
 

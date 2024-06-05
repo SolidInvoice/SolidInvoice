@@ -30,7 +30,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services
         ->load(SolidInvoiceMoneyBundle::NAMESPACE . '\\', dirname(__DIR__, 3))
-        ->exclude(dirname(__DIR__, 3) . '/{DependencyInjection,Resources,Tests}');
+        ->exclude(dirname(__DIR__, 3) . '/{DependencyInjection,Entity,Resources,Tests}');
 
     $services->alias(MoneyFormatterInterface::class, MoneyFormatter::class);
 };
