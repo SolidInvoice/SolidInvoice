@@ -12,12 +12,12 @@ declare(strict_types=1);
  */
 
 use Rector\Config\RectorConfig;
-use Rector\Core\ValueObject\PhpVersion;
 use Rector\Doctrine\Set\DoctrineSetList;
 use Rector\PHPUnit\Set\PHPUnitSetList;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
 use Rector\Symfony\Set\SymfonySetList;
+use Rector\ValueObject\PhpVersion;
 
 return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->paths([
@@ -42,18 +42,19 @@ return static function (RectorConfig $rectorConfig): void {
         PHPUnitSetList::PHPUNIT_80,
         PHPUnitSetList::PHPUNIT_90,
         PHPUnitSetList::PHPUNIT_91,
-        PHPUnitSetList::PHPUNIT_CODE_QUALITY,
+        PHPUnitSetList::PHPUNIT_100,
         PHPUnitSetList::PHPUNIT_EXCEPTION,
-        PHPUnitSetList::PHPUNIT_YIELD_DATA_PROVIDER,
+        PHPUnitSetList::PHPUNIT_CODE_QUALITY,
+        PHPUnitSetList::ANNOTATIONS_TO_ATTRIBUTES,
 
         // Doctrine
-        DoctrineSetList::DOCTRINE_25,
+        DoctrineSetList::DOCTRINE_COLLECTION_22,
         DoctrineSetList::DOCTRINE_COMMON_20,
         DoctrineSetList::DOCTRINE_DBAL_30,
         DoctrineSetList::DOCTRINE_DBAL_40,
         DoctrineSetList::DOCTRINE_ORM_29,
         DoctrineSetList::DOCTRINE_ORM_213,
-        DoctrineSetList::DOCTRINE_BEHAVIORS_20,
+        DoctrineSetList::GEDMO_ANNOTATIONS_TO_ATTRIBUTES,
         DoctrineSetList::DOCTRINE_CODE_QUALITY,
 
         // DoctrineSetList::DOCTRINE_REPOSITORY_AS_SERVICE,
