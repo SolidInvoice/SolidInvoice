@@ -51,26 +51,6 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
         }
     }
 
-    public function loadUserByUsername(string $username): UserInterface
-    {
-        $q = $this
-            ->createQueryBuilder('u')
-            ->select('u')
-            ->where('(u.username = :username OR u.email = :email)')
-            ->andWhere('u.enabled = :enabled')
-            ->setParameter('username', $username)
-            ->setParameter('email', $username)
-            ->setParameter('enabled', true)
-            ->getQuery();
-
-        try {
-            // The Query::getSingleResult() method throws an exception if there is no record matching the criteria.
-            return $q->getSingleResult();
-        } catch (NoResultException|NonUniqueResultException $e) {
-            throw new UserNotFoundException(sprintf('User "%s" does not exist.', $username), 0, $e);
-        }
-    }
-
     public function refreshUser(UserInterface $user): UserInterface
     {
         $class = $user::class;
@@ -92,7 +72,7 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
     {
         $qb = $this->createQueryBuilder('u');
 
-        $qb->select('u.id', 'u.username', 'u.email', 'u.enabled', 'u.created')
+        $qb->select('u.id', 'u.email', 'u.enabled', 'u.created')
             ->groupBy('u.id');
 
         return $qb;

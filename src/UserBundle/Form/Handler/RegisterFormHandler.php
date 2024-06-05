@@ -79,7 +79,6 @@ class RegisterFormHandler implements FormHandlerResponseInterface, FormHandlerIn
         }
 
         $data->setPassword($this->userPasswordHasher->hashPassword($data, $data->getPlainPassword()));
-        $data->setUsername($data->getEmail());
         $data->setEnabled(true);
         $data->eraseCredentials();
         $this->save($data);

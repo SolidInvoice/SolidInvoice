@@ -57,8 +57,7 @@ abstract class ApiTestCase extends PantherTestCase
         if ([] === $users) {
             $commit = true;
             $user = new User();
-            $user->setUsername('test')
-                ->setEmail('test@example.com')
+            $user->setEmail('test@example.com')
                 ->setEnabled(true)
                 ->setPassword(password_hash('Password1', PASSWORD_DEFAULT));
 

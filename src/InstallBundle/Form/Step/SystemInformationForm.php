@@ -59,14 +59,6 @@ class SystemInformationForm extends AbstractType
 
         if (0 === $options['userCount']) {
             $builder->add(
-                'username',
-                null,
-                [
-                    'constraints' => new NotBlank(['message' => 'Please enter a username']),
-                ]
-            );
-
-            $builder->add(
                 'email_address',
                 EmailType::class,
                 [

@@ -34,7 +34,6 @@ class LoadData extends Fixture
         }
 
         $user1 = (new User())
-            ->setUsername('test1')
             ->setEmail('test1@test.com')
             ->setPassword('test1')
             ->setConfirmationToken(base64_encode(bin2hex(random_bytes(24))))
@@ -43,7 +42,6 @@ class LoadData extends Fixture
         ;
 
         $user2 = (new User())
-            ->setUsername('test2')
             ->setEmail('test2@test.com')
             ->setPassword('test2')
             ->setEnabled(true)

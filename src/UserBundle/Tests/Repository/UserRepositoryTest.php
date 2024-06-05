@@ -75,8 +75,7 @@ final class UserRepositoryTest extends KernelTestCase
     public function testSave(): void
     {
         $user = new User();
-        $user->setUsername($this->faker->userName)
-            ->setEmail($this->faker->email)
+        $user->setEmail($this->faker->email)
             ->setPassword($this->faker->password)
             ->addCompany($this->company)
         ;
@@ -90,8 +89,7 @@ final class UserRepositoryTest extends KernelTestCase
     public function testSaveWithoutAnyCompanyLinkedToUser(): void
     {
         $user = new User();
-        $user->setUsername($this->faker->userName)
-            ->setEmail($this->faker->email)
+        $user->setEmail($this->faker->email)
             ->setPassword($this->faker->password)
         ;
 
@@ -108,7 +106,6 @@ final class UserRepositoryTest extends KernelTestCase
         $newUser = $this->repository->refreshUser($user);
         self::assertInstanceOf(User::class, $newUser);
         self::assertSame($user->getId(), $newUser->getId());
-        self::assertSame($user->getUsername(), $newUser->getUsername());
         self::assertSame($user->getEmail(), $newUser->getEmail());
     }
 
@@ -161,11 +158,11 @@ final class UserRepositoryTest extends KernelTestCase
 
     public function testLoadUserByIdentifierWithInvalidUser(): void
     {
-        $username = $this->faker->userName;
+        $email = $this->faker->email;
         $this->databaseTool->loadFixtures([LoadData::class], true);
         $this->expectException(UserNotFoundException::class);
-        $this->expectExceptionMessage('User "' . $username . '" does not exist.');
-        $this->repository->loadUserByIdentifier($username);
+        $this->expectExceptionMessage('User "' . $email . '" does not exist.');
+        $this->repository->loadUserByIdentifier($email);
     }
 
     public function testGetUserCount(): void
@@ -204,7 +201,7 @@ final class UserRepositoryTest extends KernelTestCase
         $queryBuilder = $this->repository->getGridQuery();
         self::assertInstanceOf(QueryBuilder::class, $queryBuilder);
         $alias = $queryBuilder->getRootAliases()[0];
-        $fields = implode(', ', ["{$alias}.id", "{$alias}.username", "{$alias}.email", "{$alias}.enabled", "{$alias}.created"]);
+        $fields = implode(', ', ["{$alias}.id", "{$alias}.email", "{$alias}.enabled", "{$alias}.created"]);
         self::assertCount(1, $queryBuilder->getDQLPart('select'));
         self::assertSame($fields, (string) $queryBuilder->getDQLPart('select')[0]);
     }

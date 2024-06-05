@@ -83,8 +83,7 @@ abstract class LiveComponentTest extends KernelTestCase
 
         if ([] === $users) {
             $user = new User();
-            $user->setUsername('test')
-                ->setEmail('test@example.com')
+            $user->setEmail('test@example.com')
                 ->setEnabled(true)
                 ->setPassword(password_hash('Password1', PASSWORD_DEFAULT));
 
