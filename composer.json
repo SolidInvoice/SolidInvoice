@@ -213,12 +213,12 @@
     },
     "config": {
         "allow-plugins": {
+            "captainhook/captainhook-phar": true,
             "ergebnis/composer-normalize": true,
+            "php-http/discovery": true,
             "phpstan/extension-installer": true,
             "symfony/flex": true,
-            "symfony/runtime": true,
-            "php-http/discovery": true,
-            "captainhook/captainhook-phar": true
+            "symfony/runtime": true
         },
         "bin-dir": "bin",
         "platform": {
