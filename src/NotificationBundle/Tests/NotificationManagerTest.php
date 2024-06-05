@@ -86,7 +86,6 @@ final class NotificationManagerTest extends TestCase
         $email = $this->getFaker()->email();
 
         $user = (new User())
-            ->setUsername($email)
             ->setEmail($email)
             ->setPassword('password');
 
@@ -140,7 +139,6 @@ final class NotificationManagerTest extends TestCase
         $email = $this->getFaker()->email();
 
         $user = (new User())
-            ->setUsername($email)
             ->setEmail($email)
             ->setPassword('password');
 
@@ -175,7 +173,6 @@ final class NotificationManagerTest extends TestCase
         $email = $this->getFaker()->email();
 
         $user = (new User())
-            ->setUsername($email)
             ->setEmail($email)
             ->setPassword('password');
 
@@ -230,11 +227,9 @@ final class NotificationManagerTest extends TestCase
         $email2 = $this->getFaker()->email();
 
         $user1 = (new User())
-            ->setUsername($email1)
             ->setEmail($email1)
             ->setPassword('password');
         $user2 = (new User())
-            ->setUsername($email2)
             ->setEmail($email2)
             ->setPassword('password');
 
@@ -305,7 +300,6 @@ final class NotificationManagerTest extends TestCase
         $email = $this->getFaker()->email();
 
         $user = (new User())
-            ->setUsername($email)
             ->setEmail($email)
             ->setPassword('password');
 

@@ -25,12 +25,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 'method' => 'getGridQuery',
             ],
             'columns' => [
-                'name' => [
-                    'name' => 'username',
-                    'label' => 'Username',
-                    'editable' => false,
-                    'cell' => 'string',
-                ],
                 'email' => [
                     'name' => 'email',
                     'label' => 'email',

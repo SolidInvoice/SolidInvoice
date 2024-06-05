@@ -48,7 +48,7 @@
                     {#<img src="https://gravatar.com/avatar/{{ app.user.email|md5 }}?d=mm" class="img-circle" alt="User Image">#}
                 </div>
                 <div class="info text-white">
-                    <p>{{ app.user.username }}</p>
+                    <p>{{ app.user.userIdentifier }}</p>
                     <a href="{{ path('_profile') }}">{{ icon('envelope') }} {{ app.user.email }}</a>
                 </div>
             </div>

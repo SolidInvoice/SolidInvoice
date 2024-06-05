@@ -20,7 +20,7 @@ class MainMenu
 {
     public static function user(ItemInterface $item, User $user): ItemInterface
     {
-        $username = $user->getUsername() . ' <b class="caret"></b>';
+        $username = $user->getUserIdentifier() . ' <b class="caret"></b>';
 
         return $item->addChild(
             'user',

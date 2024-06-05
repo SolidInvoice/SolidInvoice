@@ -177,7 +177,7 @@ final class Version20300 extends AbstractMigration implements ContainerAwareInte
         $quoteContact->addForeignKeyConstraint('companies', ['company_id'], ['id']);
 
         $users->addUniqueIndex(['email']);
-        $users->addUniqueIndex(['username']);
+        $users->dropColumn('username');
 
         $userCompany->removeForeignKey('FK_17B21745A76ED395');
         $userCompany->dropPrimaryKey();

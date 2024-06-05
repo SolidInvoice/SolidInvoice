@@ -29,6 +29,7 @@ use SolidInvoice\InstallBundle\Installer\Database\Migration;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Repository\UserRepository;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\FormatterHelper;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -36,6 +37,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Intl\Locales;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 class InstallCommand extends Command
 {
@@ -68,7 +70,6 @@ class InstallCommand extends Command
             ->addOption('database-user', null, InputOption::VALUE_REQUIRED, 'The name of the database user')
             ->addOption('database-password', null, InputOption::VALUE_REQUIRED, 'The password for the database user')
             ->addOption('skip-user', null, InputOption::VALUE_NONE, 'Skip creating the admin user')
-            ->addOption('admin-username', null, InputOption::VALUE_REQUIRED, 'The username of the admin user')
             ->addOption('admin-password', null, InputOption::VALUE_REQUIRED, 'The password of admin user')
             ->addOption('admin-email', null, InputOption::VALUE_REQUIRED, 'The email address of admin user')
             ->addOption('locale', null, InputOption::VALUE_REQUIRED, 'The locale to use');
@@ -83,7 +84,7 @@ class InstallCommand extends Command
             ->saveConfig($input)
             ->install($input, $output);
 
-        $success = $this->getHelper('formatter')->formatBlock('Application installed successfully!', 'bg=green;options=bold', true);
+        $success = (new FormatterHelper())->formatBlock('Application installed successfully!', 'bg=green;options=bold', true);
         $output->writeln('');
         $output->writeln($success);
         $output->writeln('');
@@ -92,7 +93,7 @@ class InstallCommand extends Command
         $output->writeln('');
         $output->writeln('Add the following cron job to run daily at 12AM:');
         $output->writeln('');
-        $output->writeln(sprintf('<comment>0 0 * * * php %s/console cron:run -e prod -n</comment>', $this->projectDir));
+        $output->writeln(sprintf('<comment>* * * * * php %s/console cron:run -e prod -n</comment>', $this->projectDir));
 
         return (int) Command::SUCCESS;
     }
@@ -105,7 +106,7 @@ class InstallCommand extends Command
         $values = ['database-host', 'database-user', 'locale'];
 
         if (! $input->getOption('skip-user')) {
-            $values = [...$values, 'admin-username', 'admin-password', 'admin-email'];
+            $values = [...$values, 'admin-password', 'admin-email'];
         }
 
         foreach ($values as $option) {
@@ -187,15 +188,18 @@ class InstallCommand extends Command
         $output->writeln('<info>Creating Admin User</info>');
         /** @var UserRepository $userRepository */
         $userRepository = $this->registry->getRepository(User::class);
-        $username = $input->getOption('admin-username');
-        if ($userRepository->findOneBy(['username' => $username]) instanceof User) {
-            $output->writeln(sprintf('<comment>User %s already exists, skipping creation</comment>', $username));
+        $email = $input->getOption('admin-email');
+
+        try {
+            $userRepository->loadUserByIdentifier($email);
+        } catch (UserNotFoundException) {
+            $output->writeln(sprintf('<comment>User %s already exists, skipping creation</comment>', $email));
 
             return;
         }
+
         $user = new User();
-        $user->setUsername($input->getOption('admin-username'))
-            ->setEmail($input->getOption('admin-email'))
+        $user->setEmail($input->getOption('admin-email'))
             ->setPassword($this->userPasswordHasher->hashPassword($user, $input->getOption('admin-password')))
             ->setEnabled(true);
 
@@ -236,9 +240,8 @@ class InstallCommand extends Command
             $passwordQuestion = new Question('<question>Please enter a password for the admin account:</question> ');
             $passwordQuestion->setHidden(true);
 
-            $options['admin-username'] = new Question('<question>Please enter a username for the admin account:</question> ');
-            $options['admin-password'] = $passwordQuestion;
             $options['admin-email'] = new Question('<question>Please enter an email address for the admin account:</question> ');
+            $options['admin-password'] = $passwordQuestion;
         }
 
         /** @var QuestionHelper $dialog */

@@ -30,7 +30,6 @@ class ProfileType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('username')
             ->add('email', EmailType::class)
             ->add('mobile')
             ->add('current_password', PasswordType::class, [

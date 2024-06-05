@@ -33,7 +33,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\Table(name: User::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'This email is already in use. Do you want to log in instead?')]
-#[UniqueEntity(fields: ['username'], message: 'This username is already in use')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringable
 {
     final public const TABLE_NAME = 'users';
@@ -54,9 +53,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
      */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: ApiToken::class, cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     private Collection $apiTokens;
-
-    #[ORM\Column(name: 'username', type: Types::STRING, length: 180, unique: true)]
-    private ?string $username = null;
 
     #[ORM\Column(name: 'email', type: Types::STRING, length: 180, unique: true)]
     private ?string $email = null;
@@ -136,7 +132,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     public function __toString(): string
     {
-        return $this->username;
+        return $this->email;
     }
 
     public function addRole(string $role): self
@@ -157,7 +153,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     {
         return serialize([
             $this->password,
-            $this->username,
             $this->enabled,
             $this->id,
             $this->email,
@@ -172,7 +167,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     {
         [
             $this->password,
-            $this->username,
             $this->enabled,
             $this->id,
             $this->email,
@@ -190,11 +184,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     public function getId(): ?UuidInterface
     {
         return $this->id;
-    }
-
-    public function getUsername(): ?string
-    {
-        return $this->username;
     }
 
     public function getUserIdentifier(): string
@@ -253,13 +242,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
             unset($this->roles[$key]);
             $this->roles = array_values($this->roles);
         }
-
-        return $this;
-    }
-
-    public function setUsername(string $username): self
-    {
-        $this->username = $username;
 
         return $this;
     }

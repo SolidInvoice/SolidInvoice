@@ -110,7 +110,7 @@ final class Setup
     }
 
     /**
-     * @param array{username: string, password: string, email_address: string} $data
+     * @param array{password: string, email_address: string} $data
      */
     private function createAdminUser(array $data): void
     {
@@ -120,8 +120,7 @@ final class Setup
 
         $password = $encoder->hash($data['password']);
 
-        $user->setUsername($data['username'])
-            ->setEmail($data['email_address'])
+        $user->setEmail($data['email_address'])
             ->setPassword($password)
             ->setEnabled(true);
 
