@@ -13,32 +13,17 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Tests\Functional\Api;
 
-use Doctrine\Common\DataFixtures\Executor\AbstractExecutor;
-use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Ramsey\Uuid\Uuid;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
-use SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData;
 use SolidInvoice\ClientBundle\Entity\Client;
-use function assert;
+use SolidInvoice\ClientBundle\Entity\Contact;
+use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 
 /**
  * @group functional
  */
 final class ClientTest extends ApiTestCase
 {
-    private AbstractExecutor $executor;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $databaseTool = self::getContainer()->get(DatabaseToolCollection::class)->get();
-
-        $this->executor = $databaseTool->loadFixtures([
-            LoadData::class,
-        ], true);
-    }
-
     public function testCreate(): void
     {
         $data = [
@@ -81,34 +66,36 @@ final class ClientTest extends ApiTestCase
 
     public function testDelete(): void
     {
-        $client = $this->executor->getReferenceRepository()->getReference('client');
-        assert($client instanceof Client);
+        $client = ClientFactory::createOne(['company' => $this->company, 'archived' => false])->object();
 
         $this->requestDelete('/api/clients/' . $client->getId());
     }
 
     public function testGet(): void
     {
-        $client = $this->executor->getReferenceRepository()->getReference('client');
-        assert($client instanceof Client);
+        /** @var Client $client */
+        $client = ClientFactory::createOne([
+            'company' => $this->company,
+            'archived' => false,
+        ])->object();
 
         $data = $this->requestGet('/api/clients/' . $client->getId());
 
         self::assertSame([
             'id' => $client->getId()->toString(),
-            'name' => 'Test',
-            'website' => null,
-            'status' => 'active',
-            'currency' => 'USD',
-            'vatNumber' => null,
+            'name' => $client->getName(),
+            'website' => $client->getWebsite(),
+            'status' => $client->getStatus(),
+            'currency' => $client->getCurrency()->getCode(),
+            'vatNumber' => $client->getVatNumber(),
             'contacts' => [
-                [
+                /*[
                     'id' => $client->getContacts()->first()->getId()->toString(),
                     'firstName' => 'Test',
                     'lastName' => null,
                     'email' => 'test@example.com',
                     'additionalContactDetails' => [],
-                ],
+                ],*/
             ],
             'addresses' => [],
             'credit' => '0',
@@ -117,18 +104,26 @@ final class ClientTest extends ApiTestCase
 
     public function testEdit(): void
     {
-        $client = $this->executor->getReferenceRepository()->getReference('client');
-        assert($client instanceof Client);
+        /** @var Client $client */
+        $client = ClientFactory::createOne([
+            'company' => $this->company,
+            'archived' => false,
+            'contacts' => [
+                (new Contact())
+                    ->setFirstName('Test')
+                    ->setEmail('test@example.com')
+            ]
+        ])->object();
 
         $data = $this->requestPut('/api/clients/' . $client->getId(), ['name' => 'New Test']);
 
         self::assertSame([
             'id' => $client->getId()->toString(),
             'name' => 'New Test',
-            'website' => null,
-            'status' => 'active',
-            'currency' => 'USD',
-            'vatNumber' => null,
+            'website' => $client->getWebsite(),
+            'status' => $client->getStatus(),
+            'currency' => $client->getCurrency()->getCode(),
+            'vatNumber' => $client->getVatNumber(),
             'contacts' => [
                 [
                     'id' => $client->getContacts()->first()->getId()->toString(),

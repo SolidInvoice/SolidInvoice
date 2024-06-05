@@ -27,6 +27,6 @@ class ArchivableFilter extends SQLFilter
             return '';
         }
 
-        return $targetTableAlias . '.archived IS NULL';
+        return $targetTableAlias . '.archived IS NULL OR ' . $targetTableAlias . '.archived = 0';
     }
 }

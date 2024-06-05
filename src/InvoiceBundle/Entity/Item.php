@@ -160,7 +160,7 @@ class Item implements ItemInterface, Stringable
      */
     public function getTotal(): BigNumber
     {
-        return $this->price->toBigDecimal()->multipliedBy($this->qty);
+        return $this->total;
     }
 
     public function getTax(): ?Tax

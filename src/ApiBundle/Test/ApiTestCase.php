@@ -43,7 +43,6 @@ abstract class ApiTestCase extends PantherTestCase
         parent::setUp();
 
         try {
-            /** @var KernelBrowser $client */
             self::$client = self::getContainer()->get('test.client');
         } catch (ServiceNotFoundException $e) {
             if (class_exists(KernelBrowser::class)) {
@@ -51,8 +50,6 @@ abstract class ApiTestCase extends PantherTestCase
             }
             throw new \LogicException('You cannot create the client used in functional tests if the BrowserKit component is not available. Try running "composer require symfony/browser-kit"');
         }
-
-        //self::$client = static::createClient();
 
         $registry = self::getContainer()->get('doctrine');
 
