@@ -60,6 +60,7 @@
         "payum/paypal-pro-checkout-nvp": "^1.7",
         "payum/payum-bundle": "^2.5",
         "payum/stripe": "^1.7",
+        "php-http/discovery": "^1.19",
         "php-http/guzzle7-adapter": "^1.0",
         "ramsey/uuid": "^4.0",
         "ramsey/uuid-doctrine": "^2.0",
