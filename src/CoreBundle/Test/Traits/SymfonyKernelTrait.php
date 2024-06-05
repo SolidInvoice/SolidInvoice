@@ -16,7 +16,6 @@ namespace SolidInvoice\CoreBundle\Test\Traits;
 use LogicException;
 use SolidInvoice\Kernel;
 use Symfony\Bundle\FrameworkBundle\Test\TestContainer;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpKernel\KernelInterface;
