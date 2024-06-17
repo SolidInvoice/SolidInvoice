@@ -85,7 +85,7 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
       - name: Build and push standard docker image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           push: true
           context: ./
@@ -97,7 +97,7 @@ jobs:
             solidinvoice/solidinvoice:${{ github.event.milestone.title }}
 
       - name: Build and push full docker image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           push: true
           context: ./
