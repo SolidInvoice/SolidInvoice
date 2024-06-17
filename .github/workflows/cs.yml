@@ -23,7 +23,7 @@ jobs:
             packagist.org:443
             54.185.253.63:443
 
-      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
 
       - name: Setup PHP
         uses: shivammathur/setup-php@fc14643b0a99ee9db10a3c025a33d76544fa3761
@@ -54,7 +54,7 @@ jobs:
             raw.githubusercontent.com:443
             repo.packagist.org:443
 
-      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
 
       - name: Setup PHP
         uses: shivammathur/setup-php@fc14643b0a99ee9db10a3c025a33d76544fa3761
@@ -92,7 +92,7 @@ jobs:
             54.185.253.63:443
 
       - name: Checkout Code
-        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
         with:
           fetch-depth: 0
 
