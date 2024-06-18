@@ -44,6 +44,8 @@ class GridDefinitionCompilerPass implements CompilerPassInterface
     {
         $gridDefinition = new Definition(Grid::class);
 
+        return;
+
         $gridConfig['name'] = $name;
         $gridDefinition->addArgument($this->getGridSource($gridConfig['source']));
         $gridDefinition->addArgument($this->getFilterService($gridConfig));

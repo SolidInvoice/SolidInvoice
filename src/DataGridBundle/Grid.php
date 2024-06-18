@@ -18,14 +18,79 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ObjectManager;
 use Exception;
-use JsonSerializable;
+use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\DataGridBundle\Filter\FilterInterface;
+use SolidInvoice\DataGridBundle\GridBuilder\Action\Action;
+use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
 use SolidInvoice\DataGridBundle\Source\SourceInterface;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class Grid implements GridInterface, JsonSerializable
+//class Field{}
+
+/*class SchemaBuilder
 {
+    private array $fields = [];
+
+    public function addField(Field $field): self
+    {
+        $this->fields[] = $field;
+    }
+}*/
+
+/*abstract class NewGrid implements GridInterface
+{
+    abstract public function entityFQCN(): string;
+    abstract public function columns(): array;
+
+    public function filters(): void
+    {
+    }
+}
+
+class ClientGrid extends Grid
+{
+    public function entityFQCN(): string
+    {
+        return Client::class;
+    }
+
+    public function columns(): array
+    {
+        return [
+
+        ];
+    }
+}*/
+
+class Grid implements GridInterface
+{
+    public function entityFQCN(): string
+    {
+        return '';
+    }
+
+    /**
+     * @return list<Column>
+     */
+    public function columns(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return list<Action>
+     */
+    public function actions(): array
+    {
+        return [];
+    }
+
+    public function batchActions(): array
+    {
+        return [];
+    }
+
     /**
      * @var string
      */
@@ -61,18 +126,18 @@ class Grid implements GridInterface, JsonSerializable
     private array $parameters = [];
 
     public function __construct(
-        private readonly SourceInterface $source,
-        private readonly FilterInterface $filter,
-        array $gridData,
-        private readonly MoneyFormatterInterface $moneyFormatter
+        private readonly ?SourceInterface $source = null,
+        private readonly ?FilterInterface $filter = null,
+        array $gridData = [],
+        private readonly ?MoneyFormatterInterface $moneyFormatter = null
     ) {
-        $this->title = $gridData['title'];
+        /*$this->title = $gridData['title'];
         $this->name = $gridData['name'];
         $this->columns = new ArrayCollection(array_values($gridData['columns']));
         $this->actions = $gridData['actions'];
         $this->lineActions = $gridData['line_actions'];
         $this->properties = $gridData['properties'];
-        $this->icon = $gridData['icon'];
+        $this->icon = $gridData['icon'];*/
     }
 
     /**

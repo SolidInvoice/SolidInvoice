@@ -22,6 +22,9 @@
     "authorizenet/authorizenet": {
         "version": "1.9.9"
     },
+    "babdev/pagerfanta-bundle": {
+        "version": "v4.4.0"
+    },
     "behat/transliterator": {
         "version": "v1.3.0"
     },
@@ -229,9 +232,6 @@
     },
     "nikic/php-parser": {
         "version": "v4.7.0"
-    },
-    "pagerfanta/pagerfanta": {
-        "version": "v2.4.1"
     },
     "paragonie/random_compat": {
         "version": "v9.99.99"

@@ -18,6 +18,7 @@ return static function (TwigComponentConfig $config): void {
         ->anonymousTemplateDirectory('components/')
         ->defaults('SolidInvoice\ClientBundle\Twig\Components\\', '@SolidInvoiceClient/Components')
         ->defaults('SolidInvoice\CoreBundle\Twig\Components\\', '@SolidInvoiceCore/Components')
+        ->defaults('SolidInvoice\DataGridBundle\Twig\Components\\', '@SolidInvoiceDataGrid/Components')
         ->defaults('SolidInvoice\InvoiceBundle\Twig\Components\\', '@SolidInvoiceInvoice/Components')
         ->defaults('SolidInvoice\NotificationBundle\Twig\Components\\', '@SolidInvoiceNotification/Components')
         ->defaults('SolidInvoice\QuoteBundle\Twig\Components\\', '@SolidInvoiceQuote/Components')

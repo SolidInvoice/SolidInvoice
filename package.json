@@ -67,6 +67,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.4.0",
+    "@stimulus-components/checkbox-select-all": "^6.0.0",
     "@symfony/stimulus-bridge": "^3.2.2",
     "accounting": "^0.4.1",
     "admin-lte": "git+https://github.com/ColorlibHQ/AdminLTE.git#7748b38a6e7afc2415975b9c41adab4e1733d330",

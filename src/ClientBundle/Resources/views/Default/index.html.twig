@@ -22,6 +22,7 @@
 {% block content %}
     <br class="clearfix" />
     <div class="widget">
-	    {{ render_multiple_grid('active_client_grid', 'archive_client_grid') }}
+        <twig:DataGrid name="client_grid" />
+	    {#{{ render_multiple_grid('active_client_grid', 'archive_client_grid') }}#}
     </div>
 {% endblock %}

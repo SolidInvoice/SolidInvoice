@@ -14,16 +14,39 @@ declare(strict_types=1);
 namespace SolidInvoice\DataGridBundle;
 
 use Doctrine\Persistence\ObjectManager;
+use SolidInvoice\DataGridBundle\GridBuilder\Action\Action;
+use SolidInvoice\DataGridBundle\GridBuilder\Batch\BatchAction;
+use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
 use Symfony\Component\HttpFoundation\Request;
 
 interface GridInterface
 {
-    public function requiresStatus(): bool;
+    /**
+     * @return class-string
+     */
+    public function entityFQCN(): string;
 
     /**
-     * @return mixed
+     * @return list<Column>
      */
+    public function columns(): array;
+
+    /**
+     * @return list<Action>
+     */
+    public function actions(): array;
+
+    /**
+     * @return list<BatchAction>
+     */
+    public function batchActions(): array;
+
+    /*public function requiresStatus(): bool;
+
+    /* *
+     * @return mixed
+     * /
     public function fetchData(Request $request, ObjectManager $em): array;
 
-    public function setParameters(array $params);
+    public function setParameters(array $params);*/
 }

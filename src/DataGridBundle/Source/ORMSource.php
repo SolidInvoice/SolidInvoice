@@ -13,33 +13,34 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\Source;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
+use SolidInvoice\DataGridBundle\Grid;
 
 /**
  * @see \SolidInvoice\DataGridBundle\Tests\Source\ORMSourceTest
  */
 class ORMSource implements SourceInterface
 {
+    final public const ALIAS = 'd';
+
     public function __construct(
         private readonly ManagerRegistry $registry,
-        private readonly string $repository,
-        private readonly string $method
     ) {
     }
 
-    public function fetch(array $parameters = []): QueryBuilder
+    public function fetch(Grid $grid): QueryBuilder
     {
-        $repository = $this->registry->getRepository($this->repository);
+        $em = $this->registry->getManagerForClass($grid->entityFQCN());
 
-        $method = $this->method;
-        $qb = $repository->{$method}($parameters);
-
-        if (! $qb instanceof QueryBuilder) {
-            throw new Exception('Grid source should return a query builder');
+        if (! $em instanceof EntityManagerInterface) {
+            throw new Exception();
         }
 
-        return $qb;
+        return $em
+            ->getRepository($grid->entityFQCN())
+            ->createQueryBuilder(self::ALIAS);
     }
 }

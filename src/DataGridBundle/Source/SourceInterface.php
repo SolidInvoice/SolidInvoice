@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace SolidInvoice\DataGridBundle\Source;
 
 use Doctrine\ORM\QueryBuilder;
+use SolidInvoice\DataGridBundle\Grid;
 
 interface SourceInterface
 {
-    public function fetch(array $parameters = []): QueryBuilder;
+    public function fetch(Grid $grid): QueryBuilder;
 }

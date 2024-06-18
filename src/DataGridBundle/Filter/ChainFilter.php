@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\DataGridBundle\Filter;
 
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Component\HttpFoundation\Request;
 
 class ChainFilter implements FilterInterface
 {
@@ -23,10 +22,10 @@ class ChainFilter implements FilterInterface
      */
     private array $filters = [];
 
-    public function filter(Request $request, QueryBuilder $queryBuilder): void
+    public function filter(QueryBuilder $queryBuilder): void
     {
         foreach ($this->filters as $filter) {
-            $filter->filter($request, $queryBuilder);
+            $filter->filter($queryBuilder);
         }
     }
 

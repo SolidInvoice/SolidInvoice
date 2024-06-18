@@ -1,0 +1,149 @@
+{# @var paginator \Pagerfanta\Pagerfanta #}
+
+<div {{ attributes }}>
+    {% include "@SolidInvoiceCore/flash.html.twig" %}
+
+    <div class="card">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <div class="row m-1 pt-2">
+                    <div class="col">
+                        {% if grid.batchActions|length > 0 %}
+                            <div class="">
+                                <div class="btn-group" role="group" aria-label="Batch Actions">
+                                    {% for action in grid.batchActions %}
+                                        {% set id = 'modal_' ~ random() %}
+                                        <button type="button" class="btn btn-sm btn-{{ action.getColor|default('secondary') }}"{% if action.confirm %} data-toggle="modal" data-target="#{{ id }}"{% endif %}>
+                                            {% if action.getIcon is not empty %}
+                                                {{ icon(action.getIcon) }}
+                                            {% endif %}
+                                            {{ action.getLabel|trans }}
+                                        </button>
+                                        {% component BootstrapModal with {id: id} %}
+                                            {% block modal_header %}
+                                                <h5>Confirm</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            {% endblock %}
+                                            {% block modal_body %}
+                                                Are you sure you want to perform this action on the selected items?
+                                            {% endblock %}
+                                            {% block modal_footer %}
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-primary" data-action="live#action" data-live-action-name-param="{{ action.getLabel }}"
+                                                        data-live-action-param="debounce(300)|executeBatchAction">Confirm</button>
+                                            {% endblock %}
+                                        {% endcomponent %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-3 float-right">
+                        <div class="input-group mb-3">
+                            <input type="search" name="q" class="form-control form-control-sm" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2" value="{{ queryParams.q|default('') }}" data-model="search">
+                            <div class="input-group-append">
+                                <button class="btn btn-sm btn-outline-secondary" type="submit">
+                                    {{ icon('search') }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    {#<div class="col-1">
+                        Filters...
+                    </div>#}
+                </div>
+
+                <table class="table table-bordered table-hover table-sm" {{ stimulus_controller('checkbox-select-all') }}>
+                    <thead>
+                    <tr>
+                        <th width="1%">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input position-static" {{ stimulus_target('checkbox-select-all', 'checkboxAll')}} />
+                            </div>
+                        </th>
+                        {% for column in grid.columns %}
+                            <th>
+                                {% if column.isSortable %}
+                                    {#<a href="{{ path(app.current_route, app.request.all|merge(queryParams|merge({'sort': column.field, 'sortDir': queryParams.sortDir|default('asc') is same as('asc') ? 'desc' : 'asc'}))) }}" class="d-block">#}
+                                    <a href="#" class="d-block" data-model="sort" data-value="{{ column.field }},{{ sortDir is same as('asc') ? 'desc' : 'asc'}}" data-action="live#update:prevent">
+                                        {{ column.getLabel }}
+                                        {% if sortField is same as column.field %}
+                                            <span class="float-right">
+                                                {{ icon(sortDir is same as('asc') ? 'caret-down' : 'caret-up') }}
+                                            </span>
+                                        {% endif %}
+                                    </a>
+                                {% else %}
+                                    {{ column.getLabel }}
+                                {% endif %}
+                            </th>
+                        {% endfor %}
+                        {% if grid.actions|length > 0 %}
+                            <th width="1%">
+                                {{ 'Actions'|trans }}
+                            </th>
+                        {% endif %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if paginator.nbResults is same as(0) %}
+                        <tr>
+                            <td colspan="{{ grid.columns|length + 2 }}" class="text-center">
+                                {{ 'No results found.'|trans }}
+                            </td>
+                        </tr>
+                    {% else %}
+                        {% for row in paginator %}
+                        <tr>
+                            <td>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input position-static" {{ stimulus_target('checkbox-select-all', 'checkbox')}} value="{{ this.entityId(row) }}" data-model="selectedItems" />
+                                </div>
+                            </td>
+                            {% for column in grid.columns %}
+                                <td>{{ this.renderfield(column, row)|raw }}</td>
+                            {% endfor %}
+
+                            {% if grid.actions|length > 0 %}
+                                <td style="white-space: nowrap;">
+                                    {% for action in grid.actions %}
+                                        {% set params = {} %}
+
+                                        {% for p, v in action.parameters %}
+                                            {% set params = params|merge({(p): attribute(row, v)}) %}
+                                        {% endfor %}
+
+                                        <a href="{{ path(action.getRoute, params) }}">
+                                            {{ icon(action.getIcon) }}&nbsp;{{ action.getLabel|trans }}
+                                        </a>
+                                        &nbsp;&nbsp;
+                                    {% endfor %}
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer p-3 d-flex justify-content-between">
+            <p class="tile-subtitle-p tile-subtitle-footer mb-0">
+                Showing {{ paginator.currentPageOffsetStart }} - {{ paginator.currentPageOffsetEnd }} of {{ paginator.nbResults }} results
+            </p>
+            <p class="tile-subtitle-p tile-subtitle-footer mb-0 m-auto">
+                <select class="form-control" data-model="perPage">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="{{ paginator.nbResults }}">All</option>
+                </select>
+            </p>
+            <p class="tile-subtitle-p tile-subtitle-footer mb-0 ml-auto">
+                {{ pagerfanta(paginator, '', {'prev_message': '〈', 'next_message': '〉'}) }}
+            </p>
+        </div>
+    </div>
+</div>

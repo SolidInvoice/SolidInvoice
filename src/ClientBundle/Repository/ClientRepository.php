@@ -23,7 +23,6 @@ use Exception;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Model\Status;
 use SolidInvoice\CoreBundle\Util\ArrayUtil;
-use function array_walk;
 
 /**
  * @extends ServiceEntityRepository<Client>
@@ -171,10 +170,15 @@ class ClientRepository extends ServiceEntityRepository
 
         $em->getFilters()->disable('archivable');
 
-        array_walk($ids, function (string $id) use ($em): void {
+        foreach ($ids as $id) {
             $entity = $this->find($id);
+
+            if (! $entity instanceof Client) {
+                continue;
+            }
+
             $em->remove($entity);
-        });
+        }
 
         $em->flush();
 

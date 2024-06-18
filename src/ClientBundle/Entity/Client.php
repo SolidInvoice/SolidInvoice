@@ -400,7 +400,7 @@ class Client implements Stringable
 
     public function getCredit(): ?Credit
     {
-        return $this->credit;
+        return $this->credit ?? new Credit();
     }
 
     public function setCredit(Credit $credit): self
