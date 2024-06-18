@@ -13,20 +13,22 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\Filter;
 
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Component\HttpFoundation\Request;
 
 class SortFilter implements FilterInterface
 {
-    final public const DEFAULT_ORDER = 'ASC';
+    public function __construct(
+        private readonly string $field,
+        private readonly string $direction = Criteria::ASC,
+    ) {
+    }
 
-    public function filter(Request $request, QueryBuilder $queryBuilder): void
+    public function filter(QueryBuilder $queryBuilder): void
     {
-        $order = $request->query->get('order') ?: self::DEFAULT_ORDER;
-
-        if ($request->query->has('sort')) {
+        if ($this->field) {
             $alias = $queryBuilder->getRootAliases()[0];
-            $queryBuilder->orderBy($alias . '.' . $request->query->get('sort'), $order);
+            $queryBuilder->orderBy($alias . '.' . $this->field, $this->direction);
         }
     }
 }

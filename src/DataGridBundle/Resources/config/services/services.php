@@ -15,6 +15,7 @@ use SolidInvoice\CoreBundle\Routing\Loader\AbstractDirectoryLoader;
 use SolidInvoice\DataGridBundle\Routing\Loader\GridRouteLoader;
 use SolidInvoice\DataGridBundle\SolidInvoiceDataGridBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -24,6 +25,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autoconfigure()
         ->autowire()
         ->private()
+        ->bind('$locale', env('locale'))
     ;
 
     $services

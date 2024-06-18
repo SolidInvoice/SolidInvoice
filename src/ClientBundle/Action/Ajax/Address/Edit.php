@@ -38,7 +38,7 @@ final class Edit implements AjaxResponse
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->save($address);
         }
 

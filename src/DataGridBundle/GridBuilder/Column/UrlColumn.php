@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * This file is part of SolidInvoice project.
  *
@@ -11,14 +9,8 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace SolidInvoice\DataGridBundle\Filter;
+namespace SolidInvoice\DataGridBundle\GridBuilder\Column;
 
-use Doctrine\ORM\QueryBuilder;
-
-interface FilterInterface
+final class UrlColumn extends Column
 {
-    /**
-     * @return mixed
-     */
-    public function filter(QueryBuilder $queryBuilder);
 }

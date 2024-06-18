@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * This file is part of SolidInvoice project.
  *
@@ -11,14 +9,11 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace SolidInvoice\DataGridBundle\Filter;
+namespace SolidInvoice\DataGridBundle\GridBuilder\Formatter;
 
-use Doctrine\ORM\QueryBuilder;
+use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
 
-interface FilterInterface
+interface FormatterInterface
 {
-    /**
-     * @return mixed
-     */
-    public function filter(QueryBuilder $queryBuilder);
+    public function format(Column $column, mixed $value): string;
 }

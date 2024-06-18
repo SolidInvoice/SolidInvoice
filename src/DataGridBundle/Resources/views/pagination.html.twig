@@ -1,0 +1,13 @@
+{%- extends '@BabDevPagerfanta/twitter_bootstrap4.html.twig' -%}
+
+{%- block page_link -%}
+    <li class="page-item"><a class="page-link" href="{{- path -}}" data-model="page" data-value="{{ page }}" data-action="live#update:prevent">{{- page -}}</a></li>
+{%- endblock page_link -%}
+
+{%- block previous_page_link -%}
+    <li class="page-item"><a class="page-link" href="{{- path -}}" rel="prev" data-model="page" data-value="{{ current_page - 1 }}" data-action="live#update:prevent">{{- block('previous_page_message') -}}</a></li>
+{%- endblock previous_page_link -%}
+
+{%- block next_page_link -%}
+    <li class="page-item"><a class="page-link" href="{{- path -}}" rel="next" data-model="page" data-value="{{ current_page + 1 }}" data-action="live#update:prevent">{{- block('next_page_message') -}}</a></li>
+{%- endblock next_page_link -%}

@@ -11,14 +11,12 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace SolidInvoice\DataGridBundle\Filter;
+namespace SolidInvoice\CoreBundle\Twig\Components;
 
-use Doctrine\ORM\QueryBuilder;
+use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-interface FilterInterface
+#[AsTwigComponent]
+class BootstrapModal
 {
-    /**
-     * @return mixed
-     */
-    public function filter(QueryBuilder $queryBuilder);
+    public ?string $id = null;
 }
