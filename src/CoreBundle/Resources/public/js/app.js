@@ -11,7 +11,7 @@ import Accounting from 'accounting';
 import $ from 'jquery';
 import { Application as MnApplication, View } from 'backbone.marionette';
 import Backbone from 'backbone';
-import { forEach, functionsIn, includes, isFunction, isUndefined, trim } from 'lodash';
+import { forEach, functionsIn, includes, isFunction, isUndefined } from 'lodash';
 import 'admin-lte';
 import 'bootstrap';
 import 'select2';
@@ -71,33 +71,6 @@ const Application = MnApplication.extend({
             import('SolidInvoiceCore/js/util/form/cron').then(({ default: Cron }) => {
                 $cronInput.each((i, el) => {
                     Cron(`#${el.id}`);
-                });
-            });
-        }
-
-        /**
-         * GRID
-         */
-        const $grids = $('script[data-type="grid"]');
-        if ($grids.length) {
-            import('SolidInvoiceDataGrid/js/grid').then(({ default: Grid }) => {
-                $grids.each((i, el) => {
-                    new Grid($(el).data('target'), JSON.parse(trim($(el).text())));
-                });
-            });
-        }
-
-        /**
-         * Multiple GRID
-         */
-        const $multipleGrids = $('script[data-type="multiple_grid"]');
-        if ($multipleGrids.length) {
-            import('SolidInvoiceDataGrid/js/multiple_grid').then(({ default: MultipleGrid }) => {
-                $multipleGrids.each((i, el) => {
-                    new MultipleGrid({
-                        'model': new Backbone.Model({ 'grids': JSON.parse(trim($(el).text())), 'gridId': $(el).data('target') }),
-                        'el': $(el).data('target')
-                    });
                 });
             });
         }

@@ -1,0 +1,415 @@
+<html><body>
+<div id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="DataGrid" data-live-url-value="/_components/DataGrid" data-live-query-mapping-value='{"name":{"name":"name"},"page":{"name":"page"},"sort":{"name":"sort"},"perPage":{"name":"perPage"},"search":{"name":"search"}}' data-live-props-value='{"name":"client_grid","page":1,"sort":"","perPage":10,"search":"","selectedItems":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"chh2+yFi0kUSVqPyU4rqwa3BGd8PCEuUbg1E\/sQBjlg="}' data-live-csrf-value="">
+    
+
+    <div class="card">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <div class="row m-1 pt-2">
+                    <div class="col">
+                                                    <div class="">
+                                <div class="btn-group" role="group" aria-label="Batch Actions">
+                                                                                                                    <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal_delete">
+                                                                                            <i class="fa fa-trash"></i>
+                                                                                        Delete
+                                        </button>
+                                        <div class="modal fade" tabindex="-1" aria-hidden="true" id="modal_delete" data-controller="bootstrap-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+                                                <div class="modal-header">
+                                                                        <h5>Confirm</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                                </div>
+                
+                <div class="modal-body">
+                                                                    Are you sure you want to perform this action on the selected items?
+                                                            </div>
+
+                                    <div class="modal-footer justify-content-between">
+                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-primary" data-action="live#action" data-live-action-name-param="Delete" data-live-action-param="debounce(300)|executeBatchAction">Confirm</button>
+                                                                </div>
+                                    </div>
+    </div>
+</div>
+                                                                                                                    <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal_archive">
+                                                                                            <i class="fa fa-trash"></i>
+                                                                                        Archive
+                                        </button>
+                                        <div class="modal fade" tabindex="-1" aria-hidden="true" id="modal_archive" data-controller="bootstrap-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+                                                <div class="modal-header">
+                                                                        <h5>Confirm</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                                </div>
+                
+                <div class="modal-body">
+                                                                    Are you sure you want to perform this action on the selected items?
+                                                            </div>
+
+                                    <div class="modal-footer justify-content-between">
+                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-primary" data-action="live#action" data-live-action-name-param="Archive" data-live-action-param="debounce(300)|executeBatchAction">Confirm</button>
+                                                                </div>
+                                    </div>
+    </div>
+</div>
+                                                                    </div>
+                            </div>
+                                            </div>
+                    <div class="col-3 float-right">
+                        <div class="input-group mb-3">
+                            <input type="search" name="q" class="form-control form-control-sm" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2" value="" data-model="search">
+                            <div class="input-group-append">
+                                <button class="btn btn-sm btn-outline-secondary" type="submit">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                                    </div>
+
+                <table class="table table-bordered table-hover table-sm" data-controller="checkbox-select-all">
+                    <thead>
+                    <tr>
+                        <th width="1%">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkboxAll">
+                            </div>
+                        </th>
+                                                    <th>
+                                                                                                        <a href="#" class="d-block" data-model="sort" data-value="name,asc" data-action="live#update:prevent">
+                                        Name
+                                                                            </a>
+                                                            </th>
+                                                    <th>
+                                                                                                        <a href="#" class="d-block" data-model="sort" data-value="website,asc" data-action="live#update:prevent">
+                                        Website
+                                                                            </a>
+                                                            </th>
+                                                    <th>
+                                                                                                        <a href="#" class="d-block" data-model="sort" data-value="currencyCode,asc" data-action="live#update:prevent">
+                                        Currency
+                                                                            </a>
+                                                            </th>
+                                                    <th>
+                                                                                                        <a href="#" class="d-block" data-model="sort" data-value="status,asc" data-action="live#update:prevent">
+                                        Status
+                                                                            </a>
+                                                            </th>
+                                                    <th>
+                                                                                                        <a href="#" class="d-block" data-model="sort" data-value="created,asc" data-action="live#update:prevent">
+                                        Created
+                                                                            </a>
+                                                            </th>
+                                                                            <th width="1%">
+                                Actions
+                            </th>
+                                            </tr>
+                    </thead>
+                    <tbody>
+                                                                    <tr>
+                            <td>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
+                                </div>
+                            </td>
+                                                            <td>Buckridge PLC</td>
+                                                            <td><a href="http://deckow.org/quia-similique-laudantium-mollitia-eaque.html" target="_blank">http://deckow.org/quia-similique-laudantium-mollitia-eaque.html</a></td>
+                                                            <td>Moroccan Dirham</td>
+                                                            <td><span class="badge badge-pill bg-green">Active</span></td>
+                                                            <td>15 October 2010</td>
+                            
+                                                            <td style="white-space: nowrap;">
+                                                                            
+                                                                                                                            
+                                        <a href="/clients/view/91656880-2d93-11ef-933f-5a2cf21a5680">
+                                            <i class="fa fa-eye"></i>&nbsp;View
+                                        </a>
+                                        &nbsp;&nbsp;
+                                                                            
+                                                                                                                            
+                                        <a href="/clients/edit/91656880-2d93-11ef-933f-5a2cf21a5680">
+                                            <i class="fa fa-pencil"></i>&nbsp;Edit
+                                        </a>
+                                        &nbsp;&nbsp;
+                                                                    </td>
+                                                    </tr>
+                                            <tr>
+                            <td>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
+                                </div>
+                            </td>
+                                                            <td>Crist-Rogahn</td>
+                                                            <td><a href="http://willms.com/nostrum-eveniet-in-ullam.html" target="_blank">http://willms.com/nostrum-eveniet-in-ullam.html</a></td>
+                                                            <td>New Zealand Dollar</td>
+                                                            <td><span class="badge badge-pill bg-green">Active</span></td>
+                                                            <td>14 June 2019</td>
+                            
+                                                            <td style="white-space: nowrap;">
+                                                                            
+                                                                                                                            
+                                        <a href="/clients/view/91656880-2d93-11ef-933f-5a2cf21a5680">
+                                            <i class="fa fa-eye"></i>&nbsp;View
+                                        </a>
+                                        &nbsp;&nbsp;
+                                                                            
+                                                                                                                            
+                                        <a href="/clients/edit/91656880-2d93-11ef-933f-5a2cf21a5680">
+                                            <i class="fa fa-pencil"></i>&nbsp;Edit
+                                        </a>
+                                        &nbsp;&nbsp;
+                                                                    </td>
+                                                    </tr>
+                                            <tr>
+                            <td>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
+                                </div>
+                            </td>
+                                                            <td>Bartoletti-Crooks</td>
+                                                            <td><a href="http://beatty.com/porro-non-sed-rerum-soluta" target="_blank">http://beatty.com/porro-non-sed-rerum-soluta</a></td>
+                                                            <td>Kenyan Shilling</td>
+                                                            <td><span class="badge badge-pill bg-green">Active</span></td>
+                                                            <td>09 May 2015</td>
+                            
+                                                            <td style="white-space: nowrap;">
+                                                                            
+                                                                                                                            
+                                        <a href="/clients/view/91656880-2d93-11ef-933f-5a2cf21a5680">
+                                            <i class="fa fa-eye"></i>&nbsp;View
+                                        </a>
+                                        &nbsp;&nbsp;
+                                                                            
+                                                                                                                            
+                                        <a href="/clients/edit/91656880-2d93-11ef-933f-5a2cf21a5680">
+                                            <i class="fa fa-pencil"></i>&nbsp;Edit
+                                        </a>
+                                        &nbsp;&nbsp;
+                                                                    </td>
+                                                    </tr>
+                                            <tr>
+                            <td>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
+                                </div>
+                            </td>
+                                                            <td>Hane PLC</td>
+                                                            <td><a href="http://metz.net/accusantium-quia-velit-optio-et-quia" target="_blank">http://metz.net/accusantium-quia-velit-optio-et-quia</a></td>
+                                                            <td>Bahraini Dinar</td>
+                                                            <td><span class="badge badge-pill bg-green">Active</span></td>
+                                                            <td>30 August 1998</td>
+                            
+                                                            <td style="white-space: nowrap;">
+                                                                            
+                                                                                                                            
+                                        <a href="/clients/view/91656880-2d93-11ef-933f-5a2cf21a5680">
+                                            <i class="fa fa-eye"></i>&nbsp;View
+                                        </a>
+                                        &nbsp;&nbsp;
+                                                                            
+                                                                                                                            
+                                        <a href="/clients/edit/91656880-2d93-11ef-933f-5a2cf21a5680">
+                                            <i class="fa fa-pencil"></i>&nbsp;Edit
+                                        </a>
+                                        &nbsp;&nbsp;
+                                                                    </td>
+                                                    </tr>
+                                            <tr>
+                            <td>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
+                                </div>
+                            </td>
+                                                            <td>Balistreri-Bechtelar</td>
+                                                            <td><a href="http://www.brekke.net/aut-amet-omnis-et-fuga" target="_blank">http://www.brekke.net/aut-amet-omnis-et-fuga</a></td>
+                                                            <td>British Pound</td>
+                                                            <td><span class="badge badge-pill bg-green">Active</span></td>
+                                                            <td>02 April 2012</td>
+                            
+                                                            <td style="white-space: nowrap;">
+                                                                            
+                                                                                                                            
+                                        <a href="/clients/view/91656880-2d93-11ef-933f-5a2cf21a5680">
+                                            <i class="fa fa-eye"></i>&nbsp;View
+                                        </a>
+                                        &nbsp;&nbsp;
+                                                                            
+                                                                                                                            
+                                        <a href="/clients/edit/91656880-2d93-11ef-933f-5a2cf21a5680">
+                                            <i class="fa fa-pencil"></i>&nbsp;Edit
+                                        </a>
+                                        &nbsp;&nbsp;
+                                                                    </td>
+                                                    </tr>
+                                            <tr>
+                            <td>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
+                                </div>
+                            </td>
+                                                            <td>Nikolaus LLC</td>
+                                                            <td><a href="http://www.lindgren.com/eligendi-dolorem-sunt-provident-aut-dolorem-quo-tempora" target="_blank">http://www.lindgren.com/eligendi-dolorem-sunt-provident-aut-dolorem-quo-tempora</a></td>
+                                                            <td>Uzbekistani Som</td>
+                                                            <td><span class="badge badge-pill bg-green">Active</span></td>
+                                                            <td>06 May 1970</td>
+                            
+                                                            <td style="white-space: nowrap;">
+                                                                            
+                                                                                                                            
+                                        <a href="/clients/view/91656880-2d93-11ef-933f-5a2cf21a5680">
+                                            <i class="fa fa-eye"></i>&nbsp;View
+                                        </a>
+                                        &nbsp;&nbsp;
+                                                                            
+                                                                                                                            
+                                        <a href="/clients/edit/91656880-2d93-11ef-933f-5a2cf21a5680">
+                                            <i class="fa fa-pencil"></i>&nbsp;Edit
+                                        </a>
+                                        &nbsp;&nbsp;
+                                                                    </td>
+                                                    </tr>
+                                            <tr>
+                            <td>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
+                                </div>
+                            </td>
+                                                            <td>Kuhlman-Ritchie</td>
+                                                            <td><a href="http://hintz.com/explicabo-perferendis-laborum-possimus-ipsam-ut" target="_blank">http://hintz.com/explicabo-perferendis-laborum-possimus-ipsam-ut</a></td>
+                                                            <td>Cuban Convertible Peso</td>
+                                                            <td><span class="badge badge-pill bg-green">Active</span></td>
+                                                            <td>08 November 1976</td>
+                            
+                                                            <td style="white-space: nowrap;">
+                                                                            
+                                                                                                                            
+                                        <a href="/clients/view/91656880-2d93-11ef-933f-5a2cf21a5680">
+                                            <i class="fa fa-eye"></i>&nbsp;View
+                                        </a>
+                                        &nbsp;&nbsp;
+                                                                            
+                                                                                                                            
+                                        <a href="/clients/edit/91656880-2d93-11ef-933f-5a2cf21a5680">
+                                            <i class="fa fa-pencil"></i>&nbsp;Edit
+                                        </a>
+                                        &nbsp;&nbsp;
+                                                                    </td>
+                                                    </tr>
+                                            <tr>
+                            <td>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
+                                </div>
+                            </td>
+                                                            <td>Rice, Dietrich and Wolf</td>
+                                                            <td><a href="https://www.purdy.com/commodi-non-sed-officia-et-expedita-aliquid-assumenda-quo" target="_blank">https://www.purdy.com/commodi-non-sed-officia-et-expedita-aliquid-assumenda-quo</a></td>
+                                                            <td>Lebanese Pound</td>
+                                                            <td><span class="badge badge-pill bg-green">Active</span></td>
+                                                            <td>24 March 1975</td>
+                            
+                                                            <td style="white-space: nowrap;">
+                                                                            
+                                                                                                                            
+                                        <a href="/clients/view/91656880-2d93-11ef-933f-5a2cf21a5680">
+                                            <i class="fa fa-eye"></i>&nbsp;View
+                                        </a>
+                                        &nbsp;&nbsp;
+                                                                            
+                                                                                                                            
+                                        <a href="/clients/edit/91656880-2d93-11ef-933f-5a2cf21a5680">
+                                            <i class="fa fa-pencil"></i>&nbsp;Edit
+                                        </a>
+                                        &nbsp;&nbsp;
+                                                                    </td>
+                                                    </tr>
+                                            <tr>
+                            <td>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
+                                </div>
+                            </td>
+                                                            <td>Doyle, Raynor and Kutch</td>
+                                                            <td><a href="https://www.bode.com/expedita-praesentium-ea-maxime" target="_blank">https://www.bode.com/expedita-praesentium-ea-maxime</a></td>
+                                                            <td>Ethiopian Birr</td>
+                                                            <td><span class="badge badge-pill bg-green">Active</span></td>
+                                                            <td>11 January 1973</td>
+                            
+                                                            <td style="white-space: nowrap;">
+                                                                            
+                                                                                                                            
+                                        <a href="/clients/view/91656880-2d93-11ef-933f-5a2cf21a5680">
+                                            <i class="fa fa-eye"></i>&nbsp;View
+                                        </a>
+                                        &nbsp;&nbsp;
+                                                                            
+                                                                                                                            
+                                        <a href="/clients/edit/91656880-2d93-11ef-933f-5a2cf21a5680">
+                                            <i class="fa fa-pencil"></i>&nbsp;Edit
+                                        </a>
+                                        &nbsp;&nbsp;
+                                                                    </td>
+                                                    </tr>
+                                            <tr>
+                            <td>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
+                                </div>
+                            </td>
+                                                            <td>Fahey Inc</td>
+                                                            <td><a href="http://schneider.biz/soluta-modi-tempora-nulla" target="_blank">http://schneider.biz/soluta-modi-tempora-nulla</a></td>
+                                                            <td>Peruvian Sol</td>
+                                                            <td><span class="badge badge-pill bg-green">Active</span></td>
+                                                            <td>03 December 1972</td>
+                            
+                                                            <td style="white-space: nowrap;">
+                                                                            
+                                                                                                                            
+                                        <a href="/clients/view/91656880-2d93-11ef-933f-5a2cf21a5680">
+                                            <i class="fa fa-eye"></i>&nbsp;View
+                                        </a>
+                                        &nbsp;&nbsp;
+                                                                            
+                                                                                                                            
+                                        <a href="/clients/edit/91656880-2d93-11ef-933f-5a2cf21a5680">
+                                            <i class="fa fa-pencil"></i>&nbsp;Edit
+                                        </a>
+                                        &nbsp;&nbsp;
+                                                                    </td>
+                                                    </tr>
+                                                            </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer p-3 d-flex justify-content-between">
+            <p class="tile-subtitle-p tile-subtitle-footer mb-0">
+                Showing 1 - 10 of 30 results
+            </p>
+            <p class="tile-subtitle-p tile-subtitle-footer mb-0 m-auto">
+                <select class="form-control" data-model="perPage">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="30">All</option>
+                </select>
+            </p>
+            <p class="tile-subtitle-p tile-subtitle-footer mb-0 ml-auto">
+                </p>
+<ul class="pagination">
+<li class="page-item disabled"><span class="page-link">&atilde;&#128;&#136;</span></li>
+<li class="page-item active" aria-current="page"><span class="page-link">1</span></li>
+<li class="page-item"><a class="page-link" href="/?page=2" data-model="page" data-value="2" data-action="live#update:prevent">2</a></li>
+<li class="page-item"><a class="page-link" href="/?page=3" data-model="page" data-value="3" data-action="live#update:prevent">3</a></li>
+<li class="page-item"><a class="page-link" href="/?page=2" rel="next" data-model="page" data-value="2" data-action="live#update:prevent">&atilde;&#128;&#137;</a></li>
+</ul>
+            
+        </div>
+    </div>
+</div>
+</body></html>

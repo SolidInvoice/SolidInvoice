@@ -14,13 +14,14 @@ declare(strict_types=1);
 namespace SolidInvoice\DataGridBundle\Exception;
 
 use Exception;
+use Throwable;
 
 class InvalidGridException extends Exception
 {
-    public function __construct(string $grid)
+    public function __construct(string $grid, ?Throwable $previous = null)
     {
         $message = sprintf('The grid "%s" does not exist.', $grid);
 
-        parent::__construct($message);
+        parent::__construct($message, 0, $previous);
     }
 }

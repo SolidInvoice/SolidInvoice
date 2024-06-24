@@ -22,10 +22,10 @@ class ChainFilter implements FilterInterface
      */
     private array $filters = [];
 
-    public function filter(QueryBuilder $queryBuilder): void
+    public function filter(QueryBuilder $queryBuilder, array $params = []): void
     {
         foreach ($this->filters as $filter) {
-            $filter->filter($queryBuilder);
+            $filter->filter($queryBuilder, $params);
         }
     }
 

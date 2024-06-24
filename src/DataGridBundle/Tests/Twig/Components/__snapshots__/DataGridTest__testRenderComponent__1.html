@@ -1,0 +1,148 @@
+<html><body>
+<div id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="DataGrid" data-live-url-value="/_components/DataGrid" data-live-query-mapping-value='{"name":{"name":"name"},"page":{"name":"page"},"sort":{"name":"sort"},"perPage":{"name":"perPage"},"search":{"name":"search"}}' data-live-props-value='{"name":"client_grid","page":1,"sort":"","perPage":10,"search":"","selectedItems":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"chh2+yFi0kUSVqPyU4rqwa3BGd8PCEuUbg1E\/sQBjlg="}' data-live-csrf-value="">
+    
+
+    <div class="card">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <div class="row m-1 pt-2">
+                    <div class="col">
+                                                    <div class="">
+                                <div class="btn-group" role="group" aria-label="Batch Actions">
+                                                                                                                    <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal_delete">
+                                                                                            <i class="fa fa-trash"></i>
+                                                                                        Delete
+                                        </button>
+                                        <div class="modal fade" tabindex="-1" aria-hidden="true" id="modal_delete" data-controller="bootstrap-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+                                                <div class="modal-header">
+                                                                        <h5>Confirm</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                                </div>
+                
+                <div class="modal-body">
+                                                                    Are you sure you want to perform this action on the selected items?
+                                                            </div>
+
+                                    <div class="modal-footer justify-content-between">
+                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-primary" data-action="live#action" data-live-action-name-param="Delete" data-live-action-param="debounce(300)|executeBatchAction">Confirm</button>
+                                                                </div>
+                                    </div>
+    </div>
+</div>
+                                                                                                                    <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal_archive">
+                                                                                            <i class="fa fa-trash"></i>
+                                                                                        Archive
+                                        </button>
+                                        <div class="modal fade" tabindex="-1" aria-hidden="true" id="modal_archive" data-controller="bootstrap-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+                                                <div class="modal-header">
+                                                                        <h5>Confirm</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                                </div>
+                
+                <div class="modal-body">
+                                                                    Are you sure you want to perform this action on the selected items?
+                                                            </div>
+
+                                    <div class="modal-footer justify-content-between">
+                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-primary" data-action="live#action" data-live-action-name-param="Archive" data-live-action-param="debounce(300)|executeBatchAction">Confirm</button>
+                                                                </div>
+                                    </div>
+    </div>
+</div>
+                                                                    </div>
+                            </div>
+                                            </div>
+                    <div class="col-3 float-right">
+                        <div class="input-group mb-3">
+                            <input type="search" name="q" class="form-control form-control-sm" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2" value="" data-model="search">
+                            <div class="input-group-append">
+                                <button class="btn btn-sm btn-outline-secondary" type="submit">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                                    </div>
+
+                <table class="table table-bordered table-hover table-sm" data-controller="checkbox-select-all">
+                    <thead>
+                    <tr>
+                        <th width="1%">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkboxAll">
+                            </div>
+                        </th>
+                                                    <th>
+                                                                                                        <a href="#" class="d-block" data-model="sort" data-value="name,asc" data-action="live#update:prevent">
+                                        Name
+                                                                            </a>
+                                                            </th>
+                                                    <th>
+                                                                                                        <a href="#" class="d-block" data-model="sort" data-value="website,asc" data-action="live#update:prevent">
+                                        Website
+                                                                            </a>
+                                                            </th>
+                                                    <th>
+                                                                                                        <a href="#" class="d-block" data-model="sort" data-value="currencyCode,asc" data-action="live#update:prevent">
+                                        Currency
+                                                                            </a>
+                                                            </th>
+                                                    <th>
+                                                                                                        <a href="#" class="d-block" data-model="sort" data-value="status,asc" data-action="live#update:prevent">
+                                        Status
+                                                                            </a>
+                                                            </th>
+                                                    <th>
+                                                                                                        <a href="#" class="d-block" data-model="sort" data-value="created,asc" data-action="live#update:prevent">
+                                        Created
+                                                                            </a>
+                                                            </th>
+                                                                            <th width="1%">
+                                Actions
+                            </th>
+                                            </tr>
+                    </thead>
+                    <tbody>
+                                            <tr>
+                            <td colspan="7" class="text-center">
+                                No results found.
+                            </td>
+                        </tr>
+                                        </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer p-3 d-flex justify-content-between">
+            <p class="tile-subtitle-p tile-subtitle-footer mb-0">
+                Showing 0 - 0 of 0 results
+            </p>
+            <p class="tile-subtitle-p tile-subtitle-footer mb-0 m-auto">
+                <select class="form-control" data-model="perPage">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="0">All</option>
+                </select>
+            </p>
+            <p class="tile-subtitle-p tile-subtitle-footer mb-0 ml-auto">
+                </p>
+<ul class="pagination">
+<li class="page-item disabled"><span class="page-link">&atilde;&#128;&#136;</span></li>
+<li class="page-item active" aria-current="page"><span class="page-link">1</span></li>
+<li class="page-item disabled"><span class="page-link">&atilde;&#128;&#137;</span></li>
+</ul>
+            
+        </div>
+    </div>
+</div>
+</body></html>
