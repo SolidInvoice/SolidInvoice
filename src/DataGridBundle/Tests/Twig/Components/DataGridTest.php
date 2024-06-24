@@ -15,11 +15,13 @@ use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Test\LiveComponentTest;
 use SolidInvoice\DataGridBundle\Twig\Components\DataGrid;
 use Symfony\UX\LiveComponent\Test\TestLiveComponent;
-use function Symfony\Component\String\u;
+use Zenstruck\Foundry\Test\Factories;
 use function Zenstruck\Foundry\faker;
 
 final class DataGridTest extends LiveComponentTest
 {
+    use Factories;
+
     private TestLiveComponent $component;
 
     protected function setUp(): void
@@ -33,20 +35,21 @@ final class DataGridTest extends LiveComponentTest
             ],
             client: $this->client,
         )->actingAs($this->getUser());
+
+        ClientFactory::faker()->seed(12345);
+        ClientFactory::createMany(30, ['company' => $this->company, 'archived' => null, 'status' => 'active']);
     }
 
     public function testRenderComponent(): void
     {
         $content = $this->component->render();
-        $this->assertMatchesHtmlSnapshot($content->toString());
+        $this->assertMatchesHtmlSnapshot($this->replaceUuid($content->toString()));
     }
 
     public function testRenderComponentWithData(): void
     {
-        ClientFactory::createMany(10, ['company' => $this->company, 'archived' => null, 'status' => 'active']);
-
         $content = $this->component->refresh()->render();
-        $this->assertMatchesHtmlSnapshot($content->toString());
+        $this->assertMatchesHtmlSnapshot($this->replaceUuid($content->toString()));
     }
 
     public function testComponentWithPaging(): void

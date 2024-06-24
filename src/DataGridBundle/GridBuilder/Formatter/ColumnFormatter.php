@@ -21,8 +21,6 @@ use SolidInvoice\DataGridBundle\GridBuilder\Column\UrlColumn;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Contracts\Service\ServiceProviderInterface;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
-use Twig\Error\LoaderError;
-use Twig\Error\SyntaxError;
 
 final class ColumnFormatter implements ServiceSubscriberInterface, FormatterInterface
 {
@@ -36,9 +34,7 @@ final class ColumnFormatter implements ServiceSubscriberInterface, FormatterInte
 
     /**
      * @throws NotFoundExceptionInterface
-     * @throws SyntaxError
      * @throws ContainerExceptionInterface
-     * @throws LoaderError
      */
     public function format(Column $column, mixed $value): string
     {
