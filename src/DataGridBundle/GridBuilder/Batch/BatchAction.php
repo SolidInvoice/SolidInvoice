@@ -122,4 +122,9 @@ class BatchAction
     {
         return $this->color;
     }
+
+    public function shouldConfirm(): bool
+    {
+        return $this->confirm;
+    }
 }

@@ -15,10 +15,12 @@ use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Test\LiveComponentTest;
 use SolidInvoice\DataGridBundle\Twig\Components\DataGrid;
 use Symfony\UX\LiveComponent\Test\TestLiveComponent;
-use function Symfony\Component\String\u;
+use Zenstruck\Foundry\Test\Factories;
 
 final class DataGridTest extends LiveComponentTest
 {
+    use Factories;
+
     private TestLiveComponent $component;
 
     protected function setUp(): void
@@ -32,27 +34,25 @@ final class DataGridTest extends LiveComponentTest
             ],
             client: $this->client,
         )->actingAs($this->getUser());
+
+        ClientFactory::faker()->seed(12345);
+        ClientFactory::createMany(30, ['company' => $this->company, 'archived' => null, 'status' => 'active']);
     }
 
     public function testRenderComponent(): void
     {
         $content = $this->component->render();
-        $this->assertMatchesHtmlSnapshot($content->toString());
+        $this->assertMatchesHtmlSnapshot($this->replaceUuid($content->toString()));
     }
 
     public function testRenderComponentWithData(): void
     {
-        ClientFactory::createMany(10, ['company' => $this->company, 'archived' => null, 'status' => 'active']);
-
         $content = $this->component->refresh()->render();
-        $this->assertMatchesHtmlSnapshot($content->toString());
+        $this->assertMatchesHtmlSnapshot($this->replaceUuid($content->toString()));
     }
 
     public function testComponentWithPaging(): void
     {
-        ClientFactory::faker()->seed(12345);
-        ClientFactory::createMany(30, ['company' => $this->company, 'archived' => null, 'status' => 'active']);
-
         $content = $this->component->refresh()->render();
         $this->assertMatchesHtmlSnapshot($this->replaceUuid($content->toString()));
 
@@ -65,9 +65,6 @@ final class DataGridTest extends LiveComponentTest
 
     public function testComponentWithSort(): void
     {
-        ClientFactory::faker()->seed(12345);
-        ClientFactory::createMany(30, ['company' => $this->company, 'archived' => null, 'status' => 'active']);
-
         $content = $this->component->refresh()->render();
         $this->assertMatchesHtmlSnapshot($this->replaceUuid($content->toString()));
 
@@ -80,6 +77,6 @@ final class DataGridTest extends LiveComponentTest
 
     private function replaceUuid(string $content): string
     {
-        return u($content)->replaceMatches('/[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}/Dms', '91656880-2d93-11ef-933f-5a2cf21a5680')->toString();
+        return preg_replace('#[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}#', '91656880-2d93-11ef-933f-5a2cf21a5680', $content);
     }
 }

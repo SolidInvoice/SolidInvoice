@@ -15,12 +15,20 @@ namespace SolidInvoice\DataGridBundle\Filter;
 
 use Doctrine\ORM\QueryBuilder;
 
-class ChainFilter implements FilterInterface
+final class ChainFilter implements FilterInterface
 {
     /**
-     * @var FilterInterface[]
+     * @var list<FilterInterface>
      */
     private array $filters = [];
+
+    /**
+     * @param list<FilterInterface> $filters
+     */
+    public function __construct(array $filters = [])
+    {
+        $this->filters = $filters;
+    }
 
     public function filter(QueryBuilder $queryBuilder, array $params = []): void
     {

@@ -12,28 +12,30 @@
                             <div class="btn-group" role="group" aria-label="Batch Actions">
                                 {% for action in grid.batchActions %}
                                     {% set id = 'modal_' ~ action.getLabel|u.snake %}
-                                    <button type="button" class="btn btn-sm btn-{{ action.getColor|default('secondary') }}"{% if action.confirm %} data-toggle="modal" data-target="#{{ id }}"{% endif %}>
+                                    <button type="button" class="btn btn-sm btn-{{ action.getColor|default('secondary') }}"{% if action.shouldConfirm %} data-toggle="modal" data-target="#{{ id }}"{% endif %}>
                                         {% if action.getIcon is not empty %}
                                             {{ icon(action.getIcon) }}
                                         {% endif %}
                                         {{ action.getLabel|trans }}
                                     </button>
-                                    {% component BootstrapModal with {id: id} %}
-                                        {% block modal_header %}
-                                            <h5>Confirm</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        {% endblock %}
-                                        {% block modal_body %}
-                                            Are you sure you want to perform this action on the selected items?
-                                        {% endblock %}
-                                        {% block modal_footer %}
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary" data-action="live#action" data-live-action-name-param="{{ action.getLabel }}"
-                                                    data-live-action-param="debounce(300)|executeBatchAction">Confirm</button>
-                                        {% endblock %}
-                                    {% endcomponent %}
+                                    {% if action.shouldConfirm %}
+                                        {% component BootstrapModal with {id: id} %}
+                                            {% block modal_header %}
+                                                <h5>{{ 'Confirm'|trans }}</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            {% endblock %}
+                                            {% block modal_body %}
+                                                {{ 'Are you sure you want to perform this action on the selected items?'|trans }}
+                                            {% endblock %}
+                                            {% block modal_footer %}
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'Close'|trans }}</button>
+                                                <button type="button" class="btn btn-primary" data-action="live#action" data-live-action-name-param="{{ action.getLabel }}"
+                                                        data-live-action-param="debounce(300)|executeBatchAction">{{ 'Confirm'|trans }}</button>
+                                            {% endblock %}
+                                        {% endcomponent %}
+                                    {% endif %}
                                 {% endfor %}
                             </div>
                         </div>

@@ -1,79 +1,104 @@
 <html><body>
-<div id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="DataGrid" data-live-url-value="/_components/DataGrid" data-live-query-mapping-value='{"name":{"name":"name"},"page":{"name":"page"},"sort":{"name":"sort"},"perPage":{"name":"perPage"},"search":{"name":"search"}}' data-live-props-value='{"name":"client_grid","page":2,"sort":"","perPage":10,"search":"","selectedItems":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"4Zpi6BJNYPBj2kLtIYjQvrNdmBpFC5TYZ1sub72EqAY="}' data-live-csrf-value="">
+<div id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="DataGrid" data-live-url-value="/_components/DataGrid" data-live-query-mapping-value='{"name":{"name":"name"},"page":{"name":"page"},"sort":{"name":"sort"},"perPage":{"name":"perPage"},"search":{"name":"search"},"filters":{"name":"filters"}}' data-live-props-value='{"name":"client_grid","page":2,"sort":"","perPage":10,"search":"","selectedItems":[],"filters":[],"formName":"form","form":{"created":{"start":"","end":""},"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"xasEjYdd75AC7r0ZBqLnWzuLJSB+1HvqFJTQippdnIc="}' data-live-csrf-value="">
     
 
     <div class="card">
         <div class="card-body p-0">
-            <div class="table-responsive">
-                <div class="row m-1 pt-2">
-                    <div class="col">
-                                                    <div class="">
-                                <div class="btn-group" role="group" aria-label="Batch Actions">
-                                                                                                                    <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal_delete">
-                                                                                            <i class="fa fa-trash"></i>
-                                                                                        Delete
-                                        </button>
-                                        <div class="modal fade" tabindex="-1" aria-hidden="true" id="modal_delete" data-controller="bootstrap-modal">
+            <div class="row m-1 pt-2">
+                <div class="col">
+                                            <div class="">
+                            <div class="btn-group" role="group" aria-label="Batch Actions">
+                                                                                                        <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal_delete">
+                                                                                    <i class="fa fa-trash"></i>
+                                                                                Delete
+                                    </button>
+                                    <div class="modal fade" tabindex="-1" aria-hidden="true" id="modal_delete" data-controller="bootstrap-modal">
     <div class="modal-dialog">
         <div class="modal-content">
                                                 <div class="modal-header">
-                                                                        <h5>Confirm</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                                                </div>
+                                                                    <h5>Confirm</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                                            </div>
                 
                 <div class="modal-body">
-                                                                    Are you sure you want to perform this action on the selected items?
-                                                            </div>
+                                                                Are you sure you want to perform this action on the selected items?
+                                                        </div>
 
                                     <div class="modal-footer justify-content-between">
-                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-primary" data-action="live#action" data-live-action-name-param="Delete" data-live-action-param="debounce(300)|executeBatchAction">Confirm</button>
-                                                                </div>
+                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary" data-action="live#action" data-live-action-name-param="Delete" data-live-action-param="debounce(300)|executeBatchAction">Confirm</button>
+                                                            </div>
                                     </div>
     </div>
 </div>
-                                                                                                                    <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal_archive">
-                                                                                            <i class="fa fa-trash"></i>
-                                                                                        Archive
-                                        </button>
-                                        <div class="modal fade" tabindex="-1" aria-hidden="true" id="modal_archive" data-controller="bootstrap-modal">
+                                                                                                        <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal_archive">
+                                                                                    <i class="fa fa-trash"></i>
+                                                                                Archive
+                                    </button>
+                                    <div class="modal fade" tabindex="-1" aria-hidden="true" id="modal_archive" data-controller="bootstrap-modal">
     <div class="modal-dialog">
         <div class="modal-content">
                                                 <div class="modal-header">
-                                                                        <h5>Confirm</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                                                </div>
+                                                                    <h5>Confirm</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                                            </div>
                 
                 <div class="modal-body">
-                                                                    Are you sure you want to perform this action on the selected items?
-                                                            </div>
+                                                                Are you sure you want to perform this action on the selected items?
+                                                        </div>
 
                                     <div class="modal-footer justify-content-between">
-                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-primary" data-action="live#action" data-live-action-name-param="Archive" data-live-action-param="debounce(300)|executeBatchAction">Confirm</button>
-                                                                </div>
+                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary" data-action="live#action" data-live-action-name-param="Archive" data-live-action-param="debounce(300)|executeBatchAction">Confirm</button>
+                                                            </div>
                                     </div>
     </div>
 </div>
-                                                                    </div>
-                            </div>
-                                            </div>
-                    <div class="col-3 float-right">
-                        <div class="input-group mb-3">
-                            <input type="search" name="q" class="form-control form-control-sm" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2" value="" data-model="search">
-                            <div class="input-group-append">
-                                <button class="btn btn-sm btn-outline-secondary" type="submit">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </div>
+                                                            </div>
+                        </div>
+                                    </div>
+                <div class="col-3 float-right d-flex justify-content-between">
+                    <div class="input-group mb-3">
+                        <input type="search" name="q" class="form-control form-control-sm" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2" value="" data-model="search">
+                        <div class="input-group-append">
+                            <button class="btn btn-sm btn-outline-secondary" type="submit">
+                                <i class="fa fa-search"></i>
+                            </button>
                         </div>
                     </div>
+                                            <div class="ml-2">
+                            <div class="dropdown dropleft">
+                                <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="text-black-50">
+                                    <i class="fa fa-filter"></i>
+                                </a>
+                                <div class="dropdown-menu p-4">
+                                    <form name="form" method="post" data-model="on(change)|*"><div id="form" data-model="on(change)|*">
+<fieldset class="form-group">                
+    <div id="form_created">
+<div class="form-group">                
+                                <label class="control-label required required" for="form_created_start">Start</label><input type="date" id="form_created_start" name="form[created][start]" data-required="required" class="form-control">
+</div>
+<div class="form-group">                
+                                <label class="control-label required required" for="form_created_end">End</label><input type="date" id="form_created_end" name="form[created][end]" data-required="required" class="form-control">
+</div>
+</div>
+</fieldset>
+<input type="hidden" id="form__token" name="form[_token]">
+</div></form>
+                                    <a href="#" data-action="live#action:prevent" data-live-action-param="clearFilters">
+                                        <i class="fa fa-cancel"></i> Clear
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                                     </div>
+            </div>
 
+            <div class="table-responsive">
                 <table class="table table-bordered table-hover table-sm" data-controller="checkbox-select-all">
                     <thead>
                     <tr>
@@ -83,27 +108,27 @@
                             </div>
                         </th>
                                                     <th>
-                                                                                                        <a href="#" class="d-block" data-model="sort" data-value="name,asc" data-action="live#update:prevent">
+                                                                    <a href="#" class="d-block" data-model="sort" data-value="name,asc" data-action="live#update:prevent">
                                         Name
                                                                             </a>
                                                             </th>
                                                     <th>
-                                                                                                        <a href="#" class="d-block" data-model="sort" data-value="website,asc" data-action="live#update:prevent">
+                                                                    <a href="#" class="d-block" data-model="sort" data-value="website,asc" data-action="live#update:prevent">
                                         Website
                                                                             </a>
                                                             </th>
                                                     <th>
-                                                                                                        <a href="#" class="d-block" data-model="sort" data-value="currencyCode,asc" data-action="live#update:prevent">
+                                                                    <a href="#" class="d-block" data-model="sort" data-value="currencyCode,asc" data-action="live#update:prevent">
                                         Currency
                                                                             </a>
                                                             </th>
                                                     <th>
-                                                                                                        <a href="#" class="d-block" data-model="sort" data-value="status,asc" data-action="live#update:prevent">
+                                                                    <a href="#" class="d-block" data-model="sort" data-value="status,asc" data-action="live#update:prevent">
                                         Status
                                                                             </a>
                                                             </th>
                                                     <th>
-                                                                                                        <a href="#" class="d-block" data-model="sort" data-value="created,asc" data-action="live#update:prevent">
+                                                                    <a href="#" class="d-block" data-model="sort" data-value="created,asc" data-action="live#update:prevent">
                                         Created
                                                                             </a>
                                                             </th>
@@ -119,11 +144,38 @@
                                     <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
                                 </div>
                             </td>
-                                                            <td>Luettgen, Bosco and Torp</td>
-                                                            <td><a href="http://www.hahn.net/eveniet-ut-ipsa-aspernatur-quibusdam-et-impedit" target="_blank">http://www.hahn.net/eveniet-ut-ipsa-aspernatur-quibusdam-et-impedit</a></td>
+                                                            <td>Green, Ruecker and Stoltenberg</td>
+                                                            <td><a href="http://www.langosh.com/animi-exercitationem-consequatur-deleniti-in-dolor-inventore-architecto.html" target="_blank">http://www.langosh.com/animi-exercitationem-consequatur-deleniti-in-dolor-inventore-architecto.html</a></td>
+                                                            <td>Omani Rial</td>
+                                                            <td><span class="badge badge-pill bg-green">Active</span></td>
+                                                            <td>25 October 1975</td>
+                            
+                                                            <td style="white-space: nowrap;">
+                                                                            
+                                                                                                                            
+                                        <a href="/clients/view/91656880-2d93-11ef-933f-5a2cf21a5680">
+                                            <i class="fa fa-eye"></i>&nbsp;View
+                                        </a>
+                                        &nbsp;&nbsp;
+                                                                            
+                                                                                                                            
+                                        <a href="/clients/edit/91656880-2d93-11ef-933f-5a2cf21a5680">
+                                            <i class="fa fa-pencil"></i>&nbsp;Edit
+                                        </a>
+                                        &nbsp;&nbsp;
+                                                                    </td>
+                                                    </tr>
+                                            <tr>
+                            <td>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
+                                </div>
+                            </td>
+                                                            <td>Kihn Inc</td>
+                                                            <td><a href="http://parker.info/velit-dolore-facere-repellendus-minus-minima-non-voluptas" target="_blank">http://parker.info/velit-dolore-facere-repellendus-minus-minima-non-voluptas</a></td>
                                                             <td>Namibian Dollar</td>
                                                             <td><span class="badge badge-pill bg-green">Active</span></td>
-                                                            <td>20 December 2009</td>
+                                                            <td>23 February 1996</td>
                             
                                                             <td style="white-space: nowrap;">
                                                                             
@@ -146,11 +198,11 @@
                                     <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
                                 </div>
                             </td>
-                                                            <td>Kreiger Group</td>
-                                                            <td><a href="http://www.boehm.net/ex-libero-culpa-vel" target="_blank">http://www.boehm.net/ex-libero-culpa-vel</a></td>
-                                                            <td>Belize Dollar</td>
+                                                            <td>Abbott-Olson</td>
+                                                            <td><a href="http://www.hoeger.biz/maiores-est-illum-molestiae-maiores-necessitatibus" target="_blank">http://www.hoeger.biz/maiores-est-illum-molestiae-maiores-necessitatibus</a></td>
+                                                            <td>Haitian Gourde</td>
                                                             <td><span class="badge badge-pill bg-green">Active</span></td>
-                                                            <td>20 April 1975</td>
+                                                            <td>23 February 1982</td>
                             
                                                             <td style="white-space: nowrap;">
                                                                             
@@ -173,11 +225,11 @@
                                     <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
                                 </div>
                             </td>
-                                                            <td>Marks-Aufderhar</td>
-                                                            <td><a href="http://www.baumbach.com/et-quos-rerum-ipsam-error-sint-alias.html" target="_blank">http://www.baumbach.com/et-quos-rerum-ipsam-error-sint-alias.html</a></td>
-                                                            <td>Colombian Peso</td>
+                                                            <td>Effertz-Daniel</td>
+                                                            <td><a href="http://www.berge.com/velit-expedita-eaque-tempora-vero-sit" target="_blank">http://www.berge.com/velit-expedita-eaque-tempora-vero-sit</a></td>
+                                                            <td>St. Helena Pound</td>
                                                             <td><span class="badge badge-pill bg-green">Active</span></td>
-                                                            <td>06 December 1973</td>
+                                                            <td>24 March 2000</td>
                             
                                                             <td style="white-space: nowrap;">
                                                                             
@@ -200,11 +252,11 @@
                                     <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
                                 </div>
                             </td>
-                                                            <td>Jacobson-Morissette</td>
-                                                            <td><a href="http://beier.com/voluptas-id-culpa-aspernatur-vel-atque" target="_blank">http://beier.com/voluptas-id-culpa-aspernatur-vel-atque</a></td>
-                                                            <td>North Korean Won</td>
+                                                            <td>McLaughlin-Nolan</td>
+                                                            <td><a href="http://vandervort.biz/dolores-ipsa-nihil-ut-eos-et-totam-qui-facere" target="_blank">http://vandervort.biz/dolores-ipsa-nihil-ut-eos-et-totam-qui-facere</a></td>
+                                                            <td>Japanese Yen</td>
                                                             <td><span class="badge badge-pill bg-green">Active</span></td>
-                                                            <td>30 September 2019</td>
+                                                            <td>27 October 1980</td>
                             
                                                             <td style="white-space: nowrap;">
                                                                             
@@ -227,11 +279,11 @@
                                     <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
                                 </div>
                             </td>
-                                                            <td>Raynor-Larkin</td>
-                                                            <td><a href="http://www.trantow.com/perferendis-aliquid-voluptates-unde-quia-beatae-fugiat-pariatur" target="_blank">http://www.trantow.com/perferendis-aliquid-voluptates-unde-quia-beatae-fugiat-pariatur</a></td>
-                                                            <td>Uruguayan Peso</td>
+                                                            <td>Von-Wolf</td>
+                                                            <td><a href="http://stiedemann.com/voluptatum-voluptas-qui-provident" target="_blank">http://stiedemann.com/voluptatum-voluptas-qui-provident</a></td>
+                                                            <td>Falkland Islands Pound</td>
                                                             <td><span class="badge badge-pill bg-green">Active</span></td>
-                                                            <td>07 November 1989</td>
+                                                            <td>26 June 1971</td>
                             
                                                             <td style="white-space: nowrap;">
                                                                             
@@ -254,11 +306,11 @@
                                     <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
                                 </div>
                             </td>
-                                                            <td>Walker and Sons</td>
-                                                            <td><a href="https://champlin.com/cumque-quam-placeat-blanditiis-assumenda-deserunt-nihil-quia.html" target="_blank">https://champlin.com/cumque-quam-placeat-blanditiis-assumenda-deserunt-nihil-quia.html</a></td>
-                                                            <td>Philippine Peso</td>
+                                                            <td>Altenwerth-Dooley</td>
+                                                            <td><a href="https://www.fahey.com/sit-fugiat-corrupti-omnis-aliquid-debitis" target="_blank">https://www.fahey.com/sit-fugiat-corrupti-omnis-aliquid-debitis</a></td>
+                                                            <td>Netherlands Antillean Guilder</td>
                                                             <td><span class="badge badge-pill bg-green">Active</span></td>
-                                                            <td>10 April 1982</td>
+                                                            <td>14 April 2008</td>
                             
                                                             <td style="white-space: nowrap;">
                                                                             
@@ -281,11 +333,11 @@
                                     <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
                                 </div>
                             </td>
-                                                            <td>Schmeler-Sipes</td>
-                                                            <td><a href="https://schimmel.net/tenetur-vitae-tenetur-soluta-culpa.html" target="_blank">https://schimmel.net/tenetur-vitae-tenetur-soluta-culpa.html</a></td>
-                                                            <td>Lesotho Loti</td>
+                                                            <td>Kerluke-Abernathy</td>
+                                                            <td><a href="http://towne.net/iure-dolorem-aut-quis-possimus.html" target="_blank">http://towne.net/iure-dolorem-aut-quis-possimus.html</a></td>
+                                                            <td>Jordanian Dinar</td>
                                                             <td><span class="badge badge-pill bg-green">Active</span></td>
-                                                            <td>16 March 1979</td>
+                                                            <td>10 October 1996</td>
                             
                                                             <td style="white-space: nowrap;">
                                                                             
@@ -308,11 +360,11 @@
                                     <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
                                 </div>
                             </td>
-                                                            <td>Jenkins PLC</td>
-                                                            <td><a href="http://www.stokes.com/nesciunt-velit-dolor-in" target="_blank">http://www.stokes.com/nesciunt-velit-dolor-in</a></td>
-                                                            <td>Russian Ruble</td>
+                                                            <td>Gerlach, Kris and Bradtke</td>
+                                                            <td><a href="http://www.auer.com/quidem-qui-perspiciatis-vel-eaque-qui-vel" target="_blank">http://www.auer.com/quidem-qui-perspiciatis-vel-eaque-qui-vel</a></td>
+                                                            <td>Serbian Dinar</td>
                                                             <td><span class="badge badge-pill bg-green">Active</span></td>
-                                                            <td>23 August 2018</td>
+                                                            <td>06 January 1970</td>
                             
                                                             <td style="white-space: nowrap;">
                                                                             
@@ -335,38 +387,11 @@
                                     <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
                                 </div>
                             </td>
-                                                            <td>Bergnaum Ltd</td>
-                                                            <td><a href="http://stehr.com/" target="_blank">http://stehr.com/</a></td>
-                                                            <td>East Caribbean Dollar</td>
-                                                            <td><span class="badge badge-pill bg-green">Active</span></td>
-                                                            <td>27 January 1976</td>
-                            
-                                                            <td style="white-space: nowrap;">
-                                                                            
-                                                                                                                            
-                                        <a href="/clients/view/91656880-2d93-11ef-933f-5a2cf21a5680">
-                                            <i class="fa fa-eye"></i>&nbsp;View
-                                        </a>
-                                        &nbsp;&nbsp;
-                                                                            
-                                                                                                                            
-                                        <a href="/clients/edit/91656880-2d93-11ef-933f-5a2cf21a5680">
-                                            <i class="fa fa-pencil"></i>&nbsp;Edit
-                                        </a>
-                                        &nbsp;&nbsp;
-                                                                    </td>
-                                                    </tr>
-                                            <tr>
-                            <td>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
-                                </div>
-                            </td>
-                                                            <td>Cummings Ltd</td>
-                                                            <td><a href="http://abbott.com/non-ipsam-occaecati-asperiores-mollitia-nulla-praesentium-eum-deserunt.html" target="_blank">http://abbott.com/non-ipsam-occaecati-asperiores-mollitia-nulla-praesentium-eum-deserunt.html</a></td>
+                                                            <td>Sipes Group</td>
+                                                            <td><a href="http://www.rempel.com/ducimus-veniam-quo-ducimus-dolores-possimus-a-accusamus" target="_blank">http://www.rempel.com/ducimus-veniam-quo-ducimus-dolores-possimus-a-accusamus</a></td>
                                                             <td>Gibraltar Pound</td>
                                                             <td><span class="badge badge-pill bg-green">Active</span></td>
-                                                            <td>03 June 2008</td>
+                                                            <td>15 January 2000</td>
                             
                                                             <td style="white-space: nowrap;">
                                                                             

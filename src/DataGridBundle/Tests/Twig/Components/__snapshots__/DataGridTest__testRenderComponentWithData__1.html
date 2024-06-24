@@ -1,79 +1,104 @@
 <html><body>
-<div id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="DataGrid" data-live-url-value="/_components/DataGrid" data-live-query-mapping-value='{"name":{"name":"name"},"page":{"name":"page"},"sort":{"name":"sort"},"perPage":{"name":"perPage"},"search":{"name":"search"}}' data-live-props-value='{"name":"client_grid","page":1,"sort":"","perPage":10,"search":"","selectedItems":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"chh2+yFi0kUSVqPyU4rqwa3BGd8PCEuUbg1E\/sQBjlg="}' data-live-csrf-value="">
+<div id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="DataGrid" data-live-url-value="/_components/DataGrid" data-live-query-mapping-value='{"name":{"name":"name"},"page":{"name":"page"},"sort":{"name":"sort"},"perPage":{"name":"perPage"},"search":{"name":"search"},"filters":{"name":"filters"}}' data-live-props-value='{"name":"client_grid","page":1,"sort":"","perPage":10,"search":"","selectedItems":[],"filters":[],"formName":"form","form":{"created":{"start":"","end":""},"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"NOH4zclI8R2GN90yc\/Q5udWmQFzS1qkSBhCcXsPkLoI="}' data-live-csrf-value="">
     
 
     <div class="card">
         <div class="card-body p-0">
-            <div class="table-responsive">
-                <div class="row m-1 pt-2">
-                    <div class="col">
-                                                    <div class="">
-                                <div class="btn-group" role="group" aria-label="Batch Actions">
-                                                                                                                    <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal_delete">
-                                                                                            <i class="fa fa-trash"></i>
-                                                                                        Delete
-                                        </button>
-                                        <div class="modal fade" tabindex="-1" aria-hidden="true" id="modal_delete" data-controller="bootstrap-modal">
+            <div class="row m-1 pt-2">
+                <div class="col">
+                                            <div class="">
+                            <div class="btn-group" role="group" aria-label="Batch Actions">
+                                                                                                        <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal_delete">
+                                                                                    <i class="fa fa-trash"></i>
+                                                                                Delete
+                                    </button>
+                                    <div class="modal fade" tabindex="-1" aria-hidden="true" id="modal_delete" data-controller="bootstrap-modal">
     <div class="modal-dialog">
         <div class="modal-content">
                                                 <div class="modal-header">
-                                                                        <h5>Confirm</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                                                </div>
+                                                                    <h5>Confirm</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                                            </div>
                 
                 <div class="modal-body">
-                                                                    Are you sure you want to perform this action on the selected items?
-                                                            </div>
+                                                                Are you sure you want to perform this action on the selected items?
+                                                        </div>
 
                                     <div class="modal-footer justify-content-between">
-                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-primary" data-action="live#action" data-live-action-name-param="Delete" data-live-action-param="debounce(300)|executeBatchAction">Confirm</button>
-                                                                </div>
+                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary" data-action="live#action" data-live-action-name-param="Delete" data-live-action-param="debounce(300)|executeBatchAction">Confirm</button>
+                                                            </div>
                                     </div>
     </div>
 </div>
-                                                                                                                    <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal_archive">
-                                                                                            <i class="fa fa-trash"></i>
-                                                                                        Archive
-                                        </button>
-                                        <div class="modal fade" tabindex="-1" aria-hidden="true" id="modal_archive" data-controller="bootstrap-modal">
+                                                                                                        <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal_archive">
+                                                                                    <i class="fa fa-trash"></i>
+                                                                                Archive
+                                    </button>
+                                    <div class="modal fade" tabindex="-1" aria-hidden="true" id="modal_archive" data-controller="bootstrap-modal">
     <div class="modal-dialog">
         <div class="modal-content">
                                                 <div class="modal-header">
-                                                                        <h5>Confirm</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                                                </div>
+                                                                    <h5>Confirm</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                                            </div>
                 
                 <div class="modal-body">
-                                                                    Are you sure you want to perform this action on the selected items?
-                                                            </div>
+                                                                Are you sure you want to perform this action on the selected items?
+                                                        </div>
 
                                     <div class="modal-footer justify-content-between">
-                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-primary" data-action="live#action" data-live-action-name-param="Archive" data-live-action-param="debounce(300)|executeBatchAction">Confirm</button>
-                                                                </div>
+                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary" data-action="live#action" data-live-action-name-param="Archive" data-live-action-param="debounce(300)|executeBatchAction">Confirm</button>
+                                                            </div>
                                     </div>
     </div>
 </div>
-                                                                    </div>
-                            </div>
-                                            </div>
-                    <div class="col-3 float-right">
-                        <div class="input-group mb-3">
-                            <input type="search" name="q" class="form-control form-control-sm" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2" value="" data-model="search">
-                            <div class="input-group-append">
-                                <button class="btn btn-sm btn-outline-secondary" type="submit">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </div>
+                                                            </div>
+                        </div>
+                                    </div>
+                <div class="col-3 float-right d-flex justify-content-between">
+                    <div class="input-group mb-3">
+                        <input type="search" name="q" class="form-control form-control-sm" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2" value="" data-model="search">
+                        <div class="input-group-append">
+                            <button class="btn btn-sm btn-outline-secondary" type="submit">
+                                <i class="fa fa-search"></i>
+                            </button>
                         </div>
                     </div>
+                                            <div class="ml-2">
+                            <div class="dropdown dropleft">
+                                <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="text-black-50">
+                                    <i class="fa fa-filter"></i>
+                                </a>
+                                <div class="dropdown-menu p-4">
+                                    <form name="form" method="post" data-model="on(change)|*"><div id="form" data-model="on(change)|*">
+<fieldset class="form-group">                
+    <div id="form_created">
+<div class="form-group">                
+                                <label class="control-label required required" for="form_created_start">Start</label><input type="date" id="form_created_start" name="form[created][start]" data-required="required" class="form-control">
+</div>
+<div class="form-group">                
+                                <label class="control-label required required" for="form_created_end">End</label><input type="date" id="form_created_end" name="form[created][end]" data-required="required" class="form-control">
+</div>
+</div>
+</fieldset>
+<input type="hidden" id="form__token" name="form[_token]">
+</div></form>
+                                    <a href="#" data-action="live#action:prevent" data-live-action-param="clearFilters">
+                                        <i class="fa fa-cancel"></i> Clear
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                                     </div>
+            </div>
 
+            <div class="table-responsive">
                 <table class="table table-bordered table-hover table-sm" data-controller="checkbox-select-all">
                     <thead>
                     <tr>
@@ -83,27 +108,27 @@
                             </div>
                         </th>
                                                     <th>
-                                                                                                        <a href="#" class="d-block" data-model="sort" data-value="name,asc" data-action="live#update:prevent">
+                                                                    <a href="#" class="d-block" data-model="sort" data-value="name,asc" data-action="live#update:prevent">
                                         Name
                                                                             </a>
                                                             </th>
                                                     <th>
-                                                                                                        <a href="#" class="d-block" data-model="sort" data-value="website,asc" data-action="live#update:prevent">
+                                                                    <a href="#" class="d-block" data-model="sort" data-value="website,asc" data-action="live#update:prevent">
                                         Website
                                                                             </a>
                                                             </th>
                                                     <th>
-                                                                                                        <a href="#" class="d-block" data-model="sort" data-value="currencyCode,asc" data-action="live#update:prevent">
+                                                                    <a href="#" class="d-block" data-model="sort" data-value="currencyCode,asc" data-action="live#update:prevent">
                                         Currency
                                                                             </a>
                                                             </th>
                                                     <th>
-                                                                                                        <a href="#" class="d-block" data-model="sort" data-value="status,asc" data-action="live#update:prevent">
+                                                                    <a href="#" class="d-block" data-model="sort" data-value="status,asc" data-action="live#update:prevent">
                                         Status
                                                                             </a>
                                                             </th>
                                                     <th>
-                                                                                                        <a href="#" class="d-block" data-model="sort" data-value="created,asc" data-action="live#update:prevent">
+                                                                    <a href="#" class="d-block" data-model="sort" data-value="created,asc" data-action="live#update:prevent">
                                         Created
                                                                             </a>
                                                             </th>
@@ -116,214 +141,25 @@
                                                                     <tr>
                             <td>
                                 <div class="form-check">
-                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="eca034d8-2d92-11ef-a3d4-5a2cf21a5680" data-model="selectedItems">
+                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
                                 </div>
                             </td>
-                                                            <td>Rath-Friesen</td>
-                                                            <td><a href="http://www.tillman.biz/reiciendis-quia-sed-rerum" target="_blank">http://www.tillman.biz/reiciendis-quia-sed-rerum</a></td>
-                                                            <td>Indonesian Rupiah</td>
-                                                            <td><span class="badge badge-pill bg-green">Active</span></td>
-                                                            <td>12 September 1972</td>
-                            
-                                                            <td style="white-space: nowrap;">
-                                                                            
-                                                                                                                            
-                                        <a href="/clients/view/eca034d8-2d92-11ef-a3d4-5a2cf21a5680">
-                                            <i class="fa fa-eye"></i>&nbsp;View
-                                        </a>
-                                        &nbsp;&nbsp;
-                                                                            
-                                                                                                                            
-                                        <a href="/clients/edit/eca034d8-2d92-11ef-a3d4-5a2cf21a5680">
-                                            <i class="fa fa-pencil"></i>&nbsp;Edit
-                                        </a>
-                                        &nbsp;&nbsp;
-                                                                    </td>
-                                                    </tr>
-                                            <tr>
-                            <td>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="eca3071c-2d92-11ef-bc29-5a2cf21a5680" data-model="selectedItems">
-                                </div>
-                            </td>
-                                                            <td>Marvin PLC</td>
-                                                            <td><a href="http://www.pagac.info/temporibus-minus-maxime-est-nobis.html" target="_blank">http://www.pagac.info/temporibus-minus-maxime-est-nobis.html</a></td>
-                                                            <td>US Dollar</td>
-                                                            <td><span class="badge badge-pill bg-green">Active</span></td>
-                                                            <td>29 May 1999</td>
-                            
-                                                            <td style="white-space: nowrap;">
-                                                                            
-                                                                                                                            
-                                        <a href="/clients/view/eca3071c-2d92-11ef-bc29-5a2cf21a5680">
-                                            <i class="fa fa-eye"></i>&nbsp;View
-                                        </a>
-                                        &nbsp;&nbsp;
-                                                                            
-                                                                                                                            
-                                        <a href="/clients/edit/eca3071c-2d92-11ef-bc29-5a2cf21a5680">
-                                            <i class="fa fa-pencil"></i>&nbsp;Edit
-                                        </a>
-                                        &nbsp;&nbsp;
-                                                                    </td>
-                                                    </tr>
-                                            <tr>
-                            <td>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="eca36d10-2d92-11ef-8159-5a2cf21a5680" data-model="selectedItems">
-                                </div>
-                            </td>
-                                                            <td>Von, Herzog and Weissnat</td>
-                                                            <td><a href="http://fisher.com/voluptatem-quia-porro-harum-ut-nulla" target="_blank">http://fisher.com/voluptatem-quia-porro-harum-ut-nulla</a></td>
-                                                            <td>Central African CFA Franc</td>
-                                                            <td><span class="badge badge-pill bg-green">Active</span></td>
-                                                            <td>01 May 1971</td>
-                            
-                                                            <td style="white-space: nowrap;">
-                                                                            
-                                                                                                                            
-                                        <a href="/clients/view/eca36d10-2d92-11ef-8159-5a2cf21a5680">
-                                            <i class="fa fa-eye"></i>&nbsp;View
-                                        </a>
-                                        &nbsp;&nbsp;
-                                                                            
-                                                                                                                            
-                                        <a href="/clients/edit/eca36d10-2d92-11ef-8159-5a2cf21a5680">
-                                            <i class="fa fa-pencil"></i>&nbsp;Edit
-                                        </a>
-                                        &nbsp;&nbsp;
-                                                                    </td>
-                                                    </tr>
-                                            <tr>
-                            <td>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="eca3cfc6-2d92-11ef-964f-5a2cf21a5680" data-model="selectedItems">
-                                </div>
-                            </td>
-                                                            <td>Robel, Cremin and Gibson</td>
-                                                            <td><a href="http://ondricka.biz/et-doloremque-aut-accusantium-tempora-tenetur-labore" target="_blank">http://ondricka.biz/et-doloremque-aut-accusantium-tempora-tenetur-labore</a></td>
-                                                            <td>Congolese Franc</td>
-                                                            <td><span class="badge badge-pill bg-green">Active</span></td>
-                                                            <td>19 August 1994</td>
-                            
-                                                            <td style="white-space: nowrap;">
-                                                                            
-                                                                                                                            
-                                        <a href="/clients/view/eca3cfc6-2d92-11ef-964f-5a2cf21a5680">
-                                            <i class="fa fa-eye"></i>&nbsp;View
-                                        </a>
-                                        &nbsp;&nbsp;
-                                                                            
-                                                                                                                            
-                                        <a href="/clients/edit/eca3cfc6-2d92-11ef-964f-5a2cf21a5680">
-                                            <i class="fa fa-pencil"></i>&nbsp;Edit
-                                        </a>
-                                        &nbsp;&nbsp;
-                                                                    </td>
-                                                    </tr>
-                                            <tr>
-                            <td>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="eca42b74-2d92-11ef-9c69-5a2cf21a5680" data-model="selectedItems">
-                                </div>
-                            </td>
-                                                            <td>Conroy, Turcotte and Dicki</td>
-                                                            <td><a href="http://johns.com/sit-at-praesentium-at-est-qui-doloribus-incidunt" target="_blank">http://johns.com/sit-at-praesentium-at-est-qui-doloribus-incidunt</a></td>
-                                                            <td>Sudanese Pound</td>
-                                                            <td><span class="badge badge-pill bg-green">Active</span></td>
-                                                            <td>10 December 1995</td>
-                            
-                                                            <td style="white-space: nowrap;">
-                                                                            
-                                                                                                                            
-                                        <a href="/clients/view/eca42b74-2d92-11ef-9c69-5a2cf21a5680">
-                                            <i class="fa fa-eye"></i>&nbsp;View
-                                        </a>
-                                        &nbsp;&nbsp;
-                                                                            
-                                                                                                                            
-                                        <a href="/clients/edit/eca42b74-2d92-11ef-9c69-5a2cf21a5680">
-                                            <i class="fa fa-pencil"></i>&nbsp;Edit
-                                        </a>
-                                        &nbsp;&nbsp;
-                                                                    </td>
-                                                    </tr>
-                                            <tr>
-                            <td>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="eca486a0-2d92-11ef-881e-5a2cf21a5680" data-model="selectedItems">
-                                </div>
-                            </td>
-                                                            <td>Kohler, Schowalter and Mraz</td>
-                                                            <td><a href="https://www.weber.org/ex-nam-sunt-qui-libero" target="_blank">https://www.weber.org/ex-nam-sunt-qui-libero</a></td>
-                                                            <td>New Taiwan Dollar</td>
-                                                            <td><span class="badge badge-pill bg-green">Active</span></td>
-                                                            <td>01 January 2019</td>
-                            
-                                                            <td style="white-space: nowrap;">
-                                                                            
-                                                                                                                            
-                                        <a href="/clients/view/eca486a0-2d92-11ef-881e-5a2cf21a5680">
-                                            <i class="fa fa-eye"></i>&nbsp;View
-                                        </a>
-                                        &nbsp;&nbsp;
-                                                                            
-                                                                                                                            
-                                        <a href="/clients/edit/eca486a0-2d92-11ef-881e-5a2cf21a5680">
-                                            <i class="fa fa-pencil"></i>&nbsp;Edit
-                                        </a>
-                                        &nbsp;&nbsp;
-                                                                    </td>
-                                                    </tr>
-                                            <tr>
-                            <td>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="eca4e802-2d92-11ef-bff9-5a2cf21a5680" data-model="selectedItems">
-                                </div>
-                            </td>
-                                                            <td>Cremin Group</td>
-                                                            <td><a href="https://www.mueller.info/et-quo-accusamus-similique-qui-odit-rerum" target="_blank">https://www.mueller.info/et-quo-accusamus-similique-qui-odit-rerum</a></td>
-                                                            <td>Nigerian Naira</td>
-                                                            <td><span class="badge badge-pill bg-green">Active</span></td>
-                                                            <td>11 September 2013</td>
-                            
-                                                            <td style="white-space: nowrap;">
-                                                                            
-                                                                                                                            
-                                        <a href="/clients/view/eca4e802-2d92-11ef-bff9-5a2cf21a5680">
-                                            <i class="fa fa-eye"></i>&nbsp;View
-                                        </a>
-                                        &nbsp;&nbsp;
-                                                                            
-                                                                                                                            
-                                        <a href="/clients/edit/eca4e802-2d92-11ef-bff9-5a2cf21a5680">
-                                            <i class="fa fa-pencil"></i>&nbsp;Edit
-                                        </a>
-                                        &nbsp;&nbsp;
-                                                                    </td>
-                                                    </tr>
-                                            <tr>
-                            <td>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="eca544e6-2d92-11ef-8995-5a2cf21a5680" data-model="selectedItems">
-                                </div>
-                            </td>
-                                                            <td>Reilly, Kutch and Koelpin</td>
-                                                            <td><a href="http://www.hermann.com/" target="_blank">http://www.hermann.com/</a></td>
+                                                            <td>Hermiston Group</td>
+                                                            <td><a href="http://www.hahn.info/aut-dolores-sapiente-delectus-nemo" target="_blank">http://www.hahn.info/aut-dolores-sapiente-delectus-nemo</a></td>
                                                             <td>New Zealand Dollar</td>
                                                             <td><span class="badge badge-pill bg-green">Active</span></td>
-                                                            <td>30 January 2005</td>
+                                                            <td>12 June 2017</td>
                             
                                                             <td style="white-space: nowrap;">
                                                                             
                                                                                                                             
-                                        <a href="/clients/view/eca544e6-2d92-11ef-8995-5a2cf21a5680">
+                                        <a href="/clients/view/91656880-2d93-11ef-933f-5a2cf21a5680">
                                             <i class="fa fa-eye"></i>&nbsp;View
                                         </a>
                                         &nbsp;&nbsp;
                                                                             
                                                                                                                             
-                                        <a href="/clients/edit/eca544e6-2d92-11ef-8995-5a2cf21a5680">
+                                        <a href="/clients/edit/91656880-2d93-11ef-933f-5a2cf21a5680">
                                             <i class="fa fa-pencil"></i>&nbsp;Edit
                                         </a>
                                         &nbsp;&nbsp;
@@ -332,25 +168,25 @@
                                             <tr>
                             <td>
                                 <div class="form-check">
-                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="eca58cd0-2d92-11ef-8005-5a2cf21a5680" data-model="selectedItems">
+                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
                                 </div>
                             </td>
-                                                            <td>Beahan LLC</td>
-                                                            <td><a href="http://reinger.com/voluptate-neque-voluptatem-ea-quia-consequatur-et-exercitationem" target="_blank">http://reinger.com/voluptate-neque-voluptatem-ea-quia-consequatur-et-exercitationem</a></td>
-                                                            <td>Moroccan Dirham</td>
+                                                            <td>Sanford, Osinski and Dickens</td>
+                                                            <td><a href="http://weber.org/" target="_blank">http://weber.org/</a></td>
+                                                            <td>Mozambican Metical</td>
                                                             <td><span class="badge badge-pill bg-green">Active</span></td>
-                                                            <td>30 July 1981</td>
+                                                            <td>09 November 2004</td>
                             
                                                             <td style="white-space: nowrap;">
                                                                             
                                                                                                                             
-                                        <a href="/clients/view/eca58cd0-2d92-11ef-8005-5a2cf21a5680">
+                                        <a href="/clients/view/91656880-2d93-11ef-933f-5a2cf21a5680">
                                             <i class="fa fa-eye"></i>&nbsp;View
                                         </a>
                                         &nbsp;&nbsp;
                                                                             
                                                                                                                             
-                                        <a href="/clients/edit/eca58cd0-2d92-11ef-8005-5a2cf21a5680">
+                                        <a href="/clients/edit/91656880-2d93-11ef-933f-5a2cf21a5680">
                                             <i class="fa fa-pencil"></i>&nbsp;Edit
                                         </a>
                                         &nbsp;&nbsp;
@@ -359,25 +195,214 @@
                                             <tr>
                             <td>
                                 <div class="form-check">
-                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="eca5f0bc-2d92-11ef-bb60-5a2cf21a5680" data-model="selectedItems">
+                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
                                 </div>
                             </td>
-                                                            <td>Reichel-Farrell</td>
-                                                            <td><a href="http://www.kuhlman.org/in-nemo-adipisci-minus-ullam-fuga-magnam-enim-quibusdam" target="_blank">http://www.kuhlman.org/in-nemo-adipisci-minus-ullam-fuga-magnam-enim-quibusdam</a></td>
-                                                            <td>Malawian Kwacha</td>
+                                                            <td>Jenkins, Barton and Fisher</td>
+                                                            <td><a href="http://streich.info/a-quo-ad-saepe-hic-quae-inventore-ipsum-nisi" target="_blank">http://streich.info/a-quo-ad-saepe-hic-quae-inventore-ipsum-nisi</a></td>
+                                                            <td>Canadian Dollar</td>
                                                             <td><span class="badge badge-pill bg-green">Active</span></td>
-                                                            <td>19 March 1981</td>
+                                                            <td>30 April 2013</td>
                             
                                                             <td style="white-space: nowrap;">
                                                                             
                                                                                                                             
-                                        <a href="/clients/view/eca5f0bc-2d92-11ef-bb60-5a2cf21a5680">
+                                        <a href="/clients/view/91656880-2d93-11ef-933f-5a2cf21a5680">
                                             <i class="fa fa-eye"></i>&nbsp;View
                                         </a>
                                         &nbsp;&nbsp;
                                                                             
                                                                                                                             
-                                        <a href="/clients/edit/eca5f0bc-2d92-11ef-bb60-5a2cf21a5680">
+                                        <a href="/clients/edit/91656880-2d93-11ef-933f-5a2cf21a5680">
+                                            <i class="fa fa-pencil"></i>&nbsp;Edit
+                                        </a>
+                                        &nbsp;&nbsp;
+                                                                    </td>
+                                                    </tr>
+                                            <tr>
+                            <td>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
+                                </div>
+                            </td>
+                                                            <td>Gaylord and Sons</td>
+                                                            <td><a href="http://www.balistreri.com/sapiente-nihil-quod-voluptate-unde-nihil-itaque-quos.html" target="_blank">http://www.balistreri.com/sapiente-nihil-quod-voluptate-unde-nihil-itaque-quos.html</a></td>
+                                                            <td>Uzbekistani Som</td>
+                                                            <td><span class="badge badge-pill bg-green">Active</span></td>
+                                                            <td>26 January 1977</td>
+                            
+                                                            <td style="white-space: nowrap;">
+                                                                            
+                                                                                                                            
+                                        <a href="/clients/view/91656880-2d93-11ef-933f-5a2cf21a5680">
+                                            <i class="fa fa-eye"></i>&nbsp;View
+                                        </a>
+                                        &nbsp;&nbsp;
+                                                                            
+                                                                                                                            
+                                        <a href="/clients/edit/91656880-2d93-11ef-933f-5a2cf21a5680">
+                                            <i class="fa fa-pencil"></i>&nbsp;Edit
+                                        </a>
+                                        &nbsp;&nbsp;
+                                                                    </td>
+                                                    </tr>
+                                            <tr>
+                            <td>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
+                                </div>
+                            </td>
+                                                            <td>Runolfsdottir Inc</td>
+                                                            <td><a href="http://www.hirthe.net/" target="_blank">http://www.hirthe.net/</a></td>
+                                                            <td>Namibian Dollar</td>
+                                                            <td><span class="badge badge-pill bg-green">Active</span></td>
+                                                            <td>23 January 1983</td>
+                            
+                                                            <td style="white-space: nowrap;">
+                                                                            
+                                                                                                                            
+                                        <a href="/clients/view/91656880-2d93-11ef-933f-5a2cf21a5680">
+                                            <i class="fa fa-eye"></i>&nbsp;View
+                                        </a>
+                                        &nbsp;&nbsp;
+                                                                            
+                                                                                                                            
+                                        <a href="/clients/edit/91656880-2d93-11ef-933f-5a2cf21a5680">
+                                            <i class="fa fa-pencil"></i>&nbsp;Edit
+                                        </a>
+                                        &nbsp;&nbsp;
+                                                                    </td>
+                                                    </tr>
+                                            <tr>
+                            <td>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
+                                </div>
+                            </td>
+                                                            <td>Mueller, Quitzon and Bednar</td>
+                                                            <td><a href="http://kunde.com/dolor-sapiente-sit-voluptatibus-modi" target="_blank">http://kunde.com/dolor-sapiente-sit-voluptatibus-modi</a></td>
+                                                            <td>Surinamese Dollar</td>
+                                                            <td><span class="badge badge-pill bg-green">Active</span></td>
+                                                            <td>26 February 2022</td>
+                            
+                                                            <td style="white-space: nowrap;">
+                                                                            
+                                                                                                                            
+                                        <a href="/clients/view/91656880-2d93-11ef-933f-5a2cf21a5680">
+                                            <i class="fa fa-eye"></i>&nbsp;View
+                                        </a>
+                                        &nbsp;&nbsp;
+                                                                            
+                                                                                                                            
+                                        <a href="/clients/edit/91656880-2d93-11ef-933f-5a2cf21a5680">
+                                            <i class="fa fa-pencil"></i>&nbsp;Edit
+                                        </a>
+                                        &nbsp;&nbsp;
+                                                                    </td>
+                                                    </tr>
+                                            <tr>
+                            <td>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
+                                </div>
+                            </td>
+                                                            <td>Gusikowski and Sons</td>
+                                                            <td><a href="https://www.emard.com/architecto-hic-minima-vero-eaque-id" target="_blank">https://www.emard.com/architecto-hic-minima-vero-eaque-id</a></td>
+                                                            <td>Venezuelan Bol&Atilde;&shy;var</td>
+                                                            <td><span class="badge badge-pill bg-green">Active</span></td>
+                                                            <td>13 December 2023</td>
+                            
+                                                            <td style="white-space: nowrap;">
+                                                                            
+                                                                                                                            
+                                        <a href="/clients/view/91656880-2d93-11ef-933f-5a2cf21a5680">
+                                            <i class="fa fa-eye"></i>&nbsp;View
+                                        </a>
+                                        &nbsp;&nbsp;
+                                                                            
+                                                                                                                            
+                                        <a href="/clients/edit/91656880-2d93-11ef-933f-5a2cf21a5680">
+                                            <i class="fa fa-pencil"></i>&nbsp;Edit
+                                        </a>
+                                        &nbsp;&nbsp;
+                                                                    </td>
+                                                    </tr>
+                                            <tr>
+                            <td>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
+                                </div>
+                            </td>
+                                                            <td>Botsford and Sons</td>
+                                                            <td><a href="http://armstrong.com/cupiditate-at-ipsum-eaque-quia-quos-quae" target="_blank">http://armstrong.com/cupiditate-at-ipsum-eaque-quia-quos-quae</a></td>
+                                                            <td>Iranian Rial</td>
+                                                            <td><span class="badge badge-pill bg-green">Active</span></td>
+                                                            <td>13 March 2020</td>
+                            
+                                                            <td style="white-space: nowrap;">
+                                                                            
+                                                                                                                            
+                                        <a href="/clients/view/91656880-2d93-11ef-933f-5a2cf21a5680">
+                                            <i class="fa fa-eye"></i>&nbsp;View
+                                        </a>
+                                        &nbsp;&nbsp;
+                                                                            
+                                                                                                                            
+                                        <a href="/clients/edit/91656880-2d93-11ef-933f-5a2cf21a5680">
+                                            <i class="fa fa-pencil"></i>&nbsp;Edit
+                                        </a>
+                                        &nbsp;&nbsp;
+                                                                    </td>
+                                                    </tr>
+                                            <tr>
+                            <td>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
+                                </div>
+                            </td>
+                                                            <td>Armstrong-Champlin</td>
+                                                            <td><a href="http://www.kertzmann.com/rerum-dicta-a-est-vel-dolores" target="_blank">http://www.kertzmann.com/rerum-dicta-a-est-vel-dolores</a></td>
+                                                            <td>Haitian Gourde</td>
+                                                            <td><span class="badge badge-pill bg-green">Active</span></td>
+                                                            <td>13 May 2004</td>
+                            
+                                                            <td style="white-space: nowrap;">
+                                                                            
+                                                                                                                            
+                                        <a href="/clients/view/91656880-2d93-11ef-933f-5a2cf21a5680">
+                                            <i class="fa fa-eye"></i>&nbsp;View
+                                        </a>
+                                        &nbsp;&nbsp;
+                                                                            
+                                                                                                                            
+                                        <a href="/clients/edit/91656880-2d93-11ef-933f-5a2cf21a5680">
+                                            <i class="fa fa-pencil"></i>&nbsp;Edit
+                                        </a>
+                                        &nbsp;&nbsp;
+                                                                    </td>
+                                                    </tr>
+                                            <tr>
+                            <td>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
+                                </div>
+                            </td>
+                                                            <td>Prosacco-Swift</td>
+                                                            <td><a href="http://www.bernier.com/" target="_blank">http://www.bernier.com/</a></td>
+                                                            <td>Bermudan Dollar</td>
+                                                            <td><span class="badge badge-pill bg-green">Active</span></td>
+                                                            <td>07 February 2004</td>
+                            
+                                                            <td style="white-space: nowrap;">
+                                                                            
+                                                                                                                            
+                                        <a href="/clients/view/91656880-2d93-11ef-933f-5a2cf21a5680">
+                                            <i class="fa fa-eye"></i>&nbsp;View
+                                        </a>
+                                        &nbsp;&nbsp;
+                                                                            
+                                                                                                                            
+                                        <a href="/clients/edit/91656880-2d93-11ef-933f-5a2cf21a5680">
                                             <i class="fa fa-pencil"></i>&nbsp;Edit
                                         </a>
                                         &nbsp;&nbsp;
@@ -389,14 +414,14 @@
         </div>
         <div class="card-footer p-3 d-flex justify-content-between">
             <p class="tile-subtitle-p tile-subtitle-footer mb-0">
-                Showing 1 - 10 of 10 results
+                Showing 1 - 10 of 30 results
             </p>
             <p class="tile-subtitle-p tile-subtitle-footer mb-0 m-auto">
                 <select class="form-control" data-model="perPage">
                     <option value="10">10</option>
                     <option value="25">25</option>
                     <option value="50">50</option>
-                    <option value="10">All</option>
+                    <option value="30">All</option>
                 </select>
             </p>
             <p class="tile-subtitle-p tile-subtitle-footer mb-0 ml-auto">
@@ -404,7 +429,9 @@
 <ul class="pagination">
 <li class="page-item disabled"><span class="page-link">&atilde;&#128;&#136;</span></li>
 <li class="page-item active" aria-current="page"><span class="page-link">1</span></li>
-<li class="page-item disabled"><span class="page-link">&atilde;&#128;&#137;</span></li>
+<li class="page-item"><a class="page-link" href="/?page=2" data-model="page" data-value="2" data-action="live#update:prevent">2</a></li>
+<li class="page-item"><a class="page-link" href="/?page=3" data-model="page" data-value="3" data-action="live#update:prevent">3</a></li>
+<li class="page-item"><a class="page-link" href="/?page=2" rel="next" data-model="page" data-value="2" data-action="live#update:prevent">&atilde;&#128;&#137;</a></li>
 </ul>
             
         </div>

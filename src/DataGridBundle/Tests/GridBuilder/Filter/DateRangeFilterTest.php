@@ -21,7 +21,7 @@ final class DateRangeFilterTest extends TestCase
 {
     private DateRangeFilter $filter;
 
-    private QueryBuilder|MockObject $queryBuilder;
+    private QueryBuilder&MockObject $queryBuilder;
 
     protected function setUp(): void
     {
@@ -34,34 +34,57 @@ final class DateRangeFilterTest extends TestCase
         $this->assertSame(DateRangeFormType::class, $this->filter->form());
     }
 
-    public function filterAddsCorrectConditionsWhenStartAndEndArePresent(): void
+    public function testFilterAddsCorrectConditionsWhenStartAndEndArePresent(): void
     {
-        $this->queryBuilder->expects($this->exactly(2))->method('andWhere');
-        $this->queryBuilder->expects($this->exactly(2))->method('setParameter');
+        $this->queryBuilder
+            ->expects($this->exactly(2))
+            ->method('andWhere')
+            ->willReturn($this->queryBuilder);
+
+        $this->queryBuilder
+            ->expects($this->exactly(2))
+            ->method('setParameter');
 
         $this->filter->filter($this->queryBuilder, ['start' => '2022-01-01', 'end' => '2022-01-31']);
     }
 
-    public function filterAddsCorrectConditionWhenOnlyStartIsPresent(): void
+    public function testFilterAddsCorrectConditionWhenOnlyStartIsPresent(): void
     {
-        $this->queryBuilder->expects($this->once())->method('andWhere');
-        $this->queryBuilder->expects($this->once())->method('setParameter');
+        $this->queryBuilder
+            ->expects($this->once())
+            ->method('andWhere')
+            ->willReturn($this->queryBuilder);
+
+        $this->queryBuilder
+            ->expects($this->once())
+            ->method('setParameter');
 
         $this->filter->filter($this->queryBuilder, ['start' => '2022-01-01']);
     }
 
-    public function filterAddsCorrectConditionWhenOnlyEndIsPresent(): void
+    public function testFilterAddsCorrectConditionWhenOnlyEndIsPresent(): void
     {
-        $this->queryBuilder->expects($this->once())->method('andWhere');
-        $this->queryBuilder->expects($this->once())->method('setParameter');
+        $this->queryBuilder
+            ->expects($this->once())
+            ->method('andWhere')
+            ->willReturn($this->queryBuilder);
+
+        $this->queryBuilder
+            ->expects($this->once())
+            ->method('setParameter');
 
         $this->filter->filter($this->queryBuilder, ['end' => '2022-01-31']);
     }
 
-    public function filterDoesNotAddAnyConditionWhenStartAndEndAreNotPresent(): void
+    public function testFilterDoesNotAddAnyConditionWhenStartAndEndAreNotPresent(): void
     {
-        $this->queryBuilder->expects($this->never())->method('andWhere');
-        $this->queryBuilder->expects($this->never())->method('setParameter');
+        $this->queryBuilder
+            ->expects($this->never())
+            ->method('andWhere');
+
+        $this->queryBuilder
+            ->expects($this->never())
+            ->method('setParameter');
 
         $this->filter->filter($this->queryBuilder, []);
     }

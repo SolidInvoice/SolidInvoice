@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace SolidInvoice\DataGridBundle\Filter;
 
 use Doctrine\ORM\QueryBuilder;
+use SolidInvoice\DataGridBundle\Source\ORMSource;
 
-class SearchFilter implements FilterInterface
+final class SearchFilter implements FilterInterface
 {
     public function __construct(
         private readonly string $query,
@@ -29,12 +30,11 @@ class SearchFilter implements FilterInterface
             return;
         }
 
-        $alias = $queryBuilder->getRootAliases()[0];
-
         $expr = $queryBuilder->expr();
 
         $fields = array_map(
-            static function ($field) use ($alias): string {
+            static function ($field): string {
+                $alias = ORMSource::ALIAS;
                 if (str_contains($field, '.')) {
                     [$alias, $field] = explode('.', $field);
                 }
