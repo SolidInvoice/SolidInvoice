@@ -39,7 +39,6 @@ Encore
         '~': path.resolve(__dirname, 'assets/js'),
         'SolidInvoiceClient': path.resolve(__dirname, 'src/ClientBundle/Resources/public'),
         'SolidInvoiceCore': path.resolve(__dirname, 'src/CoreBundle/Resources/public'),
-        'SolidInvoiceDataGrid': path.resolve(__dirname, 'src/DataGridBundle/Resources/public'),
         'SolidInvoiceInvoice': path.resolve(__dirname, 'src/InvoiceBundle/Resources/public'),
         'SolidInvoiceMailer': path.resolve(__dirname, 'src/MailerBundle/Resources/public'),
         'SolidInvoiceQuote': path.resolve(__dirname, 'src/QuoteBundle/Resources/public'),

@@ -60,6 +60,4 @@ return static function (RoutingConfigurator $routingConfigurator): void {
     $routingConfigurator
         ->add('_transition_quote', '/action/{action}/{id}')
         ->controller(Transition::class);
-
-    $routingConfigurator->import('@SolidInvoiceQuoteBundle/Action/Grid', 'grid');
 };

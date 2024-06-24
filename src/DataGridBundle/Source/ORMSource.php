@@ -16,7 +16,6 @@ namespace SolidInvoice\DataGridBundle\Source;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use Exception;
 use SolidInvoice\DataGridBundle\Grid;
 
 /**
@@ -35,9 +34,7 @@ class ORMSource implements SourceInterface
     {
         $em = $this->registry->getManagerForClass($grid->entityFQCN());
 
-        if (! $em instanceof EntityManagerInterface) {
-            throw new Exception();
-        }
+        assert($em instanceof EntityManagerInterface);
 
         return $em
             ->getRepository($grid->entityFQCN())

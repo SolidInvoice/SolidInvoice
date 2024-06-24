@@ -38,8 +38,6 @@ return static function (RoutingConfigurator $routingConfigurator): void {
         ->controller(View::class)
         ->options(['expose' => true]);
 
-    $routingConfigurator->import('@SolidInvoiceClientBundle/Action/Grid', 'grid');
-
     $routingConfigurator->import('@SolidInvoiceClientBundle/Resources/config/routing/ajax.php')
         ->prefix('/xhr')
         ->options(['expose' => true]);

@@ -37,25 +37,8 @@ class SolidInvoiceDataGridExtension extends Extension
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->import('services/*.php');
 
-        $grids = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
-
-        $container->setParameter('grid.definitions', $grids);
-
         $container->registerAttributeForAutoconfiguration(AsDataGrid::class, static function (ChildDefinition $definition, AsDataGrid $grid, \Reflector $reflector): void {
             $definition->addTag(AsDataGrid::DI_TAG, ['name' => $grid->name]);
         });
-    }
-
-    /**
-     * @param list<mixed> $config
-     */
-    public function getConfiguration(array $config, ContainerBuilder $container): GridConfiguration
-    {
-        return new GridConfiguration();
-    }
-
-    public function getAlias(): string
-    {
-        return 'datagrid';
     }
 }

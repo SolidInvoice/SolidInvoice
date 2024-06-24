@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * This file is part of SolidInvoice project.
  *
@@ -13,9 +11,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\Filter;
 
-use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\Form\FormInterface;
 
-interface FilterInterface
+interface ColumnFilterInterface extends FilterInterface
 {
-    public function filter(QueryBuilder $queryBuilder, array $params): void;
+    /**
+     * @return class-string<FormInterface>
+     */
+    public function form(): string;
 }

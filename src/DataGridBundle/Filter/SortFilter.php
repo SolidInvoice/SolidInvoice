@@ -24,7 +24,7 @@ class SortFilter implements FilterInterface
     ) {
     }
 
-    public function filter(QueryBuilder $queryBuilder): void
+    public function filter(QueryBuilder $queryBuilder, array $params = []): void
     {
         if ($this->field) {
             $alias = $queryBuilder->getRootAliases()[0];

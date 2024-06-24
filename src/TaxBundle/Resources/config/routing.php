@@ -36,6 +36,4 @@ return static function (RoutingConfigurator $routingConfigurator): void {
         ->controller(Validate::class)
         ->methods(['POST'])
         ->options(['expose' => true]);
-
-    $routingConfigurator->import('@SolidInvoiceTaxBundle/Action/Grid', 'grid');
 };

@@ -23,7 +23,7 @@ class SearchFilter implements FilterInterface
     ) {
     }
 
-    public function filter(QueryBuilder $queryBuilder): void
+    public function filter(QueryBuilder $queryBuilder, array $params = []): void
     {
         if (! $this->query) {
             return;

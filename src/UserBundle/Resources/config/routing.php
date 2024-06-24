@@ -57,10 +57,6 @@ return static function (RoutingConfigurator $routingConfigurator): void {
         ->controller(AcceptInvitation::class);
 
     $routingConfigurator
-        ->import('@SolidInvoiceUserBundle/Action/Grid', 'grid')
-        ->prefix('/users');
-
-    $routingConfigurator
         ->add('_login', '/login')
         ->controller(Login::class);
 

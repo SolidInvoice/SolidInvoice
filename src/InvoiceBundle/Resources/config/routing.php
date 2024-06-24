@@ -94,6 +94,4 @@ return static function (RoutingConfigurator $routingConfigurator): void {
     $routingConfigurator
         ->add('_action_recurring_invoice', '/recurring-action/{action}/{id}')
         ->controller(RecurringTransition::class);
-
-    $routingConfigurator->import('@SolidInvoiceInvoiceBundle/Action/Grid', 'grid');
 };

@@ -22,6 +22,7 @@ use SolidInvoice\DataGridBundle\GridBuilder\Column\CurrencyColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\DateTimeColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\UrlColumn;
+use SolidInvoice\DataGridBundle\GridBuilder\Filter\DateRangeFilter;
 
 #[AsDataGrid(name: 'client_grid')]
 final class ClientGrid extends Grid
@@ -38,7 +39,9 @@ final class ClientGrid extends Grid
             UrlColumn::new('website'),
             CurrencyColumn::new('currencyCode')->label('Currency'),
             StringColumn::new('status')->twigFunction('client_label'),
-            DateTimeColumn::new('created')->format('d F Y'),
+            DateTimeColumn::new('created')
+                ->format('d F Y')
+                ->filter(new DateRangeFilter('created')),
         ];
     }
 

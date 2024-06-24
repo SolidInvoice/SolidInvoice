@@ -5,56 +5,68 @@
 
     <div class="card">
         <div class="card-body p-0">
-            <div class="table-responsive">
-                <div class="row m-1 pt-2">
-                    <div class="col">
-                        {% if grid.batchActions|length > 0 %}
-                            <div class="">
-                                <div class="btn-group" role="group" aria-label="Batch Actions">
-                                    {% for action in grid.batchActions %}
-                                        {% set id = 'modal_' ~ random() %}
-                                        <button type="button" class="btn btn-sm btn-{{ action.getColor|default('secondary') }}"{% if action.confirm %} data-toggle="modal" data-target="#{{ id }}"{% endif %}>
-                                            {% if action.getIcon is not empty %}
-                                                {{ icon(action.getIcon) }}
-                                            {% endif %}
-                                            {{ action.getLabel|trans }}
-                                        </button>
-                                        {% component BootstrapModal with {id: id} %}
-                                            {% block modal_header %}
-                                                <h5>Confirm</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            {% endblock %}
-                                            {% block modal_body %}
-                                                Are you sure you want to perform this action on the selected items?
-                                            {% endblock %}
-                                            {% block modal_footer %}
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-primary" data-action="live#action" data-live-action-name-param="{{ action.getLabel }}"
-                                                        data-live-action-param="debounce(300)|executeBatchAction">Confirm</button>
-                                            {% endblock %}
-                                        {% endcomponent %}
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        {% endif %}
-                    </div>
-                    <div class="col-3 float-right">
-                        <div class="input-group mb-3">
-                            <input type="search" name="q" class="form-control form-control-sm" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2" value="{{ queryParams.q|default('') }}" data-model="search">
-                            <div class="input-group-append">
-                                <button class="btn btn-sm btn-outline-secondary" type="submit">
-                                    {{ icon('search') }}
-                                </button>
+            <div class="row m-1 pt-2">
+                <div class="col">
+                    {% if grid.batchActions|length > 0 %}
+                        <div class="">
+                            <div class="btn-group" role="group" aria-label="Batch Actions">
+                                {% for action in grid.batchActions %}
+                                    {% set id = 'modal_' ~ action.getLabel|u.snake %}
+                                    <button type="button" class="btn btn-sm btn-{{ action.getColor|default('secondary') }}"{% if action.confirm %} data-toggle="modal" data-target="#{{ id }}"{% endif %}>
+                                        {% if action.getIcon is not empty %}
+                                            {{ icon(action.getIcon) }}
+                                        {% endif %}
+                                        {{ action.getLabel|trans }}
+                                    </button>
+                                    {% component BootstrapModal with {id: id} %}
+                                        {% block modal_header %}
+                                            <h5>Confirm</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        {% endblock %}
+                                        {% block modal_body %}
+                                            Are you sure you want to perform this action on the selected items?
+                                        {% endblock %}
+                                        {% block modal_footer %}
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary" data-action="live#action" data-live-action-name-param="{{ action.getLabel }}"
+                                                    data-live-action-param="debounce(300)|executeBatchAction">Confirm</button>
+                                        {% endblock %}
+                                    {% endcomponent %}
+                                {% endfor %}
                             </div>
                         </div>
-                    </div>
-                    {#<div class="col-1">
-                        Filters...
-                    </div>#}
+                    {% endif %}
                 </div>
+                <div class="col-3 float-right d-flex justify-content-between">
+                    <div class="input-group mb-3">
+                        <input type="search" name="q" class="form-control form-control-sm" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2" value="{{ queryParams.q|default('') }}" data-model="search">
+                        <div class="input-group-append">
+                            <button class="btn btn-sm btn-outline-secondary" type="submit">
+                                {{ icon('search') }}
+                            </button>
+                        </div>
+                    </div>
+                    {% if grid.filters|length > 0 %}
+                        <div class="ml-2">
+                            <div class="dropdown dropleft">
+                                <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"{{ this.filters == [] ? ' class="text-black-50"' }}>
+                                    {{ icon('filter') }}
+                                </a>
+                                <div class="dropdown-menu p-4">
+                                    {{ form(form) }}
+                                    <a href="#" data-action="live#action:prevent" data-live-action-param="clearFilters">
+                                        {{ icon('cancel') }} Clear
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
 
+            <div class="table-responsive">
                 <table class="table table-bordered table-hover table-sm" {{ stimulus_controller('checkbox-select-all') }}>
                     <thead>
                     <tr>
@@ -66,7 +78,6 @@
                         {% for column in grid.columns %}
                             <th>
                                 {% if column.isSortable %}
-                                    {#<a href="{{ path(app.current_route, app.request.all|merge(queryParams|merge({'sort': column.field, 'sortDir': queryParams.sortDir|default('asc') is same as('asc') ? 'desc' : 'asc'}))) }}" class="d-block">#}
                                     <a href="#" class="d-block" data-model="sort" data-value="{{ column.field }},{{ sortDir is same as('asc') ? 'desc' : 'asc'}}" data-action="live#update:prevent">
                                         {{ column.getLabel }}
                                         {% if sortField is same as column.field %}
@@ -142,7 +153,7 @@
                 </select>
             </p>
             <p class="tile-subtitle-p tile-subtitle-footer mb-0 ml-auto">
-                {{ pagerfanta(paginator, '', {'prev_message': '〈', 'next_message': '〉'}) }}
+                {{ pagerfanta(paginator, '', {'prev_message': '〈', 'next_message': '〉', 'routeName': '_home'}) }}
             </p>
         </div>
     </div>
