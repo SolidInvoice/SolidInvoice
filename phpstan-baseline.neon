@@ -176,124 +176,9 @@ parameters:
 			path: src/DashboardBundle/Widgets/WidgetInterface.php
 
 		-
-			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\Action\\\\Data\\:\\:serialize\\(\\) has parameter \\$groups with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/DataGridBundle/Action/Data.php
-
-		-
-			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\DependencyInjection\\\\CompilerPass\\\\GridDefinitionCompilerPass\\:\\:getFilterService\\(\\) has parameter \\$gridData with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/DataGridBundle/DependencyInjection/CompilerPass/GridDefinitionCompilerPass.php
-
-		-
-			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\DependencyInjection\\\\CompilerPass\\\\GridDefinitionCompilerPass\\:\\:getGridSource\\(\\) has parameter \\$arguments with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/DataGridBundle/DependencyInjection/CompilerPass/GridDefinitionCompilerPass.php
-
-		-
 			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\Filter\\\\SearchFilter\\:\\:__construct\\(\\) has parameter \\$searchFields with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/DataGridBundle/Filter/SearchFilter.php
-
-		-
-			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\Grid\\:\\:__construct\\(\\) has parameter \\$gridData with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/DataGridBundle/Grid.php
-
-		-
-			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\Grid\\:\\:fetchData\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/DataGridBundle/Grid.php
-
-		-
-			message: "#^Property SolidInvoice\\\\DataGridBundle\\\\Grid\\:\\:\\$actions type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/DataGridBundle/Grid.php
-
-		-
-			message: "#^Property SolidInvoice\\\\DataGridBundle\\\\Grid\\:\\:\\$columns with generic class Doctrine\\\\Common\\\\Collections\\\\ArrayCollection does not specify its types\\: TKey, T$#"
-			count: 1
-			path: src/DataGridBundle/Grid.php
-
-		-
-			message: "#^Property SolidInvoice\\\\DataGridBundle\\\\Grid\\:\\:\\$lineActions type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/DataGridBundle/Grid.php
-
-		-
-			message: "#^Property SolidInvoice\\\\DataGridBundle\\\\Grid\\:\\:\\$parameters type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/DataGridBundle/Grid.php
-
-		-
-			message: "#^Property SolidInvoice\\\\DataGridBundle\\\\Grid\\:\\:\\$properties type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/DataGridBundle/Grid.php
-
-		-
-			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\GridInterface\\:\\:fetchData\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/DataGridBundle/GridInterface.php
-
-		-
-			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\GridInterface\\:\\:setParameters\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/DataGridBundle/GridInterface.php
-
-		-
-			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\GridInterface\\:\\:setParameters\\(\\) has parameter \\$params with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/DataGridBundle/GridInterface.php
-
-		-
-			message: "#^PHPDoc tag @return with type mixed is not subtype of native type array\\.$#"
-			count: 1
-			path: src/DataGridBundle/GridInterface.php
-
-		-
-			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\Source\\\\ORMSource\\:\\:fetch\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/DataGridBundle/Source/ORMSource.php
-
-		-
-			message: "#^Unable to resolve the template type T in call to method Doctrine\\\\Persistence\\\\ManagerRegistry\\:\\:getRepository\\(\\)$#"
-			count: 1
-			path: src/DataGridBundle/Source/ORMSource.php
-
-		-
-			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\Source\\\\SourceInterface\\:\\:fetch\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/DataGridBundle/Source/SourceInterface.php
-
-		-
-			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\Tests\\\\DependencyInjection\\\\GridConfigurationTest\\:\\:getConfiguration\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/DataGridBundle/Tests/DependencyInjection/GridConfigurationTest.php
-
-		-
-			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\Tests\\\\DependencyInjection\\\\GridConfigurationTest\\:\\:invalidConfigProvider\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/DataGridBundle/Tests/DependencyInjection/GridConfigurationTest.php
-
-		-
-			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\Tests\\\\DependencyInjection\\\\GridConfigurationTest\\:\\:testInvalidGridConfig\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/DataGridBundle/Tests/DependencyInjection/GridConfigurationTest.php
-
-		-
-			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\Tests\\\\DependencyInjection\\\\GridConfigurationTest\\:\\:testInvalidGridConfig\\(\\) has parameter \\$message with no type specified\\.$#"
-			count: 1
-			path: src/DataGridBundle/Tests/DependencyInjection/GridConfigurationTest.php
-
-		-
-			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\Tests\\\\DependencyInjection\\\\GridConfigurationTest\\:\\:testValidGridConfig\\(\\) has parameter \\$config with no type specified\\.$#"
-			count: 1
-			path: src/DataGridBundle/Tests/DependencyInjection/GridConfigurationTest.php
-
-		-
-			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\Tests\\\\DependencyInjection\\\\GridConfigurationTest\\:\\:validConfigProvider\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/DataGridBundle/Tests/DependencyInjection/GridConfigurationTest.php
 
 		-
 			message: "#^Method SolidInvoice\\\\InstallBundle\\\\Action\\\\Config\\:\\:__invoke\\(\\) has no return type specified\\.$#"
@@ -324,16 +209,6 @@ parameters:
 			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\Fields\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/InvoiceBundle/Action/Fields.php
-
-		-
-			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\Grid\\\\Archive\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Action/Grid/Archive.php
-
-		-
-			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\Grid\\\\RecurringArchive\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Action/Grid/RecurringArchive.php
 
 		-
 			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\Index\\:\\:__invoke\\(\\) has no return type specified\\.$#"
@@ -514,11 +389,6 @@ parameters:
 			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\CloneQuote\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/QuoteBundle/Action/CloneQuote.php
-
-		-
-			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\Grid\\\\Archive\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/QuoteBundle/Action/Grid/Archive.php
 
 		-
 			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\Index\\:\\:__invoke\\(\\) has no return type specified\\.$#"

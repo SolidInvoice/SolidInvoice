@@ -12,26 +12,35 @@
 namespace SolidInvoice\DataGridBundle\GridBuilder\Column;
 
 use Closure;
+use function is_array;
 
 final class StringColumn extends Column
 {
     private ?string $template = null;
 
-    private array|Closure $templateParams = [];
+    private Closure $templateParams;
 
     private ?string $twigFunction = null;
 
     private ?Closure $callback = null;
 
-    public function template(string $template, array | Closure $params = []): static
+    /**
+     * @param array<string, mixed>|Closure $params
+     */
+    public function template(string $template, array | callable $params = []): self
     {
         $this->template = $template;
-        $this->templateParams = $params;
+
+        if (is_array($params)) {
+            $this->templateParams = static fn () => $params;
+        } else {
+            $this->templateParams = $params(...);
+        }
 
         return $this;
     }
 
-    public function twigFunction(string $function): static
+    public function twigFunction(string $function): self
     {
         $this->twigFunction = $function;
         return $this;
@@ -42,9 +51,12 @@ final class StringColumn extends Column
         return $this->template;
     }
 
-    public function getTemplateParams(): array|Closure
+    /**
+     * @return array<string, mixed>
+     */
+    public function getTemplateParams(): array
     {
-        return $this->templateParams;
+        return ($this->templateParams)();
     }
 
     public function getTwigFunction(): ?string
@@ -59,8 +71,8 @@ final class StringColumn extends Column
         return $this;
     }
 
-    public function getCallback(): ?Closure
+    public function getCallback(): Closure
     {
-        return $this->callback;
+        return $this->callback ?? static fn (mixed $value = null): mixed => $value;
     }
 }

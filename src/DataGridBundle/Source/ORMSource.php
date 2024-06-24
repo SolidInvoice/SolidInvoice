@@ -16,7 +16,7 @@ namespace SolidInvoice\DataGridBundle\Source;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use SolidInvoice\DataGridBundle\Grid;
+use SolidInvoice\DataGridBundle\GridInterface;
 
 /**
  * @see \SolidInvoice\DataGridBundle\Tests\Source\ORMSourceTest
@@ -30,7 +30,7 @@ class ORMSource implements SourceInterface
     ) {
     }
 
-    public function fetch(Grid $grid): QueryBuilder
+    public function fetch(GridInterface $grid): QueryBuilder
     {
         $em = $this->registry->getManagerForClass($grid->entityFQCN());
 

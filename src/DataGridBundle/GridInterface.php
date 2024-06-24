@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle;
 
+use SolidInvoice\DataGridBundle\Filter\ColumnFilterInterface;
 use SolidInvoice\DataGridBundle\GridBuilder\Action\Action;
 use SolidInvoice\DataGridBundle\GridBuilder\Batch\BatchAction;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
@@ -38,4 +39,9 @@ interface GridInterface
      * @return list<BatchAction>
      */
     public function batchActions(): array;
+
+    /**
+     * @return iterable<string, ColumnFilterInterface|null>
+     */
+    public function filters(): iterable;
 }

@@ -17,5 +17,8 @@ use Doctrine\ORM\QueryBuilder;
 
 interface FilterInterface
 {
+    /**
+     * @param array<string, mixed> $params
+     */
     public function filter(QueryBuilder $queryBuilder, array $params): void;
 }

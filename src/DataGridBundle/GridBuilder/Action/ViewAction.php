@@ -11,8 +11,11 @@
 
 namespace SolidInvoice\DataGridBundle\GridBuilder\Action;
 
-class ViewAction extends Action
+final class ViewAction extends Action
 {
+    /**
+     * @param array<string, mixed> $parameters
+     */
     public static function new(string $route, array $parameters = []): static
     {
         return (new self())

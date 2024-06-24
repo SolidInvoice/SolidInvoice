@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace SolidInvoice\DataGridBundle\Source;
 
 use Doctrine\ORM\QueryBuilder;
-use SolidInvoice\DataGridBundle\Grid;
+use SolidInvoice\DataGridBundle\GridInterface;
 
 interface SourceInterface
 {
-    public function fetch(Grid $grid): QueryBuilder;
+    public function fetch(GridInterface $grid): QueryBuilder;
 }

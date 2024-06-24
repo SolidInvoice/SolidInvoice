@@ -16,6 +16,7 @@ use SolidInvoice\CoreBundle\Test\LiveComponentTest;
 use SolidInvoice\DataGridBundle\Twig\Components\DataGrid;
 use Symfony\UX\LiveComponent\Test\TestLiveComponent;
 use function Symfony\Component\String\u;
+use function Zenstruck\Foundry\faker;
 
 final class DataGridTest extends LiveComponentTest
 {
@@ -50,7 +51,7 @@ final class DataGridTest extends LiveComponentTest
 
     public function testComponentWithPaging(): void
     {
-        ClientFactory::faker()->seed(12345);
+        faker()->seed(12345);
         ClientFactory::createMany(30, ['company' => $this->company, 'archived' => null, 'status' => 'active']);
 
         $content = $this->component->refresh()->render();
@@ -65,7 +66,7 @@ final class DataGridTest extends LiveComponentTest
 
     public function testComponentWithSort(): void
     {
-        ClientFactory::faker()->seed(12345);
+        faker()->seed(12345);
         ClientFactory::createMany(30, ['company' => $this->company, 'archived' => null, 'status' => 'active']);
 
         $content = $this->component->refresh()->render();
@@ -76,10 +77,5 @@ final class DataGridTest extends LiveComponentTest
 
         $nextPage = $this->component->set('sort', 'created,desc')->render();
         $this->assertMatchesHtmlSnapshot($this->replaceUuid($nextPage->toString()));
-    }
-
-    private function replaceUuid(string $content): string
-    {
-        return u($content)->replaceMatches('/[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}/Dms', '91656880-2d93-11ef-933f-5a2cf21a5680')->toString();
     }
 }
