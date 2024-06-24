@@ -14,6 +14,9 @@ namespace SolidInvoice\DataGridBundle\GridBuilder\Column;
 use SolidInvoice\DataGridBundle\Filter\ColumnFilterInterface;
 use function Symfony\Component\String\u;
 
+/**
+ * @phpstan-consistent-constructor
+ */
 abstract class Column
 {
     private ?string $label = null;
@@ -22,7 +25,7 @@ abstract class Column
 
     private ?ColumnFilterInterface $filter = null;
 
-    public function __construct(
+    final public function __construct(
         protected string $field
     ) {
     }

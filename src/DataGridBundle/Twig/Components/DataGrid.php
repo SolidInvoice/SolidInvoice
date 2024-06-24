@@ -24,9 +24,9 @@ use SolidInvoice\DataGridBundle\Exception\InvalidGridException;
 use SolidInvoice\DataGridBundle\Filter\ChainFilter;
 use SolidInvoice\DataGridBundle\Filter\SearchFilter;
 use SolidInvoice\DataGridBundle\Filter\SortFilter;
-use SolidInvoice\DataGridBundle\Grid;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
 use SolidInvoice\DataGridBundle\GridBuilder\Formatter\ColumnFormatter;
+use SolidInvoice\DataGridBundle\GridInterface;
 use SolidInvoice\DataGridBundle\Source\SourceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\TaggedLocator;
@@ -41,11 +41,13 @@ use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
-use Twig\Environment;
 use function array_key_exists;
 use function array_map;
 use function explode;
 
+/**
+ * @template T of object
+ */
 #[AsLiveComponent]
 class DataGrid extends AbstractController
 {
@@ -53,8 +55,11 @@ class DataGrid extends AbstractController
     use ComponentToolsTrait;
     use ComponentWithFormTrait;
 
+    /**
+     * @var class-string<T>
+     */
     #[LiveProp(writable: true, url: true)]
-    public string $name = '';
+    public string $name;
 
     #[LiveProp(writable: true, url: true)]
     public int $page = 1;
@@ -68,25 +73,35 @@ class DataGrid extends AbstractController
     #[LiveProp(writable: true, url: true)]
     public string $search = '';
 
+    /**
+     * @var list<string>
+     */
     #[LiveProp(writable: true, url: false)]
     public array $selectedItems = [];
 
+    /**
+     * @var array<string, mixed>
+     */
     #[LiveProp(writable: true, url: true)]
     public array $filters = [];
 
+    /**
+     * @param ServiceLocator<GridInterface> $serviceLocator
+     */
     public function __construct(
         private readonly ManagerRegistry $registry,
         private readonly PropertyAccessorInterface $propertyAccessor,
         private readonly ColumnFormatter $columnFormatter,
         private readonly SourceInterface $source,
-        private readonly Environment $twig,
         #[TaggedLocator(AsDataGrid::DI_TAG, 'name')]
         private readonly ServiceLocator $serviceLocator,
     ) {
     }
 
     /**
+     * @return Pagerfanta<T>
      * @throws Exception
+     * @throws ContainerExceptionInterface
      */
     #[ExposeInTemplate]
     public function getPaginator(): Pagerfanta
@@ -149,7 +164,7 @@ class DataGrid extends AbstractController
      * @throws InvalidGridException
      */
     #[ExposeInTemplate]
-    public function getGrid(): Grid
+    public function getGrid(): GridInterface
     {
         try {
             return $this->serviceLocator->get($this->name);
@@ -225,6 +240,10 @@ class DataGrid extends AbstractController
         return $form->getForm();
     }
 
+    /**
+     * @param array<string, mixed> $values
+     * @return array<string, mixed>
+     */
     private function clearNestedValues(array $values): array
     {
         foreach ($values as $key => $value) {

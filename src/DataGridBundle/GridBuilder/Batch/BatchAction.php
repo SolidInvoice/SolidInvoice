@@ -21,6 +21,9 @@ class BatchAction
 
     protected string $route = '';
 
+    /**
+     * @var array<string, mixed>
+     */
     protected array $routeParameters = [];
 
     protected string $label = '';
@@ -28,6 +31,10 @@ class BatchAction
     protected string $icon = '';
 
     protected string $color = '';
+
+    final public function __construct()
+    {
+    }
 
     public static function new(string $label): static
     {
@@ -49,6 +56,9 @@ class BatchAction
         return $this;
     }
 
+    /**
+     * @param array<string, mixed> $parameters
+     */
     public function route(string $route, array $parameters = []): static
     {
         $this->route = $route;
@@ -90,6 +100,9 @@ class BatchAction
         return $this->route;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getRouteParameters(): array
     {
         return $this->routeParameters;

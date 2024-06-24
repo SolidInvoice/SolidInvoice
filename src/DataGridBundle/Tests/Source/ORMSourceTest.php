@@ -13,55 +13,53 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\Tests\Source;
 
-use Doctrine\ORM\EntityManager;
+use AssertionError;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery as M;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\DataGridBundle\GridInterface;
 use SolidInvoice\DataGridBundle\Source\ORMSource;
 
-class ORMSourceTest extends TestCase
+/**
+ * @covers \SolidInvoice\DataGridBundle\Source\ORMSource
+ */
+final class ORMSourceTest extends TestCase
 {
-    use MockeryPHPUnitIntegration;
+    private ORMSource $source;
 
-    public function testFetch(): void
+    private ManagerRegistry&MockObject $registry;
+
+    private GridInterface&MockObject $grid;
+
+    protected function setUp(): void
     {
-        $qb = M::mock(QueryBuilder::class);
-        $repository = M::mock(EntityManager::class);
-        $registry = M::mock(ManagerRegistry::class);
-
-        $registry->shouldReceive('getRepository')
-            ->with('a')
-            ->andReturn($repository);
-
-        $repository->shouldReceive('b')
-            ->andReturn($qb);
-
-        $source = new ORMSource($registry, 'a', 'b');
-
-        $data = $source->fetch();
-
-        self::assertSame($qb, $data);
+        $this->registry = $this->createMock(ManagerRegistry::class);
+        $this->grid = $this->createMock(GridInterface::class);
+        $this->source = new ORMSource($this->registry);
     }
 
-    public function testFetchException(): void
+    public function testFetchReturnsQueryBuilder(): void
     {
-        $this->expectException('Exception');
-        $this->expectExceptionMessage('Grid source should return a query builder');
+        $em = $this->createMock(EntityManagerInterface::class);
+        $repository = $this->createMock(EntityRepository::class);
+        $queryBuilder = $this->createMock(QueryBuilder::class);
 
-        $repository = M::mock(EntityManager::class);
-        $registry = M::mock(ManagerRegistry::class);
+        $this->registry->method('getManagerForClass')->willReturn($em);
+        $em->method('getRepository')->willReturn($repository);
+        $repository->method('createQueryBuilder')->willReturn($queryBuilder);
 
-        $registry->shouldReceive('getRepository')
-            ->with('a')
-            ->andReturn($repository);
+        $this->assertSame($queryBuilder, $this->source->fetch($this->grid));
+    }
 
-        $repository->shouldReceive('b')
-            ->andReturn([]);
+    public function testFetchThrowsExceptionWhenManagerIsNotEntityManager(): void
+    {
+        $this->registry->method('getManagerForClass')->willReturn(null);
 
-        $source = new ORMSource($registry, 'a', 'b');
+        $this->expectException(AssertionError::class);
 
-        $data = $source->fetch();
+        $this->source->fetch($this->grid);
     }
 }

@@ -11,12 +11,12 @@
 
 namespace SolidInvoice\DataGridBundle\Filter;
 
-use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormTypeInterface;
 
 interface ColumnFilterInterface extends FilterInterface
 {
     /**
-     * @return class-string<FormInterface>
+     * @return class-string<FormTypeInterface>
      */
     public function form(): string;
 }

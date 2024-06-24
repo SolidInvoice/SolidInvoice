@@ -12,37 +12,47 @@
 namespace SolidInvoice\DataGridBundle\GridBuilder\Formatter;
 
 use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\CurrencyColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\DateTimeColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\UrlColumn;
+use Symfony\Component\DependencyInjection\ServiceLocator;
+use Symfony\Contracts\Service\ServiceProviderInterface;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
+use Twig\Error\LoaderError;
+use Twig\Error\SyntaxError;
 
-class ColumnFormatter implements ServiceSubscriberInterface, FormatterInterface
+final class ColumnFormatter implements ServiceSubscriberInterface, FormatterInterface
 {
     /**
-     * @param ContainerInterface<class-string<Column>, FormatterInterface> $locator
+     * @param ServiceLocator<FormatterInterface> $locator
      */
     public function __construct(
-        private readonly ContainerInterface $locator
+        private readonly ServiceProviderInterface $locator
     ) {
     }
 
     /**
-     * @throws NotFoundExceptionInterface|ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws SyntaxError
+     * @throws ContainerExceptionInterface
+     * @throws LoaderError
      */
     public function format(Column $column, mixed $value): string
     {
         if (! $this->locator->has($column::class)) {
-            return $this->locator->get(StringColumn::class)?->format($column, $value);
+            // @phpstan-ignore-next-line
+            return $this->locator->get(StringColumn::class)->format($column, $value);
         }
 
-        return $this->locator->get($column::class)?->format($column, $value);
+        return $this->locator->get($column::class)->format($column, $value);
     }
 
+    /**
+     * @return array<class-string, class-string>
+     */
     public static function getSubscribedServices(): array
     {
         return [

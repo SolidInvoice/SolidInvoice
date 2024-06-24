@@ -12,6 +12,7 @@
 namespace SolidInvoice\DataGridBundle\Tests\GridBuilder\Filter;
 
 use Doctrine\ORM\QueryBuilder;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DataGridBundle\Form\Type\DateRangeFormType;
 use SolidInvoice\DataGridBundle\GridBuilder\Filter\DateRangeFilter;
@@ -20,7 +21,7 @@ final class DateRangeFilterTest extends TestCase
 {
     private DateRangeFilter $filter;
 
-    private QueryBuilder $queryBuilder;
+    private QueryBuilder|MockObject $queryBuilder;
 
     protected function setUp(): void
     {

@@ -15,15 +15,25 @@ class Action
 {
     private string $route = '';
 
+    /**
+     * @var array<string, mixed>
+     */
     private array $parameters = [];
 
     private string $icon = '';
 
     private string $label = '';
 
+    final public function __construct()
+    {
+    }
+
+    /**
+     * @param array<string, mixed> $parameters
+     */
     public static function new(string $route, array $parameters = []): static
     {
-        return new self();
+        return new static();
     }
 
     public function icon(string $icon): static
@@ -32,6 +42,9 @@ class Action
         return $this;
     }
 
+    /**
+     * @param array<string, mixed> $parameters
+     */
     public function route(string $route, array $parameters = []): static
     {
         $this->route = $route;
@@ -52,6 +65,9 @@ class Action
         return $this->route;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getParameters(): array
     {
         return $this->parameters;

@@ -41,7 +41,7 @@ final class StringFormatter implements FormatterInterface
         };
 
         if ($column instanceof StringColumn) {
-            $formatter = $column->getCallback() ?? $formatter;
+            $formatter = $column->getCallback();
             if (null !== ($function = $column->getTwigFunction())) {
                 return $this->twig->createTemplate(sprintf('{{ %s(value) }}', $function))->render(['value' => $value]);
             }
