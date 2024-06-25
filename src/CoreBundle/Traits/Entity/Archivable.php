@@ -24,7 +24,7 @@ trait Archivable
 
     public function isArchived(): bool
     {
-        return $this->archived;
+        return $this->archived ?? false;
     }
 
     /**

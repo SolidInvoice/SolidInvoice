@@ -64,13 +64,6 @@ final class StringColumn extends Column
         return $this->twigFunction;
     }
 
-    public function format(Closure $callback): self
-    {
-        $this->callback = $callback;
-
-        return $this;
-    }
-
     public function getCallback(): Closure
     {
         return $this->callback ?? static fn (mixed $value = null): mixed => $value;

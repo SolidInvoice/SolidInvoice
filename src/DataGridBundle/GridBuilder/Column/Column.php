@@ -11,6 +11,7 @@
 
 namespace SolidInvoice\DataGridBundle\GridBuilder\Column;
 
+use Closure;
 use SolidInvoice\DataGridBundle\Filter\ColumnFilterInterface;
 use function Symfony\Component\String\u;
 
@@ -22,6 +23,8 @@ abstract class Column
     private ?string $label = null;
 
     private bool $sortable = true;
+
+    private ?Closure $format = null;
 
     private ?ColumnFilterInterface $filter = null;
 
@@ -54,6 +57,12 @@ abstract class Column
         return $this;
     }
 
+    public function formatValue(Closure $format): static
+    {
+        $this->format = $format;
+        return $this;
+    }
+
     /* ============================ GETTERS ============================ */
 
     public function getField(): string
@@ -74,5 +83,10 @@ abstract class Column
     public function getFilter(): ?ColumnFilterInterface
     {
         return $this->filter;
+    }
+
+    public function getFormatValue(): Closure
+    {
+        return $this->format ?? static fn (mixed $value): mixed => $value;
     }
 }

@@ -11,31 +11,25 @@
 
 namespace SolidInvoice\DataGridBundle\GridBuilder\Formatter;
 
+use Money\Currency;
+use Money\Money;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
 use SolidInvoice\SettingsBundle\SystemConfig;
-use Symfony\Component\Intl\Currencies;
-use function is_string;
 
-final class CurrencyFormatter implements FormatterInterface
+final class MoneyFormatter implements FormatterInterface
 {
-    /**
-     * @var string[]
-     */
-    private array $currencyList;
-
     public function __construct(
         private readonly SystemConfig $config,
-        string $locale
+        private readonly \SolidInvoice\MoneyBundle\Formatter\MoneyFormatter $moneyFormatter
     ) {
-        $this->currencyList = Currencies::getNames($locale);
     }
 
     public function format(Column $column, mixed $value): string
     {
-        if (! is_string($value)) {
-            return $this->currencyList[$this->config->getCurrency()->getCode()];
+        if (! $value instanceof Money) {
+            $value = new Money($value, new Currency($this->config->getCurrency()));
         }
 
-        return $this->currencyList[$value] ?? $this->currencyList[$this->config->getCurrency()->getCode()] ?? '';
+        return $this->moneyFormatter->format($value);
     }
 }

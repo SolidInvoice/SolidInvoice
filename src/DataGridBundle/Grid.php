@@ -13,18 +13,39 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle;
 
+use ReflectionClass;
+use ReflectionException;
+use ReflectionNamedType;
 use SolidInvoice\DataGridBundle\Filter\ColumnFilterInterface;
 use SolidInvoice\DataGridBundle\GridBuilder\Action\Action;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
+use SolidInvoice\DataGridBundle\GridBuilder\Column\DateTimeColumn;
+use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
 
 abstract class Grid implements GridInterface
 {
     /**
      * @return list<Column>
+     * @throws ReflectionException
      */
     public function columns(): array
     {
-        return [];
+        $columns = [];
+
+        foreach ((new ReflectionClass($this->entityFQCN()))->getProperties() as $property) {
+            $type = $property->hasType() ? $property->getType() : null;
+
+            if ($type instanceof ReflectionNamedType) {
+                $columns[] = match ($type->getName()) {
+                    'DateTimeInterface', 'DateTime', 'DateTimeImmutable' => DateTimeColumn::new($property->getName()),
+                    default => StringColumn::new($property->getName()),
+                };
+            } else {
+                $columns[] = StringColumn::new($property->getName());
+            }
+        }
+
+        return $columns;
     }
 
     /**

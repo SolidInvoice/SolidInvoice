@@ -23,7 +23,7 @@ final class DateTimeColumnTest extends TestCase
     {
         $column = DateTimeColumn::new('date');
 
-        self::assertSame('Y-m-d H:i:s', $column->format('Y-m-d H:i:s')->getFormat());
-        self::assertSame('d F Y H:i:s', $column->format('d F Y H:i:s')->getFormat());
+        self::assertSame('Y-m-d H:i:s', $column->formatValue('Y-m-d H:i:s')->getFormat());
+        self::assertSame('d F Y H:i:s', $column->formatValue('d F Y H:i:s')->getFormat());
     }
 }

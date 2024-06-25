@@ -175,7 +175,7 @@ class DataGrid extends AbstractController
 
     public function renderField(Column $column, object $entity): string
     {
-        $value = $this->propertyAccessor->getValue($entity, $column->getField());
+        $value = $column->getFormatValue()($this->propertyAccessor->getValue($entity, $column->getField()), $entity);
 
         return $this->columnFormatter->format($column, $value);
     }

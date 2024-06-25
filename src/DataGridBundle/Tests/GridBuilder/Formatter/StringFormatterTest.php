@@ -44,7 +44,7 @@ final class StringFormatterTest extends TestCase
 
     public function testFormatReturnsStringForStringColumnWithoutTwigFunction(): void
     {
-        $column = StringColumn::new('column')->format(fn ($value) => strtoupper($value));
+        $column = StringColumn::new('column')->formatValue(fn ($value) => strtoupper($value));
 
         $this->assertSame('VALUE', $this->formatter->format($column, 'value'));
     }

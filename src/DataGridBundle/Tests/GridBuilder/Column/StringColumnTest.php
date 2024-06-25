@@ -50,7 +50,7 @@ final class StringColumnTest extends TestCase
     public function testFormatSetsAndGetsCorrectly(): void
     {
         $callback = static fn ($value) => strtoupper($value);
-        $this->column->format($callback);
+        $this->column->formatValue($callback);
         $this->assertSame($callback, $this->column->getCallback());
     }
 
