@@ -25,7 +25,7 @@
         "ext-pdo": "*",
         "ext-soap": "*",
         "ext-xsl": "*",
-        "api-platform/core": "^2.6",
+        "api-platform/core": "^3.3",
         "async-aws/ses": "^1.3",
         "brick/math": "^0.12.0",
         "composer/package-versions-deprecated": "^1.8",
