@@ -19,7 +19,7 @@
             {% if recurring %}
                 {{ render_multiple_grid('recurring_invoice_grid', 'archive_recurring_invoice_grid') }}
             {% else %}
-                {{ render_multiple_grid('active_invoice_grid', 'archive_invoice_grid') }}
+                <twig:DataGrid name="invoice_grid" />
 
                 <h5>{{ "invoice.list.status_legend"|trans }}</h5>
 

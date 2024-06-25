@@ -20,6 +20,10 @@ class DateTimeFormatter implements FormatterInterface
 {
     public function format(Column $column, mixed $value): string
     {
+        if (null === $value) {
+            return '';
+        }
+
         assert($column instanceof DateTimeColumn);
 
         if (! $value instanceof DateTimeInterface) {
