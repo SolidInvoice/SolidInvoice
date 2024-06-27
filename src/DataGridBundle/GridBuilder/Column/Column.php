@@ -24,6 +24,8 @@ abstract class Column
 
     private bool $sortable = true;
 
+    private ?string $sortableField = null;
+
     private ?Closure $format = null;
 
     private ?ColumnFilterInterface $filter = null;
@@ -63,6 +65,13 @@ abstract class Column
         return $this;
     }
 
+    public function sortableField(string $string): static
+    {
+        $this->sortableField = $string;
+
+        return $this;
+    }
+
     /* ============================ GETTERS ============================ */
 
     public function getField(): string
@@ -88,5 +97,10 @@ abstract class Column
     public function getFormatValue(): Closure
     {
         return $this->format ?? static fn (mixed $value): mixed => $value;
+    }
+
+    public function getSortableField(): string
+    {
+        return $this->sortableField ?? $this->getField();
     }
 }

@@ -234,7 +234,7 @@ class DataGrid extends AbstractController
         $form = $this->createFormBuilder($this->filters);
 
         foreach ($this->getGrid()->filters() as $name => $filter) {
-            $form->add($name, $filter->form(), ['label' => false]);
+            $form->add($name, $filter->form(), ['label' => false, 'field_name' => $name]);
         }
 
         return $form->getForm();
