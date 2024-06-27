@@ -14,7 +14,7 @@
 
 {% block content %}
     <div class="card filterable">
-	    {{ render_grid('payment_grid') }}
+	    <twig:DataGrid name="payments_grid" />
     </div>
 
     <h5>{{ "payment.list.status_legend"|trans }}</h5>

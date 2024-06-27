@@ -72,17 +72,19 @@
                 <table class="table table-bordered table-hover table-sm" {{ stimulus_controller('checkbox-select-all') }}>
                     <thead>
                     <tr>
-                        <th width="1%">
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input position-static" {{ stimulus_target('checkbox-select-all', 'checkboxAll')}} />
-                            </div>
-                        </th>
+                        {% if grid.batchActions|length > 0 %}
+                            <th width="1%">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input position-static" {{ stimulus_target('checkbox-select-all', 'checkboxAll')}} />
+                                </div>
+                            </th>
+                        {% endif %}
                         {% for column in grid.columns %}
                             <th>
                                 {% if column.isSortable %}
-                                    <a href="#" class="d-block" data-model="sort" data-value="{{ column.field }},{{ sortDir is same as('asc') ? 'desc' : 'asc'}}" data-action="live#update:prevent">
+                                    <a href="#" class="d-block" data-model="sort" data-value="{{ column.getSortableField }},{{ sortDir is same as('asc') ? 'desc' : 'asc'}}" data-action="live#update:prevent">
                                         {{ column.getLabel }}
-                                        {% if sortField is same as column.field %}
+                                        {% if sortField is same as column.getSortableField %}
                                             <span class="float-right">
                                                 {{ icon(sortDir is same as('asc') ? 'caret-down' : 'caret-up') }}
                                             </span>
@@ -110,11 +112,13 @@
                     {% else %}
                         {% for row in paginator %}
                         <tr>
-                            <td>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input position-static" {{ stimulus_target('checkbox-select-all', 'checkbox')}} value="{{ this.entityId(row) }}" data-model="selectedItems" />
-                                </div>
-                            </td>
+                            {% if grid.batchActions|length > 0 %}
+                                <td>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input position-static" {{ stimulus_target('checkbox-select-all', 'checkbox')}} value="{{ this.entityId(row) }}" data-model="selectedItems" />
+                                    </div>
+                                </td>
+                            {% endif %}
                             {% for column in grid.columns %}
                                 <td>{{ this.renderfield(column, row)|raw }}</td>
                             {% endfor %}

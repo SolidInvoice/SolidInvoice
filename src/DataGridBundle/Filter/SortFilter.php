@@ -16,6 +16,7 @@ namespace SolidInvoice\DataGridBundle\Filter;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\QueryBuilder;
 use SolidInvoice\DataGridBundle\Source\ORMSource;
+use function str_contains;
 
 final class SortFilter implements FilterInterface
 {
@@ -28,7 +29,14 @@ final class SortFilter implements FilterInterface
     public function filter(QueryBuilder $queryBuilder, array $params = []): void
     {
         if ($this->field) {
-            $queryBuilder->orderBy(ORMSource::ALIAS . '.' . $this->field, $this->direction);
+            if (str_contains($this->field, '.')) {
+                $relation = explode('.', $this->field);
+
+                $queryBuilder->join(ORMSource::ALIAS . '.' . $relation[0], $relation[0]);
+                $queryBuilder->orderBy($relation[0] . '.' . $relation[1], $this->direction);
+            } else {
+                $queryBuilder->orderBy(ORMSource::ALIAS . '.' . $this->field, $this->direction);
+            }
         }
     }
 }

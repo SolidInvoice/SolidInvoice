@@ -16,6 +16,7 @@ use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToStringTransformer;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class DateRangeFormType extends AbstractType
 {
@@ -27,6 +28,8 @@ final class DateRangeFormType extends AbstractType
             [
                 'widget' => 'single_text',
                 'html5' => true,
+                'label' => $options['field_name'] ? ucfirst($options['field_name']) . ' Start' : 'Start Date',
+                'required' => false,
             ]
         )
             ->add(
@@ -35,6 +38,8 @@ final class DateRangeFormType extends AbstractType
                 [
                     'widget' => 'single_text',
                     'html5' => true,
+                    'label' => $options['field_name'] ? ucfirst($options['field_name']) . ' End' : 'End Date',
+                    'required' => false,
                 ]
             );
 
@@ -46,5 +51,10 @@ final class DateRangeFormType extends AbstractType
 
         $builder->get('start')->addModelTransformer($transformer);
         $builder->get('end')->addModelTransformer($transformer);
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefault('field_name', null);
     }
 }
