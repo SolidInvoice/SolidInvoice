@@ -39,7 +39,7 @@ final class SortFilterTest extends TestCase
             ->method('orderBy')
             ->with('d.field', Criteria::ASC);
 
-        $this->filter->filter($this->queryBuilder);
+        $this->filter->filter($this->queryBuilder, null);
     }
 
     public function testFilterDoesNotApplyOrderingWhenFieldIsNotSet(): void
@@ -50,7 +50,7 @@ final class SortFilterTest extends TestCase
             ->expects($this->never())
             ->method('orderBy');
 
-        $sortFilter->filter($this->queryBuilder);
+        $sortFilter->filter($this->queryBuilder, null);
     }
 
     public function testFilterAppliesCorrectOrderingWhenDirectionIsDesc(): void
@@ -62,6 +62,6 @@ final class SortFilterTest extends TestCase
             ->method('orderBy')
             ->with('d.field', Criteria::DESC);
 
-        $sortFilter->filter($this->queryBuilder);
+        $sortFilter->filter($this->queryBuilder, null);
     }
 }

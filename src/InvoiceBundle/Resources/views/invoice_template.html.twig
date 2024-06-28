@@ -95,16 +95,18 @@
                                 <dd>{{ invoice.total|formatCurrency(invoice.client.currency) }}</dd>
                             </dl>
                         </div>
-                        <div class="col-sm-2 invoice-col">
-                            <dl class="dl-horizontal">
-                                <dt>{{ "Invoice Date"|trans }}</dt>
-                                <dd>{{ invoice.invoiceDate | date('d F Y') }}</dd>
-                                {% if invoice.due is not empty %}
-                                    <dt>{{ "Due Date"|trans }}</dt>
-                                    <dd>{{ invoice.due | date('d F Y') }}</dd>
-                                {% endif %}
-                            </dl>
-                        </div>
+                        {% if isRecurring is not defined or isRecurring is same as(false) %}
+                            <div class="col-sm-2 invoice-col">
+                                <dl class="dl-horizontal">
+                                    <dt>{{ "Invoice Date"|trans }}</dt>
+                                    <dd>{{ invoice.invoiceDate | date('d F Y') }}</dd>
+                                    {% if invoice.due is not empty %}
+                                        <dt>{{ "Due Date"|trans }}</dt>
+                                        <dd>{{ invoice.due | date('d F Y') }}</dd>
+                                    {% endif %}
+                                </dl>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             {% endblock %}
@@ -184,7 +186,7 @@
                                 </tr>
                             {% endif %}
                             {% set paid = 0 %}
-                            {% if invoice.payments|length > 0 and not invoice.balance.isZero %}
+                            {% if (isRecurring is not defined or isRecurring is same as(false)) and invoice.payments|length > 0 and not invoice.balance.isZero %}
                                 {% for payment in invoice.payments|filter((v) => v.status == 'captured') %}
                                     <tr>
                                         <td colspan="{{ footerSpan }}" class="no-line text-right">

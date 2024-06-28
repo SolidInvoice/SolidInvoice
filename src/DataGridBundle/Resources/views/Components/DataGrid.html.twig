@@ -27,7 +27,7 @@
                                                 </button>
                                             {% endblock %}
                                             {% block modal_body %}
-                                                {{ 'Are you sure you want to perform this action on the selected items?'|trans }}
+                                                {{ action.getConfirmMessage|default('Are you sure you want to perform this action on the selected items?')|trans|nl2br }}
                                             {% endblock %}
                                             {% block modal_footer %}
                                                 <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'Close'|trans }}</button>

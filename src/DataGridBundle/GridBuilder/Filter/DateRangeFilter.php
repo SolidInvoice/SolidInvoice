@@ -17,6 +17,10 @@ use SolidInvoice\DataGridBundle\Filter\ColumnFilterInterface;
 use SolidInvoice\DataGridBundle\Form\Type\DateRangeFormType;
 use SolidInvoice\DataGridBundle\Source\ORMSource;
 use function array_key_exists;
+use function assert;
+use function is_array;
+use function sprintf;
+use function Symfony\Component\String\u;
 
 final class DateRangeFilter implements ColumnFilterInterface
 {
@@ -30,16 +34,23 @@ final class DateRangeFilter implements ColumnFilterInterface
         return DateRangeFormType::class;
     }
 
-    public function filter(QueryBuilder $queryBuilder, array $params = []): void
+    public function formOptions(): array
     {
-        if (array_key_exists('start', $params) && $params['start'] !== '') {
+        return ['field_name' => u($this->field)->snake()->replace('_', ' ')->title()->toString()];
+    }
+
+    public function filter(QueryBuilder $queryBuilder, mixed $value): void
+    {
+        assert(is_array($value));
+
+        if (array_key_exists('start', $value) && $value['start'] !== '') {
             $queryBuilder->andWhere(sprintf('%s.%s > :start', ORMSource::ALIAS, $this->field))
-                ->setParameter('start', Carbon::createFromFormat('Y-m-d', $params['start'])?->startOfDay());
+                ->setParameter('start', Carbon::createFromFormat('Y-m-d', $value['start'])?->startOfDay());
         }
 
-        if (array_key_exists('end', $params) && $params['end'] !== '') {
+        if (array_key_exists('end', $value) && $value['end'] !== '') {
             $queryBuilder->andWhere(sprintf('%s.%s <= :end', ORMSource::ALIAS, $this->field))
-                ->setParameter('end', Carbon::createFromFormat('Y-m-d', $params['end'])?->endOfDay());
+                ->setParameter('end', Carbon::createFromFormat('Y-m-d', $value['end'])?->endOfDay());
         }
     }
 }

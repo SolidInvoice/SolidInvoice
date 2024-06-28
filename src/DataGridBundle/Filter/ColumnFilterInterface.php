@@ -19,4 +19,9 @@ interface ColumnFilterInterface extends FilterInterface
      * @return class-string<FormTypeInterface>
      */
     public function form(): string;
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function formOptions(): array;
 }

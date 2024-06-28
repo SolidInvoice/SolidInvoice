@@ -44,4 +44,20 @@ final class Graph
     public const STATUS_DECLINED = 'declined';
 
     public const STATUS_ARCHIVED = 'archived';
+
+    /**
+     * @return array<string, string>
+     */
+    public static function statusArray(): array
+    {
+        return [
+            self::STATUS_NEW => 'New',
+            self::STATUS_DRAFT => 'Draft',
+            self::STATUS_PENDING => 'Pending',
+            self::STATUS_ACCEPTED => 'Accepted',
+            self::STATUS_CANCELLED => 'Cancelled',
+            self::STATUS_DECLINED => 'Declined',
+            self::STATUS_ARCHIVED => 'Archived',
+        ];
+    }
 }

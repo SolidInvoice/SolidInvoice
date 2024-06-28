@@ -30,10 +30,10 @@ final class ChainFilter implements FilterInterface
         $this->filters = $filters;
     }
 
-    public function filter(QueryBuilder $queryBuilder, array $params = []): void
+    public function filter(QueryBuilder $queryBuilder, mixed $value): void
     {
         foreach ($this->filters as $filter) {
-            $filter->filter($queryBuilder, $params);
+            $filter->filter($queryBuilder, $value);
         }
     }
 

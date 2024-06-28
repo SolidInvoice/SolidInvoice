@@ -120,7 +120,7 @@ class DataGrid extends AbstractController
         $filter->addFilter(new SortFilter(...explode(',', $this->sort)));
         $filter->addFilter(new SearchFilter($this->search, array_map(static fn (Column $column) => $column->getField(), $grid->columns())));
 
-        $filter->filter($qb);
+        $filter->filter($qb, null);
 
         if ([] !== $this->filters) {
             foreach ($grid->columns() as $column) {
@@ -229,12 +229,16 @@ class DataGrid extends AbstractController
         $this->resetForm();
     }
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws InvalidGridException
+     */
     protected function instantiateForm(): FormInterface
     {
         $form = $this->createFormBuilder($this->filters);
 
         foreach ($this->getGrid()->filters() as $name => $filter) {
-            $form->add($name, $filter->form(), ['label' => false, 'field_name' => $name]);
+            $form->add($name, $filter->form(), ['label' => false] + $filter->formOptions());
         }
 
         return $form->getForm();

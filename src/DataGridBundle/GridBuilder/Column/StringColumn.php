@@ -63,9 +63,4 @@ final class StringColumn extends Column
     {
         return $this->twigFunction;
     }
-
-    public function getCallback(): Closure
-    {
-        return $this->callback ?? static fn (mixed $value = null): mixed => $value;
-    }
 }

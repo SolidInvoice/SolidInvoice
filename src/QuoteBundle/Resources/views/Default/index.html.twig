@@ -15,7 +15,8 @@
     <div class="row">
         <div class="col-md-9">
             <div class="widget">
-                {{ render_multiple_grid('active_quote_grid', 'archive_quote_grid') }}
+                {#{{ render_multiple_grid('active_quote_grid', 'archive_quote_grid') }}#}
+                <twig:DataGrid name="quote_grid" />
             </div>
 
             <h5>{{ "quote.list.status_legend"|trans }}</h5>

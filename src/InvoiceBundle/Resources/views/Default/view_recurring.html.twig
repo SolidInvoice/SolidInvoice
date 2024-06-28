@@ -11,6 +11,8 @@
 {% set module = 'recurring-invoice-view' %}
 {% set moduleData = {'frequency': invoice.frequency} %}
 
+{% set isRecurring = true %}
+
 {% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
 {% block page_title %}
@@ -47,7 +49,7 @@
     {% embed "@SolidInvoiceInvoice/invoice_template.html.twig" %}
         {% block title %}
             <h2 class="page-header">
-                {{ "invoice.title"|trans({"%id%" : invoice.id}) }}
+                {#{{ "invoice.title"|trans({"%id%" : invoice.id}) }}#}
                 <span class="badge badge-pill bg-success">{{ 'invoice.recurring.view.label'|trans }}</span>
                 {{ invoice_label(invoice.status) }}
             </h2>

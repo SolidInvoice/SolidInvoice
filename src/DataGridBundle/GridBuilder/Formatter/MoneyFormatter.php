@@ -11,7 +11,6 @@
 
 namespace SolidInvoice\DataGridBundle\GridBuilder\Formatter;
 
-use Money\Currency;
 use Money\Money;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
 use SolidInvoice\SettingsBundle\SystemConfig;
@@ -27,7 +26,7 @@ final class MoneyFormatter implements FormatterInterface
     public function format(Column $column, mixed $value): string
     {
         if (! $value instanceof Money) {
-            $value = new Money($value, new Currency($this->config->getCurrency()));
+            $value = new Money($value, $this->config->getCurrency());
         }
 
         return $this->moneyFormatter->format($value);

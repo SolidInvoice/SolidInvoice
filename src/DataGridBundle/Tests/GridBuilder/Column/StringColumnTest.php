@@ -51,11 +51,6 @@ final class StringColumnTest extends TestCase
     {
         $callback = static fn ($value) => strtoupper($value);
         $this->column->formatValue($callback);
-        $this->assertSame($callback, $this->column->getCallback());
-    }
-
-    public function testDefaultCallbackReturnsValueUnchanged(): void
-    {
-        $this->assertSame('value', $this->column->getCallback()('value'));
+        $this->assertSame($callback, $this->column->getFormatValue());
     }
 }

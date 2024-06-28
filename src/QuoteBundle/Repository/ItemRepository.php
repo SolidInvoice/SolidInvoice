@@ -13,19 +13,20 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Repository;
 
-use Brick\Math\BigDecimal;
-use Brick\Math\BigInteger;
 use Brick\Math\Exception\MathException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
+use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\QuoteBundle\Entity\Item;
-use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\TaxBundle\Entity\Tax;
 
 class ItemRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
+    public function __construct(
+        private readonly TotalCalculator $calculator,
+        ManagerRegistry $registry
+    ) {
         parent::__construct($registry, Item::class);
     }
 
@@ -36,33 +37,25 @@ class ItemRepository extends ServiceEntityRepository
      */
     public function removeTax(Tax $tax): void
     {
-        if (Tax::TYPE_EXCLUSIVE === $tax->getType()) {
-            $qb = $this->createQueryBuilder('i');
+        $qb = $this->createQueryBuilder('i');
 
-            $query = $qb->where('i.tax = :tax')
-                ->setParameter('tax', $tax)
-                ->groupBy('i.quote')
-                ->getQuery();
+        $query = $qb
+            ->where('i.tax = :tax')
+            ->setParameter('tax', $tax->getId(), UuidBinaryOrderedTimeType::NAME)
+            ->getQuery();
 
-            /** @var Quote $quote */
-            foreach ($query->execute() as $quote) {
-                $baseTotal = $quote->getBaseTotal();
-                assert($baseTotal instanceof BigInteger || $baseTotal instanceof BigDecimal);
+        $em = $this->getEntityManager();
 
-                $quote->setTotal($baseTotal->plus($quote->getTax()));
-                $quote->setTax(BigInteger::zero());
-                $this->getEntityManager()->persist($quote);
-            }
+        /** @var Item $quoteItem */
+        foreach ($query->toIterable() as $quoteItem) {
+            $quoteItem->setTax(null);
 
-            $this->getEntityManager()->flush();
+            $quoteItem->getQuote()->setTax(0);
+            $this->calculator->calculateTotals($quoteItem->getQuote());
+
+            $em->persist($quoteItem);
         }
 
-        $qb = $this->createQueryBuilder('q')
-            ->update()
-            ->set('q.tax', 'NULL')
-            ->where('q.tax = :tax')
-            ->setParameter('tax', $tax);
-
-        $qb->getQuery()->execute();
+        $em->flush();
     }
 }
