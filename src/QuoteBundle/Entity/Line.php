@@ -202,7 +202,7 @@ class Line implements LineInterface, Stringable
         return $this;
     }
 
-    public function getQuote(): ?Quote
+    public function getQuote(): Quote
     {
         return $this->quote;
     }

@@ -17,6 +17,8 @@ class BatchAction
 {
     protected bool $confirm = true;
 
+    protected string $confirmMessage = '';
+
     protected ?Closure $action = null;
 
     protected string $route = '';
@@ -45,6 +47,13 @@ class BatchAction
     public function confirm(bool $confirm = true): static
     {
         $this->confirm = $confirm;
+
+        return $this;
+    }
+
+    public function confirmMessage(string $message): static
+    {
+        $this->confirmMessage = $message;
 
         return $this;
     }
@@ -126,5 +135,10 @@ class BatchAction
     public function shouldConfirm(): bool
     {
         return $this->confirm;
+    }
+
+    public function getConfirmMessage(): string
+    {
+        return $this->confirmMessage;
     }
 }

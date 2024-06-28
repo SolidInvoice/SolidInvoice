@@ -11,18 +11,21 @@
 
 namespace SolidInvoice\DataGridBundle\Tests\GridBuilder\Formatter;
 
+use Mockery as M;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\CurrencyColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\DateTimeColumn;
+use SolidInvoice\DataGridBundle\GridBuilder\Column\MoneyColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\UrlColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Formatter\ColumnFormatter;
 use SolidInvoice\DataGridBundle\GridBuilder\Formatter\CurrencyFormatter;
 use SolidInvoice\DataGridBundle\GridBuilder\Formatter\DateTimeFormatter;
+use SolidInvoice\DataGridBundle\GridBuilder\Formatter\MoneyFormatter;
 use SolidInvoice\DataGridBundle\GridBuilder\Formatter\StringFormatter;
 use SolidInvoice\DataGridBundle\GridBuilder\Formatter\UrlFormatter;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
@@ -32,6 +35,8 @@ use Twig\Loader\ArrayLoader;
  */
 final class ColumnFormatterTest extends TestCase
 {
+    use M\Adapter\Phpunit\MockeryPHPUnitIntegration;
+
     private ColumnFormatter $formatter;
 
     /**
@@ -48,7 +53,7 @@ final class ColumnFormatterTest extends TestCase
     public function testFormatReturnsCorrectValueForSupportedColumn(): void
     {
         $column = CurrencyColumn::new('currency');
-        $formatter = new CurrencyFormatter('en_US');
+        $formatter = new CurrencyFormatter(M::mock(SystemConfig::class), 'en_US');
 
         $this->locator->method('has')->willReturn(true);
         $this->locator->method('get')->willReturn($formatter);
@@ -58,7 +63,7 @@ final class ColumnFormatterTest extends TestCase
 
     public function testFormatReturnsCorrectValueForUnsupportedColumn(): void
     {
-        $column = $this->createMock(Column::class);
+        $column = StringColumn::new('test');
         $formatter = new StringFormatter(new Environment(new ArrayLoader()));
 
         $this->locator->method('has')->willReturn(false);
@@ -76,6 +81,7 @@ final class ColumnFormatterTest extends TestCase
             DateTimeColumn::class => DateTimeFormatter::class,
             StringColumn::class => StringFormatter::class,
             UrlColumn::class => UrlFormatter::class,
+            MoneyColumn::class => MoneyFormatter::class,
         ], $services);
     }
 }

@@ -12,6 +12,7 @@
 namespace SolidInvoice\InvoiceBundle\DataGrid;
 
 use Brick\Math\BigNumber;
+use Lorisleiva\CronTranslator\CronTranslator;
 use Money\Money;
 use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
 use SolidInvoice\DataGridBundle\Grid;
@@ -22,52 +23,48 @@ use SolidInvoice\DataGridBundle\GridBuilder\Column\MoneyColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Filter\ChoiceFilter;
 use SolidInvoice\DataGridBundle\GridBuilder\Filter\DateRangeFilter;
-use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 
-#[AsDataGrid(name: 'invoice_grid')]
-final class InvoiceGrid extends Grid
+#[AsDataGrid(name: self::GRID_NAME)]
+final class RecurringInvoiceGrid extends Grid
 {
+    final public const GRID_NAME = 'recurring_invoice_grid';
+
     public function entityFQCN(): string
     {
-        return Invoice::class;
+        return RecurringInvoice::class;
     }
 
     public function columns(): array
     {
         return [
-            StringColumn::new('invoiceId')
-                ->label('Invoice #'),
-            DateTimeColumn::new('invoiceDate')
-                ->format('d F Y')
-                ->filter(new DateRangeFilter('invoiceDate')),
             StringColumn::new('client'),
-            MoneyColumn::new('balance')
-                ->formatValue(fn (BigNumber $value, Invoice $invoice) => new Money((string) $value, $invoice->getClient()?->getCurrency())),
-            DateTimeColumn::new('due')
-                ->label('Due Date')
+            StringColumn::new('frequency')
+                ->formatValue(static fn (string $format): string => CronTranslator::translate($format)),
+            DateTimeColumn::new('dateStart')
                 ->format('d F Y')
-                ->filter(new DateRangeFilter('due')),
-            DateTimeColumn::new('paidDate')
+                ->filter(new DateRangeFilter('dateStart')),
+            DateTimeColumn::new('dateEnd')
                 ->format('d F Y')
-                ->filter(new DateRangeFilter('paidDate')),
+                ->filter(new DateRangeFilter('dateEnd')),
             StringColumn::new('status')
                 ->twigFunction('invoice_label')
                 ->filter(ChoiceFilter::new('status', Graph::statusArray())->multiple()),
             MoneyColumn::new('total')
-                ->formatValue(fn (BigNumber $value, Invoice $invoice) => new Money((string) $value, $invoice->getClient()?->getCurrency())),
+                ->formatValue(fn (float|BigNumber $value, RecurringInvoice $invoice) => new Money((string) $value, $invoice->getClient()?->getCurrency())),
             MoneyColumn::new('tax')
-                ->formatValue(fn (BigNumber $value, Invoice $invoice) => new Money((string) $value, $invoice->getClient()?->getCurrency())),
+                ->formatValue(fn (float|BigNumber $value, RecurringInvoice $invoice) => new Money((string) $value, $invoice->getClient()?->getCurrency())),
             MoneyColumn::new('discount.value')
                 ->label('Discount')
-                ->formatValue(fn (float|BigNumber $value, Invoice $invoice) => new Money((string) $value, $invoice->getClient()?->getCurrency())),
+                ->formatValue(fn (float|BigNumber $value, RecurringInvoice $invoice) => new Money((string) $value, $invoice->getClient()?->getCurrency())),
         ];
     }
 
     public function actions(): array
     {
         return [
-            ViewAction::new('_invoices_view', ['id' => 'id']),
+            ViewAction::new('_invoices_view_recurring', ['id' => 'id']),
             EditAction::new('_invoices_edit', ['id' => 'id']),
         ];
     }

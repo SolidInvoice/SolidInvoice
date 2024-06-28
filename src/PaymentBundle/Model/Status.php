@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Model;
 
+// @TODO: Convert to Enum
 class Status
 {
     final public const STATUS_UNKNOWN = 'unknown';
@@ -36,4 +37,24 @@ class Status
     final public const STATUS_REFUNDED = 'refunded';
 
     final public const STATUS_CREDIT = 'credit';
+
+    /**
+     * @return array<string, string>
+     */
+    public static function toArray(): array
+    {
+        return [
+            self::STATUS_UNKNOWN => 'Unknown',
+            self::STATUS_FAILED => 'Failed',
+            self::STATUS_SUSPENDED => 'Suspended',
+            self::STATUS_EXPIRED => 'Expired',
+            self::STATUS_PENDING => 'Pending',
+            self::STATUS_CANCELLED => 'Cancelled',
+            self::STATUS_NEW => 'New',
+            self::STATUS_CAPTURED => 'Captured',
+            self::STATUS_AUTHORIZED => 'Authorized',
+            self::STATUS_REFUNDED => 'Refunded',
+            self::STATUS_CREDIT => 'Credit',
+        ];
+    }
 }

@@ -41,7 +41,7 @@ final class ColumnFormatter implements ServiceSubscriberInterface, FormatterInte
     {
         if (! $this->locator->has($column::class)) {
             // @phpstan-ignore-next-line
-            return $this->locator->get(StringColumn::class)->formatValue($column, $value);
+            return $this->locator->get(StringColumn::class)->format($column, $value);
         }
 
         return $this->locator->get($column::class)->format($column, $value);

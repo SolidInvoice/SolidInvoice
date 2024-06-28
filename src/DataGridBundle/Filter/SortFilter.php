@@ -26,7 +26,7 @@ final class SortFilter implements FilterInterface
     ) {
     }
 
-    public function filter(QueryBuilder $queryBuilder, array $params = []): void
+    public function filter(QueryBuilder $queryBuilder, mixed $value): void
     {
         if ($this->field) {
             if (str_contains($this->field, '.')) {

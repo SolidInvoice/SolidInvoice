@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace SolidInvoice\ClientBundle\Grid;
+namespace SolidInvoice\ClientBundle\DataGrid;
 
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;

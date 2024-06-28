@@ -12,6 +12,7 @@
 namespace SolidInvoice\DataGridBundle\GridBuilder\Formatter;
 
 use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
+use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
 use Stringable;
 use Twig\Environment;
 use Twig\Error\LoaderError;
@@ -36,9 +37,7 @@ final class StringFormatter implements FormatterInterface
      */
     public function format(Column $column, mixed $value): string
     {
-        $formatter = $column->getFormatValue();
-
-        $value = $formatter($value);
+        assert($column instanceof StringColumn);
 
         if (null !== ($function = $column->getTwigFunction())) {
             return $this->twig->createTemplate(sprintf('{{ %s(value) }}', $function))->render(['value' => $value]);

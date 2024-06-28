@@ -17,7 +17,7 @@
         <div class="{{ recurring ? 'col-12' : 'col-md-9' }}">
             <div class="widget">
             {% if recurring %}
-                {{ render_multiple_grid('recurring_invoice_grid', 'archive_recurring_invoice_grid') }}
+                <twig:DataGrid name="recurring_invoice_grid" />
             {% else %}
                 <twig:DataGrid name="invoice_grid" />
 

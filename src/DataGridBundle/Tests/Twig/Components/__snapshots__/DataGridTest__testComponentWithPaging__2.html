@@ -12,53 +12,53 @@
                                                                                     <i class="fa fa-trash"></i>
                                                                                 Delete
                                     </button>
-                                    <div class="modal fade" tabindex="-1" aria-hidden="true" id="modal_delete" data-controller="bootstrap-modal">
+                                                                            <div class="modal fade" tabindex="-1" aria-hidden="true" id="modal_delete" data-controller="bootstrap-modal">
     <div class="modal-dialog">
         <div class="modal-content">
                                                 <div class="modal-header">
-                                                                    <h5>Confirm</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                                            </div>
+                                                                        <h5>Confirm</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                                </div>
                 
                 <div class="modal-body">
-                                                                Are you sure you want to perform this action on the selected items?
-                                                        </div>
+                                                                    Are you sure you want to perform this action on the selected items?
+                                                            </div>
 
                                     <div class="modal-footer justify-content-between">
-                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary" data-action="live#action" data-live-action-name-param="Delete" data-live-action-param="debounce(300)|executeBatchAction">Confirm</button>
-                                                            </div>
+                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-primary" data-action="live#action" data-live-action-name-param="Delete" data-live-action-param="debounce(300)|executeBatchAction">Confirm</button>
+                                                                </div>
                                     </div>
     </div>
 </div>
-                                                                                                        <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal_archive">
+                                                                                                                                            <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal_archive">
                                                                                     <i class="fa fa-trash"></i>
                                                                                 Archive
                                     </button>
-                                    <div class="modal fade" tabindex="-1" aria-hidden="true" id="modal_archive" data-controller="bootstrap-modal">
+                                                                            <div class="modal fade" tabindex="-1" aria-hidden="true" id="modal_archive" data-controller="bootstrap-modal">
     <div class="modal-dialog">
         <div class="modal-content">
                                                 <div class="modal-header">
-                                                                    <h5>Confirm</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                                            </div>
+                                                                        <h5>Confirm</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                                </div>
                 
                 <div class="modal-body">
-                                                                Are you sure you want to perform this action on the selected items?
-                                                        </div>
+                                                                    Are you sure you want to perform this action on the selected items?
+                                                            </div>
 
                                     <div class="modal-footer justify-content-between">
-                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary" data-action="live#action" data-live-action-name-param="Archive" data-live-action-param="debounce(300)|executeBatchAction">Confirm</button>
-                                                            </div>
+                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-primary" data-action="live#action" data-live-action-name-param="Archive" data-live-action-param="debounce(300)|executeBatchAction">Confirm</button>
+                                                                </div>
                                     </div>
     </div>
 </div>
-                                                            </div>
+                                                                                                </div>
                         </div>
                                     </div>
                 <div class="col-3 float-right d-flex justify-content-between">
@@ -79,11 +79,11 @@
                                     <form name="form" method="post" data-model="on(change)|*"><div id="form" data-model="on(change)|*">
 <fieldset class="form-group">                
     <div id="form_created">
-<div class="form-group">                
-                                <label class="control-label required required" for="form_created_start">Start</label><input type="date" id="form_created_start" name="form[created][start]" data-required="required" class="form-control">
+<div class="form-group">    
+            <label class="control-label" for="form_created_start">Created Start</label><input type="date" id="form_created_start" name="form[created][start]" class="form-control">
 </div>
-<div class="form-group">                
-                                <label class="control-label required required" for="form_created_end">End</label><input type="date" id="form_created_end" name="form[created][end]" data-required="required" class="form-control">
+<div class="form-group">    
+            <label class="control-label" for="form_created_end">Created End</label><input type="date" id="form_created_end" name="form[created][end]" class="form-control">
 </div>
 </div>
 </fieldset>
@@ -102,12 +102,12 @@
                 <table class="table table-bordered table-hover table-sm" data-controller="checkbox-select-all">
                     <thead>
                     <tr>
-                        <th width="1%">
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkboxAll">
-                            </div>
-                        </th>
-                                                    <th>
+                                                    <th width="1%">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkboxAll">
+                                </div>
+                            </th>
+                                                                            <th>
                                                                     <a href="#" class="d-block" data-model="sort" data-value="name,asc" data-action="live#update:prevent">
                                         Name
                                                                             </a>
@@ -139,12 +139,12 @@
                     </thead>
                     <tbody>
                                                                     <tr>
-                            <td>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
-                                </div>
-                            </td>
-                                                            <td>Green, Ruecker and Stoltenberg</td>
+                                                            <td>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
+                                    </div>
+                                </td>
+                                                                                        <td>Green, Ruecker and Stoltenberg</td>
                                                             <td><a href="http://www.langosh.com/animi-exercitationem-consequatur-deleniti-in-dolor-inventore-architecto.html" target="_blank">http://www.langosh.com/animi-exercitationem-consequatur-deleniti-in-dolor-inventore-architecto.html</a></td>
                                                             <td>Omani Rial</td>
                                                             <td><span class="badge badge-pill bg-green">Active</span></td>
@@ -166,12 +166,12 @@
                                                                     </td>
                                                     </tr>
                                             <tr>
-                            <td>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
-                                </div>
-                            </td>
-                                                            <td>Kihn Inc</td>
+                                                            <td>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
+                                    </div>
+                                </td>
+                                                                                        <td>Kihn Inc</td>
                                                             <td><a href="http://parker.info/velit-dolore-facere-repellendus-minus-minima-non-voluptas" target="_blank">http://parker.info/velit-dolore-facere-repellendus-minus-minima-non-voluptas</a></td>
                                                             <td>Namibian Dollar</td>
                                                             <td><span class="badge badge-pill bg-green">Active</span></td>
@@ -193,16 +193,16 @@
                                                                     </td>
                                                     </tr>
                                             <tr>
-                            <td>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
-                                </div>
-                            </td>
-                                                            <td>Abbott-Olson</td>
+                                                            <td>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
+                                    </div>
+                                </td>
+                                                                                        <td>Abbott-Olson</td>
                                                             <td><a href="http://www.hoeger.biz/maiores-est-illum-molestiae-maiores-necessitatibus" target="_blank">http://www.hoeger.biz/maiores-est-illum-molestiae-maiores-necessitatibus</a></td>
                                                             <td>Haitian Gourde</td>
                                                             <td><span class="badge badge-pill bg-green">Active</span></td>
-                                                            <td>23 February 1982</td>
+                                                            <td>19 February 1982</td>
                             
                                                             <td style="white-space: nowrap;">
                                                                             
@@ -220,16 +220,16 @@
                                                                     </td>
                                                     </tr>
                                             <tr>
-                            <td>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
-                                </div>
-                            </td>
-                                                            <td>Effertz-Daniel</td>
+                                                            <td>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
+                                    </div>
+                                </td>
+                                                                                        <td>Effertz-Daniel</td>
                                                             <td><a href="http://www.berge.com/velit-expedita-eaque-tempora-vero-sit" target="_blank">http://www.berge.com/velit-expedita-eaque-tempora-vero-sit</a></td>
                                                             <td>St. Helena Pound</td>
                                                             <td><span class="badge badge-pill bg-green">Active</span></td>
-                                                            <td>24 March 2000</td>
+                                                            <td>20 March 2000</td>
                             
                                                             <td style="white-space: nowrap;">
                                                                             
@@ -247,12 +247,12 @@
                                                                     </td>
                                                     </tr>
                                             <tr>
-                            <td>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
-                                </div>
-                            </td>
-                                                            <td>McLaughlin-Nolan</td>
+                                                            <td>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
+                                    </div>
+                                </td>
+                                                                                        <td>McLaughlin-Nolan</td>
                                                             <td><a href="http://vandervort.biz/dolores-ipsa-nihil-ut-eos-et-totam-qui-facere" target="_blank">http://vandervort.biz/dolores-ipsa-nihil-ut-eos-et-totam-qui-facere</a></td>
                                                             <td>Japanese Yen</td>
                                                             <td><span class="badge badge-pill bg-green">Active</span></td>
@@ -274,16 +274,16 @@
                                                                     </td>
                                                     </tr>
                                             <tr>
-                            <td>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
-                                </div>
-                            </td>
-                                                            <td>Von-Wolf</td>
+                                                            <td>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
+                                    </div>
+                                </td>
+                                                                                        <td>Von-Wolf</td>
                                                             <td><a href="http://stiedemann.com/voluptatum-voluptas-qui-provident" target="_blank">http://stiedemann.com/voluptatum-voluptas-qui-provident</a></td>
                                                             <td>Falkland Islands Pound</td>
                                                             <td><span class="badge badge-pill bg-green">Active</span></td>
-                                                            <td>26 June 1971</td>
+                                                            <td>22 June 1971</td>
                             
                                                             <td style="white-space: nowrap;">
                                                                             
@@ -301,16 +301,16 @@
                                                                     </td>
                                                     </tr>
                                             <tr>
-                            <td>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
-                                </div>
-                            </td>
-                                                            <td>Altenwerth-Dooley</td>
+                                                            <td>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
+                                    </div>
+                                </td>
+                                                                                        <td>Altenwerth-Dooley</td>
                                                             <td><a href="https://www.fahey.com/sit-fugiat-corrupti-omnis-aliquid-debitis" target="_blank">https://www.fahey.com/sit-fugiat-corrupti-omnis-aliquid-debitis</a></td>
                                                             <td>Netherlands Antillean Guilder</td>
                                                             <td><span class="badge badge-pill bg-green">Active</span></td>
-                                                            <td>14 April 2008</td>
+                                                            <td>10 April 2008</td>
                             
                                                             <td style="white-space: nowrap;">
                                                                             
@@ -328,16 +328,16 @@
                                                                     </td>
                                                     </tr>
                                             <tr>
-                            <td>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
-                                </div>
-                            </td>
-                                                            <td>Kerluke-Abernathy</td>
+                                                            <td>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
+                                    </div>
+                                </td>
+                                                                                        <td>Kerluke-Abernathy</td>
                                                             <td><a href="http://towne.net/iure-dolorem-aut-quis-possimus.html" target="_blank">http://towne.net/iure-dolorem-aut-quis-possimus.html</a></td>
                                                             <td>Jordanian Dinar</td>
                                                             <td><span class="badge badge-pill bg-green">Active</span></td>
-                                                            <td>10 October 1996</td>
+                                                            <td>06 October 1996</td>
                             
                                                             <td style="white-space: nowrap;">
                                                                             
@@ -355,12 +355,12 @@
                                                                     </td>
                                                     </tr>
                                             <tr>
-                            <td>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
-                                </div>
-                            </td>
-                                                            <td>Gerlach, Kris and Bradtke</td>
+                                                            <td>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
+                                    </div>
+                                </td>
+                                                                                        <td>Gerlach, Kris and Bradtke</td>
                                                             <td><a href="http://www.auer.com/quidem-qui-perspiciatis-vel-eaque-qui-vel" target="_blank">http://www.auer.com/quidem-qui-perspiciatis-vel-eaque-qui-vel</a></td>
                                                             <td>Serbian Dinar</td>
                                                             <td><span class="badge badge-pill bg-green">Active</span></td>
@@ -382,12 +382,12 @@
                                                                     </td>
                                                     </tr>
                                             <tr>
-                            <td>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
-                                </div>
-                            </td>
-                                                            <td>Sipes Group</td>
+                                                            <td>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="91656880-2d93-11ef-933f-5a2cf21a5680" data-model="selectedItems">
+                                    </div>
+                                </td>
+                                                                                        <td>Sipes Group</td>
                                                             <td><a href="http://www.rempel.com/ducimus-veniam-quo-ducimus-dolores-possimus-a-accusamus" target="_blank">http://www.rempel.com/ducimus-veniam-quo-ducimus-dolores-possimus-a-accusamus</a></td>
                                                             <td>Gibraltar Pound</td>
                                                             <td><span class="badge badge-pill bg-green">Active</span></td>

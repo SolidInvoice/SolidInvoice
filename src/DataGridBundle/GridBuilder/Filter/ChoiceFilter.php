@@ -11,35 +11,80 @@
 
 namespace SolidInvoice\DataGridBundle\GridBuilder\Filter;
 
-use Carbon\Carbon;
 use Doctrine\ORM\QueryBuilder;
 use SolidInvoice\DataGridBundle\Filter\ColumnFilterInterface;
-use SolidInvoice\DataGridBundle\Form\Type\DateRangeFormType;
 use SolidInvoice\DataGridBundle\Source\ORMSource;
-use function array_key_exists;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use function array_flip;
+use function is_string;
 
 final class ChoiceFilter implements ColumnFilterInterface
 {
+    private bool $multiple = false;
+
+    /**
+     * @param array<string, string|int|bool> $choices
+     */
     public function __construct(
         private readonly string $field,
+        private array $choices,
     ) {
+    }
+
+    /**
+     * @param array<string, string|int|bool> $choices
+     */
+    public static function new(string $field, array $choices = []): self
+    {
+        return new self($field, $choices);
+    }
+
+    /**
+     * @param array<string, string|int|bool> $choices
+     */
+    public function choices(array $choices): self
+    {
+        $this->choices = $choices;
+
+        return $this;
+    }
+
+    public function multiple(bool $multiple = true): self
+    {
+        $this->multiple = $multiple;
+
+        return $this;
     }
 
     public function form(): string
     {
-        return DateRangeFormType::class;
+        return ChoiceType::class;
     }
 
-    public function filter(QueryBuilder $queryBuilder, array $params = []): void
+    public function formOptions(): array
     {
-        if (array_key_exists('start', $params) && $params['start'] !== '') {
-            $queryBuilder->andWhere(sprintf('%s.%s > :start', ORMSource::ALIAS, $this->field))
-                ->setParameter('start', Carbon::createFromFormat('Y-m-d', $params['start'])?->startOfDay());
-        }
+        return [
+            'multiple' => $this->multiple,
+            'choices' => array_flip($this->choices),
+        ];
+    }
 
-        if (array_key_exists('end', $params) && $params['end'] !== '') {
-            $queryBuilder->andWhere(sprintf('%s.%s <= :end', ORMSource::ALIAS, $this->field))
-                ->setParameter('end', Carbon::createFromFormat('Y-m-d', $params['end'])?->endOfDay());
+    public function filter(QueryBuilder $queryBuilder, mixed $value): void
+    {
+        if ($this->multiple) {
+            assert(is_array($value));
+
+            if ([] !== $value) {
+                $queryBuilder->andWhere(sprintf('%s.%s IN (:%s)', ORMSource::ALIAS, $this->field, $this->field))
+                    ->setParameter($this->field, $value);
+            }
+        } else {
+            assert(is_string($value));
+
+            if ('' !== $value) {
+                $queryBuilder->andWhere(sprintf('%s.%s = :%s', ORMSource::ALIAS, $this->field, $this->field))
+                    ->setParameter($this->field, $value);
+            }
         }
     }
 }

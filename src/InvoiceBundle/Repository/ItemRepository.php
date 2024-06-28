@@ -13,18 +13,20 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Repository;
 
-use Brick\Math\BigInteger;
 use Brick\Math\Exception\MathException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
+use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\TaxBundle\Entity\Tax;
 
 class ItemRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
+    public function __construct(
+        private readonly TotalCalculator $calculator,
+        ManagerRegistry $registry
+    ) {
         parent::__construct($registry, Line::class);
     }
 
@@ -34,30 +36,22 @@ class ItemRepository extends ServiceEntityRepository
      */
     public function removeTax(Tax $tax): void
     {
-        if (Tax::TYPE_EXCLUSIVE === $tax->getType()) {
-            $qb = $this->createQueryBuilder('i');
+        $qb = $this->createQueryBuilder('i');
 
-            $query = $qb->where('i.tax = :tax')
-                ->setParameter('tax', $tax)
-                ->groupBy('i.invoice')
-                ->getQuery();
+        $query = $qb->where('i.tax = :tax')
+            ->setParameter('tax', $tax->getId(), UuidBinaryOrderedTimeType::NAME)
+            ->getQuery();
 
-            /** @var Invoice $invoice */
-            foreach ($query->execute() as $invoice) {
-                $invoice->setTotal($invoice->getBaseTotal()->toBigDecimal()->plus($invoice->getTax()));
-                $invoice->setTax(BigInteger::zero());
-                $this->getEntityManager()->persist($invoice);
-            }
+        /** @var Item $invoiceItem */
+        foreach ($query->toIterable() as $invoiceItem) {
+            $invoiceItem->setTax(null);
+            $invoiceItem->getInvoice()->setTax(0);
 
-            $this->getEntityManager()->flush();
+            $this->calculator->calculateTotals($invoiceItem->getInvoice());
+
+            $this->getEntityManager()->persist($invoiceItem);
         }
 
-        $qb = $this->createQueryBuilder('i')
-            ->update()
-            ->set('i.tax', 'NULL')
-            ->where('i.tax = :tax')
-            ->setParameter('tax', $tax);
-
-        $qb->getQuery()->execute();
+        $this->getEntityManager()->flush();
     }
 }

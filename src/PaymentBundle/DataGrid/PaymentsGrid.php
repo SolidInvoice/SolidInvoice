@@ -16,8 +16,10 @@ use SolidInvoice\DataGridBundle\Grid;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\DateTimeColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\MoneyColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
+use SolidInvoice\DataGridBundle\GridBuilder\Filter\ChoiceFilter;
 use SolidInvoice\DataGridBundle\GridBuilder\Filter\DateRangeFilter;
 use SolidInvoice\PaymentBundle\Entity\Payment;
+use SolidInvoice\PaymentBundle\Model\Status;
 
 #[AsDataGrid(name: 'payments_grid')]
 final class PaymentsGrid extends Grid
@@ -36,7 +38,8 @@ final class PaymentsGrid extends Grid
                 ->label('Client'),
             StringColumn::new('method'),
             StringColumn::new('status')
-                ->twigFunction('payment_label'),
+                ->twigFunction('payment_label')
+                ->filter(ChoiceFilter::new('status', Status::toArray())->multiple()),
             DateTimeColumn::new('completed')
                 ->label('Completed Date')
                 ->format('d F Y')

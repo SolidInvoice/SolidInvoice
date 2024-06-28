@@ -24,7 +24,7 @@ final class SearchFilter implements FilterInterface
     ) {
     }
 
-    public function filter(QueryBuilder $queryBuilder, array $params = []): void
+    public function filter(QueryBuilder $queryBuilder, mixed $value): void
     {
         if (! $this->query) {
             return;
