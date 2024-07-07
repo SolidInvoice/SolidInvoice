@@ -18,12 +18,12 @@ use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Form\Transformer\UserToContactTransformer;
+use SolidInvoice\CoreBundle\Form\Type\UuidEntityType;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\InvoiceContact;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceContact;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -61,7 +61,7 @@ final class InvoiceUsersSubscriber implements EventSubscriberInterface
         if ($data instanceof Invoice || $data instanceof RecurringInvoice) {
             $clientId = $data->getClient() instanceof Client && $data->getClient()->getId() instanceof UuidInterface ? $data->getClient()->getId()->toString() : null;
         } else {
-            $clientId = $data['client']['autocomplete'] ?? null;
+            $clientId = $data['client'] ?? null;
         }
 
         if (! empty($clientId)) {
@@ -69,7 +69,7 @@ final class InvoiceUsersSubscriber implements EventSubscriberInterface
 
             $users = $this->builder->create(
                 'users',
-                EntityType::class,
+                UuidEntityType::class,
                 [
                     'constraints' => new NotBlank(),
                     'multiple' => true,

@@ -9,10 +9,8 @@
 
 {% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
-{% set module = 'client-create' %}
-
 {% block title %}{{ 'add_client'|trans }}{% endblock %}
 
 {% block content %}
-    {% include "@SolidInvoiceClient/Default/contact_form.html.twig" %}
+    <twig:ClientForm />
 {% endblock %}

@@ -23,10 +23,7 @@ class ContactDetailCollectionType extends AbstractType
         return CollectionType::class;
     }
 
-    /**
-     * @return string
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'contact_details';
     }

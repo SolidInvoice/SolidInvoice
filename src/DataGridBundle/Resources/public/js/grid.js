@@ -21,7 +21,7 @@ import Search from 'SolidInvoiceDataGrid/js/extension/search';
 import Redirect from 'SolidInvoiceDataGrid/js/extension/rowredirect';
 import ActionView from 'SolidInvoiceDataGrid/js/view/action';
 
-import 'SolidInvoiceCore/js/extend/modal';
+//import 'SolidInvoiceCore/js/extend/modal';
 import 'backgrid-select-all';
 import 'SolidInvoiceDataGrid/js/cell/actioncell';
 import 'SolidInvoiceDataGrid/js/cell/clientcell';

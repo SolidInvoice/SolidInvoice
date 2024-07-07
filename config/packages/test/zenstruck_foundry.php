@@ -1,3 +1,7 @@
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -7,9 +11,8 @@
  * with this source code in the file LICENSE.
  */
 
-import Backbone from 'backbone';
-import Address from './address';
+use Symfony\Config\ZenstruckFoundryConfig;
 
-export default Backbone.Collection.extend({
-    model: Address
-});
+return static function (ZenstruckFoundryConfig $config): void {
+    $config->autoRefreshProxies(true);
+};
