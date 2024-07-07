@@ -105,7 +105,7 @@ jobs:
 
       - uses: ramsey/composer-install@v3
 
-      - uses: oven-sh/setup-bun@v1
+      - uses: oven-sh/setup-bun@v2
 
       - run: bun install
 
