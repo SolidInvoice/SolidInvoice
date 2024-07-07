@@ -7,38 +7,16 @@
  # with this source code in the file LICENSE.
  #}
 
-<div class="form-group multiple-form-group input-group">
-    <div class="input-group-btn input-group-select">
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
-            <span class="concept">
-    		{% for type in contactTypes|filter((v) => v.id == form.type.vars.value) %}
-                    {{ type.name|title }}
-                {% else %}
-                    {{ 'client.contact.details.choose'|trans }}
-                {% endfor %}
-            </span> <span class="caret"></span>
-        </button>
-        <div class="dropdown-menu" role="menu">
-	        {% for type in contactTypes %}
-                <a href="#" data-value="{{ type.id }}" data-type="{{ type.name }}" class="dropdown-item">
-                    {{ type.name|title }}
-                </a>
-            {% endfor %}
-        </div>
-        {{ form_row(form.type) }}
+<div class="form-row">
+    <div class="col-md-4">
+        {{ form_widget(form.type) }}
+        {{ form_errors(form.type) }}
     </div>
-    {{ form_widget(form.value) }}
-    <span class="input-group-btn">
-        {% if child is defined and child %}
-            <button type="button" class="btn btn-danger btn-delete">-</button>
-        {% else %}
-            <button type="button" class="btn btn-success btn-add">+</button>
-        {% endif %}
-    </span>
-</div>
-
-<div class="form-group has-error">
-    {{ form_errors(form.type) }}
-    {{ form_errors(form.value) }}
-    {{ form_errors(form) }}
+    <div class="col-md-6">
+        {{ form_widget(form.value) }}
+        {{ form_errors(form.value) }}
+    </div>
+    <div class="col-md-2 d-flex align-items-center">
+        {{ form_widget(form.vars.button_delete, {label: 'Remove', attr: {class: 'btn btn-danger'}}) }}
+    </div>
 </div>

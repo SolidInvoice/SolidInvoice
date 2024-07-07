@@ -52,9 +52,6 @@ class InvoiceType extends AbstractType
             'client',
             ClientAutocompleteType::class,
             [
-                'attr' => [
-                    'class' => 'client-select',
-                ],
                 'placeholder' => 'invoice.client.choose',
             ]
         );

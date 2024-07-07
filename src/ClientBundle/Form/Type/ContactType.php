@@ -13,13 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Form\Type;
 
-use SolidInvoice\ClientBundle\Entity\AdditionalContactDetail;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
 
 /**
  * @see \SolidInvoice\ClientBundle\Tests\Form\Type\ContactTypeTest
@@ -34,42 +32,24 @@ class ContactType extends AbstractType
 
         $builder->add(
             'additionalContactDetails',
-            ContactDetailCollectionType::class,
+            LiveCollectionType::class,
             [
                 'entry_type' => ContactDetailType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
-                'delete_empty' => true,
-                'required' => false,
                 'by_reference' => false,
+                'required' => false,
                 'label' => 'contact_details',
-                'prototype' => true,
-                'prototype_name' => '__contact_details_prototype__',
-                'error_bubbling' => false,
-                'entry_options' => [
-                    'data_class' => AdditionalContactDetail::class,
-                ],
             ]
         );
-    }
-
-    public function buildView(FormView $view, FormInterface $form, array $options): void
-    {
-        $view->vars['allow_delete'] = $options['allow_delete'];
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(
-            [
-                'data_class' => Contact::class,
-                'csrf_protection' => false,
-                'allow_delete' => true,
-            ]
-        );
+        $resolver->setDefault('data_class', Contact::class);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'contact';
     }

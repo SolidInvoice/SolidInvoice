@@ -14,8 +14,10 @@ declare(strict_types=1);
 namespace SolidInvoice\ClientBundle\Tests\Form\Type;
 
 use Faker\Factory;
+use SolidInvoice\ClientBundle\Entity\AdditionalContactDetail;
 use SolidInvoice\ClientBundle\Entity\ContactType;
 use SolidInvoice\ClientBundle\Form\Type\ContactDetailType;
+use SolidInvoice\CoreBundle\Form\Type\UuidEntityType;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use Symfony\Component\Form\FormExtensionInterface;
@@ -37,10 +39,9 @@ class ContactDetailTypeTest extends FormTestCase
             'type' => $type->getId()->toString(),
         ];
 
-        $object = [
-            'value' => $url,
-            'type' => $type,
-        ];
+        $object = (new AdditionalContactDetail())
+            ->setType($type)
+            ->setValue($url);
 
         $this->assertFormData(ContactDetailType::class, $formData, $object);
     }
@@ -50,11 +51,12 @@ class ContactDetailTypeTest extends FormTestCase
      */
     protected function getExtensions(): array
     {
-        $type = new ContactDetailType($this->registry->getRepository(ContactType::class));
-
         return [
             // register the type instances with the PreloadedExtension
-            new PreloadedExtension([$type], []),
+            new PreloadedExtension([
+                new ContactDetailType(),
+                new UuidEntityType($this->registry),
+            ], []),
         ];
     }
 }

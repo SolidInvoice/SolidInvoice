@@ -1,0 +1,56 @@
+<div {{ attributes }}>
+    <div class="card card-primary card-outline">
+        <div class="card-header">
+            <div class="card-tools">
+                <a href="#" rel="tooltip" title="{{ "client.address.edit"|trans }}" class="btn btn-tool" data-model="edit" data-value="true" data-action="live#update:prevent">
+                    {{ icon('pencil') }}
+                </a>
+
+
+                <a href="#" rel="tooltip" title="{{ "client.address.delete"|trans }}" class="btn btn-tool" data-toggle="modal" data-target="#{{ 'delete-' ~ computed.address.id }}">
+                    <i class="fa fa-trash-o"></i>
+                </a>
+
+                {% component BootstrapModal with {id: 'delete-' ~ computed.address.id} %}
+                    {% block modal_header %}
+                        <h5>{{ 'Confirm'|trans }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    {% endblock %}
+                    {% block modal_body %}
+                        {{ 'Are you sure you want to delete the address?'|trans }}
+                    {% endblock %}
+                    {% block modal_footer %}
+                        <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'Close'|trans }}</button>
+                        <button type="button" class="btn btn-primary" data-action="live#action:prevent" data-live-action-param="delete">{{ 'Confirm'|trans }}</button>
+                    {% endblock %}
+                {% endcomponent %}
+            </div>
+        </div>
+        <div class="card-body">
+            {% if this.edit %}
+                {{ form_start(form, {attr: {
+                    'data-action': 'live#action:prevent',
+                    'data-live-action-param': 'save'
+                }}) }}
+
+                {{ form_row(form) }}
+
+                <button type="button" class="btn btn-default" data-model="edit" data-value="false" data-action="live#update:prevent">{{ 'Cancel'|trans }}</button>
+                <button type="submit" class="btn btn-primary">{{ 'Save'|trans }}</button>
+                {{ form_end(form) }}
+            {% else %}
+                {{ icon('map-marker') }}
+                {{ computed.address }}
+
+                <div class="float-right">
+                    <i class="fa fa-map-marker"></i>
+                    <a href="https://maps.google.com/?q={{ computed.address.street1 }}+{{ computed.address.street2 }}+{{ computed.address.city }}+{{ computed.address.state }}+{{ computed.address.zip }}+{{ computed.address.country }}" target="_blank">
+                        {{ 'client.address.view_map'|trans }}
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>

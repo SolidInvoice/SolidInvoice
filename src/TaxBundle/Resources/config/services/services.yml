@@ -6,4 +6,4 @@ services:
         autoconfigure: true
 
     SolidInvoice\TaxBundle\Repository\TaxRepository: ~
-    SolidInvoice\TaxBundle\Form\Type\TaxEntityType: ~
+

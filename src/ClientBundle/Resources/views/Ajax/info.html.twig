@@ -22,22 +22,9 @@
             <small>{{ 'client.contacts.info.list'|trans({'%type%': type}) }}</small>
         {% endif %}
 
-        {% if form is defined %}
+        {% if form.users is defined %}
             {{ form_errors(form.users) }}
             {{ form_row(form.users) }}
-        {% else %}
-            <ul class="nav nav-list">
-                {% for contact in client.contacts %}
-                    <li class="item">
-                        <div class="checkbox">
-                            <label for="client-contact-{{ contact.id }}">
-                                <input type="checkbox" name="{{ type }}[users][]" value="{{ contact.id }}" id="client-contact-{{ contact.id }}" {{ client.contacts|length == 1 ? "checked" : ""}}/>
-                                {{ contact }}
-                            </label>
-                        </div>
-                    </li>
-                {% endfor %}
-            </ul>
         {% endif %}
     </fieldset>
 </div>

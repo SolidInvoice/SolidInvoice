@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\ClientBundle\Tests\Form\Type;
 
 use Faker\Factory;
+use SolidInvoice\ClientBundle\Entity\Address;
 use SolidInvoice\ClientBundle\Form\Type\AddressType;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 
@@ -23,15 +24,29 @@ class AddressTypeTest extends FormTestCase
     {
         $faker = Factory::create();
 
+        $street1 = $faker->buildingNumber . ' ' . $faker->streetName;
+        $street2 = $faker->randomNumber(2) . ' ' . $faker->streetName . ' ' . $faker->streetSuffix;
+        $city = $faker->city;
+        $postcode = $faker->postcode;
+        $countryCode = $faker->countryCode;
+
         $formData = [
-            'street1' => $faker->buildingNumber . ' ' . $faker->streetName,
-            'street2' => $faker->randomNumber(2) . ' ' . $faker->streetName . ' ' . $faker->streetSuffix,
-            'city' => $faker->city,
-            'state' => $faker->city,
-            'zip' => $faker->postcode,
-            'country' => $faker->countryCode,
+            'street1' => $street1,
+            'street2' => $street2,
+            'city' => $city,
+            'state' => $city,
+            'zip' => $postcode,
+            'country' => $countryCode,
         ];
 
-        $this->assertFormData(AddressType::class, $formData, $formData);
+        $entity = (new Address())
+            ->setStreet1($street1)
+            ->setStreet2($street2)
+            ->setCity($city)
+            ->setState($city)
+            ->setZip($postcode)
+            ->setCountry($countryCode);
+
+        $this->assertFormData(AddressType::class, $formData, $entity);
     }
 }

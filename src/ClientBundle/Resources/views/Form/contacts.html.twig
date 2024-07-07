@@ -7,52 +7,27 @@
  # with this source code in the file LICENSE.
  #}
 
-{% import "@SolidInvoiceCore/Form/macro.html.twig" as _macro %}
+{{ form_errors(form) }}
 
-{% set id = random() %}
-
-<div class="widget" data-content="{{ id }}">
-    <br class="clear" />
-
-    <div class="child row">
-        <div class="col-lg-6 col-md-6">
-            {{ form_row(form.firstName) }}
-        </div>
-        <div class="col-lg-6 col-md-6">
-            {{ form_row(form.lastName) }}
-        </div>
+<div class="row">
+    <div class="col-lg-6 col-md-6">
+        {{ form_row(form.firstName) }}
     </div>
-
-    <div class="collection-container">
-        {{ form_row(form.email) }}
+    <div class="col-lg-6 col-md-6">
+        {{ form_row(form.lastName) }}
     </div>
-
-    {% set additional_details = form_row(form.additionalContactDetails.vars.prototype) %}
-
-    <script type="text/template" class="additional-details">
-        {{ additional_details|raw }}
-    </script>
-
-    <h5>
-        {{ 'client.contact.details.extra'|trans }}
-    </h5>
-
-    {% set total = form.additionalContactDetails|length %}
-    <div class="prototype-widget client_contacts" data-counter="{{ total > 0 ? total : 0 }}">
-        {% for widget in form.additionalContactDetails %}
-            {{ form_row(widget, {'child' : true}) }}
-        {% endfor %}
-
-        {{ additional_details|replace({'__contact_details_prototype__' : total})|raw }}
-    </div>
-
-    {{ form_errors(form.additionalContactDetails) }}
-    {{ form_errors(form) }}
-
-    {% if allow_delete %}
-        <a href="#" class="btn btn-danger btn-flat btn-sm btn-remove float-right" data-related="{{ id }}">
-            {{ icon('trash-o') }} {{ 'client.contact.delete'|trans }}
-        </a>
-        <br class="clear" />
-    {% endif %}
 </div>
+
+{{ form_row(form.email) }}
+
+<h5>
+    {{ 'client.contact.details.extra'|trans }}
+</h5>
+
+{% set addBtn = form_widget(form.additionalContactDetails.vars.button_add, {label: '+ ' ~ 'Add Additional Details'|trans, attr: {class: 'btn btn-outline-primary'}}) %}
+
+{{ form_row(form.additionalContactDetails) }}
+
+{{ form_errors(form.additionalContactDetails) }}
+
+{{ addBtn|raw }}
