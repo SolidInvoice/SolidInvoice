@@ -85,7 +85,7 @@ jobs:
           extensions: intl, gd, opcache, mysql, pdo_mysql, soap, zip, :xdebug
           coverage: ${{ steps.coverage_driver.outputs.value }}
 
-      - uses: oven-sh/setup-bun@v1
+      - uses: oven-sh/setup-bun@v2
 
       - uses: ramsey/composer-install@v3
 

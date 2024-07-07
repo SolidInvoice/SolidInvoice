@@ -43,7 +43,7 @@ jobs:
         run: composer install --ansi --no-interaction --no-progress --no-suggest --prefer-dist --no-dev -o -a
         working-directory: solidinvoice
 
-      - uses: oven-sh/setup-bun@v1
+      - uses: oven-sh/setup-bun@v2
 
       - name: Set ENV Variables
         run: |
