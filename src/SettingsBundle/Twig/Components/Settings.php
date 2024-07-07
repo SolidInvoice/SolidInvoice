@@ -28,7 +28,6 @@ use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
-use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Throwable;
 use function str_replace;
 
@@ -39,18 +38,12 @@ final class Settings extends AbstractController
     use ComponentWithFormTrait;
 
     #[LiveProp(writable: true, onUpdated: 'onSectionChange', url: true)]
-    public string $section = '';
+    public string $section = 'system';
 
     public function __construct(
         private readonly SettingsRepository $settingsRepository,
         private readonly PropertyAccessorInterface $propertyAccessor,
     ) {
-    }
-
-    #[PreMount()]
-    public function preMount(): void
-    {
-        $this->section = key($this->getAppSettings());
     }
 
     /**

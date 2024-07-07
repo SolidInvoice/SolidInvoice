@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace DoctrineMigrations;
 
 use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Types\Type;
@@ -37,6 +38,8 @@ final class Version20300 extends AbstractMigration implements ContainerAwareInte
 
     public function preUp(Schema $schema): void
     {
+        $this->skipIf(! $this->platform instanceof MySQLPlatform, 'Migration can only be executed safely on "mysql".');
+
         $this
             ->connection
             ->update('client_credit', ['value_amount' => 0], ['value_amount' => null]);
@@ -65,6 +68,8 @@ final class Version20300 extends AbstractMigration implements ContainerAwareInte
 
     public function up(Schema $schema): void
     {
+        $this->skipIf(! $this->platform instanceof MySQLPlatform, 'Migration can only be executed safely on "mysql".');
+
         $recurringInvoices = $schema->getTable('recurring_invoices');
         $invoices = $schema->getTable('invoices');
         $quotes = $schema->getTable('quotes');
@@ -111,7 +116,6 @@ final class Version20300 extends AbstractMigration implements ContainerAwareInte
         $this->renameIndex($schema, 'contact_details', 'fk_e8092a0be7a1254a');
         $this->renameIndex($schema, 'recurring_invoices', 'fk_fe93e28419eb6921');
         $this->renameIndex($schema, 'recurringinvoice_contact', 'fk_1673913ee7a1254a');
-        $this->renameIndex($schema, 'recurringinvoice_contact', 'idx_1673913ee31ccdf979b1ad6');
         $this->renameIndex($schema, 'user_invitations', 'fk_8a3cd93ba7b4a7e3');
         $this->renameIndex($schema, 'api_token_history', 'fk_61d8dc4441dee7b9');
         $this->renameIndex($schema, 'api_tokens', 'fk_2cad560ea76ed395');
@@ -121,14 +125,12 @@ final class Version20300 extends AbstractMigration implements ContainerAwareInte
         $this->renameIndex($schema, 'payments', 'fk_65d29b32c7440455');
         $this->renameIndex($schema, 'payments', 'fk_65d29b3219883967');
         $this->renameIndex($schema, 'invoice_contact', 'fk_bebbd0ebe7a1254a');
-        $this->renameIndex($schema, 'invoice_contact', 'idx_bebbd0eb2989f1fd979b1ad6');
         $this->renameIndex($schema, 'invoices', 'fk_6a2f2f9519eb6921');
         $this->renameIndex($schema, 'invoice_lines', 'fk_72dbdc232989f1fd');
         $this->renameIndex($schema, 'invoice_lines', 'fk_72dbdc23416ccf0f');
         $this->renameIndex($schema, 'invoice_lines', 'fk_72dbdc23b2a824d8');
         $this->renameIndex($schema, 'quotes', 'fk_a1b588c519eb6921');
         $this->renameIndex($schema, 'quote_contact', 'fk_a38d4ebce7a1254a');
-        $this->renameIndex($schema, 'quote_contact', 'idx_a38d4ebcdb805178979b1ad6');
 
         $this->setColumnType($schema, 'client_credit', 'value_amount', BigIntegerType::NAME);
         $this->setColumnType($schema, 'recurring_invoices', 'total_amount', BigIntegerType::NAME);
@@ -167,13 +169,10 @@ final class Version20300 extends AbstractMigration implements ContainerAwareInte
         $invoices->addUniqueIndex(['quote_id']);
         $invoices->addIndex(['quote_id']);
 
-        //$recurringInvoiceContact->setPrimaryKey(['recurringinvoice_id', 'contact_id']);
         $recurringInvoiceContact->addForeignKeyConstraint('companies', ['company_id'], ['id']);
 
-        //$invoiceContact->setPrimaryKey(['invoice_id', 'contact_id', 'company_id']);
         $invoiceContact->addForeignKeyConstraint('companies', ['company_id'], ['id']);
 
-        //$quoteContact->setPrimaryKey(['quote_id', 'contact_id', 'company_id']);
         $quoteContact->addForeignKeyConstraint('companies', ['company_id'], ['id']);
 
         $users->addUniqueIndex(['email']);

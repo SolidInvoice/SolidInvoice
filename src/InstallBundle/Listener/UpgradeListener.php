@@ -55,11 +55,15 @@ class UpgradeListener implements EventSubscriberInterface
             return;
         }
 
+        if (! $this->migration->isUpToDate()) {
+            $this->migration->migrate();
+        }
+
         /** @var VersionRepository $versionRepository */
-        $versionRepository = $this->registry->getRepository(Version::class);
+        /*$versionRepository = $this->registry->getRepository(Version::class);
 
         if (version_compare($versionRepository->getCurrentVersion(), SolidInvoiceCoreBundle::VERSION, '<')) {
             $this->migration->migrate();
-        }
+        }*/
     }
 }

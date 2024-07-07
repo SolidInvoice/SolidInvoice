@@ -16,6 +16,7 @@ namespace SolidInvoice\InvoiceBundle\Entity;
 use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
+use Brick\Math\Exception\RoundingNecessaryException;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
@@ -153,6 +154,10 @@ class Item implements ItemInterface, Stringable
         return $this;
     }
 
+    /**
+     * @throws MathException
+     * @throws RoundingNecessaryException
+     */
     public function getTotal(): BigNumber
     {
         return $this->total;

@@ -48,25 +48,25 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        $apiToken = $request->headers->get('X-API-TOKEN', $request->query->get('token'));
+        $tokenString = $request->headers->get('X-API-TOKEN', $request->query->get('token'));
 
-        $history = new ApiTokenHistory();
-
-        $history->setMethod($request->getMethod())
-            ->setIp($request->getClientIp())
-            ->setRequestData($request->request->all())
-            ->setUserAgent($request->server->get('HTTP_USER_AGENT'))
-            ->setResource($request->getPathInfo());
-
-        /** @var ApiTokenHistoryRepository $repository */
-        $repository = $this->registry->getRepository(ApiTokenHistory::class);
-
-        $repository->addHistory($history, $apiToken);
-
-        $apiToken = $this->registry->getRepository(ApiToken::class)->findOneBy(['token' => $apiToken]);
+        $apiToken = $this->registry->getRepository(ApiToken::class)->findOneBy(['token' => $tokenString]);
 
         if (null !== $apiToken) {
             $this->companySelector->switchCompany($apiToken->getCompany()->getId());
+
+            $history = new ApiTokenHistory();
+
+            $history->setMethod($request->getMethod())
+                ->setIp($request->getClientIp())
+                ->setRequestData($request->request->all())
+                ->setUserAgent($request->server->get('HTTP_USER_AGENT'))
+                ->setResource($request->getPathInfo());
+
+            /** @var ApiTokenHistoryRepository $repository */
+            $repository = $this->registry->getRepository(ApiTokenHistory::class);
+
+            $repository->addHistory($history, $apiToken);
         }
 
         return null;

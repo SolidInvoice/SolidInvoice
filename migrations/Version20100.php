@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
-use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Table;
@@ -32,6 +32,8 @@ final class Version20100 extends AbstractMigration implements ContainerAwareInte
 
     public function up(Schema $schema): void
     {
+        $this->skipIf(! $this->platform instanceof MySQLPlatform, 'Migration can only be executed safely on "mysql".');
+
         $this->schema = $schema;
         $schema->dropTable('ext_translations');
 
@@ -119,16 +121,14 @@ final class Version20100 extends AbstractMigration implements ContainerAwareInte
     public function postUp(Schema $schema): void
     {
         try {
-            $this->connection->transactional(function (Connection $connection): void {
-                $connection->delete('app_config', ['setting_key' => 'email/sending_options/transport']);
-                $connection->delete('app_config', ['setting_key' => 'email/sending_options/host']);
-                $connection->delete('app_config', ['setting_key' => 'email/sending_options/user']);
-                $connection->delete('app_config', ['setting_key' => 'email/sending_options/password']);
-                $connection->delete('app_config', ['setting_key' => 'email/sending_options/port']);
-                $connection->delete('app_config', ['setting_key' => 'email/sending_options/encryption']);
-                $connection->delete('app_config', ['setting_key' => 'email/format']);
-                $connection->insert('app_config', ['setting_key' => 'email/sending_options/provider', 'setting_value' => null, 'description' => null, 'field_type' => MailTransportType::class]);
-            });
+            $this->connection->delete('app_config', ['setting_key' => 'email/sending_options/transport']);
+            $this->connection->delete('app_config', ['setting_key' => 'email/sending_options/host']);
+            $this->connection->delete('app_config', ['setting_key' => 'email/sending_options/user']);
+            $this->connection->delete('app_config', ['setting_key' => 'email/sending_options/password']);
+            $this->connection->delete('app_config', ['setting_key' => 'email/sending_options/port']);
+            $this->connection->delete('app_config', ['setting_key' => 'email/sending_options/encryption']);
+            $this->connection->delete('app_config', ['setting_key' => 'email/format']);
+            $this->connection->insert('app_config', ['setting_key' => 'email/sending_options/provider', 'setting_value' => null, 'description' => null, 'field_type' => MailTransportType::class]);
         } catch (\Throwable $e) {
             $this->write(sprintf('Unable to load data: %s. Rolling back migration', $e->getMessage()));
 

@@ -1,0 +1,199 @@
+name: DB Tests
+
+on:
+    pull_request:
+
+env:
+  SOLIDINVOICE_ENV: test
+  SOLIDINVOICE_DEBUG: 0
+
+jobs:
+  migrations:
+    name: DB (${{ matrix.db.name }} ${{ matrix.db.driver }} ${{ matrix.db.version }})
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        include:
+            - db:
+                name: MySQL
+                driver: pdo_mysql
+                version: 5.7
+                image: mysql
+                port: 3306
+                user: root
+            - db:
+                name: MySQL
+                driver: pdo_mysql
+                version: "8.0"
+                image: mysql
+                port: 3306
+                user: root
+            - db:
+                name: MySQL
+                driver: pdo_mysql
+                version: 8.3
+                image: mysql
+                port: 3306
+                user: root
+            - db:
+                name: MariaDB
+                driver: pdo_mysql
+                version: 10.4
+                image: mariadb
+                port: 3306
+                user: root
+            - db:
+                name: MariaDB
+                driver: pdo_mysql
+                version: 10.5
+                image: mariadb
+                port: 3306
+                user: root
+            - db:
+                name: MariaDB
+                driver: pdo_mysql
+                version: 10.6
+                image: mariadb
+                port: 3306
+                user: root
+            - db:
+                name: MariaDB
+                driver: pdo_mysql
+                version: 10.11
+                image: mariadb
+                port: 3306
+                user: root
+            - db:
+                name: MariaDB
+                driver: pdo_mysql
+                version: "11.0"
+                image: mariadb
+                port: 3306
+                user: root
+            - db:
+                name: MariaDB
+                driver: pdo_mysql
+                version: 11.1
+                image: mariadb
+                port: 3306
+                user: root
+            - db:
+                name: MariaDB
+                driver: pdo_mysql
+                version: 11.2
+                image: mariadb
+                port: 3306
+                user: root
+            - db:
+                name: MariaDB
+                driver: pdo_mysql
+                version: 11.3
+                image: mariadb
+                port: 3306
+                user: root
+            - db:
+                name: PostgreSQL
+                driver: pdo_pgsql
+                version: 10
+                image: postgres
+                port: 5432
+                user: postgres
+            - db:
+                name: PostgreSQL
+                driver: pdo_pgsql
+                version: 15
+                image: postgres
+                port: 5432
+                user: postgres
+            - db:
+                name: PostgreSQL
+                driver: pdo_pgsql
+                version: 16
+                image: postgres
+                port: 5432
+                user: postgres
+            - db:
+                name: Oracle
+                driver: pdo_oci
+                version: 18
+                image: gvenzl/oracle-xe
+                port: 1521
+                user: system
+            - db:
+                name: Oracle
+                driver: pdo_oci
+                version: 21
+                image: gvenzl/oracle-xe
+                port: 1521
+                user: system
+            - db:
+                name: Oracle
+                driver: pdo_oci
+                version: 23
+                image: gvenzl/oracle-free
+                port: 1521
+                user: system
+            - db:
+                name: SQLServer
+                driver: pdo_sqlsrv
+                version: 2019-latest
+                image: mcr.microsoft.com/mssql/server
+                port: 1433
+                user: sa
+
+      fail-fast: false
+
+    services:
+      db:
+        image: ${{ matrix.db.image }}:${{ matrix.db.version }}
+        env:
+          ORACLE_PASSWORD: solidinvoice
+          MYSQL_ROOT_PASSWORD: solidinvoice
+          MYSQL_DATABASE: solidinvoice
+          POSTGRES_PASSWORD: solidinvoice
+          ACCEPT_EULA: "Y"
+          SA_PASSWORD: "solidinvoice"
+          MSSQL_COLLATION: "Latin1_General_100_CI_AS_SC_UTF8"
+        ports:
+          - "${{ matrix.db.port }}:${{ matrix.db.port }}"
+
+    env:
+      database_driver: ${{ matrix.db.driver }}
+      database_host: 127.0.0.1
+      database_port: ${{ matrix.db.port }}
+      database_name: solidinvoice
+      database_user: ${{ matrix.db.user }}
+      database_password: solidinvoice
+      database_version: ${{ matrix.db.name == 'MariaDB' && 'mariadb-' || '' }}${{ matrix.db.version }}${{ matrix.db.name == 'MariaDB' && '.0' || '' }}
+
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142
+        with:
+          egress-policy: block
+          allowed-endpoints: >
+            api.github.com:443
+            github.com:443
+            objects.githubusercontent.com:443
+
+      - name: Checkout
+        uses: actions/checkout@1d96c772d19495a3b5c517cd2bc0cb401ea0529f
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@c665c7a15b5295c2488ac8a87af9cb806cd72198
+        with:
+          php-version: 8.1
+          ini-values: date.timezone=Africa/Johannesburg, opcache.enable=1, opcache.enable_cli=1, opcache.memory_consumption=256, opcache.max_accelerated_files=32531, opcache.interned_strings_buffer=8, opcache.validate_timestamps=0, opcache.save_comments=1, opcache.fast_shutdown=0, memory_limit=-1, zend.assertions=1
+          extensions: intl, gd, opcache, ${{ matrix.db.driver == 'pdo_sqlsrv' && 'pdo_sql_srv-5.10.0beta1' || '' }}, ${{ matrix.db.driver }}, zip, :xdebug
+        env:
+          fail-fast: true
+
+      - uses: ramsey/composer-install@v3
+
+      - name: Create Database
+        run: bin/console doctrine:database:create
+
+      - name: Run Migrations
+        run: bin/console doctrine:migrations:migrate --no-interaction

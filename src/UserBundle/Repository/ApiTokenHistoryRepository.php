@@ -26,14 +26,9 @@ class ApiTokenHistoryRepository extends ServiceEntityRepository
         parent::__construct($registry, ApiTokenHistory::class);
     }
 
-    public function addHistory(ApiTokenHistory $history, string $token): void
+    public function addHistory(ApiTokenHistory $history, ApiToken $apiToken): void
     {
         $entityManager = $this->getEntityManager();
-
-        /** @var ApiToken $apiToken */
-        $apiToken = $entityManager
-            ->getRepository(ApiToken::class)
-            ->findOneBy(['token' => $token]);
 
         $apiToken->addHistory($history);
 

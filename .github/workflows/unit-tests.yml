@@ -100,6 +100,12 @@ jobs:
         if: matrix.coverage
         run: echo "COVERAGE=1" >> $GITHUB_ENV
 
+      - name: Create Database
+        run: bin/console doctrine:database:create --env=test --if-not-exists
+
+      - name: Create database schema
+        run: bin/console doctrine:schema:create --env=test
+
       - name: Run test suite
         run: |
          mkdir -p build/logs
