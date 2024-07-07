@@ -21,7 +21,7 @@ jobs:
             github.com:443
             objects.githubusercontent.com:443
             packagist.org:443
-            54.185.253.63:443
+            bun.sh:443
 
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
 
@@ -89,7 +89,7 @@ jobs:
             github.com:443
             registry.yarnpkg.com:443
             pipelinesghubeus2.actions.githubusercontent.com:443
-            54.185.253.63:443
+            bun.sh:443
 
       - name: Checkout Code
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332

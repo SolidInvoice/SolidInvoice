@@ -31,7 +31,7 @@ jobs:
         allowed-endpoints: >
           api.github.com:443
           github.com:443
-          54.185.253.63:443
+          bun.sh:443
 
     - name: Checkout repository
       uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
