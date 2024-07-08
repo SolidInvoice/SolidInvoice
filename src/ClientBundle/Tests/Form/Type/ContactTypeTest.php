@@ -57,11 +57,9 @@ class ContactTypeTest extends FormTestCase
         $ref->setAccessible(true);
         $ref->setValue($contactType, Uuid::uuid1());
 
-        $type = new ContactDetailType($this->registry->getRepository(Entity\ContactType::class));
-
         return [
             // register the type instances with the PreloadedExtension
-            new PreloadedExtension([$type], []),
+            new PreloadedExtension([new ContactDetailType()], []),
         ];
     }
 }

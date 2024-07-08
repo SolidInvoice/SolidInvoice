@@ -15,9 +15,9 @@ namespace SolidInvoice\InvoiceBundle\Form\Type;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Money\Currency;
+use SolidInvoice\CoreBundle\Form\Type\UuidEntityType;
 use SolidInvoice\InvoiceBundle\Entity\Item;
 use SolidInvoice\TaxBundle\Entity\Tax;
-use SolidInvoice\TaxBundle\Form\Type\TaxEntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -72,8 +72,9 @@ class ItemType extends AbstractType
         if ($this->registry->getManager()->getRepository(Tax::class)->taxRatesConfigured()) {
             $builder->add(
                 'tax',
-                TaxEntityType::class,
+                UuidEntityType::class,
                 [
+                    'class' => Tax::class,
                     'placeholder' => 'No Tax',
                     'attr' => [
                         'class' => 'input-mini invoice-item-tax',

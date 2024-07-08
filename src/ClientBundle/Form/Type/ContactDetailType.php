@@ -13,15 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Form\Type;
 
+use SolidInvoice\ClientBundle\Entity\AdditionalContactDetail;
 use SolidInvoice\ClientBundle\Entity\ContactType as ContactTypeEntity;
-use SolidInvoice\ClientBundle\Repository\ContactTypeRepository;
-use SolidInvoice\CoreBundle\Form\DataTransformer\EntityUuidTransformer;
+use SolidInvoice\CoreBundle\Form\Type\UuidEntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -29,35 +27,23 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 /**
  * @see \SolidInvoice\ClientBundle\Tests\Form\Type\ContactDetailTypeTest
  */
-class ContactDetailType extends AbstractType
+final class ContactDetailType extends AbstractType
 {
-    public function __construct(
-        private readonly ContactTypeRepository $contactTypeRepository
-    ) {
-    }
-
-    public function buildView(FormView $view, FormInterface $form, array $options): void
-    {
-        $view->vars['contactTypes'] = $this->contactTypeRepository->findAll();
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
             $builder
                 ->create(
                     'type',
-                    HiddenType::class,
+                    UuidEntityType::class,
                     [
-                        'attr' => [
-                            'class' => 'input-group-select-val',
-                        ],
+                        'class' => ContactTypeEntity::class,
+                        'placeholder' => 'Choose Type',
                         'constraints' => [
                             new NotBlank(['groups' => 'not_blank_type', 'message' => 'The contact detail type cannot be empty']),
                         ],
                     ]
                 )
-                ->addModelTransformer(new EntityUuidTransformer($this->contactTypeRepository->findAll()))
         );
 
         $builder->add(
@@ -75,6 +61,8 @@ class ContactDetailType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
+        $resolver->setDefault('data_class', AdditionalContactDetail::class);
+
         $resolver->setDefault('validation_groups', function (FormInterface $form) {
             // @codeCoverageIgnoreStart
             $contactDetailsType = $form->get('type')->getData();

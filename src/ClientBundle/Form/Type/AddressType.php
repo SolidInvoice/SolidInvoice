@@ -13,11 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Form\Type;
 
+use SolidInvoice\ClientBundle\Entity\Address;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -25,11 +24,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class AddressType extends AbstractType
 {
-    public function buildView(FormView $view, FormInterface $form, array $options): void
-    {
-        $view->vars['canDelete'] = $options['canDelete'];
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('street1');
@@ -41,9 +35,6 @@ class AddressType extends AbstractType
             'country',
             CountryType::class,
             [
-                'attr' => [
-                    'class' => 'select2',
-                ],
                 'placeholder' => 'client.address.country.select',
                 'required' => false,
             ]
@@ -52,10 +43,10 @@ class AddressType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['canDelete' => false]);
+        $resolver->setDefaults(['data_class' => Address::class]);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'address';
     }

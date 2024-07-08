@@ -1,0 +1,48 @@
+<div {{ attributes }}>
+    <div class="card">
+        <div class="card-header">
+            <div class="card-tools float-right">
+                <a href="#" class="btn btn-success btn-sm" data-toggle="modal" data-target="#{{ 'add-contact' }}">
+                    {{ icon('user') }} {{ "client.view.actions.add_contact"|trans }}
+                </a>
+
+                {{ form_start(form, {
+                    attr: {
+                        'data-action': 'live#action:prevent',
+                        'data-live-action-param': 'save'
+                    }
+                }) }}
+                {% component BootstrapModal with {id: 'add-contact'} %}
+                    {% block modal_header %}
+                        <h5>{{ 'Add Contact'|trans }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    {% endblock %}
+                    {% block modal_body %}
+
+                        {{ form_row(form) }}
+
+                    {% endblock %}
+                    {% block modal_footer %}
+                        <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'Close'|trans }}</button>
+                        <button type="submit" class="btn btn-primary">{{ 'Save'|trans }}</button>
+                    {% endblock %}
+                {% endcomponent %}
+                {{ form_end(form) }}
+            </div>
+
+            <h3 class="card-title">
+                {{ icon('users')}} {{ "client.heading.contacts"|trans }}
+            </h3>
+        </div>
+
+        <div class="card-body row">
+            {% for contact in client.contacts %}
+                <div class="col-6">
+                    <twig:ContactInfo :contact="contact" :key="contact.id" canDelete="{{ client.contacts|length > 1 }}" />
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

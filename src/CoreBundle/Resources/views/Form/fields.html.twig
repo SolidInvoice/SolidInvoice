@@ -90,7 +90,7 @@
 
 {% block address_widget %}
     {% set id = random() %}
-    <div class="widget" data-content="{{ id }}">
+    <div class="widget">
 
         <div class="row">
             <div class="col-md-6">
@@ -119,11 +119,11 @@
             </div>
         </div>
 
-        {% if canDelete %}
-            <a href="#" class="btn btn-danger btn-flat btn-sm btn-remove float-right" data-related="{{ id }}">
-                {{ icon('trash-o') }} {{ 'client.address.delete'|trans }}
-            </a>
+        {% if form.vars.button_delete is defined %}
+            {{ form_widget(form.vars.button_delete, {label_html: true, label: icon('trash-o') ~ ' ' ~ 'client.address.delete'|trans, attr: {class: 'btn btn-danger btn-flat float-right'}}) }}
+            <br class="clear" />
         {% endif %}
+
         <br class="clear"/>
     </div>
 {% endblock address_widget %}

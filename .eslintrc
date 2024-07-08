@@ -41,6 +41,7 @@
         "quotes": ["error", "single"],
         "lodash/import-scope": [2, "member"],
         "backbone/no-collection-models": "off",
-        "no-jquery/variable-pattern": "error"
+        "no-jquery/variable-pattern": "error",
+        "no-debugger": "off"
     }
 }

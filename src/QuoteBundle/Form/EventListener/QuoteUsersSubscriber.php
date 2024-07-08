@@ -18,9 +18,9 @@ use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Form\Transformer\UserToContactTransformer;
+use SolidInvoice\CoreBundle\Form\Type\UuidEntityType;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Entity\QuoteContact;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -63,7 +63,7 @@ class QuoteUsersSubscriber implements EventSubscriberInterface
 
             $users = $this->builder->create(
                 'users',
-                EntityType::class,
+                UuidEntityType::class,
                 [
                     'constraints' => new NotBlank(),
                     'multiple' => true,

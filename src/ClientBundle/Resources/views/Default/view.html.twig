@@ -8,9 +8,9 @@
  #}
 
 {% set currency = client.currency %}
-{% set module = 'client-view' %}
+{#{% set module = 'client-view' %}
 {% set moduleData = client %}
-{% set serializationGroups = ['client_api'] %}
+{% set serializationGroups = ['client_api'] %}#}
 
 {% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
@@ -49,7 +49,7 @@
 
                         {% if client.website %}
                             <li class="list-group-item">
-                                <b>{{ icon('globe') }} Website</b> <a href="{{ client.website }}" class="float-right" rel="external">{{ client.website }}</a>
+                                <b>{{ icon('globe') }} {{ 'Website'|trans }}</b> <a href="{{ client.website }}" class="float-right" rel="external">{{ client.website }}</a>
                                 <small>{{ icon('external-link') }}</small>
                             </li>
                         {% endif %}
@@ -173,6 +173,8 @@
                     <!-- Tab panes -->
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="client-info">
+                            <twig:ContactCollection :client="client" count="{{ client.contacts|length }}" />
+                            <twig:AddressCollection :client="client" count="{{ client.addresses|length }}" />
                         </div>
                         <div role="tabpanel" class="tab-pane" id="quotes">
                             {% include "@SolidInvoiceClient/quote_list.html.twig" %}

@@ -148,7 +148,7 @@ class Contact implements Serializable, Stringable
         return $this->firstName;
     }
 
-    public function setFirstName(string $firstName): self
+    public function setFirstName(?string $firstName): self
     {
         $this->firstName = $firstName;
 
@@ -179,10 +179,12 @@ class Contact implements Serializable, Stringable
         return $this;
     }
 
-    public function addAdditionalContactDetail(AdditionalContactDetail $detail): self
+    public function addAdditionalContactDetail(?AdditionalContactDetail $detail): self
     {
-        $this->additionalContactDetails->add($detail);
-        $detail->setContact($this);
+        if ($detail !== null) {
+            $this->additionalContactDetails->add($detail);
+            $detail->setContact($this);
+        }
 
         return $this;
     }
@@ -260,7 +262,7 @@ class Contact implements Serializable, Stringable
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    public function setEmail(?string $email): self
     {
         $this->email = $email;
 

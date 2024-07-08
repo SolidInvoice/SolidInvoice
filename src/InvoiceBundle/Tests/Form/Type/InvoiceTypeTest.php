@@ -20,6 +20,7 @@ use Money\Currency;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
+use SolidInvoice\CoreBundle\Form\Type\UuidEntityType;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -113,6 +114,7 @@ class InvoiceTypeTest extends FormTestCase
                 $itemType,
                 new DiscountType($systemConfig),
                 new BaseEntityAutocompleteType($this->createMock(UrlGeneratorInterface::class)),
+                new UuidEntityType($this->registry),
             ], [
                 ChoiceType::class => [
                     new AutocompleteChoiceTypeExtension(new ChecksumCalculator('abc')),

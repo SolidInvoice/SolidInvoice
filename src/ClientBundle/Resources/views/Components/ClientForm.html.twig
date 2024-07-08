@@ -1,0 +1,92 @@
+<div {{ attributes }}>
+    {{ form_start(form, {
+        attr: {
+            'data-action': 'live#action:prevent',
+            'data-live-action-param': 'save'
+        }
+    }) }}
+
+    {{ form_errors(form) }}
+
+    <div class="row">
+        <div class="col-lg-6 col-md-6" id="client-address-collection">
+            <div class="card card-primary card-outline">
+                <div class="card-header with-border">
+                    <h3 class="card-title">{{ 'client.info'|trans }}</h3>
+                </div>
+
+                <div class="card-body">
+                    {{ form_row(form.name) }}
+                    {{ form_row(form.website) }}
+                    {{ form_row(form.currencyCode) }}
+                    {{ form_row(form.vat_number) }}
+                </div>
+            </div>
+
+            <div class="card card-primary card-outline">
+                <div class="card-header with-border">
+                    <h3 class="card-title">{{ 'client.address.info'|trans }}</h3>
+                </div>
+
+                {% set addBtn = form_widget(form.addresses.vars.button_add, {label: '+ ' ~ 'client.address.add'|trans, attr: {class: 'btn btn-outline-primary'}}) %}
+
+                <div class="card-body">
+                    <div class="client_addresses">
+                        {#{% for widget in form.addresses %}
+                            {{ _macro.widget_prototype(widget, 'client.address.delete'|trans, {'trash' : {'class' : 'float-right btn-flat btn btn-danger'}}) }}
+                        {% else %}
+                            {{ addressesPrototypeForm|replace({'__name__' : 0})|raw }}
+                        {% endfor %}#}
+                        {{ form_row(form.addresses) }}
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    {{ addBtn|raw }}
+                    {#<a href="#" data-target="client_addresses" class="btn-flat btn-add add_form_collection_link">
+                        {{ icon('plus', ['circle']) }} {{ "client.address.add"|trans }}
+                    </a>#}
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6" id="client-contacts-collection">
+            <div class="card card-primary card-outline">
+                <div class="card-header with-border">
+                    <h3 class="card-title">{{ 'client.contact.info'|trans }}</h3>
+                </div>
+
+                {% set addBtn = form_widget(form.contacts.vars.button_add, {label: '+ ' ~ 'client.contact.add'|trans, attr: {class: 'btn btn-outline-primary'}}) %}
+
+                <div class="card-body">
+                    <div class="client_contacts">
+                        {{ form_row(form.contacts) }}
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    {{ addBtn|raw }}
+                    {#{{ form_widget(form.contacts.vars.button_add, {label: '+ ' ~ 'client.contact.add'|trans, attr: {class: 'btn btn-outline-primary'}}) }}#}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{ form_rest(form) }}
+
+    <div class="control-group">
+        <div class="controls clearfix">
+            <div class="float-left">
+                <button type="button" class="btn btn-warning" onclick="history.back()">
+                    {{ icon('reply') }} {{ 'client.cancel'|trans }}
+                </button>
+            </div>
+            <div class="float-right">
+                <button type="submit" class="btn btn-success">
+                    {{ icon('save') }} {{ "client.save"|trans }}
+                </button>
+            </div>
+            <br class="clear" />
+        </div>
+    </div>
+    {{ form_end(form) }}
+</div>
