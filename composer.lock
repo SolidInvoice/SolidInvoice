@@ -8621,16 +8621,16 @@
         },
         {
             "name": "symfony/doctrine-bridge",
-            "version": "v6.4.8",
+            "version": "v6.4.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/doctrine-bridge.git",
-                "reference": "afbf291ccaf595c8ff6f4ed3943aa0ea479e4d04"
+                "reference": "64d024fcb3aa613fe163ecae4aaa836dd6d1c5cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/doctrine-bridge/zipball/afbf291ccaf595c8ff6f4ed3943aa0ea479e4d04",
-                "reference": "afbf291ccaf595c8ff6f4ed3943aa0ea479e4d04",
+                "url": "https://api.github.com/repos/symfony/doctrine-bridge/zipball/64d024fcb3aa613fe163ecae4aaa836dd6d1c5cd",
+                "reference": "64d024fcb3aa613fe163ecae4aaa836dd6d1c5cd",
                 "shasum": ""
             },
             "require": {
@@ -8709,7 +8709,7 @@
             "description": "Provides integration for Doctrine with various Symfony components",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/doctrine-bridge/tree/v6.4.8"
+                "source": "https://github.com/symfony/doctrine-bridge/tree/v6.4.9"
             },
             "funding": [
                 {
@@ -8725,7 +8725,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-05-31T14:49:08+00:00"
+            "time": "2024-06-28T09:25:38+00:00"
         },
         {
             "name": "symfony/dotenv",
