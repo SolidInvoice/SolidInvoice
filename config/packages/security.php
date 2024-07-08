@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of SolidInvoice project.
+ *
+ * (c) Pierre du Plessis <open-source@solidworx.co>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 use SolidInvoice\ApiBundle\Event\Listener\AuthenticationFailHandler;
 use SolidInvoice\ApiBundle\Event\Listener\AuthenticationSuccessHandler;
 use SolidInvoice\ApiBundle\Security\ApiTokenAuthenticator;
@@ -11,7 +20,6 @@ use Symfony\Config\SecurityConfig;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
 
 return static function (SecurityConfig $config): void {
-
     $config
         ->passwordHasher(User::class)
         ->algorithm('auto');
@@ -53,10 +61,10 @@ return static function (SecurityConfig $config): void {
         ->stateless(true)
         ->security(false)
         ->formLogin()
-            ->provider('api_token_user_provider')
-            ->checkPath('/api/login')
-            ->successHandler(AuthenticationSuccessHandler::class)
-            ->failureHandler(AuthenticationFailHandler::class);
+        ->provider('api_token_user_provider')
+        ->checkPath('/api/login')
+        ->successHandler(AuthenticationSuccessHandler::class)
+        ->failureHandler(AuthenticationFailHandler::class);
 
     $config
         ->firewall('api')
@@ -93,14 +101,14 @@ return static function (SecurityConfig $config): void {
         ->target('/');
 
     $config->accessControl()
-        ->path('^(?:'.
-            '/view/(quote|invoice)/[a-zA-Z0-9-]{36}$|'.
-            '/(login|register|resetting)$|'.
-            '/install(?:.*)|'.
-            '/invite/accept/[a-zA-Z0-9-]{36}$|'.
-            '/payments/create/[a-zA-Z0-9-]{36}$|'.
-            '/payment/capture/(?:.*)|'.
-            '/payments/done$'.
+        ->path('^(?:' .
+            '/view/(quote|invoice)/[a-zA-Z0-9-]{36}$|' .
+            '/(login|register|resetting)$|' .
+            '/install(?:.*)|' .
+            '/invite/accept/[a-zA-Z0-9-]{36}$|' .
+            '/payments/create/[a-zA-Z0-9-]{36}$|' .
+            '/payment/capture/(?:.*)|' .
+            '/payments/done$' .
         ')')
         ->roles(['PUBLIC_ACCESS']);
 

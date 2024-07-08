@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of SolidInvoice project.
+ *
+ * (c) Pierre du Plessis <open-source@solidworx.co>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use Symfony\Config\ApiPlatformConfig;
 
@@ -42,7 +51,8 @@ return static function (ApiPlatformConfig $config): void {
     $config->defaults()
         ->formats(['json']);
 
-    $config->description(<<<'DESC'
+    $config->description(
+        <<<'DESC'
 SolidInvoice is a simple open source invoicing application aimed to help small businesses and freelancers manage their day-to-day billing.
 
 ### Authentication
