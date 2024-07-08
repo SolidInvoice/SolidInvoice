@@ -89,9 +89,9 @@ jobs:
           extensions: intl, gd, opcache, mysql, pdo_mysql, soap, zip, :xdebug
           coverage: ${{ steps.coverage_driver.outputs.value }}
 
-      - uses: oven-sh/setup-bun@v2
+      - uses: oven-sh/setup-bun@123c6c4e2fea3eb7bffaa91a85eb6b3d505bf7af # v2
 
-      - uses: ramsey/composer-install@v3
+      - uses: ramsey/composer-install@0f18aec461938c57720faaf2dba4421bf698cf42 # v3
 
       - name: Detect browser drivers
         run: bin/bdi detect drivers
