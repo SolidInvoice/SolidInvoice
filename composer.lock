@@ -9963,16 +9963,16 @@
         },
         {
             "name": "symfony/google-chat-notifier",
-            "version": "v6.4.8",
+            "version": "v6.4.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/google-chat-notifier.git",
-                "reference": "c1f2966a9ad46239cf3ded764f00617f6911254e"
+                "reference": "8be3ecbe17abb64510c58e59ce5b002c102d3d50"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/google-chat-notifier/zipball/c1f2966a9ad46239cf3ded764f00617f6911254e",
-                "reference": "c1f2966a9ad46239cf3ded764f00617f6911254e",
+                "url": "https://api.github.com/repos/symfony/google-chat-notifier/zipball/8be3ecbe17abb64510c58e59ce5b002c102d3d50",
+                "reference": "8be3ecbe17abb64510c58e59ce5b002c102d3d50",
                 "shasum": ""
             },
             "require": {
@@ -10013,7 +10013,7 @@
                 "notifier"
             ],
             "support": {
-                "source": "https://github.com/symfony/google-chat-notifier/tree/v6.4.8"
+                "source": "https://github.com/symfony/google-chat-notifier/tree/v6.4.9"
             },
             "funding": [
                 {
@@ -10029,7 +10029,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-05-31T14:49:08+00:00"
+            "time": "2024-06-21T16:04:15+00:00"
         },
         {
             "name": "symfony/google-mailer",
