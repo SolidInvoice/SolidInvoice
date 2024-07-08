@@ -69,6 +69,7 @@ jobs:
             cli.codecov.io:443
             api.codecov.io:443
             bun.sh:443
+            api.cloudinary.com:443
 
       - name: Checkout
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
