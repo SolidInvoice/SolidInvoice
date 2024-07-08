@@ -7995,16 +7995,16 @@
         },
         {
             "name": "symfony/clickatell-notifier",
-            "version": "v6.4.8",
+            "version": "v6.4.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/clickatell-notifier.git",
-                "reference": "e757a0c147381d567996022f23f12422a942862a"
+                "reference": "9022c7d8e1ce073e5213b58ef922103ba6db4e69"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/clickatell-notifier/zipball/e757a0c147381d567996022f23f12422a942862a",
-                "reference": "e757a0c147381d567996022f23f12422a942862a",
+                "url": "https://api.github.com/repos/symfony/clickatell-notifier/zipball/9022c7d8e1ce073e5213b58ef922103ba6db4e69",
+                "reference": "9022c7d8e1ce073e5213b58ef922103ba6db4e69",
                 "shasum": ""
             },
             "require": {
@@ -8047,7 +8047,7 @@
                 "sms"
             ],
             "support": {
-                "source": "https://github.com/symfony/clickatell-notifier/tree/v6.4.8"
+                "source": "https://github.com/symfony/clickatell-notifier/tree/v6.4.9"
             },
             "funding": [
                 {
@@ -8063,7 +8063,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-05-31T14:49:08+00:00"
+            "time": "2024-06-14T09:49:55+00:00"
         },
         {
             "name": "symfony/clock",
@@ -10098,16 +10098,16 @@
         },
         {
             "name": "symfony/http-client",
-            "version": "v6.4.8",
+            "version": "v6.4.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-client.git",
-                "reference": "61faba993e620fc22d4f0ab3b6bcf8fbb0d44b05"
+                "reference": "6e9db0025db565bcf8f1d46ed734b549e51e6045"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-client/zipball/61faba993e620fc22d4f0ab3b6bcf8fbb0d44b05",
-                "reference": "61faba993e620fc22d4f0ab3b6bcf8fbb0d44b05",
+                "url": "https://api.github.com/repos/symfony/http-client/zipball/6e9db0025db565bcf8f1d46ed734b549e51e6045",
+                "reference": "6e9db0025db565bcf8f1d46ed734b549e51e6045",
                 "shasum": ""
             },
             "require": {
@@ -10171,7 +10171,7 @@
                 "http"
             ],
             "support": {
-                "source": "https://github.com/symfony/http-client/tree/v6.4.8"
+                "source": "https://github.com/symfony/http-client/tree/v6.4.9"
             },
             "funding": [
                 {
@@ -10187,7 +10187,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-05-31T14:49:08+00:00"
+            "time": "2024-06-28T07:59:05+00:00"
         },
         {
             "name": "symfony/http-foundation",
@@ -11859,16 +11859,16 @@
         },
         {
             "name": "symfony/notifier",
-            "version": "v6.4.8",
+            "version": "v6.4.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/notifier.git",
-                "reference": "8def5812a0c180f0d6e0de2b36102bdb5571496e"
+                "reference": "878a25dad9678b750ad8e431911e3324b21e4927"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/notifier/zipball/8def5812a0c180f0d6e0de2b36102bdb5571496e",
-                "reference": "8def5812a0c180f0d6e0de2b36102bdb5571496e",
+                "url": "https://api.github.com/repos/symfony/notifier/zipball/878a25dad9678b750ad8e431911e3324b21e4927",
+                "reference": "878a25dad9678b750ad8e431911e3324b21e4927",
                 "shasum": ""
             },
             "require": {
@@ -11917,7 +11917,7 @@
                 "notifier"
             ],
             "support": {
-                "source": "https://github.com/symfony/notifier/tree/v6.4.8"
+                "source": "https://github.com/symfony/notifier/tree/v6.4.9"
             },
             "funding": [
                 {
@@ -11933,7 +11933,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-05-31T14:49:08+00:00"
+            "time": "2024-06-28T07:59:05+00:00"
         },
         {
             "name": "symfony/octopush-notifier",
