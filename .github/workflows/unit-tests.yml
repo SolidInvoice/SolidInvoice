@@ -56,12 +56,14 @@ jobs:
           allowed-endpoints: >
             api.github.com:443
             chromedriver.storage.googleapis.com:443
+            googlechromelabs.github.io:443
             codecov.io:443
             coveralls.io:443
             github.com:443
             objects.githubusercontent.com:443
             packagist.org:443
             registry.yarnpkg.com:443
+            registry.npmjs.org:443
             repo.packagist.org:443
             storage.googleapis.com:443
             uploader.codecov.io:443

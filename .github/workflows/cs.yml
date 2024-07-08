@@ -93,14 +93,11 @@ jobs:
 
       - name: Checkout Code
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
-        with:
-          fetch-depth: 0
 
       - name: Setup PHP
         uses: shivammathur/setup-php@2e947f1f6932d141d076ca441d0e1e881775e95b
         with:
           php-version: 8.3
-          ini-values: date.timezone=Europe/Paris, opcache.enable=1, opcache.enable_cli=1, opcache.memory_consumption=256, opcache.max_accelerated_files=32531, opcache.interned_strings_buffer=8, opcache.validate_timestamps=0, opcache.save_comments=1, opcache.fast_shutdown=0
           extensions: intl, gd, opcache, mysql, pdo_mysql, :xdebug
 
       - uses: ramsey/composer-install@v3
@@ -113,7 +110,7 @@ jobs:
         uses: github/super-linter/slim@4e51915f4a812abf59fed160bb14595c0a38a9e7
         env:
           VALIDATE_ALL_CODEBASE: false
-          DEFAULT_BRANCH: 2.1.x
+          DEFAULT_BRANCH: 2.3.x
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CSS_FILE_NAME: .stylelintrc.json
           VALIDATE_YAML: true
