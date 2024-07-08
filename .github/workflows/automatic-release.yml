@@ -79,13 +79,13 @@ jobs:
             build/dist/SolidInvoice-${{ github.event.milestone.title }}.tar.gz
 
       - name: Login to DockerHub
-        uses: docker/login-action@v3
+        uses: docker/login-action@0d4c9c5ea7693da7b068278f7b52bda2a190a446 # v3.2.0
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
       - name: Build and push standard docker image
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@1a162644f9a7e87d8f4b053101d1d9a712edc18c # v6.3.0
         with:
           push: true
           context: ./
@@ -97,7 +97,7 @@ jobs:
             solidinvoice/solidinvoice:${{ github.event.milestone.title }}
 
       - name: Build and push full docker image
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@1a162644f9a7e87d8f4b053101d1d9a712edc18c # v6.3.0
         with:
           push: true
           context: ./
