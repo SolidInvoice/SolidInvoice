@@ -57,8 +57,6 @@ jobs:
             api.github.com:443
             chromedriver.storage.googleapis.com:443
             googlechromelabs.github.io:443
-            codecov.io:443
-            coveralls.io:443
             github.com:443
             objects.githubusercontent.com:443
             packagist.org:443
@@ -66,7 +64,9 @@ jobs:
             registry.npmjs.org:443
             repo.packagist.org:443
             storage.googleapis.com:443
+            codecov.io:443
             uploader.codecov.io:443
+            cli.codecov.io:443
             bun.sh:443
 
       - name: Checkout
