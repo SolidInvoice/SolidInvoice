@@ -87,8 +87,13 @@ jobs:
             api.github.com:443
             github.com:443
             registry.yarnpkg.com:443
+            registry.npmjs.org:g443
             pipelinesghubeus2.actions.githubusercontent.com:443
+            api.snapcraft.io:443
             bun.sh:443
+            objects.githubusercontent.com:443
+            cdn.jsdelivr.net:443
+            setup-php.com:443
 
       - name: Checkout Code
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
