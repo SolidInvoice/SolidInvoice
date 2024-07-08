@@ -191,7 +191,7 @@ final class Version20200 extends AbstractMigration implements ContainerAwareInte
                         ->createSchemaManager()
                         ->createComparator()
                         ->compareSchemas($originalSchema, $this->toSchema)
-                )  as $sql
+                ) as $sql
         ) {
             $this->addSql($sql);
         }
@@ -279,7 +279,7 @@ final class Version20200 extends AbstractMigration implements ContainerAwareInte
                         ->createSchemaManager()
                         ->createComparator()
                         ->compareSchemas($fromSchema, $schema)
-                )  as $sql
+                ) as $sql
         ) {
             $this->logger->log(LogLevel::DEBUG, '{query}', ['query' => $sql]);
             $this->connection->executeQuery($sql);
