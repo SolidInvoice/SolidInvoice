@@ -76,7 +76,7 @@
     "backgrid-paginator": "^0.3.9",
     "backgrid-select-all": "^0.3.5",
     "bazinga-translator": "^5.0.0",
-    "bootstrap": "^4.6.2",
+    "bootstrap": "^5.3.3",
     "bootstrap-material-datetimepicker": "^2.7.3",
     "handlebars": "^4.7.7",
     "intl-messageformat": "^10.5.0",
