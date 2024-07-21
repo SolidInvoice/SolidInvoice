@@ -19537,22 +19537,22 @@
         },
         {
             "name": "phpstan/phpstan-symfony",
-            "version": "1.4.3",
+            "version": "1.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan-symfony.git",
-                "reference": "af6ae0f4b91bc080265e80776af26da3e5befb28"
+                "reference": "e909a075d69e0d4db262ac3407350ae2c6b6ab5f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-symfony/zipball/af6ae0f4b91bc080265e80776af26da3e5befb28",
-                "reference": "af6ae0f4b91bc080265e80776af26da3e5befb28",
+                "url": "https://api.github.com/repos/phpstan/phpstan-symfony/zipball/e909a075d69e0d4db262ac3407350ae2c6b6ab5f",
+                "reference": "e909a075d69e0d4db262ac3407350ae2c6b6ab5f",
                 "shasum": ""
             },
             "require": {
                 "ext-simplexml": "*",
                 "php": "^7.2 || ^8.0",
-                "phpstan/phpstan": "^1.11"
+                "phpstan/phpstan": "^1.11.7"
             },
             "conflict": {
                 "symfony/framework-bundle": "<3.0"
@@ -19603,9 +19603,9 @@
             "description": "Symfony Framework extensions and rules for PHPStan",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan-symfony/issues",
-                "source": "https://github.com/phpstan/phpstan-symfony/tree/1.4.3"
+                "source": "https://github.com/phpstan/phpstan-symfony/tree/1.4.6"
             },
-            "time": "2024-05-30T15:01:27+00:00"
+            "time": "2024-07-16T11:48:54+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
