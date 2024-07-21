@@ -19363,21 +19363,21 @@
         },
         {
             "name": "phpstan/phpstan-doctrine",
-            "version": "1.4.5",
+            "version": "1.4.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan-doctrine.git",
-                "reference": "c87ee295de7573d9c015c492693e7af7f8cd85dc"
+                "reference": "fa497c5cf8a3f9cd3db8cb4033daf5244793d3e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-doctrine/zipball/c87ee295de7573d9c015c492693e7af7f8cd85dc",
-                "reference": "c87ee295de7573d9c015c492693e7af7f8cd85dc",
+                "url": "https://api.github.com/repos/phpstan/phpstan-doctrine/zipball/fa497c5cf8a3f9cd3db8cb4033daf5244793d3e1",
+                "reference": "fa497c5cf8a3f9cd3db8cb4033daf5244793d3e1",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.2 || ^8.0",
-                "phpstan/phpstan": "^1.11"
+                "phpstan/phpstan": "^1.11.7"
             },
             "conflict": {
                 "doctrine/collections": "<1.0",
@@ -19429,9 +19429,9 @@
             "description": "Doctrine extensions for PHPStan",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan-doctrine/issues",
-                "source": "https://github.com/phpstan/phpstan-doctrine/tree/1.4.5"
+                "source": "https://github.com/phpstan/phpstan-doctrine/tree/1.4.8"
             },
-            "time": "2024-07-02T17:02:12+00:00"
+            "time": "2024-07-16T11:31:01+00:00"
         },
         {
             "name": "phpstan/phpstan-mockery",
