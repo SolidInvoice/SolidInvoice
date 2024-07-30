@@ -55,7 +55,7 @@
     "stylelint": "^16.7.0",
     "stylelint-config-recommended": "^14.0.1",
     "stylelint-config-standard-scss": "^13.1.0",
-    "stylelint-scss": "^5.0.1",
+    "stylelint-scss": "^6.4.1",
     "tom-select": "^2.2.2",
     "ts-loader": "^9.0.0",
     "typescript": "^5.4.2",
