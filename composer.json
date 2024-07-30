@@ -195,7 +195,7 @@
         "symfony/panther": "^2.0",
         "symfony/web-profiler-bundle": "^6.4",
         "symplify/easy-coding-standard": "^12.2",
-        "zenstruck/foundry": "^1.23"
+        "zenstruck/foundry": "^2.0"
     },
     "replace": {
         "symfony/polyfill-php70": "*",
