@@ -14677,16 +14677,16 @@
         },
         {
             "name": "symfony/stimulus-bundle",
-            "version": "v2.18.1",
+            "version": "v2.19.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/stimulus-bundle.git",
-                "reference": "017b60e036c366c8ce0e77864d5aabab436ad73d"
+                "reference": "5e2e1aff3e7cff2875e2f901437543fda9ca9910"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/stimulus-bundle/zipball/017b60e036c366c8ce0e77864d5aabab436ad73d",
-                "reference": "017b60e036c366c8ce0e77864d5aabab436ad73d",
+                "url": "https://api.github.com/repos/symfony/stimulus-bundle/zipball/5e2e1aff3e7cff2875e2f901437543fda9ca9910",
+                "reference": "5e2e1aff3e7cff2875e2f901437543fda9ca9910",
                 "shasum": ""
             },
             "require": {
@@ -14726,7 +14726,7 @@
                 "symfony-ux"
             ],
             "support": {
-                "source": "https://github.com/symfony/stimulus-bundle/tree/v2.18.1"
+                "source": "https://github.com/symfony/stimulus-bundle/tree/v2.19.0"
             },
             "funding": [
                 {
@@ -14742,7 +14742,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-06-11T13:21:54+00:00"
+            "time": "2024-07-30T19:26:23+00:00"
         },
         {
             "name": "symfony/stopwatch",
