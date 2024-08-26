@@ -17439,7 +17439,7 @@
     "packages-dev": [
         {
             "name": "captainhook/captainhook-phar",
-            "version": "5.23.3",
+            "version": "5.23.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/captainhookphp/captainhook-phar.git",
@@ -17493,7 +17493,7 @@
             ],
             "support": {
                 "issues": "https://github.com/captainhookphp/captainhook/issues",
-                "source": "https://github.com/captainhookphp/captainhook-phar/tree/5.23.3"
+                "source": "https://github.com/captainhookphp/captainhook-phar/tree/5.23.4"
             },
             "funding": [
                 {
@@ -19030,16 +19030,16 @@
         },
         {
             "name": "phar-io/gnupg",
-            "version": "1.0.2",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phar-io/gnupg.git",
-                "reference": "3c106d39f62ba3941f830ca24e125cb1b9290a87"
+                "reference": "ed8ab1740ac4e9db99500e7252911f2821357093"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phar-io/gnupg/zipball/3c106d39f62ba3941f830ca24e125cb1b9290a87",
-                "reference": "3c106d39f62ba3941f830ca24e125cb1b9290a87",
+                "url": "https://api.github.com/repos/phar-io/gnupg/zipball/ed8ab1740ac4e9db99500e7252911f2821357093",
+                "reference": "ed8ab1740ac4e9db99500e7252911f2821357093",
                 "shasum": ""
             },
             "require": {
@@ -19072,9 +19072,9 @@
             "description": "Thin GnuPG wrapper class around the gnupg binary, mimicking the pecl/gnupg api",
             "support": {
                 "issues": "https://github.com/phar-io/gnupg/issues",
-                "source": "https://github.com/phar-io/gnupg/tree/1.0.2"
+                "source": "https://github.com/phar-io/gnupg/tree/1.0.3"
             },
-            "time": "2020-11-30T10:21:26+00:00"
+            "time": "2024-08-22T20:45:57+00:00"
         },
         {
             "name": "phar-io/manifest",
