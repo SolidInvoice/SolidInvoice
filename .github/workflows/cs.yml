@@ -113,7 +113,7 @@ jobs:
       - run: bun install
 
       - name: Super-Linter
-        uses: github/super-linter/slim@4e51915f4a812abf59fed160bb14595c0a38a9e7
+        uses: github/super-linter/slim@b807e99ddd37e444d189cfd2c2ca1274d8ae8ef1
         env:
           VALIDATE_ALL_CODEBASE: false
           DEFAULT_BRANCH: 2.3.x
