@@ -16912,21 +16912,21 @@
         },
         {
             "name": "twig/inky-extra",
-            "version": "v3.11.0",
+            "version": "v3.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/inky-extra.git",
-                "reference": "f0e6fce7eeab518b5b18b476bc9a5f19a3359354"
+                "reference": "cf3abb00b329af9a3732d3bd6168a4e16ae8cd9f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/inky-extra/zipball/f0e6fce7eeab518b5b18b476bc9a5f19a3359354",
-                "reference": "f0e6fce7eeab518b5b18b476bc9a5f19a3359354",
+                "url": "https://api.github.com/repos/twigphp/inky-extra/zipball/cf3abb00b329af9a3732d3bd6168a4e16ae8cd9f",
+                "reference": "cf3abb00b329af9a3732d3bd6168a4e16ae8cd9f",
                 "shasum": ""
             },
             "require": {
                 "lorenzo/pinky": "^1.0.5",
-                "php": ">=7.2.5",
+                "php": ">=8.0.2",
                 "symfony/deprecation-contracts": "^2.5|^3",
                 "twig/twig": "^3.0"
             },
@@ -16966,7 +16966,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/twigphp/inky-extra/tree/v3.11.0"
+                "source": "https://github.com/twigphp/inky-extra/tree/v3.12.0"
             },
             "funding": [
                 {
@@ -16978,7 +16978,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-06-21T06:22:31+00:00"
+            "time": "2024-08-10T10:32:24+00:00"
         },
         {
             "name": "twig/markdown-extra",
