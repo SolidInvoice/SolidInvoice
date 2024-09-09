@@ -58,7 +58,7 @@ jobs:
         run: "./scripts/bump_version.sh ${{ github.event.milestone.title }}"
 
       - name: Release
-        uses: laminas/automatic-releases@12dde9b998d13e6721e5d000cf0c6a513ebdb98b
+        uses: laminas/automatic-releases@a6e41a9a66b415667863ecbf06633181fcd9dd77
         with:
           command-name: laminas:automatic-releases:release
         env:
@@ -108,7 +108,7 @@ jobs:
             solidinvoice/solidinvoice:${{ github.event.milestone.title }}-full
 
       - name: Create Merge-Up Pull Request
-        uses: laminas/automatic-releases@12dde9b998d13e6721e5d000cf0c6a513ebdb98b
+        uses: laminas/automatic-releases@a6e41a9a66b415667863ecbf06633181fcd9dd77
         with:
           command-name: laminas:automatic-releases:create-merge-up-pull-request
         env:
@@ -118,7 +118,7 @@ jobs:
           "GIT_AUTHOR_EMAIL": ${{ secrets.GIT_AUTHOR_EMAIL }}
 
       - name: Create new milestones
-        uses: laminas/automatic-releases@12dde9b998d13e6721e5d000cf0c6a513ebdb98b
+        uses: laminas/automatic-releases@a6e41a9a66b415667863ecbf06633181fcd9dd77
         with:
           command-name: laminas:automatic-releases:create-milestones
         env:
