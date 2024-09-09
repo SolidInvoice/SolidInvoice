@@ -16919,23 +16919,23 @@
         },
         {
             "name": "twig/inky-extra",
-            "version": "v3.12.0",
+            "version": "v3.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/inky-extra.git",
-                "reference": "cf3abb00b329af9a3732d3bd6168a4e16ae8cd9f"
+                "reference": "60c92c2a435ccd95d7a852229f01098aaf7fbced"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/inky-extra/zipball/cf3abb00b329af9a3732d3bd6168a4e16ae8cd9f",
-                "reference": "cf3abb00b329af9a3732d3bd6168a4e16ae8cd9f",
+                "url": "https://api.github.com/repos/twigphp/inky-extra/zipball/60c92c2a435ccd95d7a852229f01098aaf7fbced",
+                "reference": "60c92c2a435ccd95d7a852229f01098aaf7fbced",
                 "shasum": ""
             },
             "require": {
                 "lorenzo/pinky": "^1.0.5",
                 "php": ">=8.0.2",
                 "symfony/deprecation-contracts": "^2.5|^3",
-                "twig/twig": "^3.0"
+                "twig/twig": "^3.13|^4.0"
             },
             "require-dev": {
                 "symfony/phpunit-bridge": "^6.4|^7.0"
@@ -16973,7 +16973,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/twigphp/inky-extra/tree/v3.12.0"
+                "source": "https://github.com/twigphp/inky-extra/tree/v3.13.0"
             },
             "funding": [
                 {
@@ -16985,7 +16985,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-08-10T10:32:24+00:00"
+            "time": "2024-09-03T13:08:40+00:00"
         },
         {
             "name": "twig/markdown-extra",
