@@ -5352,17 +5352,17 @@
         },
         {
             "name": "payum/klarna-invoice",
-            "version": "1.7.4",
+            "version": "1.7.5",
             "target-dir": "Payum/Klarna/Invoice",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/KlarnaInvoice.git",
-                "reference": "e53348d6f3bbc15a44d74f5f83f1d14cfbe5d0be"
+                "reference": "0ab4481cf6bc75382270030ac369d436d2ebf6c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/KlarnaInvoice/zipball/e53348d6f3bbc15a44d74f5f83f1d14cfbe5d0be",
-                "reference": "e53348d6f3bbc15a44d74f5f83f1d14cfbe5d0be",
+                "url": "https://api.github.com/repos/Payum/KlarnaInvoice/zipball/0ab4481cf6bc75382270030ac369d436d2ebf6c9",
+                "reference": "0ab4481cf6bc75382270030ac369d436d2ebf6c9",
                 "shasum": ""
             },
             "require": {
@@ -5410,9 +5410,9 @@
                 "payment"
             ],
             "support": {
-                "source": "https://github.com/Payum/KlarnaInvoice/tree/1.7.4"
+                "source": "https://github.com/Payum/KlarnaInvoice/tree/1.7.5"
             },
-            "time": "2023-12-07T11:06:53+00:00"
+            "time": "2024-04-01T15:15:02+00:00"
         },
         {
             "name": "payum/offline",
@@ -6222,16 +6222,16 @@
         },
         {
             "name": "phpxmlrpc/phpxmlrpc",
-            "version": "4.10.3",
+            "version": "4.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/gggeek/phpxmlrpc.git",
-                "reference": "6725f215cd7d7c7d36c1d773aa89902aef2da67c"
+                "reference": "e50480272493d90dd4aca9fb861a9b9ce0ef4729"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gggeek/phpxmlrpc/zipball/6725f215cd7d7c7d36c1d773aa89902aef2da67c",
-                "reference": "6725f215cd7d7c7d36c1d773aa89902aef2da67c",
+                "url": "https://api.github.com/repos/gggeek/phpxmlrpc/zipball/e50480272493d90dd4aca9fb861a9b9ce0ef4729",
+                "reference": "e50480272493d90dd4aca9fb861a9b9ce0ef4729",
                 "shasum": ""
             },
             "require": {
@@ -6276,9 +6276,9 @@
             ],
             "support": {
                 "issues": "https://github.com/gggeek/phpxmlrpc/issues",
-                "source": "https://github.com/gggeek/phpxmlrpc/tree/4.10.3"
+                "source": "https://github.com/gggeek/phpxmlrpc/tree/4.11.0"
             },
-            "time": "2024-04-23T10:50:06+00:00"
+            "time": "2024-09-07T14:44:05+00:00"
         },
         {
             "name": "psr/cache",
