@@ -5546,7 +5546,7 @@
         },
         {
             "name": "payum/paypal-express-checkout-nvp",
-            "version": "1.7.4",
+            "version": "1.7.5",
             "target-dir": "Payum/Paypal/ExpressCheckout/Nvp",
             "source": {
                 "type": "git",
@@ -5607,7 +5607,7 @@
                 "recurring payment"
             ],
             "support": {
-                "source": "https://github.com/Payum/PaypalExpressCheckoutNvp/tree/1.7.4"
+                "source": "https://github.com/Payum/PaypalExpressCheckoutNvp/tree/1.7.5"
             },
             "time": "2023-12-07T11:06:53+00:00"
         },
