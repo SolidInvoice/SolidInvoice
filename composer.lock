@@ -5102,17 +5102,17 @@
         },
         {
             "name": "payum/core",
-            "version": "1.7.4",
+            "version": "1.7.5",
             "target-dir": "Payum/Core",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/Core.git",
-                "reference": "77f621c2bec49dcb2c148b5a01e07d074564e283"
+                "reference": "b7e4dce4ba42cb272b22c2e9f119956b2c5708fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/Core/zipball/77f621c2bec49dcb2c148b5a01e07d074564e283",
-                "reference": "77f621c2bec49dcb2c148b5a01e07d074564e283",
+                "url": "https://api.github.com/repos/Payum/Core/zipball/b7e4dce4ba42cb272b22c2e9f119956b2c5708fc",
+                "reference": "b7e4dce4ba42cb272b22c2e9f119956b2c5708fc",
                 "shasum": ""
             },
             "require": {
@@ -5214,9 +5214,9 @@
                 "withdrawal"
             ],
             "support": {
-                "source": "https://github.com/Payum/Core/tree/1.7.4"
+                "source": "https://github.com/Payum/Core/tree/1.7.5"
             },
-            "time": "2023-11-06T09:43:01+00:00"
+            "time": "2024-09-10T05:31:41+00:00"
         },
         {
             "name": "payum/iso4217",
@@ -5352,17 +5352,17 @@
         },
         {
             "name": "payum/klarna-invoice",
-            "version": "1.7.4",
+            "version": "1.7.5",
             "target-dir": "Payum/Klarna/Invoice",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Payum/KlarnaInvoice.git",
-                "reference": "e53348d6f3bbc15a44d74f5f83f1d14cfbe5d0be"
+                "reference": "0ab4481cf6bc75382270030ac369d436d2ebf6c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Payum/KlarnaInvoice/zipball/e53348d6f3bbc15a44d74f5f83f1d14cfbe5d0be",
-                "reference": "e53348d6f3bbc15a44d74f5f83f1d14cfbe5d0be",
+                "url": "https://api.github.com/repos/Payum/KlarnaInvoice/zipball/0ab4481cf6bc75382270030ac369d436d2ebf6c9",
+                "reference": "0ab4481cf6bc75382270030ac369d436d2ebf6c9",
                 "shasum": ""
             },
             "require": {
@@ -5410,9 +5410,9 @@
                 "payment"
             ],
             "support": {
-                "source": "https://github.com/Payum/KlarnaInvoice/tree/1.7.4"
+                "source": "https://github.com/Payum/KlarnaInvoice/tree/1.7.5"
             },
-            "time": "2023-12-07T11:06:53+00:00"
+            "time": "2024-04-01T15:15:02+00:00"
         },
         {
             "name": "payum/offline",
@@ -6222,16 +6222,16 @@
         },
         {
             "name": "phpxmlrpc/phpxmlrpc",
-            "version": "4.10.3",
+            "version": "4.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/gggeek/phpxmlrpc.git",
-                "reference": "6725f215cd7d7c7d36c1d773aa89902aef2da67c"
+                "reference": "e50480272493d90dd4aca9fb861a9b9ce0ef4729"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gggeek/phpxmlrpc/zipball/6725f215cd7d7c7d36c1d773aa89902aef2da67c",
-                "reference": "6725f215cd7d7c7d36c1d773aa89902aef2da67c",
+                "url": "https://api.github.com/repos/gggeek/phpxmlrpc/zipball/e50480272493d90dd4aca9fb861a9b9ce0ef4729",
+                "reference": "e50480272493d90dd4aca9fb861a9b9ce0ef4729",
                 "shasum": ""
             },
             "require": {
@@ -6276,9 +6276,9 @@
             ],
             "support": {
                 "issues": "https://github.com/gggeek/phpxmlrpc/issues",
-                "source": "https://github.com/gggeek/phpxmlrpc/tree/4.10.3"
+                "source": "https://github.com/gggeek/phpxmlrpc/tree/4.11.0"
             },
-            "time": "2024-04-23T10:50:06+00:00"
+            "time": "2024-09-07T14:44:05+00:00"
         },
         {
             "name": "psr/cache",
@@ -6698,16 +6698,16 @@
         },
         {
             "name": "psr/log",
-            "version": "3.0.1",
+            "version": "3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "79dff0b268932c640297f5208d6298f71855c03e"
+                "reference": "f16e1d5863e37f8d8c2a01719f5b34baa2b714d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/79dff0b268932c640297f5208d6298f71855c03e",
-                "reference": "79dff0b268932c640297f5208d6298f71855c03e",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/f16e1d5863e37f8d8c2a01719f5b34baa2b714d3",
+                "reference": "f16e1d5863e37f8d8c2a01719f5b34baa2b714d3",
                 "shasum": ""
             },
             "require": {
@@ -6742,9 +6742,9 @@
                 "psr-3"
             ],
             "support": {
-                "source": "https://github.com/php-fig/log/tree/3.0.1"
+                "source": "https://github.com/php-fig/log/tree/3.0.2"
             },
-            "time": "2024-08-21T13:31:24+00:00"
+            "time": "2024-09-11T13:17:53+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
