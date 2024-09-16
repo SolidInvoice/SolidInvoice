@@ -28,7 +28,7 @@
     "@babel/eslint-parser": "^7.22.5",
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
     "@babel/preset-env": "^7.22.4",
-    "@codecov/webpack-plugin": "^0.0.1-beta.6",
+    "@codecov/webpack-plugin": "^1.0.1",
     "@hotwired/stimulus": "^3.2.2",
     "@symfony/stimulus-bundle": "file:vendor/symfony/stimulus-bundle/assets",
     "@symfony/ux-autocomplete": "file:vendor/symfony/ux-autocomplete/assets",
