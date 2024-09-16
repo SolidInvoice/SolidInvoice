@@ -5288,7 +5288,7 @@
         },
         {
             "name": "payum/klarna-checkout",
-            "version": "1.7.4",
+            "version": "1.7.5",
             "target-dir": "Payum/Klarna/Checkout",
             "source": {
                 "type": "git",
@@ -5346,7 +5346,7 @@
                 "payment"
             ],
             "support": {
-                "source": "https://github.com/Payum/KlarnaCheckout/tree/1.7.4"
+                "source": "https://github.com/Payum/KlarnaCheckout/tree/1.7.5"
             },
             "time": "2023-11-06T09:43:01+00:00"
         },
