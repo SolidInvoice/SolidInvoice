@@ -5416,7 +5416,7 @@
         },
         {
             "name": "payum/offline",
-            "version": "1.7.4",
+            "version": "1.7.5",
             "target-dir": "Payum/Offline",
             "source": {
                 "type": "git",
@@ -5474,7 +5474,7 @@
                 "payment"
             ],
             "support": {
-                "source": "https://github.com/Payum/Offline/tree/1.7.4"
+                "source": "https://github.com/Payum/Offline/tree/1.7.5"
             },
             "time": "2023-11-06T09:43:01+00:00"
         },
