@@ -9518,16 +9518,16 @@
         },
         {
             "name": "symfony/form",
-            "version": "v6.4.11",
+            "version": "v6.4.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/form.git",
-                "reference": "330d337558ecd77c664ae71e99fbc8dbc4032246"
+                "reference": "5037c00071b193182eae4088fbd1801793b326f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/form/zipball/330d337558ecd77c664ae71e99fbc8dbc4032246",
-                "reference": "330d337558ecd77c664ae71e99fbc8dbc4032246",
+                "url": "https://api.github.com/repos/symfony/form/zipball/5037c00071b193182eae4088fbd1801793b326f4",
+                "reference": "5037c00071b193182eae4088fbd1801793b326f4",
                 "shasum": ""
             },
             "require": {
@@ -9595,7 +9595,7 @@
             "description": "Allows to easily create, process and reuse HTML forms",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/form/tree/v6.4.11"
+                "source": "https://github.com/symfony/form/tree/v6.4.12"
             },
             "funding": [
                 {
@@ -9611,7 +9611,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-08-12T09:55:28+00:00"
+            "time": "2024-09-20T08:15:52+00:00"
         },
         {
             "name": "symfony/framework-bundle",
@@ -15635,16 +15635,16 @@
         },
         {
             "name": "symfony/ux-dropzone",
-            "version": "v2.19.3",
+            "version": "v2.20.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-dropzone.git",
-                "reference": "aacd654a9b344d574fa55d572fea9330aa47ece5"
+                "reference": "4105d4fff54dcc1ee13b6e8aac9a2cf6391a8e64"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-dropzone/zipball/aacd654a9b344d574fa55d572fea9330aa47ece5",
-                "reference": "aacd654a9b344d574fa55d572fea9330aa47ece5",
+                "url": "https://api.github.com/repos/symfony/ux-dropzone/zipball/4105d4fff54dcc1ee13b6e8aac9a2cf6391a8e64",
+                "reference": "4105d4fff54dcc1ee13b6e8aac9a2cf6391a8e64",
                 "shasum": ""
             },
             "require": {
@@ -15694,7 +15694,7 @@
                 "symfony-ux"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-dropzone/tree/v2.19.3"
+                "source": "https://github.com/symfony/ux-dropzone/tree/v2.20.0"
             },
             "funding": [
                 {
@@ -15710,7 +15710,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-08-14T04:55:38+00:00"
+            "time": "2024-09-19T15:11:48+00:00"
         },
         {
             "name": "symfony/ux-live-component",
