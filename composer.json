@@ -31,7 +31,7 @@
         "composer/package-versions-deprecated": "^1.8",
         "defuse/php-encryption": "^2.2",
         "doctrine/annotations": "^2.0",
-        "doctrine/collections": "^1.5",
+        "doctrine/collections": "^2.2",
         "doctrine/common": "^3.4",
         "doctrine/dbal": "^3.4",
         "doctrine/doctrine-bundle": "^2.7",
