@@ -34,7 +34,7 @@
     "@symfony/ux-autocomplete": "file:vendor/symfony/ux-autocomplete/assets",
     "@symfony/ux-dropzone": "file:vendor/symfony/ux-dropzone/assets",
     "@symfony/ux-live-component": "file:vendor/symfony/ux-live-component/assets",
-    "@symfony/webpack-encore": "^4.6.0",
+    "@symfony/webpack-encore": "^5.0.0",
     "@types/jquery": "^3.5.29",
     "cloudinary": "^2.1.0",
     "eslint": "^8.52.0",
