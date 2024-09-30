@@ -35,7 +35,7 @@ jobs:
           bun.sh:443
 
     - name: Checkout repository
-      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
+      uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@294a9d92911152fe08befb9ec03e240add280cb3
@@ -78,7 +78,7 @@ jobs:
   #          schemastore.org:443
   #
   #    - name: Checkout repository
-  #      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
+  #      uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938
   #
   #    - name: 'Qodana Scan'
   #      uses: JetBrains/qodana-action@61b94e7e3a716dcb9e2030cfd79cd46149d56c26
