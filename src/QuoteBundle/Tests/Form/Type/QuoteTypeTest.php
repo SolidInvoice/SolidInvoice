@@ -34,7 +34,7 @@ class QuoteTypeTest extends FormTestCase
             'client' => null,
             'discount' => 12,
             'quoteId' => '10',
-            'items' => [],
+            'lines' => [],
             'terms' => '',
             'notes' => '',
             'total' => 0,

@@ -1,5 +1,5 @@
 <html><body>
-<div id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="CreateInvoice" data-live-url-value="/_components/CreateInvoice" data-live-props-value='{"formData":[],"formName":"invoice","invoice":{"client":"","discount":{"type":"percentage","value":0},"items":[{"description":"","price":"100.00","qty":"1","tax":""}],"invoiceId":"1","terms":"","notes":"","total":0,"baseTotal":0,"tax":0,"invoiceDate":"2021-01-01","due":"","_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"CZ0f49fk8777K9xDZ2QSdYSz63ubrkxK4Y5\/yAADq8c="}' data-live-csrf-value="">
+<div id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="CreateInvoice" data-live-url-value="/_components/CreateInvoice" data-live-props-value='{"formData":[],"formName":"invoice","invoice":{"client":"","discount":{"type":"percentage","value":0},"lines":[{"description":"","price":"100.00","qty":"1","tax":""}],"invoiceId":"1","terms":"","notes":"","total":0,"baseTotal":0,"tax":0,"invoiceDate":"2021-01-01","due":"","_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"ofKte7XE1lbkd39FJdD4PnJwzfTO\/yAvVe6vXtN7f\/k="}' data-live-csrf-value="">
     
     <form name="invoice" method="post" data-model="on(change)|*">
     <div class="row">
@@ -101,7 +101,7 @@
                                                                                                     </tr>
 <tr>
                                                     <td class="column-description">
-                                                        <textarea id="invoice_items_0_description" name="invoice[items][0][description]" class="input-medium invoice-item-name form-control"></textarea>
+                                                        <textarea id="invoice_lines_0_description" name="invoice[lines][0][description]" class="input-medium invoice-item-name form-control"></textarea>
                                                         
                                                     </td>
                                                     <td class="column-price">
@@ -109,16 +109,16 @@
 <div class="input-group-prepend">
                     <span class="input-group-text">$ </span>
                 </div>
-<input type="text" id="invoice_items_0_price" name="invoice[items][0][price]" class="input-small invoice-item-price form-control" value="100.00">
+<input type="text" id="invoice_lines_0_price" name="invoice[lines][0][price]" class="input-small invoice-item-price form-control" value="100.00">
 </div>
                                                         
                                                     </td>
                                                     <td class="column-qty">
-                                                        <input type="text" id="invoice_items_0_qty" name="invoice[items][0][qty]" class="input-mini invoice-item-qty form-control" inputmode="decimal" value="1">
+                                                        <input type="text" id="invoice_lines_0_qty" name="invoice[lines][0][qty]" class="input-mini invoice-item-qty form-control" inputmode="decimal" value="1">
                                                         
                                                     </td>
                                                                                                             <td class="column-total text-right">
-                                                            <select id="invoice_items_0_tax" name="invoice[items][0][tax]" class="input-mini invoice-item-tax form-control"><option value="">No Tax</option>
+                                                            <select id="invoice_lines_0_tax" name="invoice[lines][0][tax]" class="input-mini invoice-item-tax form-control"><option value="">No Tax</option>
 <option value="0f9e91e6-06ba-11ef-a331-5a2cf21a5680">20% VAT (inc)</option></select>
                                                             
                                                         </td>
@@ -179,7 +179,7 @@
 
                         <div class="row">
                             <div class="col add-item-col">
-                                <button type="button" id="invoice_items_add" name="invoice[items][add]" data-action="live#action" data-live-action-param="addCollectionItem" data-live-name-param="invoice[items]" class="add-item btn">+ Add Item</button>
+                                <button type="button" id="invoice_lines_add" name="invoice[lines][add]" data-action="live#action" data-live-action-param="addCollectionItem" data-live-name-param="invoice[lines]" class="add-item btn">+ Add Item</button>
                             </div>
                         </div>
 

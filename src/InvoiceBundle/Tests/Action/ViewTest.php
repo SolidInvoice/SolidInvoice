@@ -71,7 +71,7 @@ final class ViewTest extends KernelTestCase
                 'balance' => 100,
                 'baseTotal' => 100,
                 'created' => new DateTimeImmutable('2021-09-01'),
-                'items' => [
+                'lines' => [
                     (new Line())
                         ->setDescription('Test Item')
                         ->setPrice(100)
@@ -134,7 +134,7 @@ final class ViewTest extends KernelTestCase
                 'balance' => 100,
                 'baseTotal' => 100,
                 'created' => new DateTimeImmutable('2021-09-01'),
-                'items' => [
+                'lines' => [
                     (new Line())
                         ->setDescription('Test Item')
                         ->setPrice(100)
