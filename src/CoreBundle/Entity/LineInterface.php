@@ -17,7 +17,7 @@ use Brick\Math\BigNumber;
 use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\TaxBundle\Entity\Tax;
 
-interface ItemInterface
+interface LineInterface
 {
     public function getId(): UuidInterface;
 

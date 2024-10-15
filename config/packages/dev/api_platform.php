@@ -11,8 +11,8 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use Symfony\Config\MakerConfig;
+use Symfony\Config\ApiPlatformConfig;
 
-return static function (MakerConfig $config): void {
-    $config->rootNamespace('SolidInvoice');
+return static function (ApiPlatformConfig $config): void {
+    $config->enableProfiler(true);
 };

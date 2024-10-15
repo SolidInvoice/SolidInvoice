@@ -69,7 +69,7 @@ class InvoiceType extends AbstractType
         );
 
         $builder->add(
-            'items',
+            'lines',
             LiveCollectionType::class,
             [
                 'entry_type' => ItemType::class,

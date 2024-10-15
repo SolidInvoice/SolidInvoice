@@ -11,6 +11,8 @@
 
 namespace SolidInvoice\CoreBundle\Doctrine\Type;
 
+use Brick\Math\BigDecimal;
+use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
 use Brick\Math\RoundingMode;
@@ -40,7 +42,7 @@ final class BigIntegerType extends Type
         }
 
         try {
-            return BigNumber::of($value);
+            return BigInteger::of($value);
         } catch (MathException $e) {
             throw ConversionException::conversionFailedSerialization($value, $this->getName(), $e::class, $e);
         }
@@ -54,6 +56,16 @@ final class BigIntegerType extends Type
 
         if ($value instanceof BigNumber) {
             try {
+
+                if (($value instanceof BigDecimal) && $value->getScale() > 0) {
+                    return $value->multipliedBy(
+                        100
+                        /*str_pad('1', $value->getScale() + 1, '0', STR_PAD_RIGHT)*/
+                    )
+                        ->toScale(0, RoundingMode::HALF_EVEN)
+                        ->toInt();
+                }
+
                 return $value->toScale(0, RoundingMode::HALF_EVEN)->toInt();
             } catch (MathException $e) {
                 throw ConversionException::conversionFailedSerialization($value, $this->getName(), $e::class, $e);

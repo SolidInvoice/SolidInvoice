@@ -30,7 +30,9 @@ trait EnsureApplicationInstalled
      */
     public function installApplication(): void
     {
-        self::bootKernel();
+        if (! static::$booted) {
+            self::bootKernel();
+        }
 
         $_SERVER['locale'] = $_ENV['locale'] = 'en_US';
         $_SERVER['installed'] = $_ENV['installed'] = date(DateTimeInterface::ATOM);

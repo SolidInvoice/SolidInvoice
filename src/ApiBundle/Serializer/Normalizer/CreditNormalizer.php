@@ -13,30 +13,31 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Serializer\Normalizer;
 
-use InvalidArgumentException;
 use SolidInvoice\ClientBundle\Entity\Credit;
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @see \SolidInvoice\ApiBundle\Tests\Serializer\Normalizer\CreditNormalizerTest
  */
-class CreditNormalizer implements NormalizerInterface, DenormalizerInterface
+#[AutoconfigureTag('serializer.normalizer')]
+class CreditNormalizer implements NormalizerAwareInterface, NormalizerInterface, DenormalizerAwareInterface, DenormalizerInterface
 {
-    private readonly DenormalizerInterface|NormalizerInterface $normalizer;
-
-    public function __construct(NormalizerInterface $normalizer)
-    {
-        if (! $normalizer instanceof DenormalizerInterface) {
-            throw new InvalidArgumentException('The normalizer must implement ' . DenormalizerInterface::class);
-        }
-
-        $this->normalizer = $normalizer;
-    }
+    use NormalizerAwareTrait;
+    use DenormalizerAwareTrait;
 
     public function denormalize($data, $type, $format = null, array $context = [])
     {
-        return $this->normalizer->denormalize($data, $type, $format, $context);
+        if ($type === Credit::class) {
+            return (new Credit())->setValue($data);
+        }
+
+        return $this->denormalizer->denormalize($data, $type, $format, $context);
     }
 
     public function supportsDenormalization($data, $type, $format = null): bool
@@ -44,10 +45,10 @@ class CreditNormalizer implements NormalizerInterface, DenormalizerInterface
         return Credit::class === $type;
     }
 
-    public function normalize($object, $format = null, array $context = []): object
+    public function normalize($object, $format = null, array $context = []): float
     {
         /** @var Credit $object */
-        return $object->getValue();
+        return $this->normalizer->normalize($object->getValue(), $format, $context);
     }
 
     public function supportsNormalization($data, $format = null): bool

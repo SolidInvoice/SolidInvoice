@@ -13,6 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
@@ -22,9 +29,63 @@ use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Stringable;
 use Symfony\Component\Serializer\Annotation as Serialize;
+use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 
 #[ORM\Table(name: AdditionalContactDetail::TABLE_NAME)]
 #[ORM\Entity]
+/*
+AdditionalContactDetail has a deeply nested URL which requires a client id and contact id.
+This does not work well with API Platform, so this process needs to be revisited.
+
+#[ApiResource(
+    uriTemplate: '/clients/{clientId}/contacts/{contactId}/additional_details',
+    operations: [ new GetCollection(), new Post() ],
+    uriVariables: [
+        'clientId' => new Link(
+            fromProperty: 'contact.client',
+            toProperty: 'contact.client',
+            fromClass: Contact::class,
+        ),
+        'contactId' => new Link(
+            fromProperty: 'additionalContactDetails',
+            fromClass: Contact::class,
+        ),
+    ],
+    normalizationContext: [
+        // 'groups' => ['contact_type_id'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ],
+    denormalizationContext: [
+        // 'groups' => ['contact_type_id'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ]
+)]
+#[ApiResource(
+    uriTemplate: '/clients/{clientId}/contacts/{contactId}/additional_details/{id}',
+    operations: [ new Get(), new Patch(), new Put() ],
+    uriVariables: [
+        'clientId' => new Link(
+            fromProperty: 'contact.client',
+            toProperty: 'contact.client',
+            fromClass: Contact::class,
+        ),
+        'contactId' => new Link(
+            fromProperty: 'additionalContactDetails',
+            fromClass: Contact::class,
+        ),
+        'id' => new Link(
+            fromClass: AdditionalContactDetail::class,
+        ),
+    ],
+    normalizationContext: [
+        // 'groups' => ['contact_type_id'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ],
+    denormalizationContext: [
+        // 'groups' => ['contact_type_id'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ]
+)]*/
 class AdditionalContactDetail implements Stringable
 {
     final public const TABLE_NAME = 'contact_details';
@@ -36,17 +97,17 @@ class AdditionalContactDetail implements Stringable
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
-    #[Serialize\Groups(['client_api', 'contact_api'])]
-    protected ?UuidInterface $id = null;
+    #[Serialize\Groups(['contact_type_id'])]
+    private ?UuidInterface $id = null;
 
     #[ORM\Column(name: 'value', type: Types::TEXT)]
-    #[Serialize\Groups(['client_api', 'contact_api'])]
-    protected ?string $value = null;
+    #[Serialize\Groups(['contact_type_id'])]
+    private ?string $value = null;
 
     #[ORM\ManyToOne(targetEntity: ContactType::class, inversedBy: 'details')]
     #[ORM\JoinColumn(name: 'contact_type_id')]
-    #[Serialize\Groups(['client_api', 'contact_api'])]
-    protected ?ContactType $type = null;
+    #[Serialize\Groups(['contact_type_id'])]
+    private ?ContactType $type = null;
 
     #[ORM\ManyToOne(targetEntity: Contact::class, inversedBy: 'additionalContactDetails')]
     #[ORM\JoinColumn(name: 'contact_id')]
@@ -70,12 +131,12 @@ class AdditionalContactDetail implements Stringable
         return $this;
     }
 
-    public function getType(): ?ContactType
+    public function getType(): ContactType
     {
         return $this->type;
     }
 
-    public function setType(?ContactType $type): self
+    public function setType(ContactType $type): self
     {
         $this->type = $type;
 

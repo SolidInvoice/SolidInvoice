@@ -15,7 +15,7 @@ namespace SolidInvoice\QuoteBundle\Cloner;
 
 use Brick\Math\Exception\MathException;
 use Carbon\Carbon;
-use SolidInvoice\QuoteBundle\Entity\Item;
+use SolidInvoice\QuoteBundle\Entity\Line;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Model\Graph;
 use SolidInvoice\TaxBundle\Entity\Tax;
@@ -37,7 +37,7 @@ final class QuoteCloner
      */
     public function clone(Quote $quote): Quote
     {
-        // We don't use 'clone', since cloning a quote will clone all the item id's and nested values.
+        // We don't use 'clone', since cloning a quote will clone all the line id's and nested values.
         // We rather set it manually
         $newQuote = new Quote();
 
@@ -56,7 +56,7 @@ final class QuoteCloner
             $newQuote->setTax($quote->getTax());
         }
 
-        array_map(static fn (Item $item): Quote => $newQuote->addItem($item), iterator_to_array($this->addItems($quote, $now)));
+        array_map(static fn (Line $line): Quote => $newQuote->addLine($line), iterator_to_array($this->addLines($quote, $now)));
 
         $this->quoteStateMachine->apply($newQuote, Graph::TRANSITION_NEW);
 
@@ -66,21 +66,21 @@ final class QuoteCloner
     /**
      * @throws MathException
      */
-    private function addItems(Quote $quote, Carbon $now): Traversable
+    private function addLines(Quote $quote, Carbon $now): Traversable
     {
-        foreach ($quote->getItems() as $item) {
-            $invoiceItem = new Item();
-            $invoiceItem->setCreated($now);
-            $invoiceItem->setTotal($item->getTotal());
-            $invoiceItem->setDescription($item->getDescription());
-            $invoiceItem->setPrice($item->getPrice());
-            $invoiceItem->setQty($item->getQty());
+        foreach ($quote->getLines() as $line) {
+            $invoiceLine = new Line();
+            $invoiceLine->setCreated($now);
+            $invoiceLine->setTotal($line->getTotal());
+            $invoiceLine->setDescription($line->getDescription());
+            $invoiceLine->setPrice($line->getPrice());
+            $invoiceLine->setQty($line->getQty());
 
-            if ($item->getTax() instanceof Tax) {
-                $invoiceItem->setTax($item->getTax());
+            if ($line->getTax() instanceof Tax) {
+                $invoiceLine->setTax($line->getTax());
             }
 
-            yield $invoiceItem;
+            yield $invoiceLine;
         }
     }
 }

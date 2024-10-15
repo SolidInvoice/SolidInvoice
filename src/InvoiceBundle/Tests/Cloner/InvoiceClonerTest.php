@@ -23,7 +23,7 @@ use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\InvoiceBundle\Cloner\InvoiceCloner;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
-use SolidInvoice\InvoiceBundle\Entity\Item;
+use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\SettingsBundle\SystemConfig;
@@ -49,7 +49,7 @@ class InvoiceClonerTest extends TestCase
         $tax->setRate(14.00);
         $tax->setType(Tax::TYPE_INCLUSIVE);
 
-        $item = new Item();
+        $item = new Line();
         $item->setTax($tax);
         $item->setDescription('Item Description');
         $item->setCreated(new DateTime('now'));
@@ -68,7 +68,7 @@ class InvoiceClonerTest extends TestCase
         $invoice->setTerms('Terms');
         $invoice->setTotal(987);
         $invoice->setClient($client);
-        $invoice->addItem($item);
+        $invoice->addLine($item);
 
         $invoiceManager = M::mock(InvoiceManager::class);
         $invoiceManager->shouldReceive('create');
@@ -111,10 +111,10 @@ class InvoiceClonerTest extends TestCase
         self::assertNull($newInvoice->getId());
         self::assertNotEquals($invoice->getInvoiceId(), $newInvoice->getInvoiceId());
 
-        self::assertCount(1, $newInvoice->getItems());
+        self::assertCount(1, $newInvoice->getLines());
 
-        $invoiceItem = $newInvoice->getItems();
-        self::assertInstanceOf(Item::class, $invoiceItem[0]);
+        $invoiceItem = $newInvoice->getLines();
+        self::assertInstanceOf(Line::class, $invoiceItem[0]);
 
         self::assertSame($item->getTax(), $invoiceItem[0]->getTax());
         self::assertSame($item->getDescription(), $invoiceItem[0]->getDescription());
@@ -137,7 +137,7 @@ class InvoiceClonerTest extends TestCase
         $tax->setRate(14.00);
         $tax->setType(Tax::TYPE_INCLUSIVE);
 
-        $item = new Item();
+        $item = new Line();
         $item->setTax($tax);
         $item->setDescription('Item Description');
         $item->setCreated(new DateTime('now'));
@@ -182,7 +182,7 @@ class InvoiceClonerTest extends TestCase
         self::assertCount(1, $newInvoice->getItems());
 
         $invoiceItem = $newInvoice->getItems();
-        self::assertInstanceOf(Item::class, $invoiceItem[0]);
+        self::assertInstanceOf(Line::class, $invoiceItem[0]);
 
         self::assertSame($item->getTax(), $invoiceItem[0]->getTax());
         self::assertSame($item->getDescription(), $invoiceItem[0]->getDescription());

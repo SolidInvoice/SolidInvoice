@@ -19,7 +19,6 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Persistence\ObjectManager;
 use Money\Currency;
 use SolidInvoice\ClientBundle\Entity\Client;
-use SolidInvoice\ClientBundle\Entity\Credit;
 use SolidInvoice\ClientBundle\Model\Status;
 use SolidInvoice\ClientBundle\Notification\ClientCreateNotification;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
@@ -62,10 +61,6 @@ final class ClientListener implements EventSubscriberInterface
             if ($entity->getCurrencyCode() === null) {
                 $entity->setCurrency($this->config->getCurrency());
             }
-
-            $credit = new Credit();
-            $credit->setClient($entity);
-            $entity->setCredit($credit);
         }
     }
 

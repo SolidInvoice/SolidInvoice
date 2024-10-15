@@ -41,13 +41,13 @@ class ContactType implements Stringable
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
-    #[Serialize\Groups(['client_api', 'contact_api'])]
+    #[Serialize\Groups(['contact_api'])]
     private ?UuidInterface $id = null;
 
     #[ORM\Column(name: 'name', type: Types::STRING, length: 45)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 45)]
-    #[Serialize\Groups(['client_api', 'contact_api'])]
+    #[Serialize\Groups(['contact_api'])]
     private ?string $name = null;
 
     #[ORM\Column(name: 'type', type: Types::STRING, length: 45)]

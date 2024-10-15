@@ -15,6 +15,12 @@ namespace SolidInvoice\QuoteBundle\Entity;
 
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
 use Brick\Math\BigDecimal;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
@@ -33,14 +39,15 @@ use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use SolidInvoice\CoreBundle\Entity\Discount;
-use SolidInvoice\CoreBundle\Entity\ItemInterface;
+use SolidInvoice\CoreBundle\Entity\LineInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
 use SolidInvoice\QuoteBundle\Traits\QuoteStatusTrait;
-use Symfony\Component\Serializer\Annotation as Serialize;
+use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: Quote::TABLE_NAME)]
@@ -48,11 +55,52 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\HasLifecycleCallbacks]
 #[ApiResource(
     normalizationContext: [
-        'groups' => ['quote_api']
+        'groups' => ['quote_api:read'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
     ],
     denormalizationContext: [
-        'groups' => ['create_quote_api']
+        'groups' => ['quote_api:write'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
     ],
+)]
+#[ApiResource(
+    uriTemplate: '/clients/{clientId}/quotes',
+    operations: [new GetCollection(), new Post()],
+    uriVariables: [
+        'clientId' => new Link(
+            fromProperty: 'quotes',
+            fromClass: Client::class,
+        ),
+    ],
+    normalizationContext: [
+        'groups' => ['quote_api:read'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ],
+    denormalizationContext: [
+        'groups' => ['quote_api:write'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ]
+)]
+#[ApiResource(
+    uriTemplate: '/clients/{clientId}/quotes/{id}',
+    operations: [new Get(), new Patch(), new Delete()],
+    uriVariables: [
+        'clientId' => new Link(
+            fromProperty: 'quotes',
+            fromClass: Client::class,
+        ),
+        'id' => new Link(
+            fromClass: Quote::class,
+        ),
+    ],
+    normalizationContext: [
+        'groups' => ['quote_api:read'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ],
+    denormalizationContext: [
+        'groups' => ['quote_api:write'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ]
 )]
 class Quote
 {
@@ -68,63 +116,88 @@ class Quote
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
-    #[Serialize\Groups(['quote_api', 'client_api'])]
+    #[Groups(['quote_api:read'])]
     private ?UuidInterface $id = null;
 
     #[ORM\Column(name: 'quote_id', type: Types::STRING, length: 255)]
+    #[Groups(['quote_api:read', 'quote_api:write'])]
     private string $quoteId = '';
 
     #[ORM\Column(name: 'uuid', type: UuidType::NAME, length: 36)]
-    #[Serialize\Groups(['quote_api', 'client_api'])]
+    #[Groups(['quote_api:read'])]
     private ?UuidInterface $uuid = null;
 
     #[ORM\Column(name: 'status', type: Types::STRING, length: 25)]
-    #[Serialize\Groups(['quote_api', 'client_api'])]
+    #[Groups(['quote_api:read'])]
     private ?string $status = null;
 
     #[ApiProperty(iris: ['https://schema.org/Organization'])]
     #[ORM\ManyToOne(targetEntity: Client::class, cascade: ['persist'], inversedBy: 'quotes')]
     #[Assert\NotBlank]
-    #[Serialize\Groups(['quote_api', 'create_quote_api'])]
+    #[Groups(['quote_api:read', 'quote_api:write'])]
     private ?Client $client = null;
 
     #[ORM\Column(name: 'total_amount', type: BigIntegerType::NAME)]
-    #[Serialize\Groups(['quote_api', 'client_api'])]
+    #[Groups(['quote_api:read'])]
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'number',
+        ],
+        jsonSchemaContext: [
+            'type' => 'number',
+        ]
+    )]
     private BigNumber $total;
 
     #[ORM\Column(name: 'baseTotal_amount', type: BigIntegerType::NAME)]
-    #[Serialize\Groups(['quote_api', 'client_api'])]
+    #[Groups(['quote_api:read'])]
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'number',
+        ],
+        jsonSchemaContext: [
+            'type' => 'number',
+        ]
+    )]
     private BigNumber $baseTotal;
 
     #[ORM\Column(name: 'tax_amount', type: BigIntegerType::NAME)]
-    #[Serialize\Groups(['quote_api', 'client_api'])]
+    #[Groups(['quote_api:read'])]
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'number',
+        ],
+        jsonSchemaContext: [
+            'type' => 'number',
+        ]
+    )]
     private BigNumber $tax;
 
     #[ORM\Embedded(class: Discount::class)]
-    #[Serialize\Groups(['quote_api', 'client_api', 'create_quote_api'])]
+    #[Groups(['quote_api:read', 'quote_api:write'])]
     private Discount $discount;
 
     #[ORM\Column(name: 'terms', type: Types::TEXT, nullable: true)]
-    #[Serialize\Groups(['quote_api', 'client_api', 'create_quote_api'])]
+    #[Groups(['quote_api:read', 'quote_api:write'])]
     private ?string $terms = null;
 
     #[ORM\Column(name: 'notes', type: Types::TEXT, nullable: true)]
-    #[Serialize\Groups(['quote_api', 'client_api', 'create_quote_api'])]
+    #[Groups(['quote_api:read', 'quote_api:write'])]
     private ?string $notes = null;
 
     #[ORM\Column(name: 'due', type: Types::DATE_MUTABLE, nullable: true)]
-    #[Assert\DateTime]
-    #[Serialize\Groups(['quote_api', 'client_api', 'create_quote_api'])]
+    #[Assert\Type(type: DateTimeInterface::class)]
+    #[Groups(['quote_api:read', 'quote_api:write'])]
     private ?DateTimeInterface $due = null;
 
     /**
-     * @var Collection<int, Item>
+     * @var Collection<int, Line>
      */
-    #[ORM\OneToMany(mappedBy: 'quote', targetEntity: Item::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'quote', targetEntity: Line::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[Assert\Valid]
-    #[Assert\Count(min: 1, minMessage: 'You need to add at least 1 item to the Quote')]
-    #[Serialize\Groups(['quote_api', 'client_api', 'create_quote_api'])]
-    private Collection $items;
+    #[Assert\Count(min: 1, minMessage: 'You need to add at least 1 line to the Quote')]
+    #[Groups(['quote_api:read', 'quote_api:write'])]
+    private Collection $lines;
 
     /**
      * @var Collection<int,QuoteContact>
@@ -132,16 +205,17 @@ class Quote
     #[ApiProperty(writableLink: true)]
     #[ORM\OneToMany(mappedBy: 'quote', targetEntity: QuoteContact::class, cascade: ['persist', 'remove'])]
     #[Assert\Count(min: 1, minMessage: 'You need to select at least 1 user to attach to the Quote')]
-    #[Serialize\Groups(['quote_api', 'client_api', 'create_quote_api'])]
+    #[Groups(['quote_api:read', 'quote_api:write'])]
     private Collection $users;
 
     #[ORM\OneToOne(mappedBy: 'quote', targetEntity: Invoice::class)]
+    #[Groups(['quote_api:read'])]
     private ?Invoice $invoice = null;
 
     public function __construct()
     {
         $this->discount = new Discount();
-        $this->items = new ArrayCollection();
+        $this->lines = new ArrayCollection();
         $this->users = new ArrayCollection();
         try {
             $this->setUuid(Uuid::uuid1());
@@ -280,27 +354,27 @@ class Quote
         return $this;
     }
 
-    public function addItem(ItemInterface $item): self
+    public function addLine(LineInterface $line): self
     {
-        assert($item instanceof Item);
-        $this->items[] = $item;
-        $item->setQuote($this);
+        assert($line instanceof Line);
+        $this->lines[] = $line;
+        $line->setQuote($this);
         return $this;
     }
 
-    public function removeItem(Item $item): self
+    public function removeLine(Line $line): self
     {
-        $this->items->removeElement($item);
-        $item->setQuote();
+        $this->lines->removeElement($line);
+        $line->setQuote();
         return $this;
     }
 
     /**
-     * @return Collection<int, Item>
+     * @return Collection<int, Line>
      */
-    public function getItems(): Collection
+    public function getLines(): Collection
     {
-        return $this->items;
+        return $this->lines;
     }
 
     public function getTerms(): ?string
@@ -341,10 +415,10 @@ class Quote
     }
 
     #[ORM\PrePersist]
-    public function updateItems(): void
+    public function updateLines(): void
     {
-        foreach ($this->items as $item) {
-            $item->setQuote($this);
+        foreach ($this->lines as $line) {
+            $line->setQuote($this);
         }
     }
 

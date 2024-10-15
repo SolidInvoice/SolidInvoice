@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\TaxBundle\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -22,17 +23,29 @@ use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
 use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
-use SolidInvoice\InvoiceBundle\Entity\Item;
-use SolidInvoice\InvoiceBundle\Entity\Item as InvoiceItem;
-use SolidInvoice\QuoteBundle\Entity\Item as QuoteItem;
+use SolidInvoice\InvoiceBundle\Entity\Line;
+use SolidInvoice\InvoiceBundle\Entity\Line as InvoiceLine;
+use SolidInvoice\QuoteBundle\Entity\Line as QuoteLine;
 use SolidInvoice\TaxBundle\Repository\TaxRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: Tax::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: TaxRepository::class)]
 #[UniqueEntity('name')]
+#[ApiResource(
+    normalizationContext: [
+        'groups' => ['tax_api:read'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ],
+    denormalizationContext: [
+        'groups' => ['tax_api:write'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ],
+)]
 class Tax implements Stringable
 {
     final public const TABLE_NAME = 'tax_rates';
@@ -48,37 +61,41 @@ class Tax implements Stringable
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
+    #[Groups(['tax_api:read'])]
     private ?UuidInterface $id = null;
 
     #[ORM\Column(name: 'name', type: Types::STRING, length: 32)]
     #[Assert\NotBlank]
+    #[Groups(['tax_api:read', 'tax_api:write'])]
     private ?string $name = null;
 
     #[ORM\Column(name: 'rate', type: Types::FLOAT, precision: 4)]
     #[Assert\Type('float')]
     #[Assert\NotBlank]
+    #[Groups(['tax_api:read', 'tax_api:write'])]
     private ?float $rate = null;
 
     #[ORM\Column(name: 'tax_type', type: Types::STRING, length: 32)]
     #[Assert\NotBlank]
+    #[Groups(['tax_api:read', 'tax_api:write'])]
     private ?string $type = null;
 
     /**
-     * @var Collection<int, Item>
+     * @var Collection<int, Line>
      */
-    #[ORM\OneToMany(mappedBy: 'tax', targetEntity: InvoiceItem::class)]
-    private Collection $invoiceItems;
+    #[ORM\OneToMany(mappedBy: 'tax', targetEntity: InvoiceLine::class)]
+    private Collection $invoiceLines;
 
     /**
-     * @var Collection<int, QuoteItem>
+     * @var Collection<int, QuoteLine>
      */
-    #[ORM\OneToMany(mappedBy: 'tax', targetEntity: QuoteItem::class)]
-    private Collection $quoteItems;
+    #[ORM\OneToMany(mappedBy: 'tax', targetEntity: QuoteLine::class)]
+    private Collection $quoteLines;
 
     public function __construct()
     {
-        $this->invoiceItems = new ArrayCollection();
-        $this->quoteItems = new ArrayCollection();
+        $this->invoiceLines = new ArrayCollection();
+        $this->quoteLines = new ArrayCollection();
     }
 
     /**
@@ -136,37 +153,37 @@ class Tax implements Stringable
     }
 
     /**
-     * @return Collection<int, Item>
+     * @return Collection<int, Line>
      */
-    public function getInvoiceItems(): Collection
+    public function getInvoiceLines(): Collection
     {
-        return $this->invoiceItems;
+        return $this->invoiceLines;
     }
 
     /**
-     * @param Item[] $invoiceItems
+     * @param Line[] $invoiceLines
      */
-    public function setInvoiceItems(array $invoiceItems): self
+    public function setInvoiceLines(array $invoiceLines): self
     {
-        $this->invoiceItems = new ArrayCollection($invoiceItems);
+        $this->invoiceLines = new ArrayCollection($invoiceLines);
 
         return $this;
     }
 
     /**
-     * @return Collection<int, QuoteItem>
+     * @return Collection<int, QuoteLine>
      */
-    public function getQuoteItems(): Collection
+    public function getQuoteLines(): Collection
     {
-        return $this->quoteItems;
+        return $this->quoteLines;
     }
 
     /**
-     * @param QuoteItem[] $quoteItems
+     * @param QuoteLine[] $quoteLines
      */
-    public function setQuoteItems(array $quoteItems): self
+    public function setQuoteLines(array $quoteLines): self
     {
-        $this->quoteItems = new ArrayCollection($quoteItems);
+        $this->quoteLines = new ArrayCollection($quoteLines);
 
         return $this;
     }

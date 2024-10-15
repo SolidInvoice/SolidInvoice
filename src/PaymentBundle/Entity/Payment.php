@@ -13,7 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Patch;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -30,17 +36,88 @@ use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
-use Symfony\Component\Serializer\Annotation as Serialize;
+use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Validator\Constraints as Assert;
 use Traversable;
 
 #[ORM\Table(name: Payment::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: PaymentRepository::class)]
 #[ApiResource(
+    uriTemplate: '/invoices/{invoiceId}/payments',
+    operations: [new GetCollection()],
+    uriVariables: [
+        'invoiceId' => new Link(
+            fromProperty: 'payments',
+            fromClass: Invoice::class,
+        ),
+    ],
     normalizationContext: [
-        'groups' => ['payment_api']
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ],
+    denormalizationContext: [
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
     ]
 )]
+#[ApiResource(
+    uriTemplate: '/invoices/{invoiceId}/payment/{id}',
+    operations: [new Get()],
+    uriVariables: [
+        'invoiceId' => new Link(
+            fromProperty: 'payments',
+            fromClass: Invoice::class,
+        ),
+        'id' => new Link(
+            fromClass: Payment::class,
+        ),
+    ],
+    normalizationContext: [
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ],
+    denormalizationContext: [
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ]
+)]
+/*
+
+Having multiple ApiResource attributes with different uriTemplates on the same class
+with the same operation does not work as expected in ApiPlatform.
+These attributes are kept here as a reference to try and get this working in the future.
+
+#[ApiResource(
+    uriTemplate: '/clients/{clientId}/payments',
+    operations: [new GetCollection()],
+    uriVariables: [
+        'clientId' => new Link(
+            fromProperty: 'payments',
+            fromClass: Client::class,
+        ),
+    ],
+    normalizationContext: [
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ],
+    denormalizationContext: [
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ]
+)]
+#[ApiResource(
+    uriTemplate: '/clients/{clientId}/payment/{id}',
+    operations: [new Get(), new Patch(), new Delete()],
+    uriVariables: [
+        'clientId' => new Link(
+            fromProperty: 'payments',
+            fromClass: Client::class,
+        ),
+        'id' => new Link(
+            fromClass: Payment::class,
+        ),
+    ],
+    normalizationContext: [
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ],
+    denormalizationContext: [
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ]
+)]*/
 class Payment extends BasePayment implements PaymentInterface
 {
     final public const TABLE_NAME = 'payments';
@@ -54,19 +131,6 @@ class Payment extends BasePayment implements PaymentInterface
     #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
     protected ?UuidInterface $id = null;
 
-    /**
-     * @var array<string, string>
-     */
-    protected $details;
-
-    protected $description;
-
-    protected $number;
-
-    protected $clientEmail;
-
-    protected $clientId;
-
     #[ORM\ManyToOne(targetEntity: Invoice::class, inversedBy: 'payments')]
     private ?Invoice $invoice = null;
 
@@ -75,20 +139,20 @@ class Payment extends BasePayment implements PaymentInterface
     private ?Client $client = null;
 
     #[ORM\ManyToOne(targetEntity: PaymentMethod::class, inversedBy: 'payments')]
-    #[Serialize\Groups(['payment_api', 'client_api'])]
+    // #[Serialize\Groups(['payment_api', 'client_api'])]
     private ?PaymentMethod $method = null;
 
     #[ORM\Column(name: 'status', type: Types::STRING, length: 25)]
-    #[Serialize\Groups(['payment_api', 'client_api'])]
+    // #[Serialize\Groups(['payment_api', 'client_api'])]
     private ?string $status = null;
 
     #[ORM\Column(name: 'message', type: Types::TEXT, nullable: true)]
-    #[Serialize\Groups(['payment_api', 'client_api'])]
+    // #[Serialize\Groups(['payment_api', 'client_api'])]
     private ?string $message = null;
 
     #[ORM\Column(name: 'completed', type: Types::DATETIME_MUTABLE, nullable: true)]
     #[Assert\DateTime]
-    #[Serialize\Groups(['payment_api', 'client_api'])]
+    // #[Serialize\Groups(['payment_api', 'client_api'])]
     private ?DateTimeInterface $completed = null;
 
     public function getId(): ?UuidInterface
@@ -195,6 +259,36 @@ class Payment extends BasePayment implements PaymentInterface
         return $this;
     }
 
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'object',
+            'items' => [
+                'type' => 'object',
+                'properties' => [
+                    'amount' => [
+                        'type' => 'number',
+                    ],
+                    'currency' => [
+                        'type' => 'string',
+                    ],
+                ],
+            ],
+        ],
+        jsonSchemaContext: [
+            'type' => 'object',
+            'items' => [
+                'type' => 'object',
+                'properties' => [
+                    'amount' => [
+                        'type' => 'number',
+                    ],
+                    'currency' => [
+                        'type' => 'string',
+                    ],
+                ],
+            ],
+        ]
+    )]
     public function getAmount(): Money
     {
         return new Money($this->getTotalAmount(), new Currency($this->getCurrencyCode()));

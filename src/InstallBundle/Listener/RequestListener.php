@@ -97,7 +97,6 @@ final class RequestListener implements EventSubscriberInterface
         }
 
         $request = $event->getRequest();
-        $session = $request->getSession();
         $route = $request->get('_route');
 
         if (null !== $this->installed && '' !== $this->installed) {
@@ -113,7 +112,7 @@ final class RequestListener implements EventSubscriberInterface
 
             // If the application is installed, and we already have users, and the installer route is requested
             // then throw an exception
-            if (in_array($route, self::INSTALL_ROUTES, true) && ! $session->has('installation_step')) {
+            if (in_array($route, self::INSTALL_ROUTES, true) && ! $request->getSession()->has('installation_step')) {
                 throw new ApplicationInstalledException();
             }
         } elseif (! in_array($route, $this->allowRoutes, true)) {

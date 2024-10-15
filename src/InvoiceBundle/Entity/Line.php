@@ -13,6 +13,14 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
 use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
@@ -22,19 +30,55 @@ use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
 use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
-use SolidInvoice\CoreBundle\Entity\ItemInterface;
+use SolidInvoice\CoreBundle\Entity\LineInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Repository\ItemRepository;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use Stringable;
-use Symfony\Component\Serializer\Annotation as Serialize;
+use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: Item::TABLE_NAME)]
+#[ORM\Table(name: Line::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: ItemRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-class Item implements ItemInterface, Stringable
+#[ApiResource(
+    uriTemplate: '/invoices/{invoiceId}/lines',
+    operations: [new GetCollection(), new Post()],
+    uriVariables: [
+        'invoiceId' => new Link(
+            fromProperty: 'lines',
+            fromClass: Invoice::class,
+        ),
+    ],
+    normalizationContext: [
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ],
+    denormalizationContext: [
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ]
+)]
+#[ApiResource(
+    uriTemplate: '/invoices/{invoiceId}/line/{id}',
+    operations: [new Get(), new Patch(), new Delete()],
+    uriVariables: [
+        'invoiceId' => new Link(
+            fromProperty: 'lines',
+            fromClass: Invoice::class,
+        ),
+        'id' => new Link(
+            fromClass: Line::class,
+        ),
+    ],
+    normalizationContext: [
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ],
+    denormalizationContext: [
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ]
+)]
+class Line implements LineInterface, Stringable
 {
     final public const TABLE_NAME = 'invoice_lines';
 
@@ -45,36 +89,52 @@ class Item implements ItemInterface, Stringable
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
-    #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api'])]
+    #[Groups(['invoice_api:read'])]
     private ?UuidInterface $id = null;
 
     #[ORM\Column(name: 'description', type: Types::TEXT)]
     #[Assert\NotBlank]
-    #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
+    #[Groups(['invoice_api:read', 'invoice_api:write'])]
     private ?string $description = null;
 
     #[ORM\Column(name: 'price_amount', type: BigIntegerType::NAME)]
     #[Assert\NotBlank]
-    #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
+    #[Groups(['invoice_api:read', 'invoice_api:write'])]
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'number',
+        ],
+        jsonSchemaContext: [
+            'type' => 'number',
+        ]
+    )]
     private BigNumber $price;
 
     #[ORM\Column(name: 'qty', type: Types::FLOAT)]
     #[Assert\NotBlank]
-    #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
+    #[Groups(['invoice_api:read', 'invoice_api:write'])]
     private ?float $qty = 1;
 
-    #[ORM\ManyToOne(targetEntity: Invoice::class, inversedBy: 'items')]
+    #[ORM\ManyToOne(targetEntity: Invoice::class, inversedBy: 'lines')]
     private ?Invoice $invoice = null;
 
-    #[ORM\ManyToOne(targetEntity: RecurringInvoice::class, inversedBy: 'items')]
+    #[ORM\ManyToOne(targetEntity: RecurringInvoice::class, inversedBy: 'lines')]
     private ?RecurringInvoice $recurringInvoice = null;
 
-    #[ORM\ManyToOne(targetEntity: Tax::class, inversedBy: 'invoiceItems')]
-    #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
+    #[ORM\ManyToOne(targetEntity: Tax::class, inversedBy: 'invoiceLines')]
+    #[Groups(['invoice_api:read', 'invoice_api:write'])]
     private ?Tax $tax = null;
 
     #[ORM\Column(name: 'total_amount', type: BigIntegerType::NAME)]
-    #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api'])]
+    #[Groups(['invoice_api:read'])]
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'number',
+        ],
+        jsonSchemaContext: [
+            'type' => 'number',
+        ]
+    )]
     private BigNumber $total;
 
     public function __construct()
@@ -88,7 +148,7 @@ class Item implements ItemInterface, Stringable
         return $this->id;
     }
 
-    public function setDescription(string $description): ItemInterface
+    public function setDescription(string $description): LineInterface
     {
         $this->description = $description;
 
@@ -103,7 +163,7 @@ class Item implements ItemInterface, Stringable
     /**
      * @throws MathException
      */
-    public function setPrice(BigNumber|float|int|string $price): ItemInterface
+    public function setPrice(BigNumber|float|int|string $price): LineInterface
     {
         $this->price = BigNumber::of($price);
 
@@ -115,7 +175,7 @@ class Item implements ItemInterface, Stringable
         return $this->price;
     }
 
-    public function setQty(float $qty): ItemInterface
+    public function setQty(float $qty): LineInterface
     {
         $this->qty = $qty;
 
@@ -127,7 +187,7 @@ class Item implements ItemInterface, Stringable
         return $this->qty;
     }
 
-    public function setInvoice(Invoice|RecurringInvoice|null $invoice): ItemInterface
+    public function setInvoice(Invoice|RecurringInvoice|null $invoice): LineInterface
     {
         if ($invoice instanceof RecurringInvoice) {
             $this->recurringInvoice = $invoice;
@@ -146,7 +206,7 @@ class Item implements ItemInterface, Stringable
     /**
      * @throws MathException
      */
-    public function setTotal(BigNumber|float|int|string $total): ItemInterface
+    public function setTotal(BigNumber|float|int|string $total): LineInterface
     {
         $this->total = BigNumber::of($total);
 
@@ -163,7 +223,7 @@ class Item implements ItemInterface, Stringable
         return $this->tax;
     }
 
-    public function setTax(?Tax $tax): ItemInterface
+    public function setTax(?Tax $tax): LineInterface
     {
         $this->tax = $tax;
 

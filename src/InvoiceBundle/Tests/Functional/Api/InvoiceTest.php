@@ -13,51 +13,50 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Functional\Api;
 
-use Doctrine\Common\DataFixtures\Executor\AbstractExecutor;
-use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
+use DateTime;
 use Ramsey\Uuid\Uuid;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
-use SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData as LoadClientData;
-use SolidInvoice\ClientBundle\Entity\Contact;
-use SolidInvoice\InvoiceBundle\DataFixtures\ORM\LoadData as LoadInvoiceData;
+use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
+use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
+use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
-use function assert;
+use SolidInvoice\InvoiceBundle\Entity\Line;
+use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
+use Zenstruck\Foundry\Proxy;
+use Zenstruck\Foundry\Test\Factories;
+use function array_map;
 use function date;
+use function Zenstruck\Foundry\faker;
 
 /**
  * @group functional
  */
 final class InvoiceTest extends ApiTestCase
 {
-    private AbstractExecutor $executor;
+    use Factories;
 
-    protected function setUp(): void
+    protected function getResourceClass(): string
     {
-        parent::setUp();
-
-        $databaseTool = self::getContainer()->get(DatabaseToolCollection::class)->get();
-
-        $this->executor = $databaseTool->loadFixtures([
-            LoadClientData::class,
-            LoadInvoiceData::class,
-        ], true);
+        return Invoice::class;
     }
 
     public function testCreate(): void
     {
-        $contact = $this->executor->getReferenceRepository()->getReference('contact');
-        assert($contact instanceof Contact);
+        $client = ClientFactory::createOne(['archived' => null, 'company' => $this->company])->object();
+
+        $contacts = array_map(
+            fn (Proxy $contact) => $this->getIriFromResource($contact->object()),
+            ContactFactory::createMany(faker()->numberBetween(1, 5), ['company' => $this->company, 'client' => $client])
+        );
 
         $data = [
-            'users' => [
-                '/api/contacts/' . $contact->getId(),
-            ],
-            'client' => '/api/clients/' . $contact->getClient()->getId(),
+            'users' => $contacts,
+            'client' => $this->getIriFromResource($client),
             'discount' => [
                 'type' => 'percentage',
                 'value' => 10,
             ],
-            'items' => [
+            'lines' => [
                 [
                     'price' => 100,
                     'qty' => 1,
@@ -70,105 +69,148 @@ final class InvoiceTest extends ApiTestCase
 
         self::assertTrue(Uuid::isValid($result['id']));
         self::assertTrue(Uuid::isValid($result['uuid']));
-        self::assertTrue(Uuid::isValid($result['items'][0]['id']));
+        self::assertTrue(Uuid::isValid($result['lines'][0]['id']));
 
-        unset($result['id'], $result['uuid'], $result['items'][0]['id']);
-
-        self::assertSame([
-            'client' => '/api/clients/' . $contact->getClient()->getId(),
-            'balance' => 90.0,
+        self::assertJsonContains([
+            '@context' => $this->getContextForResource($this->getResourceClass()),
+            '@type' => 'Invoice',
+            'client' => $this->getIriFromResource($client),
+            'balance' => 90,
             'due' => null,
             'invoiceDate' => date('Y-m-d\T00:00:00+02:00'),
             'paidDate' => null,
-            'items' => [
+            'lines' => [
                 [
                     'description' => 'Foo Item',
-                    'price' => 100.0,
-                    'qty' => 1.0,
+                    'price' => 100,
+                    'qty' => 1,
                     'tax' => null,
-                    'total' => 100.0,
+                    'total' => 100,
                 ],
             ],
-            'users' => [
-                '/api/contacts/' . $contact->getId(),
-            ],
+            'users' => $contacts,
             'status' => 'draft',
-            'total' => 90.0,
-            'baseTotal' => 100.0,
-            'tax' => 0.0,
+            'total' => 90,
+            'baseTotal' => 100,
+            'tax' => 0,
             'discount' => [
                 'type' => 'percentage',
-                'value' => 10.0,
+                'value' => 10,
             ],
             'terms' => null,
             'notes' => null,
-        ], $result);
+        ]);
     }
 
     public function testDelete(): void
     {
-        $invoice = $this->executor->getReferenceRepository()->getReference('invoice');
-        assert($invoice instanceof Invoice);
+        $client = ClientFactory::createOne(['archived' => null, 'company' => $this->company]);
+        $invoice = InvoiceFactory::createOne(['archived' => null, 'company' => $this->company, 'client' => $client])->object();
 
-        $this->requestDelete('/api/invoices/' . $invoice->getId());
+        $this->requestDelete($this->getIriFromResource($invoice));
     }
 
     public function testGet(): void
     {
-        $invoice = $this->executor->getReferenceRepository()->getReference('invoice');
-        assert($invoice instanceof Invoice);
+        $client = ClientFactory::createOne(['archived' => null, 'company' => $this->company]);
+        $contacts = ContactFactory::createMany(faker()->numberBetween(1, 5), ['company' => $this->company, 'client' => $client]);
 
-        $data = $this->requestGet('/api/invoices/' . $invoice->getId());
+        /** @var Invoice $invoice */
+        $invoice = InvoiceFactory::createOne([
+            'archived' => null,
+            'company' => $this->company,
+            'client' => $client,
+            'users' => $contacts,
+            'due' => new DateTime('2005-01-20'),
+            'paidDate' => null,
+            'discount' => (new Discount())
+                ->setType('percentage')
+                ->setValue(0),
+            'lines' => [
+                (new Line())
+                    ->setDescription('Test Item')
+                    ->setQty(1)
+                    ->setPrice(10000),
+            ],
+        ])->object();
+
+        $data = $this->requestGet($this->getIriFromResource($invoice));
 
         self::assertSame([
+            '@context' => '/api/contexts/Invoice',
+            '@id' => $this->getIriFromResource($invoice),
+            '@type' => 'Invoice',
             'id' => $invoice->getId()->toString(),
+            'invoiceId' => '',
             'uuid' => $invoice->getUuid()->toString(),
             'client' => '/api/clients/' . $invoice->getClient()->getId(),
-            'balance' => 100.0,
-            'due' => null,
+            'balance' => 100,
+            'due' => '2005-01-20T00:00:00+02:00',
             'invoiceDate' => date('Y-m-d\T00:00:00+02:00'),
             'paidDate' => null,
-            'items' => [
+            'payments' => [],
+            'quote' => null,
+            'lines' => [
                 [
-                    'id' => $invoice->getItems()->first()->getId()->toString(),
+                    '@id' => $this->getIriFromResource($invoice->getLines()->first()),
+                    '@type' => 'Line',
+                    'id' => $invoice->getLines()->first()->getId()->toString(),
                     'description' => 'Test Item',
-                    'price' => 100.0,
-                    'qty' => 1.0,
+                    'price' => 100,
+                    'qty' => 1,
                     'tax' => null,
-                    'total' => 100.0,
+                    'total' => 100,
                 ],
             ],
-            'users' => [
-                '/api/contacts/' . $invoice->getUsers()->first()->getId(),
-            ],
-            'status' => 'draft',
-            'total' => 100.0,
-            'baseTotal' => 100.0,
-            'tax' => 0.0,
+            'users' => array_map(fn (Proxy $contact) => $this->getIriFromResource($contact->object()), $contacts),
+            'status' => $invoice->getStatus(),
+            'total' => 100,
+            'baseTotal' => 100,
+            'tax' => 0,
             'discount' => [
-                'type' => null,
-                'value' => 0.0,
+                'type' => $invoice->getDiscount()->getType(),
+                'value' => 0,
             ],
-            'terms' => null,
-            'notes' => null,
+            'terms' => $invoice->getTerms(),
+            'notes' => $invoice->getNotes(),
         ], $data);
     }
 
     public function testEdit(): void
     {
-        $invoice = $this->executor->getReferenceRepository()->getReference('invoice');
-        assert($invoice instanceof Invoice);
+        $client = ClientFactory::createOne(['archived' => null, 'company' => $this->company]);
+        $contacts = ContactFactory::createMany(faker()->numberBetween(1, 5), ['company' => $this->company, 'client' => $client]);
 
-        $data = $this->requestPut(
-            '/api/invoices/' . $invoice->getId(),
+        /** @var Invoice $invoice */
+        $invoice = InvoiceFactory::createOne([
+            'archived' => null,
+            'company' => $this->company,
+            'client' => $client,
+            'due' => new DateTime('2005-01-20'),
+            'paidDate' => null,
+            'users' => $contacts,
+            'lines' => [
+                (new Line())
+                    ->setDescription('Test Item')
+                    ->setQty(1)
+                    ->setPrice(10000),
+                (new Line())
+                    ->setDescription('Test Item Too')
+                    ->setQty(1)
+                    ->setPrice(10000),
+            ],
+        ])->object();
+
+        $data = $this->requestPatch(
+            $this->getIriFromResource($invoice),
             [
                 'discount' => [
                     'type' => 'percentage',
                     'value' => 10,
                 ],
-                'items' => [
+                'lines' => [
                     [
-                        'price' => 100,
+                        'price' => 10000,
                         'qty' => 1,
                         'description' => 'Foo Item',
                     ],
@@ -177,36 +219,42 @@ final class InvoiceTest extends ApiTestCase
         );
 
         self::assertSame([
+            '@context' => '/api/contexts/Invoice',
+            '@id' => $this->getIriFromResource($invoice),
+            '@type' => 'Invoice',
             'id' => $invoice->getId()->toString(),
+            'invoiceId' => '',
             'uuid' => $invoice->getUuid()->toString(),
-            'client' => '/api/clients/' . $invoice->getClient()->getId(),
-            'balance' => 90.0,
-            'due' => null,
+            'client' => $this->getIriFromResource($invoice->getClient()),
+            'balance' => 9000,
+            'due' => '2005-01-20T00:00:00+02:00',
             'invoiceDate' => date('Y-m-d\T00:00:00+02:00'),
             'paidDate' => null,
-            'items' => [
+            'payments' => [],
+            'quote' => null,
+            'lines' => [
                 [
-                    'id' => $invoice->getItems()->first()->getId()->toString(),
+                    '@id' => $this->getIriFromResource($invoice->getLines()->first()),
+                    '@type' => 'Line',
+                    'id' => $invoice->getLines()->first()->getId()->toString(),
                     'description' => 'Foo Item',
-                    'price' => 100.0,
-                    'qty' => 1.0,
+                    'price' => 10000,
+                    'qty' => 1,
                     'tax' => null,
-                    'total' => 100.0,
+                    'total' => 10000,
                 ],
             ],
-            'users' => [
-                '/api/contacts/' . $invoice->getUsers()->first()->getId(),
-            ],
-            'status' => 'draft',
-            'total' => 90.0,
-            'baseTotal' => 100.0,
-            'tax' => 0.0,
+            'users' => array_map(fn (Proxy $contact) => $this->getIriFromResource($contact->object()), $contacts),
+            'status' => $invoice->getStatus(),
+            'total' => 9000,
+            'baseTotal' => 10000,
+            'tax' => 0,
             'discount' => [
-                'type' => 'percentage',
-                'value' => 10.0,
+                'type' => $invoice->getDiscount()->getType(),
+                'value' => 10,
             ],
-            'terms' => null,
-            'notes' => null,
+            'terms' => $invoice->getTerms(),
+            'notes' => $invoice->getNotes(),
         ], $data);
     }
 }

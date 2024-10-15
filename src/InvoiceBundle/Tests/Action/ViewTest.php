@@ -20,7 +20,7 @@ use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Pdf\Generator;
 use SolidInvoice\InvoiceBundle\Action\View;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
-use SolidInvoice\InvoiceBundle\Entity\Item;
+use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use SolidInvoice\PaymentBundle\Entity\Payment;
@@ -72,7 +72,7 @@ final class ViewTest extends KernelTestCase
                 'baseTotal' => 100,
                 'created' => new DateTimeImmutable('2021-09-01'),
                 'items' => [
-                    (new Item())
+                    (new Line())
                         ->setDescription('Test Item')
                         ->setPrice(100)
                         ->setQty(1),
@@ -135,7 +135,7 @@ final class ViewTest extends KernelTestCase
                 'baseTotal' => 100,
                 'created' => new DateTimeImmutable('2021-09-01'),
                 'items' => [
-                    (new Item())
+                    (new Line())
                         ->setDescription('Test Item')
                         ->setPrice(100)
                         ->setQty(1),
@@ -160,7 +160,7 @@ final class ViewTest extends KernelTestCase
         $invoice->setId($uuid)
             ->setUuid($uuid)
             ->setInvoiceId('INV-2021-0001')
-            ->updateItems()
+            ->updateLines()
         ;
 
         $template = $action($request, $invoice);

@@ -23,7 +23,7 @@ use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Capture;
 use Payum\Core\Security\GenericTokenFactoryInterface;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
-use SolidInvoice\InvoiceBundle\Entity\Item;
+use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use function assert;
@@ -72,8 +72,8 @@ class CapturePaymentAction implements ActionInterface, GatewayAwareInterface
         $details['PAYMENTREQUEST_0_ITEMAMT'] = number_format(MoneyFormatter::toFloat($invoice->getTotal()), 2);
 
         $counter = 0;
-        foreach ($invoice->getItems() as $item) {
-            /** @var Item $item */
+        foreach ($invoice->getLines() as $item) {
+            /** @var Line $item */
             $details['L_PAYMENTREQUEST_0_NAME' . $counter] = $item->getDescription();
             $details['L_PAYMENTREQUEST_0_AMT' . $counter] = number_format(MoneyFormatter::toFloat($item->getPrice()), 2);
             $details['L_PAYMENTREQUEST_0_QTY' . $counter] = $item->getQty();
