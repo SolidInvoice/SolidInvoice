@@ -2,6 +2,8 @@ includes:
     - phpstan.neon
 
 parameters:
+    scanFiles:
+        - vendor/symfony/dependency-injection/Loader/Configurator/ContainerConfigurator.php
     scanDirectories:
         - var/cache/test/Symfony/Config
     symfony:

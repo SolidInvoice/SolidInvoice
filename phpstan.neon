@@ -4,17 +4,12 @@ includes:
 parameters:
     level: 6
     paths:
-        - config
         - migrations
         - src
     bootstrapFiles:
         - vendor/autoload.php
     excludePaths:
         - src/CoreBundle/Tests/Fixtures/file.php
-    scanDirectories:
-        - var/cache/dev/Symfony/Config
-    scanFiles:
-        - vendor/symfony/dependency-injection/Loader/Configurator/ContainerConfigurator.php
     symfony:
         container_xml_path: var/cache/dev/SolidInvoice_KernelDevDebugContainer.xml
     stubFiles:
