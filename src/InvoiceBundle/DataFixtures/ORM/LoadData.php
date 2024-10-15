@@ -22,7 +22,7 @@ use Exception;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
-use SolidInvoice\InvoiceBundle\Entity\Item;
+use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use function assert;
@@ -55,13 +55,13 @@ class LoadData extends Fixture
         $recurringInvoice->setFrequency('* * * * *');
         $recurringInvoice->setDateStart(new DateTimeImmutable('2012-01-01 15:30:00', new DateTimeZone('Europe/Paris')));
 
-        $item = new Item();
+        $item = new Line();
         $item->setQty(1);
         $item->setPrice(BigInteger::of(10000));
         $item->setDescription('Test Item');
-        $invoice->addItem($item);
+        $invoice->addLine($item);
 
-        $recurringItem = new Item();
+        $recurringItem = new Line();
         $recurringItem->setQty(1);
         $recurringItem->setPrice(BigInteger::of(10000));
         $recurringItem->setDescription('Test Item');

@@ -13,59 +13,152 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Tests\Functional\Api;
 
-use Doctrine\Common\DataFixtures\Executor\AbstractExecutor;
-use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
-use SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData as LoadClientData;
-use SolidInvoice\PaymentBundle\DataFixtures\ORM\LoadData as LoadPaymentData;
+use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use SolidInvoice\PaymentBundle\Entity\Payment;
-use function assert;
+use SolidInvoice\PaymentBundle\Test\Factory\PaymentFactory;
+use Zenstruck\Foundry\Test\Factories;
 
 /**
  * @group functional
  */
 final class PaymentTest extends ApiTestCase
 {
-    private AbstractExecutor $executor;
+    use Factories;
 
-    protected function setUp(): void
+    protected function getResourceClass(): string
     {
-        parent::setUp();
-
-        $databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
-
-        $this->executor = $databaseTool->loadFixtures([
-            LoadClientData::class,
-            LoadPaymentData::class,
-        ], true);
+        return Payment::class;
     }
 
-    public function testGetAll(): void
+    public function testGetPaymentsForInvoice(): void
     {
-        $data = $this->requestGet('/api/payments');
+        $invoice = InvoiceFactory::createOne(['archived' => null, 'company' => $this->company])->object();
+        $payment = PaymentFactory::createOne([
+            'invoice' => $invoice,
+            'status' => 'captured',
+        ]);
+
+        $data = $this->requestGet($this->getIriFromResource($invoice) . '/payments');
 
         self::assertSame([
-            [
-                'method' => null,
-                'status' => 'captured',
-                'message' => null,
-                'completed' => null,
+            '@context' => '/api/contexts/Payment',
+            '@id' => $this->getIriFromResource($invoice) . '/payments',
+            '@type' => 'hydra:Collection',
+            'hydra:totalItems' => 1,
+            'hydra:member' => [
+                [
+                    '@id' => $this->getIriFromResource($invoice) . '/payment/' . $payment->getId(),
+                    '@type' => 'Payment',
+                    'id' => $payment->getId()->toString(),
+                    'invoice' => $this->getIriFromResource($invoice),
+                    'client' => null,
+                    'method' => null,
+                    'status' => 'captured',
+                    'message' => $payment->getMessage(),
+                    'completed' => $payment->getCompleted()->format('c'),
+                    'number' => $payment->getNumber(),
+                    'description' => $payment->getDescription(),
+                    'clientEmail' => $payment->getClientEmail(),
+                    'clientId' => null,
+                    'totalAmount' => $payment->getTotalAmount(),
+                    'currencyCode' => $payment->getCurrencyCode(),
+                    'details' => [],
+                    'creditCard' => null,
+                    'bankAccount' => null,
+                    'created' => $payment->getCreated()->format('c'),
+                    'updated' => $payment->getUpdated()->format('c'),
+                    'amount' => [
+                        'amount' => $payment->getAmount()->getAmount(),
+                        'currency' => $payment->getAmount()->getCurrency()->getCode(),
+                    ],
+                ],
             ],
         ], $data);
     }
 
-    public function testGet(): void
+    /*public function testGetPaymentsForClient(): void
     {
-        $payment = $this->executor->getReferenceRepository()->getReference('payment');
-        assert($payment instanceof Payment);
+        $client = ClientFactory::createOne(['archived' => null, 'company' => $this->company])->object();
+        $payment = PaymentFactory::createOne([
+            'client' => $client,
+            'status' => 'captured',
+        ]);
 
-        $data = $this->requestGet('/api/payments/' . $payment->getId());
+        $data = $this->requestGet($this->getIriFromResource($client) . '/payments');
 
         self::assertSame([
+            '@context' => '/api/contexts/Payment',
+            '@id' => $this->getIriFromResource($client) . '/payments',
+            '@type' => 'hydra:Collection',
+            'hydra:totalItems' => 1,
+            'hydra:member' => [
+                [
+                    '@id' => $this->getIriFromResource($client) . '/payment/' . $payment->getId(),
+                    '@type' => 'Payment',
+                    'id' => $payment->getId()->toString(),
+                    'details' => [],
+                    'description' => $payment->getDescription(),
+                    'number' => $payment->getNumber(),
+                    'clientEmail' => $payment->getClientEmail(),
+                    'clientId' => null,
+                    'invoice' => $this->getIriFromResource($client),
+                    'client' => null,
+                    'method' => null,
+                    'status' => 'captured',
+                    'message' => $payment->getMessage(),
+                    'completed' => $payment->getCompleted()->format('c'),
+                    'totalAmount' => $payment->getTotalAmount(),
+                    'currencyCode' => $payment->getCurrencyCode(),
+                    'creditCard' => null,
+                    'bankAccount' => null,
+                    'created' => $payment->getCreated()->format('c'),
+                    'updated' => $payment->getUpdated()->format('c'),
+                    'amount' => [
+                        'amount' => $payment->getAmount()->getAmount(),
+                        'currency' => $payment->getAmount()->getCurrency()->getCode(),
+                    ],
+                ],
+            ],
+        ], $data);
+    }*/
+
+    public function testGetFromInvoice(): void
+    {
+        $invoice = InvoiceFactory::createOne(['archived' => null, 'company' => $this->company])->object();
+        $payment = PaymentFactory::createOne([
+            'invoice' => $invoice,
+            'status' => 'captured',
+        ]);
+
+        $data = $this->requestGet($this->getIriFromResource($invoice) . '/payment/' . $payment->getId()->toString());
+
+        self::assertSame([
+            '@context' => '/api/contexts/Payment',
+            '@id' => $this->getIriFromResource($invoice) . '/payment/' . $payment->getId(),
+            '@type' => 'Payment',
+            'id' => $payment->getId()->toString(),
+            'invoice' => $this->getIriFromResource($invoice),
+            'client' => null,
             'method' => null,
             'status' => 'captured',
-            'message' => null,
-            'completed' => null,
+            'message' => $payment->getMessage(),
+            'completed' => $payment->getCompleted()->format('c'),
+            'number' => $payment->getNumber(),
+            'description' => $payment->getDescription(),
+            'clientEmail' => $payment->getClientEmail(),
+            'clientId' => null,
+            'totalAmount' => $payment->getTotalAmount(),
+            'currencyCode' => $payment->getCurrencyCode(),
+            'details' => [],
+            'creditCard' => null,
+            'bankAccount' => null,
+            'created' => $payment->getCreated()->format('c'),
+            'updated' => $payment->getUpdated()->format('c'),
+            'amount' => [
+                'amount' => $payment->getAmount()->getAmount(),
+                'currency' => $payment->getAmount()->getCurrency()->getCode(),
+            ],
         ], $data);
     }
 }

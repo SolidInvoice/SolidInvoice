@@ -29,6 +29,7 @@ use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
 use Symfony\Component\Serializer\Annotation as Serialize;
+use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: RecurringInvoice::TABLE_NAME)]
@@ -36,10 +37,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\HasLifecycleCallbacks]
 #[ApiResource(
     normalizationContext: [
-        'groups' => ['recurring_invoice_api']
+        'groups' => ['recurring_invoice_api'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
     ],
     denormalizationContext: [
-        'groups' => ['create_recurring_invoice_api']
+        'groups' => ['create_recurring_invoice_api'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
     ],
 )]
 class RecurringInvoice extends BaseInvoice
@@ -76,9 +79,9 @@ class RecurringInvoice extends BaseInvoice
     private ?DateTimeInterface $dateEnd = null;
 
     /**
-     * @var Collection<int, Item>
+     * @var Collection<int, Line>
      */
-    #[ORM\OneToMany(mappedBy: 'recurringInvoice', targetEntity: Item::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'recurringInvoice', targetEntity: Line::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[Assert\Valid]
     #[Assert\Count(min: 1, minMessage: 'You need to add at least 1 item to the Invoice')]
     #[Serialize\Groups(['recurring_invoice_api', 'client_api', 'create_recurring_invoice_api'])]
@@ -153,7 +156,7 @@ class RecurringInvoice extends BaseInvoice
         return $this;
     }
 
-    public function addItem(Item $item): self
+    public function addItem(Line $item): self
     {
         $this->items[] = $item;
         $item->setInvoice($this);
@@ -161,7 +164,7 @@ class RecurringInvoice extends BaseInvoice
         return $this;
     }
 
-    public function removeItem(Item $item): self
+    public function removeItem(Line $item): self
     {
         $this->items->removeElement($item);
         $item->setInvoice(null);
@@ -170,7 +173,7 @@ class RecurringInvoice extends BaseInvoice
     }
 
     /**
-     * @return Collection<int, Item>
+     * @return Collection<int, Line>
      */
     public function getItems(): Collection
     {

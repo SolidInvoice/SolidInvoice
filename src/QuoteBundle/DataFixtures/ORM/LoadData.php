@@ -18,7 +18,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
-use SolidInvoice\QuoteBundle\Entity\Item;
+use SolidInvoice\QuoteBundle\Entity\Line;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Model\Graph;
 use function assert;
@@ -41,11 +41,11 @@ class LoadData extends Fixture
         $quote->addUser($contact);
         $quote->setStatus(Graph::STATUS_DRAFT);
 
-        $item = new Item();
+        $item = new Line();
         $item->setQty(1);
         $item->setPrice(BigInteger::of(10000));
         $item->setDescription('Test Item');
-        $quote->addItem($item);
+        $quote->addLine($item);
 
         $this->setReference('quote', $quote);
         $this->setReference('quoteItem', $item);

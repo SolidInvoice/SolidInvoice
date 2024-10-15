@@ -18,7 +18,7 @@ use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Pdf\Generator;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\QuoteBundle\Action\View;
-use SolidInvoice\QuoteBundle\Entity\Item;
+use SolidInvoice\QuoteBundle\Entity\Line;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Model\Graph;
 use SolidInvoice\QuoteBundle\Test\Factory\QuoteFactory;
@@ -67,7 +67,7 @@ final class ViewTest extends KernelTestCase
                 'baseTotal' => '100.00',
                 'created' => new \DateTimeImmutable('2021-09-01'),
                 'items' => [
-                    (new Item())
+                    (new Line())
                         ->setDescription('Test Item')
                         ->setPrice('100.00')
                         ->setQty(1),

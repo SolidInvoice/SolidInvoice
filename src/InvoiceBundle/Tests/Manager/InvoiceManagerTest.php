@@ -22,12 +22,12 @@ use Money\Currency;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Entity\Discount;
-use SolidInvoice\InvoiceBundle\Entity\Item as InvoiceItem;
+use SolidInvoice\InvoiceBundle\Entity\Line as InvoiceItem;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Listener\WorkFlowSubscriber;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
-use SolidInvoice\QuoteBundle\Entity\Item;
+use SolidInvoice\QuoteBundle\Entity\Line;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -85,7 +85,7 @@ class InvoiceManagerTest extends KernelTestCase
         $tax->setRate(14.00);
         $tax->setType(Tax::TYPE_INCLUSIVE);
 
-        $item = new Item();
+        $item = new Line();
         $item->setTax($tax);
         $item->setDescription('Item Description');
         $item->setCreated(new DateTime('now'));
@@ -104,7 +104,7 @@ class InvoiceManagerTest extends KernelTestCase
         $quote->setTerms('Terms');
         $quote->setTotal(987);
         $quote->setClient($client);
-        $quote->addItem($item);
+        $quote->addLine($item);
         $quote->setCompany(new Company());
 
         $invoice = $this->manager->createFromQuote($quote);
@@ -121,9 +121,9 @@ class InvoiceManagerTest extends KernelTestCase
         self::assertNotSame($quote->getUuid(), $invoice->getUuid());
         self::assertNull($invoice->getId());
 
-        self::assertCount(1, $invoice->getItems());
+        self::assertCount(1, $invoice->getLines());
 
-        $invoiceItem = $invoice->getItems();
+        $invoiceItem = $invoice->getLines();
         self::assertInstanceOf(InvoiceItem::class, $invoiceItem[0]);
 
         self::assertSame($item->getTax(), $invoiceItem[0]->getTax());
@@ -183,9 +183,9 @@ class InvoiceManagerTest extends KernelTestCase
 
         self::assertNull($invoice->getId());
 
-        self::assertCount(1, $invoice->getItems());
+        self::assertCount(1, $invoice->getLines());
 
-        $invoiceItem = $invoice->getItems();
+        $invoiceItem = $invoice->getLines();
         self::assertInstanceOf(InvoiceItem::class, $invoiceItem[0]);
 
         self::assertSame($item->getTax(), $invoiceItem[0]->getTax());

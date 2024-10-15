@@ -43,6 +43,11 @@ final class RecurringInvoiceTest extends ApiTestCase
         ], true);
     }
 
+    protected function getResourceClass(): string
+    {
+        return RecurringInvoice::class;
+    }
+
     public function testCreate(): void
     {
         $contact = $this->executor->getReferenceRepository()->getReference('contact');
@@ -62,7 +67,7 @@ final class RecurringInvoiceTest extends ApiTestCase
                 'type' => 'percentage',
                 'value' => 10.0,
             ],
-            'items' => [
+            'lines' => [
                 [
                     'price' => 100.10,
                     'qty' => 1.0,
@@ -74,18 +79,18 @@ final class RecurringInvoiceTest extends ApiTestCase
         $result = $this->requestPost('/api/recurring_invoices', $data);
 
         self::assertArrayHasKey('id', $result);
-        self::assertArrayHasKey('id', $result['items'][0]);
+        self::assertArrayHasKey('id', $result['lines'][0]);
         self::assertTrue(Uuid::isValid($result['id']));
-        self::assertTrue(Uuid::isValid($result['items'][0]['id']));
+        self::assertTrue(Uuid::isValid($result['lines'][0]['id']));
 
-        unset($result['id'], $result['items'][0]['id']);
+        unset($result['id'], $result['lines'][0]['id']);
 
         self::assertSame([
             'client' => '/api/clients/' . $contact->getClient()->getId(),
             'frequency' => '* * * * *',
             'dateStart' => date('Y-m-d\T00:00:00+02:00'),
             'dateEnd' => null,
-            'items' => [
+            'lines' => [
                 [
                     'description' => 'Foo Item',
                     'price' => 100.1,
@@ -131,7 +136,7 @@ final class RecurringInvoiceTest extends ApiTestCase
             'frequency' => '* * * * *',
             'dateStart' => '2012-01-01T00:00:00+02:00',
             'dateEnd' => null,
-            'items' => [
+            'lines' => [
                 [
                     'id' => $recurringInvoice->getItems()->first()->getId()->toString(),
                     'description' => 'Test Item',

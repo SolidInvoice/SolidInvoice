@@ -125,7 +125,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            {% for item in invoice.items %}
+                            {% for item in invoice.lines %}
                                 <tr>
                                     <td class="column-description">
                                         {{ item.description }}

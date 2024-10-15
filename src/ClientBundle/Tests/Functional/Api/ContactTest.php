@@ -13,98 +13,109 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Tests\Functional\Api;
 
-use Doctrine\Common\DataFixtures\Executor\AbstractExecutor;
-use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Ramsey\Uuid\Uuid;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
-use SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData;
-use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
-use function assert;
+use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
+use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
+use Zenstruck\Foundry\Test\Factories;
 
 /**
  * @group functional
  */
 final class ContactTest extends ApiTestCase
 {
-    private AbstractExecutor $executor;
+    use Factories;
 
-    protected function setUp(): void
+    protected function getResourceClass(): string
     {
-        parent::setUp();
-
-        $databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
-
-        $this->executor = $databaseTool->loadFixtures([
-            LoadData::class,
-        ], true);
+        return Contact::class;
     }
 
     public function testCreate(): void
     {
-        $client = $this->executor->getReferenceRepository()->getReference('client');
-        assert($client instanceof Client);
+        $client = ClientFactory::createOne(['archived' => null, 'company' => $this->company])->object();
 
         $data = [
-            'client' => '/api/clients/' . $client->getId(),
+            'client' => $this->getIriFromResource($client),
             'firstName' => 'foo bar',
             'email' => 'foo@bar.com',
         ];
 
-        $result = $this->requestPost('/api/contacts', $data);
+        $result = $this->requestPost($this->getIriFromResource($client) . '/contacts', $data);
 
         self::assertTrue(Uuid::isValid($result['id']));
 
-        unset($result['id']);
-
         self::assertSame([
+            '@context' => '/api/contexts/Contact',
+            '@id' => $this->getIriFromResource($client) . '/contacts/' . $result['id'],
+            '@type' => 'Contact',
+            'id' => $result['id'],
             'firstName' => 'foo bar',
             'lastName' => null,
-            'client' => '/api/clients/' . $client->getId(),
+            'client' => $this->getIriFromResource($client),
             'email' => 'foo@bar.com',
-            'additionalContactDetails' => [],
         ], $result);
     }
 
     public function testDelete(): void
     {
-        $contact = $this->executor->getReferenceRepository()->getReference('contact');
-        assert($contact instanceof Contact);
+        $client = ClientFactory::createOne(['archived' => null, 'company' => $this->company])->object();
+        $contact = ContactFactory::createOne(['client' => $client, 'company' => $this->company])->object();
 
-        $this->requestDelete('/api/contacts/' . $contact->getId());
+        $this->requestDelete($this->getIriFromResource($contact));
     }
 
     public function testGet(): void
     {
-        $contact = $this->executor->getReferenceRepository()->getReference('contact');
-        assert($contact instanceof Contact);
+        $firstName = $this->faker->firstName();
+        $lastName = $this->faker->firstName();
+        $email = $this->faker->email();
 
-        $data = $this->requestGet('/api/contacts/' . $contact->getId());
+        $client = ClientFactory::createOne(['archived' => null, 'company' => $this->company])->object();
+        $contact = ContactFactory::createOne([
+            'firstName' => $firstName,
+            'lastName' => $lastName,
+            'email' => $email,
+            'client' => $client,
+            'company' => $this->company,
+        ])->object();
+
+        $data = $this->requestGet($this->getIriFromResource($contact));
 
         self::assertSame([
+            '@context' => '/api/contexts/Contact',
+            '@id' => $this->getIriFromResource($contact),
+            '@type' => 'Contact',
             'id' => $contact->getId()->toString(),
-            'firstName' => 'Test',
-            'lastName' => null,
-            'client' => '/api/clients/' . $contact->getClient()->getId()->toString(),
-            'email' => 'test@example.com',
-            'additionalContactDetails' => [],
+            'firstName' => $firstName,
+            'lastName' => $lastName,
+            'client' => $this->getIriFromResource($client),
+            'email' => $email,
         ], $data);
     }
 
     public function testEdit(): void
     {
-        $contact = $this->executor->getReferenceRepository()->getReference('contact');
-        assert($contact instanceof Contact);
+        $client = ClientFactory::createOne(['archived' => null, 'company' => $this->company])->object();
+        $contact = ContactFactory::createOne([
+            'lastName' => null,
+            'email' => 'test@example.com',
+            'client' => $client,
+            'company' => $this->company,
+        ])->object();
 
-        $data = $this->requestPut('/api/contacts/' . $contact->getId(), ['firstName' => 'New Test']);
+        $data = $this->requestPatch($this->getIriFromResource($contact), ['firstName' => 'New Test']);
 
         self::assertSame([
+            '@context' => '/api/contexts/Contact',
+            '@id' => $this->getIriFromResource($contact),
+            '@type' => 'Contact',
             'id' => $contact->getId()->toString(),
             'firstName' => 'New Test',
             'lastName' => null,
-            'client' => '/api/clients/' . $contact->getClient()->getId()->toString(),
+            'client' => $this->getIriFromResource($client),
             'email' => 'test@example.com',
-            'additionalContactDetails' => [],
         ], $data);
     }
 }

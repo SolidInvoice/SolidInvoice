@@ -13,53 +13,52 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Tests\Functional\Api;
 
-use Doctrine\Common\DataFixtures\Executor\AbstractExecutor;
-use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
+use DateTime;
 use Ramsey\Uuid\Uuid;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
-use SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData as LoadClientData;
-use SolidInvoice\ClientBundle\Entity\Contact;
-use SolidInvoice\QuoteBundle\DataFixtures\ORM\LoadData as LoadQuoteData;
+use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
+use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
+use SolidInvoice\CoreBundle\Entity\Discount;
+use SolidInvoice\QuoteBundle\Entity\Line;
 use SolidInvoice\QuoteBundle\Entity\Quote;
-use function assert;
+use SolidInvoice\QuoteBundle\Test\Factory\QuoteFactory;
+use Zenstruck\Foundry\Proxy;
+use Zenstruck\Foundry\Test\Factories;
+use function array_map;
+use function Zenstruck\Foundry\faker;
 
 /**
  * @group functional
  */
 final class QuoteTest extends ApiTestCase
 {
-    private AbstractExecutor $executor;
+    use Factories;
 
-    protected function setUp(): void
+    protected function getResourceClass(): string
     {
-        parent::setUp();
-
-        $databaseTool = self::getContainer()->get(DatabaseToolCollection::class)->get();
-
-        $this->executor = $databaseTool->loadFixtures([
-            LoadClientData::class,
-            LoadQuoteData::class,
-        ], true);
+        return Quote::class;
     }
 
     public function testCreate(): void
     {
-        $contact = $this->executor->getReferenceRepository()->getReference('contact');
-        assert($contact instanceof Contact);
+        $client = ClientFactory::createOne(['archived' => null, 'company' => $this->company])->object();
+
+        $contacts = array_map(
+            fn (Proxy $contact) => $this->getIriFromResource($contact->object()),
+            ContactFactory::createMany(faker()->numberBetween(1, 5), ['company' => $this->company, 'client' => $client])
+        );
 
         $data = [
-            'users' => [
-                '/api/contacts/' . $contact->getId(),
-            ],
-            'client' => '/api/clients/' . $contact->getClient()->getId(),
+            'users' => $contacts,
+            'client' => $this->getIriFromResource($client),
             'discount' => [
                 'type' => 'percentage',
-                'value' => 10.0,
+                'value' => 10,
             ],
-            'items' => [
+            'lines' => [
                 [
-                    'price' => 100.0,
-                    'qty' => 1.0,
+                    'price' => 100,
+                    'qty' => 1,
                     'description' => 'Foo Item',
                 ],
             ],
@@ -69,134 +68,195 @@ final class QuoteTest extends ApiTestCase
 
         self::assertTrue(Uuid::isValid($result['id']));
         self::assertTrue(Uuid::isValid($result['uuid']));
-        self::assertTrue(Uuid::isValid($result['items'][0]['id']));
+        self::assertTrue(Uuid::isValid($result['lines'][0]['id']));
 
-        unset($result['id'], $result['uuid'], $result['items'][0]['id']);
-
-        self::assertSame([
+        self::assertJsonContains([
+            '@context' => $this->getContextForResource($this->getResourceClass()),
+            '@type' => 'Quote',
+            'client' => $this->getIriFromResource($client),
+            'due' => null,
+            'lines' => [
+                [
+                    'description' => 'Foo Item',
+                    'price' => 100,
+                    'qty' => 1,
+                    'tax' => null,
+                    'total' => 100,
+                ],
+            ],
+            'users' => $contacts,
             'status' => 'draft',
-            'client' => '/api/clients/' . $contact->getClient()->getId(),
-            'total' => 90.0,
-            'baseTotal' => 100.0,
-            'tax' => 0.0,
+            'total' => 90,
+            'baseTotal' => 100,
+            'tax' => 0,
             'discount' => [
                 'type' => 'percentage',
-                'value' => 10.0,
+                'value' => 10,
             ],
             'terms' => null,
             'notes' => null,
-            'due' => null,
-            'items' => [
-                [
-                    'description' => 'Foo Item',
-                    'price' => 100.0,
-                    'qty' => 1.0,
-                    'tax' => null,
-                    'total' => 100.0,
-                ],
-            ],
-            'users' => [
-                '/api/contacts/' . $contact->getId(),
-            ],
-        ], $result);
+        ]);
     }
 
     public function testDelete(): void
     {
-        $quote = $this->executor->getReferenceRepository()->getReference('quote');
-        assert($quote instanceof Quote);
+        $client = ClientFactory::createOne(['archived' => null, 'company' => $this->company]);
+        $quote = QuoteFactory::createOne(['archived' => null, 'company' => $this->company, 'client' => $client])->object();
 
-        $this->requestDelete('/api/quotes/' . $quote->getId());
+        $this->requestDelete($this->getIriFromResource($quote));
     }
 
     public function testGet(): void
     {
-        $quote = $this->executor->getReferenceRepository()->getReference('quote');
-        assert($quote instanceof Quote);
+        $client = ClientFactory::createOne(['archived' => null, 'company' => $this->company]);
+        $contacts = ContactFactory::createMany(faker()->numberBetween(1, 5), ['company' => $this->company, 'client' => $client]);
 
-        $data = $this->requestGet('/api/quotes/' . $quote->getId());
+        /** @var Quote $quote */
+        $quote = QuoteFactory::createOne([
+            'archived' => null,
+            'company' => $this->company,
+            'client' => $client,
+            'users' => $contacts,
+            'status' => 'draft',
+            'due' => new DateTime('2005-01-20'),
+            'discount' => (new Discount())
+                ->setType('percentage')
+                ->setValue(0),
+            'lines' => [
+                (new Line())
+                    ->setDescription('Test Item')
+                    ->setQty(1)
+                    ->setPrice(10000),
+            ],
+        ])->object();
+
+        $data = $this->requestGet($this->getIriFromResource($quote));
 
         self::assertSame([
+            '@context' => '/api/contexts/Quote',
+            '@id' => $this->getIriFromResource($quote),
+            '@type' => 'Quote',
             'id' => $quote->getId()->toString(),
+            'quoteId' => '',
             'uuid' => $quote->getUuid()->toString(),
             'status' => 'draft',
             'client' => '/api/clients/' . $quote->getClient()->getId(),
-            'total' => 100.0,
-            'baseTotal' => 100.0,
-            'tax' => 0.0,
+            'total' => 100,
+            'baseTotal' => 100,
+            'tax' => 0,
             'discount' => [
                 'type' => null,
-                'value' => 0.0,
+                'value' => 0,
             ],
-            'terms' => null,
-            'notes' => null,
-            'due' => null,
-            'items' => [
+            'terms' => $quote->getTerms(),
+            'notes' => $quote->getNotes(),
+            'due' => '2005-01-20T00:00:00+02:00',
+            'lines' => [
                 [
-                    'id' => $quote->getItems()->first()->getId()->toString(),
+                    '@id' => $this->getIriFromResource($quote->getLines()->first()),
+                    '@type' => 'Line',
+                    'id' => $quote->getLines()->first()->getId()->toString(),
                     'description' => 'Test Item',
-                    'price' => 100.0,
-                    'qty' => 1.0,
+                    'price' => 100,
+                    'qty' => 1,
                     'tax' => null,
-                    'total' => 100.0,
+                    'total' => 100,
                 ],
             ],
-            'users' => [
-                '/api/contacts/' . $quote->getUsers()->first()->getId(),
-            ],
+            'users' => array_map(fn (Proxy $contact) => $this->getIriFromResource($contact->object()), $contacts),
+            'invoice' => null,
         ], $data);
     }
 
     public function testEdit(): void
     {
-        $quote = $this->executor->getReferenceRepository()->getReference('quote');
-        assert($quote instanceof Quote);
+        $client = ClientFactory::createOne(['archived' => null, 'company' => $this->company]);
+        $contacts = ContactFactory::createMany(faker()->numberBetween(1, 5), ['company' => $this->company, 'client' => $client]);
 
-        $data = $this->requestPut(
-            '/api/quotes/' . $quote->getId()->toString(),
+        /** @var Quote $quote */
+        $quote = QuoteFactory::createOne([
+            'archived' => null,
+            'company' => $this->company,
+            'client' => $client,
+            'users' => $contacts,
+            'status' => 'draft',
+            'due' => new DateTime('2005-01-20'),
+            'discount' => (new Discount())
+                ->setType('percentage')
+                ->setValue(0),
+            'lines' => [
+                (new Line())
+                    ->setDescription('Test Item')
+                    ->setQty(1)
+                    ->setPrice(10000),
+            ],
+        ])->object();
+
+        $data = $this->requestPatch(
+            $this->getIriFromResource($quote),
             [
                 'discount' => [
                     'type' => 'percentage',
-                    'value' => 10.0,
+                    'value' => 10,
                 ],
-                'items' => [
+                'lines' => [
                     [
-                        'price' => 100.0,
-                        'qty' => 1.0,
+                        'price' => 10000,
+                        'qty' => 1,
                         'description' => 'Foo Item',
+                    ],
+                    [
+                        'price' => 500,
+                        'qty' => 5,
+                        'description' => 'Foo Items',
                     ],
                 ],
             ]
         );
 
         self::assertSame([
+            '@context' => '/api/contexts/Quote',
+            '@id' => $this->getIriFromResource($quote),
+            '@type' => 'Quote',
             'id' => $quote->getId()->toString(),
+            'quoteId' => '',
             'uuid' => $quote->getUuid()->toString(),
             'status' => 'draft',
             'client' => '/api/clients/' . $quote->getClient()->getId(),
-            'total' => 90.0,
-            'baseTotal' => 100.0,
-            'tax' => 0.0,
+            'total' => 11250,
+            'baseTotal' => 12500,
+            'tax' => 0,
             'discount' => [
                 'type' => 'percentage',
-                'value' => 10.0,
+                'value' => 10,
             ],
-            'terms' => null,
-            'notes' => null,
-            'due' => null,
-            'items' => [
+            'terms' => $quote->getTerms(),
+            'notes' => $quote->getNotes(),
+            'due' => '2005-01-20T00:00:00+02:00',
+            'lines' => [
                 [
-                    'id' => $quote->getItems()->first()->getId()->toString(),
+                    '@id' => $this->getIriFromResource($quote->getLines()->get(0)),
+                    '@type' => 'Line',
+                    'id' => $quote->getLines()->get(0)->getId()->toString(),
                     'description' => 'Foo Item',
-                    'price' => 100.0,
-                    'qty' => 1.0,
+                    'price' => 10000,
+                    'qty' => 1,
                     'tax' => null,
-                    'total' => 100.0,
+                    'total' => 10000,
+                ],
+                [
+                    '@id' => $this->getIriFromResource($quote->getLines()->get(1)),
+                    '@type' => 'Line',
+                    'id' => $quote->getLines()->get(1)->getId()->toString(),
+                    'description' => 'Foo Items',
+                    'price' => 500,
+                    'qty' => 5,
+                    'tax' => null,
+                    'total' => 2500,
                 ],
             ],
-            'users' => [
-                '/api/contacts/' . $quote->getUsers()->first()->getId(),
-            ],
+            'users' => array_map(fn (Proxy $contact) => $this->getIriFromResource($contact->object()), $contacts),
+            'invoice' => null,
         ], $data);
     }
 }

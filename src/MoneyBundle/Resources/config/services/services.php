@@ -16,6 +16,7 @@ use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
 use SolidInvoice\MoneyBundle\SolidInvoiceMoneyBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -26,6 +27,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autowire()
         ->private()
         ->bind('$locale', env('locale'))
+        ->bind('$normalizer', service('api_platform.serializer.normalizer.item'))
     ;
 
     $services

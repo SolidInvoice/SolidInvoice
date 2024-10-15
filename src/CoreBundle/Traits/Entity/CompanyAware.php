@@ -15,11 +15,13 @@ namespace SolidInvoice\CoreBundle\Traits\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\CoreBundle\Entity\Company;
+use Symfony\Component\Serializer\Attribute as Serialize;
 
 trait CompanyAware
 {
     #[ORM\ManyToOne(targetEntity: Company::class)]
     #[ORM\JoinColumn(nullable: false)]
+    #[Serialize\Ignore()]
     protected Company $company;
 
     public function getCompany(): Company

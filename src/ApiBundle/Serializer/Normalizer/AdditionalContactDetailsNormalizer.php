@@ -14,40 +14,49 @@ declare(strict_types=1);
 namespace SolidInvoice\ApiBundle\Serializer\Normalizer;
 
 use Doctrine\Persistence\ManagerRegistry;
-use InvalidArgumentException;
 use SolidInvoice\ClientBundle\Entity\AdditionalContactDetail;
 use SolidInvoice\ClientBundle\Entity\ContactType;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @see \SolidInvoice\ApiBundle\Tests\Serializer\Normalizer\AdditionalContactDetailsNormalizerTest
  */
-class AdditionalContactDetailsNormalizer implements NormalizerInterface, DenormalizerInterface
+class AdditionalContactDetailsNormalizer implements NormalizerAwareInterface, NormalizerInterface, DenormalizerAwareInterface, DenormalizerInterface
 {
-    private readonly DenormalizerInterface|NormalizerInterface $normalizer;
+    use NormalizerAwareTrait;
+    use DenormalizerAwareTrait;
 
     public function __construct(
         private readonly ManagerRegistry $registry,
-        NormalizerInterface $normalizer
     ) {
-        if (! $normalizer instanceof DenormalizerInterface) {
-            throw new InvalidArgumentException('The normalizer must implement ' . DenormalizerInterface::class);
-        }
-
-        $this->normalizer = $normalizer;
     }
 
-    public function denormalize($data, $type, $format = null, array $context = [])
+    /**
+     * @param array<string, mixed> $context
+     * @throws ExceptionInterface
+     */
+    public function denormalize($data, $type, $format = null, array $context = []): AdditionalContactDetail
     {
-        $data['type'] = [
-            'name' => $data['type'],
-        ];
+        if (! array_key_exists('type', $data) || ! array_key_exists('value', $data)) {
+            throw new \InvalidArgumentException('Invalid data');
+        }
 
-        /** @var AdditionalContactDetail $detail */
-        $detail = $this->normalizer->denormalize($data, $type, $format, $context);
+        $detail = new AdditionalContactDetail();
         $repository = $this->registry->getRepository(ContactType::class);
-        $detail->setType($repository->findOneBy(['name' => $detail->getType()->getName()]));
+        $contactType = $repository->findOneBy(['name' => $data['type']]);
+
+        if (! $contactType instanceof ContactType) {
+            throw new \InvalidArgumentException('Invalid contact type');
+        }
+
+        $detail->setType($contactType);
+        $detail->setValue($data['value']);
 
         return $detail;
     }
@@ -59,13 +68,15 @@ class AdditionalContactDetailsNormalizer implements NormalizerInterface, Denorma
 
     /**
      * @param AdditionalContactDetail $object
-     * @param string|null $format
      * @param array<string, mixed> $context
-     * @return array<string, string>
+     * @return array{type: string, value: string|null}
      */
-    public function normalize($object, $format = null, array $context = []): array
+    public function normalize($object, ?string $format = null, array $context = []): array
     {
-        return ['type' => $object->getType()->getName(), 'value' => $object->getValue()];
+        return [
+            'type' => $object->getType()->getName(),
+            'value' => $object->getValue(),
+        ];
     }
 
     public function supportsNormalization($data, $format = null): bool

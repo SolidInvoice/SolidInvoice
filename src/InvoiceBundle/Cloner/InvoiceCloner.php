@@ -21,7 +21,7 @@ use Psr\Container\NotFoundExceptionInterface;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
-use SolidInvoice\InvoiceBundle\Entity\Item;
+use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Exception\InvalidTransitionException;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
@@ -81,7 +81,7 @@ final class InvoiceCloner
             $newInvoice->setTax($tax);
         }
 
-        array_map(static fn (Item $item): BaseInvoice => $newInvoice->addItem($item), iterator_to_array($this->addItems($invoice, $now)));
+        array_map(static fn (Line $item): BaseInvoice => $newInvoice->addLine($item), iterator_to_array($this->addItems($invoice, $now)));
 
         $this->invoiceManager->create($newInvoice);
 
@@ -90,8 +90,8 @@ final class InvoiceCloner
 
     private function addItems(BaseInvoice $invoice, Carbon $now): Traversable
     {
-        foreach ($invoice->getItems() as $item) {
-            $invoiceItem = new Item();
+        foreach ($invoice->getLines() as $item) {
+            $invoiceItem = new Line();
             $invoiceItem->setCreated($now);
             $invoiceItem->setTotal($item->getTotal());
             $invoiceItem->setDescription($item->getDescription());

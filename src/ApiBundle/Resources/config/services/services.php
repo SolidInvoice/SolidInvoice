@@ -22,7 +22,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autowire()
         ->autoconfigure()
         ->private()
-        ->bind('$normalizer', service('api_platform.serializer.normalizer.item'))
         ->bind('$invoiceStateMachine', service('state_machine.invoice'))
         ->bind('$quoteStateMachine', service('state_machine.quote'))
     ;

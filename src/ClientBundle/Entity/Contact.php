@@ -13,13 +13,15 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Entity;
 
+use ApiPlatform\JsonSchema\Metadata\Property\Factory\SchemaPropertyMetadataFactory;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Put;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -40,23 +42,102 @@ use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Entity\QuoteContact;
 use Stringable;
 use Symfony\Component\Serializer\Annotation as Serialize;
+use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Validator\Constraints as Assert;
 use function strtolower;
 
-#[ApiResource(
+/*#[ApiResource(
     types: ['https://schema.org/Person'],
-    operations: [
-        new Get(),
-        new Put(),
-        new Patch(),
-        new Delete(),
-        new Post()
-    ],
+    sunset: 'V2.4.0',
+    deprecationReason: 'This resource is deprecated, please use the `/clients/{clientId}/contacts` endpoint',
     normalizationContext: [
-        'groups' => ['contact_api']
+        'groups' => ['contact_api'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
     ],
     denormalizationContext: [
-        'groups' => ['contact_api']
+        'groups' => ['contact_api'],
+    ],
+)]*/
+/*#[ApiResource(
+    uriTemplate: '/clients/{clientId}/contacts',
+    operations: [
+        new GetCollection(),
+        new Post(),
+    ],
+    uriVariables: [
+        'clientId' => new Link(
+            fromProperty: 'contacts',
+            fromClass: Client::class
+        ),
+    ],
+    normalizationContext: [
+        'groups' => ['contact_api'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ],
+    denormalizationContext: [
+        'groups' => ['contact_api'],
+    ]
+)]
+#[ApiResource(
+    uriTemplate: '/clients/{clientId}/contacts/{id}',
+    operations: [
+        //new Get(),
+        new Patch(),
+        new Delete(),
+    ],
+    uriVariables: [
+        'clientId' => new Link(
+            toProperty: 'client',
+            fromClass: Client::class
+        ),
+        'id' => new Link(
+            fromClass: Contact::class
+        ),
+    ],
+    normalizationContext: [
+        'groups' => ['contact_api'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ],
+    denormalizationContext: [
+        'groups' => ['contact_api'],
+    ]
+)]*/
+#[ApiResource(
+    uriTemplate: '/clients/{clientId}/contacts',
+    operations: [ new GetCollection(), new Post() ],
+    uriVariables: [
+        'clientId' => new Link(
+            fromProperty: 'contacts',
+            fromClass: Client::class,
+        ),
+    ],
+    normalizationContext: [
+        'groups' => ['contact_api:read'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ],
+    denormalizationContext: [
+        'groups' => ['contact_api:write'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ]
+)]
+#[ApiResource(
+    uriTemplate: '/clients/{clientId}/contacts/{id}',
+    operations: [new Get(), new Delete(), new Patch()],
+    uriVariables: [
+        'clientId' => new Link(
+            fromProperty: 'contacts',
+            fromClass: Client::class,
+        ),
+        'id' => new Link(
+            fromClass: Contact::class,
+        ),
+    ],
+    normalizationContext: [
+        'groups' => ['contact_api:read'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ],
+    denormalizationContext: [
+        'groups' => ['contact_api:write'],
     ]
 )]
 #[ORM\Table(name: Contact::TABLE_NAME)]
@@ -73,26 +154,26 @@ class Contact implements Serializable, Stringable
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
-    #[Serialize\Groups(['client_api', 'contact_api'])]
+    #[Serialize\Groups(['contact_api:read'])]
     private ?UuidInterface $id = null;
 
     #[ApiProperty(iris: ['https://schema.org/givenName'])]
     #[ORM\Column(name: 'firstName', type: Types::STRING, length: 125)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 125)]
-    #[Serialize\Groups(['client_api', 'contact_api'])]
+    #[Serialize\Groups(['contact_api:read', 'contact_api:write'])]
     private ?string $firstName = null;
 
     #[ApiProperty(iris: ['https://schema.org/familyName'])]
     #[ORM\Column(name: 'lastName', type: Types::STRING, length: 125, nullable: true)]
     #[Assert\Length(max: 125)]
-    #[Serialize\Groups(['client_api', 'contact_api'])]
+    #[Serialize\Groups(['contact_api:read', 'contact_api:write'])]
     private ?string $lastName = null;
 
     #[ApiProperty(iris: ['https://schema.org/Organization'])]
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'contacts')]
     #[ORM\JoinColumn(name: 'client_id')]
-    #[Serialize\Groups(['contact_api'])]
+    #[Serialize\Groups(['contact_api:read', 'contact_api:write'])]
     #[Assert\Valid]
     #[Assert\NotBlank]
     private ?Client $client = null;
@@ -101,7 +182,7 @@ class Contact implements Serializable, Stringable
     #[ORM\Column(name: 'email', type: Types::STRING, length: 255)]
     #[Assert\NotBlank]
     #[Assert\Email(mode: Assert\Email::VALIDATION_MODE_STRICT)]
-    #[Serialize\Groups(['client_api', 'contact_api'])]
+    #[Serialize\Groups(['contact_api:read', 'contact_api:write'])]
     private ?string $email = null;
 
     /**
@@ -109,7 +190,26 @@ class Contact implements Serializable, Stringable
      */
     #[ORM\OneToMany(mappedBy: 'contact', targetEntity: AdditionalContactDetail::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[Assert\Valid]
-    #[Serialize\Groups(['client_api', 'contact_api'])]
+    // #[Serialize\Groups(['contact_api:read', 'contact_api:write'])]
+    /*#[ApiProperty(
+        openapiContext: [
+            'type' => 'array',
+            'items' => [
+                'type' => 'object',
+                'properties' => [
+                    'type' => [
+                        'type' => 'string',
+                    ],
+                    'value' => [
+                        'type' => 'string',
+                    ],
+                ],
+            ],
+        ],
+        extraProperties: [
+            SchemaPropertyMetadataFactory::JSON_SCHEMA_USER_DEFINED => true,
+        ],
+    )]*/
     private Collection $additionalContactDetails;
 
     /**
@@ -230,7 +330,7 @@ class Contact implements Serializable, Stringable
             'lastName' => $this->lastName,
             'email' => $this->email,
             'created' => $this->created,
-            'updated' => $this->updated
+            'updated' => $this->updated,
         ];
     }
 

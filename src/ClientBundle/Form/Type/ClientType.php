@@ -78,10 +78,13 @@ class ClientType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['data_class' => Client::class]);
+        $resolver->setDefaults([
+            'data_class' => Client::class,
+            'validation_groups' => ['Default', 'form'],
+        ]);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'client';
     }

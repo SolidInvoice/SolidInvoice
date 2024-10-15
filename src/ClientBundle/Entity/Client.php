@@ -15,6 +15,11 @@ namespace SolidInvoice\ClientBundle\Entity;
 
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -33,10 +38,32 @@ use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use Stringable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Serializer\Annotation as Serialize;
+use Symfony\Component\Serializer\Attribute as Serialize;
+use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ApiResource(types: ['https://schema.org/Corporation'], normalizationContext: ['groups' => ['client_api']], denormalizationContext: ['groups' => ['client_api']])]
+#[ApiResource(
+    types: ['https://schema.org/Corporation'],
+    operations: [
+         // PUT is not supported
+        new Get(),
+        new Post(),
+        new GetCollection(),
+        new Patch(),
+        new Delete(),
+    ],
+    normalizationContext: [
+        'groups' => ['client_api:read'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+        AbstractObjectNormalizer::SKIP_UNINITIALIZED_VALUES => true,
+    ],
+    denormalizationContext: [
+        'groups' => ['client_api:write'],
+    ],
+    validationContext: [
+        'groups' => ['Default', 'api'],
+    ],
+)]
 #[ORM\Table(name: Client::TABLE_NAME)]
 #[ORM\UniqueConstraint(columns: ['name', 'company_id'])]
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
@@ -53,37 +80,37 @@ class Client implements Stringable
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
-    #[Serialize\Groups(['client_api'])]
+    #[Serialize\Groups(['client_api:read'])]
     private ?UuidInterface $id = null;
 
     #[ApiProperty(iris: ['https://schema.org/name'])]
     #[ORM\Column(name: 'name', type: Types::STRING, length: 125)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 125)]
-    #[Serialize\Groups(['client_api'])]
+    #[Serialize\Groups(['client_api:read', 'client_api:write'])]
     private ?string $name = null;
 
     #[ApiProperty(iris: ['https://schema.org/URL'])]
     #[ORM\Column(name: 'website', type: Types::STRING, length: 125, nullable: true)]
     #[Assert\Url]
     #[Assert\Length(max: 125)]
-    #[Serialize\Groups(['client_api'])]
+    #[Serialize\Groups(['client_api:read', 'client_api:write'])]
     private ?string $website = null;
 
     #[ApiProperty(iris: ['https://schema.org/Text'])]
     #[ORM\Column(name: 'status', type: Types::STRING, length: 25)]
-    #[Serialize\Groups(['client_api'])]
+    #[Serialize\Groups(['client_api:read'])]
     private ?string $status = null;
 
     #[ORM\Column(name: 'currency', type: Types::STRING, length: 3, nullable: true)]
     private ?string $currencyCode = null;
 
-    #[ApiProperty(iris: ['https://schema.org/Text'])]
-    #[Serialize\Groups(['client_api'])]
+    #[ApiProperty(openapiContext: ['type' => 'string'], iris: ['https://schema.org/Text'])]
+    #[Serialize\Groups(['client_api:read', 'client_api:write'])]
     private Currency $currency;
 
     #[ORM\Column(name: 'vat_number', type: Types::STRING, nullable: true)]
-    #[Serialize\Groups(['client_api'])]
+    #[Serialize\Groups(['client_api:read', 'client_api:write'])]
     private ?string $vatNumber = null;
 
     /**
@@ -92,9 +119,17 @@ class Client implements Stringable
     #[ApiProperty(iris: ['https://schema.org/Person'])]
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Contact::class, cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     #[ORM\OrderBy(['firstName' => 'ASC'])]
-    #[Assert\Count(min: 1, minMessage: 'You need to add at least one contact to this client')]
-    #[Assert\Valid]
-    #[Serialize\Groups(['client_api'])]
+    #[Assert\Count(
+        min: 1,
+        minMessage: 'You need to add at least one contact to this client',
+        // Only validate from the form.
+        // API validation should not happen, since you should be able to
+        // create clients without contacts
+        // (Due to the REST nature of the API, the contacts are a separate resource)
+        groups: ['form'],
+    )]
+    #[Assert\Valid(groups: ['form'])]
+    #[Serialize\Groups(['client_api:read'])]
     private Collection $contacts;
 
     /**
@@ -102,6 +137,7 @@ class Client implements Stringable
      */
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Quote::class, cascade: ['remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     #[ORM\OrderBy(['created' => 'DESC'])]
+    #[Serialize\Groups(['client_api:read'])]
     private Collection $quotes;
 
     /**
@@ -109,6 +145,7 @@ class Client implements Stringable
      */
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Invoice::class, cascade: ['remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     #[ORM\OrderBy(['created' => 'DESC'])]
+    #[Serialize\Groups(['client_api:read'])]
     private Collection $invoices;
 
     /**
@@ -116,24 +153,26 @@ class Client implements Stringable
      */
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: RecurringInvoice::class, cascade: ['remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     #[ORM\OrderBy(['created' => 'DESC'])]
+    #[Serialize\Groups(['client_api:read'])]
     private Collection $recurringInvoices;
 
     /**
      * @var Collection<int, Payment>
      */
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Payment::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[Serialize\Groups(['client_api:read'])]
     private Collection $payments;
 
     /**
      * @var Collection<int, Address>
      */
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Address::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
-    #[Serialize\Groups(['client_api'])]
+    #[Serialize\Groups(['client_api:read', 'client_api:write'])]
     private Collection $addresses;
 
-    #[ApiProperty(iris: ['https://schema.org/MonetaryAmount'])]
+    #[ApiProperty(openapiContext: ['type' => 'string'], iris: ['https://schema.org/MonetaryAmount'])]
     #[ORM\OneToOne(mappedBy: 'client', targetEntity: Credit::class, cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
-    #[Serialize\Groups(['client_api'])]
+    #[Serialize\Groups(['client_api:read', 'client_api:write'])]
     private ?Credit $credit = null;
 
     public function __construct()
@@ -144,6 +183,8 @@ class Client implements Stringable
         $this->recurringInvoices = new ArrayCollection();
         $this->payments = new ArrayCollection();
         $this->addresses = new ArrayCollection();
+
+        $this->setCredit(new Credit());
     }
 
     public function getId(): ?UuidInterface
@@ -327,7 +368,7 @@ class Client implements Stringable
         return $this->addresses;
     }
 
-    public function getCredit(): Credit
+    public function getCredit(): ?Credit
     {
         return $this->credit;
     }
@@ -335,18 +376,9 @@ class Client implements Stringable
     public function setCredit(Credit $credit): self
     {
         $this->credit = $credit;
+        $credit->setClient($this);
 
         return $this;
-    }
-
-    #[ORM\PrePersist]
-    public function setInitialCredit(): void
-    {
-        if (! $this->id instanceof UuidInterface) {
-            $credit = new Credit();
-            $credit->setClient($this);
-            $this->setCredit($credit);
-        }
     }
 
     public function getCurrencyCode(): ?string

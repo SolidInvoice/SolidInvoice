@@ -15,7 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Form\Type;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Money\Currency;
-use SolidInvoice\InvoiceBundle\Entity\Item;
+use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidInvoice\TaxBundle\Form\Type\TaxEntityType;
 use Symfony\Component\Form\AbstractType;
@@ -92,7 +92,7 @@ class ItemType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
-            ->setDefault('data_class', Item::class)
+            ->setDefault('data_class', Line::class)
             ->setRequired('currency')
             ->setAllowedTypes('currency', [Currency::class]);
     }

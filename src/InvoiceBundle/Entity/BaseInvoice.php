@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use Brick\Math\BigDecimal;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
@@ -22,6 +23,7 @@ use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use Symfony\Component\Serializer\Annotation as Serialize;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\MappedSuperclass]
 abstract class BaseInvoice
@@ -29,31 +31,60 @@ abstract class BaseInvoice
     use CompanyAware;
 
     #[ORM\Column(name: 'status', type: Types::STRING, length: 25)]
-    #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api'])]
+    #[Groups(['invoice_api:read'])]
     protected ?string $status = null;
 
     #[ORM\Column(name: 'total_amount', type: BigIntegerType::NAME)]
-    #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api'])]
+    #[Groups(['invoice_api:read'])]
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'number',
+        ],
+        jsonSchemaContext: [
+            'type' => 'number',
+        ]
+    )]
     protected BigNumber $total;
 
     #[ORM\Column(name: 'baseTotal_amount', type: BigIntegerType::NAME)]
     #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api'])]
+    #[Groups(['invoice_api:read', 'invoice_api:write'])]
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'number',
+        ],
+        jsonSchemaContext: [
+            'type' => 'number',
+        ]
+    )]
     protected BigNumber $baseTotal;
 
     #[ORM\Column(name: 'tax_amount', type: BigIntegerType::NAME)]
     #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api'])]
+    #[Groups(['invoice_api:read'])]
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'number',
+        ],
+        jsonSchemaContext: [
+            'type' => 'number',
+        ]
+    )]
     protected BigNumber $tax;
 
     #[ORM\Embedded(class: Discount::class)]
     #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
+    #[Groups(['invoice_api:read', 'invoice_api:write'])]
     protected Discount $discount;
 
     #[ORM\Column(name: 'terms', type: Types::TEXT, nullable: true)]
     #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
+    #[Groups(['invoice_api:read', 'invoice_api:write'])]
     protected ?string $terms = null;
 
     #[ORM\Column(name: 'notes', type: Types::TEXT, nullable: true)]
     #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
+    #[Groups(['invoice_api:read', 'invoice_api:write'])]
     protected ?string $notes = null;
 
     public function __construct()

@@ -22,7 +22,6 @@ use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Stringable;
 use Symfony\Component\Intl\Countries;
-use Symfony\Component\Serializer\Annotation as Serialize;
 
 #[ORM\Table(name: Address::TABLE_NAME)]
 #[ORM\Entity]
@@ -37,34 +36,26 @@ class Address implements Stringable
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
-    #[Serialize\Groups(['client_api'])]
     private ?UuidInterface $id = null;
 
     #[ORM\Column(name: 'street1', type: Types::STRING, nullable: true)]
-    #[Serialize\Groups(['client_api'])]
     private ?string $street1 = null;
 
     #[ORM\Column(name: 'street2', type: Types::STRING, nullable: true)]
-    #[Serialize\Groups(['client_api'])]
     private ?string $street2 = null;
 
     #[ORM\Column(name: 'city', type: Types::STRING, nullable: true)]
-    #[Serialize\Groups(['client_api'])]
     private ?string $city = null;
 
     #[ORM\Column(name: 'state', type: Types::STRING, nullable: true)]
-    #[Serialize\Groups(['client_api'])]
     private ?string $state = null;
 
     #[ORM\Column(name: 'zip', type: Types::STRING, nullable: true)]
-    #[Serialize\Groups(['client_api'])]
     private ?string $zip = null;
 
     #[ORM\Column(name: 'country', type: Types::STRING, nullable: true)]
-    #[Serialize\Groups(['client_api'])]
     private ?string $country = null;
 
-    #[Serialize\Groups(['client_api'])]
     private ?string $countryName = null;
 
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'addresses')]

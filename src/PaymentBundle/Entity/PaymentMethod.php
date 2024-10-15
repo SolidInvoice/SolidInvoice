@@ -48,7 +48,7 @@ class PaymentMethod implements GatewayConfigInterface, Stringable
 
     #[ORM\Column(name: 'name', type: Types::STRING, length: 125)]
     #[Assert\NotBlank]
-    #[Serialize\Groups(['payment_api'])]
+    // #[Serialize\Groups(['payment_api'])]
     private ?string $name = null;
 
     #[ORM\Column(name: 'gateway_name', type: Types::STRING, length: 125)]
