@@ -66,9 +66,9 @@ final class ViewTest extends KernelTestCase
                 'total' => '100.00',
                 'baseTotal' => '100.00',
                 'created' => new \DateTimeImmutable('2021-09-01'),
-                'items' => [
+                'lines' => [
                     (new Line())
-                        ->setDescription('Test Item')
+                        ->setDescription('Test Line')
                         ->setPrice('100.00')
                         ->setQty(1),
                 ],

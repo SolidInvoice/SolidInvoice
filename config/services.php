@@ -37,7 +37,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters->set('env(SENTRY_DSN)', null);
     $parameters->set('env(MAILER_DSN)', 'null://null');
     $parameters->set('env(SENTRY_SEND_DEFAULT_PII)', '0');
-    $parameters->set('.container.dumper.inline_factories', false);
 
     $containerConfigurator->services()
         ->set(Monolog\Processor\PsrLogMessageProcessor::class)

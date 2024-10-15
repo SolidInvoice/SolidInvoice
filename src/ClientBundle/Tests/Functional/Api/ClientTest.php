@@ -110,6 +110,10 @@ final class ClientTest extends ApiTestCase
             'currency' => $client->getCurrencyCode(),
             'vatNumber' => $client->getVatNumber(),
             'contacts' => array_map($this->getIriFromResource(...), array_map(static fn (Proxy $proxy) => $proxy->object(), $contacts)),
+            'quotes' => [],
+            'invoices' => [],
+            'recurringInvoices' => [],
+            'payments' => [],
             'addresses' => [],
             'credit' => 0,
         ], $data);
@@ -155,6 +159,10 @@ final class ClientTest extends ApiTestCase
             'currency' => $client->getCurrencyCode(),
             'vatNumber' => $client->getVatNumber(),
             'contacts' => $contactInfo,
+            'quotes' => [],
+            'invoices' => [],
+            'recurringInvoices' => [],
+            'payments' => [],
             'addresses' => [],
             'credit' => 0,
         ], $data);

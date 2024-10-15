@@ -1,5 +1,5 @@
 <html><body>
-<div id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="CreateInvoice" data-live-url-value="/_components/CreateInvoice" data-live-props-value='{"formData":[],"formName":"invoice","invoice":{"client":"","discount":{"type":"percentage","value":0},"items":[],"invoiceId":"1","terms":"","notes":"","total":0,"baseTotal":0,"tax":0,"invoiceDate":"2021-01-01","due":"","_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"prPuo71WCY211fEgoX\/77zIwWOFw\/jZuL+\/mq2LTs7M="}' data-live-csrf-value="">
+<div id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="CreateInvoice" data-live-url-value="/_components/CreateInvoice" data-live-props-value='{"formData":[],"formName":"invoice","invoice":{"client":"","discount":{"type":"percentage","value":0},"lines":[],"invoiceId":"1","terms":"","notes":"","total":0,"baseTotal":0,"tax":0,"invoiceDate":"2021-01-01","due":"","_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"Rf+\/6C7EL8N5sbYDlkyFfi4hCArIHX3kJq9jjdyQdSo="}' data-live-csrf-value="">
     
     <form name="invoice" method="post" data-model="on(change)|*">
     <div class="row">
@@ -137,7 +137,7 @@
 
                         <div class="row">
                             <div class="col add-item-col">
-                                <button type="button" id="invoice_items_add" name="invoice[items][add]" data-action="live#action" data-live-action-param="addCollectionItem" data-live-name-param="invoice[items]" class="add-item btn">+ Add Item</button>
+                                <button type="button" id="invoice_lines_add" name="invoice[lines][add]" data-action="live#action" data-live-action-param="addCollectionItem" data-live-name-param="invoice[lines]" class="add-item btn">+ Add Item</button>
                             </div>
                         </div>
 
@@ -180,7 +180,7 @@
         </div>
     </div>
     <fieldset class="form-group">                
-    <div id="invoice_items"></div>
+    <div id="invoice_lines"></div>
 </fieldset>
 <input type="hidden" id="invoice_total" name="invoice[total]" value="0"><input type="hidden" id="invoice_baseTotal" name="invoice[baseTotal]" value="0"><input type="hidden" id="invoice_tax" name="invoice[tax]" value="0"><input type="hidden" id="invoice__token" name="invoice[_token]">
 </form>

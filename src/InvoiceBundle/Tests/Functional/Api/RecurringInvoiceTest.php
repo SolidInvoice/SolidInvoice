@@ -71,7 +71,7 @@ final class RecurringInvoiceTest extends ApiTestCase
                 [
                     'price' => 100.10,
                     'qty' => 1.0,
-                    'description' => 'Foo Item',
+                    'description' => 'Foo Line',
                 ],
             ],
         ];
@@ -92,7 +92,7 @@ final class RecurringInvoiceTest extends ApiTestCase
             'dateEnd' => null,
             'lines' => [
                 [
-                    'description' => 'Foo Item',
+                    'description' => 'Foo Line',
                     'price' => 100.1,
                     'qty' => 1.0,
                     'tax' => null,
@@ -138,8 +138,8 @@ final class RecurringInvoiceTest extends ApiTestCase
             'dateEnd' => null,
             'lines' => [
                 [
-                    'id' => $recurringInvoice->getItems()->first()->getId()->toString(),
-                    'description' => 'Test Item',
+                    'id' => $recurringInvoice->getLines()->first()->getId()->toString(),
+                    'description' => 'Test Line',
                     'price' => 100.0,
                     'qty' => 1.0,
                     'tax' => null,
@@ -175,11 +175,11 @@ final class RecurringInvoiceTest extends ApiTestCase
                     'type' => 'percentage',
                     'value' => 10.0,
                 ],
-                'items' => [
+                'lines' => [
                     [
                         'price' => 100.0,
                         'qty' => 1.0,
-                        'description' => 'Foo Item',
+                        'description' => 'Foo Line',
                     ],
                 ],
             ]
@@ -191,10 +191,10 @@ final class RecurringInvoiceTest extends ApiTestCase
             'frequency' => '5 * * * *',
             'dateStart' => '2012-01-01T00:00:00+02:00',
             'dateEnd' => null,
-            'items' => [
+            'lines' => [
                 [
-                    'id' => $recurringInvoice->getItems()->first()->getId()->toString(),
-                    'description' => 'Foo Item',
+                    'id' => $recurringInvoice->getLines()->first()->getId()->toString(),
+                    'description' => 'Foo Line',
                     'price' => 100.0,
                     'qty' => 1.0,
                     'tax' => null,

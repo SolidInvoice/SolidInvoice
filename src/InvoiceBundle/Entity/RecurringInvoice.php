@@ -83,9 +83,9 @@ class RecurringInvoice extends BaseInvoice
      */
     #[ORM\OneToMany(mappedBy: 'recurringInvoice', targetEntity: Line::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[Assert\Valid]
-    #[Assert\Count(min: 1, minMessage: 'You need to add at least 1 item to the Invoice')]
+    #[Assert\Count(min: 1, minMessage: 'You need to add at least 1 line to the Invoice')]
     #[Serialize\Groups(['recurring_invoice_api', 'client_api', 'create_recurring_invoice_api'])]
-    protected Collection $items;
+    protected Collection $lines;
 
     /**
      * @var Collection<int, RecurringInvoiceContact>
@@ -98,7 +98,7 @@ class RecurringInvoice extends BaseInvoice
 
     public function __construct()
     {
-        $this->items = new ArrayCollection();
+        $this->lines = new ArrayCollection();
         $this->users = new ArrayCollection();
         parent::__construct();
     }
@@ -156,18 +156,18 @@ class RecurringInvoice extends BaseInvoice
         return $this;
     }
 
-    public function addItem(Line $item): self
+    public function addLine(Line $line): self
     {
-        $this->items[] = $item;
-        $item->setInvoice($this);
+        $this->lines[] = $line;
+        $line->setInvoice($this);
 
         return $this;
     }
 
-    public function removeItem(Line $item): self
+    public function removeLine(Line $line): self
     {
-        $this->items->removeElement($item);
-        $item->setInvoice(null);
+        $this->lines->removeElement($line);
+        $line->setInvoice(null);
 
         return $this;
     }
@@ -175,9 +175,9 @@ class RecurringInvoice extends BaseInvoice
     /**
      * @return Collection<int, Line>
      */
-    public function getItems(): Collection
+    public function getLines(): Collection
     {
-        return $this->items;
+        return $this->lines;
     }
 
     /**
