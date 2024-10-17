@@ -111,7 +111,6 @@ class InstallationTest extends PantherTestCase
 
             if (0 === count($crawler->filter('.callout.callout-warning'))) {
                 $formData += [
-                    'system_information[username]' => 'admin',
                     'system_information[email_address]' => 'foo@bar.com',
                     'system_information[password][first]' => 'foobar',
                     'system_information[password][second]' => 'foobar',
