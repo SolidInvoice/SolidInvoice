@@ -77,7 +77,6 @@ class ContactEditFormHandlerTest extends FormHandlerTestCase
     {
         $company = CompanyFactory::new()->create()->object();
         $client = ClientFactory::createOne([
-            'archived' => null,
             'company' => $company,
             'credit' => (new Credit())->setCompany($company)])
             ->object();

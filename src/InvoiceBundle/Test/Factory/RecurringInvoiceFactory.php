@@ -53,7 +53,7 @@ final class RecurringInvoiceFactory extends ModelFactory
             'status' => self::faker()->word(),
             'terms' => self::faker()->text(),
             'notes' => self::faker()->text(),
-            'archived' => self::faker()->boolean(),
+            'archived' => null,
             'dateStart' => DateTimeImmutable::createFromMutable(self::faker()->dateTime()),
             'created' => self::faker()->dateTime(),
             'updated' => self::faker()->dateTime(),

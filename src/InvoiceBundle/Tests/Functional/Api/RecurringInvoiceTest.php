@@ -25,7 +25,6 @@ use SolidInvoice\InvoiceBundle\Test\Factory\RecurringInvoiceFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\Test\Factories;
 use function array_map;
-use function Zenstruck\Foundry\faker;
 
 /**
  * @group functional
@@ -41,11 +40,11 @@ final class RecurringInvoiceTest extends ApiTestCase
 
     public function testCreate(): void
     {
-        $client = ClientFactory::createOne(['archived' => null, 'company' => $this->company])->object();
+        $client = ClientFactory::createOne()->object();
 
         $contacts = array_map(
             fn (Proxy $contact) => $this->getIriFromResource($contact->object()),
-            ContactFactory::createMany(faker()->numberBetween(1, 5), ['company' => $this->company, 'client' => $client])
+            ContactFactory::createMany($this->faker->numberBetween(1, 5), ['client' => $client])
         );
 
         $date = date(DateTimeInterface::ATOM);
@@ -78,7 +77,7 @@ final class RecurringInvoiceTest extends ApiTestCase
 
         unset($result['id'], $result['@id'], $result['lines'][0]['id'], $result['lines'][0]['@id']);
 
-        self::assertSame([
+        self::assertEqualsCanonicalizing([
             '@context' => '/api/contexts/RecurringInvoice',
             '@type' => 'RecurringInvoice',
             'client' => $this->getIriFromResource($client),
@@ -111,19 +110,18 @@ final class RecurringInvoiceTest extends ApiTestCase
 
     public function testDelete(): void
     {
-        $recurringInvoice = RecurringInvoiceFactory::createOne(['archived' => null])->object();
+        $recurringInvoice = RecurringInvoiceFactory::createOne()->object();
 
         $this->requestDelete($this->getIriFromResource($recurringInvoice));
     }
 
     public function testGet(): void
     {
-        $client = ClientFactory::createOne(['archived' => null, 'company' => $this->company]);
-        $contacts = ContactFactory::createMany(faker()->numberBetween(1, 5), ['company' => $this->company, 'client' => $client]);
+        $client = ClientFactory::createOne();
+        $contacts = ContactFactory::createMany($this->faker->numberBetween(1, 5), ['client' => $client]);
 
         /** @var RecurringInvoice $recurringInvoice */
         $recurringInvoice = RecurringInvoiceFactory::createOne([
-            'archived' => null,
             'users' => $contacts,
             'frequency' => '* * * * *',
             'lines' => [
@@ -139,7 +137,7 @@ final class RecurringInvoiceTest extends ApiTestCase
 
         $data = $this->requestGet($this->getIriFromResource($recurringInvoice));
 
-        self::assertSame([
+        self::assertEqualsCanonicalizing([
             '@context' => '/api/contexts/RecurringInvoice',
             '@id' => $this->getIriFromResource($recurringInvoice),
             '@type' => 'RecurringInvoice',
@@ -176,12 +174,11 @@ final class RecurringInvoiceTest extends ApiTestCase
 
     public function testEdit(): void
     {
-        $client = ClientFactory::createOne(['archived' => null, 'company' => $this->company]);
-        $contacts = ContactFactory::createMany(faker()->numberBetween(1, 5), ['company' => $this->company, 'client' => $client]);
+        $client = ClientFactory::createOne();
+        $contacts = ContactFactory::createMany($this->faker->numberBetween(1, 5), ['client' => $client]);
 
         /** @var RecurringInvoice $recurringInvoice */
         $recurringInvoice = RecurringInvoiceFactory::createOne([
-            'archived' => null,
             'users' => $contacts,
             'frequency' => '* * * * *',
             'lines' => [
@@ -214,7 +211,7 @@ final class RecurringInvoiceTest extends ApiTestCase
             ]
         );
 
-        self::assertSame([
+        self::assertEqualsCanonicalizing([
             '@context' => '/api/contexts/RecurringInvoice',
             '@id' => $this->getIriFromResource($recurringInvoice),
             '@type' => 'RecurringInvoice',

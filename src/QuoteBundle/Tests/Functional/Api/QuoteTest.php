@@ -25,7 +25,6 @@ use SolidInvoice\QuoteBundle\Test\Factory\QuoteFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\Test\Factories;
 use function array_map;
-use function Zenstruck\Foundry\faker;
 
 /**
  * @group functional
@@ -41,11 +40,11 @@ final class QuoteTest extends ApiTestCase
 
     public function testCreate(): void
     {
-        $client = ClientFactory::createOne(['archived' => null, 'company' => $this->company])->object();
+        $client = ClientFactory::createOne()->object();
 
         $contacts = array_map(
             fn (Proxy $contact) => $this->getIriFromResource($contact->object()),
-            ContactFactory::createMany(faker()->numberBetween(1, 5), ['company' => $this->company, 'client' => $client])
+            ContactFactory::createMany($this->faker->numberBetween(1, 5), ['client' => $client])
         );
 
         $data = [
@@ -100,21 +99,19 @@ final class QuoteTest extends ApiTestCase
 
     public function testDelete(): void
     {
-        $client = ClientFactory::createOne(['archived' => null, 'company' => $this->company]);
-        $quote = QuoteFactory::createOne(['archived' => null, 'company' => $this->company, 'client' => $client])->object();
+        $client = ClientFactory::createOne();
+        $quote = QuoteFactory::createOne(['client' => $client])->object();
 
         $this->requestDelete($this->getIriFromResource($quote));
     }
 
     public function testGet(): void
     {
-        $client = ClientFactory::createOne(['archived' => null, 'company' => $this->company]);
-        $contacts = ContactFactory::createMany(faker()->numberBetween(1, 5), ['company' => $this->company, 'client' => $client]);
+        $client = ClientFactory::createOne();
+        $contacts = ContactFactory::createMany($this->faker->numberBetween(1, 5), ['client' => $client]);
 
         /** @var Quote $quote */
         $quote = QuoteFactory::createOne([
-            'archived' => null,
-            'company' => $this->company,
             'client' => $client,
             'users' => $contacts,
             'status' => 'draft',
@@ -132,7 +129,7 @@ final class QuoteTest extends ApiTestCase
 
         $data = $this->requestGet($this->getIriFromResource($quote));
 
-        self::assertSame([
+        self::assertEqualsCanonicalizing([
             '@context' => '/api/contexts/Quote',
             '@id' => $this->getIriFromResource($quote),
             '@type' => 'Quote',
@@ -170,13 +167,11 @@ final class QuoteTest extends ApiTestCase
 
     public function testEdit(): void
     {
-        $client = ClientFactory::createOne(['archived' => null, 'company' => $this->company]);
-        $contacts = ContactFactory::createMany(faker()->numberBetween(1, 5), ['company' => $this->company, 'client' => $client]);
+        $client = ClientFactory::createOne();
+        $contacts = ContactFactory::createMany($this->faker->numberBetween(1, 5), ['client' => $client]);
 
         /** @var Quote $quote */
         $quote = QuoteFactory::createOne([
-            'archived' => null,
-            'company' => $this->company,
             'client' => $client,
             'users' => $contacts,
             'status' => 'draft',
@@ -214,7 +209,7 @@ final class QuoteTest extends ApiTestCase
             ]
         );
 
-        self::assertSame([
+        self::assertEqualsCanonicalizing([
             '@context' => '/api/contexts/Quote',
             '@id' => $this->getIriFromResource($quote),
             '@type' => 'Quote',
