@@ -14,5 +14,3 @@ parameters:
         container_xml_path: var/cache/dev/SolidInvoice_KernelDevDebugContainer.xml
     stubFiles:
         - tests/stub.php
-    ignoreErrors:
-        - '#^Service "[^"]+" is private.$#'
