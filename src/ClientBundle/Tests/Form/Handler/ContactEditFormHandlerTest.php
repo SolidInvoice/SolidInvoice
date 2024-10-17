@@ -24,7 +24,11 @@ use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Zenstruck\Foundry\ChainManagerRegistry;
+use Zenstruck\Foundry\Factory;
 use Zenstruck\Foundry\Test\Factories;
+use Zenstruck\Foundry\Test\LazyManagerRegistry;
+use Zenstruck\Foundry\Test\TestState;
 
 class ContactEditFormHandlerTest extends FormHandlerTestCase
 {
@@ -36,6 +40,24 @@ class ContactEditFormHandlerTest extends FormHandlerTestCase
 
     protected function setUp(): void
     {
+        $kernel = static::createKernel();
+        $kernel->boot();
+
+        TestState::bootFromContainer($kernel->getContainer());
+        Factory::configuration()->setManagerRegistry(
+            new LazyManagerRegistry(
+                static function (): ChainManagerRegistry {
+                    if (! static::$booted) {
+                        static::bootKernel();
+                    }
+
+                    return TestState::initializeChainManagerRegistry(static::$kernel->getContainer());
+                },
+            ),
+        );
+
+        $kernel->shutdown();
+
         parent::setUp();
 
         $this->firstName = $this->faker->firstName;
@@ -54,11 +76,10 @@ class ContactEditFormHandlerTest extends FormHandlerTestCase
     protected function getHandlerOptions(): array
     {
         $company = CompanyFactory::new()->create()->object();
-        $client = ClientFactory::new([
+        $client = ClientFactory::createOne([
             'archived' => null,
             'company' => $company,
             'credit' => (new Credit())->setCompany($company)])
-            ->create()
             ->object();
 
         $contact = ContactFactory::createOne([

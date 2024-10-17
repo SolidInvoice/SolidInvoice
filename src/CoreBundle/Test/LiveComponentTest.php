@@ -50,7 +50,6 @@ abstract class LiveComponentTest extends KernelTestCase
         self::getContainer()
             ->set('security.csrf.token_manager', $this->csrfTokenManager);
 
-        // @phpstan-ignore-next-line
         $this->client = self::getContainer()->get('test.client');
         $this->client->disableReboot();
 
