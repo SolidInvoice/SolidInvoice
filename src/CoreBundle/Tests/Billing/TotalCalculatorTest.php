@@ -59,7 +59,7 @@ class TotalCalculatorTest extends KernelTestCase
         $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator());
 
         $invoice = new Invoice();
-        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD', 'company' => $this->company])->object());
+        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD'])->object());
         $item = new Line();
         $item->setQty(1)
             ->setPrice(15000);
@@ -81,7 +81,7 @@ class TotalCalculatorTest extends KernelTestCase
         $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator());
 
         $invoice = new Invoice();
-        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD', 'company' => $this->company])->object());
+        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD'])->object());
         $item = new Line();
         $item->setQty(2)
             ->setPrice(15000);
@@ -103,7 +103,7 @@ class TotalCalculatorTest extends KernelTestCase
         $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator());
 
         $invoice = new Invoice();
-        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD', 'company' => $this->company])->object());
+        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD'])->object());
         $item = new Line();
         $item->setQty(2)
             ->setPrice(15000);
@@ -129,7 +129,7 @@ class TotalCalculatorTest extends KernelTestCase
         $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator());
 
         $invoice = new Invoice();
-        $invoice->setClient(ClientFactory::createOne(['company' => $this->company])->object());
+        $invoice->setClient(ClientFactory::createOne()->object());
         $item = new Line();
         $item->setQty(2)
             ->setPrice(15000);
@@ -159,7 +159,7 @@ class TotalCalculatorTest extends KernelTestCase
             ->setRate(20);
 
         $invoice = new Invoice();
-        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD', 'company' => $this->company])->object());
+        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD'])->object());
         $item = new Line();
         $item->setQty(2)
             ->setPrice(15000)
@@ -188,7 +188,7 @@ class TotalCalculatorTest extends KernelTestCase
             ->setRate(20);
 
         $invoice = new Invoice();
-        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD', 'company' => $this->company])->object());
+        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD'])->object());
         $item = new Line();
         $item->setQty(2)
             ->setPrice(15000)
@@ -217,7 +217,7 @@ class TotalCalculatorTest extends KernelTestCase
             ->setRate(20);
 
         $invoice = new Invoice();
-        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD', 'company' => $this->company])->object());
+        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD'])->object());
         $item = new Line();
         $item->setQty(2)
             ->setPrice(15000)
@@ -249,7 +249,7 @@ class TotalCalculatorTest extends KernelTestCase
             ->setRate(20);
 
         $invoice = new Invoice();
-        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD', 'company' => $this->company])->object());
+        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD'])->object());
         $item = new Line();
         $item->setQty(2)
             ->setPrice(15000)
@@ -277,7 +277,7 @@ class TotalCalculatorTest extends KernelTestCase
     public function testUpdateTotalsWithPayments(): void
     {
         $invoice = new Invoice();
-        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD', 'company' => $this->company])->object());
+        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD'])->object());
         $invoice->setTotal(30000);
         $invoice->setBaseTotal(30000);
         $invoice->setBalance(30000);

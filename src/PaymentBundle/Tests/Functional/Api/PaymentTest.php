@@ -36,7 +36,7 @@ final class PaymentTest extends ApiTestCase
 
     public function testGetPaymentsForInvoice(): void
     {
-        $invoice = InvoiceFactory::createOne(['archived' => null, 'company' => $this->company])->object();
+        $invoice = InvoiceFactory::createOne()->object();
         $payment = PaymentFactory::createOne([
             'invoice' => $invoice,
             'status' => 'captured',
@@ -44,7 +44,7 @@ final class PaymentTest extends ApiTestCase
 
         $data = $this->requestGet($this->getIriFromResource($invoice) . '/payments');
 
-        self::assertSame([
+        self::assertEqualsCanonicalizing([
             '@context' => $this->getContextForResource($payment),
             '@id' => $this->getIriFromResource($invoice) . '/payments',
             '@type' => 'hydra:Collection',
@@ -82,18 +82,18 @@ final class PaymentTest extends ApiTestCase
 
     public function testGetPaymentsForClient(): void
     {
-        $client = ClientFactory::createOne(['archived' => null, 'company' => $this->company])->object();
+        $client = ClientFactory::createOne()->object();
         $payment = PaymentFactory::createOne([
             'client' => $client,
             'status' => 'captured',
         ])->object();
 
         // Create multiple additional payments to ensure we only receive the payments for the specified client
-        PaymentFactory::createMany(5, ['client' => ClientFactory::new(['archived' => null, 'company' => $this->company])]);
+        PaymentFactory::createMany(5, ['client' => ClientFactory::new()]);
 
         $data = $this->requestGet($this->getIriFromResource($client) . '/payments');
 
-        self::assertSame([
+        self::assertEqualsCanonicalizing([
             '@context' => $this->getContextForResource($payment),
             '@id' => $this->getIriFromResource($client) . '/payments',
             '@type' => 'hydra:Collection',
@@ -134,13 +134,13 @@ final class PaymentTest extends ApiTestCase
      */
     public function testGetPaymentsForArchivedClient(): void
     {
-        $client = ClientFactory::createOne(['archived' => true, 'company' => $this->company])->object();
+        $client = ClientFactory::createOne(['archived' => true])->object();
 
         PaymentFactory::createOne(['client' => $client]);
 
         $data = $this->requestGet($this->getIriFromResource($client) . '/payments');
 
-        self::assertSame([
+        self::assertEqualsCanonicalizing([
             '@context' => $this->getContextForResource(Payment::class),
             '@id' => $this->getIriFromResource($client) . '/payments',
             '@type' => 'hydra:Collection',
@@ -156,14 +156,14 @@ final class PaymentTest extends ApiTestCase
     {
         $company = CompanyFactory::new()->create();
         self::getContainer()->get(CompanySelector::class)->switchCompany($company->getId());
-        $client = ClientFactory::createOne(['archived' => null, 'company' => $company])->object();
+        $client = ClientFactory::createOne(['company' => $company])->object();
         self::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
 
         PaymentFactory::createOne(['client' => $client]);
 
         $data = $this->requestGet($this->getIriFromResource($client) . '/payments');
 
-        self::assertSame([
+        self::assertEqualsCanonicalizing([
             '@context' => $this->getContextForResource(Payment::class),
             '@id' => $this->getIriFromResource($client) . '/payments',
             '@type' => 'hydra:Collection',
@@ -174,8 +174,8 @@ final class PaymentTest extends ApiTestCase
 
     public function testGet(): void
     {
-        $client = ClientFactory::createOne(['archived' => null, 'company' => $this->company])->object();
-        $invoice = InvoiceFactory::createOne(['archived' => null, 'company' => $this->company, 'client' => $client])->object();
+        $client = ClientFactory::createOne()->object();
+        $invoice = InvoiceFactory::createOne(['client' => $client])->object();
         $payment = PaymentFactory::createOne([
             'client' => $client,
             'invoice' => $invoice,
@@ -184,7 +184,7 @@ final class PaymentTest extends ApiTestCase
 
         $data = $this->requestGet($this->getIriFromResource($payment));
 
-        self::assertSame([
+        self::assertEqualsCanonicalizing([
             '@context' => $this->getContextForResource($payment),
             '@id' => $this->getIriFromResource($payment),
             '@type' => 'Payment',
@@ -215,11 +215,11 @@ final class PaymentTest extends ApiTestCase
 
     public function testGetAll(): void
     {
-        ClientFactory::new(['archived' => null, 'company' => $this->company])->createMany(4);
+        ClientFactory::createMany(4);
 
         PaymentFactory::createMany(4, [
-            'client' => ClientFactory::random(['archived' => null, 'company' => $this->company]),
-            'invoice' => InvoiceFactory::new(['archived' => null, 'company' => $this->company]),
+            'client' => ClientFactory::random(),
+            'invoice' => InvoiceFactory::new(),
         ]);
 
         $data = $this->requestGet('/api/payments');

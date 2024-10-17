@@ -26,7 +26,6 @@ use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\Test\Factories;
 use function array_map;
 use function date;
-use function Zenstruck\Foundry\faker;
 
 /**
  * @group functional
@@ -42,11 +41,11 @@ final class InvoiceTest extends ApiTestCase
 
     public function testCreate(): void
     {
-        $client = ClientFactory::createOne(['archived' => null, 'company' => $this->company])->object();
+        $client = ClientFactory::createOne()->object();
 
         $contacts = array_map(
             fn (Proxy $contact) => $this->getIriFromResource($contact->object()),
-            ContactFactory::createMany(faker()->numberBetween(1, 5), ['company' => $this->company, 'client' => $client])
+            ContactFactory::createMany($this->faker->numberBetween(1, 5), ['client' => $client])
         );
 
         $data = [
@@ -104,21 +103,19 @@ final class InvoiceTest extends ApiTestCase
 
     public function testDelete(): void
     {
-        $client = ClientFactory::createOne(['archived' => null, 'company' => $this->company]);
-        $invoice = InvoiceFactory::createOne(['archived' => null, 'company' => $this->company, 'client' => $client])->object();
+        $client = ClientFactory::createOne();
+        $invoice = InvoiceFactory::createOne(['client' => $client])->object();
 
         $this->requestDelete($this->getIriFromResource($invoice));
     }
 
     public function testGet(): void
     {
-        $client = ClientFactory::createOne(['archived' => null, 'company' => $this->company]);
-        $contacts = ContactFactory::createMany(faker()->numberBetween(1, 5), ['company' => $this->company, 'client' => $client]);
+        $client = ClientFactory::createOne();
+        $contacts = ContactFactory::createMany($this->faker->numberBetween(1, 5), ['client' => $client]);
 
         /** @var Invoice $invoice */
         $invoice = InvoiceFactory::createOne([
-            'archived' => null,
-            'company' => $this->company,
             'client' => $client,
             'users' => $contacts,
             'due' => new DateTime('2005-01-20'),
@@ -178,13 +175,11 @@ final class InvoiceTest extends ApiTestCase
 
     public function testEdit(): void
     {
-        $client = ClientFactory::createOne(['archived' => null, 'company' => $this->company]);
-        $contacts = ContactFactory::createMany(faker()->numberBetween(1, 5), ['company' => $this->company, 'client' => $client]);
+        $client = ClientFactory::createOne();
+        $contacts = ContactFactory::createMany($this->faker->numberBetween(1, 5), ['client' => $client]);
 
         /** @var Invoice $invoice */
         $invoice = InvoiceFactory::createOne([
-            'archived' => null,
-            'company' => $this->company,
             'client' => $client,
             'due' => new DateTime('2005-01-20'),
             'paidDate' => null,

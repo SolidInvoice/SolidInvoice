@@ -76,7 +76,7 @@ final class ClientTest extends ApiTestCase
      */
     public function testDelete(): void
     {
-        $client = ClientFactory::createOne(['archived' => null, 'company' => $this->company])->object();
+        $client = ClientFactory::createOne()->object();
 
         $this->requestDelete($this->getIriFromResource($client));
     }
@@ -87,15 +87,12 @@ final class ClientTest extends ApiTestCase
      */
     public function testGet(): void
     {
-        $client = ClientFactory::createOne(['archived' => null, 'company' => $this->company])->object();
+        $client = ClientFactory::createOne()->object();
         assert($client instanceof Client);
 
-        $contacts = ContactFactory::new(function () use ($client) {
-            return [
-                'client' => $client,
-                'company' => $this->company,
-            ];
-        })->many(1, 5)->create();
+        $contacts = ContactFactory::new([
+            'client' => $client,
+        ])->many(1, 5)->create();
 
         $data = $this->requestGet($this->getIriFromResource($client));
 
@@ -128,15 +125,12 @@ final class ClientTest extends ApiTestCase
      */
     public function testEdit(): void
     {
-        $client = ClientFactory::createOne(['archived' => null, 'company' => $this->company])->object();
+        $client = ClientFactory::createOne()->object();
         assert($client instanceof Client);
 
-        $contacts = ContactFactory::new(function () use ($client) {
-            return [
-                'client' => $client,
-                'company' => $this->company,
-            ];
-        })->many(4, 15)->create();
+        $contacts = ContactFactory::new([
+            'client' => $client,
+        ])->many(4, 15)->create();
 
         $contactInfo = array_map(fn (Proxy $proxy): string => $this->getIriFromResource($proxy->object()), $contacts);
 

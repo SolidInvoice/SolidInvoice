@@ -34,7 +34,7 @@ final class ContactTest extends ApiTestCase
 
     public function testCreate(): void
     {
-        $client = ClientFactory::createOne(['archived' => null, 'company' => $this->company])->object();
+        $client = ClientFactory::createOne()->object();
 
         $data = [
             'client' => $this->getIriFromResource($client),
@@ -46,7 +46,7 @@ final class ContactTest extends ApiTestCase
 
         self::assertTrue(Uuid::isValid($result['id']));
 
-        self::assertSame([
+        self::assertEqualsCanonicalizing([
             '@context' => '/api/contexts/Contact',
             '@id' => $this->getIriFromResource($client) . '/contacts/' . $result['id'],
             '@type' => 'Contact',
@@ -60,8 +60,8 @@ final class ContactTest extends ApiTestCase
 
     public function testDelete(): void
     {
-        $client = ClientFactory::createOne(['archived' => null, 'company' => $this->company])->object();
-        $contact = ContactFactory::createOne(['client' => $client, 'company' => $this->company])->object();
+        $client = ClientFactory::createOne()->object();
+        $contact = ContactFactory::createOne(['client' => $client])->object();
 
         $this->requestDelete($this->getIriFromResource($contact));
     }
@@ -72,18 +72,17 @@ final class ContactTest extends ApiTestCase
         $lastName = $this->faker->firstName();
         $email = $this->faker->email();
 
-        $client = ClientFactory::createOne(['archived' => null, 'company' => $this->company])->object();
+        $client = ClientFactory::createOne()->object();
         $contact = ContactFactory::createOne([
             'firstName' => $firstName,
             'lastName' => $lastName,
             'email' => $email,
             'client' => $client,
-            'company' => $this->company,
         ])->object();
 
         $data = $this->requestGet($this->getIriFromResource($contact));
 
-        self::assertSame([
+        self::assertEqualsCanonicalizing([
             '@context' => '/api/contexts/Contact',
             '@id' => $this->getIriFromResource($contact),
             '@type' => 'Contact',
@@ -97,17 +96,16 @@ final class ContactTest extends ApiTestCase
 
     public function testEdit(): void
     {
-        $client = ClientFactory::createOne(['archived' => null, 'company' => $this->company])->object();
+        $client = ClientFactory::createOne()->object();
         $contact = ContactFactory::createOne([
             'lastName' => null,
             'email' => 'test@example.com',
             'client' => $client,
-            'company' => $this->company,
         ])->object();
 
         $data = $this->requestPatch($this->getIriFromResource($contact), ['firstName' => 'New Test']);
 
-        self::assertSame([
+        self::assertEqualsCanonicalizing([
             '@context' => '/api/contexts/Contact',
             '@id' => $this->getIriFromResource($contact),
             '@type' => 'Contact',

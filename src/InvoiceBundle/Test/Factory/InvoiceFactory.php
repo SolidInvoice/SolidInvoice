@@ -57,7 +57,7 @@ final class InvoiceFactory extends ModelFactory
             'status' => self::faker()->word(),
             'terms' => self::faker()->text(),
             'notes' => self::faker()->text(),
-            'archived' => self::faker()->boolean(),
+            'archived' => null,
             'created' => self::faker()->dateTime(),
             'updated' => self::faker()->dateTime(),
             'balance' => BigInteger::of(self::faker()->randomNumber()),

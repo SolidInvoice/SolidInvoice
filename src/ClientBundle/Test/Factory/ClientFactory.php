@@ -50,7 +50,7 @@ final class ClientFactory extends ModelFactory
             'status' => self::faker()->word(),
             'currencyCode' => self::faker()->currencyCode(),
             'vatNumber' => self::faker()->word(),
-            'archived' => self::faker()->boolean(),
+            'archived' => null,
             'created' => self::faker()->dateTime(),
             'updated' => self::faker()->dateTime(),
             'company' => CompanyFactory::new(),
