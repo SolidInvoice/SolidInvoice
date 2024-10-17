@@ -33,6 +33,7 @@ use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use SolidInvoice\CoreBundle\Entity\LineInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceLineType;
 use SolidInvoice\InvoiceBundle\Repository\ItemRepository;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use Stringable;
@@ -43,6 +44,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: Line::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: ItemRepository::class)]
 #[ORM\HasLifecycleCallbacks]
+#[ORM\MappedSuperclass]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'type', type: 'string', enumType: InvoiceLineType::class)]
+#[ORM\DiscriminatorMap(['invoice' => Line::class, 'recurring_invoice' => RecurringInvoiceLine::class])]
 #[ApiResource(
     uriTemplate: '/invoices/{invoiceId}/lines',
     operations: [new GetCollection(), new Post()],
@@ -89,17 +94,17 @@ class Line implements LineInterface, Stringable
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
-    #[Groups(['invoice_api:read'])]
-    private ?UuidInterface $id = null;
+    #[Groups(['invoice_api:read', 'recurring_invoice_api:read'])]
+    protected ?UuidInterface $id = null;
 
     #[ORM\Column(name: 'description', type: Types::TEXT)]
     #[Assert\NotBlank]
-    #[Groups(['invoice_api:read', 'invoice_api:write'])]
-    private ?string $description = null;
+    #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write'])]
+    protected ?string $description = null;
 
     #[ORM\Column(name: 'price_amount', type: BigIntegerType::NAME)]
     #[Assert\NotBlank]
-    #[Groups(['invoice_api:read', 'invoice_api:write'])]
+    #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write'])]
     #[ApiProperty(
         openapiContext: [
             'type' => 'number',
@@ -108,25 +113,22 @@ class Line implements LineInterface, Stringable
             'type' => 'number',
         ]
     )]
-    private BigNumber $price;
+    protected BigNumber $price;
 
     #[ORM\Column(name: 'qty', type: Types::FLOAT)]
     #[Assert\NotBlank]
-    #[Groups(['invoice_api:read', 'invoice_api:write'])]
-    private ?float $qty = 1;
+    #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write'])]
+    protected ?float $qty = 1;
 
     #[ORM\ManyToOne(targetEntity: Invoice::class, inversedBy: 'lines')]
-    private ?Invoice $invoice = null;
-
-    #[ORM\ManyToOne(targetEntity: RecurringInvoice::class, inversedBy: 'lines')]
-    private ?RecurringInvoice $recurringInvoice = null;
+    protected ?Invoice $invoice = null;
 
     #[ORM\ManyToOne(targetEntity: Tax::class, inversedBy: 'invoiceLines')]
-    #[Groups(['invoice_api:read', 'invoice_api:write'])]
-    private ?Tax $tax = null;
+    #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write'])]
+    protected ?Tax $tax = null;
 
     #[ORM\Column(name: 'total_amount', type: BigIntegerType::NAME)]
-    #[Groups(['invoice_api:read'])]
+    #[Groups(['invoice_api:read', 'recurring_invoice_api:read'])]
     #[ApiProperty(
         openapiContext: [
             'type' => 'number',
@@ -135,7 +137,7 @@ class Line implements LineInterface, Stringable
             'type' => 'number',
         ]
     )]
-    private BigNumber $total;
+    protected BigNumber $total;
 
     public function __construct()
     {
@@ -187,20 +189,16 @@ class Line implements LineInterface, Stringable
         return $this->qty;
     }
 
-    public function setInvoice(Invoice|RecurringInvoice|null $invoice): LineInterface
+    public function setInvoice(?Invoice $invoice): LineInterface
     {
-        if ($invoice instanceof RecurringInvoice) {
-            $this->recurringInvoice = $invoice;
-        } else {
-            $this->invoice = $invoice;
-        }
+        $this->invoice = $invoice;
 
         return $this;
     }
 
-    public function getInvoice(): BaseInvoice
+    public function getInvoice(): ?Invoice
     {
-        return $this->invoice ?? $this->recurringInvoice;
+        return $this->invoice;
     }
 
     /**

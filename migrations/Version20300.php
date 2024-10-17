@@ -220,6 +220,8 @@ final class Version20300 extends AbstractMigration implements ContainerAwareInte
         $userNotificationTransports->setPrimaryKey(['usernotification_id', 'transportsetting_id']);
         $userNotificationTransports->addForeignKeyConstraint(UserNotification::TABLE_NAME, ['usernotification_id'], ['id'], ['onDelete' => 'CASCADE']);
         $userNotificationTransports->addForeignKeyConstraint(TransportSetting::TABLE_NAME, ['transportsetting_id'], ['id'], ['onDelete' => 'CASCADE']);
+
+        $invoiceLines->addColumn('type', Types::STRING, ['length' => 255, 'notnull' => false]);
     }
 
     public function postUp(Schema $schema): void
@@ -324,6 +326,14 @@ final class Version20300 extends AbstractMigration implements ContainerAwareInte
         $this
             ->connection
             ->executeStatement('UPDATE invoices SET invoice_date = created');
+
+        $this
+            ->connection
+            ->update('invoice_lines', ['type' => 'invoice'], ['recurringInvoice_id' => null]);
+
+        $this
+            ->connection
+            ->update('invoice_lines', ['type' => 'recurring_invoice'], ['invoice_id' => null]);
     }
 
     /**

@@ -19,10 +19,10 @@ use JsonException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
-use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceLine;
 use SolidInvoice\InvoiceBundle\Exception\InvalidTransitionException;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use Traversable;
@@ -45,7 +45,7 @@ final class InvoiceCloner
      * @throws InvalidTransitionException
      * @throws MathException
      */
-    public function clone(BaseInvoice $invoice): BaseInvoice
+    public function clone(Invoice|RecurringInvoice $invoice): Invoice|RecurringInvoice
     {
         // We don't use 'clone', since cloning an invoice will clone all the item id's and nested values.
         // Rather set it manually
@@ -72,7 +72,7 @@ final class InvoiceCloner
             $newInvoice->setDateStart($invoice->getDateStart());
             $newInvoice->setDateEnd($invoice->getDateEnd());
             $newInvoice->setFrequency($invoice->getFrequency());
-        } elseif ($invoice instanceof Invoice) {
+        } else {
             $newInvoice->setDue($invoice->getDue());
             $newInvoice->setInvoiceId($this->billingIdGenerator->generate($newInvoice, ['field' => 'invoiceId']));
         }
@@ -81,28 +81,37 @@ final class InvoiceCloner
             $newInvoice->setTax($tax);
         }
 
-        array_map(static fn (Line $item): BaseInvoice => $newInvoice->addLine($item), iterator_to_array($this->addItems($invoice, $now)));
+        array_map(static fn (Line $item): Invoice|RecurringInvoice => $newInvoice->addLine($item), iterator_to_array($this->addLine($invoice, $now)));
 
         $this->invoiceManager->create($newInvoice);
 
         return $newInvoice;
     }
 
-    private function addItems(BaseInvoice $invoice, Carbon $now): Traversable
+    /**
+     * @return Traversable<Line|RecurringInvoiceLine>
+     * @throws MathException
+     */
+    private function addLine(Invoice|RecurringInvoice $invoice, Carbon $now): Traversable
     {
-        foreach ($invoice->getLines() as $item) {
-            $invoiceItem = new Line();
-            $invoiceItem->setCreated($now);
-            $invoiceItem->setTotal($item->getTotal());
-            $invoiceItem->setDescription($item->getDescription());
-            $invoiceItem->setPrice($item->getPrice());
-            $invoiceItem->setQty($item->getQty());
-
-            if (null !== $item->getTax()) {
-                $invoiceItem->setTax($item->getTax());
+        foreach ($invoice->getLines() as $line) {
+            if ($invoice instanceof RecurringInvoice) {
+                $invoiceLine = new RecurringInvoiceLine();
+            } else {
+                $invoiceLine = new Line();
             }
 
-            yield $invoiceItem;
+            $invoiceLine->setCreated($now);
+            $invoiceLine->setTotal($line->getTotal());
+            $invoiceLine->setDescription($line->getDescription());
+            $invoiceLine->setPrice($line->getPrice());
+            $invoiceLine->setQty($line->getQty());
+
+            if (null !== $line->getTax()) {
+                $invoiceLine->setTax($line->getTax());
+            }
+
+            yield $invoiceLine;
         }
     }
 }

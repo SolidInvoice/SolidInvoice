@@ -24,6 +24,7 @@ use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceLine;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use function assert;
 
@@ -61,7 +62,7 @@ class LoadData extends Fixture
         $line->setDescription('Test Line');
         $invoice->addLine($line);
 
-        $recurringLine = new Line();
+        $recurringLine = new RecurringInvoiceLine();
         $recurringLine->setQty(1);
         $recurringLine->setPrice(BigInteger::of(10000));
         $recurringLine->setDescription('Test Line');

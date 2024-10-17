@@ -31,11 +31,11 @@ abstract class BaseInvoice
     use CompanyAware;
 
     #[ORM\Column(name: 'status', type: Types::STRING, length: 25)]
-    #[Groups(['invoice_api:read'])]
+    #[Groups(['invoice_api:read', 'recurring_invoice_api:read'])]
     protected ?string $status = null;
 
     #[ORM\Column(name: 'total_amount', type: BigIntegerType::NAME)]
-    #[Groups(['invoice_api:read'])]
+    #[Groups(['invoice_api:read', 'recurring_invoice_api:read'])]
     #[ApiProperty(
         openapiContext: [
             'type' => 'number',
@@ -48,7 +48,7 @@ abstract class BaseInvoice
 
     #[ORM\Column(name: 'baseTotal_amount', type: BigIntegerType::NAME)]
     #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api'])]
-    #[Groups(['invoice_api:read', 'invoice_api:write'])]
+    #[Groups(['invoice_api:read', 'recurring_invoice_api:read'])]
     #[ApiProperty(
         openapiContext: [
             'type' => 'number',
@@ -61,7 +61,7 @@ abstract class BaseInvoice
 
     #[ORM\Column(name: 'tax_amount', type: BigIntegerType::NAME)]
     #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api'])]
-    #[Groups(['invoice_api:read'])]
+    #[Groups(['invoice_api:read', 'recurring_invoice_api:read'])]
     #[ApiProperty(
         openapiContext: [
             'type' => 'number',
@@ -74,17 +74,17 @@ abstract class BaseInvoice
 
     #[ORM\Embedded(class: Discount::class)]
     #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
-    #[Groups(['invoice_api:read', 'invoice_api:write'])]
+    #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write'])]
     protected Discount $discount;
 
     #[ORM\Column(name: 'terms', type: Types::TEXT, nullable: true)]
     #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
-    #[Groups(['invoice_api:read', 'invoice_api:write'])]
+    #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write'])]
     protected ?string $terms = null;
 
     #[ORM\Column(name: 'notes', type: Types::TEXT, nullable: true)]
     #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
-    #[Groups(['invoice_api:read', 'invoice_api:write'])]
+    #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write'])]
     protected ?string $notes = null;
 
     public function __construct()

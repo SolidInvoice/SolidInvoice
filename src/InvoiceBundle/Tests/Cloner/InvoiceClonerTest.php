@@ -25,6 +25,7 @@ use SolidInvoice\InvoiceBundle\Cloner\InvoiceCloner;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceLine;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\TaxBundle\Entity\Tax;
@@ -137,7 +138,7 @@ class InvoiceClonerTest extends TestCase
         $tax->setRate(14.00);
         $tax->setType(Tax::TYPE_INCLUSIVE);
 
-        $line = new Line();
+        $line = new RecurringInvoiceLine();
         $line->setTax($tax);
         $line->setDescription('Line Description');
         $line->setCreated(new DateTime('now'));
