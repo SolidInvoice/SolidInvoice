@@ -15,11 +15,8 @@ namespace SolidInvoice\QuoteBundle\Entity;
 
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Delete;
-use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
-use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use Brick\Math\BigDecimal;
 use Brick\Math\BigNumber;
@@ -70,27 +67,6 @@ use Symfony\Component\Validator\Constraints as Assert;
         'clientId' => new Link(
             fromProperty: 'quotes',
             fromClass: Client::class,
-        ),
-    ],
-    normalizationContext: [
-        'groups' => ['quote_api:read'],
-        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
-    ],
-    denormalizationContext: [
-        'groups' => ['quote_api:write'],
-        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
-    ]
-)]
-#[ApiResource(
-    uriTemplate: '/clients/{clientId}/quotes/{id}',
-    operations: [new Get(), new Patch(), new Delete()],
-    uriVariables: [
-        'clientId' => new Link(
-            fromProperty: 'quotes',
-            fromClass: Client::class,
-        ),
-        'id' => new Link(
-            fromClass: Quote::class,
         ),
     ],
     normalizationContext: [

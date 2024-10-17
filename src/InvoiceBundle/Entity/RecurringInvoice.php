@@ -15,6 +15,13 @@ namespace SolidInvoice\InvoiceBundle\Entity;
 
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -36,14 +43,46 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: RecurringInvoiceRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[ApiResource(
+    uriTemplate: '/recurring-invoices',
+    operations: [new GetCollection(), new Post()],
     normalizationContext: [
-        'groups' => ['recurring_invoice_api'],
+        'groups' => ['recurring_invoice_api:read'],
         AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
     ],
     denormalizationContext: [
-        'groups' => ['create_recurring_invoice_api'],
+        'groups' => ['recurring_invoice_api:write'],
         AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
     ],
+)]
+#[ApiResource(
+    uriTemplate: '/recurring-invoices/{id}',
+    operations: [new Get(), new Put(), new Patch(), new Delete()],
+    normalizationContext: [
+        'groups' => ['recurring_invoice_api:read'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ],
+    denormalizationContext: [
+        'groups' => ['recurring_invoice_api:write'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ],
+)]
+#[ApiResource(
+    uriTemplate: '/clients/{clientId}/recurring-invoices',
+    operations: [new GetCollection(), new Post()],
+    uriVariables: [
+        'clientId' => new Link(
+            fromProperty: 'recurringInvoices',
+            fromClass: Client::class,
+        ),
+    ],
+    normalizationContext: [
+        'groups' => ['recurring_invoice_api:read'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ],
+    denormalizationContext: [
+        'groups' => ['recurring_invoice_api:write'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ]
 )]
 class RecurringInvoice extends BaseInvoice
 {
@@ -55,36 +94,36 @@ class RecurringInvoice extends BaseInvoice
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
-    #[Serialize\Groups(['recurring_invoice_api', 'client_api'])]
+    #[Serialize\Groups(['recurring_invoice_api:read'])]
     private ?UuidInterface $id = null;
 
     #[ApiProperty(iris: ['https://schema.org/Organization'])]
     #[ORM\ManyToOne(targetEntity: Client::class, cascade: ['persist'], inversedBy: 'recurringInvoices')]
     #[Assert\NotBlank]
-    #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
+    #[Serialize\Groups(['recurring_invoice_api:read', 'recurring_invoice_api:write'])]
     protected ?Client $client = null;
 
     #[ORM\Column(name: 'frequency', type: Types::STRING, nullable: true)]
-    #[Serialize\Groups(['recurring_invoice_api', 'client_api', 'create_recurring_invoice_api'])]
+    #[Serialize\Groups(['recurring_invoice_api:read', 'recurring_invoice_api:write'])]
     private ?string $frequency = null;
 
     #[ORM\Column(name: 'date_start', type: Types::DATE_IMMUTABLE)]
     #[Assert\NotBlank(groups: ['Recurring'])]
     #[Assert\Date(groups: ['Recurring'])]
-    #[Serialize\Groups(['recurring_invoice_api', 'client_api', 'create_recurring_invoice_api'])]
+    #[Serialize\Groups(['recurring_invoice_api:read', 'recurring_invoice_api:write'])]
     private ?DateTimeInterface $dateStart = null;
 
     #[ORM\Column(name: 'date_end', type: Types::DATE_IMMUTABLE, nullable: true)]
-    #[Serialize\Groups(['recurring_invoice_api', 'client_api', 'create_recurring_invoice_api'])]
+    #[Serialize\Groups(['recurring_invoice_api:read', 'recurring_invoice_api:write'])]
     private ?DateTimeInterface $dateEnd = null;
 
     /**
-     * @var Collection<int, Line>
+     * @var Collection<int, RecurringInvoiceLine>
      */
-    #[ORM\OneToMany(mappedBy: 'recurringInvoice', targetEntity: Line::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'recurringInvoice', targetEntity: RecurringInvoiceLine::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[Assert\Valid]
     #[Assert\Count(min: 1, minMessage: 'You need to add at least 1 line to the Invoice')]
-    #[Serialize\Groups(['recurring_invoice_api', 'client_api', 'create_recurring_invoice_api'])]
+    #[Serialize\Groups(['recurring_invoice_api:read', 'recurring_invoice_api:write'])]
     protected Collection $lines;
 
     /**
@@ -93,7 +132,7 @@ class RecurringInvoice extends BaseInvoice
     #[ApiProperty(writableLink: true)]
     #[ORM\OneToMany(mappedBy: 'recurringInvoice', targetEntity: RecurringInvoiceContact::class, cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY')]
     #[Assert\Count(min: 1, minMessage: 'You need to select at least 1 user to attach to the Invoice')]
-    #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
+    #[Serialize\Groups(['recurring_invoice_api:read', 'recurring_invoice_api:write'])]
     protected Collection $users;
 
     public function __construct()
@@ -156,24 +195,24 @@ class RecurringInvoice extends BaseInvoice
         return $this;
     }
 
-    public function addLine(Line $line): self
+    public function addLine(RecurringInvoiceLine $line): self
     {
         $this->lines[] = $line;
-        $line->setInvoice($this);
+        $line->setRecurringInvoice($this);
 
         return $this;
     }
 
-    public function removeLine(Line $line): self
+    public function removeLine(RecurringInvoiceLine $line): self
     {
         $this->lines->removeElement($line);
-        $line->setInvoice(null);
+        $line->setRecurringInvoice(null);
 
         return $this;
     }
 
     /**
-     * @return Collection<int, Line>
+     * @return Collection<int, RecurringInvoiceLine>
      */
     public function getLines(): Collection
     {

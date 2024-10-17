@@ -1,11 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with 123 and SolidInvoice\\\\ClientBundle\\\\Entity\\\\Credit will always evaluate to false\\.$#"
-			count: 1
-			path: src/ApiBundle/Tests/Serializer/Normalizer/CreditNormalizerTest.php
-
-		-
 			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Ajax\\\\Address\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/ClientBundle/Action/Ajax/Address.php
@@ -406,19 +401,9 @@ parameters:
 			path: src/InstallBundle/Action/Config.php
 
 		-
-			message: "#^Call to an undefined method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:getId\\(\\)\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Action/CloneInvoice.php
-
-		-
 			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\CloneInvoice\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/InvoiceBundle/Action/CloneInvoice.php
-
-		-
-			message: "#^Call to an undefined method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:getId\\(\\)\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Action/CloneRecurringInvoice.php
 
 		-
 			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\CloneRecurringInvoice\\:\\:__invoke\\(\\) has no return type specified\\.$#"
@@ -464,26 +449,6 @@ parameters:
 			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\RecurringTransition\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/InvoiceBundle/Action/RecurringTransition.php
-
-		-
-			message: "#^Call to an undefined method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:getClient\\(\\)\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Cloner/InvoiceCloner.php
-
-		-
-			message: "#^Call to an undefined method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:getItems\\(\\)\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Cloner/InvoiceCloner.php
-
-		-
-			message: "#^Call to an undefined method SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice\\:\\:getUsers\\(\\)\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Cloner/InvoiceCloner.php
-
-		-
-			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Cloner\\\\InvoiceCloner\\:\\:addItems\\(\\) return type has no value type specified in iterable type Traversable\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Cloner/InvoiceCloner.php
 
 		-
 			message: "#^Parameter \\#1 \\$invoice of class SolidInvoice\\\\InvoiceBundle\\\\Email\\\\InvoiceEmail constructor expects SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\Invoice, SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice given\\.$#"
@@ -709,11 +674,6 @@ parameters:
 			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\Index\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/QuoteBundle/Action/Index.php
-
-		-
-			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Cloner\\\\QuoteCloner\\:\\:addItems\\(\\) return type has no value type specified in iterable type Traversable\\.$#"
-			count: 1
-			path: src/QuoteBundle/Cloner/QuoteCloner.php
 
 		-
 			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Email\\\\QuoteEmail\\:\\:getContext\\(\\) return type has no value type specified in iterable type array\\.$#"

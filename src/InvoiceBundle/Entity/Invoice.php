@@ -15,11 +15,8 @@ namespace SolidInvoice\InvoiceBundle\Entity;
 
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Delete;
-use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
-use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
@@ -71,27 +68,6 @@ use Symfony\Component\Validator\Constraints as Assert;
         'clientId' => new Link(
             fromProperty: 'invoices',
             fromClass: Client::class,
-        ),
-    ],
-    normalizationContext: [
-        'groups' => ['invoice_api:read'],
-        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
-    ],
-    denormalizationContext: [
-        'groups' => ['invoice_api:write'],
-        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
-    ]
-)]
-#[ApiResource(
-    uriTemplate: '/clients/{clientId}/invoices/{id}',
-    operations: [new Get(), new Patch(), new Delete()],
-    uriVariables: [
-        'clientId' => new Link(
-            fromProperty: 'invoices',
-            fromClass: Client::class,
-        ),
-        'id' => new Link(
-            fromClass: Invoice::class,
         ),
     ],
     normalizationContext: [

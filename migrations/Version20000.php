@@ -15,6 +15,7 @@ namespace DoctrineMigrations;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\Migrations\AbstractMigration;
 use function date;
@@ -564,7 +565,11 @@ final class Version20000 extends AbstractMigration
         }
     }
 
-    private function createTable($name, array $columns = [], $setPrimaryKey = true): Table
+    /**
+     * @param list<mixed> $columns
+     * @throws SchemaException
+     */
+    private function createTable(string $name, array $columns = [], bool $setPrimaryKey = true): Table
     {
         $table = $this->schema->createTable($name);
 

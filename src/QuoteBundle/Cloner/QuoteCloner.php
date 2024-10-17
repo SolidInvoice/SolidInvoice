@@ -65,22 +65,23 @@ final class QuoteCloner
 
     /**
      * @throws MathException
+     * @return Traversable<Line>
      */
     private function addLines(Quote $quote, Carbon $now): Traversable
     {
         foreach ($quote->getLines() as $line) {
-            $invoiceLine = new Line();
-            $invoiceLine->setCreated($now);
-            $invoiceLine->setTotal($line->getTotal());
-            $invoiceLine->setDescription($line->getDescription());
-            $invoiceLine->setPrice($line->getPrice());
-            $invoiceLine->setQty($line->getQty());
+            $quoteLine = new Line();
+            $quoteLine->setCreated($now);
+            $quoteLine->setTotal($line->getTotal());
+            $quoteLine->setDescription($line->getDescription());
+            $quoteLine->setPrice($line->getPrice());
+            $quoteLine->setQty($line->getQty());
 
             if ($line->getTax() instanceof Tax) {
-                $invoiceLine->setTax($line->getTax());
+                $quoteLine->setTax($line->getTax());
             }
 
-            yield $invoiceLine;
+            yield $quoteLine;
         }
     }
 }

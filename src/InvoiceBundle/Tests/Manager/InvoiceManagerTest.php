@@ -24,6 +24,7 @@ use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\InvoiceBundle\Entity\Line as InvoiceLine;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceLine;
 use SolidInvoice\InvoiceBundle\Listener\WorkFlowSubscriber;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
@@ -147,7 +148,7 @@ class InvoiceManagerTest extends KernelTestCase
         $tax->setRate(14.00);
         $tax->setType(Tax::TYPE_INCLUSIVE);
 
-        $line = new InvoiceLine();
+        $line = new RecurringInvoiceLine();
         $line->setTax($tax);
         $line->setDescription('Line Description {day} {day_name} {month} {year}');
         $line->setCreated(new DateTime('now'));
