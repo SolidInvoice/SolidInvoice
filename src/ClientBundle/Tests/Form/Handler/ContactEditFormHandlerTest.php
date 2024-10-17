@@ -14,16 +14,22 @@ declare(strict_types=1);
 namespace SolidInvoice\ClientBundle\Tests\Form\Handler;
 
 use SolidInvoice\ClientBundle\Entity\Contact;
+use SolidInvoice\ClientBundle\Entity\Credit;
 use SolidInvoice\ClientBundle\Form\Handler\ContactEditFormHandler;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
+use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
 use SolidInvoice\CoreBundle\Templating\Template;
+use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Zenstruck\Foundry\Test\Factories;
 
 class ContactEditFormHandlerTest extends FormHandlerTestCase
 {
+    use Factories;
+
     private string $firstName;
 
     private string $email;
@@ -47,12 +53,19 @@ class ContactEditFormHandlerTest extends FormHandlerTestCase
 
     protected function getHandlerOptions(): array
     {
-        $contact = new Contact();
-        $contact->setFirstName('Test Name')
-            ->setEmail('test@test.com')
-            ->setClient(ClientFactory::new()->create()->object());
-        $this->em->persist($contact);
-        $this->em->flush();
+        $company = CompanyFactory::new()->create()->object();
+        $client = ClientFactory::new([
+            'archived' => null,
+            'company' => $company,
+            'credit' => (new Credit())->setCompany($company)])
+            ->create()
+            ->object();
+
+        $contact = ContactFactory::createOne([
+            'firstName' => 'Test Name',
+            'client' => $client,
+            'company' => $company,
+        ])->object();
 
         return [
             'contact' => $contact,

@@ -18,6 +18,7 @@ use ReflectionClass;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Pdf\Generator;
+use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Action\View;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
@@ -32,6 +33,7 @@ use Zenstruck\Foundry\Test\Factories;
 
 final class ViewTest extends KernelTestCase
 {
+    use EnsureApplicationInstalled;
     use MatchesSnapshots;
     use Factories;
 

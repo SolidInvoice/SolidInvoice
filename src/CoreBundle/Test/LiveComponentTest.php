@@ -39,9 +39,9 @@ abstract class LiveComponentTest extends KernelTestCase
 
     protected function setUp(): void
     {
-        parent::setUp();
-
         $_SERVER['secret'] = $_ENV['secret'] = '$ecretf0rt3st';
+
+        parent::setUp();
 
         $this->ensureSessionIsSet();
 
@@ -50,6 +50,7 @@ abstract class LiveComponentTest extends KernelTestCase
         self::getContainer()
             ->set('security.csrf.token_manager', $this->csrfTokenManager);
 
+        // @phpstan-ignore-next-line
         $this->client = self::getContainer()->get('test.client');
         $this->client->disableReboot();
 
