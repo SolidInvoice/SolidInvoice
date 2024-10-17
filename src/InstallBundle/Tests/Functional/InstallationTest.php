@@ -46,14 +46,14 @@ class InstallationTest extends PantherTestCase
 
     protected function setUp(): void
     {
-        parent::setUp();
-
         unset($_SERVER['locale'], $_ENV['locale'], $_SERVER['installed'], $_ENV['installed']);
+
+        parent::setUp();
     }
 
     public function testItRedirectsToInstallationPage(): void
     {
-        $client = self::createPantherClient();
+        $client = self::createPantherClient(['env' => ['SOLIDINVOICE_ENV' => 'test']]);
 
         $crawler = $client->request('GET', '/');
 
@@ -62,7 +62,7 @@ class InstallationTest extends PantherTestCase
 
     public function testApplicationInstallation(): void
     {
-        $client = self::createPantherClient();
+        $client = self::createPantherClient(['env' => ['SOLIDINVOICE_ENV' => 'test']]);
 
         $crawler = $client->request('GET', '/install');
 

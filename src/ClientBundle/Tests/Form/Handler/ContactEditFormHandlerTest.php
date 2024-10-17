@@ -15,6 +15,7 @@ namespace SolidInvoice\ClientBundle\Tests\Form\Handler;
 
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Form\Handler\ContactEditFormHandler;
+use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
 use SolidWorx\FormHandler\FormRequest;
@@ -48,7 +49,8 @@ class ContactEditFormHandlerTest extends FormHandlerTestCase
     {
         $contact = new Contact();
         $contact->setFirstName('Test Name')
-            ->setEmail('test@test.com');
+            ->setEmail('test@test.com')
+            ->setClient(ClientFactory::new()->create()->object());
         $this->em->persist($contact);
         $this->em->flush();
 
