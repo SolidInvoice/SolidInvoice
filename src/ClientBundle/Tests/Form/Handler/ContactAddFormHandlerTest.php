@@ -15,6 +15,7 @@ namespace SolidInvoice\ClientBundle\Tests\Form\Handler;
 
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Form\Handler\ContactAddFormHandler;
+use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\CoreBundle\Test\Traits\SymfonyKernelTrait;
 use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
@@ -37,7 +38,7 @@ class ContactAddFormHandlerTest extends FormHandlerTestCase
 
     protected function getHandlerOptions(): array
     {
-        return ['contact' => new Contact()];
+        return ['contact' => (new Contact())->setClient(ClientFactory::new()->create()->object())];
     }
 
     public function getFormData(): array
