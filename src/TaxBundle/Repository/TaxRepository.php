@@ -16,8 +16,8 @@ namespace SolidInvoice\TaxBundle\Repository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use SolidInvoice\InvoiceBundle\Entity\Item as InvoiceItem;
-use SolidInvoice\QuoteBundle\Entity\Item as QuoteItem;
+use SolidInvoice\InvoiceBundle\Entity\Line as InvoiceItem;
+use SolidInvoice\QuoteBundle\Entity\Line as QuoteItem;
 use SolidInvoice\TaxBundle\Entity\Tax;
 
 class TaxRepository extends ServiceEntityRepository

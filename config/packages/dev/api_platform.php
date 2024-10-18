@@ -11,10 +11,8 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use Symfony\Config\WebProfilerConfig;
+use Symfony\Config\ApiPlatformConfig;
 
-return static function (WebProfilerConfig $config): void {
-    $config
-        ->toolbar(false)
-        ->interceptRedirects(false);
+return static function (ApiPlatformConfig $config): void {
+    $config->enableProfiler(true);
 };

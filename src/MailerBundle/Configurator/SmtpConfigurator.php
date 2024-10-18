@@ -15,6 +15,7 @@ namespace SolidInvoice\MailerBundle\Configurator;
 
 use SolidInvoice\MailerBundle\Form\Type\TransportConfig\SmtpTransportConfigType;
 use Symfony\Component\Mailer\Transport\Dsn;
+use function urlencode;
 
 /**
  * @see \SolidInvoice\MailerBundle\Tests\Configurator\SmtpConfiguratorTest
@@ -42,6 +43,6 @@ final class SmtpConfigurator implements ConfiguratorInterface
             return Dsn::fromString(\sprintf('smtp://%s:%d', $config['host'], $config['port'] ?? self::DEFAULT_PORT));
         }
 
-        return Dsn::fromString(\sprintf('smtp://%s:%s@%s:%d', $config['user'], urlencode($config['password']), $config['host'], $config['port'] ?? self::DEFAULT_PORT));
+        return Dsn::fromString(\sprintf('smtp://%s:%s@%s:%d', $config['user'], urlencode($config['password'] ?? ''), $config['host'], $config['port'] ?? self::DEFAULT_PORT));
     }
 }

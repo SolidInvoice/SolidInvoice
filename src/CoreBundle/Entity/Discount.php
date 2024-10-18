@@ -97,7 +97,7 @@ class Discount
     /**
      * @throws MathException
      */
-    public function setValue(BigNumber|float|int|string $value): void
+    public function setValue(BigNumber|float|int|string $value): self
     {
         switch ($this->getType()) {
             case self::TYPE_PERCENTAGE:
@@ -110,5 +110,7 @@ class Discount
                 $this->setValueMoney(BigNumber::of($value));
                 break;
         }
+
+        return $this;
     }
 }

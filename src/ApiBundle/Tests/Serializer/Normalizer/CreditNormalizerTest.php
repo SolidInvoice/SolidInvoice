@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Tests\Serializer\Normalizer;
 
-use Brick\Math\BigInteger;
 use Brick\Math\Exception\MathException;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ApiBundle\Serializer\Normalizer\CreditNormalizer;
@@ -22,7 +21,7 @@ use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class CreditNormalizerTest extends TestCase
+final class CreditNormalizerTest extends TestCase
 {
     public function testSupportsNormalization(): void
     {
@@ -48,7 +47,8 @@ class CreditNormalizerTest extends TestCase
             }
         };
 
-        $normalizer = new CreditNormalizer($parentNormalizer);
+        $normalizer = new CreditNormalizer();
+        $normalizer->setNormalizer($parentNormalizer);
 
         self::assertTrue($normalizer->supportsNormalization(new Credit()));
         self::assertFalse($normalizer->supportsNormalization(Credit::class));
@@ -78,7 +78,8 @@ class CreditNormalizerTest extends TestCase
             }
         };
 
-        $normalizer = new CreditNormalizer($parentNormalizer);
+        $normalizer = new CreditNormalizer();
+        $normalizer->setDenormalizer($parentNormalizer);
 
         self::assertTrue($normalizer->supportsDenormalization(null, Credit::class));
         self::assertFalse($normalizer->supportsDenormalization([], NormalizerInterface::class));
@@ -93,7 +94,7 @@ class CreditNormalizerTest extends TestCase
         $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
             public function normalize($object, $format = null, array $context = [])
             {
-                return $object;
+                return $object->toFloat();
             }
 
             public function supportsNormalization($data, $format = null)
@@ -112,12 +113,13 @@ class CreditNormalizerTest extends TestCase
             }
         };
 
-        $normalizer = new CreditNormalizer($parentNormalizer);
+        $normalizer = new CreditNormalizer();
+        $normalizer->setNormalizer($parentNormalizer);
 
         $credit = new Credit();
         $credit->setValue(10000);
 
-        self::assertEquals(BigInteger::of(10000), $normalizer->normalize($credit));
+        self::assertEquals(10000, $normalizer->normalize($credit));
     }
 
     public function testDenormalization(): void
@@ -144,8 +146,9 @@ class CreditNormalizerTest extends TestCase
             }
         };
 
-        $normalizer = new CreditNormalizer($parentNormalizer);
+        $normalizer = new CreditNormalizer();
+        $normalizer->setDenormalizer($parentNormalizer);
 
-        self::assertSame(123, $normalizer->denormalize([], Credit::class));
+        self::assertEquals((new Credit())->setValue(123), $normalizer->denormalize(123, Credit::class));
     }
 }

@@ -16,7 +16,7 @@ use DateTimeImmutable;
 use Ramsey\Uuid\Uuid;
 use SolidInvoice\CoreBundle\Test\LiveComponentTest;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
-use SolidInvoice\InvoiceBundle\Entity\Item;
+use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Twig\Components\CreateInvoice;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use Zenstruck\Foundry\Test\Factories;
@@ -43,8 +43,8 @@ final class CreateInvoiceTest extends LiveComponentTest
     public function testCreateInvoiceWithMultipleLines(): void
     {
         $invoice = (new Invoice())->setInvoiceDate(new DateTimeImmutable('2021-01-01'));
-        $invoice->addItem((new Item())->setPrice(10000)->setQty(1))->updateItems();
-        $invoice->addItem((new Item())->setPrice(10000)->setQty(1))->updateItems();
+        $invoice->addLine((new Line())->setPrice(10000)->setQty(1))->updateLines();
+        $invoice->addLine((new Line())->setPrice(10000)->setQty(1))->updateLines();
 
         $component = $this->createLiveComponent(
             name: CreateInvoice::class,
@@ -78,7 +78,7 @@ final class CreateInvoiceTest extends LiveComponentTest
         $em->flush();
 
         $invoice = (new Invoice())->setInvoiceDate(new DateTimeImmutable('2021-01-01'));
-        $invoice->addItem((new Item())->setPrice(10000)->setQty(1))->updateItems();
+        $invoice->addLine((new Line())->setPrice(10000)->setQty(1))->updateLines();
 
         $component = $this->createLiveComponent(
             name: CreateInvoice::class,

@@ -17,7 +17,7 @@ use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
-use SolidInvoice\InvoiceBundle\Entity\Item;
+use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Form\Handler\InvoiceCreateHandler;
 use SolidWorx\FormHandler\FormHandler;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,7 +42,7 @@ final class Create
 
         $invoice = new Invoice();
         $invoice->setClient($client);
-        $invoice->addItem(new Item());
+        $invoice->addLine(new Line());
 
         $options = [
             'invoice' => $invoice,

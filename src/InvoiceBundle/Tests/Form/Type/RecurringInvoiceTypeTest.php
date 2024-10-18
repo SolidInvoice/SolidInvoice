@@ -47,7 +47,7 @@ class RecurringInvoiceTypeTest extends FormTestCase
                 'value' => $discountValue,
                 'type' => Discount::TYPE_PERCENTAGE,
             ],
-            'items' => [],
+            'lines' => [],
             'notes' => $notes,
             'terms' => $terms,
             'total' => 0,

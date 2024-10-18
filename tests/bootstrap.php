@@ -54,4 +54,4 @@ if (class_exists(Deprecation::class)) {
     $version->updateVersion(SolidInvoiceCoreBundle::VERSION);
 
     $kernel->shutdown();
-})();
+});

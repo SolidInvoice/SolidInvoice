@@ -13,7 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -30,15 +34,50 @@ use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
-use Symfony\Component\Serializer\Annotation as Serialize;
+use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Validator\Constraints as Assert;
 use Traversable;
 
 #[ORM\Table(name: Payment::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: PaymentRepository::class)]
 #[ApiResource(
+    operations: [
+        new GetCollection(
+            uriTemplate: '/invoices/{invoiceId}/payments',
+            uriVariables: [
+                'invoiceId' => new Link(
+                    fromProperty: 'payments',
+                    fromClass: Invoice::class,
+                ),
+            ],
+        ),
+        new GetCollection(
+            uriTemplate: '/clients/{clientId}/payments',
+            uriVariables: [
+                'clientId' => new Link(
+                    fromProperty: 'payments',
+                    fromClass: Client::class,
+                ),
+            ],
+        ),
+    ],
     normalizationContext: [
-        'groups' => ['payment_api']
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ],
+    denormalizationContext: [
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ]
+)]
+#[ApiResource(
+    operations: [
+        new Get(),
+        new GetCollection(),
+    ],
+    normalizationContext: [
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ],
+    denormalizationContext: [
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
     ]
 )]
 class Payment extends BasePayment implements PaymentInterface
@@ -54,19 +93,6 @@ class Payment extends BasePayment implements PaymentInterface
     #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
     protected ?UuidInterface $id = null;
 
-    /**
-     * @var array<string, string>
-     */
-    protected $details;
-
-    protected $description;
-
-    protected $number;
-
-    protected $clientEmail;
-
-    protected $clientId;
-
     #[ORM\ManyToOne(targetEntity: Invoice::class, inversedBy: 'payments')]
     private ?Invoice $invoice = null;
 
@@ -75,20 +101,16 @@ class Payment extends BasePayment implements PaymentInterface
     private ?Client $client = null;
 
     #[ORM\ManyToOne(targetEntity: PaymentMethod::class, inversedBy: 'payments')]
-    #[Serialize\Groups(['payment_api', 'client_api'])]
     private ?PaymentMethod $method = null;
 
     #[ORM\Column(name: 'status', type: Types::STRING, length: 25)]
-    #[Serialize\Groups(['payment_api', 'client_api'])]
     private ?string $status = null;
 
     #[ORM\Column(name: 'message', type: Types::TEXT, nullable: true)]
-    #[Serialize\Groups(['payment_api', 'client_api'])]
     private ?string $message = null;
 
     #[ORM\Column(name: 'completed', type: Types::DATETIME_MUTABLE, nullable: true)]
     #[Assert\DateTime]
-    #[Serialize\Groups(['payment_api', 'client_api'])]
     private ?DateTimeInterface $completed = null;
 
     public function getId(): ?UuidInterface
@@ -195,6 +217,36 @@ class Payment extends BasePayment implements PaymentInterface
         return $this;
     }
 
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'object',
+            'items' => [
+                'type' => 'object',
+                'properties' => [
+                    'amount' => [
+                        'type' => 'number',
+                    ],
+                    'currency' => [
+                        'type' => 'string',
+                    ],
+                ],
+            ],
+        ],
+        jsonSchemaContext: [
+            'type' => 'object',
+            'items' => [
+                'type' => 'object',
+                'properties' => [
+                    'amount' => [
+                        'type' => 'number',
+                    ],
+                    'currency' => [
+                        'type' => 'string',
+                    ],
+                ],
+            ],
+        ]
+    )]
     public function getAmount(): Money
     {
         return new Money($this->getTotalAmount(), new Currency($this->getCurrencyCode()));

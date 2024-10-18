@@ -35,6 +35,6 @@ final class Fields
     {
         $form = $this->factory->create(QuoteType::class, null, ['currency' => new Currency($currency)]);
 
-        return $this->json($this->renderer->render($form->createView(), 'children[items].vars[prototype]'));
+        return $this->json($this->renderer->render($form->createView(), 'children[lines].vars[prototype]'));
     }
 }

@@ -91,7 +91,7 @@
                                                 </tr>
                                                 </thead>
                                                 <tr>
-                                                    {% for index, item in form.items %}
+                                                    {% for index, item in form.lines %}
                                                 <tr>
                                                     <td class="column-description">
                                                         {{ form_widget(item.description) }}
@@ -115,7 +115,7 @@
                                                         {{ item.vars.value.total|formatCurrency(currency) }}
                                                     </td>
                                                     <td class="column-trash text-center">
-                                                        {% if form.items|length > 1 %}
+                                                        {% if form.lines|length > 1 %}
                                                             {{ form_row(item.vars.button_delete, {label: ' ', attr: {class: 'remove-item text-danger fas fa-times-circle'}}) }}
                                                         {% endif %}
                                                     </td>
@@ -174,7 +174,7 @@
 
                         <div class="row">
                             <div class="col add-item-col">
-                                {{ form_widget(form.items.vars.button_add, {label: '+ Add Item', attr: {class: 'add-item'}}) }}
+                                {{ form_widget(form.lines.vars.button_add, {label: '+ Add Item', attr: {class: 'add-item'}}) }}
                             </div>
                         </div>
 

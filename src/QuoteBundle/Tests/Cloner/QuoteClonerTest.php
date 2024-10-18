@@ -21,7 +21,7 @@ use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\QuoteBundle\Cloner\QuoteCloner;
-use SolidInvoice\QuoteBundle\Entity\Item;
+use SolidInvoice\QuoteBundle\Entity\Line;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Model\Graph;
 use SolidInvoice\TaxBundle\Entity\Tax;
@@ -50,7 +50,7 @@ class QuoteClonerTest extends TestCase
         $tax->setRate(14.00);
         $tax->setType(Tax::TYPE_INCLUSIVE);
 
-        $item = new Item();
+        $item = new Line();
         $item->setTax($tax);
         $item->setDescription('Item Description');
         $item->setCreated(new DateTime('now'));
@@ -69,7 +69,7 @@ class QuoteClonerTest extends TestCase
         $quote->setTerms('Terms');
         $quote->setTotal(BigInteger::of(987));
         $quote->setClient($client);
-        $quote->addItem($item);
+        $quote->addLine($item);
 
         $dispatcher = new EventDispatcher();
         $quoteStateMachine = new StateMachine(
@@ -97,10 +97,10 @@ class QuoteClonerTest extends TestCase
 
         self::assertNotSame($quote->getUuid(), $newQuote->getUuid());
 
-        self::assertCount(1, $newQuote->getItems());
+        self::assertCount(1, $newQuote->getLines());
 
-        $quoteItem = $newQuote->getItems();
-        self::assertInstanceOf(Item::class, $quoteItem[0]);
+        $quoteItem = $newQuote->getLines();
+        self::assertInstanceOf(Line::class, $quoteItem[0]);
 
         self::assertSame($item->getTax(), $quoteItem[0]->getTax());
         self::assertSame($item->getDescription(), $quoteItem[0]->getDescription());

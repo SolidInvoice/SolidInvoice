@@ -49,11 +49,12 @@ final class CompanyEventSubscriber implements EventSubscriberInterface
 
     public function onKernelRequest(RequestEvent $event): void
     {
-        if (! $event->isMainRequest()) {
+        $request = $event->getRequest();
+
+        if (! $event->isMainRequest() || $request->attributes->get('_stateless')) {
             return;
         }
 
-        $request = $event->getRequest();
         $session = $request->getSession();
         assert($session instanceof SessionInterface);
 

@@ -13,12 +13,21 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Tests\Functional\Api;
 
-use Doctrine\Common\DataFixtures\Executor\AbstractExecutor;
-use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
+use JsonException;
 use Ramsey\Uuid\Uuid;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
-use SolidInvoice\ClientBundle\DataFixtures\ORM\LoadData;
+use SolidInvoice\ClientBundle\Entity\Address;
 use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
+use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use Zenstruck\Foundry\Proxy;
+use Zenstruck\Foundry\Test\Factories;
+use function array_map;
 use function assert;
 
 /**
@@ -26,120 +35,136 @@ use function assert;
  */
 final class ClientTest extends ApiTestCase
 {
-    private AbstractExecutor $executor;
+    use Factories;
 
-    protected function setUp(): void
+    protected function getResourceClass(): string
     {
-        parent::setUp();
-
-        $databaseTool = self::getContainer()->get(DatabaseToolCollection::class)->get();
-
-        $this->executor = $databaseTool->loadFixtures([
-            LoadData::class,
-        ], true);
+        return Client::class;
     }
 
     public function testCreate(): void
     {
         $data = [
             'name' => 'Dummy User',
-            'contacts' => [
-                [
-                    'firstName' => 'foo bar',
-                    'email' => 'foo@example.com',
-                ],
-            ],
+            'contacts' => [],
+            'credit' => '125.50',
         ];
 
         $result = $this->requestPost('/api/clients', $data);
 
         self::assertArrayHasKey('id', $result);
-        self::assertArrayHasKey('id', $result['contacts'][0]);
         self::assertTrue(Uuid::isValid($result['id']));
-        self::assertTrue(Uuid::isValid($result['contacts'][0]['id']));
 
-        unset($result['id'], $result['contacts'][0]['id']);
-
-        self::assertSame([
+        self::assertJsonContains([
+            '@context' => $this->getContextForResource($this->getResourceClass()),
+            '@type' => 'https://schema.org/Corporation',
             'name' => 'Dummy User',
             'website' => null,
             'status' => 'active',
             'currency' => 'USD',
             'vatNumber' => null,
-            'contacts' => [
-                [
-                    'firstName' => 'foo bar',
-                    'lastName' => null,
-                    'email' => 'foo@example.com',
-                    'additionalContactDetails' => [],
-                ],
-            ],
+            'contacts' => [],
             'addresses' => [],
-            'credit' => '0',
-        ], $result);
+            'credit' => 125.5,
+        ]);
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ClientExceptionInterface
+     */
     public function testDelete(): void
     {
-        $client = $this->executor->getReferenceRepository()->getReference('client');
-        assert($client instanceof Client);
+        $client = ClientFactory::createOne()->object();
 
-        $this->requestDelete('/api/clients/' . $client->getId());
+        $this->requestDelete($this->getIriFromResource($client));
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws JsonException
+     */
     public function testGet(): void
     {
-        $client = $this->executor->getReferenceRepository()->getReference('client');
-        assert($client instanceof Client);
-
-        $data = $this->requestGet('/api/clients/' . $client->getId());
-
-        self::assertSame([
-            'id' => $client->getId()->toString(),
-            'name' => 'Test',
-            'website' => null,
-            'status' => 'active',
-            'currency' => 'USD',
-            'vatNumber' => null,
-            'contacts' => [
-                [
-                    'id' => $client->getContacts()->first()->getId()->toString(),
-                    'firstName' => 'Test',
-                    'lastName' => null,
-                    'email' => 'test@example.com',
-                    'additionalContactDetails' => [],
-                ],
+        $client = ClientFactory::createOne([
+            'addresses' => [
+                $address = new Address(),
             ],
-            'addresses' => [],
-            'credit' => '0',
+        ])->object();
+
+        $contacts = ContactFactory::new([
+            'client' => $client,
+        ])->many(1, 5)->create();
+
+        $data = $this->requestGet($this->getIriFromResource($client));
+
+        self::assertEqualsCanonicalizing([
+            '@context' => $this->getContextForResource($client),
+            '@id' => $this->getIriFromResource($client),
+            '@type' => 'https://schema.org/Corporation',
+            'id' => $client->getId()->toString(),
+            'name' => $client->getName(),
+            'website' => $client->getWebsite(),
+            'status' => $client->getStatus(),
+            'currency' => $client->getCurrencyCode(),
+            'vatNumber' => $client->getVatNumber(),
+            'contacts' => array_map($this->getIriFromResource(...), array_map(static fn (Proxy $proxy) => $proxy->object(), $contacts)),
+            'quotes' => [],
+            'invoices' => [],
+            'recurringInvoices' => [],
+            'payments' => [],
+            'addresses' => [
+                $this->getIriFromResource($address),
+            ],
+            'credit' => 0,
         ], $data);
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
     public function testEdit(): void
     {
-        $client = $this->executor->getReferenceRepository()->getReference('client');
+        $client = ClientFactory::createOne()->object();
         assert($client instanceof Client);
 
-        $data = $this->requestPut('/api/clients/' . $client->getId(), ['name' => 'New Test']);
+        $contacts = ContactFactory::new([
+            'client' => $client,
+        ])->many(4, 15)->create();
 
-        self::assertSame([
+        $contactInfo = array_map(fn (Proxy $proxy): string => $this->getIriFromResource($proxy->object()), $contacts);
+
+        $data = $this->requestPatch(
+            $this->getIriFromResource($client),
+            [
+                'name' => 'New Test',
+                'contacts' => $contactInfo,
+            ]
+        );
+
+        self::assertEqualsCanonicalizing([
+            '@context' => $this->getContextForResource($client),
+            '@id' => $this->getIriFromResource($client),
+            '@type' => 'https://schema.org/Corporation',
             'id' => $client->getId()->toString(),
             'name' => 'New Test',
-            'website' => null,
-            'status' => 'active',
-            'currency' => 'USD',
-            'vatNumber' => null,
-            'contacts' => [
-                [
-                    'id' => $client->getContacts()->first()->getId()->toString(),
-                    'firstName' => 'Test',
-                    'lastName' => null,
-                    'email' => 'test@example.com',
-                    'additionalContactDetails' => [],
-                ],
-            ],
+            'website' => $client->getWebsite(),
+            'status' => $client->getStatus(),
+            'currency' => $client->getCurrencyCode(),
+            'vatNumber' => $client->getVatNumber(),
+            'contacts' => $contactInfo,
+            'quotes' => [],
+            'invoices' => [],
+            'recurringInvoices' => [],
+            'payments' => [],
             'addresses' => [],
-            'credit' => '0',
+            'credit' => 0,
         ], $data);
     }
 }

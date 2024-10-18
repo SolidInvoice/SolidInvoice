@@ -21,7 +21,7 @@ use Doctrine\Persistence\ObjectManager;
 use JsonException;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
-use SolidInvoice\InvoiceBundle\Entity\Item;
+use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvent;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvents;
@@ -71,8 +71,8 @@ class InvoiceManager
 
         $now = CarbonImmutable::now();
 
-        /** @var Item $item */
-        foreach ($invoice->getItems() as $item) {
+        /** @var Line $item */
+        foreach ($invoice->getLines() as $item) {
             $description = $item->getDescription();
 
             $description = str_replace(
@@ -122,9 +122,9 @@ class InvoiceManager
             $invoice->setTax($object->getTax());
         }
 
-        /** @var \SolidInvoice\QuoteBundle\Entity\Item $item */
-        foreach ($object->getItems() as $item) {
-            $invoiceItem = new Item();
+        /** @var \SolidInvoice\QuoteBundle\Entity\Line $item */
+        foreach ($object->getLines() as $item) {
+            $invoiceItem = new Line();
             $invoiceItem->setCreated($now);
             $invoiceItem->setTotal($item->getTotal());
             $invoiceItem->setDescription($item->getDescription());
@@ -135,7 +135,7 @@ class InvoiceManager
                 $invoiceItem->setTax($item->getTax());
             }
 
-            $invoice->addItem($invoiceItem);
+            $invoice->addLine($invoiceItem);
         }
 
         if ($object instanceof Quote) {

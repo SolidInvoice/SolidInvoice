@@ -68,15 +68,15 @@ class TotalCalculator
         $subTotal = BigDecimal::zero();
         $tax = BigDecimal::zero();
 
-        foreach ($entity->getItems() as $item) {
-            $item->updateTotal();
+        foreach ($entity->getLines() as $line) {
+            $line->updateTotal();
 
-            $rowTotal = $item->getTotal();
+            $rowTotal = $line->getTotal();
 
-            $total = $total->plus($item->getTotal());
-            $subTotal = $subTotal->plus($item->getTotal());
+            $total = $total->plus($line->getTotal());
+            $subTotal = $subTotal->plus($line->getTotal());
 
-            if (($rowTax = $item->getTax()) instanceof Tax) {
+            if (($rowTax = $line->getTax()) instanceof Tax) {
                 if (Tax::TYPE_INCLUSIVE === $rowTax->getType()) {
                     $taxAmount = $rowTotal->toBigDecimal()->dividedBy(($rowTax->getRate() / 100) + 1, 2, RoundingMode::HALF_EVEN)->minus($rowTotal)->negated();
                     $subTotal = $subTotal->minus($taxAmount);

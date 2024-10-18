@@ -22,36 +22,17 @@ use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class AdditionalContactDetailsNormalizerTest extends TestCase
+/**
+ * @covers \SolidInvoice\ApiBundle\Serializer\Normalizer\AdditionalContactDetailsNormalizer
+ */
+final class AdditionalContactDetailsNormalizerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
     use DoctrineTestTrait;
 
     public function testSupportsNormalization(): void
     {
-        $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
-            public function normalize($object, $format = null, array $context = [])
-            {
-                return $object;
-            }
-
-            public function supportsNormalization($data, $format = null)
-            {
-                return true;
-            }
-
-            public function supportsDenormalization($data, $type, $format = null)
-            {
-                return true;
-            }
-
-            public function denormalize($data, $class, $format = null, array $context = [])
-            {
-                return $data;
-            }
-        };
-
-        $normalizer = new AdditionalContactDetailsNormalizer($this->registry, $parentNormalizer);
+        $normalizer = new AdditionalContactDetailsNormalizer($this->registry);
 
         self::assertTrue($normalizer->supportsNormalization(new AdditionalContactDetail()));
         self::assertFalse($normalizer->supportsNormalization(AdditionalContactDetail::class));
@@ -59,29 +40,7 @@ class AdditionalContactDetailsNormalizerTest extends TestCase
 
     public function testSupportsDenormalization(): void
     {
-        $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
-            public function normalize($object, $format = null, array $context = [])
-            {
-                return $object;
-            }
-
-            public function supportsNormalization($data, $format = null)
-            {
-                return true;
-            }
-
-            public function supportsDenormalization($data, $type, $format = null)
-            {
-                return true;
-            }
-
-            public function denormalize($data, $class, $format = null, array $context = [])
-            {
-                return $data;
-            }
-        };
-
-        $normalizer = new AdditionalContactDetailsNormalizer($this->registry, $parentNormalizer);
+        $normalizer = new AdditionalContactDetailsNormalizer($this->registry);
 
         self::assertTrue($normalizer->supportsDenormalization(null, AdditionalContactDetail::class));
         self::assertFalse($normalizer->supportsDenormalization([], NormalizerInterface::class));
@@ -89,29 +48,7 @@ class AdditionalContactDetailsNormalizerTest extends TestCase
 
     public function testNormalization(): void
     {
-        $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
-            public function normalize($object, $format = null, array $context = [])
-            {
-                return $object;
-            }
-
-            public function supportsNormalization($data, $format = null)
-            {
-                return true;
-            }
-
-            public function supportsDenormalization($data, $type, $format = null)
-            {
-                return true;
-            }
-
-            public function denormalize($data, $class, $format = null, array $context = [])
-            {
-                return $data;
-            }
-        };
-
-        $normalizer = new AdditionalContactDetailsNormalizer($this->registry, $parentNormalizer);
+        $normalizer = new AdditionalContactDetailsNormalizer($this->registry);
 
         $additionalContactDetail = new AdditionalContactDetail();
         $type = new ContactType();
@@ -124,17 +61,7 @@ class AdditionalContactDetailsNormalizerTest extends TestCase
 
     public function testDenormalization(): void
     {
-        $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
-            public function normalize($object, $format = null, array $context = [])
-            {
-                return $object;
-            }
-
-            public function supportsNormalization($data, $format = null)
-            {
-                return true;
-            }
-
+        $parentNormalizer = new class() implements DenormalizerInterface {
             public function supportsDenormalization($data, $type, $format = null)
             {
                 return true;
@@ -152,14 +79,14 @@ class AdditionalContactDetailsNormalizerTest extends TestCase
             }
         };
 
-        $normalizer = new AdditionalContactDetailsNormalizer($this->registry, $parentNormalizer);
+        $normalizer = new AdditionalContactDetailsNormalizer($this->registry);
+        $normalizer->setDenormalizer($parentNormalizer);
 
         $additionalContactDetail = new AdditionalContactDetail();
         $additionalContactDetail->setType(new ContactType())
             ->setValue('one@two.com');
 
         $detail = $normalizer->denormalize(['type' => 'email', 'value' => 'one@two.com'], AdditionalContactDetail::class);
-        self::assertInstanceOf(AdditionalContactDetail::class, $detail);
         self::assertSame('email', $detail->getType()->getName());
         self::assertSame('one@two.com', $detail->getValue());
     }

@@ -57,7 +57,7 @@ class RecurringInvoiceType extends AbstractType
         $builder->add('discount', DiscountType::class, ['required' => false, 'label' => 'Discount', 'currency' => $options['currency']]);
 
         $builder->add(
-            'items',
+            'lines',
             CollectionType::class,
             [
                 'entry_type' => ItemType::class,

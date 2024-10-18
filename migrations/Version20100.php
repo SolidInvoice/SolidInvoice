@@ -213,7 +213,11 @@ final class Version20100 extends AbstractMigration implements ContainerAwareInte
         $recurringInvoices->addUniqueIndex(['invoice_id']);
     }
 
-    private function createTable($name, array $columns = [], $setPrimaryKey = true): Table
+    /**
+     * @param list<mixed> $columns
+     * @throws SchemaException
+     */
+    private function createTable(string $name, array $columns = [], bool $setPrimaryKey = true): Table
     {
         $table = $this->schema->createTable($name);
 

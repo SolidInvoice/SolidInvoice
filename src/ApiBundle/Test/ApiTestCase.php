@@ -13,74 +13,56 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Test;
 
-use const PASSWORD_DEFAULT;
-use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
-use JsonException;
+use ApiPlatform\JsonLd\ContextBuilderInterface;
+use ApiPlatform\Symfony\Bundle\Test\Client;
+use Faker\Factory;
+use Faker\Generator;
 use SolidInvoice\ApiBundle\ApiTokenManager;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
-use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
-use SolidInvoice\UserBundle\Entity\User;
-use Symfony\Component\BrowserKit\AbstractBrowser;
+use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Panther\PantherTestCase;
-use function password_hash;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use function is_object;
 
 /**
  * @codeCoverageIgnore
  */
-abstract class ApiTestCase extends PantherTestCase
+abstract class ApiTestCase extends \ApiPlatform\Symfony\Bundle\Test\ApiTestCase
 {
     use EnsureApplicationInstalled;
 
-    protected static AbstractBrowser $client;
+    protected static Client $client;
+
+    protected Generator $faker;
+
+    /**
+     * @return class-string
+     */
+    abstract protected function getResourceClass(): string;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        self::$client = static::createClient();
+        $this->faker = Factory::create();
 
-        $registry = self::getContainer()->get('doctrine');
+        $user = UserFactory::createOne(['companies' => [$this->company]])->object();
 
-        $userRepository = $registry->getRepository(User::class);
-        $companyRepository = $registry->getRepository(Company::class);
+        $tokenManager = self::getContainer()->get(ApiTokenManager::class);
+        $token = $tokenManager->getOrCreate($user, 'Functional Test');
 
-        /** @var User[] $users */
-        $users = $userRepository->findAll();
+        self::$client = static::createClient(defaultOptions: ['headers' => ['X-API-TOKEN' => $token->getToken()]]);
 
-        /** @var Company[] $companies */
-        $companies = $companyRepository->findAll();
-
-        $commit = false;
-
-        if ([] === $users) {
-            $commit = true;
-            $user = new User();
-            $user->setEmail('test@example.com')
-                ->setEnabled(true)
-                ->setPassword(password_hash('Password1', PASSWORD_DEFAULT));
-
-            foreach ($companies as $company) {
-                $user->addCompany($company);
-            }
-
-            $registry->getManager()->persist($user);
-            $registry->getManager()->flush();
-            $users = [$user];
-        }
-
-        static::getContainer()->get(CompanySelector::class)->switchCompany($companies[0]->getId());
-
-        $tokenManager = new ApiTokenManager($registry);
-        $token = $tokenManager->getOrCreate($users[0], 'Functional Test');
-
-        self::$client->setServerParameter('HTTP_X_API_TOKEN', $token->getToken());
-
-        if ($commit) {
-            StaticDriver::commit();
-            StaticDriver::beginTransaction();
-        }
+        // We need to switch the company again,
+        // because the ::createClient call resets the container
+        // so we lose the state on the CompanySelector service
+        static::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
     }
 
     /**
@@ -88,91 +70,175 @@ abstract class ApiTestCase extends PantherTestCase
      * @param array<string, string> $headers
      *
      * @return array<string, mixed>
-     * @throws JsonException
+     * @throws ClientExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
      */
     protected function requestPost(string $uri, array $data, array $headers = []): array
     {
-        $server = ['CONTENT_TYPE' => 'application/json', 'HTTP_ACCEPT' => 'application/json'];
-        foreach ($headers as $key => $value) {
-            $server['HTTP_' . strtoupper($key)] = $value;
-        }
+        $headers = [
+            'content-type' => 'application/ld+json',
+            'accept' => 'application/ld+json',
+            ...$headers
+        ];
 
-        self::$client->request(Request::METHOD_POST, $uri, [], [], $server, json_encode($data, JSON_THROW_ON_ERROR));
+        $response = self::$client->request(
+            method: Request::METHOD_POST,
+            url: $uri,
+            options: [
+                'json' => $data,
+                'headers' => $headers,
+            ]
+        );
 
-        $statusCode = self::$client->getResponse()->getStatusCode();
-        self::assertSame(201, $statusCode);
-        $content = self::$client->getResponse()->getContent();
-        self::assertJson($content);
+        static::assertResponseStatusCodeSame(Response::HTTP_CREATED);
+        static::assertResponseFormatSame('jsonld');
+        static::assertMatchesResourceItemJsonSchema($this->getResourceClass());
 
-        return json_decode((string) $content, true, 512, JSON_THROW_ON_ERROR);
+        return $response->toArray(false);
     }
 
     /**
+     * PATCH makes incremental updates to the resource
+     *
      * @param array<string, mixed> $data
      * @param array<string, string> $headers
      *
      * @return array<string, mixed>
-     * @throws JsonException
+     * @throws ClientExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     */
+    protected function requestPatch(string $uri, array $data, array $headers = []): array
+    {
+        $headers = [
+            'content-type' => 'application/merge-patch+json',
+            'accept' => 'application/ld+json',
+            ...$headers
+        ];
+
+        $response = self::$client->request(
+            method: Request::METHOD_PATCH,
+            url: $uri,
+            options: [
+                'json' => $data,
+                'headers' => $headers,
+            ]
+        );
+
+        static::assertResponseStatusCodeSame(Response::HTTP_OK);
+        static::assertResponseFormatSame('jsonld');
+        static::assertMatchesResourceItemJsonSchema($this->getResourceClass());
+
+        return $response->toArray(false);
+    }
+
+    /**
+     * PUT replaces the resource entirely
+     *
+     * @param array<string, mixed> $data
+     * @param array<string, string> $headers
+     *
+     * @return array<string, mixed>
+     * @throws ClientExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
      */
     protected function requestPut(string $uri, array $data, array $headers = []): array
     {
-        $server = ['CONTENT_TYPE' => 'application/json', 'HTTP_ACCEPT' => 'application/json'];
-        foreach ($headers as $key => $value) {
-            $server['HTTP_' . strtoupper($key)] = $value;
-        }
+        $headers = [
+            'content-type' => 'application/ld+json',
+            'accept' => 'application/ld+json',
+            ...$headers
+        ];
 
-        self::$client->request(Request::METHOD_PUT, $uri, [], [], $server, json_encode($data, JSON_THROW_ON_ERROR));
+        $response = self::$client->request(
+            method: Request::METHOD_PUT,
+            url: $uri,
+            options: [
+                'json' => $data,
+                'headers' => $headers,
+            ]
+        );
 
-        $statusCode = self::$client->getResponse()->getStatusCode();
+        static::assertResponseStatusCodeSame(Response::HTTP_OK);
+        static::assertResponseFormatSame('jsonld');
+        static::assertMatchesResourceItemJsonSchema($this->getResourceClass());
 
-        self::assertSame(200, $statusCode);
-
-        $content = self::$client->getResponse()->getContent();
-        self::assertJson($content);
-
-        return json_decode((string) $content, true, 512, JSON_THROW_ON_ERROR);
+        return $response->toArray(false);
     }
 
     /**
      * @param array<string, string> $headers
      *
      * @return array<mixed>
-     * @throws JsonException
+     * @throws ClientExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
      */
     protected function requestGet(string $uri, array $headers = []): array
     {
-        $server = ['CONTENT_TYPE' => 'application/json', 'HTTP_ACCEPT' => 'application/json'];
-        foreach ($headers as $key => $value) {
-            $server['HTTP_' . strtoupper($key)] = $value;
-        }
+        $headers = [
+            'content-type' => 'application/ld+json',
+            'accept' => 'application/ld+json',
+            ...$headers
+        ];
 
-        self::$client->request(Request::METHOD_GET, $uri, [], [], $server);
+        $response = self::$client->request(
+            method: Request::METHOD_GET,
+            url: $uri,
+            options: [
+                'headers' => $headers,
+            ]
+        );
 
-        $statusCode = self::$client->getResponse()->getStatusCode();
-        self::assertSame(200, $statusCode);
-        $content = self::$client->getResponse()->getContent();
-        self::assertJson($content);
+        static::assertResponseStatusCodeSame(Response::HTTP_OK);
+        static::assertResponseFormatSame('jsonld');
+        static::assertMatchesResourceItemJsonSchema($this->getResourceClass());
 
-        return json_decode((string) $content, true, 512, JSON_THROW_ON_ERROR);
+        return $response->toArray(false);
     }
 
     /**
      * @param array<string,string> $headers
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
      */
-    protected function requestDelete(string $uri, array $headers = []): string
+    protected function requestDelete(string $uri, array $headers = []): void
     {
-        $server = ['CONTENT_TYPE' => 'application/json', 'HTTP_ACCEPT' => 'application/json'];
-        foreach ($headers as $key => $value) {
-            $server['HTTP_' . strtoupper($key)] = $value;
-        }
+        $headers = [
+            'content-type' => 'application/ld+json',
+            'accept' => 'application/ld+json',
+            ...$headers
+        ];
 
-        self::$client->request(Request::METHOD_DELETE, $uri, [], [], $server);
+        $response = self::$client->request(
+            method: Request::METHOD_DELETE,
+            url: $uri,
+            options: [
+                'headers' => $headers,
+            ]
+        );
 
-        $statusCode = self::$client->getResponse()->getStatusCode();
-        self::assertSame(204, $statusCode);
-        $content = self::$client->getResponse()->getContent();
-        self::assertEmpty($content);
+        static::assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
+        self::assertEmpty($response->getContent(false));
+    }
 
-        return $content;
+    protected function getContextForResource(object|string $resource): string
+    {
+        /** @var ContextBuilderInterface $contextBuilder */
+        $contextBuilder = static::getContainer()->get('api_platform.jsonld.context_builder');
+
+        return $contextBuilder->getResourceContextUri(is_object($resource) ? $resource::class : $resource);
     }
 }

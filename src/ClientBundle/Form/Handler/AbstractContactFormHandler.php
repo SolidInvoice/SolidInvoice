@@ -53,7 +53,7 @@ abstract class AbstractContactFormHandler implements FormHandlerInterface, FormH
         /** @var Contact $contact */
         $this->save($contact);
 
-        return $this->serialize($contact, ['client_api']);
+        return $this->serialize($contact, ['client_api:read']);
     }
 
     abstract public function getTemplate(): string;

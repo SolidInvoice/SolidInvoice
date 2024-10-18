@@ -52,7 +52,7 @@ class InvoiceTypeTest extends FormTestCase
                 'value' => $discountValue,
                 'type' => Discount::TYPE_PERCENTAGE,
             ],
-            'items' => [],
+            'lines' => [],
             'invoiceId' => '10',
             'notes' => $notes,
             'terms' => $terms,

@@ -39,9 +39,9 @@ abstract class LiveComponentTest extends KernelTestCase
 
     protected function setUp(): void
     {
-        parent::setUp();
-
         $_SERVER['secret'] = $_ENV['secret'] = '$ecretf0rt3st';
+
+        parent::setUp();
 
         $this->ensureSessionIsSet();
 

@@ -248,6 +248,7 @@ final class Version20200 extends AbstractMigration implements ContainerAwareInte
             ->insert('companies', ['name' => $companyName, 'id' => $companyId->getBytes()]);
 
         foreach (self::ALL_TABLES as $table) {
+            // @phpstan-ignore-next-line
             $this->connection->update($table, ['company_id' => $companyId->getBytes()], ['1' => '1']);
         }
 

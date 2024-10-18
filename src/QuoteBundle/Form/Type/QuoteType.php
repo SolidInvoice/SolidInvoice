@@ -73,7 +73,7 @@ class QuoteType extends AbstractType
         );
 
         $builder->add(
-            'items',
+            'lines',
             CollectionType::class,
             [
                 'entry_type' => ItemType::class,

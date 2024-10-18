@@ -4,6 +4,7 @@ includes:
 parameters:
     level: 6
     paths:
+        - migrations
         - src
     bootstrapFiles:
         - vendor/autoload.php
@@ -13,5 +14,3 @@ parameters:
         container_xml_path: var/cache/dev/SolidInvoice_KernelDevDebugContainer.xml
     stubFiles:
         - tests/stub.php
-    ignoreErrors:
-        - '#^Service "[^"]+" is private.$#'

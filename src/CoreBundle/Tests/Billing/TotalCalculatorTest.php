@@ -25,7 +25,7 @@ use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Exception\UnexpectedTypeException;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
-use SolidInvoice\InvoiceBundle\Entity\Item;
+use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\MoneyBundle\Calculator;
 use SolidInvoice\PaymentBundle\Entity\Payment;
@@ -59,11 +59,11 @@ class TotalCalculatorTest extends KernelTestCase
         $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator());
 
         $invoice = new Invoice();
-        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD', 'company' => $this->company])->object());
-        $item = new Item();
+        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD'])->object());
+        $item = new Line();
         $item->setQty(1)
             ->setPrice(15000);
-        $invoice->addItem($item);
+        $invoice->addLine($item);
 
         $updater->calculateTotals($invoice);
 
@@ -81,11 +81,11 @@ class TotalCalculatorTest extends KernelTestCase
         $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator());
 
         $invoice = new Invoice();
-        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD', 'company' => $this->company])->object());
-        $item = new Item();
+        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD'])->object());
+        $item = new Line();
         $item->setQty(2)
             ->setPrice(15000);
-        $invoice->addItem($item);
+        $invoice->addLine($item);
 
         $updater->calculateTotals($invoice);
 
@@ -103,11 +103,11 @@ class TotalCalculatorTest extends KernelTestCase
         $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator());
 
         $invoice = new Invoice();
-        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD', 'company' => $this->company])->object());
-        $item = new Item();
+        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD'])->object());
+        $item = new Line();
         $item->setQty(2)
             ->setPrice(15000);
-        $invoice->addItem($item);
+        $invoice->addLine($item);
         $discount = new Discount();
         $discount->setType(Discount::TYPE_PERCENTAGE);
         $discount->setValue(15);
@@ -129,11 +129,11 @@ class TotalCalculatorTest extends KernelTestCase
         $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator());
 
         $invoice = new Invoice();
-        $invoice->setClient(ClientFactory::createOne(['company' => $this->company])->object());
-        $item = new Item();
+        $invoice->setClient(ClientFactory::createOne()->object());
+        $item = new Line();
         $item->setQty(2)
             ->setPrice(15000);
-        $invoice->addItem($item);
+        $invoice->addLine($item);
         $discount = new Discount();
         $discount->setType(Discount::TYPE_MONEY);
         $discount->setValue(80);
@@ -159,13 +159,13 @@ class TotalCalculatorTest extends KernelTestCase
             ->setRate(20);
 
         $invoice = new Invoice();
-        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD', 'company' => $this->company])->object());
-        $item = new Item();
+        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD'])->object());
+        $item = new Line();
         $item->setQty(2)
             ->setPrice(15000)
             ->setTax($tax);
 
-        $invoice->addItem($item);
+        $invoice->addLine($item);
 
         $updater->calculateTotals($invoice);
 
@@ -188,13 +188,13 @@ class TotalCalculatorTest extends KernelTestCase
             ->setRate(20);
 
         $invoice = new Invoice();
-        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD', 'company' => $this->company])->object());
-        $item = new Item();
+        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD'])->object());
+        $item = new Line();
         $item->setQty(2)
             ->setPrice(15000)
             ->setTax($tax);
 
-        $invoice->addItem($item);
+        $invoice->addLine($item);
 
         $updater->calculateTotals($invoice);
 
@@ -217,12 +217,12 @@ class TotalCalculatorTest extends KernelTestCase
             ->setRate(20);
 
         $invoice = new Invoice();
-        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD', 'company' => $this->company])->object());
-        $item = new Item();
+        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD'])->object());
+        $item = new Line();
         $item->setQty(2)
             ->setPrice(15000)
             ->setTax($tax);
-        $invoice->addItem($item);
+        $invoice->addLine($item);
         $discount = new Discount();
         $discount->setType(Discount::TYPE_PERCENTAGE);
         $discount->setValue(1500);
@@ -249,12 +249,12 @@ class TotalCalculatorTest extends KernelTestCase
             ->setRate(20);
 
         $invoice = new Invoice();
-        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD', 'company' => $this->company])->object());
-        $item = new Item();
+        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD'])->object());
+        $item = new Line();
         $item->setQty(2)
             ->setPrice(15000)
             ->setTax($tax);
-        $invoice->addItem($item);
+        $invoice->addLine($item);
         $discount = new Discount();
         $discount->setType(Discount::TYPE_MONEY);
         $discount->setValue(80);
@@ -277,16 +277,16 @@ class TotalCalculatorTest extends KernelTestCase
     public function testUpdateTotalsWithPayments(): void
     {
         $invoice = new Invoice();
-        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD', 'company' => $this->company])->object());
+        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD'])->object());
         $invoice->setTotal(30000);
         $invoice->setBaseTotal(30000);
         $invoice->setBalance(30000);
         $invoice->setStatus(Graph::STATUS_PENDING);
-        $item = new Item();
+        $item = new Line();
         $item->setQty(2)
             ->setPrice(15000)
             ->setDescription('foobar');
-        $invoice->addItem($item);
+        $invoice->addLine($item);
 
         $payment = new Payment();
         $payment->setTotalAmount(1000);
