@@ -15,13 +15,9 @@ namespace SolidInvoice\InvoiceBundle\Entity;
 
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Delete;
-use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
-use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Put;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -43,20 +39,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: RecurringInvoiceRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[ApiResource(
-    uriTemplate: '/recurring-invoices',
-    operations: [new GetCollection(), new Post()],
-    normalizationContext: [
-        'groups' => ['recurring_invoice_api:read'],
-        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
-    ],
-    denormalizationContext: [
-        'groups' => ['recurring_invoice_api:write'],
-        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
-    ],
-)]
-#[ApiResource(
-    uriTemplate: '/recurring-invoices/{id}',
-    operations: [new Get(), new Put(), new Patch(), new Delete()],
     normalizationContext: [
         'groups' => ['recurring_invoice_api:read'],
         AbstractObjectNormalizer::SKIP_NULL_VALUES => false,

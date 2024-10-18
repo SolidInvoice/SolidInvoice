@@ -138,6 +138,7 @@ use function strtolower;
     ],
     denormalizationContext: [
         'groups' => ['contact_api:write'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
     ]
 )]
 #[ORM\Table(name: Contact::TABLE_NAME)]

@@ -21,6 +21,7 @@ return static function (ApiPlatformConfig $config): void {
         ->version(SolidInvoiceCoreBundle::VERSION)
         ->showWebby(false)
         ->enableProfiler(param('kernel.debug'))
+        ->pathSegmentNameGenerator('api_platform.metadata.path_segment_name_generator.dash')
     ;
 
     $config

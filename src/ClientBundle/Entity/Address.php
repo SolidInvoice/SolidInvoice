@@ -13,6 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
@@ -22,9 +29,48 @@ use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Stringable;
 use Symfony\Component\Intl\Countries;
+use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 
 #[ORM\Table(name: Address::TABLE_NAME)]
 #[ORM\Entity]
+#[ApiResource(
+    uriTemplate: '/clients/{clientId}/addresses',
+    operations: [ new GetCollection(), new Post() ],
+    uriVariables: [
+        'clientId' => new Link(
+            fromProperty: 'addresses',
+            fromClass: Client::class,
+        ),
+    ],
+    normalizationContext: [
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ],
+    denormalizationContext: [
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ]
+)]
+#[ApiResource(
+    uriTemplate: '/clients/{clientId}/address/{id}',
+    operations: [new Get(), new Delete(), new Patch()],
+    uriVariables: [
+        'clientId' => new Link(
+            fromProperty: 'addresses',
+            fromClass: Client::class,
+        ),
+        'id' => new Link(
+            fromClass: Address::class,
+        ),
+    ],
+    normalizationContext: [
+        'groups' => ['address_api:read'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ],
+    denormalizationContext: [
+        'groups' => ['address_api:write'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ]
+)]
 class Address implements Stringable
 {
     final public const TABLE_NAME = 'addresses';
@@ -36,29 +82,38 @@ class Address implements Stringable
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
+    #[Groups(['address_api:read'])]
     private ?UuidInterface $id = null;
 
     #[ORM\Column(name: 'street1', type: Types::STRING, nullable: true)]
+    #[Groups(['address_api:read', 'address_api:write'])]
     private ?string $street1 = null;
 
     #[ORM\Column(name: 'street2', type: Types::STRING, nullable: true)]
+    #[Groups(['address_api:read', 'address_api:write'])]
     private ?string $street2 = null;
 
     #[ORM\Column(name: 'city', type: Types::STRING, nullable: true)]
+    #[Groups(['address_api:read', 'address_api:write'])]
     private ?string $city = null;
 
     #[ORM\Column(name: 'state', type: Types::STRING, nullable: true)]
+    #[Groups(['address_api:read', 'address_api:write'])]
     private ?string $state = null;
 
     #[ORM\Column(name: 'zip', type: Types::STRING, nullable: true)]
+    #[Groups(['address_api:read', 'address_api:write'])]
     private ?string $zip = null;
 
     #[ORM\Column(name: 'country', type: Types::STRING, nullable: true)]
+    #[Groups(['address_api:read', 'address_api:write'])]
     private ?string $country = null;
 
+    #[Groups(['address_api:read'])]
     private ?string $countryName = null;
 
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'addresses')]
+    #[Groups(['address_api:read'])]
     private ?Client $client = null;
 
     public function getId(): ?UuidInterface
@@ -134,7 +189,7 @@ class Address implements Stringable
     public function getCountryName(): ?string
     {
         if (null === $this->countryName) {
-            $this->countryName = $this->getCountry() ? Countries::getName($this->getCountry()) : null;
+            $this->countryName = $this->getCountry() && Countries::exists($this->getCountry()) ? Countries::getName($this->getCountry()) : null;
         }
 
         return $this->countryName;

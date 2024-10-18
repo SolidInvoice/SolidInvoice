@@ -16,6 +16,7 @@ namespace SolidInvoice\ClientBundle\Tests\Functional\Api;
 use JsonException;
 use Ramsey\Uuid\Uuid;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
+use SolidInvoice\ClientBundle\Entity\Address;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
@@ -87,8 +88,11 @@ final class ClientTest extends ApiTestCase
      */
     public function testGet(): void
     {
-        $client = ClientFactory::createOne()->object();
-        assert($client instanceof Client);
+        $client = ClientFactory::createOne([
+            'addresses' => [
+                $address = new Address(),
+            ],
+        ])->object();
 
         $contacts = ContactFactory::new([
             'client' => $client,
@@ -111,7 +115,9 @@ final class ClientTest extends ApiTestCase
             'invoices' => [],
             'recurringInvoices' => [],
             'payments' => [],
-            'addresses' => [],
+            'addresses' => [
+                $this->getIriFromResource($address),
+            ],
             'credit' => 0,
         ], $data);
     }

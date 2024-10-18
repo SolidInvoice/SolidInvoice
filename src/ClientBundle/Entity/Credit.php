@@ -44,7 +44,7 @@ class Credit implements Stringable
     #[ORM\Column(name: 'value_amount', type: BigIntegerType::NAME)]
     private BigNumber $value;
 
-    #[ORM\OneToOne(inversedBy: 'credit', targetEntity: Client::class, cascade: ['persist'])]
+    #[ORM\OneToOne(inversedBy: 'credit', targetEntity: Client::class)]
     private ?Client $client = null;
 
     public function __construct()
