@@ -17,6 +17,7 @@ use ApiPlatform\Metadata\ApiProperty;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Serializer\Attribute\Ignore;
 
 trait TimeStampable
 {
@@ -25,6 +26,7 @@ trait TimeStampable
      */
     #[ApiProperty(iris: ['https://schema.org/DateTime'])]
     #[ORM\Column(name: 'created', type: 'datetime')]
+    #[Ignore]
     protected ?DateTimeInterface $created = null;
 
     /**
@@ -32,6 +34,7 @@ trait TimeStampable
      */
     #[ApiProperty(iris: ['https://schema.org/DateTime'])]
     #[ORM\Column(name: 'updated', type: 'datetime')]
+    #[Ignore]
     protected ?DateTimeInterface $updated = null;
 
     /**
