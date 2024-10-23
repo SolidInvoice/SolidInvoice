@@ -15,8 +15,11 @@ namespace SolidInvoice\InvoiceBundle\Entity;
 
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
@@ -52,6 +55,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Index(columns: ['quote_id'])]
 #[ORM\Entity(repositoryClass: InvoiceRepository::class)]
 #[ApiResource(
+    operations: [new GetCollection(), new Get(), new Post(), new Patch(), new Delete()],
     normalizationContext: [
         'groups' => ['invoice_api:read'],
         AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
@@ -63,7 +67,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ApiResource(
     uriTemplate: '/clients/{clientId}/invoices',
-    operations: [new GetCollection(), new Post()],
+    operations: [new GetCollection()],
     uriVariables: [
         'clientId' => new Link(
             fromProperty: 'invoices',
@@ -101,9 +105,13 @@ class Invoice extends BaseInvoice
 
     #[ORM\Column(name: 'uuid', type: UuidType::NAME, length: 36)]
     #[Groups(['invoice_api:read'])]
+    #[ApiProperty(writable: false)]
     private ?UuidInterface $uuid = null;
 
-    #[ApiProperty(iris: ['https://schema.org/Organization'])]
+    #[ApiProperty(
+        example: '/api/clients/3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        iris: ['https://schema.org/Organization']
+    )]
     #[ORM\ManyToOne(targetEntity: Client::class, cascade: ['persist'], inversedBy: 'invoices')]
     #[ORM\JoinColumn(name: 'client_id', referencedColumnName: 'id', nullable: false)]
     #[Assert\NotBlank]
@@ -113,6 +121,7 @@ class Invoice extends BaseInvoice
     #[ORM\Column(name: 'balance_amount', type: BigIntegerType::NAME)]
     #[Groups(['invoice_api:read'])]
     #[ApiProperty(
+        writable: false,
         openapiContext: [
             'type' => 'number',
         ],
@@ -133,7 +142,7 @@ class Invoice extends BaseInvoice
     private DateTimeInterface $invoiceDate;
 
     #[ORM\Column(name: 'paid_date', type: Types::DATETIME_MUTABLE, nullable: true)]
-    #[Assert\DateTime]
+    #[Assert\Type(type: DateTimeInterface::class)]
     #[Groups(['invoice_api:read', 'invoice_api:write'])]
     private ?DateTime $paidDate = null;
 
@@ -142,10 +151,12 @@ class Invoice extends BaseInvoice
      */
     #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: Payment::class, cascade: ['persist'], orphanRemoval: true)]
     #[Groups(['invoice_api:read', 'invoice_api:write'])]
+    #[ApiProperty(example: ['/api/payments/3fa85f64-5717-4562-b3fc-2c963f66afa6'])]
     private Collection $payments;
 
     #[ORM\OneToOne(inversedBy: 'invoice', targetEntity: Quote::class)]
     #[Groups(['invoice_api:read'])]
+    #[ApiProperty(example: '/api/quotes/3fa85f64-5717-4562-b3fc-2c963f66afa6')]
     private ?Quote $quote = null;
 
     /**
@@ -160,7 +171,10 @@ class Invoice extends BaseInvoice
     /**
      * @var Collection<int,InvoiceContact>
      */
-    #[ApiProperty(writableLink: true)]
+    #[ApiProperty(
+        writableLink: true,
+        example: ['/api/clients/3fa85f64-5717-4562-b3fc-2c963f66afa6/contact/3fa85f64-5717-4562-b3fc-2c963f66afa6'],
+    )]
     #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: InvoiceContact::class, cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY')]
     #[Assert\Count(min: 1, minMessage: 'You need to select at least 1 user to attach to the Invoice')]
     #[Groups(['invoice_api:read', 'invoice_api:write'])]
@@ -218,7 +232,7 @@ class Invoice extends BaseInvoice
     /**
      * @throws MathException
      */
-    public function setBalance(BigNumber|float|int|string $balance): self
+    public function setBalance(BigNumber | float | int | string $balance): self
     {
         $this->balance = BigNumber::of($balance);
 

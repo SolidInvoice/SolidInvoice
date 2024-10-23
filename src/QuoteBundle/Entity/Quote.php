@@ -15,8 +15,11 @@ namespace SolidInvoice\QuoteBundle\Entity;
 
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use Brick\Math\BigDecimal;
 use Brick\Math\BigNumber;
@@ -51,6 +54,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: QuoteRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[ApiResource(
+    operations: [new GetCollection(), new Get(), new Post(), new Patch(), new Delete()],
     normalizationContext: [
         'groups' => ['quote_api:read'],
         AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
@@ -62,7 +66,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ApiResource(
     uriTemplate: '/clients/{clientId}/quotes',
-    operations: [new GetCollection(), new Post()],
+    operations: [new GetCollection()],
     uriVariables: [
         'clientId' => new Link(
             fromProperty: 'quotes',
@@ -101,13 +105,18 @@ class Quote
 
     #[ORM\Column(name: 'uuid', type: UuidType::NAME, length: 36)]
     #[Groups(['quote_api:read'])]
+    #[ApiProperty(writable: false)]
     private ?UuidInterface $uuid = null;
 
     #[ORM\Column(name: 'status', type: Types::STRING, length: 25)]
     #[Groups(['quote_api:read'])]
+    #[ApiProperty(writable: false)]
     private ?string $status = null;
 
-    #[ApiProperty(iris: ['https://schema.org/Organization'])]
+    #[ApiProperty(
+        example: '/api/clients/3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        iris: ['https://schema.org/Organization']
+    )]
     #[ORM\ManyToOne(targetEntity: Client::class, cascade: ['persist'], inversedBy: 'quotes')]
     #[Assert\NotBlank]
     #[Groups(['quote_api:read', 'quote_api:write'])]
@@ -116,6 +125,7 @@ class Quote
     #[ORM\Column(name: 'total_amount', type: BigIntegerType::NAME)]
     #[Groups(['quote_api:read'])]
     #[ApiProperty(
+        writable: false,
         openapiContext: [
             'type' => 'number',
         ],
@@ -128,6 +138,7 @@ class Quote
     #[ORM\Column(name: 'baseTotal_amount', type: BigIntegerType::NAME)]
     #[Groups(['quote_api:read'])]
     #[ApiProperty(
+        writable: false,
         openapiContext: [
             'type' => 'number',
         ],
@@ -140,6 +151,7 @@ class Quote
     #[ORM\Column(name: 'tax_amount', type: BigIntegerType::NAME)]
     #[Groups(['quote_api:read'])]
     #[ApiProperty(
+        writable: false,
         openapiContext: [
             'type' => 'number',
         ],
@@ -151,6 +163,42 @@ class Quote
 
     #[ORM\Embedded(class: Discount::class)]
     #[Groups(['quote_api:read', 'quote_api:write'])]
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'object',
+            'properties' => [
+                'type' => [
+                    'oneOf' => [
+                        ['type' => 'string', 'enum' => ['percentage', 'money']],
+                        ['type' => 'null'],
+                    ],
+                ],
+                'value' => [
+                    'oneOf' => [
+                        ['type' => 'number'],
+                        ['type' => 'null'],
+                    ],
+                ],
+            ],
+        ],
+        jsonSchemaContext: [
+            'type' => 'object',
+            'properties' => [
+                'type' => [
+                    'oneOf' => [
+                        ['type' => 'string', 'enum' => ['percentage', 'money']],
+                        ['type' => 'null'],
+                    ],
+                ],
+                'value' => [
+                    'oneOf' => [
+                        ['type' => 'number'],
+                        ['type' => 'null'],
+                    ],
+                ],
+            ],
+        ]
+    )]
     private Discount $discount;
 
     #[ORM\Column(name: 'terms', type: Types::TEXT, nullable: true)]
@@ -178,7 +226,10 @@ class Quote
     /**
      * @var Collection<int,QuoteContact>
      */
-    #[ApiProperty(writableLink: true)]
+    #[ApiProperty(
+        writableLink: true,
+        example: ['/api/clients/3fa85f64-5717-4562-b3fc-2c963f66afa6/contact/3fa85f64-5717-4562-b3fc-2c963f66afa6'],
+    )]
     #[ORM\OneToMany(mappedBy: 'quote', targetEntity: QuoteContact::class, cascade: ['persist', 'remove'])]
     #[Assert\Count(min: 1, minMessage: 'You need to select at least 1 user to attach to the Quote')]
     #[Groups(['quote_api:read', 'quote_api:write'])]
@@ -186,6 +237,9 @@ class Quote
 
     #[ORM\OneToOne(mappedBy: 'quote', targetEntity: Invoice::class)]
     #[Groups(['quote_api:read'])]
+    #[ApiProperty(
+        example: '/api/invoices/3fa85f64-5717-4562-b3fc-2c963f66afa6',
+    )]
     private ?Invoice $invoice = null;
 
     public function __construct()

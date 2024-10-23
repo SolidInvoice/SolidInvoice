@@ -13,7 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\TaxBundle\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -37,6 +43,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: TaxRepository::class)]
 #[UniqueEntity('name')]
 #[ApiResource(
+    operations: [
+        new GetCollection(),
+        new Post(),
+        new Get(),
+        new Patch(),
+        new Delete(),
+    ],
     normalizationContext: [
         'groups' => ['tax_api:read'],
         AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
@@ -78,6 +91,20 @@ class Tax implements Stringable
     #[ORM\Column(name: 'tax_type', type: Types::STRING, length: 32)]
     #[Assert\NotBlank]
     #[Groups(['tax_api:read', 'tax_api:write'])]
+    #[ApiProperty(
+        openapiContext: [
+            'type' => [
+                'type' => 'string',
+                'enum' => ['inclusive', 'exclusive'],
+            ],
+        ],
+        jsonSchemaContext: [
+            'type' => [
+                'type' => 'string',
+                'enum' => ['inclusive', 'exclusive'],
+            ],
+        ]
+    )]
     private ?string $type = null;
 
     /**

@@ -50,6 +50,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\DiscriminatorMap(['invoice' => Line::class, 'recurring_invoice' => RecurringInvoiceLine::class])]
 #[ApiResource(
     uriTemplate: '/invoices/{invoiceId}/lines',
+    shortName: 'InvoiceLine',
     operations: [new GetCollection(), new Post()],
     uriVariables: [
         'invoiceId' => new Link(
@@ -66,6 +67,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ApiResource(
     uriTemplate: '/invoices/{invoiceId}/line/{id}',
+    shortName: 'InvoiceLine',
     operations: [new Get(), new Patch(), new Delete()],
     uriVariables: [
         'invoiceId' => new Link(
@@ -121,15 +123,22 @@ class Line implements LineInterface, Stringable
     protected ?float $qty = 1;
 
     #[ORM\ManyToOne(targetEntity: Invoice::class, inversedBy: 'lines')]
+    #[ApiProperty(
+        writable: false,
+        writableLink: false,
+        example: '/api/invoices/3fa85f64-5717-4562-b3fc-2c963f66afa6'
+    )]
     protected ?Invoice $invoice = null;
 
     #[ORM\ManyToOne(targetEntity: Tax::class, inversedBy: 'invoiceLines')]
     #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write'])]
+    #[ApiProperty(example: '/api/tax/3fa85f64-5717-4562-b3fc-2c963f66afa6')]
     protected ?Tax $tax = null;
 
     #[ORM\Column(name: 'total_amount', type: BigIntegerType::NAME)]
     #[Groups(['invoice_api:read', 'recurring_invoice_api:read'])]
     #[ApiProperty(
+        writable: false,
         openapiContext: [
             'type' => 'number',
         ],

@@ -45,7 +45,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     types: ['https://schema.org/Corporation'],
     operations: [
-         // PUT is not supported
         new Get(),
         new Post(),
         new GetCollection(),
@@ -97,16 +96,35 @@ class Client implements Stringable
     #[Serialize\Groups(['client_api:read', 'client_api:write'])]
     private ?string $website = null;
 
-    #[ApiProperty(iris: ['https://schema.org/Text'])]
+    #[ApiProperty(writable: false, iris: ['https://schema.org/Text'])]
     #[ORM\Column(name: 'status', type: Types::STRING, length: 25)]
     #[Serialize\Groups(['client_api:read'])]
     private ?string $status = null;
 
     #[ORM\Column(name: 'currency', type: Types::STRING, length: 3, nullable: true)]
+    #[Serialize\Groups(['client_api:read', 'client_api:write'])]
+    #[ApiProperty(
+        openapiContext: [
+            'type' => [
+                'oneOf' => [
+                    ['type' => 'string'],
+                    ['type' => 'null'],
+                ],
+            ],
+        ],
+        jsonSchemaContext: [
+            'type' => [
+                'oneOf' => [
+                    ['type' => 'string'],
+                    ['type' => 'null'],
+                ],
+            ],
+        ],
+        property: 'currency'
+    )
+    ]
     private ?string $currencyCode = null;
 
-    #[ApiProperty(openapiContext: ['type' => 'string'], iris: ['https://schema.org/Text'])]
-    #[Serialize\Groups(['client_api:read', 'client_api:write'])]
     private Currency $currency;
 
     #[ORM\Column(name: 'vat_number', type: Types::STRING, nullable: true)]
@@ -116,7 +134,7 @@ class Client implements Stringable
     /**
      * @var Collection<int, Contact>
      */
-    #[ApiProperty(iris: ['https://schema.org/Person'])]
+    #[ApiProperty(example: ['/api/clients/3fa85f64-5717-4562-b3fc-2c963f66afa6/contact/3fa85f64-5717-4562-b3fc-2c963f66afa6'], iris: ['https://schema.org/Person'])]
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Contact::class, cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     #[ORM\OrderBy(['firstName' => 'ASC'])]
     #[Assert\Count(
@@ -138,6 +156,7 @@ class Client implements Stringable
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Quote::class, cascade: ['remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     #[ORM\OrderBy(['created' => 'DESC'])]
     #[Serialize\Groups(['client_api:read'])]
+    #[ApiProperty(example: ['/api/quotes/3fa85f64-5717-4562-b3fc-2c963f66afa6'])]
     private Collection $quotes;
 
     /**
@@ -146,6 +165,7 @@ class Client implements Stringable
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Invoice::class, cascade: ['remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     #[ORM\OrderBy(['created' => 'DESC'])]
     #[Serialize\Groups(['client_api:read'])]
+    #[ApiProperty(example: ['/api/invoices/3fa85f64-5717-4562-b3fc-2c963f66afa6'])]
     private Collection $invoices;
 
     /**
@@ -154,6 +174,7 @@ class Client implements Stringable
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: RecurringInvoice::class, cascade: ['remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     #[ORM\OrderBy(['created' => 'DESC'])]
     #[Serialize\Groups(['client_api:read'])]
+    #[ApiProperty(example: ['/api/recurring-invoices/3fa85f64-5717-4562-b3fc-2c963f66afa6'])]
     private Collection $recurringInvoices;
 
     /**
@@ -161,16 +182,26 @@ class Client implements Stringable
      */
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Payment::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[Serialize\Groups(['client_api:read'])]
+    #[ApiProperty(example: ['/api/payments/3fa85f64-5717-4562-b3fc-2c963f66afa6'])]
     private Collection $payments;
 
     /**
      * @var Collection<int, Address>
      */
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Address::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
-    #[Serialize\Groups(['client_api:read', 'client_api:write'])]
+    #[Serialize\Groups(['client_api:read'])]
+    #[ApiProperty(example: ['/api/clients/3fa85f64-5717-4562-b3fc-2c963f66afa6/address/3fa85f64-5717-4562-b3fc-2c963f66afa6'])]
     private Collection $addresses;
 
-    #[ApiProperty(openapiContext: ['type' => 'string'], iris: ['https://schema.org/MonetaryAmount'])]
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'number',
+        ],
+        jsonSchemaContext: [
+            'type' => 'number',
+        ],
+        iris: ['https://schema.org/MonetaryAmount']
+    )]
     #[ORM\OneToOne(mappedBy: 'client', targetEntity: Credit::class, cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     #[Serialize\Groups(['client_api:read', 'client_api:write'])]
     private ?Credit $credit = null;

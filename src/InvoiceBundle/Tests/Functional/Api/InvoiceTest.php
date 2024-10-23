@@ -150,7 +150,7 @@ final class InvoiceTest extends ApiTestCase
             'lines' => [
                 [
                     '@id' => $this->getIriFromResource($invoice->getLines()->first()),
-                    '@type' => 'Line',
+                    '@type' => 'InvoiceLine',
                     'id' => $invoice->getLines()->first()->getId()->toString(),
                     'description' => 'Test Item',
                     'price' => 100,
@@ -230,7 +230,7 @@ final class InvoiceTest extends ApiTestCase
             'lines' => [
                 [
                     '@id' => $this->getIriFromResource($invoice->getLines()->first()),
-                    '@type' => 'Line',
+                    '@type' => 'InvoiceLine',
                     'id' => $invoice->getLines()->first()->getId()->toString(),
                     'description' => 'Foo Item',
                     'price' => 10000,

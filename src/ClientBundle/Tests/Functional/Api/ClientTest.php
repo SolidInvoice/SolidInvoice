@@ -54,19 +54,24 @@ final class ClientTest extends ApiTestCase
 
         self::assertArrayHasKey('id', $result);
         self::assertTrue(Uuid::isValid($result['id']));
+        unset($result['id'], $result['@id']);
 
-        self::assertJsonContains([
-            '@context' => $this->getContextForResource($this->getResourceClass()),
+        self::assertEqualsCanonicalizing([
+            '@context' => $this->getContextForResource(Client::class),
             '@type' => 'https://schema.org/Corporation',
             'name' => 'Dummy User',
             'website' => null,
             'status' => 'active',
-            'currency' => 'USD',
+            'currencyCode' => null,
             'vatNumber' => null,
             'contacts' => [],
+            'quotes' => [],
+            'invoices' => [],
+            'recurringInvoices' => [],
+            'payments' => [],
             'addresses' => [],
             'credit' => 125.5,
-        ]);
+        ], $result);
     }
 
     /**

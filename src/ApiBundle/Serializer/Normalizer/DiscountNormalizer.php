@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\ApiBundle\Serializer\Normalizer;
 
 use Brick\Math\BigInteger;
+use Brick\Math\Exception\MathException;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -25,6 +26,7 @@ class DiscountNormalizer implements NormalizerInterface, DenormalizerInterface
 {
     /**
      * @param array{type: string|null, value: string|int|null} $data
+     * @throws MathException
      */
     public function denormalize($data, string $type, string $format = null, array $context = []): Discount
     {

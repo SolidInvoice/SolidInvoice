@@ -15,8 +15,11 @@ namespace SolidInvoice\InvoiceBundle\Entity;
 
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -39,6 +42,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: RecurringInvoiceRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[ApiResource(
+    operations: [new GetCollection(), new Get(), new Post(), new Patch(), new Delete()],
     normalizationContext: [
         'groups' => ['recurring_invoice_api:read'],
         AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
@@ -50,7 +54,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ApiResource(
     uriTemplate: '/clients/{clientId}/recurring-invoices',
-    operations: [new GetCollection(), new Post()],
+    operations: [new GetCollection()],
     uriVariables: [
         'clientId' => new Link(
             fromProperty: 'recurringInvoices',
@@ -79,7 +83,10 @@ class RecurringInvoice extends BaseInvoice
     #[Serialize\Groups(['recurring_invoice_api:read'])]
     private ?UuidInterface $id = null;
 
-    #[ApiProperty(iris: ['https://schema.org/Organization'])]
+    #[ApiProperty(
+        example: '/api/clients/3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        iris: ['https://schema.org/Organization']
+    )]
     #[ORM\ManyToOne(targetEntity: Client::class, cascade: ['persist'], inversedBy: 'recurringInvoices')]
     #[Assert\NotBlank]
     #[Serialize\Groups(['recurring_invoice_api:read', 'recurring_invoice_api:write'])]
@@ -111,7 +118,10 @@ class RecurringInvoice extends BaseInvoice
     /**
      * @var Collection<int, RecurringInvoiceContact>
      */
-    #[ApiProperty(writableLink: true)]
+    #[ApiProperty(
+        writableLink: true,
+        example: ['/api/clients/3fa85f64-5717-4562-b3fc-2c963f66afa6/contact/3fa85f64-5717-4562-b3fc-2c963f66afa6'],
+    )]
     #[ORM\OneToMany(mappedBy: 'recurringInvoice', targetEntity: RecurringInvoiceContact::class, cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY')]
     #[Assert\Count(min: 1, minMessage: 'You need to select at least 1 user to attach to the Invoice')]
     #[Serialize\Groups(['recurring_invoice_api:read', 'recurring_invoice_api:write'])]

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
@@ -35,28 +36,13 @@ use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 #[ORM\Table(name: Address::TABLE_NAME)]
 #[ORM\Entity]
 #[ApiResource(
-    uriTemplate: '/clients/{clientId}/addresses',
-    operations: [ new GetCollection(), new Post() ],
-    uriVariables: [
-        'clientId' => new Link(
-            fromProperty: 'addresses',
-            fromClass: Client::class,
-        ),
-    ],
-    normalizationContext: [
-        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
-    ],
-    denormalizationContext: [
-        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
-    ]
-)]
-#[ApiResource(
     uriTemplate: '/clients/{clientId}/address/{id}',
     operations: [new Get(), new Delete(), new Patch()],
     uriVariables: [
         'clientId' => new Link(
             fromProperty: 'addresses',
             fromClass: Client::class,
+            description: 'Client identifier',
         ),
         'id' => new Link(
             fromClass: Address::class,
@@ -68,6 +54,23 @@ use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
     ],
     denormalizationContext: [
         'groups' => ['address_api:write'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ]
+)]
+#[ApiResource(
+    uriTemplate: '/clients/{clientId}/addresses',
+    operations: [ new GetCollection(), new Post() ],
+    uriVariables: [
+        'clientId' => new Link(
+            fromProperty: 'addresses',
+            fromClass: Client::class,
+            description: 'Client identifier',
+        ),
+    ],
+    normalizationContext: [
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ],
+    denormalizationContext: [
         AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
     ]
 )]
@@ -107,6 +110,7 @@ class Address implements Stringable
 
     #[ORM\Column(name: 'country', type: Types::STRING, nullable: true)]
     #[Groups(['address_api:read', 'address_api:write'])]
+    #[ApiProperty(iris: ['https://schema.org/Country'])]
     private ?string $country = null;
 
     #[Groups(['address_api:read'])]
@@ -114,6 +118,7 @@ class Address implements Stringable
 
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'addresses')]
     #[Groups(['address_api:read'])]
+    #[ApiProperty(writable: false, writableLink: false, example: '/api/clients/3fa85f64-5717-4562-b3fc-2c963f66afa6')]
     private ?Client $client = null;
 
     public function getId(): ?UuidInterface
