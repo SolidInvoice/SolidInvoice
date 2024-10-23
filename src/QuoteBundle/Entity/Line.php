@@ -47,6 +47,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\HasLifecycleCallbacks]
 #[ApiResource(
     uriTemplate: '/quotes/{quoteId}/lines',
+    shortName: 'QuoteLine',
     operations: [new GetCollection(), new Post()],
     uriVariables: [
         'quoteId' => new Link(
@@ -63,6 +64,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ApiResource(
     uriTemplate: '/quotes/{quoteId}/line/{id}',
+    shortName: 'QuoteLine',
     operations: [new Get(), new Patch(), new Delete()],
     uriVariables: [
         'quoteId' => new Link(
@@ -119,10 +121,16 @@ class Line implements LineInterface, Stringable
     private ?float $qty = null;
 
     #[ORM\ManyToOne(targetEntity: Quote::class, inversedBy: 'items')]
+    #[ApiProperty(
+        writable: false,
+        writableLink: false,
+        example: '/api/quotes/3fa85f64-5717-4562-b3fc-2c963f66afa6'
+    )]
     private ?Quote $quote = null;
 
     #[ORM\ManyToOne(targetEntity: Tax::class, inversedBy: 'quoteLines')]
     #[Groups(['quote_api:read', 'quote_api:write'])]
+    #[ApiProperty(example: '/api/taxes/3fa85f64-5717-4562-b3fc-2c963f66afa6')]
     private ?Tax $tax = null;
 
     #[ORM\Column(name: 'total_amount', type: BigIntegerType::NAME)]

@@ -151,7 +151,7 @@ final class QuoteTest extends ApiTestCase
             'lines' => [
                 [
                     '@id' => $this->getIriFromResource($quote->getLines()->first()),
-                    '@type' => 'Line',
+                    '@type' => 'QuoteLine',
                     'id' => $quote->getLines()->first()->getId()->toString(),
                     'description' => 'Test Item',
                     'price' => 100,
@@ -231,7 +231,7 @@ final class QuoteTest extends ApiTestCase
             'lines' => [
                 [
                     '@id' => $this->getIriFromResource($quote->getLines()->get(0)),
-                    '@type' => 'Line',
+                    '@type' => 'QuoteLine',
                     'id' => $quote->getLines()->get(0)->getId()->toString(),
                     'description' => 'Foo Item',
                     'price' => 10000,
@@ -241,7 +241,7 @@ final class QuoteTest extends ApiTestCase
                 ],
                 [
                     '@id' => $this->getIriFromResource($quote->getLines()->get(1)),
-                    '@type' => 'Line',
+                    '@type' => 'QuoteLine',
                     'id' => $quote->getLines()->get(1)->getId()->toString(),
                     'description' => 'Foo Items',
                     'price' => 500,

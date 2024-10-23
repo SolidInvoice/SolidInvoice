@@ -69,8 +69,6 @@ final class PaymentTest extends ApiTestCase
                     'details' => [],
                     'creditCard' => null,
                     'bankAccount' => null,
-                    'created' => $payment->getCreated()->format('c'),
-                    'updated' => $payment->getUpdated()->format('c'),
                     'amount' => [
                         'amount' => $payment->getAmount()->getAmount(),
                         'currency' => $payment->getAmount()->getCurrency()->getCode(),
@@ -118,8 +116,6 @@ final class PaymentTest extends ApiTestCase
                     'details' => [],
                     'creditCard' => null,
                     'bankAccount' => null,
-                    'created' => $payment->getCreated()->format('c'),
-                    'updated' => $payment->getUpdated()->format('c'),
                     'amount' => [
                         'amount' => $payment->getAmount()->getAmount(),
                         'currency' => $payment->getAmount()->getCurrency()->getCode(),
@@ -204,8 +200,6 @@ final class PaymentTest extends ApiTestCase
             'details' => [],
             'creditCard' => null,
             'bankAccount' => null,
-            'created' => $payment->getCreated()->format('c'),
-            'updated' => $payment->getUpdated()->format('c'),
             'amount' => [
                 'amount' => $payment->getAmount()->getAmount(),
                 'currency' => $payment->getAmount()->getCurrency()->getCode(),

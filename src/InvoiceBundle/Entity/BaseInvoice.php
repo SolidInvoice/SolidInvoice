@@ -32,11 +32,13 @@ abstract class BaseInvoice
 
     #[ORM\Column(name: 'status', type: Types::STRING, length: 25)]
     #[Groups(['invoice_api:read', 'recurring_invoice_api:read'])]
+    #[ApiProperty(writable: false)]
     protected ?string $status = null;
 
     #[ORM\Column(name: 'total_amount', type: BigIntegerType::NAME)]
     #[Groups(['invoice_api:read', 'recurring_invoice_api:read'])]
     #[ApiProperty(
+        writable: false,
         openapiContext: [
             'type' => 'number',
         ],
@@ -50,6 +52,7 @@ abstract class BaseInvoice
     #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api'])]
     #[Groups(['invoice_api:read', 'recurring_invoice_api:read'])]
     #[ApiProperty(
+        writable: false,
         openapiContext: [
             'type' => 'number',
         ],
@@ -63,6 +66,7 @@ abstract class BaseInvoice
     #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api'])]
     #[Groups(['invoice_api:read', 'recurring_invoice_api:read'])]
     #[ApiProperty(
+        writable: false,
         openapiContext: [
             'type' => 'number',
         ],
@@ -75,6 +79,42 @@ abstract class BaseInvoice
     #[ORM\Embedded(class: Discount::class)]
     #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
     #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write'])]
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'object',
+            'properties' => [
+                'type' => [
+                    'oneOf' => [
+                        ['type' => 'string', 'enum' => ['percentage', 'money']],
+                        ['type' => 'null'],
+                    ],
+                ],
+                'value' => [
+                    'oneOf' => [
+                        ['type' => 'number'],
+                        ['type' => 'null'],
+                    ],
+                ],
+            ],
+        ],
+        jsonSchemaContext: [
+            'type' => 'object',
+            'properties' => [
+                'type' => [
+                    'oneOf' => [
+                        ['type' => 'string', 'enum' => ['percentage', 'money']],
+                        ['type' => 'null'],
+                    ],
+                ],
+                'value' => [
+                    'oneOf' => [
+                        ['type' => 'number'],
+                        ['type' => 'null'],
+                    ],
+                ],
+            ],
+        ]
+    )]
     protected Discount $discount;
 
     #[ORM\Column(name: 'terms', type: Types::TEXT, nullable: true)]

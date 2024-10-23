@@ -79,7 +79,7 @@ use function strtolower;
     ]
 )]
 #[ApiResource(
-    uriTemplate: '/clients/{clientId}/contacts/{id}',
+    uriTemplate: '/clients/{clientId}/contact/{id}',
     operations: [
         //new Get(),
         new Patch(),
@@ -121,7 +121,7 @@ use function strtolower;
     ]
 )]
 #[ApiResource(
-    uriTemplate: '/clients/{clientId}/contacts/{id}',
+    uriTemplate: '/clients/{clientId}/contact/{id}',
     operations: [new Get(), new Delete(), new Patch()],
     uriVariables: [
         'clientId' => new Link(
@@ -171,7 +171,12 @@ class Contact implements Serializable, Stringable
     #[Serialize\Groups(['contact_api:read', 'contact_api:write'])]
     private ?string $lastName = null;
 
-    #[ApiProperty(iris: ['https://schema.org/Organization'])]
+    #[ApiProperty(
+        writable: false,
+        writableLink: false,
+        example: '/api/clients/3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        iris: ['https://schema.org/Organization']
+    )]
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'contacts')]
     #[ORM\JoinColumn(name: 'client_id')]
     #[Serialize\Groups(['contact_api:read', 'contact_api:write'])]

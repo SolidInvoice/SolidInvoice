@@ -48,7 +48,7 @@ final class ContactTest extends ApiTestCase
 
         self::assertEqualsCanonicalizing([
             '@context' => '/api/contexts/Contact',
-            '@id' => $this->getIriFromResource($client) . '/contacts/' . $result['id'],
+            '@id' => $this->getIriFromResource($client) . '/contact/' . $result['id'],
             '@type' => 'Contact',
             'id' => $result['id'],
             'firstName' => 'foo bar',
