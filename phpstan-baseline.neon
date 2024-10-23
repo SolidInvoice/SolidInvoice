@@ -131,11 +131,6 @@ parameters:
 			path: src/ClientBundle/Tests/Form/Handler/ContactAddFormHandlerTest.php
 
 		-
-			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Tests\\\\Form\\\\Handler\\\\ContactAddFormHandlerTest\\:\\:getHandlerOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/ClientBundle/Tests/Form/Handler/ContactAddFormHandlerTest.php
-
-		-
 			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Tests\\\\Form\\\\Handler\\\\ContactEditFormHandlerTest\\:\\:getFormData\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/ClientBundle/Tests/Form/Handler/ContactEditFormHandlerTest.php
