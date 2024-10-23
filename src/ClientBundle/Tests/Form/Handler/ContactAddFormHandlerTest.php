@@ -52,9 +52,6 @@ class ContactAddFormHandlerTest extends FormHandlerTestCase
         $kernel->shutdown();
 
         parent::setUp();
-
-        $this->firstName = $this->faker->firstName;
-        $this->email = $this->faker->email;
     }
 
     public function getHandler(): ContactAddFormHandler
