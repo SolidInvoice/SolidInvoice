@@ -173,7 +173,7 @@
     },
     "require-dev": {
         "captainhook/captainhook-phar": "^5.23",
-        "dama/doctrine-test-bundle": "^7.2",
+        "dama/doctrine-test-bundle": "^8.2",
         "dbrekelmans/bdi": "^1.0",
         "doctrine/doctrine-fixtures-bundle": "^3.3",
         "ergebnis/composer-normalize": "^2.20",
