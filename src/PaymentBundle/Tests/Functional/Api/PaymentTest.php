@@ -36,11 +36,11 @@ final class PaymentTest extends ApiTestCase
 
     public function testGetPaymentsForInvoice(): void
     {
-        $invoice = InvoiceFactory::createOne()->object();
+        $invoice = InvoiceFactory::createOne()->_real();
         $payment = PaymentFactory::createOne([
             'invoice' => $invoice,
             'status' => 'captured',
-        ])->object();
+        ])->_real();
 
         $data = $this->requestGet($this->getIriFromResource($invoice) . '/payments');
 
@@ -80,11 +80,11 @@ final class PaymentTest extends ApiTestCase
 
     public function testGetPaymentsForClient(): void
     {
-        $client = ClientFactory::createOne()->object();
+        $client = ClientFactory::createOne()->_real();
         $payment = PaymentFactory::createOne([
             'client' => $client,
             'status' => 'captured',
-        ])->object();
+        ])->_real();
 
         // Create multiple additional payments to ensure we only receive the payments for the specified client
         PaymentFactory::createMany(5, ['client' => ClientFactory::new()]);
@@ -130,7 +130,7 @@ final class PaymentTest extends ApiTestCase
      */
     public function testGetPaymentsForArchivedClient(): void
     {
-        $client = ClientFactory::createOne(['archived' => true])->object();
+        $client = ClientFactory::createOne(['archived' => true])->_real();
 
         PaymentFactory::createOne(['client' => $client]);
 
@@ -152,7 +152,7 @@ final class PaymentTest extends ApiTestCase
     {
         $company = CompanyFactory::new()->create();
         self::getContainer()->get(CompanySelector::class)->switchCompany($company->getId());
-        $client = ClientFactory::createOne(['company' => $company])->object();
+        $client = ClientFactory::createOne(['company' => $company])->_real();
         self::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
 
         PaymentFactory::createOne(['client' => $client]);
@@ -170,13 +170,13 @@ final class PaymentTest extends ApiTestCase
 
     public function testGet(): void
     {
-        $client = ClientFactory::createOne()->object();
-        $invoice = InvoiceFactory::createOne(['client' => $client])->object();
+        $client = ClientFactory::createOne()->_real();
+        $invoice = InvoiceFactory::createOne(['client' => $client])->_real();
         $payment = PaymentFactory::createOne([
             'client' => $client,
             'invoice' => $invoice,
             'status' => 'captured',
-        ])->object();
+        ])->_real();
 
         $data = $this->requestGet($this->getIriFromResource($payment));
 

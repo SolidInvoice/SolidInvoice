@@ -11,8 +11,10 @@
 
 namespace SolidInvoice\QuoteBundle\Tests\Action;
 
+use DateTimeImmutable;
 use Psr\Log\NullLogger;
 use Ramsey\Uuid\Uuid;
+use ReflectionClass;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Pdf\Generator;
@@ -55,7 +57,7 @@ final class ViewTest extends KernelTestCase
             'name' => 'Johnston PLC',
             'website' => 'https://www.example.com',
             'vatNumber' => 'GB123456789',
-        ])->object();
+        ])->_real();
 
         /** @var Quote $quote */
         $quote = QuoteFactory::new()
@@ -65,7 +67,7 @@ final class ViewTest extends KernelTestCase
                 'status' => $status,
                 'total' => '100.00',
                 'baseTotal' => '100.00',
-                'created' => new \DateTimeImmutable('2021-09-01'),
+                'created' => new DateTimeImmutable('2021-09-01'),
                 'lines' => [
                     (new Line())
                         ->setDescription('Test Line')
@@ -77,7 +79,7 @@ final class ViewTest extends KernelTestCase
                 'discount' => new Discount(),
                 'tax' => 0,
             ])
-            ->object();
+            ->_real();
 
         $uuid = Uuid::fromString('181aaf4a-0097-11ef-9b64-5a2cf21a5680');
         $quote->setId($uuid)
@@ -97,7 +99,7 @@ final class ViewTest extends KernelTestCase
      */
     public function quoteStatusProvider(): iterable
     {
-        $reflectionClass = new \ReflectionClass(Graph::class);
+        $reflectionClass = new ReflectionClass(Graph::class);
 
         foreach ($reflectionClass->getConstants() as $constant => $value) {
             if ($value !== Graph::STATUS_NEW && str_starts_with($constant, 'STATUS_')) {

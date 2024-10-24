@@ -34,7 +34,7 @@ final class ContactTest extends ApiTestCase
 
     public function testCreate(): void
     {
-        $client = ClientFactory::createOne()->object();
+        $client = ClientFactory::createOne()->_real();
 
         $data = [
             'client' => $this->getIriFromResource($client),
@@ -60,8 +60,8 @@ final class ContactTest extends ApiTestCase
 
     public function testDelete(): void
     {
-        $client = ClientFactory::createOne()->object();
-        $contact = ContactFactory::createOne(['client' => $client])->object();
+        $client = ClientFactory::createOne()->_real();
+        $contact = ContactFactory::createOne(['client' => $client])->_real();
 
         $this->requestDelete($this->getIriFromResource($contact));
     }
@@ -72,13 +72,13 @@ final class ContactTest extends ApiTestCase
         $lastName = $this->faker->firstName();
         $email = $this->faker->email();
 
-        $client = ClientFactory::createOne()->object();
+        $client = ClientFactory::createOne()->_real();
         $contact = ContactFactory::createOne([
             'firstName' => $firstName,
             'lastName' => $lastName,
             'email' => $email,
             'client' => $client,
-        ])->object();
+        ])->_real();
 
         $data = $this->requestGet($this->getIriFromResource($contact));
 
@@ -96,12 +96,12 @@ final class ContactTest extends ApiTestCase
 
     public function testEdit(): void
     {
-        $client = ClientFactory::createOne()->object();
+        $client = ClientFactory::createOne()->_real();
         $contact = ContactFactory::createOne([
             'lastName' => null,
             'email' => 'test@example.com',
             'client' => $client,
-        ])->object();
+        ])->_real();
 
         $data = $this->requestPatch($this->getIriFromResource($contact), ['firstName' => 'New Test']);
 

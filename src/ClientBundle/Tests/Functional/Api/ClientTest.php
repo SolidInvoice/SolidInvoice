@@ -25,7 +25,7 @@ use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
-use Zenstruck\Foundry\Proxy;
+use Zenstruck\Foundry\Persistence\Proxy;
 use Zenstruck\Foundry\Test\Factories;
 use function array_map;
 use function assert;
@@ -82,7 +82,7 @@ final class ClientTest extends ApiTestCase
      */
     public function testDelete(): void
     {
-        $client = ClientFactory::createOne()->object();
+        $client = ClientFactory::createOne()->_real();
 
         $this->requestDelete($this->getIriFromResource($client));
     }
@@ -97,7 +97,7 @@ final class ClientTest extends ApiTestCase
             'addresses' => [
                 $address = new Address(),
             ],
-        ])->object();
+        ])->_real();
 
         $contacts = ContactFactory::new([
             'client' => $client,
@@ -115,7 +115,7 @@ final class ClientTest extends ApiTestCase
             'status' => $client->getStatus(),
             'currency' => $client->getCurrencyCode(),
             'vatNumber' => $client->getVatNumber(),
-            'contacts' => array_map($this->getIriFromResource(...), array_map(static fn (Proxy $proxy) => $proxy->object(), $contacts)),
+            'contacts' => array_map($this->getIriFromResource(...), array_map(static fn (Proxy $proxy) => $proxy->_real(), $contacts)),
             'quotes' => [],
             'invoices' => [],
             'recurringInvoices' => [],
@@ -136,14 +136,14 @@ final class ClientTest extends ApiTestCase
      */
     public function testEdit(): void
     {
-        $client = ClientFactory::createOne()->object();
+        $client = ClientFactory::createOne()->_real();
         assert($client instanceof Client);
 
         $contacts = ContactFactory::new([
             'client' => $client,
         ])->many(4, 15)->create();
 
-        $contactInfo = array_map(fn (Proxy $proxy): string => $this->getIriFromResource($proxy->object()), $contacts);
+        $contactInfo = array_map(fn (Proxy $proxy): string => $this->getIriFromResource($proxy->_real()), $contacts);
 
         $data = $this->requestPatch(
             $this->getIriFromResource($client),

@@ -20,7 +20,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Contracts\Service\ResetInterface;
-use Zenstruck\Foundry\Test\TestState;
 use function assert;
 
 /**
@@ -52,7 +51,6 @@ trait SymfonyKernelTrait
         static::ensureKernelShutdown();
         static::$kernel = null;
         static::$booted = false;
-        TestState::shutdownFoundry();
     }
 
     /**

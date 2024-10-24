@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\ApiBundle\Serializer\Normalizer;
 
 use Doctrine\Persistence\ManagerRegistry;
+use InvalidArgumentException;
 use SolidInvoice\ClientBundle\Entity\AdditionalContactDetail;
 use SolidInvoice\ClientBundle\Entity\ContactType;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
@@ -44,7 +45,7 @@ class AdditionalContactDetailsNormalizer implements NormalizerAwareInterface, No
     public function denormalize($data, $type, $format = null, array $context = []): AdditionalContactDetail
     {
         if (! array_key_exists('type', $data) || ! array_key_exists('value', $data)) {
-            throw new \InvalidArgumentException('Invalid data');
+            throw new InvalidArgumentException('Invalid data');
         }
 
         $detail = new AdditionalContactDetail();
@@ -52,7 +53,7 @@ class AdditionalContactDetailsNormalizer implements NormalizerAwareInterface, No
         $contactType = $repository->findOneBy(['name' => $data['type']]);
 
         if (! $contactType instanceof ContactType) {
-            throw new \InvalidArgumentException('Invalid contact type');
+            throw new InvalidArgumentException('Invalid contact type');
         }
 
         $detail->setType($contactType);

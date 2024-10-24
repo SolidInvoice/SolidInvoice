@@ -18,36 +18,55 @@ use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
-use Zenstruck\Foundry\ModelFactory;
-use Zenstruck\Foundry\Proxy;
-use Zenstruck\Foundry\RepositoryProxy;
+use Zenstruck\Foundry\FactoryCollection;
+use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
+use Zenstruck\Foundry\Persistence\Proxy;
+use Zenstruck\Foundry\Persistence\ProxyRepositoryDecorator;
 
 /**
- * @extends ModelFactory<Invoice>
- *
+ * @method Invoice|Proxy create((array | callable) $attributes = [])
  * @method static Invoice|Proxy createOne(array $attributes = [])
- * @method static Invoice[]|Proxy[] createMany(int $number, array|callable $attributes = [])
- * @method static Invoice[]|Proxy[] createSequence(array|callable $sequence)
- * @method static Invoice|Proxy find(object|array|mixed $criteria)
+ * @method static Invoice|Proxy find((object | array | mixed) $criteria)
  * @method static Invoice|Proxy findOrCreate(array $attributes)
  * @method static Invoice|Proxy first(string $sortedField = 'id')
  * @method static Invoice|Proxy last(string $sortedField = 'id')
  * @method static Invoice|Proxy random(array $attributes = [])
  * @method static Invoice|Proxy randomOrCreate(array $attributes = [])
  * @method static Invoice[]|Proxy[] all()
+ * @method static Invoice[]|Proxy[] createMany(int $number, (array | callable) $attributes = [])
+ * @method static Invoice[]|Proxy[] createSequence((iterable | callable) $sequence)
  * @method static Invoice[]|Proxy[] findBy(array $attributes)
- * @method static Invoice[]|Proxy[] randomSet(int $number, array $attributes = [])
  * @method static Invoice[]|Proxy[] randomRange(int $min, int $max, array $attributes = [])
- * @method static InvoiceRepository|RepositoryProxy repository()
- * @method Invoice|Proxy create(array|callable $attributes = [])
+ * @method static Invoice[]|Proxy[] randomSet(int $number, array $attributes = [])
+ * @method FactoryCollection<(Invoice | Proxy)> many(int $min, (int | null) $max = null)
+ * @method FactoryCollection<(Invoice | Proxy)> sequence((iterable | callable) $sequence)
+ * @method static ProxyRepositoryDecorator<Invoice, InvoiceRepository> repository()
+ *
+ * @phpstan-method Invoice&Proxy<Invoice> create((array | callable) $attributes = [])
+ * @phpstan-method static Invoice&Proxy<Invoice> createOne(array $attributes = [])
+ * @phpstan-method static Invoice&Proxy<Invoice> find((object | array | mixed) $criteria)
+ * @phpstan-method static Invoice&Proxy<Invoice> findOrCreate(array $attributes)
+ * @phpstan-method static Invoice&Proxy<Invoice> first(string $sortedField = 'id')
+ * @phpstan-method static Invoice&Proxy<Invoice> last(string $sortedField = 'id')
+ * @phpstan-method static Invoice&Proxy<Invoice> random(array $attributes = [])
+ * @phpstan-method static Invoice&Proxy<Invoice> randomOrCreate(array $attributes = [])
+ * @phpstan-method static list<Invoice&Proxy<Invoice>> all()
+ * @phpstan-method static list<Invoice&Proxy<Invoice>> createMany(int $number, (array | callable) $attributes = [])
+ * @phpstan-method static list<Invoice&Proxy<Invoice>> createSequence((iterable | callable) $sequence)
+ * @phpstan-method static list<Invoice&Proxy<Invoice>> findBy(array $attributes)
+ * @phpstan-method static list<Invoice&Proxy<Invoice>> randomRange(int $min, int $max, array $attributes = [])
+ * @phpstan-method static list<Invoice&Proxy<Invoice>> randomSet(int $number, array $attributes = [])
+ * @phpstan-method FactoryCollection<Invoice&Proxy<Invoice>> many(int $min, (int | null) $max = null)
+ * @phpstan-method FactoryCollection<Invoice&Proxy<Invoice>> sequence((iterable | callable) $sequence)
+ * @extends PersistentProxyObjectFactory<Invoice>
  */
-final class InvoiceFactory extends ModelFactory
+final class InvoiceFactory extends PersistentProxyObjectFactory
 {
     /**
      * @return array<string, mixed>
      * @throws MathException
      */
-    protected function getDefaults(): array
+    protected function defaults(): array
     {
         return [
             'client' => ClientFactory::new(),
@@ -71,7 +90,7 @@ final class InvoiceFactory extends ModelFactory
         ];
     }
 
-    protected static function getClass(): string
+    public static function class(): string
     {
         return Invoice::class;
     }

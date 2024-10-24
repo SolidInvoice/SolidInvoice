@@ -22,7 +22,7 @@ use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
-use Zenstruck\Foundry\Proxy;
+use Zenstruck\Foundry\Persistence\Proxy;
 use Zenstruck\Foundry\Test\Factories;
 use function array_map;
 use function date;
@@ -41,10 +41,10 @@ final class InvoiceTest extends ApiTestCase
 
     public function testCreate(): void
     {
-        $client = ClientFactory::createOne()->object();
+        $client = ClientFactory::createOne()->_real();
 
         $contacts = array_map(
-            fn (Proxy $contact) => $this->getIriFromResource($contact->object()),
+            fn (Proxy $contact) => $this->getIriFromResource($contact->_real()),
             ContactFactory::createMany($this->faker->numberBetween(1, 5), ['client' => $client])
         );
 
@@ -104,7 +104,7 @@ final class InvoiceTest extends ApiTestCase
     public function testDelete(): void
     {
         $client = ClientFactory::createOne();
-        $invoice = InvoiceFactory::createOne(['client' => $client])->object();
+        $invoice = InvoiceFactory::createOne(['client' => $client])->_real();
 
         $this->requestDelete($this->getIriFromResource($invoice));
     }
@@ -129,7 +129,7 @@ final class InvoiceTest extends ApiTestCase
                     ->setQty(1)
                     ->setPrice(10000),
             ],
-        ])->object();
+        ])->_real();
 
         $data = $this->requestGet($this->getIriFromResource($invoice));
 
@@ -159,7 +159,7 @@ final class InvoiceTest extends ApiTestCase
                     'total' => 100,
                 ],
             ],
-            'users' => array_map(fn (Proxy $contact) => $this->getIriFromResource($contact->object()), $contacts),
+            'users' => array_map(fn (Proxy $contact) => $this->getIriFromResource($contact->_real()), $contacts),
             'status' => $invoice->getStatus(),
             'total' => 100,
             'baseTotal' => 100,
@@ -194,7 +194,7 @@ final class InvoiceTest extends ApiTestCase
                     ->setQty(1)
                     ->setPrice(10000),
             ],
-        ])->object();
+        ])->_real();
 
         $data = $this->requestPatch(
             $this->getIriFromResource($invoice),
@@ -239,7 +239,7 @@ final class InvoiceTest extends ApiTestCase
                     'total' => 10000,
                 ],
             ],
-            'users' => array_map(fn (Proxy $contact) => $this->getIriFromResource($contact->object()), $contacts),
+            'users' => array_map(fn (Proxy $contact) => $this->getIriFromResource($contact->_real()), $contacts),
             'status' => $invoice->getStatus(),
             'total' => 9000,
             'baseTotal' => 10000,

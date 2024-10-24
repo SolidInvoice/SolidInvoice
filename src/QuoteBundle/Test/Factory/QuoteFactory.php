@@ -19,36 +19,55 @@ use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
-use Zenstruck\Foundry\ModelFactory;
-use Zenstruck\Foundry\Proxy;
-use Zenstruck\Foundry\RepositoryProxy;
+use Zenstruck\Foundry\FactoryCollection;
+use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
+use Zenstruck\Foundry\Persistence\Proxy;
+use Zenstruck\Foundry\Persistence\ProxyRepositoryDecorator;
 
 /**
- * @extends ModelFactory<Quote>
- *
+ * @method Quote|Proxy create((array | callable) $attributes = [])
  * @method static Quote|Proxy createOne(array $attributes = [])
- * @method static Quote[]|Proxy[] createMany(int $number, array|callable $attributes = [])
- * @method static Quote[]|Proxy[] createSequence(array|callable $sequence)
- * @method static Quote|Proxy find(object|array|mixed $criteria)
+ * @method static Quote|Proxy find((object | array | mixed) $criteria)
  * @method static Quote|Proxy findOrCreate(array $attributes)
  * @method static Quote|Proxy first(string $sortedField = 'id')
  * @method static Quote|Proxy last(string $sortedField = 'id')
  * @method static Quote|Proxy random(array $attributes = [])
  * @method static Quote|Proxy randomOrCreate(array $attributes = [])
  * @method static Quote[]|Proxy[] all()
+ * @method static Quote[]|Proxy[] createMany(int $number, (array | callable) $attributes = [])
+ * @method static Quote[]|Proxy[] createSequence((iterable | callable) $sequence)
  * @method static Quote[]|Proxy[] findBy(array $attributes)
- * @method static Quote[]|Proxy[] randomSet(int $number, array $attributes = [])
  * @method static Quote[]|Proxy[] randomRange(int $min, int $max, array $attributes = [])
- * @method static QuoteRepository|RepositoryProxy repository()
- * @method Quote|Proxy create(array|callable $attributes = [])
+ * @method static Quote[]|Proxy[] randomSet(int $number, array $attributes = [])
+ * @method FactoryCollection<(Quote | Proxy)> many(int $min, (int | null) $max = null)
+ * @method FactoryCollection<(Quote | Proxy)> sequence((iterable | callable) $sequence)
+ * @method static ProxyRepositoryDecorator<Quote, QuoteRepository> repository()
+ *
+ * @phpstan-method Quote&Proxy<Quote> create((array | callable) $attributes = [])
+ * @phpstan-method static Quote&Proxy<Quote> createOne(array $attributes = [])
+ * @phpstan-method static Quote&Proxy<Quote> find((object | array | mixed) $criteria)
+ * @phpstan-method static Quote&Proxy<Quote> findOrCreate(array $attributes)
+ * @phpstan-method static Quote&Proxy<Quote> first(string $sortedField = 'id')
+ * @phpstan-method static Quote&Proxy<Quote> last(string $sortedField = 'id')
+ * @phpstan-method static Quote&Proxy<Quote> random(array $attributes = [])
+ * @phpstan-method static Quote&Proxy<Quote> randomOrCreate(array $attributes = [])
+ * @phpstan-method static list<Quote&Proxy<Quote>> all()
+ * @phpstan-method static list<Quote&Proxy<Quote>> createMany(int $number, (array | callable) $attributes = [])
+ * @phpstan-method static list<Quote&Proxy<Quote>> createSequence((iterable | callable) $sequence)
+ * @phpstan-method static list<Quote&Proxy<Quote>> findBy(array $attributes)
+ * @phpstan-method static list<Quote&Proxy<Quote>> randomRange(int $min, int $max, array $attributes = [])
+ * @phpstan-method static list<Quote&Proxy<Quote>> randomSet(int $number, array $attributes = [])
+ * @phpstan-method FactoryCollection<Quote&Proxy<Quote>> many(int $min, (int | null) $max = null)
+ * @phpstan-method FactoryCollection<Quote&Proxy<Quote>> sequence((iterable | callable) $sequence)
+ * @extends PersistentProxyObjectFactory<Quote>
  */
-final class QuoteFactory extends ModelFactory
+final class QuoteFactory extends PersistentProxyObjectFactory
 {
     /**
      * @return array<string, mixed>
      * @throws MathException
      */
-    protected function getDefaults(): array
+    protected function defaults(): array
     {
         return [
             'client' => ClientFactory::new(),
@@ -71,7 +90,7 @@ final class QuoteFactory extends ModelFactory
         ];
     }
 
-    protected static function getClass(): string
+    public static function class(): string
     {
         return Quote::class;
     }

@@ -52,7 +52,7 @@ abstract class ApiTestCase extends \ApiPlatform\Symfony\Bundle\Test\ApiTestCase
 
         $this->faker = Factory::create();
 
-        $user = UserFactory::createOne(['companies' => [$this->company]])->object();
+        $user = UserFactory::createOne(['companies' => [$this->company]])->_real();
 
         $tokenManager = self::getContainer()->get(ApiTokenManager::class);
         $token = $tokenManager->getOrCreate($user, 'Functional Test');

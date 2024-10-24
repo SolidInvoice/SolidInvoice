@@ -21,11 +21,8 @@ use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Zenstruck\Foundry\ChainManagerRegistry;
-use Zenstruck\Foundry\Factory;
+use Zenstruck\Foundry\Configuration;
 use Zenstruck\Foundry\Test\Factories;
-use Zenstruck\Foundry\Test\LazyManagerRegistry;
-use Zenstruck\Foundry\Test\TestState;
 
 class ContactAddFormHandlerTest extends FormHandlerTestCase
 {
@@ -33,25 +30,11 @@ class ContactAddFormHandlerTest extends FormHandlerTestCase
 
     protected function setUp(): void
     {
-        $kernel = static::createKernel();
-        $kernel->boot();
-
-        TestState::bootFromContainer($kernel->getContainer());
-        Factory::configuration()->setManagerRegistry(
-            new LazyManagerRegistry(
-                static function (): ChainManagerRegistry {
-                    if (! static::$booted) {
-                        static::bootKernel();
-                    }
-
-                    return TestState::initializeChainManagerRegistry(static::$kernel->getContainer());
-                },
-            ),
-        );
-
-        $kernel->shutdown();
-
         parent::setUp();
+
+        Configuration::boot(static function () {
+            return static::getContainer()->get('.zenstruck_foundry.configuration'); // @phpstan-ignore-line
+        });
     }
 
     public function getHandler(): ContactAddFormHandler
@@ -68,7 +51,7 @@ class ContactAddFormHandlerTest extends FormHandlerTestCase
      */
     protected function getHandlerOptions(): array
     {
-        $client = ClientFactory::createOne()->object();
+        $client = ClientFactory::createOne()->_real();
 
         return ['contact' => (new Contact())->setClient($client)];
     }

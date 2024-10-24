@@ -61,7 +61,7 @@ final class PaymentRepositoryTest extends KernelTestCase
             $this
                 ->em
                 ->getRepository(Payment::class)
-                ->getTotalPaidForInvoice($invoice->object())
+                ->getTotalPaidForInvoice($invoice->_real())
                 ->isEqualTo(500123)
         );
     }
@@ -87,7 +87,7 @@ final class PaymentRepositoryTest extends KernelTestCase
             $this
                 ->em
                 ->getRepository(Payment::class)
-                ->getTotalPaidForInvoice($invoice->object())
+                ->getTotalPaidForInvoice($invoice->_real())
                 ->isEqualTo(0)
         );
     }
@@ -113,7 +113,7 @@ final class PaymentRepositoryTest extends KernelTestCase
             $this
                 ->em
                 ->getRepository(Payment::class)
-                ->getTotalPaidForInvoice($invoice[1]->object())
+                ->getTotalPaidForInvoice($invoice[1]->_real())
                 ->isEqualTo(0)
         );
     }
@@ -140,7 +140,7 @@ final class PaymentRepositoryTest extends KernelTestCase
             $this
                 ->em
                 ->getRepository(Payment::class)
-                ->getTotalIncomeForClient($client->object())
+                ->getTotalIncomeForClient($client->_real())
                 ->isEqualTo(500123)
         );
     }
@@ -167,7 +167,7 @@ final class PaymentRepositoryTest extends KernelTestCase
             $this
                 ->em
                 ->getRepository(Payment::class)
-                ->getTotalIncomeForClient($client->object())
+                ->getTotalIncomeForClient($client->_real())
                 ->isZero()
         );
     }
@@ -255,10 +255,10 @@ final class PaymentRepositoryTest extends KernelTestCase
         $created = DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
         $completed = DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
 
-        $invoice = InvoiceFactory::createOne(['client' => $client, 'invoiceId' => 'INV-FOO'])->disableAutoRefresh();
+        $invoice = InvoiceFactory::createOne(['client' => $client, 'invoiceId' => 'INV-FOO'])->_disableAutoRefresh();
         $payment = PaymentFactory::createOne([
             'invoice' => $invoice,
-            'client' => $client->object(),
+            'client' => $client->_real(),
             'currencyCode' => 'USD',
             'totalAmount' => 500123,
             'status' => Status::STATUS_CAPTURED,
@@ -285,7 +285,7 @@ final class PaymentRepositoryTest extends KernelTestCase
             $this
                 ->em
                 ->getRepository(Payment::class)
-                ->getPaymentsForClient($client->object())
+                ->getPaymentsForClient($client->_real())
         );
     }
 
@@ -378,7 +378,7 @@ final class PaymentRepositoryTest extends KernelTestCase
 
         $invoice = InvoiceFactory::new(['client' => $client, 'invoiceId' => 'INV-FOO'])
             ->create()
-            ->disableAutoRefresh();
+            ->_disableAutoRefresh();
 
         $created = DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
         $completed = DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
@@ -412,7 +412,7 @@ final class PaymentRepositoryTest extends KernelTestCase
             $this
                 ->em
                 ->getRepository(Payment::class)
-                ->getPaymentsForInvoice($invoice->object())
+                ->getPaymentsForInvoice($invoice->_real())
         );
     }
 
@@ -471,7 +471,7 @@ final class PaymentRepositoryTest extends KernelTestCase
         /** @var Payment $payment */
         $payment = PaymentFactory::createOne([
             'status' => Status::STATUS_PENDING,
-        ])->object();
+        ])->_real();
 
         $this
             ->em
@@ -494,7 +494,7 @@ final class PaymentRepositoryTest extends KernelTestCase
         $client = ClientFactory::createOne(['currencyCode' => 'USD']);
         $invoice = InvoiceFactory::new(['client' => $client, 'invoiceId' => 'INV-FOO'])
             ->create()
-            ->disableAutoRefresh();
+            ->_disableAutoRefresh();
 
         $created = DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
         $completed = DateTime::createFromFormat('Y-m-d', date('Y-m-d'));

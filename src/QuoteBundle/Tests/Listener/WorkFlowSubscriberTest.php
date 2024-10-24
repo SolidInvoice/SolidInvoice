@@ -78,7 +78,7 @@ final class WorkFlowSubscriberTest extends KernelTestCase
     public function testOnWorkflowTransitionApplied(): void
     {
         $quote = (new Quote())
-            ->setClient(ClientFactory::createOne()->object())
+            ->setClient(ClientFactory::createOne()->_real())
             ->setStatus('pending');
 
         $invoiceManager = M::mock(InvoiceManager::class);

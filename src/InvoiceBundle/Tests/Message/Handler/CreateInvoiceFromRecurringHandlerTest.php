@@ -50,7 +50,7 @@ final class CreateInvoiceFromRecurringHandlerTest extends KernelTestCase
     public function testHandler(): void
     {
         $recurringInvoice = new RecurringInvoice();
-        $recurringInvoice->setCompany(CompanyFactory::createOne()->object());
+        $recurringInvoice->setCompany(CompanyFactory::createOne()->_real());
         $invoice = new Invoice();
         $configuration = new Configuration();
 

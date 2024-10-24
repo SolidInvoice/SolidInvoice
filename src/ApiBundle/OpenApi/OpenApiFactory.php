@@ -12,7 +12,7 @@
 namespace SolidInvoice\ApiBundle\OpenApi;
 
 use ApiPlatform\OpenApi\Factory\OpenApiFactoryInterface;
-use ApiPlatform\OpenApi\Model;
+use ApiPlatform\OpenApi\Model\Server;
 use ApiPlatform\OpenApi\OpenApi;
 use Symfony\Component\DependencyInjection\Attribute\AsDecorator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -40,7 +40,7 @@ final class OpenApiFactory implements OpenApiFactoryInterface
         // to define base path URL
         return $this->decorated->__invoke($context)
             ->withServers([
-                new Model\Server($this->urlGenerator->generate('_home', [], UrlGeneratorInterface::ABSOLUTE_URL)),
+                new Server($this->urlGenerator->generate('_home', [], UrlGeneratorInterface::ABSOLUTE_URL)),
             ]);
     }
 }
