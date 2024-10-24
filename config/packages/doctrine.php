@@ -34,7 +34,9 @@ return static function (DoctrineConfig $config): void {
         ->user(env('database_user'))
         ->password(env('database_password'))
         ->serverVersion(env('database_version'))
-        ->charset('UTF8');
+        ->charset('UTF8')
+        ->useSavepoints(true)
+    ;
 
     $dbalConfig
         ->type(UuidType::NAME)
