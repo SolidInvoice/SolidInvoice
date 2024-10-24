@@ -36,7 +36,6 @@ use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 /*
 AdditionalContactDetail has a deeply nested URL which requires a client id and contact id.
 This does not work well with API Platform, so this process needs to be revisited.
-
 #[ApiResource(
     uriTemplate: '/clients/{clientId}/contacts/{contactId}/additional_details',
     operations: [ new GetCollection(), new Post() ],

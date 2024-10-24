@@ -54,7 +54,6 @@ class GridExtension extends AbstractExtension
 
     /**
      * @param array<string, string> $parameters
-
      * @throws InvalidGridException|JsonException|LoaderError|RuntimeError|SyntaxError
      */
     public function renderGrid(Environment $env, string $gridName, array $parameters = []): string
