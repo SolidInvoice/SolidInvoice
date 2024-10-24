@@ -18,11 +18,11 @@ use Doctrine\ORM\Exception\NotSupported;
 use Mockery as M;
 use Money\Currency;
 use SolidInvoice\ClientBundle\Entity\Client;
-use SolidInvoice\ClientBundle\Entity\ContactType;
 use SolidInvoice\ClientBundle\Form\ClientAutocompleteType;
 use SolidInvoice\ClientBundle\Form\Type\ContactDetailType;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
+use SolidInvoice\CoreBundle\Form\Type\UuidEntityType;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator\IdGeneratorInterface;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
@@ -219,12 +219,13 @@ final class InvoiceCreateHandlerTest extends FormHandlerTestCase
                 [
                     new HiddenMoneyType(),
                     new CurrencyType('en_US'),
-                    new ContactDetailType($this->registry->getRepository(ContactType::class)),
+                    new ContactDetailType(),
                     new InvoiceType($systemConfig, $this->registry, new BillingIdGenerator(new ServiceLocator(['random_number' => static fn () => $randomNumberGenerator]), $systemConfig)),
                     new InvoiceItemType($this->registry),
                     new DiscountType($systemConfig),
                     new BaseEntityAutocompleteType($this->createMock(UrlGeneratorInterface::class)),
                     new ClientAutocompleteType(),
+                    new UuidEntityType($this->registry),
                 ],
                 [
                     ChoiceType::class => [

@@ -13,15 +13,14 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Form\Type;
 
-use SolidInvoice\ClientBundle\Entity\Address;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\MoneyBundle\Form\Type\CurrencyType;
 use SolidInvoice\TaxBundle\Form\Type\TaxNumberType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
 
 /**
  * @see \SolidInvoice\ClientBundle\Tests\Form\Type\ClientTypeTest
@@ -46,31 +45,24 @@ class ClientType extends AbstractType
 
         $builder->add(
             'contacts',
-            ContactCollectionType::class,
+            LiveCollectionType::class,
             [
                 'entry_type' => ContactType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
-                'delete_empty' => true,
-                'by_reference' => false,
-                'prototype' => true,
-                'prototype_name' => '__contact_prototype__',
+                'button_delete_options' => [
+                    'label_html' => true,
+                ],
             ]
         );
 
         $builder->add(
             'addresses',
-            CollectionType::class,
+            LiveCollectionType::class,
             [
                 'entry_type' => AddressType::class,
-                'entry_options' => [
-                    'data_class' => Address::class,
-                    'canDelete' => true,
-                ],
                 'allow_add' => true,
                 'allow_delete' => true,
-                'delete_empty' => true,
-                'by_reference' => false,
                 'required' => false,
             ]
         );

@@ -136,7 +136,6 @@ class Client implements Stringable
      */
     #[ApiProperty(example: ['/api/clients/3fa85f64-5717-4562-b3fc-2c963f66afa6/contact/3fa85f64-5717-4562-b3fc-2c963f66afa6'], iris: ['https://schema.org/Person'])]
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Contact::class, cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
-    #[ORM\OrderBy(['firstName' => 'ASC'])]
     #[Assert\Count(
         min: 1,
         minMessage: 'You need to add at least one contact to this client',

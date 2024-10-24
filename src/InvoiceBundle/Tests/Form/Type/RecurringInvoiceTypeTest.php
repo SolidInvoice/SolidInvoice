@@ -20,6 +20,7 @@ use Money\Currency;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
+use SolidInvoice\CoreBundle\Form\Type\UuidEntityType;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Form\Type\ItemType;
@@ -91,7 +92,12 @@ class RecurringInvoiceTypeTest extends FormTestCase
 
         return [
             // register the type instances with the PreloadedExtension
-            new PreloadedExtension([$invoiceType, $itemType, new DiscountType($systemConfig)], []),
+            new PreloadedExtension([
+                $invoiceType,
+                $itemType,
+                new DiscountType($systemConfig),
+                new UuidEntityType($this->registry),
+            ], []),
         ];
     }
 }
