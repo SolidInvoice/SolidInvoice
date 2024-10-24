@@ -22,7 +22,7 @@ use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\QuoteBundle\Entity\Line;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Test\Factory\QuoteFactory;
-use Zenstruck\Foundry\Proxy;
+use Zenstruck\Foundry\Persistence\Proxy;
 use Zenstruck\Foundry\Test\Factories;
 use function array_map;
 
@@ -40,10 +40,10 @@ final class QuoteTest extends ApiTestCase
 
     public function testCreate(): void
     {
-        $client = ClientFactory::createOne()->object();
+        $client = ClientFactory::createOne()->_real();
 
         $contacts = array_map(
-            fn (Proxy $contact) => $this->getIriFromResource($contact->object()),
+            fn (Proxy $contact) => $this->getIriFromResource($contact->_real()),
             ContactFactory::createMany($this->faker->numberBetween(1, 5), ['client' => $client])
         );
 
@@ -100,7 +100,7 @@ final class QuoteTest extends ApiTestCase
     public function testDelete(): void
     {
         $client = ClientFactory::createOne();
-        $quote = QuoteFactory::createOne(['client' => $client])->object();
+        $quote = QuoteFactory::createOne(['client' => $client])->_real();
 
         $this->requestDelete($this->getIriFromResource($quote));
     }
@@ -125,7 +125,7 @@ final class QuoteTest extends ApiTestCase
                     ->setQty(1)
                     ->setPrice(10000),
             ],
-        ])->object();
+        ])->_real();
 
         $data = $this->requestGet($this->getIriFromResource($quote));
 
@@ -160,7 +160,7 @@ final class QuoteTest extends ApiTestCase
                     'total' => 100,
                 ],
             ],
-            'users' => array_map(fn (Proxy $contact) => $this->getIriFromResource($contact->object()), $contacts),
+            'users' => array_map(fn (Proxy $contact) => $this->getIriFromResource($contact->_real()), $contacts),
             'invoice' => null,
         ], $data);
     }
@@ -185,7 +185,7 @@ final class QuoteTest extends ApiTestCase
                     ->setQty(1)
                     ->setPrice(10000),
             ],
-        ])->object();
+        ])->_real();
 
         $data = $this->requestPatch(
             $this->getIriFromResource($quote),
@@ -250,7 +250,7 @@ final class QuoteTest extends ApiTestCase
                     'total' => 2500,
                 ],
             ],
-            'users' => array_map(fn (Proxy $contact) => $this->getIriFromResource($contact->object()), $contacts),
+            'users' => array_map(fn (Proxy $contact) => $this->getIriFromResource($contact->_real()), $contacts),
             'invoice' => null,
         ], $data);
     }

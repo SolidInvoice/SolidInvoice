@@ -45,7 +45,7 @@ class InvoiceTypeTest extends FormTestCase
         $notes = $this->faker->text;
         $terms = $this->faker->text;
         $discountValue = $this->faker->numberBetween(0, 100);
-        $client = ClientFactory::createOne()->object();
+        $client = ClientFactory::createOne()->_real();
         $formData = [
             'client' => $client->getId()->toString(),
             'discount' => [

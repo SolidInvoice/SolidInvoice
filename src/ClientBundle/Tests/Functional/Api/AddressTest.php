@@ -48,7 +48,7 @@ final class AddressTest extends ApiTestCase
             'country' => 'US',
         ];
 
-        $client = ClientFactory::createOne()->object();
+        $client = ClientFactory::createOne()->_real();
 
         $result = $this->requestPost($this->getIriFromResource($client) . '/addresses', $data);
 
@@ -82,7 +82,7 @@ final class AddressTest extends ApiTestCase
             'addresses' => [
                 $address = new Address(),
             ],
-        ])->object();
+        ])->_real();
 
         $this->requestDelete($this->getIriFromResource($address));
     }
@@ -103,7 +103,7 @@ final class AddressTest extends ApiTestCase
                     ->setCountry('US')
                     ->setZip('1234'),
             ],
-        ])->object();
+        ])->_real();
 
         $data = $this->requestGet($this->getIriFromResource($address));
 
@@ -142,7 +142,7 @@ final class AddressTest extends ApiTestCase
                     ->setCountry('US')
                     ->setZip('1234'),
             ],
-        ])->object();
+        ])->_real();
 
         $data = $this->requestPatch(
             $this->getIriFromResource($address),

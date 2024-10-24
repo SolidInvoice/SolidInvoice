@@ -169,7 +169,7 @@ class InvoiceManager
     }
 
     /**
-     * @throws InvalidTransitionException|\JsonException
+     * @throws InvalidTransitionException|JsonException
      */
     private function applyTransition(BaseInvoice $invoice, string $transition): void
     {

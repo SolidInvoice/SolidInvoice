@@ -16,6 +16,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
+use SolidInvoice\CoreBundle\Generator\BillingIdGenerator\IdGeneratorInterface;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\DependencyInjection\ServiceLocator;
@@ -32,9 +33,9 @@ final class BillingIdGeneratorTest extends TestCase
      */
     public function testGenerateWithDefaultStrategy(): void
     {
-        $autoIncrementGenerator = $this->createMock(BillingIdGenerator\IdGeneratorInterface::class);
-        $randomNumberGenerator = $this->createMock(BillingIdGenerator\IdGeneratorInterface::class);
-        $timestampGenerator = $this->createMock(BillingIdGenerator\IdGeneratorInterface::class);
+        $autoIncrementGenerator = $this->createMock(IdGeneratorInterface::class);
+        $randomNumberGenerator = $this->createMock(IdGeneratorInterface::class);
+        $timestampGenerator = $this->createMock(IdGeneratorInterface::class);
 
         $autoIncrementGenerator->expects(self::once())
             ->method('generate')
@@ -77,9 +78,9 @@ final class BillingIdGeneratorTest extends TestCase
      */
     public function testGenerateWithCustomStrategy(): void
     {
-        $autoIncrementGenerator = $this->createMock(BillingIdGenerator\IdGeneratorInterface::class);
-        $randomNumberGenerator = $this->createMock(BillingIdGenerator\IdGeneratorInterface::class);
-        $timestampGenerator = $this->createMock(BillingIdGenerator\IdGeneratorInterface::class);
+        $autoIncrementGenerator = $this->createMock(IdGeneratorInterface::class);
+        $randomNumberGenerator = $this->createMock(IdGeneratorInterface::class);
+        $timestampGenerator = $this->createMock(IdGeneratorInterface::class);
 
         $autoIncrementGenerator->expects(self::never())
             ->method('generate');
@@ -116,9 +117,9 @@ final class BillingIdGeneratorTest extends TestCase
 
     public function testGenerateWithPrefixAndSuffix(): void
     {
-        $autoIncrementGenerator = $this->createMock(BillingIdGenerator\IdGeneratorInterface::class);
-        $randomNumberGenerator = $this->createMock(BillingIdGenerator\IdGeneratorInterface::class);
-        $timestampGenerator = $this->createMock(BillingIdGenerator\IdGeneratorInterface::class);
+        $autoIncrementGenerator = $this->createMock(IdGeneratorInterface::class);
+        $randomNumberGenerator = $this->createMock(IdGeneratorInterface::class);
+        $timestampGenerator = $this->createMock(IdGeneratorInterface::class);
 
         $autoIncrementGenerator->expects(self::once())
             ->method('generate')

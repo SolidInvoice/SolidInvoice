@@ -15,16 +15,14 @@ namespace SolidInvoice\CoreBundle\Test\Factory;
 
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
-use Zenstruck\Foundry\ModelFactory;
-use Zenstruck\Foundry\Proxy;
-use Zenstruck\Foundry\RepositoryProxy;
+use Zenstruck\Foundry\FactoryCollection;
+use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
+use Zenstruck\Foundry\Persistence\Proxy;
+use Zenstruck\Foundry\Persistence\ProxyRepositoryDecorator;
 
 /**
- * @extends ModelFactory<Company>
- *
+ * @method Company|Proxy create(array|callable $attributes = [])
  * @method static Company|Proxy createOne(array $attributes = [])
- * @method static Company[]|Proxy[] createMany(int $number, array|callable $attributes = [])
- * @method static Company[]|Proxy[] createSequence(array|callable $sequence)
  * @method static Company|Proxy find(object|array|mixed $criteria)
  * @method static Company|Proxy findOrCreate(array $attributes)
  * @method static Company|Proxy first(string $sortedField = 'id')
@@ -32,25 +30,46 @@ use Zenstruck\Foundry\RepositoryProxy;
  * @method static Company|Proxy random(array $attributes = [])
  * @method static Company|Proxy randomOrCreate(array $attributes = [])
  * @method static Company[]|Proxy[] all()
+ * @method static Company[]|Proxy[] createMany(int $number, array|callable $attributes = [])
+ * @method static Company[]|Proxy[] createSequence(iterable|callable $sequence)
  * @method static Company[]|Proxy[] findBy(array $attributes)
- * @method static Company[]|Proxy[] randomSet(int $number, array $attributes = [])
  * @method static Company[]|Proxy[] randomRange(int $min, int $max, array $attributes = [])
- * @method static CompanyRepository|RepositoryProxy repository()
- * @method Company|Proxy create(array|callable $attributes = [])
+ * @method static Company[]|Proxy[] randomSet(int $number, array $attributes = [])
+ * @method FactoryCollection<Company|Proxy> many(int $min, int|null $max = null)
+ * @method FactoryCollection<Company|Proxy> sequence(iterable|callable $sequence)
+ * @method static ProxyRepositoryDecorator<Company, CompanyRepository> repository()
+ *
+ * @phpstan-method Company&Proxy<Company> create(array|callable $attributes = [])
+ * @phpstan-method static Company&Proxy<Company> createOne(array $attributes = [])
+ * @phpstan-method static Company&Proxy<Company> find(object|array|mixed $criteria)
+ * @phpstan-method static Company&Proxy<Company> findOrCreate(array $attributes)
+ * @phpstan-method static Company&Proxy<Company> first(string $sortedField = 'id')
+ * @phpstan-method static Company&Proxy<Company> last(string $sortedField = 'id')
+ * @phpstan-method static Company&Proxy<Company> random(array $attributes = [])
+ * @phpstan-method static Company&Proxy<Company> randomOrCreate(array $attributes = [])
+ * @phpstan-method static list<Company&Proxy<Company>> all()
+ * @phpstan-method static list<Company&Proxy<Company>> createMany(int $number, array|callable $attributes = [])
+ * @phpstan-method static list<Company&Proxy<Company>> createSequence(iterable|callable $sequence)
+ * @phpstan-method static list<Company&Proxy<Company>> findBy(array $attributes)
+ * @phpstan-method static list<Company&Proxy<Company>> randomRange(int $min, int $max, array $attributes = [])
+ * @phpstan-method static list<Company&Proxy<Company>> randomSet(int $number, array $attributes = [])
+ * @phpstan-method FactoryCollection<Company&Proxy<Company>> many(int $min, int|null $max = null)
+ * @phpstan-method FactoryCollection<Company&Proxy<Company>> sequence(iterable|callable $sequence)
+ * @extends PersistentProxyObjectFactory<Company>
  */
-final class CompanyFactory extends ModelFactory
+final class CompanyFactory extends PersistentProxyObjectFactory
 {
     /**
      * @return array<string, mixed>
      */
-    protected function getDefaults(): array
+    protected function defaults(): array
     {
         return [
             'name' => self::faker()->company(),
         ];
     }
 
-    protected static function getClass(): string
+    public static function class(): string
     {
         return Company::class;
     }

@@ -14,35 +14,54 @@ namespace SolidInvoice\ClientBundle\Test\Factory;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
-use Zenstruck\Foundry\ModelFactory;
-use Zenstruck\Foundry\Proxy;
-use Zenstruck\Foundry\RepositoryProxy;
+use Zenstruck\Foundry\FactoryCollection;
+use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
+use Zenstruck\Foundry\Persistence\Proxy;
+use Zenstruck\Foundry\Persistence\ProxyRepositoryDecorator;
 
 /**
- * @extends ModelFactory<Client>
- *
+ * @method Client|Proxy create((array | callable) $attributes = [])
  * @method static Client|Proxy createOne(array $attributes = [])
- * @method static Client[]|Proxy[] createMany(int $number, array|callable $attributes = [])
- * @method static Client[]|Proxy[] createSequence(array|callable $sequence)
- * @method static Client|Proxy find(object|array|mixed $criteria)
+ * @method static Client|Proxy find((object | array | mixed) $criteria)
  * @method static Client|Proxy findOrCreate(array $attributes)
  * @method static Client|Proxy first(string $sortedField = 'id')
  * @method static Client|Proxy last(string $sortedField = 'id')
  * @method static Client|Proxy random(array $attributes = [])
  * @method static Client|Proxy randomOrCreate(array $attributes = [])
  * @method static Client[]|Proxy[] all()
+ * @method static Client[]|Proxy[] createMany(int $number, (array | callable) $attributes = [])
+ * @method static Client[]|Proxy[] createSequence((iterable | callable) $sequence)
  * @method static Client[]|Proxy[] findBy(array $attributes)
- * @method static Client[]|Proxy[] randomSet(int $number, array $attributes = [])
  * @method static Client[]|Proxy[] randomRange(int $min, int $max, array $attributes = [])
- * @method static ClientRepository|RepositoryProxy repository()
- * @method Client|Proxy create(array|callable $attributes = [])
+ * @method static Client[]|Proxy[] randomSet(int $number, array $attributes = [])
+ * @method FactoryCollection<(Client | Proxy)> many(int $min, (int | null) $max = null)
+ * @method FactoryCollection<(Client | Proxy)> sequence((iterable | callable) $sequence)
+ * @method static ProxyRepositoryDecorator<Client, ClientRepository> repository()
+ *
+ * @phpstan-method Client&Proxy<Client> create((array | callable) $attributes = [])
+ * @phpstan-method static Client&Proxy<Client> createOne(array $attributes = [])
+ * @phpstan-method static Client&Proxy<Client> find((object | array | mixed) $criteria)
+ * @phpstan-method static Client&Proxy<Client> findOrCreate(array $attributes)
+ * @phpstan-method static Client&Proxy<Client> first(string $sortedField = 'id')
+ * @phpstan-method static Client&Proxy<Client> last(string $sortedField = 'id')
+ * @phpstan-method static Client&Proxy<Client> random(array $attributes = [])
+ * @phpstan-method static Client&Proxy<Client> randomOrCreate(array $attributes = [])
+ * @phpstan-method static list<Client&Proxy<Client>> all()
+ * @phpstan-method static list<Client&Proxy<Client>> createMany(int $number, (array | callable) $attributes = [])
+ * @phpstan-method static list<Client&Proxy<Client>> createSequence((iterable | callable) $sequence)
+ * @phpstan-method static list<Client&Proxy<Client>> findBy(array $attributes)
+ * @phpstan-method static list<Client&Proxy<Client>> randomRange(int $min, int $max, array $attributes = [])
+ * @phpstan-method static list<Client&Proxy<Client>> randomSet(int $number, array $attributes = [])
+ * @phpstan-method FactoryCollection<Client&Proxy<Client>> many(int $min, (int | null) $max = null)
+ * @phpstan-method FactoryCollection<Client&Proxy<Client>> sequence((iterable | callable) $sequence)
+ * @extends PersistentProxyObjectFactory<Client>
  */
-final class ClientFactory extends ModelFactory
+final class ClientFactory extends PersistentProxyObjectFactory
 {
     /**
      * @return array<string, mixed>
      */
-    protected function getDefaults(): array
+    protected function defaults(): array
     {
         return [
             'name' => self::faker()->company(),
@@ -57,7 +76,7 @@ final class ClientFactory extends ModelFactory
         ];
     }
 
-    protected static function getClass(): string
+    public static function class(): string
     {
         return Client::class;
     }

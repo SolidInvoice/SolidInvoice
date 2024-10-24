@@ -22,7 +22,7 @@ use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceLine;
 use SolidInvoice\InvoiceBundle\Test\Factory\RecurringInvoiceFactory;
-use Zenstruck\Foundry\Proxy;
+use Zenstruck\Foundry\Persistence\Proxy;
 use Zenstruck\Foundry\Test\Factories;
 use function array_map;
 
@@ -40,10 +40,10 @@ final class RecurringInvoiceTest extends ApiTestCase
 
     public function testCreate(): void
     {
-        $client = ClientFactory::createOne()->object();
+        $client = ClientFactory::createOne()->_real();
 
         $contacts = array_map(
-            fn (Proxy $contact) => $this->getIriFromResource($contact->object()),
+            fn (Proxy $contact) => $this->getIriFromResource($contact->_real()),
             ContactFactory::createMany($this->faker->numberBetween(1, 5), ['client' => $client])
         );
 
@@ -110,7 +110,7 @@ final class RecurringInvoiceTest extends ApiTestCase
 
     public function testDelete(): void
     {
-        $recurringInvoice = RecurringInvoiceFactory::createOne()->object();
+        $recurringInvoice = RecurringInvoiceFactory::createOne()->_real();
 
         $this->requestDelete($this->getIriFromResource($recurringInvoice));
     }
@@ -133,7 +133,7 @@ final class RecurringInvoiceTest extends ApiTestCase
             'discount' => (new Discount())
                 ->setType('percentage')
                 ->setValue(0),
-        ])->object();
+        ])->_real();
 
         $data = $this->requestGet($this->getIriFromResource($recurringInvoice));
 
@@ -158,7 +158,7 @@ final class RecurringInvoiceTest extends ApiTestCase
                     'total' => 1,
                 ],
             ],
-            'users' => array_map(fn (Proxy $contact) => $this->getIriFromResource($contact->object()), $contacts),
+            'users' => array_map(fn (Proxy $contact) => $this->getIriFromResource($contact->_real()), $contacts),
             'status' => $recurringInvoice->getStatus(),
             'total' => 1,
             'baseTotal' => 1,
@@ -190,7 +190,7 @@ final class RecurringInvoiceTest extends ApiTestCase
             'discount' => (new Discount())
                 ->setType('percentage')
                 ->setValue(0),
-        ])->object();
+        ])->_real();
 
         $data = $this->requestPatch(
             $this->getIriFromResource($recurringInvoice),
@@ -232,7 +232,7 @@ final class RecurringInvoiceTest extends ApiTestCase
                     'total' => 100,
                 ],
             ],
-            'users' => array_map(fn (Proxy $contact) => $this->getIriFromResource($contact->object()), $contacts),
+            'users' => array_map(fn (Proxy $contact) => $this->getIriFromResource($contact->_real()), $contacts),
             'status' => $recurringInvoice->getStatus(),
             'total' => 90,
             'baseTotal' => 100,

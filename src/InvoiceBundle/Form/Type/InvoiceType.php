@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Form\Type;
 
 use Doctrine\Persistence\ManagerRegistry;
+use JsonException;
 use Money\Currency;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -43,7 +44,7 @@ class InvoiceType extends AbstractType
     }
 
     /**
-     * @throws ContainerExceptionInterface|NotFoundExceptionInterface|\JsonException
+     * @throws ContainerExceptionInterface|NotFoundExceptionInterface|JsonException
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

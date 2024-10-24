@@ -61,7 +61,7 @@ final class ViewTest extends KernelTestCase
                 'name' => 'Johnston PLC',
                 'website' => 'https://www.example.com',
                 'vatNumber' => 'GB123456789',
-            ])->object();
+            ])->_real();
 
         /** @var Invoice $invoice */
         $invoice = InvoiceFactory::new()
@@ -86,7 +86,7 @@ final class ViewTest extends KernelTestCase
                 'invoiceDate' => new DateTimeImmutable('2021-09-30'),
                 'tax' => 0,
             ])
-            ->object();
+            ->_real();
 
         $uuid = Uuid::fromString('181aaf4a-0097-11ef-9b64-5a2cf21a5680');
         $invoice->setId($uuid)
@@ -124,7 +124,7 @@ final class ViewTest extends KernelTestCase
                 'name' => 'Johnston PLC',
                 'website' => 'https://www.example.com',
                 'vatNumber' => 'GB123456789',
-            ])->object();
+            ])->_real();
 
         /** @var Invoice $invoice */
         $invoice = InvoiceFactory::new()
@@ -149,7 +149,7 @@ final class ViewTest extends KernelTestCase
                 'invoiceDate' => new DateTimeImmutable('2021-09-30'),
                 'tax' => 0,
             ])
-            ->object();
+            ->_real();
 
         $payment = new Payment();
         $payment->setTotalAmount(100);

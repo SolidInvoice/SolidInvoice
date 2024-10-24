@@ -21,6 +21,7 @@ use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
+use SolidInvoice\CoreBundle\Generator\BillingIdGenerator\RandomNumberGenerator;
 use SolidInvoice\InvoiceBundle\Cloner\InvoiceCloner;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
@@ -92,7 +93,7 @@ class InvoiceClonerTest extends TestCase
             ->andReturn('');
 
         $invoiceCloner = new InvoiceCloner($invoiceManager, new BillingIdGenerator(new ServiceLocator([
-            'random_number' => fn () => new BillingIdGenerator\RandomNumberGenerator(),
+            'random_number' => fn () => new RandomNumberGenerator(),
         ]), $systemConfig));
 
         $newInvoice = $invoiceCloner->clone($invoice);
