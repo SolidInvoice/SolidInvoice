@@ -167,7 +167,7 @@
         "twig/inky-extra": "^3.4",
         "twig/markdown-extra": "^3.4",
         "twig/twig": "^3.4",
-        "willdurand/js-translation-bundle": "^5.0",
+        "willdurand/js-translation-bundle": "^6.1",
         "willdurand/negotiation": "^3.0",
         "zenstruck/schedule-bundle": "^1.5"
     },

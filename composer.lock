@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b1635f4a8fa09fea04697a838693001e",
+    "content-hash": "e2cc43fd1283024310fc0d2ce7dfaba2",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -10525,16 +10525,16 @@
         },
         {
             "name": "symfony/intl",
-            "version": "v6.4.8",
+            "version": "v6.4.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/intl.git",
-                "reference": "50265cdcf5a44bec3fcf487b5d0015aece91d1eb"
+                "reference": "5f64d7218f4078492ca59da94747d7474a2a52c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/intl/zipball/50265cdcf5a44bec3fcf487b5d0015aece91d1eb",
-                "reference": "50265cdcf5a44bec3fcf487b5d0015aece91d1eb",
+                "url": "https://api.github.com/repos/symfony/intl/zipball/5f64d7218f4078492ca59da94747d7474a2a52c4",
+                "reference": "5f64d7218f4078492ca59da94747d7474a2a52c4",
                 "shasum": ""
             },
             "require": {
@@ -10588,7 +10588,7 @@
                 "localization"
             ],
             "support": {
-                "source": "https://github.com/symfony/intl/tree/v6.4.8"
+                "source": "https://github.com/symfony/intl/tree/v6.4.12"
             },
             "funding": [
                 {
@@ -10604,7 +10604,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-05-31T14:49:08+00:00"
+            "time": "2024-09-20T08:16:53+00:00"
         },
         {
             "name": "symfony/iqsms-notifier",
@@ -15099,16 +15099,16 @@
         },
         {
             "name": "symfony/translation",
-            "version": "v6.4.10",
+            "version": "v6.4.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
-                "reference": "94041203f8ac200ae9e7c6a18fa6137814ccecc9"
+                "reference": "cf8360b8352b086be620fae8342c4d96e391a489"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation/zipball/94041203f8ac200ae9e7c6a18fa6137814ccecc9",
-                "reference": "94041203f8ac200ae9e7c6a18fa6137814ccecc9",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/cf8360b8352b086be620fae8342c4d96e391a489",
+                "reference": "cf8360b8352b086be620fae8342c4d96e391a489",
                 "shasum": ""
             },
             "require": {
@@ -15174,7 +15174,7 @@
             "description": "Provides tools to internationalize your application",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/translation/tree/v6.4.10"
+                "source": "https://github.com/symfony/translation/tree/v6.4.12"
             },
             "funding": [
                 {
@@ -15190,7 +15190,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-07-26T12:30:32+00:00"
+            "time": "2024-09-16T06:02:54+00:00"
         },
         {
             "name": "symfony/turbo-sms-notifier",
@@ -17261,43 +17261,42 @@
         },
         {
             "name": "willdurand/js-translation-bundle",
-            "version": "5.1.0",
+            "version": "6.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/willdurand/BazingaJsTranslationBundle.git",
-                "reference": "820a1fa45b9c84c262606e77bc9cadd1c8ad5953"
+                "reference": "f6af94fe2100076d087334d7412a77b758c88eec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/willdurand/BazingaJsTranslationBundle/zipball/820a1fa45b9c84c262606e77bc9cadd1c8ad5953",
-                "reference": "820a1fa45b9c84c262606e77bc9cadd1c8ad5953",
+                "url": "https://api.github.com/repos/willdurand/BazingaJsTranslationBundle/zipball/f6af94fe2100076d087334d7412a77b758c88eec",
+                "reference": "f6af94fe2100076d087334d7412a77b758c88eec",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2.5",
-                "symfony/console": "~4.4|~5.0|~6.0",
-                "symfony/finder": "~4.4|~5.0|~6.0",
-                "symfony/framework-bundle": "~4.4|~5.0|~6.0",
-                "symfony/intl": "~4.4|~5.0|~6.0",
-                "symfony/translation": "~4.4|~5.0|~6.0",
-                "symfony/twig-bundle": "~4.4|~5.0|~6.0"
+                "symfony/console": "~4.4|~5.0|~6.0|~7.0",
+                "symfony/finder": "~4.4|~5.0|~6.0|~7.0",
+                "symfony/framework-bundle": "~4.4|~5.0|~6.0|~7.0",
+                "symfony/intl": "~4.4|~5.0|~6.0|~7.0",
+                "symfony/translation": "~4.4|~5.0|~6.0|~7.0",
+                "symfony/twig-bundle": "~4.4|~5.0|~6.0|~7.0"
             },
             "replace": {
                 "willdurand/expose-translation-bundle": "2.5.*"
             },
             "require-dev": {
                 "phpunit/phpunit": "^4.8|~5.7|~6.5|~8",
-                "symfony/asset": "~4.4|~5.0|~6.0",
-                "symfony/browser-kit": "~4.4|~5.0|~6.0",
-                "symfony/filesystem": "~4.4|~5.0|~6.0",
-                "symfony/phpunit-bridge": "^5.0|^6.0",
-                "symfony/twig-bundle": "~4.4|~5.0|~6.0",
-                "symfony/yaml": "~4.4|~5.0|~6.0"
+                "symfony/asset": "~4.4|~5.0|~6.0|~7.0",
+                "symfony/browser-kit": "~4.4|~5.0|~6.0|~7.0",
+                "symfony/filesystem": "~4.4|~5.0|~6.0|~7.0",
+                "symfony/phpunit-bridge": "^5.0|^6.0|~7.0",
+                "symfony/yaml": "~4.4|~5.0|~6.0|~7.0"
             },
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.7-dev"
+                    "dev-master": "6.x-dev"
                 }
             },
             "autoload": {
@@ -17323,9 +17322,9 @@
             ],
             "support": {
                 "issues": "https://github.com/willdurand/BazingaJsTranslationBundle/issues",
-                "source": "https://github.com/willdurand/BazingaJsTranslationBundle/tree/5.1.0"
+                "source": "https://github.com/willdurand/BazingaJsTranslationBundle/tree/6.1.0"
             },
-            "time": "2023-07-03T21:26:41+00:00"
+            "time": "2024-08-02T14:30:21+00:00"
         },
         {
             "name": "willdurand/jsonp-callback-validator",
