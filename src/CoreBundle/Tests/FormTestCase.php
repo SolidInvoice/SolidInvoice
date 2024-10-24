@@ -128,7 +128,7 @@ abstract class FormTestCase extends KernelTestCase
         self::assertNotEmpty($formData);
 
         if (! $form instanceof FormInterface) {
-            $form = $this->factory->create($form);
+            $form = $this->factory->create($form, $object);
         }
 
         // submit the data to the form directly
