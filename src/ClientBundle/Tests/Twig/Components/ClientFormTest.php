@@ -58,9 +58,4 @@ final class ClientFormTest extends LiveComponentTest
             $this->replaceChecksum($this->replaceUuid($component->render()->toString()))
         );
     }
-
-    private function replaceChecksum(string $content): string
-    {
-        return preg_replace('/&quot;&#x40;checksum&quot;&#x3A;&quot;[^"]+&quot;/', '"@checksum":"checksum"', $content);
-    }
 }
