@@ -30,7 +30,7 @@ final class PaymentSettingsTest extends LiveComponentTest
             client: $this->client,
         )->actingAs($this->getUser());
 
-        $this->assertMatchesHtmlSnapshot($component->render()->toString());
+        $this->assertMatchesHtmlSnapshot($this->replaceChecksum($component->render()->toString()));
     }
 
     public function testSavePaymentSettings(): void
@@ -66,7 +66,7 @@ final class PaymentSettingsTest extends LiveComponentTest
         self::assertSame('Test Cash', $paymentMethod->getName());
         self::assertFalse($paymentMethod->isEnabled());
 
-        $this->assertMatchesHtmlSnapshot($component->render()->toString());
+        $this->assertMatchesHtmlSnapshot($this->replaceChecksum($component->render()->toString()));
 
         $component = $this->createLiveComponent(
             name: PaymentSettings::class,
@@ -74,7 +74,7 @@ final class PaymentSettingsTest extends LiveComponentTest
             client: $this->client,
         )->actingAs($this->getUser());
 
-        $this->assertMatchesHtmlSnapshot($component->render()->toString());
+        $this->assertMatchesHtmlSnapshot($this->replaceChecksum($component->render()->toString()));
     }
 
     public function testCreateNewPaymentSettings(): void
@@ -117,7 +117,7 @@ final class PaymentSettingsTest extends LiveComponentTest
             'sandbox' => true,
         ], $paymentMethod->getConfig());
 
-        $this->assertMatchesHtmlSnapshot($component->render()->toString());
+        $this->assertMatchesHtmlSnapshot($this->replaceChecksum($component->render()->toString()));
 
         $component = $this->createLiveComponent(
             name: PaymentSettings::class,
@@ -125,7 +125,7 @@ final class PaymentSettingsTest extends LiveComponentTest
             client: $this->client,
         )->actingAs($this->getUser());
 
-        $this->assertMatchesHtmlSnapshot($component->render()->toString());
+        $this->assertMatchesHtmlSnapshot($this->replaceChecksum($component->render()->toString()));
     }
 
     /**
