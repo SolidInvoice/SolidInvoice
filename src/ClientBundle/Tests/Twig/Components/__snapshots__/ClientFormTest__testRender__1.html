@@ -2,7 +2,7 @@
 <div id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="ClientForm" data-live-url-value="/_components/ClientForm" data-live-props-value='{"formData":null,"formName":"client","client":{"name":"","website":"","currencyCode":"","vat_number":"","contacts":[{"firstName":"","lastName":"","email":"","additionalContactDetails":[]}],"addresses":[{"street1":"","street2":"","city":"","state":"","zip":"","country":""}],"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"rEELn+4QzpPfUa0pQ\/BocJQLlcaZk8CudmsgUm0cVeo="}' data-live-csrf-value="">
     <form name="client" method="post" data-model="on(change)|*" data-action="live#action:prevent" data-live-action-param="save">
 
-
+    
 
     <div class="row">
         <div class="col-lg-6 col-md-6" id="client-address-collection">
@@ -12,13 +12,13 @@
                 </div>
 
                 <div class="card-body">
-                    <div class="form-group">
+                    <div class="form-group">                
                                 <label class="control-label required required" for="client_name">Name</label><input type="text" id="client_name" name="client[name]" data-required="required" maxlength="125" class="form-control">
 </div>
-                    <div class="form-group">
+                    <div class="form-group">                
             <label class="control-label" for="client_website">Website</label><input type="text" id="client_website" name="client[website]" inputmode="url" class="form-control">
 </div>
-                    <div class="form-group">
+                    <div class="form-group">                
             <label class="control-label" for="client_currencyCode">Currency code</label><select id="client_currencyCode" name="client[currencyCode]" class="select2 form-control"><option value="">System Default</option>
 <option value="AED">United Arab Emirates Dirham</option>
 <option value="AFN">Afghan Afghani</option>
@@ -187,7 +187,7 @@
 <option value="ZMW">Zambian Kwacha</option>
 <option value="ZWL">Zimbabwean Dollar (2009)</option></select>
 </div>
-                    <div class="form-group">
+                    <div class="form-group">                
             <label class="control-label" for="client_vat_number">Vat number</label><div class="input-group">
         <input type="text" id="client_vat_number" name="client[vat_number]" class="form-control">
         <span class="input-group-btn">
@@ -203,21 +203,21 @@
                     <h3 class="card-title">Address Info</h3>
                 </div>
 
-
+               
                 <div class="card-body">
                     <div class="client_addresses">
-                        <fieldset class="form-group">
-    <div id="client_addresses"><fieldset class="form-group">
+                        <fieldset class="form-group">                
+    <div id="client_addresses"><fieldset class="form-group">                
             <div class="widget">
 
         <div class="row">
             <div class="col-md-6">
-                <div class="form-group">
+                <div class="form-group">                
             <label class="control-label" for="client_addresses_0_street1">Street1</label><input type="text" id="client_addresses_0_street1" name="client[addresses][0][street1]" class="form-control">
 </div>
             </div>
             <div class="col-md-6">
-                <div class="form-group">
+                <div class="form-group">                
             <label class="control-label" for="client_addresses_0_street2">Street2</label><input type="text" id="client_addresses_0_street2" name="client[addresses][0][street2]" class="form-control">
 </div>
             </div>
@@ -225,12 +225,12 @@
 
         <div class="row">
             <div class="col-md-6">
-                <div class="form-group">
+                <div class="form-group">                
             <label class="control-label" for="client_addresses_0_city">City</label><input type="text" id="client_addresses_0_city" name="client[addresses][0][city]" class="form-control">
 </div>
             </div>
             <div class="col-md-6">
-                <div class="form-group">
+                <div class="form-group">                
             <label class="control-label" for="client_addresses_0_state">State</label><input type="text" id="client_addresses_0_state" name="client[addresses][0][state]" class="form-control">
 </div>
             </div>
@@ -238,12 +238,12 @@
 
         <div class="row">
             <div class="col-md-6">
-                <div class="form-group">
+                <div class="form-group">                
             <label class="control-label" for="client_addresses_0_zip">Zip</label><input type="text" id="client_addresses_0_zip" name="client[addresses][0][zip]" class="form-control">
 </div>
             </div>
             <div class="col-md-6">
-                <div class="form-group">
+                <div class="form-group">                
             <label class="control-label" for="client_addresses_0_country">Country</label><select id="client_addresses_0_country" name="client[addresses][0][country]" class="form-control"><option value="">Select Country</option>
 <option value="AF">Afghanistan</option>
 <option value="AX">&Atilde;&#133;land Islands</option>
@@ -500,7 +500,7 @@
 
                     <button type="button" id="client_addresses_0_delete" name="client[addresses][0][delete]" data-action="live#action" data-live-action-param="removeCollectionItem" data-live-name-param="client[addresses]" data-live-index-param="0" class="btn btn-danger btn-flat float-right btn"><i class="fa fa-trash-o"></i> Delete Address</button>
             <br class="clear">
-
+        
         <br class="clear">
     </div>
 </fieldset></div>
@@ -519,29 +519,29 @@
                     <h3 class="card-title">Contact Info</h3>
                 </div>
 
-
+               
                 <div class="card-body">
                     <div class="client_contacts">
                         <fieldset class="form-group">
     <div id="client_contacts">
-<fieldset class="form-group">
-
+<fieldset class="form-group">                
+        
 
 
 <div class="row">
     <div class="col-lg-6 col-md-6">
-        <div class="form-group">
+        <div class="form-group">                
                                 <label class="control-label required required" for="client_contacts_0_firstName">First name</label><input type="text" id="client_contacts_0_firstName" name="client[contacts][0][firstName]" data-required="required" maxlength="125" class="form-control">
 </div>
     </div>
     <div class="col-lg-6 col-md-6">
-        <div class="form-group">
+        <div class="form-group">                
             <label class="control-label" for="client_contacts_0_lastName">Last name</label><input type="text" id="client_contacts_0_lastName" name="client[contacts][0][lastName]" maxlength="125" class="form-control">
 </div>
     </div>
 </div>
 
-<div class="form-group">
+<div class="form-group">                
                                 <label class="control-label required required" for="client_contacts_0_email">Email</label><input type="email" id="client_contacts_0_email" name="client[contacts][0][email]" data-required="required" maxlength="255" class="form-control">
 </div>
 
@@ -550,7 +550,7 @@
 </h5>
 
 
-<fieldset class="form-group">
+<fieldset class="form-group">    
     <div id="client_contacts_0_additionalContactDetails"></div>
 </fieldset>
 
