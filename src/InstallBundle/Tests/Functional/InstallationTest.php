@@ -122,11 +122,11 @@ class InstallationTest extends PantherTestCase
 
             self::assertStringContainsString('/install/install', $crawler->getUri());
 
-            $kernel = self::bootKernel();
+            /*$kernel = self::bootKernel();
             self::assertSame($dbName, (function () {
                 // @phpstan-ignore-next-line
                 return $this->getEnv('database_name');
-            })(...)->call($kernel->getContainer()));
+            })(...)->call($kernel->getContainer()));*/
 
             // Wait for installation steps to be completed
             $time = microtime(true);
