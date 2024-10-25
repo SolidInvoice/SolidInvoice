@@ -124,7 +124,7 @@ class InstallationTest extends PantherTestCase
 
             /*$kernel = self::bootKernel();
             self::assertSame($dbName, (function () {
-                // @phpstan-ignore-next-line
+                // @ phpstan-ignore-next-line
                 return $this->getEnv('database_name');
             })(...)->call($kernel->getContainer()));*/
 
