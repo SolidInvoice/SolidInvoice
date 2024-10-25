@@ -108,7 +108,7 @@ jobs:
         run: bin/console doctrine:database:create --env=test --if-not-exists
 
       - name: Create database schema
-        run: bin/console doctrine:schema:create --env=test
+        run: bin/console doctrine:migrations:migrate --env=test
 
       - name: Run test suite
         run: |
