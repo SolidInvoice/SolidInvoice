@@ -130,7 +130,7 @@ class AdditionalContactDetail implements Stringable
         return $this;
     }
 
-    public function getType(): ContactType
+    public function getType(): ?ContactType
     {
         return $this->type;
     }
