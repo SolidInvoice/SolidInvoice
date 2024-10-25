@@ -32,17 +32,8 @@
                 </div>
 
                 <div class="card-body">
-                    {#{% set addressesPrototypeForm %}
-                        {{ _macro.widget_prototype(form.addresses, 'client.address.delete'|trans, {'trash' : {'class' : 'float-right btn-flat btn btn-danger'} }) }}
-                    {% endset %}#}
-
                     <div class="client_addresses">
                         {{ form_row(form.addresses) }}
-                        {#{% for widget in form.addresses %}
-                            {{ _macro.widget_prototype(widget, 'client.address.delete'|trans, {'trash' : {'class' : 'float-right btn-flat btn btn-danger'}}) }}
-                        {% else %}
-                            {{ addressesPrototypeForm|replace({'__name__' : 0})|raw }}
-                        {% endfor %}#}
                     </div>
                 </div>
 
@@ -60,17 +51,8 @@
                 </div>
 
                 <div class="card-body">
-                    {#{% set prototypeForm %}
-                        {{ _macro.widget_prototype(form.contacts, 'client.contact.delete'|trans, {'trash' : {'class' : 'float-right btn btn-flat btn-danger'} }) }}
-                    {% endset %}#}
-
                     <div class="client_contacts">
                         {{ form_row(form.contacts) }}
-                        {#{% for widget in form.contacts %}
-                            {{ _macro.widget_prototype(widget, 'client.contact.delete'|trans, {'trash' : {'class' : 'float-right btn btn-flat btn-danger'}}) }}
-                        {% else %}
-                            {{ prototypeForm|replace({'__contact_prototype__' : 0})|raw }}
-                        {% endfor %}#}
                     </div>
                 </div>
 

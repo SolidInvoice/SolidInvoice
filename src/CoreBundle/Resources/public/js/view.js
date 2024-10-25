@@ -1,5 +1,4 @@
 import { View } from 'backbone.marionette';
-//import './lib/bootstrap/modalmanager';
 
 export default View.extend({
     constructor(options) {

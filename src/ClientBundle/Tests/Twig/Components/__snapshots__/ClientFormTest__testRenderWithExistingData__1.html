@@ -1,5 +1,5 @@
 <html><body>
-<div id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="ClientForm" data-live-url-value="/_components/ClientForm" data-live-props-value='{"formData":"91656880-2d93-11ef-933f-5a2cf21a5680","formName":"client","client":{"name":"Dickinson-Doyle","website":"http:\/\/www.gibson.com\/","currencyCode":"CRC","vat_number":"necessitatibus","contacts":[],"addresses":[],"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},' data-live-csrf-value="">
+<div id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="ClientForm" data-live-url-value="/_components/ClientForm" data-live-props-value='{"formData":"91656880-2d93-11ef-933f-5a2cf21a5680","formName":"client","client":{"name":"Foo Bar","website":"https:\/\/example.com","currencyCode":"SBD","vat_number":"12345","contacts":[],"addresses":[],"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},' data-live-csrf-value="">
     <form name="client" method="post" data-model="on(change)|*" data-action="live#action:prevent" data-live-action-param="save">
 
     
@@ -13,10 +13,10 @@
 
                 <div class="card-body">
                     <div class="form-group">                
-                                <label class="control-label required required" for="client_name">Name</label><input type="text" id="client_name" name="client[name]" data-required="required" maxlength="125" class="form-control" value="Dickinson-Doyle">
+                                <label class="control-label required required" for="client_name">Name</label><input type="text" id="client_name" name="client[name]" data-required="required" maxlength="125" class="form-control" value="Foo Bar">
 </div>
                     <div class="form-group">                
-            <label class="control-label" for="client_website">Website</label><input type="text" id="client_website" name="client[website]" inputmode="url" class="form-control" value="http://www.gibson.com/">
+            <label class="control-label" for="client_website">Website</label><input type="text" id="client_website" name="client[website]" inputmode="url" class="form-control" value="https://example.com">
 </div>
                     <div class="form-group">                
             <label class="control-label" for="client_currencyCode">Currency code</label><select id="client_currencyCode" name="client[currencyCode]" class="select2 form-control"><option value="">System Default</option>
@@ -56,7 +56,7 @@
 <option value="CNY">Chinese Yuan</option>
 <option value="COP">Colombian Peso</option>
 <option value="COU">Colombian Real Value Unit</option>
-<option value="CRC" selected>Costa Rican Col&Atilde;&sup3;n</option>
+<option value="CRC">Costa Rican Col&Atilde;&sup3;n</option>
 <option value="CUC">Cuban Convertible Peso</option>
 <option value="CUP">Cuban Peso</option>
 <option value="CVE">Cape Verdean Escudo</option>
@@ -142,7 +142,7 @@
 <option value="RUB">Russian Ruble</option>
 <option value="RWF">Rwandan Franc</option>
 <option value="SAR">Saudi Riyal</option>
-<option value="SBD">Solomon Islands Dollar</option>
+<option value="SBD" selected>Solomon Islands Dollar</option>
 <option value="SCR">Seychellois Rupee</option>
 <option value="SDG">Sudanese Pound</option>
 <option value="SEK">Swedish Krona</option>
@@ -189,7 +189,7 @@
 </div>
                     <div class="form-group">                
             <label class="control-label" for="client_vat_number">Vat number</label><div class="input-group">
-        <input type="text" id="client_vat_number" name="client[vat_number]" class="form-control" value="necessitatibus">
+        <input type="text" id="client_vat_number" name="client[vat_number]" class="form-control" value="12345">
         <span class="input-group-btn">
             <a href="#" class="btn btn-secondary vat-validator" data-input="#client_vat_number" rel="tooltip" title="EU Countries Only">Validate</a>
         </span>

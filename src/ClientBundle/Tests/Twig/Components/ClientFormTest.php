@@ -42,8 +42,13 @@ final class ClientFormTest extends LiveComponentTest
 
     public function testRenderWithExistingData(): void
     {
-        ClientFactory::faker()->seed(123);
-        $client = ClientFactory::createOne(['company' => $this->company])->object();
+        $client = ClientFactory::createOne([
+            'name' => 'Foo Bar',
+            'vatNumber' => '12345',
+            'website' => 'https://example.com',
+            'currencyCode' => 'SBD',
+            'company' => $this->company
+        ])->_real();
 
         $component = $this
             ->createLiveComponent(ClientForm::class, ['client' => $client])

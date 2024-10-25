@@ -3,7 +3,6 @@ import { triggerMethod } from 'backbone.marionette';
 import Template from '../templates/modal.hbs';
 import View from './view';
 import { forEach, assignIn, functionsIn, includes, isFunction, result } from 'lodash';
-//import './extend/modal';
 
 export default View.extend({
     ui: {

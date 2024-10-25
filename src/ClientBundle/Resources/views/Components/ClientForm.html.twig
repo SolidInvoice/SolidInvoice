@@ -32,20 +32,12 @@
 
                 <div class="card-body">
                     <div class="client_addresses">
-                        {#{% for widget in form.addresses %}
-                            {{ _macro.widget_prototype(widget, 'client.address.delete'|trans, {'trash' : {'class' : 'float-right btn-flat btn btn-danger'}}) }}
-                        {% else %}
-                            {{ addressesPrototypeForm|replace({'__name__' : 0})|raw }}
-                        {% endfor %}#}
                         {{ form_row(form.addresses) }}
                     </div>
                 </div>
 
                 <div class="card-footer">
                     {{ addBtn|raw }}
-                    {#<a href="#" data-target="client_addresses" class="btn-flat btn-add add_form_collection_link">
-                        {{ icon('plus', ['circle']) }} {{ "client.address.add"|trans }}
-                    </a>#}
                 </div>
             </div>
         </div>
@@ -65,7 +57,6 @@
 
                 <div class="card-footer">
                     {{ addBtn|raw }}
-                    {#{{ form_widget(form.contacts.vars.button_add, {label: '+ ' ~ 'client.contact.add'|trans, attr: {class: 'btn btn-outline-primary'}}) }}#}
                 </div>
             </div>
         </div>

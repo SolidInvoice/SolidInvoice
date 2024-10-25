@@ -8,9 +8,6 @@
  #}
 
 {% set currency = client.currency %}
-{#{% set module = 'client-view' %}
-{% set moduleData = client %}
-{% set serializationGroups = ['client_api'] %}#}
 
 {% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
@@ -25,7 +22,6 @@
         <div class="col-md-3">
             <div class="card card-primary">
                 <div class="card-body box-profile">
-                    {#<img class="profile-user-img img-responsive img-circle" src="../../dist/img/user4-128x128.jpg" alt="User profile picture">#}
 
                     <h3 class="profile-username text-center">{{ client.name }}</h3>
 
