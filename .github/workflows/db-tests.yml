@@ -174,9 +174,19 @@ jobs:
         with:
           egress-policy: block
           allowed-endpoints: >
-            api.github.com:443
-            github.com:443
-            objects.githubusercontent.com:443
+            packagist.org:443
+            download.oracle.com:443
+            azure.archive.ubuntu.com:443
+            archive.ubuntu.com:443
+            security.ubuntu.com:443
+            esm.ubuntu.com:443
+            pecl.php.net:443
+            pear.php.net:443
+            api.launchpad.net:443
+            keyserver.ubuntu.com:443
+            pgp.mit.edu:443
+            keys.openpgp.org:443
+            ppa.launchpad.net:443
 
       - name: Checkout
         uses: actions/checkout@1d96c772d19495a3b5c517cd2bc0cb401ea0529f

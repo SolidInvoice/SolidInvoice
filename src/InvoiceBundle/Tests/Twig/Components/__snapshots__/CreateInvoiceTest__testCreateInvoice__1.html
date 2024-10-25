@@ -1,6 +1,6 @@
 <html><body>
 <div id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="CreateInvoice" data-live-url-value="/_components/CreateInvoice" data-live-props-value='{"formData":[],"formName":"invoice","invoice":{"client":"","discount":{"type":"percentage","value":0},"lines":[],"invoiceId":"1","terms":"","notes":"","total":0,"baseTotal":0,"tax":0,"invoiceDate":"2021-01-01","due":"","_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"Rf+\/6C7EL8N5sbYDlkyFfi4hCArIHX3kJq9jjdyQdSo="}' data-live-csrf-value="">
-
+    
     <form name="invoice" method="post" data-model="on(change)|*">
     <div class="row">
         <div class="col-12">
@@ -12,7 +12,7 @@
                             <div class="row">
                                 <div class="col-6">
                                     <div>
-                                        <div class="form-group">
+                                        <div class="form-group">                        
                                 <label class="control-label required required" for="invoice_client">Client</label>
             <select id="invoice_client" name="invoice[client]" data-required="required" data-controller="symfony--ux-autocomplete--autocomplete" data-symfony--ux-autocomplete--autocomplete-url-value="/autocomplete/client_autocomplete_type" data-symfony--ux-autocomplete--autocomplete-max-results-value="10" data-symfony--ux-autocomplete--autocomplete-loading-more-text-value="Loading more results..." data-symfony--ux-autocomplete--autocomplete-no-results-found-text-value="No results found" data-symfony--ux-autocomplete--autocomplete-no-more-results-text-value="No more results" data-symfony--ux-autocomplete--autocomplete-create-option-text-value="Add %placeholder%..." data-symfony--ux-autocomplete--autocomplete-preload-value="focus" data-action="live#$render" class="form-control"><option value="" selected>Choose a client</option></select>
     </div>
@@ -41,7 +41,7 @@
 
                                     <div class="d-none" data-billing-id-target="form">
 
-
+                                                        
                                 <label class="control-label required required" for="invoice_invoiceId">Invoice id</label>
                                         <div class="input-group mb-3">
                                             <input type="text" id="invoice_invoiceId" name="invoice[invoiceId]" data-required="required" maxlength="255" class="form-control" value="1">
@@ -57,13 +57,13 @@
                                     </div>
                                 </div>
                                 <div class="col-3">
-                                    <div class="form-group">
+                                    <div class="form-group">                
                                 <label class="control-label required required" for="invoice_invoiceDate">Invoice date</label><input type="date" id="invoice_invoiceDate" name="invoice[invoiceDate]" data-required="required" class="form-control" value="2021-01-01">
 </div>
                                 </div>
 
                                 <div class="col-3">
-                                    <div class="form-group">
+                                    <div class="form-group">    
             <label class="control-label" for="invoice_due">Due Date</label><input type="date" id="invoice_due" name="invoice[due]" class="form-control">
 </div>
                                 </div>
@@ -95,7 +95,7 @@
                                                 </tr>
                                                 </thead>
                                                 <tr>
-
+                                                                                                    
                                                 </tr>
 <tfoot>
                                                 <tr>
@@ -146,12 +146,12 @@
 
                         <div class="row">
                             <div class="col-6">
-                                <div class="form-group">
+                                <div class="form-group">                
             <label class="control-label" for="invoice_terms">Terms</label><textarea id="invoice_terms" name="invoice[terms]" class="form-control"></textarea>
 </div>
                             </div>
                             <div class="col-6">
-                                <div class="form-group">
+                                <div class="form-group">                
             <label class="control-label" for="invoice_notes">Notes</label><textarea id="invoice_notes" name="invoice[notes]" aria-describedby="invoice_notes_help" class="form-control"></textarea><div class="alert alert-info mt-2">
             <small id="invoice_notes_help" class="form-text ">Notes will not be visible to the client</small>
         </div>
@@ -179,7 +179,7 @@
             </div>
         </div>
     </div>
-    <fieldset class="form-group">
+    <fieldset class="form-group">                
     <div id="invoice_lines"></div>
 </fieldset>
 <input type="hidden" id="invoice_total" name="invoice[total]" value="0"><input type="hidden" id="invoice_baseTotal" name="invoice[baseTotal]" value="0"><input type="hidden" id="invoice_tax" name="invoice[tax]" value="0"><input type="hidden" id="invoice__token" name="invoice[_token]">
