@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1466fde8fb84dc55d14c5ae3fb70b497",
+    "content-hash": "0bc8ca400e9584eb9a2489ae88e2023d",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -70,16 +70,16 @@
         },
         {
             "name": "api-platform/core",
-            "version": "v3.4.3",
+            "version": "v3.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/api-platform/core.git",
-                "reference": "a11c21335297b6026aa2b12fbe11a77e888481d7"
+                "reference": "77d3ff3e8ddf88546eaf288a399d11f130553606"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/api-platform/core/zipball/a11c21335297b6026aa2b12fbe11a77e888481d7",
-                "reference": "a11c21335297b6026aa2b12fbe11a77e888481d7",
+                "url": "https://api.github.com/repos/api-platform/core/zipball/77d3ff3e8ddf88546eaf288a399d11f130553606",
+                "reference": "77d3ff3e8ddf88546eaf288a399d11f130553606",
                 "shasum": ""
             },
             "require": {
@@ -285,9 +285,9 @@
             ],
             "support": {
                 "issues": "https://github.com/api-platform/core/issues",
-                "source": "https://github.com/api-platform/core/tree/v3.4.3"
+                "source": "https://github.com/api-platform/core/tree/v3.4.4"
             },
-            "time": "2024-10-11T12:19:54+00:00"
+            "time": "2024-10-19T10:05:07+00:00"
         },
         {
             "name": "async-aws/core",

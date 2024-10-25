@@ -187,6 +187,11 @@ jobs:
             pgp.mit.edu:443
             keys.openpgp.org:443
             ppa.launchpad.net:443
+            objects.githubusercontent.com:443
+            cdn.jsdelivr.net:443
+            setup-php.com:443
+            dl.cloudsmith.io:443
+            getcomposer.org:443
 
       - name: Checkout
         uses: actions/checkout@1d96c772d19495a3b5c517cd2bc0cb401ea0529f
