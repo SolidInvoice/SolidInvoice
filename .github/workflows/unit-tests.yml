@@ -114,9 +114,9 @@ jobs:
         run: |
          mkdir -p build/logs
           if [ "$COVERAGE" = '1' ]; then
-            bin/phpunit --coverage-clover build/logs/clover.xml
+            bin/phpunit --debug --coverage-clover build/logs/clover.xml
           else
-            bin/phpunit
+            bin/phpunit --debug
           fi
 
       - name: Upload coverage results to Codecov
