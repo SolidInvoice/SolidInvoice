@@ -22,6 +22,7 @@ use Mockery as M;
 use Money\Currency;
 use Ramsey\Uuid\Doctrine\UuidType;
 use SolidInvoice\CoreBundle\Form\Extension\FormHelpExtension;
+use SolidInvoice\CoreBundle\Form\Type\BaseEntityAutocompleteType;
 use SolidInvoice\CoreBundle\Form\Type\ImageUploadType;
 use SolidInvoice\CoreBundle\Form\Type\Select2Type;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
@@ -42,6 +43,7 @@ use Symfony\Component\Form\FormTypeExtensionInterface;
 use Symfony\Component\Form\FormTypeGuesserInterface;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\PreloadedExtension;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -159,7 +161,7 @@ abstract class FormTestCase extends KernelTestCase
         $moneyType = new HiddenMoneyType();
 
         return array_merge([
-            new PreloadedExtension([$type, $moneyType], []),
+            new PreloadedExtension([$type, $moneyType, new BaseEntityAutocompleteType($this->createMock(UrlGeneratorInterface::class))], []),
             new DoctrineOrmExtension($this->registry),
         ], $this->getExtensions());
     }
