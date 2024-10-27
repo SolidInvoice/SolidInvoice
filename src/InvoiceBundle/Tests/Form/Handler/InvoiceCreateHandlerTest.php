@@ -21,6 +21,7 @@ use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Form\ClientAutocompleteType;
 use SolidInvoice\ClientBundle\Form\Type\ContactDetailType;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
+use SolidInvoice\CoreBundle\Form\Type\BaseEntityAutocompleteType;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
 use SolidInvoice\CoreBundle\Form\Type\UuidEntityType;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
@@ -57,7 +58,6 @@ use Symfony\Component\Workflow\StateMachine;
 use Symfony\Component\Workflow\Transition;
 use Symfony\UX\Autocomplete\Checksum\ChecksumCalculator;
 use Symfony\UX\Autocomplete\Form\AutocompleteChoiceTypeExtension;
-use Symfony\UX\Autocomplete\Form\BaseEntityAutocompleteType;
 use function iterator_to_array;
 
 /**
