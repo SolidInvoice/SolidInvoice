@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Entity;
 
-use ApiPlatform\JsonSchema\Metadata\Property\Factory\SchemaPropertyMetadataFactory;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
@@ -160,14 +159,14 @@ class Contact implements Serializable, Stringable
 
     #[ApiProperty(iris: ['https://schema.org/givenName'])]
     #[ORM\Column(name: 'firstName', type: Types::STRING, length: 125)]
-    #[Assert\NotBlank]
-    #[Assert\Length(max: 125)]
+    #[Assert\NotBlank(groups: ['Default', 'form'])]
+    #[Assert\Length(max: 125, groups: ['Default', 'form'])]
     #[Serialize\Groups(['contact_api:read', 'contact_api:write'])]
     private ?string $firstName = null;
 
     #[ApiProperty(iris: ['https://schema.org/familyName'])]
     #[ORM\Column(name: 'lastName', type: Types::STRING, length: 125, nullable: true)]
-    #[Assert\Length(max: 125)]
+    #[Assert\Length(max: 125, groups: ['Default', 'form'])]
     #[Serialize\Groups(['contact_api:read', 'contact_api:write'])]
     private ?string $lastName = null;
 
@@ -186,8 +185,8 @@ class Contact implements Serializable, Stringable
 
     #[ApiProperty(iris: ['https://schema.org/email'])]
     #[ORM\Column(name: 'email', type: Types::STRING, length: 255)]
-    #[Assert\NotBlank]
-    #[Assert\Email(mode: Assert\Email::VALIDATION_MODE_STRICT)]
+    #[Assert\NotBlank(groups: ['Default', 'form'])]
+    #[Assert\Email(mode: Assert\Email::VALIDATION_MODE_STRICT, groups: ['Default', 'form'])]
     #[Serialize\Groups(['contact_api:read', 'contact_api:write'])]
     private ?string $email = null;
 

@@ -72,6 +72,18 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                     'editable' => false,
                     'cell' => 'string',
                 ],
+                'reference' => [
+                    'name' => 'reference',
+                    'label' => 'Reference',
+                    'editable' => false,
+                    'cell' => 'string',
+                ],
+                'notes' => [
+                    'name' => 'notes',
+                    'label' => 'Notes',
+                    'editable' => false,
+                    'cell' => 'string',
+                ],
                 'completed' => [
                     'name' => 'completed',
                     'label' => 'Completed',
@@ -134,6 +146,18 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                     'editable' => false,
                     'cell' => 'string',
                 ],
+                'reference' => [
+                    'name' => 'reference',
+                    'label' => 'Reference',
+                    'editable' => false,
+                    'cell' => 'string',
+                ],
+                'notes' => [
+                    'name' => 'notes',
+                    'label' => 'Notes',
+                    'editable' => false,
+                    'cell' => 'string',
+                ],
             ],
             'search' => [
                 'fields' => [
@@ -186,6 +210,18 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 'message' => [
                     'name' => 'message',
                     'label' => 'Message',
+                    'editable' => false,
+                    'cell' => 'string',
+                ],
+                'reference' => [
+                    'name' => 'reference',
+                    'label' => 'Reference',
+                    'editable' => false,
+                    'cell' => 'string',
+                ],
+                'notes' => [
+                    'name' => 'notes',
+                    'label' => 'Notes',
                     'editable' => false,
                     'cell' => 'string',
                 ],

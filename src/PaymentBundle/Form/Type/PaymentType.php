@@ -21,6 +21,7 @@ use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -91,6 +92,8 @@ class PaymentType extends AbstractType
             $attributes->addTarget(self::STIMULUS_CONTROLLER, 'captureOnline');
 
             $builder->add('capture_online', CheckboxType::class, ['data' => true, 'row_attr' => $attributes->toArray()]);
+            $builder->add('reference', null, ['required' => false]);
+            $builder->add('notes', TextareaType::class, ['required' => false]);
         }
     }
 

@@ -27,6 +27,7 @@ use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use SolidInvoice\CoreBundle\Form\Type\BillingIdConfigurationType;
 use SolidInvoice\NotificationBundle\Entity\TransportSetting;
 use SolidInvoice\NotificationBundle\Entity\UserNotification;
+use SolidInvoice\PaymentBundle\Entity\Payment;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -79,6 +80,7 @@ final class Version20300 extends AbstractMigration implements ContainerAwareInte
         $users = $schema->getTable('users');
         $userCompany = $schema->getTable('user_company');
         $userInvitations = $schema->getTable('user_invitations');
+        $payments = $schema->getTable(Payment::TABLE_NAME);
 
         $recurringInvoices->dropColumn('total_currency');
         $recurringInvoices->dropColumn('baseTotal_currency');
@@ -222,6 +224,9 @@ final class Version20300 extends AbstractMigration implements ContainerAwareInte
         $userNotificationTransports->addForeignKeyConstraint(TransportSetting::TABLE_NAME, ['transportsetting_id'], ['id'], ['onDelete' => 'CASCADE']);
 
         $invoiceLines->addColumn('type', Types::STRING, ['length' => 255, 'notnull' => false]);
+
+        $payments->addColumn('reference', Types::STRING, ['length' => 255, 'notnull' => false]);
+        $payments->addColumn('notes', Types::TEXT, ['notnull' => false]);
     }
 
     public function postUp(Schema $schema): void

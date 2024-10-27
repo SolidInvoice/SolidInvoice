@@ -40,7 +40,8 @@ class ClientForm extends AbstractController
             ClientType::class,
             $this->client ?? (new Client())
                 ->addContact(new Contact())
-                ->addAddress(new Address())
+                ->addAddress(new Address()),
+            ['validation_groups' => ['Default', 'form']]
         );
     }
 

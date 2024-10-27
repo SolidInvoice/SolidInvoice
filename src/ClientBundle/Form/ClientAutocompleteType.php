@@ -12,10 +12,10 @@
 namespace SolidInvoice\ClientBundle\Form;
 
 use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\CoreBundle\Form\Type\BaseEntityAutocompleteType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\Autocomplete\Form\AsEntityAutocompleteField;
-use Symfony\UX\Autocomplete\Form\BaseEntityAutocompleteType;
 
 #[AsEntityAutocompleteField]
 final class ClientAutocompleteType extends AbstractType

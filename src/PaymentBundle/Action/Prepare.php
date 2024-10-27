@@ -92,11 +92,10 @@ final class Prepare
 
         $this->companySelector->switchCompany($invoice->getCompany()->getId());
 
-        $isAuthenticated = false;
-
         try {
             $isAuthenticated = $this->authorization->isGranted('IS_AUTHENTICATED_REMEMBERED');
         } catch (AuthenticationCredentialsNotFoundException) {
+            $isAuthenticated = false;
         }
 
         if ($this->paymentMethodRepository->getTotalMethodsConfigured($isAuthenticated) < 1) {
@@ -176,6 +175,8 @@ final class Prepare
             $payment->setClient($invoice->getClient());
             $payment->setNumber($invoice->getId()?->toString());
             $payment->setClientEmail($invoice->getClient()->getContacts()->first()->getEmail());
+            $payment->setReference($data['reference'] ?? null);
+            $payment->setNotes($data['notes'] ?? null);
             $invoice->addPayment($payment);
             $this->save($payment);
 
