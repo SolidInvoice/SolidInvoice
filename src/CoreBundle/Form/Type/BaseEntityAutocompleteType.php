@@ -26,7 +26,7 @@ use Symfony\UX\Autocomplete\Form\ChoiceList\Loader\ExtraLazyChoiceLoader;
 final class BaseEntityAutocompleteType extends AbstractType
 {
     public function __construct(
-        private UrlGeneratorInterface $urlGenerator,
+        private readonly UrlGeneratorInterface $urlGenerator,
     ) {
     }
 
@@ -87,6 +87,8 @@ final class BaseEntityAutocompleteType extends AbstractType
 
     /**
      * Uses the provided URL, or auto-generate from the provided alias.
+     *
+     * @param array<string, mixed> $options
      */
     private function getAutocompleteUrl(FormBuilderInterface $builder, array $options): string
     {
