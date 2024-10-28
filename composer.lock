@@ -4482,22 +4482,22 @@
         },
         {
             "name": "mpociot/vat-calculator",
-            "version": "3.12.0",
+            "version": "3.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/driesvints/vat-calculator.git",
-                "reference": "e78b942301c197c9402540ff536c08f043a26462"
+                "reference": "fee4ca768f65e4e9d9de1911ac402ddd037d7ff7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/driesvints/vat-calculator/zipball/e78b942301c197c9402540ff536c08f043a26462",
-                "reference": "e78b942301c197c9402540ff536c08f043a26462",
+                "url": "https://api.github.com/repos/driesvints/vat-calculator/zipball/fee4ca768f65e4e9d9de1911ac402ddd037d7ff7",
+                "reference": "fee4ca768f65e4e9d9de1911ac402ddd037d7ff7",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "ext-soap": "*",
-                "php": "^7.3|~8.0.0|~8.1.0|~8.2.0|~8.3.0"
+                "php": "^7.3|~8.0.0|~8.1.0|~8.2.0|~8.3.0|~8.4.0"
             },
             "require-dev": {
                 "illuminate/contracts": "^6.0|^7.0|^8.0|^9.0|^10.0|^11.0",
@@ -4550,7 +4550,7 @@
             ],
             "support": {
                 "issues": "https://github.com/driesvints/vat-calculator/issues",
-                "source": "https://github.com/driesvints/vat-calculator/tree/3.12.0"
+                "source": "https://github.com/driesvints/vat-calculator/tree/3.13.0"
             },
             "funding": [
                 {
@@ -4562,7 +4562,7 @@
                     "type": "paypal"
                 }
             ],
-            "time": "2024-09-02T06:26:21+00:00"
+            "time": "2024-10-08T20:40:29+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -22860,8 +22860,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "roave/security-advisories": 20,
-        "solidworx/toggler": 15
+        "solidworx/toggler": 15,
+        "roave/security-advisories": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
