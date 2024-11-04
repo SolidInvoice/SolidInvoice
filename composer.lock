@@ -17565,16 +17565,16 @@
     "packages-dev": [
         {
             "name": "captainhook/captainhook-phar",
-            "version": "5.23.5",
+            "version": "5.23.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/captainhookphp/captainhook-phar.git",
-                "reference": "055e6e109170a1d79353f9c94a6099e08bab15cd"
+                "reference": "cf50ad07abd291af2770eceb3c1dcadf615f0819"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/captainhookphp/captainhook-phar/zipball/055e6e109170a1d79353f9c94a6099e08bab15cd",
-                "reference": "055e6e109170a1d79353f9c94a6099e08bab15cd",
+                "url": "https://api.github.com/repos/captainhookphp/captainhook-phar/zipball/cf50ad07abd291af2770eceb3c1dcadf615f0819",
+                "reference": "cf50ad07abd291af2770eceb3c1dcadf615f0819",
                 "shasum": ""
             },
             "require": {
@@ -17582,7 +17582,7 @@
                 "ext-json": "*",
                 "ext-spl": "*",
                 "phar-io/composer-distributor": "^1.0",
-                "php": "^8.0 || ^8.1 || ^8.2"
+                "php": ">=8.0"
             },
             "require-dev": {
                 "composer/composer": "^1.1 || ^2.0"
@@ -17619,7 +17619,7 @@
             ],
             "support": {
                 "issues": "https://github.com/captainhookphp/captainhook/issues",
-                "source": "https://github.com/captainhookphp/captainhook-phar/tree/5.23.5"
+                "source": "https://github.com/captainhookphp/captainhook-phar/tree/5.23.6"
             },
             "funding": [
                 {
@@ -17627,7 +17627,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-12-13T23:08:05+00:00"
+            "time": "2024-10-18T15:40:42+00:00"
         },
         {
             "name": "dama/doctrine-test-bundle",
