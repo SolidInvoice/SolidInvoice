@@ -19,6 +19,7 @@ use Pagerfanta\Exception\OutOfRangeCurrentPageException;
 use Pagerfanta\Pagerfanta;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Ramsey\Uuid\Rfc4122\UuidV1;
 use ReflectionObject;
 use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
 use SolidInvoice\DataGridBundle\Exception\InvalidGridException;
@@ -46,6 +47,7 @@ use Twig\Error\LoaderError;
 use Twig\Error\SyntaxError;
 use function array_map;
 use function explode;
+use function unserialize;
 
 /**
  * @template T of object
@@ -60,8 +62,14 @@ class DataGrid extends AbstractController
     /**
      * @var class-string<T>
      */
-    #[LiveProp(writable: true, url: true)]
+    #[LiveProp(writable: true, url: false)]
     public string $name;
+
+    /**
+     * @var array<string, mixed>
+     */
+    #[LiveProp(writable: true, hydrateWith: 'hydrateContext', dehydrateWith: 'dehydrateContext', url: false)]
+    public array $context = [];
 
     #[LiveProp(writable: true, url: true)]
     public int $page = 1;
@@ -190,7 +198,10 @@ class DataGrid extends AbstractController
     public function getGrid(): GridInterface
     {
         try {
-            return $this->serviceLocator->get($this->name);
+            $grid = $this->serviceLocator->get($this->name);
+            $grid->initialize($this->context);
+
+            return $grid;
         } catch (NotFoundExceptionInterface $e) {
             throw new InvalidGridException($this->name, $e);
         }
@@ -319,5 +330,21 @@ class DataGrid extends AbstractController
         $gridDefinition = (new ReflectionObject($grid))->getAttributes(AsDataGrid::class)[0] ?? null;
 
         return $gridDefinition?->getArguments()['title'] ?? null;
+    }
+
+    /**
+     * @param array<string, mixed> $context
+     */
+    public function dehydrateContext(array $context): string
+    {
+        return serialize($context);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function hydrateContext(string $context): array
+    {
+        return unserialize($context, ['allowed_classes' => [UuidV1::class]]);
     }
 }

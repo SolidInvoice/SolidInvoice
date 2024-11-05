@@ -100,7 +100,13 @@
     {% if payments|length > 0 %}
         <div class="invoice box no-print">
             <div class="card-body">
-                {% include "@SolidInvoicePayment/Payment/list.html.twig" with {"data" : {'invoice' : invoice.id}, 'grid' : 'invoice_payment_grid'} only %}
+                <h3 class="page-header">
+                    {{ icon('credit-card') }} {{ "Payments"|trans }}
+                </h3>
+
+                <div class="widget">
+                    {% include "@SolidInvoicePayment/Payment/list.html.twig" with {"data" : {'invoice' : invoice.id}, 'grid' : 'invoice_payment_grid'} only %}
+                </div>
             </div>
         </div>
     {% endif %}

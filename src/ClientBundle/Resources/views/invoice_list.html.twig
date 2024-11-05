@@ -14,7 +14,7 @@
         </h3>
     </div>
     <div class="card-body">
-        <twig:DataGrid name="invoice_grid" />
+        <twig:DataGrid name="invoice_grid" context="{{ {'client_id': client.id} }}" />
     </div>
 </div>
 

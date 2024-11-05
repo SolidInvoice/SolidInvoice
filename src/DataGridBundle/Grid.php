@@ -30,6 +30,19 @@ use SolidInvoice\DataGridBundle\GridBuilder\Query;
 abstract class Grid implements GridInterface
 {
     /**
+     * @var array<string, mixed>
+     */
+    protected array $context = [];
+
+    /**
+     * @param array<string, mixed> $context
+     */
+    public function initialize(array $context): void
+    {
+        $this->context = $context;
+    }
+
+    /**
      * @return list<Column>
      * @throws ReflectionException
      */

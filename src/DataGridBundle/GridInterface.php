@@ -23,6 +23,11 @@ use SolidInvoice\DataGridBundle\GridBuilder\Query;
 interface GridInterface
 {
     /**
+     * @param array<string, mixed> $context
+     */
+    public function initialize(array $context): void;
+
+    /**
      * @return class-string
      */
     public function entityFQCN(): string;

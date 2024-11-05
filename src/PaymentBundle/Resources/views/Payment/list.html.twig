@@ -7,10 +7,4 @@
  # with this source code in the file LICENSE.
  #}
 
-<h3 class="page-header">
-    {{ icon('credit-card') }} {{ "Payments"|trans }}
-</h3>
-
-<div class="widget">
-    <twig:DataGrid name="payments_grid" />
-</div>
+<twig:DataGrid name="payments_grid" context="{{ {'client_id': data.client|default(null), 'invoice_id': data.invoice|default(null)} }}" />
