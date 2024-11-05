@@ -36,7 +36,7 @@ final class DataGridTest extends LiveComponentTest
             client: $this->client,
         )->actingAs($this->getUser());
 
-        ClientFactory::faker()->seed(12345);
+        faker()->seed(12345);
         ClientFactory::createMany(30, ['company' => $this->company, 'archived' => null, 'status' => 'active']);
     }
 

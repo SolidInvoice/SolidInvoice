@@ -14,12 +14,24 @@
 
 {% block content %}
     <div class="row">
-        <div class="{{ recurring ? 'col-12' : 'col-md-9' }}">
+        <div class="col-md-12">
             <div class="widget">
             {% if recurring %}
                 <twig:DataGrid name="recurring_invoice_grid" />
             {% else %}
-                <twig:DataGrid name="invoice_grid" />
+                {% if app.request.query.get('archived', '0') is same as('1') %}
+                    <twig:DataGrid name="archived_invoice_grid" />
+                {% else %}
+                    <twig:DataGrid name="invoice_grid" />
+                {% endif %}
+
+                <div class="text-center">
+                    {% if app.request.query.get('archived', '0') is same as('1') %}
+                        <a class="btn btn-sm btn-outline-info text-center" href="?archived=0">{{ 'View active invoices'|trans }}</a>
+                    {% else %}
+                        <a class="btn btn-sm btn-outline-info text-center" href="?archived=1">{{ 'View archived invoices'|trans }}</a>
+                    {% endif %}
+                </div>
 
                 <h5>{{ "invoice.list.status_legend"|trans }}</h5>
 
@@ -30,7 +42,7 @@
             </div>
 
         </div>
-        {% if not recurring %}
+        {#{% if not recurring %}
             <div class="col-md-3">
                 <div class="card right-nav">
                     <div class="card-body">
@@ -50,7 +62,7 @@
 
                 </div>
             </div>
-        {% endif %}
+        {% endif %}#}
     </div>
 {% endblock content %}
 

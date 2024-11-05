@@ -5,6 +5,9 @@
 
     <div class="card">
         <div class="card-body p-0">
+            {% if this.title is not empty %}
+                <h6 class="ml-3 mt-3">{{ this.title|trans }}</h6>
+            {% endif %}
             <div class="row m-1 pt-2">
                 <div class="col">
                     {% if grid.batchActions|length > 0 %}
@@ -56,7 +59,7 @@
                                 <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"{{ this.filters == [] ? ' class="text-black-50"' }}>
                                     {{ icon('filter') }}
                                 </a>
-                                <div class="dropdown-menu p-4">
+                                <div class="dropdown-menu p-4 max-content">
                                     {{ form(form) }}
                                     <a href="#" data-action="live#action:prevent" data-live-action-param="clearFilters">
                                         {{ icon('cancel') }} Clear
@@ -75,7 +78,7 @@
                         {% if grid.batchActions|length > 0 %}
                             <th width="1%">
                                 <div class="form-check">
-                                    <input type="checkbox" class="form-check-input position-static" {{ stimulus_target('checkbox-select-all', 'checkboxAll')}} />
+                                    <input type="checkbox" class="form-check-input position-static" {{ stimulus_target('checkbox-select-all', 'checkboxAll')}} data-model="selectedAll"  />
                                 </div>
                             </th>
                         {% endif %}
@@ -83,7 +86,7 @@
                             <th>
                                 {% if column.isSortable %}
                                     <a href="#" class="d-block" data-model="sort" data-value="{{ column.getSortableField }},{{ sortDir is same as('asc') ? 'desc' : 'asc'}}" data-action="live#update:prevent">
-                                        {{ column.getLabel }}
+                                        {{ column.getLabel|trans }}
                                         {% if sortField is same as column.getSortableField %}
                                             <span class="float-right">
                                                 {{ icon(sortDir is same as('asc') ? 'caret-down' : 'caret-up') }}
@@ -91,7 +94,7 @@
                                         {% endif %}
                                     </a>
                                 {% else %}
-                                    {{ column.getLabel }}
+                                    {{ column.getLabel|trans }}
                                 {% endif %}
                             </th>
                         {% endfor %}
@@ -146,7 +149,7 @@
                 </table>
             </div>
         </div>
-        <div class="card-footer p-3 d-flex justify-content-between">
+        <div class="card-footer p-2 d-flex justify-content-between">
             <p class="tile-subtitle-p tile-subtitle-footer mb-0">
                 Showing {{ paginator.currentPageOffsetStart }} - {{ paginator.currentPageOffsetEnd }} of {{ paginator.nbResults }} results
             </p>

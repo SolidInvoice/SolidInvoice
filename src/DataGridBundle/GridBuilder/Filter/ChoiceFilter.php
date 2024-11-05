@@ -64,6 +64,7 @@ final class ChoiceFilter implements ColumnFilterInterface
     public function formOptions(): array
     {
         return [
+            'placeholder' => 'Choose a value',
             'multiple' => $this->multiple,
             'choices' => array_flip($this->choices),
         ];

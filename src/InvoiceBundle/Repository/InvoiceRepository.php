@@ -237,4 +237,52 @@ class InvoiceRepository extends ServiceEntityRepository
             return BigInteger::zero();
         }
     }
+
+    /**
+     * @param list<int> $ids
+     */
+    public function archiveInvoices(array $ids): void
+    {
+        $em = $this->getEntityManager();
+
+        foreach ($ids as $id) {
+            $invoice = $this->find($id);
+
+            if (! $invoice instanceof Invoice) {
+                continue;
+            }
+
+            $invoice->setArchived(true);
+
+            $em->persist($invoice);
+        }
+
+        $em->flush();
+    }
+
+    /**
+     * @param list<int> $ids
+     */
+    public function restoreInvoices(array $ids): void
+    {
+        $em = $this->getEntityManager();
+
+        $em->getFilters()->disable('archivable');
+
+        foreach ($ids as $id) {
+            $invoice = $this->find($id);
+
+            if (! $invoice instanceof Invoice) {
+                continue;
+            }
+
+            $invoice->setArchived(null);
+
+            $em->persist($invoice);
+        }
+
+        $em->flush();
+
+        $em->getFilters()->enable('archivable');
+    }
 }

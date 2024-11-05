@@ -22,7 +22,18 @@
 {% block content %}
     <br class="clearfix" />
     <div class="widget">
-        <twig:DataGrid name="client_grid" />
+        {% if app.request.query.get('archived', '0') is same as('1') %}
+            <twig:DataGrid name="archived_client_grid" />
+        {% else %}
+            <twig:DataGrid name="client_grid" />
+        {% endif %}
 	    {#{{ render_multiple_grid('active_client_grid', 'archive_client_grid') }}#}
+    </div>
+    <div class="text-center">
+        {% if app.request.query.get('archived', '0') is same as('1') %}
+            <a class="btn btn-sm btn-outline-info text-center" href="?archived=0">{{ 'View active clients'|trans }}</a>
+        {% else %}
+            <a class="btn btn-sm btn-outline-info text-center" href="?archived=1">{{ 'View archived clients'|trans }}</a>
+        {% endif %}
     </div>
 {% endblock %}

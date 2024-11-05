@@ -11,63 +11,22 @@
 
 namespace SolidInvoice\ClientBundle\DataGrid;
 
-use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
-use SolidInvoice\DataGridBundle\Grid;
-use SolidInvoice\DataGridBundle\GridBuilder\Action\EditAction;
-use SolidInvoice\DataGridBundle\GridBuilder\Action\ViewAction;
 use SolidInvoice\DataGridBundle\GridBuilder\Batch\BatchAction;
-use SolidInvoice\DataGridBundle\GridBuilder\Column\CurrencyColumn;
-use SolidInvoice\DataGridBundle\GridBuilder\Column\DateTimeColumn;
-use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
-use SolidInvoice\DataGridBundle\GridBuilder\Column\UrlColumn;
-use SolidInvoice\DataGridBundle\GridBuilder\Filter\DateRangeFilter;
 
 #[AsDataGrid(name: 'client_grid')]
-final class ClientGrid extends Grid
+final class ClientGrid extends BaseClientGrid
 {
-    public function entityFQCN(): string
+    public function batchActions(): iterable
     {
-        return Client::class;
-    }
+        yield from parent::batchActions();
 
-    public function columns(): array
-    {
-        return [
-            StringColumn::new('name'),
-            UrlColumn::new('website'),
-            CurrencyColumn::new('currencyCode')->label('Currency'),
-            StringColumn::new('status')->twigFunction('client_label'),
-            DateTimeColumn::new('created')
-                ->format('d F Y')
-                ->filter(new DateRangeFilter('created')),
-        ];
-    }
-
-    public function actions(): array
-    {
-        return [
-            ViewAction::new('_clients_view', ['id' => 'id']),
-            EditAction::new('_clients_edit', ['id' => 'id']),
-        ];
-    }
-
-    public function batchActions(): array
-    {
-        return [
-            BatchAction::new('Delete')
-                ->icon('trash')
-                ->color('danger')
-                ->action(static function (ClientRepository $repository, array $selectedItems): void {
-                    $repository->deleteClients($selectedItems);
-                }),
-            BatchAction::new('Archive')
-                ->icon('trash')
-                ->color('warning')
-                ->action(static function (ClientRepository $repository, array $selectedItems): void {
-                    $repository->archiveClients($selectedItems);
-                }),
-        ];
+        yield BatchAction::new('Archive')
+            ->icon('trash')
+            ->color('warning')
+            ->action(static function (ClientRepository $repository, array $selectedItems): void {
+                $repository->archiveClients($selectedItems);
+            });
     }
 }

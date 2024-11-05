@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\Source;
 
-use Doctrine\ORM\QueryBuilder;
+use SolidInvoice\DataGridBundle\GridBuilder\Query;
 use SolidInvoice\DataGridBundle\GridInterface;
 
 interface SourceInterface
 {
-    public function fetch(GridInterface $grid): QueryBuilder;
+    public function fetch(GridInterface $grid): Query;
 }

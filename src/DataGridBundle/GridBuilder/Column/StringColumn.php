@@ -22,8 +22,6 @@ final class StringColumn extends Column
 
     private ?string $twigFunction = null;
 
-    private ?Closure $callback = null;
-
     /**
      * @param array<string, mixed>|Closure $params
      */

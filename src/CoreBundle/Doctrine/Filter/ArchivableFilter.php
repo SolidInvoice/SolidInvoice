@@ -13,13 +13,30 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Doctrine\Filter;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Filter\SQLFilter;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
+use SolidInvoice\DataGridBundle\GridBuilder\Query;
+use function sprintf;
 
 class ArchivableFilter extends SQLFilter
 {
     private const ARCHIVABLE_CLASS = Archivable::class;
+
+    public static function disableForGrid(EntityManagerInterface $entityManager, Query $query): Query
+    {
+        $query
+            ->beforeQuery(static fn () => $entityManager->getFilters()->suspend('archivable'))
+            ->afterQuery(static fn () => $entityManager->getFilters()->restore('archivable'));
+
+        $query
+            ->getQueryBuilder()
+            ->where(sprintf('%1$s.archived is not null or %1$s.archived = :archived', $query->getRootAlias()))
+            ->setParameter('archived', false);
+
+        return $query;
+    }
 
     public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias): string
     {

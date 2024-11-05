@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle;
 
+use Doctrine\ORM\EntityManagerInterface;
 use SolidInvoice\DataGridBundle\Filter\ColumnFilterInterface;
 use SolidInvoice\DataGridBundle\GridBuilder\Action\Action;
 use SolidInvoice\DataGridBundle\GridBuilder\Batch\BatchAction;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
+use SolidInvoice\DataGridBundle\GridBuilder\Query;
 
 interface GridInterface
 {
@@ -36,12 +38,14 @@ interface GridInterface
     public function actions(): array;
 
     /**
-     * @return list<BatchAction>
+     * @return iterable<BatchAction>
      */
-    public function batchActions(): array;
+    public function batchActions(): iterable;
 
     /**
      * @return iterable<string, ColumnFilterInterface|null>
      */
     public function filters(): iterable;
+
+    public function query(EntityManagerInterface $entityManager, Query $query): Query;
 }

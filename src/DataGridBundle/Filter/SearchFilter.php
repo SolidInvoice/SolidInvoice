@@ -18,25 +18,29 @@ use SolidInvoice\DataGridBundle\Source\ORMSource;
 
 final class SearchFilter implements FilterInterface
 {
+    /**
+     * @param string[] $searchFields
+     */
     public function __construct(
-        private readonly string $query,
         private readonly array $searchFields
     ) {
     }
 
     public function filter(QueryBuilder $queryBuilder, mixed $value): void
     {
-        if (! $this->query) {
+        if (! $value || $this->searchFields === []) {
             return;
         }
 
         $expr = $queryBuilder->expr();
 
         $fields = array_map(
-            static function ($field): string {
+            static function ($field) use ($queryBuilder): string {
                 $alias = ORMSource::ALIAS;
                 if (str_contains($field, '.')) {
                     [$alias, $field] = explode('.', $field);
+
+                    $queryBuilder->join(ORMSource::ALIAS . '.' . $alias, $alias);
                 }
 
                 return sprintf('%s.%s LIKE :q', $alias, $field);
@@ -45,6 +49,6 @@ final class SearchFilter implements FilterInterface
         );
 
         $queryBuilder->andWhere($expr->orX(...$fields));
-        $queryBuilder->setParameter('q', '%' . $this->query . '%');
+        $queryBuilder->setParameter('q', '%' . $value . '%');
     }
 }

@@ -57,4 +57,9 @@ final class DateRangeFormType extends AbstractType
     {
         $resolver->setDefault('field_name', null);
     }
+
+    public function getBlockPrefix(): string
+    {
+        return 'date_range';
+    }
 }

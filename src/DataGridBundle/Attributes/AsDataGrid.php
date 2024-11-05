@@ -19,7 +19,8 @@ final class AsDataGrid
     final public const DI_TAG = 'solidinvoice.data_grid.grid';
 
     public function __construct(
-        public string $name
+        public string $name,
+        public ?string $title = null,
     ) {
     }
 }

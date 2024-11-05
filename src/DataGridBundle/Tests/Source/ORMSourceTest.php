@@ -20,6 +20,7 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\DataGridBundle\GridBuilder\Query;
 use SolidInvoice\DataGridBundle\GridInterface;
 use SolidInvoice\DataGridBundle\Source\ORMSource;
 
@@ -46,12 +47,14 @@ final class ORMSourceTest extends TestCase
         $em = $this->createMock(EntityManagerInterface::class);
         $repository = $this->createMock(EntityRepository::class);
         $queryBuilder = $this->createMock(QueryBuilder::class);
+        $query = new Query($queryBuilder, 'c');
 
         $this->registry->method('getManagerForClass')->willReturn($em);
         $em->method('getRepository')->willReturn($repository);
         $repository->method('createQueryBuilder')->willReturn($queryBuilder);
+        $this->grid->method('query')->willReturn($query);
 
-        $this->assertSame($queryBuilder, $this->source->fetch($this->grid));
+        $this->assertSame($query, $this->source->fetch($this->grid));
     }
 
     public function testFetchThrowsExceptionWhenManagerIsNotEntityManager(): void

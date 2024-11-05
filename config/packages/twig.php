@@ -22,5 +22,6 @@ return static function (TwigConfig $config): void {
         ->formThemes([
             '@SolidInvoiceNotification/Form/fields.html.twig',
             '@SolidInvoiceCore/Form/fields.html.twig',
+            '@SolidInvoiceDataGrid/Form/fields.html.twig',
         ]);
 };

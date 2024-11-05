@@ -40,7 +40,7 @@ final class TaxGrid extends Grid
         ];
     }
 
-    public function batchActions(): array
+    public function batchActions(): iterable
     {
         return [
             BatchAction::new('Delete')

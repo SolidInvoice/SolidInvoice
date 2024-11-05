@@ -99,7 +99,7 @@ class ClientRepository extends ServiceEntityRepository
 
     public function getArchivedGridQuery(): QueryBuilder
     {
-        $this->getEntityManager()->getFilters()->disable('archivable');
+        $this->getEntityManager()->getFilters()->suspend('archivable');
 
         $qb = $this->createQueryBuilder('c');
 

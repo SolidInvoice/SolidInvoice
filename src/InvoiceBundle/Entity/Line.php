@@ -31,7 +31,7 @@ use SolidInvoice\CoreBundle\Entity\LineInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceLineType;
-use SolidInvoice\InvoiceBundle\Repository\ItemRepository;
+use SolidInvoice\InvoiceBundle\Repository\LineRepository;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
@@ -42,7 +42,7 @@ use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: Line::TABLE_NAME)]
-#[ORM\Entity(repositoryClass: ItemRepository::class)]
+#[ORM\Entity(repositoryClass: LineRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\MappedSuperclass]
 #[ORM\InheritanceType('SINGLE_TABLE')]

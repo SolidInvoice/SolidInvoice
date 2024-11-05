@@ -12,27 +12,28 @@
 namespace SolidInvoice\DataGridBundle\Twig\Components;
 
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
-use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Exception\OutOfRangeCurrentPageException;
 use Pagerfanta\Pagerfanta;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use ReflectionObject;
 use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
 use SolidInvoice\DataGridBundle\Exception\InvalidGridException;
-use SolidInvoice\DataGridBundle\Filter\ChainFilter;
 use SolidInvoice\DataGridBundle\Filter\SearchFilter;
 use SolidInvoice\DataGridBundle\Filter\SortFilter;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
-use SolidInvoice\DataGridBundle\GridBuilder\Formatter\ColumnFormatter;
+use SolidInvoice\DataGridBundle\GridBuilder\Query;
 use SolidInvoice\DataGridBundle\GridInterface;
+use SolidInvoice\DataGridBundle\Paginator\Adapter\QueryAdapter;
+use SolidInvoice\DataGridBundle\Render\GridFieldRenderer;
 use SolidInvoice\DataGridBundle\Source\SourceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\TaggedLocator;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveArg;
@@ -41,7 +42,8 @@ use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
-use function array_key_exists;
+use Twig\Error\LoaderError;
+use Twig\Error\SyntaxError;
 use function array_map;
 use function explode;
 
@@ -76,8 +78,11 @@ class DataGrid extends AbstractController
     /**
      * @var list<string>
      */
-    #[LiveProp(writable: true, url: false)]
+    #[LiveProp(writable: true, onUpdated: 'onSelectedItem', url: false)]
     public array $selectedItems = [];
+
+    #[LiveProp(writable: true, onUpdated: 'selectAll', url: false)]
+    public bool $selectedAll = false;
 
     /**
      * @var array<string, mixed>
@@ -85,13 +90,34 @@ class DataGrid extends AbstractController
     #[LiveProp(writable: true, url: true)]
     public array $filters = [];
 
+    public function selectAll(): void
+    {
+        if ($this->selectedAll) {
+            $this->selectedItems = [];
+            foreach ($this->getPaginator() as $item) {
+                $this->selectedItems[] = (string) $this->entityId($item);
+            }
+        } else {
+            $this->selectedItems = [];
+        }
+    }
+
+    public function onSelectedItem(): void
+    {
+        $totalItems = count($this->selectedItems);
+        if (0 === $totalItems) {
+            $this->selectedAll = false;
+        } elseif ($totalItems === count($this->getPaginator())) {
+            $this->selectedAll = true;
+        }
+    }
+
     /**
      * @param ServiceLocator<GridInterface> $serviceLocator
      */
     public function __construct(
         private readonly ManagerRegistry $registry,
-        private readonly PropertyAccessorInterface $propertyAccessor,
-        private readonly ColumnFormatter $columnFormatter,
+        private readonly GridFieldRenderer $fieldRenderer,
         private readonly SourceInterface $source,
         #[TaggedLocator(AsDataGrid::DI_TAG, 'name')]
         private readonly ServiceLocator $serviceLocator,
@@ -114,25 +140,18 @@ class DataGrid extends AbstractController
 
         $grid = $this->getGrid();
 
-        $qb = $this->source->fetch($grid);
+        $query = $this->source->fetch($grid);
+        $builder = $query->getQueryBuilder();
 
-        $filter = new ChainFilter();
-        $filter->addFilter(new SortFilter(...explode(',', $this->sort)));
-        $filter->addFilter(new SearchFilter($this->search, array_map(static fn (Column $column) => $column->getField(), $grid->columns())));
-
-        $filter->filter($qb, null);
-
-        if ([] !== $this->filters) {
-            foreach ($grid->columns() as $column) {
-                if (array_key_exists($column->getField(), $this->formValues) && '' !== $this->formValues[$column->getField()]) {
-                    $column->getFilter()?->filter($qb, $this->formValues[$column->getField()]);
-                }
-            }
-        }
+        $this->filterQuery($grid, $builder);
 
         try {
             return Pagerfanta::createForCurrentPageWithMaxPerPage(
-                new QueryAdapter($qb),
+                new QueryAdapter(
+                    $builder,
+                    beforeQuery: $query->getCallback(Query::BEFORE_QUERY),
+                    afterQuery: $query->getCallback(Query::AFTER_QUERY),
+                ),
                 $this->page,
                 $this->perPage,
             );
@@ -140,7 +159,11 @@ class DataGrid extends AbstractController
             $this->page = 1;
 
             return Pagerfanta::createForCurrentPageWithMaxPerPage(
-                new QueryAdapter($qb),
+                new QueryAdapter(
+                    $builder,
+                    beforeQuery: $query->getCallback(Query::BEFORE_QUERY),
+                    afterQuery: $query->getCallback(Query::AFTER_QUERY),
+                ),
                 $this->page,
                 $this->perPage,
             );
@@ -173,11 +196,15 @@ class DataGrid extends AbstractController
         }
     }
 
+    /**
+     * @throws SyntaxError
+     * @throws NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
+     * @throws LoaderError
+     */
     public function renderField(Column $column, object $entity): string
     {
-        $value = $column->getFormatValue()($this->propertyAccessor->getValue($entity, $column->getField()), $entity);
-
-        return $this->columnFormatter->format($column, $value);
+        return $this->fieldRenderer->render($column, $entity);
     }
 
     public function entityId(object $entity): mixed
@@ -187,6 +214,10 @@ class DataGrid extends AbstractController
         return $metaData->getIdentifierValues($entity)[$metaData->getIdentifier()[0]];
     }
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws InvalidGridException
+     */
     #[LiveAction]
     public function executeBatchAction(#[LiveArg('actionName')] string $actionName): void
     {
@@ -218,6 +249,7 @@ class DataGrid extends AbstractController
             }
         } finally {
             $this->selectedItems = [];
+            $this->selectedAll = false;
             $this->dispatchBrowserEvent('modal:close');
         }
     }
@@ -238,7 +270,7 @@ class DataGrid extends AbstractController
         $form = $this->createFormBuilder($this->filters);
 
         foreach ($this->getGrid()->filters() as $name => $filter) {
-            $form->add($name, $filter->form(), ['label' => false] + $filter->formOptions());
+            $form->add($name, $filter->form(), array_merge(['label' => false], $filter->formOptions()));
         }
 
         return $form->getForm();
@@ -263,5 +295,29 @@ class DataGrid extends AbstractController
         }
 
         return $values;
+    }
+
+    private function filterQuery(GridInterface $grid, QueryBuilder $builder): void
+    {
+        (new SortFilter(...explode(',', $this->sort)))->filter($builder, null);
+
+        $searchFields = array_filter($grid->columns(), static fn (Column $column) => $column->isSearchable());
+        $searchFields = array_map(static fn (Column $column) => $column->getField(), $searchFields);
+        (new SearchFilter($searchFields))->filter($builder, $this->search);
+
+        foreach ($grid->filters() as $column => $filter) {
+            if ('' !== ($this->formValues[$column] ?? '')) {
+                $filter->filter($builder, $this->formValues[$column]);
+            }
+        }
+    }
+
+    public function title(): ?string
+    {
+        $grid = $this->getGrid();
+
+        $gridDefinition = (new ReflectionObject($grid))->getAttributes(AsDataGrid::class)[0] ?? null;
+
+        return $gridDefinition?->getArguments()['title'] ?? null;
     }
 }

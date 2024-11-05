@@ -21,7 +21,10 @@ use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\TaxBundle\Entity\Tax;
 
-class ItemRepository extends ServiceEntityRepository
+/**
+ * @extends ServiceEntityRepository<Line>
+ */
+class LineRepository extends ServiceEntityRepository
 {
     public function __construct(
         private readonly TotalCalculator $calculator,
@@ -42,14 +45,14 @@ class ItemRepository extends ServiceEntityRepository
             ->setParameter('tax', $tax->getId(), UuidBinaryOrderedTimeType::NAME)
             ->getQuery();
 
-        /** @var Item $invoiceItem */
-        foreach ($query->toIterable() as $invoiceItem) {
-            $invoiceItem->setTax(null);
-            $invoiceItem->getInvoice()->setTax(0);
+        /** @var Line $invoiceLine */
+        foreach ($query->toIterable() as $invoiceLine) {
+            $invoiceLine->setTax(null);
+            $invoiceLine->getInvoice()?->setTax(0);
 
-            $this->calculator->calculateTotals($invoiceItem->getInvoice());
+            $this->calculator->calculateTotals($invoiceLine->getInvoice());
 
-            $this->getEntityManager()->persist($invoiceItem);
+            $this->getEntityManager()->persist($invoiceLine);
         }
 
         $this->getEntityManager()->flush();

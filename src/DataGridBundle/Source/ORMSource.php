@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace SolidInvoice\DataGridBundle\Source;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use SolidInvoice\DataGridBundle\GridBuilder\Query;
 use SolidInvoice\DataGridBundle\GridInterface;
 
 /**
@@ -30,14 +30,20 @@ class ORMSource implements SourceInterface
     ) {
     }
 
-    public function fetch(GridInterface $grid): QueryBuilder
+    public function fetch(GridInterface $grid): Query
     {
         $em = $this->registry->getManagerForClass($grid->entityFQCN());
 
         assert($em instanceof EntityManagerInterface);
 
-        return $em
-            ->getRepository($grid->entityFQCN())
-            ->createQueryBuilder(self::ALIAS);
+        return $grid->query(
+            $em,
+            new Query(
+                $em
+                    ->getRepository($grid->entityFQCN())
+                    ->createQueryBuilder(self::ALIAS),
+                self::ALIAS
+            )
+        );
     }
 }

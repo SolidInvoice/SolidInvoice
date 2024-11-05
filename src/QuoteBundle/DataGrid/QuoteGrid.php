@@ -38,11 +38,10 @@ final class QuoteGrid extends Grid
         return [
             StringColumn::new('quoteId')
                 ->label('Quote #'),
-            StringColumn::new('client'),
-
+            StringColumn::new('client')
+                ->linkToRoute('_clients_view', ['id' => 'client.id']),
             MoneyColumn::new('total')
                 ->formatValue(fn (BigNumber $value, Quote $quote) => new Money((string) $value, $quote->getClient()?->getCurrency())),
-
             StringColumn::new('status')
                 ->twigFunction('quote_label')
                 ->filter(ChoiceFilter::new('status', Graph::statusArray())->multiple()),

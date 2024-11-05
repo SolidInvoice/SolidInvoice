@@ -13,6 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle;
 
+use DateTime;
+use DateTimeImmutable;
+use DateTimeInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionNamedType;
@@ -21,6 +25,7 @@ use SolidInvoice\DataGridBundle\GridBuilder\Action\Action;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\DateTimeColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
+use SolidInvoice\DataGridBundle\GridBuilder\Query;
 
 abstract class Grid implements GridInterface
 {
@@ -37,7 +42,7 @@ abstract class Grid implements GridInterface
 
             if ($type instanceof ReflectionNamedType) {
                 $columns[] = match ($type->getName()) {
-                    'DateTimeInterface', 'DateTime', 'DateTimeImmutable' => DateTimeColumn::new($property->getName()),
+                    DateTimeInterface::class, DateTime::class, DateTimeImmutable::class => DateTimeColumn::new($property->getName()),
                     default => StringColumn::new($property->getName()),
                 };
             } else {
@@ -56,20 +61,26 @@ abstract class Grid implements GridInterface
         return [];
     }
 
-    public function batchActions(): array
+    public function batchActions(): iterable
     {
         return [];
     }
 
     /**
      * @return iterable<string, ColumnFilterInterface|null>
+     * @throws ReflectionException
      */
     public function filters(): iterable
     {
         foreach ($this->columns() as $column) {
-            if (null !== $column->getFilter()) {
+            if ($column->getFilter() instanceof ColumnFilterInterface) {
                 yield $column->getField() => $column->getFilter();
             }
         }
+    }
+
+    public function query(EntityManagerInterface $entityManager, Query $query): Query
+    {
+        return $query;
     }
 }

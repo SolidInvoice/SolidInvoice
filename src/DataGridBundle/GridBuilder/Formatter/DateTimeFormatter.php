@@ -15,10 +15,11 @@ use DateTime;
 use DateTimeInterface;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\DateTimeColumn;
+use Symfony\Component\Translation\TranslatableMessage;
 
 class DateTimeFormatter implements FormatterInterface
 {
-    public function format(Column $column, mixed $value): string
+    public function format(Column $column, mixed $value): string|TranslatableMessage
     {
         if (null === $value) {
             return '';

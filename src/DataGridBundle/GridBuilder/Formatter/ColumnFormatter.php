@@ -20,6 +20,7 @@ use SolidInvoice\DataGridBundle\GridBuilder\Column\MoneyColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\UrlColumn;
 use Symfony\Component\DependencyInjection\ServiceLocator;
+use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Contracts\Service\ServiceProviderInterface;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
 
@@ -37,7 +38,7 @@ final class ColumnFormatter implements ServiceSubscriberInterface, FormatterInte
      * @throws NotFoundExceptionInterface
      * @throws ContainerExceptionInterface
      */
-    public function format(Column $column, mixed $value): string
+    public function format(Column $column, mixed $value): string|TranslatableMessage
     {
         if (! $this->locator->has($column::class)) {
             // @phpstan-ignore-next-line

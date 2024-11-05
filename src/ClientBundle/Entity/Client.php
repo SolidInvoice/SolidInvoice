@@ -31,6 +31,7 @@ use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use Stringable;
@@ -41,6 +42,7 @@ use Symfony\Component\Serializer\Attribute as Serialize;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
+use function in_array;
 
 #[ApiResource(
     types: ['https://schema.org/Corporation'],
@@ -454,5 +456,17 @@ class Client implements Stringable
     public function __toString(): string
     {
         return $this->name;
+    }
+
+    /**
+     * @return iterable<Invoice>
+     */
+    public function getOutstandingInvoices(): iterable
+    {
+        foreach ($this->invoices as $invoice) {
+            if (in_array($invoice->getStatus(), [Graph::STATUS_PENDING, Graph::STATUS_OVERDUE], true) && $invoice->getBalance()->isPositive()) {
+                yield $invoice;
+            }
+        }
     }
 }

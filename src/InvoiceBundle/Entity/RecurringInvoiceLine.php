@@ -21,10 +21,10 @@ use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use Doctrine\ORM\Mapping as ORM;
-use SolidInvoice\InvoiceBundle\Repository\ItemRepository;
+use SolidInvoice\InvoiceBundle\Repository\LineRepository;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 
-#[ORM\Entity(repositoryClass: ItemRepository::class)]
+#[ORM\Entity(repositoryClass: LineRepository::class)]
 #[ApiResource(
     uriTemplate: '/recurring-invoices/{invoiceId}/lines',
     operations: [new GetCollection(), new Post()],

@@ -28,8 +28,8 @@ final class SearchFilterTest extends TestCase
         $queryBuilder->expects($this->once())->method('andWhere')->with((new Expr())->orX('d.field1 LIKE :q', 'd.field2 LIKE :q'));
         $queryBuilder->expects($this->once())->method('setParameter')->with('q', '%query%');
 
-        $filter = new SearchFilter('query', ['field1', 'field2']);
-        $filter->filter($queryBuilder, null);
+        $filter = new SearchFilter(['field1', 'field2']);
+        $filter->filter($queryBuilder, 'query');
     }
 
     public function testFilterDoesNotAddConditionsWhenQueryIsEmpty(): void
@@ -38,8 +38,8 @@ final class SearchFilterTest extends TestCase
         $queryBuilder->expects($this->never())->method('andWhere');
         $queryBuilder->expects($this->never())->method('setParameter');
 
-        $filter = new SearchFilter('', ['field1', 'field2']);
-        $filter->filter($queryBuilder, null);
+        $filter = new SearchFilter(['field1', 'field2']);
+        $filter->filter($queryBuilder, '');
     }
 
     public function testFilterHandlesFieldsWithAliasCorrectly(): void
@@ -49,7 +49,7 @@ final class SearchFilterTest extends TestCase
         $queryBuilder->expects($this->once())->method('andWhere')->with((new Expr())->orX('b.field1 LIKE :q', 'd.field2 LIKE :q'));
         $queryBuilder->expects($this->once())->method('setParameter')->with('q', '%query%');
 
-        $filter = new SearchFilter('query', ['b.field1', 'field2']);
-        $filter->filter($queryBuilder, null);
+        $filter = new SearchFilter(['b.field1', 'field2']);
+        $filter->filter($queryBuilder, 'query');
     }
 }

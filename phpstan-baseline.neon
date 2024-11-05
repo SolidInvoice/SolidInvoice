@@ -176,11 +176,6 @@ parameters:
 			path: src/DashboardBundle/Widgets/WidgetInterface.php
 
 		-
-			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\Filter\\\\SearchFilter\\:\\:__construct\\(\\) has parameter \\$searchFields with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/DataGridBundle/Filter/SearchFilter.php
-
-		-
 			message: "#^Method SolidInvoice\\\\InstallBundle\\\\Action\\\\Config\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/InstallBundle/Action/Config.php
@@ -234,11 +229,6 @@ parameters:
 			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Manager\\\\InvoiceManager\\:\\:createFromObject\\(\\) has parameter \\$object with no type specified\\.$#"
 			count: 1
 			path: src/InvoiceBundle/Manager/InvoiceManager.php
-
-		-
-			message: "#^Class SolidInvoice\\\\InvoiceBundle\\\\Repository\\\\ItemRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#"
-			count: 1
-			path: src/InvoiceBundle/Repository/ItemRepository.php
 
 		-
 			message: "#^Method SolidInvoice\\\\MailerBundle\\\\Configurator\\\\ConfiguratorInterface\\:\\:configure\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"

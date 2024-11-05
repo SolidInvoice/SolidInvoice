@@ -11,10 +11,6 @@
     {{ icon('credit-card') }} {{ "Payments"|trans }}
 </h3>
 
-{% if data is not defined %}
-    {% set data = {} %}
-{% endif %}
-
 <div class="widget">
-    {#{{ render_grid(grid, data) }}#}
+    <twig:DataGrid name="payments_grid" />
 </div>

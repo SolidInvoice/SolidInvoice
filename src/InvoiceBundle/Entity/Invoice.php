@@ -41,6 +41,7 @@ use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\InvoiceBundle\Traits\InvoiceStatusTrait;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\QuoteBundle\Entity\Quote;
+use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -81,7 +82,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
     ]
 )]
-class Invoice extends BaseInvoice
+class Invoice extends BaseInvoice implements Stringable
 {
     final public const TABLE_NAME = 'invoices';
     use Archivable;
@@ -398,5 +399,10 @@ class Invoice extends BaseInvoice
         $this->invoiceDate = $invoiceDate;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->invoiceId;
     }
 }

@@ -12,6 +12,7 @@
 namespace SolidInvoice\DataGridBundle\GridBuilder\Formatter;
 
 use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
+use Symfony\Component\Translation\TranslatableMessage;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\SyntaxError;
@@ -26,7 +27,7 @@ final class UrlFormatter implements FormatterInterface
     /**
      * @throws SyntaxError|LoaderError
      */
-    public function format(Column $column, mixed $value): string
+    public function format(Column $column, mixed $value): string|TranslatableMessage
     {
         return $this->twig->createTemplate('<a href="{{ value }}" target="_blank">{{ value }}</a>')->render(['value' => $value ?? '']);
     }

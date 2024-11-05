@@ -14,6 +14,7 @@ namespace SolidInvoice\DataGridBundle\GridBuilder\Formatter;
 use Money\Money;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
 use SolidInvoice\SettingsBundle\SystemConfig;
+use Symfony\Component\Translation\TranslatableMessage;
 
 final class MoneyFormatter implements FormatterInterface
 {
@@ -23,7 +24,7 @@ final class MoneyFormatter implements FormatterInterface
     ) {
     }
 
-    public function format(Column $column, mixed $value): string
+    public function format(Column $column, mixed $value): string|TranslatableMessage
     {
         if (! $value instanceof Money) {
             $value = new Money($value, $this->config->getCurrency());

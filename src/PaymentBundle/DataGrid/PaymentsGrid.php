@@ -18,7 +18,10 @@ use SolidInvoice\DataGridBundle\GridBuilder\Column\MoneyColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Filter\ChoiceFilter;
 use SolidInvoice\DataGridBundle\GridBuilder\Filter\DateRangeFilter;
+use SolidInvoice\DataGridBundle\GridBuilder\Filter\EntityFilter;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\PaymentBundle\Entity\Payment;
+use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\PaymentBundle\Model\Status;
 
 #[AsDataGrid(name: 'payments_grid')]
@@ -32,11 +35,18 @@ final class PaymentsGrid extends Grid
     public function columns(): array
     {
         return [
-            StringColumn::new('invoice.invoiceId')
-                ->label('Invoice #'),
-            StringColumn::new('client.name')
-                ->label('Client'),
-            StringColumn::new('method'),
+            StringColumn::new('invoice')
+                ->label('Invoice #')
+                ->formatValue(static fn (Invoice $invoice) => $invoice->getInvoiceId())
+                ->linkToRoute('_invoices_view', ['id' => 'invoice.id']),
+            StringColumn::new('client')
+                ->linkToRoute('_clients_view', ['id' => 'client.id']),
+            StringColumn::new('method')
+                ->linkToRoute('_payment_settings_index', ['method' => 'method.gatewayName'])
+                ->filter(
+                    EntityFilter::new(PaymentMethod::class, 'method', 'name')
+                        ->multiple()
+                ),
             StringColumn::new('status')
                 ->twigFunction('payment_label')
                 ->filter(ChoiceFilter::new('status', Status::toArray())->multiple()),

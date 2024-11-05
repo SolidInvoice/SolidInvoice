@@ -14,6 +14,7 @@ namespace SolidInvoice\DataGridBundle\GridBuilder\Formatter;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\Intl\Currencies;
+use Symfony\Component\Translation\TranslatableMessage;
 use function is_string;
 
 final class CurrencyFormatter implements FormatterInterface
@@ -30,12 +31,14 @@ final class CurrencyFormatter implements FormatterInterface
         $this->currencyList = Currencies::getNames($locale);
     }
 
-    public function format(Column $column, mixed $value): string
+    public function format(Column $column, mixed $value): string|TranslatableMessage
     {
+        $systemDefault = new TranslatableMessage('System Default') . ' (' . $this->config->getCurrency()->getCode() . ')';
+
         if (! is_string($value)) {
-            return $this->currencyList[$this->config->getCurrency()->getCode()];
+            return $systemDefault;
         }
 
-        return $this->currencyList[$value] ?? $this->currencyList[$this->config->getCurrency()->getCode()] ?? '';
+        return $this->currencyList[$value] ?? $systemDefault;
     }
 }

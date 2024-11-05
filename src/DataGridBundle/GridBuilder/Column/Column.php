@@ -13,6 +13,9 @@ namespace SolidInvoice\DataGridBundle\GridBuilder\Column;
 
 use Closure;
 use SolidInvoice\DataGridBundle\Filter\ColumnFilterInterface;
+use Symfony\Component\Translation\TranslatableMessage;
+use Symfony\Contracts\Translation\TranslatableInterface;
+use function sprintf;
 use function Symfony\Component\String\u;
 
 /**
@@ -20,7 +23,7 @@ use function Symfony\Component\String\u;
  */
 abstract class Column
 {
-    private ?string $label = null;
+    private ?TranslatableInterface $label = null;
 
     private bool $sortable = true;
 
@@ -29,6 +32,17 @@ abstract class Column
     private ?Closure $format = null;
 
     private ?ColumnFilterInterface $filter = null;
+
+    private bool $searchable = true;
+
+    private ?string $link = null;
+
+    private ?string $linkRoute = null;
+
+    /**
+     * @var array<string, mixed>
+     */
+    private array $linkParameters = [];
 
     final public function __construct(
         protected string $field
@@ -40,9 +54,10 @@ abstract class Column
         return new static($field);
     }
 
-    public function label(string $label): static
+    public function label(string | TranslatableInterface $label): static
     {
-        $this->label = $label;
+        $this->label = $label instanceof TranslatableInterface ? $label : new TranslatableMessage($label);
+
         return $this;
     }
 
@@ -55,6 +70,13 @@ abstract class Column
     public function filter(ColumnFilterInterface $filter): static
     {
         $this->filter = $filter;
+
+        return $this;
+    }
+
+    public function searchable(bool $searchable): static
+    {
+        $this->searchable = $searchable;
 
         return $this;
     }
@@ -72,6 +94,33 @@ abstract class Column
         return $this;
     }
 
+    public function linkTo(string $url): static
+    {
+        if ($this->linkRoute !== null && $this->linkRoute !== '') {
+            throw new \InvalidArgumentException(sprintf('Route link is already set for column %s. Either one of linkTo() or linkToRoute() must be used', $this->field));
+        }
+
+        $this->link = $url;
+
+        return $this;
+    }
+
+    /**
+     * @param array<string, mixed> $parameters
+     */
+    public function linkToRoute(string $routeName, array $parameters = []): static
+    {
+        if ($this->link !== null && $this->link !== '') {
+            throw new \InvalidArgumentException(sprintf('Link is already set for column %s. Either one of linkTo() or linkToRoute() must be used', $this->field));
+        }
+
+        $this->linkRoute = $routeName;
+        $this->linkParameters = $parameters;
+
+        return $this;
+
+    }
+
     /* ============================ GETTERS ============================ */
 
     public function getField(): string
@@ -79,14 +128,19 @@ abstract class Column
         return $this->field;
     }
 
-    public function getLabel(): string
+    public function getLabel(): TranslatableInterface
     {
-        return $this->label ?? u($this->field)->snake()->replace('_', ' ')->title(true)->toString();
+        return $this->label ?? new TranslatableMessage(u($this->field)->snake()->replace('_', ' ')->title(true)->toString());
     }
 
     public function isSortable(): bool
     {
         return $this->sortable;
+    }
+
+    public function isSearchable(): bool
+    {
+        return $this->searchable;
     }
 
     public function getFilter(): ?ColumnFilterInterface
@@ -102,5 +156,23 @@ abstract class Column
     public function getSortableField(): string
     {
         return $this->sortableField ?? $this->getField();
+    }
+
+    public function getLink(): ?string
+    {
+        return $this->link;
+    }
+
+    public function getLinkRoute(): ?string
+    {
+        return $this->linkRoute;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getLinkParameters(): array
+    {
+        return $this->linkParameters;
     }
 }

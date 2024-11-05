@@ -22,6 +22,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->defaults()
         ->autoconfigure()
         ->autowire()
+        ->bind('$locale', '%env(locale)%')
         ->private()
     ;
 

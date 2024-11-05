@@ -16,9 +16,9 @@ namespace SolidInvoice\QuoteBundle\Repository;
 use Brick\Math\Exception\MathException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use SolidInvoice\QuoteBundle\Entity\Line;
 use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
+use SolidInvoice\QuoteBundle\Entity\Line;
 use SolidInvoice\TaxBundle\Entity\Tax;
 
 /**
@@ -49,14 +49,14 @@ class LineRepository extends ServiceEntityRepository
 
         $em = $this->getEntityManager();
 
-        /** @var Item $quoteItem */
-        foreach ($query->toIterable() as $quoteItem) {
-            $quoteItem->setTax(null);
+        /** @var Line $quoteLine */
+        foreach ($query->toIterable() as $quoteLine) {
+            $quoteLine->setTax(null);
 
-            $quoteItem->getQuote()->setTax(0);
-            $this->calculator->calculateTotals($quoteItem->getQuote());
+            $quoteLine->getQuote()->setTax(0);
+            $this->calculator->calculateTotals($quoteLine->getQuote());
 
-            $em->persist($quoteItem);
+            $em->persist($quoteLine);
         }
 
         $em->flush();
