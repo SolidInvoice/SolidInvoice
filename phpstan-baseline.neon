@@ -391,11 +391,6 @@ parameters:
 			path: src/QuoteBundle/Email/QuoteEmail.php
 
 		-
-			message: "#^Class SolidInvoice\\\\QuoteBundle\\\\Repository\\\\QuoteRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#"
-			count: 1
-			path: src/QuoteBundle/Repository/QuoteRepository.php
-
-		-
 			message: "#^Method SolidInvoice\\\\SettingsBundle\\\\Collection\\\\ConfigCollection\\:\\:add\\(\\) has parameter \\$settings with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/SettingsBundle/Collection/ConfigCollection.php
@@ -506,11 +501,6 @@ parameters:
 			path: src/UserBundle/Action/ApiIndex.php
 
 		-
-			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\EditProfile\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/UserBundle/Action/EditProfile.php
-
-		-
 			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\ForgotPassword\\\\Check\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/UserBundle/Action/ForgotPassword/Check.php
@@ -526,11 +516,6 @@ parameters:
 			path: src/UserBundle/Action/ForgotPassword/Reset.php
 
 		-
-			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\Profile\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/UserBundle/Action/Profile.php
-
-		-
 			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\Security\\\\ChangePassword\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/UserBundle/Action/Security/ChangePassword.php
@@ -539,11 +524,6 @@ parameters:
 			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\Security\\\\Login\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/UserBundle/Action/Security/Login.php
-
-		-
-			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\Users\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/UserBundle/Action/Users.php
 
 		-
 			message: "#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\:\\:getEmail\\(\\)\\.$#"

@@ -20,8 +20,10 @@ use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\QuoteBundle\Entity\Quote;
-use function array_walk;
 
+/**
+ * @extends ServiceEntityRepository<Quote>
+ */
 class QuoteRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -61,9 +63,7 @@ class QuoteRepository extends ServiceEntityRepository
             ->orderBy('q.created', Criteria::DESC)
             ->setMaxResults($limit);
 
-        $query = $qb->getQuery();
-
-        return $query->getResult();
+        return $qb->getQuery()->getResult();
     }
 
     /**
@@ -107,13 +107,64 @@ class QuoteRepository extends ServiceEntityRepository
 
         $em = $this->getEntityManager();
 
-        array_walk($ids, function (string $id) use ($em): void {
+        foreach ($ids as $id) {
             $entity = $this->find($id);
+            if (! $entity instanceof Quote) {
+                continue;
+            }
             $em->remove($entity);
-        });
+        }
 
         $em->flush();
 
         $filters->enable('archivable');
+    }
+
+    /**
+     * @param list<int> $ids
+     */
+    public function archiveQuotes(array $ids): void
+    {
+        $em = $this->getEntityManager();
+
+        foreach ($ids as $id) {
+            $quote = $this->find($id);
+
+            if (! $quote instanceof Quote) {
+                continue;
+            }
+
+            $quote->setArchived(true);
+
+            $em->persist($quote);
+        }
+
+        $em->flush();
+    }
+
+    /**
+     * @param list<int> $ids
+     */
+    public function restoreQuotes(array $ids): void
+    {
+        $em = $this->getEntityManager();
+
+        $em->getFilters()->disable('archivable');
+
+        foreach ($ids as $id) {
+            $quote = $this->find($id);
+
+            if (! $quote instanceof Quote) {
+                continue;
+            }
+
+            $quote->setArchived(null);
+
+            $em->persist($quote);
+        }
+
+        $em->flush();
+
+        $em->getFilters()->enable('archivable');
     }
 }

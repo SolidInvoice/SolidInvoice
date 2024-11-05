@@ -4,7 +4,30 @@
 
 {% block content %}
     <div class="widget">
-        {{ render_multiple_grid('users_list', 'users_invitations') }}
+        {#{{ render_multiple_grid('users_list', 'users_invitations') }}#}
+        {#<twig:DataGrid name="users_list" />#}
+
+        <div class="mb-2">
+            <div class="float-right">
+                <div class="btn-group btn-group-sm" role="group">
+                    <a href="?grid=users" class="btn btn-dark{{ app.request.query.get('grid', 'users') is same as('users') ? ' active disabled' }}">
+                        {{ icon('user') }}
+                        {{ 'Users'|trans }}
+                    </a>
+                    <a href="?grid=invitations" class="btn btn-dark{{ app.request.query.get('grid') is same as('invitations') ? ' active disabled' }}">
+                        {{ icon('envelope') }}
+                        {{ 'Invitations'|trans }}
+                    </a>
+                </div>
+            </div>
+            <br class="clear">
+        </div>
+
+        {% if app.request.query.get('grid', 'users') is same as('users') %}
+            <twig:DataGrid name="users_list" />
+        {% else %}
+            <twig:DataGrid name="user_invitations" />
+        {% endif %}
     </div>
 {% endblock content %}
 

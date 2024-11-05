@@ -17,7 +17,7 @@ use SolidInvoice\CoreBundle\Templating\Template;
 
 final class Users
 {
-    public function __invoke()
+    public function __invoke(): Template
     {
         return new Template('@SolidInvoiceUser/Users/index.html.twig');
     }

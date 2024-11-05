@@ -14,7 +14,6 @@
         </h3>
     </div>
     <div class="card-body">
-        {#{{ render_multiple_grid(['active_invoice_grid', 'recurring_invoice_grid'], {'client' : client.id}) }}#}
         <twig:DataGrid name="invoice_grid" />
     </div>
 </div>

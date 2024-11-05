@@ -9,18 +9,23 @@
  * with this source code in the file LICENSE.
  */
 
-namespace SolidInvoice\ClientBundle\DataGrid;
+namespace SolidInvoice\QuoteBundle\DataGrid;
 
 use Doctrine\ORM\EntityManagerInterface;
-use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Doctrine\Filter\ArchivableFilter;
 use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
 use SolidInvoice\DataGridBundle\GridBuilder\Batch\BatchAction;
 use SolidInvoice\DataGridBundle\GridBuilder\Query;
+use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
 
-#[AsDataGrid(name: 'archived_client_grid', title: 'Archived Clients')]
-final class ArchivedClientGrid extends BaseClientGrid
+#[AsDataGrid(name: 'archived_quote_grid', title: 'Archived Quotes')]
+final class ArchivedQuoteGrid extends BaseQuoteGrid
 {
+    public function actions(): array
+    {
+        return [];
+    }
+
     public function batchActions(): iterable
     {
         yield from parent::batchActions();
@@ -28,13 +33,13 @@ final class ArchivedClientGrid extends BaseClientGrid
         yield BatchAction::new('Activate')
             ->icon('refresh')
             ->color('success')
-            ->action(static function (ClientRepository $repository, array $selectedItems): void {
-                $repository->restoreClients($selectedItems);
+            ->action(static function (QuoteRepository $repository, array $selectedItems): void {
+                $repository->restoreQuotes($selectedItems);
             });
     }
 
     public function query(EntityManagerInterface $entityManager, Query $query): Query
     {
-        return ArchivableFilter::disableForGrid($entityManager, $query);
+        return ArchivableFilter::disableForGrid($entityManager, parent::query($entityManager, $query));
     }
 }

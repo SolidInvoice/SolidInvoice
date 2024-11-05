@@ -18,7 +18,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 final class Profile
 {
-    public function __invoke(TokenStorageInterface $storage)
+    public function __invoke(TokenStorageInterface $storage): Template
     {
         return new Template('@SolidInvoiceUser/Profile/show.html.twig');
     }

@@ -13,10 +13,21 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-md-9">
+        <div class="col-md-12">
             <div class="widget">
-                {#{{ render_multiple_grid('active_quote_grid', 'archive_quote_grid') }}#}
-                <twig:DataGrid name="quote_grid" />
+                {% if app.request.query.get('archived', '0') is same as('1') %}
+                    <twig:DataGrid name="archived_quote_grid" />
+                {% else %}
+                    <twig:DataGrid name="quote_grid" />
+                {% endif %}
+            </div>
+
+            <div class="text-center">
+                {% if app.request.query.get('archived', '0') is same as('1') %}
+                    <a class="btn btn-sm btn-outline-info text-center" href="?archived=0">{{ 'View active quotes'|trans }}</a>
+                {% else %}
+                    <a class="btn btn-sm btn-outline-info text-center" href="?archived=1">{{ 'View archived quotes'|trans }}</a>
+                {% endif %}
             </div>
 
             <h5>{{ "quote.list.status_legend"|trans }}</h5>
@@ -25,7 +36,7 @@
                 {{ status|raw }}
             {% endfor %}
         </div>
-        <div class="col-md-3">
+        {#<div class="col-md-3">
             <div class="card right-nav">
                 <div class="card-body">
                     <a class="btn btn-block btn-info action-button" href="{{ path("_quotes_create") }}">
@@ -45,6 +56,6 @@
                     </ul>
                 </div>
             </div>
-        </div>
+        </div>#}
     </div>
 {% endblock content %}

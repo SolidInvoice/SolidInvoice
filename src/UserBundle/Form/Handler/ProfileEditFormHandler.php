@@ -40,7 +40,7 @@ class ProfileEditFormHandler implements FormHandlerResponseInterface, FormHandle
 
     public function getForm(FormFactoryInterface $factory, Options $options)
     {
-        return $factory->create(ProfileType::class, $this->tokenStorage->getToken()->getUser());
+        return $factory->create(ProfileType::class, $this->tokenStorage->getToken()?->getUser());
     }
 
     public function getResponse(FormRequest $formRequest)
@@ -48,7 +48,7 @@ class ProfileEditFormHandler implements FormHandlerResponseInterface, FormHandle
         return new Template(
             '@SolidInvoiceUser/Profile/edit.html.twig',
             [
-                'form' => $formRequest->getForm()->createView(),
+                'form' => $formRequest->getForm()?->createView(),
             ]
         );
     }

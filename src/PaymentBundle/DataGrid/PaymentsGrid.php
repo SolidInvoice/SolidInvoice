@@ -11,6 +11,7 @@
 
 namespace SolidInvoice\PaymentBundle\DataGrid;
 
+use Doctrine\ORM\EntityNotFoundException;
 use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
 use SolidInvoice\DataGridBundle\Grid;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\DateTimeColumn;
@@ -24,7 +25,7 @@ use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\PaymentBundle\Model\Status;
 
-#[AsDataGrid(name: 'payments_grid')]
+#[AsDataGrid(name: 'payments_grid', title: 'Payments')]
 final class PaymentsGrid extends Grid
 {
     public function entityFQCN(): string
@@ -37,7 +38,13 @@ final class PaymentsGrid extends Grid
         return [
             StringColumn::new('invoice')
                 ->label('Invoice #')
-                ->formatValue(static fn (Invoice $invoice) => $invoice->getInvoiceId())
+                ->formatValue(static function (Invoice $invoice) {
+                    try {
+                        return $invoice->getInvoiceId();
+                    } catch (EntityNotFoundException $e) {
+                        return null;
+                    }
+                })
                 ->linkToRoute('_invoices_view', ['id' => 'invoice.id']),
             StringColumn::new('client')
                 ->linkToRoute('_clients_view', ['id' => 'client.id']),

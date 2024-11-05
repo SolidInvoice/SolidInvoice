@@ -27,7 +27,6 @@
         {% else %}
             <twig:DataGrid name="client_grid" />
         {% endif %}
-	    {#{{ render_multiple_grid('active_client_grid', 'archive_client_grid') }}#}
     </div>
     <div class="text-center">
         {% if app.request.query.get('archived', '0') is same as('1') %}

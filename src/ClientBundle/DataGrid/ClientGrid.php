@@ -15,7 +15,7 @@ use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
 use SolidInvoice\DataGridBundle\GridBuilder\Batch\BatchAction;
 
-#[AsDataGrid(name: 'client_grid')]
+#[AsDataGrid(name: 'client_grid', title: 'Clients')]
 final class ClientGrid extends BaseClientGrid
 {
     public function batchActions(): iterable

@@ -73,9 +73,9 @@ class RecurringInvoiceRepository extends ServiceEntityRepository
         /** @var RecurringInvoice[] $invoices */
         $invoices = $this->findBy(['id' => $ids]);
 
-        array_walk($invoices, static function (object $entity) use ($em): void {
-            $em->remove($entity);
-        });
+        foreach ($invoices as $invoice) {
+            $em->remove($invoice);
+        }
 
         $em->flush();
 

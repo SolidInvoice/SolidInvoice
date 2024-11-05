@@ -20,7 +20,7 @@ use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidInvoice\TaxBundle\Repository\TaxRepository;
 
-#[AsDataGrid(name: 'tax_grid')]
+#[AsDataGrid(name: 'tax_grid', title: 'Tax Rates')]
 final class TaxGrid extends Grid
 {
     public function entityFQCN(): string

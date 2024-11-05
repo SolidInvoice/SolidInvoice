@@ -15,10 +15,11 @@ namespace SolidInvoice\UserBundle\Action;
 
 use SolidInvoice\UserBundle\Form\Handler\ProfileEditFormHandler;
 use SolidWorx\FormHandler\FormHandler;
+use SolidWorx\FormHandler\FormRequest;
 
 final class EditProfile
 {
-    public function __invoke(FormHandler $formHandler)
+    public function __invoke(FormHandler $formHandler): FormRequest
     {
         return $formHandler->handle(ProfileEditFormHandler::class);
     }

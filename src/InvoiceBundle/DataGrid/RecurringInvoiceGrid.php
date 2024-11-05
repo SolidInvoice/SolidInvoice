@@ -18,6 +18,7 @@ use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
 use SolidInvoice\DataGridBundle\Grid;
 use SolidInvoice\DataGridBundle\GridBuilder\Action\EditAction;
 use SolidInvoice\DataGridBundle\GridBuilder\Action\ViewAction;
+use SolidInvoice\DataGridBundle\GridBuilder\Batch\BatchAction;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\DateTimeColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\MoneyColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
@@ -25,8 +26,9 @@ use SolidInvoice\DataGridBundle\GridBuilder\Filter\ChoiceFilter;
 use SolidInvoice\DataGridBundle\GridBuilder\Filter\DateRangeFilter;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
 
-#[AsDataGrid(name: self::GRID_NAME)]
+#[AsDataGrid(name: self::GRID_NAME, title: 'Recurring Invoices')]
 final class RecurringInvoiceGrid extends Grid
 {
     final public const GRID_NAME = 'recurring_invoice_grid';
@@ -39,7 +41,8 @@ final class RecurringInvoiceGrid extends Grid
     public function columns(): array
     {
         return [
-            StringColumn::new('client'),
+            StringColumn::new('client')
+                ->searchable(false),
             StringColumn::new('frequency')
                 ->formatValue(static fn (string $format): string => CronTranslator::translate($format)),
             DateTimeColumn::new('dateStart')
@@ -57,6 +60,7 @@ final class RecurringInvoiceGrid extends Grid
                 ->formatValue(fn (float|BigNumber $value, RecurringInvoice $invoice) => new Money((string) $value, $invoice->getClient()?->getCurrency())),
             MoneyColumn::new('discount.value')
                 ->label('Discount')
+                ->searchable(false)
                 ->formatValue(fn (float|BigNumber $value, RecurringInvoice $invoice) => new Money((string) $value, $invoice->getClient()?->getCurrency())),
         ];
     }
@@ -67,5 +71,15 @@ final class RecurringInvoiceGrid extends Grid
             ViewAction::new('_invoices_view_recurring', ['id' => 'id']),
             EditAction::new('_invoices_edit', ['id' => 'id']),
         ];
+    }
+
+    public function batchActions(): iterable
+    {
+        yield BatchAction::new('Delete')
+            ->icon('trash')
+            ->color('danger')
+            ->action(static function (RecurringInvoiceRepository $repository, array $selectedItems): void {
+                $repository->deleteInvoices($selectedItems);
+            });
     }
 }
