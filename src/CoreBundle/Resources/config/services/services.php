@@ -17,6 +17,10 @@ use SolidInvoice\CoreBundle\Menu\Builder;
 use SolidInvoice\CoreBundle\Routing\Loader\AbstractDirectoryLoader;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symfony\Component\Uid\Command\GenerateUlidCommand;
+use Symfony\Component\Uid\Command\GenerateUuidCommand;
+use Symfony\Component\Uid\Command\InspectUlidCommand;
+use Symfony\Component\Uid\Command\InspectUuidCommand;
 use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
@@ -72,4 +76,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->arg('$kernel', service('kernel'));
 
     $services->set(VatCalculator::class);
+
+    $services->set(GenerateUlidCommand::class);
+    $services->set(GenerateUuidCommand::class);
+    $services->set(InspectUlidCommand::class);
+    $services->set(InspectUuidCommand::class);
 };
