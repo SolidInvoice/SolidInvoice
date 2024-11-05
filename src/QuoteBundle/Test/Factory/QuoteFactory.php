@@ -13,13 +13,11 @@ namespace SolidInvoice\QuoteBundle\Test\Factory;
 
 use Brick\Math\BigInteger;
 use Brick\Math\Exception\MathException;
-use Ramsey\Uuid\Uuid;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
-use Zenstruck\Foundry\FactoryCollection;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 use Zenstruck\Foundry\Persistence\Proxy;
 use Zenstruck\Foundry\Persistence\ProxyRepositoryDecorator;
@@ -72,7 +70,6 @@ final class QuoteFactory extends PersistentProxyObjectFactory
         return [
             'client' => ClientFactory::new(),
             'company' => CompanyFactory::new(),
-            'uuid' => Uuid::fromString(self::faker()->uuid()),
             'due' => self::faker()->dateTime(),
             'status' => self::faker()->word(),
             'terms' => self::faker()->text(),

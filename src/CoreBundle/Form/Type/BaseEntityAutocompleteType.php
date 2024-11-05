@@ -11,6 +11,7 @@
 
 namespace SolidInvoice\CoreBundle\Form\Type;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\RuntimeException;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -77,7 +78,7 @@ final class BaseEntityAutocompleteType extends AbstractType
 
     public function getParent(): string
     {
-        return UuidEntityType::class;
+        return EntityType::class;
     }
 
     public function getBlockPrefix(): string

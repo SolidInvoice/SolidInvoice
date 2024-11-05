@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\QuoteBundle\Form\Handler;
 
 use Generator;
-use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
 use SolidInvoice\QuoteBundle\Entity\Quote;
@@ -31,6 +30,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Workflow\WorkflowInterface;
 
 abstract class AbstractQuoteHandler implements FormHandlerInterface, FormHandlerResponseInterface, FormHandlerSuccessInterface, FormHandlerOptionsResolver
@@ -53,7 +53,7 @@ abstract class AbstractQuoteHandler implements FormHandlerInterface, FormHandler
         /** @var Quote $quote */
         $action = $form->getRequest()->request->get('save');
 
-        if (! $quote->getId() instanceof UuidInterface) {
+        if (! $quote->getId() instanceof Ulid) {
             $this->quoteStateMachine->apply($quote, Graph::TRANSITION_NEW);
         }
 

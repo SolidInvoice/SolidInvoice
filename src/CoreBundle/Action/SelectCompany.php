@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Action;
 
-use Ramsey\Uuid\Uuid;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\UserBundle\Entity\User;
@@ -22,6 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Uid\Ulid;
 
 final class SelectCompany
 {
@@ -56,7 +56,7 @@ final class SelectCompany
 
     public function switchCompany(Request $request, string $id): RedirectResponse
     {
-        $uuid = Uuid::fromString($id);
+        $uuid = Ulid::fromString($id);
 
         $user = $this->security->getUser();
 

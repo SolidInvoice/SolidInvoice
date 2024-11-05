@@ -26,9 +26,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
-use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
-use Ramsey\Uuid\UuidInterface;
 use Serializable;
 use SolidInvoice\ClientBundle\Repository\ContactRepository;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
@@ -40,8 +37,11 @@ use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceContact;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Entity\QuoteContact;
 use Stringable;
+use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
+use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
 use function strtolower;
 
@@ -150,12 +150,12 @@ class Contact implements Serializable, Stringable
     use TimeStampable;
     use CompanyAware;
 
-    #[ORM\Column(name: 'id', type: UuidBinaryOrderedTimeType::NAME)]
+    #[ORM\Column(name: 'id', type: UlidType::NAME)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
+    #[ORM\CustomIdGenerator(class: UlidGenerator::class)]
     #[Serialize\Groups(['contact_api:read'])]
-    private ?UuidInterface $id = null;
+    private ?Ulid $id = null;
 
     #[ApiProperty(iris: ['https://schema.org/givenName'])]
     #[ORM\Column(name: 'firstName', type: Types::STRING, length: 125)]
@@ -243,7 +243,7 @@ class Contact implements Serializable, Stringable
         $this->quotes = new ArrayCollection();
     }
 
-    public function getId(): ?UuidInterface
+    public function getId(): ?Ulid
     {
         return $this->id;
     }
@@ -327,7 +327,7 @@ class Contact implements Serializable, Stringable
     }
 
     /**
-     * @return array<string, string|DateTimeInterface|UuidInterface|null>
+     * @return array<string, string|DateTimeInterface|Ulid|null>
      */
     public function __serialize(): array
     {
@@ -350,7 +350,7 @@ class Contact implements Serializable, Stringable
     }
 
     /**
-     * @param array<string, string|DateTimeInterface|UuidInterface|null> $data
+     * @param array<string, string|DateTimeInterface|Ulid|null> $data
      */
     public function __unserialize(array $data): void
     {

@@ -17,12 +17,12 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
-use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
-use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\UserBundle\Repository\UserInvitationRepository;
+use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Uid\Ulid;
 
 #[ORM\Table(name: UserInvitation::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: UserInvitationRepository::class)]
@@ -37,9 +37,9 @@ class UserInvitation
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
-    #[ORM\Column(type: UuidBinaryOrderedTimeType::NAME)]
-    private ?UuidInterface $id = null;
+    #[ORM\CustomIdGenerator(class: UlidGenerator::class)]
+    #[ORM\Column(type: UlidType::NAME)]
+    private ?Ulid $id = null;
 
     #[ORM\Column(type: Types::STRING, length: 255)]
     private string $email = '';
@@ -59,7 +59,7 @@ class UserInvitation
         $this->created = new DateTimeImmutable();
     }
 
-    public function getId(): ?UuidInterface
+    public function getId(): ?Ulid
     {
         return $this->id;
     }

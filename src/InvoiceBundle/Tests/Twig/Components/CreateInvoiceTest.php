@@ -13,12 +13,12 @@ namespace SolidInvoice\InvoiceBundle\Tests\Twig\Components;
 
 use Brick\Math\Exception\MathException;
 use DateTimeImmutable;
-use Ramsey\Uuid\Uuid;
 use SolidInvoice\CoreBundle\Test\LiveComponentTest;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Twig\Components\CreateInvoice;
 use SolidInvoice\TaxBundle\Entity\Tax;
+use Symfony\Component\Uid\Ulid;
 use Zenstruck\Foundry\Test\Factories;
 
 final class CreateInvoiceTest extends LiveComponentTest
@@ -72,7 +72,7 @@ final class CreateInvoiceTest extends LiveComponentTest
 
         (function (): void {
             /** @var Tax $this */
-            $this->id = Uuid::fromString('0f9e91e6-06ba-11ef-a331-5a2cf21a5680'); // @phpstan-ignore-line
+            $this->id = Ulid::fromString('0f9e91e6-06ba-11ef-a331-5a2cf21a5680'); // @phpstan-ignore-line
         })(...)->call($tax);
 
         $em->flush();

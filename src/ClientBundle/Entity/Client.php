@@ -25,9 +25,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Money\Currency;
-use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
-use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
-use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
@@ -37,9 +34,12 @@ use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use Stringable;
+use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute as Serialize;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
+use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
@@ -75,12 +75,12 @@ class Client implements Stringable
     use TimeStampable;
     use CompanyAware;
 
-    #[ORM\Column(name: 'id', type: UuidBinaryOrderedTimeType::NAME)]
+    #[ORM\Column(name: 'id', type: UlidType::NAME)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
+    #[ORM\CustomIdGenerator(class: UlidGenerator::class)]
     #[Serialize\Groups(['client_api:read'])]
-    private ?UuidInterface $id = null;
+    private ?Ulid $id = null;
 
     #[ApiProperty(iris: ['https://schema.org/name'])]
     #[ORM\Column(name: 'name', type: Types::STRING, length: 125)]
@@ -217,7 +217,7 @@ class Client implements Stringable
         $this->setCredit(new Credit());
     }
 
-    public function getId(): ?UuidInterface
+    public function getId(): ?Ulid
     {
         return $this->id;
     }

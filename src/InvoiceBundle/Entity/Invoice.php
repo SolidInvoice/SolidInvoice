@@ -31,12 +31,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Exception;
-use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
-use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
-use Ramsey\Uuid\Doctrine\UuidType;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
@@ -47,8 +41,12 @@ use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\InvoiceBundle\Traits\InvoiceStatusTrait;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\QuoteBundle\Entity\Quote;
+use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
+use Symfony\Component\Uid\Ulid;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: Invoice::TABLE_NAME)]
@@ -92,21 +90,21 @@ class Invoice extends BaseInvoice
     }
     use TimeStampable;
 
-    #[ORM\Column(name: 'id', type: UuidBinaryOrderedTimeType::NAME)]
+    #[ORM\Column(name: 'id', type: UlidType::NAME)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
+    #[ORM\CustomIdGenerator(class: UlidGenerator::class)]
     #[Groups(['invoice_api:read'])]
-    private ?UuidInterface $id = null;
+    private ?Ulid $id = null;
 
     #[ORM\Column(name: 'invoice_id', type: Types::STRING, length: 255)]
     #[Groups(['invoice_api:read', 'invoice_api:write'])]
     private string $invoiceId = '';
 
-    #[ORM\Column(name: 'uuid', type: UuidType::NAME, length: 36)]
+    #[ORM\Column(name: 'uuid', type: Types::STRING, length: 36)]
     #[Groups(['invoice_api:read'])]
     #[ApiProperty(writable: false)]
-    private ?UuidInterface $uuid = null;
+    private ?string $uuid = null;
 
     #[ApiProperty(
         example: '/api/clients/3fa85f64-5717-4562-b3fc-2c963f66afa6',
@@ -189,26 +187,22 @@ class Invoice extends BaseInvoice
         $this->users = new ArrayCollection();
         $this->balance = BigInteger::zero();
         $this->invoiceDate = new DateTimeImmutable();
-
-        try {
-            $this->setUuid(Uuid::uuid1());
-        } catch (Exception) {
-        }
+        $this->setUuid(Uuid::v7());
     }
 
-    public function getId(): ?UuidInterface
+    public function getId(): ?Ulid
     {
         return $this->id;
     }
 
-    public function getUuid(): UuidInterface
+    public function getUuid(): Uuid
     {
-        return $this->uuid;
+        return Uuid::fromString($this->uuid);
     }
 
-    public function setUuid(UuidInterface $uuid): self
+    public function setUuid(Uuid $uuid): self
     {
-        $this->uuid = $uuid;
+        $this->uuid = $uuid->toString();
         return $this;
     }
 
@@ -372,10 +366,7 @@ class Invoice extends BaseInvoice
         foreach ($lines as $line) {
             $this->lines->add(clone $line);
         }
-        try {
-            $this->setUuid(Uuid::uuid1());
-        } catch (Exception) {
-        }
+        $this->setUuid(Uuid::v7());
     }
 
     public function getInvoiceId(): string
@@ -390,7 +381,7 @@ class Invoice extends BaseInvoice
         return $this;
     }
 
-    public function setId(UuidInterface $id): self
+    public function setId(Ulid $id): self
     {
         $this->id = $id;
 

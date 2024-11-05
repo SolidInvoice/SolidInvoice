@@ -15,10 +15,10 @@ namespace SolidInvoice\CoreBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
-use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
+use Symfony\Bridge\Doctrine\Types\UlidType;
+use Symfony\Component\Uid\Ulid;
 
 /**
  * @extends ServiceEntityRepository<Company>
@@ -36,13 +36,13 @@ final class CompanyRepository extends ServiceEntityRepository
     {
         $company = $this->companySelector->getCompany();
 
-        if ($company instanceof UuidInterface) {
+        if ($company instanceof Ulid) {
             $this->createQueryBuilder('c')
                 ->update()
                 ->set('c.name', ':name')
                 ->where('c.id = :id')
                 ->setParameter('name', $value)
-                ->setParameter('id', $company, UuidBinaryOrderedTimeType::NAME)
+                ->setParameter('id', $company, UlidType::NAME)
                 ->getQuery()
                 ->execute();
         }

@@ -13,7 +13,6 @@ namespace SolidInvoice\QuoteBundle\Tests\Action;
 
 use DateTimeImmutable;
 use Psr\Log\NullLogger;
-use Ramsey\Uuid\Uuid;
 use ReflectionClass;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
@@ -27,6 +26,8 @@ use SolidInvoice\QuoteBundle\Test\Factory\QuoteFactory;
 use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Uid\Ulid;
+use Symfony\Component\Uid\Uuid;
 use Twig\Environment;
 use Zenstruck\Foundry\Test\Factories;
 
@@ -81,9 +82,9 @@ final class ViewTest extends KernelTestCase
             ])
             ->_real();
 
-        $uuid = Uuid::fromString('181aaf4a-0097-11ef-9b64-5a2cf21a5680');
+        $uuid = Ulid::fromString('181aaf4a-0097-11ef-9b64-5a2cf21a5680');
         $quote->setId($uuid)
-            ->setUuid($uuid)
+            ->setUuid(Uuid::fromString('181aaf4a-0097-11ef-9b64-5a2cf21a5680'))
             ->setQuoteId('QUOT-2021-0001')
         ;
 

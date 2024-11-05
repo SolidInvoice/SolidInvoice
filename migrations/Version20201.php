@@ -20,23 +20,16 @@ use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\Migrations\AbstractMigration;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
-use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
-use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use RuntimeException;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Bridge\Doctrine\Types\UlidType;
+use Symfony\Component\Uid\Ulid;
 use function array_flip;
 use function count;
 
-final class Version20201 extends AbstractMigration implements ContainerAwareInterface
+final class Version20201 extends AbstractMigration
 {
-    use ContainerAwareTrait;
-
     private Schema $schema;
 
     private Schema $fromSchema;
@@ -73,17 +66,17 @@ final class Version20201 extends AbstractMigration implements ContainerAwareInte
             ->dropPrimaryKey();
 
         $invoiceContact = $this->schema->getTable('invoice_contact');
-        $invoiceContact->addColumn('company_id', UuidBinaryOrderedTimeType::NAME, ['notnull' => false]);
+        $invoiceContact->addColumn('company_id', UlidType::NAME, ['notnull' => false]);
         $invoiceContact->addIndex(['invoice_id', 'company_id']);
         //$invoiceContact->setPrimaryKey(['invoice_id', 'contact_id', 'company_id']);
 
         $recurringInvoiceContact = $this->schema->getTable('recurringinvoice_contact');
-        $recurringInvoiceContact->addColumn('company_id', UuidBinaryOrderedTimeType::NAME, ['notnull' => false]);
+        $recurringInvoiceContact->addColumn('company_id', UlidType::NAME, ['notnull' => false]);
         $recurringInvoiceContact->addIndex(['recurringinvoice_id', 'company_id']);
         //$recurringInvoiceContact->setPrimaryKey(['recurringinvoice_id', 'contact_id', 'company_id']);
 
         $quoteContact = $this->schema->getTable('quote_contact');
-        $quoteContact->addColumn('company_id', UuidBinaryOrderedTimeType::NAME, ['notnull' => false]);
+        $quoteContact->addColumn('company_id', UlidType::NAME, ['notnull' => false]);
         $quoteContact->addIndex(['quote_id', 'company_id']);
         //$quoteContact->setPrimaryKey(['quote_id', 'contact_id', 'company_id']);
 
@@ -293,23 +286,21 @@ final class Version20201 extends AbstractMigration implements ContainerAwareInte
     {
         $table = $this->schema->getTable($tableName);
 
-        $table->addColumn($uuidColumnName, UuidBinaryOrderedTimeType::NAME, ['notnull' => true]);
+        $table->addColumn($uuidColumnName, UlidType::NAME, ['notnull' => true]);
 
         foreach ($foreignKeys as $fk) {
             $fkTable = $this->schema->getTable($fk['table']);
 
-            $fkTable->addColumn($fk['tmpKey'], UuidBinaryOrderedTimeType::NAME, ['notnull' => ! $this->foreignColumnShouldBeNullable($fk)]);
+            $fkTable->addColumn($fk['tmpKey'], UlidType::NAME, ['notnull' => ! $this->foreignColumnShouldBeNullable($fk)]);
         }
     }
 
     /**
-     * @return array<string, array<UuidInterface>>
+     * @return array<string, array<Ulid>>
      * @throws \Exception
      */
     private function generateUuidsToReplaceIds(string $tableName, string $uuidColumnName, bool $linkCompany = true): array
     {
-        $idGenerator = new UuidOrderedTimeGenerator();
-
         $fields = ['id'];
 
         if ($linkCompany) {
@@ -327,7 +318,7 @@ final class Version20201 extends AbstractMigration implements ContainerAwareInte
 
         foreach ($records as $record) {
             $id = $record['id'];
-            $uuid = $idGenerator->generateId($this->getEntityManager(), null);
+            $uuid = new Ulid();
 
             if ($linkCompany) {
                 $companyId = $record['company_id'];
@@ -342,7 +333,7 @@ final class Version20201 extends AbstractMigration implements ContainerAwareInte
                 $tableName,
                 [$uuidColumnName => $uuid],
                 $updateCriteria,
-                [$uuidColumnName => UuidBinaryOrderedTimeType::NAME]
+                [$uuidColumnName => UlidType::NAME]
             );
         }
 
@@ -351,7 +342,7 @@ final class Version20201 extends AbstractMigration implements ContainerAwareInte
 
     /**
      * @param array<array<string|array<string>>> $foreignKeys
-     * @param array<string, array<UuidInterface>> $idToUuidMap
+     * @param array<string, array<Ulid>> $idToUuidMap
      * @throws Exception
      */
     private function addUuidsToTablesWithFK(array $foreignKeys, array $idToUuidMap, bool $linkCompany = true): void
@@ -384,7 +375,7 @@ final class Version20201 extends AbstractMigration implements ContainerAwareInte
                     continue;
                 }
 
-                if ($linkCompany && Uuid::fromBytes($record['company_id'])->toString() === '00000000-0000-0000-0000-000000000000') {
+                if ($linkCompany && Ulid::fromString($record['company_id'])->toString() === '00000000-0000-0000-0000-000000000000') {
                     continue;
                 }
 
@@ -400,7 +391,7 @@ final class Version20201 extends AbstractMigration implements ContainerAwareInte
                     $uuid = $idToUuidMap[$record[$fk['key']]];
                 }
 
-                /** @var UuidInterface $uuid */
+                /** @var Ulid $uuid */
 
                 $this->connection->update(
                     $fk['table'],
@@ -409,7 +400,7 @@ final class Version20201 extends AbstractMigration implements ContainerAwareInte
                     ],
                     $queryPk,
                     [
-                        $fk['tmpKey'] => UuidBinaryOrderedTimeType::NAME,
+                        $fk['tmpKey'] => UlidType::NAME,
                     ]
                 );
             }
@@ -442,7 +433,7 @@ final class Version20201 extends AbstractMigration implements ContainerAwareInte
             $table = $this->schema->getTable($fk['table']);
             $table->dropColumn($fk['tmpKey']);
 
-            $table->addColumn($fk['key'], UuidBinaryOrderedTimeType::NAME, ['notnull' => ! $this->foreignColumnShouldBeNullable($fk)]);
+            $table->addColumn($fk['key'], UlidType::NAME, ['notnull' => ! $this->foreignColumnShouldBeNullable($fk)]);
         }
     }
 
@@ -460,7 +451,7 @@ final class Version20201 extends AbstractMigration implements ContainerAwareInte
         $this->persistChanges();
 
         $table->dropColumn($uuidColumnName);
-        $table->addColumn('id', UuidBinaryOrderedTimeType::NAME, ['notnull' => true]);
+        $table->addColumn('id', UlidType::NAME, ['notnull' => true]);
         $table->setPrimaryKey(['id']);
     }
 
@@ -510,11 +501,6 @@ final class Version20201 extends AbstractMigration implements ContainerAwareInte
         }
 
         $this->fromSchema = clone $this->schema;
-    }
-
-    private function getEntityManager(): EntityManagerInterface
-    {
-        return $this->container->get('doctrine.orm.entity_manager');
     }
 
     /**

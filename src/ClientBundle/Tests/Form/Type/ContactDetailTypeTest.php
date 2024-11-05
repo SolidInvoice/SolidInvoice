@@ -17,7 +17,6 @@ use Faker\Factory;
 use SolidInvoice\ClientBundle\Entity\AdditionalContactDetail;
 use SolidInvoice\ClientBundle\Entity\ContactType;
 use SolidInvoice\ClientBundle\Form\Type\ContactDetailType;
-use SolidInvoice\CoreBundle\Form\Type\UuidEntityType;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use Symfony\Component\Form\FormExtensionInterface;
@@ -55,7 +54,6 @@ class ContactDetailTypeTest extends FormTestCase
             // register the type instances with the PreloadedExtension
             new PreloadedExtension([
                 new ContactDetailType(),
-                new UuidEntityType($this->registry),
             ], []),
         ];
     }

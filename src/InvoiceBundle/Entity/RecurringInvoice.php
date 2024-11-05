@@ -26,16 +26,16 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
-use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
-use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
+use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
+use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: RecurringInvoice::TABLE_NAME)]
@@ -76,12 +76,12 @@ class RecurringInvoice extends BaseInvoice
     use Archivable;
     use TimeStampable;
 
-    #[ORM\Column(name: 'id', type: UuidBinaryOrderedTimeType::NAME)]
+    #[ORM\Column(name: 'id', type: UlidType::NAME)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
+    #[ORM\CustomIdGenerator(class: UlidGenerator::class)]
     #[Serialize\Groups(['recurring_invoice_api:read'])]
-    private ?UuidInterface $id = null;
+    private ?Ulid $id = null;
 
     #[ApiProperty(
         example: '/api/clients/3fa85f64-5717-4562-b3fc-2c963f66afa6',
@@ -134,7 +134,7 @@ class RecurringInvoice extends BaseInvoice
         parent::__construct();
     }
 
-    public function getId(): ?UuidInterface
+    public function getId(): ?Ulid
     {
         return $this->id;
     }

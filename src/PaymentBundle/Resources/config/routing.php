@@ -30,7 +30,7 @@ return static function (RoutingConfigurator $routingConfigurator): void {
     $routingConfigurator
         ->add('_payments_create', '/create/{uuid}')
         ->controller(Prepare::class)
-        ->requirements(['uuid' => '[a-zA-Z0-9-]{36}']);
+        /*->requirements(['uuid' => '[a-zA-Z0-9-]{36}'])*/;
 
     $routingConfigurator
         ->add('_payments_done', '/done')

@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Entity;
 
 use Brick\Math\BigNumber;
-use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\TaxBundle\Entity\Tax;
+use Symfony\Component\Uid\Ulid;
 
 interface LineInterface
 {
-    public function getId(): UuidInterface;
+    public function getId(): Ulid;
 
     public function setDescription(string $description): self;
 

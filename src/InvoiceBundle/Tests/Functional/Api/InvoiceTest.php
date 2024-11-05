@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Tests\Functional\Api;
 
 use DateTime;
-use Ramsey\Uuid\Uuid;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
@@ -22,6 +21,8 @@ use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
+use Symfony\Component\Uid\Ulid;
+use Symfony\Component\Uid\Uuid;
 use Zenstruck\Foundry\Persistence\Proxy;
 use Zenstruck\Foundry\Test\Factories;
 use function array_map;
@@ -66,9 +67,9 @@ final class InvoiceTest extends ApiTestCase
 
         $result = $this->requestPost('/api/invoices', $data);
 
-        self::assertTrue(Uuid::isValid($result['id']));
+        self::assertTrue(Ulid::isValid($result['id']));
         self::assertTrue(Uuid::isValid($result['uuid']));
-        self::assertTrue(Uuid::isValid($result['lines'][0]['id']));
+        self::assertTrue(Ulid::isValid($result['lines'][0]['id']));
 
         self::assertJsonContains([
             '@context' => $this->getContextForResource($this->getResourceClass()),

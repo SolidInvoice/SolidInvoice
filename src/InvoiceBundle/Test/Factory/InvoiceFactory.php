@@ -13,11 +13,11 @@ namespace SolidInvoice\InvoiceBundle\Test\Factory;
 
 use Brick\Math\BigInteger;
 use Brick\Math\Exception\MathException;
-use Ramsey\Uuid\Uuid;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
+use Symfony\Component\Uid\Uuid;
 use Zenstruck\Foundry\FactoryCollection;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 use Zenstruck\Foundry\Persistence\Proxy;
@@ -70,7 +70,7 @@ final class InvoiceFactory extends PersistentProxyObjectFactory
     {
         return [
             'client' => ClientFactory::new(),
-            'uuid' => Uuid::fromString(self::faker()->uuid()),
+            // 'uuid' => Uuid::v7(),
             'due' => self::faker()->dateTime(),
             'paidDate' => self::faker()->dateTime(),
             'status' => self::faker()->word(),

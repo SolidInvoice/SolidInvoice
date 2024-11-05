@@ -13,14 +13,14 @@ namespace SolidInvoice\NotificationBundle\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
-use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
-use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\NotificationBundle\Repository\TransportSettingRepository;
 use SolidInvoice\UserBundle\Entity\User;
 use Stringable;
+use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TransportSettingRepository::class)]
@@ -34,10 +34,10 @@ class TransportSetting implements Stringable
     use CompanyAware;
 
     #[ORM\Id]
-    #[ORM\Column(type: UuidBinaryOrderedTimeType::NAME)]
+    #[ORM\Column(type: UlidType::NAME)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
-    private UuidInterface $id;
+    #[ORM\CustomIdGenerator(class: UlidGenerator::class)]
+    private Ulid $id;
 
     #[ORM\Column(type: Types::STRING, length: 255)]
     #[Assert\NotBlank()]
@@ -56,7 +56,7 @@ class TransportSetting implements Stringable
     #[ORM\ManyToOne(targetEntity: User::class)]
     private User $user;
 
-    public function getId(): UuidInterface
+    public function getId(): Ulid
     {
         return $this->id;
     }

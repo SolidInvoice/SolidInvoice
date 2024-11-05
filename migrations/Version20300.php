@@ -14,54 +14,70 @@ declare(strict_types=1);
 namespace DoctrineMigrations;
 
 use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\OraclePlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SqlitePlatform;
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
-use Ramsey\Uuid\Codec\OrderedTimeCodec;
 use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidFactory;
 use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use SolidInvoice\CoreBundle\Form\Type\BillingIdConfigurationType;
 use SolidInvoice\NotificationBundle\Entity\TransportSetting;
 use SolidInvoice\NotificationBundle\Entity\UserNotification;
 use SolidInvoice\PaymentBundle\Entity\Payment;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Uid\Ulid;
+use Symfony\Component\Uid\UuidV1;
 
-final class Version20300 extends AbstractMigration implements ContainerAwareInterface
+final class Version20300 extends AbstractMigration
 {
-    use ContainerAwareTrait;
+    /**
+     * @var array<string, list<string>>
+     */
+    private array $columnsToUpdate = [];
 
     public function preUp(Schema $schema): void
     {
-        $this
-            ->connection
+        $this->connection
             ->update('client_credit', ['value_amount' => 0], ['value_amount' => null]);
-        $this
-            ->connection
+
+        $this->connection
             ->update('invoices', ['discount_valueMoney_amount' => 0], ['discount_valueMoney_amount' => null]);
-        $this
-            ->connection
+
+        $this->connection
             ->update('quotes', ['discount_valueMoney_amount' => 0], ['discount_valueMoney_amount' => null]);
-        $this
-            ->connection
+
+        $this->connection
             ->update('recurring_invoices', ['discount_valueMoney_amount' => 0], ['discount_valueMoney_amount' => null]);
 
-        $this
-            ->connection
+        $this->connection
             ->delete('invoice_contact', ['company_id' => null]);
 
-        $this
-            ->connection
+        $this->connection
             ->delete('quote_contact', ['company_id' => null]);
 
-        $this
-            ->connection
+        $this->connection
             ->delete('recurringinvoice_contact', ['company_id' => null]);
+
+        if ($this->platform instanceof MySQLPlatform) {
+            $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS=0;');
+        } elseif ($this->platform instanceof PostgreSQLPlatform) {
+            $this->connection->executeQuery('SET CONSTRAINTS ALL DEFERRED;');
+        } elseif ($this->platform instanceof SQLitePlatform) {
+            $this->connection->executeQuery('PRAGMA foreign_keys = OFF;');
+        } elseif ($this->platform instanceof OraclePlatform) {
+            $this->connection->executeQuery('SET CONSTRAINTS ALL DEFERRED;');
+        } elseif ($this->platform instanceof SQLServerPlatform) {
+            foreach ($schema->getTables() as $table) {
+                $this->connection->executeQuery("ALTER TABLE {$table->getName()} NOCHECK CONSTRAINT ALL;");
+            }
+        }
     }
 
     public function up(Schema $schema): void
@@ -107,31 +123,6 @@ final class Version20300 extends AbstractMigration implements ContainerAwareInte
         $quoteLines->dropColumn('price_currency');
         $quoteLines->dropColumn('total_currency');
 
-        $this->renameIndex($schema, 'addresses', 'fk_6fca751619eb6921');
-        $this->renameIndex($schema, 'contacts', 'fk_3340157319eb6921');
-        $this->renameIndex($schema, 'contact_details', 'fk_e8092a0b5f63ad12');
-        $this->renameIndex($schema, 'contact_details', 'fk_e8092a0be7a1254a');
-        $this->renameIndex($schema, 'recurring_invoices', 'fk_fe93e28419eb6921');
-        $this->renameIndex($schema, 'recurringinvoice_contact', 'fk_1673913ee7a1254a');
-        $this->renameIndex($schema, 'recurringinvoice_contact', 'idx_1673913ee31ccdf979b1ad6');
-        $this->renameIndex($schema, 'user_invitations', 'fk_8a3cd93ba7b4a7e3');
-        $this->renameIndex($schema, 'api_token_history', 'fk_61d8dc4441dee7b9');
-        $this->renameIndex($schema, 'api_tokens', 'fk_2cad560ea76ed395');
-        $this->renameIndex($schema, 'quote_lines', 'fk_42fe01f7b2a824d8');
-        $this->renameIndex($schema, 'quote_lines', 'fk_42fe01f7db805178');
-        $this->renameIndex($schema, 'payments', 'fk_65d29b322989f1fd');
-        $this->renameIndex($schema, 'payments', 'fk_65d29b32c7440455');
-        $this->renameIndex($schema, 'payments', 'fk_65d29b3219883967');
-        $this->renameIndex($schema, 'invoice_contact', 'fk_bebbd0ebe7a1254a');
-        $this->renameIndex($schema, 'invoice_contact', 'idx_bebbd0eb2989f1fd979b1ad6');
-        $this->renameIndex($schema, 'invoices', 'fk_6a2f2f9519eb6921');
-        $this->renameIndex($schema, 'invoice_lines', 'fk_72dbdc232989f1fd');
-        $this->renameIndex($schema, 'invoice_lines', 'fk_72dbdc23416ccf0f');
-        $this->renameIndex($schema, 'invoice_lines', 'fk_72dbdc23b2a824d8');
-        $this->renameIndex($schema, 'quotes', 'fk_a1b588c519eb6921');
-        $this->renameIndex($schema, 'quote_contact', 'fk_a38d4ebce7a1254a');
-        $this->renameIndex($schema, 'quote_contact', 'idx_a38d4ebcdb805178979b1ad6');
-
         $this->setColumnType($schema, 'client_credit', 'value_amount', BigIntegerType::NAME);
         $this->setColumnType($schema, 'recurring_invoices', 'total_amount', BigIntegerType::NAME);
         $this->setColumnType($schema, 'recurring_invoices', 'baseTotal_amount', BigIntegerType::NAME);
@@ -150,13 +141,13 @@ final class Version20300 extends AbstractMigration implements ContainerAwareInte
         $this->setColumnType($schema, 'invoice_lines', 'total_amount', BigIntegerType::NAME);
         $this->setColumnType($schema, 'quote_lines', 'price_amount', BigIntegerType::NAME);
         $this->setColumnType($schema, 'quote_lines', 'total_amount', BigIntegerType::NAME);
-        $this->setColumnType($schema, 'recurringinvoice_contact', 'company_id', UuidBinaryOrderedTimeType::NAME);
-        $this->setColumnType($schema, 'invoice_contact', 'invoice_id', UuidBinaryOrderedTimeType::NAME);
-        $this->setColumnType($schema, 'invoice_contact', 'contact_id', UuidBinaryOrderedTimeType::NAME);
-        $this->setColumnType($schema, 'invoice_contact', 'company_id', UuidBinaryOrderedTimeType::NAME);
-        $this->setColumnType($schema, 'quote_contact', 'quote_id', UuidBinaryOrderedTimeType::NAME);
-        $this->setColumnType($schema, 'quote_contact', 'contact_id', UuidBinaryOrderedTimeType::NAME);
-        $this->setColumnType($schema, 'quote_contact', 'company_id', UuidBinaryOrderedTimeType::NAME);
+        $this->setColumnType($schema, 'recurringinvoice_contact', 'company_id', UlidType::NAME);
+        $this->setColumnType($schema, 'invoice_contact', 'invoice_id', UlidType::NAME);
+        $this->setColumnType($schema, 'invoice_contact', 'contact_id', UlidType::NAME);
+        $this->setColumnType($schema, 'invoice_contact', 'company_id', UlidType::NAME);
+        $this->setColumnType($schema, 'quote_contact', 'quote_id', UlidType::NAME);
+        $this->setColumnType($schema, 'quote_contact', 'contact_id', UlidType::NAME);
+        $this->setColumnType($schema, 'quote_contact', 'company_id', UlidType::NAME);
 
         $contactTypes->dropIndex('UNIQ_741A993F5E237E06979B1AD6');
         $contactTypes->addUniqueIndex(['name', 'company_id']);
@@ -169,13 +160,10 @@ final class Version20300 extends AbstractMigration implements ContainerAwareInte
         $invoices->addUniqueIndex(['quote_id']);
         $invoices->addIndex(['quote_id']);
 
-        //$recurringInvoiceContact->setPrimaryKey(['recurringinvoice_id', 'contact_id']);
         $recurringInvoiceContact->addForeignKeyConstraint('companies', ['company_id'], ['id']);
 
-        //$invoiceContact->setPrimaryKey(['invoice_id', 'contact_id', 'company_id']);
         $invoiceContact->addForeignKeyConstraint('companies', ['company_id'], ['id']);
 
-        //$quoteContact->setPrimaryKey(['quote_id', 'contact_id', 'company_id']);
         $quoteContact->addForeignKeyConstraint('companies', ['company_id'], ['id']);
 
         $users->addUniqueIndex(['email']);
@@ -195,20 +183,20 @@ final class Version20300 extends AbstractMigration implements ContainerAwareInte
 
         $transportSettingsTable = $schema->createTable(TransportSetting::TABLE_NAME);
 
-        $transportSettingsTable->addColumn('id', UuidBinaryOrderedTimeType::NAME);
+        $transportSettingsTable->addColumn('id', UlidType::NAME);
         $transportSettingsTable->addColumn('name', Types::STRING, ['length' => 255]);
         $transportSettingsTable->addColumn('transport', Types::STRING, ['length' => 255]);
         $transportSettingsTable->addColumn('settings', Types::JSON);
-        $transportSettingsTable->addColumn('user_id', UuidBinaryOrderedTimeType::NAME);
-        $transportSettingsTable->addColumn('company_id', UuidBinaryOrderedTimeType::NAME);
+        $transportSettingsTable->addColumn('user_id', UlidType::NAME);
+        $transportSettingsTable->addColumn('company_id', UlidType::NAME);
         $transportSettingsTable->setPrimaryKey(['id']);
         $transportSettingsTable->addForeignKeyConstraint('users', ['user_id'], ['id']);
         $transportSettingsTable->addForeignKeyConstraint('companies', ['company_id'], ['id']);
 
         $userNotificationTable = $schema->createTable(UserNotification::TABLE_NAME);
-        $userNotificationTable->addColumn('id', UuidBinaryOrderedTimeType::NAME);
-        $userNotificationTable->addColumn('user_id', UuidBinaryOrderedTimeType::NAME);
-        $userNotificationTable->addColumn('company_id', UuidBinaryOrderedTimeType::NAME);
+        $userNotificationTable->addColumn('id', UlidType::NAME);
+        $userNotificationTable->addColumn('user_id', UlidType::NAME);
+        $userNotificationTable->addColumn('company_id', UlidType::NAME);
         $userNotificationTable->addColumn('event', Types::STRING, ['length' => 255]);
         $userNotificationTable->addColumn('email', Types::BOOLEAN);
         $userNotificationTable->setPrimaryKey(['id']);
@@ -217,8 +205,8 @@ final class Version20300 extends AbstractMigration implements ContainerAwareInte
 
         $userNotificationTransports = $schema->createTable('usernotification_transportsetting');
 
-        $userNotificationTransports->addColumn('usernotification_id', UuidBinaryOrderedTimeType::NAME);
-        $userNotificationTransports->addColumn('transportsetting_id', UuidBinaryOrderedTimeType::NAME);
+        $userNotificationTransports->addColumn('usernotification_id', UlidType::NAME);
+        $userNotificationTransports->addColumn('transportsetting_id', UlidType::NAME);
         $userNotificationTransports->setPrimaryKey(['usernotification_id', 'transportsetting_id']);
         $userNotificationTransports->addForeignKeyConstraint(UserNotification::TABLE_NAME, ['usernotification_id'], ['id'], ['onDelete' => 'CASCADE']);
         $userNotificationTransports->addForeignKeyConstraint(TransportSetting::TABLE_NAME, ['transportsetting_id'], ['id'], ['onDelete' => 'CASCADE']);
@@ -227,6 +215,18 @@ final class Version20300 extends AbstractMigration implements ContainerAwareInte
 
         $payments->addColumn('reference', Types::STRING, ['length' => 255, 'notnull' => false]);
         $payments->addColumn('notes', Types::TEXT, ['notnull' => false]);
+
+        $type = Type::getType(UlidType::NAME);
+
+        foreach ($schema->getTables() as $table) {
+            foreach ($table->getColumns() as $column) {
+                if ($column->getType() instanceof UuidBinaryOrderedTimeType) {
+                    $column->setType($type);
+
+                    $this->columnsToUpdate[$table->getName()][] = $column->getName();
+                }
+            }
+        }
     }
 
     public function postUp(Schema $schema): void
@@ -239,15 +239,12 @@ final class Version20300 extends AbstractMigration implements ContainerAwareInte
             ->from('companies')
             ->executeQuery();
 
-        $codec = new OrderedTimeCodec((new UuidFactory())->getUuidBuilder());
-
         foreach ($companies->iterateAssociative() as $company) {
-            $this
-                ->connection
+            $this->connection
                 ->insert(
                     'app_config',
                     [
-                        'id' => $codec->encodeBinary(Uuid::uuid1()),
+                        'id' => (new Ulid())->toBinary(),
                         'company_id' => $company['id'],
                         'setting_key' => 'invoice/id_generation/strategy',
                         'setting_value' => 'auto_increment',
@@ -256,12 +253,11 @@ final class Version20300 extends AbstractMigration implements ContainerAwareInte
                     ]
                 );
 
-            $this
-                ->connection
+            $this->connection
                 ->insert(
                     'app_config',
                     [
-                        'id' => $codec->encodeBinary(Uuid::uuid1()),
+                        'id' => (new Ulid())->toBinary(),
                         'company_id' => $company['id'],
                         'setting_key' => 'invoice/id_generation/id_prefix',
                         'setting_value' => '',
@@ -270,12 +266,11 @@ final class Version20300 extends AbstractMigration implements ContainerAwareInte
                     ]
                 );
 
-            $this
-                ->connection
+            $this->connection
                 ->insert(
                     'app_config',
                     [
-                        'id' => $codec->encodeBinary(Uuid::uuid1()),
+                        'id' => (new Ulid())->toBinary(),
                         'company_id' => $company['id'],
                         'setting_key' => 'invoice/id_generation/id_suffix',
                         'setting_value' => '',
@@ -284,12 +279,11 @@ final class Version20300 extends AbstractMigration implements ContainerAwareInte
                     ]
                 );
 
-            $this
-                ->connection
+            $this->connection
                 ->insert(
                     'app_config',
                     [
-                        'id' => $codec->encodeBinary(Uuid::uuid1()),
+                        'id' => (new Ulid())->toBinary(),
                         'company_id' => $company['id'],
                         'setting_key' => 'quote/id_generation/strategy',
                         'setting_value' => 'auto_increment',
@@ -298,12 +292,11 @@ final class Version20300 extends AbstractMigration implements ContainerAwareInte
                     ]
                 );
 
-            $this
-                ->connection
+            $this->connection
                 ->insert(
                     'app_config',
                     [
-                        'id' => $codec->encodeBinary(Uuid::uuid1()),
+                        'id' => (new Ulid())->toBinary(),
                         'company_id' => $company['id'],
                         'setting_key' => 'quote/id_generation/id_prefix',
                         'setting_value' => '',
@@ -312,12 +305,11 @@ final class Version20300 extends AbstractMigration implements ContainerAwareInte
                     ]
                 );
 
-            $this
-                ->connection
+            $this->connection
                 ->insert(
                     'app_config',
                     [
-                        'id' => $codec->encodeBinary(Uuid::uuid1()),
+                        'id' => (new Ulid())->toBinary(),
                         'company_id' => $company['id'],
                         'setting_key' => 'quote/id_generation/id_suffix',
                         'setting_value' => '',
@@ -328,29 +320,51 @@ final class Version20300 extends AbstractMigration implements ContainerAwareInte
         }
 
         // Set invoice date as created date for all existing invoices
-        $this
-            ->connection
+        $this->connection
             ->executeStatement('UPDATE invoices SET invoice_date = created');
 
-        $this
-            ->connection
+        $this->connection
             ->update('invoice_lines', ['type' => 'invoice'], ['recurringInvoice_id' => null]);
 
-        $this
-            ->connection
+        $this->connection
             ->update('invoice_lines', ['type' => 'recurring_invoice'], ['invoice_id' => null]);
-    }
 
-    /**
-     * @throws SchemaException
-     */
-    private function renameIndex(Schema $schema, string $tableName, string $from): void
-    {
-        $table = $schema->getTable($tableName);
-        $existingIndex = $table->getIndex($from);
+        if ($this->columnsToUpdate !== [] && Type::hasType(UuidBinaryOrderedTimeType::NAME)) {
+            /** @var UuidBinaryOrderedTimeType $type */
+            $type = Type::getType(UuidBinaryOrderedTimeType::NAME);
 
-        $table->dropIndex($from);
-        $table->addIndex($existingIndex->getColumns(), null, $existingIndex->getFlags(), $existingIndex->getOptions());
+            foreach ($this->columnsToUpdate as $table => $columns) {
+                $records = $this->connection->createQueryBuilder()
+                    ->select(...$columns)
+                    ->from($table)
+                    ->fetchAllAssociative();
+
+                foreach ($records as $record) {
+                    foreach ($record as $column => $id) {
+
+                        if ($id === null) {
+                            continue;
+                        }
+
+                        $originalId = $type->convertToPHPValue($id, $this->platform);
+
+                        $convertedId = Ulid::fromRfc4122(UuidV1::fromString($originalId->toString())->toV7()->toRfc4122())->toBinary();
+
+                        $this->connection->update($table, [$column => $convertedId], [$column => $id]);
+                    }
+                }
+            }
+
+            if ($this->platform instanceof MySQLPlatform) {
+                $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS=1;');
+            } elseif ($this->platform instanceof SQLitePlatform) {
+                $this->connection->executeQuery('PRAGMA foreign_keys = ON;');
+            } elseif ($this->platform instanceof SQLServerPlatform) {
+                foreach ($schema->getTables() as $table) {
+                    $this->connection->executeQuery("ALTER TABLE {$table->getName()} CHECK CONSTRAINT ALL;");
+                }
+            }
+        }
     }
 
     /**

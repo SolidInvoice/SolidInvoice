@@ -14,15 +14,12 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Tests;
 
 use Doctrine\DBAL\Exception;
-use Doctrine\DBAL\Types\Type as DoctrineType;
 use Faker\Factory;
 use Faker\Generator;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use Money\Currency;
-use Ramsey\Uuid\Doctrine\UuidType;
 use SolidInvoice\CoreBundle\Form\Extension\FormHelpExtension;
-use SolidInvoice\CoreBundle\Form\Type\BaseEntityAutocompleteType;
 use SolidInvoice\CoreBundle\Form\Type\ImageUploadType;
 use SolidInvoice\CoreBundle\Form\Type\Select2Type;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
@@ -46,6 +43,7 @@ use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\UX\Autocomplete\Form\BaseEntityAutocompleteType;
 
 abstract class FormTestCase extends KernelTestCase
 {
@@ -153,10 +151,6 @@ abstract class FormTestCase extends KernelTestCase
      */
     private function getInternalExtension(): array
     {
-        if (! DoctrineType::hasType('uuid')) {
-            DoctrineType::addType('uuid', UuidType::class);
-        }
-
         $type = new EntityType($this->registry);
         $moneyType = new HiddenMoneyType();
 

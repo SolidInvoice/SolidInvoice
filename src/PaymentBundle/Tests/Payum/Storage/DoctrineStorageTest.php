@@ -17,9 +17,9 @@ use Doctrine\Persistence\Mapping\ClassMetadata;
 use Doctrine\Persistence\ObjectManager;
 use LogicException;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid;
 use SolidInvoice\PaymentBundle\Payum\Storage\DoctrineStorage;
 use stdClass;
+use Symfony\Component\Uid\Ulid;
 
 final class DoctrineStorageTest extends TestCase
 {
@@ -56,7 +56,7 @@ final class DoctrineStorageTest extends TestCase
             ->with(stdClass::class)
             ->willReturn($classMetadata);
 
-        $uuid = Uuid::uuid4();
+        $uuid = new Ulid();
 
         $classMetadata->expects(self::once())
             ->method('getIdentifierValues')

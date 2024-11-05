@@ -15,7 +15,6 @@ namespace SolidInvoice\InvoiceBundle\Form\Handler;
 
 use Brick\Math\Exception\MathException;
 use Generator;
-use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
@@ -41,6 +40,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Workflow\WorkflowInterface;
 
 abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandlerResponseInterface, FormHandlerSuccessInterface, FormHandlerOptionsResolver, FormHandlerFailInterface
@@ -69,7 +69,7 @@ abstract class AbstractInvoiceHandler implements FormHandlerInterface, FormHandl
         $action = $form->getRequest()->request->get('save');
         $isRecurring = $form->getOptions()->get('recurring');
 
-        if (! $data->getId() instanceof UuidInterface) {
+        if (! $data->getId() instanceof Ulid) {
             ($isRecurring ? $this->recurringInvoiceStateMachine : $this->invoiceStateMachine)->apply($data, Graph::TRANSITION_NEW);
         }
 

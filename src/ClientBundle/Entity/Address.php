@@ -23,15 +23,15 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
-use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
-use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Stringable;
+use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
+use Symfony\Component\Uid\Ulid;
 
 #[ORM\Table(name: Address::TABLE_NAME)]
 #[ORM\Entity]
@@ -81,12 +81,12 @@ class Address implements Stringable
     use TimeStampable;
     use CompanyAware;
 
-    #[ORM\Column(name: 'id', type: UuidBinaryOrderedTimeType::NAME)]
+    #[ORM\Column(name: 'id', type: UlidType::NAME)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
+    #[ORM\CustomIdGenerator(class: UlidGenerator::class)]
     #[Groups(['address_api:read'])]
-    private ?UuidInterface $id = null;
+    private ?Ulid $id = null;
 
     #[ORM\Column(name: 'street1', type: Types::STRING, nullable: true)]
     #[Groups(['address_api:read', 'address_api:write'])]
@@ -121,7 +121,7 @@ class Address implements Stringable
     #[ApiProperty(writable: false, writableLink: false, example: '/api/clients/3fa85f64-5717-4562-b3fc-2c963f66afa6')]
     private ?Client $client = null;
 
-    public function getId(): ?UuidInterface
+    public function getId(): ?Ulid
     {
         return $this->id;
     }

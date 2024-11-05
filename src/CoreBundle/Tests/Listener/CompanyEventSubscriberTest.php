@@ -21,15 +21,12 @@ use Doctrine\ORM\Query\FilterCollection;
 use Doctrine\Persistence\ManagerRegistry;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Codec\OrderedTimeCodec;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidFactory;
-use Ramsey\Uuid\UuidInterface;
 use ReflectionClass;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Listener\CompanyEventSubscriber;
 use SolidInvoice\UserBundle\Entity\User;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -38,7 +35,7 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Security;
-use function assert;
+use Symfony\Component\Uid\Ulid;
 
 /**
  * @covers \SolidInvoice\CoreBundle\Listener\CompanyEventSubscriber
@@ -97,7 +94,7 @@ final class CompanyEventSubscriberTest extends TestCase
         $company = new Company();
         $user->addCompany($company);
 
-        $this->setCompanyId($company, Uuid::uuid1());
+        $this->setCompanyId($company, new Ulid());
 
         $security
             ->shouldReceive('getUser')
@@ -192,7 +189,7 @@ final class CompanyEventSubscriberTest extends TestCase
         $router->shouldNotReceive('generate');
 
         $company = new Company();
-        $this->setCompanyId($company, Uuid::uuid1());
+        $this->setCompanyId($company, new Ulid());
         $filter = $this->expectSwitchCompanyCalls($registry, $company);
 
         $session = new Session(new MockArraySessionStorage());
@@ -236,11 +233,6 @@ final class CompanyEventSubscriberTest extends TestCase
             }
         };
 
-        $factory = clone Uuid::getFactory();
-        assert($factory instanceof UuidFactory);
-
-        $codec = new OrderedTimeCodec($factory->getUuidBuilder());
-
         $registry
             ->shouldReceive('getManager')
             ->once()
@@ -270,17 +262,16 @@ final class CompanyEventSubscriberTest extends TestCase
         $connection
             ->shouldReceive('quote')
             ->once()
-            ->with($codec->encodeBinary($company->getId()), 'string')
+            ->with($company->getId(), UlidType::NAME)
             ->andReturn($company->getId()->toString());
 
         return $filter;
     }
 
-    private function setCompanyId(Company $company, UuidInterface $id): void
+    private function setCompanyId(Company $company, Ulid $id): void
     {
         $ref = new ReflectionClass($company);
         $property = $ref->getProperty('id');
-        $property->setAccessible(true);
         $property->setValue($company, $id);
     }
 }

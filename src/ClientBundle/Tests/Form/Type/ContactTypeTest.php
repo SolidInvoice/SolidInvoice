@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Tests\Form\Type;
 
-use Ramsey\Uuid\Uuid;
 use ReflectionException;
 use ReflectionProperty;
 use SolidInvoice\ClientBundle\Entity;
@@ -22,6 +21,7 @@ use SolidInvoice\ClientBundle\Form\Type\ContactDetailType;
 use SolidInvoice\ClientBundle\Form\Type\ContactType;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use Symfony\Component\Form\PreloadedExtension;
+use Symfony\Component\Uid\Ulid;
 
 class ContactTypeTest extends FormTestCase
 {
@@ -54,8 +54,7 @@ class ContactTypeTest extends FormTestCase
         // create a type instance with the mocked dependencies
         $contactType = new Entity\ContactType();
         $ref = new ReflectionProperty($contactType, 'id');
-        $ref->setAccessible(true);
-        $ref->setValue($contactType, Uuid::uuid1());
+        $ref->setValue($contactType, new Ulid());
 
         return [
             // register the type instances with the PreloadedExtension

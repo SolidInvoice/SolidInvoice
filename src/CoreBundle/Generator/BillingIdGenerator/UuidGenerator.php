@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\UuidV7;
 
 final class UuidGenerator implements IdGeneratorInterface
 {
@@ -29,6 +29,6 @@ final class UuidGenerator implements IdGeneratorInterface
 
     public function generate(object $entity, array $options): string
     {
-        return Uuid::uuid7()->toString();
+        return UuidV7::generate();
     }
 }

@@ -19,7 +19,6 @@ use Money\Currency;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Form\Type\ContactDetailType;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
-use SolidInvoice\CoreBundle\Form\Type\UuidEntityType;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator\IdGeneratorInterface;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
@@ -223,7 +222,6 @@ final class QuoteCreateHandlerTest extends FormHandlerTestCase
                     new QuoteType($systemConfig, $this->registry, new BillingIdGenerator(new ServiceLocator(['random_number' => static fn () => $randomNumberGenerator]), $systemConfig)),
                     new ItemType($this->registry),
                     new DiscountType($systemConfig),
-                    new UuidEntityType($this->registry),
                 ],
                 []
             ),

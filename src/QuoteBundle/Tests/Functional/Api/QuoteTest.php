@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\QuoteBundle\Tests\Functional\Api;
 
 use DateTime;
-use Ramsey\Uuid\Uuid;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
@@ -22,6 +21,8 @@ use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\QuoteBundle\Entity\Line;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Test\Factory\QuoteFactory;
+use Symfony\Component\Uid\Ulid;
+use Symfony\Component\Uid\Uuid;
 use Zenstruck\Foundry\Persistence\Proxy;
 use Zenstruck\Foundry\Test\Factories;
 use function array_map;
@@ -65,9 +66,9 @@ final class QuoteTest extends ApiTestCase
 
         $result = $this->requestPost('/api/quotes', $data);
 
-        self::assertTrue(Uuid::isValid($result['id']));
+        self::assertTrue(Ulid::isValid($result['id']));
         self::assertTrue(Uuid::isValid($result['uuid']));
-        self::assertTrue(Uuid::isValid($result['lines'][0]['id']));
+        self::assertTrue(Ulid::isValid($result['lines'][0]['id']));
 
         self::assertJsonContains([
             '@context' => $this->getContextForResource($this->getResourceClass()),

@@ -20,9 +20,7 @@ use Mockery as M;
 use Money\Currency;
 use SolidInvoice\ClientBundle\Form\Type\ContactDetailType;
 use SolidInvoice\CoreBundle\Form\Extension\FormHelpExtension;
-use SolidInvoice\CoreBundle\Form\Type\BaseEntityAutocompleteType;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
-use SolidInvoice\CoreBundle\Form\Type\UuidEntityType;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
@@ -46,6 +44,7 @@ use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\UX\Autocomplete\Checksum\ChecksumCalculator;
 use Symfony\UX\Autocomplete\Form\AutocompleteChoiceTypeExtension;
+use Symfony\UX\Autocomplete\Form\BaseEntityAutocompleteType;
 
 abstract class FormHandlerTestCase extends BaseTestCase
 {
@@ -86,7 +85,6 @@ abstract class FormHandlerTestCase extends BaseTestCase
                     new QuoteItemType($this->registry),
                     new DiscountType($systemConfig),
                     new BaseEntityAutocompleteType($this->createMock(UrlGeneratorInterface::class)),
-                    new UuidEntityType($this->registry),
                 ],
                 [
                     [

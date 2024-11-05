@@ -15,7 +15,7 @@ namespace SolidInvoice\ClientBundle\Form\Type;
 
 use SolidInvoice\ClientBundle\Entity\AdditionalContactDetail;
 use SolidInvoice\ClientBundle\Entity\ContactType as ContactTypeEntity;
-use SolidInvoice\CoreBundle\Form\Type\UuidEntityType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -35,7 +35,7 @@ final class ContactDetailType extends AbstractType
             $builder
                 ->create(
                     'type',
-                    UuidEntityType::class,
+                    EntityType::class,
                     [
                         'class' => ContactTypeEntity::class,
                         'placeholder' => 'Choose Type',

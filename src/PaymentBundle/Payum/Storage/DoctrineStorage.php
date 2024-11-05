@@ -16,7 +16,7 @@ namespace SolidInvoice\PaymentBundle\Payum\Storage;
 use LogicException;
 use Payum\Core\Bridge\Doctrine\Storage\DoctrineStorage as BaseDoctrineStorage;
 use Payum\Core\Model\Identity;
-use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Uid\Ulid;
 use function array_shift;
 use function count;
 
@@ -38,7 +38,7 @@ final class DoctrineStorage extends BaseDoctrineStorage
 
         $modelId = array_shift($id);
 
-        if ($modelId instanceof UuidInterface) {
+        if ($modelId instanceof Ulid) {
             $modelId = $modelId->toString();
         }
 

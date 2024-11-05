@@ -26,12 +26,12 @@ use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
-use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Model\Status;
+use Symfony\Bridge\Doctrine\Types\UlidType;
+use Symfony\Component\Uid\Ulid;
 use function array_map;
 
 /**
@@ -82,7 +82,7 @@ class PaymentRepository extends ServiceEntityRepository
 
         $queryBuilder
             ->where('p.invoice = :invoice')
-            ->setParameter('invoice', $invoice->getId(), UuidBinaryOrderedTimeType::NAME);
+            ->setParameter('invoice', $invoice->getId(), UlidType::NAME);
 
         return $queryBuilder->getQuery()->getArrayResult();
     }
@@ -120,7 +120,7 @@ class PaymentRepository extends ServiceEntityRepository
      */
     public function getTotalPaidForInvoice(Invoice $invoice): BigNumber
     {
-        if (! $invoice->getId() instanceof UuidInterface) {
+        if (! $invoice->getId() instanceof Ulid) {
             return BigInteger::zero();
         }
 
@@ -130,7 +130,7 @@ class PaymentRepository extends ServiceEntityRepository
             ->select('SUM(p.totalAmount) as total')
             ->where('p.invoice = :invoice')
             ->andWhere('p.status = :status')
-            ->setParameter('invoice', $invoice->getId(), UuidBinaryOrderedTimeType::NAME)
+            ->setParameter('invoice', $invoice->getId(), UlidType::NAME)
             ->setParameter('status', Status::STATUS_CAPTURED);
 
         $query = $queryBuilder->getQuery();
@@ -153,7 +153,7 @@ class PaymentRepository extends ServiceEntityRepository
 
         $queryBuilder
             ->where('p.client = :client')
-            ->setParameter('client', $client->getId(), UuidBinaryOrderedTimeType::NAME);
+            ->setParameter('client', $client->getId(), UlidType::NAME);
 
         return $queryBuilder->getQuery()->getArrayResult();
     }
@@ -289,12 +289,12 @@ class PaymentRepository extends ServiceEntityRepository
 
         if (isset($parameters['invoice'])) {
             $qb->andWhere('p.invoice = :invoice');
-            $qb->setParameter('invoice', $parameters['invoice'], UuidBinaryOrderedTimeType::NAME);
+            $qb->setParameter('invoice', $parameters['invoice'], UlidType::NAME);
         }
 
         if (isset($parameters['client'])) {
             $qb->andWhere('p.client = :client');
-            $qb->setParameter('client', $parameters['client'], UuidBinaryOrderedTimeType::NAME);
+            $qb->setParameter('client', $parameters['client'], UlidType::NAME);
         }
 
         return $qb;
@@ -311,7 +311,7 @@ class PaymentRepository extends ServiceEntityRepository
             ->where('p.status = :status')
             ->andWhere('p.client = :client')
             ->groupBy('p.currencyCode')
-            ->setParameter('client', $client->getId(), UuidBinaryOrderedTimeType::NAME)
+            ->setParameter('client', $client->getId(), UlidType::NAME)
             ->setParameter('status', Status::STATUS_CAPTURED);
 
         $query = $qb->getQuery();

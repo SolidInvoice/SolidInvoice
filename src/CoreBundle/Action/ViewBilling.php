@@ -15,8 +15,6 @@ namespace SolidInvoice\CoreBundle\Action;
 
 use Doctrine\Persistence\ManagerRegistry;
 use InvalidArgumentException;
-use Ramsey\Uuid\Exception\InvalidUuidStringException;
-use Ramsey\Uuid\Uuid;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\QuoteBundle\Entity\Quote;
@@ -29,6 +27,7 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
+use Symfony\Component\Uid\Ulid;
 
 class ViewBilling
 {
@@ -42,7 +41,7 @@ class ViewBilling
     /**
      * View a quote if not logged in.
      *
-     * @throws InvalidArgumentException|InvalidParameterException|InvalidUuidStringException|MissingMandatoryParametersException|NotFoundHttpException|RouteNotFoundException
+     * @throws InvalidArgumentException|InvalidParameterException|MissingMandatoryParametersException|NotFoundHttpException|RouteNotFoundException
      */
     public function quoteAction(string $uuid): Template|Response
     {
@@ -60,7 +59,7 @@ class ViewBilling
     /**
      * View a invoice if not logged in.
      *
-     * @throws InvalidArgumentException|InvalidParameterException|InvalidUuidStringException|MissingMandatoryParametersException|NotFoundHttpException|RouteNotFoundException
+     * @throws InvalidArgumentException|InvalidParameterException|MissingMandatoryParametersException|NotFoundHttpException|RouteNotFoundException
      */
     public function invoiceAction(string $uuid): Response|Template
     {
@@ -76,13 +75,13 @@ class ViewBilling
     }
 
     /**
-     * @throws NotFoundHttpException|InvalidArgumentException|InvalidUuidStringException|InvalidParameterException|MissingMandatoryParametersException|RouteNotFoundException
+     * @throws NotFoundHttpException|InvalidArgumentException|InvalidParameterException|MissingMandatoryParametersException|RouteNotFoundException
      */
     private function createResponse(array $options): Template|Response
     {
         $repository = $this->registry->getRepository($options['repository']);
 
-        $entity = $repository->findOneBy(['uuid' => Uuid::fromString($options['uuid'])]);
+        $entity = $repository->findOneBy(['uuid' => Ulid::fromString($options['uuid'])]);
 
         if (null === $entity) {
             throw new NotFoundHttpException(sprintf('"%s" with id %s does not exist', ucfirst((string) $options['entity']), $options['uuid']));

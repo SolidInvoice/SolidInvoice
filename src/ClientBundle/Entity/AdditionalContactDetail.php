@@ -22,14 +22,14 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
-use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
-use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Stringable;
+use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
+use Symfony\Component\Uid\Ulid;
 
 #[ORM\Table(name: AdditionalContactDetail::TABLE_NAME)]
 #[ORM\Entity]
@@ -92,12 +92,12 @@ class AdditionalContactDetail implements Stringable
     use TimeStampable;
     use CompanyAware;
 
-    #[ORM\Column(name: 'id', type: UuidBinaryOrderedTimeType::NAME)]
+    #[ORM\Column(name: 'id', type: UlidType::NAME)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
+    #[ORM\CustomIdGenerator(class: UlidGenerator::class)]
     #[Serialize\Groups(['contact_type_id'])]
-    private ?UuidInterface $id = null;
+    private ?Ulid $id = null;
 
     #[ORM\Column(name: 'value', type: Types::TEXT)]
     #[Serialize\Groups(['contact_type_id'])]
@@ -113,7 +113,7 @@ class AdditionalContactDetail implements Stringable
     #[Serialize\Groups(['js'])]
     private ?Contact $contact = null;
 
-    public function getId(): UuidInterface
+    public function getId(): Ulid
     {
         return $this->id;
     }

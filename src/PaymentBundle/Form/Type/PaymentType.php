@@ -16,8 +16,8 @@ namespace SolidInvoice\PaymentBundle\Form\Type;
 use Brick\Math\BigNumber;
 use Doctrine\Persistence\ManagerRegistry;
 use Money\Currency;
-use SolidInvoice\CoreBundle\Form\Type\UuidEntityType;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -50,7 +50,7 @@ class PaymentType extends AbstractType
 
         $builder->add(
             'payment_method',
-            UuidEntityType::class,
+            EntityType::class,
             [
                 'class' => PaymentMethod::class,
                 'choices' => $paymentMethodRepository->getAvailablePaymentMethods($options['user'] !== null),

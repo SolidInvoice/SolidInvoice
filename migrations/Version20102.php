@@ -15,13 +15,9 @@ namespace DoctrineMigrations;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-final class Version20102 extends AbstractMigration implements ContainerAwareInterface
+final class Version20102 extends AbstractMigration
 {
-    use ContainerAwareTrait;
-
     public function up(Schema $schema): void
     {
         $this->connection

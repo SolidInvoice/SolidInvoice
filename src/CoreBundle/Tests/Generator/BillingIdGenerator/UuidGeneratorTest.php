@@ -12,9 +12,9 @@
 namespace SolidInvoice\CoreBundle\Tests\Generator\BillingIdGenerator;
 
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator\UuidGenerator;
 use stdClass;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * @covers \SolidInvoice\CoreBundle\Generator\BillingIdGenerator\UuidGenerator

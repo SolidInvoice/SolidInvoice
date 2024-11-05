@@ -15,12 +15,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
-use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
-use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\NotificationBundle\Repository\UserNotificationRepository;
 use SolidInvoice\UserBundle\Entity\User;
+use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
+use Symfony\Bridge\Doctrine\Types\UlidType;
+use Symfony\Component\Uid\Ulid;
 
 #[ORM\Entity(repositoryClass: UserNotificationRepository::class)]
 #[ORM\Table(name: UserNotification::TABLE_NAME)]
@@ -31,10 +31,10 @@ class UserNotification
     use CompanyAware;
 
     #[ORM\Id]
-    #[ORM\Column(type: UuidBinaryOrderedTimeType::NAME)]
+    #[ORM\Column(type: UlidType::NAME)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
-    private UuidInterface $id;
+    #[ORM\CustomIdGenerator(class: UlidGenerator::class)]
+    private Ulid $id;
 
     #[ORM\Column(type: Types::STRING, length: 255)]
     private string $event;
@@ -56,7 +56,7 @@ class UserNotification
         $this->transports = new ArrayCollection();
     }
 
-    public function getId(): UuidInterface
+    public function getId(): Ulid
     {
         return $this->id;
     }

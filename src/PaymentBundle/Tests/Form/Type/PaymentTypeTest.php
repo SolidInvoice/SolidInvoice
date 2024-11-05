@@ -16,7 +16,6 @@ namespace SolidInvoice\PaymentBundle\Tests\Form\Type;
 use Brick\Math\BigDecimal;
 use Brick\Math\Exception\MathException;
 use Money\Currency;
-use SolidInvoice\CoreBundle\Form\Type\UuidEntityType;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\PaymentBundle\Form\Type\PaymentType;
 use Symfony\UX\StimulusBundle\Helper\StimulusHelper;
@@ -48,7 +47,6 @@ class PaymentTypeTest extends FormTestCase
         $types = parent::getTypes();
 
         $types[] = new PaymentType($this->registry, new StimulusHelper(null));
-        $types[] = new UuidEntityType($this->registry);
 
         return $types;
     }

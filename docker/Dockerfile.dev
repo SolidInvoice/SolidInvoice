@@ -1,4 +1,4 @@
-FROM php:8.1-fpm-buster as base
+FROM php:8.2-fpm-buster as base
 
 ENV TIMEZONE Europe/Paris
 ENV TERM xterm

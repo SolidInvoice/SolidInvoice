@@ -19,9 +19,7 @@ use Mockery as M;
 use Money\Currency;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
-use SolidInvoice\CoreBundle\Form\Type\BaseEntityAutocompleteType;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
-use SolidInvoice\CoreBundle\Form\Type\UuidEntityType;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -35,6 +33,7 @@ use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\UX\Autocomplete\Checksum\ChecksumCalculator;
 use Symfony\UX\Autocomplete\Form\AutocompleteChoiceTypeExtension;
+use Symfony\UX\Autocomplete\Form\BaseEntityAutocompleteType;
 use Zenstruck\Foundry\Test\Factories;
 
 class InvoiceTypeTest extends FormTestCase
@@ -113,8 +112,7 @@ class InvoiceTypeTest extends FormTestCase
                 $invoiceType,
                 $itemType,
                 new DiscountType($systemConfig),
-                new BaseEntityAutocompleteType($this->createMock(UrlGeneratorInterface::class)),
-                new UuidEntityType($this->registry),
+                new BaseEntityAutocompleteType($this->createMock(UrlGeneratorInterface::class))
             ], [
                 ChoiceType::class => [
                     new AutocompleteChoiceTypeExtension(new ChecksumCalculator('abc')),

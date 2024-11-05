@@ -14,20 +14,20 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Form\EventListener;
 
 use Doctrine\Persistence\ManagerRegistry;
-use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Form\Transformer\UserToContactTransformer;
-use SolidInvoice\CoreBundle\Form\Type\UuidEntityType;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\InvoiceContact;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceContact;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class InvoiceUsersSubscriber implements EventSubscriberInterface
@@ -59,7 +59,7 @@ final class InvoiceUsersSubscriber implements EventSubscriberInterface
         }
 
         if ($data instanceof Invoice || $data instanceof RecurringInvoice) {
-            $clientId = $data->getClient() instanceof Client && $data->getClient()->getId() instanceof UuidInterface ? $data->getClient()->getId()->toString() : null;
+            $clientId = $data->getClient() instanceof Client && $data->getClient()->getId() instanceof Ulid ? $data->getClient()->getId()->toString() : null;
         } else {
             $clientId = $data['client'] ?? null;
         }
@@ -69,7 +69,7 @@ final class InvoiceUsersSubscriber implements EventSubscriberInterface
 
             $users = $this->builder->create(
                 'users',
-                UuidEntityType::class,
+                EntityType::class,
                 [
                     'constraints' => new NotBlank(),
                     'multiple' => true,

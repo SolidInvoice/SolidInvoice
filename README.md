@@ -38,7 +38,7 @@ SolidInvoice is a sophisticated open-source invoicing application designed to as
 
 ## System Requirements
 
-SolidInvoice requires PHP version 8.1 or later for optimal performance. It is recommended to use the latest available version of PHP.
+SolidInvoice requires PHP version 8.2 or later for optimal performance. It is recommended to use the latest available version of PHP.
 
 ## Installation Options
 

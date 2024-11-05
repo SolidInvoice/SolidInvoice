@@ -16,9 +16,9 @@ namespace SolidInvoice\CoreBundle\Doctrine\Listener;
 use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
 use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Events;
-use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
+use Symfony\Component\Uid\Ulid;
 
 class CompanyListener implements EventSubscriberInterface
 {
@@ -50,7 +50,7 @@ class CompanyListener implements EventSubscriberInterface
             $repository = $em->getRepository(Company::class);
             $companyId = $this->companySelector->getCompany();
 
-            if ($companyId instanceof UuidInterface) {
+            if ($companyId instanceof Ulid) {
                 $object->setCompany($repository->find($companyId));
             }
         }

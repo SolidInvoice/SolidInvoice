@@ -24,16 +24,16 @@ use Doctrine\ORM\Mapping as ORM;
 use Money\Currency;
 use Money\Money;
 use Payum\Core\Model\Payment as BasePayment;
-use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
-use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
-use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Exception\UnexpectedTypeException;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
+use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
+use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
 use Traversable;
 
@@ -86,11 +86,11 @@ class Payment extends BasePayment
     use TimeStampable;
     use CompanyAware;
 
-    #[ORM\Column(name: 'id', type: UuidBinaryOrderedTimeType::NAME)]
+    #[ORM\Column(name: 'id', type: UlidType::NAME)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
-    protected ?UuidInterface $id = null;
+    #[ORM\CustomIdGenerator(class: UlidGenerator::class)]
+    protected ?Ulid $id = null;
 
     #[ORM\ManyToOne(targetEntity: Invoice::class, inversedBy: 'payments')]
     private ?Invoice $invoice = null;
@@ -118,7 +118,7 @@ class Payment extends BasePayment
     #[ORM\Column(name: 'notes', type: Types::TEXT, nullable: true)]
     private ?string $notes = null;
 
-    public function getId(): ?UuidInterface
+    public function getId(): ?Ulid
     {
         return $this->id;
     }
@@ -207,7 +207,7 @@ class Payment extends BasePayment
     {
         $client = $this->getClient();
 
-        return $client instanceof Client && $client->getId() instanceof UuidInterface ? $client->getId()->toString() : null;
+        return $client instanceof Client && $client->getId() instanceof Ulid ? $client->getId()->toString() : null;
     }
 
     public function getClient(): ?Client

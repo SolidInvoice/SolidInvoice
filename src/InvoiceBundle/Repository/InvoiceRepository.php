@@ -22,11 +22,11 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\PaymentBundle\Entity\Payment;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 
 /**
  * @extends ServiceEntityRepository<Invoice>
@@ -69,7 +69,7 @@ class InvoiceRepository extends ServiceEntityRepository
 
         if ($client instanceof Client) {
             $qb->andWhere('i.client = :client')
-                ->setParameter('client', $client->getId(), UuidBinaryOrderedTimeType::NAME);
+                ->setParameter('client', $client->getId(), UlidType::NAME);
         }
 
         try {
@@ -92,7 +92,7 @@ class InvoiceRepository extends ServiceEntityRepository
 
         if ($client instanceof Client) {
             $qb->andWhere('i.client = :client')
-                ->setParameter('client', $client->getId(), UuidBinaryOrderedTimeType::NAME);
+                ->setParameter('client', $client->getId(), UlidType::NAME);
         }
 
         $query = $qb->getQuery();
@@ -125,7 +125,7 @@ class InvoiceRepository extends ServiceEntityRepository
 
         if ($client instanceof Client) {
             $qb->andWhere('i.client = :client')
-                ->setParameter('client', $client->getId(), UuidBinaryOrderedTimeType::NAME);
+                ->setParameter('client', $client->getId(), UlidType::NAME);
         }
 
         $query = $qb->getQuery();
@@ -166,7 +166,7 @@ class InvoiceRepository extends ServiceEntityRepository
 
         if (! empty($parameters['client'])) {
             $qb->andWhere('i.client = :client')
-                ->setParameter('client', $parameters['client'], UuidBinaryOrderedTimeType::NAME);
+                ->setParameter('client', $parameters['client'], UlidType::NAME);
         }
 
         return $qb;
@@ -226,7 +226,7 @@ class InvoiceRepository extends ServiceEntityRepository
         $qb->select('SUM(i.balance) as total')
             ->where('i.status = :status')
             ->andWhere('i.client = :client')
-            ->setParameter('client', $client->getId(), UuidBinaryOrderedTimeType::NAME)
+            ->setParameter('client', $client->getId(), UlidType::NAME)
             ->setParameter('status', Graph::STATUS_PENDING);
 
         $query = $qb->getQuery();

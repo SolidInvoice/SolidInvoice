@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Tests\Functional\Api;
 
 use DateTimeInterface;
-use Ramsey\Uuid\Uuid;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
@@ -22,6 +21,7 @@ use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceLine;
 use SolidInvoice\InvoiceBundle\Test\Factory\RecurringInvoiceFactory;
+use Symfony\Component\Uid\Ulid;
 use Zenstruck\Foundry\Persistence\Proxy;
 use Zenstruck\Foundry\Test\Factories;
 use function array_map;
@@ -72,8 +72,8 @@ final class RecurringInvoiceTest extends ApiTestCase
 
         self::assertArrayHasKey('id', $result);
         self::assertArrayHasKey('id', $result['lines'][0]);
-        self::assertTrue(Uuid::isValid($result['id']));
-        self::assertTrue(Uuid::isValid($result['lines'][0]['id']));
+        self::assertTrue(Ulid::isValid($result['id']));
+        self::assertTrue(Ulid::isValid($result['lines'][0]['id']));
 
         unset($result['id'], $result['@id'], $result['lines'][0]['id'], $result['lines'][0]['@id']);
 

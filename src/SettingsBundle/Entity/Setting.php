@@ -15,14 +15,14 @@ namespace SolidInvoice\SettingsBundle\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
-use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
-use Ramsey\Uuid\UuidInterface;
 use Serializable;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\SettingsBundle\Repository\SettingsRepository;
 use Stringable;
+use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Uid\Ulid;
 
 #[ORM\Table(name: Setting::TABLE_NAME)]
 #[ORM\UniqueConstraint(columns: ['setting_key', 'company_id'])]
@@ -34,11 +34,11 @@ class Setting implements Stringable, Serializable
 
     use CompanyAware;
 
-    #[ORM\Column(name: 'id', type: UuidBinaryOrderedTimeType::NAME)]
+    #[ORM\Column(name: 'id', type: UlidType::NAME)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
-    private ?UuidInterface $id = null;
+    #[ORM\CustomIdGenerator(class: UlidGenerator::class)]
+    private ?Ulid $id = null;
 
     #[ORM\Column(name: 'setting_key', type: Types::STRING, length: 125)]
     protected ?string $key = null;
@@ -52,7 +52,7 @@ class Setting implements Stringable, Serializable
     #[ORM\Column(name: 'field_type', type: Types::STRING)]
     protected ?string $type = null;
 
-    public function getId(): ?UuidInterface
+    public function getId(): ?Ulid
     {
         return $this->id;
     }
@@ -122,7 +122,7 @@ class Setting implements Stringable, Serializable
     }
 
     /**
-     * @param array{0: UuidInterface|null, 1: string|null, 2: string|null, 3: string|null, 4: string|null} $data
+     * @param array{0: Ulid|null, 1: string|null, 2: string|null, 3: string|null, 4: string|null} $data
      */
     public function __unserialize(array $data): void
     {

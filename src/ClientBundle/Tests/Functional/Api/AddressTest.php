@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace SolidInvoice\ClientBundle\Tests\Functional\Api;
 
 use JsonException;
-use Ramsey\Uuid\Uuid;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\ClientBundle\Entity\Address;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
+use Symfony\Component\Uid\Ulid;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
@@ -53,7 +53,7 @@ final class AddressTest extends ApiTestCase
         $result = $this->requestPost($this->getIriFromResource($client) . '/addresses', $data);
 
         self::assertArrayHasKey('id', $result);
-        self::assertTrue(Uuid::isValid($result['id']));
+        self::assertTrue(Ulid::isValid($result['id']));
         unset($result['id'], $result['@id']);
 
         self::assertEqualsCanonicalizing([

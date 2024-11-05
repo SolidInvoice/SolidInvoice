@@ -15,12 +15,12 @@ namespace SolidInvoice\UserBundle\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
-use Ramsey\Uuid\Doctrine\UuidOrderedTimeGenerator;
-use Ramsey\Uuid\UuidInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\UserBundle\Repository\ApiTokenHistoryRepository;
+use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
+use Symfony\Bridge\Doctrine\Types\UlidType;
+use Symfony\Component\Uid\Ulid;
 
 #[ORM\Table(name: ApiTokenHistory::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: ApiTokenHistoryRepository::class)]
@@ -31,11 +31,11 @@ class ApiTokenHistory
     use TimeStampable;
     use CompanyAware;
 
-    #[ORM\Column(type: UuidBinaryOrderedTimeType::NAME)]
+    #[ORM\Column(type: UlidType::NAME)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: UuidOrderedTimeGenerator::class)]
-    private ?UuidInterface $id = null;
+    #[ORM\CustomIdGenerator(class: UlidGenerator::class)]
+    private ?Ulid $id = null;
 
     #[ORM\Column(type: Types::STRING)]
     private ?string $ip = null;
@@ -59,7 +59,7 @@ class ApiTokenHistory
     #[ORM\JoinColumn(name: 'token_id')]
     private ?ApiToken $token = null;
 
-    public function getId(): ?UuidInterface
+    public function getId(): ?Ulid
     {
         return $this->id;
     }

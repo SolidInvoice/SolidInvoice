@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Action;
 
 use Generator;
-use Ramsey\Uuid\Uuid;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\UserBundle\Entity\UserInvitation as UserInvitationEntity;
 use SolidInvoice\UserBundle\Repository\UserInvitationRepository;
 use SolidInvoice\UserBundle\UserInvitation\UserInvitation;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Uid\Ulid;
 
 final class ResendUserInvite
 {
@@ -33,7 +33,7 @@ final class ResendUserInvite
 
     public function __invoke(string $id): RedirectResponse
     {
-        $invitation = $this->invitationRepository->find(Uuid::fromString($id));
+        $invitation = $this->invitationRepository->find(Ulid::fromString($id));
 
         if ($invitation instanceof UserInvitationEntity) {
             $this->invitation->sendUserInvitation($invitation);

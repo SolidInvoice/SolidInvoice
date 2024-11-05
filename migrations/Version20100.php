@@ -21,13 +21,9 @@ use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
 use SolidInvoice\SettingsBundle\Form\Type\MailTransportType;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-final class Version20100 extends AbstractMigration implements ContainerAwareInterface
+final class Version20100 extends AbstractMigration
 {
-    use ContainerAwareTrait;
-
     private Schema $schema;
 
     public function up(Schema $schema): void

@@ -109,6 +109,7 @@ abstract class LiveComponentTest extends KernelTestCase
 
     protected function replaceUuid(string $content): string
     {
-        return preg_replace('#[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}#', '91656880-2d93-11ef-933f-5a2cf21a5680', $content);
+        $content = preg_replace('#[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}#', '91656880-2d93-11ef-933f-5a2cf21a5680', $content);
+        return preg_replace('#[0-9A-f]{26}#', '01JBYEQCR7DJ2YW4EXP6FYJZCR', $content);
     }
 }

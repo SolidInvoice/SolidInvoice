@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Action;
 
-use Ramsey\Uuid\Uuid;
 use SolidInvoice\UserBundle\Entity\UserInvitation;
 use SolidInvoice\UserBundle\Form\Handler\RegisterFormHandler;
 use SolidInvoice\UserBundle\Repository\UserInvitationRepository;
@@ -22,6 +21,7 @@ use SolidWorx\FormHandler\FormRequest;
 use SolidWorx\Toggler\ToggleInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Uid\Ulid;
 
 final class Register
 {
@@ -35,7 +35,7 @@ final class Register
         $invitation = null;
 
         if ($request->query->has('invitation')) {
-            $invitation = $this->repository->find(Uuid::fromString($request->query->get('invitation')));
+            $invitation = $this->repository->find(Ulid::fromString($request->query->get('invitation')));
 
             if (! $invitation instanceof UserInvitation) {
                 throw new NotFoundHttpException('Invitation is not valid');
