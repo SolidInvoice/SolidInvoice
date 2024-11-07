@@ -35,11 +35,6 @@ return static function (RoutingConfigurator $routingConfigurator): void {
         ->options(['expose' => true]);
 
     $routingConfigurator
-        ->import('@SolidInvoiceUserBundle/Resources/config/routing/ajax.php')
-        ->prefix('/profile/api/xhr')
-        ->options(['expose' => true]);
-
-    $routingConfigurator
         ->add('_users_list', '/users')
         ->controller(Users::class);
 

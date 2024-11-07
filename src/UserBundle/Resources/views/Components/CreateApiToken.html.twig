@@ -1,0 +1,30 @@
+<div {{ attributes }}>
+    <a href="#" class="btn btn-info" data-toggle="modal" data-target="#{{ 'create-' ~ attributes.all.id }}">
+        {{ icon('plus') }} {{ 'profile.api.create'|trans }}
+    </a>
+
+    {{ form_start(form, {
+        attr: {
+            'data-action': 'live#action:prevent',
+            'data-live-action-param': 'save'
+        }
+    }) }}
+
+    {% component BootstrapModal with {id: 'create-' ~ attributes.all.id} %}
+        {% block modal_header %}
+            <h5>{{ 'Confirm'|trans }}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        {% endblock %}
+        {% block modal_body %}
+            {{ form_row(form) }}
+        {% endblock %}
+        {% block modal_footer %}
+            <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'Close'|trans }}</button>
+            <button type="submit" class="btn btn-primary">{{ 'Confirm'|trans }}</button>
+        {% endblock %}
+    {% endcomponent %}
+
+    {{ form_end(form) }}
+</div>

@@ -9,27 +9,15 @@
 
 {% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
-{% set module = 'profile-api' %}
-
 {% block title %}{{ "profile.api.title"|trans }}{% endblock title %}
 
 {% block heading %}
     <div class="float-right header-button">
-        <a href="{{ path('_xhr_api_keys_create') }}" class="btn btn-info" id="create-api-token">
-            {{ icon('plus') }} {{ 'profile.api.create'|trans }}
-        </a>
+        <twig:CreateApiToken />
     </div>
     <br class="clear" />
 {% endblock %}
 
 {% block content %}
-    <div class="card">
-        <div class="card-body">
-            <div class="alert alert-info">
-                To view the API documentation, visit the <a href="{{ path('api_doc') }}" target="_blank">API documentation</a> page.
-            </div>
-
-            <ul class="list-group" id="token-list"></ul>
-        </div>
-    </div>
+    <twig:ApiTokens />
 {% endblock content %}

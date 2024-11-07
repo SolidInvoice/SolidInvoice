@@ -1,8 +1,8 @@
 {
-    "name": "solidinvoice/solidinvoice",
     "description": "General Billing Application",
     "license": "MIT",
-    "type": "application",
+    "type": "project",
+    "version": "2.3.x-dev",
     "keywords": [
         "billing",
         "general billing",
@@ -235,9 +235,6 @@
         "sort-packages": true
     },
     "extra": {
-        "branch-alias": {
-            "dev-master": "2.3-dev"
-        },
         "symfony": {
             "allow-contrib": true,
             "require": "^7.1"
