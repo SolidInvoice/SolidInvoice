@@ -146,6 +146,11 @@ parameters:
 			path: src/CoreBundle/Templating/Template.php
 
 		-
+			message: "#^Service \"test\\.client\" is not registered in the container\\.$#"
+			count: 1
+			path: src/CoreBundle/Test/LiveComponentTest.php
+
+		-
 			message: "#^Property SolidInvoice\\\\CoreBundle\\\\Tests\\\\KernelAwareTest\\:\\:\\$container \\(Symfony\\\\Component\\\\DependencyInjection\\\\Container\\) does not accept Symfony\\\\Component\\\\DependencyInjection\\\\ContainerInterface\\.$#"
 			count: 1
 			path: src/CoreBundle/Tests/KernelAwareTest.php
@@ -451,6 +456,11 @@ parameters:
 			path: src/TaxBundle/Repository/TaxRepository.php
 
 		-
+			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\EditProfile\\:\\:__invoke\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/UserBundle/Action/EditProfile.php
+
+		-
 			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\Ajax\\\\ApiList\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/UserBundle/Action/Ajax/ApiList.php
@@ -529,21 +539,6 @@ parameters:
 			message: "#^Class SolidInvoice\\\\UserBundle\\\\Repository\\\\ApiTokenRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#"
 			count: 1
 			path: src/UserBundle/Repository/ApiTokenRepository.php
-
-		-
-			message: "#^Method SolidInvoice\\\\UserBundle\\\\Repository\\\\ApiTokenRepository\\:\\:getApiTokensForUser\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/UserBundle/Repository/ApiTokenRepository.php
-
-		-
-			message: "#^Method SolidInvoice\\\\UserBundle\\\\Tests\\\\Form\\\\Handler\\\\ApiFormHandlerTest\\:\\:getFormData\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/UserBundle/Tests/Form/Handler/ApiFormHandlerTest.php
-
-		-
-			message: "#^Method SolidInvoice\\\\UserBundle\\\\Tests\\\\Form\\\\Handler\\\\ApiFormHandlerTest\\:\\:getHandlerOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/UserBundle/Tests/Form/Handler/ApiFormHandlerTest.php
 
 		-
 			message: "#^Method SolidInvoice\\\\UserBundle\\\\Tests\\\\Form\\\\Handler\\\\ProfileEditHandlerTest\\:\\:getFormData\\(\\) return type has no value type specified in iterable type array\\.$#"
