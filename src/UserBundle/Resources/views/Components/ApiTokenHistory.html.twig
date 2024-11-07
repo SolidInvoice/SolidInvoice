@@ -1,0 +1,27 @@
+<div {{ attributes }}>
+    <div class="alert alert-warning">
+        <strong>{{ icon('exclamation-triangle') }} {{ 'profile.api.history.last_calls_shown_note'|trans }} </strong>
+        {{ 'profile.api.history.last_calls_shown'|trans }}
+    </div>
+
+    <table class="table table-responsive table-sm">
+        <thead>
+            <tr>
+                <th>{{ 'profile.api.history.list.date'|trans }}</th>
+                <th>{{ 'profile.api.history.list.ip'|trans }}</th>
+                <th>{{ 'profile.api.history.list.resource'|trans }}</th>
+                <th>{{ 'profile.api.history.list.user_agent'|trans }}</th>
+            </tr>
+        </thead>
+        {% for item in history %}
+            <tbody>
+            <tr>
+                <td>{{ item.created|date }}</td>
+                <td>{{ item.ip }}</td>
+                <td>[{{ item.method }}] {{ item.resource }}</td>
+                <td>{{ item.userAgent }}</td>
+            </tr>
+            </tbody>
+        {% endfor %}
+    </table>
+</div>

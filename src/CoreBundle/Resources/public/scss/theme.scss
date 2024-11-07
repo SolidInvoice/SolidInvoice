@@ -103,6 +103,10 @@ $screen-header-collapse: map.get($grid-breakpoints, md) !default;
     }
 }
 
+.modal-dialog {
+    max-width: fit-content;
+}
+
 /*
  * Skin: Default
  * -------------
