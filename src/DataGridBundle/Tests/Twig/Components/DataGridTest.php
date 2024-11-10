@@ -16,7 +16,6 @@ use SolidInvoice\CoreBundle\Test\LiveComponentTest;
 use SolidInvoice\DataGridBundle\Twig\Components\DataGrid;
 use Symfony\UX\LiveComponent\Test\TestLiveComponent;
 use Zenstruck\Foundry\Test\Factories;
-use function Zenstruck\Foundry\faker;
 
 final class DataGridTest extends LiveComponentTest
 {
@@ -36,7 +35,6 @@ final class DataGridTest extends LiveComponentTest
             client: $this->client,
         )->actingAs($this->getUser());
 
-        faker()->seed(12345);
         ClientFactory::createMany(30, ['company' => $this->company, 'archived' => null, 'status' => 'active']);
     }
 
