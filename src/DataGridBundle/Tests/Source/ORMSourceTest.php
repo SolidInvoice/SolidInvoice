@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\Tests\Source;
 
-use AssertionError;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
