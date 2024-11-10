@@ -20,11 +20,15 @@ use Money\Currency;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Entity\Discount;
+use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
+use SolidInvoice\CoreBundle\Generator\BillingIdGenerator\IdGeneratorInterface;
 use SolidInvoice\QuoteBundle\Cloner\QuoteCloner;
 use SolidInvoice\QuoteBundle\Entity\Line;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Model\Graph;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\TaxBundle\Entity\Tax;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Workflow\Definition;
 use Symfony\Component\Workflow\MarkingStore\MethodMarkingStore;
@@ -38,8 +42,6 @@ class QuoteClonerTest extends TestCase
      */
     public function testClone(): void
     {
-        $currency = new Currency('USD');
-
         $client = new Client();
         $client->setName('Test Client');
         $client->setWebsite('http://example.com');
@@ -65,6 +67,7 @@ class QuoteClonerTest extends TestCase
         $discount->setValue(12);
         $quote->setDiscount($discount);
         $quote->setNotes('Notes');
+        $quote->setQuoteId('bar-baz-foo');
         $quote->setTax(BigInteger::of(432));
         $quote->setTerms('Terms');
         $quote->setTotal(BigInteger::of(987));
@@ -82,7 +85,23 @@ class QuoteClonerTest extends TestCase
             'quote'
         );
 
-        $quoteCloner = new QuoteCloner($quoteStateMachine);
+        $config = $this->createMock(SystemConfig::class);
+        $config->method('get')
+            ->willReturn('generator');
+
+        $billingIdGenerator = $this->createMock(IdGeneratorInterface::class);
+        $billingIdGenerator->expects($this->once())
+            ->method('generate')
+            // ->with($quote, ['field' => 'quoteId'])
+            ->willReturn('foo-bar-baz');
+
+        $quoteCloner = new QuoteCloner(
+            $quoteStateMachine,
+            new BillingIdGenerator(
+                new ServiceLocator(['generator' => fn () => $billingIdGenerator]),
+                $config
+            )
+        );
 
         $newQuote = $quoteCloner->clone($quote);
 
@@ -91,6 +110,8 @@ class QuoteClonerTest extends TestCase
         self::assertSame($quote->getDiscount(), $newQuote->getDiscount());
         self::assertSame($quote->getNotes(), $newQuote->getNotes());
         self::assertSame($quote->getTerms(), $newQuote->getTerms());
+        self::assertNotSame($quote->getQuoteId(), $newQuote->getQuoteId());
+        self::assertSame('generatorfoo-bar-bazgenerator', $newQuote->getQuoteId());
         self::assertEquals($quote->getTax(), $newQuote->getTax());
         self::assertSame($client, $newQuote->getClient());
         self::assertSame(Graph::STATUS_DRAFT, $newQuote->getStatus());

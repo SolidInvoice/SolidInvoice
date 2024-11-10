@@ -16,6 +16,7 @@ namespace SolidInvoice\QuoteBundle\Tests\Form\Handler;
 use Mockery as M;
 use Money\Currency;
 use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
@@ -120,7 +121,7 @@ final class QuoteEditHandlerTest extends FormHandlerTestCase
             ->withAnyArgs()
             ->andReturn('/quotes/1');
 
-        $handler = new QuoteEditHandler($router, $stateMachine);
+        $handler = new QuoteEditHandler($router, $stateMachine, $this->createMock(TotalCalculator::class));
         $handler->setDoctrine($this->registry);
 
         return $handler;

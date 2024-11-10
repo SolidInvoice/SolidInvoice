@@ -18,6 +18,7 @@ use Mockery as M;
 use Money\Currency;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Form\Type\ContactDetailType;
+use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator\IdGeneratorInterface;
@@ -46,11 +47,13 @@ use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Workflow\Definition;
 use Symfony\Component\Workflow\MarkingStore\MethodMarkingStore;
 use Symfony\Component\Workflow\StateMachine;
 use Symfony\Component\Workflow\Transition;
+use Symfony\UX\Autocomplete\Form\BaseEntityAutocompleteType;
 use function iterator_to_array;
 
 /**
@@ -121,7 +124,7 @@ final class QuoteCreateHandlerTest extends FormHandlerTestCase
             ->withAnyArgs()
             ->andReturn('/quotes/1');
 
-        $handler = new QuoteCreateHandler($router, $stateMachine);
+        $handler = new QuoteCreateHandler($router, $stateMachine, $this->createMock(TotalCalculator::class));
         $handler->setDoctrine($this->registry);
 
         return $handler;
@@ -222,6 +225,7 @@ final class QuoteCreateHandlerTest extends FormHandlerTestCase
                     new QuoteType($systemConfig, $this->registry, new BillingIdGenerator(new ServiceLocator(['random_number' => static fn () => $randomNumberGenerator]), $systemConfig)),
                     new ItemType($this->registry),
                     new DiscountType($systemConfig),
+                    new BaseEntityAutocompleteType($this->createMock(UrlGeneratorInterface::class)),
                 ],
                 []
             ),

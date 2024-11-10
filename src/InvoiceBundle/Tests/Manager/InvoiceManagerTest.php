@@ -22,6 +22,8 @@ use Money\Currency;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Entity\Discount;
+use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
+use SolidInvoice\CoreBundle\Generator\BillingIdGenerator\IdGeneratorInterface;
 use SolidInvoice\InvoiceBundle\Entity\Line as InvoiceLine;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceLine;
@@ -30,8 +32,10 @@ use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\QuoteBundle\Entity\Line;
 use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Workflow\Definition;
 use Symfony\Component\Workflow\MarkingStore\MethodMarkingStore;
@@ -65,7 +69,20 @@ class InvoiceManagerTest extends KernelTestCase
             'invoice'
         );
 
-        $this->manager = new InvoiceManager($doctrine, new EventDispatcher(), $stateMachine, $notification);
+        $config = $this->createMock(SystemConfig::class);
+        $config->method('get')
+            ->willReturn('generator');
+
+        $this->manager = new InvoiceManager(
+            $doctrine,
+            new EventDispatcher(),
+            $stateMachine,
+            $notification,
+            new BillingIdGenerator(
+                new ServiceLocator(['generator' => fn () => $this->createMock(IdGeneratorInterface::class)]),
+                $config
+            )
+        );
 
         $entityManager
             ->shouldReceive('persist', 'flush')

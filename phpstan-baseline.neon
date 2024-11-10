@@ -336,11 +336,6 @@ parameters:
 			path: src/InvoiceBundle/Action/CloneRecurringInvoice.php
 
 		-
-			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\Create\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Action/Create.php
-
-		-
 			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\CreateRecurring\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/InvoiceBundle/Action/CreateRecurring.php
@@ -604,11 +599,6 @@ parameters:
 			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Email\\\\QuoteEmail\\:\\:getContext\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/QuoteBundle/Email/QuoteEmail.php
-
-		-
-			message: "#^Class SolidInvoice\\\\QuoteBundle\\\\Repository\\\\ItemRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#"
-			count: 1
-			path: src/QuoteBundle/Repository/ItemRepository.php
 
 		-
 			message: "#^Class SolidInvoice\\\\QuoteBundle\\\\Repository\\\\QuoteRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#"
