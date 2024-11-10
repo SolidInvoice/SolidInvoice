@@ -22,7 +22,10 @@ use SolidInvoice\QuoteBundle\Entity\Line;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\TaxBundle\Entity\Tax;
 
-class ItemRepository extends ServiceEntityRepository
+/**
+ * @extends ServiceEntityRepository<Line>
+ */
+class LineRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

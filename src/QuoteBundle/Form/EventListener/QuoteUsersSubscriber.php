@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\QuoteBundle\Form\EventListener;
 
 use Doctrine\Persistence\ManagerRegistry;
-use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Form\Transformer\UserToContactTransformer;
 use SolidInvoice\QuoteBundle\Entity\Quote;
@@ -24,7 +23,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class QuoteUsersSubscriber implements EventSubscriberInterface
@@ -53,7 +51,7 @@ class QuoteUsersSubscriber implements EventSubscriberInterface
         }
 
         if ($data instanceof Quote) {
-            $clientId = $data->getClient() instanceof Client && $data->getClient()->getId() instanceof Ulid ? $data->getClient()->getId()->toString() : null;
+            $clientId = $data->getClient()?->getId()?->toString();
         } else {
             $clientId = $data['client'] ?? null;
         }

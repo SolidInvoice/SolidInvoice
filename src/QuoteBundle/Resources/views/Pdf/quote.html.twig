@@ -153,24 +153,24 @@
             </tr>
             </thead>
             <tbody>
-            {% for item in quote.items %}
+            {% for line in quote.lines %}
                 <tr>
                     <td class="column-description">
-                        {{ item.description }}
+                        {{ line.description }}
                     </td>
                     <td class="column-price">
-                        {{ item.price|formatCurrency }}
+                        {{ line.price|formatCurrency }}
                     </td>
                     <td class="column-qty">
-                        {{ item.qty }}
+                        {{ line.qty }}
                     </td>
                     {% if quote.tax.positive %}
                         <td class="column-tax">
-                            {{ item.tax }}
+                            {{ line.tax }}
                         </td>
                     {% endif %}
                     <td class="column-total text-right">
-                        {{ item.total|formatCurrency }}
+                        {{ line.total|formatCurrency }}
                     </td>
                 </tr>
             {% endfor %}

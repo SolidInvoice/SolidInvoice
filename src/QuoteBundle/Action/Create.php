@@ -17,6 +17,7 @@ use Exception;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Templating\Template;
+use SolidInvoice\QuoteBundle\Entity\Line;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Form\Handler\QuoteCreateHandler;
 use SolidWorx\FormHandler\FormHandler;
@@ -44,6 +45,7 @@ final class Create
 
         $quote = new Quote();
         $quote->setClient($client);
+        $quote->addLine(new Line());
 
         if (1 === $totalClientsCount && ! $client instanceof Client) {
             $quote->setClient($this->repository->findOneBy([]));

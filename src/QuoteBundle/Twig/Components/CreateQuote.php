@@ -9,13 +9,13 @@
  * with this source code in the file LICENSE.
  */
 
-namespace SolidInvoice\InvoiceBundle\Twig\Components;
+namespace SolidInvoice\QuoteBundle\Twig\Components;
 
 use Brick\Math\Exception\MathException;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
-use SolidInvoice\InvoiceBundle\Entity\Invoice;
-use SolidInvoice\InvoiceBundle\Form\Type\InvoiceType;
+use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\QuoteBundle\Form\Type\QuoteType;
 use SolidInvoice\TaxBundle\Repository\TaxRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -28,13 +28,13 @@ use Symfony\UX\LiveComponent\LiveCollectionTrait;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
 #[AsLiveComponent()]
-final class CreateInvoice extends AbstractController
+final class CreateQuote extends AbstractController
 {
     use DefaultActionTrait;
     use LiveCollectionTrait;
 
     #[LiveProp(writable: true, fieldName: 'formData')]
-    public Invoice $invoice;
+    public Quote $quote;
 
     public function __construct(
         private readonly ClientRepository $clientRepository,
@@ -49,7 +49,7 @@ final class CreateInvoice extends AbstractController
     #[PreReRender]
     public function preRender(): void
     {
-        $this->totalCalculator->calculateTotals($this->invoice);
+        $this->totalCalculator->calculateTotals($this->quote);
     }
 
     protected function instantiateForm(): FormInterface
@@ -61,7 +61,7 @@ final class CreateInvoice extends AbstractController
             $options['currency'] = $client?->getCurrency();
         }
 
-        return $this->createForm(InvoiceType::class, $this->invoice, $options);
+        return $this->createForm(QuoteType::class, $this->quote, $options);
     }
 
     #[LiveAction]

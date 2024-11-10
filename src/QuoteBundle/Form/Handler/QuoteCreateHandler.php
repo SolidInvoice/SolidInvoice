@@ -21,12 +21,13 @@ use SolidWorx\FormHandler\FormRequest;
  */
 class QuoteCreateHandler extends AbstractQuoteHandler
 {
-    public function getResponse(FormRequest $formRequest)
+    public function getResponse(FormRequest $formRequest): Template
     {
         return new Template(
             '@SolidInvoiceQuote/Default/create.html.twig',
             [
-                'form' => $formRequest->getForm()->createView(),
+                'quote' => $formRequest->getOptions()->get('quote'),
+                'form' => $formRequest->getForm()?->createView(),
             ]
         );
     }

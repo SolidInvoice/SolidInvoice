@@ -1,0 +1,214 @@
+<div {{ attributes }}>
+    {% set currency = quote.client.currency|default(null) %}
+
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <section class="invoice">
+
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div{{ form.client.vars.data is not empty ? ' class="d-none"' }}>
+                                        {{ form_row(form.client, {attr: {'data-action': 'live#$render'}}) }}
+                                    </div>
+                                    {% if form.client.vars.data %}
+                                        {% include "@SolidInvoiceClient/Ajax/info.html.twig" with {'client' : form.client.vars.data, 'form' : form} %}
+                                    {% endif %}
+                                </div>
+
+                                <div class="col-3 offset-3 text-right">
+                                    {{ form_row(form.discount) }}
+                                </div>
+                            </div>
+
+                            <div class="row mb-4">
+                                <div class="col-6 pt-4" {{ stimulus_controller('billing-id') }}>
+                                    <span {{ stimulus_target('billing-id', 'info') }}>
+                                        <span class="h4">
+                                            {{ 'Quote #'|trans }}<span {{ stimulus_target('billing-id', 'value') }}>{{ form.quoteId.vars.data }}</span>
+                                        </span>
+                                        {% if editQuoteId is not defined or editQuoteId is not same as(false) %}
+                                            <a href="#" {{ stimulus_action('billing-id', 'edit') }}>{{ icon('pencil') }}</a>
+                                        {% endif %}
+                                    </span>
+
+                                    <div class="d-none" {{ stimulus_target('billing-id', 'form') }}>
+
+                                        {{ form_label(form.quoteId) }}
+                                        <div class="input-group mb-3">
+                                            {{ form_widget(form.quoteId) }}
+                                            <div class="input-group-append">
+                                                <button class="btn btn-outline-secondary" type="button" {{ stimulus_action('billing-id', 'save') }} title="{{ 'Save'|trans }}" rel="tooltip">
+                                                    {{ icon('save') }}
+                                                </button>
+                                                <button class="btn btn-outline-secondary" type="button" {{ stimulus_action('billing-id', 'cancel') }} title="{{ 'Cancel'|trans }}" rel="tooltip">
+                                                    {{ icon('cancel') }}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {#<div class="col-3">
+                                    {{ form_row(form.quoteDate) }}
+                                </div>#}
+
+                                {#<div class="col-3">
+                                    {{ form_row(form.due) }}
+                                </div>#}
+                            </div>
+                        </div>
+
+                        <div class="row invoice-container">
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title"><strong>{{ 'quote.summary'|trans }}</strong></h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-condensed">
+                                                <thead>
+                                                <tr>
+                                                    <th>
+                                                        {{ "quote.item.heading.description"|trans }}
+                                                    </th>
+                                                    <th>
+                                                        {{ "quote.item.heading.price"|trans }}
+                                                    </th>
+                                                    <th>
+                                                        {{ "quote.item.heading.qty"|trans }}
+                                                    </th>
+                                                    {% if hasTax %}
+                                                        <th>
+                                                            {{ "quote.item.heading.tax"|trans }}
+                                                        </th>
+                                                    {% endif %}
+                                                    <th class="text-right">{{ 'quote.item.heading.total'|trans }}</th>
+                                                    <th></th>
+                                                </tr>
+                                                </thead>
+                                                <tr>
+                                                    {% for index, item in form.lines %}
+                                                <tr>
+                                                    <td class="column-description">
+                                                        {{ form_widget(item.description) }}
+                                                        {{ form_errors(item.description) }}
+                                                    </td>
+                                                    <td class="column-price">
+                                                        {{ form_widget(item.price) }}
+                                                        {{ form_errors(item.price) }}
+                                                    </td>
+                                                    <td class="column-qty">
+                                                        {{ form_widget(item.qty) }}
+                                                        {{ form_errors(item.qty) }}
+                                                    </td>
+                                                    {% if hasTax %}
+                                                        <td class="column-total text-right">
+                                                            {{ form_widget(item.tax) }}
+                                                            {{ form_errors(item.tax) }}
+                                                        </td>
+                                                    {% endif %}
+                                                    <td class="column-total text-right">
+                                                        {{ item.vars.value.total|formatCurrency(currency) }}
+                                                    </td>
+                                                    <td class="column-trash text-center">
+                                                        {% if form.lines|length > 1 %}
+                                                            {{ form_row(item.vars.button_delete, {label: ' ', attr: {class: 'remove-item text-danger fas fa-times-circle'}}) }}
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                                </tbody>
+                                                <tfoot>
+                                                <tr>
+                                                    <td colspan="{{ hasTax ? 4 : 3 }}" class="thick-line text-right"><strong>{{ 'billing.subtotal'|trans }}</strong></td>
+                                                    <td class="thick-line text-right">
+                                                        <div class="sub-total">
+                                                            {{ quote.baseTotal|formatCurrency(currency) }}
+                                                        </div>
+                                                    </td>
+                                                    <td class="thick-line">
+                                                    </td>
+                                                </tr>
+                                                {% if hasTax %}
+                                                    <tr>
+                                                        <td colspan="{{ hasTax ? 4 : 3 }}" class="no-line text-right"><strong>{{ 'billing.tax'|trans }}</strong></td>
+                                                        <td class="no-line text-right">
+                                                        <span class="tax">
+                                                            {{ quote.tax|formatCurrency(currency) }}
+                                                        </span>
+                                                        </td>
+                                                        <td class="no-line">
+                                                        </td>
+                                                    </tr>
+                                                {% endif %}
+                                                <tr>
+                                                    <td colspan="{{ hasTax ? 4 : 3 }}" class="no-line text-right"><strong>{{ 'billing.discount'|trans }}</strong></td>
+                                                    <td class="no-line text-right">
+                                                        <span class="text-danger discount">
+                                                            {{ discount(quote)|formatCurrency(currency) }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="no-line">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="{{ hasTax ? 4 : 3 }}" class="no-line text-right"><strong>{{ 'billing.total'|trans }}</strong></td>
+                                                    <td class="no-line text-right">
+                                                        <div class="total">
+                                                            {{ quote.total|formatCurrency(currency) }}
+                                                        </div>
+                                                    </td>
+                                                    <td class="no-line"></td>
+                                                </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col add-item-col">
+                                {{ form_widget(form.lines.vars.button_add, {label: '+ Add Item', attr: {class: 'add-item'}}) }}
+                            </div>
+                        </div>
+
+
+                        <br class="clear" />
+
+                        <div class="row">
+                            <div class="col-6">
+                                {{ form_row(form.terms) }}
+                            </div>
+                            <div class="col-6">
+                                {{ form_row(form.notes) }}
+                            </div>
+                        </div>
+
+                        <div class="form-actions clearfix">
+                            <div class="float-left">
+                                <button type="submit" class="btn btn-success" name="save" value="pending">
+                                    {{ icon('envelope', ['o']) }} {{ ("quote.save.send")|trans }}
+                                </button>
+                                <button type="submit" class="btn btn-info" name="save" value="publish">
+                                    {{ icon('check') }} {{ "Save Quote"|trans }}
+                                </button>
+                            </div>
+                            <div class="float-right">
+                                <button type="submit" class="btn btn-primary" name="save" value="save">
+                                    {{ icon('save') }} {{ "quote.save.draft"|trans }}
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form_end(form) }}
+</div>

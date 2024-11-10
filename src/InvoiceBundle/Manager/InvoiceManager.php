@@ -19,6 +19,7 @@ use Carbon\CarbonImmutable;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use JsonException;
+use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
@@ -48,7 +49,8 @@ class InvoiceManager
         ManagerRegistry $doctrine,
         EventDispatcherInterface $dispatcher,
         private readonly WorkflowInterface $invoiceStateMachine,
-        private readonly NotificationManager $notification
+        private readonly NotificationManager $notification,
+        private readonly BillingIdGenerator $billingIdGenerator,
     ) {
         $this->entityManager = $doctrine->getManager();
         $this->dispatcher = $dispatcher;
@@ -117,6 +119,7 @@ class InvoiceManager
         $invoice->setUsers($object->getUsers()->toArray());
         $invoice->setBalance($invoice->getTotal());
         $invoice->setCompany($object->getCompany());
+        $invoice->setInvoiceId($this->billingIdGenerator->generate($invoice, ['field' => 'invoiceId']));
 
         if (null !== $object->getTax()) {
             $invoice->setTax($object->getTax());

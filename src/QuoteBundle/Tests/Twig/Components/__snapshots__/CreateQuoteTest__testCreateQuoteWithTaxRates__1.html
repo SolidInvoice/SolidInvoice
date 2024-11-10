@@ -1,0 +1,217 @@
+<html><body>
+<div id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="CreateQuote" data-live-url-value="/_components/CreateQuote" data-live-props-value='{"formData":[],"formName":"quote","quote":{"client":"","discount":{"type":"percentage","value":0},"lines":[{"description":"","price":"100.00","qty":"1","tax":""}],"quoteId":"1","terms":"","notes":"","total":0,"baseTotal":0,"tax":0,"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"ZmJZrP9uPpYgue\/EjP5pIKTupumF2+NDTL1nFfatcXk="}' data-live-csrf-value="">
+    
+    <form name="quote" method="post" data-model="on(change)|*">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <section class="invoice">
+
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div>
+                                        <div class="form-group">                        
+                                <label class="control-label required required" for="quote_client">Client</label>
+            <select id="quote_client" name="quote[client]" data-required="required" class="client-select form-control" data-controller="symfony--ux-autocomplete--autocomplete" data-symfony--ux-autocomplete--autocomplete-url-value="/autocomplete/client_autocomplete_type" data-symfony--ux-autocomplete--autocomplete-max-results-value="10" data-symfony--ux-autocomplete--autocomplete-loading-more-text-value="Loading more results..." data-symfony--ux-autocomplete--autocomplete-no-results-found-text-value="No results found" data-symfony--ux-autocomplete--autocomplete-no-more-results-text-value="No more results" data-symfony--ux-autocomplete--autocomplete-create-option-text-value="Add %placeholder%..." data-symfony--ux-autocomplete--autocomplete-preload-value="focus" data-action="live#$render"><option value="" selected>Choose a client</option></select>
+    </div>
+                                    </div>
+                                                                    </div>
+
+                                <div class="col-3 offset-3 text-right">
+                                        <label for="quote_discount_value">Discount</label>
+    <div class="form-group multiple-form-group input-group">
+        <input type="text" id="quote_discount_value" name="quote[discount][value]" class="discount-value form-control" value="0">
+        <select id="quote_discount_type" name="quote[discount][type]" class="discount-type form-control"><option value="percentage" selected>%</option>
+<option value="money">USD</option></select>
+    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="row mb-4">
+                                <div class="col-6 pt-4" data-controller="billing-id">
+                                    <span data-billing-id-target="info">
+                                        <span class="h4">
+                                            Quote #<span data-billing-id-target="value">1</span>
+                                        </span>
+                                                                                    <a href="#" data-action="billing-id#edit"><i class="fa fa-pencil"></i></a>
+                                                                            </span>
+
+                                    <div class="d-none" data-billing-id-target="form">
+
+                                                        
+                                <label class="control-label required required" for="quote_quoteId">Quote id</label>
+                                        <div class="input-group mb-3">
+                                            <input type="text" id="quote_quoteId" name="quote[quoteId]" data-required="required" maxlength="255" class="form-control" value="1">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-outline-secondary" type="button" data-action="billing-id#save" title="Save" rel="tooltip">
+                                                    <i class="fa fa-save"></i>
+                                                </button>
+                                                <button class="btn btn-outline-secondary" type="button" data-action="billing-id#cancel" title="Cancel" rel="tooltip">
+                                                    <i class="fa fa-cancel"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                                            </div>
+                        </div>
+
+                        <div class="row invoice-container">
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title"><strong>Quote Summary</strong></h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-condensed">
+                                                <thead>
+                                                <tr>
+                                                    <th>
+                                                        Description
+                                                    </th>
+                                                    <th>
+                                                        Price
+                                                    </th>
+                                                    <th>
+                                                        Qty
+                                                    </th>
+                                                                                                            <th>
+                                                            Tax
+                                                        </th>
+                                                                                                        <th class="text-right">Total</th>
+                                                    <th></th>
+                                                </tr>
+                                                </thead>
+                                                <tr>
+                                                                                                    </tr>
+<tr>
+                                                    <td class="column-description">
+                                                        <textarea id="quote_lines_0_description" name="quote[lines][0][description]" class="input-medium quote-item-name form-control"></textarea>
+                                                        
+                                                    </td>
+                                                    <td class="column-price">
+                                                        <div class="input-group ">
+<div class="input-group-prepend">
+                    <span class="input-group-text">$ </span>
+                </div>
+<input type="text" id="quote_lines_0_price" name="quote[lines][0][price]" class="input-small quote-item-price form-control" value="100.00">
+</div>
+                                                        
+                                                    </td>
+                                                    <td class="column-qty">
+                                                        <input type="text" id="quote_lines_0_qty" name="quote[lines][0][qty]" class="input-mini quote-item-qty form-control" inputmode="decimal" value="1">
+                                                        
+                                                    </td>
+                                                                                                            <td class="column-total text-right">
+                                                            <select id="quote_lines_0_tax" name="quote[lines][0][tax]" class="input-mini quote-item-tax form-control"><option value="">No Tax</option>
+<option value="0FKT8YC1NT27QT6CAT5KS1MNM0">20% VAT (inc)</option></select>
+                                                            
+                                                        </td>
+                                                                                                        <td class="column-total text-right">
+                                                        $100.00
+                                                    </td>
+                                                    <td class="column-trash text-center">
+                                                                                                            </td>
+                                                </tr>
+                                                                                                
+                                                <tfoot>
+                                                <tr>
+                                                    <td colspan="4" class="thick-line text-right"><strong>SubTotal</strong></td>
+                                                    <td class="thick-line text-right">
+                                                        <div class="sub-total">
+                                                            $100.00
+                                                        </div>
+                                                    </td>
+                                                    <td class="thick-line">
+                                                    </td>
+                                                </tr>
+                                                                                                    <tr>
+                                                        <td colspan="4" class="no-line text-right"><strong>Tax</strong></td>
+                                                        <td class="no-line text-right">
+                                                        <span class="tax">
+                                                            $0.00
+                                                        </span>
+                                                        </td>
+                                                        <td class="no-line">
+                                                        </td>
+                                                    </tr>
+                                                                                                <tr>
+                                                    <td colspan="4" class="no-line text-right"><strong>Discount</strong></td>
+                                                    <td class="no-line text-right">
+                                                        <span class="text-danger discount">
+                                                            $0.00
+                                                        </span>
+                                                    </td>
+                                                    <td class="no-line">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="4" class="no-line text-right"><strong>Total</strong></td>
+                                                    <td class="no-line text-right">
+                                                        <div class="total">
+                                                            $100.00
+                                                        </div>
+                                                    </td>
+                                                    <td class="no-line"></td>
+                                                </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col add-item-col">
+                                <button type="button" id="quote_lines_add" name="quote[lines][add]" data-action="live#action" data-live-action-param="addCollectionItem" data-live-name-param="quote[lines]" class="add-item btn">+ Add Item</button>
+                            </div>
+                        </div>
+
+
+                        <br class="clear">
+
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">                
+            <label class="control-label" for="quote_terms">Terms</label><textarea id="quote_terms" name="quote[terms]" class="form-control"></textarea>
+</div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">                
+            <label class="control-label" for="quote_notes">Notes</label><textarea id="quote_notes" name="quote[notes]" aria-describedby="quote_notes_help" class="form-control"></textarea><div class="alert alert-info mt-2">
+            <small id="quote_notes_help" class="form-text ">Notes will not be visible to the client</small>
+        </div>
+</div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions clearfix">
+                            <div class="float-left">
+                                <button type="submit" class="btn btn-success" name="save" value="pending">
+                                    <i class="fa fa-envelope o"></i> Save and Send
+                                </button>
+                                <button type="submit" class="btn btn-info" name="save" value="publish">
+                                    <i class="fa fa-check"></i> Save Quote
+                                </button>
+                            </div>
+                            <div class="float-right">
+                                <button type="submit" class="btn btn-primary" name="save" value="save">
+                                    <i class="fa fa-save"></i> Save as Draft
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="quote_total" name="quote[total]" value="0"><input type="hidden" id="quote_baseTotal" name="quote[baseTotal]" value="0"><input type="hidden" id="quote_tax" name="quote[tax]" value="0"><input type="hidden" id="quote__token" name="quote[_token]">
+</form>
+</div>
+</body></html>

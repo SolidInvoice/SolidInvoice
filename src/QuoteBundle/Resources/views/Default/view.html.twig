@@ -47,7 +47,7 @@
 
                 {% if quote.status not in ['declined', 'cancelled'] %}
                     <a href="{{ path('_send_quote', {'id' : quote.id}) }}" class="btn btn-info">
-                        {{ icon('envelope', ['o']) }} {{ (quote.status not in ['pending'] ? "Publish and Send" : "quote.view.toolbar.send")|trans }}
+                        {{ icon('envelope', ['o']) }} {{ (quote.status not in ['pending', 'accepted'] ? "Publish and Send" : "quote.view.toolbar.send")|trans }}
                     </a>
                 {% endif %}
 

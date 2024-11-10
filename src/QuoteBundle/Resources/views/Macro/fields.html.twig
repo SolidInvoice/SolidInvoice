@@ -1,28 +1,28 @@
-{% macro getFieldData(items, form) %}
+{% macro getFieldData(lines, form) %}
     {% set fieldData = {} %}
 
-    {% if items is not iterable %}
-        {% set items = [] %}
+    {% if lines is not iterable %}
+        {% set lines = [] %}
     {% endif %}
 
-    {% for item in items %}
-        {% set fieldData = fieldData|merge({(item): form_widget(form.items.vars.prototype[item])}) %}
+    {% for line in lines %}
+        {% set fieldData = fieldData|merge({(line): form_widget(form.lines.vars.prototype[line])}) %}
     {% endfor %}
 
-    {% for index, item in form.items %}
+    {% for index, line in form.line %}
         {% set fields = {} %}
 
-        {% for field in item.children|keys %}
+        {% for field in line.children|keys %}
             {% set fieldValue %}
-                {% set error = form_errors(item[field]) %}
+                {% set error = form_errors(line[field]) %}
 
                 {% if error|trim is not empty %}
                     <div class="form-group has-error">
-                        {{ form_widget(item[field]) }}
+                        {{ form_widget(line[field]) }}
                         {{ error|raw }}
                     </div>
                 {% else %}
-                    {{ form_widget(item[field]) }}
+                    {{ form_widget(line[field]) }}
                 {% endif %}
             {% endset %}
 
@@ -31,7 +31,7 @@
 
         {% set formData = formData|merge({(index) : fields}) %}
 
-        {% do item.setRendered() %}
+        {% do line.setRendered() %}
     {% endfor %}
 
     {{ fieldData }}

@@ -18,7 +18,7 @@ use JsonException;
 use Money\Currency;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\ClientBundle\Form\ClientAutocompleteType;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
@@ -26,9 +26,9 @@ use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Form\EventListener\QuoteUsersSubscriber;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
 use function array_key_exists;
 
 /**
@@ -52,13 +52,12 @@ class QuoteType extends AbstractType
     {
         $builder->add(
             'client',
-            null,
+            ClientAutocompleteType::class,
             [
                 'attr' => [
-                    'class' => 'select2 client-select',
+                    'class' => 'client-select',
                 ],
                 'placeholder' => 'quote.client.choose',
-                'choices' => $this->registry->getRepository(Client::class)->findAll()
             ]
         );
 
@@ -74,12 +73,11 @@ class QuoteType extends AbstractType
 
         $builder->add(
             'lines',
-            CollectionType::class,
+            LiveCollectionType::class,
             [
                 'entry_type' => ItemType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
-                'by_reference' => false,
                 'required' => false,
                 'entry_options' => [
                     'currency' => $options['currency'],

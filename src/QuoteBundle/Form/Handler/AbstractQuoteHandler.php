@@ -13,18 +13,24 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Form\Handler;
 
+use Brick\Math\Exception\MathException;
+use Exception;
 use Generator;
+use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Form\Type\QuoteType;
 use SolidInvoice\QuoteBundle\Model\Graph;
+use SolidWorx\FormHandler\FormHandlerFailInterface;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\FormHandler\FormHandlerOptionsResolver;
 use SolidWorx\FormHandler\FormHandlerResponseInterface;
 use SolidWorx\FormHandler\FormHandlerSuccessInterface;
 use SolidWorx\FormHandler\FormRequest;
 use SolidWorx\FormHandler\Options;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormErrorIterator;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,13 +39,14 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Workflow\WorkflowInterface;
 
-abstract class AbstractQuoteHandler implements FormHandlerInterface, FormHandlerResponseInterface, FormHandlerSuccessInterface, FormHandlerOptionsResolver
+abstract class AbstractQuoteHandler implements FormHandlerInterface, FormHandlerResponseInterface, FormHandlerSuccessInterface, FormHandlerOptionsResolver, FormHandlerFailInterface
 {
     use SaveableTrait;
 
     public function __construct(
         private readonly RouterInterface $router,
-        private readonly WorkflowInterface $quoteStateMachine
+        private readonly WorkflowInterface $quoteStateMachine,
+        private readonly TotalCalculator $totalCalculator,
     ) {
     }
 
@@ -48,6 +55,9 @@ abstract class AbstractQuoteHandler implements FormHandlerInterface, FormHandler
         return $factory->create(QuoteType::class, $options->get('quote'), $options->get('form_options'));
     }
 
+    /**
+     * @throws Exception
+     */
     public function onSuccess(FormRequest $form, $quote): ?Response
     {
         /** @var Quote $quote */
@@ -75,6 +85,21 @@ abstract class AbstractQuoteHandler implements FormHandlerInterface, FormHandler
                 yield self::FLASH_SUCCESS => 'quote.action.create.success';
             }
         };
+    }
+
+    /**
+     * @param FormErrorIterator<FormError> $errors
+     * @throws MathException
+     */
+    public function onFail(FormRequest $formRequest, FormErrorIterator $errors, $data = null): ?Response
+    {
+        $invoice = $formRequest->getOptions()->get('quote');
+
+        assert($invoice instanceof Quote);
+
+        $this->totalCalculator->calculateTotals($invoice);
+
+        return null;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

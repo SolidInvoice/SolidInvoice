@@ -1,3 +1,17 @@
+{% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
+
+{% block title %}
+    {% if quote is defined %}
+        {{ 'quote.title'|trans({'%id%' : quote.quoteId}) }}
+    {% else %}
+        {{ 'quote.create'|trans }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <twig:CreateQuote :form="form" :quote="quote" />
+{% endblock content %}
+
 {#
  # This file is part of SolidInvoice package.
  #
@@ -7,6 +21,7 @@
  # with this source code in the file LICENSE.
  #}
 
+{#
 {% set items = form.items.vars.prototype|keys %}
 {% set formData = {} %}
 {% set module = 'quote-create' %}
@@ -59,6 +74,7 @@
     {% endif %}
 {% endblock %}
 
+
 {% block form_row -%}
     {% if prototype is not defined %}
         <div class="form-group{% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %}">
@@ -69,7 +85,6 @@
     {% endif %}
 {%- endblock %}
 
-{% block content %}
     {{ form_start(form, {'attr' : {'id' : 'quote-create-form'} }) }}
 
     {{ form_errors(form) }}
@@ -176,3 +191,4 @@
 
     <br class="clear"/>
 {% endblock form_buttons %}
+#}

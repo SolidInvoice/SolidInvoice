@@ -228,7 +228,7 @@ class Quote
         writableLink: true,
         example: ['/api/clients/3fa85f64-5717-4562-b3fc-2c963f66afa6/contact/3fa85f64-5717-4562-b3fc-2c963f66afa6'],
     )]
-    #[ORM\OneToMany(mappedBy: 'quote', targetEntity: QuoteContact::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(mappedBy: 'quote', targetEntity: QuoteContact::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[Assert\Count(min: 1, minMessage: 'You need to select at least 1 user to attach to the Quote')]
     #[Groups(['quote_api:read', 'quote_api:write'])]
     private Collection $users;

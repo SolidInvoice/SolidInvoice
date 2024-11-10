@@ -15,6 +15,8 @@ namespace SolidInvoice\QuoteBundle\Cloner;
 
 use Brick\Math\Exception\MathException;
 use Carbon\Carbon;
+use Psr\Container\ContainerExceptionInterface;
+use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\QuoteBundle\Entity\Line;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Model\Graph;
@@ -28,12 +30,14 @@ use Traversable;
 final class QuoteCloner
 {
     public function __construct(
-        private readonly WorkflowInterface $quoteStateMachine
+        private readonly WorkflowInterface $quoteStateMachine,
+        private readonly BillingIdGenerator $billingIdGenerator,
     ) {
     }
 
     /**
      * @throws MathException
+     * @throws ContainerExceptionInterface
      */
     public function clone(Quote $quote): Quote
     {
@@ -51,6 +55,7 @@ final class QuoteCloner
         $newQuote->setTotal($quote->getTotal());
         $newQuote->setTerms($quote->getTerms());
         $newQuote->setUsers($quote->getUsers());
+        $newQuote->setQuoteId($this->billingIdGenerator->generate($newQuote, ['field' => 'quoteId']));
 
         if (null !== $quote->getTax()) {
             $newQuote->setTax($quote->getTax());

@@ -20,6 +20,7 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Form\Handler\InvoiceCreateHandler;
 use SolidWorx\FormHandler\FormHandler;
+use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\Request;
 
 final class Create
@@ -30,7 +31,7 @@ final class Create
     ) {
     }
 
-    public function __invoke(Request $request, Client $client = null)
+    public function __invoke(Request $request, Client $client = null): FormRequest | Template
     {
         $totalClientsCount = $this->clientRepository->getTotalClients();
         if (0 === $totalClientsCount) {

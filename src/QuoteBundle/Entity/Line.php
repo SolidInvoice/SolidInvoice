@@ -31,7 +31,7 @@ use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use SolidInvoice\CoreBundle\Entity\LineInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
-use SolidInvoice\QuoteBundle\Repository\ItemRepository;
+use SolidInvoice\QuoteBundle\Repository\LineRepository;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
@@ -43,7 +43,7 @@ use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: Line::TABLE_NAME)]
-#[ORM\Entity(repositoryClass: ItemRepository::class)]
+#[ORM\Entity(repositoryClass: LineRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[ApiResource(
     uriTemplate: '/quotes/{quoteId}/lines',
@@ -118,7 +118,7 @@ class Line implements LineInterface, Stringable
     #[ORM\Column(name: 'qty', type: Types::FLOAT)]
     #[Assert\NotBlank]
     #[Groups(['quote_api:read', 'quote_api:write'])]
-    private ?float $qty = null;
+    private ?float $qty = 1;
 
     #[ORM\ManyToOne(targetEntity: Quote::class, inversedBy: 'items')]
     #[ApiProperty(
