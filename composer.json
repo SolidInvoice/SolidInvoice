@@ -45,7 +45,7 @@
         "friendsofsymfony/jsrouting-bundle": "^3.0",
         "knplabs/knp-menu-bundle": "^3.2",
         "league/commonmark": "^2.4",
-        "lorisleiva/cron-translator": "*",
+        "lorisleiva/cron-translator": "^0.4.5",
         "moneyphp/money": "^4.5",
         "mpdf/mpdf": "^8.0",
         "mpociot/vat-calculator": "^3.1",

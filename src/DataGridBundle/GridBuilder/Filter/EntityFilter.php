@@ -16,9 +16,9 @@ use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\QueryBuilder;
 use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use Ramsey\Uuid\Uuid;
-use SolidInvoice\CoreBundle\Form\Type\UuidEntityType;
 use SolidInvoice\DataGridBundle\Filter\ColumnFilterInterface;
 use SolidInvoice\DataGridBundle\Source\ORMSource;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use function array_filter;
 use function array_map;
 use function array_values;
@@ -52,7 +52,7 @@ final class EntityFilter implements ColumnFilterInterface
 
     public function form(): string
     {
-        return UuidEntityType::class;
+        return EntityType::class;
     }
 
     public function formOptions(): array
