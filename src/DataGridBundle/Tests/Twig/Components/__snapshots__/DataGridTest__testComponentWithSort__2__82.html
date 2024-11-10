@@ -1,0 +1,501 @@
+<html><body>
+<div id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="DataGrid" data-live-url-value="/_components/DataGrid" data-live-query-mapping-value='{"page":{"name":"page"},"sort":{"name":"sort"},"perPage":{"name":"perPage"},"search":{"name":"search"},"filters":{"name":"filters"}}' data-live-props-value='{"name":"client_grid","context":"a:0:{}","page":1,"sort":"name,asc","perPage":10,"search":"","selectedItems":[],"selectedAll":false,"filters":[],"formName":"form","form":{"currencyCode":"","created":{"start":"","end":""},"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"pV3eG74uKxAxFhuIlq1ESupljiNmarV9Auiy6Ht+kTk="}' data-live-csrf-value="">
+    
+
+    <div class="card">
+        <div class="card-body p-0">
+                            <h5 class="ml-3 mt-3">Clients</h5>
+                        <div class="row m-1 pt-2">
+                <div class="col">
+                                            <div class="">
+                            <div class="btn-group" role="group" aria-label="Batch Actions">
+                                                                                                        <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal_delete">
+                                                                                    <i class="fa fa-trash"></i>
+                                                                                Delete
+                                    </button>
+                                                                            <div class="modal fade" tabindex="-1" aria-hidden="true" id="modal_delete" data-controller="bootstrap-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+                                                <div class="modal-header">
+                                                                        <h5>Confirm</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                                </div>
+                
+                <div class="modal-body">
+                                                                    Are you sure you want to perform this action on the selected items?
+                                                            </div>
+
+                                    <div class="modal-footer justify-content-between">
+                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-primary" data-action="live#action" data-live-action-name-param="Delete" data-live-action-param="debounce(300)|executeBatchAction">Confirm</button>
+                                                                </div>
+                                    </div>
+    </div>
+</div>
+                                                                                                                                            <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal_archive">
+                                                                                    <i class="fa fa-trash"></i>
+                                                                                Archive
+                                    </button>
+                                                                            <div class="modal fade" tabindex="-1" aria-hidden="true" id="modal_archive" data-controller="bootstrap-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+                                                <div class="modal-header">
+                                                                        <h5>Confirm</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                                </div>
+                
+                <div class="modal-body">
+                                                                    Are you sure you want to perform this action on the selected items?
+                                                            </div>
+
+                                    <div class="modal-footer justify-content-between">
+                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-primary" data-action="live#action" data-live-action-name-param="Archive" data-live-action-param="debounce(300)|executeBatchAction">Confirm</button>
+                                                                </div>
+                                    </div>
+    </div>
+</div>
+                                                                                                </div>
+                        </div>
+                                    </div>
+                <div class="col-3 float-right d-flex justify-content-between">
+                    <div class="input-group mb-3">
+                        <input type="search" name="q" class="form-control form-control-sm" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2" value="" data-model="search">
+                        <div class="input-group-append">
+                            <button class="btn btn-sm btn-outline-secondary" type="submit">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                                            <div class="ml-2">
+                            <div class="dropdown dropleft">
+                                <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="text-black-50">
+                                    <i class="fa fa-filter"></i>
+                                </a>
+                                <div class="dropdown-menu p-4 max-content">
+                                    <form name="form" method="post" data-model="on(change)|*"><div id="form" data-model="on(change)|*">
+<div class="form-group">                
+                                <label class="control-label required required" for="form_currencyCode">Currency code</label><select id="form_currencyCode" name="form[currencyCode]" data-required="required" class="form-control"><option value="" selected>Choose a value</option>
+<option value="AFN">Afghan Afghani</option>
+<option value="AFA">Afghan Afghani (1927&acirc;&#128;&#147;2002)</option>
+<option value="ALL">Albanian Lek</option>
+<option value="ALK">Albanian Lek (1946&acirc;&#128;&#147;1965)</option>
+<option value="DZD">Algerian Dinar</option>
+<option value="ADP">Andorran Peseta</option>
+<option value="AOA">Angolan Kwanza</option>
+<option value="AOK">Angolan Kwanza (1977&acirc;&#128;&#147;1991)</option>
+<option value="AON">Angolan New Kwanza (1990&acirc;&#128;&#147;2000)</option>
+<option value="AOR">Angolan Readjusted Kwanza (1995&acirc;&#128;&#147;1999)</option>
+<option value="ARA">Argentine Austral</option>
+<option value="ARS">Argentine Peso</option>
+<option value="ARM">Argentine Peso (1881&acirc;&#128;&#147;1970)</option>
+<option value="ARP">Argentine Peso (1983&acirc;&#128;&#147;1985)</option>
+<option value="ARL">Argentine Peso Ley (1970&acirc;&#128;&#147;1983)</option>
+<option value="AMD">Armenian Dram</option>
+<option value="AWG">Aruban Florin</option>
+<option value="AUD">Australian Dollar</option>
+<option value="ATS">Austrian Schilling</option>
+<option value="AZN">Azerbaijani Manat</option>
+<option value="AZM">Azerbaijani Manat (1993&acirc;&#128;&#147;2006)</option>
+<option value="BSD">Bahamian Dollar</option>
+<option value="BHD">Bahraini Dinar</option>
+<option value="BDT">Bangladeshi Taka</option>
+<option value="BBD">Barbadian Dollar</option>
+<option value="BYN">Belarusian Ruble</option>
+<option value="BYB">Belarusian Ruble (1994&acirc;&#128;&#147;1999)</option>
+<option value="BYR">Belarusian Ruble (2000&acirc;&#128;&#147;2016)</option>
+<option value="BEF">Belgian Franc</option>
+<option value="BEC">Belgian Franc (convertible)</option>
+<option value="BEL">Belgian Franc (financial)</option>
+<option value="BZD">Belize Dollar</option>
+<option value="BMD">Bermudan Dollar</option>
+<option value="BTN">Bhutanese Ngultrum</option>
+<option value="VED">Bol&Atilde;&shy;var Soberano</option>
+<option value="BOB">Bolivian Boliviano</option>
+<option value="BOL">Bolivian Boliviano (1863&acirc;&#128;&#147;1963)</option>
+<option value="BOV">Bolivian Mvdol</option>
+<option value="BOP">Bolivian Peso</option>
+<option value="BAM">Bosnia-Herzegovina Convertible Mark</option>
+<option value="BAD">Bosnia-Herzegovina Dinar (1992&acirc;&#128;&#147;1994)</option>
+<option value="BAN">Bosnia-Herzegovina New Dinar (1994&acirc;&#128;&#147;1997)</option>
+<option value="BWP">Botswanan Pula</option>
+<option value="BRC">Brazilian Cruzado (1986&acirc;&#128;&#147;1989)</option>
+<option value="BRZ">Brazilian Cruzeiro (1942&acirc;&#128;&#147;1967)</option>
+<option value="BRE">Brazilian Cruzeiro (1990&acirc;&#128;&#147;1993)</option>
+<option value="BRR">Brazilian Cruzeiro (1993&acirc;&#128;&#147;1994)</option>
+<option value="BRN">Brazilian New Cruzado (1989&acirc;&#128;&#147;1990)</option>
+<option value="BRB">Brazilian New Cruzeiro (1967&acirc;&#128;&#147;1986)</option>
+<option value="BRL">Brazilian Real</option>
+<option value="GBP">British Pound</option>
+<option value="BND">Brunei Dollar</option>
+<option value="BGL">Bulgarian Hard Lev</option>
+<option value="BGN">Bulgarian Lev</option>
+<option value="BGO">Bulgarian Lev (1879&acirc;&#128;&#147;1952)</option>
+<option value="BGM">Bulgarian Socialist Lev</option>
+<option value="BUK">Burmese Kyat</option>
+<option value="BIF">Burundian Franc</option>
+<option value="KHR">Cambodian Riel</option>
+<option value="CAD">Canadian Dollar</option>
+<option value="CVE">Cape Verdean Escudo</option>
+<option value="XCG">Caribbean guilder</option>
+<option value="KYD">Cayman Islands Dollar</option>
+<option value="XAF">Central African CFA Franc</option>
+<option value="XPF">CFP Franc</option>
+<option value="CLE">Chilean Escudo</option>
+<option value="CLP">Chilean Peso</option>
+<option value="CLF">Chilean Unit of Account (UF)</option>
+<option value="CNX">Chinese People&acirc;&#128;&#153;s Bank Dollar</option>
+<option value="CNY">Chinese Yuan</option>
+<option value="CNH">Chinese Yuan (offshore)</option>
+<option value="COP">Colombian Peso</option>
+<option value="COU">Colombian Real Value Unit</option>
+<option value="KMF">Comorian Franc</option>
+<option value="CDF">Congolese Franc</option>
+<option value="CRC">Costa Rican Col&Atilde;&sup3;n</option>
+<option value="HRD">Croatian Dinar</option>
+<option value="HRK">Croatian Kuna</option>
+<option value="CUC">Cuban Convertible Peso</option>
+<option value="CUP">Cuban Peso</option>
+<option value="CYP">Cypriot Pound</option>
+<option value="CZK">Czech Koruna</option>
+<option value="CSK">Czechoslovak Hard Koruna</option>
+<option value="DKK">Danish Krone</option>
+<option value="DJF">Djiboutian Franc</option>
+<option value="DOP">Dominican Peso</option>
+<option value="NLG">Dutch Guilder</option>
+<option value="XCD">East Caribbean Dollar</option>
+<option value="DDM">East German Mark</option>
+<option value="ECS">Ecuadorian Sucre</option>
+<option value="ECV">Ecuadorian Unit of Constant Value</option>
+<option value="EGP">Egyptian Pound</option>
+<option value="GQE">Equatorial Guinean Ekwele</option>
+<option value="ERN">Eritrean Nakfa</option>
+<option value="EEK">Estonian Kroon</option>
+<option value="ETB">Ethiopian Birr</option>
+<option value="EUR">Euro</option>
+<option value="XEU">European Currency Unit</option>
+<option value="FKP">Falkland Islands Pound</option>
+<option value="FJD">Fijian Dollar</option>
+<option value="FIM">Finnish Markka</option>
+<option value="FRF">French Franc</option>
+<option value="XFO">French Gold Franc</option>
+<option value="XFU">French UIC-Franc</option>
+<option value="GMD">Gambian Dalasi</option>
+<option value="GEK">Georgian Kupon Larit</option>
+<option value="GEL">Georgian Lari</option>
+<option value="DEM">German Mark</option>
+<option value="GHS">Ghanaian Cedi</option>
+<option value="GHC">Ghanaian Cedi (1979&acirc;&#128;&#147;2007)</option>
+<option value="GIP">Gibraltar Pound</option>
+<option value="GRD">Greek Drachma</option>
+<option value="GTQ">Guatemalan Quetzal</option>
+<option value="GWP">Guinea-Bissau Peso</option>
+<option value="GNF">Guinean Franc</option>
+<option value="GNS">Guinean Syli</option>
+<option value="GYD">Guyanaese Dollar</option>
+<option value="HTG">Haitian Gourde</option>
+<option value="HNL">Honduran Lempira</option>
+<option value="HKD">Hong Kong Dollar</option>
+<option value="HUF">Hungarian Forint</option>
+<option value="ISK">Icelandic Kr&Atilde;&sup3;na</option>
+<option value="ISJ">Icelandic Kr&Atilde;&sup3;na (1918&acirc;&#128;&#147;1981)</option>
+<option value="INR">Indian Rupee</option>
+<option value="IDR">Indonesian Rupiah</option>
+<option value="IRR">Iranian Rial</option>
+<option value="IQD">Iraqi Dinar</option>
+<option value="IEP">Irish Pound</option>
+<option value="ILS">Israeli New Shekel</option>
+<option value="ILP">Israeli Pound</option>
+<option value="ILR">Israeli Shekel (1980&acirc;&#128;&#147;1985)</option>
+<option value="ITL">Italian Lira</option>
+<option value="JMD">Jamaican Dollar</option>
+<option value="JPY">Japanese Yen</option>
+<option value="JOD">Jordanian Dinar</option>
+<option value="KZT">Kazakhstani Tenge</option>
+<option value="KES">Kenyan Shilling</option>
+<option value="KWD">Kuwaiti Dinar</option>
+<option value="KGS">Kyrgystani Som</option>
+<option value="LAK">Laotian Kip</option>
+<option value="LVL">Latvian Lats</option>
+<option value="LVR">Latvian Ruble</option>
+<option value="LBP">Lebanese Pound</option>
+<option value="LSL">Lesotho Loti</option>
+<option value="LRD">Liberian Dollar</option>
+<option value="LYD">Libyan Dinar</option>
+<option value="LTL">Lithuanian Litas</option>
+<option value="LTT">Lithuanian Talonas</option>
+<option value="LUL">Luxembourg Financial Franc</option>
+<option value="LUC">Luxembourgian Convertible Franc</option>
+<option value="LUF">Luxembourgian Franc</option>
+<option value="MOP">Macanese Pataca</option>
+<option value="MKD">Macedonian Denar</option>
+<option value="MKN">Macedonian Denar (1992&acirc;&#128;&#147;1993)</option>
+<option value="MGA">Malagasy Ariary</option>
+<option value="MGF">Malagasy Franc</option>
+<option value="MWK">Malawian Kwacha</option>
+<option value="MYR">Malaysian Ringgit</option>
+<option value="MVR">Maldivian Rufiyaa</option>
+<option value="MVP">Maldivian Rupee (1947&acirc;&#128;&#147;1981)</option>
+<option value="MLF">Malian Franc</option>
+<option value="MTL">Maltese Lira</option>
+<option value="MTP">Maltese Pound</option>
+<option value="MRU">Mauritanian Ouguiya</option>
+<option value="MRO">Mauritanian Ouguiya (1973&acirc;&#128;&#147;2017)</option>
+<option value="MUR">Mauritian Rupee</option>
+<option value="MXV">Mexican Investment Unit</option>
+<option value="MXN">Mexican Peso</option>
+<option value="MXP">Mexican Silver Peso (1861&acirc;&#128;&#147;1992)</option>
+<option value="MDC">Moldovan Cupon</option>
+<option value="MDL">Moldovan Leu</option>
+<option value="MCF">Monegasque Franc</option>
+<option value="MNT">Mongolian Tugrik</option>
+<option value="MAD">Moroccan Dirham</option>
+<option value="MAF">Moroccan Franc</option>
+<option value="MZE">Mozambican Escudo</option>
+<option value="MZN">Mozambican Metical</option>
+<option value="MZM">Mozambican Metical (1980&acirc;&#128;&#147;2006)</option>
+<option value="MMK">Myanmar Kyat</option>
+<option value="NAD">Namibian Dollar</option>
+<option value="NPR">Nepalese Rupee</option>
+<option value="ANG">Netherlands Antillean Guilder</option>
+<option value="TWD">New Taiwan Dollar</option>
+<option value="NZD">New Zealand Dollar</option>
+<option value="NIO">Nicaraguan C&Atilde;&sup3;rdoba</option>
+<option value="NIC">Nicaraguan C&Atilde;&sup3;rdoba (1988&acirc;&#128;&#147;1991)</option>
+<option value="NGN">Nigerian Naira</option>
+<option value="KPW">North Korean Won</option>
+<option value="NOK">Norwegian Krone</option>
+<option value="OMR">Omani Rial</option>
+<option value="PKR">Pakistani Rupee</option>
+<option value="PAB">Panamanian Balboa</option>
+<option value="PGK">Papua New Guinean Kina</option>
+<option value="PYG">Paraguayan Guarani</option>
+<option value="PEI">Peruvian Inti</option>
+<option value="PEN">Peruvian Sol</option>
+<option value="PES">Peruvian Sol (1863&acirc;&#128;&#147;1965)</option>
+<option value="PHP">Philippine Peso</option>
+<option value="PLN">Polish Zloty</option>
+<option value="PLZ">Polish Zloty (1950&acirc;&#128;&#147;1995)</option>
+<option value="PTE">Portuguese Escudo</option>
+<option value="GWE">Portuguese Guinea Escudo</option>
+<option value="QAR">Qatari Riyal</option>
+<option value="RHD">Rhodesian Dollar</option>
+<option value="XRE">RINET Funds</option>
+<option value="RON">Romanian Leu</option>
+<option value="ROL">Romanian Leu (1952&acirc;&#128;&#147;2006)</option>
+<option value="RUB">Russian Ruble</option>
+<option value="RUR">Russian Ruble (1991&acirc;&#128;&#147;1998)</option>
+<option value="RWF">Rwandan Franc</option>
+<option value="SVC">Salvadoran Col&Atilde;&sup3;n</option>
+<option value="WST">Samoan Tala</option>
+<option value="STN">S&Atilde;&pound;o Tom&Atilde;&copy; &amp; Pr&Atilde;&shy;ncipe Dobra</option>
+<option value="STD">S&Atilde;&pound;o Tom&Atilde;&copy; &amp; Pr&Atilde;&shy;ncipe Dobra (1977&acirc;&#128;&#147;2017)</option>
+<option value="SAR">Saudi Riyal</option>
+<option value="RSD">Serbian Dinar</option>
+<option value="CSD">Serbian Dinar (2002&acirc;&#128;&#147;2006)</option>
+<option value="SCR">Seychellois Rupee</option>
+<option value="SLE">Sierra Leonean Leone</option>
+<option value="SLL">Sierra Leonean Leone (1964&acirc;&#128;&#148;2022)</option>
+<option value="SGD">Singapore Dollar</option>
+<option value="SKK">Slovak Koruna</option>
+<option value="SIT">Slovenian Tolar</option>
+<option value="SBD">Solomon Islands Dollar</option>
+<option value="SOS">Somali Shilling</option>
+<option value="ZAR">South African Rand</option>
+<option value="ZAL">South African Rand (financial)</option>
+<option value="KRH">South Korean Hwan (1953&acirc;&#128;&#147;1962)</option>
+<option value="KRW">South Korean Won</option>
+<option value="KRO">South Korean Won (1945&acirc;&#128;&#147;1953)</option>
+<option value="SSP">South Sudanese Pound</option>
+<option value="SUR">Soviet Rouble</option>
+<option value="ESP">Spanish Peseta</option>
+<option value="ESA">Spanish Peseta (A account)</option>
+<option value="ESB">Spanish Peseta (convertible account)</option>
+<option value="LKR">Sri Lankan Rupee</option>
+<option value="SHP">St. Helena Pound</option>
+<option value="SDD">Sudanese Dinar (1992&acirc;&#128;&#147;2007)</option>
+<option value="SDG">Sudanese Pound</option>
+<option value="SDP">Sudanese Pound (1957&acirc;&#128;&#147;1998)</option>
+<option value="SRD">Surinamese Dollar</option>
+<option value="SRG">Surinamese Guilder</option>
+<option value="SZL">Swazi Lilangeni</option>
+<option value="SEK">Swedish Krona</option>
+<option value="CHF">Swiss Franc</option>
+<option value="SYP">Syrian Pound</option>
+<option value="TJR">Tajikistani Ruble</option>
+<option value="TJS">Tajikistani Somoni</option>
+<option value="TZS">Tanzanian Shilling</option>
+<option value="THB">Thai Baht</option>
+<option value="TPE">Timorese Escudo</option>
+<option value="TOP">Tongan Pa&Ecirc;&raquo;anga</option>
+<option value="TTD">Trinidad &amp; Tobago Dollar</option>
+<option value="TND">Tunisian Dinar</option>
+<option value="TRY">Turkish Lira</option>
+<option value="TRL">Turkish Lira (1922&acirc;&#128;&#147;2005)</option>
+<option value="TMT">Turkmenistani Manat</option>
+<option value="TMM">Turkmenistani Manat (1993&acirc;&#128;&#147;2009)</option>
+<option value="UGX">Ugandan Shilling</option>
+<option value="UGS">Ugandan Shilling (1966&acirc;&#128;&#147;1987)</option>
+<option value="UAH">Ukrainian Hryvnia</option>
+<option value="UAK">Ukrainian Karbovanets</option>
+<option value="AED">United Arab Emirates Dirham</option>
+<option value="UYW">Uruguayan Nominal Wage Index Unit</option>
+<option value="UYU">Uruguayan Peso</option>
+<option value="UYP">Uruguayan Peso (1975&acirc;&#128;&#147;1993)</option>
+<option value="UYI">Uruguayan Peso (Indexed Units)</option>
+<option value="USD">US Dollar</option>
+<option value="USN">US Dollar (Next day)</option>
+<option value="USS">US Dollar (Same day)</option>
+<option value="UZS">Uzbekistani Som</option>
+<option value="VUV">Vanuatu Vatu</option>
+<option value="VES">Venezuelan Bol&Atilde;&shy;var</option>
+<option value="VEB">Venezuelan Bol&Atilde;&shy;var (1871&acirc;&#128;&#147;2008)</option>
+<option value="VEF">Venezuelan Bol&Atilde;&shy;var (2008&acirc;&#128;&#147;2018)</option>
+<option value="VND">Vietnamese Dong</option>
+<option value="VNN">Vietnamese Dong (1978&acirc;&#128;&#147;1985)</option>
+<option value="XOF">West African CFA Franc</option>
+<option value="CHE">WIR Euro</option>
+<option value="CHW">WIR Franc</option>
+<option value="YDD">Yemeni Dinar</option>
+<option value="YER">Yemeni Rial</option>
+<option value="YUN">Yugoslavian Convertible Dinar (1990&acirc;&#128;&#147;1992)</option>
+<option value="YUD">Yugoslavian Hard Dinar (1966&acirc;&#128;&#147;1990)</option>
+<option value="YUM">Yugoslavian New Dinar (1994&acirc;&#128;&#147;2002)</option>
+<option value="YUR">Yugoslavian Reformed Dinar (1992&acirc;&#128;&#147;1993)</option>
+<option value="ZRN">Zairean New Zaire (1993&acirc;&#128;&#147;1998)</option>
+<option value="ZRZ">Zairean Zaire (1971&acirc;&#128;&#147;1993)</option>
+<option value="ZMW">Zambian Kwacha</option>
+<option value="ZMK">Zambian Kwacha (1968&acirc;&#128;&#147;2012)</option>
+<option value="ZWD">Zimbabwean Dollar (1980&acirc;&#128;&#147;2008)</option>
+<option value="ZWR">Zimbabwean Dollar (2008)</option>
+<option value="ZWL">Zimbabwean Dollar (2009)</option></select>
+</div>
+<fieldset class="form-group">                
+        <div class="row">
+        <div class="col-6">
+            <div class="form-group">    
+            <label class="control-label" for="form_created_start">Created Start</label><input type="date" id="form_created_start" name="form[created][start]" class="form-control">
+</div>
+        </div>
+        <div class="col-6">
+            <div class="form-group">    
+            <label class="control-label" for="form_created_end">Created End</label><input type="date" id="form_created_end" name="form[created][end]" class="form-control">
+</div>
+        </div>
+    </div>
+</fieldset>
+<input type="hidden" id="form__token" name="form[_token]">
+</div></form>
+                                    <a href="#" data-action="live#action:prevent" data-live-action-param="clearFilters">
+                                        <i class="fa fa-cancel"></i> Clear
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                                    </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-sm" data-controller="checkbox-select-all">
+                    <thead>
+                    <tr>
+                                                    <th width="1%">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkboxAll" data-model="selectedAll">
+                                </div>
+                            </th>
+                                                                            <th>
+                                                                    <a href="#" class="d-block" data-model="sort" data-value="name,desc" data-action="live#update:prevent">
+                                        Name
+                                                                                    <span class="float-right">
+                                                <i class="fa fa-caret-down"></i>
+                                            </span>
+                                                                            </a>
+                                                            </th>
+                                                    <th>
+                                                                    <a href="#" class="d-block" data-model="sort" data-value="website,desc" data-action="live#update:prevent">
+                                        Website
+                                                                            </a>
+                                                            </th>
+                                                    <th>
+                                                                    <a href="#" class="d-block" data-model="sort" data-value="currencyCode,desc" data-action="live#update:prevent">
+                                        Currency
+                                                                            </a>
+                                                            </th>
+                                                    <th>
+                                                                    Total Balance
+                                                            </th>
+                                                    <th>
+                                                                    Outstanding Balance
+                                                            </th>
+                                                    <th>
+                                                                    <a href="#" class="d-block" data-model="sort" data-value="created,desc" data-action="live#update:prevent">
+                                        Created
+                                                                            </a>
+                                                            </th>
+                                                                            <th width="1%">
+                                Actions
+                            </th>
+                                            </tr>
+                    </thead>
+                    <tbody>
+                                                                    <tr>
+                                                            <td>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input position-static" data-checkbox-select-all-target="checkbox" value="01JBYEQCR7DJ2YW4EXP6FYJZCR" data-model="selectedItems">
+                                    </div>
+                                </td>
+                                                                                        <td>Bosco-Padberg</td>
+                                                            <td><a href="https://fisher.net" target="_blank">https://fisher.net</a></td>
+                                                            <td>British Pound</td>
+                                                            <td>$0.00</td>
+                                                            <td>$0.00</td>
+                                                            <td>13 November 1997</td>
+                            
+                                                            <td style="white-space: nowrap;">
+                                                                            
+                                                                                                                            
+                                        <a href="/clients/view/01JBYEQCR7DJ2YW4EXP6FYJZCR">
+                                            <i class="fa fa-eye"></i>&nbsp;View
+                                        </a>
+                                        &nbsp;&nbsp;
+                                                                            
+                                                                                                                            
+                                        <a href="/clients/edit/01JBYEQCR7DJ2YW4EXP6FYJZCR">
+                                            <i class="fa fa-pencil"></i>&nbsp;Edit
+                                        </a>
+                                        &nbsp;&nbsp;
+                                                                    </td>
+                                                    </tr>
+                                                            </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer p-2 d-flex justify-content-between">
+            <p class="tile-subtitle-p tile-subtitle-footer mb-0">
+                Showing 1 - 1 of 1 results
+            </p>
+            <p class="tile-subtitle-p tile-subtitle-footer mb-0 m-auto">
+                <select class="form-control" data-model="perPage">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="1">All</option>
+                </select>
+            </p>
+            <p class="tile-subtitle-p tile-subtitle-footer mb-0 ml-auto">
+                </p>
+<ul class="pagination">
+<li class="page-item disabled"><span class="page-link">&atilde;&#128;&#136;</span></li>
+<li class="page-item active" aria-current="page"><span class="page-link">1</span></li>
+<li class="page-item disabled"><span class="page-link">&atilde;&#128;&#137;</span></li>
+</ul>
+            
+        </div>
+    </div>
+</div>
+</body></html>
