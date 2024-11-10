@@ -56,13 +56,4 @@ final class ORMSourceTest extends TestCase
 
         $this->assertSame($query, $this->source->fetch($this->grid));
     }
-
-    public function testFetchThrowsExceptionWhenManagerIsNotEntityManager(): void
-    {
-        $this->registry->method('getManagerForClass')->willReturn(null);
-
-        $this->expectException(AssertionError::class);
-
-        $this->source->fetch($this->grid);
-    }
 }

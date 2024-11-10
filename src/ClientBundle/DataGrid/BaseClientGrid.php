@@ -12,6 +12,7 @@
 namespace SolidInvoice\ClientBundle\DataGrid;
 
 use Brick\Math\BigInteger;
+use Doctrine\ORM\EntityManagerInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\DataGridBundle\Grid;
@@ -25,6 +26,8 @@ use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\UrlColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Filter\ChoiceFilter;
 use SolidInvoice\DataGridBundle\GridBuilder\Filter\DateRangeFilter;
+use SolidInvoice\DataGridBundle\GridBuilder\Query;
+use SolidInvoice\DataGridBundle\Source\ORMSource;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use Symfony\Component\Intl\Currencies;
 use Symfony\Component\Translation\TranslatableMessage;
@@ -103,5 +106,13 @@ abstract class BaseClientGrid extends Grid
             ->action(static function (ClientRepository $repository, array $selectedItems): void {
                 $repository->deleteClients($selectedItems);
             });
+    }
+
+    public function query(EntityManagerInterface $entityManager, Query $query): Query
+    {
+        $query->getQueryBuilder()
+            ->orderBy(ORMSource::ALIAS . '.created', 'ASC');
+
+        return $query;
     }
 }
