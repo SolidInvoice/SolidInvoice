@@ -16,7 +16,6 @@ namespace SolidInvoice\QuoteBundle\Tests\Cloner;
 use Brick\Math\BigInteger;
 use Brick\Math\Exception\MathException;
 use DateTime;
-use Money\Currency;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Entity\Discount;
@@ -92,7 +91,6 @@ class QuoteClonerTest extends TestCase
         $billingIdGenerator = $this->createMock(IdGeneratorInterface::class);
         $billingIdGenerator->expects($this->once())
             ->method('generate')
-            // ->with($quote, ['field' => 'quoteId'])
             ->willReturn('foo-bar-baz');
 
         $quoteCloner = new QuoteCloner(
