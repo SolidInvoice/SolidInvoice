@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3d4ee94afd0a45e344f83ea82458819e",
+    "content-hash": "5cd78c7ff8b542f5120cac948784f47d",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -7751,22 +7751,22 @@
         },
         {
             "name": "symfony/all-my-sms-notifier",
-            "version": "v6.4.8",
+            "version": "v7.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/all-my-sms-notifier.git",
-                "reference": "786c3b11193a0d0fb661e512b4286c1c94ef0607"
+                "reference": "54b1617607deb048ccd65951f160e7114cca383f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/all-my-sms-notifier/zipball/786c3b11193a0d0fb661e512b4286c1c94ef0607",
-                "reference": "786c3b11193a0d0fb661e512b4286c1c94ef0607",
+                "url": "https://api.github.com/repos/symfony/all-my-sms-notifier/zipball/54b1617607deb048ccd65951f160e7114cca383f",
+                "reference": "54b1617607deb048ccd65951f160e7114cca383f",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.1",
-                "symfony/http-client": "^5.4|^6.0|^7.0",
-                "symfony/notifier": "^6.2.7|^7.0"
+                "php": ">=8.2",
+                "symfony/http-client": "^6.4|^7.0",
+                "symfony/notifier": "^6.4|^7.0"
             },
             "type": "symfony-notifier-bridge",
             "autoload": {
@@ -7799,7 +7799,7 @@
                 "sms"
             ],
             "support": {
-                "source": "https://github.com/symfony/all-my-sms-notifier/tree/v6.4.8"
+                "source": "https://github.com/symfony/all-my-sms-notifier/tree/v7.1.6"
             },
             "funding": [
                 {
@@ -7815,7 +7815,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-05-31T14:49:08+00:00"
+            "time": "2024-09-25T14:20:29+00:00"
         },
         {
             "name": "symfony/amazon-mailer",
