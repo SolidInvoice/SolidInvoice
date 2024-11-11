@@ -107,7 +107,7 @@
         "symfony/linked-in-notifier": "^6.4",
         "symfony/mailchimp-mailer": "^6.4",
         "symfony/mailer": "^6.4",
-        "symfony/mailgun-mailer": "^6.4",
+        "symfony/mailgun-mailer": "^7.1",
         "symfony/mailjet-notifier": "^6.4",
         "symfony/mattermost-notifier": "^6.4",
         "symfony/mercure-notifier": "^6.4",
