@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
-use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Table;
@@ -504,54 +503,52 @@ final class Version20000 extends AbstractMigration
         parent::postUp($schema);
 
         try {
-            $this->connection->transactional(function (Connection $connection): void {
-                $date = date('Y-m-d H:i:s');
+            $date = date('Y-m-d H:i:s');
 
-                $configs = [
-                    ['setting_key' => 'system/company/company_name', 'setting_value' => 'SolidInvoice', 'description' => null, 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\TextType'],
-                    ['setting_key' => 'system/company/logo', 'setting_value' => null, 'description' => null, 'field_type' => 'SolidInvoice\CoreBundle\Form\Type\ImageUploadType'],
-                    ['setting_key' => 'quote/email_subject', 'setting_value' => 'New Quotation - #{id}', 'description' => 'To include the id of the quote in the subject, add the placeholder {id} where you want the id', 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\TextType'],
-                    ['setting_key' => 'quote/bcc_address', 'setting_value' => null, 'description' => 'Send BCC copy of quote to this address', 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\EmailType'],
-                    ['setting_key' => 'invoice/email_subject', 'setting_value' => 'New Invoice - #{id}', 'description' => 'To include the id of the invoice in the subject, add the placeholder {id} where you want the id', 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\TextType'],
-                    ['setting_key' => 'invoice/bcc_address', 'setting_value' => null, 'description' => 'Send BCC copy of invoice to this address', 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\EmailType'],
-                    ['setting_key' => 'email/from_name', 'setting_value' => 'SolidInvoice', 'description' => null, 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\TextType'],
-                    ['setting_key' => 'email/from_address', 'setting_value' => 'info@solidinvoice.co', 'description' => null, 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\TextType'],
-                    ['setting_key' => 'email/format', 'setting_value' => 'both', 'description' => 'In what format should emails be sent.', 'field_type' => 'SolidInvoice\SettingsBundle\Form\Type\MailFormatType'],
-                    ['setting_key' => 'sms/twilio/number', 'setting_value' => null, 'description' => null, 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\TextType'],
-                    ['setting_key' => 'sms/twilio/sid', 'setting_value' => null, 'description' => null, 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\TextType'],
-                    ['setting_key' => 'sms/twilio/token', 'setting_value' => null, 'description' => null, 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\TextType'],
-                    ['setting_key' => 'design/system/theme', 'setting_value' => 'skin-solidinvoice-default', 'description' => null, 'field_type' => 'SolidInvoice\SettingsBundle\Form\Type\ThemeType'],
-                    ['setting_key' => 'system/company/vat_number', 'setting_value' => null, 'description' => null, 'field_type' => 'SolidInvoice\TaxBundle\Form\Type\TaxNumberType'],
-                    ['setting_key' => 'system/company/contact_details/email', 'setting_value' => null, 'description' => null, 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\EmailType'],
-                    ['setting_key' => 'system/company/contact_details/phone_number', 'setting_value' => null, 'description' => null, 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\TextType'],
-                    ['setting_key' => 'system/company/contact_details/address', 'setting_value' => null, 'description' => null, 'field_type' => 'SolidInvoice\SettingsBundle\Form\Type\AddressType'],
-                    ['setting_key' => 'notification/client_create', 'setting_value' => '{"email":true,"sms":false}', 'description' => null, 'field_type' => 'SolidInvoice\NotificationBundle\Form\Type\NotificationType'],
-                    ['setting_key' => 'notification/invoice_status_update', 'setting_value' => '{"email":true,"sms":false}', 'description' => null, 'field_type' => 'SolidInvoice\NotificationBundle\Form\Type\NotificationType'],
-                    ['setting_key' => 'notification/quote_status_update', 'setting_value' => '{"email":true,"sms":false}', 'description' => null, 'field_type' => 'SolidInvoice\NotificationBundle\Form\Type\NotificationType'],
-                    ['setting_key' => 'notification/payment_made', 'setting_value' => '{"email":true,"sms":false}', 'description' => null, 'field_type' => 'SolidInvoice\NotificationBundle\Form\Type\NotificationType'],
-                    ['setting_key' => 'email/sending_options/transport', 'setting_value' => null, 'description' => null, 'field_type' => 'SolidInvoice\SettingsBundle\Form\Type\MailTransportType'],
-                    ['setting_key' => 'email/sending_options/host', 'setting_value' => null, 'description' => null, 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\TextType'],
-                    ['setting_key' => 'email/sending_options/user', 'setting_value' => null, 'description' => null, 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\TextType'],
-                    ['setting_key' => 'email/sending_options/password', 'setting_value' => null, 'description' => null, 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\PasswordType'],
-                    ['setting_key' => 'email/sending_options/port', 'setting_value' => null, 'description' => null, 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\TextType'],
-                    ['setting_key' => 'email/sending_options/encryption', 'setting_value' => null, 'description' => null, 'field_type' => 'SolidInvoice\SettingsBundle\Form\Type\MailEncryptionType'],
-                    ['setting_key' => 'system/company/currency', 'setting_value' => 'USD', 'description' => null, 'field_type' => 'SolidInvoice\MoneyBundle\Form\Type\CurrencyType'],
-                ];
+            $configs = [
+                ['setting_key' => 'system/company/company_name', 'setting_value' => 'SolidInvoice', 'description' => null, 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\TextType'],
+                ['setting_key' => 'system/company/logo', 'setting_value' => null, 'description' => null, 'field_type' => 'SolidInvoice\CoreBundle\Form\Type\ImageUploadType'],
+                ['setting_key' => 'quote/email_subject', 'setting_value' => 'New Quotation - #{id}', 'description' => 'To include the id of the quote in the subject, add the placeholder {id} where you want the id', 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\TextType'],
+                ['setting_key' => 'quote/bcc_address', 'setting_value' => null, 'description' => 'Send BCC copy of quote to this address', 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\EmailType'],
+                ['setting_key' => 'invoice/email_subject', 'setting_value' => 'New Invoice - #{id}', 'description' => 'To include the id of the invoice in the subject, add the placeholder {id} where you want the id', 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\TextType'],
+                ['setting_key' => 'invoice/bcc_address', 'setting_value' => null, 'description' => 'Send BCC copy of invoice to this address', 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\EmailType'],
+                ['setting_key' => 'email/from_name', 'setting_value' => 'SolidInvoice', 'description' => null, 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\TextType'],
+                ['setting_key' => 'email/from_address', 'setting_value' => 'info@solidinvoice.co', 'description' => null, 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\TextType'],
+                ['setting_key' => 'email/format', 'setting_value' => 'both', 'description' => 'In what format should emails be sent.', 'field_type' => 'SolidInvoice\SettingsBundle\Form\Type\MailFormatType'],
+                ['setting_key' => 'sms/twilio/number', 'setting_value' => null, 'description' => null, 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\TextType'],
+                ['setting_key' => 'sms/twilio/sid', 'setting_value' => null, 'description' => null, 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\TextType'],
+                ['setting_key' => 'sms/twilio/token', 'setting_value' => null, 'description' => null, 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\TextType'],
+                ['setting_key' => 'design/system/theme', 'setting_value' => 'skin-solidinvoice-default', 'description' => null, 'field_type' => 'SolidInvoice\SettingsBundle\Form\Type\ThemeType'],
+                ['setting_key' => 'system/company/vat_number', 'setting_value' => null, 'description' => null, 'field_type' => 'SolidInvoice\TaxBundle\Form\Type\TaxNumberType'],
+                ['setting_key' => 'system/company/contact_details/email', 'setting_value' => null, 'description' => null, 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\EmailType'],
+                ['setting_key' => 'system/company/contact_details/phone_number', 'setting_value' => null, 'description' => null, 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\TextType'],
+                ['setting_key' => 'system/company/contact_details/address', 'setting_value' => null, 'description' => null, 'field_type' => 'SolidInvoice\SettingsBundle\Form\Type\AddressType'],
+                ['setting_key' => 'notification/client_create', 'setting_value' => '{"email":true,"sms":false}', 'description' => null, 'field_type' => 'SolidInvoice\NotificationBundle\Form\Type\NotificationType'],
+                ['setting_key' => 'notification/invoice_status_update', 'setting_value' => '{"email":true,"sms":false}', 'description' => null, 'field_type' => 'SolidInvoice\NotificationBundle\Form\Type\NotificationType'],
+                ['setting_key' => 'notification/quote_status_update', 'setting_value' => '{"email":true,"sms":false}', 'description' => null, 'field_type' => 'SolidInvoice\NotificationBundle\Form\Type\NotificationType'],
+                ['setting_key' => 'notification/payment_made', 'setting_value' => '{"email":true,"sms":false}', 'description' => null, 'field_type' => 'SolidInvoice\NotificationBundle\Form\Type\NotificationType'],
+                ['setting_key' => 'email/sending_options/transport', 'setting_value' => null, 'description' => null, 'field_type' => 'SolidInvoice\SettingsBundle\Form\Type\MailTransportType'],
+                ['setting_key' => 'email/sending_options/host', 'setting_value' => null, 'description' => null, 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\TextType'],
+                ['setting_key' => 'email/sending_options/user', 'setting_value' => null, 'description' => null, 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\TextType'],
+                ['setting_key' => 'email/sending_options/password', 'setting_value' => null, 'description' => null, 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\PasswordType'],
+                ['setting_key' => 'email/sending_options/port', 'setting_value' => null, 'description' => null, 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\TextType'],
+                ['setting_key' => 'email/sending_options/encryption', 'setting_value' => null, 'description' => null, 'field_type' => 'SolidInvoice\SettingsBundle\Form\Type\MailEncryptionType'],
+                ['setting_key' => 'system/company/currency', 'setting_value' => 'USD', 'description' => null, 'field_type' => 'SolidInvoice\MoneyBundle\Form\Type\CurrencyType'],
+            ];
 
-                foreach ($configs as $config) {
-                    $connection->insert('app_config', $config);
-                }
+            foreach ($configs as $config) {
+                $this->connection->insert('app_config', $config);
+            }
 
-                // Contact Types
-                $connection->insert('contact_types', ['name' => 'email', 'required' => 1, 'type' => 'email', 'field_options' => 'a:1:{s:11:"constraints";a:1:{i:0;s:5:"email";}}']);
-                $connection->insert('contact_types', ['name' => 'mobile', 'required' => 0, 'type' => 'text', 'field_options' => 'N;']);
-                $connection->insert('contact_types', ['name' => 'phone', 'required' => 0, 'type' => 'text', 'field_options' => 'N;']);
+            // Contact Types
+            $this->connection->insert('contact_types', ['name' => 'email', 'required' => 1, 'type' => 'email', 'field_options' => 'a:1:{s:11:"constraints";a:1:{i:0;s:5:"email";}}']);
+            $this->connection->insert('contact_types', ['name' => 'mobile', 'required' => 0, 'type' => 'text', 'field_options' => 'N;']);
+            $this->connection->insert('contact_types', ['name' => 'phone', 'required' => 0, 'type' => 'text', 'field_options' => 'N;']);
 
-                // Payment Methods
-                $connection->insert('payment_methods', ['name' => 'Cash', 'gateway_name' => 'cash', 'config' => 'a:0:{}', 'internal' => true, 'enabled' => true, 'factory' => 'offline', 'created' => $date, 'updated' => $date]);
-                $connection->insert('payment_methods', ['name' => 'Bank Transfer', 'gateway_name' => 'bank_transfer', 'config' => 'a:0:{}', 'internal' => true, 'enabled' => true, 'factory' => 'offline', 'created' => $date, 'updated' => $date]);
-                $connection->insert('payment_methods', ['name' => 'Credit', 'gateway_name' => 'credit', 'config' => 'a:0:{}', 'internal' => true, 'enabled' => true, 'factory' => 'offline', 'created' => $date, 'updated' => $date]);
-            });
+            // Payment Methods
+            $this->connection->insert('payment_methods', ['name' => 'Cash', 'gateway_name' => 'cash', 'config' => 'a:0:{}', 'internal' => true, 'enabled' => true, 'factory' => 'offline', 'created' => $date, 'updated' => $date]);
+            $this->connection->insert('payment_methods', ['name' => 'Bank Transfer', 'gateway_name' => 'bank_transfer', 'config' => 'a:0:{}', 'internal' => true, 'enabled' => true, 'factory' => 'offline', 'created' => $date, 'updated' => $date]);
+            $this->connection->insert('payment_methods', ['name' => 'Credit', 'gateway_name' => 'credit', 'config' => 'a:0:{}', 'internal' => true, 'enabled' => true, 'factory' => 'offline', 'created' => $date, 'updated' => $date]);
         } catch (\Throwable $e) {
             $this->write(sprintf('Unable to load data: %s. Rolling back migration', $e->getMessage()));
 
