@@ -136,7 +136,7 @@
         "symfony/sendgrid-mailer": "^6.4",
         "symfony/sendinblue-notifier": "^6.4",
         "symfony/serializer": "^6.4",
-        "symfony/sinch-notifier": "^6.4",
+        "symfony/sinch-notifier": "^7.1",
         "symfony/slack-notifier": "^6.4",
         "symfony/sms-biuras-notifier": "^6.4",
         "symfony/sms77-notifier": "^6.4",

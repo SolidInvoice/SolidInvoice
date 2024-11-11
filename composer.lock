@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5cd78c7ff8b542f5120cac948784f47d",
+    "content-hash": "8aaf4e520ca73b5e8719569863773732",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -14324,22 +14324,22 @@
         },
         {
             "name": "symfony/sinch-notifier",
-            "version": "v6.4.8",
+            "version": "v7.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/sinch-notifier.git",
-                "reference": "b293801e22f284e52b68e0d062fcf7d89ce6bba8"
+                "reference": "5ca2babbc69f3a58c3653e2dcd171b79cb9e78ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/sinch-notifier/zipball/b293801e22f284e52b68e0d062fcf7d89ce6bba8",
-                "reference": "b293801e22f284e52b68e0d062fcf7d89ce6bba8",
+                "url": "https://api.github.com/repos/symfony/sinch-notifier/zipball/5ca2babbc69f3a58c3653e2dcd171b79cb9e78ae",
+                "reference": "5ca2babbc69f3a58c3653e2dcd171b79cb9e78ae",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.1",
-                "symfony/http-client": "^5.4|^6.0|^7.0",
-                "symfony/notifier": "^6.2.7|^7.0"
+                "php": ">=8.2",
+                "symfony/http-client": "^6.4|^7.0",
+                "symfony/notifier": "^6.4|^7.0"
             },
             "type": "symfony-notifier-bridge",
             "autoload": {
@@ -14372,7 +14372,7 @@
                 "sms"
             ],
             "support": {
-                "source": "https://github.com/symfony/sinch-notifier/tree/v6.4.8"
+                "source": "https://github.com/symfony/sinch-notifier/tree/v7.1.6"
             },
             "funding": [
                 {
@@ -14388,7 +14388,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-05-31T14:49:08+00:00"
+            "time": "2024-09-25T14:20:29+00:00"
         },
         {
             "name": "symfony/slack-notifier",
