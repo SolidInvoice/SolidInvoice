@@ -195,7 +195,7 @@
         "symfony/debug-bundle": "^6.4",
         "symfony/maker-bundle": "^1.33",
         "symfony/panther": "^2.0",
-        "symfony/web-profiler-bundle": "^6.4",
+        "symfony/web-profiler-bundle": "^7.1",
         "symplify/easy-coding-standard": "^12.2",
         "zenstruck/foundry": "^2.2"
     },
