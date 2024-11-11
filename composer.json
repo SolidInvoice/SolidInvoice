@@ -112,7 +112,7 @@
         "symfony/mattermost-notifier": "^6.4",
         "symfony/mercure-notifier": "^6.4",
         "symfony/message-bird-notifier": "^6.4",
-        "symfony/message-media-notifier": "^6.4",
+        "symfony/message-media-notifier": "^7.1",
         "symfony/messenger": "^6.4",
         "symfony/microsoft-teams-notifier": "^6.4",
         "symfony/mime": "^6.4",

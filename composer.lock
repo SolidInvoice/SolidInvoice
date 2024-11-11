@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5cd78c7ff8b542f5120cac948784f47d",
+    "content-hash": "3038510b19356a2b83fae8ac6c2a3a17",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -11448,22 +11448,22 @@
         },
         {
             "name": "symfony/message-media-notifier",
-            "version": "v6.4.8",
+            "version": "v7.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/message-media-notifier.git",
-                "reference": "ab4a8f9d3472e09780dcb3209c825d9641efbe26"
+                "reference": "80303529d84b24d6fbcfeb7d9f4071bc2dae146b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/message-media-notifier/zipball/ab4a8f9d3472e09780dcb3209c825d9641efbe26",
-                "reference": "ab4a8f9d3472e09780dcb3209c825d9641efbe26",
+                "url": "https://api.github.com/repos/symfony/message-media-notifier/zipball/80303529d84b24d6fbcfeb7d9f4071bc2dae146b",
+                "reference": "80303529d84b24d6fbcfeb7d9f4071bc2dae146b",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.1",
-                "symfony/http-client": "^5.4|^6.0|^7.0",
-                "symfony/notifier": "^6.2.7|^7.0"
+                "php": ">=8.2",
+                "symfony/http-client": "^6.4|^7.0",
+                "symfony/notifier": "^6.4|^7.0"
             },
             "type": "symfony-notifier-bridge",
             "autoload": {
@@ -11496,7 +11496,7 @@
                 "sms"
             ],
             "support": {
-                "source": "https://github.com/symfony/message-media-notifier/tree/v6.4.8"
+                "source": "https://github.com/symfony/message-media-notifier/tree/v7.1.6"
             },
             "funding": [
                 {
@@ -11512,7 +11512,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-05-31T14:49:08+00:00"
+            "time": "2024-09-25T14:20:29+00:00"
         },
         {
             "name": "symfony/messenger",
