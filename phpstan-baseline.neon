@@ -26,11 +26,6 @@ parameters:
 			path: src/ClientBundle/Form/Handler/AbstractContactFormHandler.php
 
 		-
-			message: "#^Negated boolean expression is always false\\.$#"
-			count: 1
-			path: src/ClientBundle/Form/Handler/AbstractContactFormHandler.php
-
-		-
 			message: "#^Class SolidInvoice\\\\ClientBundle\\\\Repository\\\\ContactRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#"
 			count: 1
 			path: src/ClientBundle/Repository/ContactRepository.php
@@ -89,11 +84,6 @@ parameters:
 			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Billing\\\\TotalCalculator\\:\\:updateTotal\\(\\) has parameter \\$entity with no type specified\\.$#"
 			count: 1
 			path: src/CoreBundle/Billing/TotalCalculator.php
-
-		-
-			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Command\\\\YamlFormatCommand\\:\\:findFiles\\(\\) return type has no value type specified in iterable type iterable\\.$#"
-			count: 1
-			path: src/CoreBundle/Command/YamlFormatCommand.php
 
 		-
 			message: "#^Class SolidInvoice\\\\CoreBundle\\\\Form\\\\Transformer\\\\DiscountTransformer implements generic interface Symfony\\\\Component\\\\Form\\\\DataTransformerInterface but does not specify its types\\: T, R$#"
@@ -187,11 +177,6 @@ parameters:
 
 		-
 			message: "#^Method SolidInvoice\\\\DataGridBundle\\\\Action\\\\Data\\:\\:serialize\\(\\) has parameter \\$groups with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/DataGridBundle/Action/Data.php
-
-		-
-			message: "#^Negated boolean expression is always false\\.$#"
 			count: 1
 			path: src/DataGridBundle/Action/Data.php
 
@@ -501,56 +486,6 @@ parameters:
 			path: src/PaymentBundle/PaymentAction/Request/StatusRequest.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between 'authorized' and int will always evaluate to false\\.$#"
-			count: 1
-			path: src/PaymentBundle/PaymentAction/Request/StatusRequest.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between 'cancelled' and int will always evaluate to false\\.$#"
-			count: 1
-			path: src/PaymentBundle/PaymentAction/Request/StatusRequest.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between 'captured' and int will always evaluate to false\\.$#"
-			count: 1
-			path: src/PaymentBundle/PaymentAction/Request/StatusRequest.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between 'expired' and int will always evaluate to false\\.$#"
-			count: 1
-			path: src/PaymentBundle/PaymentAction/Request/StatusRequest.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between 'failed' and int will always evaluate to false\\.$#"
-			count: 1
-			path: src/PaymentBundle/PaymentAction/Request/StatusRequest.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between 'new' and int will always evaluate to false\\.$#"
-			count: 1
-			path: src/PaymentBundle/PaymentAction/Request/StatusRequest.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between 'pending' and int will always evaluate to false\\.$#"
-			count: 1
-			path: src/PaymentBundle/PaymentAction/Request/StatusRequest.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between 'refunded' and int will always evaluate to false\\.$#"
-			count: 1
-			path: src/PaymentBundle/PaymentAction/Request/StatusRequest.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between 'suspended' and int will always evaluate to false\\.$#"
-			count: 1
-			path: src/PaymentBundle/PaymentAction/Request/StatusRequest.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between 'unknown' and int will always evaluate to false\\.$#"
-			count: 1
-			path: src/PaymentBundle/PaymentAction/Request/StatusRequest.php
-
-		-
 			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Payum\\\\Extension\\\\UpdatePaymentDetailsExtension\\:\\:onException\\(\\) has parameter \\$request with no type specified\\.$#"
 			count: 1
 			path: src/PaymentBundle/Payum/Extension/UpdatePaymentDetailsExtension.php
@@ -692,11 +627,6 @@ parameters:
 
 		-
 			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\Ajax\\\\ApiList\\:\\:serialize\\(\\) has parameter \\$groups with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/UserBundle/Action/Ajax/ApiList.php
-
-		-
-			message: "#^Negated boolean expression is always false\\.$#"
 			count: 1
 			path: src/UserBundle/Action/Ajax/ApiList.php
 

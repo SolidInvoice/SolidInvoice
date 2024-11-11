@@ -28,6 +28,7 @@ use SolidInvoice\InstallBundle\Exception\ApplicationInstalledException;
 use SolidInvoice\InstallBundle\Installer\Database\Migration;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Repository\UserRepository;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\FormatterHelper;
 use Symfony\Component\Console\Helper\QuestionHelper;
@@ -39,12 +40,9 @@ use Symfony\Component\Intl\Locales;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
+#[AsCommand(name: 'app:install', description: 'Installs the application')]
 class InstallCommand extends Command
 {
-    protected static $defaultName = 'app:install';
-
-    protected static $defaultDescription = 'Installs the application';
-
     public function __construct(
         private readonly ConfigWriter $configWriter,
         private readonly Migration $migration,

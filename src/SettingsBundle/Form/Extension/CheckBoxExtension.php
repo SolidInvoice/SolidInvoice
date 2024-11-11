@@ -23,12 +23,12 @@ class CheckBoxExtension extends AbstractTypeExtension
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addModelTransformer(new class() implements DataTransformerInterface {
-            public function transform($value)
+            public function transform(mixed $value): bool
             {
                 return (bool) $value;
             }
 
-            public function reverseTransform($value)
+            public function reverseTransform(mixed $value): string
             {
                 return (string) $value;
             }

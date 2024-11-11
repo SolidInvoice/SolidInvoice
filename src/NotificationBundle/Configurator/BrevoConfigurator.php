@@ -15,7 +15,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\NotificationBundle\Configurator;
 
-use SolidInvoice\NotificationBundle\Form\Type\Transport\SendinblueType;
+use SolidInvoice\NotificationBundle\Form\Type\Transport\BrevoType;
 use Symfony\Component\Notifier\Transport\Dsn;
 use function sprintf;
 use function urlencode;
@@ -23,11 +23,11 @@ use function urlencode;
 /**
  * @codeCoverageIgnore
  */
-final class SendinblueConfigurator implements ConfiguratorInterface
+final class BrevoConfigurator implements ConfiguratorInterface
 {
     public static function getName(): string
     {
-        return 'Sendinblue';
+        return 'Brevo';
     }
 
     public static function getType(): string
@@ -37,7 +37,7 @@ final class SendinblueConfigurator implements ConfiguratorInterface
 
     public function getForm(): string
     {
-        return SendinblueType::class;
+        return BrevoType::class;
     }
 
     /**
@@ -45,6 +45,6 @@ final class SendinblueConfigurator implements ConfiguratorInterface
      */
     public function configure(array $config): Dsn
     {
-        return new Dsn(sprintf('sendinblue://%s@default?sender=%s', urlencode($config['api_key']), urlencode($config['phone'])));
+        return new Dsn(sprintf('brevo://%s@default?sender=%s', urlencode($config['api_key']), urlencode($config['phone'])));
     }
 }

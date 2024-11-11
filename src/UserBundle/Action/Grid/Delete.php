@@ -20,9 +20,9 @@ use SolidInvoice\CoreBundle\Response\AjaxResponse;
 use SolidInvoice\CoreBundle\Traits\JsonTrait;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Repository\UserRepositoryInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Security;
 
 final class Delete implements AjaxResponse
 {

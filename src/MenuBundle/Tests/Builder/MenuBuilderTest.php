@@ -68,7 +68,7 @@ class MenuBuilderTest extends TestCase
 
     public function testContainer(): void
     {
-        $builder = M::mock('SolidInvoice\MenuBundle\Builder\BuilderInterface, Symfony\Component\DependencyInjection\ContainerAwareInterface', ['validate' => false]);
+        $builder = M::mock(BuilderInterface::class, ['validate' => false]);
         $item = new MenuItem('', M::mock(FactoryInterface::class));
 
         $builder->shouldReceive('validate')

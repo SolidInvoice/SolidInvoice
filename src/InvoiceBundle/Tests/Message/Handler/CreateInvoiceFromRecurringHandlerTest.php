@@ -30,22 +30,11 @@ use SolidInvoice\InvoiceBundle\Model\Graph;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Workflow\StateMachine;
 use Zenstruck\Foundry\Test\Factories;
-use function iterator_to_array;
 
 /** @covers \SolidInvoice\InvoiceBundle\Message\Handler\CreateInvoiceFromRecurringHandler */
 final class CreateInvoiceFromRecurringHandlerTest extends KernelTestCase
 {
     use Factories;
-
-    public function testGetHandledMessages(): void
-    {
-        self::assertSame(
-            [
-                CreateInvoiceFromRecurring::class => ['from_transport' => 'sync'],
-            ],
-            iterator_to_array(CreateInvoiceFromRecurringHandler::getHandledMessages())
-        );
-    }
 
     public function testHandler(): void
     {

@@ -16,19 +16,21 @@ namespace SolidInvoice\ApiBundle\Serializer\Normalizer;
 use Brick\Math\BigInteger;
 use Brick\Math\Exception\MathException;
 use SolidInvoice\CoreBundle\Entity\Discount;
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @see \SolidInvoice\ApiBundle\Tests\Serializer\Normalizer\DiscountNormalizerTest
  */
-class DiscountNormalizer implements NormalizerInterface, DenormalizerInterface
+#[AutoconfigureTag('serializer.normalizer')]
+final class DiscountNormalizer implements NormalizerInterface, DenormalizerInterface
 {
     /**
      * @param array{type: string|null, value: string|int|null} $data
      * @throws MathException
      */
-    public function denormalize($data, string $type, string $format = null, array $context = []): Discount
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): Discount
     {
         $discount = new Discount();
         $discount->setType($data['type'] ?? null);
@@ -37,7 +39,7 @@ class DiscountNormalizer implements NormalizerInterface, DenormalizerInterface
         return $discount;
     }
 
-    public function supportsDenormalization($data, $type, $format = null): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
         return Discount::class === $type;
     }
@@ -47,7 +49,7 @@ class DiscountNormalizer implements NormalizerInterface, DenormalizerInterface
      * @param array<string, mixed> $context
      * @return array{type: string, value: BigInteger|int|float|string|null}
      */
-    public function normalize($object, string $format = null, array $context = []): array
+    public function normalize(mixed $object, ?string $format = null, array $context = []): array
     {
         return [
             'type' => $object->getType(),
@@ -55,8 +57,15 @@ class DiscountNormalizer implements NormalizerInterface, DenormalizerInterface
         ];
     }
 
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
         return $data instanceof Discount;
+    }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            Discount::class => null,
+        ];
     }
 }

@@ -14,10 +14,11 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Action\Security;
 
 use SolidInvoice\CoreBundle\Templating\Template;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Security\Http\SecurityRequestAttributes;
 
 final class Login
 {
@@ -25,8 +26,8 @@ final class Login
     {
         $session = $request->getSession();
 
-        $authErrorKey = Security::AUTHENTICATION_ERROR;
-        $lastUsernameKey = Security::LAST_USERNAME;
+        $authErrorKey = SecurityRequestAttributes::AUTHENTICATION_ERROR;
+        $lastUsernameKey = SecurityRequestAttributes::LAST_USERNAME;
         $error = null;
 
         if ($request->attributes->has($authErrorKey)) {

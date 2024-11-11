@@ -17,7 +17,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use InvalidArgumentException;
 use SolidInvoice\ClientBundle\Entity\AdditionalContactDetail;
 use SolidInvoice\ClientBundle\Entity\ContactType;
-use Symfony\Component\Serializer\Exception\ExceptionInterface;
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -28,7 +28,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 /**
  * @see \SolidInvoice\ApiBundle\Tests\Serializer\Normalizer\AdditionalContactDetailsNormalizerTest
  */
-class AdditionalContactDetailsNormalizer implements NormalizerAwareInterface, NormalizerInterface, DenormalizerAwareInterface, DenormalizerInterface
+#[AutoconfigureTag('serializer.normalizer')]
+final class AdditionalContactDetailsNormalizer implements NormalizerAwareInterface, NormalizerInterface, DenormalizerAwareInterface, DenormalizerInterface
 {
     use NormalizerAwareTrait;
     use DenormalizerAwareTrait;
@@ -40,9 +41,8 @@ class AdditionalContactDetailsNormalizer implements NormalizerAwareInterface, No
 
     /**
      * @param array<string, mixed> $context
-     * @throws ExceptionInterface
      */
-    public function denormalize($data, $type, $format = null, array $context = []): AdditionalContactDetail
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): AdditionalContactDetail
     {
         if (! array_key_exists('type', $data) || ! array_key_exists('value', $data)) {
             throw new InvalidArgumentException('Invalid data');
@@ -62,7 +62,7 @@ class AdditionalContactDetailsNormalizer implements NormalizerAwareInterface, No
         return $detail;
     }
 
-    public function supportsDenormalization($data, $type, $format = null): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
         return AdditionalContactDetail::class === $type;
     }
@@ -72,16 +72,23 @@ class AdditionalContactDetailsNormalizer implements NormalizerAwareInterface, No
      * @param array<string, mixed> $context
      * @return array{type: string, value: string|null}
      */
-    public function normalize($object, ?string $format = null, array $context = []): array
+    public function normalize(mixed $object, ?string $format = null, array $context = []): array
     {
         return [
-            'type' => $object->getType()->getName(),
+            'type' => $object->getType()?->getName(),
             'value' => $object->getValue(),
         ];
     }
 
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
         return $data instanceof AdditionalContactDetail;
+    }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            AdditionalContactDetail::class => null,
+        ];
     }
 }

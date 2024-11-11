@@ -17,12 +17,13 @@ use ApiPlatform\Api\IriConverterInterface;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\QuoteBundle\Entity\Quote;
-use Symfony\Component\Serializer\Normalizer\ContextAwareDenormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\ContextAwareNormalizerInterface;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use function in_array;
 use function is_a;
 use function is_array;
@@ -30,7 +31,7 @@ use function is_array;
 /**
  * @see \SolidInvoice\InvoiceBundle\Tests\Api\BillingUserNormalizerTest
  */
-final class BillingUserNormalizer implements ContextAwareDenormalizerInterface, DenormalizerAwareInterface, ContextAwareNormalizerInterface, NormalizerAwareInterface
+final class BillingUserNormalizer implements DenormalizerAwareInterface, DenormalizerInterface, NormalizerAwareInterface, NormalizerInterface
 {
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
@@ -40,12 +41,19 @@ final class BillingUserNormalizer implements ContextAwareDenormalizerInterface, 
     ) {
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    /**
+     * @param array<string, mixed> $context
+     * @throws ExceptionInterface
+     */
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        return $this->denormalizer->denormalize($data, $class, $format, $context + [self::class => true]);
+        return $this->denormalizer->denormalize($data, $type, $format, $context + [self::class => true]);
     }
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    /**
+     * @param array<string, mixed> $context
+     */
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
         return in_array($format, ['json', 'jsonld'], true) &&
             (
@@ -57,16 +65,23 @@ final class BillingUserNormalizer implements ContextAwareDenormalizerInterface, 
             ! isset($context[self::class]);
     }
 
-    public function supportsNormalization($data, string $format = null, array $context = []): bool
+    /**
+     * @param array<string, mixed> $context
+     */
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
         return is_array($data) && isset($context['resource_class'], $data['users']) && (
             $context['resource_class'] === Invoice::class ||
-            $context['resource_class'] === RecurringInvoice::class ||
-            $context['resource_class'] === Quote::class
+                $context['resource_class'] === RecurringInvoice::class ||
+                $context['resource_class'] === Quote::class
         ) && is_array($data['users']) && ! isset($context[self::class]);
     }
 
-    public function normalize($object, string $format = null, array $context = [])
+    /**
+     * @param array<string, mixed> $context
+     * @throws ExceptionInterface
+     */
+    public function normalize(mixed $object, ?string $format = null, array $context = []): array | string | int | float | bool | \ArrayObject | null
     {
         $users = $object['users'];
 
@@ -75,5 +90,14 @@ final class BillingUserNormalizer implements ContextAwareDenormalizerInterface, 
         }
 
         return $this->normalizer->normalize($object, $format, $context + [self::class => true]);
+    }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            Invoice::class => null,
+            RecurringInvoice::class => null,
+            Quote::class => null,
+        ];
     }
 }

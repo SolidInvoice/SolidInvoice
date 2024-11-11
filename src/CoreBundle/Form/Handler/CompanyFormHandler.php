@@ -25,12 +25,12 @@ use SolidWorx\FormHandler\FormHandlerResponseInterface;
 use SolidWorx\FormHandler\FormHandlerSuccessInterface;
 use SolidWorx\FormHandler\FormRequest;
 use SolidWorx\FormHandler\Options;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Security;
 use function assert;
 
 final class CompanyFormHandler implements FormHandlerInterface, FormHandlerSuccessInterface, FormHandlerResponseInterface

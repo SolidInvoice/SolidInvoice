@@ -29,7 +29,7 @@ final class CurrencySerializer implements NormalizerInterface, DenormalizerInter
         $this->normalizer = $normalizer;
     }
 
-    public function denormalize($data, $type, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): Currency
     {
         if ($type === Currency::class && is_string($data)) {
             return new Currency($data);
@@ -38,18 +38,25 @@ final class CurrencySerializer implements NormalizerInterface, DenormalizerInter
         return $this->normalizer->denormalize($data, $type, $format, $context);
     }
 
-    public function supportsDenormalization($data, $type, $format = null): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
         return Currency::class === $type;
     }
 
-    public function normalize($object, $format = null, array $context = []): object
+    public function normalize(mixed $object, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         return $object;
     }
 
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
         return $data instanceof Currency;
+    }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            Currency::class => null,
+        ];
     }
 }

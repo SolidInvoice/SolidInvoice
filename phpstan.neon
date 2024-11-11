@@ -12,5 +12,4 @@ parameters:
         - src/CoreBundle/Tests/Fixtures/file.php
     symfony:
         container_xml_path: var/cache/dev/SolidInvoice_KernelDevDebugContainer.xml
-    stubFiles:
-        - tests/stub.php
+    treatPhpDocTypesAsCertain: false

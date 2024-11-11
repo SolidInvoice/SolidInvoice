@@ -24,11 +24,11 @@ use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Form\Handler\UserInviteFormHandler;
 use SolidInvoice\UserBundle\UserInvitation\UserInvitation;
 use SolidWorx\FormHandler\FormRequest;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class UserInviteFormHandlerTest extends FormHandlerTestCase

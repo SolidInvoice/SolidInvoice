@@ -62,12 +62,18 @@ final class AdditionalContactDetailsNormalizerTest extends TestCase
     public function testDenormalization(): void
     {
         $parentNormalizer = new class() implements DenormalizerInterface {
-            public function supportsDenormalization($data, $type, $format = null)
+            /**
+             * @param array<string, mixed> $context
+             */
+            public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
             {
                 return true;
             }
 
-            public function denormalize($data, $class, $format = null, array $context = [])
+            /**
+             * @param array<string, mixed> $context
+             */
+            public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
             {
                 $additionalContactDetail = new AdditionalContactDetail();
                 $type = new ContactType();
@@ -76,6 +82,13 @@ final class AdditionalContactDetailsNormalizerTest extends TestCase
                     ->setValue($data['value']);
 
                 return $additionalContactDetail;
+            }
+
+            public function getSupportedTypes(?string $format): array
+            {
+                return [
+                    AdditionalContactDetail::class => null,
+                ];
             }
         };
 

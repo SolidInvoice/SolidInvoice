@@ -26,12 +26,12 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @see \SolidInvoice\ApiBundle\Tests\Serializer\Normalizer\CreditNormalizerTest
  */
 #[AutoconfigureTag('serializer.normalizer')]
-class CreditNormalizer implements NormalizerAwareInterface, NormalizerInterface, DenormalizerAwareInterface, DenormalizerInterface
+final class CreditNormalizer implements NormalizerAwareInterface, NormalizerInterface, DenormalizerAwareInterface, DenormalizerInterface
 {
     use NormalizerAwareTrait;
     use DenormalizerAwareTrait;
 
-    public function denormalize($data, $type, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
         if ($type === Credit::class) {
             return (new Credit())->setValue($data);
@@ -40,19 +40,26 @@ class CreditNormalizer implements NormalizerAwareInterface, NormalizerInterface,
         return $this->denormalizer->denormalize($data, $type, $format, $context);
     }
 
-    public function supportsDenormalization($data, $type, $format = null): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
         return Credit::class === $type;
     }
 
-    public function normalize($object, $format = null, array $context = []): float
+    public function normalize(mixed $object, ?string $format = null, array $context = []): float
     {
         /** @var Credit $object */
         return $this->normalizer->normalize($object->getValue(), $format, $context);
     }
 
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
         return $data instanceof Credit;
+    }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            Credit::class => null,
+        ];
     }
 }

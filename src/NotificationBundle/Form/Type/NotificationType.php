@@ -29,7 +29,7 @@ class NotificationType extends AbstractType
         $builder->add('sms', CheckboxType::class);
 
         $builder->addModelTransformer(new class() implements DataTransformerInterface {
-            public function transform($value)
+            public function transform(mixed $value): mixed
             {
                 if (! is_string($value)) {
                     return null;
@@ -38,7 +38,7 @@ class NotificationType extends AbstractType
                 return json_decode($value, true, 512, JSON_THROW_ON_ERROR);
             }
 
-            public function reverseTransform($value)
+            public function reverseTransform(mixed $value): string | null | false
             {
                 if (null === $value) {
                     return $value;

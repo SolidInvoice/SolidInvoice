@@ -27,10 +27,7 @@ use function assert;
  */
 trait SymfonyKernelTrait
 {
-    /**
-     * @var KernelInterface|null
-     */
-    protected static $kernel;
+    protected static ?KernelInterface $kernel = null;
 
     /**
      * @var ContainerInterface|null
@@ -39,10 +36,7 @@ trait SymfonyKernelTrait
      */
     protected static $container;
 
-    /**
-     * @var bool
-     */
-    protected static $booted = false;
+    protected static bool $booted = false;
 
     protected function tearDown(): void
     {
@@ -62,8 +56,9 @@ trait SymfonyKernelTrait
     {
         static::ensureKernelShutdown();
 
-        static::$kernel = static::createKernel($options);
-        static::$kernel->boot();
+        $kernel = static::createKernel($options);
+        $kernel->boot();
+        static::$kernel = $kernel;
         static::$booted = true;
 
         return static::$kernel;
@@ -127,9 +122,13 @@ trait SymfonyKernelTrait
      */
     protected static function ensureKernelShutdown(): void
     {
-        if (static::$kernel instanceof KernelInterface) {
+        if (null !== static::$kernel) {
             static::$kernel->boot();
             $container = static::$kernel->getContainer();
+
+            // Instantiate the service because Container::reset() only resets services that have been used
+            $container->get('services_resetter');
+
             static::$kernel->shutdown();
             static::$booted = false;
 

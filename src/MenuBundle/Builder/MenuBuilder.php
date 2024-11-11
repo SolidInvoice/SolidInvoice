@@ -14,16 +14,12 @@ declare(strict_types=1);
 namespace SolidInvoice\MenuBundle\Builder;
 
 use SolidInvoice\MenuBundle\MenuItem;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 /**
  * @see \SolidInvoice\MenuBundle\Tests\Builder\MenuBuilderTest
  */
-final class MenuBuilder implements ContainerAwareInterface
+final class MenuBuilder
 {
-    use ContainerAwareTrait;
-
     public function __construct(
         protected BuilderInterface $class,
         protected string $method

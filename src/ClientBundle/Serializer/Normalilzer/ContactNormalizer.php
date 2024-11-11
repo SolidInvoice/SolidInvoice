@@ -28,7 +28,7 @@ use function is_array;
 /**
  * @see \SolidInvoice\ClientBundle\Tests\Serializer\Normalizer\ContactNormalizerTest
  */
-class ContactNormalizer implements NormalizerAwareInterface, NormalizerInterface, DenormalizerAwareInterface, DenormalizerInterface
+final class ContactNormalizer implements NormalizerAwareInterface, NormalizerInterface, DenormalizerAwareInterface, DenormalizerInterface
 {
     use NormalizerAwareTrait;
     use DenormalizerAwareTrait;
@@ -42,7 +42,7 @@ class ContactNormalizer implements NormalizerAwareInterface, NormalizerInterface
      * @param array<string, mixed> $context
      * @throws ExceptionInterface
      */
-    public function denormalize($data, $type, $format = null, array $context = []): Contact
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): Contact
     {
         $contact = $this->denormalizer->denormalize($data, $type, $format, $context + [self::class => true]);
 
@@ -55,34 +55,35 @@ class ContactNormalizer implements NormalizerAwareInterface, NormalizerInterface
     }
 
     /**
-     * @param mixed $data
-     * @param string $type
-     * @param string|null $format
      * @param array<string, mixed> $context
      */
-    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
         return Contact::class === $type && is_array($data) && ! isset($context[self::class]);
     }
 
     /**
-     * @param mixed $object
      * @param array<string, mixed> $context
      * @throws ExceptionInterface
      * @return array<string, mixed>
      */
-    public function normalize($object, ?string $format = null, array $context = []): array
+    public function normalize(mixed $object, ?string $format = null, array $context = []): array
     {
         return $this->normalizer->normalize($object, $format, $context + [self::class => true]);
     }
 
     /**
-     * @param mixed $data
-     * @param string|null $format
      * @param array<string, mixed> $context
      */
-    public function supportsNormalization($data, $format = null, array $context = []): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
         return $data instanceof Contact && ! isset($context[self::class]);
+    }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            Contact::class => null,
+        ];
     }
 }

@@ -29,7 +29,7 @@ class DiscountTransformer implements DataTransformerInterface
      * @throws MathException
      * @throws NumberFormatException
      */
-    public function transform($value): float
+    public function transform(mixed $value): float
     {
         if ($value === null) {
             return 0.0;
@@ -44,7 +44,7 @@ class DiscountTransformer implements DataTransformerInterface
      * @throws MathException
      * @throws NumberFormatException
      */
-    public function reverseTransform($value): BigNumber
+    public function reverseTransform(mixed $value): BigNumber
     {
         return BigNumber::of($value)
             ->toBigDecimal()

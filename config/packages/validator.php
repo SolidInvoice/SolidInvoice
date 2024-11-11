@@ -18,6 +18,5 @@ return static function (FrameworkConfig $config): void {
     $config
         ->validation()
         ->enabled(true)
-        ->enableAnnotations(true)
         ->emailValidationMode(Email::VALIDATION_MODE_STRICT);
 };

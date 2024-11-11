@@ -16,11 +16,11 @@ namespace SolidInvoice\CoreBundle\Action;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\UserBundle\Entity\User;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Uid\Ulid;
 
 final class SelectCompany

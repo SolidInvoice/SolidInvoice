@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Tests\Serializer\Normalizer;
 
+use ArrayObject;
 use Brick\Math\Exception\MathException;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ApiBundle\Serializer\Normalizer\CreditNormalizer;
@@ -26,24 +27,29 @@ final class CreditNormalizerTest extends TestCase
     public function testSupportsNormalization(): void
     {
         $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
-            public function normalize($object, $format = null, array $context = [])
+            public function normalize(mixed $object, ?string $format = null, array $context = []): array|string|int|float|bool|ArrayObject|null
             {
                 return $object;
             }
 
-            public function supportsNormalization($data, $format = null)
+            public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
             {
                 return true;
             }
 
-            public function supportsDenormalization($data, $type, $format = null)
+            public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
             {
                 return true;
             }
 
-            public function denormalize($data, $class, $format = null, array $context = [])
+            public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
             {
                 return $data;
+            }
+
+            public function getSupportedTypes(?string $format): array
+            {
+                return [];
             }
         };
 
@@ -57,24 +63,29 @@ final class CreditNormalizerTest extends TestCase
     public function testSupportsDenormalization(): void
     {
         $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
-            public function normalize($object, $format = null, array $context = [])
+            public function normalize(mixed $object, ?string $format = null, array $context = []): array|string|int|float|bool|ArrayObject|null
             {
                 return $object;
             }
 
-            public function supportsNormalization($data, $format = null)
+            public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
             {
                 return true;
             }
 
-            public function supportsDenormalization($data, $type, $format = null)
+            public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
             {
                 return true;
             }
 
-            public function denormalize($data, $class, $format = null, array $context = [])
+            public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
             {
                 return $data;
+            }
+
+            public function getSupportedTypes(?string $format): array
+            {
+                return [];
             }
         };
 
@@ -92,24 +103,29 @@ final class CreditNormalizerTest extends TestCase
     public function testNormalization(): void
     {
         $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
-            public function normalize($object, $format = null, array $context = [])
+            public function normalize(mixed $object, ?string $format = null, array $context = []): array|string|int|float|bool|ArrayObject|null
             {
                 return $object->toFloat();
             }
 
-            public function supportsNormalization($data, $format = null)
+            public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
             {
                 return true;
             }
 
-            public function supportsDenormalization($data, $type, $format = null)
+            public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
             {
                 return true;
             }
 
-            public function denormalize($data, $class, $format = null, array $context = [])
+            public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
             {
                 return $data;
+            }
+
+            public function getSupportedTypes(?string $format): array
+            {
+                return [];
             }
         };
 
@@ -125,24 +141,29 @@ final class CreditNormalizerTest extends TestCase
     public function testDenormalization(): void
     {
         $parentNormalizer = new class() implements NormalizerInterface, DenormalizerInterface {
-            public function normalize($object, $format = null, array $context = [])
+            public function normalize(mixed $object, ?string $format = null, array $context = []): array|string|int|float|bool|ArrayObject|null
             {
                 return $object;
             }
 
-            public function supportsNormalization($data, $format = null)
+            public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
             {
                 return true;
             }
 
-            public function supportsDenormalization($data, $type, $format = null)
+            public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
             {
                 return true;
             }
 
-            public function denormalize($data, $class, $format = null, array $context = [])
+            public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
             {
                 return 123;
+            }
+
+            public function getSupportedTypes(?string $format): array
+            {
+                return [];
             }
         };
 

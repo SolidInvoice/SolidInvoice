@@ -30,7 +30,7 @@ class ViewTransformer implements DataTransformerInterface
      * @throws MathException
      * @throws NumberFormatException
      */
-    public function transform($value): float
+    public function transform(mixed $value): float
     {
         if ($value === null) {
             return 0.0;
@@ -45,7 +45,7 @@ class ViewTransformer implements DataTransformerInterface
      * @throws MathException
      * @throws NumberFormatException
      */
-    public function reverseTransform($value): BigNumber
+    public function reverseTransform(mixed $value): BigNumber
     {
         if ('' === $value || null === $value) {
             return BigDecimal::zero();

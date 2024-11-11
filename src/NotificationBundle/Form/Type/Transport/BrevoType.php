@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 /**
  * @codeCoverageIgnore
  */
-final class SendinblueType extends AbstractType
+final class BrevoType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -30,7 +30,7 @@ final class SendinblueType extends AbstractType
             'api_key',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'sendinblue']),
+                'constraints' => new NotBlank(['groups' => 'brevo']),
             ]
         );
 
@@ -38,7 +38,7 @@ final class SendinblueType extends AbstractType
             'phone',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'sendinblue']),
+                'constraints' => new NotBlank(['groups' => 'brevo']),
             ]
         );
     }

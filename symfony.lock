@@ -147,9 +147,6 @@
     "egulias/email-validator": {
         "version": "2.1.18"
     },
-    "friendsofphp/proxy-manager-lts": {
-        "version": "v1.0.3"
-    },
     "friendsofsymfony/jsrouting-bundle": {
         "version": "2.3",
         "recipe": {
@@ -185,9 +182,6 @@
     },
     "knplabs/knp-menu-bundle": {
         "version": "v2.3.0"
-    },
-    "laminas/laminas-code": {
-        "version": "3.4.1"
     },
     "laminas/laminas-eventmanager": {
         "version": "3.3.1"
@@ -439,6 +433,15 @@
     },
     "symfony/asset": {
         "version": "v5.1.3"
+    },
+    "symfony/brevo-notifier": {
+        "version": "7.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "6.4",
+            "ref": "3ae8f4671b4c42babcf3c1ce306a85c6398474a5"
+        }
     },
     "symfony/browser-kit": {
         "version": "v5.1.3"
@@ -912,9 +915,6 @@
     "symfony/property-info": {
         "version": "v4.4.11"
     },
-    "symfony/proxy-manager-bridge": {
-        "version": "v4.4.11"
-    },
     "symfony/requirements-checker": {
         "version": "1.0",
         "recipe": {
@@ -966,15 +966,6 @@
             "branch": "master",
             "version": "4.4",
             "ref": "b46e4f8f1adb2864f0aa9c0ff57aea3324a07199"
-        }
-    },
-    "symfony/sendinblue-notifier": {
-        "version": "5.4",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "5.2",
-            "ref": "fe4a888a47063f12ff2e83db69cb937bfdab931d"
         }
     },
     "symfony/serializer": {

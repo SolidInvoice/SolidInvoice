@@ -75,9 +75,9 @@ return [
             'package' => 'symfony/ovh-cloud-notifier',
             'dsn' => 'ovhcloud://APPLICATION_KEY:APPLICATION_SECRET@default?consumer_key=CONSUMER_KEY&service_name=SERVICE_NAME',
         ],
-        'Sendinblue' => [
-            'package' => 'symfony/sendinblue-notifier',
-            'dsn' => 'sendinblue://API_KEY@default?sender=PHONE',
+        'Brevo' => [
+            'package' => 'symfony/brevo-notifier',
+            'dsn' => 'brevo://API_KEY@default?sender=PHONE',
         ],
         'Sms77' => [
             'package' => 'symfony/sms77-notifier',

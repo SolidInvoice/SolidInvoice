@@ -23,7 +23,7 @@ class AddressType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addModelTransformer(new class() implements DataTransformerInterface {
-            public function transform($value)
+            public function transform(mixed $value): mixed
             {
                 if (! is_string($value)) {
                     return null;
@@ -32,10 +32,10 @@ class AddressType extends AbstractType
                 return json_decode($value, true, 512, JSON_THROW_ON_ERROR);
             }
 
-            public function reverseTransform($value)
+            public function reverseTransform(mixed $value): mixed
             {
-                if (null == $value) {
-                    return $value;
+                if (null === $value) {
+                    return null;
                 }
 
                 return json_encode($value, JSON_THROW_ON_ERROR);

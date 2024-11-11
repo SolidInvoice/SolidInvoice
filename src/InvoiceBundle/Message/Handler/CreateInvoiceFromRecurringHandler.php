@@ -21,13 +21,14 @@ use SolidInvoice\InvoiceBundle\Exception\InvalidTransitionException;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\InvoiceBundle\Message\CreateInvoiceFromRecurring;
 use SolidInvoice\InvoiceBundle\Model\Graph;
-use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Workflow\WorkflowInterface;
 
 /**
  * @see \SolidInvoice\InvoiceBundle\Tests\Message\Handler\CreateInvoiceFromRecurringHandlerTest
  */
-final class CreateInvoiceFromRecurringHandler implements MessageSubscriberInterface
+#[AsMessageHandler(fromTransport: 'sync')]
+final class CreateInvoiceFromRecurringHandler
 {
     public function __construct(
         private readonly InvoiceManager $invoiceManager,
@@ -35,16 +36,6 @@ final class CreateInvoiceFromRecurringHandler implements MessageSubscriberInterf
         private readonly CompanySelector $companySelector,
         private LoggerInterface $logger,
     ) {
-    }
-
-    /**
-     * @return iterable<string, array<string, string>>
-     */
-    public static function getHandledMessages(): iterable
-    {
-        yield CreateInvoiceFromRecurring::class => [
-            'from_transport' => 'sync',
-        ];
     }
 
     public function __invoke(CreateInvoiceFromRecurring $message): void

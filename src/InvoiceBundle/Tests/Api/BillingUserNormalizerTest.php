@@ -22,8 +22,8 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use stdClass;
-use Symfony\Component\Serializer\Normalizer\ContextAwareDenormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\ContextAwareNormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @coversDefaultClass \SolidInvoice\InvoiceBundle\Api\BillingUserNormalizer
@@ -38,20 +38,20 @@ final class BillingUserNormalizerTest extends TestCase
     private IriConverterInterface $iriConverter;
 
     /**
-     * @var ContextAwareDenormalizerInterface&MockObject
+     * @var DenormalizerInterface&MockObject
      */
-    private ContextAwareDenormalizerInterface $denormalizer;
+    private DenormalizerInterface $denormalizer;
 
     /**
-     * @var ContextAwareNormalizerInterface&MockObject
+     * @var NormalizerInterface&MockObject
      */
-    private ContextAwareNormalizerInterface $normalizer;
+    private NormalizerInterface $normalizer;
 
     protected function setUp(): void
     {
         $this->iriConverter = $this->createMock(IriConverterInterface::class);
-        $this->denormalizer = $this->createMock(ContextAwareDenormalizerInterface::class);
-        $this->normalizer = $this->createMock(ContextAwareNormalizerInterface::class);
+        $this->denormalizer = $this->createMock(DenormalizerInterface::class);
+        $this->normalizer = $this->createMock(NormalizerInterface::class);
 
         $this->billingUserNormalizer = new BillingUserNormalizer($this->iriConverter);
         $this->billingUserNormalizer->setDenormalizer($this->denormalizer);

@@ -92,7 +92,7 @@ final class MailTransportType extends AbstractType
             /**
              * @return null|array<string, mixed>
              */
-            public function transform($value): ?array
+            public function transform(mixed $value): ?array
             {
                 if (! is_string($value)) {
                     return null;
@@ -106,7 +106,7 @@ final class MailTransportType extends AbstractType
                 ];
             }
 
-            public function reverseTransform($value): ?string
+            public function reverseTransform(mixed $value): ?string
             {
                 if (null === $value) {
                     return null;

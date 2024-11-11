@@ -27,6 +27,7 @@ use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Listener\CompanyEventSubscriber;
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Bridge\Doctrine\Types\UlidType;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -34,7 +35,6 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Uid\Ulid;
 
 /**

@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\DependencyInjection;
 
+use Symfony\Component\Config\Exception\LoaderLoadException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
  * This is the class that loads and manages your bundle configuration.
@@ -27,6 +28,7 @@ class SolidInvoiceDataGridExtension extends Extension
 {
     /**
      * @param list<mixed> $configs
+     * @throws LoaderLoadException
      */
     public function load(array $configs, ContainerBuilder $container): void
     {

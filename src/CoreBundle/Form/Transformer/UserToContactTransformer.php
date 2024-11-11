@@ -15,6 +15,7 @@ namespace SolidInvoice\CoreBundle\Form\Transformer;
 
 use Doctrine\Common\Collections\Collection;
 use SolidInvoice\ClientBundle\Entity\Contact;
+use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\InvoiceContact;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
@@ -35,32 +36,36 @@ final class UserToContactTransformer implements DataTransformerInterface
      * @param class-string<T> $class
      */
     public function __construct(
-        private readonly object $entity,
+        private readonly Quote|BaseInvoice $entity,
         private readonly string $class
     ) {
     }
 
     /**
-     * @param mixed $value
-     *
-     * @return mixed
+     * @template F
+     * @param F $value
+     * @return F
      */
-    public function transform($value)
+    public function transform(mixed $value): mixed
     {
         return $value;
     }
 
     /**
-     * @param mixed $value
-     * @return array<int, T>|mixed
+     * @template E
+     * @param Collection<int, Contact>|E $value
+     * @return array<int, T>|E
      */
-    public function reverseTransform($value)
+    public function reverseTransform(mixed $value): mixed
     {
         if (is_iterable($value)) {
             /** @var Collection<int, Contact> $value */
             $users = [];
 
             foreach ($value as $item) {
+                assert($item instanceof Contact);
+
+                /** @var T $class */
                 $class = $this->class;
                 $contact = new $class();
                 $contact->setContact($item);
