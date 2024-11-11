@@ -73,7 +73,7 @@
         "symfony/all-my-sms-notifier": "^6.4",
         "symfony/amazon-mailer": "^6.4",
         "symfony/amazon-sns-notifier": "^6.4",
-        "symfony/clickatell-notifier": "^6.4",
+        "symfony/clickatell-notifier": "^7.1",
         "symfony/config": "^6.4",
         "symfony/console": "^6.4",
         "symfony/contracts": "*",

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d75bd5143c6b5b1546a2925a2060119f",
+    "content-hash": "3d4ee94afd0a45e344f83ea82458819e",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -8121,22 +8121,22 @@
         },
         {
             "name": "symfony/clickatell-notifier",
-            "version": "v6.4.9",
+            "version": "v7.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/clickatell-notifier.git",
-                "reference": "9022c7d8e1ce073e5213b58ef922103ba6db4e69"
+                "reference": "65819ebf4826ed1589b7887bb0f32d636a0a8f54"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/clickatell-notifier/zipball/9022c7d8e1ce073e5213b58ef922103ba6db4e69",
-                "reference": "9022c7d8e1ce073e5213b58ef922103ba6db4e69",
+                "url": "https://api.github.com/repos/symfony/clickatell-notifier/zipball/65819ebf4826ed1589b7887bb0f32d636a0a8f54",
+                "reference": "65819ebf4826ed1589b7887bb0f32d636a0a8f54",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.1",
-                "symfony/http-client": "^5.4|^6.0|^7.0",
-                "symfony/notifier": "^6.2.7|^7.0"
+                "php": ">=8.2",
+                "symfony/http-client": "^6.4|^7.0",
+                "symfony/notifier": "^6.4|^7.0"
             },
             "type": "symfony-notifier-bridge",
             "autoload": {
@@ -8173,7 +8173,7 @@
                 "sms"
             ],
             "support": {
-                "source": "https://github.com/symfony/clickatell-notifier/tree/v6.4.9"
+                "source": "https://github.com/symfony/clickatell-notifier/tree/v7.1.6"
             },
             "funding": [
                 {
@@ -8189,7 +8189,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-06-14T09:49:55+00:00"
+            "time": "2024-09-25T14:20:29+00:00"
         },
         {
             "name": "symfony/clock",
@@ -11988,33 +11988,33 @@
         },
         {
             "name": "symfony/notifier",
-            "version": "v6.4.13",
+            "version": "v7.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/notifier.git",
-                "reference": "c46321b53391088861bf627cd9e24873d216cf00"
+                "reference": "e45a3db2dd184060fa9c0d5c0b94dfa82bc0a13f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/notifier/zipball/c46321b53391088861bf627cd9e24873d216cf00",
-                "reference": "c46321b53391088861bf627cd9e24873d216cf00",
+                "url": "https://api.github.com/repos/symfony/notifier/zipball/e45a3db2dd184060fa9c0d5c0b94dfa82bc0a13f",
+                "reference": "e45a3db2dd184060fa9c0d5c0b94dfa82bc0a13f",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.1",
+                "php": ">=8.2",
                 "psr/log": "^1|^2|^3"
             },
             "conflict": {
-                "symfony/event-dispatcher": "<5.4",
+                "symfony/event-dispatcher": "<6.4",
                 "symfony/event-dispatcher-contracts": "<2.5",
                 "symfony/http-client-contracts": "<2.5",
-                "symfony/http-kernel": "<5.4"
+                "symfony/http-kernel": "<6.4"
             },
             "require-dev": {
                 "symfony/event-dispatcher-contracts": "^2.5|^3",
                 "symfony/http-client-contracts": "^2.5|^3",
-                "symfony/http-foundation": "^5.4|^6.0|^7.0",
-                "symfony/messenger": "^5.4|^6.0|^7.0"
+                "symfony/http-foundation": "^6.4|^7.0",
+                "symfony/messenger": "^6.4|^7.0"
             },
             "type": "library",
             "autoload": {
@@ -12046,7 +12046,7 @@
                 "notifier"
             ],
             "support": {
-                "source": "https://github.com/symfony/notifier/tree/v6.4.13"
+                "source": "https://github.com/symfony/notifier/tree/v7.1.6"
             },
             "funding": [
                 {
@@ -12062,7 +12062,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-25T14:18:03+00:00"
+            "time": "2024-09-25T14:20:29+00:00"
         },
         {
             "name": "symfony/octopush-notifier",
@@ -22861,8 +22861,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "roave/security-advisories": 20,
-        "solidworx/toggler": 15
+        "solidworx/toggler": 15,
+        "roave/security-advisories": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
@@ -22877,7 +22877,7 @@
         "ext-soap": "*",
         "ext-xsl": "*"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "platform-overrides": {
         "php": "8.2"
     },
