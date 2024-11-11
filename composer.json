@@ -102,7 +102,7 @@
         "symfony/http-kernel": "^6.4",
         "symfony/infobip-notifier": "^6.4",
         "symfony/intl": "^6.4",
-        "symfony/iqsms-notifier": "^6.4",
+        "symfony/iqsms-notifier": "^7.1",
         "symfony/light-sms-notifier": "^6.4",
         "symfony/linked-in-notifier": "^6.4",
         "symfony/mailchimp-mailer": "^6.4",
