@@ -25,6 +25,10 @@ use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\PreloadedExtension;
+use Symfony\UX\Autocomplete\Checksum\ChecksumCalculator;
+use Symfony\UX\Autocomplete\Form\AutocompleteChoiceTypeExtension;
+use function bin2hex;
+use function random_bytes;
 
 class QuoteTypeTest extends FormTestCase
 {
@@ -74,6 +78,15 @@ class QuoteTypeTest extends FormTestCase
 
         return [
             new PreloadedExtension([$type, $itemType, new DiscountType($systemConfig)], []),
+        ];
+    }
+
+    protected function getTypeExtensions(): array
+    {
+        return [
+            new AutocompleteChoiceTypeExtension(
+                new ChecksumCalculator($_SERVER['secret'] ?? bin2hex(random_bytes(8))),
+            ),
         ];
     }
 }

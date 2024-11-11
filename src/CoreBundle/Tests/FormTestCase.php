@@ -69,7 +69,7 @@ abstract class FormTestCase extends KernelTestCase
 
         $this->factory = Forms::createFormFactoryBuilder()
             ->addExtensions($this->getInternalExtension())
-            ->addTypeExtensions($this->getTypedExtensions())
+            ->addTypeExtensions($this->getTypeExtensions())
             ->addTypes($this->getTypes())
             ->addTypeGuessers($this->getTypeGuessers())
             ->getFormFactory();
@@ -83,7 +83,7 @@ abstract class FormTestCase extends KernelTestCase
      *
      * @return array<FormTypeExtensionInterface>
      */
-    protected function getTypedExtensions(): array
+    protected function getTypeExtensions(): array
     {
         $validator = M::mock(ValidatorInterface::class);
 
@@ -166,14 +166,6 @@ abstract class FormTestCase extends KernelTestCase
      * @return array<FormExtensionInterface>
      */
     protected function getExtensions(): array
-    {
-        return [];
-    }
-
-    /**
-     * @return array<FormTypeExtensionInterface>
-     */
-    protected function getTypeExtensions(): array
     {
         return [];
     }
