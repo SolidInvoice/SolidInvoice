@@ -16,6 +16,7 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaException;
@@ -70,6 +71,11 @@ final class Version20200 extends AbstractMigration
         parent::__construct($connection, $logger);
 
         $this->logger = $logger;
+    }
+
+    public function isTransactional(): bool
+    {
+        return ! $this->platform instanceof MySqlPlatform && ! $this->platform instanceof OraclePlatform;
     }
 
     public function preUp(Schema $schema): void

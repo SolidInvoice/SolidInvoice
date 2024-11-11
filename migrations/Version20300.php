@@ -42,6 +42,11 @@ final class Version20300 extends AbstractMigration
      */
     private array $columnsToUpdate = [];
 
+    public function isTransactional(): bool
+    {
+        return ! $this->platform instanceof MySqlPlatform && ! $this->platform instanceof OraclePlatform;
+    }
+
     public function preUp(Schema $schema): void
     {
         $this->connection

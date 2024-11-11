@@ -141,11 +141,6 @@ parameters:
 			path: src/CoreBundle/Repository/VersionRepository.php
 
 		-
-			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Repository\\\\VersionRepository\\:\\:updateVersion\\(\\) has parameter \\$version with no type specified\\.$#"
-			count: 1
-			path: src/CoreBundle/Repository/VersionRepository.php
-
-		-
 			message: "#^Method SolidInvoice\\\\CoreBundle\\\\Response\\\\PdfResponse\\:\\:__construct\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/CoreBundle/Response/PdfResponse.php
@@ -647,11 +642,6 @@ parameters:
 
 		-
 			message: "#^Class SolidInvoice\\\\SettingsBundle\\\\Repository\\\\SettingsRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#"
-			count: 1
-			path: src/SettingsBundle/Repository/SettingsRepository.php
-
-		-
-			message: "#^Method SolidInvoice\\\\SettingsBundle\\\\Repository\\\\SettingsRepository\\:\\:save\\(\\) has parameter \\$settings with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/SettingsBundle/Repository/SettingsRepository.php
 

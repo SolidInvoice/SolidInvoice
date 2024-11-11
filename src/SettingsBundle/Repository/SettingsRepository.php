@@ -29,6 +29,8 @@ class SettingsRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param array<string, string> $settings
+     *
      * @throws InvalidArgumentException|Throwable
      */
     public function save(array $settings): void
@@ -37,7 +39,7 @@ class SettingsRepository extends ServiceEntityRepository
         $entityManager = $this->getEntityManager();
 
         try {
-            $entityManager->transactional(function () use ($settings): void {
+            $entityManager->wrapInTransaction(function () use ($settings): void {
                 foreach ($settings as $key => $value) {
                     $this->createQueryBuilder('s')
                         ->update()

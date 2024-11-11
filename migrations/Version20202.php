@@ -13,11 +13,18 @@ declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
 final class Version20202 extends AbstractMigration
 {
+    public function isTransactional(): bool
+    {
+        return ! $this->platform instanceof MySqlPlatform && ! $this->platform instanceof OraclePlatform;
+    }
+
     public function up(Schema $schema): void
     {
         $contactTypes = $schema->getTable('contact_types');

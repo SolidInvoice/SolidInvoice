@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Table;
@@ -24,6 +26,11 @@ use SolidInvoice\SettingsBundle\Form\Type\MailTransportType;
 final class Version20100 extends AbstractMigration
 {
     private Schema $schema;
+
+    public function isTransactional(): bool
+    {
+        return ! $this->platform instanceof MySqlPlatform && ! $this->platform instanceof OraclePlatform;
+    }
 
     public function up(Schema $schema): void
     {

@@ -31,7 +31,7 @@ class VersionRepository extends ServiceEntityRepository
     /**
      * Updates the current version.
      */
-    public function updateVersion($version): void
+    public function updateVersion(string $version): void
     {
         $entityManager = $this->getEntityManager();
 
