@@ -125,7 +125,7 @@
         "symfony/polyfill-php82": "^1.28",
         "symfony/polyfill-php83": "^1.28",
         "symfony/postmark-mailer": "^6.4",
-        "symfony/property-access": "^6.4",
+        "symfony/property-access": "^7.1",
         "symfony/property-info": "^6.4",
         "symfony/proxy-manager-bridge": "^6.4",
         "symfony/requirements-checker": "^2.0",
