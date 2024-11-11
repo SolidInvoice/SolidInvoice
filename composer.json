@@ -140,7 +140,7 @@
         "symfony/slack-notifier": "^6.4",
         "symfony/sms-biuras-notifier": "^6.4",
         "symfony/sms77-notifier": "^6.4",
-        "symfony/smsapi-notifier": "^6.4",
+        "symfony/smsapi-notifier": "^7.1",
         "symfony/smsc-notifier": "^6.4",
         "symfony/spot-hit-notifier": "^6.4",
         "symfony/stimulus-bundle": "^2.15",

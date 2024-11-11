@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5cd78c7ff8b542f5120cac948784f47d",
+    "content-hash": "aa3bbfaa5c1288907dd7a6b569b6dd35",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -14595,22 +14595,22 @@
         },
         {
             "name": "symfony/smsapi-notifier",
-            "version": "v6.4.8",
+            "version": "v7.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/smsapi-notifier.git",
-                "reference": "dc6a7bf4d632960eca005475d52a34cb66931505"
+                "reference": "4120c086f2c86cbbd2551bf3e1f5567cf125f59c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/smsapi-notifier/zipball/dc6a7bf4d632960eca005475d52a34cb66931505",
-                "reference": "dc6a7bf4d632960eca005475d52a34cb66931505",
+                "url": "https://api.github.com/repos/symfony/smsapi-notifier/zipball/4120c086f2c86cbbd2551bf3e1f5567cf125f59c",
+                "reference": "4120c086f2c86cbbd2551bf3e1f5567cf125f59c",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.1",
-                "symfony/http-client": "^5.4|^6.0|^7.0",
-                "symfony/notifier": "^6.2.7|^7.0"
+                "php": ">=8.2",
+                "symfony/http-client": "^6.4|^7.0",
+                "symfony/notifier": "^6.4|^7.0"
             },
             "type": "symfony-notifier-bridge",
             "autoload": {
@@ -14643,7 +14643,7 @@
                 "smsapi"
             ],
             "support": {
-                "source": "https://github.com/symfony/smsapi-notifier/tree/v6.4.8"
+                "source": "https://github.com/symfony/smsapi-notifier/tree/v7.1.6"
             },
             "funding": [
                 {
@@ -14659,7 +14659,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-05-31T14:49:08+00:00"
+            "time": "2024-09-25T14:20:29+00:00"
         },
         {
             "name": "symfony/smsc-notifier",
