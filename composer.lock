@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5cd78c7ff8b542f5120cac948784f47d",
+    "content-hash": "75981a95c7cf655da6615ad0ae217b62",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -9214,26 +9214,26 @@
         },
         {
             "name": "symfony/fake-chat-notifier",
-            "version": "v6.4.8",
+            "version": "v7.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/fake-chat-notifier.git",
-                "reference": "d45a0839baab998090896cada0e8c0a57a7636cf"
+                "reference": "82e123c289e41238e9f04537b74442be1c40c0f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/fake-chat-notifier/zipball/d45a0839baab998090896cada0e8c0a57a7636cf",
-                "reference": "d45a0839baab998090896cada0e8c0a57a7636cf",
+                "url": "https://api.github.com/repos/symfony/fake-chat-notifier/zipball/82e123c289e41238e9f04537b74442be1c40c0f0",
+                "reference": "82e123c289e41238e9f04537b74442be1c40c0f0",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.1",
-                "symfony/http-client": "^5.4|^6.0|^7.0",
-                "symfony/notifier": "^6.2.7|^7.0"
+                "php": ">=8.2",
+                "symfony/http-client": "^6.4|^7.0",
+                "symfony/notifier": "^6.4|^7.0"
             },
             "require-dev": {
                 "psr/log": "^1|^2|^3",
-                "symfony/mailer": "^5.4|^6.0|^7.0"
+                "symfony/mailer": "^6.4|^7.0"
             },
             "type": "symfony-notifier-bridge",
             "autoload": {
@@ -9273,7 +9273,7 @@
                 "symfony"
             ],
             "support": {
-                "source": "https://github.com/symfony/fake-chat-notifier/tree/v6.4.8"
+                "source": "https://github.com/symfony/fake-chat-notifier/tree/v7.1.6"
             },
             "funding": [
                 {
@@ -9289,7 +9289,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-05-31T14:49:08+00:00"
+            "time": "2024-09-25T14:20:29+00:00"
         },
         {
             "name": "symfony/fake-sms-notifier",
