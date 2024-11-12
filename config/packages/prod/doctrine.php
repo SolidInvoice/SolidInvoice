@@ -12,11 +12,13 @@ declare(strict_types=1);
  */
 
 use Symfony\Config\DoctrineConfig;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 
 return static function (DoctrineConfig $config): void {
     $em = $config
         ->orm()
         ->autoGenerateProxyClasses(false)
+        ->proxyDir(param('kernel.build_dir') . '/doctrine/orm/Proxies')
         ->entityManager('default');
 
     $em

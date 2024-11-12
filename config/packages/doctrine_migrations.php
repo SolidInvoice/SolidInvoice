@@ -17,6 +17,7 @@ use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 return static function (DoctrineMigrationsConfig $config): void {
     $config
         ->migrationsPath('DoctrineMigrations', param('kernel.project_dir') . '/migrations')
+        ->enableProfiler(false)
         ->storage()
         ->tableStorage()
         ->tableName('migration_versions')

@@ -17,5 +17,7 @@ use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 return static function (WebpackEncoreConfig $config): void {
     $config
         ->outputPath(param('kernel.project_dir') . '/public/static')
-        ->strictMode(param('kernel.debug'));
+        ->strictMode(param('kernel.debug'))
+        ->scriptAttributes('defer', true)
+    ;
 };

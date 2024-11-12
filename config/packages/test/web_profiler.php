@@ -11,12 +11,10 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use Symfony\Config\FrameworkConfig;
+use Symfony\Config\WebProfilerConfig;
 
-return static function (FrameworkConfig $config): void {
+return static function (WebProfilerConfig $config): void {
     $config
-        ->profiler()
-        ->onlyExceptions(false)
-        ->collectSerializerData(true)
-    ;
+        ->toolbar(false)
+        ->interceptRedirects(false);
 };

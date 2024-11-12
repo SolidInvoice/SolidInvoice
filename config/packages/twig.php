@@ -18,6 +18,7 @@ return static function (TwigConfig $config): void {
     $config
         ->debug(param('kernel.debug'))
         ->strictVariables(param('kernel.debug'))
+        ->fileNamePattern('*.twig')
         ->formThemes([
             '@SolidInvoiceNotification/Form/fields.html.twig',
             '@SolidInvoiceCore/Form/fields.html.twig',

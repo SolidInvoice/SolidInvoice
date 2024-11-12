@@ -18,7 +18,8 @@
   "scripts": {
     "dev": "encore dev",
     "dev-server": "encore dev-server --port=8505",
-    "build": "encore production",
+    "watch": "encore dev --watch",
+    "build": "encore production --progress",
     "lint:js": "eslint src",
     "lint:css": "stylelint 'src/**/*.{scss,css}'"
   },
@@ -38,6 +39,7 @@
     "@types/bootstrap": "^5.2.10",
     "@types/jquery": "^3.5.29",
     "cloudinary": "^2.1.0",
+    "core-js": "^3.38.0",
     "eslint": "^8.52.0",
     "eslint-loader": "^4.0.2",
     "eslint-plugin-backbone": "^2.1.1",

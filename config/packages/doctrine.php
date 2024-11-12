@@ -11,6 +11,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use Ramsey\Uuid\Doctrine\UuidType;
 use SolidInvoice\CoreBundle\Doctrine\Filter\ArchivableFilter;
@@ -50,12 +51,21 @@ return static function (DoctrineConfig $config): void {
         ->type(BigIntegerType::NAME)
         ->class(BigIntegerType::class);
 
-    $ormConfig->autoGenerateProxyClasses(param('kernel.debug'));
+    $ormConfig
+        ->autoGenerateProxyClasses(param('kernel.debug'))
+        ->enableLazyGhostObjects(true)
+        ->controllerResolver()
+        ->autoMapping(true)
+    ;
 
     $entityManagerConfig = $ormConfig->entityManager('default');
 
     $entityManagerConfig
-        ->autoMapping(true);
+        ->autoMapping(true)
+        ->reportFieldsWhereDeclared(true)
+        ->validateXmlMapping(true)
+        ->identityGenerationPreference(PostgreSQLPlatform::class, 'identity')
+    ;
 
     $entityManagerConfig
         ->filter('company')

@@ -27,7 +27,9 @@ return static function (MonologConfig $config): void {
         ->handler('nested')
         ->type('stream')
         ->path('%kernel.logs_dir%/%kernel.environment%.log')
-        ->level('debug');
+        ->level('debug')
+        ->formatter('monolog.formatter.json')
+    ;
 
     $config
         ->handler('console')
@@ -35,4 +37,13 @@ return static function (MonologConfig $config): void {
         ->processPsr3Messages(false)
         ->channels()
         ->elements(['!event', '!doctrine']);
+
+    $config
+        ->handler('deprecation')
+        ->type('stream')
+        ->processPsr3Messages(false)
+        ->path('%kernel.logs_dir%/%kernel.environment%.deprecations.log')
+        ->formatter('monolog.formatter.json')
+        ->channels()
+        ->elements(['deprecation']);
 };

@@ -14,9 +14,6 @@ declare(strict_types=1);
 use Symfony\Config\FrameworkConfig;
 
 return static function (FrameworkConfig $config): void {
-    $config
-        ->profiler()
-        ->onlyExceptions(false)
-        ->collectSerializerData(true)
-    ;
+    $config->messenger()
+        ->transport('async', 'in-memory://');
 };

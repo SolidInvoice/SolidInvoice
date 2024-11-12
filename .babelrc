@@ -1,5 +1,13 @@
 {
-  "presets": ["@babel/env"],
+  "presets": [
+      [
+      "@babel/preset-env",
+      {
+        "useBuiltIns": "entry",
+        "corejs": "3.28"
+      }
+    ]
+  ],
   "ignore": [
     "csbillcore/js/lib/**/*.js",
     "csbillcore/js/app.js",

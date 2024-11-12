@@ -13,8 +13,12 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
 }
 
 Encore
+    // directory where compiled assets will be stored
     .setOutputPath('public/static/')
+    // public path used by the web server to access the output path
     .setPublicPath('/static')
+    // only needed for CDN's or subdirectory deploy
+    //.setManifestKeyPrefix('build/')
 
     .addEntry('core', './assets/core.js')
 
@@ -43,6 +47,17 @@ Encore
         'SolidInvoiceUser': path.resolve(__dirname, 'src/UserBundle/Resources/public'),
         'translator': path.resolve(__dirname, 'src/CoreBundle/Resources/public/js/extend/translator'),
     })
+
+    // configure Babel
+    // .configureBabel((config) => {
+    //     config.plugins.push('@babel/a-babel-plugin');
+    // })
+
+    // enables and configure @babel/preset-env polyfills
+    /*.configureBabelPresetEnv((config) => {
+        config.useBuiltIns = 'usage';
+        config.corejs = '3.38';
+    })*/
 
     .enableHandlebarsLoader((options) => {
         options.helperDirs = [
@@ -74,6 +89,7 @@ Encore
         };
     })
 
+
     .configureDevServerOptions(options => {
          options.server = {
              type: 'https',
@@ -93,6 +109,10 @@ Encore
     }))
 
     .addPlugin(new FosRouting())
+
+    // uncomment to get integrity="..." attributes on your script & link tags
+    // requires WebpackEncoreBundle 1.4 or higher
+    //.enableIntegrityHashes(Encore.isProduction())
 ;
 
 const pagesDir = path.resolve(__dirname, 'assets/js/pages');

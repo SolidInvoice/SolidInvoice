@@ -16,12 +16,17 @@ use SolidInvoice\ApiBundle\Event\Listener\AuthenticationSuccessHandler;
 use SolidInvoice\ApiBundle\Security\ApiTokenAuthenticator;
 use SolidInvoice\ApiBundle\Security\Provider\ApiTokenUserProvider;
 use SolidInvoice\UserBundle\Entity\User;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Config\SecurityConfig;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
 
 return static function (SecurityConfig $config): void {
     $config
         ->passwordHasher(User::class)
+        ->algorithm('auto');
+
+    $config
+        ->passwordHasher(PasswordAuthenticatedUserInterface::class)
         ->algorithm('auto');
 
     $config
