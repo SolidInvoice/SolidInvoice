@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f0c5193aecfee449c4a301eeca24d4ca",
+    "content-hash": "935ee8cf33f6278e8428cc9344383971",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -7362,16 +7362,16 @@
         },
         {
             "name": "solidworx/toggler",
-            "version": "2.0.0-alpha8",
+            "version": "2.0.0-alpha10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SolidWorx/Toggler.git",
-                "reference": "b54de89a045b510b92c0f12ffb6f0e5aae7fc355"
+                "reference": "d0c035d768c591a54a1c807dc9bb735dc42f5929"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SolidWorx/Toggler/zipball/b54de89a045b510b92c0f12ffb6f0e5aae7fc355",
-                "reference": "b54de89a045b510b92c0f12ffb6f0e5aae7fc355",
+                "url": "https://api.github.com/repos/SolidWorx/Toggler/zipball/d0c035d768c591a54a1c807dc9bb735dc42f5929",
+                "reference": "d0c035d768c591a54a1c807dc9bb735dc42f5929",
                 "shasum": ""
             },
             "require": {
@@ -7434,9 +7434,9 @@
             ],
             "support": {
                 "issues": "https://github.com/SolidWorx/Toggler/issues",
-                "source": "https://github.com/SolidWorx/Toggler/tree/2.0.0-alpha8"
+                "source": "https://github.com/SolidWorx/Toggler/tree/2.0.0-alpha10"
             },
-            "time": "2024-11-11T17:31:14+00:00"
+            "time": "2024-11-12T18:21:24+00:00"
         },
         {
             "name": "stof/doctrine-extensions-bundle",

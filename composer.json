@@ -68,7 +68,7 @@
         "ramsey/uuid-doctrine": "^2.0",
         "sentry/sentry-symfony": "^5.0",
         "solidworx/form-handler-bundle": "^1.0",
-        "solidworx/toggler": "2.0.0-alpha8",
+        "solidworx/toggler": "2.0.0-alpha10",
         "stof/doctrine-extensions-bundle": "^1.3",
         "symfony/all-my-sms-notifier": "^7.1",
         "symfony/amazon-mailer": "^7.1",
