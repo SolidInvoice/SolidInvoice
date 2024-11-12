@@ -14,8 +14,12 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Doctrine\Listener;
 
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
+use Gedmo\Mapping\Event\AdapterInterface;
 use Gedmo\Mapping\MappedEventSubscriber;
 
+/**
+ * @extends MappedEventSubscriber<array, AdapterInterface>
+ */
 class ArchiveListener extends MappedEventSubscriber
 {
     /**
