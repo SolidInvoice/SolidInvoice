@@ -65,7 +65,7 @@ final class DiscountNormalizer implements NormalizerInterface, DenormalizerInter
     public function getSupportedTypes(?string $format): array
     {
         return [
-            Discount::class => null,
+            Discount::class => true,
         ];
     }
 }

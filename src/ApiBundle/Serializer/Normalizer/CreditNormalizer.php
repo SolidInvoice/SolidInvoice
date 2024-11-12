@@ -59,7 +59,7 @@ final class CreditNormalizer implements NormalizerAwareInterface, NormalizerInte
     public function getSupportedTypes(?string $format): array
     {
         return [
-            Credit::class => null,
+            Credit::class => true,
         ];
     }
 }

@@ -88,7 +88,7 @@ final class AdditionalContactDetailsNormalizer implements NormalizerAwareInterfa
     public function getSupportedTypes(?string $format): array
     {
         return [
-            AdditionalContactDetail::class => null,
+            AdditionalContactDetail::class => true,
         ];
     }
 }

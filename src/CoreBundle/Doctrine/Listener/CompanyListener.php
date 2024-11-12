@@ -13,28 +13,19 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Doctrine\Listener;
 
-use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Events;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 use Symfony\Component\Uid\Ulid;
 
-class CompanyListener implements EventSubscriberInterface
+#[AsDoctrineListener(Events::prePersist)]
+final class CompanyListener
 {
     public function __construct(
         private readonly CompanySelector $companySelector
     ) {
-    }
-
-    /**
-     * @return list<string>
-     */
-    public function getSubscribedEvents(): array
-    {
-        return [
-            Events::prePersist,
-        ];
     }
 
     /**

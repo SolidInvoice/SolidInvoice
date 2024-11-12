@@ -95,9 +95,9 @@ final class BillingUserNormalizer implements DenormalizerAwareInterface, Denorma
     public function getSupportedTypes(?string $format): array
     {
         return [
-            Invoice::class => null,
-            RecurringInvoice::class => null,
-            Quote::class => null,
+            Invoice::class => false,
+            RecurringInvoice::class => false,
+            Quote::class => false,
         ];
     }
 }

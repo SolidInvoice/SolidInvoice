@@ -56,7 +56,7 @@ final class CurrencySerializer implements NormalizerInterface, DenormalizerInter
     public function getSupportedTypes(?string $format): array
     {
         return [
-            Currency::class => null,
+            Currency::class => true,
         ];
     }
 }

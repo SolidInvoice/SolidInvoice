@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Serializer\Normalizer;
 
-use Brick\Math\BigDecimal;
-use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
 use Brick\Math\RoundingMode;
@@ -68,9 +66,7 @@ final class BigIntegerNormalizer implements NormalizerInterface, DenormalizerInt
     public function getSupportedTypes(?string $format): array
     {
         return [
-            BigNumber::class => null,
-            BigInteger::class => null,
-            BigDecimal::class => null,
+            BigNumber::class => true,
         ];
     }
 }

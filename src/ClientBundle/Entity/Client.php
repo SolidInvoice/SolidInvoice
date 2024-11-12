@@ -120,7 +120,7 @@ class Client implements Stringable
                 ],
             ],
         ],
-        property: 'currency'
+        // property: 'currency'
     )
     ]
     private ?string $currencyCode = null;

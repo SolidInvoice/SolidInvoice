@@ -16,4 +16,7 @@ use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
 
 return static function (StofDoctrineExtensionsConfig $config): void {
     $config->defaultLocale(env('locale'));
+
+    $config->orm('default')
+        ->timestampable(true);
 };

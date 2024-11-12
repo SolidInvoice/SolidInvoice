@@ -87,7 +87,7 @@ final class AdditionalContactDetailsNormalizerTest extends TestCase
             public function getSupportedTypes(?string $format): array
             {
                 return [
-                    AdditionalContactDetail::class => null,
+                    AdditionalContactDetail::class => true,
                 ];
             }
         };

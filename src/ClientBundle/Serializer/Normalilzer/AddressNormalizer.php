@@ -83,7 +83,7 @@ final class AddressNormalizer implements NormalizerAwareInterface, NormalizerInt
     public function getSupportedTypes(?string $format): array
     {
         return [
-            Address::class => null,
+            Address::class => false,
         ];
     }
 }

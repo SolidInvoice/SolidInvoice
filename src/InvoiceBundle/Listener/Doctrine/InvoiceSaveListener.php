@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Listener\Doctrine;
 
 use Brick\Math\Exception\MathException;
-use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Persistence\ObjectManager;
@@ -24,22 +24,13 @@ use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 /**
  * @see \SolidInvoice\InvoiceBundle\Tests\Listener\Doctrine\InvoiceSaveListenerTest
  */
-class InvoiceSaveListener implements EventSubscriberInterface
+#[AsDoctrineListener(Events::prePersist)]
+#[AsDoctrineListener(Events::preUpdate)]
+final class InvoiceSaveListener
 {
     public function __construct(
         private readonly TotalCalculator $totalCalculator
     ) {
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getSubscribedEvents(): array
-    {
-        return [
-            Events::prePersist,
-            Events::preUpdate,
-        ];
     }
 
     /**

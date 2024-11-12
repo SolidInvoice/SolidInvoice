@@ -21,17 +21,13 @@ use Symfony\Component\Serializer\Attribute\Ignore;
 
 trait TimeStampable
 {
-    /**
-     * @Gedmo\Timestampable(on="create")
-     */
+    #[Gedmo\Timestampable(on: 'create')]
     #[ApiProperty(iris: ['https://schema.org/DateTime'])]
     #[ORM\Column(name: 'created', type: 'datetime')]
     #[Ignore]
     protected ?DateTimeInterface $created = null;
 
-    /**
-     * @Gedmo\Timestampable(on="update")
-     */
+    #[Gedmo\Timestampable(on: 'update')]
     #[ApiProperty(iris: ['https://schema.org/DateTime'])]
     #[ORM\Column(name: 'updated', type: 'datetime')]
     #[Ignore]
@@ -45,11 +41,6 @@ trait TimeStampable
         return $this->created;
     }
 
-    /**
-     * Sets created.
-     *
-     * @return $this
-     */
     public function setCreated(DateTimeInterface $created): self
     {
         $this->created = $created;
@@ -65,11 +56,6 @@ trait TimeStampable
         return $this->updated;
     }
 
-    /**
-     * Sets updated.
-     *
-     * @return $this
-     */
     public function setUpdated(DateTimeInterface $updated): self
     {
         $this->updated = $updated;

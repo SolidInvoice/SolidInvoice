@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Tests\Listener\Doctrine;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
@@ -28,12 +27,6 @@ use SolidInvoice\QuoteBundle\Entity\Quote;
 class InvoiceSaveListenerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
-
-    public function testEvents(): void
-    {
-        $listener = new InvoiceSaveListener(M::mock(TotalCalculator::class));
-        self::assertSame([Events::prePersist, Events::preUpdate], $listener->getSubscribedEvents());
-    }
 
     public function testPrePersist(): void
     {

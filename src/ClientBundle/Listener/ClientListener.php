@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Listener;
 
-use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Persistence\ObjectManager;
@@ -24,24 +24,15 @@ use SolidInvoice\ClientBundle\Notification\ClientCreateNotification;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\SettingsBundle\SystemConfig;
 
-final class ClientListener implements EventSubscriberInterface
+#[AsDoctrineListener(Events::prePersist)]
+#[AsDoctrineListener(Events::postPersist)]
+#[AsDoctrineListener(Events::postLoad)]
+final class ClientListener
 {
     public function __construct(
         private readonly NotificationManager $notification,
         private readonly SystemConfig $config,
     ) {
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getSubscribedEvents(): array
-    {
-        return [
-            Events::prePersist,
-            Events::postPersist,
-            Events::postLoad,
-        ];
     }
 
     /**
