@@ -66,7 +66,6 @@ final class DataGridTest extends LiveComponentTest
 
     public function testComponentWithPaging(): void
     {
-        faker()->seed(12345);
         ClientFactory::createMany(30, ['company' => $this->company, 'archived' => null, 'status' => 'active']);
 
         $content = $this->component->refresh()->render();
@@ -81,7 +80,6 @@ final class DataGridTest extends LiveComponentTest
 
     public function testComponentWithSort(): void
     {
-        faker()->seed(12345);
         ClientFactory::createMany(30, ['company' => $this->company, 'archived' => null, 'status' => 'active']);
 
         $content = $this->component->refresh()->render();
