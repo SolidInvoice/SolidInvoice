@@ -38,9 +38,7 @@ final class DataGridTest extends LiveComponentTest
             client: $this->client,
         )->actingAs($this->getUser());
 
-        // @TODO: Creating more than 1 record causes inconsistent generated data which fails the unit test randomly
-        // Find a proper fix to generate multiple predictable random records
-        ClientFactory::createMany(1, ['company' => $this->company, 'archived' => null, 'status' => 'active']);
+        ClientFactory::createMany(20, ['company' => $this->company, 'archived' => null, 'status' => 'active']);
     }
 
     protected function getSnapshotId(): string
@@ -66,8 +64,6 @@ final class DataGridTest extends LiveComponentTest
 
     public function testComponentWithPaging(): void
     {
-        ClientFactory::createMany(30, ['company' => $this->company, 'archived' => null, 'status' => 'active']);
-
         $content = $this->component->refresh()->render();
         $this->assertMatchesHtmlSnapshot($this->replaceUuid($content->toString()));
 
@@ -80,8 +76,6 @@ final class DataGridTest extends LiveComponentTest
 
     public function testComponentWithSort(): void
     {
-        ClientFactory::createMany(30, ['company' => $this->company, 'archived' => null, 'status' => 'active']);
-
         $content = $this->component->refresh()->render();
         $this->assertMatchesHtmlSnapshot($this->replaceUuid($content->toString()));
 
