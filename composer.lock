@@ -22892,8 +22892,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "solidworx/toggler": 15,
-        "roave/security-advisories": 20
+        "roave/security-advisories": 20,
+        "solidworx/toggler": 15
     },
     "prefer-stable": false,
     "prefer-lowest": false,
@@ -22908,7 +22908,7 @@
         "ext-soap": "*",
         "ext-xsl": "*"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "platform-overrides": {
         "php": "8.2"
     },
