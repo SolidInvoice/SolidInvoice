@@ -20,7 +20,7 @@ composer.phar
 !public/fonts/.gitkeep
 !public/img/.gitkeep
 !var/db/.gitkeep
-config/env/env.php
+config/env/*
 .idea
 node_modules
 .rules

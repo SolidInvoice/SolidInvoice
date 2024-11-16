@@ -26,7 +26,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autoconfigure()
         ->autowire()
         ->private()
-        ->bind('$installed', env('installed'))
+        ->bind('$installed', env('SOLIDINVOICE_INSTALLED'))
     ;
 
     $services

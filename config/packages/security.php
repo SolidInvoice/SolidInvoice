@@ -86,7 +86,7 @@ return static function (SecurityConfig $config): void {
 
     $mainFirewallConfig
         ->rememberMe()
-        ->secret(env('secret'))
+        ->secret(env('SOLIDINVOICE_APP_SECRET'))
         ->lifetime(3600)
         ->path('/')
         ->domain(null);

@@ -13,48 +13,49 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle;
 
-use RuntimeException;
-use Symfony\Component\Filesystem\Filesystem;
+use const DIRECTORY_SEPARATOR;
+use Symfony\Bundle\FrameworkBundle\Secrets\AbstractVault;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use function basename;
+use function function_exists;
+use function opcache_is_script_cached;
+use function rtrim;
+use function str_starts_with;
+use function strtoupper;
 
-class ConfigWriter
+readonly class ConfigWriter
 {
-    private readonly Filesystem $fileSystem;
+    private const CONFIG_PREFIX = 'SOLIDINVOICE_';
 
-    private readonly string $configFile;
+    private string $pathPrefix;
 
-    public function __construct(string $projectDir)
-    {
-        $this->fileSystem = new Filesystem();
-        $this->configFile = $projectDir . '/config/env/env.php';
+    public function __construct(
+        private AbstractVault $vault,
+        #[Autowire(env: 'SOLIDINVOICE_CONFIG_DIR')]
+        string $secretsDir,
+    ) {
+        $this->pathPrefix = rtrim(str_replace('/', DIRECTORY_SEPARATOR, $secretsDir), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . basename($secretsDir) . '.';
     }
 
     /**
-     * Dumps an array into the env config file.
-     *
      * @param array<string, mixed> $config
      */
-    public function dump(array $config): void
+    public function save(array $config): void
     {
-        $values = array_merge($this->getConfigValues(), $config);
+        $this->vault->generateKeys();
 
-        $code = "<?php\n\nreturn " . var_export($values, true) . ";\n";
+        $opCacheEnabled = function_exists('opcache_invalidate');
 
-        $this->fileSystem->dumpFile($this->configFile, $code);
-    }
+        foreach ($config as $key => $value) {
+            if (! str_starts_with($key, self::CONFIG_PREFIX)) {
+                $key = self::CONFIG_PREFIX . $key;
+            }
 
-    /**
-     * Get all values from the config file.
-     *
-     * @return array<string, mixed>
-     *
-     * @throws RuntimeException
-     */
-    public function getConfigValues(): array
-    {
-        if (! \file_exists($this->configFile)) {
-            return [];
+            $this->vault->seal(strtoupper($key), (string) $value);
+
+            if ($opCacheEnabled && opcache_is_script_cached($this->pathPrefix . 'list.php')) {
+                opcache_invalidate($this->pathPrefix . 'list.php', true);
+            }
         }
-
-        return require $this->configFile;
     }
 }

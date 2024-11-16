@@ -13,30 +13,33 @@ declare(strict_types=1);
 
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\UX\StimulusBundle\Helper\StimulusHelper;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters = $containerConfigurator->parameters();
 
-    $parameters->set('env(database_driver)', 'pdo_mysql');
-    $parameters->set('env(database_host)', '127.0.0.1');
-    $parameters->set('env(database_port)', '3306');
-    $parameters->set('env(database_name)', 'solidinvoice');
-    $parameters->set('env(database_user)', 'root');
-    $parameters->set('env(database_password)', null);
-    $parameters->set('env(database_version)', '1.0');
+    $parameters->set('env(SOLIDINVOICE_DATABASE_DRIVER)', 'pdo_sqlite');
+    $parameters->set('env(SOLIDINVOICE_DATABASE_HOST)', '');
+    $parameters->set('env(SOLIDINVOICE_DATABASE_PORT)', '0');
+    $parameters->set('env(SOLIDINVOICE_DATABASE_NAME)', 'solidinvoice');
+    $parameters->set('env(SOLIDINVOICE_DATABASE_USER)', '');
+    $parameters->set('env(SOLIDINVOICE_DATABASE_PASSWORD)', null);
+    $parameters->set('env(SOLIDINVOICE_DATABASE_VERSION)', '');
     $parameters->set('env(mailer_transport)', 'sendmail');
     $parameters->set('env(mailer_host)', '127.0.0.1');
     $parameters->set('env(mailer_user)', null);
     $parameters->set('env(mailer_password)', null);
     $parameters->set('env(mailer_port)', null);
     $parameters->set('env(mailer_encryption)', null);
-    $parameters->set('env(locale)', 'en');
-    $parameters->set('env(secret)', 'SecretToken');
-    $parameters->set('env(installed)', null);
+    $parameters->set('env(SOLIDINVOICE_LOCALE)', 'en');
+    $parameters->set('env(SOLIDINVOICE_APP_SECRET)', '');
+    $parameters->set('env(SOLIDINVOICE_INSTALLED)', null);
     $parameters->set('env(SOLIDINVOICE_ALLOW_REGISTRATION)', '0');
     $parameters->set('env(SENTRY_DSN)', null);
     $parameters->set('env(MAILER_DSN)', 'null://null');
     $parameters->set('env(SENTRY_SEND_DEFAULT_PII)', '0');
+
+    $parameters->set('env(SOLIDINVOICE_CONFIG_DIR)', param('kernel.project_dir') . '/config/env');
 
     $containerConfigurator->services()
         ->set(Monolog\Processor\PsrLogMessageProcessor::class)

@@ -18,12 +18,5 @@ return static function (DoctrineConfig $config): void {
     $config
         ->dbal()
         ->connection('default')
-        ->dbnameSuffix('_test' . env('TEST_TOKEN')->default(''))
-        ->driver(env('database_driver'))
-        ->host(env('database_host'))
-        ->port(env('database_port')->int())
-        ->dbname(env('database_name'))
-        ->user(env('database_user'))
-        ->password(env('database_password'))
-        ->serverVersion(env('database_version'));
+        ->dbnameSuffix('_test' . env('TEST_TOKEN')->default(''));
 };

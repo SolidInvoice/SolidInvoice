@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Installer\Database;
 
+use DateTimeImmutable;
 use Doctrine\Migrations\DependencyFactory;
-use Doctrine\Migrations\MigratorConfiguration;
-use Doctrine\Migrations\Query\Query;
+use Doctrine\Migrations\Version\ExecutionResult;
+use Doctrine\ORM\Tools\SchemaTool;
 
 final class Migration
 {
@@ -24,12 +25,26 @@ final class Migration
     ) {
     }
 
-    /**
-     * @return array<string, Query[]>
-     */
-    public function migrate(): array
+    public function isUpToDate(): bool
     {
-        $this->migrationDependencyFactory->getMetadataStorage()->ensureInitialized();
+        $statusCalculator = $this->migrationDependencyFactory->getMigrationStatusCalculator();
+
+        $executedUnavailableMigrations = $statusCalculator->getExecutedUnavailableMigrations();
+        $newMigrations = $statusCalculator->getNewMigrations();
+        $newMigrationsCount = count($newMigrations);
+        $executedUnavailableMigrationsCount = count($executedUnavailableMigrations);
+
+        return $newMigrationsCount === 0 && $executedUnavailableMigrationsCount === 0;
+    }
+
+    public function migrate(?callable $callback = null): void
+    {
+        $metadataStorage = $this->migrationDependencyFactory->getMetadataStorage();
+
+        $metadataStorage->ensureInitialized();
+
+        $em = $this->migrationDependencyFactory->getEntityManager();
+        $tables = $em->getMetadataFactory()->getAllMetadata();
 
         $planCalculator = $this->migrationDependencyFactory->getMigrationPlanCalculator();
 
@@ -37,12 +52,23 @@ final class Migration
 
         $plan = $planCalculator->getPlanUntilVersion($version);
 
-        return $this->migrationDependencyFactory->getMigrator()->migrate(
-            $plan,
-            (new MigratorConfiguration())
-                ->setDryRun(false)
-                ->setTimeAllQueries(true)
-                ->setAllOrNothing(true)
-        );
+        $schemaTool = new SchemaTool($em);
+
+        $updateSchemaSql = $schemaTool->getUpdateSchemaSql($tables, true);
+        $conn = $em->getConnection();
+
+        foreach ($updateSchemaSql as $sql) {
+            $conn->executeStatement($sql);
+
+            if (null !== $callback) {
+                $callback($sql);
+            }
+        }
+
+        $now = new DateTimeImmutable();
+
+        foreach ($plan->getItems() as $item) {
+            $metadataStorage->complete(new ExecutionResult($item->getVersion(), $item->getDirection(), $now));
+        }
     }
 }

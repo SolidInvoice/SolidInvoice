@@ -16,7 +16,7 @@ use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
 
 return static function (FrameworkConfig $config): void {
     $config
-        ->defaultLocale(env('locale'))
+        ->defaultLocale(env('SOLIDINVOICE_LOCALE'))
         ->translator()
         ->fallbacks(['en']);
 };

@@ -85,7 +85,7 @@ class QuoteTypeTest extends FormTestCase
     {
         return [
             new AutocompleteChoiceTypeExtension(
-                new ChecksumCalculator($_SERVER['secret'] ?? bin2hex(random_bytes(8))),
+                new ChecksumCalculator($_SERVER['SOLIDINVOICE_APP_SECRET'] ?? bin2hex(random_bytes(8))),
             ),
         ];
     }

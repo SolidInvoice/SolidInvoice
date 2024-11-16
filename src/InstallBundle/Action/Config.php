@@ -14,36 +14,33 @@ declare(strict_types=1);
 namespace SolidInvoice\InstallBundle\Action;
 
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Exception;
 use PDO;
 use SolidInvoice\CoreBundle\ConfigWriter;
-use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\InstallBundle\Form\Step\ConfigStepForm;
-use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\HttpFoundation\Response;
 use function array_intersect;
 use function array_map;
 use function assert;
 use function Symfony\Component\String\u;
 
-final class Config
+final class Config extends AbstractController
 {
     public function __construct(
         private readonly ConfigWriter $configWriter,
-        private readonly RouterInterface $router,
-        private readonly FormFactoryInterface $formFactory
     ) {
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         if ($request->isMethod(Request::METHOD_POST)) {
             return $this->handleForm($request);
         }
 
-        return $this->render();
+        return $this->render('@SolidInvoiceInstall/config.html.twig', ['form' => $this->getForm()]);
     }
 
     private function getForm(): FormInterface
@@ -63,23 +60,10 @@ final class Config
             array_map(static fn (string $driver) => u($driver)->replace('pdo_', '')->title()->toString(), $availablePdoDrivers)
         );
 
-        $config = $this->configWriter->getConfigValues();
-
-        $data = [
-            'database_config' => [
-                'host' => $config['database_host'] ?? null,
-                'port' => $config['database_port'] ?? null,
-                'name' => $config['database_name'] ?? null,
-                'user' => $config['database_user'] ?? null,
-                'password' => null,
-                'driver' => $config['database_driver'] ?? null,
-            ],
-        ];
-
-        return $this->formFactory->create(ConfigStepForm::class, $data, ['drivers' => $drivers]);
+        return $this->createForm(ConfigStepForm::class, null, ['drivers' => $drivers]);
     }
 
-    public function handleForm(Request $request)
+    private function handleForm(Request $request): Response
     {
         $form = $this->getForm();
 
@@ -95,29 +79,29 @@ final class Config
                 $config[$key] = $param;
             }
 
-            $nativeConnection = DriverManager::getConnection([
-                'host' => $config['database_host'] ?? null,
-                'port' => $config['database_port'] ?? null,
-                'name' => $config['database_name'] ?? null,
-                'user' => $config['database_user'] ?? null,
-                'password' => $config['database_password'] ?? null,
-                'driver' => $config['database_driver'] ?? null,
-            ])->getNativeConnection();
+            try {
+                $nativeConnection = DriverManager::getConnection([
+                    'host' => $config['database_host'] ?? null,
+                    'port' => $config['database_port'] ?? null,
+                    'name' => $config['database_name'] ?? null,
+                    'user' => $config['database_user'] ?? null,
+                    'password' => $config['database_password'] ?? null,
+                    'driver' => $config['database_driver'] ?? null,
+                ])->getNativeConnection();
+            } catch (Exception $e) {
+                $this->addFlash('error', $e->getMessage());
+                return $this->redirectToRoute('_install_config');
+            }
 
             assert($nativeConnection instanceof PDO);
 
             $config['database_version'] = $nativeConnection->getAttribute(PDO::ATTR_SERVER_VERSION);
 
-            $this->configWriter->dump($config);
+            $this->configWriter->save($config);
 
-            return new RedirectResponse($this->router->generate('_install_install'));
+            return $this->redirectToRoute('_install_install');
         }
 
-        return $this->render($form);
-    }
-
-    private function render(?FormInterface $form = null): Template
-    {
-        return new Template('@SolidInvoiceInstall/config.html.twig', ['form' => ($form ?: $this->getForm())->createView()]);
+        return $this->render('@SolidInvoiceInstall/config.html.twig', ['form' => $form]);
     }
 }

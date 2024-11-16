@@ -16,6 +16,7 @@ use SolidInvoice\InstallBundle\SolidInvoiceInstallBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -26,8 +27,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autowire()
         ->private()
         ->bind('$projectDir', param('kernel.project_dir'))
-        ->bind('$installed', env('installed'))
+        ->bind('$installed', env('SOLIDINVOICE_INSTALLED'))
         ->bind('$debug', param('kernel.debug'))
+        ->bind('$vault', service('secrets.vault'))
     ;
 
     $services

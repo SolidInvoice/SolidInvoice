@@ -176,16 +176,6 @@ parameters:
 			path: src/DashboardBundle/Widgets/WidgetInterface.php
 
 		-
-			message: "#^Method SolidInvoice\\\\InstallBundle\\\\Action\\\\Config\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/InstallBundle/Action/Config.php
-
-		-
-			message: "#^Method SolidInvoice\\\\InstallBundle\\\\Action\\\\Config\\:\\:handleForm\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/InstallBundle/Action/Config.php
-
-		-
 			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\CloneInvoice\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/InvoiceBundle/Action/CloneInvoice.php

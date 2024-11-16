@@ -87,6 +87,7 @@ EOF;
         MethodChainingIndentationFixer::class => [
             __DIR__ . '/src/PaymentBundle/DependencyInjection/Configuration.php',
             __DIR__ . '/src/DataGridBundle/DependencyInjection/GridConfiguration.php',
-        ]
+        ],
+        __DIR__ . '/config/env',
     ]);
 };

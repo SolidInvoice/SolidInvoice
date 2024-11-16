@@ -28,13 +28,13 @@ return static function (DoctrineConfig $config): void {
 
     $dbalConfig
         ->connection('default')
-        ->driver(env('database_driver'))
-        ->host(env('database_host'))
-        ->port(env('database_port')->int())
-        ->dbname(env('database_name'))
-        ->user(env('database_user'))
-        ->password(env('database_password'))
-        ->serverVersion(env('database_version'))
+        ->driver(env('SOLIDINVOICE_DATABASE_DRIVER'))
+        ->host(env('SOLIDINVOICE_DATABASE_HOST'))
+        ->port(env('SOLIDINVOICE_DATABASE_PORT'))
+        ->dbname(env('SOLIDINVOICE_DATABASE_NAME'))
+        ->user(env('SOLIDINVOICE_DATABASE_USER'))
+        ->password(env('SOLIDINVOICE_DATABASE_PASSWORD'))
+        ->serverVersion(env('SOLIDINVOICE_DATABASE_VERSION'))
         ->charset('UTF8')
         ->useSavepoints(true)
     ;

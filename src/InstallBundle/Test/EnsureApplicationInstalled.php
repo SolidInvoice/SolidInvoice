@@ -34,8 +34,8 @@ trait EnsureApplicationInstalled
             self::bootKernel();
         }
 
-        $_SERVER['locale'] = $_ENV['locale'] = 'en_US';
-        $_SERVER['installed'] = $_ENV['installed'] = date(DateTimeInterface::ATOM);
+        $_SERVER['SOLIDINVOICE_LOCALE'] = $_ENV['SOLIDINVOICE_LOCALE'] = 'en_US';
+        $_SERVER['SOLIDINVOICE_INSTALLED'] = $_ENV['SOLIDINVOICE_INSTALLED'] = date(DateTimeInterface::ATOM);
 
         $this->company = static::getContainer()->get('doctrine')
             ->getRepository(Company::class)
@@ -50,6 +50,6 @@ trait EnsureApplicationInstalled
      */
     public function clearEnv(): void
     {
-        unset($_SERVER['locale'], $_ENV['locale'], $_SERVER['installed'], $_ENV['installed']);
+        unset($_SERVER['SOLIDINVOICE_LOCALE'], $_ENV['SOLIDINVOICE_LOCALE'], $_SERVER['SOLIDINVOICE_INSTALLED'], $_ENV['SOLIDINVOICE_INSTALLED']);
     }
 }

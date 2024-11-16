@@ -36,7 +36,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->private()
         ->bind('$projectDir', param('kernel.project_dir'))
         ->bind('$cacheDir', param('kernel.cache_dir'))
-        ->bind('$installed', env('installed'))
+        ->bind('$installed', env('SOLIDINVOICE_INSTALLED'))
+        ->bind('$vault', service('secrets.vault'))
     ;
 
     $services

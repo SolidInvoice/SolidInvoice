@@ -134,7 +134,7 @@ class InstallCommand extends Command
             $repository->updateVersion($version);
             $time = new DateTime('NOW');
             $config = ['installed' => $time->format(DateTime::ATOM)];
-            $this->configWriter->dump($config);
+            $this->configWriter->save($config);
         }
     }
 
@@ -215,7 +215,7 @@ class InstallCommand extends Command
     {
         // Don't update installed here, in case something goes wrong with the rest of the installation process
         $config = ['database_driver' => $input->getOption('database-driver'), 'database_host' => $input->getOption('database-host'), 'database_port' => $input->getOption('database-port'), 'database_name' => $input->getOption('database-name'), 'database_user' => $input->getOption('database-user'), 'database_password' => $input->getOption('database-password'), 'locale' => $input->getOption('locale'), 'secret' => Key::createNewRandomKey()->saveToAsciiSafeString()];
-        $this->configWriter->dump($config);
+        $this->configWriter->save($config);
 
         return $this;
     }

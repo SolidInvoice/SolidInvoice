@@ -19,30 +19,40 @@
                     </h3>
                 </div>
                 <div class="card-body">
-                    <div class="progress progress-striped mb-3">
-                        <div class="progress-bar active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                    <div class="progress mb-3" id="installation-progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
                         </div>
                     </div>
 
                     <div id="error-message" class="text-danger"></div>
 
                     <ul class="list-group">
-                        <li class="list-group-item" id="step-createdb">
-                            {{ 'installation.process.step.createdb'|trans }}
-                        </li>
-                        <li class="list-group-item" id="step-migrations">
-                            {{ 'installation.process.step.migrations'|trans }}
-                        </li>
+                        {% for step in steps %}
+                            {% set label = step.label %}
+                            <li class="list-group-item" id="step-{{ label|u.snake }}">
+                                {{ label|trans }}
+                                <div id="step-{{ label|u.snake }}-status" class="float-right icon"></div>
+                            </li>
+                        {% endfor %}
                     </ul>
+
+                    <a class="link-black" data-toggle="collapse" href="#outputDropdown" role="button" aria-expanded="false" aria-controls="outputDropdown">
+                        {{ icon('caret-down') }}
+                        {{ 'View output'|trans }}
+                    </a>
+
+                    <div class="collapse multi-collapse" id="outputDropdown">
+                        <pre id="output" class="text-info pre-scrollable"></pre>
+                    </div>
                 </div>
                 <div class="card-footer">
                     <div class="row">
-                        <div class="col align-self-start">
+                        <div class="col">
                             <a href="{{ path('_install_config') }}" class="btn btn-warning btn-block">
                                 {{ icon('arrow-left') }} {{ "installation.action.previous"|trans }}
                             </a>
                         </div>
-                        <div class="col-8">
+                        <div class="col-7">
                         </div>
                         <div class="col" id="next_button">
                             <a id="continue_step" href="{{ path('_install_setup') }}" class="disabled btn btn-success btn-block">
@@ -56,6 +66,88 @@
     </div>
 {% endblock %}
 
-{% block scripts %}
-    {{ encore_entry_script_tags('installation-install') }}
+{% block scripts -%}
+    <script defer>
+        const steps = [
+            {% for step in steps -%}
+                '{{- step.label|u.snake -}}',
+            {% endfor -%}
+        ];
+
+        let currentStep = 0;
+        const outputElement = document.getElementById('output');
+        const progressBar = document.querySelector('#installation-progress .progress-bar');
+
+        runStep(currentStep);
+
+        function runStep(index) {
+            if (index >= steps.length) {
+                document.querySelector('#continue_step').classList.remove('disabled');
+                document.querySelector('#install-title').textContent = '{{ 'installation.process.title.done'|trans }}';
+
+                progressBar.style.width = '100%';
+                progressBar.setAttribute('aria-valuenow', '100');
+                progressBar.textContent = '100%';
+                progressBar.classList.remove('progress-bar-striped');
+                progressBar.classList.remove('progress-bar-animated');
+                progressBar.classList.add('bg-success');
+                return;
+            }
+
+            const stepId = steps[index];
+            updateStatus(stepId, 'running');
+
+            let progress = (index + 1) * 100 / steps.length;
+            progressBar.style.width = `${progress}%`;
+            progressBar.setAttribute('aria-valuenow', '' + progress);
+            progressBar.textContent = `${progress}%`;
+
+            const eventSource = new EventSource('{{ path('_install_install') }}?action=' + stepId);
+
+            eventSource.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+
+                if (data.status === 'done') {
+                    updateStatus(stepId, 'done');
+                    eventSource.close();
+                    currentStep++;
+                    runStep(currentStep);
+                } else if (data.status === 'failed') {
+                    updateStatus(stepId, 'failed');
+                    outputElement.textContent += `Error: ${data.error}\n`;
+                    eventSource.close();
+                } else if (data.output) {
+                    outputElement.textContent += `${data.output}\n`;
+                    outputElement.scrollTop = outputElement.scrollHeight;
+                }
+            };
+
+            eventSource.onerror = () => {
+                updateStatus(stepId, 'failed');
+                eventSource.close();
+            };
+        }
+
+        function updateStatus(stepId, status) {
+            const element = document.querySelector(`#step-${stepId}-status`);
+            if (element) {
+                switch (status) {
+                    case 'running':
+                        element.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i>';
+                        break;
+                    case 'done':
+                        element.innerHTML = '<i class="fas fa-check text-success"></i>';
+                        break;
+                    case 'failed':
+                        element.innerHTML = '<i class="fas fa-times text-danger"></i>';
+                        element.classList.add('error');
+                        break;
+                }
+                // element.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+                if (status === 'failed') {
+                    element.classList.add('error');
+                }
+            }
+        }
+    </script>
 {% endblock scripts %}

@@ -201,6 +201,9 @@
         "symplify/easy-coding-standard": "^12.2",
         "zenstruck/foundry": "^2.2"
     },
+    "suggest": {
+        "ext-zend-opcache": "For best performance"
+    },
     "replace": {
         "symfony/polyfill-php70": "*",
         "symfony/polyfill-php71": "*",

@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Company;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Uid\Ulid;
 use function assert;
 
@@ -42,7 +42,7 @@ final class CompanySelector
         $em
             ->getFilters()
             ->enable('company')
-            ->setParameter('companyId', $companyId, UlidType::NAME);
+            ->setParameter('companyId', $companyId->toHex(), Types::STRING);
 
         $this->companyId = $companyId;
     }

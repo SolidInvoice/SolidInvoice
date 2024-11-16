@@ -16,7 +16,6 @@ namespace SolidInvoice\InstallBundle\Action;
 use DateTime;
 use DateTimeInterface;
 use Defuse\Crypto\Exception\EnvironmentIsBrokenException;
-use Defuse\Crypto\Key;
 use Doctrine\Persistence\ManagerRegistry;
 use Mpociot\VatCalculator\VatCalculator;
 use SolidInvoice\CoreBundle\ConfigWriter;
@@ -48,10 +47,9 @@ final class Setup
     }
 
     /**
-     * @return Template|RedirectResponse
      * @throws EnvironmentIsBrokenException|Throwable
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): RedirectResponse | Template
     {
         if ($request->isMethod(Request::METHOD_POST)) {
             return $this->handleForm($request);
@@ -62,13 +60,7 @@ final class Setup
 
     private function getForm(): FormInterface
     {
-        $config = $this->configWriter->getConfigValues();
-
-        $data = [
-            'locale' => $config['locale'] ?? null,
-        ];
-
-        return $this->formFactory->create(SystemInformationForm::class, $data, ['userCount' => $this->getUserCount()]);
+        return $this->formFactory->create(SystemInformationForm::class, null, ['userCount' => $this->getUserCount()]);
     }
 
     private function getUserCount(): int
@@ -158,10 +150,9 @@ final class Setup
         $config = [
             'locale' => $data['locale'],
             'installed' => $time->format(DateTimeInterface::ATOM),
-            'secret' => Key::createNewRandomKey()->saveToAsciiSafeString(),
         ];
 
-        $this->configWriter->dump($config);
+        $this->configWriter->save($config);
 
         $countryCode = explode('_', $data['locale'])[1] ?? $data['locale'];
 
