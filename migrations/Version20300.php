@@ -90,7 +90,6 @@ final class Version20300 extends AbstractMigration
         $clientCredit = $schema->getTable('client_credit');
         $invoiceLines = $schema->getTable('invoice_lines');
         $quoteLines = $schema->getTable('quote_lines');
-        $contactTypes = $schema->getTable('contact_types');
         $clients = $schema->getTable('clients');
         $recurringInvoiceContact = $schema->getTable('recurringinvoice_contact');
         $invoiceContact = $schema->getTable('invoice_contact');

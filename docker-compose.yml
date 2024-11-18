@@ -22,12 +22,12 @@ services:
     environment:
       SOLIDINVOICE_ENV: dev
       SOLIDINVOICE_DEBUG: 1
-      database_driver: pdo_mysql
-      database_host: db
-      database_port: 3306
-      database_name: solidinvoice
-      database_user: root
-      database_password:
+      SOLIDINVOICE_DATABASE_DRIVER: pdo_mysql
+      SOLIDINVOICE_DATABASE_HOST: db
+      SOLIDINVOICE_DATABASE_PORT: 3306
+      SOLIDINVOICE_DATABASE_NAME: solidinvoice
+      SOLIDINVOICE_DATABASE_USER: root
+      SOLIDINVOICE_DATABASE_PASSWORD:
 
 volumes:
   db_data: {}
