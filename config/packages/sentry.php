@@ -20,16 +20,13 @@ use Symfony\Config\SentryConfig;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
 
 return static function (SentryConfig $sentryConfig, MonologConfig $monologConfig): void {
-    $sentryConfig->dsn(env('SENTRY_DSN'))
+    $sentryConfig->dsn(env('SOLIDINVOICE_SENTRY_DSN'))
         ->registerErrorListener(false)
         ->registerErrorHandler(false)
-        ->options([
-            'send_default_pii' => env('SENTRY_SEND_DEFAULT_PII')->bool(),
-            'ignore_exceptions' => [
-                FatalError::class,
-                FatalErrorException::class,
-            ],
-        ]);
+        ->options()
+        ->sendDefaultPii(env('SOLIDINVOICE_SENTRY_SEND_DEFAULT_PII')->bool())
+        ->ignoreExceptions([FatalError::class, FatalErrorException::class])
+        ->release(env('SOLIDINVOICE_SENTRY_RELEASE'));
 
     $monologConfig->handler('sentry_main')
         ->type('sentry')

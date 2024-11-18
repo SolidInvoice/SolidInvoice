@@ -30,15 +30,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters->set('env(SOLIDINVOICE_INSTALLED)', null);
     $parameters->set('env(SOLIDINVOICE_ALLOW_REGISTRATION)', '0');
 
-    $parameters->set('env(mailer_transport)', 'sendmail');
-    $parameters->set('env(mailer_host)', '127.0.0.1');
-    $parameters->set('env(mailer_user)', null);
-    $parameters->set('env(mailer_password)', null);
-    $parameters->set('env(mailer_port)', null);
-    $parameters->set('env(mailer_encryption)', null);
-    $parameters->set('env(SENTRY_DSN)', null);
-    $parameters->set('env(MAILER_DSN)', 'null://null');
-    $parameters->set('env(SENTRY_SEND_DEFAULT_PII)', '0');
+    $parameters->set('env(SOLIDINVOICE_SENTRY_DSN)', null);
+    $parameters->set('env(SOLIDINVOICE_SENTRY_RELEASE)', '');
+    $parameters->set('env(SOLIDINVOICE_SENTRY_SEND_DEFAULT_PII)', '0');
+    $parameters->set('env(SOLIDINVOICE_MAILER_DSN)', 'null://null');
 
     $parameters->set('env(SOLIDINVOICE_CONFIG_DIR)', param('kernel.project_dir') . '/config/env');
 
