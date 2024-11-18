@@ -26,7 +26,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Uid\Ulid;
 
-#[ORM\Table(name: Credit::TABLE_NAME)]
+#[ORM\Table(name: Credit::TABLE_NAME, uniqueConstraints: [new ORM\UniqueConstraint(columns: ['client_id'])])]
 #[ORM\Entity(repositoryClass: CreditRepository::class)]
 class Credit implements Stringable
 {
@@ -45,6 +45,7 @@ class Credit implements Stringable
     private BigNumber $value;
 
     #[ORM\OneToOne(inversedBy: 'credit', targetEntity: Client::class)]
+    #[ORM\JoinColumn(name: 'client_id', referencedColumnName: 'id', unique: true)]
     private ?Client $client = null;
 
     public function __construct()
@@ -77,7 +78,7 @@ class Credit implements Stringable
     /**
      * @throws MathException
      */
-    public function setValue(BigNumber|float|int|string $value): self
+    public function setValue(BigNumber | float | int | string $value): self
     {
         $this->value = BigNumber::of($value);
 

@@ -27,9 +27,6 @@ use Doctrine\Migrations\AbstractMigration;
 use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use SolidInvoice\CoreBundle\Form\Type\BillingIdConfigurationType;
-use SolidInvoice\NotificationBundle\Entity\TransportSetting;
-use SolidInvoice\NotificationBundle\Entity\UserNotification;
-use SolidInvoice\PaymentBundle\Entity\Payment;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Uid\Ulid;
@@ -101,7 +98,7 @@ final class Version20300 extends AbstractMigration
         $users = $schema->getTable('users');
         $userCompany = $schema->getTable('user_company');
         $userInvitations = $schema->getTable('user_invitations');
-        $payments = $schema->getTable(Payment::TABLE_NAME);
+        $payments = $schema->getTable('payments');
 
         $recurringInvoices->dropColumn('total_currency');
         $recurringInvoices->dropColumn('baseTotal_currency');
@@ -154,16 +151,17 @@ final class Version20300 extends AbstractMigration
         $this->setColumnType($schema, 'quote_contact', 'contact_id', UlidType::NAME);
         $this->setColumnType($schema, 'quote_contact', 'company_id', UlidType::NAME);
 
-        $contactTypes->dropIndex('UNIQ_741A993F5E237E06979B1AD6');
-        $contactTypes->addUniqueIndex(['name', 'company_id']);
+        foreach ($clientCredit->getIndexes() as $index) {
+            if ($index->getColumns() === ['client_id']) {
+                $clientCredit->dropIndex($index->getName());
+            }
+        }
 
-        $clientCredit->dropIndex('FK_4967254D19EB6921');
         $clientCredit->addUniqueIndex(['client_id']);
 
         $clients->addUniqueIndex(['name', 'company_id']);
 
         $invoices->addUniqueIndex(['quote_id']);
-        $invoices->addIndex(['quote_id']);
 
         $recurringInvoiceContact->addForeignKeyConstraint('companies', ['company_id'], ['id']);
 
@@ -174,19 +172,17 @@ final class Version20300 extends AbstractMigration
         $users->addUniqueIndex(['email']);
         $users->dropColumn('username');
 
-        $userCompany->removeForeignKey('FK_17B21745A76ED395');
         $userCompany->dropPrimaryKey();
         $userCompany->setPrimaryKey(['user_id', 'company_id']);
         $userCompany->addForeignKeyConstraint('companies', ['company_id'], ['id'], ['onDelete' => 'CASCADE']);
         $userCompany->addForeignKeyConstraint('users', ['user_id'], ['id'], ['onDelete' => 'CASCADE']);
-        $userCompany->addIndex(['user_id']);
 
         $userInvitations->dropPrimaryKey();
         $userInvitations->setPrimaryKey(['id']);
 
         $invoices->addColumn('invoice_date', Types::DATE_IMMUTABLE, ['notnull' => false]);
 
-        $transportSettingsTable = $schema->createTable(TransportSetting::TABLE_NAME);
+        $transportSettingsTable = $schema->createTable('notification_transport_setting');
 
         $transportSettingsTable->addColumn('id', UlidType::NAME);
         $transportSettingsTable->addColumn('name', Types::STRING, ['length' => 255]);
@@ -197,8 +193,9 @@ final class Version20300 extends AbstractMigration
         $transportSettingsTable->setPrimaryKey(['id']);
         $transportSettingsTable->addForeignKeyConstraint('users', ['user_id'], ['id']);
         $transportSettingsTable->addForeignKeyConstraint('companies', ['company_id'], ['id']);
+        $transportSettingsTable->addUniqueIndex(['name', 'company_id', 'user_id'], 'unique_name_user');
 
-        $userNotificationTable = $schema->createTable(UserNotification::TABLE_NAME);
+        $userNotificationTable = $schema->createTable('notification_user_setting');
         $userNotificationTable->addColumn('id', UlidType::NAME);
         $userNotificationTable->addColumn('user_id', UlidType::NAME);
         $userNotificationTable->addColumn('company_id', UlidType::NAME);
@@ -213,8 +210,8 @@ final class Version20300 extends AbstractMigration
         $userNotificationTransports->addColumn('usernotification_id', UlidType::NAME);
         $userNotificationTransports->addColumn('transportsetting_id', UlidType::NAME);
         $userNotificationTransports->setPrimaryKey(['usernotification_id', 'transportsetting_id']);
-        $userNotificationTransports->addForeignKeyConstraint(UserNotification::TABLE_NAME, ['usernotification_id'], ['id'], ['onDelete' => 'CASCADE']);
-        $userNotificationTransports->addForeignKeyConstraint(TransportSetting::TABLE_NAME, ['transportsetting_id'], ['id'], ['onDelete' => 'CASCADE']);
+        $userNotificationTransports->addForeignKeyConstraint('notification_user_setting', ['usernotification_id'], ['id'], ['onDelete' => 'CASCADE']);
+        $userNotificationTransports->addForeignKeyConstraint('notification_transport_setting', ['transportsetting_id'], ['id'], ['onDelete' => 'CASCADE']);
 
         $invoiceLines->addColumn('type', Types::STRING, ['length' => 255, 'notnull' => false]);
 

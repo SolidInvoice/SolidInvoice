@@ -75,17 +75,17 @@ final class Version20201 extends AbstractMigration
         $invoiceContact = $this->schema->getTable('invoice_contact');
         $invoiceContact->addColumn('company_id', UlidType::NAME, ['notnull' => false]);
         $invoiceContact->addIndex(['invoice_id', 'company_id']);
-        //$invoiceContact->setPrimaryKey(['invoice_id', 'contact_id', 'company_id']);
+        $invoiceContact->setPrimaryKey(['invoice_id', 'contact_id']);
 
         $recurringInvoiceContact = $this->schema->getTable('recurringinvoice_contact');
         $recurringInvoiceContact->addColumn('company_id', UlidType::NAME, ['notnull' => false]);
         $recurringInvoiceContact->addIndex(['recurringinvoice_id', 'company_id']);
-        //$recurringInvoiceContact->setPrimaryKey(['recurringinvoice_id', 'contact_id', 'company_id']);
+        $recurringInvoiceContact->setPrimaryKey(['recurringinvoice_id', 'contact_id']);
 
         $quoteContact = $this->schema->getTable('quote_contact');
         $quoteContact->addColumn('company_id', UlidType::NAME, ['notnull' => false]);
         $quoteContact->addIndex(['quote_id', 'company_id']);
-        //$quoteContact->setPrimaryKey(['quote_id', 'contact_id', 'company_id']);
+        $quoteContact->setPrimaryKey(['quote_id', 'contact_id']);
 
         $schema->dropTable('ext_log_entries');
 
@@ -426,6 +426,12 @@ final class Version20201 extends AbstractMigration
 
             $table->removeForeignKey($fk['name']);
             $table->dropColumn($fk['key']);
+
+            foreach ($table->getIndexes() as $index) {
+                if ($index->getColumns() === [$fk['key']]) {
+                    $table->dropIndex($index->getName());
+                }
+            }
         }
     }
 
@@ -482,8 +488,6 @@ final class Version20201 extends AbstractMigration
                 $tableName,
                 [$foreignKey['key']],
                 ['id'],
-                [],
-                $foreignKey['name']
             );
         }
     }

@@ -72,8 +72,8 @@ final class Version20100 extends AbstractMigration
         $this->createTable(
             'recurringinvoice_contact',
             [
-                ['recurringinvoice_id', 'integer', ['notnull' => true]],
-                ['contact_id', 'integer', ['notnull' => true]],
+                ['recurringinvoice_id', 'integer', ['notnull' => false]],
+                ['contact_id', 'integer', ['notnull' => false]],
             ]
         )
             ->addIndex(['recurringinvoice_id'])
