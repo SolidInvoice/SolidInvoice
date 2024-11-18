@@ -36,12 +36,14 @@
                         {% endfor %}
                     </ul>
 
-                    <a class="link-black" data-toggle="collapse" href="#outputDropdown" role="button" aria-expanded="false" aria-controls="outputDropdown">
+                    {#<a class="link-black" data-toggle="collapse" href="#outputDropdown" role="button" aria-expanded="false" aria-controls="outputDropdown">#}
+                    <a class="link-black" href="#outputDropdown">
                         {{ icon('caret-down') }}
                         {{ 'View output'|trans }}
                     </a>
 
-                    <div class="collapse multi-collapse" id="outputDropdown">
+                    {#<div class="collapse multi-collapse" id="outputDropdown">#}
+                    <div class="" id="outputDropdown">
                         <pre id="output" class="text-info pre-scrollable"></pre>
                     </div>
                 </div>
