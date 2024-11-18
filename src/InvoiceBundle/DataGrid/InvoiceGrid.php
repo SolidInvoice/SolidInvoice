@@ -12,12 +12,12 @@
 namespace SolidInvoice\InvoiceBundle\DataGrid;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
 use SolidInvoice\DataGridBundle\GridBuilder\Batch\BatchAction;
 use SolidInvoice\DataGridBundle\GridBuilder\Query;
 use SolidInvoice\DataGridBundle\Source\ORMSource;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 use function array_key_exists;
 
 #[AsDataGrid(name: 'invoice_grid', title: 'Active Invoices')]
@@ -43,7 +43,7 @@ final class InvoiceGrid extends BaseInvoiceGrid
             $query
                 ->getQueryBuilder()
                 ->where(ORMSource::ALIAS . '.client = :client_id')
-                ->setParameter('client_id', $this->context['client_id'], UuidBinaryOrderedTimeType::NAME);
+                ->setParameter('client_id', $this->context['client_id'], UlidType::NAME);
         }
 
         return $query;

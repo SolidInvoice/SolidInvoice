@@ -16,10 +16,10 @@ namespace SolidInvoice\InvoiceBundle\Repository;
 use Brick\Math\Exception\MathException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\TaxBundle\Entity\Tax;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 
 /**
  * @extends ServiceEntityRepository<Line>
@@ -42,7 +42,7 @@ class LineRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('i');
 
         $query = $qb->where('i.tax = :tax')
-            ->setParameter('tax', $tax->getId(), UuidBinaryOrderedTimeType::NAME)
+            ->setParameter('tax', $tax->getId(), UlidType::NAME)
             ->getQuery();
 
         /** @var Line $invoiceLine */

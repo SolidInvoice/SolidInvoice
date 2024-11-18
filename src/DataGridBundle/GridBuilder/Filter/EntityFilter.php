@@ -14,11 +14,11 @@ namespace SolidInvoice\DataGridBundle\GridBuilder\Filter;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\QueryBuilder;
-use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use Ramsey\Uuid\Uuid;
 use SolidInvoice\DataGridBundle\Filter\ColumnFilterInterface;
 use SolidInvoice\DataGridBundle\Source\ORMSource;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 use function array_filter;
 use function array_map;
 use function array_values;
@@ -80,7 +80,7 @@ final class EntityFilter implements ColumnFilterInterface
 
             if ([] !== $value) {
                 $platform = $queryBuilder->getEntityManager()->getConnection()->getDatabasePlatform();
-                $type = Type::getType(UuidBinaryOrderedTimeType::NAME);
+                $type = Type::getType(UlidType::NAME);
                 $parameterType = ArrayParameterType::STRING;
 
                 $values = array_map(static function ($value) use ($type, $platform) {
@@ -97,7 +97,7 @@ final class EntityFilter implements ColumnFilterInterface
             if ('' !== $value) {
                 $queryBuilder->join($this->class, $hash)
                     ->andWhere(sprintf('%1$s.id = :%1$s', $hash))
-                    ->setParameter($hash, Uuid::fromString($value), UuidBinaryOrderedTimeType::NAME);
+                    ->setParameter($hash, Uuid::fromString($value), UlidType::NAME);
             }
         }
     }

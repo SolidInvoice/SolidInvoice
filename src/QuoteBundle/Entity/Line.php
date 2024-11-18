@@ -120,7 +120,7 @@ class Line implements LineInterface, Stringable
     #[Groups(['quote_api:read', 'quote_api:write'])]
     private ?float $qty = 1;
 
-    #[ORM\ManyToOne(targetEntity: Quote::class, inversedBy: 'items')]
+    #[ORM\ManyToOne(targetEntity: Quote::class, inversedBy: 'lines')]
     #[ApiProperty(
         writable: false,
         writableLink: false,

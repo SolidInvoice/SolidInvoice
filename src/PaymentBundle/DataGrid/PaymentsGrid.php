@@ -13,7 +13,6 @@ namespace SolidInvoice\PaymentBundle\DataGrid;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
-use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
 use SolidInvoice\DataGridBundle\Grid;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\DateTimeColumn;
@@ -28,6 +27,7 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\PaymentBundle\Model\Status;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 use function array_key_exists;
 
 #[AsDataGrid(name: 'payments_grid', title: 'Payments')]
@@ -83,14 +83,14 @@ final class PaymentsGrid extends Grid
             $query
                 ->getQueryBuilder()
                 ->where(ORMSource::ALIAS . '.client = :client_id')
-                ->setParameter('client_id', $this->context['client_id'], UuidBinaryOrderedTimeType::NAME);
+                ->setParameter('client_id', $this->context['client_id'], UlidType::NAME);
         }
 
         if (array_key_exists('invoice_id', $this->context) && null !== $this->context['invoice_id']) {
             $query
                 ->getQueryBuilder()
                 ->where(ORMSource::ALIAS . '.invoice = :invoice_id')
-                ->setParameter('invoice_id', $this->context['invoice_id'], UuidBinaryOrderedTimeType::NAME);
+                ->setParameter('invoice_id', $this->context['invoice_id'], UlidType::NAME);
         }
 
         return $query;
