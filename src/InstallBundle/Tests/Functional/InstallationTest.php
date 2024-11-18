@@ -92,7 +92,7 @@ final class InstallationTest extends PantherTestCase
                 'config_step[database_config][host]' => getenv('SOLIDINVOICE_DATABASE_HOST') ?: '127.0.0.1',
                 'config_step[database_config][user]' => getenv('SOLIDINVOICE_DATABASE_USER') ?: 'root',
                 'config_step[database_config][password]' => getenv('SOLIDINVOICE_DATABASE_PASSWORD') ?: '',
-                'config_step[database_config][name]' => getenv('SOLIDINVOICE_DATABASE_NAME') ?: 'solidinvoice_test',
+                'config_step[database_config][name]' => 'solidinvoice_install_test',
             ]
         );
 
