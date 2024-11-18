@@ -73,7 +73,7 @@ final class InstallationTest extends PantherTestCase
 
     public function testApplicationInstallation(): void
     {
-        $client = self::createPantherClient(['env' => ['SOLIDINVOICE_ENV' => 'test']]);
+        $client = self::createPantherClient(['env' => ['SOLIDINVOICE_ENV' => 'test', 'SOLIDINVOICE_DATABASE_NAME' => 'solidinvoice_install_test']]);
 
         $crawler = $client->request('GET', '/install');
 
