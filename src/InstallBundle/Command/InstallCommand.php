@@ -14,18 +14,22 @@ declare(strict_types=1);
 namespace SolidInvoice\InstallBundle\Command;
 
 use DateTime;
+use DateTimeInterface;
+use Defuse\Crypto\Exception\EnvironmentIsBrokenException;
 use Defuse\Crypto\Key;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Exception;
 use InvalidArgumentException;
+use PDO;
+use RuntimeException;
 use SolidInvoice\CoreBundle\ConfigWriter;
 use SolidInvoice\CoreBundle\Entity\Version;
 use SolidInvoice\CoreBundle\Repository\VersionRepository;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\InstallBundle\Exception\ApplicationInstalledException;
-use SolidInvoice\InstallBundle\Installer\Database\Migration;
+use SolidInvoice\InstallBundle\Step\InstallationStepInterface;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Repository\UserRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -35,19 +39,37 @@ use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\Question;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
+use Symfony\Component\DependencyInjection\ServiceLocator;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Intl\Locales;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
+use Symfony\Contracts\Service\ResetInterface;
+use function array_combine;
+use function array_intersect;
+use function array_keys;
+use function array_map;
+use function array_search;
+use function assert;
+use function in_array;
+use function Symfony\Component\String\u;
 
 #[AsCommand(name: 'app:install', description: 'Installs the application')]
 class InstallCommand extends Command
 {
+    /**
+     * @param ServiceLocator<InstallationStepInterface> $installationSteps
+     */
     public function __construct(
         private readonly ConfigWriter $configWriter,
-        private readonly Migration $migration,
         private readonly ManagerRegistry $registry,
         private readonly UserPasswordHasherInterface $userPasswordHasher,
+        #[AutowireLocator(services: InstallationStepInterface::DI_TAG, defaultIndexMethod: 'getLabel', defaultPriorityMethod: 'priority')]
+        private readonly ServiceLocator $installationSteps,
+        private readonly KernelInterface $kernel,
         private readonly string $projectDir,
         private readonly ?string $installed
     ) {
@@ -61,10 +83,10 @@ class InstallCommand extends Command
 
     protected function configure(): void
     {
-        $this->addOption('database-driver', null, InputOption::VALUE_REQUIRED, 'The database driver to use', 'pdo_mysql')
-            ->addOption('database-host', null, InputOption::VALUE_REQUIRED, 'The database host', '127.0.0.1')
-            ->addOption('database-port', null, InputOption::VALUE_REQUIRED, 'The database port', 3306)
-            ->addOption('database-name', null, InputOption::VALUE_REQUIRED, 'The name of the database to use (will be created if it doesn\'t exist)', 'solidinvoice')
+        $this->addOption('database-driver', null, InputOption::VALUE_REQUIRED, 'The database driver to use')
+            ->addOption('database-host', null, InputOption::VALUE_REQUIRED, 'The database host')
+            ->addOption('database-port', null, InputOption::VALUE_REQUIRED, 'The database port')
+            ->addOption('database-name', null, InputOption::VALUE_REQUIRED, 'The name of the database to use (will be created if it doesn\'t exist)')
             ->addOption('database-user', null, InputOption::VALUE_REQUIRED, 'The name of the database user')
             ->addOption('database-password', null, InputOption::VALUE_REQUIRED, 'The password for the database user')
             ->addOption('skip-user', null, InputOption::VALUE_NONE, 'Skip creating the admin user')
@@ -78,6 +100,10 @@ class InstallCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        if ($this->installed) {
+            throw new ApplicationInstalledException();
+        }
+
         $this->validate($input)
             ->saveConfig($input)
             ->install($input, $output);
@@ -86,14 +112,13 @@ class InstallCommand extends Command
         $output->writeln('');
         $output->writeln($success);
         $output->writeln('');
-        $output->writeln('As a final step, you must add a scheduled task to run daily.');
-        $output->writeln('You can choose what time the command should run, but 12AM is a good default if you are unsure.');
+        $output->writeln('As a final step, you must add a scheduled task to run every minute.');
         $output->writeln('');
-        $output->writeln('Add the following cron job to run daily at 12AM:');
+        $output->writeln('Add the following cron job:');
         $output->writeln('');
         $output->writeln(sprintf('<comment>* * * * * php %s/console cron:run -e prod -n</comment>', $this->projectDir));
 
-        return (int) Command::SUCCESS;
+        return Command::SUCCESS;
     }
 
     /**
@@ -109,7 +134,7 @@ class InstallCommand extends Command
 
         foreach ($values as $option) {
             if (null === $input->getOption($option)) {
-                throw new Exception(sprintf('The --%s option needs to be specified', $option));
+                throw new RuntimeException(sprintf('The --%s option needs to be specified', $option));
             }
         }
         if (! array_key_exists($locale = $input->getOption('locale'), Locales::getNames())) {
@@ -119,66 +144,31 @@ class InstallCommand extends Command
         return $this;
     }
 
+    /**
+     * @throws Exception
+     */
     private function install(InputInterface $input, OutputInterface $output): void
     {
-        if ($this->initDb($input, $output)) {
-            if (! $input->getOption('skip-user')) {
-                $this->createAdminUser($input, $output);
-            }
-
-            $version = SolidInvoiceCoreBundle::VERSION;
-            $entityManager = $this->registry->getManager();
-
-            /** @var VersionRepository $repository */
-            $repository = $entityManager->getRepository(Version::class);
-            $repository->updateVersion($version);
-            $time = new DateTime('NOW');
-            $config = ['installed' => $time->format(DateTime::ATOM)];
-            $this->configWriter->save($config);
+        foreach ($this->installationSteps as $step) {
+            $output->writeln(sprintf('<info>Running step: %s</info>', $step->getLabel()));
+            $step->execute(function (string $content) use ($output): void {
+                $output->writeln($content, OutputInterface::VERBOSITY_VERBOSE);
+            });
         }
-    }
 
-    /**
-     * @throws Exception
-     */
-    private function initDb(InputInterface $input, OutputInterface $output): bool
-    {
-        $this->createDb($input, $output);
-        $output->writeln('<info>Running database migrations</info>');
-        $this->migration->migrate();
-
-        return true;
-    }
-
-    /**
-     * @throws Exception
-     */
-    private function createDb(InputInterface $input, OutputInterface $output): void
-    {
-        $dbName = $input->getOption('database-name');
-        $params = ['driver' => $input->getOption('database-driver'), 'host' => $input->getOption('database-host'), 'port' => $input->getOption('database-port'), 'user' => $input->getOption('database-user'), 'password' => $input->getOption('database-password'), 'charset' => 'UTF8', 'driverOptions' => []];
-        $tmpConnection = DriverManager::getConnection($params);
-
-        try {
-            $tmpConnection->createSchemaManager()->createDatabase($dbName);
-            $output->writeln(sprintf('<info>Created database %s</info>', $dbName));
-        } catch (Exception $e) {
-            if (str_contains($e->getMessage(), 'database exists')) {
-                if ($output->getVerbosity() >= OutputInterface::VERBOSITY_DEBUG) {
-                    $output->writeln(sprintf('<info>Database %s already exists</info>', $dbName));
-                }
-            } else {
-                throw $e;
-            }
+        if (! $input->getOption('skip-user')) {
+            $this->createAdminUser($input, $output);
         }
-        $params['dbname'] = $dbName;
-        // Set the current connection to the new DB name
-        $connection = $this->registry->getConnection();
-        if ($connection->isConnected()) {
-            $connection->close();
-        }
-        $connection->__construct($params, $connection->getDriver(), $connection->getConfiguration(), $connection->getEventManager());
-        $connection->connect();
+
+        $version = SolidInvoiceCoreBundle::VERSION;
+        $entityManager = $this->registry->getManager();
+
+        /** @var VersionRepository $repository */
+        $repository = $entityManager->getRepository(Version::class);
+        $repository->updateVersion($version);
+        $time = new DateTime('NOW');
+        $config = ['installed' => $time->format(DateTimeInterface::ATOM)];
+        $this->configWriter->save($config);
     }
 
     private function createAdminUser(InputInterface $input, OutputInterface $output): void
@@ -204,34 +194,85 @@ class InstallCommand extends Command
         $em = $this->registry->getManagerForClass(User::class);
 
         if (! $em instanceof ObjectManager) {
-            throw new Exception(sprintf('No object manager found for class "%s".', User::class));
+            throw new RuntimeException(sprintf('No object manager found for class "%s".', User::class));
         }
 
         $em->persist($user);
         $em->flush();
     }
 
+    /**
+     * @throws EnvironmentIsBrokenException
+     */
     private function saveConfig(InputInterface $input): self
     {
         // Don't update installed here, in case something goes wrong with the rest of the installation process
-        $config = ['database_driver' => $input->getOption('database-driver'), 'database_host' => $input->getOption('database-host'), 'database_port' => $input->getOption('database-port'), 'database_name' => $input->getOption('database-name'), 'database_user' => $input->getOption('database-user'), 'database_password' => $input->getOption('database-password'), 'locale' => $input->getOption('locale'), 'secret' => Key::createNewRandomKey()->saveToAsciiSafeString()];
+        $config = [
+            'database_driver' => $input->getOption('database-driver'),
+            'database_host' => $input->getOption('database-host'),
+            'database_port' => $input->getOption('database-port'),
+            'database_name' => $input->getOption('database-name'),
+            'database_user' => $input->getOption('database-user'),
+            'database_password' => $input->getOption('database-password'),
+            'locale' => $input->getOption('locale'),
+            'app_secret' => Key::createNewRandomKey()->saveToAsciiSafeString(),
+        ];
+
+        try {
+            $nativeConnection = DriverManager::getConnection([
+                'host' => $config['database_host'] ?? null,
+                'port' => $config['database_port'] ?? null,
+                'name' => $config['database_name'] ?? null,
+                'user' => $config['database_user'] ?? null,
+                'password' => $config['database_password'] ?? null,
+                'driver' => $config['database_driver'] ?? null,
+            ])->getNativeConnection();
+        } catch (\Doctrine\DBAL\Exception $e) {
+            throw new RuntimeException($e->getMessage());
+        }
+
+        assert($nativeConnection instanceof PDO);
+
+        $config['database_version'] = $nativeConnection->getAttribute(PDO::ATTR_SERVER_VERSION);
+
         $this->configWriter->save($config);
+
+        $container = $this->kernel->getContainer();
+
+        if ($container instanceof ResetInterface) {
+            $container->reset();
+            $container->set('kernel', $this->kernel);
+        }
 
         return $this;
     }
 
     protected function interact(InputInterface $input, OutputInterface $output): void
     {
-        if ($this->installed) {
-            throw new ApplicationInstalledException();
+        $availablePdoDrivers = array_values(array_intersect(
+            array_map(static fn (string $driver) => "pdo_{$driver}", PDO::getAvailableDrivers()),
+            DriverManager::getAvailableDrivers()
+        ));
+
+        // We can't support sqlite at the moment, since it requires a physical file
+        if (in_array('pdo_sqlite', $availablePdoDrivers, true)) {
+            unset($availablePdoDrivers[array_search('pdo_sqlite', $availablePdoDrivers, true)]);
         }
 
-        $locales = array_keys(Locales::getNames());
-        $localeQuestion = new Question('<question>Please enter a locale:</question> ');
-        $localeQuestion->setAutocompleterValues($locales);
+        $drivers = array_combine(
+            array_map(static fn (string $driver) => u($driver)->replace('pdo_', '')->title()->toString(), $availablePdoDrivers),
+            $availablePdoDrivers,
+        );
+
         $options = [
-            'database-user' => new Question('<question>Please enter your database username:</question> '),
-            'locale' => $localeQuestion,
+            'database-driver' => (new ChoiceQuestion('<question>please enter your database type:</question> ', array_keys($drivers))),
+            'database-host' => new Question('<question>please enter your database host:</question> '),
+            'database-port' => new Question('<question>please enter your database port:</question> '),
+            'database-name' => new Question('<question>please enter your database name:</question> '),
+            'database-user' => new Question('<question>please enter your database username:</question> '),
+            'database-password' => new Question('<question>please enter your database password:</question> '),
+            'locale' => (new Question('<question>Please enter a locale:</question> '))
+                ->setAutocompleterValues(array_keys(Locales::getNames())),
         ];
 
         if (! $input->getOption('skip-user')) {
@@ -247,10 +288,12 @@ class InstallCommand extends Command
 
         foreach ($options as $option => $question) {
             if (null === $input->getOption($option)) {
-                $value = null;
-                while (empty($value)) {
-                    $value = $dialog->ask($input, $output, $question);
+                $value = $dialog->ask($input, $output, $question);
+
+                if ($option === 'database-driver') {
+                    $value = $drivers[$value];
                 }
+
                 $input->setOption($option, $value);
             }
         }
