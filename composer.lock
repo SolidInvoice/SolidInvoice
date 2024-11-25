@@ -18504,16 +18504,16 @@
         },
         {
             "name": "liip/test-fixtures-bundle",
-            "version": "3.1.0",
+            "version": "3.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipTestFixturesBundle.git",
-                "reference": "c170375e247603a81d3c16efd1a46d22215ec26d"
+                "reference": "537bcb45e61bdef2a853caeb37643159a3b44e15"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipTestFixturesBundle/zipball/c170375e247603a81d3c16efd1a46d22215ec26d",
-                "reference": "c170375e247603a81d3c16efd1a46d22215ec26d",
+                "url": "https://api.github.com/repos/liip/LiipTestFixturesBundle/zipball/537bcb45e61bdef2a853caeb37643159a3b44e15",
+                "reference": "537bcb45e61bdef2a853caeb37643159a3b44e15",
                 "shasum": ""
             },
             "require": {
@@ -18586,9 +18586,9 @@
             ],
             "support": {
                 "issues": "https://github.com/liip/LiipTestFixturesBundle/issues",
-                "source": "https://github.com/liip/LiipTestFixturesBundle/tree/3.1.0"
+                "source": "https://github.com/liip/LiipTestFixturesBundle/tree/3.1.1"
             },
-            "time": "2024-08-05T20:30:34+00:00"
+            "time": "2024-11-12T19:08:31+00:00"
         },
         {
             "name": "localheinz/diff",
