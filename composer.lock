@@ -13369,16 +13369,16 @@
         },
         {
             "name": "symfony/requirements-checker",
-            "version": "v2.0.2",
+            "version": "v2.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/requirements-checker.git",
-                "reference": "10e35b45057bd44ad1bffbde9e92fe1bb11d7a3b"
+                "reference": "e68f11c6753d586fb465e17c6c3c8e8d9f642627"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/requirements-checker/zipball/10e35b45057bd44ad1bffbde9e92fe1bb11d7a3b",
-                "reference": "10e35b45057bd44ad1bffbde9e92fe1bb11d7a3b",
+                "url": "https://api.github.com/repos/symfony/requirements-checker/zipball/e68f11c6753d586fb465e17c6c3c8e8d9f642627",
+                "reference": "e68f11c6753d586fb465e17c6c3c8e8d9f642627",
                 "shasum": ""
             },
             "require": {
@@ -13410,7 +13410,7 @@
             ],
             "support": {
                 "issues": "https://github.com/symfony/requirements-checker/issues",
-                "source": "https://github.com/symfony/requirements-checker/tree/v2.0.2"
+                "source": "https://github.com/symfony/requirements-checker/tree/v2.0.3"
             },
             "funding": [
                 {
@@ -13426,7 +13426,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-11-09T08:04:39+00:00"
+            "time": "2024-11-14T22:24:57+00:00"
         },
         {
             "name": "symfony/rocket-chat-notifier",
