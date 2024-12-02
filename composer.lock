@@ -8511,16 +8511,16 @@
         },
         {
             "name": "symfony/contracts",
-            "version": "v3.5.0",
+            "version": "v3.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/contracts.git",
-                "reference": "f8cd5313753cfac8329ebc4033e2013b874208e1"
+                "reference": "dcd099d876d3a82b857d7f4ea0893e132e63d0fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/contracts/zipball/f8cd5313753cfac8329ebc4033e2013b874208e1",
-                "reference": "f8cd5313753cfac8329ebc4033e2013b874208e1",
+                "url": "https://api.github.com/repos/symfony/contracts/zipball/dcd099d876d3a82b857d7f4ea0893e132e63d0fe",
+                "reference": "dcd099d876d3a82b857d7f4ea0893e132e63d0fe",
                 "shasum": ""
             },
             "require": {
@@ -8586,7 +8586,7 @@
                 "standards"
             ],
             "support": {
-                "source": "https://github.com/symfony/contracts/tree/v3.5.0"
+                "source": "https://github.com/symfony/contracts/tree/v3.5.1"
             },
             "funding": [
                 {
@@ -8602,7 +8602,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-04-18T09:32:20+00:00"
+            "time": "2024-11-25T12:02:18+00:00"
         },
         {
             "name": "symfony/css-selector",
@@ -10301,26 +10301,27 @@
         },
         {
             "name": "symfony/http-client",
-            "version": "v7.1.8",
+            "version": "v7.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-client.git",
-                "reference": "c30d91a1deac0dc3ed5e604683cf2e1dfc635b8a"
+                "reference": "955e43336aff03df1e8a8e17daefabb0127a313b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-client/zipball/c30d91a1deac0dc3ed5e604683cf2e1dfc635b8a",
-                "reference": "c30d91a1deac0dc3ed5e604683cf2e1dfc635b8a",
+                "url": "https://api.github.com/repos/symfony/http-client/zipball/955e43336aff03df1e8a8e17daefabb0127a313b",
+                "reference": "955e43336aff03df1e8a8e17daefabb0127a313b",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.2",
                 "psr/log": "^1|^2|^3",
                 "symfony/deprecation-contracts": "^2.5|^3",
-                "symfony/http-client-contracts": "^3.4.1",
+                "symfony/http-client-contracts": "~3.4.3|^3.5.1",
                 "symfony/service-contracts": "^2.5|^3"
             },
             "conflict": {
+                "amphp/amp": "<2.5",
                 "php-http/discovery": "<1.15",
                 "symfony/http-foundation": "<6.4"
             },
@@ -10331,14 +10332,14 @@
                 "symfony/http-client-implementation": "3.0"
             },
             "require-dev": {
-                "amphp/amp": "^2.5",
-                "amphp/http-client": "^4.2.1",
-                "amphp/http-tunnel": "^1.0",
+                "amphp/http-client": "^4.2.1|^5.0",
+                "amphp/http-tunnel": "^1.0|^2.0",
                 "amphp/socket": "^1.1",
                 "guzzlehttp/promises": "^1.4|^2.0",
                 "nyholm/psr7": "^1.0",
                 "php-http/httplug": "^1.0|^2.0",
                 "psr/http-client": "^1.0",
+                "symfony/amphp-http-client-meta": "^1.0|^2.0",
                 "symfony/dependency-injection": "^6.4|^7.0",
                 "symfony/http-kernel": "^6.4|^7.0",
                 "symfony/messenger": "^6.4|^7.0",
@@ -10375,7 +10376,7 @@
                 "http"
             ],
             "support": {
-                "source": "https://github.com/symfony/http-client/tree/v7.1.8"
+                "source": "https://github.com/symfony/http-client/tree/v7.2.0"
             },
             "funding": [
                 {
@@ -10391,7 +10392,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-11-13T13:40:27+00:00"
+            "time": "2024-11-29T08:22:02+00:00"
         },
         {
             "name": "symfony/http-foundation",
@@ -12063,16 +12064,16 @@
         },
         {
             "name": "symfony/notifier",
-            "version": "v7.1.6",
+            "version": "v7.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/notifier.git",
-                "reference": "e45a3db2dd184060fa9c0d5c0b94dfa82bc0a13f"
+                "reference": "b5104341c0b0d78fe2cfc8a7a0a185d544ee5c1c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/notifier/zipball/e45a3db2dd184060fa9c0d5c0b94dfa82bc0a13f",
-                "reference": "e45a3db2dd184060fa9c0d5c0b94dfa82bc0a13f",
+                "url": "https://api.github.com/repos/symfony/notifier/zipball/b5104341c0b0d78fe2cfc8a7a0a185d544ee5c1c",
+                "reference": "b5104341c0b0d78fe2cfc8a7a0a185d544ee5c1c",
                 "shasum": ""
             },
             "require": {
@@ -12121,7 +12122,7 @@
                 "notifier"
             ],
             "support": {
-                "source": "https://github.com/symfony/notifier/tree/v7.1.6"
+                "source": "https://github.com/symfony/notifier/tree/v7.2.0"
             },
             "funding": [
                 {
@@ -12137,26 +12138,26 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-25T14:20:29+00:00"
+            "time": "2024-11-15T13:52:25+00:00"
         },
         {
             "name": "symfony/octopush-notifier",
-            "version": "v7.1.6",
+            "version": "v7.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/octopush-notifier.git",
-                "reference": "b5798b02f6093670ac6747c90cb9c06e46d75640"
+                "reference": "eabe36353036c81c30d6c56e5aa6f1812eda5a1e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/octopush-notifier/zipball/b5798b02f6093670ac6747c90cb9c06e46d75640",
-                "reference": "b5798b02f6093670ac6747c90cb9c06e46d75640",
+                "url": "https://api.github.com/repos/symfony/octopush-notifier/zipball/eabe36353036c81c30d6c56e5aa6f1812eda5a1e",
+                "reference": "eabe36353036c81c30d6c56e5aa6f1812eda5a1e",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.2",
                 "symfony/http-client": "^6.4|^7.0",
-                "symfony/notifier": "^6.4|^7.0"
+                "symfony/notifier": "^7.2"
             },
             "type": "symfony-notifier-bridge",
             "autoload": {
@@ -12189,7 +12190,7 @@
                 "sms"
             ],
             "support": {
-                "source": "https://github.com/symfony/octopush-notifier/tree/v7.1.6"
+                "source": "https://github.com/symfony/octopush-notifier/tree/v7.2.0"
             },
             "funding": [
                 {
@@ -12205,7 +12206,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-25T14:20:29+00:00"
+            "time": "2024-09-27T08:38:14+00:00"
         },
         {
             "name": "symfony/options-resolver",
