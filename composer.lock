@@ -10023,22 +10023,22 @@
         },
         {
             "name": "symfony/gateway-api-notifier",
-            "version": "v7.1.6",
+            "version": "v7.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/gateway-api-notifier.git",
-                "reference": "686af02c222a81627a9487cbb8bd0326caba5bca"
+                "reference": "514e971c8b604ee6df9d4baa4e7dc222b365e2f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/gateway-api-notifier/zipball/686af02c222a81627a9487cbb8bd0326caba5bca",
-                "reference": "686af02c222a81627a9487cbb8bd0326caba5bca",
+                "url": "https://api.github.com/repos/symfony/gateway-api-notifier/zipball/514e971c8b604ee6df9d4baa4e7dc222b365e2f8",
+                "reference": "514e971c8b604ee6df9d4baa4e7dc222b365e2f8",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.2",
                 "symfony/http-client": "^6.4|^7.0",
-                "symfony/notifier": "^6.4|^7.0"
+                "symfony/notifier": "^7.2"
             },
             "type": "symfony-notifier-bridge",
             "autoload": {
@@ -10075,7 +10075,7 @@
                 "sms"
             ],
             "support": {
-                "source": "https://github.com/symfony/gateway-api-notifier/tree/v7.1.6"
+                "source": "https://github.com/symfony/gateway-api-notifier/tree/v7.2.0"
             },
             "funding": [
                 {
@@ -10091,7 +10091,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-25T14:20:29+00:00"
+            "time": "2024-10-03T09:25:00+00:00"
         },
         {
             "name": "symfony/gitter-notifier",
