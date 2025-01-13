@@ -10590,22 +10590,22 @@
         },
         {
             "name": "symfony/infobip-notifier",
-            "version": "v7.1.6",
+            "version": "v7.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/infobip-notifier.git",
-                "reference": "0e1e4d90b255c4f979a24aea87f1dc22bc3f1c19"
+                "reference": "3ddca6605c03b326555765bac16ab91518c14bf9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/infobip-notifier/zipball/0e1e4d90b255c4f979a24aea87f1dc22bc3f1c19",
-                "reference": "0e1e4d90b255c4f979a24aea87f1dc22bc3f1c19",
+                "url": "https://api.github.com/repos/symfony/infobip-notifier/zipball/3ddca6605c03b326555765bac16ab91518c14bf9",
+                "reference": "3ddca6605c03b326555765bac16ab91518c14bf9",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.2",
                 "symfony/http-client": "^6.4|^7.0",
-                "symfony/notifier": "^6.4|^7.0"
+                "symfony/notifier": "^7.2"
             },
             "type": "symfony-notifier-bridge",
             "autoload": {
@@ -10642,7 +10642,7 @@
                 "sms"
             ],
             "support": {
-                "source": "https://github.com/symfony/infobip-notifier/tree/v7.1.6"
+                "source": "https://github.com/symfony/infobip-notifier/tree/v7.2.0"
             },
             "funding": [
                 {
@@ -10658,7 +10658,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-25T14:20:29+00:00"
+            "time": "2024-09-27T08:38:14+00:00"
         },
         {
             "name": "symfony/intl",
@@ -23145,5 +23145,5 @@
     "platform-overrides": {
         "php": "8.2"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
