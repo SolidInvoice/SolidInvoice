@@ -9958,22 +9958,22 @@
         },
         {
             "name": "symfony/free-mobile-notifier",
-            "version": "v7.1.6",
+            "version": "v7.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/free-mobile-notifier.git",
-                "reference": "b1b28fcaf7ca6436bc08a7743e74a07e0a4b7273"
+                "reference": "a8c8848ad58009ad247bac7dc37ce7f87d717b80"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/free-mobile-notifier/zipball/b1b28fcaf7ca6436bc08a7743e74a07e0a4b7273",
-                "reference": "b1b28fcaf7ca6436bc08a7743e74a07e0a4b7273",
+                "url": "https://api.github.com/repos/symfony/free-mobile-notifier/zipball/a8c8848ad58009ad247bac7dc37ce7f87d717b80",
+                "reference": "a8c8848ad58009ad247bac7dc37ce7f87d717b80",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.2",
                 "symfony/http-client": "^6.4|^7.0",
-                "symfony/notifier": "^6.4|^7.0"
+                "symfony/notifier": "^7.2"
             },
             "type": "symfony-notifier-bridge",
             "autoload": {
@@ -10008,7 +10008,7 @@
                 "sms"
             ],
             "support": {
-                "source": "https://github.com/symfony/free-mobile-notifier/tree/v7.1.6"
+                "source": "https://github.com/symfony/free-mobile-notifier/tree/v7.2.0"
             },
             "funding": [
                 {
@@ -10024,7 +10024,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-25T14:20:29+00:00"
+            "time": "2024-09-27T08:38:14+00:00"
         },
         {
             "name": "symfony/gateway-api-notifier",
@@ -23145,5 +23145,5 @@
     "platform-overrides": {
         "php": "8.2"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
