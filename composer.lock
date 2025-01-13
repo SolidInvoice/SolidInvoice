@@ -8420,16 +8420,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v7.1.8",
+            "version": "v7.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "ff04e5b5ba043d2badfb308197b9e6b42883fcd5"
+                "reference": "fefcc18c0f5d0efe3ab3152f15857298868dc2c3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/ff04e5b5ba043d2badfb308197b9e6b42883fcd5",
-                "reference": "ff04e5b5ba043d2badfb308197b9e6b42883fcd5",
+                "url": "https://api.github.com/repos/symfony/console/zipball/fefcc18c0f5d0efe3ab3152f15857298868dc2c3",
+                "reference": "fefcc18c0f5d0efe3ab3152f15857298868dc2c3",
                 "shasum": ""
             },
             "require": {
@@ -8493,7 +8493,7 @@
                 "terminal"
             ],
             "support": {
-                "source": "https://github.com/symfony/console/tree/v7.1.8"
+                "source": "https://github.com/symfony/console/tree/v7.2.1"
             },
             "funding": [
                 {
@@ -8509,7 +8509,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-11-06T14:23:19+00:00"
+            "time": "2024-12-11T03:49:26+00:00"
         },
         {
             "name": "symfony/contracts",
@@ -12524,8 +12524,8 @@
             "type": "library",
             "extra": {
                 "thanks": {
-                    "name": "symfony/polyfill",
-                    "url": "https://github.com/symfony/polyfill"
+                    "url": "https://github.com/symfony/polyfill",
+                    "name": "symfony/polyfill"
                 }
             },
             "autoload": {
@@ -12769,8 +12769,8 @@
             "type": "library",
             "extra": {
                 "thanks": {
-                    "name": "symfony/polyfill",
-                    "url": "https://github.com/symfony/polyfill"
+                    "url": "https://github.com/symfony/polyfill",
+                    "name": "symfony/polyfill"
                 }
             },
             "autoload": {
@@ -23145,5 +23145,5 @@
     "platform-overrides": {
         "php": "8.2"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
