@@ -9,14 +9,6 @@
 
 {% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
-{% block title %}
-    {#{% if invoice is defined and invoice.invoiceId is defined %}
-        {{ 'invoice.title'|trans({'%id%' : invoice.invoiceId}) }}
-    {% else %}
-        {{ (recurring ? "invoice.action.create_recurring" : "invoice.action.create")|trans }}
-    {% endif %}#}
-{% endblock %}
-
 {% block content %}
     {% if recurring %}
         <twig:CreateRecurringInvoice :form="form" :invoice="invoice" />

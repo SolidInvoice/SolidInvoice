@@ -99,23 +99,6 @@ class RecurringInvoiceType extends AbstractType
                 ],
             ]
         );
-
-        /*$builder->add(
-            'date_end',
-            DateType::class,
-            [
-                'required' => false,
-                'widget' => 'single_text',
-                'input' => 'datetime_immutable',
-                'label' => 'invoice.recurring.date_end',
-                'help' => 'invoice.recurring.date_end_info',
-                'help_type' => 'block',
-                'attr' => [
-                    'class' => 'datepicker',
-                    'data-depends' => 'invoice_recurringInfo_date_start',
-                ],
-            ]
-        );*/
     }
 
     public function getBlockPrefix(): string

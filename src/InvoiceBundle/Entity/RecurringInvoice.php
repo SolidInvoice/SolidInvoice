@@ -92,10 +92,6 @@ class RecurringInvoice extends BaseInvoice
     #[Serialize\Groups(['recurring_invoice_api:read', 'recurring_invoice_api:write'])]
     protected ?Client $client = null;
 
-    /*#[ORM\Column(name: 'frequency', type: Types::STRING, nullable: true)]
-    #[Serialize\Groups(['recurring_invoice_api:read', 'recurring_invoice_api:write'])]
-    private ?string $frequency = null;*/
-
     #[ORM\Column(name: 'date_start', type: Types::DATE_IMMUTABLE)]
     #[Assert\NotBlank(groups: ['Recurring'])]
     #[Assert\Date(groups: ['Recurring'])]
@@ -154,10 +150,6 @@ class RecurringInvoice extends BaseInvoice
 
         return $this;
     }
-
-    /*public function getFrequency(): ?string
-        return $this;
-    }*/
 
     public function getDateStart(): ?DateTimeInterface
     {

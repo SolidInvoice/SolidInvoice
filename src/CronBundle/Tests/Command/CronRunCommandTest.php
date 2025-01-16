@@ -39,7 +39,6 @@ final class CronRunCommandTest extends TestCase
         $entity
             ->setClient((new Client())->setName('Test')->setCurrencyCode('USD'))
             ->setDateStart(new DateTimeImmutable())
-            ->setFrequency('* * * * *')
             ->setStatus('active')
         ;
 
