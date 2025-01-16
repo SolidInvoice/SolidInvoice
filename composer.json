@@ -43,6 +43,7 @@
         "dragonmantank/cron-expression": "^3.3",
         "egulias/email-validator": "^4.0",
         "friendsofsymfony/jsrouting-bundle": "^3.0",
+        "illuminate/support": "^11.36",
         "knplabs/knp-menu-bundle": "^3.2",
         "league/commonmark": "^2.4",
         "lorisleiva/cron-translator": "^0.4.5",

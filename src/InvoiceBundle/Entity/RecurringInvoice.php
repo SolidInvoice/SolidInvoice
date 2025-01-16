@@ -92,9 +92,9 @@ class RecurringInvoice extends BaseInvoice
     #[Serialize\Groups(['recurring_invoice_api:read', 'recurring_invoice_api:write'])]
     protected ?Client $client = null;
 
-    #[ORM\Column(name: 'frequency', type: Types::STRING, nullable: true)]
+    /*#[ORM\Column(name: 'frequency', type: Types::STRING, nullable: true)]
     #[Serialize\Groups(['recurring_invoice_api:read', 'recurring_invoice_api:write'])]
-    private ?string $frequency = null;
+    private ?string $frequency = null;*/
 
     #[ORM\Column(name: 'date_start', type: Types::DATE_IMMUTABLE)]
     #[Assert\NotBlank(groups: ['Recurring'])]
@@ -122,10 +122,14 @@ class RecurringInvoice extends BaseInvoice
         writableLink: true,
         example: ['/api/clients/3fa85f64-5717-4562-b3fc-2c963f66afa6/contact/3fa85f64-5717-4562-b3fc-2c963f66afa6'],
     )]
-    #[ORM\OneToMany(mappedBy: 'recurringInvoice', targetEntity: RecurringInvoiceContact::class, cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY')]
+    #[ORM\OneToMany(mappedBy: 'recurringInvoice', targetEntity: RecurringInvoiceContact::class, cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     #[Assert\Count(min: 1, minMessage: 'You need to select at least 1 user to attach to the Invoice')]
     #[Serialize\Groups(['recurring_invoice_api:read', 'recurring_invoice_api:write'])]
     protected Collection $users;
+
+    #[ORM\OneToOne(mappedBy: 'recurringInvoice', cascade: ['persist', 'remove'])]
+    #[Assert\Valid]
+    private ?RecurringOptions $recurringOptions = null;
 
     public function __construct()
     {
@@ -151,17 +155,9 @@ class RecurringInvoice extends BaseInvoice
         return $this;
     }
 
-    public function getFrequency(): ?string
-    {
-        return $this->frequency;
-    }
-
-    public function setFrequency(string $frequency): self
-    {
-        $this->frequency = $frequency;
-
+    /*public function getFrequency(): ?string
         return $this;
-    }
+    }*/
 
     public function getDateStart(): ?DateTimeInterface
     {
@@ -177,7 +173,15 @@ class RecurringInvoice extends BaseInvoice
 
     public function getDateEnd(): ?DateTimeInterface
     {
-        return $this->dateEnd;
+        if ($this->dateEnd instanceof DateTimeInterface) {
+            return $this->dateEnd;
+        }
+
+        if ($this->recurringOptions instanceof RecurringOptions) {
+            return $this->recurringOptions->getEndDate();
+        }
+
+        return null;
     }
 
     public function setDateEnd(DateTimeInterface $dateEnd = null): self
@@ -250,6 +254,21 @@ class RecurringInvoice extends BaseInvoice
         $recurringInvoiceContact->setRecurringInvoice($this);
 
         $this->users[] = $recurringInvoiceContact;
+
+        return $this;
+    }
+
+    public function getRecurringOptions(): ?RecurringOptions
+    {
+        return $this->recurringOptions;
+    }
+
+    public function setRecurringOptions(?RecurringOptions $recurringOptions): static
+    {
+        $this->recurringOptions = $recurringOptions;
+        if ($recurringOptions instanceof RecurringOptions) {
+            $recurringOptions->setRecurringInvoice($this);
+        }
 
         return $this;
     }

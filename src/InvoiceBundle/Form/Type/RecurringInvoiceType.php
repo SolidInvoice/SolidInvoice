@@ -18,16 +18,17 @@ use Doctrine\Persistence\ManagerRegistry;
 use Money\Currency;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
-use SolidInvoice\CronBundle\Form\Type\CronType;
+use SolidInvoice\CronBundle\Form\Type\RecurringScheduleType;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Form\EventListener\InvoiceUsersSubscriber;
 use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
+use Symfonycasts\DynamicForms\DynamicFormBuilder;
 
 /**
  * @see \SolidInvoice\InvoiceBundle\Tests\Form\Type\RecurringInvoiceTypeTest
@@ -42,6 +43,8 @@ class RecurringInvoiceType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $builder = new DynamicFormBuilder($builder);
+
         $builder->add(
             'client',
             null,
@@ -58,12 +61,11 @@ class RecurringInvoiceType extends AbstractType
 
         $builder->add(
             'lines',
-            CollectionType::class,
+            LiveCollectionType::class,
             [
-                'entry_type' => ItemType::class,
+                'entry_type' => RecurringInvoiceLineType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
-                'by_reference' => false,
                 'required' => false,
                 'entry_options' => [
                     'currency' => $options['currency'],
@@ -79,7 +81,7 @@ class RecurringInvoiceType extends AbstractType
 
         $builder->addEventSubscriber(new InvoiceUsersSubscriber($builder, $options['data'], $this->registry));
 
-        $builder->add('frequency', CronType::class);
+        $builder->add('recurringOptions', RecurringScheduleType::class);
 
         $now = CarbonImmutable::now();
 
@@ -98,7 +100,7 @@ class RecurringInvoiceType extends AbstractType
             ]
         );
 
-        $builder->add(
+        /*$builder->add(
             'date_end',
             DateType::class,
             [
@@ -113,7 +115,7 @@ class RecurringInvoiceType extends AbstractType
                     'data-depends' => 'invoice_recurringInfo_date_start',
                 ],
             ]
-        );
+        );*/
     }
 
     public function getBlockPrefix(): string

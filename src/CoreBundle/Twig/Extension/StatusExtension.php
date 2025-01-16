@@ -28,6 +28,7 @@ class StatusExtension extends AbstractExtension
      * @var array<string, string>
      */
     private array $invoiceLabelMap = [
+        InvoiceGraph::STATUS_NEW => 'grey',
         InvoiceGraph::STATUS_PENDING => 'yellow',
         InvoiceGraph::STATUS_DRAFT => 'secondary',
         InvoiceGraph::STATUS_PAID => 'green',

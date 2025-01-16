@@ -228,6 +228,17 @@ final class Version20300 extends AbstractMigration
                 }
             }
         }
+
+        $recurringOptions = $schema->createTable('recurring_options');
+
+        $recurringOptions->addColumn('id', UlidType::NAME);
+        $recurringOptions->addColumn('recurringInvoice_id', UlidType::NAME);
+        $recurringOptions->addColumn('type', Types::STRING, ['length' => 15]);
+        $recurringOptions->addColumn('endType', Types::STRING, ['length' => 15]);
+        $recurringOptions->addColumn('days', Types::JSON);
+        $recurringOptions->addColumn('endDate', Types::DATE_IMMUTABLE, ['notnull' => false]);
+        $recurringOptions->addColumn('endOccurrence', Types::INTEGER);
+        $recurringOptions->addForeignKeyConstraint('recurring_invoices', ['recurringInvoice_id'], ['id']);
     }
 
     public function postUp(Schema $schema): void

@@ -46,7 +46,7 @@ class GridFieldRenderer
         try {
             $value = $this->propertyAccessor->getValue($entity, $column->getField());
         } catch (NoSuchPropertyException) {
-            $value = '';
+            $value = $entity;
         }
 
         $value = $this->columnFormatter->format($column, $column->getFormatValue()($value, $entity));

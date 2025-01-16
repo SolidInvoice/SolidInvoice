@@ -12,7 +12,6 @@
 namespace SolidInvoice\InvoiceBundle\DataGrid;
 
 use Brick\Math\BigNumber;
-use Lorisleiva\CronTranslator\CronTranslator;
 use Money\Money;
 use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
 use SolidInvoice\DataGridBundle\Grid;
@@ -44,7 +43,7 @@ final class RecurringInvoiceGrid extends Grid
             StringColumn::new('client')
                 ->searchable(false),
             StringColumn::new('frequency')
-                ->formatValue(static fn (string $format): string => CronTranslator::translate($format)),
+                ->formatValue(static fn (RecurringInvoice $recurringInvoice): ?string => $recurringInvoice->getRecurringOptions()?->getFrequency()),
             DateTimeColumn::new('dateStart')
                 ->format('d F Y')
                 ->filter(new DateRangeFilter('dateStart')),
@@ -69,7 +68,7 @@ final class RecurringInvoiceGrid extends Grid
     {
         return [
             ViewAction::new('_invoices_view_recurring', ['id' => 'id']),
-            EditAction::new('_invoices_edit', ['id' => 'id']),
+            EditAction::new('_invoices_edit_recurring', ['id' => 'id']),
         ];
     }
 

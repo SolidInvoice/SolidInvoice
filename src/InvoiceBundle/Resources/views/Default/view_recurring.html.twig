@@ -8,8 +8,6 @@
  #}
 
 {% set currency = invoice.client.currency %}
-{% set module = 'recurring-invoice-view' %}
-{% set moduleData = {'frequency': invoice.frequency} %}
 
 {% set isRecurring = true %}
 
@@ -49,7 +47,6 @@
     {% embed "@SolidInvoiceInvoice/invoice_template.html.twig" %}
         {% block title %}
             <h2 class="page-header">
-                {#{{ "invoice.title"|trans({"%id%" : invoice.id}) }}#}
                 <span class="badge badge-pill bg-success">{{ 'invoice.recurring.view.label'|trans }}</span>
                 {{ invoice_label(invoice.status) }}
             </h2>
@@ -83,13 +80,7 @@
                 <div class="col-md-12">
                     <div>
                         {{ icon('refresh') }}
-                        <span id="recurring"></span>
-                        {{ 'invoice.recurring.view.starting'|trans }}
-                        {{ invoice.dateStart|date('d F Y') }}
-                        {% if invoice.dateEnd is not empty %}
-                            {{ 'invoice.recurring.view.ending'|trans }}
-                            {{ invoice.dateEnd|date('d F Y') }}
-                        {% endif %}
+                        {{ invoice.recurringOptions }}
                     </div>
                     <br class="clearfix" />
                 </div>

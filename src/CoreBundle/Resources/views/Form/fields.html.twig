@@ -52,6 +52,12 @@
         {% endif %}
 
         {{- parent() -}}
+    {% elseif 'choice' in block_prefixes %}
+        {% if required %}
+            {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
+        {% endif %}
+        {% set compound = false %}
+        {{- parent() -}}
     {% endif %}
 {%- endblock form_label %}
 
@@ -166,3 +172,19 @@
     {{- form_help(form) -}}
     </{{ element|default('div') }}>
 {% endblock image_upload_widget %}
+
+{#{%- block number_widget -%}
+    <div class="input-group mb-3" {{ stimulus_controller('numberinput') }}>
+        <button class="btn btn-xs btn-outline-secondary" type="button" {{ stimulus_action('numberinput', 'decrement') }}>
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-minus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 12l14 0" /></svg>
+        </button>
+
+        {%- set type = type|default('text') -%}
+        {%- set attr = attr|default({})|merge(stimulus_target('numberinput', 'input').toArray) -%}
+        {{ block('form_widget_simple') }}
+
+        <button class="btn btn-xs btn-outline-secondary" type="button" {{ stimulus_action('numberinput', 'increment') }}>
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+        </button>
+    </div>
+{%- endblock number_widget -%}#}
