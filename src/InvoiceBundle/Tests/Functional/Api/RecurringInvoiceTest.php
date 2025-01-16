@@ -52,7 +52,6 @@ final class RecurringInvoiceTest extends ApiTestCase
         $data = [
             'users' => $contacts,
             'client' => $this->getIriFromResource($client),
-            'frequency' => '* * * * *',
             'dateStart' => $date,
             'dateEnd' => null,
             'discount' => [
@@ -81,7 +80,6 @@ final class RecurringInvoiceTest extends ApiTestCase
             '@context' => '/api/contexts/RecurringInvoice',
             '@type' => 'RecurringInvoice',
             'client' => $this->getIriFromResource($client),
-            'frequency' => '* * * * *',
             'dateStart' => date('Y-m-d\T00:00:00+02:00'),
             'dateEnd' => null,
             'lines' => [
@@ -123,7 +121,6 @@ final class RecurringInvoiceTest extends ApiTestCase
         /** @var RecurringInvoice $recurringInvoice */
         $recurringInvoice = RecurringInvoiceFactory::createOne([
             'users' => $contacts,
-            'frequency' => '* * * * *',
             'lines' => [
                 (new RecurringInvoiceLine())
                     ->setDescription('Test Line')
@@ -143,7 +140,6 @@ final class RecurringInvoiceTest extends ApiTestCase
             '@type' => 'RecurringInvoice',
             'id' => $recurringInvoice->getId()->toString(),
             'client' => '/api/clients/' . $recurringInvoice->getClient()->getId()->toString(),
-            'frequency' => '* * * * *',
             'dateStart' => $recurringInvoice->getDateStart()->format('c'),
             'dateEnd' => null,
             'lines' => [
@@ -180,7 +176,6 @@ final class RecurringInvoiceTest extends ApiTestCase
         /** @var RecurringInvoice $recurringInvoice */
         $recurringInvoice = RecurringInvoiceFactory::createOne([
             'users' => $contacts,
-            'frequency' => '* * * * *',
             'lines' => [
                 (new RecurringInvoiceLine())
                     ->setDescription('Test Line')
@@ -195,7 +190,6 @@ final class RecurringInvoiceTest extends ApiTestCase
         $data = $this->requestPatch(
             $this->getIriFromResource($recurringInvoice),
             [
-                'frequency' => '5 * * * *',
                 'dateStart' => '2012-01-01',
                 'discount' => [
                     'type' => 'percentage',
@@ -217,7 +211,6 @@ final class RecurringInvoiceTest extends ApiTestCase
             '@type' => 'RecurringInvoice',
             'id' => $recurringInvoice->getId()->toString(),
             'client' => $this->getIriFromResource($recurringInvoice->getClient()),
-            'frequency' => '5 * * * *',
             'dateStart' => '2012-01-01T00:00:00+02:00',
             'dateEnd' => null,
             'lines' => [
