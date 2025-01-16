@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Tests\Form\Type;
 
 use Brick\Math\BigDecimal;
-use Cron\CronExpression;
 use Mockery as M;
 use Money\Currency;
 use SolidInvoice\ClientBundle\Entity\Client;
@@ -22,6 +21,7 @@ use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\InvoiceBundle\Entity\RecurringOptions;
 use SolidInvoice\InvoiceBundle\Form\Type\ItemType;
 use SolidInvoice\InvoiceBundle\Form\Type\RecurringInvoiceType;
 use SolidInvoice\SettingsBundle\SystemConfig;
@@ -53,13 +53,11 @@ class RecurringInvoiceTypeTest extends FormTestCase
             'total' => 0,
             'baseTotal' => 0,
             'tax' => 0,
-            'frequency' => (string) new CronExpression('@weekly'),
             'date_start' => $this->faker->dateTime,
-            'date_end' => $this->faker->dateTime,
         ];
 
         $object = new RecurringInvoice();
-        $object->setFrequency('0 0 * * 0');
+        $object->setRecurringOptions(new RecurringOptions());
         $object->setClient($client);
 
         $data = clone $object;

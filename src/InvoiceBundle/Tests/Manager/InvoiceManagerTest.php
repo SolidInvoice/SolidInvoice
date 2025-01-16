@@ -185,7 +185,6 @@ class InvoiceManagerTest extends KernelTestCase
         $recurringInvoice->setTotal(987);
         $recurringInvoice->setClient($client);
         $recurringInvoice->addLine($line);
-        $recurringInvoice->setFrequency('* 0 0 * *');
         $recurringInvoice->setCompany(new Company());
 
         $invoice = $this->manager->createFromRecurring($recurringInvoice);

@@ -159,7 +159,6 @@ class InvoiceClonerTest extends TestCase
         $invoice->setTotal(987);
         $invoice->setClient($client);
         $invoice->addLine($line);
-        $invoice->setFrequency('* * * * *');
         $invoice->setDateStart($date);
 
         $invoiceManager = M::mock(InvoiceManager::class);
@@ -191,7 +190,6 @@ class InvoiceClonerTest extends TestCase
         self::assertInstanceOf(DateTime::class, $invoiceLine[0]->getCreated());
         self::assertEquals($line->getPrice(), $invoiceLine[0]->getPrice());
         self::assertSame($line->getQty(), $invoiceLine[0]->getQty());
-        self::assertSame($newInvoice->getFrequency(), $invoice->getFrequency());
         self::assertSame($newInvoice->getDateStart(), $invoice->getDateStart());
         self::assertSame($newInvoice->getDateEnd(), $invoice->getDateEnd());
     }

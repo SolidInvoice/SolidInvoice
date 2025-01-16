@@ -23,6 +23,7 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceLine;
+use SolidInvoice\InvoiceBundle\Entity\RecurringOptions;
 use SolidInvoice\InvoiceBundle\Exception\InvalidTransitionException;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use Traversable;
@@ -71,7 +72,16 @@ final class InvoiceCloner
         if ($invoice instanceof RecurringInvoice) {
             $newInvoice->setDateStart($invoice->getDateStart());
             $newInvoice->setDateEnd($invoice->getDateEnd());
-            $newInvoice->setFrequency($invoice->getFrequency());
+
+            if ($invoice->getRecurringOptions() instanceof RecurringOptions) {
+                $recurringOptions = new RecurringOptions();
+                $recurringOptions->setType($invoice->getRecurringOptions()->getType());
+                $recurringOptions->setDays($invoice->getRecurringOptions()->getDays());
+                $recurringOptions->setEndDate($invoice->getRecurringOptions()->getEndDate());
+                $recurringOptions->setEndOccurrence($invoice->getRecurringOptions()->getEndOccurrence());
+                $recurringOptions->setEndType($invoice->getRecurringOptions()->getEndType());
+                $newInvoice->setRecurringOptions($recurringOptions);
+            }
         } else {
             $newInvoice->setDue($invoice->getDue());
             $newInvoice->setInvoiceId($this->billingIdGenerator->generate($newInvoice, ['field' => 'invoiceId']));

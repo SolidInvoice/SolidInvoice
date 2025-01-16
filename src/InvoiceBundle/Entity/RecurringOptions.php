@@ -134,6 +134,12 @@ class RecurringOptions implements Stringable
     {
         $this->endType = $endType;
 
+        if (! $endType->isOn()) {
+            $this->endDate = null;
+        } elseif (! $endType->isAfter()) {
+            $this->endOccurrence = null;
+        }
+
         return $this;
     }
 
@@ -147,12 +153,29 @@ class RecurringOptions implements Stringable
             $totalOccurrence = 0;
             $start = CarbonImmutable::instance($this->recurringInvoice->getDateStart());
 
-            $dates = $start->range($this->endOccurrence * 7, Unit::Day->interval());
+            $dates = match ($this->type) {
+                // @phpstan-ignore-next-line
+                ScheduleRecurringType::DAILY => $start->range($this->endOccurrence, Unit::Day->interval()),
+                // @phpstan-ignore-next-line
+                ScheduleRecurringType::WEEKLY => $start->range($this->endOccurrence * 7, Unit::Day->interval()),
+                // @phpstan-ignore-next-line
+                ScheduleRecurringType::MONTHLY => $start->range($this->endOccurrence * 12, Unit::Day->interval()),
+                // @phpstan-ignore-next-line
+                ScheduleRecurringType::YEARLY => $start->range($this->endOccurrence * 12, Unit::Month->interval()),
+            };
+
             $endDate = null;
 
             foreach ($dates->getIterator() as $date) {
                 /** @var CarbonImmutable $date */
-                if (in_array($date->dayOfWeek, $this->days, true)) {
+                $valid = match ($this->type) {
+                    ScheduleRecurringType::DAILY => true,
+                    ScheduleRecurringType::WEEKLY => in_array($date->dayOfWeek, $this->days, true),
+                    ScheduleRecurringType::MONTHLY => in_array($date->day, $this->days, true),
+                    ScheduleRecurringType::YEARLY => in_array($date->month, $this->days, true),
+                };
+
+                if ($valid) {
                     $totalOccurrence++;
 
                     if ($totalOccurrence === $this->endOccurrence) {
@@ -260,10 +283,15 @@ class RecurringOptions implements Stringable
     {
         $string = $this->getFrequency();
 
+        $format = match ($this->type) {
+            ScheduleRecurringType::YEARLY => 'F Y',
+            default => 'd F Y',
+        };
+
         return $string . match ($this->endType) {
-            ScheduleEndType::ON => sprintf(' from %s to %s', $this->recurringInvoice->getDateStart()?->format('d F Y'), $this->endDate?->format('d F Y')),
-            ScheduleEndType::AFTER => sprintf(' from %s to %s (%d occurrences)', $this->recurringInvoice->getDateStart()?->format('d F Y'), $this->getEndDate()?->format('d F Y'), $this->endOccurrence),
-            ScheduleEndType::NEVER => sprintf(' from %s', $this->recurringInvoice->getDateStart()?->format('d F Y')),
+            ScheduleEndType::ON => sprintf(' from %s to %s', $this->recurringInvoice->getDateStart()?->format($format), $this->endDate?->format($format)),
+            ScheduleEndType::AFTER => sprintf(' from %s to %s (%d occurrences)', $this->recurringInvoice->getDateStart()?->format($format), $this->getEndDate()?->format($format), $this->endOccurrence),
+            ScheduleEndType::NEVER => sprintf(' from %s', $this->recurringInvoice->getDateStart()?->format($format)),
         };
     }
 }
