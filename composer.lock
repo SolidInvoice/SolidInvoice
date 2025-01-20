@@ -14242,22 +14242,22 @@
         },
         {
             "name": "symfony/slack-notifier",
-            "version": "v7.1.6",
+            "version": "v7.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/slack-notifier.git",
-                "reference": "66bb991139d492c7e1ae85268e2205910345967d"
+                "reference": "802d7ae6701db205edbf8b29a7e338ecce62f8e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/slack-notifier/zipball/66bb991139d492c7e1ae85268e2205910345967d",
-                "reference": "66bb991139d492c7e1ae85268e2205910345967d",
+                "url": "https://api.github.com/repos/symfony/slack-notifier/zipball/802d7ae6701db205edbf8b29a7e338ecce62f8e2",
+                "reference": "802d7ae6701db205edbf8b29a7e338ecce62f8e2",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.2",
                 "symfony/http-client": "^6.4|^7.0",
-                "symfony/notifier": "^6.4|^7.0"
+                "symfony/notifier": "^7.2"
             },
             "type": "symfony-notifier-bridge",
             "autoload": {
@@ -14289,7 +14289,7 @@
                 "slack"
             ],
             "support": {
-                "source": "https://github.com/symfony/slack-notifier/tree/v7.1.6"
+                "source": "https://github.com/symfony/slack-notifier/tree/v7.2.0"
             },
             "funding": [
                 {
@@ -14305,7 +14305,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-25T14:20:29+00:00"
+            "time": "2024-09-27T08:38:14+00:00"
         },
         {
             "name": "symfony/sms-biuras-notifier",
