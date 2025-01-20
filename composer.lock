@@ -9072,22 +9072,22 @@
         },
         {
             "name": "symfony/esendex-notifier",
-            "version": "v7.1.6",
+            "version": "v7.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/esendex-notifier.git",
-                "reference": "5cf10c7d30098c9c08d242c033143071a9691327"
+                "reference": "1f5753b141d20724cd772ae2b2f391594ead91fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/esendex-notifier/zipball/5cf10c7d30098c9c08d242c033143071a9691327",
-                "reference": "5cf10c7d30098c9c08d242c033143071a9691327",
+                "url": "https://api.github.com/repos/symfony/esendex-notifier/zipball/1f5753b141d20724cd772ae2b2f391594ead91fe",
+                "reference": "1f5753b141d20724cd772ae2b2f391594ead91fe",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.2",
                 "symfony/http-client": "^6.4|^7.0",
-                "symfony/notifier": "^6.4|^7.0"
+                "symfony/notifier": "^7.2"
             },
             "type": "symfony-notifier-bridge",
             "autoload": {
@@ -9120,7 +9120,7 @@
                 "sms"
             ],
             "support": {
-                "source": "https://github.com/symfony/esendex-notifier/tree/v7.1.6"
+                "source": "https://github.com/symfony/esendex-notifier/tree/v7.2.0"
             },
             "funding": [
                 {
@@ -9136,7 +9136,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-25T14:20:29+00:00"
+            "time": "2024-09-27T08:38:14+00:00"
         },
         {
             "name": "symfony/event-dispatcher",
