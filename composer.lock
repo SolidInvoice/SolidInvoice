@@ -14377,22 +14377,22 @@
         },
         {
             "name": "symfony/sms77-notifier",
-            "version": "v7.1.6",
+            "version": "v7.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/sms77-notifier.git",
-                "reference": "d70e0af141cf94be1833b1ce363b427f430f7f5c"
+                "reference": "8e2f6a2b1b74e8f53686c93cbe0976eaa943914f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/sms77-notifier/zipball/d70e0af141cf94be1833b1ce363b427f430f7f5c",
-                "reference": "d70e0af141cf94be1833b1ce363b427f430f7f5c",
+                "url": "https://api.github.com/repos/symfony/sms77-notifier/zipball/8e2f6a2b1b74e8f53686c93cbe0976eaa943914f",
+                "reference": "8e2f6a2b1b74e8f53686c93cbe0976eaa943914f",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.2",
                 "symfony/http-client": "^6.4|^7.0",
-                "symfony/notifier": "^6.4|^7.0"
+                "symfony/notifier": "^7.2"
             },
             "type": "symfony-notifier-bridge",
             "autoload": {
@@ -14425,7 +14425,7 @@
                 "sms77"
             ],
             "support": {
-                "source": "https://github.com/symfony/sms77-notifier/tree/v7.1.6"
+                "source": "https://github.com/symfony/sms77-notifier/tree/v7.2.0"
             },
             "funding": [
                 {
@@ -14441,7 +14441,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-25T14:20:29+00:00"
+            "time": "2024-09-27T08:38:14+00:00"
         },
         {
             "name": "symfony/smsapi-notifier",
