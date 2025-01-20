@@ -11460,22 +11460,22 @@
         },
         {
             "name": "symfony/message-bird-notifier",
-            "version": "v7.1.6",
+            "version": "v7.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/message-bird-notifier.git",
-                "reference": "6b4c8b00d0f4091d9a22272efecae306fe565673"
+                "reference": "6ec2858fc871e2cfd052ec2f0e232e877c9f4f85"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/message-bird-notifier/zipball/6b4c8b00d0f4091d9a22272efecae306fe565673",
-                "reference": "6b4c8b00d0f4091d9a22272efecae306fe565673",
+                "url": "https://api.github.com/repos/symfony/message-bird-notifier/zipball/6ec2858fc871e2cfd052ec2f0e232e877c9f4f85",
+                "reference": "6ec2858fc871e2cfd052ec2f0e232e877c9f4f85",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.2",
                 "symfony/http-client": "^6.4|^7.0",
-                "symfony/notifier": "^6.4|^7.0"
+                "symfony/notifier": "^7.2"
             },
             "type": "symfony-notifier-bridge",
             "autoload": {
@@ -11508,7 +11508,7 @@
                 "sms"
             ],
             "support": {
-                "source": "https://github.com/symfony/message-bird-notifier/tree/v7.1.6"
+                "source": "https://github.com/symfony/message-bird-notifier/tree/v7.2.0"
             },
             "funding": [
                 {
@@ -11524,7 +11524,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-25T14:20:29+00:00"
+            "time": "2024-09-27T08:38:14+00:00"
         },
         {
             "name": "symfony/message-media-notifier",
