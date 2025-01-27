@@ -16194,22 +16194,22 @@
         },
         {
             "name": "symfony/vonage-notifier",
-            "version": "v7.1.6",
+            "version": "v7.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/vonage-notifier.git",
-                "reference": "bb683c69a1fb496a88bf0523681b84a857c01bed"
+                "reference": "6c7f808f358ac32143014a50b8819c8774468367"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/vonage-notifier/zipball/bb683c69a1fb496a88bf0523681b84a857c01bed",
-                "reference": "bb683c69a1fb496a88bf0523681b84a857c01bed",
+                "url": "https://api.github.com/repos/symfony/vonage-notifier/zipball/6c7f808f358ac32143014a50b8819c8774468367",
+                "reference": "6c7f808f358ac32143014a50b8819c8774468367",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.2",
                 "symfony/http-client": "^6.4|^7.0",
-                "symfony/notifier": "^6.4|^7.0"
+                "symfony/notifier": "^7.2"
             },
             "require-dev": {
                 "symfony/webhook": "^6.4|^7.0"
@@ -16245,7 +16245,7 @@
                 "vonage"
             ],
             "support": {
-                "source": "https://github.com/symfony/vonage-notifier/tree/v7.1.6"
+                "source": "https://github.com/symfony/vonage-notifier/tree/v7.2.0"
             },
             "funding": [
                 {
@@ -16261,7 +16261,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-25T14:20:29+00:00"
+            "time": "2024-09-27T08:38:14+00:00"
         },
         {
             "name": "symfony/web-link",
