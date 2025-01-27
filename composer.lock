@@ -14173,22 +14173,22 @@
         },
         {
             "name": "symfony/sinch-notifier",
-            "version": "v7.1.6",
+            "version": "v7.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/sinch-notifier.git",
-                "reference": "5ca2babbc69f3a58c3653e2dcd171b79cb9e78ae"
+                "reference": "a92119a41dad28f18740e7c647a3bd73a127ef6b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/sinch-notifier/zipball/5ca2babbc69f3a58c3653e2dcd171b79cb9e78ae",
-                "reference": "5ca2babbc69f3a58c3653e2dcd171b79cb9e78ae",
+                "url": "https://api.github.com/repos/symfony/sinch-notifier/zipball/a92119a41dad28f18740e7c647a3bd73a127ef6b",
+                "reference": "a92119a41dad28f18740e7c647a3bd73a127ef6b",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.2",
                 "symfony/http-client": "^6.4|^7.0",
-                "symfony/notifier": "^6.4|^7.0"
+                "symfony/notifier": "^7.2"
             },
             "type": "symfony-notifier-bridge",
             "autoload": {
@@ -14221,7 +14221,7 @@
                 "sms"
             ],
             "support": {
-                "source": "https://github.com/symfony/sinch-notifier/tree/v7.1.6"
+                "source": "https://github.com/symfony/sinch-notifier/tree/v7.2.0"
             },
             "funding": [
                 {
@@ -14237,7 +14237,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-25T14:20:29+00:00"
+            "time": "2024-09-27T08:38:14+00:00"
         },
         {
             "name": "symfony/slack-notifier",
