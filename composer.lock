@@ -11837,22 +11837,22 @@
         },
         {
             "name": "symfony/mobyt-notifier",
-            "version": "v7.1.6",
+            "version": "v7.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/mobyt-notifier.git",
-                "reference": "ed3e4ba683e56c8f2ffe89b9c76b8c3bcf71973c"
+                "reference": "71bd8e2c5d85219d8164aa508b0878a1cf115780"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/mobyt-notifier/zipball/ed3e4ba683e56c8f2ffe89b9c76b8c3bcf71973c",
-                "reference": "ed3e4ba683e56c8f2ffe89b9c76b8c3bcf71973c",
+                "url": "https://api.github.com/repos/symfony/mobyt-notifier/zipball/71bd8e2c5d85219d8164aa508b0878a1cf115780",
+                "reference": "71bd8e2c5d85219d8164aa508b0878a1cf115780",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.2",
                 "symfony/http-client": "^6.4|^7.0",
-                "symfony/notifier": "^6.4|^7.0"
+                "symfony/notifier": "^7.2"
             },
             "type": "symfony-notifier-bridge",
             "autoload": {
@@ -11885,7 +11885,7 @@
                 "sms"
             ],
             "support": {
-                "source": "https://github.com/symfony/mobyt-notifier/tree/v7.1.6"
+                "source": "https://github.com/symfony/mobyt-notifier/tree/v7.2.0"
             },
             "funding": [
                 {
@@ -11901,7 +11901,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-25T14:20:29+00:00"
+            "time": "2024-09-27T08:38:14+00:00"
         },
         {
             "name": "symfony/monolog-bridge",
