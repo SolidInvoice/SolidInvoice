@@ -11674,22 +11674,22 @@
         },
         {
             "name": "symfony/microsoft-teams-notifier",
-            "version": "v7.1.6",
+            "version": "v7.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/microsoft-teams-notifier.git",
-                "reference": "aeb07887558de8fd42f88a784fafd6aea44688e9"
+                "reference": "488bfe133eedf4cc21547b6b369721b4e4633686"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/microsoft-teams-notifier/zipball/aeb07887558de8fd42f88a784fafd6aea44688e9",
-                "reference": "aeb07887558de8fd42f88a784fafd6aea44688e9",
+                "url": "https://api.github.com/repos/symfony/microsoft-teams-notifier/zipball/488bfe133eedf4cc21547b6b369721b4e4633686",
+                "reference": "488bfe133eedf4cc21547b6b369721b4e4633686",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.2",
                 "symfony/http-client": "^6.4|^7.0",
-                "symfony/notifier": "^6.4|^7.0"
+                "symfony/notifier": "^7.2"
             },
             "type": "symfony-notifier-bridge",
             "autoload": {
@@ -11726,7 +11726,7 @@
                 "notifier"
             ],
             "support": {
-                "source": "https://github.com/symfony/microsoft-teams-notifier/tree/v7.1.6"
+                "source": "https://github.com/symfony/microsoft-teams-notifier/tree/v7.2.0"
             },
             "funding": [
                 {
@@ -11742,7 +11742,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-25T14:20:29+00:00"
+            "time": "2024-09-27T08:38:14+00:00"
         },
         {
             "name": "symfony/mime",
