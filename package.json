@@ -57,7 +57,7 @@
     "sass-loader": "^16.0.1",
     "stylelint": "^16.7.0",
     "stylelint-config-recommended": "^15.0.0",
-    "stylelint-config-standard-scss": "^13.1.0",
+    "stylelint-config-standard-scss": "^14.0.0",
     "stylelint-scss": "^6.5.0",
     "tom-select": "^2.2.2",
     "ts-loader": "^9.0.0",
