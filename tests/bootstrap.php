@@ -17,8 +17,9 @@ use SolidInvoice\Kernel;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Dotenv\Dotenv;
 
-require dirname(__DIR__) . '/vendor/autoload.php';
+(new Dotenv('SOLIDINVOICE_ENV', 'SOLIDINVOICE_DEBUG'))->bootEnv(dirname(__DIR__) . '/.env', 'test');
 
 if (class_exists(Deprecation::class)) {
     Deprecation::enableWithTriggerError();
@@ -33,8 +34,8 @@ if (class_exists(Deprecation::class)) {
 
     $application->run(new ArrayInput([
         'command' => 'doctrine:database:drop',
-        '--if-exists' => '1',
-        '--force' => '1',
+        '--if-exists' => true,
+        '--force' => true,
     ]));
 
     $application->run(new ArrayInput([
@@ -43,8 +44,8 @@ if (class_exists(Deprecation::class)) {
 
     $application->run(new ArrayInput([
         'command' => 'doctrine:migrations:migrate',
-        '--allow-no-migration' => '1',
-        '--no-interaction' => '1',
+        '--allow-no-migration' => true,
+        '--no-interaction' => true,
     ]));
 
     $kernel->getContainer()->get(SystemConfig::class)->set(SystemConfig::CURRENCY_CONFIG_PATH, 'USD');
