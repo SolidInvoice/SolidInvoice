@@ -361,11 +361,6 @@ parameters:
 			path: src/PaymentBundle/Repository/PaymentMethodRepository.php
 
 		-
-			message: "#^Method SolidInvoice\\\\PaymentBundle\\\\Tests\\\\Factory\\\\DependencyInjection\\\\ConfigurationTest\\:\\:getConfiguration\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/PaymentBundle/Tests/Factory/DependencyInjection/ConfigurationTest.php
-
-		-
 			message: "#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\CloneQuote\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/QuoteBundle/Action/CloneQuote.php

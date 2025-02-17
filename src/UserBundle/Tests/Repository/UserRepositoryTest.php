@@ -51,7 +51,9 @@ final class UserRepositoryTest extends KernelTestCase
         $this->repository = $registry->getRepository(User::class);
         $this->faker = $this->getFaker();
 
-        $this->databaseTool = self::getContainer()->get(DatabaseToolCollection::class)->get();
+        /** @var DatabaseToolCollection $databaseToolCollection */
+        $databaseToolCollection = self::getContainer()->get(DatabaseToolCollection::class);
+        $this->databaseTool = $databaseToolCollection->get();
 
         // Ensure there are no users set, to make the tests a bit more predicable,
         // since users can be added by api tests
@@ -102,7 +104,7 @@ final class UserRepositoryTest extends KernelTestCase
     public function testRefreshUser(): void
     {
         $executor = $this->databaseTool->loadFixtures([LoadData::class], true);
-        $user = $executor->getReferenceRepository()->getReference('user2');
+        $user = $executor->getReferenceRepository()->getReference('user2', User::class);
         $newUser = $this->repository->refreshUser($user);
         self::assertInstanceOf(User::class, $newUser);
         self::assertSame($user->getId(), $newUser->getId());
@@ -129,7 +131,7 @@ final class UserRepositoryTest extends KernelTestCase
 
             public function getUserIdentifier(): string
             {
-                return '';
+                return 'abc';
             }
 
             public function eraseCredentials(): void
@@ -184,7 +186,7 @@ final class UserRepositoryTest extends KernelTestCase
     {
         $executor = $this->databaseTool->loadFixtures([LoadData::class], true);
         /** @var User $user1 */
-        $user1 = $executor->getReferenceRepository()->getReference('user1');
+        $user1 = $executor->getReferenceRepository()->getReference('user1', User::class);
 
         self::assertNotNull($user1->getConfirmationToken());
         self::assertNotNull($user1->getPasswordRequestedAt());
