@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Schedule;
 
 use Carbon\Carbon;
+use Carbon\CarbonInterface;
 use DateTimeInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
@@ -43,11 +44,16 @@ final class ScheduleBuilder implements ScheduleBuilderInterface
                 continue;
             }
 
-            $schedule
-                ->addMessage(new CreateInvoiceFromRecurring($recurringInvoice))
-                ->description(sprintf('Create recurring invoice (%s)', $recurringInvoice->getId()))
-                // ->cron($recurringInvoice->getFrequency())
-            ;
+            $nextRunDate = $recurringInvoice->getRecurringOptions()?->getNextRunDate();
+
+            if ($nextRunDate instanceof CarbonInterface && $nextRunDate->isToday()) {
+                $schedule
+                    ->addMessage(new CreateInvoiceFromRecurring($recurringInvoice))
+                    ->description(sprintf('Create recurring invoice (%s)', $recurringInvoice->getId()))
+                    ->cron()
+                ;
+            }
+
         }
     }
 }

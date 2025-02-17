@@ -87,5 +87,46 @@
             </div>
         {% endblock %}
     {% endembed %}
-{% endblock content %}
 
+    {% set totalCount = 0 %}
+
+    {% set totalCount = totalCount - 10 %}
+
+    {% set occurrences %}
+        {% for occurance in invoice.recurringOptions.occurrences(date()) %}
+            {% if loop.index0 < 10 %}
+                <tr>
+                    <td>
+                        {{ occurance|date('l, d F Y') }}
+                    </td>
+                </tr>
+            {% endif %}
+
+            {% set totalCount = totalCount + 1 %}
+        {% endfor %}
+        {% if totalCount > 0 %}
+            <tr>
+                <td>
+                    ... {{ totalCount }} {{ 'more'|trans }}
+                </td>
+            </tr>
+        {% endif %}
+    {% endset %}
+
+    {% if occurrences|trim is not empty %}
+        <br class="clear"/>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">{{ 'Upcoming Occurrences'|trans }}</h3>
+            </div>
+            <div class="card-body p-0">
+                <table class="table">
+                    <tbody>
+                        {{ occurrences }}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    {% endif %}
+{% endblock content %}

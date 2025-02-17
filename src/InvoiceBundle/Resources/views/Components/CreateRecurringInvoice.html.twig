@@ -213,10 +213,16 @@
         <div class="col-3">
             <div class="card">
                 <div class="card-header">
-                    Invoice Settings
+                    {{ 'Recurring Settings'|trans }}
                 </div>
                 <div class="card-body">
                     <div class="recurring-info row">
+                        <div class="col-12">
+                            {{ form.recurringOptions.vars.value }}
+                        </div>
+                        <div class="col-12">
+                            {{ form_row(form.date_start) }}
+                        </div>
                         <div class="col-12">
                             {{ form_row(form.recurringOptions) }}
                         </div>
@@ -228,9 +234,6 @@
                                 {{ form_row(form.endOccurrences) }}
                             </div>
                         {% endif %}#}
-                        <div class="col-12">
-                            {{ form_row(form.date_start) }}
-                        </div>
                         {#<div class="col-12">
                             {{ form_row(form.date_end) }}
                         </div>#}

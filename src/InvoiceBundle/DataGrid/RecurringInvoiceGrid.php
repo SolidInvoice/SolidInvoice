@@ -50,6 +50,9 @@ final class RecurringInvoiceGrid extends Grid
             DateTimeColumn::new('dateEnd')
                 ->format('d F Y')
                 ->filter(new DateRangeFilter('dateEnd')),
+            DateTimeColumn::new('recurringOptions.getNextRunDate')
+                ->label('Next Run Date')
+                ->format('d F Y'),
             StringColumn::new('status')
                 ->twigFunction('invoice_label')
                 ->filter(ChoiceFilter::new('status', Graph::statusArray())->multiple()),

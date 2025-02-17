@@ -11,7 +11,9 @@
 
 namespace SolidInvoice\InvoiceBundle\Entity;
 
+use Carbon\Carbon;
 use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
 use Carbon\Unit;
 use Carbon\WeekDay;
 use DateTimeImmutable;
@@ -101,7 +103,6 @@ class RecurringOptions implements Stringable
      */
     public function getDays(): array
     {
-        //return array_map(WeekDay::from(...), $this->days);
         return $this->days;
     }
 
@@ -113,7 +114,7 @@ class RecurringOptions implements Stringable
         if ($this->type->isDaily()) {
             $this->days = [];
         } else {
-            $this->days = array_map(static function (int|WeekDay $day) {
+            $this->days = array_map(static function (int | WeekDay $day) {
                 if ($day instanceof WeekDay) {
                     return $day->value;
                 }
@@ -141,54 +142,6 @@ class RecurringOptions implements Stringable
         }
 
         return $this;
-    }
-
-    public function getEndDate(): ?CarbonImmutable
-    {
-        if ($this->endDate instanceof DateTimeInterface) {
-            return CarbonImmutable::instance($this->endDate);
-        }
-
-        if ($this->endType->isAfter()) {
-            $totalOccurrence = 0;
-            $start = CarbonImmutable::instance($this->recurringInvoice->getDateStart());
-
-            $dates = match ($this->type) {
-                // @phpstan-ignore-next-line
-                ScheduleRecurringType::DAILY => $start->range($this->endOccurrence, Unit::Day->interval()),
-                // @phpstan-ignore-next-line
-                ScheduleRecurringType::WEEKLY => $start->range($this->endOccurrence * 7, Unit::Day->interval()),
-                // @phpstan-ignore-next-line
-                ScheduleRecurringType::MONTHLY => $start->range($this->endOccurrence * 12, Unit::Day->interval()),
-                // @phpstan-ignore-next-line
-                ScheduleRecurringType::YEARLY => $start->range($this->endOccurrence * 12, Unit::Month->interval()),
-            };
-
-            $endDate = null;
-
-            foreach ($dates->getIterator() as $date) {
-                /** @var CarbonImmutable $date */
-                $valid = match ($this->type) {
-                    ScheduleRecurringType::DAILY => true,
-                    ScheduleRecurringType::WEEKLY => in_array($date->dayOfWeek, $this->days, true),
-                    ScheduleRecurringType::MONTHLY => in_array($date->day, $this->days, true),
-                    ScheduleRecurringType::YEARLY => in_array($date->month, $this->days, true),
-                };
-
-                if ($valid) {
-                    $totalOccurrence++;
-
-                    if ($totalOccurrence === $this->endOccurrence) {
-                        $endDate = $date;
-                        break;
-                    }
-                }
-            }
-
-            return $endDate;
-        }
-
-        return null;
     }
 
     public function setEndDate(?DateTimeImmutable $endDate): static
@@ -267,6 +220,45 @@ class RecurringOptions implements Stringable
         }
     }
 
+    public function getEndDate(): ?CarbonInterface
+    {
+        if ($this->endDate instanceof DateTimeInterface) {
+            return CarbonImmutable::instance($this->endDate);
+        }
+
+        foreach ($this->getOccurrences() as $occurrence) {
+        }
+
+        return $occurrence ?? CarbonImmutable::now();
+
+        /*if ($this->endType->isAfter() && $this->recurringInvoice->getDateStart() instanceof DateTimeInterface) {
+                // @phpstan-ignore-next-line
+                ScheduleRecurringType::WEEKLY => $start->range($this->endOccurrence * 7, Unit::Day->interval()),
+                // @phpstan-ignore-next-line
+                ScheduleRecurringType::MONTHLY => $start->range($this->endOccurrence * 365, Unit::Day->interval()),
+                // @phpstan-ignore-next-line
+                ScheduleRecurringType::YEARLY => $start->range($this->endOccurrence * 12, Unit::Month->interval()),
+            foreach ($dates->getIterator() as $date) {
+                /** @var CarbonImmutable $date * /
+                $valid = match ($this->type) {
+                    ScheduleRecurringType::DAILY => true,
+                    ScheduleRecurringType::WEEKLY => in_array($date->dayOfWeek, $this->days, true),
+                    ScheduleRecurringType::MONTHLY => in_array($date->day, $this->days, true),
+                    ScheduleRecurringType::YEARLY => in_array($date->month, $this->days, true),
+                };
+                if ($valid) {
+                    $totalOccurrence++;
+                    if ($totalOccurrence === $this->endOccurrence) {
+                        $endDate = $date;
+                        break;
+                    }
+                }
+            }
+            return $endDate;
+        }
+        return null;*/
+    }
+
     public function getFrequency(): string
     {
         $formatter = new NumberFormatter('en', NumberFormatter::ORDINAL);
@@ -279,6 +271,58 @@ class RecurringOptions implements Stringable
         };
     }
 
+    /**
+     * @return iterable<CarbonInterface>
+     */
+    public function getOccurrences(?DateTimeInterface $startDate = null, ?int $limit = 10): iterable
+    {
+        $start = CarbonImmutable::instance($startDate ?? $this->recurringInvoice->getDateStart());
+        $totalOccurrence = 0;
+
+        $dates = $start->range(Carbon::now()->addDays(365), Unit::Day->interval());
+
+        foreach ($dates->getIterator() as $i => $date) {
+            if (match ($this->type) {
+                ScheduleRecurringType::DAILY => true,
+                ScheduleRecurringType::WEEKLY => in_array($date->dayOfWeek, $this->days, true),
+                ScheduleRecurringType::MONTHLY => in_array($date->day, $this->days, true),
+                ScheduleRecurringType::YEARLY => in_array($date->month, $this->days, true),
+            }) {
+                yield $date;
+
+                switch (true) {
+                    case $this->endType->isNever():
+                        if ($i === $limit) {
+                            break 2;
+                        }
+                        break;
+                    case $this->endType->isAfter():
+                        if (++$totalOccurrence === $this->endOccurrence) {
+                            break 2;
+                        }
+                        break;
+                }
+            }
+
+            if ($this->endDate && $this->endType->isOn() && $date->isSameDay($this->endDate)) {
+                break;
+            }
+        }
+    }
+
+    public function getNextRunDate(): CarbonInterface
+    {
+        $today = CarbonImmutable::now();
+
+        foreach ($this->getOccurrences() as $occurrence) {
+            if ($occurrence->is($today) || $occurrence->isAfter($today)) {
+                return $occurrence;
+            }
+        }
+
+        return CarbonImmutable::now();
+    }
+
     public function __toString(): string
     {
         $string = $this->getFrequency();
@@ -288,10 +332,14 @@ class RecurringOptions implements Stringable
             default => 'd F Y',
         };
 
+        if (! isset($this->endType) || ! $this->recurringInvoice->getDateStart() instanceof DateTimeInterface) {
+            return $string;
+        }
+
         return $string . match ($this->endType) {
-            ScheduleEndType::ON => sprintf(' from %s to %s', $this->recurringInvoice->getDateStart()?->format($format), $this->endDate?->format($format)),
-            ScheduleEndType::AFTER => sprintf(' from %s to %s (%d occurrences)', $this->recurringInvoice->getDateStart()?->format($format), $this->getEndDate()?->format($format), $this->endOccurrence),
-            ScheduleEndType::NEVER => sprintf(' from %s', $this->recurringInvoice->getDateStart()?->format($format)),
+            ScheduleEndType::ON => sprintf(' from %s to %s', $this->recurringInvoice->getDateStart()->format($format), $this->endDate?->format($format)),
+            ScheduleEndType::AFTER => sprintf(' from %s to %s (%d occurrences)', $this->recurringInvoice->getDateStart()->format($format), $this->getEndDate()?->format($format), $this->endOccurrence),
+            ScheduleEndType::NEVER => sprintf(' from %s', $this->recurringInvoice->getDateStart()->format($format)),
         };
     }
 }

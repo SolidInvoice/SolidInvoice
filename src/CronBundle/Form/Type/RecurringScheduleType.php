@@ -40,6 +40,7 @@ final class RecurringScheduleType extends AbstractType
                 'class' => ScheduleRecurringType::class,
                 'placeholder' => 'Select a recurring type',
                 'expanded' => true,
+                'label' => 'Recurring Type',
             ]);
 
         $builder->addDependent('days', ['type'], function (DependentField $field, ?ScheduleRecurringType $recurringType): void {
