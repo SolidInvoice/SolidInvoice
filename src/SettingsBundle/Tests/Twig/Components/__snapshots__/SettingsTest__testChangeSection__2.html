@@ -1,5 +1,5 @@
 <html><body>
-<section class="row" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="Settings" data-live-url-value="/_components/Settings" data-live-query-mapping-value='{"section":{"name":"section"}}' data-live-props-value='{"section":"invoice","formName":"settings","settings":{"email_subject":"New Invoice - #{id}","bcc_address":"","watermark":"1","id_generation":{"strategy":"auto_increment","id_prefix":"","id_suffix":""},"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"xMTqDxPfihhq\/dGYkyvJnf5pFdqcevYIc7+Y4Kl0Bvg="}' data-live-csrf-value="">
+<section class="row" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="Settings" data-live-url-value="/_components/Settings" data-live-query-mapping-value='{"section":{"name":"section"}}' data-live-props-value='{"section":"invoice","formName":"settings","settings":{"email_subject":"New Invoice - #{id}","bcc_address":"","watermark":"1","id_generation":{"strategy":"auto_increment","id_prefix":"","id_suffix":""},"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"xMTqDxPfihhq\/dGYkyvJnf5pFdqcevYIc7+Y4Kl0Bvg="}'>
     <aside class="col-3">
         <div class="card sticky-top">
             <div class="card-body">
@@ -97,7 +97,7 @@
 </div>
 </div>
 </fieldset>
-<input type="hidden" id="settings__token" name="settings[_token]">
+<input type="hidden" id="settings__token" name="settings[_token]" data-controller="csrf-protection">
 </div>
                 </div>
             </div>

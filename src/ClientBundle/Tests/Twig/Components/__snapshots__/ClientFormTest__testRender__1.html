@@ -1,5 +1,5 @@
 <html><body>
-<div id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="ClientForm" data-live-url-value="/_components/ClientForm" data-live-props-value='{"formData":null,"formName":"client","client":{"name":"","website":"","currencyCode":"","vat_number":"","contacts":[{"firstName":"","lastName":"","email":"","additionalContactDetails":[]}],"addresses":[{"street1":"","street2":"","city":"","state":"","zip":"","country":""}],"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"rEELn+4QzpPfUa0pQ\/BocJQLlcaZk8CudmsgUm0cVeo="}' data-live-csrf-value="">
+<div id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="ClientForm" data-live-url-value="/_components/ClientForm" data-live-props-value='{"formData":null,"formName":"client","client":{"name":"","website":"","currencyCode":"","vat_number":"","contacts":[{"firstName":"","lastName":"","email":"","additionalContactDetails":[]}],"addresses":[{"street1":"","street2":"","city":"","state":"","zip":"","country":""}],"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"rEELn+4QzpPfUa0pQ\/BocJQLlcaZk8CudmsgUm0cVeo="}'>
     <form name="client" method="post" data-model="on(change)|*" data-action="live#action:prevent" data-live-action-param="save">
 
     
@@ -185,7 +185,7 @@
 <option value="YER">Yemeni Rial</option>
 <option value="ZAR">South African Rand</option>
 <option value="ZMW">Zambian Kwacha</option>
-<option value="ZWL">Zimbabwean Dollar (2009)</option></select>
+<option value="ZWL">Zimbabwean Dollar (2009&acirc;&#128;&#147;2024)</option></select>
 </div>
                     <div class="form-group">                
             <label class="control-label" for="client_vat_number">Vat number</label><div class="input-group">
@@ -571,7 +571,7 @@
         </div>
     </div>
 
-    <input type="hidden" id="client__token" name="client[_token]">
+    <input type="hidden" id="client__token" name="client[_token]" data-controller="csrf-protection">
 
     <div class="control-group">
         <div class="controls clearfix">
