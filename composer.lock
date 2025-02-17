@@ -11231,22 +11231,22 @@
         },
         {
             "name": "symfony/mattermost-notifier",
-            "version": "v7.1.6",
+            "version": "v7.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/mattermost-notifier.git",
-                "reference": "fa4ef65774604e5c5bcb9aa36fd9b8afe83dfd24"
+                "reference": "6e56d755aaccc8c30e5225d241c12ba890f7527f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/mattermost-notifier/zipball/fa4ef65774604e5c5bcb9aa36fd9b8afe83dfd24",
-                "reference": "fa4ef65774604e5c5bcb9aa36fd9b8afe83dfd24",
+                "url": "https://api.github.com/repos/symfony/mattermost-notifier/zipball/6e56d755aaccc8c30e5225d241c12ba890f7527f",
+                "reference": "6e56d755aaccc8c30e5225d241c12ba890f7527f",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.2",
                 "symfony/http-client": "^6.4|^7.0",
-                "symfony/notifier": "^6.4|^7.0"
+                "symfony/notifier": "^7.2"
             },
             "type": "symfony-notifier-bridge",
             "autoload": {
@@ -11278,7 +11278,7 @@
                 "notifier"
             ],
             "support": {
-                "source": "https://github.com/symfony/mattermost-notifier/tree/v7.1.6"
+                "source": "https://github.com/symfony/mattermost-notifier/tree/v7.2.0"
             },
             "funding": [
                 {
@@ -11294,7 +11294,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-25T14:20:29+00:00"
+            "time": "2024-09-27T08:38:14+00:00"
         },
         {
             "name": "symfony/mercure",
