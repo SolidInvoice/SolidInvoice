@@ -14507,22 +14507,22 @@
         },
         {
             "name": "symfony/smsc-notifier",
-            "version": "v7.1.6",
+            "version": "v7.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/smsc-notifier.git",
-                "reference": "ff84a731881b5714fd6dc00d36712b6e53454bbf"
+                "reference": "56753d0ffad066ba12aee47e8574e5a183956cc9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/smsc-notifier/zipball/ff84a731881b5714fd6dc00d36712b6e53454bbf",
-                "reference": "ff84a731881b5714fd6dc00d36712b6e53454bbf",
+                "url": "https://api.github.com/repos/symfony/smsc-notifier/zipball/56753d0ffad066ba12aee47e8574e5a183956cc9",
+                "reference": "56753d0ffad066ba12aee47e8574e5a183956cc9",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.2",
                 "symfony/http-client": "^6.4|^7.0",
-                "symfony/notifier": "^6.4|^7.0"
+                "symfony/notifier": "^7.2"
             },
             "type": "symfony-notifier-bridge",
             "autoload": {
@@ -14555,7 +14555,7 @@
                 "smsc"
             ],
             "support": {
-                "source": "https://github.com/symfony/smsc-notifier/tree/v7.1.6"
+                "source": "https://github.com/symfony/smsc-notifier/tree/v7.2.0"
             },
             "funding": [
                 {
@@ -14571,7 +14571,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-25T14:20:29+00:00"
+            "time": "2024-09-27T08:38:14+00:00"
         },
         {
             "name": "symfony/spot-hit-notifier",
