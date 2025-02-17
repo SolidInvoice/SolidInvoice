@@ -44,8 +44,4 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 'method' => 'sidebar',
             ]
         );
-
-    $services
-        ->load(SolidInvoiceClientBundle::NAMESPACE . '\\DataFixtures\\ORM\\', dirname(__DIR__, 3) . '/DataFixtures/ORM/*')
-        ->tag('doctrine.fixture.orm');
 };

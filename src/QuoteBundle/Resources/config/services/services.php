@@ -47,9 +47,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ]
         );
 
-    $services
-        ->load(SolidInvoiceQuoteBundle::NAMESPACE . '\\DataFixtures\ORM\\', dirname(__DIR__, 3) . '/DataFixtures/ORM/*')
-        ->tag('doctrine.fixture.orm');
-
     $services->remove(QuoteUsersSubscriber::class);
 };

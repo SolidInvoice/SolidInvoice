@@ -65,9 +65,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->public()
         ->tag('payum.extension', ['all' => true]);
 
-    $services
-        ->load(SolidInvoicePaymentBundle::NAMESPACE . '\\DataFixtures\ORM\\', dirname(__DIR__, 3) . '/DataFixtures/ORM/*')
-        ->tag('doctrine.fixture.orm');
-
     $services->alias(RegistryInterface::class, 'payum');
 };
