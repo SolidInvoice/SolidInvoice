@@ -11159,22 +11159,22 @@
         },
         {
             "name": "symfony/mailjet-notifier",
-            "version": "v7.1.6",
+            "version": "v7.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/mailjet-notifier.git",
-                "reference": "e32135d82c7e08a39ed8a205648cadb2b8467e59"
+                "reference": "c1872ba26abe529b3394d226f3ac99b10358af1d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/mailjet-notifier/zipball/e32135d82c7e08a39ed8a205648cadb2b8467e59",
-                "reference": "e32135d82c7e08a39ed8a205648cadb2b8467e59",
+                "url": "https://api.github.com/repos/symfony/mailjet-notifier/zipball/c1872ba26abe529b3394d226f3ac99b10358af1d",
+                "reference": "c1872ba26abe529b3394d226f3ac99b10358af1d",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.2",
                 "symfony/http-client": "^6.4|^7.0",
-                "symfony/notifier": "^6.4|^7.0"
+                "symfony/notifier": "^7.2"
             },
             "type": "symfony-notifier-bridge",
             "autoload": {
@@ -11211,7 +11211,7 @@
                 "sms"
             ],
             "support": {
-                "source": "https://github.com/symfony/mailjet-notifier/tree/v7.1.6"
+                "source": "https://github.com/symfony/mailjet-notifier/tree/v7.2.0"
             },
             "funding": [
                 {
@@ -11227,7 +11227,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-25T14:20:29+00:00"
+            "time": "2024-09-27T08:38:14+00:00"
         },
         {
             "name": "symfony/mattermost-notifier",
