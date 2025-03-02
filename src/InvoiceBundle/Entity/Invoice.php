@@ -159,7 +159,7 @@ class Invoice extends BaseInvoice implements Stringable
     private ?Quote $quote = null;
 
     #[ORM\ManyToOne(targetEntity: RecurringInvoice::class, inversedBy: 'invoices')]
-    #[ApiProperty(example: '/api/quotes/3fa85f64-5717-4562-b3fc-2c963f66afa6')]
+    #[ORM\JoinColumn(name: 'recurring_invoice_id', referencedColumnName: 'id', nullable: true)]
     private ?RecurringInvoice $recurringInvoice = null;
 
     /**
