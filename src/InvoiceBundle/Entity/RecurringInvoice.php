@@ -123,6 +123,9 @@ class RecurringInvoice extends BaseInvoice
     #[Serialize\Groups(['recurring_invoice_api:read', 'recurring_invoice_api:write'])]
     protected Collection $users;
 
+    #[ORM\OneToMany(mappedBy: 'recurringInvoice', targetEntity: Invoice::class)]
+    protected Collection $invoices;
+
     #[ORM\OneToOne(mappedBy: 'recurringInvoice', cascade: ['persist', 'remove'])]
     #[Assert\Valid]
     #[Serialize\Groups(['recurring_invoice_api:read', 'recurring_invoice_api:write'])]
@@ -132,6 +135,7 @@ class RecurringInvoice extends BaseInvoice
     {
         $this->lines = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->invoices = new ArrayCollection();
         $this->recurringOptions = new RecurringOptions();
         parent::__construct();
     }
@@ -253,6 +257,30 @@ class RecurringInvoice extends BaseInvoice
     {
         $this->recurringOptions = $recurringOptions;
         $recurringOptions->setRecurringInvoice($this);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Invoice>
+     */
+    public function getInvoices(): Collection
+    {
+        return $this->invoices;
+    }
+
+    public function addInvoice(Invoice $invoice): self
+    {
+        $this->invoices[] = $invoice;
+        $invoice->setRecurringInvoice($this);
+
+        return $this;
+    }
+
+    public function removeInvoice(Invoice $invoice): self
+    {
+        $this->invoices->removeElement($invoice);
+        $invoice->setRecurringInvoice(null);
 
         return $this;
     }

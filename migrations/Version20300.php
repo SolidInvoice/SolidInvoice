@@ -180,6 +180,7 @@ final class Version20300 extends AbstractMigration
         $userInvitations->setPrimaryKey(['id']);
 
         $invoices->addColumn('invoice_date', Types::DATE_IMMUTABLE, ['notnull' => false]);
+        $invoices->addColumn('recurring_invoice_id', UlidType::NAME, ['notnull' => false]);
 
         $transportSettingsTable = $schema->createTable('notification_transport_setting');
 

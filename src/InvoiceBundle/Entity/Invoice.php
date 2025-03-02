@@ -158,6 +158,10 @@ class Invoice extends BaseInvoice implements Stringable
     #[ApiProperty(example: '/api/quotes/3fa85f64-5717-4562-b3fc-2c963f66afa6')]
     private ?Quote $quote = null;
 
+    #[ORM\ManyToOne(targetEntity: RecurringInvoice::class, inversedBy: 'invoices')]
+    #[ApiProperty(example: '/api/quotes/3fa85f64-5717-4562-b3fc-2c963f66afa6')]
+    private ?RecurringInvoice $recurringInvoice = null;
+
     /**
      * @var Collection<int, Line>
      */
@@ -404,5 +408,15 @@ class Invoice extends BaseInvoice implements Stringable
     public function __toString(): string
     {
         return $this->invoiceId;
+    }
+
+    public function getRecurringInvoice(): ?RecurringInvoice
+    {
+        return $this->recurringInvoice;
+    }
+
+    public function setRecurringInvoice(?RecurringInvoice $recurringInvoice): void
+    {
+        $this->recurringInvoice = $recurringInvoice;
     }
 }

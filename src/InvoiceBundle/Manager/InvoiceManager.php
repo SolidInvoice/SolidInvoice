@@ -18,7 +18,7 @@ use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
-use JsonException;
+use Psr\Container\ContainerExceptionInterface;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -41,35 +41,34 @@ use function str_replace;
  */
 class InvoiceManager
 {
-    protected ObjectManager $entityManager;
-
-    protected EventDispatcherInterface $dispatcher;
+    private ObjectManager $entityManager;
 
     public function __construct(
         ManagerRegistry $doctrine,
-        EventDispatcherInterface $dispatcher,
+        private readonly EventDispatcherInterface $dispatcher,
         private readonly WorkflowInterface $invoiceStateMachine,
         private readonly NotificationManager $notification,
         private readonly BillingIdGenerator $billingIdGenerator,
     ) {
         $this->entityManager = $doctrine->getManager();
-        $this->dispatcher = $dispatcher;
     }
 
     /**
-     * @throws MathException
+     * @throws MathException|ContainerExceptionInterface
      */
     public function createFromQuote(Quote $quote): Invoice
     {
-        return $this->createFromObject($quote);
+        return $this->createFromObject($quote)
+            ->setQuote($quote);
     }
 
     /**
-     * @throws MathException
+     * @throws MathException|ContainerExceptionInterface
      */
     public function createFromRecurring(RecurringInvoice $recurringInvoice): Invoice
     {
         $invoice = $this->createFromObject($recurringInvoice);
+        $invoice->setRecurringInvoice($recurringInvoice);
 
         $now = CarbonImmutable::now();
 
@@ -100,9 +99,9 @@ class InvoiceManager
     }
 
     /**
-     * @throws MathException
+     * @throws MathException|ContainerExceptionInterface
      */
-    private function createFromObject($object): Invoice
+    private function createFromObject(RecurringInvoice | Quote $object): Invoice
     {
         /** @var RecurringInvoice|Quote $object */
         $invoice = new Invoice();
@@ -141,16 +140,11 @@ class InvoiceManager
             $invoice->addLine($invoiceItem);
         }
 
-        if ($object instanceof Quote) {
-            $invoice->setQuote($object);
-        }
-
         return $invoice;
     }
 
     /**
      * @throws InvalidTransitionException
-     * @throws JsonException
      */
     public function create(BaseInvoice $invoice): BaseInvoice
     {
@@ -159,7 +153,7 @@ class InvoiceManager
         $this->entityManager->persist($invoice);
         $this->entityManager->flush();
 
-        $this->applyTransition($invoice, Graph::TRANSITION_NEW);
+        $this->applyTransition($invoice);
 
         $this->dispatcher->dispatch(new InvoiceEvent($invoice), InvoiceEvents::INVOICE_PRE_CREATE);
 
@@ -172,32 +166,27 @@ class InvoiceManager
     }
 
     /**
-     * @throws InvalidTransitionException|JsonException
+     * @throws InvalidTransitionException
      */
-    private function applyTransition(BaseInvoice $invoice, string $transition): void
+    private function applyTransition(BaseInvoice $invoice): void
     {
-        if ($this->invoiceStateMachine->can($invoice, $transition)) {
-            // Do not send status updates for new invoices
-            if (Graph::TRANSITION_NEW !== $transition) {
-                $oldStatus = $invoice->getStatus();
-
-                $this->invoiceStateMachine->apply($invoice, $transition);
-
-                $newStatus = $invoice->getStatus();
-
-                $parameters = [
-                    'invoice' => $invoice,
-                    'old_status' => $oldStatus,
-                    'new_status' => $newStatus,
-                    'transition' => $transition,
-                ];
-
-                $this->notification->sendNotification(new InvoiceStatusNotification($parameters));
-            }
-
-            return;
+        if (! $this->invoiceStateMachine->can($invoice, Graph::TRANSITION_NEW)) {
+            throw new InvalidTransitionException(Graph::TRANSITION_NEW);
         }
 
-        throw new InvalidTransitionException($transition);
+        $oldStatus = $invoice->getStatus();
+
+        $this->invoiceStateMachine->apply($invoice, Graph::TRANSITION_NEW);
+
+        $newStatus = $invoice->getStatus();
+
+        $parameters = [
+            'invoice' => $invoice,
+            'old_status' => $oldStatus,
+            'new_status' => $newStatus,
+            'transition' => Graph::TRANSITION_NEW,
+        ];
+
+        $this->notification->sendNotification(new InvoiceStatusNotification($parameters));
     }
 }
