@@ -48,11 +48,6 @@ final class RecurringScheduleTest extends TestCase
         self::assertSame($expected, $occurrences);
     }
 
-    public function testGetNextRunDate(): void
-    {
-        $this->markTestSkipped('Not implemented');
-    }
-
     /**
      * @return iterable<array{options: RecurringOptions, expected: string|null}>
      */
@@ -78,12 +73,12 @@ final class RecurringScheduleTest extends TestCase
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
                 $recurringInvoice->setDateStart(new \DateTimeImmutable('2024-01-01'));
-                $recurringInvoice->setDateEnd(new \DateTimeImmutable('2024-01-15'));
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
                 $recurringOptions->setEndType(ScheduleEndType::ON);
                 $recurringOptions->setType(ScheduleRecurringType::DAILY);
+                $recurringOptions->setEndDate(new \DateTimeImmutable('2024-01-15'));
 
                 return $recurringOptions;
             })(),
@@ -155,12 +150,12 @@ final class RecurringScheduleTest extends TestCase
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
                 $recurringInvoice->setDateStart(new \DateTimeImmutable('2024-01-01'));
-                $recurringInvoice->setDateEnd(new \DateTimeImmutable('2024-01-15'));
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
                 $recurringOptions->setEndType(ScheduleEndType::ON);
                 $recurringOptions->setType(ScheduleRecurringType::WEEKLY);
+                $recurringOptions->setEndDate(new \DateTimeImmutable('2024-01-15'));
 
                 return $recurringOptions;
             })(),
@@ -218,12 +213,12 @@ final class RecurringScheduleTest extends TestCase
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
                 $recurringInvoice->setDateStart(new \DateTimeImmutable('2024-01-01'));
-                $recurringInvoice->setDateEnd(new \DateTimeImmutable('2024-01-15'));
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
                 $recurringOptions->setEndType(ScheduleEndType::ON);
                 $recurringOptions->setType(ScheduleRecurringType::MONTHLY);
+                $recurringOptions->setEndDate(new \DateTimeImmutable('2024-01-15'));
 
                 return $recurringOptions;
             })(),
@@ -281,12 +276,12 @@ final class RecurringScheduleTest extends TestCase
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
                 $recurringInvoice->setDateStart(new \DateTimeImmutable('2024-01-01'));
-                $recurringInvoice->setDateEnd(new \DateTimeImmutable('2024-01-15'));
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
                 $recurringOptions->setEndType(ScheduleEndType::ON);
                 $recurringOptions->setType(ScheduleRecurringType::YEARLY);
+                $recurringOptions->setEndDate(new \DateTimeImmutable('2024-01-15'));
 
                 return $recurringOptions;
             })(),
@@ -330,12 +325,12 @@ final class RecurringScheduleTest extends TestCase
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
                 $recurringInvoice->setDateStart(new \DateTimeImmutable('2024-01-01'));
-                $recurringInvoice->setDateEnd(new \DateTimeImmutable('2024-01-15'));
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
                 $recurringOptions->setEndType(ScheduleEndType::ON);
                 $recurringOptions->setType(ScheduleRecurringType::DAILY);
+                $recurringOptions->setEndDate(new \DateTimeImmutable('2024-01-15'));
 
                 return $recurringOptions;
             })(),
@@ -460,13 +455,13 @@ final class RecurringScheduleTest extends TestCase
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
                 $recurringInvoice->setDateStart(new \DateTimeImmutable('2024-01-01'));
-                $recurringInvoice->setDateEnd(new \DateTimeImmutable('2024-01-15'));
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
                 $recurringOptions->setEndType(ScheduleEndType::ON);
                 $recurringOptions->setType(ScheduleRecurringType::WEEKLY);
                 $recurringOptions->setDays([1, 3, 5]);
+                $recurringOptions->setEndDate(new \DateTimeImmutable('2024-01-15'));
 
                 return $recurringOptions;
             })(),
@@ -562,13 +557,13 @@ final class RecurringScheduleTest extends TestCase
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
                 $recurringInvoice->setDateStart(new \DateTimeImmutable('2024-01-01'));
-                $recurringInvoice->setDateEnd(new \DateTimeImmutable('2024-01-15'));
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
                 $recurringOptions->setEndType(ScheduleEndType::ON);
                 $recurringOptions->setType(ScheduleRecurringType::MONTHLY);
                 $recurringOptions->setDays([5, 15, 25]);
+                $recurringOptions->setEndDate(new \DateTimeImmutable('2024-01-15'));
 
                 return $recurringOptions;
             })(),
@@ -659,13 +654,13 @@ final class RecurringScheduleTest extends TestCase
             'options' => (static function () {
                 $recurringInvoice = new RecurringInvoice();
                 $recurringInvoice->setDateStart(new \DateTimeImmutable('2024-01-01'));
-                $recurringInvoice->setDateEnd(new \DateTimeImmutable('2024-05-15'));
                 $recurringOptions = new RecurringOptions();
                 $recurringOptions->setRecurringInvoice($recurringInvoice);
 
                 $recurringOptions->setEndType(ScheduleEndType::ON);
                 $recurringOptions->setType(ScheduleRecurringType::YEARLY);
                 $recurringOptions->setDays([4]);
+                $recurringOptions->setEndDate(new \DateTimeImmutable('2024-05-15'));
 
                 return $recurringOptions;
             })(),
