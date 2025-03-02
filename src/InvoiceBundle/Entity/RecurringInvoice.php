@@ -123,6 +123,9 @@ class RecurringInvoice extends BaseInvoice
     #[Serialize\Groups(['recurring_invoice_api:read', 'recurring_invoice_api:write'])]
     protected Collection $users;
 
+    /**
+     * @var Collection<int, Invoice>
+     */
     #[ORM\OneToMany(mappedBy: 'recurringInvoice', targetEntity: Invoice::class)]
     protected Collection $invoices;
 
