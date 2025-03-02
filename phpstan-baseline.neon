@@ -451,36 +451,6 @@ parameters:
 			path: src/TaxBundle/Repository/TaxRepository.php
 
 		-
-			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\EditProfile\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/UserBundle/Action/EditProfile.php
-
-		-
-			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\Ajax\\\\ApiList\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/UserBundle/Action/Ajax/ApiList.php
-
-		-
-			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\Ajax\\\\ApiList\\:\\:serialize\\(\\) has parameter \\$groups with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/UserBundle/Action/Ajax/ApiList.php
-
-		-
-			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\Ajax\\\\ApiRevoke\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/UserBundle/Action/Ajax/ApiRevoke.php
-
-		-
-			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\Ajax\\\\ApiTokenHistory\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/UserBundle/Action/Ajax/ApiTokenHistory.php
-
-		-
-			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\ApiIndex\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/UserBundle/Action/ApiIndex.php
-
-		-
 			message: "#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\ForgotPassword\\\\Check\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/UserBundle/Action/ForgotPassword/Check.php
