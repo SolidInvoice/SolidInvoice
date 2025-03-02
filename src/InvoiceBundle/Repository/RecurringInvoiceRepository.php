@@ -81,4 +81,16 @@ class RecurringInvoiceRepository extends ServiceEntityRepository
 
         $filters->enable('archivable');
     }
+
+    /**
+     * @return iterable<RecurringInvoice>
+     */
+    public function getActiveRecurringInvoices(): iterable
+    {
+        return $this->createQueryBuilder('ri')
+            ->where('ri.status = :status')
+            ->setParameter('status', 'active')
+            ->getQuery()
+            ->toIterable();
+    }
 }

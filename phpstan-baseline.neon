@@ -146,6 +146,11 @@ parameters:
 			path: src/CoreBundle/Templating/Template.php
 
 		-
+			message: "#^Service \"test\\.client\" is not registered in the container\\.$#"
+			count: 1
+			path: src/CoreBundle/Test/LiveComponentTest.php
+
+		-
 			message: "#^Property SolidInvoice\\\\CoreBundle\\\\Tests\\\\KernelAwareTest\\:\\:\\$container \\(Symfony\\\\Component\\\\DependencyInjection\\\\Container\\) does not accept Symfony\\\\Component\\\\DependencyInjection\\\\ContainerInterface\\.$#"
 			count: 1
 			path: src/CoreBundle/Tests/KernelAwareTest.php
@@ -184,11 +189,6 @@ parameters:
 			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\CloneRecurringInvoice\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/InvoiceBundle/Action/CloneRecurringInvoice.php
-
-		-
-			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\CreateRecurring\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/InvoiceBundle/Action/CreateRecurring.php
 
 		-
 			message: "#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\Fields\\:\\:__invoke\\(\\) has no return type specified\\.$#"
