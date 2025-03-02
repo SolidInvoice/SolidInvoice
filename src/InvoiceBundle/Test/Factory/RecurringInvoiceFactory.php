@@ -16,7 +16,10 @@ use Brick\Math\Exception\MathException;
 use DateTimeImmutable;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
+use SolidInvoice\CronBundle\Enum\ScheduleEndType;
+use SolidInvoice\CronBundle\Enum\ScheduleRecurringType;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\InvoiceBundle\Entity\RecurringOptions;
 use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
 use Zenstruck\Foundry\FactoryCollection;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
@@ -84,6 +87,11 @@ final class RecurringInvoiceFactory extends PersistentProxyObjectFactory
                 ->setType(self::faker()->text())
                 ->setValueMoney(BigInteger::of(self::faker()->randomNumber()))
                 ->setValuePercentage(self::faker()->randomFloat()),
+            'recurringOptions' => (new RecurringOptions())
+                ->setType(ScheduleRecurringType::WEEKLY)
+                ->setEndType(ScheduleEndType::AFTER)
+                ->setDays([1])
+                ->setEndOccurrence(1),
         ];
     }
 

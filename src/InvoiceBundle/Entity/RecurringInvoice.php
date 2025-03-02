@@ -125,6 +125,7 @@ class RecurringInvoice extends BaseInvoice
 
     #[ORM\OneToOne(mappedBy: 'recurringInvoice', cascade: ['persist', 'remove'])]
     #[Assert\Valid]
+    #[Serialize\Groups(['recurring_invoice_api:read', 'recurring_invoice_api:write'])]
     private RecurringOptions $recurringOptions;
 
     public function __construct()

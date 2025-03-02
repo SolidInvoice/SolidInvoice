@@ -11,6 +11,7 @@
 
 namespace SolidInvoice\InvoiceBundle\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use Carbon\WeekDay;
 use DateTimeImmutable;
 use DateTimeInterface;
@@ -21,6 +22,7 @@ use SolidInvoice\CronBundle\Enum\ScheduleRecurringType;
 use SolidInvoice\InvoiceBundle\Repository\RecurringOptionsRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
+use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -41,22 +43,28 @@ class RecurringOptions
 
     #[ORM\Column(length: 15, enumType: ScheduleRecurringType::class)]
     #[Assert\NotBlank]
+    #[Serialize\Groups(['recurring_invoice_api:read', 'recurring_invoice_api:write'])]
     private ScheduleRecurringType $type;
 
     /**
      * @var list<int>
      */
     #[ORM\Column(type: Types::JSON)]
+    #[Serialize\Groups(['recurring_invoice_api:read', 'recurring_invoice_api:write'])]
+    #[ApiProperty(schema: ['array<int>'])]
     private array $days = [];
 
     #[ORM\Column(length: 15, enumType: ScheduleEndType::class)]
+    #[Serialize\Groups(['recurring_invoice_api:read', 'recurring_invoice_api:write'])]
     private ScheduleEndType $endType;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
     #[Assert\GreaterThan(value: 'today', message: 'End date must be in the future')]
+    #[Serialize\Groups(['recurring_invoice_api:read', 'recurring_invoice_api:write'])]
     private ?DateTimeImmutable $endDate = null;
 
     #[ORM\Column(nullable: true)]
+    #[Serialize\Groups(['recurring_invoice_api:read', 'recurring_invoice_api:write'])]
     private ?int $endOccurrence = null;
 
     #[ORM\OneToOne(inversedBy: 'recurringOptions', targetEntity: RecurringInvoice::class, cascade: ['persist', 'remove'])]

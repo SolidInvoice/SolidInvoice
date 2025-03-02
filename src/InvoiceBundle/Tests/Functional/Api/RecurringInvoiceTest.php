@@ -18,8 +18,11 @@ use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
+use SolidInvoice\CronBundle\Enum\ScheduleEndType;
+use SolidInvoice\CronBundle\Enum\ScheduleRecurringType;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceLine;
+use SolidInvoice\InvoiceBundle\Entity\RecurringOptions;
 use SolidInvoice\InvoiceBundle\Test\Factory\RecurringInvoiceFactory;
 use Symfony\Component\Uid\Ulid;
 use Zenstruck\Foundry\Persistence\Proxy;
@@ -54,6 +57,12 @@ final class RecurringInvoiceTest extends ApiTestCase
             'client' => $this->getIriFromResource($client),
             'dateStart' => $date,
             'dateEnd' => null,
+            'recurringOptions' => [
+                'type' => ScheduleRecurringType::WEEKLY,
+                'endType' => ScheduleEndType::AFTER,
+                'days' => ['4', '5'],
+                'endOccurrence' => 1,
+            ],
             'discount' => [
                 'type' => 'percentage',
                 'value' => 10.0,
@@ -74,7 +83,7 @@ final class RecurringInvoiceTest extends ApiTestCase
         self::assertTrue(Ulid::isValid($result['id']));
         self::assertTrue(Ulid::isValid($result['lines'][0]['id']));
 
-        unset($result['id'], $result['@id'], $result['lines'][0]['id'], $result['lines'][0]['@id']);
+        unset($result['id'], $result['@id'], $result['lines'][0]['id'], $result['lines'][0]['@id'], $result['recurringOptions']['@id']);
 
         self::assertEqualsCanonicalizing([
             '@context' => '/api/contexts/RecurringInvoice',
@@ -93,6 +102,14 @@ final class RecurringInvoiceTest extends ApiTestCase
                 ],
             ],
             'users' => $contacts,
+            'recurringOptions' => [
+                '@type' => 'RecurringOptions',
+                'type' => 'weekly',
+                'days' => [4, 5],
+                'endType' => 'after',
+                'endDate' => null,
+                'endOccurrence' => 1,
+            ],
             'status' => 'draft',
             'total' => 9009,
             'baseTotal' => 10010,
@@ -120,6 +137,10 @@ final class RecurringInvoiceTest extends ApiTestCase
 
         /** @var RecurringInvoice $recurringInvoice */
         $recurringInvoice = RecurringInvoiceFactory::createOne([
+            'recurringOptions' => (new RecurringOptions())
+                ->setType(ScheduleRecurringType::WEEKLY)
+                ->setEndType(ScheduleEndType::AFTER)
+                ->setEndOccurrence(1),
             'users' => $contacts,
             'lines' => [
                 (new RecurringInvoiceLine())
@@ -133,6 +154,8 @@ final class RecurringInvoiceTest extends ApiTestCase
         ])->_real();
 
         $data = $this->requestGet($this->getIriFromResource($recurringInvoice));
+
+        unset($data['recurringOptions']['@id']);
 
         self::assertEqualsCanonicalizing([
             '@context' => '/api/contexts/RecurringInvoice',
@@ -162,6 +185,14 @@ final class RecurringInvoiceTest extends ApiTestCase
             'discount' => [
                 'type' => $recurringInvoice->getDiscount()->getType(),
                 'value' => 0,
+            ],
+            'recurringOptions' => [
+                '@type' => 'RecurringOptions',
+                'type' => 'weekly',
+                'days' => [],
+                'endType' => 'after',
+                'endDate' => null,
+                'endOccurrence' => 1,
             ],
             'terms' => $recurringInvoice->getTerms(),
             'notes' => $recurringInvoice->getNotes(),
@@ -205,6 +236,8 @@ final class RecurringInvoiceTest extends ApiTestCase
             ]
         );
 
+        unset($data['recurringOptions']['@id']);
+
         self::assertEqualsCanonicalizing([
             '@context' => '/api/contexts/RecurringInvoice',
             '@id' => $this->getIriFromResource($recurringInvoice),
@@ -226,6 +259,14 @@ final class RecurringInvoiceTest extends ApiTestCase
                 ],
             ],
             'users' => array_map(fn (Proxy $contact) => $this->getIriFromResource($contact->_real()), $contacts),
+            'recurringOptions' => [
+                '@type' => 'RecurringOptions',
+                'type' => 'weekly',
+                'days' => [1],
+                'endType' => 'after',
+                'endDate' => null,
+                'endOccurrence' => 1,
+            ],
             'status' => $recurringInvoice->getStatus(),
             'total' => 90,
             'baseTotal' => 100,
