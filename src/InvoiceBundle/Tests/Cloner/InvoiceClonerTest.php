@@ -22,6 +22,8 @@ use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator\RandomNumberGenerator;
+use SolidInvoice\CronBundle\Enum\ScheduleEndType;
+use SolidInvoice\CronBundle\Enum\ScheduleRecurringType;
 use SolidInvoice\InvoiceBundle\Cloner\InvoiceCloner;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
@@ -160,6 +162,9 @@ class InvoiceClonerTest extends TestCase
         $invoice->setClient($client);
         $invoice->addLine($line);
         $invoice->setDateStart($date);
+        $invoice->getRecurringOptions()->setType(ScheduleRecurringType::WEEKLY);
+        $invoice->getRecurringOptions()->setEndType(ScheduleEndType::AFTER);
+        $invoice->getRecurringOptions()->setEndOccurrence(1);
 
         $invoiceManager = M::mock(InvoiceManager::class);
         $invoiceManager->shouldReceive('create');
