@@ -80,7 +80,7 @@
                 <div class="col-md-12">
                     <div>
                         {{ icon('refresh') }}
-                        {{ invoice.recurringOptions }}
+                        {{ recurring_frequency(invoice.recurringOptions) }}
                     </div>
                     <br class="clearfix" />
                 </div>
@@ -93,7 +93,7 @@
     {% set totalCount = totalCount - 10 %}
 
     {% set occurrences %}
-        {% for occurance in invoice.recurringOptions.occurrences(date()) %}
+        {% for occurance in recurring_occurrences(invoice.recurringOptions) %}
             {% if loop.index0 < 10 %}
                 <tr>
                     <td>

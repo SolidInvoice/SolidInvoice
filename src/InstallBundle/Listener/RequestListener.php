@@ -62,6 +62,7 @@ final class RequestListener implements EventSubscriberInterface
      */
     private const DEBUG_ROUTES = [
         '_wdt',
+        '_wdt_stylesheet',
         '_profiler',
         '_profiler_search',
         '_profiler_search_bar',

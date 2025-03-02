@@ -125,12 +125,13 @@ class RecurringInvoice extends BaseInvoice
 
     #[ORM\OneToOne(mappedBy: 'recurringInvoice', cascade: ['persist', 'remove'])]
     #[Assert\Valid]
-    private ?RecurringOptions $recurringOptions = null;
+    private RecurringOptions $recurringOptions;
 
     public function __construct()
     {
         $this->lines = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->recurringOptions = new RecurringOptions();
         parent::__construct();
     }
 
@@ -165,15 +166,7 @@ class RecurringInvoice extends BaseInvoice
 
     public function getDateEnd(): ?DateTimeInterface
     {
-        if ($this->dateEnd instanceof DateTimeInterface) {
-            return $this->dateEnd;
-        }
-
-        if ($this->recurringOptions instanceof RecurringOptions) {
-            return $this->recurringOptions->getEndDate();
-        }
-
-        return null;
+        return $this->dateEnd;
     }
 
     public function setDateEnd(DateTimeInterface $dateEnd = null): self
@@ -250,17 +243,15 @@ class RecurringInvoice extends BaseInvoice
         return $this;
     }
 
-    public function getRecurringOptions(): ?RecurringOptions
+    public function getRecurringOptions(): RecurringOptions
     {
         return $this->recurringOptions;
     }
 
-    public function setRecurringOptions(?RecurringOptions $recurringOptions): static
+    public function setRecurringOptions(RecurringOptions $recurringOptions): static
     {
         $this->recurringOptions = $recurringOptions;
-        if ($recurringOptions instanceof RecurringOptions) {
-            $recurringOptions->setRecurringInvoice($this);
-        }
+        $recurringOptions->setRecurringInvoice($this);
 
         return $this;
     }

@@ -15,6 +15,7 @@ use SolidInvoice\InvoiceBundle\Form\EventListener\InvoiceUsersSubscriber;
 use SolidInvoice\InvoiceBundle\Menu\Builder;
 use SolidInvoice\InvoiceBundle\SolidInvoiceInvoiceBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -27,6 +28,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->private()
         ->bind('$invoiceStateMachine', service('state_machine.invoice'))
         ->bind('$recurringInvoiceStateMachine', service('state_machine.recurring_invoice'))
+        ->bind('$locale', env('SOLIDINVOICE_LOCALE'))
     ;
 
     $services

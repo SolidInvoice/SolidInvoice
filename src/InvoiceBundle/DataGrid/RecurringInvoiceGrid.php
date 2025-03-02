@@ -12,6 +12,7 @@
 namespace SolidInvoice\InvoiceBundle\DataGrid;
 
 use Brick\Math\BigNumber;
+use DateTimeInterface;
 use Money\Money;
 use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
 use SolidInvoice\DataGridBundle\Grid;
@@ -25,12 +26,19 @@ use SolidInvoice\DataGridBundle\GridBuilder\Filter\ChoiceFilter;
 use SolidInvoice\DataGridBundle\GridBuilder\Filter\DateRangeFilter;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidInvoice\InvoiceBundle\Recurring\RecurringSchedule;
 use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
 
 #[AsDataGrid(name: self::GRID_NAME, title: 'Recurring Invoices')]
 final class RecurringInvoiceGrid extends Grid
 {
     final public const GRID_NAME = 'recurring_invoice_grid';
+
+    public function __construct(
+        private readonly RecurringSchedule $schedule
+    ) {
+
+    }
 
     public function entityFQCN(): string
     {
@@ -43,15 +51,17 @@ final class RecurringInvoiceGrid extends Grid
             StringColumn::new('client')
                 ->searchable(false),
             StringColumn::new('frequency')
-                ->formatValue(static fn (RecurringInvoice $recurringInvoice): ?string => $recurringInvoice->getRecurringOptions()?->getFrequency()),
+                ->formatValue(fn (RecurringInvoice $recurringInvoice): string => $this->schedule->getFrequency($recurringInvoice->getRecurringOptions())),
             DateTimeColumn::new('dateStart')
                 ->format('d F Y')
                 ->filter(new DateRangeFilter('dateStart')),
-            DateTimeColumn::new('dateEnd')
+            DateTimeColumn::new('endDate')
                 ->format('d F Y')
-                ->filter(new DateRangeFilter('dateEnd')),
-            DateTimeColumn::new('recurringOptions.getNextRunDate')
+                ->formatValue(fn (RecurringInvoice $recurringInvoice) => $this->schedule->getEndDate($recurringInvoice->getRecurringOptions()))
+                ->filter(new DateRangeFilter('endDate')),
+            DateTimeColumn::new('nextRunDate')
                 ->label('Next Run Date')
+                ->formatValue(fn (RecurringInvoice $recurringInvoice): ?DateTimeInterface => $this->schedule->getNextRunDate($recurringInvoice->getRecurringOptions()))
                 ->format('d F Y'),
             StringColumn::new('status')
                 ->twigFunction('invoice_label')
