@@ -79,10 +79,13 @@
 </div>
 </div>
 <div class="form-group">                
-            <label class="control-label" for="settings_company_vat_number">Vat number</label><div class="input-group">
-        <input type="text" id="settings_company_vat_number" name="settings[company][vat_number]" class="form-control">
+            <label class="control-label" for="settings_company_vat_number">Vat number</label><div class="input-group" data-controller="vat-validator" data-vat-validator-url-value="/tax/number/validate">
+        <input type="text" id="settings_company_vat_number" name="settings[company][vat_number]" data-vat-validator-target="input" class="form-control">
+
         <span class="input-group-btn">
-            <a href="#" class="btn btn-secondary vat-validator" data-input="#settings_company_vat_number" rel="tooltip" title="EU Countries Only">Validate</a>
+            <a href="#" class="btn btn-secondary vat-validator" rel="tooltip" title="EU Countries Only" data-action="click-&gt;vat-validator#validate" data-vat-validator-target="button">
+                Validate
+            </a>
         </span>
     </div>
 </div>

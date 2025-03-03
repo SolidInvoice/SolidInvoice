@@ -17,6 +17,8 @@ use Brick\Math\BigDecimal;
 use Brick\Math\Exception\MathException;
 use SolidInvoice\ClientBundle\Form\Type\CreditType;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
+use Symfony\Component\Form\FormTypeInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CreditTypeTest extends FormTestCase
 {
@@ -36,5 +38,15 @@ class CreditTypeTest extends FormTestCase
         ];
 
         $this->assertFormData(CreditType::class, $formData, $object);
+    }
+
+    /**
+     * @return array<class-string, FormTypeInterface>
+     */
+    protected function getTypes(): array
+    {
+        return [
+            CreditType::class => new CreditType($this->createMock(TranslatorInterface::class)),
+        ];
     }
 }

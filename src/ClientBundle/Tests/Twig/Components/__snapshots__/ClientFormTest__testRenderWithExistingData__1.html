@@ -188,10 +188,13 @@
 <option value="ZWL">Zimbabwean Dollar (2009&acirc;&#128;&#147;2024)</option></select>
 </div>
                     <div class="form-group">                
-            <label class="control-label" for="client_vat_number">Vat number</label><div class="input-group">
-        <input type="text" id="client_vat_number" name="client[vat_number]" class="form-control" value="12345">
+            <label class="control-label" for="client_vat_number">Vat number</label><div class="input-group" data-controller="vat-validator" data-vat-validator-url-value="/tax/number/validate">
+        <input type="text" id="client_vat_number" name="client[vat_number]" data-vat-validator-target="input" class="form-control" value="12345">
+
         <span class="input-group-btn">
-            <a href="#" class="btn btn-secondary vat-validator" data-input="#client_vat_number" rel="tooltip" title="EU Countries Only">Validate</a>
+            <a href="#" class="btn btn-secondary vat-validator" rel="tooltip" title="EU Countries Only" data-action="click-&gt;vat-validator#validate" data-vat-validator-target="button">
+                Validate
+            </a>
         </span>
     </div>
 </div>
