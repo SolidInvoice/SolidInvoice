@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "@codecov/webpack-plugin": "^1.0.1",
+    "@eslint/js": "^9.21.0",
     "@hotwired/stimulus": "^3.2.2",
     "@symfony/stimulus-bundle": "file:vendor/symfony/stimulus-bundle/assets",
     "@symfony/ux-autocomplete": "file:vendor/symfony/ux-autocomplete/assets",
@@ -53,7 +54,8 @@
     "stylelint-scss": "^6.5.0",
     "tom-select": "^2.2.2",
     "ts-loader": "^9.0.0",
-    "typescript": "^5.4.2",
+    "typescript": "^5.8.2",
+    "typescript-eslint": "^8.25.0",
     "webpack": "^5.90.3",
     "webpack-cli": "^6.0"
   },
@@ -68,6 +70,7 @@
     "bootstrap": "^4.6.2",
     "caniuse-lite": "^1.0.30001677",
     "intl-messageformat": "^10.5.0",
+    "jquery": "^3.7.1",
     "popper.js": "^1.16.1",
     "regenerator-runtime": "^0.14.1",
     "select2": "^4.1.0-rc.0",
