@@ -1,5 +1,4 @@
 const Encore = require('@symfony/webpack-encore'),
-    path = require('path'),
     { codecovWebpackPlugin } = require('@codecov/webpack-plugin'),
     ESLintPlugin = require('eslint-webpack-plugin')
 ;
