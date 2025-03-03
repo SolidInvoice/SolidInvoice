@@ -38,7 +38,7 @@ form {
         display: inline;
     }
 
-    label.required:not(.form-check-label)::before {
+    label.required:not( .form-check-label )::before {
         content: '* ';
         color: $form-feedback-invalid-color;
     }
