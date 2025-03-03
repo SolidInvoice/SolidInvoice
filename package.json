@@ -17,7 +17,6 @@
   "homepage": "https://solidinvoice.co",
   "scripts": {
     "dev": "encore dev",
-    "dev-server": "encore dev-server --port=8505",
     "watch": "encore dev --watch",
     "build": "encore production --progress",
     "lint:js": "eslint src",
@@ -31,7 +30,7 @@
     "@symfony/ux-autocomplete": "file:vendor/symfony/ux-autocomplete/assets",
     "@symfony/ux-dropzone": "file:vendor/symfony/ux-dropzone/assets",
     "@symfony/ux-live-component": "file:vendor/symfony/ux-live-component/assets",
-    "@symfony/webpack-encore": "^4.6.0",
+    "@symfony/webpack-encore": "^5.1.0",
     "@types/bootstrap": "^5.2.10",
     "@types/jquery": "^3.5.29",
     "cloudinary": "^2.1.0",
@@ -46,7 +45,7 @@
     "postcss": "^8.4.38",
     "postcss-scss": "^4.0.6",
     "sass": "^1.63.3",
-    "sass-loader": "^14.2.1",
+    "sass-loader": "^16.0.5",
     "stylelint": "^16.15.0",
     "stylelint-config-recommended": "^15.0.0",
     "stylelint-config-standard-scss": "^14.0.0",
@@ -56,7 +55,7 @@
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.25.0",
     "webpack": "^5.90.3",
-    "webpack-cli": "^6.0"
+    "webpack-cli": "^6.0.1"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.4.0",

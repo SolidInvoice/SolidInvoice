@@ -33,15 +33,6 @@ Encore
     .enableSassLoader()
     .autoProvidejQuery()
 
-    .configureDevServerOptions(options => {
-        options.server = {
-            type: 'https',
-            options: {
-                pfx: path.join(process.env.HOME, '.symfony5/certs/default.p12'),
-            },
-        };
-    })
-
     .enableStimulusBridge('./assets/controllers.json')
     .enableTypeScriptLoader()
 
