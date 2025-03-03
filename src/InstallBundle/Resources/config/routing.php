@@ -29,8 +29,7 @@ return static function (RoutingConfigurator $routingConfigurator): void {
 
     $routingConfigurator
         ->add('_install_install', '/install/install')
-        ->controller(Install::class)
-        ->options(['expose' => true]);
+        ->controller(Install::class);
 
     $routingConfigurator
         ->add('_install_setup', '/install/setup')

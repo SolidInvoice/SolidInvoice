@@ -31,8 +31,7 @@ use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 return static function (RoutingConfigurator $routingConfigurator): void {
     $routingConfigurator
         ->add('_api_keys_index', '/profile/api')
-        ->controller(ApiIndex::class)
-        ->options(['expose' => true]);
+        ->controller(ApiIndex::class);
 
     $routingConfigurator
         ->add('_users_list', '/users')
@@ -44,8 +43,7 @@ return static function (RoutingConfigurator $routingConfigurator): void {
 
     $routingConfigurator
         ->add('_user_resend_invite', '/users/invite/{id}/resend')
-        ->controller(ResendUserInvite::class)
-        ->options(['expose' => true]);
+        ->controller(ResendUserInvite::class);
 
     $routingConfigurator
         ->add('_user_accept_invite', '/invite/accept/{id}')

@@ -39,41 +39,34 @@ return static function (RoutingConfigurator $routingConfigurator): void {
     $routingConfigurator
         ->add('_invoices_create', '/create/{client}')
         ->controller(Create::class)
-        ->defaults(['client' => null])
-        ->options(['expose' => true]);
+        ->defaults(['client' => null]);
 
     $routingConfigurator
         ->add('_invoices_create_recurring', '/recurring/create/{client}')
         ->controller(CreateRecurring::class)
-        ->defaults(['client' => null])
-        ->options(['expose' => true]);
+        ->defaults(['client' => null]);
 
     $routingConfigurator
         ->add('_invoices_get_fields', '/fields/get/{currency}')
-        ->controller(Fields::class)
-        ->options(['expose' => true]);
+        ->controller(Fields::class);
 
     $routingConfigurator
         ->add('_invoices_edit', '/edit/{id}')
-        ->controller(Edit::class)
-        ->options(['expose' => true]);
+        ->controller(Edit::class);
 
     $routingConfigurator
         ->add('_invoices_edit_recurring', '/recurring/edit/{id}')
-        ->controller(EditRecurring::class)
-        ->options(['expose' => true]);
+        ->controller(EditRecurring::class);
 
     $routingConfigurator
         ->add('_invoices_view', '/view/{id}.{_format}')
         ->controller(View::class)
         ->defaults(['_format' => 'html'])
-        ->requirements(['_format' => 'html|pdf'])
-        ->options(['expose' => true]);
+        ->requirements(['_format' => 'html|pdf']);
 
     $routingConfigurator
         ->add('_invoices_view_recurring', '/recurring/view/{id}')
-        ->controller(ViewRecurring::class)
-        ->options(['expose' => true]);
+        ->controller(ViewRecurring::class);
 
     $routingConfigurator
         ->add('_invoices_clone', '/clone/{id}')

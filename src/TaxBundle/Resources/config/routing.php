@@ -28,12 +28,10 @@ return static function (RoutingConfigurator $routingConfigurator): void {
 
     $routingConfigurator
         ->add('_tax_rates_edit', '/rates/edit/{id}')
-        ->controller(Edit::class)
-        ->options(['expose' => true]);
+        ->controller(Edit::class);
 
     $routingConfigurator
         ->add('_tax_number_validate', '/number/validate')
         ->controller(Validate::class)
-        ->methods(['POST'])
-        ->options(['expose' => true]);
+        ->methods(['POST']);
 };

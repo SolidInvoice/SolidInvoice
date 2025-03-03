@@ -75,8 +75,7 @@ abstract class AbstractDirectoryLoader extends Loader
 
             $route = new Route(sprintf('%s/%s', $type, $actionName));
 
-            $route->addOptions(['expose' => true])
-                ->setMethods(['POST'])
+            $route->setMethods(['POST'])
                 ->setDefault('_controller', $controller);
 
             $collection->add(sprintf('%s_%s_%s', $bundleName, $type, $actionName), $route);

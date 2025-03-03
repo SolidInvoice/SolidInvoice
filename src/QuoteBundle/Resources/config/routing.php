@@ -29,25 +29,21 @@ return static function (RoutingConfigurator $routingConfigurator): void {
     $routingConfigurator
         ->add('_quotes_create', '/create/{client}')
         ->controller(Create::class)
-        ->defaults(['client' => null])
-        ->options(['expose' => true]);
+        ->defaults(['client' => null]);
 
     $routingConfigurator
         ->add('_quotes_get_fields', '/fields/get/{currency}')
-        ->controller(Fields::class)
-        ->options(['expose' => true]);
+        ->controller(Fields::class);
 
     $routingConfigurator
         ->add('_quotes_edit', '/edit/{id}')
-        ->controller(Edit::class)
-        ->options(['expose' => true]);
+        ->controller(Edit::class);
 
     $routingConfigurator
         ->add('_quotes_view', '/view/{id}.{_format}')
         ->controller(View::class)
         ->defaults(['_format' => 'html'])
-        ->requirements(['_format' => 'html|pdf'])
-        ->options(['expose' => true]);
+        ->requirements(['_format' => 'html|pdf']);
 
     $routingConfigurator
         ->add('_quotes_clone', '/clone/{id}')

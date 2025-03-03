@@ -24,8 +24,7 @@ return static function (RoutingConfigurator $routingConfigurator): void {
 
     $routingConfigurator
         ->add('_payment_settings_index', '/methods')
-        ->controller(Settings::class)
-        ->options(['expose' => true]);
+        ->controller(Settings::class);
 
     $routingConfigurator
         ->add('_payments_create', '/create/{uuid}')

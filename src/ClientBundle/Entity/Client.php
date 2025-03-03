@@ -400,9 +400,9 @@ class Client implements Stringable
         return $this->addresses;
     }
 
-    public function getCredit(): ?Credit
+    public function getCredit(): Credit
     {
-        return $this->credit ?? new Credit();
+        return $this->credit;
     }
 
     public function setCredit(Credit $credit): self

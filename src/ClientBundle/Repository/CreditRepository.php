@@ -23,6 +23,9 @@ use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Credit;
 use function assert;
 
+/**
+ * @extends ServiceEntityRepository<Credit>
+ */
 class CreditRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

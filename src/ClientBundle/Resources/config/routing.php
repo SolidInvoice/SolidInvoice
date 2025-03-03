@@ -20,25 +20,20 @@ use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 return static function (RoutingConfigurator $routingConfigurator): void {
     $routingConfigurator
         ->add('_clients_index', '/')
-        ->controller(Index::class)
-        ->options(['expose' => true]);
+        ->controller(Index::class);
 
     $routingConfigurator
         ->add('_clients_add', '/add')
-        ->controller(Add::class)
-        ->options(['expose' => true]);
+        ->controller(Add::class);
 
     $routingConfigurator
         ->add('_clients_edit', '/edit/{id}')
-        ->controller(Edit::class)
-        ->options(['expose' => true]);
+        ->controller(Edit::class);
 
     $routingConfigurator
         ->add('_clients_view', '/view/{id}')
-        ->controller(View::class)
-        ->options(['expose' => true]);
+        ->controller(View::class);
 
     $routingConfigurator->import('@SolidInvoiceClientBundle/Resources/config/routing/ajax.php')
-        ->prefix('/xhr')
-        ->options(['expose' => true]);
+        ->prefix('/xhr');
 };

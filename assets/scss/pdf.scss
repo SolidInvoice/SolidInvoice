@@ -1,3 +1,58 @@
 $enable-deprecation-messages: false;
 
-@import '~SolidInvoiceCore/scss/pdf';
+$body-bg: #FFFFFF;
+
+@import '~admin-lte/build/scss/mixins';
+@import 'theme';
+
+h4 {
+    margin: 0;
+}
+
+table.invoice-details,
+table.quote-details {
+    border: 1px solid #999999;
+    border-spacing: 0;
+
+    thead {
+
+        tr {
+            border: 1px solid #999999;
+            background-color: #EFEFEF;
+            margin: 0;
+
+            th {
+                margin: 0;
+                padding: 8px;
+                border-right: 1px solid #999999;
+            }
+        }
+    }
+
+    tbody {
+
+        tr {
+
+            td {
+                border-bottom: 1px solid #999999;
+                padding: 8px;
+                border-right: 1px solid #999999;
+            }
+        }
+    }
+
+    tfoot {
+
+        tr {
+
+            td {
+                padding: 8px;
+            }
+        }
+    }
+}
+
+table.invoice-summary,
+table.quote-summary {
+    float: right;
+}
