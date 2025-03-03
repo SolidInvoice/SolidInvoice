@@ -46,9 +46,7 @@ jobs:
         with:
           egress-policy: block
           allowed-endpoints: >
-            185.125.188.54:443
-            185.125.188.55:443
-            185.125.188.59:443
+            api.snapcraft.io:443
             api.github.com:443
             api.ipify.org:443
             api.launchpad.net:443
@@ -61,6 +59,7 @@ jobs:
             keyserver.ubuntu.com:443
             motd.ubuntu.com:443
             objects.githubusercontent.com:443
+            raw.githubusercontent.com:443
             packages.microsoft.com:443
             packages.microsoft.com:80
             packagist.org:443
@@ -68,7 +67,6 @@ jobs:
             ppa.launchpad.net:80
             ppa.launchpadcontent.net:443
             ppa.launchpadcontent.net:80
-            raw.githubusercontent.com:443
             repo.packagist.org:443
             security.ubuntu.com:443
             security.ubuntu.com:80
@@ -109,6 +107,7 @@ jobs:
             cdn.jsdelivr.net:443
             github.com:443
             objects.githubusercontent.com:443
+            raw.githubusercontent.com:443
             packagist.org:443
             registry.npmjs.org:443
             registry.yarnpkg.com:443
