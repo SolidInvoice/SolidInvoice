@@ -13,7 +13,6 @@
         "jasmine": true
     },
     "plugins": [
-        "backbone",
         "no-jquery",
         "lodash",
         "jest",

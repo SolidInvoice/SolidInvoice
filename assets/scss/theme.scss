@@ -1,7 +1,8 @@
 @use 'sass:map';
 @use 'sass:color';
-@import '~bootstrap/scss/mixins';
+@import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
 @import 'colors';
 @import '~admin-lte/build/scss/variables';
 @import '~admin-lte/build/scss/variables-alt';

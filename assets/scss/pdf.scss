@@ -2,8 +2,7 @@ $enable-deprecation-messages: false;
 
 $body-bg: #FFFFFF;
 
-@import '~admin-lte/build/scss/mixins';
-@import 'theme';
+@import './theme';
 
 h4 {
     margin: 0;

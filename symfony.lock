@@ -149,18 +149,6 @@
     "egulias/email-validator": {
         "version": "2.1.18"
     },
-    "friendsofsymfony/jsrouting-bundle": {
-        "version": "2.3",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
-            "version": "2.3",
-            "ref": "a9f2e49180f75cdc71ae279a929c4b2e0638de84"
-        },
-        "files": [
-            "config/routes/fos_js_routing.yaml"
-        ]
-    },
     "gedmo/doctrine-extensions": {
         "version": "v2.4.41"
     },
@@ -1270,21 +1258,6 @@
     },
     "twig/twig": {
         "version": "v2.13.1"
-    },
-    "willdurand/js-translation-bundle": {
-        "version": "2.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "2.0",
-            "ref": "02b720a49f6d36b44d557e0b18e48bf09e0a8e07"
-        },
-        "files": [
-            "config/routes/js_translation.yaml"
-        ]
-    },
-    "willdurand/jsonp-callback-validator": {
-        "version": "v1.1.0"
     },
     "willdurand/negotiation": {
         "version": "v2.3.1"

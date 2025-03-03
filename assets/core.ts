@@ -1,3 +1,7 @@
+import 'admin-lte';
+import 'bootstrap';
+import 'select2';
+
 import { startStimulusApp } from '@symfony/stimulus-bridge';
 
 import CheckboxSelectAll from '@stimulus-components/checkbox-select-all';
