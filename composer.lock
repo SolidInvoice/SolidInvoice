@@ -4772,16 +4772,16 @@
         },
         {
             "name": "mpociot/vat-calculator",
-            "version": "3.19.0",
+            "version": "3.20.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/driesvints/vat-calculator.git",
-                "reference": "e974299aba96cc7b224667f57319f3e2b8f412ce"
+                "reference": "dc7f6da8ba3b1e53d47df0399affbf82748d3f82"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/driesvints/vat-calculator/zipball/e974299aba96cc7b224667f57319f3e2b8f412ce",
-                "reference": "e974299aba96cc7b224667f57319f3e2b8f412ce",
+                "url": "https://api.github.com/repos/driesvints/vat-calculator/zipball/dc7f6da8ba3b1e53d47df0399affbf82748d3f82",
+                "reference": "dc7f6da8ba3b1e53d47df0399affbf82748d3f82",
                 "shasum": ""
             },
             "require": {
@@ -4840,7 +4840,7 @@
             ],
             "support": {
                 "issues": "https://github.com/driesvints/vat-calculator/issues",
-                "source": "https://github.com/driesvints/vat-calculator/tree/3.19.0"
+                "source": "https://github.com/driesvints/vat-calculator/tree/3.20.0"
             },
             "funding": [
                 {
@@ -4852,7 +4852,7 @@
                     "type": "paypal"
                 }
             ],
-            "time": "2025-02-13T21:09:06+00:00"
+            "time": "2025-02-28T10:43:14+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -23607,8 +23607,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "roave/security-advisories": 20,
-        "solidworx/toggler": 15
+        "solidworx/toggler": 15,
+        "roave/security-advisories": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
@@ -23623,9 +23623,9 @@
         "ext-soap": "*",
         "ext-xsl": "*"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "platform-overrides": {
         "php": "8.2"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
