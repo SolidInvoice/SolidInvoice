@@ -70,10 +70,16 @@
 {% endblock contact_widget %}
 
 {% block tax_number_widget -%}
-    <div class="input-group">
-        {{ form_widget(form) }}
+    <div class="input-group" {{ stimulus_controller('vat-validator', {'url': path('_tax_number_validate')}) }}>
+        {{ form_widget(form, { attr: stimulus_target('vat-validator', 'input').toArray() }) }}
+
         <span class="input-group-btn">
-            <a href="#" class="btn btn-secondary vat-validator" data-input="#{{ form.vars.id }}" rel="tooltip" title="EU Countries Only">{{ 'tax.form.input.validate'|trans }}</a>
+            <a href="#" class="btn btn-secondary vat-validator" rel="tooltip" title="{{ 'EU Countries Only'|trans }}"
+                {{ stimulus_action('vat-validator', 'validate', 'click') }}
+                {{ stimulus_target('vat-validator', 'button') }}
+            >
+                {{ 'tax.form.input.validate'|trans }}
+            </a>
         </span>
     </div>
 {%- endblock tax_number_widget %}

@@ -36,11 +36,6 @@ parameters:
 			path: src/ClientBundle/Repository/ContactTypeRepository.php
 
 		-
-			message: "#^Class SolidInvoice\\\\ClientBundle\\\\Repository\\\\CreditRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#"
-			count: 1
-			path: src/ClientBundle/Repository/CreditRepository.php
-
-		-
 			message: "#^Method SolidInvoice\\\\ClientBundle\\\\Tests\\\\Form\\\\Handler\\\\ClientEditFormHandlerTest\\:\\:getFormData\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/ClientBundle/Tests/Form/Handler/ClientEditFormHandlerTest.php
@@ -429,11 +424,6 @@ parameters:
 			message: "#^Method SolidInvoice\\\\TaxBundle\\\\Action\\\\Index\\:\\:__invoke\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/TaxBundle/Action/Index.php
-
-		-
-			message: "#^Method SolidInvoice\\\\TaxBundle\\\\Action\\\\Validate\\:\\:__invoke\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: src/TaxBundle/Action/Validate.php
 
 		-
 			message: "#^Parameter \\#2 \\$default of method SolidWorx\\\\FormHandler\\\\Options\\:\\:get\\(\\) expects null, SolidInvoice\\\\TaxBundle\\\\Entity\\\\Tax given\\.$#"

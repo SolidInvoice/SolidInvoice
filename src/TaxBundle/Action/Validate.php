@@ -15,20 +15,18 @@ namespace SolidInvoice\TaxBundle\Action;
 
 use Mpociot\VatCalculator\Exceptions\VATCheckUnavailableException;
 use Mpociot\VatCalculator\VatCalculator;
-use SolidInvoice\CoreBundle\Response\AjaxResponse;
-use SolidInvoice\CoreBundle\Traits\JsonTrait;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-final class Validate implements AjaxResponse
+final class Validate extends AbstractController
 {
-    use JsonTrait;
-
     public function __construct(
         private readonly VatCalculator $calculator
     ) {
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): JsonResponse
     {
         try {
             $valid = $this->calculator->isValidVATNumber($request->request->get('vat_number'));
