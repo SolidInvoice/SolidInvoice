@@ -1,5 +1,4 @@
 import { Controller } from '@hotwired/stimulus';
-import $ from 'jquery';
 
 /* stimulusFetch: 'lazy' */
 export default class CapturePaymentController extends Controller<HTMLDivElement> {
@@ -17,7 +16,7 @@ export default class CapturePaymentController extends Controller<HTMLDivElement>
 
         this.captureOnlineTarget.classList.add('d-none');
 
-        $(this.paymentMethodTarget).on('change', (e: Event): void => {
+        this.paymentMethodTarget.addEventListener('change', (e: Event): void => {
 
             const selectedOption: HTMLOptionElement|null = (e.target as HTMLSelectElement).querySelector('option:checked');
 
