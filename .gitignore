@@ -33,6 +33,9 @@ yarn.lock
 package-lock.json
 /vendor-bin/**/vendor
 /drivers
+/frankenphp/dist
+/frankenphp/app.tar
+/frankenphp/app_checksum.txt
 
 ###> symfony/framework-bundle ###
 /.env.local

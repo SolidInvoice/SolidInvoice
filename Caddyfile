@@ -1,0 +1,65 @@
+{
+	{$CADDY_GLOBAL_OPTIONS}
+
+	admin off
+
+	auto_https {$AUTO_HTTPS:disable_redirects}
+
+	frankenphp {
+		{$FRANKENPHP_CONFIG}
+	}
+}
+
+{$CADDY_EXTRA_CONFIG} 
+
+{$SERVER_NAME} {
+	bind {$SERVER_IP:0.0.0.0}
+
+	log {
+		{$CADDY_SERVER_LOG_OPTIONS}
+		# Redact the authorization query parameter that can be set by Mercure
+		format filter {
+			request>uri query {
+				replace authorization REDACTED
+			}
+		}
+	}
+
+	root {$APP_PATH}/public
+	encode zstd br gzip
+
+	#	mercure {
+	#		# Transport to use (default to Bolt)
+	#		transport_url {$MERCURE_TRANSPORT_URL:bolt:///data/mercure.db}
+	#		# Publisher JWT key
+	#		publisher_jwt {env.MERCURE_PUBLISHER_JWT_KEY} {env.MERCURE_PUBLISHER_JWT_ALG}
+	#		# Subscriber JWT key
+	#		subscriber_jwt {env.MERCURE_SUBSCRIBER_JWT_KEY} {env.MERCURE_SUBSCRIBER_JWT_ALG}
+	#		# Allow anonymous subscribers (double-check that it's what you want)
+	#		anonymous
+	#		# Enable the subscription API (double-check that it's what you want)
+	#		subscriptions
+	#		# Extra directives
+	#		{$MERCURE_EXTRA_DIRECTIVES}
+	#	}
+
+	#	vulcain
+
+	{$CADDY_SERVER_EXTRA_DIRECTIVES}
+
+	# Disable Topics tracking if not enabled explicitly: https://github.com/jkarlin/topics
+	header ?Permissions-Policy "browsing-topics=()"
+
+	@phpRoute {
+		not path /.well-known/mercure*
+		not file {path}
+	}
+	rewrite @phpRoute index.php
+
+	@frontController path index.php
+	php @frontController
+
+	file_server {
+		hide *.php
+	}
+}
