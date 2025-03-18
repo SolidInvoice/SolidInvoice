@@ -27,10 +27,6 @@
 
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
-
-        {% if module is defined %}
-            {{ encore_entry_link_tags(module) }}
-        {% endif %}
     {% endblock stylesheets %}
 </head>
 <body class="skin-solidinvoice-default sidebar-mini hold-transition {{ body_class|default('') }}">
@@ -52,12 +48,7 @@
             </footer>
         {% endif %}
 
-
-        {% if module is defined %}
-            {{ encore_entry_script_tags(module) }}
-        {% else %}
-            {{ encore_entry_script_tags('core') }}
-        {% endif %}
+        {{ encore_entry_script_tags('core') }}
 
         {{ block('scripts') is defined ? block('scripts') }}
 

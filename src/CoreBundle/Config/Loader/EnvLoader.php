@@ -13,15 +13,18 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Config\Loader;
 
+use SolidInvoice\CoreBundle\ConfigWriter;
 use Symfony\Component\DependencyInjection\EnvVarLoaderInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use function strtoupper;
 
 final class EnvLoader implements EnvVarLoaderInterface
 {
     private Filesystem $fileSystem;
 
     public function __construct(
-        private readonly string $projectDir
+        private readonly string $projectDir,
+        private readonly ConfigWriter $configWriter,
     ) {
         $this->fileSystem = new Filesystem();
     }
@@ -33,18 +36,39 @@ final class EnvLoader implements EnvVarLoaderInterface
         $newEnvPath = $this->projectDir . '/config/env';
 
         if ($this->fileSystem->exists("{$newEnvPath}/{$fileName}")) {
-            return require "{$newEnvPath}/{$fileName}";
+            return $this->migrateToSecrets("{$newEnvPath}/{$fileName}");
         }
 
         $oldEnvFile = $this->projectDir . '/config/env.php';
 
         if ($this->fileSystem->exists($oldEnvFile)) {
-            $this->fileSystem->mkdir($newEnvPath);
-            $this->fileSystem->rename($oldEnvFile, "{$newEnvPath}/{$fileName}");
-
-            return require "{$newEnvPath}/{$fileName}";
+            return $this->migrateToSecrets($oldEnvFile);
         }
 
         return [];
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function migrateToSecrets(string $path): array
+    {
+        $values = require $path;
+
+        $this->configWriter->save($values);
+
+        $this->fileSystem->remove($path);
+
+        $env = [];
+
+        foreach ($values as $key => $value) {
+            if (! str_starts_with($key, ConfigWriter::CONFIG_PREFIX)) {
+                $key = ConfigWriter::CONFIG_PREFIX . $key;
+            }
+
+            $env[strtoupper($key)] = $value;
+        }
+
+        return $env;
     }
 }
