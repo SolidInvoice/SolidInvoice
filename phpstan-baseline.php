@@ -170,12 +170,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/CoreBundle/Templating/Template.php',
 ];
 $ignoreErrors[] = [
-	// identifier: symfonyContainer.serviceNotFound
-	'message' => '#^Service "test\\.client" is not registered in the container\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/src/CoreBundle/Test/LiveComponentTest.php',
-];
-$ignoreErrors[] = [
 	// identifier: assign.propertyType
 	'message' => '#^Property SolidInvoice\\\\CoreBundle\\\\Tests\\\\KernelAwareTest\\:\\:\\$container \\(Symfony\\\\Component\\\\DependencyInjection\\\\Container\\) does not accept Symfony\\\\Component\\\\DependencyInjection\\\\ContainerInterface\\.$#',
 	'count' => 1,

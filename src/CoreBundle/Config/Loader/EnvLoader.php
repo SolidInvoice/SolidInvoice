@@ -39,7 +39,7 @@ final class EnvLoader implements EnvVarLoaderInterface
             return $this->migrateToSecrets("{$newEnvPath}/{$fileName}");
         }
 
-        $oldEnvFile = $this->projectDir . '/config/env.php';
+        $oldEnvFile = $this->projectDir . '/config/' . $fileName;
 
         if ($this->fileSystem->exists($oldEnvFile)) {
             return $this->migrateToSecrets($oldEnvFile);
