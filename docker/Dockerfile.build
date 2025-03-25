@@ -1,60 +1,20 @@
-ARG PHP_VERSION=8.2
+FROM scratch
 
-FROM serversideup/php:${PHP_VERSION}-fpm-nginx
-
-ARG SOLIDINVOICE_VERSION
+ARG BINARY
 
 # Base ENV
-ENV TIMEZONE Europe/Paris
-ENV TERM xterm
+ENV TIMEZONE=Europe/Paris
+ENV TERM=xterm
 
-# Composer ENV
-ENV COMPOSER_HTACCESS_PROTECT 0
-ENV COMPOSER_NO_INTERACTION 1
-
-# PHP ENV
-ENV PHP_DATE_TIMEZONE ${TIMEZONE}
-ENV PHP_MAX_EXECUTION_TIME 60
-ENV PHP_POOL_NAME solidinvoice
-ENV PHP_SESSION_COOKIE_SECURE 0
-ENV PHP_POST_MAX_SIZE 101M
-
-# Setup ENV
-ENV AUTORUN_ENABLED 0
-ENV SSL_MODE mixed
-ENV S6_LOGGING 1
-
-# Application ENV
-ENV SOLIDINVOICE_ENV prod
-ENV SOLIDINVOICE_DEBUG 0
-
-SHELL ["/bin/bash", "-c"]
-
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-    wget \
-    php${BUILD_PHP_VERSION}-pdo-mysql \
-    php${BUILD_PHP_VERSION}-opcache \
-    php${BUILD_PHP_VERSION}-bcmath \
-    php${BUILD_PHP_VERSION}-intl \
-    php${BUILD_PHP_VERSION}-gd \
-    php${BUILD_PHP_VERSION}-xsl \
-    php${BUILD_PHP_VERSION}-soap \
-    php${BUILD_PHP_VERSION}-zip \
-    php${BUILD_PHP_VERSION}-apcu \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
-
-RUN cd /tmp && mkdir solidinvoice && cd solidinvoice && \
-    wget "https://github.com/SolidInvoice/SolidInvoice/releases/download/${SOLIDINVOICE_VERSION}/SolidInvoice-${SOLIDINVOICE_VERSION}.zip" && \
-    unzip "SolidInvoice-${SOLIDINVOICE_VERSION}.zip" && \
-    rm "SolidInvoice-${SOLIDINVOICE_VERSION}.zip" && \
-    shopt -s dotglob && \
-    mv ./* /var/www/html && \
-    cd /tmp && rm -rf solidinvoice && \
-    sed -i '/session.cookie_secure/d' /etc/php/current_version/fpm/pool.d/y-override-php-defaults.conf
-
-VOLUME /var/www/html/config/env
-
-EXPOSE 80
 EXPOSE 443
+EXPOSE 443/udp
+
+LABEL org.opencontainers.image.title=SolidInvoice
+LABEL org.opencontainers.image.description="Simple and elegant invoicing solution"
+LABEL org.opencontainers.image.url=https://solidinvoice.co
+LABEL org.opencontainers.image.source=https://github.com/SolidInvoice/SolidInvoice
+LABEL org.opencontainers.image.licenses=MIT
+LABEL org.opencontainers.image.vendor="SolidWorx"
+
+COPY $BINARY /solidinvoice
+ENTRYPOINT ["/solidinvoice", "run"]

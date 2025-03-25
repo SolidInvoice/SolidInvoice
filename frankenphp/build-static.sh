@@ -282,7 +282,7 @@ fi
 "dist/${bin}" version
 
 if [ -n "${RELEASE}" ]; then
-	gh release upload "${SOLIDINVOICE_VERSION}" "dist/${bin}" --repo solidinvoice/solidinvoice --clobber
+	gh release upload "${SOLIDINVOICE_VERSION}" "dist/${bin}" --repo pierredup/solidinvoice --clobber
 fi
 
 if [ -n "${CURRENT_REF}" ]; then

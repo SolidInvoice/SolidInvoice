@@ -28,23 +28,8 @@ fi
 cd "${ROOT_DIR}/frankenphp"
 
 cp "${DIST_DIR}/SolidInvoice-"$SOLIDINVOICE_VERSION".tar.gz" ./app.tar.gz
-gunzip app.tar.gz
+gunzip -f app.tar.gz
 
-targets=(
-  "linux/amd64"
-  "linux/arm64"
-  "linux/386"
-  "darwin/amd64"
-  "darwin/arm64"
-  "windows/amd64"
-  "windows/arm64"
-)
-
-for t in "${targets[@]}"; do
-  IFS="/" read -r GOOS GOARCH <<< "$t"
-  [ "$GOOS" == "windows" ] && BIN_NAME="myapp.exe"
-
-  GOOS="$GOOS" GOARCH="$GOARCH" PHP_VERSION=8.4 ./build-static.sh
-done
+PHP_VERSION=8.4 ./build-static.sh
 
 rm app.tar
