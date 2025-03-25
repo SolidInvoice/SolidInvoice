@@ -81,6 +81,7 @@ else
   CUR_MAJOR_BRANCH="${MAJOR}.${MINOR}.x" # "3.0.x"
   NEXT_MINOR_BRANCH="${MAJOR}.$((MINOR+1)).x" # "3.1.x"
   NEXT_MINOR_RELEASE="${MAJOR}.$((MINOR+1)).0" # "3.1.x"
+  NEXT_PATCH_RELEASE="${MAJOR}.${MINOR}.1" # "3.0.1"
 
   echo "==> MAJOR release: Tag from $CUR_MAJOR_BRANCH, create $NEXT_MINOR_BRANCH, set default to $NEXT_MINOR_BRANCH"
 
@@ -97,6 +98,13 @@ else
     repos/"${REPOSITORY}"/milestones \
     -f title="${NEXT_MINOR_RELEASE}" \
     -f state='open' \
+
+    # Create milestone for next patch release (E.G 2.3.1)
+    gh api \
+      --method POST \
+      repos/"${REPOSITORY}"/milestones \
+      -f title="${NEXT_PATCH_RELEASE}" \
+      -f state='open' \
 
   #./scripts/bump_version_dev.sh "${NEXT_MINOR_RELEASE}"-dev
 fi
