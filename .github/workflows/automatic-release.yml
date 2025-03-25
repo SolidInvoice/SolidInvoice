@@ -14,7 +14,7 @@ jobs:
       - name: Harden Runner
         uses: step-security/harden-runner@4d991eb9b905ef189e4c376166672c3f2f230481
         with:
-          egress-policy: block
+          egress-policy: audit
           allowed-endpoints: >
             api.github.com:443
             archive.ubuntu.com:80
@@ -28,6 +28,7 @@ jobs:
             registry-1.docker.io:443
             registry.yarnpkg.com:443
             repo.packagist.org:443
+            raw.githubusercontent.com:443
             security.ubuntu.com:80
             uploads.github.com:443
 
