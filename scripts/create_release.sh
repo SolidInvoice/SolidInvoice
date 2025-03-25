@@ -49,8 +49,8 @@ elif [ "$PATCH" = "0" ] && [ "$MINOR" != "0" ]; then
   #CURRENT_BRANCH="${MAJOR}.${MINOR}.x"
   CURRENT_BRANCH="frankenphp" # @TODO: Change to the correct branch after testing
   NEW_BRANCH="${MAJOR}.$((MINOR+1)).x"
-  NEXT_MINOR_RELEASE="${MAJOR}.$((MINOR+1)).0" # "3.1.x"
-  NEXT_PATCH_RELEASE="${MAJOR}.$((MINOR+1)).1" # "3.1.1"
+  NEXT_MINOR_RELEASE="${MAJOR}.$((MINOR+1)).0" # "2.4.x"
+  NEXT_PATCH_RELEASE="${MAJOR}.${MINOR}.1" # "2.3.1"
 
   echo "==> MINOR release: Creating tag ${TAG} from $CURRENT_BRANCH, new branch $NEW_BRANCH, set default"
 
