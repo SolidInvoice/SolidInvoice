@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euxo pipefail
+
 # Extract version from milestone title
 VERSION="$1"  # e.g. "2.3.1"
 REPOSITORY="$2"  # e.g. "2.3.1"

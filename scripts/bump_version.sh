@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euxo pipefail
+
 # GitHub Actions setup for Git
 if [ -n "$GITHUB_ACTIONS" ]; then
   git config --local user.email "action@github.com"
