@@ -24,7 +24,7 @@ jobs:
         with:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
 
-      #- uses: FranzDiebold/github-env-vars-action@1791216cd180e6578dd1d67fb8d2852b883a5f53
+      - uses: FranzDiebold/github-env-vars-action@1791216cd180e6578dd1d67fb8d2852b883a5f53
 
       - name: Checkout code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -39,29 +39,13 @@ jobs:
           ini-values: memory_limit=-1
           php-version: 8.3
 
-      - name: Install PHP dependencies
-        run: composer install --ansi --no-interaction --no-progress --no-suggest --prefer-dist --no-dev -o -a
-        working-directory: solidinvoice
-
       - uses: oven-sh/setup-bun@4bc047ad259df6fc24a6c9b0f9a0cb08cf17fbe5 # v2
 
-      - name: Set ENV Variables
-        run: |
-          echo SOLIDINVOICE_ENV=$SOLIDINVOICE_ENV > .env
-          echo SOLIDINVOICE_DEBUG=$SOLIDINVOICE_DEBUG >> .env
-        working-directory: solidinvoice
-
-      - name: Install JS dependencies
-        run: bun install
-        working-directory: solidinvoice
-
-      - name: Build Assets
-        run: bun run build
-        working-directory: solidinvoice
-
-      - name: Cleanup files
-        run: rm -Rf node_modules vendor-bin .github .git
-        working-directory: solidinvoice
+      - name: Build Release Artifact
+        run: "./scripts/build_dist.sh ${{ env.CI_REF_NAME }} ${{ env.CI_REF_NAME }}"
+        env:
+          RELEASE: 1
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       #- name: Create release
       #  id: create_release
@@ -74,16 +58,13 @@ jobs:
       #    draft: true
       #    body: TODO
 
-      - name: Create ZIP distribution
-        run: zip -r SolidInvoice-${{ env.CI_REF_NAME }}.zip ./
+      #- name: Create ZIP distribution
+      #  run: zip -r SolidInvoice-${{ env.CI_REF_NAME }}.zip ./
 
-      - name: List files
-        run: ls -la
-
-      - name: Upload ZIP distribution
-        env:
-            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: "gh release upload "${{ env.CI_REF_NAME }}" "./SolidInvoice-${{ env.CI_REF_NAME }}.zip" --repo ${{ github.repository }} --clobber"
+      #- name: Upload ZIP distribution
+      #  run: "gh release upload "${{ env.CI_REF_NAME }}" "./SolidInvoice-${{ env.CI_REF_NAME }}.zip" --repo ${{ github.repository }} --clobber"
+      # env:
+      #      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       #- name: Upload ZIP distribution
       #  uses: actions/upload-release-asset@e8f9f06c4b078e705bd2ea027f0926603fc9b4d5
@@ -97,14 +78,6 @@ jobs:
 
       #- name: Delete ZIP File
       #  run: rm -Rf SolidInvoice-${{ env.CI_REF_NAME }}.zip
-
-      - name: Create TAR distribution
-        run: tar -zcvf SolidInvoice-${{ env.CI_REF_NAME }}.tar.gz ./solidinvoice
-
-      - name: Upload TAR distribution
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: "gh release upload "${{ env.CI_REF_NAME }}" "./SolidInvoice-${{ env.CI_REF_NAME }}.tar.gz" --repo ${{ github.repository }} --clobber"
 
       #- name: Upload TAR distribution
       #  uses: actions/upload-release-asset@e8f9f06c4b078e705bd2ea027f0926603fc9b4d5
