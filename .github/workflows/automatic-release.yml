@@ -5,14 +5,11 @@ on:
     types:
       - closed
 
-permissions:
-  contents: write
-  pull-requests: write
-
 jobs:
   release:
     name: "GIT tag, release & create merge-up PR"
     runs-on: ubuntu-latest
+    permissions: write-all
 
     steps:
       - name: Harden Runner
