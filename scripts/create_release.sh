@@ -16,6 +16,7 @@ if [ "$PATCH" != "0" ]; then
   TAG="$VERSION"
   NEXT_MINOR_BRANCH="${MAJOR}.$((MINOR+1)).x"
   MERGE_UP_BRANCH="merge-up/${VERSION}-to-${NEXT_MINOR_BRANCH}"
+  NEXT_PATCH_RELEASE="${MAJOR}.${MINOR}.$((PATCH+1))" # "2.3.2"
 
   echo "==> PATCH release: Creating tag $TAG from $FROM_BRANCH, merging up to $NEXT_MINOR_BRANCH"
   gh release create "$TAG" --generate-notes -t "Release $TAG" --discussion-category releases --target "$FROM_BRANCH"
@@ -32,6 +33,13 @@ if [ "$PATCH" != "0" ]; then
     --base "$NEXT_MINOR_BRANCH" \
     --head "$MERGE_UP_BRANCH"
 
+  # Create milestone for next patch release (E.G 2.3.1)
+  gh api \
+    --method POST \
+    repos/"${REPOSITORY}"/milestones \
+    -f title="${NEXT_PATCH_RELEASE}" \
+    -f state='open' \
+
 elif [ "$PATCH" = "0" ] && [ "$MINOR" != "0" ]; then
   # MINOR RELEASE
   TAG="$VERSION"
@@ -39,6 +47,7 @@ elif [ "$PATCH" = "0" ] && [ "$MINOR" != "0" ]; then
   CURRENT_BRANCH="frankenphp" # @TODO: Change to the correct branch after testing
   NEW_BRANCH="${MAJOR}.$((MINOR+1)).x"
   NEXT_MINOR_RELEASE="${MAJOR}.$((MINOR+1)).0" # "3.1.x"
+  NEXT_PATCH_RELEASE="${MAJOR}.$((MINOR+1)).1" # "3.1.1"
 
   echo "==> MINOR release: Creating tag ${TAG} from $CURRENT_BRANCH, new branch $NEW_BRANCH, set default"
 
@@ -50,13 +59,21 @@ elif [ "$PATCH" = "0" ] && [ "$MINOR" != "0" ]; then
 
   gh repo edit "${REPOSITORY}" --default-branch "${NEW_BRANCH}"
 
+  # Create milestone for next minor release (E.G 2.4.0)
   gh api \
     --method POST \
     repos/"${REPOSITORY}"/milestones \
     -f title="${NEXT_MINOR_RELEASE}" \
     -f state='open' \
 
-  ./scripts/bump_version_dev.sh "${NEXT_MINOR_RELEASE}"-dev
+  # Create milestone for next patch release (E.G 2.3.1)
+  gh api \
+    --method POST \
+    repos/"${REPOSITORY}"/milestones \
+    -f title="${NEXT_PATCH_RELEASE}" \
+    -f state='open' \
+
+  #./scripts/bump_version_dev.sh "${NEXT_MINOR_RELEASE}"-dev
 
 else
   # MAJOR RELEASE
@@ -81,5 +98,5 @@ else
     -f title="${NEXT_MINOR_RELEASE}" \
     -f state='open' \
 
-  ./scripts/bump_version_dev.sh "${NEXT_MINOR_RELEASE}"-dev
+  #./scripts/bump_version_dev.sh "${NEXT_MINOR_RELEASE}"-dev
 fi
