@@ -111,6 +111,12 @@ jobs:
           go-version: "1.24"
           cache-dependency-path: frankenphp/go.sum
 
+      - name: Copy app to build dir
+        working-directory: ./frankenphp
+        run: |
+            cp "../build/dist/SolidInvoice-"$SOLIDINVOICE_VERSION".tar.gz" ./app.tar.gz
+            gunzip -f app.tar.gz
+
       - name: Build SolidInvoice
         run: ./build-static.sh
         working-directory: ./frankenphp
