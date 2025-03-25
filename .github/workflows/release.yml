@@ -104,6 +104,7 @@ jobs:
         run: "./scripts/build_dist.sh ${{ needs.prepare.outputs.ref }} ${{ needs.prepare.outputs.ref }}"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE:
 
       - uses: actions/setup-go@v5
         with:
