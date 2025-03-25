@@ -4,7 +4,7 @@
 if [ -n "$GITHUB_ACTIONS" ]; then
   git config --local user.email "action@github.com"
   git config --local user.name "GitHub Action"
-  git remote set-url origin https://"${GITHUB_ACTOR}":"${GITHUB_TOKEN}"@github.com/"${GITHUB_REPOSITORY}".git
+  git remote set-url origin https://"${GITHUB_ACTOR}":"${GH_TOKEN}"@github.com/"${GITHUB_REPOSITORY}".git
 fi
 
 # File path
