@@ -46,6 +46,6 @@ jq --arg version "$next_version" '.version=$version' --indent 4 $COMPOSER_JSON >
 
 composer update --lock
 
-#git add $FILE $PACKAGE_JSON $COMPOSER_JSON
-#git commit -m "Release version $next_version"
-#git push
+git add $FILE $PACKAGE_JSON $COMPOSER_JSON
+git commit -m "Release version $next_version"
+git push
