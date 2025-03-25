@@ -61,8 +61,8 @@ zip -qr "${DIST_DIR}/SolidInvoice-$VERSION".zip ./
 tar -czf "${DIST_DIR}/SolidInvoice-$VERSION".tar.gz ./
 
 if [ -n "${RELEASE}" ]; then
-	gh release upload "${SOLIDINVOICE_VERSION}" "${DIST_DIR}"/SolidInvoice-"${VERSION}".zip --repo pierredup/solidinvoice --clobber
-	gh release upload "${SOLIDINVOICE_VERSION}" "${DIST_DIR}"/SolidInvoice-"${VERSION}".tar.gz --repo pierredup/solidinvoice --clobber
+	gh release upload "${VERSION}" "${DIST_DIR}"/SolidInvoice-"${VERSION}".zip --repo pierredup/solidinvoice --clobber
+	gh release upload "${VERSION}" "${DIST_DIR}"/SolidInvoice-"${VERSION}".tar.gz --repo pierredup/solidinvoice --clobber
 fi
 
 cd ../ && rm -Rf "./SolidInvoice"
