@@ -21,9 +21,9 @@ if [ "$PATCH" != "0" ]; then
   gh release create "$TAG" --generate-notes -t "Release $TAG" --discussion-category releases --target "$FROM_BRANCH"
 
   # Create dedicated merge-up branch
-  gh api --method POST repos/${REPOSITORY}/git/refs \
+  gh api --method POST repos/"${REPOSITORY}"/git/refs \
     -f ref="refs/heads/${MERGE_UP_BRANCH}" \
-    -f sha="$(gh api repos/${REPOSITORY}/git/refs/heads/${FROM_BRANCH} --jq '.object.sha')"
+    -f sha="$(gh api repos/"${REPOSITORY}"/git/refs/heads/"${FROM_BRANCH}" --jq '.object.sha')"
 
   # Create merge-up PR
   gh pr create \
@@ -34,7 +34,6 @@ if [ "$PATCH" != "0" ]; then
 
 elif [ "$PATCH" = "0" ] && [ "$MINOR" != "0" ]; then
   # MINOR RELEASE
-  PREV_BRANCH="${MAJOR}.$((MINOR-1)).x"
   TAG="$VERSION"
   #CURRENT_BRANCH="${MAJOR}.${MINOR}.x"
   CURRENT_BRANCH="frankenphp" # @TODO: Change to the correct branch after testing
@@ -45,15 +44,15 @@ elif [ "$PATCH" = "0" ] && [ "$MINOR" != "0" ]; then
 
   gh release create "${TAG}" --generate-notes -t "Release ${TAG}" --discussion-category releases --target "${CURRENT_BRANCH}"
 
-  gh api --method POST repos/${REPOSITORY}/git/refs \
+  gh api --method POST repos/"${REPOSITORY}"/git/refs \
     -f ref="refs/heads/${NEW_BRANCH}" \
-    -f sha="$(gh api repos/${REPOSITORY}/git/refs/heads/${CURRENT_BRANCH} --jq '.object.sha')"
+    -f sha="$(gh api repos/"${REPOSITORY}"/git/refs/heads/${CURRENT_BRANCH} --jq '.object.sha')"
 
   gh repo edit "${REPOSITORY}" --default-branch "${NEW_BRANCH}"
 
   gh api \
     --method POST \
-    repos/${REPOSITORY}/milestones \
+    repos/"${REPOSITORY}"/milestones \
     -f title="${NEXT_MINOR_RELEASE}" \
     -f state='open' \
 
@@ -70,16 +69,17 @@ else
 
   gh release create "${TAG}" --generate-notes -t "Release ${TAG}" --discussion-category releases --target "${CUR_MAJOR_BRANCH}"
 
-  gh api --method POST repos/${REPOSITORY}/git/refs \
+  gh api --method POST repos/"${REPOSITORY}"/git/refs \
     -f ref="refs/heads/${NEXT_MINOR_BRANCH}" \
-    -f sha="$(gh api repos/${REPOSITORY}/git/refs/heads/${CUR_MAJOR_BRANCH} --jq '.object.sha')"
+    -f sha="$(gh api repos/"${REPOSITORY}"/git/refs/heads/"${CUR_MAJOR_BRANCH}" --jq '.object.sha')"
 
   gh repo edit "${REPOSITORY}" --default-branch "${NEXT_MINOR_BRANCH}"
 
   gh api \
     --method POST \
-    repos/${REPOSITORY}/milestones \
+    repos/"${REPOSITORY}"/milestones \
     -f title="${NEXT_MINOR_RELEASE}" \
     -f state='open' \
 
   ./scripts/bump_version_dev.sh "${NEXT_MINOR_RELEASE}"-dev
+fi
