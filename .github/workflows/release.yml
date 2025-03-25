@@ -74,12 +74,24 @@ jobs:
 
   build-mac:
     name: Build MACOS
-    runs-on: ${{ matrix.platform == 'arm64' && 'macos-14' || 'macos-13' }}
     needs: [prepare]
     strategy:
       fail-fast: false
       matrix:
-        platform: ["arm64", "x86_64"]
+        #platform: ["arm64", "x86_64"]
+        include:
+          - platform: arm64
+            os: macos-14
+          - platform: x86_64
+            os: macos-13
+          - platform: arm64
+            os: ubuntu-24.04-arm
+          - platform: x86_64
+            os: ubuntu-24.04
+          #- platform: aarch64
+          #  os: ubuntu-24.04
+    #runs-on: ${{ matrix.platform == 'arm64' && 'macos-14' || 'macos-13' }}
+    runs-on: ${{ matrix.os }}
     env:
       HOMEBREW_NO_AUTO_UPDATE: 1
       SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
@@ -121,5 +133,5 @@ jobs:
         run: ./build-static.sh
         working-directory: ./frankenphp
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RELEASE: 1
