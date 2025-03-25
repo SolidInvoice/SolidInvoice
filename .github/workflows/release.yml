@@ -131,6 +131,13 @@ jobs:
             cp "../build/dist/SolidInvoice-"$SOLIDINVOICE_VERSION".tar.gz" ./app.tar.gz
             gunzip -f app.tar.gz
 
+      - name: Set env variables for Linux
+        if: ${{ matrix.os == 'ubuntu-24.04' }} || ${{ matrix.os == 'ubuntu-24.04-arm' }}
+        run: |
+            echo "SPC_DEFAULT_C_FLAGS=-fPIE -fPIC -O3 -march=native" >> $GITHUB_ENV
+            echo "SPC_LIBC=musl" >> $GITHUB_ENV
+            echo "SPC_CMD_VAR_PHP_MAKE_EXTRA_LDFLAGS_PROGRAM=-Wl,-O3 -pie" >> $GITHUB_ENV
+
       - name: Build SolidInvoice
         run: ./build-static.sh
         working-directory: ./frankenphp
