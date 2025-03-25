@@ -36,7 +36,6 @@ else
 fi
 
 if [ -z "${PHP_EXTENSIONS}" ]; then
-	#if [ -n "${EMBED}" ] && [ -f "${EMBED}/composer.json" ]; then
 	cd "../"
 	#	# read the composer.json file and extract the required PHP extensions
 	#	# remove internal extensions from the list: https://github.com/crazywhalecc/static-php-cli/blob/4b16631d45a57370b4747df15c8f105130e96d03/src/globals/defines.php#L26-L34
@@ -81,6 +80,8 @@ elif [ -d ".git/" ]; then
 fi
 
 bin="solidinvoice-${os}-${arch}"
+
+[ "$GOOS" == "windows" ] && bin="solidinvoice-${os}-${arch}.exe"
 
 if [ -n "${CLEAN}" ]; then
 	rm -Rf dist/
@@ -255,14 +256,7 @@ fi
 
 cd ../
 
-# Embed PHP app, if any
-#if [ -n "${EMBED}" ] && [ -f "${EMBED}" ]; then
-if [ -n "${EMBED}" ]; then
-	#tar -cf app.tar -C "${EMBED}" .
-	cp ${EMBED} app.tar
-	# gunzip --force app.tar.gz
-	${md5binary} app.tar | awk '{printf $1}' >app_checksum.txt
-fi
+${md5binary} app.tar | awk '{printf $1}' >app_checksum.txt
 
 if [ -z "${XCADDY_ARGS}" ]; then
 	XCADDY_ARGS="--with github.com/dunglas/caddy-cbrotli --with github.com/dunglas/mercure/caddy --with github.com/dunglas/vulcain/caddy"
@@ -280,11 +274,6 @@ CGO_ENABLED=1 \
 	XCADDY_DEBUG="${XCADDY_DEBUG}" \
 	go build -buildmode=pie -tags cgo,netgo,osusergo,static_build,nobadger,nowatcher,nomysql,nopgx -ldflags "-linkmode=external -extldflags '-static-pie ${extraExtldflags}' ${extraLdflags} -X 'github.com/caddyserver/caddy/v2.CustomVersion=SolidInvoice ${SOLIDINVOICE_VERSION} PHP ${LIBPHP_VERSION} Caddy'" \
 	-o "./dist/${bin}" \
-
-if [ -f "${EMBED}" ]; then
-	truncate -s 0 app.tar
-	truncate -s 0 app_checksum.txt
-fi
 
 if type "upx" >/dev/null 2>&1 && [ -z "${DEBUG_SYMBOLS}" ] && [ -z "${NO_COMPRESS}" ]; then
 	upx --best "dist/${bin}"

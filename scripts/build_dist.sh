@@ -32,34 +32,37 @@ ROOT_DIR=$( dirname "$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null 
 BUILD_DIR="$ROOT_DIR/build"
 DIST_DIR="$BUILD_DIR/dist/"
 
-function generateRelease() {
-    rm -Rf build/*
 
-    mkdir -p "${BUILD_DIR}"
-    mkdir -p "$DIST_DIR"
+rm -Rf build/*
 
-    cd "${BUILD_DIR}"
+mkdir -p "${BUILD_DIR}"
+mkdir -p "$DIST_DIR"
 
-    git clone "${REPO}" "./SolidInvoice"
-    cd "./SolidInvoice"
-    git checkout "${BRANCH}"
+cd "${BUILD_DIR}"
 
-    composer config --no-plugins allow-plugins.symfony/flex true
-    composer install -o -n --no-dev -vvv
-    bun install
-    bun run build
-    rm -Rf node_modules .env .git
-    chmod -R 0777 var
+git clone "${REPO}" "./SolidInvoice"
+cd "./SolidInvoice"
+git checkout "${BRANCH}"
 
-    echo "SOLIDINVOICE_ENV=$SOLIDINVOICE_ENV" >> .env
-    echo "SOLIDINVOICE_DEBUG=$SOLIDINVOICE_DEBUG" >> .env
+composer config --no-plugins allow-plugins.symfony/flex true
+composer install -o -n --no-dev -a
+#composer require runtime/frankenphp-symfony
+bun install
+bun run build
+rm -Rf node_modules .env .git
+chmod -R 0777 var
 
-    chmod a+w config
+echo "SOLIDINVOICE_ENV=$SOLIDINVOICE_ENV" >> .env
+echo "SOLIDINVOICE_DEBUG=$SOLIDINVOICE_DEBUG" >> .env
 
-    zip -qr "${DIST_DIR}/SolidInvoice-$VERSION".zip ./
-    tar -czf "${DIST_DIR}/SolidInvoice-$VERSION".tar.gz ./
+chmod a+w config
 
-    cd ../ && rm -Rf "./SolidInvoice"
-}
+zip -qr "${DIST_DIR}/SolidInvoice-$VERSION".zip ./
+tar -czf "${DIST_DIR}/SolidInvoice-$VERSION".tar.gz ./
 
-generateRelease
+if [ -n "${RELEASE}" ]; then
+	gh release upload "${SOLIDINVOICE_VERSION}" ${DIST_DIR}/SolidInvoice-$VERSION".zip --repo solidinvoice/solidinvoice --clobber
+	gh release upload "${SOLIDINVOICE_VERSION}" "${DIST_DIR}/SolidInvoice-$VERSION".tar.gz --repo solidinvoice/solidinvoice --clobber
+fi
+
+cd ../ && rm -Rf "./SolidInvoice"

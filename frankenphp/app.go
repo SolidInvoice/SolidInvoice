@@ -62,9 +62,6 @@ func init() {
 var caddyExtraOptions = `
 tls internal
 `
-var caddyGlobalOptions = `
-auto_https disable_redirects
-`
 
 var defaultServerIp string
 
