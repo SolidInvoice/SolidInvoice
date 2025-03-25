@@ -21,7 +21,8 @@ if [ "$PATCH" != "0" ]; then
   NEXT_PATCH_RELEASE="${MAJOR}.${MINOR}.$((PATCH+1))" # "2.3.2"
 
   echo "==> PATCH release: Creating tag $TAG from $FROM_BRANCH, merging up to $NEXT_MINOR_BRANCH"
-  gh release create "$TAG" -t "Release $TAG" --discussion-category "Releases" --target "$FROM_BRANCH" --generate-notes
+  # gh release create "$TAG" -t "Release $TAG" --discussion-category "Releases" --target "$FROM_BRANCH" --generate-notes
+  gh release create "$TAG" -t "Release $TAG" --target "$FROM_BRANCH" --generate-notes
 
   # Create dedicated merge-up branch
   gh api --method POST repos/"${REPOSITORY}"/git/refs \
@@ -53,7 +54,8 @@ elif [ "$PATCH" = "0" ] && [ "$MINOR" != "0" ]; then
 
   echo "==> MINOR release: Creating tag ${TAG} from $CURRENT_BRANCH, new branch $NEW_BRANCH, set default"
 
-  gh release create "${TAG}" -t "Release ${TAG}" --discussion-category "Releases" --target "${CURRENT_BRANCH}" --generate-notes
+  # gh release create "${TAG}" -t "Release ${TAG}" --discussion-category "Releases" --target "${CURRENT_BRANCH}" --generate-notes
+  gh release create "${TAG}" -t "Release ${TAG}" --target "${CURRENT_BRANCH}" --generate-notes
 
   gh api --method POST repos/"${REPOSITORY}"/git/refs \
     -f ref="refs/heads/${NEW_BRANCH}" \
@@ -87,7 +89,8 @@ else
 
   echo "==> MAJOR release: Tag from $CUR_MAJOR_BRANCH, create $NEXT_MINOR_BRANCH, set default to $NEXT_MINOR_BRANCH"
 
-  gh release create "${TAG}" -t "Release ${TAG}" --discussion-category "Releases" --target "${CUR_MAJOR_BRANCH}" --generate-notes
+  # gh release create "${TAG}" -t "Release ${TAG}" --discussion-category "Releases" --target "${CUR_MAJOR_BRANCH}" --generate-notes
+  gh release create "${TAG}" -t "Release ${TAG}" --target "${CUR_MAJOR_BRANCH}" --generate-notes
 
   gh api --method POST repos/"${REPOSITORY}"/git/refs \
     -f ref="refs/heads/${NEXT_MINOR_BRANCH}" \
