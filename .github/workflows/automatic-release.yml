@@ -5,12 +5,17 @@ on:
     types:
       - closed
 
+permissions:
+  contents: read
+
 jobs:
   release:
     name: "GIT tag, release & create merge-up PR"
     runs-on: ubuntu-latest
-    permissions: write-all
-
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@4d991eb9b905ef189e4c376166672c3f2f230481
@@ -62,7 +67,7 @@ jobs:
       - name: Release
         run: "./scripts/create_release.sh ${{ github.event.milestone.title }} ${{ github.repository }}"
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
 
       #- name: Release
       #  uses: laminas/automatic-releases@a6e41a9a66b415667863ecbf06633181fcd9dd77

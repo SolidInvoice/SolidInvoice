@@ -1,9 +1,8 @@
 name: Automatic Releases
 
 on:
-  milestone:
-    types:
-      - closed
+  schedule:
+      - cron: '0 0 0 0 0'
 
 jobs:
   release:
