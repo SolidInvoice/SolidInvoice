@@ -31,7 +31,6 @@ jobs:
     steps:
       - name: Get version
         id: check
-        if: github.event_name == 'schedule'
         run: |
           ref="${{ (github.ref_type == 'tag' && github.ref_name) || (github.event_name == 'workflow_dispatch' && inputs.version) || '' }}"
           if [[ -z "${ref}" ]]; then
