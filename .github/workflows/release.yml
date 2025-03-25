@@ -73,8 +73,10 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   build-mac:
-    name: Build MACOS
+    name: Build ${{ matrix.os }}-${{ matrix.platform }} binaries
     needs: [prepare]
+    permissions:
+      contents: write
     strategy:
       fail-fast: false
       matrix:
