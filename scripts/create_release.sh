@@ -85,7 +85,7 @@ else
 
   echo "==> MAJOR release: Tag from $CUR_MAJOR_BRANCH, create $NEXT_MINOR_BRANCH, set default to $NEXT_MINOR_BRANCH"
 
-  gh release create "${TAG}" --generate-notes -t "Release ${TAG}" --discussion-category releases --target "${CUR_MAJOR_BRANCH}"
+  gh release create "${TAG}" --generate-notes -t "Release ${TAG}" --discussion-category Releases --target "${CUR_MAJOR_BRANCH}"
 
   gh api --method POST repos/"${REPOSITORY}"/git/refs \
     -f ref="refs/heads/${NEXT_MINOR_BRANCH}" \
