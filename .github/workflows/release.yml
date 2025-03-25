@@ -1,9 +1,20 @@
 name: "Release"
 
+concurrency:
+  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.ref }}
+
 on:
   push:
     tags:
       - "*"
+  workflow_dispatch:
+    inputs:
+      #checkov:skip=CKV_GHA_7
+      version:
+        description: "SolidInvoice version"
+        required: false
+        type: string
 
 env:
   SOLIDINVOICE_ENV: prod
@@ -13,18 +24,35 @@ permissions:  # added using https://github.com/step-security/secure-workflows
   contents: read
 
 jobs:
-  build:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      ref: ${{ steps.check.outputs.ref }}
+    steps:
+      - name: Get version
+        id: check
+        if: github.event_name == 'schedule'
+        run: |
+          ref="${{ (github.ref_type == 'tag' && github.ref_name) || (github.event_name == 'workflow_dispatch' && inputs.version) || '' }}"
+          if [[ -z "${ref}" ]]; then
+            ref="$(gh release view --repo pierredup/solidinvoice --json tagName --jq '.tagName')"
+          fi
+
+          echo "ref=${ref}" >> "${GITHUB_OUTPUT}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build-dist:
     permissions:
       contents: write  # for actions/create-release to create a release
-    name: Upload Release Asset
+    name: Build Assets
+    needs: [prepare]
     runs-on: ubuntu-latest
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@4d991eb9b905ef189e4c376166672c3f2f230481
         with:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
-
-      - uses: FranzDiebold/github-env-vars-action@1791216cd180e6578dd1d67fb8d2852b883a5f53
 
       - name: Checkout code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -40,52 +68,52 @@ jobs:
       - uses: oven-sh/setup-bun@4bc047ad259df6fc24a6c9b0f9a0cb08cf17fbe5 # v2
 
       - name: Build Release Artifact
-        run: "./scripts/build_dist.sh ${{ env.CI_REF_NAME }} ${{ env.CI_REF_NAME }}"
+        run: "./scripts/build_dist.sh ${{ needs.prepare.outputs.ref }} ${{ needs.prepare.outputs.ref }}"
         env:
           RELEASE: 1
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      #- name: Create release
-      #  id: create_release
-      #  uses: actions/create-release@0cb9c9b65d5d1901c1f53e5e66eaf4afd303e70e
-      #  env:
-      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #  with:
-      #    tag_name: ${{ github.ref }}
-      #    release_name: ${{ env.CI_REF_NAME }}
-      #    draft: true
-      #    body: TODO
+  build-mac:
+    name: Build MACOS
+    runs-on: ${{ matrix.platform == 'arm64' && 'macos-14' || 'macos-13' }}
+    needs: [prepare]
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: ["arm64", "x86_64"]
+    env:
+      HOMEBREW_NO_AUTO_UPDATE: 1
+      SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
+      PHP_VERSION: 8.4
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ needs.prepare.outputs.ref }}
 
-      #- name: Create ZIP distribution
-      #  run: zip -r SolidInvoice-${{ env.CI_REF_NAME }}.zip ./
+      - name: Install PHP
+        uses: shivammathur/setup-php@9e72090525849c5e82e596468b86eb55e9cc5401
+        with:
+          coverage: none
+          extensions: curl, gd, intl, opcache, json, openssl, pdo, soap, xsl, :xdebug
+          ini-values: memory_limit=-1
+          php-version: ${{ env.PHP_VERSION }}
 
-      #- name: Upload ZIP distribution
-      #  run: "gh release upload "${{ env.CI_REF_NAME }}" "./SolidInvoice-${{ env.CI_REF_NAME }}.zip" --repo ${{ github.repository }} --clobber"
-      # env:
-      #      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: oven-sh/setup-bun@4bc047ad259df6fc24a6c9b0f9a0cb08cf17fbe5 # v2
 
-      #- name: Upload ZIP distribution
-      #  uses: actions/upload-release-asset@e8f9f06c4b078e705bd2ea027f0926603fc9b4d5
-      #  env:
-      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #  with:
-      #      upload_url: ${{ steps.create_release.outputs.upload_url }}
-      #      asset_path: ./SolidInvoice-${{ env.CI_REF_NAME }}.zip
-      #      asset_name: SolidInvoice-${{ env.CI_REF_NAME }}.zip
-      #      asset_content_type: application/zip
+      - name: Build Release Artifact
+        run: "./scripts/build_dist.sh ${{ needs.prepare.outputs.ref }} ${{ needs.prepare.outputs.ref }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      #- name: Delete ZIP File
-      #  run: rm -Rf SolidInvoice-${{ env.CI_REF_NAME }}.zip
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.24"
+          cache-dependency-path: frankenphp/go.sum
 
-      #- name: Upload TAR distribution
-      #  uses: actions/upload-release-asset@e8f9f06c4b078e705bd2ea027f0926603fc9b4d5
-      #  env:
-      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #  with:
-      #      upload_url: ${{ steps.create_release.outputs.upload_url }}
-      #      asset_path: ./SolidInvoice-${{ env.CI_REF_NAME }}.tar.gz
-      #      asset_name: SolidInvoice-${{ env.CI_REF_NAME }}.tar.gz
-      #      asset_content_type: application/gzip
-
-      #- name: Delete TAR File
-      #  run: rm -Rf SolidInvoice-${{ env.CI_REF_NAME }}.tar.gz
+      - name: Build SolidInvoice
+        run: ./build-static.sh
+        working-directory: ./frankenphp
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE: 1
