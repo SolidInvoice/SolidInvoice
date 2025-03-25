@@ -24,7 +24,7 @@ jobs:
         with:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
 
-      - uses: FranzDiebold/github-env-vars-action@1791216cd180e6578dd1d67fb8d2852b883a5f53
+      #- uses: FranzDiebold/github-env-vars-action@1791216cd180e6578dd1d67fb8d2852b883a5f53
 
       - name: Checkout code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -63,16 +63,16 @@ jobs:
         run: rm -Rf node_modules vendor-bin .github .git
         working-directory: solidinvoice
 
-      - name: Create release
-        id: create_release
-        uses: actions/create-release@0cb9c9b65d5d1901c1f53e5e66eaf4afd303e70e
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ env.CI_REF_NAME }}
-          draft: true
-          body: TODO
+      #- name: Create release
+      #  id: create_release
+      #  uses: actions/create-release@0cb9c9b65d5d1901c1f53e5e66eaf4afd303e70e
+      #  env:
+      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #  with:
+      #    tag_name: ${{ github.ref }}
+      #    release_name: ${{ env.CI_REF_NAME }}
+      #    draft: true
+      #    body: TODO
 
       - name: Create ZIP distribution
         run: zip -r SolidInvoice-${{ env.CI_REF_NAME }}.zip ./
@@ -81,30 +81,40 @@ jobs:
         run: ls -la
 
       - name: Upload ZIP distribution
-        uses: actions/upload-release-asset@e8f9f06c4b078e705bd2ea027f0926603fc9b4d5
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-            upload_url: ${{ steps.create_release.outputs.upload_url }}
-            asset_path: ./SolidInvoice-${{ env.CI_REF_NAME }}.zip
-            asset_name: SolidInvoice-${{ env.CI_REF_NAME }}.zip
-            asset_content_type: application/zip
+            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: "gh release upload "${{ env.CI_REF_NAME }}" "./SolidInvoice-${{ env.CI_REF_NAME }}.zip" --repo ${{ github.repository }} --clobber"
 
-      - name: Delete ZIP File
-        run: rm -Rf SolidInvoice-${{ env.CI_REF_NAME }}.zip
+      #- name: Upload ZIP distribution
+      #  uses: actions/upload-release-asset@e8f9f06c4b078e705bd2ea027f0926603fc9b4d5
+      #  env:
+      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #  with:
+      #      upload_url: ${{ steps.create_release.outputs.upload_url }}
+      #      asset_path: ./SolidInvoice-${{ env.CI_REF_NAME }}.zip
+      #      asset_name: SolidInvoice-${{ env.CI_REF_NAME }}.zip
+      #      asset_content_type: application/zip
+
+      #- name: Delete ZIP File
+      #  run: rm -Rf SolidInvoice-${{ env.CI_REF_NAME }}.zip
 
       - name: Create TAR distribution
         run: tar -zcvf SolidInvoice-${{ env.CI_REF_NAME }}.tar.gz ./solidinvoice
 
       - name: Upload TAR distribution
-        uses: actions/upload-release-asset@e8f9f06c4b078e705bd2ea027f0926603fc9b4d5
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-            upload_url: ${{ steps.create_release.outputs.upload_url }}
-            asset_path: ./SolidInvoice-${{ env.CI_REF_NAME }}.tar.gz
-            asset_name: SolidInvoice-${{ env.CI_REF_NAME }}.tar.gz
-            asset_content_type: application/gzip
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: "gh release upload "${{ env.CI_REF_NAME }}" "./SolidInvoice-${{ env.CI_REF_NAME }}.tar.gz" --repo ${{ github.repository }} --clobber"
 
-      - name: Delete TAR File
-        run: rm -Rf SolidInvoice-${{ env.CI_REF_NAME }}.tar.gz
+      #- name: Upload TAR distribution
+      #  uses: actions/upload-release-asset@e8f9f06c4b078e705bd2ea027f0926603fc9b4d5
+      #  env:
+      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #  with:
+      #      upload_url: ${{ steps.create_release.outputs.upload_url }}
+      #      asset_path: ./SolidInvoice-${{ env.CI_REF_NAME }}.tar.gz
+      #      asset_name: SolidInvoice-${{ env.CI_REF_NAME }}.tar.gz
+      #      asset_content_type: application/gzip
+
+      #- name: Delete TAR File
+      #  run: rm -Rf SolidInvoice-${{ env.CI_REF_NAME }}.tar.gz
