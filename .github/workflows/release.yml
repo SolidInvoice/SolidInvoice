@@ -92,8 +92,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        with:
-          ref: ${{ needs.prepare.outputs.ref }}
 
       - name: Install PHP
         uses: shivammathur/setup-php@9e72090525849c5e82e596468b86eb55e9cc5401
@@ -158,8 +156,6 @@ jobs:
 #           echo "sanitized_platform=${platform//\//-}" >> "${GITHUB_OUTPUT}"
 #      - name: Checkout code
 #        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-#        with:
-#          ref: ${{ needs.prepare.outputs.ref }}
 #
 #      - name: Install PHP
 #        uses: shivammathur/setup-php@9e72090525849c5e82e596468b86eb55e9cc5401
