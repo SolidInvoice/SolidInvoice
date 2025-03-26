@@ -13,7 +13,7 @@ group "default" {
     ]
 }
 
-target "linux_amd64_binary" {
+target "linux-arm64_binary" {
     context = "."
     dockerfile = "docker/Dockerfile.linux-static-build"
     platforms = ["linux/amd64"]

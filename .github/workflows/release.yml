@@ -188,9 +188,9 @@ jobs:
         #run: ./scripts/build_binary.sh ${{ needs.prepare.outputs.ref }}
         uses: docker/bake-action@v6
         with:
-            targets: linux_${{ steps.prepare.outputs.sanitized_platform }}_binary
+            targets: ${{ steps.prepare.outputs.sanitized_platform }}_binary
             set: |
-                linux_${{ steps.prepare.outputs.sanitized_platform }}_binary.args.NO_COMPRESS=${{ (matrix.platform == 'linux/arm64') && '1' || '0' }}
+                ${{ steps.prepare.outputs.sanitized_platform }}_binary.args.NO_COMPRESS=${{ (matrix.platform == 'linux/arm64') && '1' || '0' }}
                 *.platform=${{ matrix.platform }}
         env:
           # GITHUB_TOKEN needs to be defined twice here.
