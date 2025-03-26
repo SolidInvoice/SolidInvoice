@@ -134,7 +134,7 @@ else
 	fi
 
 	${spcCommand} doctor --auto-fix
-	${spcCommand} download --with-php="${PHP_VERSION}" --for-extensions="${PHP_EXTENSIONS}" --for-libs="${PHP_EXTENSION_LIBS}" --ignore-cache-sources=php-src --prefer-pre-built
+	${spcCommand} download --with-php="${PHP_VERSION}" --for-extensions="${PHP_EXTENSIONS}" --for-libs="${PHP_EXTENSION_LIBS}" --ignore-cache-sources=php-src --prefer-pre-built --debug -vvv
 	# shellcheck disable=SC2086
 	${spcCommand} build --debug --enable-zts --build-embed ${extraOpts} "${PHP_EXTENSIONS}" --with-libs="${PHP_EXTENSION_LIBS}"
 fi
