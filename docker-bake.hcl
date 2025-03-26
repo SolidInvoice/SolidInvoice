@@ -2,7 +2,7 @@ variable "IMAGE_NAME" {
     default = "solidinvoice/solidinvoice"
 }
 
-variable "VERSION" {
+variable "SOLIDINVOICE_VERSION" {
     default = "dev"
 }
 
@@ -18,7 +18,7 @@ target "linux-arm64_binary" {
     dockerfile = "docker/Dockerfile.linux-static-build"
     platforms = ["linux/amd64"]
     args = {
-        SOLIDINVOICE_VERSION = "${VERSION}"
+        SOLIDINVOICE_VERSION = "${SOLIDINVOICE_VERSION}"
     }
 }
 
@@ -27,6 +27,6 @@ target "linux_arm64_binary" {
     dockerfile = "docker/Dockerfile.linux-static-build"
     platforms = ["linux/amd64"]
     args = {
-        SOLIDINVOICE_VERSION = "${VERSION}"
+        SOLIDINVOICE_VERSION = "${SOLIDINVOICE_VERSION}"
     }
 }

@@ -199,3 +199,4 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RELEASE: 1
+          SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
