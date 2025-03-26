@@ -1,0 +1,10 @@
+FROM dunglas/frankenphp:static-builder-musl
+
+ARG PHP_VERSION=7.4.0
+ARG SOLIDINVOICE_VERSION=dev
+
+COPY . /app
+
+WORKDIR /app
+
+RUN ./scripts/build_binary.sh $SOLIDINVOICE_VERSION

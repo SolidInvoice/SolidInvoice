@@ -13,22 +13,20 @@ group "default" {
     ]
 }
 
-target "linux_amd64" {
+target "linux_amd64_binary" {
     context = "."
-    dockerfile = "docker/Dockerfile.build"
+    dockerfile = "docker/Dockerfile.linux-static-build"
     platforms = ["linux/amd64"]
-    tags = ["${IMAGE_NAME}:${VERSION}-linux_amd64"]
     args = {
-        BINARY = "frankenphp/dist/solidinvoice-mac-arm64"
+        SOLIDINVOICE_VERSION = "${VERSION}"
     }
 }
 
-target "linux_arm64" {
+target "linux_arm64_binary" {
     context = "."
-    dockerfile = "docker/Dockerfile.build"
-    platforms = ["linux/arm64"]
-    tags = ["${IMAGE_NAME}:${VERSION}-linux_arm64"]
+    dockerfile = "docker/Dockerfile.linux-static-build"
+    platforms = ["linux/amd64"]
     args = {
-        BINARY = "frankenphp/dist/solidinvoice-mac-arm64"
+        SOLIDINVOICE_VERSION = "${VERSION}"
     }
 }
