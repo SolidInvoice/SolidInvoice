@@ -119,7 +119,11 @@ jobs:
       - name: Build SolidInvoice
         run: ./scripts/build_binary.sh ${{ needs.prepare.outputs.ref }}
         env:
+          # GITHUB_TOKEN needs to be defined twice here.
+          # GH_TOKEN is used by the gh cli utility to upload the binary files
+          # GITHUB_TOKEN is used by static-php-cli script to make api calls to Github
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RELEASE: 1
 
 #  build-linux:
@@ -192,5 +196,9 @@ jobs:
 #                ${{ (matrix.platform == 'linux/arm64') && 'linux_${{ env.sanitized_platform }}_binary.args.NO_COMPRESS=1' || '' }}
 #                *.platform=${{ matrix.platform }}
 #        env:
+#          # GITHUB_TOKEN needs to be defined twice here.
+#          # GH_TOKEN is used by the gh cli utility to upload the binary files
+#          # GITHUB_TOKEN is used by static-php-cli script to make api calls to Github
 #          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 #          RELEASE: 1
