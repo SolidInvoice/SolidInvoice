@@ -187,7 +187,7 @@ jobs:
         #run: ./scripts/build_binary.sh ${{ needs.prepare.outputs.ref }}
         uses: docker/bake-action@v6
         with:
-            load: linux_${{ env.sanitized_platform }}_binary
+            targets: linux_${{ env.sanitized_platform }}_binary
             set: |
                 ${{ (matrix.platform == 'linux/arm64') && 'linux_${{ env.sanitized_platform }}_binary.args.NO_COMPRESS=1' || '' }}
                 *.platform=${{ matrix.platform }}
