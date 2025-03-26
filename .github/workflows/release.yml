@@ -71,58 +71,58 @@ jobs:
           RELEASE: 1
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  build-mac:
-    name: Build ${{ matrix.os }}-${{ matrix.platform }} binaries
-    needs: [prepare]
-    permissions:
-      contents: write
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - platform: arm64
-            os: macos-14
-          - platform: x86_64
-            os: macos-13
-    runs-on: ${{ matrix.os }}
-    env:
-      HOMEBREW_NO_AUTO_UPDATE: 1
-      SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
-      PHP_VERSION: 8.3
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-
-      - name: Install PHP
-        uses: shivammathur/setup-php@9e72090525849c5e82e596468b86eb55e9cc5401
-        with:
-          coverage: none
-          extensions: curl, gd, intl, opcache, json, openssl, pdo, soap, xsl, :xdebug
-          ini-values: memory_limit=-1
-          php-version: 8.4 # static-php-cli requires PHP 8.4, but the app must be built with PHP 8.3
-
-      - uses: oven-sh/setup-bun@4bc047ad259df6fc24a6c9b0f9a0cb08cf17fbe5 # v2
-
-      - name: Build Release Artifact
-        run: "./scripts/build_dist.sh ${{ needs.prepare.outputs.ref }} ${{ needs.prepare.outputs.ref }}"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE:
-
-      - uses: actions/setup-go@v5
-        with:
-          go-version: "1.24"
-          cache-dependency-path: frankenphp/go.sum
-
-      - name: Build SolidInvoice
-        run: ./scripts/build_binary.sh ${{ needs.prepare.outputs.ref }}
-        env:
-          # GITHUB_TOKEN needs to be defined twice here.
-          # GH_TOKEN is used by the gh cli utility to upload the binary files
-          # GITHUB_TOKEN is used by static-php-cli script to make api calls to Github
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE: 1
+#  build-mac:
+#    name: Build ${{ matrix.os }}-${{ matrix.platform }} binaries
+#    needs: [prepare]
+#    permissions:
+#      contents: write
+#    strategy:
+#      fail-fast: false
+#      matrix:
+#        include:
+#          - platform: arm64
+#            os: macos-14
+#          - platform: x86_64
+#            os: macos-13
+#    runs-on: ${{ matrix.os }}
+#    env:
+#      HOMEBREW_NO_AUTO_UPDATE: 1
+#      SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
+#      PHP_VERSION: 8.3
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+#
+#      - name: Install PHP
+#        uses: shivammathur/setup-php@9e72090525849c5e82e596468b86eb55e9cc5401
+#        with:
+#          coverage: none
+#          extensions: curl, gd, intl, opcache, json, openssl, pdo, soap, xsl, :xdebug
+#          ini-values: memory_limit=-1
+#          php-version: 8.4 # static-php-cli requires PHP 8.4, but the app must be built with PHP 8.3
+#
+#      - uses: oven-sh/setup-bun@4bc047ad259df6fc24a6c9b0f9a0cb08cf17fbe5 # v2
+#
+#      - name: Build Release Artifact
+#        run: "./scripts/build_dist.sh ${{ needs.prepare.outputs.ref }} ${{ needs.prepare.outputs.ref }}"
+#        env:
+#          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          RELEASE:
+#
+#      - uses: actions/setup-go@v5
+#        with:
+#          go-version: "1.24"
+#          cache-dependency-path: frankenphp/go.sum
+#
+#      - name: Build SolidInvoice
+#        run: ./scripts/build_binary.sh ${{ needs.prepare.outputs.ref }}
+#        env:
+#          # GITHUB_TOKEN needs to be defined twice here.
+#          # GH_TOKEN is used by the gh cli utility to upload the binary files
+#          # GITHUB_TOKEN is used by static-php-cli script to make api calls to Github
+#          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          RELEASE: 1
 
   build-linux:
     name: Build ${{ matrix.os }}-${{ matrix.platform }} binaries
