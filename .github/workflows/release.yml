@@ -124,77 +124,77 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RELEASE: 1
 
-#  build-linux:
-#    name: Build ${{ matrix.os }}-${{ matrix.platform }} binaries
-#    needs: [prepare]
-#    permissions:
-#      contents: write
-#    strategy:
-#      fail-fast: false
-#      matrix:
-#        #platform: ["arm64", "x86_64"]
-#        include:
-#          - platform: linux/arm64
-#            os: ubuntu-24.04-arm
+  build-linux:
+    name: Build ${{ matrix.os }}-${{ matrix.platform }} binaries
+    needs: [prepare]
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        #platform: ["arm64", "x86_64"]
+        include:
+          - platform: linux/arm64
+            os: ubuntu-24.04-arm
 #          - platform: linux/amd64
 #            os: ubuntu-24.04
 #          #- platform: aarch64
 #          #  os: ubuntu-24.04
 #    #runs-on: ${{ matrix.platform == 'arm64' && 'macos-14' || 'macos-13' }}
-#    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
 #    container:
 #      image: dunglas/frankenphp:static-builder-musl
 #      options: --cpus 1
-#    env:
-#      HOMEBREW_NO_AUTO_UPDATE: 1
-#      SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
-#      PHP_VERSION: 8.4
-#    steps:
-#      -  name: Prepare
-#         run: |
-#           platform=${{ matrix.platform }}
-#           echo "sanitized_platform=${platform//\//-}" >> "${GITHUB_OUTPUT}"
-#      - name: Checkout code
-#        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-#
-#      - name: Install PHP
-#        uses: shivammathur/setup-php@9e72090525849c5e82e596468b86eb55e9cc5401
-#        with:
-#          coverage: none
-#          extensions: curl, gd, intl, opcache, json, openssl, pdo, soap, xsl, :xdebug
-#          ini-values: memory_limit=-1
-#          php-version: ${{ env.PHP_VERSION }}
-#
-#      - uses: oven-sh/setup-bun@4bc047ad259df6fc24a6c9b0f9a0cb08cf17fbe5 # v2
-#
-#      # Add support for more platforms with QEMU
-#      # https://github.com/docker/setup-qemu-action
-#      - name: Set up QEMU
-#        uses: docker/setup-qemu-action@v3
-#
-#      - name: Set up Docker Buildx
-#        uses: docker/setup-buildx-action@v3
-#        with:
-#            platforms: ${{ matrix.platform }}
-#
-#      - name: Build Release Artifact
-#        run: "./scripts/build_dist.sh ${{ needs.prepare.outputs.ref }} ${{ needs.prepare.outputs.ref }}"
-#        env:
-#          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          RELEASE:
-#
-#      - name: Build SolidInvoice
-#        #run: ./scripts/build_binary.sh ${{ needs.prepare.outputs.ref }}
-#        uses: docker/bake-action@v6
-#        with:
-#            load: linux_${{ env.sanitized_platform }}_binary
-#            set: |
-#                ${{ (matrix.platform == 'linux/arm64') && 'linux_${{ env.sanitized_platform }}_binary.args.NO_COMPRESS=1' || '' }}
-#                *.platform=${{ matrix.platform }}
-#        env:
-#          # GITHUB_TOKEN needs to be defined twice here.
-#          # GH_TOKEN is used by the gh cli utility to upload the binary files
-#          # GITHUB_TOKEN is used by static-php-cli script to make api calls to Github
-#          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          RELEASE: 1
+    env:
+      HOMEBREW_NO_AUTO_UPDATE: 1
+      SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
+      PHP_VERSION: 8.4
+    steps:
+      -  name: Prepare
+         run: |
+           platform=${{ matrix.platform }}
+           echo "sanitized_platform=${platform//\//-}" >> "${GITHUB_OUTPUT}"
+      - name: Checkout code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@9e72090525849c5e82e596468b86eb55e9cc5401
+        with:
+          coverage: none
+          extensions: curl, gd, intl, opcache, json, openssl, pdo, soap, xsl, :xdebug
+          ini-values: memory_limit=-1
+          php-version: ${{ env.PHP_VERSION }}
+
+      - uses: oven-sh/setup-bun@4bc047ad259df6fc24a6c9b0f9a0cb08cf17fbe5 # v2
+
+      # Add support for more platforms with QEMU
+      # https://github.com/docker/setup-qemu-action
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+            platforms: ${{ matrix.platform }}
+
+      - name: Build Release Artifact
+        run: "./scripts/build_dist.sh ${{ needs.prepare.outputs.ref }} ${{ needs.prepare.outputs.ref }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE:
+
+      - name: Build SolidInvoice
+        #run: ./scripts/build_binary.sh ${{ needs.prepare.outputs.ref }}
+        uses: docker/bake-action@v6
+        with:
+            load: linux_${{ env.sanitized_platform }}_binary
+            set: |
+                ${{ (matrix.platform == 'linux/arm64') && 'linux_${{ env.sanitized_platform }}_binary.args.NO_COMPRESS=1' || '' }}
+                *.platform=${{ matrix.platform }}
+        env:
+          # GITHUB_TOKEN needs to be defined twice here.
+          # GH_TOKEN is used by the gh cli utility to upload the binary files
+          # GITHUB_TOKEN is used by static-php-cli script to make api calls to Github
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE: 1
