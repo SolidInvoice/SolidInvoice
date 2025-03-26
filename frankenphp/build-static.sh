@@ -56,7 +56,7 @@ if ! echo "${PHP_EXTENSION_LIBS}" | grep -q "\bbrotli\b"; then
 fi
 
 if [ -z "${PHP_VERSION}" ]; then
-	export PHP_VERSION="8.4"
+	export PHP_VERSION="8.3"
 fi
 
 if [ -z "${SOLIDINVOICE_VERSION}" ]; then
@@ -278,6 +278,8 @@ CGO_ENABLED=1 \
 if type "upx" >/dev/null 2>&1 && [ -z "${DEBUG_SYMBOLS}" ] && [ -z "${NO_COMPRESS}" ]; then
 	upx --best "dist/${bin}"
 fi
+
+chmod a+x "dist/${bin}"
 
 "dist/${bin}" version
 

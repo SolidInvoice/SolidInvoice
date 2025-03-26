@@ -88,7 +88,7 @@ jobs:
     env:
       HOMEBREW_NO_AUTO_UPDATE: 1
       SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
-      PHP_VERSION: 8.4
+      PHP_VERSION: 8.3
     steps:
       - name: Checkout code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -99,7 +99,7 @@ jobs:
           coverage: none
           extensions: curl, gd, intl, opcache, json, openssl, pdo, soap, xsl, :xdebug
           ini-values: memory_limit=-1
-          php-version: ${{ env.PHP_VERSION }}
+          php-version: 8.4 # static-php-cli requires PHP 8.4, but the app must be built with PHP 8.3
 
       - uses: oven-sh/setup-bun@4bc047ad259df6fc24a6c9b0f9a0cb08cf17fbe5 # v2
 
@@ -148,7 +148,7 @@ jobs:
     env:
       HOMEBREW_NO_AUTO_UPDATE: 1
       SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
-      PHP_VERSION: 8.4
+      PHP_VERSION: 8.3
     steps:
       -  name: Prepare
          run: |
@@ -163,7 +163,7 @@ jobs:
           coverage: none
           extensions: curl, gd, intl, opcache, json, openssl, pdo, soap, xsl, :xdebug
           ini-values: memory_limit=-1
-          php-version: ${{ env.PHP_VERSION }}
+          php-version: 8.4 # static-php-cli requires PHP 8.4, but the app must be built with PHP 8.3
 
       - uses: oven-sh/setup-bun@4bc047ad259df6fc24a6c9b0f9a0cb08cf17fbe5 # v2
 
