@@ -8,8 +8,8 @@ variable "SOLIDINVOICE_VERSION" {
 
 group "default" {
     targets = [
-        "linux_amd64",
-        "linux_arm64",
+        "linux-amd64_binary",
+        "linux-arm64_binary",
     ]
 }
 
@@ -22,7 +22,7 @@ target "linux-arm64_binary" {
     }
 }
 
-target "linux_arm64_binary" {
+target "linux-6amd64_binary" {
     context = "."
     dockerfile = "docker/Dockerfile.linux-static-build"
     platforms = ["linux/amd64"]

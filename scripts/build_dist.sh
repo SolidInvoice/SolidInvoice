@@ -40,9 +40,10 @@ mkdir -p "$DIST_DIR"
 
 cd "${BUILD_DIR}"
 
-git clone "${REPO}" "./SolidInvoice"
+git version
+
+git clone --branch "${BRANCH}" --depth 1 "${REPO}" "./SolidInvoice"
 cd "./SolidInvoice"
-git checkout "${BRANCH}"
 
 composer config --no-plugins allow-plugins.symfony/flex true
 composer install -o -n --no-dev -a --ignore-platform-reqs # Platform requirements can be ignored since it's not needed on the build server
