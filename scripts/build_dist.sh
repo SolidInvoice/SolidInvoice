@@ -45,7 +45,7 @@ cd "./SolidInvoice"
 git checkout "${BRANCH}"
 
 composer config --no-plugins allow-plugins.symfony/flex true
-composer install -o -n --no-dev -a
+composer install -o -n --no-dev -a --ignore-platform-reqs # Platform requirements can be ignored since it's not needed on the build server
 #composer require runtime/frankenphp-symfony
 bun install
 bun run build
