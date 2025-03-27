@@ -59,7 +59,6 @@ jobs:
 #        uses: shivammathur/setup-php@9e72090525849c5e82e596468b86eb55e9cc5401
 #        with:
 #          coverage: none
-#          extensions: curl, gd, intl, opcache, json, openssl, pdo, soap, xsl, :xdebug
 #          ini-values: memory_limit=-1
 #          php-version: 8.3
 #
@@ -97,7 +96,6 @@ jobs:
 #        uses: shivammathur/setup-php@9e72090525849c5e82e596468b86eb55e9cc5401
 #        with:
 #          coverage: none
-#          extensions: curl, gd, intl, opcache, json, openssl, pdo, soap, xsl, :xdebug
 #          ini-values: memory_limit=-1
 #          php-version: 8.4 # static-php-cli requires PHP 8.4, but the app must be built with PHP 8.3
 #
@@ -158,31 +156,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
-      - name: Install PHP
-        uses: shivammathur/setup-php@9e72090525849c5e82e596468b86eb55e9cc5401
-        with:
-          coverage: none
-          extensions: curl, gd, intl, opcache, json, openssl, pdo, soap, xsl, :xdebug
-          ini-values: memory_limit=-1
-          php-version: 8.4 # static-php-cli requires PHP 8.4, but the app must be built with PHP 8.3
-
-      - uses: oven-sh/setup-bun@4bc047ad259df6fc24a6c9b0f9a0cb08cf17fbe5 # v2
-
       # Add support for more platforms with QEMU
       # https://github.com/docker/setup-qemu-action
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+      #- name: Set up QEMU
+      #  uses: docker/setup-qemu-action@v3
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
         with:
             platforms: ${{ matrix.platform }}
-
-      - name: Build Release Artifact
-        run: "./scripts/build_dist.sh ${{ needs.prepare.outputs.ref }} ${{ needs.prepare.outputs.ref }}"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE:
 
       - name: Build SolidInvoice
         #run: ./scripts/build_binary.sh ${{ needs.prepare.outputs.ref }}
