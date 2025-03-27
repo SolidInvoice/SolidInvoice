@@ -1,7 +1,9 @@
 FROM dunglas/frankenphp:static-builder-musl
 
-ARG PHP_VERSION=7.4.0
+ARG PHP_VERSION=8.3.0
 ARG SOLIDINVOICE_VERSION=dev
+
+RUN curl -fsSL https://bun.sh/install | bash
 
 COPY . /app
 

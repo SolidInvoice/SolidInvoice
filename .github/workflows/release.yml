@@ -191,7 +191,11 @@ jobs:
             targets: ${{ steps.prepare.outputs.sanitized_platform }}_binary
             set: |
                 ${{ steps.prepare.outputs.sanitized_platform }}_binary.args.NO_COMPRESS=${{ (matrix.platform == 'linux/arm64') && '1' || '0' }}
+                *.tags=
                 *.platform=${{ matrix.platform }}
+                *.cache-from=type=gha,scope=${{ needs.prepare.outputs.ref || github.ref }}-${{ steps.prepare.outputs.sanitized_platform }}_binary
+                *.cache-from=type=gha,scope=refs/heads/main-${{ steps.prepare.outputs.sanitized_platform }}_binary
+                *.cache-to=type=gha,scope=${{ needs.prepare.outputs.ref || github.ref }}-${{ steps.prepare.outputs.sanitized_platform }}_binary,ignore-error=true
         env:
           # GITHUB_TOKEN needs to be defined twice here.
           # GH_TOKEN is used by the gh cli utility to upload the binary files
