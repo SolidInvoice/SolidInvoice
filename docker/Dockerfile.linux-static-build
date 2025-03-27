@@ -5,7 +5,11 @@ ARG SOLIDINVOICE_VERSION=dev
 
 RUN curl -fsSL https://bun.sh/install | bash
 
-ENV BUN_INSTALL="$HOME/.bun"
+ENV BUN_INSTALL="~/.bun"
 ENV PATH="$BUN_INSTALL/bin:$PATH"
 
-RUN ./scripts/build_binary.sh $SOLIDINVOICE_VERSION
+COPY --link ./scripts ./scripts
+COPY --link ./composer.json ./composer.json
+COPY --link ./composer.lock ./composer.lock
+
+RUN scripts/build_binary.sh $SOLIDINVOICE_VERSION
