@@ -3,7 +3,9 @@ FROM dunglas/frankenphp:static-builder-musl
 ARG PHP_VERSION=8.3.0
 ARG SOLIDINVOICE_VERSION=dev
 
-RUN curl -fsSL https://bun.sh/install | bash
+RUN curl -fsSL https://bun.sh/install | bash \
+    apk add --no-cache \
+        php84-simplexml
 
 ENV BUN_INSTALL="~/.bun"
 ENV PATH="$BUN_INSTALL/bin:$PATH"
