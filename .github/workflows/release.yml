@@ -70,12 +70,17 @@ jobs:
           RELEASE: 1
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Archive production artifacts
+      - name: Upload TAR archive
         uses: actions/upload-artifact@v4
         with:
-          name: dist-without-markdown
-          path: |
-            build/dist/SolidInvoice-*
+          name: SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.tar.gz
+          path: build/dist/SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.tar.gz
+
+      - name: Upload ZIP archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.zip
+          path: build/dist/SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.zip
 
 
 #  build-mac:
