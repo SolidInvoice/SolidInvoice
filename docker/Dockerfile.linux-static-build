@@ -2,15 +2,16 @@ FROM dunglas/frankenphp:static-builder-musl
 
 ARG PHP_VERSION=8.3.0
 ARG SOLIDINVOICE_VERSION=dev
+ARG RELEASE=0
 
+COPY --link ./build/dist ./build/dist
 COPY --link ./scripts ./scripts
+COPY --link ./frankenphp ./frankenphp
 COPY --link ./composer.json ./composer.json
 COPY --link ./composer.lock ./composer.lock
 
-RUN curl -fsSL https://bun.sh/install | bash \
-    && apk add php84-simplexml php84-iconv php84-intl php84-pdo php84-opcache
-
 ENV BUN_INSTALL="~/.bun"
 ENV PATH="$BUN_INSTALL/bin:$PATH"
+ENV RELEASE="$RELEASE"
 
 RUN scripts/build_binary.sh $SOLIDINVOICE_VERSION

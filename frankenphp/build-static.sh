@@ -283,7 +283,7 @@ chmod a+x "dist/${bin}"
 
 "dist/${bin}" version
 
-if [ -n "${RELEASE}" ]; then
+if [! -z "${RELEASE}" ]; then
 	gh release upload "${SOLIDINVOICE_VERSION}" "dist/${bin}" --repo pierredup/solidinvoice --clobber
 fi
 

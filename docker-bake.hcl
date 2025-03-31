@@ -16,7 +16,7 @@ group "default" {
 target "linux-arm64_binary" {
     context = "."
     dockerfile = "docker/Dockerfile.linux-static-build"
-    platforms = ["linux/amd64"]
+    platforms = ["linux/arm64"]
     args = {
         SOLIDINVOICE_VERSION = "${SOLIDINVOICE_VERSION}"
     }

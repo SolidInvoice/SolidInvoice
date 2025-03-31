@@ -40,35 +40,43 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-#  build-dist:
-#    permissions:
-#      contents: write  # for actions/create-release to create a release
-#    name: Build Assets
-#    needs: [prepare]
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Harden Runner
-#        uses: step-security/harden-runner@4d991eb9b905ef189e4c376166672c3f2f230481
-#        with:
-#          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
-#
-#      - name: Checkout code
-#        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-#
-#      - name: Install PHP
-#        uses: shivammathur/setup-php@9e72090525849c5e82e596468b86eb55e9cc5401
-#        with:
-#          coverage: none
-#          ini-values: memory_limit=-1
-#          php-version: 8.3
-#
-#      - uses: oven-sh/setup-bun@4bc047ad259df6fc24a6c9b0f9a0cb08cf17fbe5 # v2
-#
-#      - name: Build Release Artifact
-#        run: "./scripts/build_dist.sh ${{ needs.prepare.outputs.ref }} ${{ needs.prepare.outputs.ref }}"
-#        env:
-#          RELEASE: 1
-#          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  build-dist:
+    permissions:
+      contents: write  # for actions/create-release to create a release
+    name: Build Assets
+    needs: [prepare]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@4d991eb9b905ef189e4c376166672c3f2f230481
+        with:
+          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+
+      - name: Checkout code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@9e72090525849c5e82e596468b86eb55e9cc5401
+        with:
+          coverage: none
+          ini-values: memory_limit=-1
+          php-version: 8.3
+
+      - uses: oven-sh/setup-bun@4bc047ad259df6fc24a6c9b0f9a0cb08cf17fbe5 # v2
+
+      - name: Build Release Artifact
+        run: "./scripts/build_dist.sh ${{ needs.prepare.outputs.ref }} ${{ needs.prepare.outputs.ref }}"
+        env:
+          RELEASE: 1
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-without-markdown
+          path: |
+            build/dist/SolidInvoice-*
+
 
 #  build-mac:
 #    name: Build ${{ matrix.os }}-${{ matrix.platform }} binaries
@@ -124,7 +132,7 @@ jobs:
 
   build-linux:
     name: Build ${{ matrix.os }}-${{ matrix.platform }} binaries
-    needs: [prepare]
+    needs: [prepare, build-dist]
     permissions:
       contents: write
     strategy:
@@ -166,11 +174,18 @@ jobs:
         with:
             platforms: ${{ matrix.platform }}
 
+      - name: Download a single artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.tar.gz
+          path: build/dist
+
       - name: Build SolidInvoice
         #run: ./scripts/build_binary.sh ${{ needs.prepare.outputs.ref }}
         uses: docker/bake-action@v6
         with:
             targets: ${{ steps.prepare.outputs.sanitized_platform }}_binary
+            source: .
             set: |
                 ${{ steps.prepare.outputs.sanitized_platform }}_binary.args.NO_COMPRESS=${{ (matrix.platform == 'linux/arm64') && '1' || '0' }}
                 *.tags=
