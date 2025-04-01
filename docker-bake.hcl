@@ -6,6 +6,10 @@ variable "SOLIDINVOICE_VERSION" {
     default = "dev"
 }
 
+variable "PHP_VERSION" {
+    default = "8.3"
+}
+
 group "default" {
     targets = [
         "linux-amd64_binary",
