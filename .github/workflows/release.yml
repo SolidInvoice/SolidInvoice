@@ -191,6 +191,7 @@ jobs:
         with:
             targets: ${{ steps.prepare.outputs.sanitized_platform }}_binary
             source: .
+            load: true
             set: |
                 ${{ steps.prepare.outputs.sanitized_platform }}_binary.args.NO_COMPRESS=${{ (matrix.platform == 'linux/arm64') && '1' || '0' }}
                 *.tags=

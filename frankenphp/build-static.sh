@@ -194,9 +194,6 @@ else
 		fi
 	fi
 
-	#PHP_EXTENSIONS="brotli,bcmath,ctype,curl,dom,filter,gd,intl,libxml,mbstring,openssl,pdo,simplexml,soap,tokenizer,xml,xmlwriter,xsl,zlib"
-	PHP_EXTENSIONS="bcmath,ctype,curl,dom,filter,gd,intl,mbstring,openssl,pdo,tokenizer,zlib"
-
 	${spcCommand} doctor --auto-fix
 	# shellcheck disable=SC2086
 	${spcCommand} download --with-php="${PHP_VERSION}" --for-extensions="${PHP_EXTENSIONS}" --for-libs="${PHP_EXTENSION_LIBS}" ${SPC_OPT_DOWNLOAD_ARGS}
