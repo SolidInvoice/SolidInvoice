@@ -19,7 +19,9 @@ target "linux-arm64_binary" {
     platforms = ["linux/arm64"]
     args = {
         SOLIDINVOICE_VERSION = "${SOLIDINVOICE_VERSION}"
+        PHP_VERSION = "${PHP_VERSION}"
     }
+    secret = ["id=github-token,env=GITHUB_TOKEN"]
 }
 
 target "linux-amd64_binary" {
@@ -28,5 +30,7 @@ target "linux-amd64_binary" {
     platforms = ["linux/amd64"]
     args = {
         SOLIDINVOICE_VERSION = "${SOLIDINVOICE_VERSION}"
+        PHP_VERSION = "${PHP_VERSION}"
     }
+    secret = ["id=github-token,env=GITHUB_TOKEN"]
 }

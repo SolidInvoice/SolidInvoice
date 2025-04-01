@@ -1,8 +1,83 @@
-FROM dunglas/frankenphp:static-builder-musl
+FROM golang:1.24-alpine
 
-ARG PHP_VERSION=8.3.0
-ARG SOLIDINVOICE_VERSION=dev
-ARG RELEASE=0
+ARG SOLIDINVOICE_VERSION=''
+ENV SOLIDINVOICE_VERSION=${SOLIDINVOICE_VERSION}
+
+ARG PHP_VERSION=''
+ENV PHP_VERSION=${PHP_VERSION}
+
+ARG MIMALLOC=''
+ENV MIMALLOC=${MIMALLOC}
+
+ARG NO_COMPRESS=''
+ENV NO_COMPRESS=${NO_COMPRESS}
+
+ARG RELEASE='0'
+ENV RELEASE=${RELEASE}
+
+SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
+
+LABEL org.opencontainers.image.title=SolidInvoice
+LABEL org.opencontainers.image.description="Simple and elegant invoicing application"
+LABEL org.opencontainers.image.url=https://solidinvoice.co
+LABEL org.opencontainers.image.source=https://github.com/solidinvoice/solidinvoice
+LABEL org.opencontainers.image.licenses=MIT
+LABEL org.opencontainers.image.vendor="SolidWorx"
+
+RUN apk update; \
+	apk add --no-cache \
+		alpine-sdk \
+		autoconf \
+		automake \
+		bash \
+		binutils \
+		bison \
+		build-base \
+		cmake \
+		curl \
+		file \
+		flex \
+		g++ \
+		gcc \
+		git \
+        github-cli \
+		jq \
+		libgcc \
+		libstdc++ \
+		libtool \
+		linux-headers \
+		m4 \
+		make \
+		pkgconfig \
+		php84 \
+		php84-common \
+		php84-ctype \
+		php84-curl \
+		php84-dom \
+		php84-mbstring \
+		php84-openssl \
+		php84-pcntl \
+		php84-phar \
+		php84-posix \
+		php84-session \
+		php84-sodium \
+		php84-tokenizer \
+		php84-xml \
+		php84-xmlwriter \
+		upx \
+		wget \
+		xz ; \
+	ln -sf /usr/bin/php84 /usr/bin/php
+
+# https://getcomposer.org/doc/03-cli.md#composer-allow-superuser
+ENV COMPOSER_ALLOW_SUPERUSER=1
+COPY --from=composer/composer:2-bin /composer /usr/bin/composer
+
+WORKDIR /go/src/app
+
+ENV SPC_DEFAULT_C_FLAGS='-fPIE -fPI2C -O3 -march=native'
+ENV SPC_LIBC='musl'
+ENV SPC_CMD_VAR_PHP_MAKE_EXTRA_LDFLAGS_PROGRAM='-Wl,-O3 -pie'
 
 COPY --link ./build/dist ./build/dist
 COPY --link ./scripts ./scripts
@@ -10,13 +85,9 @@ COPY --link ./frankenphp ./frankenphp
 COPY --link ./composer.json ./composer.json
 COPY --link ./composer.lock ./composer.lock
 
-#RUN curl -fsSL https://bun.sh/install | bash \
-#    && apk add php84-simplexml php84-iconv php84-intl php84-pdo php84-opcache zip
+WORKDIR /go/src/app/frankenphp
+RUN go mod graph | awk '{if ($1 !~ "@") print $2}' | xargs go get
 
+WORKDIR /go/src/app
 
-#ENV BUN_INSTALL="~/.bun"
-#ENV PATH="$BUN_INSTALL/bin:$PATH"
-ENV RELEASE="$RELEASE"
-
-#RUN pwd && cat dist/cache_key
-RUN mv ./dist ./frankenphp/dist && scripts/build_binary.sh $SOLIDINVOICE_VERSION
+RUN --mount=type=secret,id=github-token GITHUB_TOKEN=$(cat /run/secrets/github-token) ./scripts/build_binary.sh $SOLIDINVOICE_VERSION
