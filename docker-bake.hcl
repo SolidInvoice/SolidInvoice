@@ -22,7 +22,7 @@ target "linux-arm64_binary" {
     }
 }
 
-target "linux-6amd64_binary" {
+target "linux-amd64_binary" {
     context = "."
     dockerfile = "docker/Dockerfile.linux-static-build"
     platforms = ["linux/amd64"]

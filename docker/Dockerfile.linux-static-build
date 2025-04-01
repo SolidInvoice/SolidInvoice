@@ -10,8 +10,13 @@ COPY --link ./frankenphp ./frankenphp
 COPY --link ./composer.json ./composer.json
 COPY --link ./composer.lock ./composer.lock
 
-ENV BUN_INSTALL="~/.bun"
-ENV PATH="$BUN_INSTALL/bin:$PATH"
+#RUN curl -fsSL https://bun.sh/install | bash \
+#    && apk add php84-simplexml php84-iconv php84-intl php84-pdo php84-opcache zip
+
+
+#ENV BUN_INSTALL="~/.bun"
+#ENV PATH="$BUN_INSTALL/bin:$PATH"
 ENV RELEASE="$RELEASE"
 
-RUN scripts/build_binary.sh $SOLIDINVOICE_VERSION
+#RUN pwd && cat dist/cache_key
+RUN mv ./dist ./frankenphp/dist && scripts/build_binary.sh $SOLIDINVOICE_VERSION

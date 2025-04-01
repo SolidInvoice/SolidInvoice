@@ -179,7 +179,7 @@ jobs:
         with:
             platforms: ${{ matrix.platform }}
 
-      - name: Download a single artifact
+      - name: Download archive
         uses: actions/download-artifact@v4
         with:
           name: SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.tar.gz
