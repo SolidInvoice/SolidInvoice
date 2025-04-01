@@ -186,11 +186,11 @@ jobs:
         #run: ./scripts/build_binary.sh ${{ needs.prepare.outputs.ref }}
         uses: docker/bake-action@v6
         with:
-            targets: ${{ steps.prepare.outputs.sanitized_platform }}_binary
+            targets: build-static
             source: .
             load: true
             set: |
-                ${{ steps.prepare.outputs.sanitized_platform }}_binary.args.NO_COMPRESS=${{ (matrix.platform == 'linux/arm64') && '1' || '0' }}
+                build-static.args.NO_COMPRESS=${{ (matrix.platform == 'linux/arm64') && '1' || '0' }}
                 *.tags=
                 *.platform=${{ matrix.platform }}
                 *.cache-from=type=gha,scope=${{ needs.prepare.outputs.ref || github.ref }}-${{ steps.prepare.outputs.sanitized_platform }}_binary
