@@ -143,14 +143,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        #platform: ["arm64", "x86_64"]
         include:
-          - platform: linux/arm64
+          - platform: "linux/amd64"
+            os: ubuntu-24.04
+          - platform: "linux/386"
+            os: ubuntu-24.04
+          - platform: "linux/arm/v6"
             os: ubuntu-24.04-arm
-#          - platform: linux/amd64
-#            os: ubuntu-24.04
-#          #- platform: aarch64
-#          #  os: ubuntu-24.04
+          - platform: "linux/arm/v7"
+            os: ubuntu-24.04-arm
+          - platform: "linux/arm64"
+            os: ubuntu-24.04-arm
 #    #runs-on: ${{ matrix.platform == 'arm64' && 'macos-14' || 'macos-13' }}
     runs-on: ${{ matrix.os }}
 #    container:
