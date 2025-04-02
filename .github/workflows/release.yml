@@ -10,7 +10,6 @@ on:
       - "*"
   workflow_dispatch:
     inputs:
-      #checkov:skip=CKV_GHA_7
       version:
         description: "SolidInvoice version"
         required: false
@@ -20,7 +19,7 @@ env:
   SOLIDINVOICE_ENV: prod
   SOLIDINVOICE_DEBUG: 0
 
-permissions:  # added using https://github.com/step-security/secure-workflows
+permissions:
   contents: read
 
 jobs:
@@ -83,57 +82,56 @@ jobs:
           path: build/dist/SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.zip
 
 
-#  build-mac:
-#    name: Build ${{ matrix.os }}-${{ matrix.platform }} binaries
-#    needs: [prepare]
-#    permissions:
-#      contents: write
-#    strategy:
-#      fail-fast: false
-#      matrix:
-#        include:
-#          - platform: arm64
-#            os: macos-14
-#          - platform: x86_64
-#            os: macos-13
-#    runs-on: ${{ matrix.os }}
-#    env:
-#      HOMEBREW_NO_AUTO_UPDATE: 1
-#      SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
-#      PHP_VERSION: 8.3
-#    steps:
-#      - name: Checkout code
-#        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-#
-#      - name: Install PHP
-#        uses: shivammathur/setup-php@9e72090525849c5e82e596468b86eb55e9cc5401
-#        with:
-#          coverage: none
-#          ini-values: memory_limit=-1
-#          php-version: 8.4 # static-php-cli requires PHP 8.4, but the app must be built with PHP 8.3
-#
-#      - uses: oven-sh/setup-bun@4bc047ad259df6fc24a6c9b0f9a0cb08cf17fbe5 # v2
-#
-#      - name: Build Release Artifact
-#        run: "./scripts/build_dist.sh ${{ needs.prepare.outputs.ref }} ${{ needs.prepare.outputs.ref }}"
-#        env:
-#          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          RELEASE:
-#
-#      - uses: actions/setup-go@v5
-#        with:
-#          go-version: "1.24"
-#          cache-dependency-path: frankenphp/go.sum
-#
-#      - name: Build SolidInvoice
-#        run: ./scripts/build_binary.sh ${{ needs.prepare.outputs.ref }}
-#        env:
-#          # GITHUB_TOKEN needs to be defined twice here.
-#          # GH_TOKEN is used by the gh cli utility to upload the binary files
-#          # GITHUB_TOKEN is used by static-php-cli script to make api calls to Github
-#          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          RELEASE: 1
+  build-mac:
+    name: Build ${{ matrix.os }}-${{ matrix.platform }} binaries
+    needs: [prepare]
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: arm64
+            os: macos-14
+          - platform: x86_64
+            os: macos-13
+    runs-on: ${{ matrix.os }}
+    env:
+      HOMEBREW_NO_AUTO_UPDATE: 1
+      SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
+      PHP_VERSION: 8.3
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@9e72090525849c5e82e596468b86eb55e9cc5401
+        with:
+          coverage: none
+          ini-values: memory_limit=-1
+          php-version: 8.4 # static-php-cli requires PHP 8.4, but the app must be built with PHP 8.3
+
+      - uses: oven-sh/setup-bun@4bc047ad259df6fc24a6c9b0f9a0cb08cf17fbe5 # v2
+
+      - name: Build Release Artifact
+        run: "./scripts/build_dist.sh ${{ needs.prepare.outputs.ref }} ${{ needs.prepare.outputs.ref }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.24"
+          cache-dependency-path: frankenphp/go.sum
+
+      - name: Build SolidInvoice
+        run: ./scripts/build_binary.sh ${{ needs.prepare.outputs.ref }}
+        env:
+          # GITHUB_TOKEN needs to be defined twice here.
+          # GH_TOKEN is used by the gh cli utility to upload the binary files
+          # GITHUB_TOKEN is used by static-php-cli script to make api calls to Github
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE: 1
 
   build-linux:
     name: Build ${{ matrix.os }}-${{ matrix.platform }} binaries
@@ -148,11 +146,7 @@ jobs:
             os: ubuntu-24.04
           - platform: "linux/arm64"
             os: ubuntu-24.04-arm
-#    #runs-on: ${{ matrix.platform == 'arm64' && 'macos-14' || 'macos-13' }}
     runs-on: ${{ matrix.os }}
-#    container:
-#      image: dunglas/frankenphp:static-builder-musl
-#      options: --cpus 1
     env:
       HOMEBREW_NO_AUTO_UPDATE: 1
       SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
@@ -166,11 +160,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
-      # Add support for more platforms with QEMU
-      # https://github.com/docker/setup-qemu-action
-      #- name: Set up QEMU
-      #  uses: docker/setup-qemu-action@v3
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
         with:
@@ -183,7 +172,6 @@ jobs:
           path: build/dist
 
       - name: Build SolidInvoice
-        #run: ./scripts/build_binary.sh ${{ needs.prepare.outputs.ref }}
         uses: docker/bake-action@v6
         with:
             targets: build-static
