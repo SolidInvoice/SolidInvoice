@@ -1,6 +1,7 @@
-FROM golang:1.24-alpine
+FROM golang:1.24-alpine AS builder
 
 ARG TARGETARCH
+ARG TARGETOS
 
 ARG SOLIDINVOICE_VERSION=''
 ENV SOLIDINVOICE_VERSION=${SOLIDINVOICE_VERSION}
@@ -18,13 +19,6 @@ ARG RELEASE='0'
 ENV RELEASE=${RELEASE}
 
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
-
-LABEL org.opencontainers.image.title=SolidInvoice
-LABEL org.opencontainers.image.description="Simple and elegant invoicing application"
-LABEL org.opencontainers.image.url=https://solidinvoice.co
-LABEL org.opencontainers.image.source=https://github.com/solidinvoice/solidinvoice
-LABEL org.opencontainers.image.licenses=MIT
-LABEL org.opencontainers.image.vendor="SolidWorx"
 
 RUN apk update; \
 	apk add --no-cache \
@@ -93,3 +87,24 @@ RUN go mod graph | awk '{if ($1 !~ "@") print $2}' | xargs go get
 WORKDIR /go/src/app
 
 RUN --mount=type=secret,id=github-token GITHUB_TOKEN=$(cat /run/secrets/github-token) ./scripts/build_binary.sh $SOLIDINVOICE_VERSION
+
+FROM scratch
+
+ARG TARGETARCH
+ARG TARGETOS
+
+LABEL org.opencontainers.image.title=SolidInvoice
+LABEL org.opencontainers.image.description="Simple and elegant invoicing solution"
+LABEL org.opencontainers.image.url=https://solidinvoice.co
+LABEL org.opencontainers.image.source=https://github.com/SolidInvoice/SolidInvoice
+LABEL org.opencontainers.image.licenses=MIT
+LABEL org.opencontainers.image.vendor="SolidWorx"
+
+EXPOSE 8765
+EXPOSE 8765/udp
+
+COPY --from=builder /go/src/app/frankenphp/dist/solidinvoice-${TARGETOS}-${TARGETARCH} /usr/local/bin/solidinvoice
+
+#COPY Caddyfile /.SolidInvoice/app_f8b2bcc6009de23efc67ea11235b1acd/Caddyfile
+
+ENTRYPOINT ["/usr/local/bin/solidinvoice"]

@@ -19,12 +19,12 @@ import (
 // untar reads the tar file from r and writes it into dir.
 //
 // Adapted from https://github.com/golang/build/blob/master/cmd/buildlet/buildlet.go
-func untar(dir string) (err error) {
+func untar(app []byte, dir string) (err error) {
 	t0 := time.Now()
 	nFiles := 0
 	madeDir := map[string]bool{}
 
-	tr := tar.NewReader(bytes.NewReader(embeddedApp))
+	tr := tar.NewReader(bytes.NewReader(app))
 	loggedChtimesError := false
 	for {
 		f, err := tr.Next()

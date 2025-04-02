@@ -61,7 +61,7 @@ chmod a+w config
 zip -qr "${DIST_DIR}/SolidInvoice-$VERSION".zip ./
 tar -czf "${DIST_DIR}/SolidInvoice-$VERSION".tar.gz ./
 
-if [! -z "${RELEASE}" ]; then
+if [ "${RELEASE:-}" = "1" ]; then
 	gh release upload "${VERSION}" "${DIST_DIR}"/SolidInvoice-"${VERSION}".zip --repo pierredup/solidinvoice --clobber
 	gh release upload "${VERSION}" "${DIST_DIR}"/SolidInvoice-"${VERSION}".tar.gz --repo pierredup/solidinvoice --clobber
 fi

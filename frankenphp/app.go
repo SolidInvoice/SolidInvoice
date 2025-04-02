@@ -2,6 +2,8 @@ package main
 
 import (
 	"bufio"
+	"bytes"
+	"compress/gzip"
 	"context"
 	_ "embed"
 	"errors"
@@ -42,7 +44,7 @@ var rootCmd = &cobra.Command{
 	Use: appName,
 }
 
-//go:embed app.tar
+//go:embed app.tar.gz
 var embeddedApp []byte
 
 //go:embed app_checksum.txt
@@ -309,7 +311,12 @@ func extractEmbeddedApp(appDir string) (string, error) {
 	if _, err := os.Stat(appPath); os.IsNotExist(err) {
 		must(os.Setenv("COPYFILE_DISABLE", "1"))
 
-		if err = untar(appPath); err != nil {
+		appTar, err := gUnzipData(embeddedApp)
+		if err != nil {
+			return "", err
+		}
+
+		if err = untar(appTar, appPath); err != nil {
 			must(os.RemoveAll(appPath))
 			return "", err
 		}
@@ -470,4 +477,22 @@ func outputAppInfo() {
 			domainNote,
 	),
 	)
+}
+
+func gUnzipData(data []byte) ([]byte, error) {
+	b := bytes.NewBuffer(data)
+
+	var r io.Reader
+	r, err := gzip.NewReader(b)
+	if err != nil {
+		return nil, err
+	}
+
+	var resB bytes.Buffer
+	_, err = resB.ReadFrom(r)
+	if err != nil {
+		return nil, err
+	}
+
+	return resB.Bytes(), nil
 }

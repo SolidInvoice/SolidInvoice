@@ -28,8 +28,8 @@ fi
 cd "${ROOT_DIR}/frankenphp"
 
 cp "${DIST_DIR}/SolidInvoice-"$SOLIDINVOICE_VERSION".tar.gz" ./app.tar.gz
-gunzip -f app.tar.gz
+# gunzip -f app.tar.gz
 
 ./build-static.sh
 
-rm app.tar
+# rm app.tar.gz

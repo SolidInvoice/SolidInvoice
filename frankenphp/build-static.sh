@@ -121,12 +121,12 @@ cache_key="${PHP_VERSION}-${PHP_EXTENSIONS}-${PHP_EXTENSION_LIBS}"
 
 # Build libphp if necessary
 if [ -f dist/cache_key ] && [ "$(cat dist/cache_key)" = "${cache_key}" ] && [ -f "dist/static-php-cli/buildroot/lib/libphp.a" ]; then
-	cd dist/static-php-cli
-    if [ -f "./spc" ]; then
-        spcCommand="./spc"
-    elif [ -f "bin/spc" ]; then
-        spcCommand="./bin/spc"
-    fi
+		cd dist/static-php-cli
+		if [ -f "./spc" ]; then
+				spcCommand="./spc"
+		elif [ -f "bin/spc" ]; then
+				spcCommand="./bin/spc"
+		fi
 else
 	mkdir -p dist/
 	cd dist/
@@ -206,16 +206,16 @@ if ! type "go" >/dev/null 2>&1; then
 	exit 1
 fi
 
-XCADDY_COMMAND="xcaddy"
-if ! type "$XCADDY_COMMAND" >/dev/null 2>&1; then
-	go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
-	XCADDY_COMMAND="$(go env GOPATH)/bin/xcaddy"
-fi
+#XCADDY_COMMAND="xcaddy"
+#if ! type "$XCADDY_COMMAND" >/dev/null 2>&1; then
+#	go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
+#	XCADDY_COMMAND="$(go env GOPATH)/bin/xcaddy"
+#fi
 
-curlGitHubHeaders=(--header "X-GitHub-Api-Version: 2022-11-28")
-if [ "${GITHUB_TOKEN}" ]; then
-	curlGitHubHeaders+=(--header "Authorization: Bearer ${GITHUB_TOKEN}")
-fi
+#curlGitHubHeaders=(--header "X-GitHub-Api-Version: 2022-11-28")
+#if [ "${GITHUB_TOKEN}" ]; then
+#	curlGitHubHeaders+=(--header "Authorization: Bearer ${GITHUB_TOKEN}")
+#fi
 
 # See https://github.com/docker-library/php/blob/master/8.3/alpine3.20/zts/Dockerfile#L53-L55
 CGO_CFLAGS="-DSOLIDINVOICE_VERSION=${SOLIDINVOICE_VERSION} -I${PWD}/buildroot/include/ $(${spcCommand} spc-config "${PHP_EXTENSIONS}" --with-libs="${PHP_EXTENSION_LIBS}" --includes)"
@@ -264,16 +264,16 @@ cd ../
 #	tar -cf app.tar -C "${EMBED}" .
 #	${md5binary} app.tar | awk '{printf $1}' >app_checksum.txt
 #fi
-${md5binary} app.tar | awk '{printf $1}' >app_checksum.txt
+${md5binary} app.tar.gz | awk '{printf $1}' >app_checksum.txt
 
 #if [ -z "${XCADDY_ARGS}" ]; then
 #	XCADDY_ARGS="--with github.com/dunglas/caddy-cbrotli --with github.com/dunglas/mercure/caddy --with github.com/dunglas/vulcain/caddy"
 #fi
 
-XCADDY_DEBUG=0
-if [ -n "${DEBUG_SYMBOLS}" ]; then
-	XCADDY_DEBUG=1
-fi
+#XCADDY_DEBUG=0
+#if [ -n "${DEBUG_SYMBOLS}" ]; then
+#	XCADDY_DEBUG=1
+#fi
 
 if [ "${SPC_LIBC}" = "musl" ]; then
 	muslStackSizeFix="-Wl,-z,stack-size=0x80000"
@@ -283,14 +283,14 @@ go env
 # cd caddy/
 if [ -z "${SPC_LIBC}" ] || [ "${SPC_LIBC}" = "musl" ]; then
 	#xcaddyGoBuildFlags="-buildmode=pie -tags cgo,netgo,osusergo,static_build,nobadger,nowatcher,nomysql,nopgx -ldflags \"-linkmode=external -extldflags '-static-pie ${muslStackSizeFix}' ${extraLdflags} -X 'github.com/caddyserver/caddy/v2.CustomVersion=SolidInvoice ${SOLIDINVOICE_VERSION} PHP ${LIBPHP_VERSION} Caddy'\""
-	xcaddyGoBuildFlags=(
+	goBuildFlags=(
             -buildmode=pie
             -tags cgo,netgo,osusergo,static_build,nobadger,nowatcher,nomysql,nopgx
             -ldflags
             "-linkmode=external -extldflags '-static-pie ${muslStackSizeFix}' ${extraLdflags} -X 'github.com/caddyserver/caddy/v2.CustomVersion=SolidInvoice ${SOLIDINVOICE_VERSION} PHP ${LIBPHP_VERSION} Caddy'"
         )
 elif [ "${SPC_LIBC}" = "glibc" ]; then
-	xcaddyGoBuildFlags=(
+	goBuildFlags=(
 	    -buildmode=pie
 	    -tags cgo,netgo,osusergo,nobadger,nowatcher,nomysql,nopgx
 	    -ldflags
@@ -300,10 +300,10 @@ fi
 
 # shellcheck disable=SC2086
 CGO_ENABLED=1 \
-	#go build ${xcaddyGoBuildFlags} \
-	go build "${xcaddyGoBuildFlags[@]}" \
+	#go build ${goBuildFlags} \
+	go build "${goBuildFlags[@]}" \
 	-o "./dist/${bin}" \
-	${XCADDY_ARGS}
+	#${XCADDY_ARGS}
 #cd ..
 
 #if [ -d "${EMBED}" ]; then
@@ -311,17 +311,21 @@ CGO_ENABLED=1 \
 #	truncate -s 0 app_checksum.txt
 #fi
 
-if type "upx" >/dev/null 2>&1 && [ -z "${DEBUG_SYMBOLS}" ] && [ -z "${NO_COMPRESS}" ]; then
-	upx --best "dist/${bin}"
-fi
+#if type "upx" >/dev/null 2>&1 && [ -z "${DEBUG_SYMBOLS}" ] && [ -z "${NO_COMPRESS}" ]; then
+#	upx --best "dist/${bin}"
+#fi
 
 "dist/${bin}" version
 #"dist/${bin}" build-info
 
-if [ -n "${RELEASE}" ]; then
+if [ "${RELEASE:-}" = "1" ]; then
 	gh release upload "${SOLIDINVOICE_VERSION}" "dist/${bin}" --repo pierredup/solidinvoice --clobber
 fi
 
 if [ -n "${CURRENT_REF}" ]; then
 	git checkout "${CURRENT_REF}"
+fi
+
+if [ -n "${TARGETARCH}" ]; then
+    mv "dist/${bin}" "dist/solidinvoice-${TARGETOS}-${TARGETARCH}"
 fi
