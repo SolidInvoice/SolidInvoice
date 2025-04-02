@@ -165,6 +165,12 @@ jobs:
         with:
             platforms: ${{ matrix.platform }}
 
+      - name: Login to DockerHub
+        uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3.4.0
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
       - name: Download archive
         uses: actions/download-artifact@v4
         with:
@@ -176,10 +182,9 @@ jobs:
         with:
             targets: build-static
             source: .
-            load: true
+            push: true
             set: |
                 build-static.args.NO_COMPRESS=${{ (matrix.platform == 'linux/arm64') && '1' || '0' }}
-                *.tags=
                 *.platform=${{ matrix.platform }}
                 *.cache-from=type=gha,scope=${{ needs.prepare.outputs.ref || github.ref }}-${{ steps.prepare.outputs.sanitized_platform }}_binary
                 *.cache-from=type=gha,scope=refs/heads/main-${{ steps.prepare.outputs.sanitized_platform }}_binary
