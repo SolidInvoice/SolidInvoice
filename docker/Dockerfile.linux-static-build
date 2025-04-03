@@ -100,8 +100,17 @@ LABEL org.opencontainers.image.source=https://github.com/SolidInvoice/SolidInvoi
 LABEL org.opencontainers.image.licenses=MIT
 LABEL org.opencontainers.image.vendor="SolidWorx"
 
+ARG SOLIDINVOICE_VERSION=''
+ENV SOLIDINVOICE_VERSION=${SOLIDINVOICE_VERSION}
+
+ENV SOLIDINVOICE_ENV=prod
+ENV SOLIDINVOICE_DEBUG=0
+ENV SOLIDINVOICE_CONFIG_DIR=/etc/solidinvoice
+ENV SOLIDINVOICE_RUNTIME=docker
+
 EXPOSE 8765
-EXPOSE 8765/udp
+
+VOLUME ["/etc/solidinvoice"]
 
 COPY --from=builder /go/src/app/frankenphp/dist/solidinvoice-${TARGETOS}-${TARGETARCH} /usr/local/bin/solidinvoice
 

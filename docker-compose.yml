@@ -8,18 +8,15 @@ services:
       MYSQL_DATABASE: solidinvoice
       MYSQL_ALLOW_EMPTY_PASSWORD: 1
   app:
-    build:
-        dockerfile: "docker/Dockerfile.dev"
+    image: "solidinvoice/solidinvoice:latest"
     depends_on:
       - db
     ports:
-      - "8000:8000"
+      - "8765:8765"
     restart: always
     volumes:
-      - ".:/opt/srv"
+      - app_data:/etc/solidinvoice
     environment:
-      SOLIDINVOICE_ENV: dev
-      SOLIDINVOICE_DEBUG: 1
       SOLIDINVOICE_DATABASE_DRIVER: pdo_mysql
       SOLIDINVOICE_DATABASE_HOST: db
       SOLIDINVOICE_DATABASE_PORT: 3306
@@ -29,3 +26,4 @@ services:
 
 volumes:
   db_data: {}
+  app_data: {}
