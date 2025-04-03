@@ -181,11 +181,6 @@ jobs:
             source: .
             push: true
             set: |
-                #build-static.args.NO_COMPRESS=${{ (matrix.platform == 'linux/arm64') && '1' || '0' }}
-                #*.platform=${{ matrix.platform }}
-                #*.cache-from=type=gha,scope=${{ needs.prepare.outputs.ref || github.ref }}-${{ steps.prepare.outputs.sanitized_platform }}_binary
-                #*.cache-from=type=gha,scope=refs/heads/main-${{ steps.prepare.outputs.sanitized_platform }}_binary
-                #*.cache-to=type=gha,scope=${{ needs.prepare.outputs.ref || github.ref }}-${{ steps.prepare.outputs.sanitized_platform }}_binary,ignore-error=true
                 *.cache-from=type=gha,scope=${{ needs.prepare.outputs.ref || github.ref }}
                 *.cache-to=type=gha,scope=${{ needs.prepare.outputs.ref || github.ref }},ignore-error=true
         env:
