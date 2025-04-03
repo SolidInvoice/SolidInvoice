@@ -14,6 +14,10 @@ variable "LATEST" {
     default = true
 }
 
+variable "RELEASE" {
+    default = 0
+}
+
 # cleanTag ensures that the tag is a valid Docker tag
 # see https://github.com/distribution/distribution/blob/v2.8.2/reference/regexp.go#L37
 function "clean_tag" {
@@ -58,6 +62,7 @@ target "build-static" {
     args = {
         SOLIDINVOICE_VERSION = "${SOLIDINVOICE_VERSION}"
         PHP_VERSION = "${PHP_VERSION}"
+        RELEASE = "${RELEASE}"
     }
     secret = ["id=github-token,env=GITHUB_TOKEN"]
 }
