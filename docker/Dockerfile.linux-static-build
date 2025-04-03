@@ -105,6 +105,6 @@ EXPOSE 8765/udp
 
 COPY --from=builder /go/src/app/frankenphp/dist/solidinvoice-${TARGETOS}-${TARGETARCH} /usr/local/bin/solidinvoice
 
-#COPY Caddyfile /.SolidInvoice/app_f8b2bcc6009de23efc67ea11235b1acd/Caddyfile
-
 ENTRYPOINT ["/usr/local/bin/solidinvoice"]
+
+CMD ["run"]
