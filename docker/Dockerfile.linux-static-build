@@ -36,7 +36,7 @@ RUN apk update; \
 		g++ \
 		gcc \
 		git \
-        github-cli \
+		github-cli \
 		jq \
 		libgcc \
 		libstdc++ \
