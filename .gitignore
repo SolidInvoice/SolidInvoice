@@ -35,6 +35,7 @@ package-lock.json
 /drivers
 /frankenphp/dist
 /frankenphp/app.tar
+/frankenphp/app.tar.gz
 /frankenphp/app_checksum.txt
 
 ###> symfony/framework-bundle ###
