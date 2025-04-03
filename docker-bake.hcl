@@ -3,7 +3,7 @@ variable "IMAGE_NAME" {
 }
 
 variable "SOLIDINVOICE_VERSION" {
-    default = "dev"
+    default = "2.3.x"
 }
 
 variable "PHP_VERSION" {
@@ -54,6 +54,10 @@ target "build-static" {
     platforms = [
         "linux/amd64",
         "linux/arm64",
+        // @TODO: Add support for more architectures
+        //"linux/386",
+        //"linux/arm/v6",
+        //"linux/arm/v7",
     ]
     tags = distinct(flatten([
             LATEST ? "${IMAGE_NAME}:latest" : "",
@@ -63,6 +67,7 @@ target "build-static" {
         SOLIDINVOICE_VERSION = "${SOLIDINVOICE_VERSION}"
         PHP_VERSION = "${PHP_VERSION}"
         RELEASE = "${RELEASE}"
+        NO_COMPRESS = 1 // Binaries are small enough for now, no need to compress them
     }
     secret = ["id=github-token,env=GITHUB_TOKEN"]
 }
