@@ -87,6 +87,7 @@ func main() {
 	must(os.Setenv(upperAppName+"_ENV", "prod"))
 	must(os.Setenv(upperAppName+"_DEBUG", "0"))
 	must(os.Setenv("APP_PATH", appPath))
+	must(os.Setenv("SOLIDINVOICE_RUNTIME", "frankenphp"))
 
 	// os.Setenv("APP_RUNTIME", "Runtime\\FrankenPhpSymfony\\Runtime")
 
