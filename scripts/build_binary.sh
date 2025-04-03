@@ -20,13 +20,13 @@ DIST_DIR="$BUILD_DIR/dist/"
 
 # Check if build file exists, exit if it doesn't
 
-if [ ! -f "${DIST_DIR}/SolidInvoice-"$SOLIDINVOICE_VERSION".tar.gz" ]; then
+if [ ! -f "${DIST_DIR}"/SolidInvoice-"$SOLIDINVOICE_VERSION".tar.gz ]; then
     echo "Build file does not exist. Please run build_dist.sh first."
     exit 1
 fi
 
 cd "${ROOT_DIR}/frankenphp"
 
-cp "${DIST_DIR}/SolidInvoice-"$SOLIDINVOICE_VERSION".tar.gz" ./app.tar.gz
+cp "${DIST_DIR}"/SolidInvoice-"$SOLIDINVOICE_VERSION".tar.gz ./app.tar.gz
 
 ./build-static.sh
