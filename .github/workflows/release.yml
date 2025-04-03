@@ -84,7 +84,7 @@ jobs:
 
   build-mac:
     name: Build ${{ matrix.os }}-${{ matrix.platform }} binaries
-    needs: [prepare]
+    needs: [prepare, build-dist]
     permissions:
       contents: write
     strategy:
@@ -104,19 +104,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
-      - name: Install PHP
-        uses: shivammathur/setup-php@9e72090525849c5e82e596468b86eb55e9cc5401
+      - name: Download archive
+        uses: actions/download-artifact@v4
         with:
-          coverage: none
-          ini-values: memory_limit=-1
-          php-version: 8.4 # static-php-cli requires PHP 8.4, but the app must be built with PHP 8.3
-
-      - uses: oven-sh/setup-bun@4bc047ad259df6fc24a6c9b0f9a0cb08cf17fbe5 # v2
-
-      - name: Build Release Artifact
-        run: "./scripts/build_dist.sh ${{ needs.prepare.outputs.ref }} ${{ needs.prepare.outputs.ref }}"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.tar.gz
+          path: build/dist
 
       - uses: actions/setup-go@v5
         with:
