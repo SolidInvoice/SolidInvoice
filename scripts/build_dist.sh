@@ -8,7 +8,7 @@ export SOLIDINVOICE_ENV=prod
 export SOLIDINVOICE_DEBUG=0
 export NODE_ENVIRONMENT=production
 
-REPO=https://github.com/solidinvoice/solidinvoice.git
+REPO=https://github.com/pierredup/solidinvoice.git
 BRANCH=${1:-}
 VERSION=${2:-}
 
@@ -62,8 +62,8 @@ zip -qr "${DIST_DIR}/SolidInvoice-$VERSION".zip ./
 tar -czf "${DIST_DIR}/SolidInvoice-$VERSION".tar.gz ./
 
 if [ "${RELEASE:-}" = "1" ]; then
-	gh release upload "${VERSION}" "${DIST_DIR}"/SolidInvoice-"${VERSION}".zip --repo solidinvoice/solidinvoice --clobber
-	gh release upload "${VERSION}" "${DIST_DIR}"/SolidInvoice-"${VERSION}".tar.gz --repo solidinvoice/solidinvoice --clobber
+	gh release upload "${VERSION}" "${DIST_DIR}"/SolidInvoice-"${VERSION}".zip --repo pierredup/solidinvoice --clobber
+	gh release upload "${VERSION}" "${DIST_DIR}"/SolidInvoice-"${VERSION}".tar.gz --repo pierredup/solidinvoice --clobber
 fi
 
 cd ../ && rm -Rf "./SolidInvoice"

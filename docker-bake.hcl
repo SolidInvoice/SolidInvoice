@@ -1,5 +1,5 @@
 variable "IMAGE_NAME" {
-    default = "solidinvoice/solidinvoice"
+    default = "pierredup/solidinvoice"
 }
 
 variable "SOLIDINVOICE_VERSION" {
