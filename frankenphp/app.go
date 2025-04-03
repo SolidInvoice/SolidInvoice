@@ -255,6 +255,12 @@ func main() {
 		RunE:               runCaddyCommand("version"),
 	})
 	rootCmd.AddCommand(&cobra.Command{
+		Use:                "build-info",
+		Short:              "Display application version",
+		DisableFlagParsing: true,
+		RunE:               runCaddyCommand("build-info"),
+	})
+	rootCmd.AddCommand(&cobra.Command{
 		Use:                "console",
 		Short:              "Run the embedded console commands",
 		DisableFlagParsing: true,
