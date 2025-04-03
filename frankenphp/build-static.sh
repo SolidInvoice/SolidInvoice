@@ -260,7 +260,7 @@ fi
 #"dist/${bin}" build-info
 
 if [ "${RELEASE:-}" = "1" ]; then
-	gh release upload "${SOLIDINVOICE_VERSION}" "dist/${bin}" --repo pierredup/solidinvoice --clobber
+	gh release upload "${SOLIDINVOICE_VERSION}" "dist/${bin}" --repo solidinvoice/solidinvoice --clobber
 fi
 
 if [ -n "${CURRENT_REF}" ]; then
