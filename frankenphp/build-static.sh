@@ -231,16 +231,18 @@ fi
 go env
 
 if [ -z "${SPC_LIBC}" ] || [ "${SPC_LIBC}" = "musl" ]; then
+    # shellcheck disable=SC2054
 	goBuildFlags=(
 	    -buildmode=pie
-        "-tags cgo,netgo,osusergo,static_build,nobadger,nowatcher,nomysql,nopgx"
+        -tags cgo,netgo,osusergo,static_build,nobadger,nowatcher,nomysql,nopgx
         -ldflags
         "-linkmode=external -extldflags '-static-pie ${muslStackSizeFix}' ${extraLdflags} -X 'github.com/caddyserver/caddy/v2.CustomVersion=SolidInvoice ${SOLIDINVOICE_VERSION} PHP ${LIBPHP_VERSION} Caddy'"
     )
 elif [ "${SPC_LIBC}" = "glibc" ]; then
+    # shellcheck disable=SC2054
 	goBuildFlags=(
 	    -buildmode=pie
-	    "-tags cgo,netgo,osusergo,nobadger,nowatcher,nomysql,nopgx"
+	    -tags cgo,netgo,osusergo,nobadger,nowatcher,nomysql,nopgx
 	    -ldflags
 	    "-linkmode=external -extldflags '-pie' ${extraLdflags} -X 'github.com/caddyserver/caddy/v2.CustomVersion=SolidInvoice ${SOLIDINVOICE_VERSION} PHP ${LIBPHP_VERSION} Caddy'"
 	)
