@@ -20,3 +20,8 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+
+  - package-ecosystem: "gomod"
+    directory: "/frankenphp"
+    schedule:
+      interval: "weekly"
