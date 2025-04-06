@@ -43,11 +43,13 @@ fi
 
 # Update file with bumped version
 sed -i "s/public const VERSION = '.*';/public const VERSION = '$next_version';/" $FILE
-jq --arg version "$next_version" '.version=$version' --indent 2 $PACKAGE_JSON > tmp.json && mv tmp.json $PACKAGE_JSON
+jq --arg version "$next_version" '.version=$version' --indent 4 $PACKAGE_JSON > tmp.json && mv tmp.json $PACKAGE_JSON
 jq --arg version "$next_version" '.version=$version' --indent 4 $COMPOSER_JSON > tmp.json && mv tmp.json $COMPOSER_JSON
 
 composer update --lock
 
-git add $FILE $PACKAGE_JSON $COMPOSER_JSON composer.lock
-git commit -m "Release version $next_version"
-git push
+if [ "${RELEASE:-}" = "1" ]; then
+    git add $FILE $PACKAGE_JSON $COMPOSER_JSON composer.lock
+    git commit -m "Release version $next_version"
+    git push
+fi

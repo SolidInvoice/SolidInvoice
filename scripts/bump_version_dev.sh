@@ -43,11 +43,13 @@ dev_version=$(bump_version "$clean_version" 2 1)-dev
 
 # Update file with next dev version
 sed -i "s/public const VERSION = '.*';/public const VERSION = '$dev_version';/" $FILE
-jq --arg version "$dev_version" '.version=$version' --indent 2 $PACKAGE_JSON > tmp.json && mv tmp.json $PACKAGE_JSON
+jq --arg version "$dev_version" '.version=$version' --indent 4 $PACKAGE_JSON > tmp.json && mv tmp.json $PACKAGE_JSON
 jq --arg version "$dev_version" '.version=$version' --indent 4 $COMPOSER_JSON > tmp.json && mv tmp.json $COMPOSER_JSON
 
 composer update --lock
 
-git add $FILE $PACKAGE_JSON $COMPOSER_JSON composer.lock
-git commit -m "Bump to dev version $dev_version"
-git push
+if [ "${RELEASE:-}" = "1" ]; then
+    git add $FILE $PACKAGE_JSON $COMPOSER_JSON composer.lock
+    git commit -m "Bump to dev version $dev_version"
+    git push
+fi
