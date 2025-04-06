@@ -16,11 +16,12 @@ namespace SolidInvoice\ApiBundle\Test;
 use ApiPlatform\JsonLd\ContextBuilderInterface;
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase as ApiPlatformTestCase;
 use ApiPlatform\Symfony\Bundle\Test\Client;
+use DateTimeInterface;
 use Faker\Factory;
 use Faker\Generator;
 use SolidInvoice\ApiBundle\ApiTokenManager;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
-use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
+use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,6 +30,7 @@ use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use function date;
 use function is_object;
 
 /**
@@ -36,11 +38,11 @@ use function is_object;
  */
 abstract class ApiTestCase extends ApiPlatformTestCase
 {
-    use EnsureApplicationInstalled;
-
     protected static Client $client;
 
     protected Generator $faker;
+
+    protected Company $company;
 
     protected static ?bool $alwaysBootKernel = false;
 
@@ -48,6 +50,26 @@ abstract class ApiTestCase extends ApiPlatformTestCase
      * @return class-string
      */
     abstract protected function getResourceClass(): string;
+
+    /**
+     * @before
+     */
+    public function installApplication(): void
+    {
+        if (! static::$booted) {
+            static::bootKernel();
+        }
+
+        $_SERVER['SOLIDINVOICE_LOCALE'] = $_ENV['SOLIDINVOICE_LOCALE'] = 'en_US';
+        $_SERVER['SOLIDINVOICE_INSTALLED'] = $_ENV['SOLIDINVOICE_INSTALLED'] = date(DateTimeInterface::ATOM);
+
+        $this->company = static::getContainer()->get('doctrine')
+            ->getRepository(Company::class)
+            ->findOneBy([]);
+
+        // @phpstan-ignore-next-line Ignore this line in PHPStan, since it sees the CompanySelector service as private
+        static::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
+    }
 
     protected function setUp(): void
     {
