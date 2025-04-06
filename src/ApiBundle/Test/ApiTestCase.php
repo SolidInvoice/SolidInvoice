@@ -14,11 +14,12 @@ declare(strict_types=1);
 namespace SolidInvoice\ApiBundle\Test;
 
 use ApiPlatform\JsonLd\ContextBuilderInterface;
+use ApiPlatform\Symfony\Bundle\Test\ApiTestCase as ApiPlatformTestCase;
 use ApiPlatform\Symfony\Bundle\Test\Client;
 use Faker\Factory;
 use Faker\Generator;
 use SolidInvoice\ApiBundle\ApiTokenManager;
-use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\CoreBundle\Company\CompanySelector;q
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,13 +34,15 @@ use function is_object;
 /**
  * @codeCoverageIgnore
  */
-abstract class ApiTestCase extends \ApiPlatform\Symfony\Bundle\Test\ApiTestCase
+abstract class ApiTestCase extends ApiPlatformTestCase
 {
     use EnsureApplicationInstalled;
 
     protected static Client $client;
 
     protected Generator $faker;
+
+    protected static ?bool $alwaysBootKernel = false;
 
     /**
      * @return class-string
