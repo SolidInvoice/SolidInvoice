@@ -41,7 +41,6 @@ trait EnsureApplicationInstalled
             ->getRepository(Company::class)
             ->findOneBy([]);
 
-        // @phpstan-ignore-next-line Ignore this line in PHPStan, since it sees the CompanySelector service as private
         static::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
     }
 
