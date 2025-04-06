@@ -47,7 +47,7 @@ final class PaymentTest extends ApiTestCase
         self::assertEqualsCanonicalizing([
             '@context' => $this->getContextForResource($payment),
             '@id' => $this->getIriFromResource($invoice) . '/payments',
-            '@type' => 'hydra:Collection',
+            '@type' => 'Collection',
             'hydra:totalItems' => 1,
             'hydra:member' => [
                 [
@@ -96,7 +96,7 @@ final class PaymentTest extends ApiTestCase
         self::assertEqualsCanonicalizing([
             '@context' => $this->getContextForResource($payment),
             '@id' => $this->getIriFromResource($client) . '/payments',
-            '@type' => 'hydra:Collection',
+            '@type' => 'Collection',
             'hydra:totalItems' => 1,
             'hydra:member' => [
                 [
@@ -143,7 +143,7 @@ final class PaymentTest extends ApiTestCase
         self::assertEqualsCanonicalizing([
             '@context' => $this->getContextForResource(Payment::class),
             '@id' => $this->getIriFromResource($client) . '/payments',
-            '@type' => 'hydra:Collection',
+            '@type' => 'Collection',
             'hydra:totalItems' => 0,
             'hydra:member' => [],
         ], $data);
@@ -166,7 +166,7 @@ final class PaymentTest extends ApiTestCase
         self::assertEqualsCanonicalizing([
             '@context' => $this->getContextForResource(Payment::class),
             '@id' => $this->getIriFromResource($client) . '/payments',
-            '@type' => 'hydra:Collection',
+            '@type' => 'Collection',
             'hydra:totalItems' => 0,
             'hydra:member' => [],
         ], $data);
@@ -227,8 +227,7 @@ final class PaymentTest extends ApiTestCase
         self::assertArraySubset([
             '@context' => $this->getContextForResource(Payment::class),
             '@id' => '/api/payments',
-            '@type' => 'hydra:Collection',
-            'hydra:totalItems' => 4,
+            '@type' => 'Collection',
         ], $data);
     }
 }

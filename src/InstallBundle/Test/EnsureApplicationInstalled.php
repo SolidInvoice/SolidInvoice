@@ -31,7 +31,7 @@ trait EnsureApplicationInstalled
     public function installApplication(): void
     {
         if (! static::$booted) {
-            self::bootKernel();
+            static::bootKernel();
         }
 
         $_SERVER['SOLIDINVOICE_LOCALE'] = $_ENV['SOLIDINVOICE_LOCALE'] = 'en_US';

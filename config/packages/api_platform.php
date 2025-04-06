@@ -82,8 +82,7 @@ return static function (ApiPlatformConfig $config): void {
         ->extraProperties(['standard_put' => true, 'rfc_7807_compliant_errors' => true])
         ->cacheHeaders([['Content-Type', 'Authorization', 'Origin']]);
 
-    $config->keepLegacyInflector(false)
-        ->useSymfonyListeners(true);
+    $config->useSymfonyListeners(true);
 
     $array = $config->toArray();
 
