@@ -19,7 +19,7 @@ use ApiPlatform\Symfony\Bundle\Test\Client;
 use Faker\Factory;
 use Faker\Generator;
 use SolidInvoice\ApiBundle\ApiTokenManager;
-use SolidInvoice\CoreBundle\Company\CompanySelector;q
+use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use Symfony\Component\HttpFoundation\Request;
