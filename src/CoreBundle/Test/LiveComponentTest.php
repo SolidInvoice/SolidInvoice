@@ -50,8 +50,10 @@ abstract class LiveComponentTest extends KernelTestCase
         self::getContainer()
             ->set('security.csrf.token_manager', $this->csrfTokenManager);
 
-        $this->client = self::getContainer()->get('test.client');
-        $this->client->disableReboot();
+        if (self::getContainer()->has('test.client')) {
+            $this->client = self::getContainer()->get('test.client');
+            $this->client->disableReboot();
+        }
 
         $this->csrfTokenManager
             ->method('isTokenValid')
