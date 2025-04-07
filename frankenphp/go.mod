@@ -9,7 +9,7 @@ require (
 	github.com/dunglas/caddy-cbrotli v1.0.0
 	github.com/dunglas/frankenphp v1.5.0
 	github.com/dunglas/frankenphp/caddy v1.5.0
-	github.com/go-playground/validator/v10 v10.25.0
+	github.com/go-playground/validator/v10 v10.26.0
 	github.com/luno/jettison v0.0.0-20240722160230-b42bd507a5f6
 	github.com/luno/lu v0.0.0-20250306165345-9dc624600fb2
 	github.com/spf13/cobra v1.9.1
