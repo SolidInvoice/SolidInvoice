@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace SolidInvoice\InstallBundle\Form\Step;
 
 use Doctrine\DBAL\DriverManager;
+use SolidInvoice\InstallBundle\Doctrine\Drivers;
 use SolidInvoice\InstallBundle\Form\Type\DatabaseConfigType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Throwable;
@@ -29,17 +29,17 @@ class ConfigStepForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $drivers = $options['drivers'];
-
         $builder->add(
             'database_config',
             DatabaseConfigType::class,
             [
-                'drivers' => $drivers,
+                'allow_extra_fields' => true,
                 'constraints' => new Callback(
                     static function ($data, ExecutionContextInterface $executionContext): void {
-                        if (null !== $data['driver'] && null !== $data['user']) {
+                        if (null !== $data['driver'] && 'sqlite' !== $data['driver']) {
                             try {
+                                unset($data['name']);
+                                $data['driver'] = Drivers::getDriver($data['driver']);
                                 DriverManager::getConnection($data)->connect();
                             } catch (Throwable $e) {
                                 $executionContext->addViolation($e->getMessage());
@@ -49,11 +49,6 @@ class ConfigStepForm extends AbstractType
                 ),
             ]
         );
-    }
-
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setRequired(['drivers']);
     }
 
     public function getBlockPrefix(): string

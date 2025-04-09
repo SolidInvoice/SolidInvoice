@@ -43,7 +43,7 @@ final class CompanySelector implements ResetInterface
         $em
             ->getFilters()
             ->enable('company')
-            ->setParameter('companyId', $companyId->toHex(), Types::STRING);
+            ->setParameter('companyId', $companyId->toBinary(), Types::STRING);
 
         $this->companyId = $companyId;
     }

@@ -31,18 +31,27 @@ final class CreateDatabaseStep implements InstallationStepInterface
     {
         $connection = $this->doctrine->getConnection();
         $params = $connection->getParams();
-        $dbName = $params['dbname'];
 
-        unset($params['dbname']);
+        $dbName = '';
+
+        if ($params['driver'] !== 'pdo_sqlite') {
+            $dbName = $params['dbname'];
+            unset($params['dbname']);
+        }
 
         $tmpConnection = DriverManager::getConnection(
             $params,
             $connection->getConfiguration(),
         );
-        $schemaManager = $tmpConnection->createSchemaManager();
 
-        if (! in_array($dbName, $schemaManager->listDatabases(), true)) {
-            $schemaManager->createDatabase($dbName);
+        if ($params['driver'] === 'pdo_sqlite') {
+            $tmpConnection->connect();
+            $tmpConnection->close();
+        } else {
+            $schemaManager = $tmpConnection->createSchemaManager();
+            if (! in_array($dbName, $schemaManager->listDatabases(), true)) {
+                $schemaManager->createDatabase($dbName);
+            }
         }
     }
 

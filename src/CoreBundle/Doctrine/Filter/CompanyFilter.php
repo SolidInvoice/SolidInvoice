@@ -16,7 +16,6 @@ namespace SolidInvoice\CoreBundle\Doctrine\Filter;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Filter\SQLFilter;
 use SolidInvoice\UserBundle\Entity\User;
-use function str_replace;
 
 class CompanyFilter extends SQLFilter
 {
@@ -31,7 +30,7 @@ class CompanyFilter extends SQLFilter
                     ->createQueryBuilder()
                     ->select('user_id')
                     ->from('user_company')
-                    ->where('company_id = ' . str_replace("'", '', $this->getParameter('companyId')))
+                    ->where('company_id = ' . $this->getParameter('companyId'))
                     ->getSQL()
             );
         }
@@ -41,7 +40,7 @@ class CompanyFilter extends SQLFilter
         }
 
         if ($this->hasParameter('companyId')) {
-            return sprintf('%s.company_id = %s', $targetTableAlias, str_replace("'", '', $this->getParameter('companyId')));
+            return sprintf('%s.company_id = %s', $targetTableAlias, $this->getParameter('companyId'));
         }
 
         return '';

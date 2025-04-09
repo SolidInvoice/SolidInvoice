@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Config\Loader;
 
 use SolidInvoice\CoreBundle\ConfigWriter;
+use SolidInvoice\InstallBundle\Config\DatabaseConfig;
 use Symfony\Component\DependencyInjection\EnvVarLoaderInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use function strtoupper;
@@ -49,25 +50,48 @@ final class EnvLoader implements EnvVarLoaderInterface
     }
 
     /**
+     * @param array<string, mixed> $params
+     * @return array<string, mixed>
+     */
+    private function migrateToDatabaseUrl(array $params): array
+    {
+        if (isset($params['database_host'])) {
+            $params['database_url'] = DatabaseConfig::paramsToDatabaseUrl($params);
+
+            unset(
+                $params['database_host'],
+                $params['database_port'],
+                $params['database_name'],
+                $params['database_user'],
+                $params['database_password'],
+                $params['database_driver'],
+                $params['database_version']
+            );
+        }
+
+        return $params;
+    }
+
+    /**
      * @return array<string, string>
      */
     private function migrateToSecrets(string $path): array
     {
-        $values = require $path;
-
-        $this->configWriter->save($values);
-
-        $this->fileSystem->remove($path);
+        $values = $this->migrateToDatabaseUrl(require $path);
 
         $env = [];
 
         foreach ($values as $key => $value) {
-            if (! str_starts_with($key, ConfigWriter::CONFIG_PREFIX)) {
-                $key = ConfigWriter::CONFIG_PREFIX . $key;
+            if ($key === 'secret') {
+                $key = 'app_secret';
             }
 
             $env[strtoupper($key)] = $value;
         }
+
+        $this->configWriter->save($env);
+
+        $this->fileSystem->remove($path);
 
         return $env;
     }

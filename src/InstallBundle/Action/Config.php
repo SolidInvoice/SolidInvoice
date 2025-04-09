@@ -17,91 +17,78 @@ use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
 use PDO;
 use SolidInvoice\CoreBundle\ConfigWriter;
+use SolidInvoice\InstallBundle\Config\DatabaseConfig;
+use SolidInvoice\InstallBundle\Doctrine\Drivers;
 use SolidInvoice\InstallBundle\Form\Step\ConfigStepForm;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use function array_intersect;
-use function array_map;
 use function assert;
-use function Symfony\Component\String\u;
 
 final class Config extends AbstractController
 {
     public function __construct(
         private readonly ConfigWriter $configWriter,
+        #[Autowire(env: 'SOLIDINVOICE_CONFIG_DIR')]
+        private readonly string $configDir
     ) {
     }
 
     public function __invoke(Request $request): Response
     {
+        $form = $this->createForm(ConfigStepForm::class);
+
         if ($request->isMethod(Request::METHOD_POST)) {
-            return $this->handleForm($request);
+            return $this->handleForm($request, $form);
         }
 
-        return $this->render('@SolidInvoiceInstall/config.html.twig', ['form' => $this->getForm()]);
+        return $this->renderTemplate($form);
     }
 
-    private function getForm(): FormInterface
+    private function handleForm(Request $request, FormInterface $form): Response
     {
-        $availablePdoDrivers = array_intersect(
-            array_map(static fn (string $driver) => "pdo_{$driver}", PDO::getAvailableDrivers()),
-            DriverManager::getAvailableDrivers()
-        );
-
-        // We can't support sqlite at the moment, since it requires a physical file
-        if (in_array('pdo_sqlite', $availablePdoDrivers, true)) {
-            unset($availablePdoDrivers[array_search('pdo_sqlite', $availablePdoDrivers, true)]);
-        }
-
-        $drivers = array_combine(
-            $availablePdoDrivers,
-            array_map(static fn (string $driver) => u($driver)->replace('pdo_', '')->title()->toString(), $availablePdoDrivers)
-        );
-
-        return $this->createForm(ConfigStepForm::class, null, ['drivers' => $drivers]);
-    }
-
-    private function handleForm(Request $request): Response
-    {
-        $form = $this->getForm();
-
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $data = $form->getData();
-            $config = [];
+            $config = $data['database_config'];
 
-            // sets the database details
-            foreach ($data['database_config'] as $key => $param) {
-                $key = sprintf('database_%s', $key);
-                $config[$key] = $param;
+            if ($config['driver'] === 'sqlite') {
+                (new Filesystem())->mkdir($this->configDir . '/db');
+                $config['name'] = $this->configDir . '/db/solidinvoice.db';
             }
 
             try {
-                $nativeConnection = DriverManager::getConnection([
-                    'host' => $config['database_host'] ?? null,
-                    'port' => $config['database_port'] ?? null,
-                    'name' => $config['database_name'] ?? null,
-                    'user' => $config['database_user'] ?? null,
-                    'password' => $config['database_password'] ?? null,
-                    'driver' => $config['database_driver'] ?? null,
-                ])->getNativeConnection();
+                unset($data['database_config']['name']);
+                $data['database_config']['driver'] = Drivers::getDriver($data['database_config']['driver']);
+                $nativeConnection = DriverManager::getConnection($data['database_config'])->getNativeConnection();
             } catch (Exception $e) {
                 $this->addFlash('error', $e->getMessage());
-                return $this->redirectToRoute('_install_config');
+                return $this->renderTemplate($form);
             }
 
             assert($nativeConnection instanceof PDO);
 
-            $config['database_version'] = $nativeConnection->getAttribute(PDO::ATTR_SERVER_VERSION);
+            $config['version'] = $nativeConnection->getAttribute(PDO::ATTR_SERVER_VERSION);
 
-            $this->configWriter->save($config);
+            $this->configWriter->save(['database_url' => DatabaseConfig::paramsToDatabaseUrl($config)]);
 
             return $this->redirectToRoute('_install_install');
         }
 
-        return $this->render('@SolidInvoiceInstall/config.html.twig', ['form' => $form]);
+        return $this->renderTemplate($form);
+    }
+
+    private function renderTemplate(FormInterface $form): Response
+    {
+        return $this->render(
+            '@SolidInvoiceInstall/config.html.twig',
+            [
+                'form' => $form,
+            ]
+        );
     }
 }

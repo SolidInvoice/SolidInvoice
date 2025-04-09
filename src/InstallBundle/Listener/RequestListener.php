@@ -37,7 +37,11 @@ final class RequestListener implements EventSubscriberInterface
      *
      * @var list<string>
      */
-    private array $allowRoutes = self::INSTALL_ROUTES;
+    private array $allowRoutes = [
+        ...self::INSTALL_ROUTES,
+        ...self::SETUP_ROUTES,
+        'ux_live_component',
+    ];
 
     /**
      * @var list<string>
@@ -46,7 +50,6 @@ final class RequestListener implements EventSubscriberInterface
         self::INSTALLER_ROUTE,
         '_install_config',
         '_install_install',
-        ...self::SETUP_ROUTES
     ];
 
     /**

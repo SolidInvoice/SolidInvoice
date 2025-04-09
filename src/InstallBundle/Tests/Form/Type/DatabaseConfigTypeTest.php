@@ -20,12 +20,8 @@ class DatabaseConfigTypeTest extends FormTestCase
 {
     public function testSubmit(): void
     {
-        $drivers = [
-            'pdo_mysql' => 'MySQL',
-        ];
-
         $formData = [
-            'driver' => 'pdo_mysql',
+            'driver' => 'mysql',
             'host' => '127.0.0.1',
             'port' => 1234,
             'user' => 'root',
@@ -33,6 +29,6 @@ class DatabaseConfigTypeTest extends FormTestCase
             'name' => 'testdb',
         ];
 
-        $this->assertFormData($this->factory->create(DatabaseConfigType::class, null, ['drivers' => $drivers]), $formData, $formData);
+        $this->assertFormData($this->factory->create(DatabaseConfigType::class), $formData, $formData);
     }
 }

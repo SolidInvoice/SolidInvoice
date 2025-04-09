@@ -14,13 +14,15 @@ declare(strict_types=1);
 namespace SolidInvoice\InstallBundle\Form\Type;
 
 use SolidInvoice\CoreBundle\Form\Type\Select2Type;
+use SolidInvoice\InstallBundle\Doctrine\Drivers;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
+use Symfonycasts\DynamicForms\DependentField;
+use Symfonycasts\DynamicForms\DynamicFormBuilder;
 
 /**
  * @see \SolidInvoice\InstallBundle\Tests\Form\Type\DatabaseConfigTypeTest
@@ -29,71 +31,67 @@ class DatabaseConfigType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $drivers = $options['drivers'];
+        $builder = new DynamicFormBuilder($builder);
 
         $builder->add(
             'driver',
             Select2Type::class,
             [
-                'choices' => array_flip($drivers),
+                'label' => 'Database Type',
+                'choices' => Drivers::getChoiceList(),
                 'placeholder' => 'Select Database Driver',
                 'constraints' => new NotBlank(),
             ]
         );
 
-        $builder->add(
-            'host',
-            null,
-            [
-                'constraints' => new NotBlank(),
-            ]
-        );
+        $fields = [
+            'host' => [
+                null,
+                [
+                    'constraints' => new NotBlank(),
+                ],
+            ],
+            'port' => [
+                IntegerType::class,
+                [
+                    'constraints' => new Type(['type' => 'integer']),
+                    'required' => false,
+                ],
+            ],
+            'user' => [
+                null,
+                [
+                    'constraints' => new NotBlank(),
+                ],
+            ],
+            'password' => [
+                PasswordType::class,
+                [
+                    'required' => false,
+                ],
+            ],
+            'name' => [
+                null,
+                [
+                    'label' => 'Database Name',
+                    'constraints' => new NotBlank(),
+                    'required' => true,
+                ],
+            ],
+        ];
 
-        $builder->add(
-            'port',
-            IntegerType::class,
-            [
-                'constraints' => new Type(['type' => 'integer']),
-                'required' => false,
-            ]
-        );
+        foreach ($fields as $name => [$type, $fieldOptions]) {
+            $builder->addDependent($name, ['driver'], function (DependentField $field, ?string $driver = null) use ($type, $fieldOptions): void {
+                if ($driver === null || $driver === 'sqlite') {
+                    return;
+                }
 
-        $builder->add(
-            'user',
-            null,
-            [
-                'constraints' => new NotBlank(),
-            ]
-        );
-
-        $builder->add(
-            'password',
-            PasswordType::class,
-            [
-                'required' => false,
-            ]
-        );
-
-        $builder->add(
-            'name',
-            null,
-            [
-                'label' => 'Database Name',
-                'constraints' => new NotBlank(),
-                'required' => true,
-            ]
-        );
+                $field->add($type, $fieldOptions);
+            });
+        }
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setRequired(['drivers']);
-    }
-
-    /**
-     * @return string
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'database_config';
     }

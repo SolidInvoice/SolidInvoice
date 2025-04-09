@@ -107,6 +107,7 @@ return static function (SecurityConfig $config): void {
 
     $config->accessControl()
         ->path('^(?:' .
+            '/_components/DatabaseConfig|' .
             '/view/(quote|invoice)/[a-zA-Z0-9-]{36}$|' .
             '/(login|register|resetting)$|' .
             '/install(?:.*)|' .

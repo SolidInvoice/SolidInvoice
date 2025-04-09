@@ -1,0 +1,41 @@
+<div {{ attributes }}>
+    {{ form_start(form, {
+        attr: {
+            novalidate: true,
+        }
+    }) }}
+
+    {{ form_errors(form) }}
+
+    <div class="card card-primary">
+        <div class="card-header with-border">
+            <h3 class="card-title">{{ icon('database') }} {{ 'installation.config.title.database_config'|trans }}</h3>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-info">
+                {{ icon('info-circle') }}
+                Enter your database details below. If the database does not exist yet, we will attempt to create it first.
+            </div>
+            {{ form_row(form.database_config) }}
+        </div>
+        <div class="card-footer">
+            <div class="row">
+                <div class="col align-self-start">
+                    <a href="{{ path('_install_check_requirements') }}" class="btn btn-warning btn-block">
+                        {{ icon('arrow-left') }} {{ "installation.action.previous"|trans }}
+                    </a>
+                </div>
+                <div class="col-7">
+                </div>
+                <div class="col" id="next_button">
+                    <button type="submit" class="btn btn-success btn-block" id="continue_step">
+                        {{ "installation.action.next"|trans }} {{ icon('arrow-right') }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+</div>

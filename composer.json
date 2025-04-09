@@ -171,6 +171,7 @@
         "twig/markdown-extra": "^3.4",
         "twig/string-extra": "^3.10",
         "twig/twig": "^3.4",
+        "webmozart/assert": "^1.11",
         "willdurand/negotiation": "^3.0",
         "zenstruck/schedule-bundle": "^1.5"
     },
