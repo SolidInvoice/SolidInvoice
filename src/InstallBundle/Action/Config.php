@@ -27,6 +27,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use function assert;
+use function in_array;
 
 final class Config extends AbstractController
 {
@@ -39,7 +40,17 @@ final class Config extends AbstractController
 
     public function __invoke(Request $request): Response
     {
-        $form = $this->createForm(ConfigStepForm::class);
+        $choices = Drivers::getChoiceList();
+
+        $form = $this->createForm(
+            ConfigStepForm::class,
+            in_array('sqlite', $choices, true) ?
+            [
+                'database_config' => [
+                    'driver' => 'sqlite'
+                ]
+            ] : []
+        );
 
         if ($request->isMethod(Request::METHOD_POST)) {
             return $this->handleForm($request, $form);
