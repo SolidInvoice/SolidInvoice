@@ -17,7 +17,7 @@ use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 
 return static function (FrameworkConfig $config): void {
     $config
-        ->secret(env('SOLIDINVOICE_APP_SECRET')->default(bin2hex(random_bytes(32))))
+        ->secret(env('SOLIDINVOICE_APP_SECRET'))
         ->phpErrors()
         ->log(true)
     ;

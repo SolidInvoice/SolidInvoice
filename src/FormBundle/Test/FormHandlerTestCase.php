@@ -89,7 +89,7 @@ abstract class FormHandlerTestCase extends BaseTestCase
                 [
                     [
                         new AutocompleteChoiceTypeExtension(
-                            new ChecksumCalculator('abc')
+                            new ChecksumCalculator($_SERVER['SOLIDINVOICE_APP_SECRET'])
                         ),
                     ]
                 ]
@@ -123,7 +123,7 @@ abstract class FormHandlerTestCase extends BaseTestCase
             new MoneyExtension($systemConfig),
             new FormTypeValidatorExtension($validator),
             new AutocompleteChoiceTypeExtension(
-                new ChecksumCalculator('abc')
+                new ChecksumCalculator($_SERVER['SOLIDINVOICE_APP_SECRET'])
             ),
         ];
     }

@@ -39,8 +39,6 @@ abstract class LiveComponentTest extends KernelTestCase
 
     protected function setUp(): void
     {
-        $_SERVER['SOLIDINVOICE_APP_SECRET'] = $_ENV['SOLIDINVOICE_APP_SECRET'] = '$ecretf0rt3st';
-
         parent::setUp();
 
         $this->ensureSessionIsSet();

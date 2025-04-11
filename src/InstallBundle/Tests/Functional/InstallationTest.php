@@ -20,7 +20,6 @@ use Symfony\Component\Panther\Client;
 use Symfony\Component\Panther\PantherTestCase;
 use function assert;
 use function count;
-use function getenv;
 use function microtime;
 use function Zenstruck\Foundry\faker;
 
@@ -88,18 +87,11 @@ final class InstallationTest extends PantherTestCase
         $crawler = $client->submitForm(
             'Next',
             [
-                'config_step[database_config][driver]' => getenv('SOLIDINVOICE_DATABASE_DRIVER') ?: 'pdo_mysql',
-                'config_step[database_config][host]' => getenv('SOLIDINVOICE_DATABASE_HOST') ?: '127.0.0.1',
-                'config_step[database_config][user]' => getenv('SOLIDINVOICE_DATABASE_USER') ?: 'root',
-                'config_step[database_config][password]' => getenv('SOLIDINVOICE_DATABASE_PASSWORD') ?: '',
-                'config_step[database_config][name]' => 'solidinvoice_install_test',
+                'config_step[database_config][driver]' => 'sqlite',
             ]
         );
 
         self::assertStringContainsString('/install/install', $crawler->getUri());
-
-        $kernel = self::bootKernel();
-        self::assertSame('solidinvoice_test', $kernel->getContainer()->getParameter('env(database_name)'));
 
         // Wait for installation steps to be completed
         $time = microtime(true);

@@ -20,21 +20,12 @@ class ConfigStepFormTest extends FormTestCase
 {
     public function testSubmit(): void
     {
-        $drivers = [
-            'pdo_mysql' => 'MySQL',
-        ];
-
         $formData = [
             'database_config' => [
-                'driver' => 'pdo_mysql',
-                'host' => '127.0.0.1',
-                'port' => 1234,
-                'user' => 'root',
-                'password' => 'password',
-                'name' => 'testdb',
+                'driver' => 'sqlite',
             ],
         ];
 
-        $this->assertFormData($this->factory->create(ConfigStepForm::class, null, ['drivers' => $drivers]), $formData, $formData);
+        $this->assertFormData($this->factory->create(ConfigStepForm::class), $formData, $formData);
     }
 }

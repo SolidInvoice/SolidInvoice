@@ -27,6 +27,7 @@ use SolidInvoice\SettingsBundle\Entity\Setting;
 use SolidInvoice\SettingsBundle\Form\Type\AddressType;
 use SolidInvoice\SettingsBundle\Form\Type\MailTransportType;
 use SolidInvoice\TaxBundle\Form\Type\TaxNumberType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -44,6 +45,7 @@ final class DefaultData
 
     /**
      * @param array{currency: string} $data
+     * @throws JsonException
      */
     public function __invoke(Company $company, array $data): void
     {
@@ -61,25 +63,6 @@ final class DefaultData
     private function createAppConfig(Company $company, array $data): void
     {
         $appConfig = [
-            // Email
-            ['setting_key' => 'email/from_address', 'setting_value' => 'info@solidinvoice.co', 'description' => null, 'field_type' => TextType::class],
-            ['setting_key' => 'email/from_name', 'setting_value' => $company->getName(), 'description' => null, 'field_type' => TextType::class],
-            ['setting_key' => 'email/sending_options/provider', 'setting_value' => null, 'description' => null, 'field_type' => MailTransportType::class],
-
-            // Invoice
-            ['setting_key' => 'invoice/bcc_address', 'setting_value' => null, 'description' => 'Send BCC copy of invoice to this address', 'field_type' => EmailType::class],
-            ['setting_key' => 'invoice/email_subject', 'setting_value' => 'New Invoice - #{id}', 'description' => 'To include the id of the invoice in the subject, add the placeholder {id} where you want the id', 'field_type' => TextType::class],
-            ['setting_key' => 'invoice/id_generation/strategy', 'setting_value' => 'auto_increment', 'description' => '', 'field_type' => BillingIdConfigurationType::class],
-            ['setting_key' => 'invoice/id_generation/id_prefix', 'setting_value' => '', 'description' => 'Example: INV-', 'field_type' => TextType::class],
-            ['setting_key' => 'invoice/id_generation/id_suffix', 'setting_value' => '', 'description' => 'Example: -INV', 'field_type' => TextType::class],
-
-            // Quote
-            ['setting_key' => 'quote/bcc_address', 'setting_value' => null, 'description' => 'Send BCC copy of quote to this address', 'field_type' => EmailType::class],
-            ['setting_key' => 'quote/email_subject', 'setting_value' => 'New Quotation - #{id}', 'description' => 'To include the id of the quote in the subject, add the placeholder {id} where you want the id', 'field_type' => TextType::class],
-            ['setting_key' => 'quote/id_generation/strategy', 'setting_value' => 'auto_increment', 'description' => '', 'field_type' => BillingIdConfigurationType::class],
-            ['setting_key' => 'quote/id_generation/id_prefix', 'setting_value' => '', 'description' => 'Example: QUOT-', 'field_type' => TextType::class],
-            ['setting_key' => 'quote/id_generation/id_suffix', 'setting_value' => '', 'description' => 'Example: -QUOT', 'field_type' => TextType::class],
-
             // System
             ['setting_key' => 'system/company/logo', 'setting_value' => null, 'description' => null, 'field_type' => ImageUploadType::class],
             ['setting_key' => 'system/company/company_name', 'setting_value' => $company->getName(), 'description' => null, 'field_type' => TextType::class],
@@ -88,6 +71,27 @@ final class DefaultData
             ['setting_key' => 'system/company/contact_details/phone_number', 'setting_value' => null, 'description' => null, 'field_type' => TextType::class],
             ['setting_key' => 'system/company/currency', 'setting_value' => $data['currency'], 'description' => null, 'field_type' => CurrencyType::class],
             ['setting_key' => 'system/company/vat_number', 'setting_value' => null, 'description' => null, 'field_type' => TaxNumberType::class],
+
+            // Email
+            ['setting_key' => 'email/from_address', 'setting_value' => 'info@solidinvoice.co', 'description' => null, 'field_type' => TextType::class],
+            ['setting_key' => 'email/from_name', 'setting_value' => $company->getName(), 'description' => null, 'field_type' => TextType::class],
+            ['setting_key' => 'email/sending_options/provider', 'setting_value' => null, 'description' => null, 'field_type' => MailTransportType::class],
+
+            // Invoice
+            ['setting_key' => 'invoice/watermark', 'setting_value' => '1', 'description' => 'Display a watermark on the invoice with the status', 'field_type' => CheckboxType::class],
+            ['setting_key' => 'invoice/bcc_address', 'setting_value' => null, 'description' => 'Send BCC copy of invoice to this address', 'field_type' => EmailType::class],
+            ['setting_key' => 'invoice/email_subject', 'setting_value' => 'New Invoice - #{id}', 'description' => 'To include the id of the invoice in the subject, add the placeholder {id} where you want the id', 'field_type' => TextType::class],
+            ['setting_key' => 'invoice/id_generation/strategy', 'setting_value' => 'auto_increment', 'description' => '', 'field_type' => BillingIdConfigurationType::class],
+            ['setting_key' => 'invoice/id_generation/id_prefix', 'setting_value' => '', 'description' => 'Example: INV-', 'field_type' => TextType::class],
+            ['setting_key' => 'invoice/id_generation/id_suffix', 'setting_value' => '', 'description' => 'Example: -INV', 'field_type' => TextType::class],
+
+            // Quote
+            ['setting_key' => 'quote/watermark', 'setting_value' => '1', 'description' => 'Display a watermark on the quote with the status', 'field_type' => CheckboxType::class],
+            ['setting_key' => 'quote/bcc_address', 'setting_value' => null, 'description' => 'Send BCC copy of quote to this address', 'field_type' => EmailType::class],
+            ['setting_key' => 'quote/email_subject', 'setting_value' => 'New Quotation - #{id}', 'description' => 'To include the id of the quote in the subject, add the placeholder {id} where you want the id', 'field_type' => TextType::class],
+            ['setting_key' => 'quote/id_generation/strategy', 'setting_value' => 'auto_increment', 'description' => '', 'field_type' => BillingIdConfigurationType::class],
+            ['setting_key' => 'quote/id_generation/id_prefix', 'setting_value' => '', 'description' => 'Example: QUOT-', 'field_type' => TextType::class],
+            ['setting_key' => 'quote/id_generation/id_suffix', 'setting_value' => '', 'description' => 'Example: -QUOT', 'field_type' => TextType::class],
         ];
 
         foreach ($appConfig as $setting) {

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Tests\Listener;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Filter\SQLFilter;
@@ -27,6 +26,7 @@ use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Listener\CompanyEventSubscriber;
 use SolidInvoice\UserBundle\Entity\User;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -116,7 +116,7 @@ final class CompanyEventSubscriberTest extends TestCase
 
         self::assertNull($event->getResponse());
         self::assertSame($company->getId(), $companySelector->getCompany());
-        self::assertSame($company->getId()->toHex(), $filter->getParameter('companyId'));
+        self::assertSame($company->getId()->toBinary(), $filter->getParameter('companyId'));
     }
 
     /**
@@ -204,7 +204,7 @@ final class CompanyEventSubscriberTest extends TestCase
 
         self::assertNull($event->getResponse());
         self::assertSame($company->getId(), $companySelector->getCompany());
-        self::assertSame($company->getId()->toHex(), $filter->getParameter('companyId'));
+        self::assertSame($company->getId()->toBinary(), $filter->getParameter('companyId'));
     }
 
     /**
@@ -262,8 +262,8 @@ final class CompanyEventSubscriberTest extends TestCase
         $connection
             ->shouldReceive('quote')
             ->once()
-            ->with($company->getId()->toHex(), Types::STRING)
-            ->andReturn($company->getId()->toHex());
+            ->with($company->getId(), UlidType::NAME)
+            ->andReturn($company->getId()->toBinary());
 
         return $filter;
     }

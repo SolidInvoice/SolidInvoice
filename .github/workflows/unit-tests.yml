@@ -34,24 +34,6 @@ jobs:
       PANTHER_NO_SANDBOX: 1
       PANTHER_CHROME_ARGUMENTS: --disable-dev-shm-usage
       COVERAGE: 0
-      SOLIDINVOICE_DATABASE_DRIVER: pdo_mysql
-      SOLIDINVOICE_DATABASE_HOST: 127.0.0.1
-      SOLIDINVOICE_DATABASE_PORT: 3306
-      SOLIDINVOICE_DATABASE_NAME: solidinvoice
-      SOLIDINVOICE_DATABASE_USER: root
-      SOLIDINVOICE_DATABASE_PASSWORD:
-      SOLIDINVOICE_DATABASE_VERSION: 8.0
-
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD:
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_DATABASE: solidinvoice_test
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
       - name: Harden Runner

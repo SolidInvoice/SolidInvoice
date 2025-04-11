@@ -115,7 +115,7 @@ class InvoiceTypeTest extends FormTestCase
                 new BaseEntityAutocompleteType($this->createMock(UrlGeneratorInterface::class))
             ], [
                 ChoiceType::class => [
-                    new AutocompleteChoiceTypeExtension(new ChecksumCalculator('abc')),
+                    new AutocompleteChoiceTypeExtension(new ChecksumCalculator($_SERVER['SOLIDINVOICE_APP_SECRET'])),
                 ],
             ]),
         ];

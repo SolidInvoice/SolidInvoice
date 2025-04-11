@@ -27,8 +27,6 @@ use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\PreloadedExtension;
 use Symfony\UX\Autocomplete\Checksum\ChecksumCalculator;
 use Symfony\UX\Autocomplete\Form\AutocompleteChoiceTypeExtension;
-use function bin2hex;
-use function random_bytes;
 
 class QuoteTypeTest extends FormTestCase
 {
@@ -85,7 +83,7 @@ class QuoteTypeTest extends FormTestCase
     {
         return [
             new AutocompleteChoiceTypeExtension(
-                new ChecksumCalculator($_SERVER['SOLIDINVOICE_APP_SECRET'] ?? bin2hex(random_bytes(8))),
+                new ChecksumCalculator($_SERVER['SOLIDINVOICE_APP_SECRET']),
             ),
         ];
     }

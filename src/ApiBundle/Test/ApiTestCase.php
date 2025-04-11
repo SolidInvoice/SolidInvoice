@@ -17,10 +17,12 @@ use ApiPlatform\JsonLd\ContextBuilderInterface;
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase as ApiPlatformTestCase;
 use ApiPlatform\Symfony\Bundle\Test\Client;
 use DateTimeInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Faker\Factory;
 use Faker\Generator;
 use SolidInvoice\ApiBundle\ApiTokenManager;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\CoreBundle\Company\DefaultData;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -63,11 +65,28 @@ abstract class ApiTestCase extends ApiPlatformTestCase
         $_SERVER['SOLIDINVOICE_LOCALE'] = $_ENV['SOLIDINVOICE_LOCALE'] = 'en_US';
         $_SERVER['SOLIDINVOICE_INSTALLED'] = $_ENV['SOLIDINVOICE_INSTALLED'] = date(DateTimeInterface::ATOM);
 
-        $this->company = static::getContainer()->get('doctrine')
+        /** @var ManagerRegistry $registry */
+        $registry = static::getContainer()->get('doctrine');
+        $company = $registry
             ->getRepository(Company::class)
             ->findOneBy([]);
 
-        static::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
+        if (! $company instanceof Company) {
+            $this->company = new Company();
+            $this->company->setName('SolidInvoice');
+            $registry->getManager()->persist($this->company);
+            $registry->getManager()->flush();
+
+            static::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
+
+            /** @var DefaultData $defaultData */
+            $defaultData = static::getContainer()->get(DefaultData::class);
+            $defaultData($this->company, ['currency' => 'USD']);
+        } else {
+            $this->company = $company;
+
+            static::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
+        }
     }
 
     protected function setUp(): void

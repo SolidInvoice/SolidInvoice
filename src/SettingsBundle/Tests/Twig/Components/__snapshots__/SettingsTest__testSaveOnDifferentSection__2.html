@@ -1,5 +1,5 @@
 <html><body>
-<section class="row" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="Settings" data-live-url-value="/_components/Settings" data-live-query-mapping-value='{"section":{"name":"section"}}' data-live-props-value='{"section":"invoice","formName":"settings","settings":{"email_subject":"invoice subject","bcc_address":"","watermark":"1","id_generation":{"strategy":"random_number","id_prefix":"","id_suffix":""},"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"W\/h1pnGnXmrbNBUG9FF9E3w7TJVhM4qjN\/kbqzCx7ds="}'>
+<section class="row" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="Settings" data-live-url-value="/_components/Settings" data-live-query-mapping-value='{"section":{"name":"section"}}' data-live-props-value='{"section":"invoice","formName":"settings","settings":{"watermark":"1","bcc_address":"","email_subject":"invoice subject","id_generation":{"strategy":"random_number","id_prefix":"","id_suffix":""},"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"W\/h1pnGnXmrbNBUG9FF9E3w7TJVhM4qjN\/kbqzCx7ds="}'>
     <aside class="col-3">
         <div class="card sticky-top">
             <div class="card-body">
@@ -11,9 +11,9 @@
                             </a>
                         </li>
                                             <li class="nav-item">
-                            <a href="/settings?section=quote" class="nav-link">
+                            <a href="/settings?section=email" class="nav-link">
                                 <i class="fa fa-cog"></i>
-                                <p>Quote</p>
+                                <p>Email</p>
                             </a>
                         </li>
                                             <li class="nav-item">
@@ -23,21 +23,9 @@
                             </a>
                         </li>
                                             <li class="nav-item">
-                            <a href="/settings?section=email" class="nav-link">
+                            <a href="/settings?section=quote" class="nav-link">
                                 <i class="fa fa-cog"></i>
-                                <p>Email</p>
-                            </a>
-                        </li>
-                                            <li class="nav-item">
-                            <a href="/settings?section=sms" class="nav-link">
-                                <i class="fa fa-cog"></i>
-                                <p>Sms</p>
-                            </a>
-                        </li>
-                                            <li class="nav-item">
-                            <a href="/settings?section=notification" class="nav-link">
-                                <i class="fa fa-cog"></i>
-                                <p>Notification</p>
+                                <p>Quote</p>
                             </a>
                         </li>
                                     </ul>
@@ -56,16 +44,6 @@
                 </div>
                 <div class="card-body">
                     <div id="settings" data-model="norender|*">
-<div class="form-group">                
-            <label class="control-label" for="settings_email_subject">Email subject</label><input type="text" id="settings_email_subject" name="settings[email_subject]" aria-describedby="settings_email_subject_help" class="form-control" value="invoice subject"><div class="alert alert-info mt-2">
-            <small id="settings_email_subject_help" class="form-text ">To include the id of the invoice in the subject, add the placeholder {id} where you want the id</small>
-        </div>
-</div>
-<div class="form-group">                
-            <label class="control-label" for="settings_bcc_address">Bcc address</label><input type="email" id="settings_bcc_address" name="settings[bcc_address]" aria-describedby="settings_bcc_address_help" class="form-control"><div class="alert alert-info mt-2">
-            <small id="settings_bcc_address_help" class="form-text ">Send BCC copy of invoice to this address</small>
-        </div>
-</div>
 <div class="form-group">
 <div class="form-check">        
         <input type="checkbox" id="settings_watermark" name="settings[watermark]" aria-describedby="settings_watermark_help" class="form-check-input" value="1" checked>
@@ -73,6 +51,16 @@
 </div>
 <div class="alert alert-info mt-2">
             <small id="settings_watermark_help" class="form-text ">Display a watermark on the invoice with the status</small>
+        </div>
+</div>
+<div class="form-group">                
+            <label class="control-label" for="settings_bcc_address">Bcc address</label><input type="email" id="settings_bcc_address" name="settings[bcc_address]" aria-describedby="settings_bcc_address_help" class="form-control"><div class="alert alert-info mt-2">
+            <small id="settings_bcc_address_help" class="form-text ">Send BCC copy of invoice to this address</small>
+        </div>
+</div>
+<div class="form-group">                
+            <label class="control-label" for="settings_email_subject">Email subject</label><input type="text" id="settings_email_subject" name="settings[email_subject]" aria-describedby="settings_email_subject_help" class="form-control" value="invoice subject"><div class="alert alert-info mt-2">
+            <small id="settings_email_subject_help" class="form-text ">To include the id of the invoice in the subject, add the placeholder {id} where you want the id</small>
         </div>
 </div>
 <fieldset class="form-group">                

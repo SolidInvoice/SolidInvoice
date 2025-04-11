@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace SolidInvoice\InstallBundle\Test;
 
 use DateTimeInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\CoreBundle\Company\DefaultData;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Test\Traits\SymfonyKernelTrait;
 use function date;
@@ -37,11 +39,29 @@ trait EnsureApplicationInstalled
         $_SERVER['SOLIDINVOICE_LOCALE'] = $_ENV['SOLIDINVOICE_LOCALE'] = 'en_US';
         $_SERVER['SOLIDINVOICE_INSTALLED'] = $_ENV['SOLIDINVOICE_INSTALLED'] = date(DateTimeInterface::ATOM);
 
-        $this->company = static::getContainer()->get('doctrine')
+        /** @var ManagerRegistry $registry */
+        $registry = static::getContainer()->get('doctrine');
+        $company = $registry
             ->getRepository(Company::class)
             ->findOneBy([]);
 
-        static::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
+        if (! $company instanceof Company) {
+            $this->company = new Company();
+            $this->company->setName('SolidInvoice');
+            $registry->getManager()->persist($this->company);
+            $registry->getManager()->flush();
+
+            static::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
+
+            /** @var DefaultData $defaultData */
+            $defaultData = static::getContainer()->get(DefaultData::class);
+            $defaultData($this->company, ['currency' => 'USD']);
+        } else {
+            $this->company = $company;
+
+            static::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
+        }
+
     }
 
     /**

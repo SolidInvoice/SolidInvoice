@@ -227,10 +227,10 @@ final class InvoiceCreateHandlerTest extends FormHandlerTestCase
                 ],
                 [
                     ChoiceType::class => [
-                        new AutocompleteChoiceTypeExtension(new ChecksumCalculator('abc')),
+                        new AutocompleteChoiceTypeExtension(new ChecksumCalculator($_SERVER['SOLIDINVOICE_APP_SECRET'])),
                     ],
                     TextType::class => [
-                        new AutocompleteChoiceTypeExtension(new ChecksumCalculator('abc')),
+                        new AutocompleteChoiceTypeExtension(new ChecksumCalculator($_SERVER['SOLIDINVOICE_APP_SECRET'])),
                     ],
                 ]
             ),

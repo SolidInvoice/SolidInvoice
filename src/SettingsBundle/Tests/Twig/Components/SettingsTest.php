@@ -56,6 +56,7 @@ final class SettingsTest extends LiveComponentTest
 
     public function testSave(): void
     {
+        $this->settingsComponent->set('section', 'system');
         $this->settingsComponent->set('settings.company.currency', 'ZAR');
         $this->settingsComponent->call('save');
 

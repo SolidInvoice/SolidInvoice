@@ -10,11 +10,7 @@
  */
 
 use Doctrine\Deprecations\Deprecation;
-use SolidInvoice\CoreBundle\Entity\Version;
-use SolidInvoice\CoreBundle\Repository\VersionRepository;
-use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\Kernel;
-use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Dotenv\Dotenv;
@@ -32,27 +28,16 @@ if (class_exists(Deprecation::class)) {
     $application = new Application($kernel);
     $application->setAutoExit(false);
 
-    $application->run(new ArrayInput([
-        'command' => 'doctrine:database:drop',
-        '--if-exists' => true,
-        '--force' => true,
-    ]));
-
-    $application->run(new ArrayInput([
+    /*$application->run(new ArrayInput([
         'command' => 'doctrine:database:create',
-    ]));
+    ]));*/
 
     $application->run(new ArrayInput([
-        'command' => 'doctrine:migrations:migrate',
-        '--allow-no-migration' => true,
-        '--no-interaction' => true,
+        'command' => 'doctrine:schema:update',
+        '--force' => true,
+        '--complete' => true,
+        '--quiet' => true,
     ]));
-
-    $kernel->getContainer()->get(SystemConfig::class)->set(SystemConfig::CURRENCY_CONFIG_PATH, 'USD');
-
-    /** @var VersionRepository $version */
-    $version = $kernel->getContainer()->get('doctrine')->getManager()->getRepository(Version::class);
-    $version->updateVersion(SolidInvoiceCoreBundle::VERSION);
 
     $kernel->shutdown();
 })();
