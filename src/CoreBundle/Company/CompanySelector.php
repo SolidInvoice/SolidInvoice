@@ -15,7 +15,6 @@ namespace SolidInvoice\CoreBundle\Company;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Contracts\Service\ResetInterface;
 use function assert;
@@ -43,7 +42,6 @@ final class CompanySelector implements ResetInterface
         $em
             ->getFilters()
             ->enable('company')
-            //->setParameter('companyId', $companyId, UlidType::NAME);
             ->setParameter('companyId', substr($companyId->toHex(), 2), 'string');
 
         $this->companyId = $companyId;
