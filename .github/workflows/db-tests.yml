@@ -29,6 +29,7 @@ jobs:
             - db:
                 name: MySQL
                 driver: pdo_mysql
+                scheme: mysql
                 version: 5.7
                 image: mysql
                 port: 3306
@@ -169,7 +170,7 @@ jobs:
           - "${{ matrix.db.port }}:${{ matrix.db.port }}"
 
     env:
-      SOLIDINVOICE_DATABASE_URL: "${{ matrix.db.driver }}://${{ matrix.db.user }}:solidinvoice@127.0.0.1:${{ matrix.db.port }}/solidinvoice?serverVersion=${{ matrix.db.name == 'MariaDB' && 'mariadb-' || '' }}${{ matrix.db.version }}${{ matrix.db.name == 'MariaDB' && '.0' || '' }}"
+      SOLIDINVOICE_DATABASE_URL: "${{ scheme }}://${{ matrix.db.user }}:solidinvoice@127.0.0.1:${{ matrix.db.port }}/solidinvoice?serverVersion=${{ matrix.db.name == 'MariaDB' && 'mariadb-' || '' }}${{ matrix.db.version }}${{ matrix.db.name == 'MariaDB' && '.0' || '' }}"
 
     steps:
       - name: Harden Runner
