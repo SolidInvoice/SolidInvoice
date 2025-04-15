@@ -122,27 +122,27 @@ jobs:
                 image: mariadb
                 port: 3306
                 user: root
-            #- db:
-            #    name: PostgreSQL
-            #    driver: pdo_pgsql
-            #    version: 10
-            #    image: postgres
-            #    port: 5432
-            #    user: postgres
-            #- db:
-            #    name: PostgreSQL
-            #    driver: pdo_pgsql
-            #    version: 15
-            #    image: postgres
-            #    port: 5432
-            #    user: postgres
-            #- db:
-            #    name: PostgreSQL
-            #    driver: pdo_pgsql
-            #    version: 16
-            #    image: postgres
-            #    port: 5432
-            #    user: postgres
+            - db:
+                name: PostgreSQL
+                driver: pdo_pgsql
+                version: 10
+                image: postgres
+                port: 5432
+                user: postgres
+            - db:
+                name: PostgreSQL
+                driver: pdo_pgsql
+                version: 16
+                image: postgres
+                port: 5432
+                user: postgres
+            - db:
+                name: PostgreSQL
+                driver: pdo_pgsql
+                version: 17
+                image: postgres
+                port: 5432
+                user: postgres
             #- db:
             #    name: Oracle
             #    driver: pdo_oci
