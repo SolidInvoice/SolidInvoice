@@ -110,7 +110,7 @@ jobs:
                 name: MariaDB
                 driver: pdo_mysql
                 scheme: mysql
-                version: 11.8
+                version: 11.4
                 image: mariadb
                 port: 3306
                 user: root
@@ -188,7 +188,7 @@ jobs:
           - "${{ matrix.db.port }}:${{ matrix.db.port }}"
 
     env:
-      SOLIDINVOICE_DATABASE_URL: "${{ matrix.db.scheme }}://${{ matrix.db.user }}:solidinvoice@127.0.0.1:${{ matrix.db.port }}/solidinvoice?serverVersion=${{ matrix.db.name == 'MariaDB' && 'mariadb-' || '' }}${{ matrix.db.version }}${{ matrix.db.name == 'MariaDB' && '.0' || '' }}"
+      SOLIDINVOICE_DATABASE_URL: "${{ matrix.db.scheme }}://${{ matrix.db.user }}:solidinvoice@127.0.0.1:${{ matrix.db.port }}/solidinvoice"
 
     steps:
       - name: Harden Runner
