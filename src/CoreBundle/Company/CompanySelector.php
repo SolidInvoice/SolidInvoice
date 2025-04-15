@@ -43,7 +43,8 @@ final class CompanySelector implements ResetInterface
         $em
             ->getFilters()
             ->enable('company')
-            ->setParameter('companyId', $companyId, UlidType::NAME);
+            //->setParameter('companyId', $companyId, UlidType::NAME);
+            ->setParameter('companyId', substr($companyId->toHex(), 2), 'string');
 
         $this->companyId = $companyId;
     }

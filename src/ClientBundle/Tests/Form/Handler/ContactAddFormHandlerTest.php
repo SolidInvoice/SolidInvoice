@@ -21,21 +21,11 @@ use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Zenstruck\Foundry\Configuration;
 use Zenstruck\Foundry\Test\Factories;
 
 class ContactAddFormHandlerTest extends FormHandlerTestCase
 {
     use Factories;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        Configuration::boot(static function () {
-            return static::getContainer()->get('.zenstruck_foundry.configuration'); // @phpstan-ignore-line
-        });
-    }
 
     public function getHandler(): ContactAddFormHandler
     {

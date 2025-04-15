@@ -26,7 +26,6 @@ use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Listener\CompanyEventSubscriber;
 use SolidInvoice\UserBundle\Entity\User;
-use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -116,7 +115,7 @@ final class CompanyEventSubscriberTest extends TestCase
 
         self::assertNull($event->getResponse());
         self::assertSame($company->getId(), $companySelector->getCompany());
-        self::assertSame($company->getId()->toBinary(), $filter->getParameter('companyId'));
+        self::assertSame($company->getId()->toHex(), $filter->getParameter('companyId'));
     }
 
     /**
@@ -204,7 +203,7 @@ final class CompanyEventSubscriberTest extends TestCase
 
         self::assertNull($event->getResponse());
         self::assertSame($company->getId(), $companySelector->getCompany());
-        self::assertSame($company->getId()->toBinary(), $filter->getParameter('companyId'));
+        self::assertSame($company->getId()->toHex(), $filter->getParameter('companyId'));
     }
 
     /**
@@ -262,8 +261,8 @@ final class CompanyEventSubscriberTest extends TestCase
         $connection
             ->shouldReceive('quote')
             ->once()
-            ->with($company->getId(), UlidType::NAME)
-            ->andReturn($company->getId()->toBinary());
+            ->with(substr($company->getId()->toHex(), 2), 'string')
+            ->andReturn($company->getId()->toHex());
 
         return $filter;
     }

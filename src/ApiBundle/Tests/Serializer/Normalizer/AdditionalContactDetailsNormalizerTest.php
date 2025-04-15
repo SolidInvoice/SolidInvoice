@@ -14,18 +14,18 @@ declare(strict_types=1);
 namespace SolidInvoice\ApiBundle\Tests\Serializer\Normalizer;
 
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use PHPUnit\Framework\TestCase;
 use SolidInvoice\ApiBundle\Serializer\Normalizer\AdditionalContactDetailsNormalizer;
 use SolidInvoice\ClientBundle\Entity\AdditionalContactDetail;
 use SolidInvoice\ClientBundle\Entity\ContactType;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @covers \SolidInvoice\ApiBundle\Serializer\Normalizer\AdditionalContactDetailsNormalizer
  */
-final class AdditionalContactDetailsNormalizerTest extends TestCase
+final class AdditionalContactDetailsNormalizerTest extends KernelTestCase
 {
     use MockeryPHPUnitIntegration;
     use DoctrineTestTrait;

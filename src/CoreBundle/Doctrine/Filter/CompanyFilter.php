@@ -16,22 +16,24 @@ namespace SolidInvoice\CoreBundle\Doctrine\Filter;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Filter\SQLFilter;
 use SolidInvoice\UserBundle\Entity\User;
+use function sprintf;
 
 class CompanyFilter extends SQLFilter
 {
     public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias): string
     {
         if (User::class === $targetEntity->getName() && $this->hasParameter('companyId')) {
+            $query = $this
+                ->getConnection()
+                ->createQueryBuilder()
+                ->select('HEX(user_id)')
+                ->from('user_company')
+                ->where('HEX(company_id) = ' . strtoupper($this->getParameter('companyId')));
+
             return sprintf(
-                '%s.id IN (%s)',
+                'HEX(%s.id) IN (%s)',
                 $targetTableAlias,
-                $this
-                    ->getConnection()
-                    ->createQueryBuilder()
-                    ->select('user_id')
-                    ->from('user_company')
-                    ->where('company_id = ' . $this->getParameter('companyId'))
-                    ->getSQL()
+                $query->getSQL()
             );
         }
 
@@ -40,7 +42,7 @@ class CompanyFilter extends SQLFilter
         }
 
         if ($this->hasParameter('companyId')) {
-            return sprintf('%s.company_id = %s', $targetTableAlias, $this->getParameter('companyId'));
+            return sprintf('HEX(%s.company_id) = %s', $targetTableAlias, strtoupper($this->getParameter('companyId')));
         }
 
         return '';

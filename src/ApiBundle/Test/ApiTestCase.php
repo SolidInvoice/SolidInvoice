@@ -24,6 +24,7 @@ use SolidInvoice\ApiBundle\ApiTokenManager;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Company\DefaultData;
 use SolidInvoice\CoreBundle\Entity\Company;
+use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,6 +33,8 @@ use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use Zenstruck\Foundry\Configuration;
+use Zenstruck\Foundry\Persistence\ResetDatabase\ResetDatabaseManager;
 use function date;
 use function is_object;
 
@@ -40,6 +43,8 @@ use function is_object;
  */
 abstract class ApiTestCase extends ApiPlatformTestCase
 {
+    // use EnsureApplicationInstalled;
+
     protected static Client $client;
 
     protected Generator $faker;
@@ -58,35 +63,45 @@ abstract class ApiTestCase extends ApiPlatformTestCase
      */
     public function installApplication(): void
     {
-        if (! static::$booted) {
-            static::bootKernel();
+        if (Configuration::isBooted() && ! Configuration::instance()->isPersistenceAvailable()) {
+            Configuration::boot(static function () {
+                return static::getContainer()->get('.zenstruck_foundry.configuration'); // @phpstan-ignore-line
+            });
         }
+
+        ResetDatabaseManager::resetBeforeEachTest(
+            static fn () => static::bootKernel(),
+            static fn () => static::ensureKernelShutdown(),
+        );
 
         $_SERVER['SOLIDINVOICE_LOCALE'] = $_ENV['SOLIDINVOICE_LOCALE'] = 'en_US';
         $_SERVER['SOLIDINVOICE_INSTALLED'] = $_ENV['SOLIDINVOICE_INSTALLED'] = date(DateTimeInterface::ATOM);
 
         /** @var ManagerRegistry $registry */
         $registry = static::getContainer()->get('doctrine');
-        $company = $registry
-            ->getRepository(Company::class)
-            ->findOneBy([]);
 
-        if (! $company instanceof Company) {
-            $this->company = new Company();
-            $this->company->setName('SolidInvoice');
-            $registry->getManager()->persist($this->company);
-            $registry->getManager()->flush();
+        $this->company = new Company();
+        $this->company->setName('SolidInvoice');
+        $registry->getManager()->persist($this->company);
+        $registry->getManager()->flush();
 
-            static::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
+        static::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
 
-            /** @var DefaultData $defaultData */
-            $defaultData = static::getContainer()->get(DefaultData::class);
-            $defaultData($this->company, ['currency' => 'USD']);
-        } else {
-            $this->company = $company;
+        /** @var DefaultData $defaultData */
+        $defaultData = static::getContainer()->get(DefaultData::class);
+        $defaultData($this->company, ['currency' => 'USD']);
+    }
 
-            static::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
-        }
+    /**
+     * @internal
+     * @beforeClass
+     */
+    public static function _resetDatabaseBeforeFirstTest(): void
+    {
+        ResetDatabaseManager::resetBeforeFirstTest(
+            static fn () => static::bootKernel(),
+            static fn () => static::ensureKernelShutdown(),
+        );
     }
 
     protected function setUp(): void

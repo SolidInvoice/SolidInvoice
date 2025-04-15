@@ -32,6 +32,8 @@ final class RequestListener implements EventSubscriberInterface
 {
     public const INSTALLER_ROUTE = '_install_check_requirements';
 
+    public static bool $isDebug = false;
+
     /**
      * Core routes.
      *

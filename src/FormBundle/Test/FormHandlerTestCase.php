@@ -23,7 +23,6 @@ use SolidInvoice\CoreBundle\Form\Extension\FormHelpExtension;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
-use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Form\Type\InvoiceType;
 use SolidInvoice\InvoiceBundle\Form\Type\ItemType as InvoiceItemType;
 use SolidInvoice\MoneyBundle\Form\Extension\MoneyExtension;
@@ -48,7 +47,6 @@ use Symfony\UX\Autocomplete\Form\BaseEntityAutocompleteType;
 
 abstract class FormHandlerTestCase extends BaseTestCase
 {
-    use EnsureApplicationInstalled;
     use DoctrineTestTrait;
     use MockeryPHPUnitIntegration;
 

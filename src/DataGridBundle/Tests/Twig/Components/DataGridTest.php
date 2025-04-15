@@ -38,9 +38,7 @@ final class DataGridTest extends LiveComponentTest
             client: $this->client,
         )->actingAs($this->getUser());
 
-        $this->markTestSkipped('This test is flaky, skipping until it can be made more robust');
-
-        // ClientFactory::createMany(20, ['company' => $this->company, 'archived' => null, 'status' => 'active']);
+        ClientFactory::createMany(20, ['company' => $this->company, 'archived' => null, 'status' => 'active']);
     }
 
     protected function getSnapshotId(): string
