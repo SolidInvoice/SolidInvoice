@@ -66,62 +66,70 @@ jobs:
                 image: mysql
                 port: 3306
                 user: root
-            #- db:
-            #    name: MariaDB
-            #    driver: pdo_mysql
-            #    version: 10.4
-            #    image: mariadb
-            #    port: 3306
-            #    user: root
-            #- db:
-            #    name: MariaDB
-            #    driver: pdo_mysql
-            #    version: 10.5
-            #    image: mariadb
-            #    port: 3306
-            #    user: root
-            #- db:
-            #    name: MariaDB
-            #    driver: pdo_mysql
-            #    version: 10.6
-            #    image: mariadb
-            #    port: 3306
-            #    user: root
-            #- db:
-            #    name: MariaDB
-            #    driver: pdo_mysql
-            #    version: 10.11
-            #    image: mariadb
-            #    port: 3306
-            #    user: root
-            #- db:
-            #    name: MariaDB
-            #    driver: pdo_mysql
-            #    version: "11.0"
-            #    image: mariadb
-            #    port: 3306
-            #    user: root
-            #- db:
-            #    name: MariaDB
-            #    driver: pdo_mysql
-            #    version: 11.1
-            #    image: mariadb
-            #    port: 3306
-            #    user: root
-            #- db:
-            #    name: MariaDB
-            #    driver: pdo_mysql
-            #    version: 11.2
-            #    image: mariadb
-            #    port: 3306
-            #    user: root
-            #- db:
-            #    name: MariaDB
-            #    driver: pdo_mysql
-            #    version: 11.3
-            #    image: mariadb
-            #    port: 3306
-            #    user: root
+            - db:
+                name: MariaDB
+                driver: pdo_mysql
+                scheme: mysql
+                version: 10.4
+                image: mariadb
+                port: 3306
+                user: root
+            - db:
+                name: MariaDB
+                driver: pdo_mysql
+                scheme: mysql
+                version: 10.5
+                image: mariadb
+                port: 3306
+                user: root
+            - db:
+                name: MariaDB
+                driver: pdo_mysql
+                scheme: mysql
+                version: 10.6
+                image: mariadb
+                port: 3306
+                user: root
+            - db:
+                name: MariaDB
+                driver: pdo_mysql
+                scheme: mysql
+                version: 10.11
+                image: mariadb
+                port: 3306
+                user: root
+            - db:
+                name: MariaDB
+                driver: pdo_mysql
+                scheme: mysql
+                version: "11.0"
+                image: mariadb
+                port: 3306
+                user: root
+            - db:
+                name: MariaDB
+                driver: pdo_mysql
+                scheme: mysql
+                version: 11.1
+                image: mariadb
+                port: 3306
+                user: root
+            - db:
+                name: MariaDB
+                driver: pdo_mysql
+                scheme: mysql
+                version: 11.2
+                image: mariadb
+                port: 3306
+                user: root
+            - db:
+                name: MariaDB
+                driver: pdo_mysql
+                scheme: mysql
+                version: 11.3
+                image: mariadb
+                port: 3306
+                user: root
             #- db:
             #    name: PostgreSQL
             #    driver: pdo_pgsql
