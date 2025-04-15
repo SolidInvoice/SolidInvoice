@@ -42,7 +42,6 @@
         <server name="SOLIDINVOICE_APP_SECRET" value="$ecretf0rt3st" />
         <server name="SOLIDINVOICE_ENV" value="test" />
         <server name="SOLIDINVOICE_DEBUG" value="0" />
-        <server name="SOLIDINVOICE_DATABASE_URL" value="sqlite:///var/cache/test/solidinvoice.db" />
         <server name="KERNEL_CLASS" value="SolidInvoice\Kernel" />
         <server name="KERNEL_DIR" value="app" />
         <server name="SHELL_VERBOSITY" value="-1" />
