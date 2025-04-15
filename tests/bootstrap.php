@@ -28,8 +28,6 @@ if (class_exists(Deprecation::class)) {
     $application = new Application($kernel);
     $application->setAutoExit(false);
 
-    var_dump(str_split($_SERVER['SOLIDINVOICE_DATABASE_URL'], 10));
-
     $application->run(new ArrayInput([
         'command' => 'doctrine:database:create',
     ]));
