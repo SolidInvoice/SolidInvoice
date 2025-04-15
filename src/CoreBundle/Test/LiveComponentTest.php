@@ -104,6 +104,7 @@ abstract class LiveComponentTest extends KernelTestCase
     protected function tearDown(): void
     {
         $this->tearDownTrait();
+        parent::tearDown();
 
         $this->client->getKernel()->shutdown();
         $this->client->getKernel()->boot();
