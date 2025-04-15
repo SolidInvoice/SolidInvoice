@@ -110,7 +110,7 @@ jobs:
                 name: MariaDB
                 driver: pdo_mysql
                 scheme: mysql
-                version: 11.1
+                version: 11.8
                 image: mariadb
                 port: 3306
                 user: root
@@ -118,15 +118,7 @@ jobs:
                 name: MariaDB
                 driver: pdo_mysql
                 scheme: mysql
-                version: 11.2
-                image: mariadb
-                port: 3306
-                user: root
-            - db:
-                name: MariaDB
-                driver: pdo_mysql
-                scheme: mysql
-                version: 11.3
+                version: 11
                 image: mariadb
                 port: 3306
                 user: root
