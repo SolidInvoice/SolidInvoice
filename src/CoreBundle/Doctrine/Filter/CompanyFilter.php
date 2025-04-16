@@ -55,7 +55,7 @@ class CompanyFilter extends SQLFilter
         }
 
         if ($this->hasParameter('companyId')) {
-            return sprintf($encode('%s.company_id'), $targetTableAlias, $this->getParameter('companyId'));
+            return sprintf($encode('%s.company_id') . ' = %s', $targetTableAlias, $this->getParameter('companyId'));
         }
 
         return '';
