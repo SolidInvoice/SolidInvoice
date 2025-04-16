@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Tests\Message\Handler;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Driver\PDO\SQLite\Driver;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\FilterCollection;
@@ -45,8 +47,9 @@ final class CreateInvoiceFromRecurringHandlerTest extends KernelTestCase
 
         $invoiceManager = $this->createMock(InvoiceManager::class);
         $invoiceStateMachine = $this->createMock(StateMachine::class);
-        $registry = $this->createMock(Registry::class);
         $entityManager = $this->createMock(EntityManagerInterface::class);
+        $registry = $this->createMock(Registry::class);
+        $entityManager->expects($this->once())->method('getConnection')->willReturn(new Connection([], new Driver()));
 
         $configuration->addFilter('company', CompanyFilter::class);
 
