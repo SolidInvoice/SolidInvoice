@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Tests\Listener;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Filter\SQLFilter;
@@ -35,6 +36,7 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Uid\Ulid;
+use function strtoupper;
 
 /**
  * @covers \SolidInvoice\CoreBundle\Listener\CompanyEventSubscriber
@@ -244,7 +246,7 @@ final class CompanyEventSubscriberTest extends TestCase
 
         $em
             ->shouldReceive('getConnection')
-            ->once()
+            ->zeroOrMoreTimes()
             ->andReturn($connection);
 
         $filterCollection
@@ -259,9 +261,14 @@ final class CompanyEventSubscriberTest extends TestCase
             ->withNoArgs();
 
         $connection
+            ->shouldReceive('getDatabasePlatform')
+            ->zeroOrMoreTimes()
+            ->andReturn(new SqlitePlatform());
+
+        $connection
             ->shouldReceive('quote')
             ->once()
-            ->with(substr($company->getId()->toHex(), 2), 'string')
+            ->with(strtoupper(substr($company->getId()->toHex(), 2)), 'string')
             ->andReturn($company->getId()->toHex());
 
         return $filter;
