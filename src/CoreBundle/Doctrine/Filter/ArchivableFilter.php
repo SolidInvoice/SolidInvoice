@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Doctrine\Filter;
 
+use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Filter\SQLFilter;
@@ -44,6 +46,10 @@ class ArchivableFilter extends SQLFilter
             return '';
         }
 
-        return sprintf('(%1$s.archived IS NULL OR %1$s.archived = 0)', $targetTableAlias);
+        $type = Type::getType(Types::BOOLEAN);
+
+        $value = $type->convertToDatabaseValue(false, $this->getConnection()->getDatabasePlatform());
+
+        return sprintf('(%1$s.archived IS NULL OR %1$s.archived = %2$s)', $targetTableAlias, $value);
     }
 }
