@@ -122,8 +122,7 @@ final class RequestListener implements EventSubscriberInterface, ServiceSubscrib
                 $session->start();
             }
 
-            $sessionHash = md5($request->getSession()->getId());
-            $_SERVER['SOLIDINVOICE_APP_SECRET'] = $_ENV['SOLIDINVOICE_APP_SECRET'] = $sessionHash . $sessionHash; // crypt secret needs to be 64 chars long
+            $_SERVER['SOLIDINVOICE_APP_SECRET'] = $_ENV['SOLIDINVOICE_APP_SECRET'] = $request->getSession()->getId();
 
             $container = $this->locator->get('service_container');
             if ($container instanceof Container) {
