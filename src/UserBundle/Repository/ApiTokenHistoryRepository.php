@@ -65,6 +65,9 @@ class ApiTokenHistoryRepository extends ServiceEntityRepository
         */
     }
 
+    /**
+     * @return iterable<int, ApiTokenHistory>
+     */
     public function getHistoryForToken(ApiToken $apiToken): iterable
     {
         return $this->createQueryBuilder('h')
