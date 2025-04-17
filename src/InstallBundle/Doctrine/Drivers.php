@@ -23,18 +23,18 @@ final class Drivers
         'mysql' => 'MySQL',
         'pgsql' => 'PostgreSQL',
         'sqlite' => 'Embedded Database (SQLite)',
-        'mssql' => 'SQL Server',
-        'db2' => 'DB2',
-        'oci8' => 'Oracle',
+        // 'mssql' => 'SQL Server',  // Not Supported
+        // 'db2' => 'DB2',  // Not Supported
+        // 'oci8' => 'Oracle',  // Not Supported
     ];
 
     /**
      * @var array<string, string>
      */
     private static array $driverSchemeAliases = [
-        'db2' => 'ibm_db2',
-        'mssql' => 'pdo_sqlsrv',
-        'sqlsrv' => 'pdo_sqlsrv',
+        // 'db2' => 'ibm_db2', // Not Supported
+        // 'mssql' => 'pdo_sqlsrv', // Not Supported
+        // 'sqlsrv' => 'pdo_sqlsrv', // Not Supported
         'mysql' => 'pdo_mysql',
         'postgres' => 'pdo_pgsql',
         'pgsql' => 'pdo_pgsql',

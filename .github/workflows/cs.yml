@@ -27,7 +27,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@9e72090525849c5e82e596468b86eb55e9cc5401
         with:
-          php-version: 8.3
+          php-version-file: .php-version
           extensions: intl, gd, opcache, mysql, pdo_mysql
 
       - uses: ramsey/composer-install@e52779489de843a9f022c7b8faa648b608b02c70 # v3
@@ -76,7 +76,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@9e72090525849c5e82e596468b86eb55e9cc5401
         with:
-          php-version: 8.3
+          php-version-file: .php-version
 
       - name: Install dependencies
         run: composer install --no-scripts
@@ -121,7 +121,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@9e72090525849c5e82e596468b86eb55e9cc5401
         with:
-          php-version: 8.3
+          php-version-file: .php-version
           extensions: intl, gd, opcache, mysql, pdo_mysql, :xdebug
 
       - uses: ramsey/composer-install@e52779489de843a9f022c7b8faa648b608b02c70 # v3

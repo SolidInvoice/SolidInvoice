@@ -138,43 +138,6 @@ jobs:
                 image: postgres
                 port: 5432
                 user: postgres
-            #- db:
-            #    name: Oracle
-            #    driver: pdo_oci
-            #    version: 18
-            #    image: gvenzl/oracle-xe
-            #    port: 1521
-            #    user: system
-            #- db:
-            #    name: Oracle
-            #    driver: pdo_oci
-            #    version: 21
-            #    image: gvenzl/oracle-xe
-            #    port: 1521
-            #    user: system
-            #- db:
-            #    name: Oracle
-            #    driver: pdo_oci
-            #    version: 23
-            #    image: gvenzl/oracle-free
-            #    port: 1521
-            #    user: system
-            - db:
-                name: SQLServer
-                driver: pdo_sqlsrv
-                scheme: mssql
-                version: 2019-latest
-                image: mcr.microsoft.com/mssql/server
-                port: 1433
-                user: sa
-            - db:
-                name: SQLServer
-                driver: pdo_sqlsrv
-                scheme: mssql
-                version: 2022-latest
-                image: mcr.microsoft.com/mssql/server
-                port: 1433
-                user: sa
       fail-fast: false
 
     services:
@@ -185,9 +148,6 @@ jobs:
           MYSQL_ROOT_PASSWORD: solidinvoice
           MYSQL_DATABASE: solidinvoice
           POSTGRES_PASSWORD: solidinvoice
-          ACCEPT_EULA: "Y"
-          SA_PASSWORD: "solidinvoice"
-          MSSQL_COLLATION: "Latin1_General_100_CI_AS_SC_UTF8"
         ports:
           - "${{ matrix.db.port }}:${{ matrix.db.port }}"
 
@@ -219,25 +179,14 @@ jobs:
             dl.cloudsmith.io:443
             getcomposer.org:443
 
-      - name: Set up environment
-        if: matrix.db.driver == 'pdo_sqlsrv'
-        run: |
-            sudo apt-get update
-            sudo apt-get install -y curl gnupg
-            curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
-            curl https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/prod.list | sudo tee /etc/apt/sources.list.d/mssql-release.list
-            sudo apt-get update
-            sudo ACCEPT_EULA=Y apt-get install -y msodbcsql18
-
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
       - name: Setup PHP
         uses: shivammathur/setup-php@c665c7a15b5295c2488ac8a87af9cb806cd72198
         with:
-          php-version: 8.3
+          php-version-file: .php-version
           ini-values: date.timezone=Africa/Johannesburg, opcache.enable=1, opcache.enable_cli=1, opcache.memory_consumption=256, opcache.max_accelerated_files=32531, opcache.interned_strings_buffer=8, opcache.validate_timestamps=0, opcache.save_comments=1, opcache.fast_shutdown=0, memory_limit=-1, zend.assertions=1
-          #extensions: intl, gd, opcache, ${{ matrix.db.driver == 'pdo_sqlsrv' && 'pdo_sqlsrv-5.10.0beta1' || matrix.db.driver }}, zip, :xdebug
           extensions: intl, gd, opcache, ${{ matrix.db.driver }}, zip, :xdebug
         env:
           fail-fast: true
