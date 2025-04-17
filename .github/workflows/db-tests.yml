@@ -126,14 +126,6 @@ jobs:
                 name: PostgreSQL
                 driver: pdo_pgsql
                 scheme: postgres
-                version: 10
-                image: postgres
-                port: 5432
-                user: postgres
-            - db:
-                name: PostgreSQL
-                driver: pdo_pgsql
-                scheme: postgres
                 version: 16
                 image: postgres
                 port: 5432
