@@ -404,18 +404,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/PaymentBundle/Payum/Extension/UpdatePaymentDetailsExtension.php',
 ];
 $ignoreErrors[] = [
-	// identifier: missingType.generics
-	'message' => '#^Class SolidInvoice\\\\PaymentBundle\\\\Repository\\\\PaymentMethodRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
-	'count' => 1,
-	'path' => __DIR__ . '/src/PaymentBundle/Repository/PaymentMethodRepository.php',
-];
-$ignoreErrors[] = [
-	// identifier: missingType.iterableValue
-	'message' => '#^Method SolidInvoice\\\\PaymentBundle\\\\Repository\\\\PaymentMethodRepository\\:\\:getSettingsForMethodArray\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/src/PaymentBundle/Repository/PaymentMethodRepository.php',
-];
-$ignoreErrors[] = [
 	// identifier: missingType.return
 	'message' => '#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\CloneQuote\\:\\:__invoke\\(\\) has no return type specified\\.$#',
 	'count' => 1,
@@ -582,12 +570,6 @@ $ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\$default of method SolidWorx\\\\FormHandler\\\\Options\\:\\:get\\(\\) expects null, true given\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/src/UserBundle/Form/Handler/PasswordChangeHandler.php',
-];
-$ignoreErrors[] = [
-	// identifier: missingType.generics
-	'message' => '#^Class SolidInvoice\\\\UserBundle\\\\Repository\\\\ApiTokenHistoryRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
-	'count' => 1,
-	'path' => __DIR__ . '/src/UserBundle/Repository/ApiTokenHistoryRepository.php',
 ];
 $ignoreErrors[] = [
 	// identifier: missingType.generics

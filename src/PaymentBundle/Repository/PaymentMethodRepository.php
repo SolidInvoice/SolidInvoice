@@ -14,10 +14,15 @@ declare(strict_types=1);
 namespace SolidInvoice\PaymentBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Exception;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 
+/**
+ * @extends ServiceEntityRepository<PaymentMethod>
+ */
 class PaymentMethodRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -25,6 +30,10 @@ class PaymentMethodRepository extends ServiceEntityRepository
         parent::__construct($registry, PaymentMethod::class);
     }
 
+    /**
+     * @return array<string, string>
+     * @throws NonUniqueResultException
+     */
     public function getSettingsForMethodArray(string $gatewayName): array
     {
         $queryBuilder = $this->createQueryBuilder('pm');
@@ -44,20 +53,27 @@ class PaymentMethodRepository extends ServiceEntityRepository
 
     /**
      * Get the total number of payment gateways configured.
+     *
+     * @throws Exception
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     public function getTotalMethodsConfigured(bool $includeInternal = true): int
     {
         $queryBuilder = $this->createQueryBuilder('pm');
 
+        $expr = $queryBuilder->expr();
+
+        $platform = $this->getEntityManager()->getConnection()->getDatabasePlatform();
+        $boolType = $platform->convertBooleans(true);
+
         $queryBuilder->select('COUNT(pm.id)')
-            ->where('pm.enabled = 1');
+            ->where($expr->neq('pm.enabled', $boolType));
 
         if (! $includeInternal) {
-            $expr = $queryBuilder->expr();
-
             $queryBuilder->andWhere(
                 $expr->orX(
-                    $expr->neq('pm.internal', 1),
+                    $expr->neq('pm.internal', $boolType),
                     $expr->isNull('pm.internal')
                 )
             );
@@ -68,17 +84,21 @@ class PaymentMethodRepository extends ServiceEntityRepository
 
     /**
      * @return PaymentMethod[]
+     * @throws Exception
      */
     public function getAvailablePaymentMethods(bool $includeInternal): array
     {
+        $platform = $this->getEntityManager()->getConnection()->getDatabasePlatform();
+        $boolType = $platform->convertBooleans(true);
+
         $queryBuilder = $this->createQueryBuilder('pm');
         $expression = $queryBuilder->expr();
-        $queryBuilder->where($expression->eq('pm.enabled', 1));
+        $queryBuilder->where($expression->eq('pm.enabled', $boolType));
 
         if (! $includeInternal) {
             $queryBuilder->andWhere(
                 $expression->orX(
-                    $expression->neq('pm.internal', 1),
+                    $expression->neq('pm.internal', $boolType),
                     $expression->isNull('pm.internal')
                 )
             );

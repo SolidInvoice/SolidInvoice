@@ -25,7 +25,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     }
 
     $parameters->set('env(SOLIDINVOICE_LOCALE)', 'en');
-    $parameters->set('env(SOLIDINVOICE_APP_SECRET)', bin2hex(random_bytes(12)));
+    $parameters->set('env(SOLIDINVOICE_APP_SECRET)', null);
     $parameters->set('env(SOLIDINVOICE_INSTALLED)', null);
     $parameters->set('env(SOLIDINVOICE_ALLOW_REGISTRATION)', '0');
 

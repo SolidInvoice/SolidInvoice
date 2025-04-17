@@ -18,7 +18,6 @@ use SolidInvoice\ApiBundle\Security\Provider\ApiTokenUserProvider;
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Config\SecurityConfig;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
 
 return static function (SecurityConfig $config): void {
     $config
@@ -86,7 +85,6 @@ return static function (SecurityConfig $config): void {
 
     $mainFirewallConfig
         ->rememberMe()
-        ->secret(env('SOLIDINVOICE_APP_SECRET'))
         ->lifetime(3600)
         ->path('/')
         ->domain(null);

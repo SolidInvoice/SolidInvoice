@@ -28,7 +28,7 @@ final class CompanySelector implements ResetInterface
     private ?Ulid $companyId = null;
 
     public function __construct(
-        private readonly ManagerRegistry $registry
+        private readonly ManagerRegistry $registry,
     ) {
     }
 

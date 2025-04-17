@@ -15,9 +15,9 @@ namespace SolidInvoice\InvoiceBundle\Tests\Form\Handler;
 
 use Brick\Math\Exception\MathException;
 use DateTimeImmutable;
+use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\ORM\Exception\NotSupported;
-use Doctrine\ORM\Exception\ORMException;
-use Doctrine\ORM\OptimisticLockException;
 use Mockery as M;
 use Money\Currency;
 use SolidInvoice\ClientBundle\Entity\Client;
@@ -54,8 +54,6 @@ final class InvoiceEditHandlerTest extends FormHandlerTestCase
     private Client $client;
 
     /**
-     * @throws OptimisticLockException
-     * @throws ORMException
      * @throws MathException
      */
     protected function setUp(): void
@@ -161,6 +159,7 @@ final class InvoiceEditHandlerTest extends FormHandlerTestCase
 
     /**
      * @return array<string, mixed>
+     * @throws Exception
      */
     public function getFormData(): array
     {
@@ -171,7 +170,9 @@ final class InvoiceEditHandlerTest extends FormHandlerTestCase
                     'type' => Discount::TYPE_PERCENTAGE,
                 ],
                 'client' => [
-                    'autocomplete' => $this->client->getId()->toString()
+                    'autocomplete' => $this->em->getConnection()->getDatabasePlatform() instanceof PostgreSQLPlatform ?
+                        $this->client->getId()->toRfc4122() :
+                        $this->client->getId()->toString(),
                 ],
                 'invoiceId' => '10',
                 'invoiceDate' => new DateTimeImmutable(),

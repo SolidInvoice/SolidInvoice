@@ -13,14 +13,17 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Listener;
 
+use Psr\Container\ContainerInterface;
 use SolidInvoice\InstallBundle\Exception\ApplicationInstalledException;
 use SolidInvoice\UserBundle\Repository\UserRepositoryInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\Service\ServiceSubscriberInterface;
 use function in_array;
 
 /**
@@ -28,7 +31,7 @@ use function in_array;
  * and redirect to the installer if necessary.
  * @see \SolidInvoice\InstallBundle\Tests\Listener\RequestListenerTest
  */
-final class RequestListener implements EventSubscriberInterface
+final class RequestListener implements EventSubscriberInterface, ServiceSubscriberInterface
 {
     public const INSTALLER_ROUTE = '_install_check_requirements';
 
@@ -85,6 +88,7 @@ final class RequestListener implements EventSubscriberInterface
     public function __construct(
         private readonly RouterInterface $router,
         private readonly UserRepositoryInterface $userRepository,
+        private readonly ContainerInterface $locator,
         private readonly ?string $installed,
         private readonly bool $debug = false
     ) {
@@ -104,6 +108,27 @@ final class RequestListener implements EventSubscriberInterface
 
         $request = $event->getRequest();
         $route = $request->get('_route');
+
+        if (! isset($_SERVER['SOLIDINVOICE_APP_SECRET']) && in_array($route, self::INSTALL_ROUTES, true)) {
+            // This is a terrible hack to ensure any live components on the installation pages works,
+            // since the LiveComponentHydrator needs the kernel.secret parameter to be set
+            // (which uses the SOLIDINVOICE_APP_SECRET env var).
+            // Since we don't have this value yet (it will only be created during the installation process),
+            // we need to set the app secret to a unique value.
+            // Then we need to clear the env cache, to ensure an empty cached value is not used.
+            $session = $request->getSession();
+
+            if (! $session->isStarted()) {
+                $session->start();
+            }
+
+            $_SERVER['SOLIDINVOICE_APP_SECRET'] = $_ENV['SOLIDINVOICE_APP_SECRET'] = $request->getSession()->getId();
+
+            $container = $this->locator->get('service_container');
+            if ($container instanceof Container) {
+                $container->resetEnvCache();
+            }
+        }
 
         if (null !== $this->installed && '' !== $this->installed) {
             // If the application is installed, but we don't have any users
@@ -132,5 +157,12 @@ final class RequestListener implements EventSubscriberInterface
 
         $event->setResponse($response);
         $event->stopPropagation();
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return [
+            ContainerInterface::class => 'service_container',
+        ];
     }
 }

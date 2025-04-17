@@ -54,7 +54,7 @@ final class DatabaseConfig
         Assert::keyExists($params, 'host', 'Database host is required');
         Assert::stringNotEmpty($params['host'], 'Database host is required');
 
-        if (array_key_exists('password', $params) && $params['password'] !== '') {
+        if (array_key_exists('password', $params) && $params['password'] !== '' && $params['password'] !== null) {
             Assert::keyExists($params, 'user', 'Database user is required when password is set');
             Assert::stringNotEmpty($params['user'], 'Database user is required when password is set');
         }

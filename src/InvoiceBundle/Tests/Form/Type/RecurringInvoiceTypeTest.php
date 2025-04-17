@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Tests\Form\Type;
 
 use Brick\Math\BigDecimal;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Mockery as M;
 use Money\Currency;
 use SolidInvoice\ClientBundle\Entity\Client;
@@ -41,7 +42,11 @@ class RecurringInvoiceTypeTest extends FormTestCase
         $discountValue = $this->faker->numberBetween(0, 100);
         $formData = [
             'client' => [
-                'autocomplete' => $client->getId()->toString(),
+                'autocomplete' => (
+                    $this->em->getConnection()->getDatabasePlatform() instanceof PostgreSQLPlatform ?
+                    $client->getId()->toRfc4122() :
+                    $client->getId()->toString()
+                ),
             ],
             'discount' => [
                 'value' => $discountValue,

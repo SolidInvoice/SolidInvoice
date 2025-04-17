@@ -63,7 +63,7 @@ final class Install extends AbstractController
                     echo 'data: ' . json_encode(['status' => 'done'], JSON_THROW_ON_ERROR) . "\n\n";
                     flush();
                 } catch (Throwable $e) {
-                    echo 'error: ' . json_encode(['message' => $e->getMessage()], JSON_THROW_ON_ERROR) . "\n\n";
+                    echo 'data: ' . json_encode(['status' => 'failed', 'error' => $e->getMessage()], JSON_THROW_ON_ERROR) . "\n\n";
                     flush();
                 }
             }, headers: ['content-type' => 'text/event-stream']);

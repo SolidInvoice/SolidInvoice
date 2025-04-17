@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InstallBundle\Tests\Listener;
 
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
 use SolidInvoice\InstallBundle\Exception\ApplicationInstalledException;
 use SolidInvoice\InstallBundle\Listener\RequestListener;
 use SolidInvoice\UserBundle\Repository\UserRepositoryInterface;
@@ -51,6 +52,7 @@ final class RequestListenerTest extends TestCase
         $listener = new RequestListener(
             $router,
             $this->createMock(UserRepositoryInterface::class),
+            $this->createMock(ContainerInterface::class),
             null,
         );
 
@@ -82,6 +84,7 @@ final class RequestListenerTest extends TestCase
         $listener = new RequestListener(
             $router,
             $this->createMock(UserRepositoryInterface::class),
+            $this->createMock(ContainerInterface::class),
             null,
         );
 
@@ -112,6 +115,7 @@ final class RequestListenerTest extends TestCase
         $listener = new RequestListener(
             $router,
             $this->createMock(UserRepositoryInterface::class),
+            $this->createMock(ContainerInterface::class),
             null,
         );
 
@@ -139,6 +143,7 @@ final class RequestListenerTest extends TestCase
         $listener = new RequestListener(
             $router,
             $this->createMock(UserRepositoryInterface::class),
+            $this->createMock(ContainerInterface::class),
             null,
             true,
         );
@@ -175,6 +180,7 @@ final class RequestListenerTest extends TestCase
         $listener = new RequestListener(
             $router,
             $userRepository,
+            $this->createMock(ContainerInterface::class),
             date('Y-m-d H:i:s'),
         );
 
@@ -205,6 +211,7 @@ final class RequestListenerTest extends TestCase
         $listener = new RequestListener(
             $router,
             $userRepository,
+            $this->createMock(ContainerInterface::class),
             date('Y-m-d H:i:s'),
         );
 
@@ -240,6 +247,7 @@ final class RequestListenerTest extends TestCase
         $listener = new RequestListener(
             $router,
             $userRepository,
+            $this->createMock(ContainerInterface::class),
             date('Y-m-d H:i:s'),
         );
 
@@ -277,6 +285,7 @@ final class RequestListenerTest extends TestCase
         $listener = new RequestListener(
             $router,
             $userRepository,
+            $this->createMock(ContainerInterface::class),
             date('Y-m-d H:i:s'),
         );
 
@@ -312,6 +321,7 @@ final class RequestListenerTest extends TestCase
         $listener = new RequestListener(
             $router,
             $userRepository,
+            $this->createMock(ContainerInterface::class),
             date('Y-m-d H:i:s'),
         );
 
@@ -345,6 +355,7 @@ final class RequestListenerTest extends TestCase
         $listener = new RequestListener(
             $router,
             $userRepository,
+            $this->createMock(ContainerInterface::class),
             date('Y-m-d H:i:s'),
             true,
         );

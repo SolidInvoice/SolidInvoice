@@ -14,11 +14,15 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\Order;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\UserBundle\Entity\ApiToken;
 use SolidInvoice\UserBundle\Entity\ApiTokenHistory;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 
+/**
+ * @extends ServiceEntityRepository<ApiTokenHistory>
+ */
 class ApiTokenHistoryRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -49,16 +53,15 @@ class ApiTokenHistoryRepository extends ServiceEntityRepository
         $ids = $queryBuilder
             ->select('a.id')
             ->where('a.token = :token')
-            ->orderBy('a.id', Criteria::DESC)
-            ->setMaxResults(10)
-            ->setParameter('token', $apiToken)
+            ->orderBy('a.created', Order::Descending->value)
+            ->setMaxResults(100)
             ->getQuery()
-            ->getArrayResult();
+            ->getDQL();
 
-        $this->createQueryBuilder('a')
-            ->delete()
-            ->where('a.id NOT IN (:ids)')
-            ->setParameter('ids', array_column($ids, 'id'))
+        $qb = $this->createQueryBuilder('h');
+        $qb->delete()
+            ->where($qb->expr()->in('h.id', $ids))
+            ->setParameter('token', $apiToken->getId(), UlidType::NAME)
             ->getQuery()
             ->execute();
     }

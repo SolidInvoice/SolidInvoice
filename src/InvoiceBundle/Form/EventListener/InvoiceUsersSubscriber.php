@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Form\EventListener;
 
 use Doctrine\Persistence\ManagerRegistry;
-use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Form\Transformer\UserToContactTransformer;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
@@ -27,7 +26,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class InvoiceUsersSubscriber implements EventSubscriberInterface
@@ -59,7 +57,7 @@ final class InvoiceUsersSubscriber implements EventSubscriberInterface
         }
 
         if ($data instanceof Invoice || $data instanceof RecurringInvoice) {
-            $clientId = $data->getClient() instanceof Client && $data->getClient()->getId() instanceof Ulid ? $data->getClient()->getId()->toString() : null;
+            $clientId = $data->getClient()?->getId();
         } else {
             $clientId = $data['client'] ?? null;
         }

@@ -16,6 +16,7 @@ use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use Ramsey\Uuid\Doctrine\UuidType;
 use SolidInvoice\CoreBundle\Doctrine\Filter\ArchivableFilter;
 use SolidInvoice\CoreBundle\Doctrine\Filter\CompanyFilter;
+use SolidInvoice\CoreBundle\Doctrine\Function\ToNumberFunction;
 use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use Symfony\Config\DoctrineConfig;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
@@ -60,6 +61,9 @@ return static function (DoctrineConfig $config): void {
         ->validateXmlMapping(true)
         ->identityGenerationPreference(PostgreSQLPlatform::class, 'identity')
     ;
+
+    $dql = $entityManagerConfig->dql();
+    $dql->stringFunction('to_number', ToNumberFunction::class);
 
     $entityManagerConfig
         ->filter('company')

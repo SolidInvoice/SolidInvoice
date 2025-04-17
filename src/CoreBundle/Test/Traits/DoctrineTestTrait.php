@@ -13,11 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Test\Traits;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Persistence\ObjectManager;
-use Mockery\MockInterface;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 
 /**
@@ -27,15 +24,9 @@ trait DoctrineTestTrait
 {
     use EnsureApplicationInstalled;
 
-    /**
-     * @var ManagerRegistry|Registry|MockInterface
-     */
-    protected $registry;
+    protected ManagerRegistry $registry;
 
-    /**
-     * @var EntityManager|ObjectManager|MockInterface
-     */
-    protected $em;
+    protected EntityManagerInterface $em;
 
     /**
      * @before
@@ -43,6 +34,8 @@ trait DoctrineTestTrait
     public function setupDoctrine(): void
     {
         $this->registry = static::getContainer()->get('doctrine');
-        $this->em = $this->registry->getManager();
+        $em = $this->registry->getManager();
+        assert($em instanceof EntityManagerInterface);
+        $this->em = $em;
     }
 }
