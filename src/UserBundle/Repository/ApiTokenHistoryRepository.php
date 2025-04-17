@@ -44,12 +44,11 @@ class ApiTokenHistoryRepository extends ServiceEntityRepository
         $entityManager->persist($history);
         $entityManager->flush();
 
+        /*
+         @TODO: This needs to be revisited, maybe by doing a scheduled job cleanup
         // delete the history for all but the last 100 records for each api token
         // This is to ensure the database doesn't grow to an unmanageable size
-        // @TODO: This needs to be done in a safer manner
-        // If multiple api requests happen at the same time, this can cause some inconsistencies with the data
         $queryBuilder = $this->createQueryBuilder('a');
-
         $ids = $queryBuilder
             ->select('a.id')
             ->where('a.token = :token')
@@ -57,12 +56,23 @@ class ApiTokenHistoryRepository extends ServiceEntityRepository
             ->setMaxResults(100)
             ->getQuery()
             ->getDQL();
-
         $qb = $this->createQueryBuilder('h');
         $qb->delete()
             ->where($qb->expr()->in('h.id', $ids))
             ->setParameter('token', $apiToken->getId(), UlidType::NAME)
             ->getQuery()
             ->execute();
+        */
+    }
+
+    public function getHistoryForToken(ApiToken $apiToken): iterable
+    {
+        return $this->createQueryBuilder('h')
+            ->where('h.token = :token')
+            ->setMaxResults(100)
+            ->orderBy('h.created', Order::Descending->value)
+            ->setParameter('token', $apiToken->getId(), UlidType::NAME)
+            ->getQuery()
+            ->toIterable();
     }
 }

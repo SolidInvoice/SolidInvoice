@@ -11,10 +11,10 @@
 
 namespace SolidInvoice\UserBundle\Twig\Components;
 
-use Doctrine\Common\Collections\Collection;
 use InvalidArgumentException;
 use SolidInvoice\UserBundle\Entity\ApiToken;
 use SolidInvoice\UserBundle\Entity\ApiTokenHistory as ApiTokenHistoryEntity;
+use SolidInvoice\UserBundle\Repository\ApiTokenHistoryRepository;
 use SolidInvoice\UserBundle\Repository\ApiTokenRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
@@ -31,17 +31,18 @@ final class ApiTokenHistory extends AbstractController
     public ?string $token = null;
 
     public function __construct(
-        private readonly ApiTokenRepository $apiTokenRepository
+        private readonly ApiTokenRepository $apiTokenRepository,
+        private readonly ApiTokenHistoryRepository $apiTokenHistoryRepository,
     ) {
     }
 
     /**
-     * @return Collection<int, ApiTokenHistoryEntity>
+     * @return iterable<int, ApiTokenHistoryEntity>
      */
     #[ExposeInTemplate]
-    public function history(): Collection
+    public function history(): iterable
     {
-        return $this->apiToken()->getHistory();
+        return $this->apiTokenHistoryRepository->getHistoryForToken($this->apiToken());
     }
 
     private function apiToken(): ApiToken
