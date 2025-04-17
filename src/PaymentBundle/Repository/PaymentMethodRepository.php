@@ -68,7 +68,7 @@ class PaymentMethodRepository extends ServiceEntityRepository
         $boolType = $platform->convertBooleans(true);
 
         $queryBuilder->select('COUNT(pm.id)')
-            ->where($expr->neq('pm.enabled', $boolType));
+            ->where($expr->eq('pm.enabled', $boolType));
 
         if (! $includeInternal) {
             $queryBuilder->andWhere(
