@@ -162,6 +162,7 @@ jobs:
             - db:
                 name: SQLServer
                 driver: pdo_sqlsrv
+                scheme: mssql
                 version: 2019-latest
                 image: mcr.microsoft.com/mssql/server
                 port: 1433
@@ -169,6 +170,7 @@ jobs:
             - db:
                 name: SQLServer
                 driver: pdo_sqlsrv
+                scheme: mssql
                 version: 2022-latest
                 image: mcr.microsoft.com/mssql/server
                 port: 1433
