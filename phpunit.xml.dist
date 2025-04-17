@@ -39,8 +39,8 @@
     <php>
         <ini name="display_errors" value="1" />
         <ini name="error_reporting" value="-1" />
-        <server name="SOLIDINVOICE_APP_SECRET" value="$ecretf0rt3st" />
-        <server name="SYMFONY_DECRYPTION_SECRET" value="$ecretf0rt3st" />
+        <server name="SOLIDINVOICE_APP_SECRET" value="158fea449f38760b67b0a14f0c43e7d8fa6a5a3224d7da66d9e0bdec25f62cf0" />
+        <server name="SYMFONY_DECRYPTION_SECRET" value="158fea449f38760b67b0a14f0c43e7d8fa6a5a3224d7da66d9e0bdec25f62cf0" />
         <server name="SOLIDINVOICE_ENV" value="test" />
         <server name="SOLIDINVOICE_DEBUG" value="0" />
         <server name="KERNEL_CLASS" value="SolidInvoice\Kernel" />
