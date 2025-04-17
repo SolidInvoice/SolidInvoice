@@ -219,6 +219,16 @@ jobs:
             dl.cloudsmith.io:443
             getcomposer.org:443
 
+        - name: Set up environment
+          if: matrix.db.driver == 'pdo_sqlsrv'
+          run: |
+              sudo apt-get update
+              sudo apt-get install -y curl gnupg
+              curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+              curl https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/prod.list | sudo tee /etc/apt/sources.list.d/mssql-release.list
+              sudo apt-get update
+              sudo ACCEPT_EULA=Y apt-get install -y msodbcsql18
+
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
