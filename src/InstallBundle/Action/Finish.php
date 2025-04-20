@@ -13,19 +13,23 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Action;
 
-use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\InstallBundle\Exception\ApplicationInstalledException;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-final class Finish
+final class Finish extends AbstractController
 {
     public function __construct(
-        private readonly string $projectDir
+        private readonly string $projectDir,
+        #[Autowire(env: 'SOLIDINVOICE_RUNTIME')]
+        private readonly ?string $runtime = null
     ) {
     }
 
-    public function __invoke(Request $request): Template
+    public function __invoke(Request $request): Response
     {
         $session = $request->getSession();
 
@@ -35,6 +39,12 @@ final class Finish
 
         $binDir = $this->projectDir . '/bin';
 
-        return new Template('@SolidInvoiceInstall/finish.html.twig', ['binDir' => $binDir]);
+        return $this->render(
+            '@SolidInvoiceInstall/finish.html.twig',
+            [
+                'binDir' => $binDir,
+                'runtime' => $this->runtime,
+            ]
+        );
     }
 }

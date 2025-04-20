@@ -14,13 +14,32 @@ declare(strict_types=1);
 namespace SolidInvoice\InstallBundle\Action;
 
 use SolidInvoice\AppRequirements;
-use SolidInvoice\CoreBundle\Templating\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\HttpFoundation\Response;
 
-final class SystemRequirements
+final class SystemRequirements extends AbstractController
 {
-    public function __invoke(): Template
+    public function __construct(
+        #[Autowire(env: 'SOLIDINVOICE_RUNTIME')]
+        private readonly ?string $runtime = null
+    ) {
+    }
+
+    public function __invoke(): Response
     {
-        return new Template(
+        if ('frankenphp' === $this->runtime) {
+            /*
+             * When running with Frankenphp, the correct php version,
+             * all the required extensions and php.ini config is already set,
+             * so no need to check the system requirements (which should always be valid).
+             * It will also confuse the user since they can't change anything
+             * that this page would display.
+             */
+            return $this->redirectToRoute('_install_config');
+        }
+
+        return $this->render(
             '@SolidInvoiceInstall/system_check.html.twig',
             [
                 'requirements' => new AppRequirements(),

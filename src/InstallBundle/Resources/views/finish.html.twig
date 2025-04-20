@@ -23,18 +23,22 @@
                         {{ "installation.finish.success_message"|trans }}
                     </h4>
 
-                    <div>
-                        <div class="alert alert-info">
-                            As a final step, you must add a scheduled task to run every 5 minutes.
+                    {% if runtime is same as('frankenphp') %}
+                        {# When running using Frankenphp, a Cron is automatically set up, #}
+                        {# so this step is not needed for the user. #}
+                        <div>
+                            <div class="alert alert-info">
+                                As a final step, you must add a scheduled task to run every minute.
+                            </div>
+                            <p>
+                                Add the following cron job:
+                                <br />
+                            <pre style="color: #c7254e;">
+    * * * * * php {{ binDir }}/console cron:run -e prod -n
+                            </pre>
+                            </p>
                         </div>
-                        <p>
-                            Add the following cron job:
-                            <br />
-                        <pre style="color: #c7254e;">
-* * * * * php {{ binDir }}/console cron:run -e prod -n
-                        </pre>
-                        </p>
-                    </div>
+                    {% endif %}
                 </div>
                 <div class="card-footer" id="next_button">
                     <a id="login" href="{{ path('_login') }}" class="btn-block btn btn-success">
