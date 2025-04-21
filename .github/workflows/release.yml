@@ -67,7 +67,7 @@ jobs:
         run: "./scripts/build_dist.sh ${{ needs.prepare.outputs.ref }} ${{ needs.prepare.outputs.ref }}"
         env:
           RELEASE: 1
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
 
       - name: Upload TAR archive
         uses: actions/upload-artifact@v4
@@ -121,8 +121,8 @@ jobs:
           # GITHUB_TOKEN needs to be defined twice here.
           # GH_TOKEN is used by the gh cli utility to upload the binary files
           # GITHUB_TOKEN is used by static-php-cli script to make api calls to Github
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
           RELEASE: 1
 
   build-linux:
