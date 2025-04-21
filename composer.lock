@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a23e6d0dbb52712210d4f9837b99dc4d",
+    "content-hash": "52398d284d5aac506b1b2cf953350d28",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -17897,12 +17897,12 @@
             "version": "5.25.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/captainhookphp/captainhook-phar.git",
+                "url": "https://github.com/captainhook-git/captainhook-phar.git",
                 "reference": "ab47b0561ec7997bf9b88181d090857874f2cf8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/captainhookphp/captainhook-phar/zipball/ab47b0561ec7997bf9b88181d090857874f2cf8c",
+                "url": "https://api.github.com/repos/captainhook-git/captainhook-phar/zipball/ab47b0561ec7997bf9b88181d090857874f2cf8c",
                 "reference": "ab47b0561ec7997bf9b88181d090857874f2cf8c",
                 "shasum": ""
             },
