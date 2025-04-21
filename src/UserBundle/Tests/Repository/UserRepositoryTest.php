@@ -55,7 +55,7 @@ final class UserRepositoryTest extends KernelTestCase
         $databaseToolCollection = self::getContainer()->get(DatabaseToolCollection::class);
         $this->databaseTool = $databaseToolCollection->get();
 
-        // Ensure there are no users set, to make the tests a bit more predicable,
+        // Ensure there are no users set, to make the tests a bit more predictable,
         // since users can be added by api tests
         foreach ($this->repository->findAll() as $user) {
             foreach ($user->getApiTokens() as $token) {

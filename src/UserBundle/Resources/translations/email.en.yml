@@ -3,7 +3,7 @@ reset_password:
     message_text: |
         A password reset was requested for user %username%.
 
-        If you did not request your password to be resetted, you can safely ignore this message.
+        If you did not request your password to be reset, you can safely ignore this message.
 
         To reset your password, please copy and paste the below link in your browser
 
@@ -11,7 +11,7 @@ reset_password:
     message_html: |
         A password reset was requested for user <strong>%username%</strong>.
 
-        If you did not request your password to be resetted, you can safely ignore this message.
+        If you did not request your password to be reset, you can safely ignore this message.
 
         To reset your password, please follow the link below
     button_text: 'Reset Password'

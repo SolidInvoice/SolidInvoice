@@ -165,15 +165,15 @@ func main() {
 				must(os.Setenv("SERVER_NAME", "https://"+domain+":"+httpPort))
 				must(os.Setenv("AUTO_HTTPS", "disable_redirects"))
 			} else {
-				protocal := "https"
+				protocol := "https"
 				if disableHttps == true {
-					protocal = "http"
+					protocol = "http"
 				}
 
-				serverName := protocal + "://" + serverIp + ":" + httpPort + ", " + protocal + "://localhost:" + httpPort
+				serverName := protocol + "://" + serverIp + ":" + httpPort + ", " + protocol + "://localhost:" + httpPort
 
 				if serverIp != "127.0.0.1" {
-					serverName += ", " + protocal + "://127.0.0.1:" + httpPort
+					serverName += ", " + protocol + "://127.0.0.1:" + httpPort
 				}
 
 				must(os.Setenv("SERVER_NAME", serverName))

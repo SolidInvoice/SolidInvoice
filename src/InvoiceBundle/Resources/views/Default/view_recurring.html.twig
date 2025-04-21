@@ -93,11 +93,11 @@
     {% set totalCount = totalCount - 10 %}
 
     {% set occurrences %}
-        {% for occurance in recurring_occurrences(invoice.recurringOptions) %}
+        {% for occurrence in recurring_occurrences(invoice.recurringOptions) %}
             {% if loop.index0 < 10 %}
                 <tr>
                     <td>
-                        {{ occurance|date('l, d F Y') }}
+                        {{ occurrence|date('l, d F Y') }}
                     </td>
                 </tr>
             {% endif %}
