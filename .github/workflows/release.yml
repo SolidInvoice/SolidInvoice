@@ -33,7 +33,7 @@ jobs:
         run: |
           ref="${{ (github.ref_type == 'tag' && github.ref_name) || (github.event_name == 'workflow_dispatch' && inputs.version) || '' }}"
           if [[ -z "${ref}" ]]; then
-            ref="$(gh release view --repo pierredup/solidinvoice --json tagName --jq '.tagName')"
+            ref="$(gh release view --repo solidinvoice/solidinvoice --json tagName --jq '.tagName')"
           fi
           echo "ref=${ref}" >> "${GITHUB_OUTPUT}"
         env:

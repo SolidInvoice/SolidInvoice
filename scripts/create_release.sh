@@ -53,7 +53,6 @@ elif [ "$PATCH" = "0" ] && [ "$MINOR" != "0" ]; then
   echo "==> MINOR release: Creating tag ${TAG} from $CURRENT_BRANCH, new branch $NEW_BRANCH, set default"
 
   gh release create "${TAG}" -t "Release ${TAG}" --discussion-category "Releases" --target "${CURRENT_BRANCH}" --generate-notes
-  # gh release create "${TAG}" -t "Release ${TAG}" --target "${CURRENT_BRANCH}" --generate-notes
 
   gh api --method POST repos/"${REPOSITORY}"/git/refs \
     -f ref="refs/heads/${NEW_BRANCH}" \
