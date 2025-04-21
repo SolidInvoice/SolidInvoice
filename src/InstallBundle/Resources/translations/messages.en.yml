@@ -1,6 +1,5 @@
 installation:
     already_installed: 'The application is already installed'
-    progress: 'Installation Progress'
     title: '%app_name% Installation'
     step:
         license_agreement: 'License Agreement'
