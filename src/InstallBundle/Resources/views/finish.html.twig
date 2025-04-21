@@ -23,7 +23,7 @@
                         {{ "installation.finish.success_message"|trans }}
                     </h4>
 
-                    {% if runtime is same as('frankenphp') %}
+                    {% if runtime is not same as('frankenphp') %}
                         {# When running using Frankenphp, a Cron is automatically set up, #}
                         {# so this step is not needed for the user. #}
                         <div>
