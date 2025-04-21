@@ -124,9 +124,11 @@ final class RequestListener implements EventSubscriberInterface, ServiceSubscrib
 
             $_SERVER['SOLIDINVOICE_APP_SECRET'] = $_ENV['SOLIDINVOICE_APP_SECRET'] = $request->getSession()->getId();
 
-            $container = $this->locator->get('service_container');
-            if ($container instanceof Container) {
-                $container->resetEnvCache();
+            if ($this->locator->has(ContainerInterface::class)) {
+                $container = $this->locator->get(ContainerInterface::class);
+                if ($container instanceof Container) {
+                    $container->resetEnvCache();
+                }
             }
         }
 
