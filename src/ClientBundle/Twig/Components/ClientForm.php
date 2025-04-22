@@ -53,6 +53,12 @@ class ClientForm extends AbstractController
         /** @var Client $client */
         $client = $this->getForm()->getData();
 
+        foreach ($client->getAddresses() as $address) {
+            if ($address->isEmpty()) {
+                $client->removeAddress($address);
+            }
+        }
+
         $manager->persist($client);
         $manager->flush();
 

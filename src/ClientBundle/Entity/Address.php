@@ -32,6 +32,7 @@ use Symfony\Component\Intl\Countries;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Uid\Ulid;
+use function array_filter;
 
 #[ORM\Table(name: Address::TABLE_NAME)]
 #[ORM\Entity]
@@ -255,5 +256,22 @@ class Address implements Stringable
         );
 
         return trim(implode("\n", $info), ", \t\n\r\0\x0B");
+    }
+
+    public function isEmpty(): bool
+    {
+        $info = array_filter(
+            [
+                $this->street1,
+                $this->street2,
+                $this->city,
+                $this->state,
+                $this->zip,
+                $this->country,
+            ],
+            static fn ($value) => null !== $value && '' !== $value
+        );
+
+        return 0 === count($info);
     }
 }
