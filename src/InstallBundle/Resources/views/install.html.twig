@@ -58,7 +58,7 @@
                         </div>
                         <div class="col" id="next_button">
                             <a id="continue_step" href="{{ path('_install_setup') }}" class="disabled btn btn-success btn-block">
-                                {{ "installation.action.next"|trans }} {{ icon('arrow-right') }}
+                                {{ "waiting"|trans }} {{ icon('refresh') }}
                             </a>
                         </div>
                     </div>
@@ -85,6 +85,7 @@
         function runStep(index) {
             if (index >= steps.length) {
                 document.querySelector('#continue_step').classList.remove('disabled');
+                document.querySelector('#continue_step').innerHTML = '{{ "installation.action.next"|trans }} {{ icon('arrow-right') }}';
                 document.querySelector('#install-title').textContent = '{{ 'installation.process.title.done'|trans }}';
 
                 progressBar.style.width = '100%';
