@@ -23,6 +23,7 @@ use Psr\Log\NullLogger;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Doctrine\Filter\CompanyFilter;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
+use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
@@ -36,6 +37,7 @@ use Zenstruck\Foundry\Test\Factories;
 /** @covers \SolidInvoice\InvoiceBundle\Message\Handler\CreateInvoiceFromRecurringHandler */
 final class CreateInvoiceFromRecurringHandlerTest extends KernelTestCase
 {
+    use EnsureApplicationInstalled;
     use Factories;
 
     public function testHandler(): void
