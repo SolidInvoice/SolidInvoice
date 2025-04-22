@@ -23,17 +23,17 @@ module.exports = async ({ github, context }) => {
     const uploadImages = async () => {
         let promiseArray = [];
 
-        if (!fs.existsSync(`${rootDir}/var/error-screenshots/`)) {
+        if (!fs.existsSync(`${rootDir}/var/browser/screenshots/`)) {
             return [];
         }
 
-        let images = fs.readdirSync(`${rootDir}/var/error-screenshots/`);
+        let images = fs.readdirSync(`${rootDir}/var/browser/screenshots/`);
 
         images.forEach((element) => {
             console.log(`Uploading ${element} to cloudinary..`);
 
             let uplaodedImagePromise = cloudinary.uploader.upload(
-                `${rootDir}/var/error-screenshots/${element}`,
+                `${rootDir}/var/browser/screenshots/${element}`,
                 {
                     tags: `ci,github-actions,e2e,screenshot,${context.ref}`,
                     folder: `solidinvoice/ci/errors/${context.issue.number}/${context.sha}`,

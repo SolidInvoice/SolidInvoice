@@ -13,13 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Tests\Functional;
 
-use Exception;
-use Symfony\Bundle\FrameworkBundle\Secrets\SodiumVault;
-use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Panther\Client;
 use Symfony\Component\Panther\PantherTestCase;
-use function assert;
-use function count;
+use Zenstruck\Browser\Test\HasBrowser;
 use function microtime;
 use function Zenstruck\Foundry\faker;
 
@@ -28,10 +25,7 @@ use function Zenstruck\Foundry\faker;
  */
 final class InstallationTest extends PantherTestCase
 {
-    /**
-     * @var array<string, string>
-     */
-    private array $configValues = [];
+    use HasBrowser;
 
     protected function setUp(): void
     {
@@ -39,103 +33,63 @@ final class InstallationTest extends PantherTestCase
 
         parent::setUp();
 
-        $vault = self::getContainer()->get('secrets.vault');
-        assert($vault instanceof SodiumVault);
+        $configDir = self::getContainer()->getParameter('env(SOLIDINVOICE_CONFIG_DIR)');
 
-        $this->configValues = $vault->list(true);
-
-        foreach ($this->configValues as $key => $value) {
-            $vault->remove($key);
-        }
+        $fs = new Filesystem();
+        $fs->exists($configDir) && $fs->rename($configDir, $configDir . '_test');
     }
 
     protected function tearDown(): void
     {
         parent::tearDown();
 
-        $vault = self::getContainer()->get('secrets.vault');
-        assert($vault instanceof SodiumVault);
+        $configDir = self::getContainer()->getParameter('env(SOLIDINVOICE_CONFIG_DIR)');
 
-        foreach ($this->configValues as $key => $value) {
-            $vault->seal($key, $value);
-        }
+        $fs = new Filesystem();
+
+        $fs->exists($configDir) && $fs->remove($configDir);
+        $fs->exists($configDir . '_test') && $fs->rename($configDir . '_test', $configDir);
     }
 
     public function testItRedirectsToInstallationPage(): void
     {
-        $client = self::createPantherClient(['env' => ['SOLIDINVOICE_ENV' => 'test']]);
-
-        $crawler = $client->request('GET', '/');
-
-        self::assertStringContainsString('/install', $crawler->getUri());
+        $this->pantherBrowser()
+            ->visit('/')
+            ->assertOn('/install');
     }
 
     public function testApplicationInstallation(): void
     {
-        $client = self::createPantherClient(['env' => ['SOLIDINVOICE_ENV' => 'test', 'SOLIDINVOICE_DATABASE_NAME' => 'solidinvoice_install_test']]);
+        $password = faker()->password();
 
-        $crawler = $client->request('GET', '/install');
-
-        // No error messages on the site
-        self::assertCount(0, $crawler->filter('.alert-danger'));
-
-        $this->continue($client, $crawler);
-
-        self::assertStringContainsString('/install/config', $client->getCurrentURL());
-
-        // Configuration page
-        $crawler = $client->submitForm(
-            'Next',
-            [
-                'config_step[database_config][driver]' => 'sqlite',
-            ]
-        );
-
-        self::assertStringContainsString('/install/install', $crawler->getUri());
-
-        // Wait for installation steps to be completed
-        $time = microtime(true);
-        $client->waitFor('.fa-check.text-success');
-
-        while (3 !== count($crawler->filter('.fa-check.text-success')) && (microtime(true) - $time) < 30) {
-            $client->waitFor('.fa-check.text-success');
-        }
-
-        self::assertStringNotContainsString('disabled', $crawler->filter('#continue_step')->first()->attr('class'));
-
-        $crawler = $this->continue($client, $crawler);
-
-        self::assertStringContainsString('/install/setup', $client->getCurrentURL());
-
-        $formData = [
-            'system_information[locale]' => 'en',
-        ];
-
-        if (0 === count($crawler->filter('.callout.callout-warning'))) {
-            $password = faker()->password();
-
-            $formData += [
-                'system_information[email_address]' => faker()->email(),
-                'system_information[password][first]' => $password,
-                'system_information[password][second]' => $password,
-            ];
-        }
-
-        $crawler = $client->submitForm('Next', $formData);
-
-        self::assertStringContainsString('/install/finish', $client->getCurrentURL());
-        self::assertStringContainsString('You have successfully installed SolidInvoice!', $crawler->html());
-    }
-
-    /**
-     * @throws Exception
-     */
-    private function continue(Client $client, Crawler $crawler): Crawler
-    {
-        if (0 !== count($crawler->filter('#continue_step'))) {
-            return $client->clickLink('Next');
-        }
-
-        throw new Exception('Continue button not found');
+        $this->pantherBrowser()
+            ->visit('/install')
+            ->assertOn('/install')
+            ->assertNotSeeElement('.alert-danger') // No error messages on the site
+            ->click('#continue_step')
+            ->assertOn('/install/config')
+            // ->fillField('config_step[database_config][driver]', 'sqlite') // Default value, no need to set
+            ->click('#continue_step')
+            ->use(
+                function (Client $client): void {
+                    $time = microtime(true);
+                    do {
+                        $client->waitFor('.fa-check.text-success');
+                        $crawler = $client->getCrawler();
+                    } while (3 !== count($crawler->filter('.fa-check.text-success')) && (microtime(true) - $time) < 30);
+                }
+            )
+            ->click('#continue_step')
+            ->assertOn('/install/setup')
+            ->fillField('system_information[locale]', 'en')
+            ->fillField('system_information[email_address]', faker()->email())
+            ->fillField('system_information[password][first]', $password)
+            ->fillField('system_information[password][second]', $password)
+            ->click('#continue_step')
+            ->use(function (Client $browser): void {
+                $browser->waitFor('.alert-info');
+            })
+            ->assertOn('/install/finish')
+            ->assertSee('You have successfully installed SolidInvoice!');
     }
 }
