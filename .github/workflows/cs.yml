@@ -142,7 +142,7 @@ jobs:
           VALIDATE_MD: true
           VALIDATE_GITLEAKS: true
           VALIDATE_BASH: true
-          VALIDATE_PHP_BUILTIN: false # Disabled for now, since it causing composer install issues during run (The container does not contain all the required extensions)
+          #VALIDATE_PHP_BUILTIN: false # Disabled for now, since it causing composer install issues during run (The container does not contain all the required extensions)
           LINTER_RULES_PATH: .
           VALIDATE_JAVASCRIPT_ES: true
           VALIDATE_CSS: true
