@@ -67,6 +67,7 @@ final class AddressTest extends ApiTestCase
             'country' => 'US',
             'countryName' => 'United States',
             'client' => $this->getIriFromResource($client),
+            'empty' => false,
         ], $result);
     }
 
