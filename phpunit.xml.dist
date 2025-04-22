@@ -39,19 +39,19 @@
     <php>
         <ini name="display_errors" value="1" />
         <ini name="error_reporting" value="-1" />
+        <env name="PANTHER_NO_HEADLESS" value="0" />
         <server name="SOLIDINVOICE_APP_SECRET" value="$ecretf0rt3st" />
         <server name="SOLIDINVOICE_ENV" value="test" />
         <server name="SOLIDINVOICE_DEBUG" value="0" />
         <server name="KERNEL_CLASS" value="SolidInvoice\Kernel" />
-        <server name="KERNEL_DIR" value="app" />
         <server name="SHELL_VERBOSITY" value="-1" />
-        <server name="PANTHER_NO_HEADLESS" value="0" />
-        <server name="PANTHER_ERROR_SCREENSHOT_DIR" value="./var/error-screenshots" />
+        <server name="BROWSER_ALWAYS_START_WEBSERVER" value="1"/>
     </php>
     <listeners>
         <listener class="Mockery\Adapter\Phpunit\TestListener"/>
     </listeners>
     <extensions>
         <extension class="Symfony\Component\Panther\ServerExtension"/>
+        <extension class="Zenstruck\Browser\Test\BrowserExtension" />
     </extensions>
 </phpunit>
