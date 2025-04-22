@@ -3,7 +3,7 @@ variable "IMAGE_NAME" {
 }
 
 variable "SOLIDINVOICE_VERSION" {
-    default = "2.3.x"
+    default = "2.4.x"
 }
 
 variable "PHP_VERSION" {
@@ -65,7 +65,7 @@ target "build-static" {
     ]
     tags = distinct(flatten([
             LATEST ? "${IMAGE_NAME}:latest" : "",
-            SOLIDINVOICE_VERSION == "2.3.x" ? [] : [for v in semver(SOLIDINVOICE_VERSION) : "${IMAGE_NAME}:${v}"]
+            SOLIDINVOICE_VERSION == "2.4.x" ? [] : [for v in semver(SOLIDINVOICE_VERSION) : "${IMAGE_NAME}:${v}"]
     ]))
     args = {
         SOLIDINVOICE_VERSION = "${SOLIDINVOICE_VERSION}"
