@@ -25,7 +25,6 @@ use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
 use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
-use Ramsey\Uuid\Uuid;
 use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use SolidInvoice\CoreBundle\Form\Type\BillingIdConfigurationType;
 use Symfony\Bridge\Doctrine\Types\UlidType;
@@ -347,21 +346,21 @@ final class Version20300 extends AbstractMigration
             $type = Type::getType(UuidBinaryOrderedTimeType::NAME);
 
             foreach ($this->columnsToUpdate as $table => $columns) {
-                $records = $this->connection->createQueryBuilder()
+                $qb = $this->connection->createQueryBuilder()
                     ->select(...$columns)
                     ->from($table)
-                    ->fetchAllAssociative();
+                    ->executeQuery()
+                ;
 
-                foreach ($records as $record) {
+                /** @var array<string, string> $record */
+                foreach ($qb->iterateAssociative() as $record) {
                     foreach ($record as $column => $id) {
 
                         if ($id === null) {
                             continue;
                         }
 
-                        $originalId = Uuid::fromBytes($id);
-
-                        $convertedId = Ulid::fromString($originalId->toString());
+                        $convertedId = Ulid::fromString($id);
 
                         $this->connection->update($table, [$column => $convertedId->toBinary()], [$column => $id]);
                     }
