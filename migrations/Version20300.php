@@ -25,12 +25,12 @@ use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
 use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
+use Ramsey\Uuid\Uuid;
 use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use SolidInvoice\CoreBundle\Form\Type\BillingIdConfigurationType;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Uid\Ulid;
-use Symfony\Component\Uid\UuidV1;
 
 final class Version20300 extends AbstractMigration
 {
@@ -359,11 +359,11 @@ final class Version20300 extends AbstractMigration
                             continue;
                         }
 
-                        $originalId = $type->convertToPHPValue($id, $this->platform);
+                        $originalId = Uuid::fromBytes($id);
 
-                        $convertedId = Ulid::fromRfc4122(UuidV1::fromString($originalId->toString())->toV7()->toRfc4122())->toBinary();
+                        $convertedId = Ulid::fromString($originalId->toString());
 
-                        $this->connection->update($table, [$column => $convertedId], [$column => $id]);
+                        $this->connection->update($table, [$column => $convertedId->toBinary()], [$column => $id]);
                     }
                 }
             }
