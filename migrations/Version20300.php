@@ -342,10 +342,8 @@ final class Version20300 extends AbstractMigration
             ->update('invoice_lines', ['type' => 'recurring_invoice'], ['invoice_id' => null]);
 
         if ($this->columnsToUpdate !== [] && Type::hasType(UuidBinaryOrderedTimeType::NAME)) {
-            /** @var UuidBinaryOrderedTimeType $type */
-            $type = Type::getType(UuidBinaryOrderedTimeType::NAME);
-
             foreach ($this->columnsToUpdate as $table => $columns) {
+
                 $qb = $this->connection->createQueryBuilder()
                     ->select(...$columns)
                     ->from($table)
