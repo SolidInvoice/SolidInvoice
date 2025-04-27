@@ -380,25 +380,15 @@ func (p *runningProcess) runInternalCommand(args ...string) error {
 		return err
 	}
 
-	go (func(output *io.ReadCloser) {
-		scanner := bufio.NewScanner(stderr)
-		scanner.Split(bufio.ScanLines)
-		for scanner.Scan() {
-			m := scanner.Text()
-			caddy.Log().Info(m)
-		}
-	})(&stderr)
-
-	go (func(output *io.ReadCloser) {
-		scanner := bufio.NewScanner(stderr)
-		scanner.Split(bufio.ScanLines)
-		for scanner.Scan() {
-			m := scanner.Text()
-			caddy.Log().Info(m)
-		}
-	})(&stdout)
+	go tee(stderr)
+	go tee(stdout)
 
 	return p.cmd.Wait()
+}
+
+func tee(r io.ReadCloser) {
+	sc := bufio.NewScanner(r)
+	for sc.Scan() { caddy.Log().Info(sc.Text()) }
 }
 
 func runInternalCommand(args ...string) error {
