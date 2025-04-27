@@ -120,4 +120,4 @@ COPY --from=builder /tmp /tmp
 
 ENTRYPOINT ["/usr/local/bin/solidinvoice"]
 
-CMD ["run", "--disable-ssl"]
+CMD ["run", "--disable-https"]
