@@ -71,7 +71,7 @@ COPY --from=composer/composer:2-bin /composer /usr/bin/composer
 
 WORKDIR /go/src/app
 
-ENV SPC_DEFAULT_C_FLAGS='-fPIE -fPIC -O3 -march=native'
+ENV SPC_DEFAULT_C_FLAGS='-fPIE -fPIC -O3'
 ENV SPC_LIBC='musl'
 ENV SPC_CMD_VAR_PHP_MAKE_EXTRA_LDFLAGS_PROGRAM='-Wl,-O3 -pie'
 ENV SPC_REL_TYPE='binary'
