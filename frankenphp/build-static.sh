@@ -42,7 +42,20 @@ if [ -n "${DEBUG_SYMBOLS}" ]; then
 fi
 # php version to build
 if [ -z "${PHP_VERSION}" ]; then
-	export PHP_VERSION="8.4"
+	get_latest_php_version() {
+		input="$1"
+		json=$(curl -s "https://www.php.net/releases/index.php?json&version=$input")
+		latest=$(echo "$json" | jq -r '.version')
+
+		if [[ "$latest" == "$input"* ]]; then
+			echo "$latest"
+		else
+			echo "$input"
+		fi
+	}
+
+	PHP_VERSION="$(get_latest_php_version "8.4")"
+	export PHP_VERSION
 fi
 # default extension set
 defaultExtensions="apcu,bcmath,bz2,calendar,ctype,curl,dba,dom,exif,fileinfo,filter,ftp,gd,gmp,gettext,iconv,igbinary,imagick,intl,ldap,libxml,mbregex,mbstring,mysqli,mysqlnd,opcache,openssl,parallel,pcntl,pdo,pdo_mysql,pdo_pgsql,pdo_sqlite,pgsql,phar,posix,protobuf,readline,redis,session,shmop,simplexml,soap,sockets,sodium,sqlite3,ssh2,sysvmsg,sysvsem,sysvshm,tidy,tokenizer,xlswriter,xml,xmlreader,xmlwriter,xsl,zip,zlib,yaml,zstd"
@@ -101,78 +114,82 @@ if [ -n "${CLEAN}" ]; then
 	go clean -cache
 fi
 
-cache_key="${PHP_VERSION}-${PHP_EXTENSIONS}-${PHP_EXTENSION_LIBS}"
 
-# Build libphp if necessary
-if [ -f dist/cache_key ] && [ "$(cat dist/cache_key)" = "${cache_key}" ] && [ -f "dist/static-php-cli/buildroot/lib/libphp.a" ]; then
-		cd dist/static-php-cli
-		if [ -f "./spc" ]; then
-				spcCommand="./spc"
-		elif [ -f "bin/spc" ]; then
-				spcCommand="./bin/spc"
-		fi
-else
-	mkdir -p dist/
-	cd dist/
-	echo -n "${cache_key}" >cache_key
+mkdir -p dist/
+cd dist/
+echo -n "${cache_key}" >cache_key
 
-	if type "brew" >/dev/null 2>&1; then
-		if ! type "composer" >/dev/null; then
-			packages="composer"
-		fi
-		if ! type "go" >/dev/null 2>&1; then
-			packages="${packages} go"
-		fi
-		if [ -n "${RELEASE}" ] && ! type "gh" >/dev/null 2>&1; then
-			packages="${packages} gh"
-		fi
-
-		if [ -n "${packages}" ]; then
-			# shellcheck disable=SC2086
-			brew install --formula --quiet ${packages}
-		fi
+if type "brew" >/dev/null 2>&1; then
+	if ! type "composer" >/dev/null; then
+		packages="composer"
+	fi
+	if ! type "go" >/dev/null 2>&1; then
+		packages="${packages} go"
+	fi
+	if [ -n "${RELEASE}" ] && ! type "gh" >/dev/null 2>&1; then
+		packages="${packages} gh"
 	fi
 
-	if [ "${SPC_REL_TYPE}" = "binary" ]; then
-		mkdir -p static-php-cli/
-		cd static-php-cli/
-		curl -o spc -fsSL "https://dl.static-php.dev/static-php-cli/spc-bin/nightly/spc-linux-${arch}"
-		chmod +x spc
-		spcCommand="./spc"
-	elif [ -d "static-php-cli/src" ]; then
-		cd static-php-cli/
-		git pull
-		composer install --no-dev -a
-		spcCommand="./bin/spc"
+	if [ -n "${packages}" ]; then
+		# shellcheck disable=SC2086
+		brew install --formula --quiet ${packages}
+	fi
+fi
+
+if [ "${SPC_REL_TYPE}" = "binary" ]; then
+	mkdir -p static-php-cli/
+	cd static-php-cli/
+	if [[ "${arch}" =~ "arm" ]]; then
+		dl_arch="aarch64"
 	else
-		git clone --depth 1 https://github.com/crazywhalecc/static-php-cli --branch main
-		cd static-php-cli/
-		composer install --no-dev -a
-		spcCommand="./bin/spc"
+		dl_arch="${arch}"
 	fi
+	curl -o spc -fsSL "https://dl.static-php.dev/static-php-cli/spc-bin/nightly/spc-linux-${dl_arch}"
+	chmod +x spc
+	spcCommand="./spc"
+elif [ -d "static-php-cli/src" ]; then
+	cd static-php-cli/
+	git pull
+	composer install --no-dev -a --no-interaction
+	spcCommand="./bin/spc"
+else
+	git clone --depth 1 https://github.com/crazywhalecc/static-php-cli --branch main
+	cd static-php-cli/
+	composer install --no-dev -a --no-interaction
+	spcCommand="./bin/spc"
+fi
 
-	#PHP_EXTENSIONS=$(${spcCommand} dump-extensions "../../../" --format=text --no-dev --no-ext-output="${defaultExtensions}")
-	PHP_EXTENSIONS="${defaultExtensions}"
-	# additional libs to build
-	if [ -z "${PHP_EXTENSION_LIBS}" ]; then
-		PHP_EXTENSION_LIBS="${defaultExtensionLibs}"
-	fi
-	# The Brotli library must always be built as it is required by http://github.com/dunglas/caddy-cbrotli
-	if ! echo "${PHP_EXTENSION_LIBS}" | grep -q "\bbrotli\b"; then
-		PHP_EXTENSION_LIBS="${PHP_EXTENSION_LIBS},brotli"
-	fi
-	# The mimalloc library must be built if MIMALLOC is true
-	if [ -n "${MIMALLOC}" ]; then
-		if ! echo "${PHP_EXTENSION_LIBS}" | grep -q "\bmimalloc\b"; then
-			PHP_EXTENSION_LIBS="${PHP_EXTENSION_LIBS},mimalloc"
-		fi
-	fi
+#PHP_EXTENSIONS=$(${spcCommand} dump-extensions "../../../" --format=text --no-dev --no-ext-output="${defaultExtensions}")
+PHP_EXTENSIONS="${defaultExtensions}"
+# additional libs to build
+if [ -z "${PHP_EXTENSION_LIBS}" ]; then
+	PHP_EXTENSION_LIBS="${defaultExtensionLibs}"
+fi
 
+# The Brotli library must always be built as it is required by http://github.com/dunglas/caddy-cbrotli
+if ! echo "${PHP_EXTENSION_LIBS}" | grep -q "\bbrotli\b"; then
+	PHP_EXTENSION_LIBS="${PHP_EXTENSION_LIBS},brotli"
+fi
+
+# The mimalloc library must be built if MIMALLOC is true
+if [ -n "${MIMALLOC}" ]; then
+	if ! echo "${PHP_EXTENSION_LIBS}" | grep -q "\bmimalloc\b"; then
+		PHP_EXTENSION_LIBS="${PHP_EXTENSION_LIBS},mimalloc"
+	fi
+fi
+
+# qBuild libphp if necessary
+cache_key="${PHP_VERSION}-${PHP_EXTENSIONS}-${PHP_EXTENSION_LIBS}"
+if [ -f ../cache_key ] && [ "$(cat ../cache_key)" = "${cache_key}" ] && [ -f "buildroot/lib/libphp.a" ]; then
+	echo "Hit cache, skipping libphp build."
+else
 	${spcCommand} doctor --auto-fix
 	# shellcheck disable=SC2086
 	${spcCommand} download --with-php="${PHP_VERSION}" --for-extensions="${PHP_EXTENSIONS}" --for-libs="${PHP_EXTENSION_LIBS}" ${SPC_OPT_DOWNLOAD_ARGS}
 	# shellcheck disable=SC2086
 	${spcCommand} build --enable-zts --build-embed ${SPC_OPT_BUILD_ARGS} "${PHP_EXTENSIONS}" --with-libs="${PHP_EXTENSION_LIBS}"
+
+	echo -n "${cache_key}" >../cache_key
 fi
 
 if ! type "go" >/dev/null 2>&1; then
@@ -232,20 +249,20 @@ fi
 go env
 
 if [ -z "${SPC_LIBC}" ] || [ "${SPC_LIBC}" = "musl" ]; then
-    # shellcheck disable=SC2054
+	# shellcheck disable=SC2054
 	goBuildFlags=(
-	    -buildmode=pie
-        -tags cgo,netgo,osusergo,static_build,nobadger,nowatcher,nomysql,nopgx
-        -ldflags
-        "-linkmode=external -extldflags '-static-pie ${muslStackSizeFix}' ${extraLdflags} -X 'github.com/caddyserver/caddy/v2.CustomVersion=SolidInvoice ${SOLIDINVOICE_VERSION} PHP ${LIBPHP_VERSION} Caddy'"
-    )
+		-buildmode=pie
+		-tags cgo,netgo,osusergo,static_build,nobadger,nowatcher,nomysql,nopgx
+		-ldflags
+		"-linkmode=external -extldflags '-static-pie ${muslStackSizeFix}' ${extraLdflags} -X 'github.com/caddyserver/caddy/v2.CustomVersion=SolidInvoice ${SOLIDINVOICE_VERSION} PHP ${LIBPHP_VERSION} Caddy'"
+	)
 elif [ "${SPC_LIBC}" = "glibc" ]; then
-    # shellcheck disable=SC2054
+	# shellcheck disable=SC2054
 	goBuildFlags=(
-	    -buildmode=pie
-	    -tags cgo,netgo,osusergo,nobadger,nowatcher,nomysql,nopgx
-	    -ldflags
-	    "-linkmode=external -extldflags '-pie' ${extraLdflags} -X 'github.com/caddyserver/caddy/v2.CustomVersion=SolidInvoice ${SOLIDINVOICE_VERSION} PHP ${LIBPHP_VERSION} Caddy'"
+		-buildmode=pie
+		-tags cgo,netgo,osusergo,nobadger,nowatcher,nomysql,nopgx
+		-ldflags
+		"-linkmode=external -extldflags '-pie' ${extraLdflags} -X 'github.com/caddyserver/caddy/v2.CustomVersion=SolidInvoice ${SOLIDINVOICE_VERSION} PHP ${LIBPHP_VERSION} Caddy'"
 	)
 fi
 
@@ -271,5 +288,5 @@ if [ -n "${CURRENT_REF}" ]; then
 fi
 
 if [ -n "${TARGETARCH}" ]; then
-    mv "dist/${bin}" "dist/solidinvoice-${TARGETOS}-${TARGETARCH}"
+	mv "dist/${bin}" "dist/solidinvoice-${TARGETOS}-${TARGETARCH}"
 fi
