@@ -90,7 +90,6 @@ WORKDIR /go/src/app
 RUN \
     --mount=type=secret,id=github-token \
     --mount=type=cache,id=php-${TARGETARCH},target=/go/src/app/frankenphp/dist/static-php-cli \
-    --mount=type=cache,id=php-key-${TARGETARCH},target=/go/src/app/frankenphp/dist/cache_key \
     GITHUB_TOKEN=$(cat /run/secrets/github-token) ./scripts/build_binary.sh $SOLIDINVOICE_VERSION
 
 FROM scratch

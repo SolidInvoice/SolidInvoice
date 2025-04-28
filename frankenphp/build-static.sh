@@ -117,7 +117,6 @@ fi
 
 mkdir -p dist/
 cd dist/
-echo -n "${cache_key}" >cache_key
 
 if type "brew" >/dev/null 2>&1; then
 	if ! type "composer" >/dev/null; then
@@ -180,7 +179,7 @@ fi
 
 # Build libphp if necessary
 cache_key="${PHP_VERSION}-${PHP_EXTENSIONS}-${PHP_EXTENSION_LIBS}"
-if [ -f ../cache_key ] && [ "$(cat ../cache_key)" = "${cache_key}" ] && [ -f "buildroot/lib/libphp.a" ]; then
+if [ -f ./cache_key ] && [ "$(cat ./cache_key)" = "${cache_key}" ] && [ -f "buildroot/lib/libphp.a" ]; then
 	echo "Hit cache, skipping libphp build."
 else
 	${spcCommand} doctor --auto-fix
@@ -189,7 +188,7 @@ else
 	# shellcheck disable=SC2086
 	${spcCommand} build --enable-zts --build-embed ${SPC_OPT_BUILD_ARGS} "${PHP_EXTENSIONS}" --with-libs="${PHP_EXTENSION_LIBS}"
 
-	echo -n "${cache_key}" >../cache_key
+	echo -n "${cache_key}" >./cache_key
 fi
 
 if ! type "go" >/dev/null 2>&1; then
