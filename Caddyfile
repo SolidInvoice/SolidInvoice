@@ -10,7 +10,7 @@
 	}
 }
 
-{$CADDY_EXTRA_CONFIG} 
+{$CADDY_EXTRA_CONFIG}
 
 {$SERVER_NAME} {
 	bind {$SERVER_IP:0.0.0.0}
@@ -22,6 +22,14 @@
 			request>uri query {
 				replace authorization REDACTED
 			}
+		}
+
+		format json {
+			time_key     datetime
+			level_key    level_name
+			message_key  message
+			name_key     channel
+			level_format upper
 		}
 	}
 
