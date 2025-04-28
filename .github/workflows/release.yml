@@ -14,6 +14,11 @@ on:
         description: "SolidInvoice version"
         required: false
         type: string
+      release:
+        description: "Push builds to release"
+        required: false
+        type: boolean
+        default: true
 
 env:
   SOLIDINVOICE_ENV: prod
@@ -66,7 +71,7 @@ jobs:
       - name: Build Release Artifact
         run: "./scripts/build_dist.sh ${{ needs.prepare.outputs.ref }} ${{ needs.prepare.outputs.ref }}"
         env:
-          RELEASE: 1
+          RELEASE: ${{ inputs.release ? '1' : '0' }}
           GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
 
       - name: Upload TAR archive
@@ -129,7 +134,7 @@ jobs:
           # GITHUB_TOKEN is used by static-php-cli script to make api calls to Github
           GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
-          RELEASE: 1
+          RELEASE: ${{ inputs.release ? '1' : '0' }}
 
   build-linux:
     name: Build ${{ matrix.os }}-${{ matrix.platform }} binaries
@@ -196,5 +201,5 @@ jobs:
           # GITHUB_TOKEN is used by static-php-cli script to make api calls to Github
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE: 1
+          RELEASE: ${{ inputs.release ? '1' : '0' }}
           SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
