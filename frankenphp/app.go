@@ -172,10 +172,18 @@ func main() {
 					protocol = "http"
 				}
 
-				serverName := protocol + "://" + serverIp + ":" + httpPort + ", " + protocol + "://localhost:" + httpPort
+				var serverName string
 
-				if serverIp != "127.0.0.1" {
-					serverName += ", " + protocol + "://127.0.0.1:" + httpPort
+				if os.Getenv("SOLIDINVOICE_DOCKER") == "true" {
+					// When running in Docker, we don't care about the hostname,
+					// we just need to bind to the port,
+					// since the IP can be dynamic.
+					serverName = ":" + httpPort
+				} else {
+					serverName = protocol + "://" + serverIp + ":" + httpPort + ", " + protocol + "://localhost:" + httpPort
+					if serverIp != "127.0.0.1" {
+						serverName += ", " + protocol + "://127.0.0.1:" + httpPort
+					}
 				}
 
 				must(os.Setenv("SERVER_NAME", serverName))
