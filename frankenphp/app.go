@@ -51,7 +51,9 @@ var embeddedApp []byte
 var embeddedAppChecksum []byte
 
 type runningProcess struct {
-	cmd *exec.Cmd
+	cmd    *exec.Cmd
+	stderr *os.File
+	stdout *os.File
 }
 
 func init() {
@@ -281,7 +283,10 @@ func main() {
 }
 
 func wrapInternalCmd(args ...string) lu.Process {
-	p := &runningProcess{}
+	p := &runningProcess{
+		stderr: os.Stderr,
+		stdout: os.Stdout,
+	}
 
 	loop := process.Loop(func(ctx context.Context) error {
 		return p.runInternalCommand(args...)
@@ -367,28 +372,38 @@ func (p *runningProcess) runInternalCommand(args ...string) error {
 	p.cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
 	p.cmd.Env = os.Environ()
 
-	stderr, err := p.cmd.StderrPipe()
-	if err != nil {
-		return err
+	if p.stderr != nil {
+		p.cmd.Stderr = p.stderr
+	} else {
+		stderr, err := p.cmd.StderrPipe()
+		if err != nil {
+			return err
+		}
+		go tee(stderr)
 	}
-	stdout, err := p.cmd.StdoutPipe()
-	if err != nil {
-		return err
+
+	if p.stdout != nil {
+		p.cmd.Stdout = p.stdout
+	} else {
+		stdout, err := p.cmd.StdoutPipe()
+		if err != nil {
+			return err
+		}
+		go tee(stdout)
 	}
 
 	if err = p.cmd.Start(); err != nil {
 		return err
 	}
 
-	go tee(stderr)
-	go tee(stdout)
-
 	return p.cmd.Wait()
 }
 
 func tee(r io.ReadCloser) {
 	sc := bufio.NewScanner(r)
-	for sc.Scan() { caddy.Log().Info(sc.Text()) }
+	for sc.Scan() {
+		caddy.Log().Info(sc.Text())
+	}
 }
 
 func runInternalCommand(args ...string) error {
