@@ -92,7 +92,7 @@ RUN \
     --mount=type=cache,id=php-${TARGETARCH},target=/go/src/app/frankenphp/dist/static-php-cli \
     GITHUB_TOKEN=$(cat /run/secrets/github-token) ./scripts/build_binary.sh $SOLIDINVOICE_VERSION
 
-FROM scratch
+FROM alpine
 
 ARG TARGETARCH
 ARG TARGETOS
@@ -117,10 +117,6 @@ EXPOSE 8765
 VOLUME ["/etc/solidinvoice"]
 
 COPY --from=builder /go/src/app/frankenphp/dist/solidinvoice-${TARGETOS}-${TARGETARCH} /usr/local/bin/solidinvoice
-
-# /tmp dir required for session storage
-COPY --from=builder /tmp /tmp
-COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
 ENTRYPOINT ["/usr/local/bin/solidinvoice"]
 
