@@ -194,7 +194,7 @@ jobs:
         with:
             targets: build-static
             source: .
-            push: true
+            push: ${{ inputs.release }}
             set: |
                 *.cache-from=type=gha,scope=${{ needs.prepare.outputs.ref || github.ref }}
                 *.cache-to=type=gha,scope=${{ needs.prepare.outputs.ref || github.ref }},ignore-error=true
