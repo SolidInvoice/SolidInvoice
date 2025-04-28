@@ -153,7 +153,7 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: frankenphp/dist/static-php-cli
-          key: ${{ matrix.os }}-${{ matrix.platform }}-static-php-cli-${{ hashFiles('frankenphp/dist/cache_key') }}
+          key: ${{ matrix.os }}-${{ matrix.platform }}-static-php-cli-${{ hashFiles('frankenphp/dist/static-php-cli/cache_key') }}
 
   build-linux:
     name: Build binaries
