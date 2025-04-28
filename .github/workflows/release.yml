@@ -71,7 +71,7 @@ jobs:
       - name: Build Release Artifact
         run: "./scripts/build_dist.sh ${{ needs.prepare.outputs.ref }} ${{ needs.prepare.outputs.ref }}"
         env:
-          RELEASE: ${{ inputs.release ? '1' : '0' }}
+          RELEASE: ${{ inputs.release || '1' }}
           GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
 
       - name: Upload TAR archive
@@ -134,7 +134,7 @@ jobs:
           # GITHUB_TOKEN is used by static-php-cli script to make api calls to Github
           GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
-          RELEASE: ${{ inputs.release ? '1' : '0' }}
+          RELEASE: ${{ inputs.release || '1' }}
 
   build-linux:
     name: Build ${{ matrix.os }}-${{ matrix.platform }} binaries
@@ -201,5 +201,5 @@ jobs:
           # GITHUB_TOKEN is used by static-php-cli script to make api calls to Github
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE: ${{ inputs.release ? '1' : '0' }}
+          RELEASE: ${{ inputs.release || '1' }}
           SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
