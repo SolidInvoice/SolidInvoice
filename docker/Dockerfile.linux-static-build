@@ -120,6 +120,7 @@ COPY --from=builder /go/src/app/frankenphp/dist/solidinvoice-${TARGETOS}-${TARGE
 
 # /tmp dir required for session storage
 COPY --from=builder /tmp /tmp
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
 ENTRYPOINT ["/usr/local/bin/solidinvoice"]
 
