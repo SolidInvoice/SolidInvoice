@@ -123,11 +123,13 @@ jobs:
           cache-dependency-path: frankenphp/go.sum
 
       - name: Cache static-php build
-        id: cache-primes
-        uses: actions/cache@v4
+        id: restore-static-php
+        uses: actions/cache/restore@v4
         with:
           path: frankenphp/dist/static-php-cli
-          key: ${{ matrix.os }}-${{ matrix.platform }}-static-php-cli-${{ hashFiles('frankenphp/dist/cache_key') }}
+          key: ${{ matrix.os }}-${{ matrix.platform }}-static-php-cli-
+          restore-keys: |
+              ${{ matrix.os }}-${{ matrix.platform }}-static-php-cli-
 
       - name: Build SolidInvoice
         run: ./scripts/build_binary.sh ${{ needs.prepare.outputs.ref }}
@@ -139,8 +141,15 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
           RELEASE: ${{ inputs.release || '1' }}
 
+      - name: Save static-php cache
+        if: steps.restore-static-php.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: frankenphp/dist/static-php-cli
+          key: ${{ matrix.os }}-${{ matrix.platform }}-static-php-cli-${{ hashFiles('frankenphp/dist/cache_key') }}
+
   build-linux:
-    name: Build ${{ matrix.os }}-${{ matrix.platform }} binaries
+    name: Build binaries
     needs: [prepare, build-dist]
     permissions:
       contents: write
@@ -178,17 +187,6 @@ jobs:
           name: SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.tar.gz
           path: build/dist
 
-      - name: Static PHP CLI Cache
-        uses: actions/cache@v4
-        with:
-            path: frankenphp/dist/static-php-cli
-            key: ${{ runner.os }}-static-php-cli-${{ hashFiles('frankenphp/dist/cache_key') }}
-
-      - name: Inject static php cli cache
-        uses: reproducible-containers/buildkit-cache-dance@4b2444fec0c0fb9dbf175a96c094720a692ef810 # v2.1.4
-        with:
-            cache-source: frankenphp/dist/static-php-cli
-
       - name: Build SolidInvoice
         uses: docker/bake-action@v6
         with:
@@ -196,8 +194,8 @@ jobs:
             source: .
             push: ${{ inputs.release }}
             set: |
-                *.cache-from=type=gha,scope=${{ needs.prepare.outputs.ref || github.ref }}
-                *.cache-to=type=gha,scope=${{ needs.prepare.outputs.ref || github.ref }},ignore-error=true
+                build-static.cache-from=type=gha,scope=php
+                build-static.cache-to=type=gha,scope=php,mode=max,ignore-error=true
         env:
           # GITHUB_TOKEN needs to be defined twice here.
           # GH_TOKEN is used by the gh cli utility to upload the binary files

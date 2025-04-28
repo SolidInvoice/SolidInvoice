@@ -178,7 +178,7 @@ if [ -n "${MIMALLOC}" ]; then
 	fi
 fi
 
-# qBuild libphp if necessary
+# Build libphp if necessary
 cache_key="${PHP_VERSION}-${PHP_EXTENSIONS}-${PHP_EXTENSION_LIBS}"
 if [ -f ../cache_key ] && [ "$(cat ../cache_key)" = "${cache_key}" ] && [ -f "buildroot/lib/libphp.a" ]; then
 	echo "Hit cache, skipping libphp build."
