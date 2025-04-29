@@ -223,25 +223,6 @@ func main() {
 			}
 
 			app.AddProcess(wrapInternalCmd("server", "start"))
-			app.AddProcess(process.Loop(func(ctx context.Context) error {
-				logFile := appPath + "/var/log/prod.log"
-
-				if _, err := os.Stat(logFile); os.IsNotExist(err) {
-					return errors.New("log file does not exist: " + logFile)
-				}
-
-				tail := exec.Command("tail", "-F", logFile)
-				tail.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
-				tail.Env = os.Environ()
-				tail.Stderr = os.Stderr
-				tail.Stdout = os.Stdout
-
-				if err := tail.Start(); err != nil {
-					return err
-				}
-
-				return tail.Wait()
-			}))
 			app.AddProcess(messenger)
 			app.AddProcess(process.Scheduled(
 				func(role string) process.ContextFunc {
