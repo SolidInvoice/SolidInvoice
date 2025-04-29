@@ -26,7 +26,7 @@ return static function (MonologConfig $config): void {
     $config
         ->handler('nested')
         ->type('stream')
-        ->path('%kernel.logs_dir%/%kernel.environment%.log')
+        ->path('php://stderr')
         ->level('debug')
         ->formatter('monolog.formatter.json')
     ;
@@ -37,4 +37,13 @@ return static function (MonologConfig $config): void {
         ->processPsr3Messages(false)
         ->channels()
         ->elements(['!event', '!doctrine']);
+
+    /*
+     @TODO: Only enable deprecation logging for specific scenarios
+     $config
+        ->handler('deprecation')
+        ->type('stream')
+        ->path('php://stderr')
+        ->channels()
+        ->elements(['deprecation']);*/
 };
