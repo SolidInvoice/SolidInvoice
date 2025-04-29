@@ -38,10 +38,20 @@ jobs:
             security.ubuntu.com:80
             uploads.github.com:443
 
+      - name: Derive target branch from milestone title
+        id: vars
+        run: |
+          version="${{ github.event.milestone.title }}"
+          [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo "Milestone title must be semver"; exit 1; }
+          IFS='.' read -r MAJOR MINOR PATCH <<<"$version"
+          echo "branch=${MAJOR}.${MINOR}.x" >>"$GITHUB_OUTPUT"   # e.g. 2.3.x
+          echo "tag=v${version}" >>"$GITHUB_OUTPUT"
+
       - name: Checkout
         uses: "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683"
         with:
-          ref: 2.3.x
+          ref: ${{ steps.vars.outputs.branch }}
+          fetch-depth: 1
 
       - name: Setup PHP
         uses: shivammathur/setup-php@cf4cade2721270509d5b1c766ab3549210a39a2a
@@ -59,7 +69,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RELEASE: 1
-        run: "./scripts/bump_version.sh ${{ github.event.milestone.title }}"
+        run: "./scripts/bump_version.sh ${{ steps.vars.outputs.branch }} ${{ github.event.milestone.title }}"
 
       - name: Release
         run: "./scripts/create_release.sh ${{ github.event.milestone.title }} ${{ github.repository }}"

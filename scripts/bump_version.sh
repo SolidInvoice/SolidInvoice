@@ -9,6 +9,9 @@ if [ -n "$GITHUB_ACTIONS" ]; then
   git remote set-url origin https://"${GITHUB_ACTOR}":"${GH_TOKEN}"@github.com/"${GITHUB_REPOSITORY}".git
 fi
 
+BRANCH=${1:-}
+VERSION=${2:-}
+
 # File path
 FILE="./src/CoreBundle/SolidInvoiceCoreBundle.php"
 PACKAGE_JSON="./package.json"
@@ -33,7 +36,7 @@ bump_version() {
 }
 
 # Check for version argument
-if [ "$1" ]; then
+if [ "$VERSION" ]; then
   next_version="$1"
 else
   current_version=$(awk -F\' '/public const VERSION/ {print $2}' $FILE)
@@ -51,5 +54,5 @@ composer update --lock
 if [ "${RELEASE:-}" = "1" ]; then
     git add $FILE $PACKAGE_JSON $COMPOSER_JSON composer.lock
     git commit -m "Release version $next_version"
-    git push
+    git push origin ${BRANCH}
 fi
