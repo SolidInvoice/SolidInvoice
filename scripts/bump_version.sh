@@ -54,5 +54,5 @@ composer update --lock
 if [ "${RELEASE:-}" = "1" ]; then
     git add $FILE $PACKAGE_JSON $COMPOSER_JSON composer.lock
     git commit -m "Release version $next_version"
-    git push origin ${BRANCH}
+    git push origin "${BRANCH}"
 fi
