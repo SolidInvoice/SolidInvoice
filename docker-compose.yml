@@ -16,13 +16,6 @@ services:
     restart: always
     volumes:
       - app_data:/etc/solidinvoice
-    environment:
-      SOLIDINVOICE_DATABASE_DRIVER: pdo_mysql
-      SOLIDINVOICE_DATABASE_HOST: db
-      SOLIDINVOICE_DATABASE_PORT: 3306
-      SOLIDINVOICE_DATABASE_NAME: solidinvoice
-      SOLIDINVOICE_DATABASE_USER: root
-      SOLIDINVOICE_DATABASE_PASSWORD:
 
 volumes:
   db_data: {}
