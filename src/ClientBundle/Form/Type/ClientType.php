@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Form\Type;
 
+use SolidInvoice\ClientBundle\Entity\Address;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\MoneyBundle\Form\Type\CurrencyType;
 use SolidInvoice\TaxBundle\Form\Type\TaxNumberType;
@@ -61,6 +62,9 @@ class ClientType extends AbstractType
             LiveCollectionType::class,
             [
                 'entry_type' => AddressType::class,
+                'entry_options' => [
+                    'data_class' => Address::class,
+                ],
                 'allow_add' => true,
                 'allow_delete' => true,
                 'required' => false,

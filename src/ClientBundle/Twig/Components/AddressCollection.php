@@ -45,7 +45,7 @@ final class AddressCollection extends AbstractController
 
     protected function instantiateForm(): FormInterface
     {
-        return $this->createForm(AddressType::class, (new Address())->setClient($this->client));
+        return $this->createForm(AddressType::class, (new Address())->setClient($this->client), ['data_class' => Address::class, ]);
     }
 
     #[LiveAction()]
