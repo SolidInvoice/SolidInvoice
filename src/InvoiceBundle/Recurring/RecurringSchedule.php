@@ -16,6 +16,7 @@ use Carbon\CarbonInterface;
 use Carbon\Unit;
 use Carbon\WeekDay;
 use DateTimeInterface;
+use Exception;
 use Illuminate\Support\Arr;
 use NumberFormatter;
 use Psr\Clock\ClockInterface;
@@ -34,6 +35,7 @@ readonly class RecurringSchedule
 
     /**
      * @return iterable<CarbonInterface>
+     * @throws Exception
      */
     public function getNextOccurrences(RecurringOptions $options, int $limit = 10): iterable
     {
@@ -42,6 +44,7 @@ readonly class RecurringSchedule
 
     /**
      * @return iterable<CarbonInterface>
+     * @throws Exception
      */
     public function getOccurrences(RecurringOptions $options, ?DateTimeInterface $startDate = null, int $limit = 10): iterable
     {
@@ -83,6 +86,9 @@ readonly class RecurringSchedule
         }
     }
 
+    /**
+     * @throws Exception
+     */
     public function getNextRunDate(RecurringOptions $options): ?CarbonInterface
     {
         foreach ($this->getNextOccurrences($options) as $occurrence) {
@@ -101,6 +107,10 @@ readonly class RecurringSchedule
         }
 
         if ($scheduleEndType->isOn()) {
+            if (null === $options->getEndDate()) {
+                return null;
+            }
+
             // @TODO: Calculate the last day that the schedule needs to run
             // E.G The schedule is set to run weekly on Wednesday, but the end date is set to a Sunday.
             // This should then return the last Wednesday that the schedule should run
@@ -128,7 +138,10 @@ readonly class RecurringSchedule
 
     public function getFrequency(RecurringOptions $options): string
     {
-        // @TODO: Locale needs to be injected
+        if (! $options->hasType()) {
+            return '';
+        }
+
         $formatter = new NumberFormatter($this->locale, NumberFormatter::ORDINAL);
 
         return ($options->getType()->isDaily() || [] !== $options->getDays()) ? 'Every ' . match ($options->getType()) {

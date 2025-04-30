@@ -139,7 +139,7 @@ class RecurringInvoice extends BaseInvoice
         $this->lines = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->invoices = new ArrayCollection();
-        $this->recurringOptions = new RecurringOptions();
+        $this->setRecurringOptions(new RecurringOptions());
         parent::__construct();
     }
 

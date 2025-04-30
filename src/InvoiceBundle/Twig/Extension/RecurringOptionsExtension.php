@@ -50,6 +50,10 @@ final class RecurringOptionsExtension extends AbstractExtension
             return $frequency;
         }*/
 
+        if (! $recurringOptions->hasEndType()) {
+            return $frequency;
+        }
+
         return $frequency . match ($recurringOptions->getEndType()) {
             ScheduleEndType::ON => sprintf(' from %s to %s', $recurringOptions->getRecurringInvoice()->getDateStart()?->format($format), $this->schedule->getEndDate($recurringOptions)?->format($format)),
             ScheduleEndType::AFTER => sprintf(' from %s to %s (%d occurrences)', $recurringOptions->getRecurringInvoice()->getDateStart()?->format($format), $this->schedule->getEndDate($recurringOptions)?->format($format), $recurringOptions->getEndOccurrence()),
