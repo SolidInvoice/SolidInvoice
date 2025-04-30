@@ -178,7 +178,7 @@ func main() {
 					// When running in Docker, we don't care about the hostname,
 					// we just need to bind to the port,
 					// since the IP can be dynamic.
-					serverName = ":" + httpPort
+					serverName = protocol + "://:" + httpPort
 				} else {
 					serverName = protocol + "://" + serverIp + ":" + httpPort + ", " + protocol + "://localhost:" + httpPort
 					if serverIp != "127.0.0.1" {
