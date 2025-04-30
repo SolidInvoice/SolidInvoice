@@ -89,6 +89,7 @@ class RecurringInvoiceRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('ri')
             ->where('ri.status = :status')
+            ->innerJoin('ri.recurringOptions', 'ro')
             ->setParameter('status', 'active')
             ->getQuery()
             ->toIterable();
