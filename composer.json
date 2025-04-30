@@ -224,7 +224,6 @@
     "config": {
         "allow-plugins": {
             "captainhook/captainhook-phar": true,
-            "composer/installers": true,
             "ergebnis/composer-normalize": true,
             "php-http/discovery": true,
             "phpstan/extension-installer": true,
