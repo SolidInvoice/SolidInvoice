@@ -218,7 +218,7 @@
                 <div class="card-body">
                     <div class="recurring-info row">
                         <div class="col-12">
-                            {{ form.recurringOptions.vars.value }}
+                            {{ recurring_frequency(form.recurringOptions.vars.value) }}
                         </div>
                         <div class="col-12">
                             {{ form_row(form.date_start) }}

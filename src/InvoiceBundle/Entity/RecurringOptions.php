@@ -86,6 +86,11 @@ class RecurringOptions
         return $this->type;
     }
 
+    public function hasType(): bool
+    {
+        return isset($this->type);
+    }
+
     public function setType(ScheduleRecurringType $type): static
     {
         $this->type = $type;
@@ -128,6 +133,11 @@ class RecurringOptions
     public function getEndType(): ScheduleEndType
     {
         return $this->endType;
+    }
+
+    public function hasEndType(): bool
+    {
+        return isset($this->endType);
     }
 
     public function setEndType(ScheduleEndType $endType): static
