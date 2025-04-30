@@ -16,12 +16,25 @@ namespace SolidInvoice\CoreBundle\Form\Type;
 use SolidInvoice\MoneyBundle\Form\Type\CurrencyType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class CompanyType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('name')
-            ->add('currency', CurrencyType::class);
+        $builder->add(
+            'name',
+            null,
+            [
+                'constraints' => [new NotBlank()],
+            ]
+        )
+            ->add(
+                'currency',
+                CurrencyType::class,
+                [
+                    'constraints' => [new NotBlank()],
+                ]
+            );
     }
 }
