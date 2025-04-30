@@ -13,11 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Form\Type;
 
-use SolidInvoice\ClientBundle\Entity\Address;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @see \SolidInvoice\ClientBundle\Tests\Form\Type\AddressTypeTest
@@ -39,11 +37,6 @@ class AddressType extends AbstractType
                 'required' => false,
             ]
         );
-    }
-
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults(['data_class' => Address::class]);
     }
 
     public function getBlockPrefix(): string
