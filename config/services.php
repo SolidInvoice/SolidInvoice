@@ -11,6 +11,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\UX\StimulusBundle\Helper\StimulusHelper;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
@@ -38,6 +39,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters->set('env(SOLIDINVOICE_MAILER_DSN)', 'null://null');
 
     $parameters->set('env(SOLIDINVOICE_CONFIG_DIR)', param('kernel.project_dir') . '/config/env');
+    $parameters->set('application_version', SolidInvoiceCoreBundle::VERSION);
 
     $containerConfigurator->services()
         ->set(Monolog\Processor\PsrLogMessageProcessor::class)
