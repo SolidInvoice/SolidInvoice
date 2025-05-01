@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 use Monolog\Level;
 use Sentry\State\HubInterface;
-use Symfony\Component\Debug\Exception\FatalErrorException;
+use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use Symfony\Component\ErrorHandler\Error\FatalError;
 use Symfony\Config\MonologConfig;
 use Symfony\Config\SentryConfig;
@@ -25,8 +25,8 @@ return static function (SentryConfig $sentryConfig, MonologConfig $monologConfig
         ->registerErrorHandler(false)
         ->options()
         ->sendDefaultPii(env('SOLIDINVOICE_SENTRY_SEND_DEFAULT_PII')->bool())
-        ->ignoreExceptions([FatalError::class, FatalErrorException::class])
-        ->release(env('SOLIDINVOICE_SENTRY_RELEASE'));
+        ->ignoreExceptions([FatalError::class])
+        ->release(env('SOLIDINVOICE_SENTRY_RELEASE')->default(SolidInvoiceCoreBundle::VERSION));
 
     $monologConfig->handler('sentry_main')
         ->type('sentry')
