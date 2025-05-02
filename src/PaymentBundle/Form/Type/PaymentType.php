@@ -60,9 +60,6 @@ class PaymentType extends AbstractType
                 'placeholder' => 'Choose Payment Method',
                 'choice_attr' => fn (PaymentMethod $paymentMethod) => ['data-offline' => $paymentMethod->isOffline()],
                 'attr' => array_merge(
-                    [
-                        'class' => 'select2',
-                    ],
                     $attributes->toArray(),
                 ),
             ]

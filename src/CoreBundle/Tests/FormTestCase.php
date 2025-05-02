@@ -21,7 +21,6 @@ use Mockery as M;
 use Money\Currency;
 use SolidInvoice\CoreBundle\Form\Extension\FormHelpExtension;
 use SolidInvoice\CoreBundle\Form\Type\ImageUploadType;
-use SolidInvoice\CoreBundle\Form\Type\Select2Type;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\MoneyBundle\Form\Extension\MoneyExtension;
 use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
@@ -114,7 +113,6 @@ abstract class FormTestCase extends KernelTestCase
     protected function getTypes(): array
     {
         return [
-            'select2' => new Select2Type(),
             'image_upload' => new ImageUploadType(),
         ];
     }

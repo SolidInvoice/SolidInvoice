@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\TaxBundle\Form\Type;
 
-use SolidInvoice\CoreBundle\Form\Type\Select2Type;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PercentType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -32,7 +32,7 @@ class TaxType extends AbstractType
 
         $builder->add(
             'type',
-            Select2Type::class,
+            ChoiceType::class,
             [
                 'choices' => array_map('ucwords', Tax::getTypes()),
                 'help' => 'tax.rates.explanation',
