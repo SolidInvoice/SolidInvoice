@@ -71,7 +71,7 @@ jobs:
       - name: Build Release Artifact
         run: "./scripts/build_dist.sh ${{ needs.prepare.outputs.ref }} ${{ needs.prepare.outputs.ref }}"
         env:
-          RELEASE: ${{ inputs.release && '1' || '0' }}
+          RELEASE: ${{ inputs.release == 'true' && '1' || '0' }}
           GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
 
       - name: Upload TAR archive
@@ -136,7 +136,7 @@ jobs:
           # GITHUB_TOKEN is used by static-php-cli script to make api calls to Github
           GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
-          RELEASE: ${{ inputs.release && '1' || '0' }}
+          RELEASE: ${{ inputs.release == 'true' && '1' || '0' }}
 
       - name: Save static-php cache
         if: steps.restore-static-php.outputs.cache-hit != 'true'
@@ -194,7 +194,7 @@ jobs:
         with:
             targets: build-static
             source: .
-            push: ${{ inputs.release }}
+            push: ${{ inputs.release == 'true' && true || false }}
             set: |
                 build-static.cache-from=type=gha,scope=php
                 build-static.cache-to=type=gha,scope=php,mode=max,ignore-error=true
@@ -204,5 +204,5 @@ jobs:
           # GITHUB_TOKEN is used by static-php-cli script to make api calls to Github
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE: ${{ inputs.release && '1' || '0' }}
+          RELEASE: ${{ inputs.release == 'true' && '1' || '0' }}
           SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
