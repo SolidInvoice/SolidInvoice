@@ -26,11 +26,11 @@ use Twig\Error\SyntaxError;
 /**
  * @see \SolidInvoice\InvoiceBundle\Tests\Listener\Mailer\InvoicePdfListenerTest
  */
-class InvoicePdfListener implements EventSubscriberInterface
+readonly class InvoicePdfListener implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly Generator $generator,
-        private readonly Environment $twig
+        private Generator $generator,
+        private Environment $twig
     ) {
     }
 
@@ -47,10 +47,13 @@ class InvoicePdfListener implements EventSubscriberInterface
                 $this->twig->render('@SolidInvoiceInvoice/Pdf/invoice.html.twig', ['invoice' => $message->getInvoice()])
             );
 
-            $message->attach($content, "invoice_{$message->getInvoice()->getId()}.pdf", 'application/pdf');
+            $message->attach($content, "invoice_{$message->getInvoice()->getInvoiceId()}.pdf", 'application/pdf');
         }
     }
 
+    /**
+     * @return array<string, string>
+     */
     public static function getSubscribedEvents(): array
     {
         return [
