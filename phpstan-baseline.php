@@ -417,12 +417,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	// identifier: missingType.iterableValue
-	'message' => '#^Method SolidInvoice\\\\QuoteBundle\\\\Email\\\\QuoteEmail\\:\\:getContext\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/src/QuoteBundle/Email/QuoteEmail.php',
-];
-$ignoreErrors[] = [
-	// identifier: missingType.iterableValue
 	'message' => '#^Method SolidInvoice\\\\SettingsBundle\\\\Collection\\\\ConfigCollection\\:\\:add\\(\\) has parameter \\$settings with no value type specified in iterable type array\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/src/SettingsBundle/Collection/ConfigCollection.php',
@@ -544,12 +538,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	// identifier: method.notFound
 	'message' => '#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\:\\:getEmail\\(\\)\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/src/UserBundle/Email/ResetPasswordEmail.php',
-];
-$ignoreErrors[] = [
-	// identifier: missingType.iterableValue
-	'message' => '#^Method SolidInvoice\\\\UserBundle\\\\Email\\\\ResetPasswordEmail\\:\\:getContext\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/src/UserBundle/Email/ResetPasswordEmail.php',
 ];
