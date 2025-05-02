@@ -85,7 +85,10 @@ func main() {
 
 	defaultServerIp = getOutboundIP().String()
 
-	must(os.Setenv(upperAppName+"_CONFIG_DIR", filepath.Join(configDir, appName)))
+	if os.Getenv(upperAppName+"_CONFIG_DIR") == "" {
+	    must(os.Setenv(upperAppName+"_CONFIG_DIR", filepath.Join(configDir, appName)))
+	}
+
 	must(os.Setenv(upperAppName+"_ENV", "prod"))
 	must(os.Setenv(upperAppName+"_DEBUG", "0"))
 	must(os.Setenv("APP_PATH", appPath))
