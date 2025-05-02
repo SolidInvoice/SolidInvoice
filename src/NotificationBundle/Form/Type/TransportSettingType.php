@@ -51,7 +51,6 @@ final class TransportSettingType extends AbstractType
                 'choices' => $transports[$options['type']],
                 'placeholder' => 'Integration',
                 'label' => 'Integration',
-                'autocomplete' => true,
             ])->addDependent('settings', 'transport', function (DependentField $field, ?string $setting): void {
                 if (null === $setting) {
                     return;

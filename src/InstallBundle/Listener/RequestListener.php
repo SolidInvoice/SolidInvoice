@@ -109,7 +109,7 @@ final class RequestListener implements EventSubscriberInterface, ServiceSubscrib
         $request = $event->getRequest();
         $route = $request->get('_route');
 
-        if (! isset($_SERVER['SOLIDINVOICE_APP_SECRET']) && in_array($route, $this->allowRoutes, true)) {
+        if (! $this->installed && ! isset($_SERVER['SOLIDINVOICE_APP_SECRET']) && in_array($route, $this->allowRoutes, true)) {
             // This is a terrible hack to ensure any live components on the installation pages works,
             // since the LiveComponentHydrator needs the kernel.secret parameter to be set
             // (which uses the SOLIDINVOICE_APP_SECRET env var).

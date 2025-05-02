@@ -34,10 +34,6 @@ form {
         }
     }
 
-    .select2-search > span {
-        display: inline;
-    }
-
     label.required:not( .form-check-label )::before {
         content: '* ';
         color: $form-feedback-invalid-color;
