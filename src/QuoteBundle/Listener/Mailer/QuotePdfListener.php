@@ -26,11 +26,11 @@ use Twig\Error\SyntaxError;
 /**
  * @see \SolidInvoice\QuoteBundle\Tests\Listener\Mailer\QuotePdfListenerTest
  */
-class QuotePdfListener implements EventSubscriberInterface
+readonly class QuotePdfListener implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly Generator $generator,
-        private readonly Environment $twig
+        private Generator $generator,
+        private Environment $twig
     ) {
     }
 
@@ -47,10 +47,13 @@ class QuotePdfListener implements EventSubscriberInterface
                 $this->twig->render('@SolidInvoiceQuote/Pdf/quote.html.twig', ['quote' => $message->getQuote()])
             );
 
-            $message->attach($content, "quote_{$message->getQuote()->getId()}.pdf", 'application/pdf');
+            $message->attach($content, "quote_{$message->getQuote()->getQuoteId()}.pdf", 'application/pdf');
         }
     }
 
+    /**
+     * @return array<string, string>
+     */
     public static function getSubscribedEvents(): array
     {
         return [

@@ -43,7 +43,7 @@ final class View
     public function __invoke(Request $request, Invoice $invoice): Template | PdfResponse
     {
         if ('pdf' === $request->getRequestFormat() && $this->pdfGenerator->canPrintPdf()) {
-            return new PdfResponse($this->pdfGenerator->generate($this->twig->render('@SolidInvoiceInvoice/Pdf/invoice.html.twig', ['invoice' => $invoice])), "invoice_{$invoice->getId()}.pdf");
+            return new PdfResponse($this->pdfGenerator->generate($this->twig->render('@SolidInvoiceInvoice/Pdf/invoice.html.twig', ['invoice' => $invoice])), "invoice_{$invoice->getInvoiceId()}.pdf");
         }
 
         return new Template(
