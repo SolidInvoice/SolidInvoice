@@ -22,20 +22,13 @@ final class QuoteEmail extends TemplatedEmail
         private readonly Quote $quote
     ) {
         parent::__construct();
+
+        $this->htmlTemplate('@SolidInvoiceQuote/Email/quote.html.twig');
+        $this->context(['quote' => $this->quote]);
     }
 
     public function getQuote(): Quote
     {
         return $this->quote;
-    }
-
-    public function getHtmlTemplate(): string
-    {
-        return '@SolidInvoiceQuote/Email/quote.html.twig';
-    }
-
-    public function getContext(): array
-    {
-        return \array_merge(['quote' => $this->quote], parent::getContext());
     }
 }
