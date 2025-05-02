@@ -24,20 +24,8 @@ final class ResetPasswordEmail extends TemplatedEmail
         parent::__construct();
         $this->to($user->getEmail());
         $this->subject('Password Reset Request');
-    }
-
-    public function getHtmlTemplate(): string
-    {
-        return '@SolidInvoiceUser/Email/reset_password.html.twig';
-    }
-
-    public function getTextTemplate(): string
-    {
-        return '@SolidInvoiceUser/Email/reset_password.txt.twig';
-    }
-
-    public function getContext(): array
-    {
-        return \array_merge(['user' => $this->user], parent::getContext());
+        $this->htmlTemplate('@SolidInvoiceUser/Email/reset_password.html.twig');
+        $this->textTemplate('@SolidInvoiceUser/Email/reset_password.txt.twig');
+        $this->context(['user' => $this->user]);
     }
 }

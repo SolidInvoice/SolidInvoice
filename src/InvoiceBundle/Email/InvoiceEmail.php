@@ -22,23 +22,13 @@ final class InvoiceEmail extends TemplatedEmail
         private readonly Invoice $invoice
     ) {
         parent::__construct();
+
+        $this->htmlTemplate('@SolidInvoiceInvoice/Email/invoice.html.twig');
+        $this->context(['invoice' => $this->invoice]);
     }
 
     public function getInvoice(): Invoice
     {
         return $this->invoice;
-    }
-
-    public function getHtmlTemplate(): string
-    {
-        return '@SolidInvoiceInvoice/Email/invoice.html.twig';
-    }
-
-    /**
-     * @return array{invoice: Invoice}
-     */
-    public function getContext(): array
-    {
-        return \array_merge(['invoice' => $this->invoice], parent::getContext());
     }
 }
