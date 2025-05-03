@@ -54,8 +54,11 @@ final class QuoteCloner
         $newQuote->setNotes($quote->getNotes());
         $newQuote->setTotal($quote->getTotal());
         $newQuote->setTerms($quote->getTerms());
-        $newQuote->setUsers($quote->getUsers());
         $newQuote->setQuoteId($this->billingIdGenerator->generate($newQuote, ['field' => 'quoteId']));
+
+        foreach ($quote->getUsers() as $user) {
+            $newQuote->addUser($user);
+        }
 
         if (null !== $quote->getTax()) {
             $newQuote->setTax($quote->getTax());

@@ -13,23 +13,26 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Form\Type;
 
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityRepository;
 use JsonException;
 use Money\Currency;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Form\ClientAutocompleteType;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
 use SolidInvoice\QuoteBundle\Entity\Quote;
-use SolidInvoice\QuoteBundle\Form\EventListener\QuoteUsersSubscriber;
 use SolidInvoice\SettingsBundle\SystemConfig;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
-use function array_key_exists;
+use Symfonycasts\DynamicForms\DependentField;
+use Symfonycasts\DynamicForms\DynamicFormBuilder;
 
 /**
  * @see \SolidInvoice\QuoteBundle\Tests\Form\Type\QuoteTypeTest
@@ -38,7 +41,6 @@ class QuoteType extends AbstractType
 {
     public function __construct(
         private readonly SystemConfig $systemConfig,
-        private readonly ManagerRegistry $registry,
         private readonly BillingIdGenerator $billingIdGenerator,
     ) {
     }
@@ -50,6 +52,8 @@ class QuoteType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $builder = new DynamicFormBuilder($builder);
+
         $builder->add(
             'client',
             ClientAutocompleteType::class,
@@ -94,9 +98,24 @@ class QuoteType extends AbstractType
         $builder->add('baseTotal', HiddenMoneyType::class, ['currency' => $options['currency']]);
         $builder->add('tax', HiddenMoneyType::class, ['currency' => $options['currency']]);
 
-        if (array_key_exists('data', $options) && $options['data'] instanceof Quote) {
-            $builder->addEventSubscriber(new QuoteUsersSubscriber($builder, $options['data'], $this->registry));
-        }
+        $builder->addDependent('users', 'client', function (DependentField $field, ?Client $client): void {
+            if (! $client instanceof Client) {
+                return;
+            }
+
+            $field->add(
+                null,
+                [
+                    'constraints' => new NotBlank(),
+                    'expanded' => true,
+                    'query_builder' => function (EntityRepository $repo) use ($client) {
+                        return $repo->createQueryBuilder('c')
+                            ->where('c.client = :client')
+                            ->setParameter('client', $client->getId(), UlidType::NAME);
+                    },
+                ]
+            );
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver): void

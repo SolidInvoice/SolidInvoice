@@ -90,7 +90,7 @@ class RecurringInvoice extends BaseInvoice
     #[ORM\ManyToOne(targetEntity: Client::class, cascade: ['persist'], inversedBy: 'recurringInvoices')]
     #[Assert\NotBlank]
     #[Serialize\Groups(['recurring_invoice_api:read', 'recurring_invoice_api:write'])]
-    protected ?Client $client = null;
+    private ?Client $client = null;
 
     #[ORM\Column(name: 'date_start', type: Types::DATE_IMMUTABLE)]
     #[Assert\NotBlank(groups: ['Recurring'])]
@@ -109,25 +109,26 @@ class RecurringInvoice extends BaseInvoice
     #[Assert\Valid]
     #[Assert\Count(min: 1, minMessage: 'You need to add at least 1 line to the Invoice')]
     #[Serialize\Groups(['recurring_invoice_api:read', 'recurring_invoice_api:write'])]
-    protected Collection $lines;
+    private Collection $lines;
 
     /**
-     * @var Collection<int, RecurringInvoiceContact>
+     * @var Collection<int, Contact>
      */
     #[ApiProperty(
         writableLink: true,
         example: ['/api/clients/3fa85f64-5717-4562-b3fc-2c963f66afa6/contact/3fa85f64-5717-4562-b3fc-2c963f66afa6'],
     )]
-    #[ORM\OneToMany(mappedBy: 'recurringInvoice', targetEntity: RecurringInvoiceContact::class, cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
+    #[ORM\ManyToMany(targetEntity: Contact::class, inversedBy: 'recurringInvoices')]
+    #[ORM\JoinTable(name: 'recurringinvoice_contacts')]
     #[Assert\Count(min: 1, minMessage: 'You need to select at least 1 user to attach to the Invoice')]
     #[Serialize\Groups(['recurring_invoice_api:read', 'recurring_invoice_api:write'])]
-    protected Collection $users;
+    private Collection $users;
 
     /**
      * @var Collection<int, Invoice>
      */
     #[ORM\OneToMany(mappedBy: 'recurringInvoice', targetEntity: Invoice::class)]
-    protected Collection $invoices;
+    private Collection $invoices;
 
     #[ORM\OneToOne(mappedBy: 'recurringInvoice', cascade: ['persist', 'remove'])]
     #[Assert\Valid]
@@ -213,40 +214,21 @@ class RecurringInvoice extends BaseInvoice
      */
     public function getUsers(): Collection
     {
-        return $this->users->map(static fn (RecurringInvoiceContact $user): Contact => $user->getContact());
-    }
-
-    /**
-     * @param (RecurringInvoiceContact|Contact)[] $users
-     */
-    public function setUsers(array $users): self
-    {
-        $contacts = [];
-
-        foreach ($users as $user) {
-            if ($user instanceof Contact) {
-                $recurringInvoiceContact = new RecurringInvoiceContact();
-                $recurringInvoiceContact->setContact($user);
-                $recurringInvoiceContact->setRecurringInvoice($this);
-
-                $contacts[] = $recurringInvoiceContact;
-            } elseif ($user instanceof RecurringInvoiceContact) {
-                $contacts[] = $user;
-            }
-        }
-
-        $this->users = new ArrayCollection($contacts);
-
-        return $this;
+        return $this->users;
     }
 
     public function addUser(Contact $user): self
     {
-        $recurringInvoiceContact = new RecurringInvoiceContact();
-        $recurringInvoiceContact->setContact($user);
-        $recurringInvoiceContact->setRecurringInvoice($this);
+        if (! $this->users->contains($user)) {
+            $this->users->add($user);
+        }
 
-        $this->users[] = $recurringInvoiceContact;
+        return $this;
+    }
+
+    public function removeUser(Contact $user): self
+    {
+        $this->users->removeElement($user);
 
         return $this;
     }

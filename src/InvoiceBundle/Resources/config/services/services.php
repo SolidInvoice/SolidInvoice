@@ -11,7 +11,6 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use SolidInvoice\InvoiceBundle\Form\EventListener\InvoiceUsersSubscriber;
 use SolidInvoice\InvoiceBundle\Menu\Builder;
 use SolidInvoice\InvoiceBundle\SolidInvoiceInvoiceBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -48,6 +47,4 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 'method' => 'sidebar',
             ]
         );
-
-    $services->remove(InvoiceUsersSubscriber::class);
 };

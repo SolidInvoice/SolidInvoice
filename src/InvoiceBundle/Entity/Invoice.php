@@ -171,13 +171,14 @@ class Invoice extends BaseInvoice implements Stringable
     private Collection $lines;
 
     /**
-     * @var Collection<int,InvoiceContact>
+     * @var Collection<int, Contact>
      */
     #[ApiProperty(
         writableLink: true,
         example: ['/api/clients/3fa85f64-5717-4562-b3fc-2c963f66afa6/contact/3fa85f64-5717-4562-b3fc-2c963f66afa6'],
     )]
-    #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: InvoiceContact::class, cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY')]
+    #[ORM\ManyToMany(targetEntity: Contact::class, inversedBy: 'invoices')]
+    #[ORM\JoinTable(name: 'invoice_contact')]
     #[Assert\Count(min: 1, minMessage: 'You need to select at least 1 user to attach to the Invoice')]
     #[Groups(['invoice_api:read', 'invoice_api:write'])]
     private Collection $users;
@@ -331,35 +332,22 @@ class Invoice extends BaseInvoice implements Stringable
      */
     public function getUsers(): Collection
     {
-        return $this->users->map(static fn (InvoiceContact $invoiceContact) => $invoiceContact->getContact());
-    }
-
-    /**
-     * @param (Contact|InvoiceContact)[] $users
-     */
-    public function setUsers(array $users): self
-    {
-        $contacts = [];
-        foreach ($users as $user) {
-            if ($user instanceof InvoiceContact) {
-                $contacts[] = $user;
-            } elseif ($user instanceof Contact) {
-                $invoiceContact = new InvoiceContact();
-                $invoiceContact->setContact($user);
-                $invoiceContact->setInvoice($this);
-                $contacts[] = $invoiceContact;
-            }
-        }
-        $this->users = new ArrayCollection($contacts);
-        return $this;
+        return $this->users;
     }
 
     public function addUser(Contact $user): self
     {
-        $invoiceContact = new InvoiceContact();
-        $invoiceContact->setContact($user);
-        $invoiceContact->setInvoice($this);
-        $this->users[] = $invoiceContact;
+        if (! $this->users->contains($user)) {
+            $this->users->add($user);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(Contact $user): self
+    {
+        $this->users->removeElement($user);
+
         return $this;
     }
 

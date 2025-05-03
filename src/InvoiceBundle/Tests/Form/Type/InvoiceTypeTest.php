@@ -98,7 +98,7 @@ class InvoiceTypeTest extends FormTestCase
             ->zeroOrMoreTimes()
             ->andReturn('random_number');
 
-        $invoiceType = new InvoiceType($systemConfig, $this->registry, new BillingIdGenerator(new ServiceLocator(['random_number' => static fn () => new class() {
+        $invoiceType = new InvoiceType($systemConfig, new BillingIdGenerator(new ServiceLocator(['random_number' => static fn () => new class() {
             public function generate(): string
             {
                 return '10';

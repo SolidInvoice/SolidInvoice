@@ -115,10 +115,13 @@ class InvoiceManager
         $invoice->setNotes($object->getNotes());
         $invoice->setTotal($object->getTotal());
         $invoice->setTerms($object->getTerms());
-        $invoice->setUsers($object->getUsers()->toArray());
         $invoice->setBalance($invoice->getTotal());
         $invoice->setCompany($object->getCompany());
         $invoice->setInvoiceId($this->billingIdGenerator->generate($invoice, ['field' => 'invoiceId']));
+
+        foreach ($object->getUsers() as $user) {
+            $invoice->addUser($user);
+        }
 
         if (null !== $object->getTax()) {
             $invoice->setTax($object->getTax());

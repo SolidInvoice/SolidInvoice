@@ -14,20 +14,23 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Form\Type;
 
 use Carbon\CarbonImmutable;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Money\Currency;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
 use SolidInvoice\CronBundle\Form\Type\RecurringScheduleType;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
-use SolidInvoice\InvoiceBundle\Form\EventListener\InvoiceUsersSubscriber;
 use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
 use SolidInvoice\SettingsBundle\SystemConfig;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
+use Symfonycasts\DynamicForms\DependentField;
 use Symfonycasts\DynamicForms\DynamicFormBuilder;
 
 /**
@@ -79,7 +82,28 @@ class RecurringInvoiceType extends AbstractType
         $builder->add('baseTotal', HiddenMoneyType::class, ['currency' => $options['currency']]);
         $builder->add('tax', HiddenMoneyType::class, ['currency' => $options['currency']]);
 
-        $builder->addEventSubscriber(new InvoiceUsersSubscriber($builder, $options['data'], $this->registry));
+        $builder->addDependent(
+            'users',
+            'client',
+            function (DependentField $field, ?Client $client): void {
+                if (! $client instanceof Client) {
+                    return;
+                }
+
+                $field->add(
+                    null,
+                    [
+                        'constraints' => new NotBlank(),
+                        'expanded' => true,
+                        'query_builder' => function (EntityRepository $repo) use ($client) {
+                            return $repo->createQueryBuilder('c')
+                                ->where('c.client = :client')
+                                ->setParameter('client', $client->getId(), UlidType::NAME);
+                        },
+                    ]
+                );
+            },
+        );
 
         $builder->add('recurringOptions', RecurringScheduleType::class);
 
