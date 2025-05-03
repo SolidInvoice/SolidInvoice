@@ -395,6 +395,57 @@ class Contact implements Serializable, Stringable
         return $this->quotes;
     }
 
+    public function addQuote(Quote $quote): self
+    {
+        if (! $this->quotes->contains($quote)) {
+            $this->quotes->add($quote);
+            $quote->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuote(Quote $quote): void
+    {
+        if ($this->quotes->removeElement($quote)) {
+            $quote->removeUser($this);
+        }
+    }
+
+    public function addInvoicee(Invoice $invoice): self
+    {
+        if (! $this->invoices->contains($invoice)) {
+            $this->invoices->add($invoice);
+            $invoice->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvoice(Invoice $invoice): void
+    {
+        if ($this->invoices->removeElement($invoice)) {
+            $invoice->removeUser($this);
+        }
+    }
+
+    public function addRecurringInvoice(RecurringInvoice $recurringInvoice): self
+    {
+        if (! $this->recurringInvoices->contains($recurringInvoice)) {
+            $this->recurringInvoices->add($recurringInvoice);
+            $recurringInvoice->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRecurringInvoice(RecurringInvoice $recurringInvoice): void
+    {
+        if ($this->recurringInvoices->removeElement($recurringInvoice)) {
+            $recurringInvoice->removeUser($this);
+        }
+    }
+
     public function __toString(): string
     {
         return $this->firstName . ' ' . $this->lastName;
