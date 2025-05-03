@@ -32,7 +32,7 @@
                                 <label class="control-label required required" for="payment_methods_config_account_number">Account number</label><input type="text" id="payment_methods_config_account_number" name="payment_methods[config][account_number]" data-required="required" class="form-control">
 </div>
 <div class="form-group">                
-                                <label class="control-label required required" for="payment_methods_config_encryption_key">Encryption key</label><input type="password" id="payment_methods_config_encryption_key" name="payment_methods[config][encryption_key]" data-required="required" class="form-control">
+                                <label class="control-label required required" for="payment_methods_config_encryption_key">Encryption key</label><div class="toggle-password-container"><input type="password" id="payment_methods_config_encryption_key" name="payment_methods[config][encryption_key]" data-required="required" data-controller="symfony--ux-toggle-password--toggle-password" data-symfony--ux-toggle-password--toggle-password-hidden-label-value="Hide" data-symfony--ux-toggle-password--toggle-password-visible-label-value="Show" data-symfony--ux-toggle-password--toggle-password-hidden-icon-value="Default" data-symfony--ux-toggle-password--toggle-password-visible-icon-value="Default" data-symfony--ux-toggle-password--toggle-password-button-classes-value='["toggle-password-button"]' class="form-control"></div>
 </div>
 <div class="form-group"><div class="form-check">        
         <input type="checkbox" id="payment_methods_config_sandbox" name="payment_methods[config][sandbox]" class="form-check-input" value="1">
