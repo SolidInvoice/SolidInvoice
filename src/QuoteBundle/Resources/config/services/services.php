@@ -11,7 +11,6 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use SolidInvoice\QuoteBundle\Form\EventListener\QuoteUsersSubscriber;
 use SolidInvoice\QuoteBundle\Menu\Builder;
 use SolidInvoice\QuoteBundle\SolidInvoiceQuoteBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -46,6 +45,4 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 'method' => 'sidebar',
             ]
         );
-
-    $services->remove(QuoteUsersSubscriber::class);
 };

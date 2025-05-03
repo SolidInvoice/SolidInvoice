@@ -222,7 +222,7 @@ final class QuoteCreateHandlerTest extends FormHandlerTestCase
                     new HiddenMoneyType(),
                     new CurrencyType('en_US'),
                     new ContactDetailType(),
-                    new QuoteType($systemConfig, $this->registry, new BillingIdGenerator(new ServiceLocator(['random_number' => static fn () => $randomNumberGenerator]), $systemConfig)),
+                    new QuoteType($systemConfig, new BillingIdGenerator(new ServiceLocator(['random_number' => static fn () => $randomNumberGenerator]), $systemConfig)),
                     new ItemType($this->registry),
                     new DiscountType($systemConfig),
                     new BaseEntityAutocompleteType($this->createMock(UrlGeneratorInterface::class)),

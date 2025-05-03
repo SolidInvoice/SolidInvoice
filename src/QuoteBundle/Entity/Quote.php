@@ -222,13 +222,14 @@ class Quote
     private Collection $lines;
 
     /**
-     * @var Collection<int,QuoteContact>
+     * @var Collection<int, Contact>
      */
     #[ApiProperty(
         writableLink: true,
         example: ['/api/clients/3fa85f64-5717-4562-b3fc-2c963f66afa6/contact/3fa85f64-5717-4562-b3fc-2c963f66afa6'],
     )]
-    #[ORM\OneToMany(mappedBy: 'quote', targetEntity: QuoteContact::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\ManyToMany(targetEntity: Contact::class, inversedBy: 'quotes')]
+    #[ORM\JoinTable(name: 'quote_contact')]
     #[Assert\Count(min: 1, minMessage: 'You need to select at least 1 user to attach to the Quote')]
     #[Groups(['quote_api:read', 'quote_api:write'])]
     private Collection $users;
@@ -272,35 +273,22 @@ class Quote
      */
     public function getUsers(): Collection
     {
-        return $this->users->map(static fn (QuoteContact $contact): Contact => $contact->getContact());
-    }
-
-    /**
-     * @param iterable<Contact|QuoteContact> $users
-     */
-    public function setUsers(iterable $users): self
-    {
-        $contacts = [];
-        foreach ($users as $user) {
-            if ($user instanceof QuoteContact) {
-                $contacts[] = $user;
-            } elseif ($user instanceof Contact) {
-                $quoteContact = new QuoteContact();
-                $quoteContact->setContact($user);
-                $quoteContact->setQuote($this);
-                $contacts[] = $quoteContact;
-            }
-        }
-        $this->users = new ArrayCollection($contacts);
-        return $this;
+        return $this->users;
     }
 
     public function addUser(Contact $user): self
     {
-        $quoteContact = new QuoteContact();
-        $quoteContact->setContact($user);
-        $quoteContact->setQuote($this);
-        $this->users[] = $quoteContact;
+        if (! $this->users->contains($user)) {
+            $this->users[] = $user;
+        }
+
+        return $this;
+    }
+
+    public function removeUser(Contact $user): self
+    {
+        $this->users->removeElement($user);
+
         return $this;
     }
 

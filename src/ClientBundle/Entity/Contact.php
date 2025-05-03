@@ -31,11 +31,8 @@ use SolidInvoice\ClientBundle\Repository\ContactRepository;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
-use SolidInvoice\InvoiceBundle\Entity\InvoiceContact;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
-use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceContact;
 use SolidInvoice\QuoteBundle\Entity\Quote;
-use SolidInvoice\QuoteBundle\Entity\QuoteContact;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
@@ -218,21 +215,21 @@ class Contact implements Serializable, Stringable
     private Collection $additionalContactDetails;
 
     /**
-     * @var Collection<int, InvoiceContact>
+     * @var Collection<int, Invoice>
      */
-    #[ORM\OneToMany(mappedBy: 'contact', targetEntity: InvoiceContact::class, cascade: ['persist', 'remove'])]
+    #[ORM\ManyToMany(targetEntity: Invoice::class, mappedBy: 'users')]
     private Collection $invoices;
 
     /**
-     * @var Collection<int, RecurringInvoiceContact>
+     * @var Collection<int, RecurringInvoice>
      */
-    #[ORM\OneToMany(mappedBy: 'contact', targetEntity: RecurringInvoiceContact::class, cascade: ['persist', 'remove'])]
+    #[ORM\ManyToMany(targetEntity: RecurringInvoice::class, mappedBy: 'users')]
     private Collection $recurringInvoices;
 
     /**
-     * @var Collection<int, QuoteContact>
+     * @var Collection<int, Quote>
      */
-    #[ORM\OneToMany(mappedBy: 'contact', targetEntity: QuoteContact::class, cascade: ['persist', 'remove'])]
+    #[ORM\ManyToMany(targetEntity: Quote::class, mappedBy: 'users')]
     private Collection $quotes;
 
     public function __construct()
@@ -379,7 +376,7 @@ class Contact implements Serializable, Stringable
      */
     public function getInvoices(): Collection
     {
-        return $this->invoices->map(static fn (InvoiceContact $invoiceContact): Invoice => $invoiceContact->getInvoice());
+        return $this->invoices;
     }
 
     /**
@@ -387,10 +384,7 @@ class Contact implements Serializable, Stringable
      */
     public function getRecurringInvoices(): Collection
     {
-        return $this->recurringInvoices
-            ->map(
-                static fn (RecurringInvoiceContact $recurringInvoiceContact): RecurringInvoice => $recurringInvoiceContact->getRecurringInvoice()
-            );
+        return $this->recurringInvoices;
     }
 
     /**
@@ -398,7 +392,7 @@ class Contact implements Serializable, Stringable
      */
     public function getQuotes(): Collection
     {
-        return $this->quotes->map(static fn (QuoteContact $quoteContact): Quote => $quoteContact->getQuote());
+        return $this->quotes;
     }
 
     public function __toString(): string

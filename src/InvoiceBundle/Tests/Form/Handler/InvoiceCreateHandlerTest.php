@@ -219,7 +219,7 @@ final class InvoiceCreateHandlerTest extends FormHandlerTestCase
                     new HiddenMoneyType(),
                     new CurrencyType('en_US'),
                     new ContactDetailType(),
-                    new InvoiceType($systemConfig, $this->registry, new BillingIdGenerator(new ServiceLocator(['random_number' => static fn () => $randomNumberGenerator]), $systemConfig)),
+                    new InvoiceType($systemConfig, new BillingIdGenerator(new ServiceLocator(['random_number' => static fn () => $randomNumberGenerator]), $systemConfig)),
                     new InvoiceItemType($this->registry),
                     new DiscountType($systemConfig),
                     new BaseEntityAutocompleteType($this->createMock(UrlGeneratorInterface::class)),

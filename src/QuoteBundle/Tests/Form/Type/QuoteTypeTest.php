@@ -66,7 +66,7 @@ class QuoteTypeTest extends FormTestCase
             ->zeroOrMoreTimes()
             ->andReturn('random_number');
 
-        $type = new QuoteType($systemConfig, $this->registry, new BillingIdGenerator(new ServiceLocator(['random_number' => static fn () => new class() {
+        $type = new QuoteType($systemConfig, new BillingIdGenerator(new ServiceLocator(['random_number' => static fn () => new class() {
             public function generate(): string
             {
                 return '10';

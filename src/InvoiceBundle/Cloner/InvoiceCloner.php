@@ -63,7 +63,10 @@ final class InvoiceCloner
         $newInvoice->setNotes($invoice->getNotes());
         $newInvoice->setTotal($invoice->getTotal());
         $newInvoice->setTerms($invoice->getTerms());
-        $newInvoice->setUsers($invoice->getUsers()->toArray());
+
+        foreach ($invoice->getUsers() as $user) {
+            $newInvoice->addUser($user);
+        }
 
         if (\method_exists($newInvoice, 'setBalance')) {
             $newInvoice->setBalance($newInvoice->getTotal());
