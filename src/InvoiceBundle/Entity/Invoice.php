@@ -327,14 +327,24 @@ class Invoice extends BaseInvoice implements Stringable
         return $this;
     }
 
-    /**
-     * @return Collection<int, Contact>
+    /****
+     * Returns the collection of contacts associated with this invoice.
+     *
+     * @return Collection<int, Contact> Collection of Contact entities linked to the invoice.
      */
     public function getUsers(): Collection
     {
         return $this->users;
     }
 
+    /**
+     * Adds a contact to the invoice's users collection if not already present.
+     *
+     * Also ensures the invoice is associated with the contact.
+     *
+     * @param Contact $user The contact to add.
+     * @return self
+     */
     public function addUser(Contact $user): self
     {
         if (! $this->users->contains($user)) {
@@ -348,6 +358,14 @@ class Invoice extends BaseInvoice implements Stringable
         return $this;
     }
 
+    /**
+     * Removes a contact from the invoice's user collection.
+     *
+     * Also updates the contact to remove its association with this invoice.
+     *
+     * @param Contact $user The contact to remove.
+     * @return self
+     */
     public function removeUser(Contact $user): self
     {
         if ($this->users->removeElement($user)) {

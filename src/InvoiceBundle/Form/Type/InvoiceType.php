@@ -40,6 +40,11 @@ use Symfonycasts\DynamicForms\DynamicFormBuilder;
  */
 class InvoiceType extends AbstractType
 {
+    /**
+     * Initializes the InvoiceType form with system configuration and billing ID generation services.
+     *
+     * @internal
+     */
     public function __construct(
         private readonly SystemConfig $systemConfig,
         private readonly BillingIdGenerator $billingIdGenerator,
@@ -47,7 +52,13 @@ class InvoiceType extends AbstractType
     }
 
     /**
-     * @throws ContainerExceptionInterface|NotFoundExceptionInterface|JsonException
+     * Builds the invoice form with dynamic fields, including client selection, discount, line items, monetary totals, and dependent user assignment.
+     *
+     * Adds fields for client, discount, invoice lines, invoice ID (auto-generated if not present), terms, notes, totals, tax, invoice and due dates. Dynamically adds a multi-select users field based on the selected client, restricting choices to users associated with that client.
+     *
+     * @throws ContainerExceptionInterface If a required service cannot be retrieved from the container.
+     * @throws NotFoundExceptionInterface If a required service is not found in the container.
+     * @throws JsonException If there is an error encoding or decoding JSON data.
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -120,6 +131,11 @@ class InvoiceType extends AbstractType
         });
     }
 
+    /****
+     * Returns the prefix used for the names of form fields in the invoice form.
+     *
+     * @return string The block prefix 'invoice'.
+     */
     public function getBlockPrefix(): string
     {
         return 'invoice';

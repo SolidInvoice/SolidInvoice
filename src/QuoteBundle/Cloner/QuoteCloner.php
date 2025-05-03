@@ -35,9 +35,15 @@ final class QuoteCloner
     ) {
     }
 
-    /**
-     * @throws MathException
-     * @throws ContainerExceptionInterface
+    /****
+     * Creates a deep copy of the given Quote entity, including its users, tax, and line items, assigning a new unique quote ID and setting its workflow state to "new".
+     *
+     * The cloned quote will have the current timestamp as its creation date and will replicate all relevant data from the original, except for identifiers and workflow state.
+     *
+     * @param Quote $quote The Quote entity to be cloned.
+     * @return Quote The newly created Quote entity.
+     * @throws MathException If an error occurs during billing ID generation or line item processing.
+     * @throws ContainerExceptionInterface If an error occurs while applying the workflow transition.
      */
     public function clone(Quote $quote): Quote
     {

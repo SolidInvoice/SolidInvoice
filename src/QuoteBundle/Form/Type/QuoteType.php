@@ -39,6 +39,12 @@ use Symfonycasts\DynamicForms\DynamicFormBuilder;
  */
 class QuoteType extends AbstractType
 {
+    /**
+     * Initializes the QuoteType form with system configuration and billing ID generation services.
+     *
+     * @param SystemConfig $systemConfig Provides access to system-wide configuration settings.
+     * @param BillingIdGenerator $billingIdGenerator Generates unique billing identifiers for quotes.
+     */
     public function __construct(
         private readonly SystemConfig $systemConfig,
         private readonly BillingIdGenerator $billingIdGenerator,
@@ -46,9 +52,13 @@ class QuoteType extends AbstractType
     }
 
     /**
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     * @throws JsonException
+     * Builds the form for creating or editing a Quote entity, including dynamic fields based on the selected client.
+     *
+     * Adds fields for client selection, discount, quote lines, identifiers, terms, notes, and monetary totals. Dynamically adds a "users" field that updates based on the chosen client, filtering available users accordingly.
+     *
+     * @throws ContainerExceptionInterface If a required service cannot be retrieved from the container.
+     * @throws NotFoundExceptionInterface If a required service is not found in the container.
+     * @throws JsonException If an error occurs during JSON processing.
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -119,6 +129,14 @@ class QuoteType extends AbstractType
         });
     }
 
+    /**
+     * Configures default and allowed options for the quote form.
+     *
+     * Sets the default data class to Quote and the default currency to the system-configured value.
+     * Restricts the 'currency' option to instances of Money\Currency.
+     *
+     * @param OptionsResolver $resolver The resolver for the form options.
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(

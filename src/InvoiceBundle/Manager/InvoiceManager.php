@@ -98,8 +98,15 @@ class InvoiceManager
         return $invoice;
     }
 
-    /**
-     * @throws MathException|ContainerExceptionInterface
+    /****
+     * Creates a new Invoice entity by copying relevant data from a RecurringInvoice or Quote.
+     *
+     * Copies client, totals, discount, notes, terms, balance, company, users, tax, and line items from the source object to the new invoice. Generates a unique billing ID for the invoice.
+     *
+     * @param RecurringInvoice|Quote $object The source object to create the invoice from.
+     * @return Invoice The newly created invoice entity.
+     * @throws MathException If a mathematical error occurs during billing ID generation.
+     * @throws ContainerExceptionInterface If a container-related error occurs during billing ID generation.
      */
     private function createFromObject(RecurringInvoice | Quote $object): Invoice
     {

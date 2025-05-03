@@ -44,6 +44,11 @@ class RecurringInvoiceType extends AbstractType
     ) {
     }
 
+    /**
+     * Builds the recurring invoice form with dynamic fields and dependencies.
+     *
+     * Configures fields for client selection, discount, invoice lines, terms, notes, totals, users (dependent on client), recurring options, and start date. The users field updates dynamically based on the selected client, showing only users associated with that client.
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder = new DynamicFormBuilder($builder);

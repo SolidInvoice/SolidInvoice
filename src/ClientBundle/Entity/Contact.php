@@ -232,6 +232,9 @@ class Contact implements Serializable, Stringable
     #[ORM\ManyToMany(targetEntity: Quote::class, mappedBy: 'users')]
     private Collection $quotes;
 
+    /**
+     * Initializes collections for additional contact details, invoices, recurring invoices, and quotes.
+     */
     public function __construct()
     {
         $this->additionalContactDetails = new ArrayCollection();
@@ -371,8 +374,10 @@ class Contact implements Serializable, Stringable
         return $this;
     }
 
-    /**
-     * @return Collection<int, Invoice>
+    /****
+     * Returns the collection of invoices associated with this contact.
+     *
+     * @return Collection<int, Invoice> Collection of related Invoice entities.
      */
     public function getInvoices(): Collection
     {
@@ -380,21 +385,33 @@ class Contact implements Serializable, Stringable
     }
 
     /**
-     * @return Collection<int, RecurringInvoice>
+     * Returns the collection of recurring invoices associated with this contact.
+     *
+     * @return Collection<int, RecurringInvoice> Collection of recurring invoices linked to the contact.
      */
     public function getRecurringInvoices(): Collection
     {
         return $this->recurringInvoices;
     }
 
-    /**
-     * @return Collection<int, Quote>
+    /****
+     * Returns the collection of quotes associated with this contact.
+     *
+     * @return Collection<int, Quote> Collection of related Quote entities.
      */
     public function getQuotes(): Collection
     {
         return $this->quotes;
     }
 
+    /**
+     * Associates a quote with this contact if not already linked.
+     *
+     * Also adds this contact as a user to the given quote.
+     *
+     * @param Quote $quote The quote to associate.
+     * @return self
+     */
     public function addQuote(Quote $quote): self
     {
         if (! $this->quotes->contains($quote)) {
@@ -405,6 +422,11 @@ class Contact implements Serializable, Stringable
         return $this;
     }
 
+    /**
+     * Removes a quote from this contact and disassociates the contact from the quote's users.
+     *
+     * @param Quote $quote The quote to remove.
+     */
     public function removeQuote(Quote $quote): void
     {
         if ($this->quotes->removeElement($quote)) {
@@ -412,6 +434,12 @@ class Contact implements Serializable, Stringable
         }
     }
 
+    /**
+     * Associates this contact with the given invoice and adds the contact as a user on the invoice.
+     *
+     * @param Invoice $invoice The invoice to associate with this contact.
+     * @return self Returns the current Contact instance.
+     */
     public function addInvoicee(Invoice $invoice): self
     {
         if (! $this->invoices->contains($invoice)) {
@@ -422,6 +450,11 @@ class Contact implements Serializable, Stringable
         return $this;
     }
 
+    /**
+     * Removes the specified invoice from this contact and disassociates the contact from the invoice.
+     *
+     * @param Invoice $invoice The invoice to remove from the contact.
+     */
     public function removeInvoice(Invoice $invoice): void
     {
         if ($this->invoices->removeElement($invoice)) {
@@ -429,6 +462,14 @@ class Contact implements Serializable, Stringable
         }
     }
 
+    /**
+     * Associates a recurring invoice with this contact if not already linked.
+     *
+     * Also adds this contact as a user to the given recurring invoice.
+     *
+     * @param RecurringInvoice $recurringInvoice The recurring invoice to associate.
+     * @return self
+     */
     public function addRecurringInvoice(RecurringInvoice $recurringInvoice): self
     {
         if (! $this->recurringInvoices->contains($recurringInvoice)) {
@@ -439,6 +480,11 @@ class Contact implements Serializable, Stringable
         return $this;
     }
 
+    /**
+     * Removes a recurring invoice from this contact and disassociates the contact from the invoice.
+     *
+     * @param RecurringInvoice $recurringInvoice The recurring invoice to remove.
+     */
     public function removeRecurringInvoice(RecurringInvoice $recurringInvoice): void
     {
         if ($this->recurringInvoices->removeElement($recurringInvoice)) {
@@ -446,6 +492,13 @@ class Contact implements Serializable, Stringable
         }
     }
 
+    /**
+     * Returns the contact's full name as a string.
+     *
+     * Concatenates the first and last name with a space.
+     *
+     * @return string The contact's full name.
+     */
     public function __toString(): string
     {
         return $this->firstName . ' ' . $this->lastName;

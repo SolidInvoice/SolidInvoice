@@ -29,6 +29,14 @@ final class Version20305 extends AbstractMigration
         return ! $this->platform instanceof MySqlPlatform && ! $this->platform instanceof OraclePlatform;
     }
 
+    /**
+     * Applies schema changes for the migration.
+     *
+     * Changes the types of specific date columns to immutable datetime in the `invoices` and `quotes` tables,
+     * and removes the `company_id` column from the `invoice_contact`, `recurringinvoice_contact`, and `quote_contact` tables.
+     *
+     * @param Schema $schema The database schema to modify.
+     */
     public function up(Schema $schema): void
     {
         $this->setColumnType($schema, 'invoices', 'due', Types::DATETIME_IMMUTABLE);

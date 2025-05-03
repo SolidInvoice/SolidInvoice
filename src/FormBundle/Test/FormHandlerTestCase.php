@@ -59,8 +59,12 @@ abstract class FormHandlerTestCase extends BaseTestCase
         $this->faker = Factory::create();
     }
 
-    /**
-     * @return array<FormExtensionInterface>
+    /****
+     * Returns an array of form extensions preloaded with mocked dependencies for testing.
+     *
+     * Sets up form types and extensions with mocked configuration and services, including currency handling, billing ID generation, and autocomplete features, to facilitate form handler tests.
+     *
+     * @return array<FormExtensionInterface> Array of form extensions for use in form handler tests.
      */
     protected function getExtensions(): array
     {

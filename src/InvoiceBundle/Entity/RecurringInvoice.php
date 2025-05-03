@@ -209,14 +209,24 @@ class RecurringInvoice extends BaseInvoice
         return $this->lines;
     }
 
-    /**
-     * @return Collection<int, Contact>
+    /****
+     * Returns the collection of users associated with this recurring invoice.
+     *
+     * @return Collection<int, Contact> Collection of Contact entities linked to the recurring invoice.
      */
     public function getUsers(): Collection
     {
         return $this->users;
     }
 
+    /**
+     * Adds a contact to the recurring invoice's user list if not already present.
+     *
+     * Ensures bidirectional association by also adding this recurring invoice to the contact's list of recurring invoices.
+     *
+     * @param Contact $user The contact to associate with this recurring invoice.
+     * @return self
+     */
     public function addUser(Contact $user): self
     {
         if (! $this->users->contains($user)) {
@@ -230,6 +240,12 @@ class RecurringInvoice extends BaseInvoice
         return $this;
     }
 
+    /**
+     * Removes a user from the recurring invoice and updates the user's association.
+     *
+     * @param Contact $user The user to remove from the recurring invoice.
+     * @return self Returns the current instance for method chaining.
+     */
     public function removeUser(Contact $user): self
     {
         if ($this->users->removeElement($user)) {
@@ -260,6 +276,14 @@ class RecurringInvoice extends BaseInvoice
         return $this->invoices;
     }
 
+    /**
+     * Associates an invoice with this recurring invoice.
+     *
+     * Adds the given invoice to the collection of generated invoices and sets this recurring invoice as its parent.
+     *
+     * @param Invoice $invoice The invoice to associate.
+     * @return self
+     */
     public function addInvoice(Invoice $invoice): self
     {
         $this->invoices->add($invoice);

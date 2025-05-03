@@ -40,11 +40,18 @@ final class InvoiceCloner
     }
 
     /**
-     * @throws NotFoundExceptionInterface
-     * @throws ContainerExceptionInterface
-     * @throws JsonException
-     * @throws InvalidTransitionException
-     * @throws MathException
+     * Creates a new invoice or recurring invoice by duplicating the provided invoice entity, including its lines, users, and relevant properties.
+     *
+     * The cloned invoice is initialized with a new creation date and, for regular invoices, a new invoice ID. Recurring invoices have their recurring options and dates copied. All associated users and invoice lines are duplicated, and the new invoice is persisted.
+     *
+     * @param Invoice|RecurringInvoice $invoice The invoice entity to clone.
+     * @return Invoice|RecurringInvoice The newly created invoice or recurring invoice instance.
+     *
+     * @throws NotFoundExceptionInterface If a required dependency is not found.
+     * @throws ContainerExceptionInterface If there is a container error.
+     * @throws JsonException If JSON encoding/decoding fails.
+     * @throws InvalidTransitionException If an invalid state transition occurs.
+     * @throws MathException If a mathematical error occurs during line duplication.
      */
     public function clone(Invoice|RecurringInvoice $invoice): Invoice|RecurringInvoice
     {

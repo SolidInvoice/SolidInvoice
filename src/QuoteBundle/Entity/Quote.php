@@ -268,14 +268,22 @@ class Quote
         return $this;
     }
 
-    /**
-     * @return Collection<int, Contact>
+    /****
+     * Returns the collection of contacts associated with this quote.
+     *
+     * @return Collection<int, Contact> List of contacts linked to the quote.
      */
     public function getUsers(): Collection
     {
         return $this->users;
     }
 
+    /****
+     * Adds a contact to the quote if not already associated, ensuring bidirectional consistency.
+     *
+     * @param Contact $user The contact to associate with this quote.
+     * @return self
+     */
     public function addUser(Contact $user): self
     {
         if (! $this->users->contains($user)) {
@@ -289,6 +297,12 @@ class Quote
         return $this;
     }
 
+    /**
+     * Removes a contact from the quote and updates the bidirectional association.
+     *
+     * @param Contact $user The contact to remove.
+     * @return self
+     */
     public function removeUser(Contact $user): self
     {
         if ($this->users->removeElement($user)) {
@@ -326,8 +340,12 @@ class Quote
         return $this->total;
     }
 
-    /**
-     * @throws MathException
+    /****
+     * Sets the total amount for the quote.
+     *
+     * @param BigNumber|float|int|string $total The total amount to set.
+     * @return self
+     * @throws MathException If the value cannot be converted to a BigNumber.
      */
     public function setTotal(BigNumber | float | int | string $total): self
     {
@@ -341,8 +359,12 @@ class Quote
         return $this->baseTotal;
     }
 
-    /**
-     * @throws MathException
+    /****
+     * Sets the base total amount before tax for the quote.
+     *
+     * @param BigNumber|float|int|string $baseTotal The base total value to set.
+     * @throws MathException If the value cannot be converted to a BigNumber.
+     * @return self
      */
     public function setBaseTotal(BigNumber | float | int | string $baseTotal): self
     {
@@ -423,8 +445,12 @@ class Quote
         return $this->tax;
     }
 
-    /**
-     * @throws MathException
+    /****
+     * Sets the tax amount for the quote.
+     *
+     * @param BigNumber|float|int|string $tax The tax value to set.
+     * @return self
+     * @throws MathException If the value cannot be converted to a BigNumber.
      */
     public function setTax(BigNumber | float | int | string $tax): self
     {
