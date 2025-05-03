@@ -68,6 +68,7 @@ class DatabaseConfigType extends AbstractType
                 PasswordType::class,
                 [
                     'required' => false,
+                    'always_empty' => false,
                 ],
             ],
             'name' => [

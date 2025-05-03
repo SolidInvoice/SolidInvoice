@@ -158,6 +158,7 @@
         "symfony/ux-autocomplete": "^2.12",
         "symfony/ux-dropzone": "*",
         "symfony/ux-live-component": "^2.15",
+        "symfony/ux-toggle-password": "^2.24",
         "symfony/validator": "^7.1",
         "symfony/vonage-notifier": "^7.1",
         "symfony/webpack-encore-bundle": "^2.0",
