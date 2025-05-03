@@ -109,6 +109,7 @@ class InvoiceType extends AbstractType
                 [
                     'constraints' => new NotBlank(),
                     'expanded' => true,
+                    'multiple' => true,
                     'query_builder' => function (EntityRepository $repo) use ($client) {
                         return $repo->createQueryBuilder('c')
                             ->where('c.client = :client')
