@@ -13,6 +13,7 @@ namespace SolidInvoice\QuoteBundle\Test\Factory;
 
 use Brick\Math\BigInteger;
 use Brick\Math\Exception\MathException;
+use DateTimeImmutable;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
@@ -70,7 +71,7 @@ final class QuoteFactory extends PersistentProxyObjectFactory
         return [
             'client' => ClientFactory::new(),
             'company' => CompanyFactory::new(),
-            'due' => self::faker()->dateTime(),
+            'due' => DateTimeImmutable::createFromMutable(self::faker()->dateTime()),
             'status' => self::faker()->word(),
             'terms' => self::faker()->text(),
             'notes' => self::faker()->text(),

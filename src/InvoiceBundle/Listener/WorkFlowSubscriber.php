@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Listener;
 
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
@@ -53,7 +53,7 @@ class WorkFlowSubscriber implements EventSubscriberInterface
 
         if (($transition = $event->getTransition()) instanceof Transition) {
             if (Graph::TRANSITION_PAY === $transition->getName()) {
-                $invoice->setPaidDate(Carbon::now());
+                $invoice->setPaidDate(CarbonImmutable::now());
             }
 
             if (Graph::TRANSITION_ARCHIVE === $transition->getName()) {

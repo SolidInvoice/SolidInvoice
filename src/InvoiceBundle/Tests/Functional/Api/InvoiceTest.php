@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Functional\Api;
 
-use DateTime;
+use DateTimeImmutable;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
@@ -119,7 +119,7 @@ final class InvoiceTest extends ApiTestCase
         $invoice = InvoiceFactory::createOne([
             'client' => $client,
             'users' => $contacts,
-            'due' => new DateTime('2005-01-20'),
+            'due' => new DateTimeImmutable('2005-01-20'),
             'paidDate' => null,
             'discount' => (new Discount())
                 ->setType('percentage')
@@ -182,7 +182,7 @@ final class InvoiceTest extends ApiTestCase
         /** @var Invoice $invoice */
         $invoice = InvoiceFactory::createOne([
             'client' => $client,
-            'due' => new DateTime('2005-01-20'),
+            'due' => new DateTimeImmutable('2005-01-20'),
             'paidDate' => null,
             'users' => $contacts,
             'lines' => [
