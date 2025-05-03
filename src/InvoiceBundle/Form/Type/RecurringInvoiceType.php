@@ -56,7 +56,7 @@ class RecurringInvoiceType extends AbstractType
                     'class' => 'client-select',
                 ],
                 'placeholder' => 'invoice.client.choose',
-                'choices' => $this->registry->getRepository(Client::class)->findAll()
+                'choices' => $this->registry->getRepository(Client::class)->findAll(),
             ]
         );
 
@@ -82,28 +82,25 @@ class RecurringInvoiceType extends AbstractType
         $builder->add('baseTotal', HiddenMoneyType::class, ['currency' => $options['currency']]);
         $builder->add('tax', HiddenMoneyType::class, ['currency' => $options['currency']]);
 
-        $builder->addDependent(
-            'users',
-            'client',
-            function (DependentField $field, ?Client $client): void {
-                if (! $client instanceof Client) {
-                    return;
-                }
+        $builder->addDependent('users', 'client', function (DependentField $field, ?Client $client): void {
+            if (! $client instanceof Client) {
+                return;
+            }
 
-                $field->add(
-                    null,
-                    [
-                        'constraints' => new NotBlank(),
-                        'expanded' => true,
-                        'query_builder' => function (EntityRepository $repo) use ($client) {
-                            return $repo->createQueryBuilder('c')
-                                ->where('c.client = :client')
-                                ->setParameter('client', $client->getId(), UlidType::NAME);
-                        },
-                    ]
-                );
-            },
-        );
+            $field->add(
+                null,
+                [
+                    'constraints' => new NotBlank(),
+                    'expanded' => true,
+                    'multiple' => true,
+                    'query_builder' => function (EntityRepository $repo) use ($client) {
+                        return $repo->createQueryBuilder('c')
+                            ->where('c.client = :client')
+                            ->setParameter('client', $client->getId(), UlidType::NAME);
+                    },
+                ]
+            );
+        });
 
         $builder->add('recurringOptions', RecurringScheduleType::class);
 
