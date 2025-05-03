@@ -24,7 +24,6 @@ use ApiPlatform\Metadata\Post;
 use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
-use DateTime;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -143,7 +142,7 @@ class Invoice extends BaseInvoice implements Stringable
     #[ORM\Column(name: 'paid_date', type: Types::DATE_IMMUTABLE, nullable: true)]
     #[Assert\Type(type: DateTimeInterface::class)]
     #[Groups(['invoice_api:read', 'invoice_api:write'])]
-    private ?DateTime $paidDate = null;
+    private ?DateTimeInterface $paidDate = null;
 
     /**
      * @var Collection<int, Payment>
@@ -254,7 +253,7 @@ class Invoice extends BaseInvoice implements Stringable
         return $this->paidDate;
     }
 
-    public function setPaidDate(?DateTime $paidDate): self
+    public function setPaidDate(?DateTimeImmutable $paidDate): self
     {
         $this->paidDate = $paidDate;
         return $this;
