@@ -56,4 +56,5 @@ return [
     Symfony\UX\LiveComponent\LiveComponentBundle::class => ['all' => true],
     Symfony\UX\Autocomplete\AutocompleteBundle::class => ['all' => true],
     BabDev\PagerfantaBundle\BabDevPagerfantaBundle::class => ['all' => true],
+    Symfony\UX\TogglePassword\TogglePasswordBundle::class => ['all' => true],
 ];

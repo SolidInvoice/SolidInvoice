@@ -51,7 +51,16 @@
                         <span class="input-group-prepend">
                             <span class="input-group-text">{{ icon('lock') }}</span>
                         </span>
-                            <input class="form-control" type="password" id="password" placeholder="{{ "security.login.password"|trans }}" name="_password" required="required"/>
+                            <input class="form-control" type="password" id="password" placeholder="{{ "security.login.password"|trans }}" name="_password" required="required"
+                                   {{ stimulus_controller('symfony/ux-toggle-password/toggle-password', {
+                                       hidden_label: 'Hide',
+                                       visible_label: 'Show',
+                                       hidden_icon: 'Default',
+                                       visible_icon: 'Default',
+                                       button_classes: ['toggle-password-button'],
+                                       toggle_container_classes: ['toggle-password-container'],
+                                   }) }}
+                            />
                         </div>
                     </div>
 

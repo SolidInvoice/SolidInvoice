@@ -1125,6 +1125,9 @@
             "config/routes/ux_live_component.yaml"
         ]
     },
+    "symfony/ux-toggle-password": {
+        "version": "v2.24.0"
+    },
     "symfony/ux-twig-component": {
         "version": "2.15",
         "recipe": {
