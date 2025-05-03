@@ -34,6 +34,10 @@ final class Version20305 extends AbstractMigration
         $this->setColumnType($schema, 'invoices', 'due', Types::DATETIME_IMMUTABLE);
         $this->setColumnType($schema, 'invoices', 'invoice_date', Types::DATETIME_IMMUTABLE);
         $this->setColumnType($schema, 'quotes', 'due', Types::DATETIME_IMMUTABLE);
+
+        $schema->getTable('invoice_contact')->dropColumn('company_id');
+        $schema->getTable('recurringinvoice_contact')->dropColumn('company_id');
+        $schema->getTable('quote_contact')->dropColumn('company_id');
     }
 
     /**
