@@ -221,6 +221,10 @@ class RecurringInvoice extends BaseInvoice
     {
         if (! $this->users->contains($user)) {
             $this->users->add($user);
+
+            if (! $user->getRecurringInvoices()->contains($this)) {
+                $user->addRecurringInvoice($this);
+            }
         }
 
         return $this;
@@ -228,7 +232,9 @@ class RecurringInvoice extends BaseInvoice
 
     public function removeUser(Contact $user): self
     {
-        $this->users->removeElement($user);
+        if ($this->users->removeElement($user)) {
+            $user->removeRecurringInvoice($this);
+        }
 
         return $this;
     }
@@ -256,7 +262,7 @@ class RecurringInvoice extends BaseInvoice
 
     public function addInvoice(Invoice $invoice): self
     {
-        $this->invoices[] = $invoice;
+        $this->invoices->add($invoice);
         $invoice->setRecurringInvoice($this);
 
         return $this;

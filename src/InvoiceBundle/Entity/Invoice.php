@@ -339,6 +339,10 @@ class Invoice extends BaseInvoice implements Stringable
     {
         if (! $this->users->contains($user)) {
             $this->users->add($user);
+
+            if (! $user->getInvoices()->contains($this)) {
+                $user->addInvoicee($this);
+            }
         }
 
         return $this;
@@ -346,7 +350,9 @@ class Invoice extends BaseInvoice implements Stringable
 
     public function removeUser(Contact $user): self
     {
-        $this->users->removeElement($user);
+        if ($this->users->removeElement($user)) {
+            $user->removeInvoice($this);
+        }
 
         return $this;
     }

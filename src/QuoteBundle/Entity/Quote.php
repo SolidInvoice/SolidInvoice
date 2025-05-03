@@ -279,7 +279,11 @@ class Quote
     public function addUser(Contact $user): self
     {
         if (! $this->users->contains($user)) {
-            $this->users[] = $user;
+            $this->users->add($user);
+            // keep bidirectional association in sync
+            if (! $user->getQuotes()->contains($this)) {
+                $user->addQuote($this);
+            }
         }
 
         return $this;
@@ -287,7 +291,9 @@ class Quote
 
     public function removeUser(Contact $user): self
     {
-        $this->users->removeElement($user);
+        if ($this->users->removeElement($user)) {
+            $user->removeQuote($this);
+        }
 
         return $this;
     }
@@ -323,7 +329,7 @@ class Quote
     /**
      * @throws MathException
      */
-    public function setTotal(BigNumber|float|int|string $total): self
+    public function setTotal(BigNumber | float | int | string $total): self
     {
         $this->total = BigNumber::of($total);
 
@@ -338,7 +344,7 @@ class Quote
     /**
      * @throws MathException
      */
-    public function setBaseTotal(BigNumber|float|int|string $baseTotal): self
+    public function setBaseTotal(BigNumber | float | int | string $baseTotal): self
     {
         $this->baseTotal = BigNumber::of($baseTotal);
 
@@ -420,7 +426,7 @@ class Quote
     /**
      * @throws MathException
      */
-    public function setTax(BigNumber|float|int|string $tax): self
+    public function setTax(BigNumber | float | int | string $tax): self
     {
         $this->tax = BigNumber::of($tax);
 
