@@ -18,8 +18,6 @@ use Brick\Math\Exception\MathException;
 use DateTime;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Exception\NotSupported;
-use Doctrine\Persistence\Mapping\MappingException;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
@@ -40,9 +38,6 @@ final class PaymentRepositoryTest extends KernelTestCase
     use DoctrineTestTrait;
     use Factories;
 
-    /**
-     * @throws NotSupported
-     */
     public function testGetTotalPaidForInvoice(): void
     {
         $client = ClientFactory::createOne();
@@ -66,9 +61,6 @@ final class PaymentRepositoryTest extends KernelTestCase
         );
     }
 
-    /**
-     * @throws NotSupported
-     */
     public function testGetTotalPaidForInvoiceWithNoCapturedPayments(): void
     {
         $client = ClientFactory::createOne();
@@ -92,9 +84,6 @@ final class PaymentRepositoryTest extends KernelTestCase
         );
     }
 
-    /**
-     * @throws NotSupported
-     */
     public function testGetTotalPaidForInvoiceWithDifferentInvoice(): void
     {
         $client = ClientFactory::createOne();
@@ -118,9 +107,6 @@ final class PaymentRepositoryTest extends KernelTestCase
         );
     }
 
-    /**
-     * @throws NotSupported
-     */
     public function testGetTotalIncomeForClient(): void
     {
         $client = ClientFactory::createOne(['currencyCode' => 'USD']);
@@ -145,9 +131,6 @@ final class PaymentRepositoryTest extends KernelTestCase
         );
     }
 
-    /**
-     * @throws NotSupported
-     */
     public function testGetTotalIncomeForClientWithNoPayments(): void
     {
         $client = ClientFactory::createOne(['currencyCode' => 'USD']);
@@ -172,9 +155,6 @@ final class PaymentRepositoryTest extends KernelTestCase
         );
     }
 
-    /**
-     * @throws NotSupported
-     */
     public function testGetGridQuery(): void
     {
         $queryBuilder = $this
@@ -245,9 +225,6 @@ final class PaymentRepositoryTest extends KernelTestCase
         );
     }
 
-    /**
-     * @throws NotSupported
-     */
     public function testGetPaymentsForClient(): void
     {
         $client = ClientFactory::createOne(['currencyCode' => 'USD']);
@@ -290,7 +267,6 @@ final class PaymentRepositoryTest extends KernelTestCase
     }
 
     /**
-     * @throws NotSupported
      * @throws MathException
      */
     public function testGetTotalIncome(): void
@@ -330,7 +306,6 @@ final class PaymentRepositoryTest extends KernelTestCase
 
     /**
      * @throws MathException
-     * @throws NotSupported
      */
     public function testGetTotalIncomeWithMultipleCurrencies(): void
     {
@@ -369,9 +344,6 @@ final class PaymentRepositoryTest extends KernelTestCase
         );
     }
 
-    /**
-     * @throws NotSupported
-     */
     public function testGetPaymentsForInvoice(): void
     {
         $client = ClientFactory::createOne(['currencyCode' => 'USD']);
@@ -439,9 +411,6 @@ final class PaymentRepositoryTest extends KernelTestCase
         );
     }
 
-    /**
-     * @throws NotSupported
-     */
     public function testGetPaymentsByMonth(): void
     {
         $created = new DateTimeImmutable();
@@ -462,10 +431,6 @@ final class PaymentRepositoryTest extends KernelTestCase
         );
     }
 
-    /**
-     * @throws MappingException
-     * @throws NotSupported
-     */
     public function testUpdatePaymentStatus(): void
     {
         /** @var Payment $payment */
@@ -486,7 +451,6 @@ final class PaymentRepositoryTest extends KernelTestCase
     }
 
     /**
-     * @throws NotSupported
      * @throws MathException
      */
     public function testGetRecentPayments(): void
