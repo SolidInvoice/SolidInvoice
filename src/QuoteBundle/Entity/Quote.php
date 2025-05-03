@@ -207,7 +207,7 @@ class Quote
     #[Groups(['quote_api:read', 'quote_api:write'])]
     private ?string $notes = null;
 
-    #[ORM\Column(name: 'due', type: Types::DATE_MUTABLE, nullable: true)]
+    #[ORM\Column(name: 'due', type: Types::DATE_IMMUTABLE, nullable: true)]
     #[Assert\Type(type: DateTimeInterface::class)]
     #[Groups(['quote_api:read', 'quote_api:write'])]
     private ?DateTimeInterface $due = null;
