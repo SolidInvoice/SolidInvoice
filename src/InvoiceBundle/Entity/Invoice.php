@@ -130,7 +130,7 @@ class Invoice extends BaseInvoice implements Stringable
     )]
     private BigNumber $balance;
 
-    #[ORM\Column(name: 'due', type: Types::DATE_MUTABLE, nullable: true)]
+    #[ORM\Column(name: 'due', type: Types::DATE_IMMUTABLE, nullable: true)]
     #[Assert\Type(type: DateTimeInterface::class)]
     #[Groups(['invoice_api:read', 'invoice_api:write'])]
     private ?DateTimeInterface $due = null;
@@ -140,7 +140,7 @@ class Invoice extends BaseInvoice implements Stringable
     #[Groups(['invoice_api:read', 'invoice_api:write'])]
     private DateTimeInterface $invoiceDate;
 
-    #[ORM\Column(name: 'paid_date', type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ORM\Column(name: 'paid_date', type: Types::DATE_IMMUTABLE, nullable: true)]
     #[Assert\Type(type: DateTimeInterface::class)]
     #[Groups(['invoice_api:read', 'invoice_api:write'])]
     private ?DateTime $paidDate = null;
