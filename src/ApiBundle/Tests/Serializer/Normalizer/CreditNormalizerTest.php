@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\ApiBundle\Tests\Serializer\Normalizer;
 
 use ArrayObject;
+use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ApiBundle\Serializer\Normalizer\CreditNormalizer;
@@ -170,6 +171,6 @@ final class CreditNormalizerTest extends TestCase
         $normalizer = new CreditNormalizer();
         $normalizer->setDenormalizer($parentNormalizer);
 
-        self::assertEquals((new Credit())->setValue(123), $normalizer->denormalize(123, Credit::class));
+        self::assertTrue(BigNumber::of(12300)->isEqualTo($normalizer->denormalize(123, Credit::class)->getValue()));
     }
 }
