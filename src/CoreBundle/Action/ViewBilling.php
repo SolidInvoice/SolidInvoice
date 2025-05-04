@@ -27,7 +27,6 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
-use Symfony\Component\Uid\Ulid;
 
 class ViewBilling
 {
@@ -75,13 +74,14 @@ class ViewBilling
     }
 
     /**
+     * @param array{"repository": class-string, "route": string, "template": string, "uuid": string, "entity": string} $options
      * @throws NotFoundHttpException|InvalidArgumentException|InvalidParameterException|MissingMandatoryParametersException|RouteNotFoundException
      */
     private function createResponse(array $options): Template|Response
     {
         $repository = $this->registry->getRepository($options['repository']);
 
-        $entity = $repository->findOneBy(['uuid' => Ulid::fromString($options['uuid'])]);
+        $entity = $repository->findOneBy(['uuid' => $options['uuid']]);
 
         if (null === $entity) {
             throw new NotFoundHttpException(sprintf('"%s" with id %s does not exist', ucfirst((string) $options['entity']), $options['uuid']));

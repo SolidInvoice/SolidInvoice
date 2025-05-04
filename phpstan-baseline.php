@@ -74,18 +74,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/ClientBundle/Tests/Form/Handler/ContactEditFormHandlerTest.php',
 ];
 $ignoreErrors[] = [
-	// identifier: missingType.iterableValue
-	'message' => '#^Method SolidInvoice\\\\CoreBundle\\\\Action\\\\ViewBilling\\:\\:createResponse\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/src/CoreBundle/Action/ViewBilling.php',
-];
-$ignoreErrors[] = [
-	// identifier: argument.templateType
-	'message' => '#^Unable to resolve the template type T in call to method Doctrine\\\\Persistence\\\\ManagerRegistry\\:\\:getRepository\\(\\)$#',
-	'count' => 1,
-	'path' => __DIR__ . '/src/CoreBundle/Action/ViewBilling.php',
-];
-$ignoreErrors[] = [
 	// identifier: missingType.parameter
 	'message' => '#^Method SolidInvoice\\\\CoreBundle\\\\Billing\\\\TotalCalculator\\:\\:calculateTotals\\(\\) has parameter \\$entity with no type specified\\.$#',
 	'count' => 1,
