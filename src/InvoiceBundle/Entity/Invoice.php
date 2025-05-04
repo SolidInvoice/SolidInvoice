@@ -341,7 +341,7 @@ class Invoice extends BaseInvoice implements Stringable
             $this->users->add($user);
 
             if (! $user->getInvoices()->contains($this)) {
-                $user->addInvoicee($this);
+                $user->addInvoice($this);
             }
         }
 

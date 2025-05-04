@@ -412,7 +412,7 @@ class Contact implements Serializable, Stringable
         }
     }
 
-    public function addInvoicee(Invoice $invoice): self
+    public function addInvoice(Invoice $invoice): self
     {
         if (! $this->invoices->contains($invoice)) {
             $this->invoices->add($invoice);
