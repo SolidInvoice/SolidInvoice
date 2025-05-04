@@ -74,6 +74,7 @@ invoice:
             sent: 'Invoice has been sent'
             reopen: 'Invoice has been re-opened'
             archive: 'Invoice has been archived'
+            activate: 'Invoice has been activated'
     stats:
         count:
             pending: '{0} Pending Invoices|{1} Pending Invoice|]1,Inf] Pending Invoices'

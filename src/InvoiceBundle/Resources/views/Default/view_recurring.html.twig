@@ -25,6 +25,13 @@
                     {{ icon('clone') }} {{ "invoice.view.toolbar.clone"|trans }}
                 </a>
 
+                {% if workflow_can(invoice, 'activate') %}
+                    <a href="{{ path('_action_recurring_invoice', {'action' : 'activate', 'id' : invoice.id}) }}"
+                       class="btn btn-success">
+                        {{ icon('check') }} {{ "Activate"|trans }}
+                    </a>
+                {% endif %}
+
                 {% if workflow_can(invoice, 'cancel') %}
                     <a href="{{ path('_action_recurring_invoice', {'action' : 'cancel', 'id' : invoice.id}) }}"
                        class="btn btn-warning">
@@ -88,45 +95,48 @@
         {% endblock %}
     {% endembed %}
 
-    {% set totalCount = 0 %}
+    {% if invoice.status is same as('active') %}
 
-    {% set totalCount = totalCount - 10 %}
+        {% set totalCount = 0 %}
 
-    {% set occurrences %}
-        {% for occurrence in recurring_occurrences(invoice.recurringOptions) %}
-            {% if loop.index0 < 10 %}
+        {% set totalCount = totalCount - 10 %}
+
+        {% set occurrences %}
+            {% for occurrence in recurring_occurrences(invoice.recurringOptions) %}
+                {% if loop.index0 < 10 %}
+                    <tr>
+                        <td>
+                            {{ occurrence|date('l, d F Y') }}
+                        </td>
+                    </tr>
+                {% endif %}
+
+                {% set totalCount = totalCount + 1 %}
+            {% endfor %}
+            {% if totalCount > 0 %}
                 <tr>
                     <td>
-                        {{ occurrence|date('l, d F Y') }}
+                        ... {{ totalCount }} {{ 'more'|trans }}
                     </td>
                 </tr>
             {% endif %}
+        {% endset %}
 
-            {% set totalCount = totalCount + 1 %}
-        {% endfor %}
-        {% if totalCount > 0 %}
-            <tr>
-                <td>
-                    ... {{ totalCount }} {{ 'more'|trans }}
-                </td>
-            </tr>
+        {% if occurrences|trim is not empty %}
+            <br class="clear"/>
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">{{ 'Upcoming Occurrences'|trans }}</h3>
+                </div>
+                <div class="card-body p-0">
+                    <table class="table">
+                        <tbody>
+                            {{ occurrences }}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
         {% endif %}
-    {% endset %}
-
-    {% if occurrences|trim is not empty %}
-        <br class="clear"/>
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">{{ 'Upcoming Occurrences'|trans }}</h3>
-            </div>
-            <div class="card-body p-0">
-                <table class="table">
-                    <tbody>
-                        {{ occurrences }}
-                    </tbody>
-                </table>
-
-            </div>
-        </div>
     {% endif %}
 {% endblock content %}

@@ -7,13 +7,15 @@
  # with this source code in the file LICENSE.
  #}
 
+{% set isEdit = isEdit|default(false) %}
+
 {% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
 {% block content %}
     {% if recurring %}
-        <twig:CreateRecurringInvoice :form="form" :invoice="invoice" />
+        <twig:CreateRecurringInvoice :form="form" :invoice="invoice" :isEdit="isEdit" />
     {% else %}
-        <twig:CreateInvoice :form="form" :invoice="invoice" />
+        <twig:CreateInvoice :form="form" :invoice="invoice" :isEdit="isEdit" />
     {% endif %}
 {% endblock content %}
 

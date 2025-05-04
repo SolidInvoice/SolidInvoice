@@ -36,6 +36,9 @@ final class CreateInvoice extends AbstractController
     #[LiveProp(writable: true, fieldName: 'formData')]
     public Invoice $invoice;
 
+    #[LiveProp(writable: true)]
+    public bool $isEdit = false;
+
     public function __construct(
         private readonly ClientRepository $clientRepository,
         private readonly TotalCalculator $totalCalculator,
