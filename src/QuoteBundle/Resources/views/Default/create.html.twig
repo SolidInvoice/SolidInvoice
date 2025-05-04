@@ -1,3 +1,4 @@
+{% set isEdit = isEdit|default(false) %}
 {% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
 {% block title %}
@@ -9,5 +10,5 @@
 {% endblock %}
 
 {% block content %}
-    <twig:CreateQuote :form="form" :quote="quote" />
+    <twig:CreateQuote :form="form" :quote="quote" :isEdit="isEdit" />
 {% endblock content %}
