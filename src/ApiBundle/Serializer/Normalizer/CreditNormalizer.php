@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Serializer\Normalizer;
 
+use Brick\Math\BigNumber;
 use SolidInvoice\ClientBundle\Entity\Credit;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
@@ -34,7 +35,8 @@ final class CreditNormalizer implements NormalizerAwareInterface, NormalizerInte
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
         if ($type === Credit::class) {
-            return (new Credit())->setValue($data);
+            $value = BigNumber::of($data)->toBigDecimal()->multipliedBy(100);
+            return (new Credit())->setValue($value);
         }
 
         return $this->denormalizer->denormalize($data, $type, $format, $context);

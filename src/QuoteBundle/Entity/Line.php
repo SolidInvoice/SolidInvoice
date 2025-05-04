@@ -21,7 +21,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use Brick\Math\BigInteger;
+use Brick\Math\BigDecimal;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\RoundingNecessaryException;
@@ -147,8 +147,8 @@ class Line implements LineInterface, Stringable
 
     public function __construct()
     {
-        $this->total = BigInteger::zero();
-        $this->price = BigInteger::zero();
+        $this->total = BigDecimal::zero();
+        $this->price = BigDecimal::zero();
     }
 
     public function getId(): Ulid

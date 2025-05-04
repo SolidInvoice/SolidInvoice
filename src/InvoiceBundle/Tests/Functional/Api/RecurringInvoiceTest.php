@@ -69,7 +69,7 @@ final class RecurringInvoiceTest extends ApiTestCase
             ],
             'lines' => [
                 [
-                    'price' => 100.10,
+                    'price' => 100.1,
                     'qty' => 1.0,
                     'description' => 'Foo Line',
                 ],
@@ -111,8 +111,8 @@ final class RecurringInvoiceTest extends ApiTestCase
                 'endOccurrence' => 1,
             ],
             'status' => 'draft',
-            'total' => 9009,
-            'baseTotal' => 10010,
+            'total' => 90.09,
+            'baseTotal' => 100.1,
             'tax' => 0,
             'discount' => [
                 'type' => 'percentage',
