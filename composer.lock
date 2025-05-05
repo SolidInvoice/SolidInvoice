@@ -3109,16 +3109,16 @@
         },
         {
             "name": "illuminate/collections",
-            "version": "v12.9.2",
+            "version": "v12.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/collections.git",
-                "reference": "811d8676fd7030a7f69b8f298a278c7fd5c67af3"
+                "reference": "abccbba3aef0fb9460105496e18c36b28dfe10b2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/collections/zipball/811d8676fd7030a7f69b8f298a278c7fd5c67af3",
-                "reference": "811d8676fd7030a7f69b8f298a278c7fd5c67af3",
+                "url": "https://api.github.com/repos/illuminate/collections/zipball/abccbba3aef0fb9460105496e18c36b28dfe10b2",
+                "reference": "abccbba3aef0fb9460105496e18c36b28dfe10b2",
                 "shasum": ""
             },
             "require": {
@@ -3162,20 +3162,20 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2025-04-14T15:21:48+00:00"
+            "time": "2025-04-29T20:14:54+00:00"
         },
         {
             "name": "illuminate/conditionable",
-            "version": "v12.9.2",
+            "version": "v12.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/conditionable.git",
-                "reference": "251ef166c6ee46cc8a141403253f83fe7ee50507"
+                "reference": "455a28c08f849db93078c9a60d765b88011affd2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/conditionable/zipball/251ef166c6ee46cc8a141403253f83fe7ee50507",
-                "reference": "251ef166c6ee46cc8a141403253f83fe7ee50507",
+                "url": "https://api.github.com/repos/illuminate/conditionable/zipball/455a28c08f849db93078c9a60d765b88011affd2",
+                "reference": "455a28c08f849db93078c9a60d765b88011affd2",
                 "shasum": ""
             },
             "require": {
@@ -3208,11 +3208,11 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2025-03-19T20:10:05+00:00"
+            "time": "2025-04-23T12:59:28+00:00"
         },
         {
             "name": "illuminate/contracts",
-            "version": "v12.9.2",
+            "version": "v12.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/contracts.git",
@@ -3260,7 +3260,7 @@
         },
         {
             "name": "illuminate/macroable",
-            "version": "v12.9.2",
+            "version": "v12.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/macroable.git",
@@ -3306,16 +3306,16 @@
         },
         {
             "name": "illuminate/support",
-            "version": "v12.9.2",
+            "version": "v12.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/support.git",
-                "reference": "a1c8bc9c7bb664e36bdb2280cfae7e3de9517c1d"
+                "reference": "586b1ccf141724d7cd87ee759e6e8baae9c6d507"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/support/zipball/a1c8bc9c7bb664e36bdb2280cfae7e3de9517c1d",
-                "reference": "a1c8bc9c7bb664e36bdb2280cfae7e3de9517c1d",
+                "url": "https://api.github.com/repos/illuminate/support/zipball/586b1ccf141724d7cd87ee759e6e8baae9c6d507",
+                "reference": "586b1ccf141724d7cd87ee759e6e8baae9c6d507",
                 "shasum": ""
             },
             "require": {
@@ -3379,7 +3379,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2025-04-16T11:58:41+00:00"
+            "time": "2025-04-30T14:33:58+00:00"
         },
         {
             "name": "jean85/pretty-package-versions",
