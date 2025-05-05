@@ -11889,16 +11889,16 @@
         },
         {
             "name": "symfony/messenger",
-            "version": "v7.2.5",
+            "version": "v7.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/messenger.git",
-                "reference": "3ea7cdba88df1f36dad96289291a32cd9ab1862f"
+                "reference": "7f71d9d08c7708b758477386e7eaaa8ac78063b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/messenger/zipball/3ea7cdba88df1f36dad96289291a32cd9ab1862f",
-                "reference": "3ea7cdba88df1f36dad96289291a32cd9ab1862f",
+                "url": "https://api.github.com/repos/symfony/messenger/zipball/7f71d9d08c7708b758477386e7eaaa8ac78063b5",
+                "reference": "7f71d9d08c7708b758477386e7eaaa8ac78063b5",
                 "shasum": ""
             },
             "require": {
@@ -11956,7 +11956,7 @@
             "description": "Helps applications send and receive messages to/from other applications or via message queues",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/messenger/tree/v7.2.5"
+                "source": "https://github.com/symfony/messenger/tree/v7.2.6"
             },
             "funding": [
                 {
@@ -11972,7 +11972,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-03-04T12:34:02+00:00"
+            "time": "2025-04-27T13:34:41+00:00"
         },
         {
             "name": "symfony/microsoft-teams-notifier",
@@ -13197,7 +13197,7 @@
         },
         {
             "name": "symfony/polyfill-php83",
-            "version": "v1.31.0",
+            "version": "v1.32.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php83.git",
@@ -13253,7 +13253,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php83/tree/v1.31.0"
+                "source": "https://github.com/symfony/polyfill-php83/tree/v1.32.0"
             },
             "funding": [
                 {
@@ -23509,8 +23509,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "roave/security-advisories": 20,
-        "solidworx/toggler": 15
+        "solidworx/toggler": 15,
+        "roave/security-advisories": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
@@ -23525,9 +23525,9 @@
         "ext-soap": "*",
         "ext-xsl": "*"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "platform-overrides": {
         "php": "8.2"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
