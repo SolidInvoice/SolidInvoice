@@ -9111,16 +9111,16 @@
         },
         {
             "name": "symfony/discord-notifier",
-            "version": "v7.2.0",
+            "version": "v7.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/discord-notifier.git",
-                "reference": "c62cd5576f371b11028495713dacbe24060421e6"
+                "reference": "196c11b6c1325bab1abd4d8faf2a8f84c1a05383"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/discord-notifier/zipball/c62cd5576f371b11028495713dacbe24060421e6",
-                "reference": "c62cd5576f371b11028495713dacbe24060421e6",
+                "url": "https://api.github.com/repos/symfony/discord-notifier/zipball/196c11b6c1325bab1abd4d8faf2a8f84c1a05383",
+                "reference": "196c11b6c1325bab1abd4d8faf2a8f84c1a05383",
                 "shasum": ""
             },
             "require": {
@@ -9159,7 +9159,7 @@
                 "notifier"
             ],
             "support": {
-                "source": "https://github.com/symfony/discord-notifier/tree/v7.2.0"
+                "source": "https://github.com/symfony/discord-notifier/tree/v7.2.6"
             },
             "funding": [
                 {
@@ -9175,7 +9175,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-27T08:38:14+00:00"
+            "time": "2025-04-30T07:52:47+00:00"
         },
         {
             "name": "symfony/doctrine-bridge",
@@ -12436,16 +12436,16 @@
         },
         {
             "name": "symfony/notifier",
-            "version": "v7.2.0",
+            "version": "v7.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/notifier.git",
-                "reference": "b5104341c0b0d78fe2cfc8a7a0a185d544ee5c1c"
+                "reference": "2ef5e49009bd6a35666f10a27eb1b3aff4ae793e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/notifier/zipball/b5104341c0b0d78fe2cfc8a7a0a185d544ee5c1c",
-                "reference": "b5104341c0b0d78fe2cfc8a7a0a185d544ee5c1c",
+                "url": "https://api.github.com/repos/symfony/notifier/zipball/2ef5e49009bd6a35666f10a27eb1b3aff4ae793e",
+                "reference": "2ef5e49009bd6a35666f10a27eb1b3aff4ae793e",
                 "shasum": ""
             },
             "require": {
@@ -12494,7 +12494,7 @@
                 "notifier"
             ],
             "support": {
-                "source": "https://github.com/symfony/notifier/tree/v7.2.0"
+                "source": "https://github.com/symfony/notifier/tree/v7.2.6"
             },
             "funding": [
                 {
@@ -12510,7 +12510,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-11-15T13:52:25+00:00"
+            "time": "2025-04-30T07:52:47+00:00"
         },
         {
             "name": "symfony/octopush-notifier",
