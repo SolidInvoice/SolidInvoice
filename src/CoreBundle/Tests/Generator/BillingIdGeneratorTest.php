@@ -11,10 +11,9 @@
 
 namespace SolidInvoice\CoreBundle\Tests\Generator;
 
-use JsonException;
+use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator\IdGeneratorInterface;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -28,8 +27,7 @@ final class BillingIdGeneratorTest extends TestCase
 {
     /**
      * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     * @throws JsonException
+     * @throws Exception
      */
     public function testGenerateWithDefaultStrategy(): void
     {
@@ -73,8 +71,7 @@ final class BillingIdGeneratorTest extends TestCase
 
     /**
      * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     * @throws JsonException
+     * @throws Exception
      */
     public function testGenerateWithCustomStrategy(): void
     {
@@ -153,5 +150,35 @@ final class BillingIdGeneratorTest extends TestCase
         );
 
         self::assertSame('INV-10-00', $generator->generate(new Invoice()));
+    }
+
+    public function testGenerateWithEmptyStrategy(): void
+    {
+        $autoIncrementGenerator = $this->createMock(IdGeneratorInterface::class);
+
+        $autoIncrementGenerator->expects(self::once())
+            ->method('generate')
+            ->willReturn('10');
+
+        $systemConfig = $this->createMock(SystemConfig::class);
+
+        $systemConfig->expects(self::exactly(3))
+            ->method('get')
+            ->willReturnMap([
+                ['invoice/id_generation/strategy', null],
+                ['invoice/id_generation/prefix', null],
+                ['invoice/id_generation/suffix', null],
+            ]);
+
+        $generator = new BillingIdGenerator(
+            new ServiceLocator(
+                [
+                    'auto_increment' => static fn () => $autoIncrementGenerator,
+                ],
+            ),
+            $systemConfig,
+        );
+
+        self::assertSame('10', $generator->generate(new Invoice()));
     }
 }
