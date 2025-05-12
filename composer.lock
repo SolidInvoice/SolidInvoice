@@ -9998,16 +9998,16 @@
         },
         {
             "name": "symfony/form",
-            "version": "v7.2.5",
+            "version": "v7.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/form.git",
-                "reference": "81c5d4630d58a5ca3cfa7ac6f44070ed02568009"
+                "reference": "e4e75b930d7a1ccd47bd3273c859c28e13d89b08"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/form/zipball/81c5d4630d58a5ca3cfa7ac6f44070ed02568009",
-                "reference": "81c5d4630d58a5ca3cfa7ac6f44070ed02568009",
+                "url": "https://api.github.com/repos/symfony/form/zipball/e4e75b930d7a1ccd47bd3273c859c28e13d89b08",
+                "reference": "e4e75b930d7a1ccd47bd3273c859c28e13d89b08",
                 "shasum": ""
             },
             "require": {
@@ -10075,7 +10075,7 @@
             "description": "Allows to easily create, process and reuse HTML forms",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/form/tree/v7.2.5"
+                "source": "https://github.com/symfony/form/tree/v7.2.6"
             },
             "funding": [
                 {
@@ -10091,7 +10091,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-03-28T12:59:59+00:00"
+            "time": "2025-04-30T07:52:47+00:00"
         },
         {
             "name": "symfony/framework-bundle",
@@ -12869,16 +12869,16 @@
         },
         {
             "name": "symfony/polyfill-intl-icu",
-            "version": "v1.31.0",
+            "version": "v1.32.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-intl-icu.git",
-                "reference": "d80a05e9904d2c2b9b95929f3e4b5d3a8f418d78"
+                "reference": "763d2a91fea5681509ca01acbc1c5e450d127811"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-intl-icu/zipball/d80a05e9904d2c2b9b95929f3e4b5d3a8f418d78",
-                "reference": "d80a05e9904d2c2b9b95929f3e4b5d3a8f418d78",
+                "url": "https://api.github.com/repos/symfony/polyfill-intl-icu/zipball/763d2a91fea5681509ca01acbc1c5e450d127811",
+                "reference": "763d2a91fea5681509ca01acbc1c5e450d127811",
                 "shasum": ""
             },
             "require": {
@@ -12933,7 +12933,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-intl-icu/tree/v1.31.0"
+                "source": "https://github.com/symfony/polyfill-intl-icu/tree/v1.32.0"
             },
             "funding": [
                 {
@@ -12949,7 +12949,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-09T11:45:10+00:00"
+            "time": "2024-12-21T18:38:29+00:00"
         },
         {
             "name": "symfony/polyfill-intl-idn",
