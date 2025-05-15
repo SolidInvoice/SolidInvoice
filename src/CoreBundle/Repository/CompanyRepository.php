@@ -47,4 +47,10 @@ final class CompanyRepository extends ServiceEntityRepository
                 ->execute();
         }
     }
+
+    public function save(Company $company): void
+    {
+        $this->getEntityManager()->persist($company);
+        $this->getEntityManager()->flush();
+    }
 }

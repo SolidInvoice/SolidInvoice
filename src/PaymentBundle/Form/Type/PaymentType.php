@@ -59,9 +59,7 @@ class PaymentType extends AbstractType
                 'constraints' => new Assert\NotBlank(),
                 'placeholder' => 'Choose Payment Method',
                 'choice_attr' => fn (PaymentMethod $paymentMethod) => ['data-offline' => $paymentMethod->isOffline()],
-                'attr' => array_merge(
-                    $attributes->toArray(),
-                ),
+                'attr' => $attributes->toArray(),
             ]
         );
 

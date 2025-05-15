@@ -24,7 +24,7 @@ use Symfony\Component\Uid\Ulid;
 final class CompanyListener
 {
     public function __construct(
-        private readonly CompanySelector $companySelector
+        private readonly CompanySelector $companySelector,
     ) {
     }
 
@@ -34,6 +34,7 @@ final class CompanyListener
     public function prePersist(PrePersistEventArgs $eventArgs): void
     {
         $object = $eventArgs->getObject();
+
         $em = $eventArgs->getObjectManager();
         $metaData = $em->getClassMetadata($object::class);
 

@@ -1,0 +1,79 @@
+{% extends "@SolidInvoiceCore/Layout/default_no_nav.html.twig" %}
+
+{% block title %}
+    {{ app_logo() }}
+    {{ constant('SolidInvoice\\CoreBundle\\SolidInvoiceCoreBundle::APP_NAME') }}
+    - {{ subscription.subscriber }}
+{% endblock title %}
+
+{% block page_title %}
+    {{ constant('SolidInvoice\\CoreBundle\\SolidInvoiceCoreBundle::APP_NAME') }}
+{% endblock page_title %}
+
+{% block heading %}
+    {% set availableCompanies = app.user.companies|filter(v => v.id != company_id()) %}
+
+    {% if availableCompanies|length > 0 %}
+        <div class="btn-group float-right mr-5 pr-5">
+            <button class="btn btn-sm dropdown-toggle m-0" type="button" data-toggle="dropdown">
+                {{ company_name() }} <b class="caret"></b>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                {% for company in availableCompanies %}
+                    <li class="nav-item">
+                        <a href="{{ path('_switch_company', {'id': company.id}) }}" class="nav-link">
+                            {{ company }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <h4 class="p-1 mt-2 w-100">{{ block('title') }}</h4>
+{% endblock heading %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-8 offset-2">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-8 offset-2">
+                            <div class="callout callout-warning">
+                                <h4>
+                                    {{ icon('warning') }}
+                                    {{ 'Subscription not active'|trans }}
+                                </h4>
+                                <p>
+                                    {% trans %}
+                                        Your subscription is not active. If you have just completed the checkout, please wait a few moments then refresh the page.
+                                    {% endtrans %}
+                                </p>
+                                <p>
+                                    {% trans %}
+                                        If you have not completed the checkout, please click checkout below to continue.
+                                    {% endtrans %}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-2 offset-2 align-self-start">
+                            <a href="{{ path(app.current_route, app.current_route_parameters) }}" class="btn btn-warning btn-block">
+                                {{ icon('refresh') }} {{ "Refresh"|trans }}
+                            </a>
+                        </div>
+                        <div class="col-2 offset-4">
+                            <a href="{{ checkoutUrl }}" class="btn btn-success btn-block">
+                                {{ icon('credit-card') }} {{ "Checkout"|trans }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
