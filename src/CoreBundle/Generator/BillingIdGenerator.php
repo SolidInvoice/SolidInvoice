@@ -45,8 +45,8 @@ final class BillingIdGenerator
             default => throw new InvalidArgumentException('Invalid entity type'),
         };
 
-        $strategy ??= $this->config->get($settingSection . '/id_generation/strategy');
-        $invoiceId = $this->generators->get($strategy)->generate($entity, $options);
+        $strategy = $strategy ?: $this->config->get($settingSection . '/id_generation/strategy');
+        $invoiceId = $this->generators->get($strategy ?? 'auto_increment')->generate($entity, $options);
 
         return sprintf(
             '%s%s%s',

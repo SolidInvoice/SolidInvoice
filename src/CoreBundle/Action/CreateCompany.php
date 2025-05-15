@@ -13,14 +13,57 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Action;
 
-use SolidInvoice\CoreBundle\Form\Handler\CompanyFormHandler;
-use SolidWorx\FormHandler\FormHandler;
-use SolidWorx\FormHandler\FormRequest;
+use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\CoreBundle\Entity\Company;
+use SolidInvoice\CoreBundle\Form\Type\CompanyType;
+use SolidInvoice\CoreBundle\Repository\CompanyRepository;
+use SolidInvoice\UserBundle\Entity\User;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface;
+use function assert;
 
-final class CreateCompany
+final class CreateCompany extends AbstractController
 {
-    public function __invoke(FormHandler $formHandler): FormRequest
+    public function __construct(
+        private readonly Security $security,
+        private readonly CompanySelector $companySelector,
+        private readonly CompanyRepository $companyRepository,
+        private readonly RouterInterface $router,
+    ) {
+    }
+
+    public function __invoke(Request $request): Response
     {
-        return $formHandler->handle(CompanyFormHandler::class);
+        $user = $this->security->getUser();
+        assert($user instanceof User);
+
+        $form = $this->createForm(CompanyType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $company = $form->getData();
+            assert($company instanceof Company);
+
+            $company->addUser($user);
+            // @TODO: Set the user as the owner of the company
+
+            $this->companyRepository->save($company);
+
+            $request->getSession()->set('company', $company->getId());
+
+            return new RedirectResponse($this->router->generate('_dashboard'));
+        }
+
+        return $this->render(
+            '@SolidInvoiceCore/Company/create.html.twig',
+            [
+                'form' => $form,
+                'allowCancel' => ! $user->getCompanies()->isEmpty(),
+            ]
+        );
     }
 }

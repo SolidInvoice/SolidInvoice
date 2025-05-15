@@ -20,11 +20,10 @@
 {% block body %}
     <section class="content-header bg-white shadow mb-5 p-3">
         {{ block('heading') is defined ? block('heading') }}
-
-        {% include "@SolidInvoiceCore/flash.html.twig" %}
     </section>
 
     <section class="content">
+        {% include "@SolidInvoiceCore/flash.html.twig" %}
         {{ block('content') is defined ? block('content') }}
     </section>
 {% endblock body %}

@@ -17,11 +17,13 @@ use Doctrine\DBAL\Types\Type;
 use SolidInvoice\CoreBundle\Doctrine\Type\JsonArrayType;
 use SolidWorx\FormHandler\FormHandler;
 use SolidWorx\FormHandler\FormHandlerInterface;
+use SolidWorx\Platform\SaasBundle\SolidWorxPlatformSaasBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
+use function preg_replace;
 
 class Kernel extends BaseKernel
 {
@@ -47,6 +49,14 @@ class Kernel extends BaseKernel
     protected function configureContainer(ContainerConfigurator $container, LoaderInterface $loader, ContainerBuilder $builder): void
     {
         $this->configureContainerTrait($container, $loader, $builder);
+
+        $bundles = $this->getBundles();
+
+        if (($bundles['SolidWorxPlatformSaasBundle'] ?? null) instanceof SolidWorxPlatformSaasBundle) {
+            $configDir = preg_replace('{/config$}', '/{config}', $this->getConfigDir());
+            $container->import($configDir . '/{packages}/saas/*.{php,yaml}');
+        }
+
         $builder->registerForAutoconfiguration(FormHandlerInterface::class)
             ->addTag('form.handler');
 

@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-return [
+$bundles = [
     Symfony\Bundle\FrameworkBundle\FrameworkBundle::class => ['all' => true],
     Symfony\Bundle\SecurityBundle\SecurityBundle::class => ['all' => true],
     Symfony\Bundle\TwigBundle\TwigBundle::class => ['all' => true],
@@ -61,4 +61,14 @@ return [
     KnpU\OAuth2ClientBundle\KnpUOAuth2ClientBundle::class => ['all' => true],
     SymfonyCasts\Bundle\ResetPassword\SymfonyCastsResetPasswordBundle::class => ['all' => true],
     Zenstruck\Mailer\Test\ZenstruckMailerTestBundle::class => ['dev' => true, 'test' => true],
+    Symfony\UX\Turbo\TurboBundle::class => ['all' => true],
+    SolidWorx\Platform\UiBundle\SolidWorxPlatformUiBundle::class => ['all' => true],
+    SolidWorx\Platform\PlatformBundle\SolidWorxPlatformBundle::class => ['all' => true],
 ];
+
+//if (getenv('SOLIDINVOICE_PLATFORM') === 'saas') {
+$bundles[SolidWorx\Platform\SaasBundle\SolidWorxPlatformSaasBundle::class] = ['all' => true];
+$bundles[SolidInvoice\SaasBundle\SolidInvoiceSaasBundle::class] = ['all' => true];
+//}
+
+return $bundles;

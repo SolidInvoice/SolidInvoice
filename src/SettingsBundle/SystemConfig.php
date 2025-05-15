@@ -43,13 +43,7 @@ class SystemConfig
             return null;
         }
 
-        $setting = $this->repository->findOneBy(['key' => $key]);
-
-        if (null === $setting) {
-            return null;
-        }
-
-        return $setting->getValue();
+        return $this->repository->findOneBy(['key' => $key])?->getValue();
     }
 
     /**

@@ -37,6 +37,16 @@
                     "@symfony/ux-toggle-password/dist/style.min.css": true
                 }
             }
+        },
+        "@symfony/ux-turbo": {
+            "turbo-core": {
+                "enabled": true,
+                "fetch": "eager"
+            },
+            "mercure-turbo-stream": {
+                "enabled": false,
+                "fetch": "eager"
+            }
         }
     },
     "entrypoints": []

@@ -19,14 +19,16 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\UserBundle\Entity\User;
+use SolidWorx\Platform\SaasBundle\Subscriber\SubscribableInterface;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Uid\Ulid;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: Company::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
-class Company implements Stringable
+class Company implements Stringable, SubscribableInterface
 {
     final public const TABLE_NAME = 'companies';
 
@@ -37,6 +39,7 @@ class Company implements Stringable
     private Ulid $id;
 
     #[ORM\Column(type: Types::STRING, length: 255)]
+    #[Assert\NotBlank()]
     private string $name;
 
     /**
@@ -44,6 +47,9 @@ class Company implements Stringable
      */
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'companies')]
     private Collection $users;
+
+    #[Assert\NotBlank()]
+    public string $currency = '';
 
     public function __construct()
     {
