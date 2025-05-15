@@ -358,6 +358,19 @@
             "config/packages/ramsey_uuid_doctrine.yaml"
         ]
     },
+    "scheb/2fa-bundle": {
+        "version": "7.10",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "6.0",
+            "ref": "1e6f68089146853a790b5da9946fc5974f6fcd49"
+        },
+        "files": [
+            "config/packages/scheb_2fa.yaml",
+            "config/routes/scheb_2fa.yaml"
+        ]
+    },
     "sentry/sentry-symfony": {
         "version": "5.0",
         "recipe": {

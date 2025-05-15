@@ -58,17 +58,15 @@ $bundles = [
     BabDev\PagerfantaBundle\BabDevPagerfantaBundle::class => ['all' => true],
     Symfony\UX\TogglePassword\TogglePasswordBundle::class => ['all' => true],
     SymfonyCasts\Bundle\VerifyEmail\SymfonyCastsVerifyEmailBundle::class => ['all' => true],
-    Symfony\UX\TogglePassword\TogglePasswordBundle::class => ['all' => true],
     SymfonyCasts\Bundle\ResetPassword\SymfonyCastsResetPasswordBundle::class => ['all' => true],
     Zenstruck\Mailer\Test\ZenstruckMailerTestBundle::class => ['dev' => true, 'test' => true],
     SolidWorx\Platform\UiBundle\SolidWorxPlatformUiBundle::class => ['all' => true],
     SolidWorx\Platform\PlatformBundle\SolidWorxPlatformBundle::class => ['all' => true],
     KnpU\OAuth2ClientBundle\KnpUOAuth2ClientBundle::class => ['all' => true],
-    SymfonyCasts\Bundle\ResetPassword\SymfonyCastsResetPasswordBundle::class => ['all' => true],
-    Zenstruck\Mailer\Test\ZenstruckMailerTestBundle::class => ['dev' => true, 'test' => true],
+    Scheb\TwoFactorBundle\SchebTwoFactorBundle::class => ['all' => true],
 ];
 
-if (($_ENV['SOLIDINVOICE_PLATFORM'] ?? $_SERVER['SOLIDINVOICE_PLATFORM'] ?? null) === 'saas') {
+if (($_SERVER['SOLIDINVOICE_PLATFORM'] ?? $_ENV['SOLIDINVOICE_PLATFORM'] ?? null) === 'saas') {
     $bundles[SolidWorx\Platform\SaasBundle\SolidWorxPlatformSaasBundle::class] = ['all' => true];
     $bundles[SolidInvoice\SaasBundle\SolidInvoiceSaasBundle::class] = ['all' => true];
 }

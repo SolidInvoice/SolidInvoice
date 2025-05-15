@@ -2,7 +2,7 @@
     "description": "General Billing Application",
     "license": "MIT",
     "type": "project",
-    "version": "2.3.7",
+    "version": "2.4.0-dev",
     "keywords": [
         "billing",
         "general billing",
@@ -12,6 +12,12 @@
         {
             "name": "SolidWorx",
             "email": "open-source@solidworx.co"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../../platform"
         }
     ],
     "homepage": "https://solidinvoice.co",
