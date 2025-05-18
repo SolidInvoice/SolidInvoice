@@ -17,9 +17,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[UniqueEntity(['email'], entityClass: User::class)]
 final class Registration
 {
-    public string $email;
+    public ?string $email = null;
 
-    public string $plainPassword;
+    public ?string $plainPassword = null;
 
-    public string $company;
+    public ?string $company = null;
 }

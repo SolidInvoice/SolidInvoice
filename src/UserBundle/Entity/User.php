@@ -59,6 +59,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     #[ORM\Column(name: 'enabled', type: Types::BOOLEAN)]
     private bool $enabled = false;
 
+    #[ORM\Column(name: 'verified', type: Types::BOOLEAN)]
+    private bool $verified = false;
+
     #[ORM\Column(name: 'password', type: Types::STRING)]
     private ?string $password = null;
 
@@ -147,6 +150,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         return serialize([
             $this->password,
             $this->enabled,
+            $this->verified,
             $this->id,
             $this->email,
             $this->roles,
@@ -161,6 +165,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         [
             $this->password,
             $this->enabled,
+            $this->verified,
             $this->id,
             $this->email,
             $this->roles,
@@ -224,6 +229,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         return $this->enabled;
     }
 
+    public function isVerified(): bool
+    {
+        return $this->verified;
+    }
+
     public function removeRole(string $role): self
     {
         if (false !== $key = array_search(strtoupper($role), $this->roles, true)) {
@@ -244,6 +254,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     public function setEnabled(bool $enabled): self
     {
         $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    public function setVerified(bool $verified): self
+    {
+        $this->verified = $verified;
 
         return $this;
     }

@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Action\Security;
 
-use SolidInvoice\CoreBundle\Templating\Template;
-use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
@@ -22,7 +21,11 @@ use Symfony\Component\Security\Http\SecurityRequestAttributes;
 
 final class Login
 {
-    public function __invoke(Request $request, CsrfTokenManagerInterface $csrfTokenManager)
+    /**
+     * @return array{last_username: ?string, error: ?string, csrf_token: string}
+     */
+    #[Template('@SolidInvoiceUser/Security/login.html.twig')]
+    public function __invoke(Request $request, CsrfTokenManagerInterface $csrfTokenManager): array
     {
         $session = $request->getSession();
 
@@ -41,13 +44,10 @@ final class Login
             $error = null; // The value does not come from the security component.
         }
 
-        return new Template(
-            '@SolidInvoiceUser/Security/login.html.twig',
-            [
-                'last_username' => $session->get($lastUsernameKey),
-                'error' => $error,
-                'csrf_token' => $csrfTokenManager->getToken('authenticate')->getValue(),
-            ]
-        );
+        return [
+            'last_username' => $session->get($lastUsernameKey),
+            'error' => $error,
+            'csrf_token' => $csrfTokenManager->getToken('authenticate')->getValue(),
+        ];
     }
 }

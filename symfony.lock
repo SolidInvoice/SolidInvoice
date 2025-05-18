@@ -1259,6 +1259,9 @@
             "config/packages/reset_password.yaml"
         ]
     },
+    "symfonycasts/verify-email-bundle": {
+        "version": "v1.17.3"
+    },
     "tijsverkoyen/css-to-inline-styles": {
         "version": "2.2.3"
     },

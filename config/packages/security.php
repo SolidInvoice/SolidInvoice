@@ -111,6 +111,7 @@ return static function (SecurityConfig $config): void {
             '/(login|register)$|' .
             '/forgot-password|' .
             '/install(?:.*)|' .
+            '/verify$|' .
             '/invite/accept/[a-zA-Z0-9-]{36}$|' .
             '/payments/create/[a-zA-Z0-9-]{36}$|' .
             '/payment/capture/(?:.*)|' .

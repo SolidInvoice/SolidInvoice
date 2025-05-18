@@ -1,0 +1,26 @@
+{% extends '@SolidInvoiceCore/Layout/Email/base.html.twig' %}
+
+{%- block title -%}
+    Please confirm your email address
+{%- endblock -%}
+
+{%- block content -%}
+    {% apply nl2br %}
+        {% autoescape false %}
+            Please confirm your email address by clicking the link below:
+        {% endautoescape %}
+    {% endapply %}
+    <table class="button expand large float-center">
+        <tr>
+            <td>
+                <table>
+                    <tr>
+                        <td>
+                            <a href="{{ signedUrl }}" rel="external" target="_blank">{{ 'Confirm'|trans([], 'email') }}</a>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+{%- endblock -%}
