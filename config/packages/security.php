@@ -16,6 +16,7 @@ use SolidInvoice\ApiBundle\Event\Listener\AuthenticationSuccessHandler;
 use SolidInvoice\ApiBundle\Security\ApiTokenAuthenticator;
 use SolidInvoice\ApiBundle\Security\Provider\ApiTokenUserProvider;
 use SolidInvoice\UserBundle\Entity\User;
+use SolidInvoice\UserBundle\Security\OAuth\OAuthAuthenticator;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Config\SecurityConfig;
 
@@ -80,8 +81,10 @@ return static function (SecurityConfig $config): void {
     $mainFirewallConfig = $config
         ->firewall('main')
         ->pattern('^/')
-        ->lazy(true)
-    ;
+        ->entryPoint('form_login')
+        ->customAuthenticators([OAuthAuthenticator::class])
+        ->provider('solidinvoice_user')
+        ->lazy(true);
 
     $mainFirewallConfig
         ->rememberMe()
@@ -108,17 +111,17 @@ return static function (SecurityConfig $config): void {
             '/_components/DatabaseConfig|' .
             '/view/(quote|invoice)/[a-zA-Z0-9-]{36}$|' .
             '/(login|register|resetting)$|' .
+            '/oauth/connect|' .
             '/install(?:.*)|' .
             '/verify$|' .
             '/invite/accept/[a-zA-Z0-9-]{36}$|' .
             '/payments/create/[a-zA-Z0-9-]{36}$|' .
             '/payment/capture/(?:.*)|' .
             '/payments/done$' .
-        ')')
+            ')')
         ->roles(['PUBLIC_ACCESS']);
 
     $config->accessControl()
         ->path('^/')
-        ->roles(['ROLE_USER'])
-    ;
+        ->roles(['ROLE_USER']);
 };

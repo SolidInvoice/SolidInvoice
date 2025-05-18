@@ -1,0 +1,11 @@
+# The knpu_oauth2_client package doesn't support config specified in PHP.
+knpu_oauth2_client:
+    clients:
+        google:
+            type: google
+            client_id: '%env(SOLIDINVOICE_OAUTH_CLIENT_GOOGLE_CLIENT_ID)%'
+            client_secret: '%env(SOLIDINVOICE_OAUTH_CLIENT_GOOGLE_CLIENT_SECRET)%'
+            redirect_route: _oauth_connect_check
+            redirect_params:
+                service: google
+            #scope: ['email', 'profile']

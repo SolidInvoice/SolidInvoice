@@ -26,6 +26,8 @@ use SolidInvoice\UserBundle\Action\ResendUserInvite;
 use SolidInvoice\UserBundle\Action\Security\ChangePassword;
 use SolidInvoice\UserBundle\Action\Security\Login;
 use SolidInvoice\UserBundle\Action\Security\VerifyEmail;
+use SolidInvoice\UserBundle\Action\Security\OAuthConnect;
+use SolidInvoice\UserBundle\Action\Security\OAuthConnectCheck;
 use SolidInvoice\UserBundle\Action\Users;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
@@ -97,4 +99,10 @@ return static function (RoutingConfigurator $routingConfigurator): void {
     $routingConfigurator
         ->add('_verify_email', '/verify')
         ->controller(VerifyEmail::class);
+
+    $routingConfigurator->add(OAuthConnect::ROUTE, '/oauth/connect/{service}')
+        ->controller(OAuthConnect::class);
+
+    $routingConfigurator->add(OAuthConnectCheck::ROUTE, '/oauth/check/{service}')
+        ->controller(OAuthConnectCheck::class);
 };

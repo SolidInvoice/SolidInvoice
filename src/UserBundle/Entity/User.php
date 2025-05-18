@@ -90,6 +90,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     #[ORM\ManyToMany(targetEntity: Company::class, inversedBy: 'users')]
     private Collection $companies;
 
+    #[ORM\Column(name: 'google_id', type: Types::STRING, length: 45, nullable: true)]
+    private ?string $googleId = null;
+
     public function __construct()
     {
         $this->apiTokens = new ArrayCollection();
@@ -361,6 +364,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         if ($this->companies->contains($company)) {
             $this->companies->removeElement($company);
         }
+
+        return $this;
+    }
+
+    public function getGoogleId(): ?string
+    {
+        return $this->googleId;
+    }
+
+    public function setGoogleId(?string $googleId): self
+    {
+        $this->googleId = $googleId;
 
         return $this;
     }

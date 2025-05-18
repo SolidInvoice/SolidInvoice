@@ -13,13 +13,17 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Action;
 
-use SolidInvoice\CoreBundle\Templating\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 final class Profile
 {
-    public function __invoke(TokenStorageInterface $storage): Template
+    /**
+     * @return array<never>
+     */
+    #[Template('@SolidInvoiceUser/Profile/show.html.twig')]
+    public function __invoke(TokenStorageInterface $storage): array
     {
-        return new Template('@SolidInvoiceUser/Profile/show.html.twig');
+        return [];
     }
 }

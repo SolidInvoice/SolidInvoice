@@ -29,6 +29,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters->set('env(SOLIDINVOICE_INSTALLED)', null);
     $parameters->set('env(SOLIDINVOICE_RUNTIME)', null);
     $parameters->set('env(SOLIDINVOICE_ALLOW_REGISTRATION)', '0');
+    $parameters->set('env(SOLIDINVOICE_OAUTH_CLIENT_GOOGLE_CLIENT_ID)', null);
+    $parameters->set('env(SOLIDINVOICE_OAUTH_CLIENT_GOOGLE_CLIENT_SECRET)', null);
 
     $parameters->set('env(SOLIDINVOICE_SENTRY_DSN)', null);
     $parameters->set('env(SOLIDINVOICE_SENTRY_RELEASE)', '');
