@@ -164,6 +164,7 @@
         "symfony/yunpian-notifier": "^7.1",
         "symfony/zulip-notifier": "^7.1",
         "symfonycasts/dynamic-forms": "^0.1.2",
+        "symfonycasts/verify-email-bundle": "^1.17",
         "tijsverkoyen/css-to-inline-styles": "^2.2",
         "twig/cssinliner-extra": "^3.4",
         "twig/extra-bundle": "^3.10",

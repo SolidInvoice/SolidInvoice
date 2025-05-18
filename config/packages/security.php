@@ -109,6 +109,7 @@ return static function (SecurityConfig $config): void {
             '/view/(quote|invoice)/[a-zA-Z0-9-]{36}$|' .
             '/(login|register|resetting)$|' .
             '/install(?:.*)|' .
+            '/verify$|' .
             '/invite/accept/[a-zA-Z0-9-]{36}$|' .
             '/payments/create/[a-zA-Z0-9-]{36}$|' .
             '/payment/capture/(?:.*)|' .

@@ -16,8 +16,10 @@ namespace SolidInvoice\UserBundle\EventSubscriber;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use SolidInvoice\UserBundle\Entity\User;
+use SolidInvoice\UserBundle\Exception\UserNotVerifiedException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+use Symfony\Component\Security\Core\Event\AuthenticationSuccessEvent;
+use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
 
 /**
  * @see \SolidInvoice\UserBundle\Tests\EventSubscriber\UserLoginEventSubscriberTest
@@ -35,13 +37,24 @@ final class UserLoginEventSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            InteractiveLoginEvent::class => 'onLogin',
+            LoginSuccessEvent::class => 'onLogin',
+            AuthenticationSuccessEvent::class => 'onAuthenticationSuccess',
         ];
     }
 
-    public function onLogin(InteractiveLoginEvent $event): void
+    public function onAuthenticationSuccess(AuthenticationSuccessEvent $event): void
     {
         $user = $event->getAuthenticationToken()->getUser();
+        assert($user instanceof User);
+
+        if (! $user->isVerified()) {
+            throw new UserNotVerifiedException();
+        }
+    }
+
+    public function onLogin(LoginSuccessEvent $event): void
+    {
+        $user = $event->getUser();
         assert($user instanceof User);
 
         $user->setLastLogin(new DateTimeImmutable());

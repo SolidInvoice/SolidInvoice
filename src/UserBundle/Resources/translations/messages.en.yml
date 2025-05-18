@@ -61,7 +61,7 @@ security:
         password: Password
         password_confirm: 'Confirm Password'
         submit: Register
-        success: 'Your account has been created, you can now login'
+        success: 'Your account has been created. Please verify your email address before logging in.'
 
 users:
   invite: 'Invite User'

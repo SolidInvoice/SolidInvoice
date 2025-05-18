@@ -20,9 +20,8 @@ use PHPUnit\Framework\TestCase;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\EventSubscriber\UserLoginEventSubscriber;
 use SolidInvoice\UserBundle\Repository\UserRepository;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+use Symfony\Component\Security\Core\Event\AuthenticationSuccessEvent;
+use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
 
 /** @covers \SolidInvoice\UserBundle\EventSubscriber\UserLoginEventSubscriber */
 final class UserLoginEventSubscriberTest extends TestCase
@@ -31,14 +30,22 @@ final class UserLoginEventSubscriberTest extends TestCase
 
     public function testGetSubscribedEvents(): void
     {
-        self::assertSame([InteractiveLoginEvent::class => 'onLogin'], UserLoginEventSubscriber::getSubscribedEvents());
+        self::assertSame([
+            LoginSuccessEvent::class => 'onLogin',
+            AuthenticationSuccessEvent::class => 'onAuthenticationSuccess',
+        ], UserLoginEventSubscriber::getSubscribedEvents());
     }
 
     public function testOnLogin(): void
     {
         $entityManager = M::mock(EntityManagerInterface::class);
         $userRepository = M::mock(UserRepository::class);
+        $loginEvent = M::mock(LoginSuccessEvent::class);
         $user = new User();
+
+        $loginEvent
+            ->shouldReceive('getUser')
+            ->andReturn($user);
 
         $entityManager->expects('getRepository')
             ->with(User::class)
@@ -51,7 +58,7 @@ final class UserLoginEventSubscriberTest extends TestCase
 
         $subscriber = new UserLoginEventSubscriber($entityManager);
 
-        $subscriber->onLogin(new InteractiveLoginEvent(new Request(), new UsernamePasswordToken($user, 'main')));
+        $subscriber->onLogin($loginEvent);
 
         self::assertInstanceOf(DateTimeImmutable::class, $user->getLastLogin());
     }

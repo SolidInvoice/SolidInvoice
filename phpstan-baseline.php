@@ -542,12 +542,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/UserBundle/Action/Security/ChangePassword.php',
 ];
 $ignoreErrors[] = [
-	// identifier: missingType.return
-	'message' => '#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\Security\\\\Login\\:\\:__invoke\\(\\) has no return type specified\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/src/UserBundle/Action/Security/Login.php',
-];
-$ignoreErrors[] = [
 	// identifier: method.notFound
 	'message' => '#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\:\\:getEmail\\(\\)\\.$#',
 	'count' => 1,

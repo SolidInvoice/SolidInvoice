@@ -1229,6 +1229,9 @@
             "ref": "f420901c554baf7cde79a2a0bbf9b37ab1a650aa"
         }
     },
+    "symfonycasts/verify-email-bundle": {
+        "version": "v1.17.3"
+    },
     "tijsverkoyen/css-to-inline-styles": {
         "version": "2.2.3"
     },

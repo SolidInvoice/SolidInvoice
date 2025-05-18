@@ -25,6 +25,7 @@ use SolidInvoice\UserBundle\Action\Register;
 use SolidInvoice\UserBundle\Action\ResendUserInvite;
 use SolidInvoice\UserBundle\Action\Security\ChangePassword;
 use SolidInvoice\UserBundle\Action\Security\Login;
+use SolidInvoice\UserBundle\Action\Security\VerifyEmail;
 use SolidInvoice\UserBundle\Action\Users;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
@@ -92,4 +93,8 @@ return static function (RoutingConfigurator $routingConfigurator): void {
     $routingConfigurator
         ->add('_profile_notifications', '/profile/notifications')
         ->controller(Notifications::class);
+
+    $routingConfigurator
+        ->add('_verify_email', '/verify')
+        ->controller(VerifyEmail::class);
 };
