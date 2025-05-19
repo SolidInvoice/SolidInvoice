@@ -52,9 +52,11 @@ final class ResetPasswordTest extends WebTestCase
         $this->em->persist($user);
         $this->em->flush();
 
+        $browser = $this->browser();
+
         $emailLink = '';
 
-        $this->browser()
+        $browser
             ->withProfiling()
             ->request('GET', '/forgot-password')
             ->assertSuccessful()

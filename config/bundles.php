@@ -64,6 +64,8 @@ $bundles = [
     SolidWorx\Platform\UiBundle\SolidWorxPlatformUiBundle::class => ['all' => true],
     SolidWorx\Platform\PlatformBundle\SolidWorxPlatformBundle::class => ['all' => true],
     KnpU\OAuth2ClientBundle\KnpUOAuth2ClientBundle::class => ['all' => true],
+    SymfonyCasts\Bundle\ResetPassword\SymfonyCastsResetPasswordBundle::class => ['all' => true],
+    Zenstruck\Mailer\Test\ZenstruckMailerTestBundle::class => ['dev' => true, 'test' => true],
 ];
 
 if (($_ENV['SOLIDINVOICE_PLATFORM'] ?? $_SERVER['SOLIDINVOICE_PLATFORM'] ?? null) === 'saas') {
