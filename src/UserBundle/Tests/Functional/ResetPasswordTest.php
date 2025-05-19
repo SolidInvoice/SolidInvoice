@@ -61,14 +61,12 @@ final class ResetPasswordTest extends WebTestCase
             ->request('GET', '/forgot-password')
             ->assertSuccessful()
             ->assertSeeIn('title', 'Reset your password')
-            ->use(function (MailerComponent $component): void {
-                $component->assertNoEmailSent();
-            })
+            ->use(static fn (MailerComponent $component) => $component->assertNoEmailSent())
             ->withProfiling()
             ->interceptRedirects()
             ->fillField('reset_password_request_form[email]', 'me@example.com')
             ->click('Reset Password')
-            ->use(function (MailerComponent $component) use (&$emailLink): void {
+            ->use(static function (MailerComponent $component) use (&$emailLink): void {
                 $component
                     ->assertSentEmailCount(1)
                     ->assertEmailSentTo('me@example.com', function (TestEmail $email) use (&$emailLink): void {
