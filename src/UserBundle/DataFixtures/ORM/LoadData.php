@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\DataFixtures\ORM;
 
-use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use RuntimeException;
@@ -36,8 +35,6 @@ class LoadData extends Fixture
         $user1 = (new User())
             ->setEmail('test1@test.com')
             ->setPassword('test1')
-            ->setConfirmationToken(base64_encode(bin2hex(random_bytes(24))))
-            ->setPasswordRequestedAt(new DateTime())
             ->addCompany($company)
         ;
 

@@ -110,7 +110,8 @@ return static function (SecurityConfig $config): void {
         ->path('^(?:' .
             '/_components/DatabaseConfig|' .
             '/view/(quote|invoice)/[a-zA-Z0-9-]{36}$|' .
-            '/(login|register|resetting)$|' .
+            '/(login|register)$|' .
+            '/forgot-password|' .
             '/oauth/connect|' .
             '/install(?:.*)|' .
             '/verify$|' .

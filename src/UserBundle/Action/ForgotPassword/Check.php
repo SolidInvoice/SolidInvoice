@@ -13,12 +13,35 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Action\ForgotPassword;
 
-use SolidInvoice\CoreBundle\Templating\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
+use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordToken;
+use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 
-final class Check
+final class Check extends AbstractController
 {
-    public function __invoke()
+    use ResetPasswordControllerTrait;
+
+    public function __construct(
+        private readonly ResetPasswordHelperInterface $resetPasswordHelper
+    ) {
+    }
+
+    /**
+     * @return array{resetToken: ResetPasswordToken}
+     */
+    #[Template('@SolidInvoiceUser/ForgotPassword/check_email.html.twig')]
+    public function __invoke(): array
     {
-        return new Template('@SolidInvoiceUser/ForgotPassword/check_email.html.twig', ['tokenLifetime' => ceil((60 * 60 * 3) / 3600)]);
+        // Generate a fake token if the user does not exist or someone hit this page directly.
+        // This prevents exposing whether a user was found with the given email address or not
+        if (null === ($resetToken = $this->getTokenObjectFromSession())) {
+            $resetToken = $this->resetPasswordHelper->generateFakeResetToken();
+        }
+
+        return [
+            'resetToken' => $resetToken,
+        ];
     }
 }

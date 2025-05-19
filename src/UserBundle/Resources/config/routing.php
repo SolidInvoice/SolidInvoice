@@ -17,7 +17,6 @@ use SolidInvoice\UserBundle\Action\EditProfile;
 use SolidInvoice\UserBundle\Action\ForgotPassword\Check;
 use SolidInvoice\UserBundle\Action\ForgotPassword\Request;
 use SolidInvoice\UserBundle\Action\ForgotPassword\Reset;
-use SolidInvoice\UserBundle\Action\ForgotPassword\Send;
 use SolidInvoice\UserBundle\Action\InviteUser;
 use SolidInvoice\UserBundle\Action\Notifications;
 use SolidInvoice\UserBundle\Action\Profile;
@@ -69,15 +68,12 @@ return static function (RoutingConfigurator $routingConfigurator): void {
         ->controller(Request::class);
 
     $routingConfigurator
-        ->add('_user_forgot_password_send_emal', '/forgot-password/send')
-        ->controller(Send::class);
-
-    $routingConfigurator
         ->add('_user_forgot_password_check_email', '/forgot-password/check')
         ->controller(Check::class);
 
     $routingConfigurator
         ->add('_user_password_reset', '/forgot-password/reset/{token}')
+        ->defaults(['token' => null])
         ->controller(Reset::class);
 
     $routingConfigurator

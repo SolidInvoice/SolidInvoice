@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Tests\Repository;
 
-use DateTimeInterface;
 use Doctrine\ORM\QueryBuilder;
 use Faker\Generator;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
@@ -180,22 +179,6 @@ final class UserRepositoryTest extends KernelTestCase
     {
         self::assertFalse($this->repository->supportsClass(self::class));
         self::assertTrue($this->repository->supportsClass(User::class));
-    }
-
-    public function testClearUserConfirmationToken(): void
-    {
-        $executor = $this->databaseTool->loadFixtures([LoadData::class], true);
-        /** @var User $user1 */
-        $user1 = $executor->getReferenceRepository()->getReference('user1', User::class);
-
-        self::assertNotNull($user1->getConfirmationToken());
-        self::assertNotNull($user1->getPasswordRequestedAt());
-        self::assertInstanceOf(DateTimeInterface::class, $user1->getPasswordRequestedAt());
-
-        $this->repository->clearUserConfirmationToken($user1);
-
-        self::assertNull($user1->getConfirmationToken());
-        self::assertNull($user1->getPasswordRequestedAt());
     }
 
     public function testGetGridQuery(): void

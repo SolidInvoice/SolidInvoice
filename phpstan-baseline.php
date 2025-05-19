@@ -501,24 +501,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	// identifier: missingType.return
-	'message' => '#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\ForgotPassword\\\\Check\\:\\:__invoke\\(\\) has no return type specified\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/src/UserBundle/Action/ForgotPassword/Check.php',
-];
-$ignoreErrors[] = [
-	// identifier: missingType.return
-	'message' => '#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\ForgotPassword\\\\Request\\:\\:__invoke\\(\\) has no return type specified\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/src/UserBundle/Action/ForgotPassword/Request.php',
-];
-$ignoreErrors[] = [
-	// identifier: missingType.return
-	'message' => '#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\ForgotPassword\\\\Reset\\:\\:__invoke\\(\\) has no return type specified\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/src/UserBundle/Action/ForgotPassword/Reset.php',
-];
-$ignoreErrors[] = [
-	// identifier: missingType.return
 	'message' => '#^Method SolidInvoice\\\\UserBundle\\\\Action\\\\Security\\\\ChangePassword\\:\\:__invoke\\(\\) has no return type specified\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/src/UserBundle/Action/Security/ChangePassword.php',
