@@ -169,11 +169,10 @@ final class EmailVerifierTest extends TestCase
         try {
             $this->emailVerifier->handleEmailConfirmation($request, $user);
         } finally {
+            $this->assertFalse($user->isVerified());
             // Restore the original UriSigner
             $uriSignerReflection->setValue($this->verifyEmailHelper, $uriSigner);
         }
-
-        $this->assertFalse($user->isVerified());
     }
 
     private function createUser(): User
