@@ -81,7 +81,7 @@ final class OAuthAuthenticator extends OAuth2Authenticator implements Authentica
 
                         $user = new User();
                         $user->setEmail($oauthUser->getEmail());
-                        $user->setPassword(''); // No password needed for OAuth users
+                        $user->setPassword(bin2hex(random_bytes(24))); // Generate a secure random password that won't be used
                         $user->setEnabled(true);
                         $user->setVerified($oauthUser->getEmailVerified());
                     }

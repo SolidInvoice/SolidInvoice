@@ -20,11 +20,11 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
 #[AsEntityListener(event: Events::prePersist, entity: User::class)]
-final class UserEntitySubscriber
+final readonly class UserEntitySubscriber
 {
     public function __construct(
-        private readonly EmailVerifier $emailVerifier,
-        private readonly LoggerInterface $logger,
+        private EmailVerifier $emailVerifier,
+        private LoggerInterface $logger,
     ) {
     }
 

@@ -23,16 +23,16 @@ final readonly class OAuthUser
 
     public function getEmail(): ?string
     {
-        return match (get_class($this->resourceOwner)) {
-            GoogleUser::class => $this->resourceOwner->getEmail(),
+        return match (true) {
+            $this->resourceOwner instanceof GoogleUser => $this->resourceOwner->getEmail(),
             default => null,
         };
     }
 
     public function getFirstName(): string
     {
-        return match (get_class($this->resourceOwner)) {
-            GoogleUser::class => $this->resourceOwner->getFirstName(),
+        return match (true) {
+            $this->resourceOwner instanceof GoogleUser => $this->resourceOwner->getFirstName(),
             default => '',
         };
     }
@@ -44,24 +44,24 @@ final readonly class OAuthUser
 
     public function getLastName(): string
     {
-        return match (get_class($this->resourceOwner)) {
-            GoogleUser::class => $this->resourceOwner->getLastName(),
+        return match (true) {
+            $this->resourceOwner instanceof GoogleUser => $this->resourceOwner->getLastName(),
             default => '',
         };
     }
 
     public function getPropertyMap(): string
     {
-        return match (get_class($this->resourceOwner)) {
-            GoogleUser::class => 'googleId',
+        return match (true) {
+            $this->resourceOwner instanceof GoogleUser => 'googleId',
             default => '',
         };
     }
 
     public function getEmailVerified(): bool
     {
-        return match (get_class($this->resourceOwner)) {
-            GoogleUser::class => $this->resourceOwner->toArray()['email_verified'] ?? false,
+        return match (true) {
+            $this->resourceOwner instanceof GoogleUser => $this->resourceOwner->toArray()['email_verified'] ?? false,
             default => false,
         };
     }
