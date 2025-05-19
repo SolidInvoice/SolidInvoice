@@ -160,6 +160,7 @@ jobs:
         with:
           egress-policy: audit
           allowed-endpoints: >
+            bun.sh:443
             packagist.org:443
             download.oracle.com:443
             azure.archive.ubuntu.com:443
@@ -178,6 +179,8 @@ jobs:
             setup-php.com:443
             dl.cloudsmith.io:443
             getcomposer.org:443
+            registry.npmjs.org:443
+            registry.yarnpkg.com:443
 
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -191,7 +194,13 @@ jobs:
         env:
           fail-fast: true
 
+      - uses: oven-sh/setup-bun@4bc047ad259df6fc24a6c9b0f9a0cb08cf17fbe5 # v2
+
       - uses: ramsey/composer-install@e52779489de843a9f022c7b8faa648b608b02c70 # v3
+
+      - run: bun install
+
+      - run: bun run build
 
       - name: Run test suite
         # Installation currently only runs with SQLite,

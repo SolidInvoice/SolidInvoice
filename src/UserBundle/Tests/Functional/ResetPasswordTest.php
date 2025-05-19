@@ -20,7 +20,6 @@ use Zenstruck\Browser\Test\HasBrowser;
 use Zenstruck\Mailer\Test\Bridge\Zenstruck\Browser\MailerComponent;
 use Zenstruck\Mailer\Test\InteractsWithMailer;
 use Zenstruck\Mailer\Test\TestEmail;
-use function file_get_contents;
 
 /**
  * @group functional
@@ -53,21 +52,12 @@ final class ResetPasswordTest extends WebTestCase
         $this->em->persist($user);
         $this->em->flush();
 
-        $browser = $this->browser();
-
         $emailLink = '';
 
-        $assertSuccessful = $browser
+        $this->browser()
             ->withProfiling()
-            ->request('GET', '/forgot-password');
-            // ->assertSuccessful();
-
-        echo $browser->content();
-        echo PHP_EOL.PHP_EOL;
-        echo file_get_contents(dirname(__DIR__, 4) . '/var/log/test.log');
-        exit;
-
-        $assertSuccessful
+            ->request('GET', '/forgot-password')
+            ->assertSuccessful()
             ->assertSeeIn('title', 'Reset your password')
             ->use(static fn (MailerComponent $component) => $component->assertNoEmailSent())
             ->withProfiling()
