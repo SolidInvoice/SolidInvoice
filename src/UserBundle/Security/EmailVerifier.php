@@ -11,20 +11,20 @@
 
 namespace SolidInvoice\UserBundle\Security;
 
-use Doctrine\ORM\EntityManagerInterface;
 use SolidInvoice\UserBundle\Entity\User;
+use SolidInvoice\UserBundle\Repository\UserRepository;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 
-class EmailVerifier
+final readonly class EmailVerifier
 {
     public function __construct(
         private VerifyEmailHelperInterface $verifyEmailHelper,
         private MailerInterface $mailer,
-        private EntityManagerInterface $entityManager
+        private UserRepository $userRepository
     ) {
     }
 
@@ -56,7 +56,6 @@ class EmailVerifier
 
         $user->setVerified(true);
 
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
+        $this->userRepository->save($user);
     }
 }

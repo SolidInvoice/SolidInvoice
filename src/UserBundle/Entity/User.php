@@ -28,6 +28,7 @@ use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Uid\NilUlid;
 use Symfony\Component\Uid\Ulid;
 
 #[ORM\Table(name: User::TABLE_NAME)]
@@ -39,7 +40,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     use TimeStampable;
 
-    #[ORM\Column(type: UlidType::NAME)]
+    #[ORM\Column(type: UlidType::NAME, unique: true)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UlidGenerator::class)]
@@ -93,6 +94,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     {
         $this->apiTokens = new ArrayCollection();
         $this->companies = new ArrayCollection();
+        $this->id = new NilUlid();
     }
 
     /**
