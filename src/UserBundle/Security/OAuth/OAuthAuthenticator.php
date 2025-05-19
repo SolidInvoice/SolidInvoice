@@ -32,7 +32,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface;
 
-final class OAuthAuthenticator extends OAuth2Authenticator implements AuthenticationEntrypointInterface
+final class OAuthAuthenticator extends OAuth2Authenticator implements AuthenticationEntryPointInterface
 {
     public function __construct(
         private readonly ClientRegistry $clientRegistry,
@@ -44,7 +44,7 @@ final class OAuthAuthenticator extends OAuth2Authenticator implements Authentica
     ) {
     }
 
-    public function supports(Request $request): ?bool
+    public function supports(Request $request): bool
     {
         return $request->attributes->get('_route') === OAuthConnectCheck::ROUTE &&
             $this->toggle->isActive($request->attributes->get('service') . '_oauth_login');
@@ -83,8 +83,7 @@ final class OAuthAuthenticator extends OAuth2Authenticator implements Authentica
                         $user->setEmail($oauthUser->getEmail());
                         $user->setPassword(''); // No password needed for OAuth users
                         $user->setEnabled(true);
-                        // @TODO: Check $oauthUser->toArray()['email_verified'] to determine if email is verified.
-                        // If the email is not verified, user should not be enabled and should verify their email first
+                        $user->setVerified($oauthUser->getEmailVerified());
                     }
                 }
 

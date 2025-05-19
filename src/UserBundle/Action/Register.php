@@ -20,9 +20,7 @@ use SolidInvoice\UserBundle\Entity\UserInvitation;
 use SolidInvoice\UserBundle\Form\Type\RegisterType;
 use SolidInvoice\UserBundle\Repository\UserInvitationRepository;
 use SolidInvoice\UserBundle\Repository\UserRepository;
-use SolidInvoice\UserBundle\Security\EmailVerifier;
 use SolidWorx\Toggler\ToggleInterface;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,7 +37,6 @@ final class Register extends AbstractController
         private readonly Security $security,
         private readonly UserInvitationRepository $userInvitationRepository,
         private readonly ToggleInterface $toggle,
-        private readonly EmailVerifier $emailVerifier,
     ) {
     }
 
@@ -88,15 +85,6 @@ final class Register extends AbstractController
             $user->setEnabled(true);
             $user->eraseCredentials();
             $this->userRepository->save($user);
-
-            $this->emailVerifier->sendEmailConfirmation(
-                '_verify_email',
-                $user,
-                (new TemplatedEmail())
-                    ->to($user->getEmail())
-                    ->subject('Please Confirm your Email')
-                    ->htmlTemplate('@SolidInvoiceUser/Email/confirm_email.html.twig')
-            );
 
             if ($invitation instanceof UserInvitation) {
                 $this->userInvitationRepository->delete($invitation);

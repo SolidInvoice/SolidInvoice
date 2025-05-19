@@ -16,10 +16,7 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
-final class Version20400 extends AbstractMigration
+final class Version20400_3 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
@@ -28,5 +25,12 @@ final class Version20400 extends AbstractMigration
             'notnull' => false,
             'length' => 45,
         ]);
+        $usersTable->addIndex(['google_id']);
+    }
+
+    public function down(Schema $schema): void
+    {
+        $usersTable = $schema->getTable('users');
+        $usersTable->dropColumn('google_id');
     }
 }
