@@ -30,7 +30,6 @@ jobs:
     env:
       SOLIDINVOICE_ENV: test
       SOLIDINVOICE_DEBUG: 0
-      SOLIDINVOICE_MAILER_DSN: null://null
       PANTHER_NO_HEADLESS: 0
       PANTHER_APP_ENV: test
       PANTHER_NO_SANDBOX: 1
