@@ -43,6 +43,37 @@ class ResetPasswordRequestRepository extends ServiceEntityRepository implements 
         ;
     }
 
+    public function getMostRecentNonExpiredRequestDate(object $user): ?\DateTimeInterface
+    {
+        // Normally there is only 1 max request per use, but written to be flexible
+        /** @var ResetPasswordRequestInterface $resetPasswordRequest */
+        $resetPasswordRequest = $this->createQueryBuilder('t')
+            ->where('t.user = :user')
+            ->setParameter('user', $user->getId(), UlidType::NAME)
+            ->orderBy('t.requestedAt', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+
+        if (null !== $resetPasswordRequest && ! $resetPasswordRequest->isExpired()) {
+            return $resetPasswordRequest->getRequestedAt();
+        }
+
+        return null;
+    }
+
+    public function removeRequests(object $user): void
+    {
+        $query = $this->createQueryBuilder('t')
+            ->delete()
+            ->where('t.user = :user')
+            ->setParameter('user', $user->getId(), UlidType::NAME)
+        ;
+
+        $query->getQuery()->execute();
+    }
+
     /**
      * @param User $user
      */
