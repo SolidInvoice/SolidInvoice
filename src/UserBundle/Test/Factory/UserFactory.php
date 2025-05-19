@@ -77,8 +77,9 @@ final class UserFactory extends PersistentProxyObjectFactory
         $email = self::faker()->email();
         return [
             'email' => $email,
-            'enabled' => self::faker()->boolean(),
+            'enabled' => true,
             'password' => $this->passwordHasher->hash(self::faker()->password()),
+            'verified' => true,
             'roles' => [],
             'companies' => CompanyFactory::random(),
         ];
