@@ -86,14 +86,6 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
         $em->flush();
     }
 
-    public function clearUserConfirmationToken(User $user): void
-    {
-        $user->setConfirmationToken(null)
-            ->setPasswordRequestedAt(null);
-
-        $this->save($user);
-    }
-
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
         $q = $this

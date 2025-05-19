@@ -13,19 +13,24 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Email;
 
+use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Component\Security\Core\User\UserInterface;
+use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordToken;
 
 final class ResetPasswordEmail extends TemplatedEmail
 {
     public function __construct(
-        private readonly UserInterface $user
+        User $user,
+        ResetPasswordToken $resetToken,
     ) {
         parent::__construct();
         $this->to($user->getEmail());
-        $this->subject('Password Reset Request');
+        $this->subject('Your password reset request');
         $this->htmlTemplate('@SolidInvoiceUser/Email/reset_password.html.twig');
         $this->textTemplate('@SolidInvoiceUser/Email/reset_password.txt.twig');
-        $this->context(['user' => $this->user]);
+        $this->context([
+            'user' => $user,
+            'resetToken' => $resetToken,
+        ]);
     }
 }

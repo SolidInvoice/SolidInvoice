@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Entity;
 
-use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -67,12 +66,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     #[ORM\Column(name: 'last_login', type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTimeInterface $lastLogin = null;
-
-    #[ORM\Column(name: 'confirmation_token', type: Types::STRING, length: 180, unique: true, nullable: true)]
-    private ?string $confirmationToken = null;
-
-    #[ORM\Column(name: 'password_requested_at', type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?DateTimeInterface $passwordRequestedAt = null;
 
     /**
      * @var string[]
@@ -211,11 +204,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         return $this->lastLogin;
     }
 
-    public function getConfirmationToken(): ?string
-    {
-        return $this->confirmationToken;
-    }
-
     public function getRoles(): array
     {
         $roles = $this->roles;
@@ -279,31 +267,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         $this->lastLogin = $time;
 
         return $this;
-    }
-
-    public function setConfirmationToken(?string $confirmationToken): self
-    {
-        $this->confirmationToken = $confirmationToken;
-
-        return $this;
-    }
-
-    public function setPasswordRequestedAt(?DateTimeInterface $date = null): self
-    {
-        $this->passwordRequestedAt = $date;
-
-        return $this;
-    }
-
-    public function getPasswordRequestedAt(): ?DateTimeInterface
-    {
-        return $this->passwordRequestedAt;
-    }
-
-    public function isPasswordRequestNonExpired(int $ttl): bool
-    {
-        return $this->getPasswordRequestedAt() instanceof DateTime &&
-            $this->getPasswordRequestedAt()->getTimestamp() + $ttl > time();
     }
 
     /**

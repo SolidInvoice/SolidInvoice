@@ -11,7 +11,7 @@
 
 {% extends "@SolidInvoiceCore/Layout/default_no_nav.html.twig" %}
 
-{% block title %}{{ "Reset your password" }}{% endblock title %}
+{% block title %}{{ "Reset Password" }}{% endblock title %}
 
 {% block content %}
     <section class="container">
@@ -20,12 +20,9 @@
 
         <div class="card widget">
             <div class="card-body">
-                <p>
-                    {{ 'Forgot your password? Enter your email to reset your password.'|trans }}
-                </p>
                 {{ form_start(form) }}
 
-                {{ form_row(form.email) }}
+                {{ form_row(form) }}
                 <div>
                     <button type="submit" class="btn btn-primary">
                         {{ icon('lock') }} {{ 'forgot_password.request.submit'|trans }}

@@ -165,6 +165,7 @@
         "symfony/yunpian-notifier": "^7.1",
         "symfony/zulip-notifier": "^7.1",
         "symfonycasts/dynamic-forms": "^0.1.2",
+        "symfonycasts/reset-password-bundle": "^1.23",
         "tijsverkoyen/css-to-inline-styles": "^2.2",
         "twig/cssinliner-extra": "^3.4",
         "twig/extra-bundle": "^3.10",
@@ -200,7 +201,8 @@
         "symfony/web-profiler-bundle": "^7.1",
         "symplify/easy-coding-standard": "^12.2",
         "zenstruck/browser": "^1.9",
-        "zenstruck/foundry": "^2.2"
+        "zenstruck/foundry": "^2.2",
+        "zenstruck/mailer-test": "^1.4"
     },
     "replace": {
         "symfony/polyfill-php70": "*",
