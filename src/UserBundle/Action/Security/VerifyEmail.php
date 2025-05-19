@@ -34,31 +34,36 @@ final class VerifyEmail extends AbstractController
 
     public function __invoke(Request $request): Response
     {
-        $id = $request->query->get('id');
-        if (null === $id) {
-            $this->addFlash('verify_email_error', 'The email verification link is invalid.');
-            return $this->redirectToRoute('_login');
-        }
+        $id = $request->query->getString('id');
 
-        $user = $this->userRepository->find(Ulid::fromString($id));
+        try {
+            $user = $this->userRepository->find(Ulid::fromString($id));
+        } catch (\InvalidArgumentException) {
+            return $this->invalid();
+        }
 
         // Ensure the user exists in persistence
         if (! $user instanceof User) {
-            $this->addFlash('verify_email_error', 'The email verification link is invalid.');
-            return $this->redirectToRoute('_login');
+            return $this->invalid();
         }
 
-        // validate email confirmation link, sets User::isVerified=true and persists
+        // validate the email confirmation link, sets User::isVerified=true and persists
         try {
             $this->emailVerifier->handleEmailConfirmation($request, $user);
         } catch (VerifyEmailExceptionInterface $exception) {
-            $this->addFlash('verify_email_error', $this->translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
+            $this->addFlash('error', $this->translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
 
             return $this->redirectToRoute('_login');
         }
 
         $this->addFlash('success', 'Your email address has been verified.');
 
+        return $this->redirectToRoute('_login');
+    }
+
+    private function invalid(): Response
+    {
+        $this->addFlash('error', 'The email verification link is invalid.');
         return $this->redirectToRoute('_login');
     }
 }
