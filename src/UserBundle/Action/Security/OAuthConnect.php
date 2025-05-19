@@ -15,6 +15,7 @@ use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use SolidWorx\Toggler\ToggleInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use function array_key_exists;
 
 final class OAuthConnect extends AbstractController
 {
@@ -28,7 +29,7 @@ final class OAuthConnect extends AbstractController
 
     public function __invoke(string $service): RedirectResponse
     {
-        if (! $this->toggle->isActive($service . '_oauth_login')) {
+        if (! $this->toggle->isActive($service . '_oauth_login') || ! array_key_exists($service, $this->clientRegistry->getEnabledClientKeys())) {
             throw $this->createNotFoundException();
         }
 
@@ -44,7 +45,7 @@ final class OAuthConnect extends AbstractController
     {
         return match ($service) {
             'google' => ['profile', 'email'],
-            default => []
+            default => throw $this->createNotFoundException('Service not found'),
         };
     }
 }

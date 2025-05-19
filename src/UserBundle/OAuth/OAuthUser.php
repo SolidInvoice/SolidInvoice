@@ -57,4 +57,12 @@ final readonly class OAuthUser
             default => '',
         };
     }
+
+    public function getEmailVerified(): bool
+    {
+        return match (get_class($this->resourceOwner)) {
+            GoogleUser::class => $this->resourceOwner->toArray()['email_verified'] ?? false,
+            default => false,
+        };
+    }
 }

@@ -34,6 +34,7 @@ use Symfony\Component\Uid\Ulid;
 #[ORM\Table(name: User::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'This email is already in use. Do you want to log in instead?')]
+#[ORM\Index(fields: ['googleId'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringable
 {
     final public const TABLE_NAME = 'users';
@@ -98,14 +99,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         $this->apiTokens = new ArrayCollection();
         $this->companies = new ArrayCollection();
         $this->id = new NilUlid();
-    }
-
-    /**
-     * Don't return the salt, and rely on password_hash to generate a salt.
-     */
-    public function getSalt(): ?string
-    {
-        return null;
     }
 
     /**

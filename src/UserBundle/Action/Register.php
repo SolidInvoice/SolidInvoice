@@ -21,7 +21,6 @@ use SolidInvoice\UserBundle\Repository\UserInvitationRepository;
 use SolidInvoice\UserBundle\Repository\UserRepository;
 use SolidInvoice\UserBundle\Security\EmailVerifier;
 use SolidWorx\Toggler\ToggleInterface;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -79,20 +78,11 @@ final class Register extends AbstractController
             $user->eraseCredentials();
             $this->userRepository->save($user);
 
-            $this->emailVerifier->sendEmailConfirmation(
-                '_verify_email',
-                $user,
-                (new TemplatedEmail())
-                    ->to($user->getEmail())
-                    ->subject('Please Confirm your Email')
-                    ->htmlTemplate('@SolidInvoiceUser/Email/confirm_email.html.twig')
-            );
-
             if ($invitation instanceof UserInvitation) {
                 $this->userInvitationRepository->delete($invitation);
             }
 
-            $route = $this->router->generate('_dashboard');
+            $route = $this->router->generate('_login');
 
             return new class($route) extends RedirectResponse implements FlashResponse {
                 public function getFlash(): Generator
