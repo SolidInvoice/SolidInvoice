@@ -15965,16 +15965,16 @@
         },
         {
             "name": "symfony/ux-autocomplete",
-            "version": "v2.24.0",
+            "version": "v2.25.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-autocomplete.git",
-                "reference": "27379e70b6dc6079b0cef1c559217ba06a75f1a5"
+                "reference": "62f11dd9fd70bdc22c04db9530819471a5aca349"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-autocomplete/zipball/27379e70b6dc6079b0cef1c559217ba06a75f1a5",
-                "reference": "27379e70b6dc6079b0cef1c559217ba06a75f1a5",
+                "url": "https://api.github.com/repos/symfony/ux-autocomplete/zipball/62f11dd9fd70bdc22c04db9530819471a5aca349",
+                "reference": "62f11dd9fd70bdc22c04db9530819471a5aca349",
                 "shasum": ""
             },
             "require": {
@@ -16035,7 +16035,7 @@
                 "symfony-ux"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-autocomplete/tree/v2.24.0"
+                "source": "https://github.com/symfony/ux-autocomplete/tree/v2.25.1"
             },
             "funding": [
                 {
@@ -16051,7 +16051,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-03-17T21:06:48+00:00"
+            "time": "2025-05-19T07:20:25+00:00"
         },
         {
             "name": "symfony/ux-dropzone",
