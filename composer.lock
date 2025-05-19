@@ -23401,28 +23401,30 @@
         },
         {
             "name": "zenstruck/foundry",
-            "version": "v2.4.3",
+            "version": "v2.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zenstruck/foundry.git",
-                "reference": "d4d3c5c220ad6839341906996b28565ba6e43141"
+                "reference": "b6f7f62d28a0d061f4be39588e214a697927deb5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zenstruck/foundry/zipball/d4d3c5c220ad6839341906996b28565ba6e43141",
-                "reference": "d4d3c5c220ad6839341906996b28565ba6e43141",
+                "url": "https://api.github.com/repos/zenstruck/foundry/zipball/b6f7f62d28a0d061f4be39588e214a697927deb5",
+                "reference": "b6f7f62d28a0d061f4be39588e214a697927deb5",
                 "shasum": ""
             },
             "require": {
-                "doctrine/persistence": "^2.0|^3.0|^4.0",
                 "fakerphp/faker": "^1.23",
                 "php": ">=8.1",
                 "symfony/deprecation-contracts": "^2.2|^3.0",
-                "symfony/framework-bundle": "^6.4|^7.0",
                 "symfony/property-access": "^6.4|^7.0",
                 "symfony/property-info": "^6.4|^7.0",
                 "symfony/var-exporter": "^6.4.9|~7.0.9|^7.1.2",
                 "zenstruck/assert": "^1.4"
+            },
+            "conflict": {
+                "doctrine/persistence": "<2.0",
+                "symfony/framework-bundle": "<6.4"
             },
             "require-dev": {
                 "bamarni/composer-bin-plugin": "^1.8",
@@ -23435,9 +23437,11 @@
                 "doctrine/mongodb-odm": "^2.4",
                 "doctrine/mongodb-odm-bundle": "^4.6|^5.0",
                 "doctrine/orm": "^2.16|^3.0",
+                "doctrine/persistence": "^2.0|^3.0|^4.0",
                 "phpunit/phpunit": "^9.5.0 || ^10.0 || ^11.0 || ^12.0",
                 "symfony/console": "^6.4|^7.0",
                 "symfony/dotenv": "^6.4|^7.0",
+                "symfony/framework-bundle": "^6.4|^7.0",
                 "symfony/maker-bundle": "^1.55",
                 "symfony/phpunit-bridge": "^6.4|^7.0",
                 "symfony/runtime": "^6.4|^7.0",
@@ -23495,7 +23499,7 @@
             ],
             "support": {
                 "issues": "https://github.com/zenstruck/foundry/issues",
-                "source": "https://github.com/zenstruck/foundry/tree/v2.4.3"
+                "source": "https://github.com/zenstruck/foundry/tree/v2.5.0"
             },
             "funding": [
                 {
@@ -23503,7 +23507,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-05-05T18:35:36+00:00"
+            "time": "2025-05-13T06:29:48+00:00"
         }
     ],
     "aliases": [],
