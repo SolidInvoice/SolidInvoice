@@ -22,7 +22,7 @@ use Symfony\Component\Security\Http\SecurityRequestAttributes;
 final class Login
 {
     /**
-     * @return array{last_username: ?string, error: ?string, csrf_token: string}
+     * @return array{last_username: ?string, error: ?AuthenticationException, csrf_token: string}
      */
     #[Template('@SolidInvoiceUser/Security/login.html.twig')]
     public function __invoke(Request $request, CsrfTokenManagerInterface $csrfTokenManager): array
