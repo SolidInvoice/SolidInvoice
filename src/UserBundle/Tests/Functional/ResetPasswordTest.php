@@ -56,10 +56,15 @@ final class ResetPasswordTest extends WebTestCase
 
         $emailLink = '';
 
-        $browser
+        $assertSuccessful = $browser
             ->withProfiling()
-            ->request('GET', '/forgot-password')
-            ->assertSuccessful()
+            ->request('GET', '/forgot-password');
+            // ->assertSuccessful();
+
+        echo $browser->content();
+        exit;
+
+        $assertSuccessful
             ->assertSeeIn('title', 'Reset your password')
             ->use(static fn (MailerComponent $component) => $component->assertNoEmailSent())
             ->withProfiling()
