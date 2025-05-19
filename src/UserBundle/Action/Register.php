@@ -19,7 +19,6 @@ use SolidInvoice\UserBundle\Entity\UserInvitation;
 use SolidInvoice\UserBundle\Form\Type\RegisterType;
 use SolidInvoice\UserBundle\Repository\UserInvitationRepository;
 use SolidInvoice\UserBundle\Repository\UserRepository;
-use SolidInvoice\UserBundle\Security\EmailVerifier;
 use SolidWorx\Toggler\ToggleInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -37,7 +36,6 @@ final class Register extends AbstractController
         private readonly UserPasswordHasherInterface $userPasswordHasher,
         private readonly RouterInterface $router,
         private readonly ToggleInterface $toggle,
-        private readonly EmailVerifier $emailVerifier,
     ) {
     }
 
