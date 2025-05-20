@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f07e2c30c03a7762e3d550abadaad17b",
+    "content-hash": "0c64b5a019612526e87a0d0d10649fa8",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -16313,16 +16313,16 @@
         },
         {
             "name": "symfony/ux-live-component",
-            "version": "v2.24.0",
+            "version": "v2.25.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-live-component.git",
-                "reference": "ee1a8e5d01f5b3f2f8e6856941fa8c944677e41c"
+                "reference": "7ad44cf56d750b9f56658ed986286a10da132ee7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-live-component/zipball/ee1a8e5d01f5b3f2f8e6856941fa8c944677e41c",
-                "reference": "ee1a8e5d01f5b3f2f8e6856941fa8c944677e41c",
+                "url": "https://api.github.com/repos/symfony/ux-live-component/zipball/7ad44cf56d750b9f56658ed986286a10da132ee7",
+                "reference": "7ad44cf56d750b9f56658ed986286a10da132ee7",
                 "shasum": ""
             },
             "require": {
@@ -16331,8 +16331,8 @@
                 "symfony/property-access": "^5.4.5|^6.0|^7.0",
                 "symfony/property-info": "^5.4|^6.0|^7.0",
                 "symfony/stimulus-bundle": "^2.9",
-                "symfony/ux-twig-component": "^2.8",
-                "twig/twig": "^3.8.0"
+                "symfony/ux-twig-component": "^2.25.1",
+                "twig/twig": "^3.10.3"
             },
             "conflict": {
                 "symfony/config": "<5.4.0"
@@ -16353,6 +16353,7 @@
                 "symfony/security-bundle": "^5.4|^6.0|^7.0",
                 "symfony/serializer": "^5.4|^6.0|^7.0",
                 "symfony/twig-bundle": "^5.4|^6.0|^7.0",
+                "symfony/uid": "^5.4|^6.0|^7.0",
                 "symfony/validator": "^5.4|^6.0|^7.0",
                 "zenstruck/browser": "^1.2.0",
                 "zenstruck/foundry": "^2.0"
@@ -16387,7 +16388,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-live-component/tree/v2.24.0"
+                "source": "https://github.com/symfony/ux-live-component/tree/v2.25.1"
             },
             "funding": [
                 {
@@ -16403,7 +16404,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-03-12T08:41:47+00:00"
+            "time": "2025-05-19T11:23:13+00:00"
         },
         {
             "name": "symfony/ux-toggle-password",
@@ -23944,9 +23945,9 @@
         "ext-soap": "*",
         "ext-xsl": "*"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "platform-overrides": {
         "php": "8.2"
     },
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }
