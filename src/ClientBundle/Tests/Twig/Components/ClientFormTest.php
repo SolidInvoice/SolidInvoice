@@ -14,6 +14,8 @@ namespace SolidInvoice\ClientBundle\Tests\Twig\Components;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Twig\Components\ClientForm;
 use SolidInvoice\CoreBundle\Test\LiveComponentTest;
+use SolidInvoice\TaxBundle\Entity\Tax;
+use Symfony\Component\Uid\Ulid;
 use Symfony\UX\LiveComponent\Test\TestLiveComponent;
 use Zenstruck\Foundry\Test\Factories;
 
@@ -24,20 +26,13 @@ final class ClientFormTest extends LiveComponentTest
 {
     use Factories;
 
-    private TestLiveComponent $component;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->component = $this
-            ->createLiveComponent(name: ClientForm::class, client: $this->client)
-            ->actingAs($this->getUser());
-    }
-
     public function testRender(): void
     {
-        $this->assertMatchesHtmlSnapshot($this->component->render()->toString());
+        $component = $this
+            ->createLiveComponent(name: ClientForm::class, client: $this->client)
+            ->actingAs($this->getUser());
+
+        $this->assertMatchesHtmlSnapshot($component->render()->toString());
     }
 
     public function testRenderWithExistingData(): void
@@ -50,17 +45,17 @@ final class ClientFormTest extends LiveComponentTest
             'company' => $this->company
         ])->_real();
 
+        (function (): void {
+            /** @var Tax $this */
+            $this->id = Ulid::fromString('0f9e91e6-06ba-11ef-a331-5a2cf21a5680'); // @phpstan-ignore-line
+        })(...)->call($client);
+
         $component = $this
             ->createLiveComponent(ClientForm::class, ['client' => $client])
             ->actingAs($this->getUser());
 
         $this->assertMatchesHtmlSnapshot(
-            $this->replaceChecksum($this->replaceUuid($component->render()->toString()))
+            $this->replaceUuid($component->render()->toString())
         );
-    }
-
-    private function replaceChecksum(string $content): string
-    {
-        return preg_replace('/&quot;&#x40;checksum&quot;&#x3A;&quot;[^"]+&quot;/', '"@checksum":"checksum"', $content);
     }
 }
