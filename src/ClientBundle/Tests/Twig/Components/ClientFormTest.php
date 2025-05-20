@@ -11,12 +11,11 @@
 
 namespace SolidInvoice\ClientBundle\Tests\Twig\Components;
 
+use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Twig\Components\ClientForm;
 use SolidInvoice\CoreBundle\Test\LiveComponentTest;
-use SolidInvoice\TaxBundle\Entity\Tax;
 use Symfony\Component\Uid\Ulid;
-use Symfony\UX\LiveComponent\Test\TestLiveComponent;
 use Zenstruck\Foundry\Test\Factories;
 
 /**
@@ -46,7 +45,7 @@ final class ClientFormTest extends LiveComponentTest
         ])->_real();
 
         (function (): void {
-            /** @var Tax $this */
+            /** @var Client $this */
             $this->id = Ulid::fromString('0f9e91e6-06ba-11ef-a331-5a2cf21a5680'); // @phpstan-ignore-line
         })(...)->call($client);
 
