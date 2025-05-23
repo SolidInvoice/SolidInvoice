@@ -36,6 +36,8 @@ final class ClientFormTest extends LiveComponentTest
 
     public function testRenderWithExistingData(): void
     {
+        $user = $this->getUser();
+
         $client = ClientFactory::createOne([
             'name' => 'Foo Bar',
             'vatNumber' => '12345',
@@ -51,7 +53,7 @@ final class ClientFormTest extends LiveComponentTest
 
         $component = $this
             ->createLiveComponent(ClientForm::class, ['client' => $client])
-            ->actingAs($this->getUser());
+            ->actingAs($user);
 
         $this->assertMatchesHtmlSnapshot(
             $this->replaceUuid($component->render()->toString())
