@@ -58,7 +58,8 @@ if [ -z "${PHP_VERSION}" ]; then
 	export PHP_VERSION
 fi
 # default extension set
-defaultExtensions="apcu,bcmath,bz2,calendar,ctype,curl,dba,dom,exif,fileinfo,filter,ftp,gd,gmp,gettext,iconv,igbinary,imagick,intl,ldap,libxml,mbregex,mbstring,mysqli,mysqlnd,opcache,openssl,parallel,pcntl,pdo,pdo_mysql,pdo_pgsql,pdo_sqlite,pgsql,phar,posix,protobuf,readline,redis,session,shmop,simplexml,soap,sockets,sodium,sqlite3,ssh2,sysvmsg,sysvsem,sysvshm,tidy,tokenizer,xlswriter,xml,xmlreader,xmlwriter,xsl,zip,zlib,yaml,zstd"
+# gmp causes crashes on older CPU archs, so we cannot include it
+defaultExtensions="apcu,bcmath,bz2,calendar,ctype,curl,dba,dom,exif,fileinfo,filter,ftp,gd,gettext,iconv,igbinary,imagick,intl,ldap,libxml,mbregex,mbstring,mysqli,mysqlnd,opcache,openssl,parallel,pcntl,pdo,pdo_mysql,pdo_pgsql,pdo_sqlite,pgsql,phar,posix,protobuf,readline,redis,session,shmop,simplexml,soap,sockets,sodium,sqlite3,ssh2,sysvmsg,sysvsem,sysvshm,tidy,tokenizer,xlswriter,xml,xmlreader,xmlwriter,xsl,zip,zlib,yaml,zstd"
 # if [ "${os}" != "linux" ] || [ "${SPC_LIBC}" = "glibc" ]; then
 # 	defaultExtensions="${defaultExtensions},ffi"
 # fi
