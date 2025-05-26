@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "51ee1a991eb9cfe92453d8fd8c16060f",
+    "content-hash": "a2a6812720f4cca065ebe062729c37c8",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -8483,8 +8483,8 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SolidWorx/platform/zipball/0496a9fff3d0fece3a7ef20ec2fe478c9691c9e0",
-                "reference": "0496a9fff3d0fece3a7ef20ec2fe478c9691c9e0",
+                "url": "https://api.github.com/repos/SolidWorx/platform/zipball/819710be94100211e25017e972bb3a9a656e6981",
+                "reference": "819710be94100211e25017e972bb3a9a656e6981",
                 "shasum": ""
             },
             "require": {
@@ -8544,7 +8544,7 @@
                 "issues": "https://github.com/SolidWorx/platform/issues",
                 "source": "https://github.com/SolidWorx/platform/tree/main"
             },
-            "time": "2025-05-26T11:37:31+00:00"
+            "time": "2025-05-26T17:00:45+00:00"
         },
         {
             "name": "solidworx/toggler",
