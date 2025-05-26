@@ -72,7 +72,7 @@ final class ClientFactory extends PersistentProxyObjectFactory
             'archived' => null,
             'created' => self::faker()->dateTime('2014-02-25 08:37:17'),
             'updated' => self::faker()->dateTime('2014-02-25 08:37:17'),
-            'company' => CompanyFactory::new(),
+            'company' => CompanyFactory::random(),
         ];
     }
 

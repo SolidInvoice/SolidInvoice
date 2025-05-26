@@ -22,7 +22,6 @@ use Faker\Factory;
 use Faker\Generator;
 use SolidInvoice\ApiBundle\ApiTokenManager;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
-use SolidInvoice\CoreBundle\Company\DefaultData;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\UserBundle\Test\Factory\UserFactory;
@@ -86,10 +85,6 @@ abstract class ApiTestCase extends ApiPlatformTestCase
         $registry->getManager()->flush();
 
         static::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
-
-        /** @var DefaultData $defaultData */
-        $defaultData = static::getContainer()->get(DefaultData::class);
-        $defaultData($this->company, ['currency' => 'USD']);
     }
 
     /**

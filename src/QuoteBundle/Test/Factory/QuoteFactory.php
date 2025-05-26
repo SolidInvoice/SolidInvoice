@@ -70,7 +70,7 @@ final class QuoteFactory extends PersistentProxyObjectFactory
     {
         return [
             'client' => ClientFactory::new(),
-            'company' => CompanyFactory::new(),
+            'company' => CompanyFactory::random(),
             'due' => DateTimeImmutable::createFromMutable(self::faker()->dateTime()),
             'status' => self::faker()->word(),
             'terms' => self::faker()->text(),
