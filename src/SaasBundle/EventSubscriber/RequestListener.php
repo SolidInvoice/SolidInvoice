@@ -74,12 +74,12 @@ final readonly class RequestListener implements EventSubscriberInterface
             return;
         }
 
-        switch ($subscription->getStatus()) {
+        switch ($subscription?->getStatus()) {
             case SubscriptionStatus::PENDING:
                 $user = $this->security->getUser();
                 assert($user instanceof User);
 
-                $checkoutUrl = $this->subscriptionManager->getCheckoutUrl($subscription, Options::new()->withEmail($user->getEmail())->withSkipTrial(true));
+                $checkoutUrl = $this->subscriptionManager->getCheckoutUrl($subscription, ['email' => $user->getEmail()]);
                 $event->setResponse(
                     new Response(
                         $this->twig->render('@SolidInvoiceSaas/subscription/pending.html.twig', [
@@ -98,7 +98,7 @@ final readonly class RequestListener implements EventSubscriberInterface
                 $user = $this->security->getUser();
                 assert($user instanceof User);
 
-                $checkoutUrl = $this->subscriptionManager->getCheckoutUrl($subscription, Options::new()->withEmail($user->getEmail())->withSkipTrial(true));
+                $checkoutUrl = $this->subscriptionManager->getCheckoutUrl($subscription, ['email' => $user->getEmail()]);
                 $event->setResponse(
                     new Response(
                         $this->twig->render('@SolidInvoiceSaas/subscription/cancelled.html.twig', [
@@ -125,7 +125,7 @@ final readonly class RequestListener implements EventSubscriberInterface
             return;
         }
 
-        if (($subscription->getStatus() !== SubscriptionStatus::TRIAL && $subscription->getStatus() !== SubscriptionStatus::CANCELLED) || $subscription->getEndDate() <= new DateTimeImmutable('now', new DateTimeZone('UTC'))) {
+        if ($subscription->getStatus() !== SubscriptionStatus::CANCELLED || $subscription->getEndDate() <= new DateTimeImmutable('now', new DateTimeZone('UTC'))) {
             return;
         }
 
@@ -139,15 +139,11 @@ final readonly class RequestListener implements EventSubscriberInterface
         if ($session->has('checkout_url')) {
             $checkoutUrl = $session->get('checkout_url');
         } else {
-            // @TODO: If status is trial, and we want to allow the trial to be extended, skipTrial should be false.
-            $checkoutUrl = $this->subscriptionManager->getCheckoutUrl($subscription, Options::new()->withEmail($user->getEmail())->withSkipTrial(true));
+            $checkoutUrl = $this->subscriptionManager->getCheckoutUrl($subscription, ['email' => $user->getEmail()]);
             $session->set('checkout_url', $checkoutUrl);
         }
 
-        $message = match ($subscription->getStatus()) {
-            SubscriptionStatus::CANCELLED => '<strong>Subscription Canceled</strong> - Your subscription has been canceled. Your access will be revoked on ' . $subscription->getEndDate()->format('Y-m-d H:i:s') . '.<br /><a href="' . $checkoutUrl . '" class="btn btn-default btn-sm">Re-new now<a/> to avoid losing access.',
-            SubscriptionStatus::TRIAL => '<strong>Trial Ending Soon</strong> - Your trial is active until ' . $subscription->getEndDate()->format('Y-m-d H:i:s') . '.<br />Please <a href="' . $checkoutUrl . '" class="btn btn-default btn-sm">activate<a/> your subscription now.',
-        };
+        $message = '<strong>Subscription Canceled</strong> - Your subscription has been canceled. Your access will be revoked on ' . $subscription->getEndDate()->format('Y-m-d H:i:s') . '.<br /><a href="' . $checkoutUrl . '" class="btn btn-default btn-sm">Re-new now<a/> to avoid losing access.';
 
         $content = str_replace(
             '<div class="wrapper">',
