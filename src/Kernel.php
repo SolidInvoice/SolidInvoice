@@ -65,7 +65,7 @@ class Kernel extends BaseKernel
         $builder->setAlias(FormHandler::class, 'solidworx.form_handler');
     }
 
-    private function configureRoutes(RoutingConfigurator $routes): void
+    protected function configureRoutes(RoutingConfigurator $routes): void
     {
         $this->configureRoutesTrait($routes);
 
