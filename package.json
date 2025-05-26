@@ -27,7 +27,6 @@
         "@codecov/webpack-plugin": "^1.0.1",
         "@eslint/js": "^9.21.0",
         "@hotwired/stimulus": "^3.2.2",
-        "@hotwired/turbo": "^7.1.1 || ^8.0",
         "@symfony/stimulus-bundle": "file:vendor/symfony/stimulus-bundle/assets",
         "@symfony/ux-autocomplete": "file:vendor/symfony/ux-autocomplete/assets",
         "@symfony/ux-dropzone": "file:vendor/symfony/ux-dropzone/assets",
