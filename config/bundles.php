@@ -64,9 +64,9 @@ $bundles = [
     SolidWorx\Platform\PlatformBundle\SolidWorxPlatformBundle::class => ['all' => true],
 ];
 
-//if (getenv('SOLIDINVOICE_PLATFORM') === 'saas') {
-$bundles[SolidWorx\Platform\SaasBundle\SolidWorxPlatformSaasBundle::class] = ['all' => true];
-$bundles[SolidInvoice\SaasBundle\SolidInvoiceSaasBundle::class] = ['all' => true];
-//}
+if (getenv('SOLIDINVOICE_PLATFORM') === 'saas') {
+    $bundles[SolidWorx\Platform\SaasBundle\SolidWorxPlatformSaasBundle::class] = ['all' => true];
+    $bundles[SolidInvoice\SaasBundle\SolidInvoiceSaasBundle::class] = ['all' => true];
+}
 
 return $bundles;

@@ -14,12 +14,6 @@
             "email": "open-source@solidworx.co"
         }
     ],
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../../platform"
-        }
-    ],
     "homepage": "https://solidinvoice.co",
     "require": {
         "php": ">=8.3",

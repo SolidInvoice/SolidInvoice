@@ -12,15 +12,18 @@
 namespace SolidInvoice\SaasBundle\EventSubscriber;
 
 use SolidInvoice\CoreBundle\Event\CompanyCreatedEvent;
+use SolidInvoice\UserBundle\Entity\User;
 use SolidWorx\Platform\SaasBundle\Entity\Plan;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use SolidWorx\Platform\SaasBundle\Integration\PaymentIntegrationInterface;
 use SolidWorx\Platform\SaasBundle\Repository\PlanRepository;
 use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionManager;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use function assert;
 
 #[AsEventListener(CompanyCreatedEvent::class, 'onCompanyCreated')]
 #[AsEventListener(KernelEvents::RESPONSE, 'onResponse')]
@@ -32,6 +35,7 @@ final class CompanyEventSubscriber
         private readonly PlanRepository $planRepository,
         private readonly SubscriptionManager $subscriptionManager,
         private readonly PaymentIntegrationInterface $paymentIntegration,
+        private readonly Security $security,
     ) {
     }
 
@@ -51,7 +55,10 @@ final class CompanyEventSubscriber
     public function onResponse(ResponseEvent $event): void
     {
         if ($this->subscription instanceof Subscription) {
-            $checkoutUrl = $this->paymentIntegration->checkout($this->subscription);
+            $user = $this->security->getUser();
+            assert($user instanceof User);
+
+            $checkoutUrl = $this->paymentIntegration->checkout($this->subscription, ['email' => $user->getEmail()]);
             $event->setResponse(
                 new RedirectResponse($checkoutUrl),
             );
