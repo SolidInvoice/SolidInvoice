@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Action;
 
-use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Form\Type\CompanyType;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
@@ -30,7 +29,6 @@ final class CreateCompany extends AbstractController
 {
     public function __construct(
         private readonly Security $security,
-        private readonly CompanySelector $companySelector,
         private readonly CompanyRepository $companyRepository,
         private readonly RouterInterface $router,
     ) {
