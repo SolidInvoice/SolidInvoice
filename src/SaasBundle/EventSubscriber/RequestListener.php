@@ -72,7 +72,7 @@ final readonly class RequestListener implements EventSubscriberInterface
             return;
         }
 
-        switch ($subscription?->getStatus()) {
+        switch ($subscription->getStatus()) {
             case SubscriptionStatus::PENDING:
                 $user = $this->security->getUser();
                 assert($user instanceof User);
