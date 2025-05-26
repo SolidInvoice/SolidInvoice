@@ -65,4 +65,10 @@ final class UserInvitationRepository extends ServiceEntityRepository
         $this->_em->remove($invitation);
         $this->_em->flush();
     }
+
+    public function save(UserInvitation $data): void
+    {
+        $this->_em->persist($data);
+        $this->_em->flush();
+    }
 }
