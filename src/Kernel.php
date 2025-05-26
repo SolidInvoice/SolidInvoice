@@ -23,12 +23,14 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
+use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 use function preg_replace;
 
 class Kernel extends BaseKernel
 {
     use MicroKernelTrait {
         configureContainer as private configureContainerTrait;
+        configureRoutes as private configureRoutesTrait;
     }
 
     public function boot(): void
@@ -61,5 +63,18 @@ class Kernel extends BaseKernel
             ->addTag('form.handler');
 
         $builder->setAlias(FormHandler::class, 'solidworx.form_handler');
+    }
+
+    private function configureRoutes(RoutingConfigurator $routes): void
+    {
+        $this->configureRoutesTrait($routes);
+
+        $bundles = $this->getBundles();
+
+        if (($bundles['SolidWorxPlatformSaasBundle'] ?? null) instanceof SolidWorxPlatformSaasBundle) {
+            $configDir = preg_replace('{/config$}', '/{config}', $this->getConfigDir());
+            $routes->import($configDir . '/{routes}/saas/*.{php,yaml}');
+
+        }
     }
 }
