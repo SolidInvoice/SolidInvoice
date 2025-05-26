@@ -17,10 +17,10 @@ use SolidInvoice\UserBundle\Entity\UserInvitation as UserInvitationEntity;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
 
-final class UserInvitation
+final readonly class UserInvitation
 {
     public function __construct(
-        private readonly MailerInterface $mailer
+        private MailerInterface $mailer
     ) {
     }
 
@@ -29,7 +29,7 @@ final class UserInvitation
         $mail = new TemplatedEmail();
 
         $mail->to($invitation->getEmail())
-            ->from($invitation->getInvitedBy()->getEmail())
+            ->from($invitation->getInvitedBy()?->getEmail())
             ->subject(sprintf('Invitation to join %s', $invitation->getCompany()->getName()))
             ->htmlTemplate('@SolidInvoiceUser/Email/invitation.html.twig')
             ->context([
