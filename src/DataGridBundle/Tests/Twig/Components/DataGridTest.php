@@ -11,9 +11,6 @@
 
 namespace SolidInvoice\DataGridBundle\Tests\Twig\Components;
 
-use const PHP_MAJOR_VERSION;
-use const PHP_MINOR_VERSION;
-use ReflectionClass;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Test\LiveComponentTest;
 use SolidInvoice\DataGridBundle\Twig\Components\DataGrid;
@@ -41,15 +38,6 @@ final class DataGridTest extends LiveComponentTest
         $this->markTestSkipped('This test is flaky, skipping until it can be made more robust');
 
         // ClientFactory::createMany(20, ['company' => $this->company, 'archived' => null, 'status' => 'active']);
-    }
-
-    protected function getSnapshotId(): string
-    {
-        // Faker generates different data between PHP 8.2 and 8.3,
-        // so we set the snapshots differently for the different PHP versions
-        return (new ReflectionClass($this))->getShortName() . '__' .
-            $this->getName() . '__' .
-            $this->snapshotIncrementor . '__' . PHP_MAJOR_VERSION . PHP_MINOR_VERSION;
     }
 
     public function testRenderComponent(): void
