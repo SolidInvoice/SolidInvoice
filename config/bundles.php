@@ -59,7 +59,6 @@ $bundles = [
     Symfony\UX\TogglePassword\TogglePasswordBundle::class => ['all' => true],
     SymfonyCasts\Bundle\ResetPassword\SymfonyCastsResetPasswordBundle::class => ['all' => true],
     Zenstruck\Mailer\Test\ZenstruckMailerTestBundle::class => ['dev' => true, 'test' => true],
-    Symfony\UX\Turbo\TurboBundle::class => ['all' => true],
     SolidWorx\Platform\UiBundle\SolidWorxPlatformUiBundle::class => ['all' => true],
     SolidWorx\Platform\PlatformBundle\SolidWorxPlatformBundle::class => ['all' => true],
 ];
