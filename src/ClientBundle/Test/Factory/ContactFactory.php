@@ -67,7 +67,7 @@ final class ContactFactory extends PersistentProxyObjectFactory
             'firstName' => self::faker()->firstName(),
             'lastName' => self::faker()->lastName(),
             'email' => self::faker()->email(),
-            'company' => CompanyFactory::new(),
+            'company' => CompanyFactory::random(),
         ];
     }
 

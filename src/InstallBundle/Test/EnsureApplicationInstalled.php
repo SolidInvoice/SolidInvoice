@@ -16,7 +16,6 @@ namespace SolidInvoice\InstallBundle\Test;
 use DateTimeInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
-use SolidInvoice\CoreBundle\Company\DefaultData;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Test\Traits\SymfonyKernelTrait;
 use Zenstruck\Foundry\Configuration;
@@ -53,14 +52,11 @@ trait EnsureApplicationInstalled
 
         $this->company = new Company();
         $this->company->setName('SolidInvoice');
+        $this->company->currency = 'USD';
         $registry->getManager()->persist($this->company);
         $registry->getManager()->flush();
 
         static::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
-
-        /** @var DefaultData $defaultData */
-        $defaultData = static::getContainer()->get(DefaultData::class);
-        $defaultData($this->company, ['currency' => 'USD']);
     }
 
     /**

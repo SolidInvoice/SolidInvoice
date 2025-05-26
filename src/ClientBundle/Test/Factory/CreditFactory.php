@@ -67,7 +67,7 @@ final class CreditFactory extends PersistentProxyObjectFactory
     {
         return [
             'value' => new Money(self::faker()->randomNumber(), new Currency(self::faker()->currencyCode())),
-            'company' => CompanyFactory::new(),
+            'company' => CompanyFactory::random(),
         ];
     }
 
