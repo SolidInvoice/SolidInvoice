@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a467d3271721a10f0e3ce15465163a42",
+    "content-hash": "e8f03d573341fc8b7c7c7abd7821bdcc",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -8001,10 +8001,16 @@
         {
             "name": "solidworx/platform",
             "version": "dev-main",
-            "dist": {
-                "type": "path",
-                "url": "../../platform",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SolidWorx/platform.git",
                 "reference": "819710be94100211e25017e972bb3a9a656e6981"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SolidWorx/platform/zipball/0496a9fff3d0fece3a7ef20ec2fe478c9691c9e0",
+                "reference": "0496a9fff3d0fece3a7ef20ec2fe478c9691c9e0",
+                "shasum": ""
             },
             "require": {
                 "doctrine/doctrine-bundle": "^2.13",
@@ -8039,27 +8045,26 @@
                 "spatie/phpunit-snapshot-assertions": "^5.2",
                 "symplify/easy-coding-standard": "^12.5"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "SolidWorx\\Platform\\Component\\": "src/Component",
+                    "SolidWorx\\Platform\\Test\\": "src/Test",
                     "SolidWorx\\Platform\\UiBundle\\": "src/Bundle/Ui",
-                    "SolidWorx\\Platform\\PlatformBundle\\": "src/Bundle/Platform",
+                    "SolidWorx\\Platform\\Component\\": "src/Component",
                     "SolidWorx\\Platform\\SaasBundle\\": "src/Bundle/Saas",
-                    "SolidWorx\\Platform\\Test\\": "src/Test"
+                    "SolidWorx\\Platform\\PlatformBundle\\": "src/Bundle/Platform"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "SolidWorx\\Platform\\Tests\\": "tests/"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
-            "transport-options": {
-                "relative": true
-            }
+            "support": {
+                "issues": "https://github.com/SolidWorx/platform/issues",
+                "source": "https://github.com/SolidWorx/platform/tree/main"
+            },
+            "time": "2025-05-26T11:37:31+00:00"
         },
         {
             "name": "solidworx/toggler",
