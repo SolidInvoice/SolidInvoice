@@ -145,12 +145,6 @@ jobs:
           path: frankenphp/dist/static-php-cli
           key: ${{ matrix.os }}-${{ matrix.platform }}-static-php-cli-${{ hashFiles('frankenphp/dist/static-php-cli/cache_key') }}
 
-      - name: Save static-php cache
-        if: steps.restore-static-php.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
-        with:
-          path: frankenphp/dist/static-php-cli
-          key: ${{ matrix.os }}-${{ matrix.platform }}-static-php-cli-${{ hashFiles('frankenphp/dist/static-php-cli/cache_key') }}
 
   build-linux:
     name: Build binaries
