@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\PasswordStrength;
 
-class RegisterType extends AbstractType
+final class RegisterType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -43,6 +43,9 @@ class RegisterType extends AbstractType
                 'readonly' => true,
             ];
         }
+
+        $builder->add('firstName');
+        $builder->add('lastName');
 
         $builder->add('email', EmailType::class, $emailOptions);
         $builder->add('company', null, [

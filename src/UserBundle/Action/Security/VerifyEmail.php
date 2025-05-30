@@ -17,6 +17,7 @@ use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Repository\UserRepository;
 use SolidInvoice\UserBundle\Security\EmailVerifier;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Uid\Ulid;
@@ -29,6 +30,7 @@ final class VerifyEmail extends AbstractController
         private readonly EmailVerifier $emailVerifier,
         private readonly TranslatorInterface $translator,
         private readonly UserRepository $userRepository,
+        private readonly Security $security,
     ) {
     }
 
@@ -58,7 +60,7 @@ final class VerifyEmail extends AbstractController
 
         $this->addFlash('success', 'Your email address has been verified.');
 
-        return $this->redirectToRoute('_login');
+        return $this->security->login($user, 'security.authenticator.form_login.main', 'main');
     }
 
     private function invalid(): Response

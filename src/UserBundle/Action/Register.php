@@ -93,6 +93,11 @@ final class Register extends AbstractController
             return $this->security->login($user, 'security.authenticator.form_login.main', 'main');
         }
 
-        return $this->render('@SolidInvoiceUser/Security/register.html.twig', ['form' => $form]);
+        return $this->render(
+            '@SolidInvoiceUser/Security/register.html.twig',
+            [
+                'form' => $form->createView(),
+            ]
+        );
     }
 }
