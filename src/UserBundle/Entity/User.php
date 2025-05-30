@@ -152,42 +152,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         return $this;
     }
 
-    public function __serialize(): array
-    {
-        return [
-            $this->enabled,
-            $this->verified,
-            $this->id,
-            $this->firstName,
-            $this->lastName,
-            $this->email,
-            $this->roles,
-            $this->mobile,
-            $this->created,
-            $this->updated,
-        ];
-    }
-
-    public function __unserialize(array $serialized): void
-    {
-        [
-            $this->enabled,
-            $this->verified,
-            $this->id,
-            $this->firstName,
-            $this->lastName,
-            $this->email,
-            $this->roles,
-            $this->mobile,
-            $this->created,
-            $this->updated,
-        ] = $serialized;
-
-        if (null === $this->id) {
-            $this->id = new NilUlid();
-        }
-    }
-
     public function eraseCredentials(): void
     {
         $this->plainPassword = '';

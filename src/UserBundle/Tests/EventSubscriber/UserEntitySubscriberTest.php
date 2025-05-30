@@ -35,9 +35,9 @@ use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 final class UserEntitySubscriberTest extends TestCase
 {
     /**
-     * Test that prePersist does not send an email for verified users.
+     * Test that postPersist does not send an email for verified users.
      */
-    public function testPrePersistWithVerifiedUser(): void
+    public function testPostPersistWithVerifiedUser(): void
     {
         $verifyEmailHelper = $this->createMock(VerifyEmailHelperInterface::class);
         $mailer = $this->createMock(MailerInterface::class);
@@ -65,13 +65,13 @@ final class UserEntitySubscriberTest extends TestCase
             ->expects($this->never())
             ->method('send');
 
-        $subscriber->prePersist($user);
+        $subscriber->postPersist($user);
     }
 
     /**
-     * Test that prePersist attempts to send an email for unverified users.
+     * Test that postPersist attempts to send an email for unverified users.
      */
-    public function testPrePersistWithUnverifiedUser(): void
+    public function testPostPersistWithUnverifiedUser(): void
     {
         $verifyEmailHelper = $this->createMock(VerifyEmailHelperInterface::class);
         $mailer = $this->createMock(MailerInterface::class);
@@ -107,13 +107,13 @@ final class UserEntitySubscriberTest extends TestCase
                     && $email->getHtmlTemplate() === '@SolidInvoiceUser/Email/confirm_email.html.twig';
             }));
 
-        $subscriber->prePersist($user);
+        $subscriber->postPersist($user);
     }
 
     /**
-     * Test that prePersist handles exceptions properly.
+     * Test that postPersist handles exceptions properly.
      */
-    public function testPrePersistWithException(): void
+    public function testPostPersistWithException(): void
     {
         $verifyEmailHelper = $this->createMock(VerifyEmailHelperInterface::class);
         $mailer = $this->createMock(MailerInterface::class);
@@ -153,7 +153,7 @@ final class UserEntitySubscriberTest extends TestCase
             ->method('generateSignature')
             ->willThrowException($exception);
 
-        $subscriber->prePersist($user);
+        $subscriber->postPersist($user);
 
         $logs = $logger->cleanLogs();
         $this->assertCount(1, $logs);
