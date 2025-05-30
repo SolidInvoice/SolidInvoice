@@ -26,6 +26,8 @@ class SystemInformationFormTest extends FormTestCase
         $formData = [
             'locale' => $this->faker->randomKey(Locales::getNames()),
             'email_address' => $this->faker->email,
+            'first_name' => $this->faker->firstName,
+            'last_name' => $this->faker->lastName,
             'password' => null,
         ];
 
