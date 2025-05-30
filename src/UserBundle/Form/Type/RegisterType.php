@@ -20,16 +20,14 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class RegisterType extends AbstractType
+final class RegisterType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $emailOptions = [
             'required' => true,
-            'constraints' => [new NotBlank(), new Email(['mode' => Email::VALIDATION_MODE_STRICT])],
         ];
 
         if (isset($options['email'])) {
@@ -38,6 +36,9 @@ class RegisterType extends AbstractType
                 'readonly' => true
             ];
         }
+
+        $builder->add('firstName');
+        $builder->add('lastName');
 
         $builder->add('email', EmailType::class, $emailOptions);
         $builder->add(

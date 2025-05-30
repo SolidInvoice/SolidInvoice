@@ -28,10 +28,10 @@
                         <tbody>
                         <tr>
                             <th>
-                                {{ 'profile.show.username'|trans }}
+                                {{ 'Name'|trans }}
                             </th>
                             <td>
-                                {{ app.user.userIdentifier }}
+                                {{ app.user.firstName }} {{ app.user.lastName }}
                             </td>
                         </tr>
                         <tr>
@@ -48,26 +48,6 @@
                             </th>
                             <td>
                                 {{ app.user.mobile }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                {{ 'profile.show.last_login'|trans }}
-                            </th>
-                            <td>
-                                {{ app.user.lastLogin|date }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                {{ 'profile.show.enabled'|trans }}
-                            </th>
-                            <td>
-                                {% if app.user.enabled %}
-                                    <span class="badge badge-pill bg-green">{{ 'profile.show.yes'|trans }}</span>
-                                {% else %}
-                                    <span class="badge badge-pill bg-red">{{ 'profile.show.no'|trans }}</span>
-                                {% endif %}
                             </td>
                         </tr>
                         <tr>

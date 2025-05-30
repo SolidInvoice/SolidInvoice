@@ -19,7 +19,7 @@ use SolidInvoice\UserBundle\Security\EmailVerifier;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
-#[AsEntityListener(event: Events::prePersist, entity: User::class)]
+#[AsEntityListener(event: Events::postPersist, entity: User::class)]
 final readonly class UserEntitySubscriber
 {
     public function __construct(
@@ -28,7 +28,7 @@ final readonly class UserEntitySubscriber
     ) {
     }
 
-    public function prePersist(User $user): void
+    public function postPersist(User $user): void
     {
         if ($user->isVerified()) {
             return;

@@ -29,6 +29,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Uid\NilUlid;
 use Symfony\Component\Uid\Ulid;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: User::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -46,6 +47,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     #[ORM\CustomIdGenerator(class: UlidGenerator::class)]
     private ?Ulid $id = null;
 
+    #[ORM\Column(name: 'first_name', type: Types::STRING, length: 45, nullable: true)]
+    #[Assert\NotBlank()]
+    private ?string $firstName = null;
+
+    #[ORM\Column(name: 'last_name', type: Types::STRING, length: 45, nullable: true)]
+    #[Assert\NotBlank()]
+    private ?string $lastName = null;
+
     #[ORM\Column(name: 'mobile', type: Types::STRING, nullable: true)]
     private ?string $mobile = null;
 
@@ -56,6 +65,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     private Collection $apiTokens;
 
     #[ORM\Column(name: 'email', type: Types::STRING, length: 180, unique: true)]
+    #[Assert\NotBlank()]
+    #[Assert\Email(
+        message: 'The email "{{ value }}" is not a valid email address.',
+        mode: Assert\Email::VALIDATION_MODE_STRICT,
+    )]
     private ?string $email = null;
 
     #[ORM\Column(name: 'enabled', type: Types::BOOLEAN)]
@@ -332,6 +346,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     public function setGoogleId(?string $googleId): self
     {
         $this->googleId = $googleId;
+
+        return $this;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName(?string $firstName): static
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName(?string $lastName): static
+    {
+        $this->lastName = $lastName;
 
         return $this;
     }

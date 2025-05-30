@@ -63,7 +63,6 @@ final class Register extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $user = $form->getData();
 
             if ($invitation instanceof UserInvitation) {
@@ -93,7 +92,7 @@ final class Register extends AbstractController
         return $this->render(
             '@SolidInvoiceUser/Security/register.html.twig',
             [
-                'form' => $form->createView(),
+                'form' => $form,
             ]
         );
     }
