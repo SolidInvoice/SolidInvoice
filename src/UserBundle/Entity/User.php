@@ -138,11 +138,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         return $this;
     }
 
-    public function __toString(): string
-    {
-        return $this->email;
-    }
-
     public function addRole(string $role): self
     {
         $role = strtoupper($role);
@@ -157,33 +152,40 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         return $this;
     }
 
-    public function serialize(): string
+    public function __serialize(): array
     {
-        return serialize([
-            $this->password,
+        return [
             $this->enabled,
             $this->verified,
             $this->id,
+            $this->firstName,
+            $this->lastName,
             $this->email,
             $this->roles,
             $this->mobile,
             $this->created,
             $this->updated,
-        ]);
+        ];
     }
 
-    public function unserialize(string $serialized): void
+    public function __unserialize(array $serialized): void
     {
         [
-            $this->password,
             $this->enabled,
             $this->verified,
             $this->id,
+            $this->firstName,
+            $this->lastName,
             $this->email,
             $this->roles,
+            $this->mobile,
             $this->created,
-            $this->updated
-        ] = unserialize($serialized);
+            $this->updated,
+        ] = $serialized;
+
+        if (null === $this->id) {
+            $this->id = new NilUlid();
+        }
     }
 
     public function eraseCredentials(): void
@@ -203,7 +205,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     public function getEmail(): ?string
     {
-        return $this->email;
+        return $this->getUserIdentifier();
     }
 
     public function getPassword(): ?string
@@ -372,5 +374,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         $this->lastName = $lastName;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->email;
     }
 }
