@@ -82,6 +82,8 @@ final class InstallationTest extends PantherTestCase
             ->click('#continue_step')
             ->assertOn('/install/setup')
             ->fillField('system_information[locale]', 'en')
+            ->fillField('system_information[first_name]', faker()->firstName())
+            ->fillField('system_information[last_name]', faker()->lastName())
             ->fillField('system_information[email_address]', faker()->email())
             ->fillField('system_information[password][first]', $password)
             ->fillField('system_information[password][second]', $password)
