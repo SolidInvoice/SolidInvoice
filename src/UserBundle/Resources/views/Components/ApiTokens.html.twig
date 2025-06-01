@@ -1,108 +1,100 @@
 <div {{ attributes }}>
     {% include "@SolidInvoiceCore/flash.html.twig" %}
 
-    <div class="card">
-        <div class="card-body">
-            <div class="alert alert-info">
-                To view the API documentation, visit the <a href="{{ path('api_doc') }}" target="_blank">API documentation</a> page.
-            </div>
-
-                {% for token in apiTokens %}
-                    <ul class="list-group mb-4">
-                        <li class="list-group-item">
-                            <div class="list-group-item-heading">
-                                <h6>
-                                    {{ token.name }}
-                                </h6>
-                                <p>
-                                    <div class="input-group" {{ stimulus_controller('password-visibility', controllerClasses = { 'hidden': 'd-none' })|stimulus_controller('clipboard', {'success-content': 'Copied!'}) }}>
-                                        <div class="input-group-prepend">
-                                            <a href="#" class="btn btn-default btn-sm pt-2" title="{{ 'Copy to clipboard'|trans }}" rel="tooltip" {{ stimulus_target('clipboard', 'button') }} {{ stimulus_action('clipboard', 'copy') }}>
-                                                {{ icon('paste')}}
-                                            </a>
-                                        </div>
-                                        <div class="input-group-prepend">
-                                            <a href="#" class="btn btn-default btn-sm pt-2" title="{{ 'View Token'|trans }}" rel="tooltip" {{ stimulus_action('password-visibility', 'toggle') }}">
-                                                <span {{ stimulus_target('password-visibility', 'icon') }}>
+    {% for token in apiTokens %}
+        <ul class="list-group mb-4">
+            <li class="list-group-item">
+                <div class="list-group-item-heading">
+                    <h6>
+                        {{ token.name }}
+                    </h6>
+                    <p>
+                    <div class="input-group" {{ stimulus_controller('password-visibility', controllerClasses = { 'hidden': 'd-none' })|stimulus_controller('clipboard', {'success-content': 'Copied!'}) }}>
+                        <div class="input-group-prepend">
+                            <a href="#" class="btn btn-default btn-sm pt-2" title="{{ 'Copy to clipboard'|trans }}" rel="tooltip" {{ stimulus_target('clipboard', 'button') }} {{ stimulus_action('clipboard', 'copy') }}>
+                                {{ icon('paste')}}
+                            </a>
+                        </div>
+                        <div class="input-group-prepend">
+                            <a href="#" class="btn btn-default btn-sm pt-2" title="{{ 'View Token'|trans }}" rel="tooltip" {{ stimulus_action('password-visibility', 'toggle') }}">
+                            <span {{ stimulus_target('password-visibility', 'icon') }}>
                                                     {{ icon('eye')}}
                                                 </span>
-                                                <span {{ stimulus_target('password-visibility', 'icon') }} class="d-none">
+                            <span {{ stimulus_target('password-visibility', 'icon') }} class="d-none">
                                                     {{ icon('eye-slash')}}
                                                 </span>
-                                            </a>
-                                        </div>
-                                        <input readonly="readonly" value="{{ token.token }}" class="form-control" type="password" {{ stimulus_target('clipboard', 'source') }} {{ stimulus_target('password-visibility', 'input') }} spellcheck="false" />
-                                        <div class="input-group-append">
-                                            <a href="#" class="btn btn-danger btn-sm revoke-token pt-2" data-toggle="modal" data-target="#{{ 'revoke-' ~ token.id }}">
-                                                {{ icon('ban')}} {{ 'profile.api.tokens.revoke'|trans }}
-                                            </a>
+                            </a>
+                        </div>
+                        <input readonly="readonly" value="{{ token.token }}" class="form-control" type="password" {{ stimulus_target('clipboard', 'source') }} {{ stimulus_target('password-visibility', 'input') }} spellcheck="false" />
+                        <div class="input-group-append">
+                            <a href="#" class="btn btn-danger btn-sm revoke-token pt-2" data-toggle="modal" data-target="#{{ 'revoke-' ~ token.id }}">
+                                {{ icon('ban')}} {{ 'profile.api.tokens.revoke'|trans }}
+                            </a>
 
-                                            {% component BootstrapModal with {id: 'revoke-' ~ token.id} %}
-                                                {% block modal_header %}
-                                                    <h5>{{ 'Confirm'|trans }}</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                {% endblock %}
-                                                {% block modal_body %}
-                                                    {{ 'Are you sure you want to revoke this token?'|trans }}
-                                                {% endblock %}
-                                                {% block modal_footer %}
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'Close'|trans }}</button>
-                                                    <button type="button" class="btn btn-primary" {{ live_action('revoke:prevent', {'token': token.id}) }}>{{ 'Confirm'|trans }}</button>
-                                                {% endblock %}
-                                            {% endcomponent %}
-                                        </div>
-                                    </div>
-                                </p>
-                                <p>
-                                    <div class="float-right">
-                                        <a href="#" class="view-token-history btn btn-primary btn-flat btn-sm" data-toggle="modal" data-target="#history-{{ token.id }}">
-                                            {{ 'profile.api.tokens.history'|trans }}
-                                        </a>
-                                    </div>
-
-                                    <small>
-                                        <strong>{{ 'profile.api.tokens.used.last'|trans }}</strong>
-                                        {% if token.lastUsed is not empty %}
-                                            {{ 'profile.api.tokens.used.text'|trans({'%date%': token.lastUsed|date('d F Y'), '%ip%': token.ip})}}
-                                        {% else %}
-                                            {{ 'profile.api.tokens.used.never'|trans }}
-                                        {% endif %}
-                                    </small>
-                                </p>
-                            </div>
-
-                            <twig:BootstrapModal id="history-{{ token.id }}">
-                                <twig:block name="modal_header">
-                                    <h5>{{ 'Request history for token %name%'|trans({'%name%': token.name}) }}</h5>
+                            {% component BootstrapModal with {id: 'revoke-' ~ token.id} %}
+                                {% block modal_header %}
+                                    <h5>{{ 'Confirm'|trans }}</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
-                                </twig:block>
-                                <twig:block name="modal_body">
-                                    <twig:ApiTokenHistory token="{{ token.id }}" loading="lazy">
-                                        <twig:block name="loadingContent">
-                                            <div class="d-flex justify-content-center">
-                                                <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
-                                            </div>
-                                        </twig:block>
-                                    </twig:ApiTokenHistory>
-                                </twig:block>
-                                <twig:block name="modal_footer">
+                                {% endblock %}
+                                {% block modal_body %}
+                                    {{ 'Are you sure you want to revoke this token?'|trans }}
+                                {% endblock %}
+                                {% block modal_footer %}
                                     <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'Close'|trans }}</button>
-                                </twig:block>
-                            </twig:BootstrapModal>
+                                    <button type="button" class="btn btn-primary" {{ live_action('revoke:prevent', {'token': token.id}) }}>{{ 'Confirm'|trans }}</button>
+                                {% endblock %}
+                            {% endcomponent %}
+                        </div>
+                    </div>
+                    </p>
+                    <p>
+                    <div class="float-right">
+                        <a href="#" class="view-token-history btn btn-primary btn-flat btn-sm" data-toggle="modal" data-target="#history-{{ token.id }}">
+                            {{ 'profile.api.tokens.history'|trans }}
+                        </a>
+                    </div>
 
-                        </li>
-                    </ul>
-                {% else %}
-                    <ul class="list-group mb-4">
-                        <li class="list-group-item">
-                            {{ 'profile.api.tokens.empty'|trans }}
-                        </li>
-                    </ul>
-                {% endfor %}
-        </div>
-    </div>
+                    <small>
+                        <strong>{{ 'profile.api.tokens.used.last'|trans }}</strong>
+                        {% if token.lastUsed is not empty %}
+                            {{ 'profile.api.tokens.used.text'|trans({'%date%': token.lastUsed|date('d F Y'), '%ip%': token.ip})}}
+                        {% else %}
+                            {{ 'profile.api.tokens.used.never'|trans }}
+                        {% endif %}
+                    </small>
+                    </p>
+                </div>
+
+                <twig:BootstrapModal id="history-{{ token.id }}">
+                    <twig:block name="modal_header">
+                        <h5>{{ 'Request history for token %name%'|trans({'%name%': token.name}) }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </twig:block>
+                    <twig:block name="modal_body">
+                        <twig:ApiTokenHistory token="{{ token.id }}" loading="lazy">
+                            <twig:block name="loadingContent">
+                                <div class="d-flex justify-content-center">
+                                    <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+                                </div>
+                            </twig:block>
+                        </twig:ApiTokenHistory>
+                    </twig:block>
+                    <twig:block name="modal_footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'Close'|trans }}</button>
+                    </twig:block>
+                </twig:BootstrapModal>
+
+            </li>
+        </ul>
+    {% else %}
+        <ul class="list-group mb-4">
+            <li class="list-group-item">
+                {{ 'profile.api.tokens.empty'|trans }}
+            </li>
+        </ul>
+    {% endfor %}
 </div>
