@@ -31,7 +31,7 @@ class FieldRenderer
      *
      * @throws LoaderError|SyntaxError
      */
-    public function render(FormView $form, string $path = null): array
+    public function render(FormView $form, ?string $path = null): array
     {
         $items = [];
 

@@ -19,7 +19,7 @@ use Money\MoneyFormatter;
 
 interface MoneyFormatterInterface extends MoneyFormatter
 {
-    public function getCurrencySymbol(Currency|string $currency = null): string;
+    public function getCurrencySymbol(Currency|string|null $currency = null): string;
 
     public function getThousandSeparator(): string;
 

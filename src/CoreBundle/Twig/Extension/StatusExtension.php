@@ -81,22 +81,22 @@ class StatusExtension extends AbstractExtension
         return [
             new TwigFunction(
                 'invoice_label',
-                fn (Environment $environment, string $status = null, $tooltip = null) => $this->renderInvoiceStatusLabel($environment, $status, $tooltip),
+                fn (Environment $environment, ?string $status = null, $tooltip = null) => $this->renderInvoiceStatusLabel($environment, $status, $tooltip),
                 ['is_safe' => ['html'], 'needs_environment' => true]
             ),
             new TwigFunction(
                 'quote_label',
-                fn (Environment $environment, string $status = null, $tooltip = null) => $this->renderQuoteStatusLabel($environment, $status, $tooltip),
+                fn (Environment $environment, ?string $status = null, $tooltip = null) => $this->renderQuoteStatusLabel($environment, $status, $tooltip),
                 ['is_safe' => ['html'], 'needs_environment' => true]
             ),
             new TwigFunction(
                 'payment_label',
-                fn (Environment $environment, string $status = null, $tooltip = null) => $this->renderPaymentStatusLabel($environment, $status, $tooltip),
+                fn (Environment $environment, ?string $status = null, $tooltip = null) => $this->renderPaymentStatusLabel($environment, $status, $tooltip),
                 ['is_safe' => ['html'], 'needs_environment' => true]
             ),
             new TwigFunction(
                 'client_label',
-                fn (Environment $environment, string $status = null, $tooltip = null) => $this->renderClientStatusLabel($environment, $status, $tooltip),
+                fn (Environment $environment, ?string $status = null, $tooltip = null) => $this->renderClientStatusLabel($environment, $status, $tooltip),
                 ['is_safe' => ['html'], 'needs_environment' => true]
             ),
         ];
@@ -107,7 +107,7 @@ class StatusExtension extends AbstractExtension
      *
      * @throws Exception
      */
-    public function renderInvoiceStatusLabel(Environment $environment, string $status = null, string $tooltip = null): string|array
+    public function renderInvoiceStatusLabel(Environment $environment, ?string $status = null, ?string $tooltip = null): string|array
     {
         if (null === $status) {
             return $this->getAllStatusLabels($environment, $this->invoiceLabelMap);
@@ -144,7 +144,7 @@ class StatusExtension extends AbstractExtension
     /**
      * Return the status converted into a label string.
      */
-    private function renderStatusLabel(Environment $environment, mixed $object, string $tooltip = null): string
+    private function renderStatusLabel(Environment $environment, mixed $object, ?string $tooltip = null): string
     {
         if (is_array($object) && array_key_exists('status_label', $object) && array_key_exists('status', $object)) {
             $object = [
@@ -167,7 +167,7 @@ class StatusExtension extends AbstractExtension
      *
      * @throws Exception
      */
-    public function renderQuoteStatusLabel(Environment $environment, string $status = null, string $tooltip = null): string|array
+    public function renderQuoteStatusLabel(Environment $environment, ?string $status = null, ?string $tooltip = null): string|array
     {
         if (null === $status) {
             return $this->getAllStatusLabels($environment, $this->quoteLabelMap);
@@ -190,7 +190,7 @@ class StatusExtension extends AbstractExtension
      *
      * @throws Exception
      */
-    public function renderPaymentStatusLabel(Environment $environment, string $status = null, string $tooltip = null): string|array
+    public function renderPaymentStatusLabel(Environment $environment, ?string $status = null, ?string $tooltip = null): string|array
     {
         if (null === $status) {
             return $this->getAllStatusLabels($environment, $this->paymentLabelMap);
@@ -213,7 +213,7 @@ class StatusExtension extends AbstractExtension
      *
      * @throws Exception
      */
-    public function renderClientStatusLabel(Environment $environment, string $status = null, string $tooltip = null): string|array
+    public function renderClientStatusLabel(Environment $environment, ?string $status = null, ?string $tooltip = null): string|array
     {
         if (null === $status) {
             return $this->getAllStatusLabels($environment, $this->clientLabelMap);

@@ -76,7 +76,7 @@ class PaymentRepository extends ServiceEntityRepository
      *
      * @return array<string, string|int|DateTimeInterface>
      */
-    public function getPaymentsForInvoice(Invoice $invoice, string $orderField = null, string $sort = 'DESC'): array
+    public function getPaymentsForInvoice(Invoice $invoice, ?string $orderField = null, string $sort = 'DESC'): array
     {
         $queryBuilder = $this->getPaymentQueryBuilder($orderField, $sort);
 
@@ -87,7 +87,7 @@ class PaymentRepository extends ServiceEntityRepository
         return $queryBuilder->getQuery()->getArrayResult();
     }
 
-    protected function getPaymentQueryBuilder(string $orderField = null, string $sort = 'DESC'): QueryBuilder
+    protected function getPaymentQueryBuilder(?string $orderField = null, string $sort = 'DESC'): QueryBuilder
     {
         if (null === $orderField) {
             $orderField = 'p.created';
@@ -147,7 +147,7 @@ class PaymentRepository extends ServiceEntityRepository
      *
      * @return array<string, string|int|DateTimeInterface>
      */
-    public function getPaymentsForClient(Client $client, string $orderField = null, string $sort = 'DESC'): array
+    public function getPaymentsForClient(Client $client, ?string $orderField = null, string $sort = 'DESC'): array
     {
         $queryBuilder = $this->getPaymentQueryBuilder($orderField, $sort);
 
@@ -188,7 +188,7 @@ class PaymentRepository extends ServiceEntityRepository
      * @deprecated Use getPaymentsByMonth instead
      * @return array<array<int>>
      */
-    public function getPaymentsList(DateTime $timestamp = null): array
+    public function getPaymentsList(?DateTime $timestamp = null): array
     {
         $queryBuilder = $this->createQueryBuilder('p');
 

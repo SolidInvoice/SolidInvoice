@@ -31,7 +31,7 @@ class QuoteRepository extends ServiceEntityRepository
         parent::__construct($registry, Quote::class);
     }
 
-    public function getTotalQuotes(string $status = null): int
+    public function getTotalQuotes(?string $status = null): int
     {
         $qb = $this->createQueryBuilder('q');
 

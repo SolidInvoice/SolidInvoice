@@ -28,7 +28,7 @@ class Version implements Stringable
     #[ORM\Id]
     private ?string $version = null;
 
-    public function __construct(string $version = null)
+    public function __construct(?string $version = null)
     {
         $this->setVersion($version);
     }

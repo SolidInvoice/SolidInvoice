@@ -44,7 +44,7 @@ class TraceLogger implements SQLLogger
      */
     public $currentQuery = 0;
 
-    public function startQuery($sql, array $params = null, array $types = null): void
+    public function startQuery($sql, ?array $params = null, ?array $types = null): void
     {
         if ($this->enabled) {
             $backtrace = $this->getBactrace();

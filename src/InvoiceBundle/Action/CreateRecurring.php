@@ -31,7 +31,7 @@ final class CreateRecurring
     ) {
     }
 
-    public function __invoke(Request $request, Client $client = null): FormRequest | Template
+    public function __invoke(Request $request, ?Client $client = null): FormRequest | Template
     {
         $totalClientsCount = $this->clientRepository->getTotalClients();
         if (0 === $totalClientsCount) {

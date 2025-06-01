@@ -44,7 +44,7 @@ class InvoiceRepository extends ServiceEntityRepository
      * @throws MathException
      * @deprecated This function is deprecated, and the one in PaymentRepository should be used instead
      */
-    public function getTotalIncome(Client $client = null): BigNumber
+    public function getTotalIncome(?Client $client = null): BigNumber
     {
         @trigger_error(
             'This function is deprecated, and the one in PaymentRepository should be used instead',
@@ -59,7 +59,7 @@ class InvoiceRepository extends ServiceEntityRepository
      *
      * @throws MathException
      */
-    public function getTotalByStatus(string $status, Client $client = null): BigNumber
+    public function getTotalByStatus(string $status, ?Client $client = null): BigNumber
     {
         $qb = $this->createQueryBuilder('i');
 
@@ -82,7 +82,7 @@ class InvoiceRepository extends ServiceEntityRepository
     /**
      * Get the total amount for outstanding invoices.
      */
-    public function getTotalOutstanding(Client $client = null): int
+    public function getTotalOutstanding(?Client $client = null): int
     {
         $qb = $this->createQueryBuilder('i');
 
@@ -109,7 +109,7 @@ class InvoiceRepository extends ServiceEntityRepository
      *
      * @param string|string[] $status
      */
-    public function getCountByStatus(string | array $status, Client $client = null): int
+    public function getCountByStatus(string | array $status, ?Client $client = null): int
     {
         $qb = $this->createQueryBuilder('i');
 

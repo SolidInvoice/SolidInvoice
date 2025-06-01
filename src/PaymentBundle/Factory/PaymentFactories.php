@@ -34,7 +34,7 @@ class PaymentFactories
         $this->forms = $gateForms;
     }
 
-    public function getFactories(string $type = null): ?array
+    public function getFactories(?string $type = null): ?array
     {
         if (null === $type) {
             return $this->factories;

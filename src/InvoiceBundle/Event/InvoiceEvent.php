@@ -23,7 +23,7 @@ class InvoiceEvent extends Event
      */
     protected $invoice;
 
-    public function __construct(BaseInvoice $invoice = null)
+    public function __construct(?BaseInvoice $invoice = null)
     {
         $this->invoice = $invoice;
     }

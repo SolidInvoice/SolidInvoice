@@ -36,7 +36,7 @@ final class Create
      * @return Template|FormRequest
      * @throws Exception
      */
-    public function __invoke(Request $request, Client $client = null)
+    public function __invoke(Request $request, ?Client $client = null)
     {
         $totalClientsCount = $this->repository->getTotalClients();
         if (0 === $totalClientsCount) {

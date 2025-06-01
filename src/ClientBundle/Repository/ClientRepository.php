@@ -34,7 +34,7 @@ class ClientRepository extends ServiceEntityRepository
         parent::__construct($registry, Client::class);
     }
 
-    public function getTotalClients(string $status = null): int
+    public function getTotalClients(?string $status = null): int
     {
         $qb = $this->createQueryBuilder('c');
 

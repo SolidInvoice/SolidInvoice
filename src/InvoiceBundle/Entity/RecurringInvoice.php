@@ -166,7 +166,7 @@ class RecurringInvoice extends BaseInvoice
         return $this->dateStart;
     }
 
-    public function setDateStart(DateTimeInterface $dateStart = null): self
+    public function setDateStart(?DateTimeInterface $dateStart = null): self
     {
         $this->dateStart = $dateStart;
 
@@ -178,7 +178,7 @@ class RecurringInvoice extends BaseInvoice
         return $this->dateEnd;
     }
 
-    public function setDateEnd(DateTimeInterface $dateEnd = null): self
+    public function setDateEnd(?DateTimeInterface $dateEnd = null): self
     {
         $this->dateEnd = $dateEnd;
 

@@ -60,7 +60,7 @@ class UpdatePaymentDetailsExtension implements ExtensionInterface
     {
     }
 
-    public function onException(Exception $exception, $request, ActionInterface $action = null): void
+    public function onException(Exception $exception, $request, ?ActionInterface $action = null): void
     {
     }
 }

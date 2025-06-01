@@ -35,7 +35,7 @@ trait SerializeTrait
     /**
      * @throws Exception
      */
-    protected function serialize(mixed $object, array $groups = [], Response $response = null): Response
+    protected function serialize(mixed $object, array $groups = [], ?Response $response = null): Response
     {
         if (! $this->serializer) {
             throw new Exception(sprintf('You need to call %s::setSerializer with a valid %s instance before calling %s', static::class, SerializerInterface::class, __METHOD__));

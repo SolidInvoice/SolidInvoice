@@ -195,7 +195,7 @@ class Line implements LineInterface, Stringable
         return $this->qty;
     }
 
-    public function setQuote(Quote $quote = null): LineInterface
+    public function setQuote(?Quote $quote = null): LineInterface
     {
         $this->quote = $quote;
 

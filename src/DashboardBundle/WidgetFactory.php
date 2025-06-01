@@ -44,7 +44,7 @@ class WidgetFactory
     /**
      * @throws Exception
      */
-    public function add(WidgetInterface $widget, string $location = null, int $priority = null): void
+    public function add(WidgetInterface $widget, ?string $location = null, ?int $priority = null): void
     {
         $location = $location ?: self::DEFAULT_LOCATION;
 
