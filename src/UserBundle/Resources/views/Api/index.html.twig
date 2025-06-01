@@ -7,17 +7,26 @@
  # with this source code in the file LICENSE.
  #}
 
-{% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
+{% set menuItem = 'api-tokens' %}
+
+{% extends "@SolidInvoiceUser/Layout/profile.html.twig" %}
 
 {% block title %}{{ "profile.api.title"|trans }}{% endblock title %}
 
-{% block heading %}
-    <div class="float-right header-button">
-        <twig:CreateApiToken />
-    </div>
-    <br class="clear" />
-{% endblock %}
+{% block profile_content %}
+    <div class="card">
+        <div class="card-header">
+            <div class="alert alert-info float-left">
+                To view the API documentation, visit the <a href="{{ path('api_doc') }}" target="_blank">API documentation</a> page.
+            </div>
 
-{% block content %}
-    <twig:ApiTokens />
-{% endblock content %}
+            <div class="float-right header-button">
+                <twig:CreateApiToken />
+            </div>
+        </div>
+        <div class="card-body">
+
+            <twig:ApiTokens />
+        </div>
+    </div>
+{% endblock profile_content %}
