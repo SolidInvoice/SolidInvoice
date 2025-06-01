@@ -11,10 +11,10 @@
 
 {% block content %}
     <div class="row">
-        <aside class="col-4">
+        <aside class="col-12 col-md-4">
             {% include '@SolidInvoiceUser/Layout/_partial/nav.html.twig' with {menuItem} %}
         </aside>
-        <section class="col-8">
+        <section class="col-12 col-md-8">
             {% block profile_content %}
             {% endblock profile_content %}
         </section>

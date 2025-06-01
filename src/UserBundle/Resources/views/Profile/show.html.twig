@@ -82,12 +82,16 @@
         </div>
 
         <div class="card-footer">
-            <a href="{{ path('_edit_profile') }}" class="btn btn-primary">
-                {{ icon('user') }} {{ 'profile.show.update_profile'|trans }}
-            </a>
-            <a href="{{ path('_change_password') }}" class="btn btn-info">
-                {{ icon('key') }} {{ 'profile.show.change_password'|trans }}
-            </a>
+            <div class="float-right">
+                <a href="{{ path('_change_password') }}" class="btn btn-info">
+                    {{ icon('key') }} {{ 'profile.show.change_password'|trans }}
+                </a>
+            </div>
+            <div class="float-left">
+                <a href="{{ path('_edit_profile') }}" class="btn btn-primary">
+                    {{ icon('user') }} {{ 'profile.show.update_profile'|trans }}
+                </a>
+            </div>
         </div>
     </div>
 {% endblock profile_content %}
