@@ -73,7 +73,7 @@ final class DefaultData
             ['setting_key' => 'system/company/vat_number', 'setting_value' => null, 'description' => null, 'field_type' => TaxNumberType::class],
 
             // Email
-            ['setting_key' => 'email/from_address', 'setting_value' => 'info@solidinvoice.co', 'description' => null, 'field_type' => TextType::class],
+            ['setting_key' => 'email/from_address', 'setting_value' => 'no-reply@solidinvoice.co', 'description' => null, 'field_type' => TextType::class],
             ['setting_key' => 'email/from_name', 'setting_value' => $company->getName(), 'description' => null, 'field_type' => TextType::class],
             ['setting_key' => 'email/sending_options/provider', 'setting_value' => null, 'description' => null, 'field_type' => MailTransportType::class],
 

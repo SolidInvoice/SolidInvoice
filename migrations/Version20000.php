@@ -520,7 +520,7 @@ final class Version20000 extends AbstractMigration
                 ['setting_key' => 'invoice/email_subject', 'setting_value' => 'New Invoice - #{id}', 'description' => 'To include the id of the invoice in the subject, add the placeholder {id} where you want the id', 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\TextType'],
                 ['setting_key' => 'invoice/bcc_address', 'setting_value' => null, 'description' => 'Send BCC copy of invoice to this address', 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\EmailType'],
                 ['setting_key' => 'email/from_name', 'setting_value' => 'SolidInvoice', 'description' => null, 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\TextType'],
-                ['setting_key' => 'email/from_address', 'setting_value' => 'info@solidinvoice.co', 'description' => null, 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\TextType'],
+                ['setting_key' => 'email/from_address', 'setting_value' => 'no-reply@solidinvoice.co', 'description' => null, 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\TextType'],
                 ['setting_key' => 'email/format', 'setting_value' => 'both', 'description' => 'In what format should emails be sent.', 'field_type' => 'SolidInvoice\SettingsBundle\Form\Type\MailFormatType'],
                 ['setting_key' => 'sms/twilio/number', 'setting_value' => null, 'description' => null, 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\TextType'],
                 ['setting_key' => 'sms/twilio/sid', 'setting_value' => null, 'description' => null, 'field_type' => 'Symfony\Component\Form\Extension\Core\Type\TextType'],

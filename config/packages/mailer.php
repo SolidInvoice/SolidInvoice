@@ -18,6 +18,6 @@ return static function (FrameworkConfig $frameworkConfig): void {
     $frameworkConfig->mailer()
         ->dsn(env('SOLIDINVOICE_MAILER_DSN'))
         ->envelope()
-        ->sender('SolidInvoice <no-reply@solidinvoice.co>')
+        ->sender(env('SOLIDINVOICE_MAILER_SENDER'))
     ;
 };
