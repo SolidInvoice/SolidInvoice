@@ -7726,16 +7726,16 @@
         },
         {
             "name": "solidworx/form-handler-bundle",
-            "version": "1.3.0",
+            "version": "1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SolidWorx/FormHandlerBundle.git",
-                "reference": "9fe01a3d5c7ec00e64b0f907188ffcd7881b7134"
+                "reference": "81cc3a59811451303c0397315789ed94bd1ecf2c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SolidWorx/FormHandlerBundle/zipball/9fe01a3d5c7ec00e64b0f907188ffcd7881b7134",
-                "reference": "9fe01a3d5c7ec00e64b0f907188ffcd7881b7134",
+                "url": "https://api.github.com/repos/SolidWorx/FormHandlerBundle/zipball/81cc3a59811451303c0397315789ed94bd1ecf2c",
+                "reference": "81cc3a59811451303c0397315789ed94bd1ecf2c",
                 "shasum": ""
             },
             "require": {
@@ -7782,9 +7782,9 @@
             ],
             "support": {
                 "issues": "https://github.com/SolidWorx/FormHandlerBundle/issues",
-                "source": "https://github.com/SolidWorx/FormHandlerBundle/tree/1.3.0"
+                "source": "https://github.com/SolidWorx/FormHandlerBundle/tree/1.3.1"
             },
-            "time": "2024-11-11T17:06:45+00:00"
+            "time": "2025-06-01T18:28:13+00:00"
         },
         {
             "name": "solidworx/klarna-invoice",
