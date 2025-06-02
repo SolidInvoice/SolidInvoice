@@ -8355,20 +8355,20 @@
         },
         {
             "name": "symfony/amazon-mailer",
-            "version": "v7.2.0",
+            "version": "v7.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/amazon-mailer.git",
-                "reference": "7dd225078938bc52b114cd295449170e25ca9229"
+                "reference": "7266d4285147c890f4f7f42dc875fe5a6df8006c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/amazon-mailer/zipball/7dd225078938bc52b114cd295449170e25ca9229",
-                "reference": "7dd225078938bc52b114cd295449170e25ca9229",
+                "url": "https://api.github.com/repos/symfony/amazon-mailer/zipball/7266d4285147c890f4f7f42dc875fe5a6df8006c",
+                "reference": "7266d4285147c890f4f7f42dc875fe5a6df8006c",
                 "shasum": ""
             },
             "require": {
-                "async-aws/ses": "^1.3",
+                "async-aws/ses": "^1.8",
                 "php": ">=8.2",
                 "symfony/mailer": "^7.2"
             },
@@ -8401,7 +8401,7 @@
             "description": "Symfony Amazon Mailer Bridge",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/amazon-mailer/tree/v7.2.0"
+                "source": "https://github.com/symfony/amazon-mailer/tree/v7.3.0"
             },
             "funding": [
                 {
@@ -8417,7 +8417,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-28T08:24:38+00:00"
+            "time": "2025-02-26T16:10:57+00:00"
         },
         {
             "name": "symfony/amazon-sns-notifier",
@@ -9043,16 +9043,16 @@
         },
         {
             "name": "symfony/contracts",
-            "version": "v3.5.2",
+            "version": "v3.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/contracts.git",
-                "reference": "a1a717e017c8c30e5c339807ca47d7da1a19489f"
+                "reference": "6e489617c52619f6a4f92986dfd19eb52d83de1f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/contracts/zipball/a1a717e017c8c30e5c339807ca47d7da1a19489f",
-                "reference": "a1a717e017c8c30e5c339807ca47d7da1a19489f",
+                "url": "https://api.github.com/repos/symfony/contracts/zipball/6e489617c52619f6a4f92986dfd19eb52d83de1f",
+                "reference": "6e489617c52619f6a4f92986dfd19eb52d83de1f",
                 "shasum": ""
             },
             "require": {
@@ -9078,7 +9078,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "3.5-dev"
+                    "dev-main": "3.6-dev"
                 }
             },
             "autoload": {
@@ -9118,7 +9118,7 @@
                 "standards"
             ],
             "support": {
-                "source": "https://github.com/symfony/contracts/tree/v3.5.2"
+                "source": "https://github.com/symfony/contracts/tree/v3.6.0"
             },
             "funding": [
                 {
@@ -9134,7 +9134,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-12-07T08:49:48+00:00"
+            "time": "2025-05-01T12:12:53+00:00"
         },
         {
             "name": "symfony/css-selector",
@@ -9677,16 +9677,16 @@
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v7.2.0",
+            "version": "v7.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
-                "reference": "910c5db85a5356d0fea57680defec4e99eb9c8c1"
+                "reference": "497f73ac996a598c92409b44ac43b6690c4f666d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/910c5db85a5356d0fea57680defec4e99eb9c8c1",
-                "reference": "910c5db85a5356d0fea57680defec4e99eb9c8c1",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/497f73ac996a598c92409b44ac43b6690c4f666d",
+                "reference": "497f73ac996a598c92409b44ac43b6690c4f666d",
                 "shasum": ""
             },
             "require": {
@@ -9737,7 +9737,7 @@
             "description": "Provides tools that allow your application components to communicate with each other by dispatching events and listening to them",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/event-dispatcher/tree/v7.2.0"
+                "source": "https://github.com/symfony/event-dispatcher/tree/v7.3.0"
             },
             "funding": [
                 {
@@ -9753,7 +9753,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-25T14:21:43+00:00"
+            "time": "2025-04-22T09:11:45+00:00"
         },
         {
             "name": "symfony/expression-language",
@@ -10836,16 +10836,16 @@
         },
         {
             "name": "symfony/http-client",
-            "version": "v7.2.4",
+            "version": "v7.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-client.git",
-                "reference": "78981a2ffef6437ed92d4d7e2a86a82f256c6dc6"
+                "reference": "57e4fb86314015a695a750ace358d07a7e37b8a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-client/zipball/78981a2ffef6437ed92d4d7e2a86a82f256c6dc6",
-                "reference": "78981a2ffef6437ed92d4d7e2a86a82f256c6dc6",
+                "url": "https://api.github.com/repos/symfony/http-client/zipball/57e4fb86314015a695a750ace358d07a7e37b8a9",
+                "reference": "57e4fb86314015a695a750ace358d07a7e37b8a9",
                 "shasum": ""
             },
             "require": {
@@ -10911,7 +10911,7 @@
                 "http"
             ],
             "support": {
-                "source": "https://github.com/symfony/http-client/tree/v7.2.4"
+                "source": "https://github.com/symfony/http-client/tree/v7.3.0"
             },
             "funding": [
                 {
@@ -10927,7 +10927,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-02-13T10:27:23+00:00"
+            "time": "2025-05-02T08:23:16+00:00"
         },
         {
             "name": "symfony/http-foundation",
@@ -11557,16 +11557,16 @@
         },
         {
             "name": "symfony/mailer",
-            "version": "v7.2.6",
+            "version": "v7.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/mailer.git",
-                "reference": "998692469d6e698c6eadc7ef37a6530a9eabb356"
+                "reference": "0f375bbbde96ae8c78e4aa3e63aabd486e33364c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/mailer/zipball/998692469d6e698c6eadc7ef37a6530a9eabb356",
-                "reference": "998692469d6e698c6eadc7ef37a6530a9eabb356",
+                "url": "https://api.github.com/repos/symfony/mailer/zipball/0f375bbbde96ae8c78e4aa3e63aabd486e33364c",
+                "reference": "0f375bbbde96ae8c78e4aa3e63aabd486e33364c",
                 "shasum": ""
             },
             "require": {
@@ -11617,7 +11617,7 @@
             "description": "Helps sending emails",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/mailer/tree/v7.2.6"
+                "source": "https://github.com/symfony/mailer/tree/v7.3.0"
             },
             "funding": [
                 {
@@ -11633,7 +11633,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-04-04T09:50:51+00:00"
+            "time": "2025-04-04T09:51:09+00:00"
         },
         {
             "name": "symfony/mailgun-mailer",
@@ -12294,16 +12294,16 @@
         },
         {
             "name": "symfony/mime",
-            "version": "v7.2.6",
+            "version": "v7.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/mime.git",
-                "reference": "706e65c72d402539a072d0d6ad105fff6c161ef1"
+                "reference": "0e7b19b2f399c31df0cdbe5d8cbf53f02f6cfcd9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/mime/zipball/706e65c72d402539a072d0d6ad105fff6c161ef1",
-                "reference": "706e65c72d402539a072d0d6ad105fff6c161ef1",
+                "url": "https://api.github.com/repos/symfony/mime/zipball/0e7b19b2f399c31df0cdbe5d8cbf53f02f6cfcd9",
+                "reference": "0e7b19b2f399c31df0cdbe5d8cbf53f02f6cfcd9",
                 "shasum": ""
             },
             "require": {
@@ -12358,7 +12358,7 @@
                 "mime-type"
             ],
             "support": {
-                "source": "https://github.com/symfony/mime/tree/v7.2.6"
+                "source": "https://github.com/symfony/mime/tree/v7.3.0"
             },
             "funding": [
                 {
@@ -12374,7 +12374,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-04-27T13:34:41+00:00"
+            "time": "2025-02-19T08:51:26+00:00"
         },
         {
             "name": "symfony/mobyt-notifier",
@@ -24134,9 +24134,9 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "roave/security-advisories": 20,
         "solidworx/platform": 20,
-        "solidworx/toggler": 10
+        "solidworx/toggler": 10,
+        "roave/security-advisories": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
@@ -24151,9 +24151,9 @@
         "ext-soap": "*",
         "ext-xsl": "*"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "platform-overrides": {
         "php": "8.3"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
