@@ -36,6 +36,7 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Uid\Ulid;
+use function date;
 use function strtoupper;
 
 /**
@@ -71,7 +72,7 @@ final class CompanyEventSubscriberTest extends TestCase
         $request = new Request();
         $request->setSession($session);
 
-        $listener = new CompanyEventSubscriber($router, $companySelector, $security);
+        $listener = new CompanyEventSubscriber(date('Y'), $router, $companySelector, $security);
 
         $event = new RequestEvent(M::mock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
         $listener->onKernelRequest($event);
@@ -110,7 +111,7 @@ final class CompanyEventSubscriberTest extends TestCase
         $request = new Request();
         $request->setSession($session);
 
-        $listener = new CompanyEventSubscriber($router, $companySelector, $security);
+        $listener = new CompanyEventSubscriber(date('Y'), $router, $companySelector, $security);
 
         $event = new RequestEvent(M::mock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
         $listener->onKernelRequest($event);
@@ -141,7 +142,7 @@ final class CompanyEventSubscriberTest extends TestCase
         $request->setSession($session);
         $request->attributes->set('_route', $route);
 
-        $listener = new CompanyEventSubscriber($router, $companySelector, $security);
+        $listener = new CompanyEventSubscriber(date('Y'), $router, $companySelector, $security);
 
         $event = new RequestEvent(M::mock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
         $listener->onKernelRequest($event);
@@ -169,7 +170,7 @@ final class CompanyEventSubscriberTest extends TestCase
         $request = new Request();
         $request->setSession($session);
 
-        $listener = new CompanyEventSubscriber($router, $companySelector, $security);
+        $listener = new CompanyEventSubscriber(date('Y'), $router, $companySelector, $security);
 
         $event = new RequestEvent(M::mock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
         $listener->onKernelRequest($event);
@@ -198,7 +199,7 @@ final class CompanyEventSubscriberTest extends TestCase
         $request = new Request();
         $request->setSession($session);
 
-        $listener = new CompanyEventSubscriber($router, $companySelector, $security);
+        $listener = new CompanyEventSubscriber(date('Y'), $router, $companySelector, $security);
 
         $event = new RequestEvent(M::mock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
         $listener->onKernelRequest($event);
