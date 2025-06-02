@@ -12,9 +12,12 @@
 namespace SolidInvoice\SaasBundle\EventSubscriber;
 
 use SolidInvoice\CoreBundle\Event\CompanyCreatedEvent;
+use SolidInvoice\SaasBundle\Repository\TrialRepository;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidWorx\Platform\SaasBundle\Entity\Plan;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
+use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
+use SolidWorx\Platform\SaasBundle\Integration\Options;
 use SolidWorx\Platform\SaasBundle\Integration\PaymentIntegrationInterface;
 use SolidWorx\Platform\SaasBundle\Repository\PlanRepository;
 use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionManager;
@@ -36,6 +39,7 @@ final class CompanyEventSubscriber
         private readonly SubscriptionManager $subscriptionManager,
         private readonly PaymentIntegrationInterface $paymentIntegration,
         private readonly Security $security,
+        private readonly TrialRepository $trialRepository,
     ) {
     }
 
@@ -58,10 +62,16 @@ final class CompanyEventSubscriber
             $user = $this->security->getUser();
             assert($user instanceof User);
 
-            $checkoutUrl = $this->paymentIntegration->checkout($this->subscription, ['email' => $user->getEmail()]);
-            $event->setResponse(
-                new RedirectResponse($checkoutUrl),
-            );
+            if ($this->trialRepository->userHasTrial($user)) {
+                // User already had a free trial, so we just activate the subscription
+                $checkoutUrl = $this->paymentIntegration->checkout($this->subscription, Options::new()->withEmail($user->getEmail())->withSkipTrial(true));
+                $event->setResponse(new RedirectResponse($checkoutUrl));
+            } else {
+                // User is new, so we create a new free trial
+                $this->subscription->setStatus(SubscriptionStatus::TRIAL);
+                $this->subscription->setEndDate($this->subscription->getStartDate()->add(new \DateInterval('P7D'))); // @TODO: Trial should be configurable
+                $this->trialRepository->createTrial($user, $this->subscription);
+            }
 
             $this->subscription = null;
         }

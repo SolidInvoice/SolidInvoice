@@ -25,7 +25,13 @@ final class CompanyType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('currency', CurrencyType::class);
+            ->add(
+                'currency',
+                CurrencyType::class,
+                [
+                    'placeholder' => 'Choose Currency',
+                ]
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver): void

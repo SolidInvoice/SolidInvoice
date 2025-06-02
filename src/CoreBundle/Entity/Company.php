@@ -49,7 +49,7 @@ class Company implements Stringable, SubscribableInterface
     private Collection $users;
 
     #[Assert\NotBlank()]
-    public string $currency = '';
+    public ?string $currency = '';
 
     public function __construct()
     {

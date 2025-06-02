@@ -76,7 +76,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     /**
      * @var Collection<int, Company>
      */
-    #[ORM\ManyToMany(targetEntity: Company::class, inversedBy: 'users')]
+    #[ORM\ManyToMany(targetEntity: Company::class, inversedBy: 'users', cascade: ['persist'])]
     private Collection $companies;
 
     public function __construct()

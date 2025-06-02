@@ -17,5 +17,7 @@ use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
 return static function (TogglerConfig $config): void {
     $config
         ->config()
-        ->features('allow_registration', env('SOLIDINVOICE_ALLOW_REGISTRATION'));
+        ->features('allow_registration', env('SOLIDINVOICE_ALLOW_REGISTRATION'))
+        ->features('saas', '@=env("SOLIDINVOICE_PLATFORM") === "saas"')
+    ;
 };

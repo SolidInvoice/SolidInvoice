@@ -39,7 +39,7 @@ class BillingController extends AbstractController
 
         $subscription = $this->subscriptionManager->getSubscriptionFor($this->companyRepository->find($company));
 
-        if (! $subscription instanceof Subscription) {
+        if (! $subscription instanceof Subscription || null === $subscription->getSubscriptionId()) {
             $this->addFlash('error', 'No subscription found');
             return $this->redirectToRoute('_dashboard');
         }

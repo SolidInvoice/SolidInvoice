@@ -11,13 +11,34 @@
 
 namespace SolidInvoice\SaasBundle\Menu;
 
+use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\MenuBundle\Core\AuthenticatedMenu;
 use SolidInvoice\MenuBundle\ItemInterface;
+use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionManager;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class Builder extends AuthenticatedMenu
 {
+    public function __construct(
+        private readonly CompanySelector $companySelector,
+        private readonly CompanyRepository $companyRepository,
+        private readonly SubscriptionManager $subscriptionManager,
+        AuthorizationCheckerInterface $authorizationChecker
+    ) {
+        parent::__construct($authorizationChecker);
+    }
+
     public function systemMenu(ItemInterface $menu): void
     {
+        $subscription = $this->subscriptionManager->getSubscriptionFor(
+            $this->companyRepository->find($this->companySelector->getCompany())
+        );
+
+        if ($subscription === null || null === $subscription->getSubscriptionId()) {
+            return;
+        }
+
         $menu->addChild(
             'billing',
             [

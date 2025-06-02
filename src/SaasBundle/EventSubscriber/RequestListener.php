@@ -18,6 +18,7 @@ use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
+use SolidWorx\Platform\SaasBundle\Integration\Options;
 use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionManager;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -35,6 +36,7 @@ final readonly class RequestListener implements EventSubscriberInterface
 {
     private const array SKIPPED_ROUTES = [
         '_switch_company',
+        '_create_company',
         '_view_quote_external',
         '_view_invoice_external',
 
@@ -77,7 +79,7 @@ final readonly class RequestListener implements EventSubscriberInterface
                 $user = $this->security->getUser();
                 assert($user instanceof User);
 
-                $checkoutUrl = $this->subscriptionManager->getCheckoutUrl($subscription, ['email' => $user->getEmail()]);
+                $checkoutUrl = $this->subscriptionManager->getCheckoutUrl($subscription, Options::new()->withEmail($user->getEmail())->withSkipTrial(true));
                 $event->setResponse(
                     new Response(
                         $this->twig->render('@SolidInvoiceSaas/subscription/pending.html.twig', [
@@ -96,7 +98,7 @@ final readonly class RequestListener implements EventSubscriberInterface
                 $user = $this->security->getUser();
                 assert($user instanceof User);
 
-                $checkoutUrl = $this->subscriptionManager->getCheckoutUrl($subscription, ['email' => $user->getEmail()]);
+                $checkoutUrl = $this->subscriptionManager->getCheckoutUrl($subscription, Options::new()->withEmail($user->getEmail())->withSkipTrial(true));
                 $event->setResponse(
                     new Response(
                         $this->twig->render('@SolidInvoiceSaas/subscription/cancelled.html.twig', [
@@ -123,7 +125,7 @@ final readonly class RequestListener implements EventSubscriberInterface
             return;
         }
 
-        if ($subscription->getStatus() !== SubscriptionStatus::CANCELLED || $subscription->getEndDate() <= new DateTimeImmutable('now', new DateTimeZone('UTC'))) {
+        if (($subscription->getStatus() !== SubscriptionStatus::TRIAL && $subscription->getStatus() !== SubscriptionStatus::CANCELLED) || $subscription->getEndDate() <= new DateTimeImmutable('now', new DateTimeZone('UTC'))) {
             return;
         }
 
@@ -137,11 +139,15 @@ final readonly class RequestListener implements EventSubscriberInterface
         if ($session->has('checkout_url')) {
             $checkoutUrl = $session->get('checkout_url');
         } else {
-            $checkoutUrl = $this->subscriptionManager->getCheckoutUrl($subscription, ['email' => $user->getEmail()]);
+            // @TODO: If status is trial, and we want to allow the trial to be extended, skipTrial should be false.
+            $checkoutUrl = $this->subscriptionManager->getCheckoutUrl($subscription, Options::new()->withEmail($user->getEmail())->withSkipTrial(true));
             $session->set('checkout_url', $checkoutUrl);
         }
 
-        $message = '<strong>Subscription Canceled</strong> - Your subscription has been canceled. Your access will be revoked on ' . $subscription->getEndDate()->format('Y-m-d H:i:s') . '.<br /><a href="' . $checkoutUrl . '" class="btn btn-default btn-sm">Re-new now<a/> to avoid losing access.';
+        $message = match ($subscription->getStatus()) {
+            SubscriptionStatus::CANCELLED => '<strong>Subscription Canceled</strong> - Your subscription has been canceled. Your access will be revoked on ' . $subscription->getEndDate()->format('Y-m-d H:i:s') . '.<br /><a href="' . $checkoutUrl . '" class="btn btn-default btn-sm">Re-new now<a/> to avoid losing access.',
+            SubscriptionStatus::TRIAL => '<strong>Trial Ending Soon</strong> - Your trial is active until ' . $subscription->getEndDate()->format('Y-m-d H:i:s') . '.<br />Please <a href="' . $checkoutUrl . '" class="btn btn-default btn-sm">activate<a/> your subscription now.',
+        };
 
         $content = str_replace(
             '<div class="wrapper">',
@@ -155,6 +161,10 @@ final readonly class RequestListener implements EventSubscriberInterface
     private function getSubscription(Request $request): ?Subscription
     {
         if (in_array($request->attributes->get('_route'), self::SKIPPED_ROUTES, true)) {
+            return null;
+        }
+
+        if (null === $this->security->getUser()) {
             return null;
         }
 
