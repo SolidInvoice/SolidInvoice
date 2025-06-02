@@ -18,6 +18,5 @@ return static function (TogglerConfig $config): void {
     $config
         ->config()
         ->features('allow_registration', env('SOLIDINVOICE_ALLOW_REGISTRATION'))
-        ->features('saas', '@=env("SOLIDINVOICE_PLATFORM") === "saas"')
     ;
 };
