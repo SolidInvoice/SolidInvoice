@@ -6,7 +6,7 @@ require (
 	github.com/caddyserver/caddy/v2 v2.10.0
 	github.com/charmbracelet/lipgloss v1.1.0
 	github.com/common-nighthawk/go-figure v0.0.0-20210622060536-734e95fb86be
-	github.com/dunglas/caddy-cbrotli v1.0.0
+	github.com/dunglas/caddy-cbrotli v1.0.1
 	github.com/dunglas/frankenphp v1.5.0
 	github.com/dunglas/frankenphp/caddy v1.5.0
 	github.com/go-playground/validator/v10 v10.26.0
@@ -79,7 +79,7 @@ require (
 	github.com/golang-jwt/jwt/v5 v5.2.2 // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
-	github.com/google/brotli/go/cbrotli v0.0.0-20241111155135-4303850b01d6 // indirect
+	github.com/google/brotli/go/cbrotli v1.1.0 // indirect
 	github.com/google/cel-go v0.24.1 // indirect
 	github.com/google/certificate-transparency-go v1.3.0 // indirect
 	github.com/google/go-tpm v0.9.3 // indirect
