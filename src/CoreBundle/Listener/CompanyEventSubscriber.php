@@ -34,6 +34,7 @@ use function in_array;
 final class CompanyEventSubscriber implements EventSubscriberInterface
 {
     public function __construct(
+        private readonly ?string $installed = null,
         private readonly RouterInterface $router,
         private readonly CompanySelector $companySelector,
         private readonly Security $security
@@ -51,7 +52,7 @@ final class CompanyEventSubscriber implements EventSubscriberInterface
     {
         $request = $event->getRequest();
 
-        if (! $event->isMainRequest() || $request->attributes->get('_stateless')) {
+        if (null === $this->installed || ! $event->isMainRequest() || $request->attributes->get('_stateless')) {
             return;
         }
 
