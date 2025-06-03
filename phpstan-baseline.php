@@ -158,12 +158,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/CoreBundle/Templating/Template.php',
 ];
 $ignoreErrors[] = [
-	// identifier: assign.propertyType
-	'message' => '#^Property SolidInvoice\\\\CoreBundle\\\\Tests\\\\KernelAwareTest\\:\\:\\$container \\(Symfony\\\\Component\\\\DependencyInjection\\\\Container\\) does not accept Symfony\\\\Component\\\\DependencyInjection\\\\ContainerInterface\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/src/CoreBundle/Tests/KernelAwareTest.php',
-];
-$ignoreErrors[] = [
 	// identifier: missingType.iterableValue
 	'message' => '#^Method SolidInvoice\\\\DashboardBundle\\\\Widgets\\\\RecentClientsWidget\\:\\:getData\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'count' => 1,
