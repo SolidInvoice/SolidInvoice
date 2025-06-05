@@ -17,6 +17,7 @@ use SolidInvoice\ApiBundle\Security\ApiTokenAuthenticator;
 use SolidInvoice\ApiBundle\Security\Provider\ApiTokenUserProvider;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Security\OAuth\OAuthAuthenticator;
+use SolidWorx\Platform\PlatformBundle\DependencyInjection\Extension\TwoFactorExtension;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Config\SecurityConfig;
 
@@ -106,6 +107,13 @@ return static function (SecurityConfig $config): void {
         ->path('/logout')
         ->target('/');
 
+    $mainFirewallConfig
+        ->loginThrottling()
+        ->maxAttempts(5)
+        ->interval('15 minutes');
+
+    TwoFactorExtension::configureSecurity($mainFirewallConfig, $config->accessControl());
+
     $config->accessControl()
         ->path('^(?:' .
             '/_components/DatabaseConfig|' .
@@ -116,6 +124,7 @@ return static function (SecurityConfig $config): void {
             '/oauth/connect|' .
             '/install(?:.*)|' .
             '/verify$|' .
+            '/logout$|' .
             '/invite/accept/[a-zA-Z0-9-]{36}$|' .
             '/payments/create/[a-zA-Z0-9-]{36}$|' .
             '/payment/capture/(?:.*)|' .

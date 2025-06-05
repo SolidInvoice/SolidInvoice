@@ -23,6 +23,13 @@
                     <span class="icon">{{ 'Change Password' }}</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="{{ path('_2fa_list') }}" class="nav-link{{ menuItem is defined and menuItem is same as('2fa') ? ' active'}}">
+                    {{ icon('shield-halved') }}
+
+                    <span class="icon">{{ 'Two-Factor Authentication' }}</span>
+                </a>
+            </li>
             {# <li class="nav-header nav-item first">
                 <span> <p>Company Specific Settings</p></span>
             </li> #}

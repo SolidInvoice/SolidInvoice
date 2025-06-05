@@ -1,0 +1,64 @@
+<div {{ attributes }}>
+    <div class="card card-outline card-primary">
+        <div class="card-header with-border">
+            <h3 class="card-title">
+                {{ "Two-factor Authentication"|trans }}
+            </h3>
+        </div>
+        <div class="card-body p-0 border-0">
+            <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ 'Email'|trans }}
+                    {% if app.user.isEmailAuthEnabled %}
+                        <span class="badge badge-success">{{ 'Enabled'|trans }}</span>
+                        <a href="#" class="btn btn-sm btn-danger" {{ live_action('disableEmailAuth') }}>{{ 'Disable'|trans }}</a>
+                    {% else %}
+                        <span class="badge badge-secondary">{{ 'Disabled'|trans }}</span>
+                        <a href="#" class="btn btn-sm btn-success" {{ live_action('enableEmailAuth') }}>{{ 'Enable'|trans }}</a>
+                    {% endif %}
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ 'Authenticator app'|trans }}
+                    <a href="#" class="btn btn-sm btn-success">Enable</a>
+                </li>
+                {#<li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ 'SMS'|trans }}
+                    <a href="#" class="btn btn-sm btn-success">Enable</a>
+                </li>#}
+            </ul>
+        </div>
+    </div>
+    {% if app.user.is2FaEnabled and app.user.backupCodes is not empty %}
+        <div class="card card-outline card-info">
+            <div class="card-header with-border">
+                <h3 class="card-title">
+                    {{ "Recovery Options"|trans }}
+                </h3>
+            </div>
+            <div class="card-body p-0 border-0">
+                <ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ 'Backup Codes'|trans }}
+                        <a href="#" class="btn btn-sm btn-success">Enable</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+    {#{% if app.user.is2FaEnabled %}
+        <div class="card card-outline card-danger">
+            <div class="card-header with-border">
+                <h3 class="card-title">
+                    {{ "Disable Two-Factor Authentication"|trans }}
+                </h3>
+            </div>
+            <div class="card-body p-0 border-0">
+                <ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <a href="#" class="btn btn-sm btn-danger">Disable</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    {% endif %}#}
+</div>

@@ -15,6 +15,12 @@
         }
     ],
     "homepage": "https://solidinvoice.co",
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../../platform"
+        }
+    ],
     "require": {
         "php": ">=8.3",
         "ext-curl": "*",
@@ -134,6 +140,7 @@
         "symfony/postmark-mailer": "^7.1",
         "symfony/property-access": "^7.1",
         "symfony/property-info": "^7.1",
+        "symfony/rate-limiter": "^7.1",
         "symfony/requirements-checker": "^2.0",
         "symfony/rocket-chat-notifier": "^7.1",
         "symfony/routing": "^7.1",

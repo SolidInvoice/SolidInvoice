@@ -26,6 +26,7 @@ use SolidInvoice\UserBundle\Action\Security\ChangePassword;
 use SolidInvoice\UserBundle\Action\Security\Login;
 use SolidInvoice\UserBundle\Action\Security\OAuthConnect;
 use SolidInvoice\UserBundle\Action\Security\OAuthConnectCheck;
+use SolidInvoice\UserBundle\Action\Security\TwoFactorIndex;
 use SolidInvoice\UserBundle\Action\Security\VerifyEmail;
 use SolidInvoice\UserBundle\Action\Users;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
@@ -101,4 +102,7 @@ return static function (RoutingConfigurator $routingConfigurator): void {
 
     $routingConfigurator->add(OAuthConnectCheck::ROUTE, '/oauth/check/{service}')
         ->controller(OAuthConnectCheck::class);
+
+    $routingConfigurator->add('_2fa_list', '/profile/2fa')
+        ->controller(TwoFactorIndex::class);
 };

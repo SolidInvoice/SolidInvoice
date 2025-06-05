@@ -77,6 +77,19 @@
                         {% endif %}
                     </td>
                 </tr>
+                <tr>
+                    <th>
+                        {{ 'Two Factor Authentication'|trans }}
+                    </th>
+                    <td>
+                        {% if app.user.is2FaEnabled %}
+                            <span class="badge badge-pill bg-green">{{ 'Enabled'|trans }}</span>
+                        {% else %}
+                            <span class="badge badge-pill bg-red">{{ 'Not Enabled'|trans }}</span>
+                        {% endif %}
+                        <a href="{{ path('_2fa_list') }}" class="btn btn-sm btn-secondary">{{ 'Configure'|trans }}</a>
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>

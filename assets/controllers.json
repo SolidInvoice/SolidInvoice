@@ -1,5 +1,11 @@
 {
     "controllers": {
+        "@solidworx/platform": {
+            "modal": {
+                "enabled": true,
+                "fetch": "lazy"
+            }
+        },
         "@symfony/ux-autocomplete": {
             "autocomplete": {
                 "enabled": true,

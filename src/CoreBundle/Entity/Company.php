@@ -54,6 +54,7 @@ class Company implements Stringable, SubscribableInterface
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->id = new Ulid();
     }
 
     public function getId(): Ulid
