@@ -115,3 +115,5 @@ We extend our gratitude to all the sponsors who support this project!
 * Sentry (Sponsored Business plan)
 
 [1]: http://getcomposer.org
+
+<!-- GitAds-Verify: 5A777YN6A52PDTET1VL1VHZGIO89ZZT5 -->
