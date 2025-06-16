@@ -67,11 +67,11 @@ target "build-static" {
         //"linux/arm/v6",
         //"linux/arm/v7",
     ]
-    tags = distinct(flatten([
+    tags = compact(distinct(flatten([
             LATEST ? "${IMAGE_NAME}:latest" : "",
             NIGHTLY ? "${IMAGE_NAME}:nightly" : "",
             SOLIDINVOICE_VERSION == "2.4.x" ? [] : [for v in semver(SOLIDINVOICE_VERSION) : "${IMAGE_NAME}:${v}"]
-    ]))
+    ])))
     args = {
         SOLIDINVOICE_VERSION = "${SOLIDINVOICE_VERSION}"
         PHP_VERSION = "${PHP_VERSION}"
