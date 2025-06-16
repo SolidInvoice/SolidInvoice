@@ -77,6 +77,8 @@ target "build-static" {
         PHP_VERSION = "${PHP_VERSION}"
         RELEASE = "${RELEASE}"
         NO_COMPRESS = "${NO_COMPRESS}"
+        LATEST = "${LATEST}"
+        NIGHTLY = "${NIGHTLY}"
     }
     secret = ["id=github-token,env=GITHUB_TOKEN"]
 }
