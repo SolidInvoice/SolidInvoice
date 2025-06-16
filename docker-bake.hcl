@@ -11,7 +11,11 @@ variable "PHP_VERSION" {
 }
 
 variable "LATEST" {
-    default = true
+    default = false
+}
+
+variable "NIGHTLY" {
+    default = false
 }
 
 variable "RELEASE" {
@@ -65,6 +69,7 @@ target "build-static" {
     ]
     tags = distinct(flatten([
             LATEST ? "${IMAGE_NAME}:latest" : "",
+            NIGHTLY ? "${IMAGE_NAME}:nightly" : "",
             SOLIDINVOICE_VERSION == "2.4.x" ? [] : [for v in semver(SOLIDINVOICE_VERSION) : "${IMAGE_NAME}:${v}"]
     ]))
     args = {

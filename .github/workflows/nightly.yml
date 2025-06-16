@@ -1,0 +1,118 @@
+name: "Nightly Build"
+
+concurrency:
+  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.ref }}
+
+on:
+  push:
+    branches:
+      - 2.4.x
+
+env:
+  SOLIDINVOICE_ENV: prod
+  SOLIDINVOICE_DEBUG: 0
+
+permissions:
+  contents: read
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      ref: ${{ steps.check.outputs.ref }}
+    steps:
+      - name: Get version
+        id: check
+        run: |
+          echo "ref=nightly" >> "${GITHUB_OUTPUT}"
+
+  build-dist:
+    permissions:
+      contents: read
+    name: Build Assets
+    needs: [prepare]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@0634a2670c59f64b4a01f0f96f84700a4088b9f0
+        with:
+          egress-policy: audit
+
+      - name: Checkout code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@cf4cade2721270509d5b1c766ab3549210a39a2a
+        with:
+          coverage: none
+          ini-values: memory_limit=-1
+          php-version: 8.3
+
+      - uses: oven-sh/setup-bun@735343b667d3e6f658f44d0eca948eb6282f2b76 # v2
+
+      - name: Build Release Artifact
+        run: "./scripts/build_dist.sh ${{ github.ref_name }} ${{ needs.prepare.outputs.ref }}"
+        env:
+          RELEASE: 0
+          GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+
+      - name: Upload TAR archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.tar.gz
+          path: build/dist/SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.tar.gz
+
+  build-linux:
+    name: Build Docker Image
+    needs: [prepare, build-dist]
+    permissions:
+      contents: read
+    runs-on: ubuntu-24.04
+    env:
+      HOMEBREW_NO_AUTO_UPDATE: 1
+      SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
+      PHP_VERSION: 8.3.20
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Login to DockerHub
+        uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3.4.0
+        with:
+          username: ${{ vars.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PAT }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+            driver: cloud
+            endpoint: "solidinvoice/solidinvoice-app-cloud"
+            install: true
+            platforms: linux/amd64,linux/arm64
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Download archive
+        uses: actions/download-artifact@v4
+        with:
+          name: SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.tar.gz
+          path: build/dist
+
+      - name: Build SolidInvoice
+        uses: docker/bake-action@v6
+        with:
+            targets: build-static
+            source: .
+            push: true
+            set: |
+                build-static.cache-from=type=gha,scope=php
+                build-static.cache-to=type=gha,scope=php,mode=max,ignore-error=true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE: 0
+          LATEST: 0
+          NIGHTLY: 1
+          SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
