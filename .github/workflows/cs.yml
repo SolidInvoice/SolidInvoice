@@ -18,9 +18,12 @@ jobs:
           egress-policy: block
           allowed-endpoints: >
             api.github.com:443
+            dl.cloudsmith.io:443
+            getcomposer.org:443
             github.com:443
             objects.githubusercontent.com:443
             packagist.org:443
+            release-assets.githubusercontent.com:443
 
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 

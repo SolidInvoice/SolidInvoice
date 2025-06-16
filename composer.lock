@@ -18521,16 +18521,16 @@
         },
         {
             "name": "captainhook/captainhook-phar",
-            "version": "5.25.2",
+            "version": "5.25.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/captainhook-git/captainhook-phar.git",
-                "reference": "ab47b0561ec7997bf9b88181d090857874f2cf8c"
+                "reference": "a5dbcd8d20b3dcdb1cbd6948d0d3a058453b3d6a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/captainhook-git/captainhook-phar/zipball/ab47b0561ec7997bf9b88181d090857874f2cf8c",
-                "reference": "ab47b0561ec7997bf9b88181d090857874f2cf8c",
+                "url": "https://api.github.com/repos/captainhook-git/captainhook-phar/zipball/a5dbcd8d20b3dcdb1cbd6948d0d3a058453b3d6a",
+                "reference": "a5dbcd8d20b3dcdb1cbd6948d0d3a058453b3d6a",
                 "shasum": ""
             },
             "require": {
@@ -18563,7 +18563,7 @@
                 }
             ],
             "description": "PHP git hook manager",
-            "homepage": "https://github.com/captainhookphp/captainhook",
+            "homepage": "https://github.com/captainhook-git/captainhook",
             "keywords": [
                 "commit-msg",
                 "git",
@@ -18574,8 +18574,8 @@
                 "prepare-commit-msg"
             ],
             "support": {
-                "issues": "https://github.com/captainhookphp/captainhook/issues",
-                "source": "https://github.com/captainhookphp/captainhook-phar/tree/5.25.2"
+                "issues": "https://github.com/captainhook-git/captainhook/issues",
+                "source": "https://github.com/captainhook-git/captainhook-phar/tree/5.25.5"
             },
             "funding": [
                 {
@@ -18583,7 +18583,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-03-30T17:19:44+00:00"
+            "time": "2025-04-08T07:07:48+00:00"
         },
         {
             "name": "dbrekelmans/bdi",

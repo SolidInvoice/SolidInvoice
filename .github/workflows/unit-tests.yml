@@ -64,6 +64,7 @@ jobs:
             packagist.org:443
             registry.npmjs.org:443
             registry.yarnpkg.com:443
+            release-assets.githubusercontent.com:443
             repo.packagist.org:443
             storage.googleapis.com:443
             update.googleapis.com:80
