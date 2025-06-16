@@ -46,6 +46,7 @@ jobs:
             ppa.launchpadcontent.net:80
             registry.npmjs.org:443
             registry.yarnpkg.com:443
+            release-assets.githubusercontent.com:443
             repo.packagist.org:443
             security.ubuntu.com:443
             security.ubuntu.com:80

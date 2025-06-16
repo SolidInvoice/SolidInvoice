@@ -75,6 +75,7 @@ jobs:
             repo.packagist.org:443
             security.ubuntu.com:443
             security.ubuntu.com:80
+            setup-php.com:443
 
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
