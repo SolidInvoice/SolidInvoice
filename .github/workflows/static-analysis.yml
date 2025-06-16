@@ -18,9 +18,7 @@ jobs:
         with:
           egress-policy: block
           allowed-endpoints: >
-            185.125.188.54:443
-            185.125.188.55:443
-            185.125.188.59:443
+            api.snapcraft.io:443
             api.codecov.io:443
             api.github.com:443
             api.launchpad.net:443
@@ -28,8 +26,10 @@ jobs:
             azure.archive.ubuntu.com:80
             bun.sh:443
             codecov.io:443
+            dl.cloudsmith.io:443
             esm.ubuntu.com:443
             esm.ubuntu.com:80
+            getcomposer.org:443
             github.com:443
             keys.openpgp.org:443
             keyserver.ubuntu.com:443

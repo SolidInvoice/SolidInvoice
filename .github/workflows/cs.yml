@@ -55,8 +55,10 @@ jobs:
             api.launchpad.net:443
             archive.ubuntu.com:80
             azure.archive.ubuntu.com:80
+            dl.cloudsmith.io:443
             esm.ubuntu.com:443
             esm.ubuntu.com:80
+            getcomposer.org:443
             github.com:443
             keys.openpgp.org:443
             keyserver.ubuntu.com:443
