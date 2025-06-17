@@ -22,6 +22,11 @@ jobs:
     outputs:
       ref: ${{ steps.check.outputs.ref }}
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@002fdce3c6a235733a90a27c80493a3241e56863 # v2.12.1
+        with:
+          egress-policy: audit
+
       - name: Get version
         id: check
         run: |
@@ -58,7 +63,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
 
       - name: Upload TAR archive
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.tar.gz
           path: build/dist/SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.tar.gz
@@ -74,6 +79,11 @@ jobs:
       SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
       PHP_VERSION: 8.3.20
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@002fdce3c6a235733a90a27c80493a3241e56863 # v2.12.1
+        with:
+          egress-policy: audit
+
       - name: Checkout code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
@@ -84,7 +94,7 @@ jobs:
           password: ${{ secrets.DOCKER_PAT }}
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@18ce135bb5112fa8ce4ed6c17ab05699d7f3a5e0 # v3.11.0
         with:
             driver: cloud
             endpoint: "solidinvoice/solidinvoice-app-cloud"
@@ -92,16 +102,16 @@ jobs:
             platforms: linux/amd64,linux/arm64
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@29109295f81e9208d7d86ff1c6c12d2833863392 # v3.6.0
 
       - name: Download archive
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.tar.gz
           path: build/dist
 
       - name: Build SolidInvoice
-        uses: docker/bake-action@v6
+        uses: docker/bake-action@37816e747588cb137173af99ab33873600c46ea8 # v6.8.0
         with:
             targets: build-static
             source: .
