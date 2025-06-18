@@ -62,7 +62,7 @@ jobs:
           ini-values: date.timezone=Europe/Paris, opcache.enable=1, opcache.enable_cli=1, opcache.memory_consumption=256, opcache.max_accelerated_files=32531, opcache.interned_strings_buffer=8, opcache.validate_timestamps=0, opcache.save_comments=1, opcache.fast_shutdown=0
           extensions: intl, gd, opcache, mysql, pdo_mysql, :xdebug
 
-      - uses: ramsey/composer-install@e52779489de843a9f022c7b8faa648b608b02c70 # v3
+      - uses: ramsey/composer-install@3cf229dc2919194e9e36783941438d17239e8520 # v3
 
       - uses: oven-sh/setup-bun@735343b667d3e6f658f44d0eca948eb6282f2b76 # v2
 

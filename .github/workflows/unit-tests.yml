@@ -97,7 +97,7 @@ jobs:
 
       - uses: oven-sh/setup-bun@735343b667d3e6f658f44d0eca948eb6282f2b76 # v2
 
-      - uses: ramsey/composer-install@e52779489de843a9f022c7b8faa648b608b02c70 # v3
+      - uses: ramsey/composer-install@3cf229dc2919194e9e36783941438d17239e8520 # v3
 
       - name: Detect browser drivers
         run: bin/bdi detect drivers
