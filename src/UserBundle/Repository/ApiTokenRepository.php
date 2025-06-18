@@ -13,18 +13,18 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Repository;
 
-use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
-use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\UserBundle\Entity\ApiToken;
 use SolidInvoice\UserBundle\Entity\ApiTokenHistory;
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Uid\Ulid;
+use function array_column;
+use function array_combine;
+use function array_map;
 
 class ApiTokenRepository extends ServiceEntityRepository
 {
@@ -52,36 +52,37 @@ class ApiTokenRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return array{id: Ulid, name: string, token: string, created: DateTimeInterface, updated: DateTimeInterface, lastUsed: DateTimeInterface}
+     * @return array{id: mixed, name: mixed, ip: mixed, token: mixed, lastUsed: mixed}
      */
     public function getApiTokensForUser(UserInterface $user): array
     {
         assert($user instanceof User);
 
-        $qb = $this->createQueryBuilder('t');
-
-        $historyQb = $this->getEntityManager()
-            ->getRepository(ApiTokenHistory::class)
-            ->createQueryBuilder('th');
-
-        $historyQb
-            ->select('MAX(th.created)')
-            ->where('th.token = t')
-        ;
-
-        $qb->select('t.id', 't.name', 't.token', 'h.created AS lastUsed', 'h.ip')
-            ->leftJoin(
-                't.history',
-                'h',
-                Join::WITH,
-                $qb->expr()->eq('h.created', '(' . $historyQb->getDQL() . ')')
-            )
+        $tokens = $this->createQueryBuilder('t')
+            ->select('t.id', 't.name', 't.token')
             ->where('t.user = :user')
-            ->groupBy('t.id', 'h.id')
             ->orderBy('t.created', 'DESC')
-            ->setParameter('user', $user->getId(), UlidType::NAME);
+            ->setParameter('user', $user->getId(), UlidType::NAME)
+            ->getQuery()
+            ->getArrayResult();
 
-        return $qb->getQuery()->getArrayResult();
+        $subQb = $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select('IDENTITY(h2.token) AS token_id', 'MAX(h2.created) AS max_created', 'h2.ip')
+            ->from(ApiTokenHistory::class, 'h2')
+            ->groupBy('h2.token');
+
+        $history = $subQb->getQuery()->getArrayResult();
+
+        $historyMap = array_combine(array_column($history, 'token_id'), $history);
+
+        return array_map(static fn (array $token) => [
+            'id' => $token['id'],
+            'name' => $token['name'],
+            'ip' => $historyMap[$token['id']->toBinary()]['ip'] ?? null,
+            'token' => $token['token'],
+            'lastUsed' => $historyMap[$token['id']->toBinary()]['max_created'] ?? null,
+        ], $tokens);
     }
 
     public function revoke(ApiToken $token): void
