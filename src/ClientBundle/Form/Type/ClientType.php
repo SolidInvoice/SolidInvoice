@@ -30,7 +30,7 @@ class ClientType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('name');
+        $builder->add('name', null, ['sanitize_html' => true]);
         $builder->add('website', UrlType::class, ['required' => false]);
 
         $builder->add(

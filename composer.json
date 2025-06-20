@@ -104,6 +104,7 @@
         "symfony/gitter-notifier": "^7.1",
         "symfony/google-chat-notifier": "^7.1",
         "symfony/google-mailer": "^7.1",
+        "symfony/html-sanitizer": "^7.1",
         "symfony/http-client": "^7.1",
         "symfony/http-client-contracts": "*",
         "symfony/http-foundation": "^7.1",
