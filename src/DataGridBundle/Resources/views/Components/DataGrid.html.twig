@@ -123,7 +123,7 @@
                                 </td>
                             {% endif %}
                             {% for column in grid.columns %}
-                                <td>{{ this.renderfield(column, row)|raw }}</td>
+                                <td>{{ this.renderfield(column, row)|sanitize_html }}</td>
                             {% endfor %}
 
                             {% if grid.actions|length > 0 %}

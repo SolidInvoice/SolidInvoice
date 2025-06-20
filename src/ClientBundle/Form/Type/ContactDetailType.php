@@ -55,6 +55,7 @@ final class ContactDetailType extends AbstractType
                     new NotBlank(['groups' => 'not_blank']),
                     new Email(['groups' => 'email']),
                 ],
+                'sanitize_html' => true,
             ]
         );
     }
