@@ -70,16 +70,16 @@
         },
         {
             "name": "api-platform/core",
-            "version": "v4.1.16",
+            "version": "v4.1.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/api-platform/core.git",
-                "reference": "64ff50f9b7206e7ac324ea221537f753194889b3"
+                "reference": "e1191ca86e548d7610251bba2d8498b440cfd631"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/api-platform/core/zipball/64ff50f9b7206e7ac324ea221537f753194889b3",
-                "reference": "64ff50f9b7206e7ac324ea221537f753194889b3",
+                "url": "https://api.github.com/repos/api-platform/core/zipball/e1191ca86e548d7610251bba2d8498b440cfd631",
+                "reference": "e1191ca86e548d7610251bba2d8498b440cfd631",
                 "shasum": ""
             },
             "require": {
@@ -280,9 +280,9 @@
             ],
             "support": {
                 "issues": "https://github.com/api-platform/core/issues",
-                "source": "https://github.com/api-platform/core/tree/v4.1.16"
+                "source": "https://github.com/api-platform/core/tree/v4.1.17"
             },
-            "time": "2025-06-13T13:00:13+00:00"
+            "time": "2025-06-19T10:14:20+00:00"
         },
         {
             "name": "async-aws/core",
@@ -24209,9 +24209,9 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "roave/security-advisories": 20,
         "solidworx/platform": 20,
-        "solidworx/toggler": 10
+        "solidworx/toggler": 10,
+        "roave/security-advisories": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
@@ -24226,9 +24226,9 @@
         "ext-soap": "*",
         "ext-xsl": "*"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "platform-overrides": {
         "php": "8.3"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
