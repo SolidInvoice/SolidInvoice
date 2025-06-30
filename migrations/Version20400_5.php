@@ -45,7 +45,10 @@ final class Version20400_5 extends AbstractMigration
     public function down(Schema $schema): void
     {
         $usersTable = $schema->getTable('users');
-        $usersTable->dropColumn('first_name');
-        $usersTable->dropColumn('last_name');
+        $usersTable->dropColumn('totp_secret');
+        $usersTable->dropColumn('auth_code');
+        $usersTable->dropColumn('email_auth_enabled');
+        $usersTable->dropColumn('trusted_version');
+        $usersTable->dropColumn('backup_codes');
     }
 }
