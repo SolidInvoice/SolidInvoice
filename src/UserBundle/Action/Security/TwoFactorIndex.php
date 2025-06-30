@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -16,6 +18,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class TwoFactorIndex extends AbstractController
 {
+    /**
+     * @return array<string, scalar>
+     */
     #[Template('@SolidInvoiceUser/Security/TwoFactor/index.html.twig')]
     public function __invoke(): array
     {
