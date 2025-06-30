@@ -4473,16 +4473,16 @@
         },
         {
             "name": "lorisleiva/cron-translator",
-            "version": "v0.4.5",
+            "version": "v0.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lorisleiva/cron-translator.git",
-                "reference": "3c7d8e3984c845a33bc1ae3cdc36c0b38f4783e9"
+                "reference": "082e3cd493de13bd5816bfdda484d07bb2326768"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lorisleiva/cron-translator/zipball/3c7d8e3984c845a33bc1ae3cdc36c0b38f4783e9",
-                "reference": "3c7d8e3984c845a33bc1ae3cdc36c0b38f4783e9",
+                "url": "https://api.github.com/repos/lorisleiva/cron-translator/zipball/082e3cd493de13bd5816bfdda484d07bb2326768",
+                "reference": "082e3cd493de13bd5816bfdda484d07bb2326768",
                 "shasum": ""
             },
             "require": {
@@ -4517,7 +4517,7 @@
             ],
             "support": {
                 "issues": "https://github.com/lorisleiva/cron-translator/issues",
-                "source": "https://github.com/lorisleiva/cron-translator/tree/v0.4.5"
+                "source": "https://github.com/lorisleiva/cron-translator/tree/v0.4.6"
             },
             "funding": [
                 {
@@ -4525,7 +4525,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-02-02T10:51:56+00:00"
+            "time": "2025-06-23T10:51:20+00:00"
         },
         {
             "name": "moneyphp/money",
@@ -24209,9 +24209,9 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "roave/security-advisories": 20,
         "solidworx/platform": 20,
-        "solidworx/toggler": 10
+        "solidworx/toggler": 10,
+        "roave/security-advisories": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
@@ -24226,9 +24226,9 @@
         "ext-soap": "*",
         "ext-xsl": "*"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "platform-overrides": {
         "php": "8.3"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
