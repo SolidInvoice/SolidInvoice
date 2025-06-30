@@ -12141,16 +12141,16 @@
         },
         {
             "name": "symfony/messenger",
-            "version": "v7.3.0",
+            "version": "v7.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/messenger.git",
-                "reference": "287961b893b55ac502e3704110440d0ad515dbee"
+                "reference": "716c89b86ce58c4946d436d862694971c999d1aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/messenger/zipball/287961b893b55ac502e3704110440d0ad515dbee",
-                "reference": "287961b893b55ac502e3704110440d0ad515dbee",
+                "url": "https://api.github.com/repos/symfony/messenger/zipball/716c89b86ce58c4946d436d862694971c999d1aa",
+                "reference": "716c89b86ce58c4946d436d862694971c999d1aa",
                 "shasum": ""
             },
             "require": {
@@ -12210,7 +12210,7 @@
             "description": "Helps applications send and receive messages to/from other applications or via message queues",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/messenger/tree/v7.3.0"
+                "source": "https://github.com/symfony/messenger/tree/v7.3.1"
             },
             "funding": [
                 {
@@ -12226,7 +12226,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-05-22T15:02:37+00:00"
+            "time": "2025-06-27T19:55:54+00:00"
         },
         {
             "name": "symfony/microsoft-teams-notifier",
@@ -24209,9 +24209,9 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "roave/security-advisories": 20,
         "solidworx/platform": 20,
-        "solidworx/toggler": 10
+        "solidworx/toggler": 10,
+        "roave/security-advisories": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
@@ -24226,9 +24226,9 @@
         "ext-soap": "*",
         "ext-xsl": "*"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "platform-overrides": {
         "php": "8.3"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
