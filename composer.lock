@@ -8648,12 +8648,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SolidWorx/platform.git",
-                "reference": "ad7ca589abafaaf9134f792928441579d807839b"
+                "reference": "109bee170900baee11a58418d99a153ca76ffeb1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SolidWorx/platform/zipball/ad7ca589abafaaf9134f792928441579d807839b",
-                "reference": "ad7ca589abafaaf9134f792928441579d807839b",
+                "url": "https://api.github.com/repos/SolidWorx/platform/zipball/109bee170900baee11a58418d99a153ca76ffeb1",
+                "reference": "109bee170900baee11a58418d99a153ca76ffeb1",
                 "shasum": ""
             },
             "require": {
@@ -8722,7 +8722,7 @@
                 "issues": "https://github.com/SolidWorx/platform/issues",
                 "source": "https://github.com/SolidWorx/platform/tree/main"
             },
-            "time": "2025-06-26T12:05:08+00:00"
+            "time": "2025-06-30T10:28:27+00:00"
         },
         {
             "name": "solidworx/toggler",
