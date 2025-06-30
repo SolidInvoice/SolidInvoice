@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "483b5740272e4822339c1fae440ad3d2",
+    "content-hash": "f83c6452c2b6e5c4782aaa556dff2c28",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -5352,16 +5352,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "3.10.0",
+            "version": "3.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CarbonPHP/carbon.git",
-                "reference": "c1397390dd0a7e0f11660f0ae20f753d88c1f3d9"
+                "reference": "1fd1935b2d90aef2f093c5e35f7ae1257c448d00"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CarbonPHP/carbon/zipball/c1397390dd0a7e0f11660f0ae20f753d88c1f3d9",
-                "reference": "c1397390dd0a7e0f11660f0ae20f753d88c1f3d9",
+                "url": "https://api.github.com/repos/CarbonPHP/carbon/zipball/1fd1935b2d90aef2f093c5e35f7ae1257c448d00",
+                "reference": "1fd1935b2d90aef2f093c5e35f7ae1257c448d00",
                 "shasum": ""
             },
             "require": {
@@ -5453,7 +5453,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-06-12T10:24:28+00:00"
+            "time": "2025-06-21T15:19:35+00:00"
         },
         {
             "name": "nette/schema",
@@ -8182,6 +8182,56 @@
             "time": "2025-04-20T08:38:44+00:00"
         },
         {
+            "name": "scheb/2fa-google-authenticator",
+            "version": "v7.10.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/scheb/2fa-google-authenticator.git",
+                "reference": "01a446eb68a76c3d0528a190029afa5e6ce5c384"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/scheb/2fa-google-authenticator/zipball/01a446eb68a76c3d0528a190029afa5e6ce5c384",
+                "reference": "01a446eb68a76c3d0528a190029afa5e6ce5c384",
+                "shasum": ""
+            },
+            "require": {
+                "php": "~8.2.0 || ~8.3.0 || ~8.4.0",
+                "scheb/2fa-bundle": "self.version",
+                "spomky-labs/otphp": "^11.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Scheb\\TwoFactorBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Christian Scheb",
+                    "email": "me@christianscheb.de"
+                }
+            ],
+            "description": "Extends scheb/2fa-bundle with two-factor authentication using Google Authenticator",
+            "homepage": "https://github.com/scheb/2fa",
+            "keywords": [
+                "2fa",
+                "Authentication",
+                "google-authenticator",
+                "symfony",
+                "two-factor",
+                "two-step"
+            ],
+            "support": {
+                "source": "https://github.com/scheb/2fa-google-authenticator/tree/v7.10.0"
+            },
+            "time": "2025-04-20T08:38:44+00:00"
+        },
+        {
             "name": "scheb/2fa-totp",
             "version": "v7.10.0",
             "source": {
@@ -8645,10 +8695,16 @@
         {
             "name": "solidworx/platform",
             "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SolidWorx/platform.git",
+                "reference": "ad7ca589abafaaf9134f792928441579d807839b"
+            },
             "dist": {
-                "type": "path",
-                "url": "../../platform",
-                "reference": "dc50d5da9c1fd312b3108e9c08c8585a393543cf"
+                "type": "zip",
+                "url": "https://api.github.com/repos/SolidWorx/platform/zipball/ad7ca589abafaaf9134f792928441579d807839b",
+                "reference": "ad7ca589abafaaf9134f792928441579d807839b",
+                "shasum": ""
             },
             "require": {
                 "doctrine/doctrine-bundle": "^2.13",
@@ -8694,30 +8750,29 @@
                 "spatie/phpunit-snapshot-assertions": "^5.2",
                 "symplify/easy-coding-standard": "^12.5"
             },
+            "default-branch": true,
             "type": "symfony-bundle",
             "autoload": {
                 "psr-4": {
-                    "SolidWorx\\Platform\\Component\\": "src/Component",
+                    "SolidWorx\\Platform\\Test\\": "src/Test",
                     "SolidWorx\\Platform\\UiBundle\\": "src/Bundle/Ui",
-                    "SolidWorx\\Platform\\PlatformBundle\\": "src/Bundle/Platform",
+                    "SolidWorx\\Platform\\Component\\": "src/Component",
                     "SolidWorx\\Platform\\SaasBundle\\": "src/Bundle/Saas",
-                    "SolidWorx\\Platform\\Test\\": "src/Test"
+                    "SolidWorx\\Platform\\PlatformBundle\\": "src/Bundle/Platform"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "SolidWorx\\Platform\\Tests\\": "tests/"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "keywords": [
                 "symfony-ux"
             ],
-            "transport-options": {
-                "relative": true
-            }
+            "support": {
+                "issues": "https://github.com/SolidWorx/platform/issues",
+                "source": "https://github.com/SolidWorx/platform/tree/main"
+            },
+            "time": "2025-06-26T12:05:08+00:00"
         },
         {
             "name": "solidworx/toggler",

@@ -14,5 +14,5 @@
 {% block title %}{{ "profile.show.title"|trans({"%username%" : app.user.userIdentifier}) }}{% endblock title %}
 
 {% block profile_content %}
-    <twig:TwoFactor />
+    <twig:Platform:Security:TwoFactor />
 {% endblock profile_content %}

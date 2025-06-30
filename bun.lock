@@ -23,6 +23,7 @@
         "@codecov/webpack-plugin": "^1.0.1",
         "@eslint/js": "^9.21.0",
         "@hotwired/stimulus": "^3.2.2",
+        "@solidworx/platform": "file:vendor/solidworx/platform/assets",
         "@symfony/stimulus-bundle": "file:vendor/symfony/stimulus-bundle/assets",
         "@symfony/ux-autocomplete": "file:vendor/symfony/ux-autocomplete/assets",
         "@symfony/ux-dropzone": "file:vendor/symfony/ux-dropzone/assets",
@@ -493,6 +494,8 @@
     "@rollup/rollup-win32-x64-msvc": ["@rollup/rollup-win32-x64-msvc@4.40.0", "", { "os": "win32", "cpu": "x64" }, "sha512-lpPE1cLfP5oPzVjKMx10pgBmKELQnFJXHgvtHCtuJWOv8MxqdEIMNtgHgBFf7Ea2/7EuVwa9fodWUfXAlXZLZQ=="],
 
     "@sinclair/typebox": ["@sinclair/typebox@0.27.8", "", {}, "sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA=="],
+
+    "@solidworx/platform": ["@solidworx/platform@file:vendor/solidworx/platform/assets", { "devDependencies": { "@hotwired/stimulus": "^3.0.0", "bootstrap": "^4.6.2" }, "peerDependencies": { "@hotwired/stimulus": "^3.0.0", "bootstrap": "^4.6.2" } }],
 
     "@stimulus-components/checkbox-select-all": ["@stimulus-components/checkbox-select-all@6.1.0", "", { "peerDependencies": { "@hotwired/stimulus": "^3" } }, "sha512-FTwLyYBrVw7WneVJy9sP/J3sCVxx8/mz7U+tDJhQsVrlfM2sCyVXRNMexzb7vt/STTqz9+crN9MeWFv52hxh5Q=="],
 

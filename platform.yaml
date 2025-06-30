@@ -4,4 +4,4 @@ platform:
     security:
         2fa:
             enabled: true
-            base_template: "@SolidInvoiceCore/Layout/default_no_nav.html.twig"
+            base_template: "@SolidInvoiceCore/Layout/two_factor_security.html.twig"

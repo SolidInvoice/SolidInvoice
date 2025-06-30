@@ -18,15 +18,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Scheb\TwoFactorBundle\Model\BackupCodeInterface;
-use Scheb\TwoFactorBundle\Model\Email\TwoFactorInterface as EmailTwoFactorInterface;
-use Scheb\TwoFactorBundle\Model\Totp\TotpConfiguration;
-use Scheb\TwoFactorBundle\Model\Totp\TotpConfigurationInterface;
-use Scheb\TwoFactorBundle\Model\Totp\TwoFactorInterface as TotpTwoFactorInterface;
-use Scheb\TwoFactorBundle\Model\TrustedDeviceInterface;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\UserBundle\Repository\UserRepository;
+use SolidWorx\Platform\PlatformBundle\Contracts\Security\TwoFactor\UserTwoFactorInterface;
+use SolidWorx\Platform\PlatformBundle\Security\TwoFactor\Traits\UserTwoFactor;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
@@ -41,11 +37,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'This email is already in use. Do you want to log in instead?')]
 #[ORM\Index(fields: ['googleId'])]
-class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringable, TotpTwoFactorInterface, EmailTwoFactorInterface, TrustedDeviceInterface, BackupCodeInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringable, UserTwoFactorInterface
 {
-    final public const TABLE_NAME = 'users';
+    final public const string TABLE_NAME = 'users';
 
     use TimeStampable;
+    use UserTwoFactor;
 
     #[ORM\Column(type: UlidType::NAME, unique: true)]
     #[ORM\Id]
@@ -106,21 +103,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     #[ORM\Column(name: 'google_id', type: Types::STRING, length: 45, nullable: true)]
     private ?string $googleId = null;
-
-    #[ORM\Column(name: 'totp_secret', type: Types::STRING, length: 45, nullable: true)]
-    private ?string $totpSecret = null;
-
-    #[ORM\Column(name: 'auth_code', type: Types::STRING, length: 45, nullable: true)]
-    private ?string $authCode;
-
-    #[ORM\Column(name: 'email_auth_enabled', type: Types::BOOLEAN, nullable: true)]
-    private ?bool $emailAuthEnabled = false;
-
-    #[ORM\Column(name: 'trusted_version', type: Types::INTEGER, options: ['default' => 0])]
-    private int $trustedVersion;
-
-    #[ORM\Column(name: 'backup_codes', type: 'json', nullable: true)]
-    private ?array $backupCodes = [];
 
     public function __construct()
     {
@@ -361,98 +343,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         return $this;
     }
 
-    public function isTotpAuthenticationEnabled(): bool
-    {
-        return $this->totpSecret ? true : false;
-    }
-
-    public function getTotpAuthenticationUsername(): string
-    {
-        return $this->email;
-    }
-
-    public function getTotpAuthenticationConfiguration(): TotpConfigurationInterface | null
-    {
-        $period = 20;
-        $digits = 6;
-
-        return null !== $this->totpSecret ? new TotpConfiguration($this->totpSecret, TotpConfiguration::ALGORITHM_SHA1, $period, $digits) : null;
-    }
-
     public function __toString(): string
     {
         return $this->email;
-    }
-
-    public function isEmailAuthEnabled(): bool
-    {
-        return $this->emailAuthEnabled === true;
-    }
-
-    public function getEmailAuthRecipient(): string
-    {
-        return $this->email;
-    }
-
-    public function getEmailAuthCode(): string | null
-    {
-        if (null === $this->authCode) {
-            throw new \LogicException('The email authentication code was not set');
-        }
-
-        return $this->authCode;
-    }
-
-    public function setEmailAuthCode(string $authCode): void
-    {
-        $this->authCode = $authCode;
-    }
-
-    public function is2FaEnabled(): bool
-    {
-        return $this->isTotpAuthenticationEnabled() || $this->isEmailAuthEnabled();
-    }
-
-    public function getTrustedTokenVersion(): int
-    {
-        return $this->trustedVersion;
-    }
-
-    public function isBackupCode(string $code): bool
-    {
-        return in_array($code, (array) $this->backupCodes, true);
-    }
-
-    public function invalidateBackupCode(string $code): void
-    {
-        $key = array_search($code, (array) $this->backupCodes, true);
-        if ($key !== false) {
-            unset($this->backupCodes[$key]);
-        }
-    }
-
-    /**
-     * @param list<string> $backUpCodes
-     */
-    public function setBackUpCodes(array $backUpCodes): self
-    {
-        $this->backupCodes = $backUpCodes;
-
-        return $this;
-    }
-
-    /**
-     * @return list<string>
-     */
-    public function getBackUpCodes(): array
-    {
-        return $this->backupCodes ?? [];
-    }
-
-    public function enableEmailAuth(bool $enabled): self
-    {
-        $this->emailAuthEnabled = $enabled;
-
-        return $this;
     }
 }

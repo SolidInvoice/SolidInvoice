@@ -15,12 +15,6 @@
         }
     ],
     "homepage": "https://solidinvoice.co",
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../../platform"
-        }
-    ],
     "require": {
         "php": ">=8.3",
         "ext-curl": "*",
@@ -77,6 +71,12 @@
         "php-http/message-factory": "^1.1",
         "ramsey/uuid": "^4.0",
         "ramsey/uuid-doctrine": "^2.0",
+        "scheb/2fa-backup-code": "^7.10",
+        "scheb/2fa-bundle": "^7.10",
+        "scheb/2fa-email": "^7.10",
+        "scheb/2fa-google-authenticator": "^7.10",
+        "scheb/2fa-totp": "^7.10",
+        "scheb/2fa-trusted-device": "^7.10",
         "sentry/sentry-symfony": "^5.0",
         "solidworx/form-handler-bundle": "^1.0",
         "solidworx/platform": "dev-main",
