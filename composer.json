@@ -38,7 +38,7 @@
         "doctrine/doctrine-bundle": "^2.7",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/migrations": "^3.5",
-        "doctrine/orm": "^2.15",
+        "doctrine/orm": "^3.5",
         "doctrine/persistence": "^3.1",
         "dragonmantank/cron-expression": "^3.3",
         "egulias/email-validator": "^4.0",
