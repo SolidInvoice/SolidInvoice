@@ -15,6 +15,7 @@ namespace SolidInvoice\CoreBundle\Action;
 
 use Doctrine\Persistence\ManagerRegistry;
 use InvalidArgumentException;
+use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\QuoteBundle\Entity\Quote;
@@ -33,7 +34,8 @@ class ViewBilling
     public function __construct(
         private readonly ManagerRegistry $registry,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
-        private readonly RouterInterface $router
+        private readonly RouterInterface $router,
+        private readonly CompanySelector $companySelector,
     ) {
     }
 
@@ -101,6 +103,8 @@ class ViewBilling
         } elseif ($entity instanceof Quote) {
             $entityId = $entity->getQuoteId();
         }
+
+        $this->companySelector->switchCompany($entity->getCompany()->getId());
 
         return new Template(
             '@SolidInvoiceCore/View/' . $options['entity'] . '.html.twig',
