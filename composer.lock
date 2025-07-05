@@ -11679,16 +11679,16 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v7.3.0",
+            "version": "v7.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
-                "reference": "4236baf01609667d53b20371486228231eb135fd"
+                "reference": "23dd60256610c86a3414575b70c596e5deff6ed9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/4236baf01609667d53b20371486228231eb135fd",
-                "reference": "4236baf01609667d53b20371486228231eb135fd",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/23dd60256610c86a3414575b70c596e5deff6ed9",
+                "reference": "23dd60256610c86a3414575b70c596e5deff6ed9",
                 "shasum": ""
             },
             "require": {
@@ -11738,7 +11738,7 @@
             "description": "Defines an object-oriented layer for the HTTP specification",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/http-foundation/tree/v7.3.0"
+                "source": "https://github.com/symfony/http-foundation/tree/v7.3.1"
             },
             "funding": [
                 {
@@ -11754,7 +11754,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-05-12T14:48:23+00:00"
+            "time": "2025-06-23T15:07:14+00:00"
         },
         {
             "name": "symfony/http-kernel",
@@ -25090,9 +25090,9 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "roave/security-advisories": 20,
         "solidworx/platform": 20,
-        "solidworx/toggler": 10
+        "solidworx/toggler": 10,
+        "roave/security-advisories": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
@@ -25107,9 +25107,9 @@
         "ext-soap": "*",
         "ext-xsl": "*"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "platform-overrides": {
         "php": "8.3"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
