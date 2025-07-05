@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "370b147b662d49f8d79ece35897ef88f",
+    "content-hash": "42a987f4fc412d74eea7dc95deff69d3",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -710,16 +710,16 @@
         },
         {
             "name": "brick/math",
-            "version": "0.12.3",
+            "version": "0.13.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/brick/math.git",
-                "reference": "866551da34e9a618e64a819ee1e01c20d8a588ba"
+                "reference": "fc7ed316430118cc7836bf45faff18d5dfc8de04"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/brick/math/zipball/866551da34e9a618e64a819ee1e01c20d8a588ba",
-                "reference": "866551da34e9a618e64a819ee1e01c20d8a588ba",
+                "url": "https://api.github.com/repos/brick/math/zipball/fc7ed316430118cc7836bf45faff18d5dfc8de04",
+                "reference": "fc7ed316430118cc7836bf45faff18d5dfc8de04",
                 "shasum": ""
             },
             "require": {
@@ -758,7 +758,7 @@
             ],
             "support": {
                 "issues": "https://github.com/brick/math/issues",
-                "source": "https://github.com/brick/math/tree/0.12.3"
+                "source": "https://github.com/brick/math/tree/0.13.1"
             },
             "funding": [
                 {
@@ -766,7 +766,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-02-28T13:11:00+00:00"
+            "time": "2025-03-29T13:50:30+00:00"
         },
         {
             "name": "carbonphp/carbon-doctrine-types",
@@ -25090,9 +25090,9 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "roave/security-advisories": 20,
         "solidworx/platform": 20,
-        "solidworx/toggler": 10
+        "solidworx/toggler": 10,
+        "roave/security-advisories": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
@@ -25107,9 +25107,9 @@
         "ext-soap": "*",
         "ext-xsl": "*"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "platform-overrides": {
         "php": "8.3"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
