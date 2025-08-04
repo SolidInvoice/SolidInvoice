@@ -10093,16 +10093,16 @@
         },
         {
             "name": "symfony/doctrine-bridge",
-            "version": "v7.3.0",
+            "version": "v7.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/doctrine-bridge.git",
-                "reference": "1df0cb5ce77ddfa0bdbca410009e3822567a6a19"
+                "reference": "a2cbc12baf9bcc5d0c125e4c0f8330b98af841ca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/doctrine-bridge/zipball/1df0cb5ce77ddfa0bdbca410009e3822567a6a19",
-                "reference": "1df0cb5ce77ddfa0bdbca410009e3822567a6a19",
+                "url": "https://api.github.com/repos/symfony/doctrine-bridge/zipball/a2cbc12baf9bcc5d0c125e4c0f8330b98af841ca",
+                "reference": "a2cbc12baf9bcc5d0c125e4c0f8330b98af841ca",
                 "shasum": ""
             },
             "require": {
@@ -10151,7 +10151,7 @@
                 "symfony/security-core": "^6.4|^7.0",
                 "symfony/stopwatch": "^6.4|^7.0",
                 "symfony/translation": "^6.4|^7.0",
-                "symfony/type-info": "^7.1",
+                "symfony/type-info": "^7.1.8",
                 "symfony/uid": "^6.4|^7.0",
                 "symfony/validator": "^6.4|^7.0",
                 "symfony/var-dumper": "^6.4|^7.0"
@@ -10182,7 +10182,7 @@
             "description": "Provides integration for Doctrine with various Symfony components",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/doctrine-bridge/tree/v7.3.0"
+                "source": "https://github.com/symfony/doctrine-bridge/tree/v7.3.2"
             },
             "funding": [
                 {
@@ -10194,11 +10194,15 @@
                     "type": "github"
                 },
                 {
+                    "url": "https://github.com/nicolas-grekas",
+                    "type": "github"
+                },
+                {
                     "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-05-25T10:32:38+00:00"
+            "time": "2025-07-15T11:36:08+00:00"
         },
         {
             "name": "symfony/dotenv",
