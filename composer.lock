@@ -12306,16 +12306,16 @@
         },
         {
             "name": "symfony/mailer",
-            "version": "v7.3.0",
+            "version": "v7.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/mailer.git",
-                "reference": "0f375bbbde96ae8c78e4aa3e63aabd486e33364c"
+                "reference": "d43e84d9522345f96ad6283d5dfccc8c1cfc299b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/mailer/zipball/0f375bbbde96ae8c78e4aa3e63aabd486e33364c",
-                "reference": "0f375bbbde96ae8c78e4aa3e63aabd486e33364c",
+                "url": "https://api.github.com/repos/symfony/mailer/zipball/d43e84d9522345f96ad6283d5dfccc8c1cfc299b",
+                "reference": "d43e84d9522345f96ad6283d5dfccc8c1cfc299b",
                 "shasum": ""
             },
             "require": {
@@ -12366,7 +12366,7 @@
             "description": "Helps sending emails",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/mailer/tree/v7.3.0"
+                "source": "https://github.com/symfony/mailer/tree/v7.3.2"
             },
             "funding": [
                 {
@@ -12378,11 +12378,15 @@
                     "type": "github"
                 },
                 {
+                    "url": "https://github.com/nicolas-grekas",
+                    "type": "github"
+                },
+                {
                     "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-04-04T09:51:09+00:00"
+            "time": "2025-07-15T11:36:08+00:00"
         },
         {
             "name": "symfony/mailgun-mailer",
@@ -13045,16 +13049,16 @@
         },
         {
             "name": "symfony/mime",
-            "version": "v7.3.0",
+            "version": "v7.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/mime.git",
-                "reference": "0e7b19b2f399c31df0cdbe5d8cbf53f02f6cfcd9"
+                "reference": "e0a0f859148daf1edf6c60b398eb40bfc96697d1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/mime/zipball/0e7b19b2f399c31df0cdbe5d8cbf53f02f6cfcd9",
-                "reference": "0e7b19b2f399c31df0cdbe5d8cbf53f02f6cfcd9",
+                "url": "https://api.github.com/repos/symfony/mime/zipball/e0a0f859148daf1edf6c60b398eb40bfc96697d1",
+                "reference": "e0a0f859148daf1edf6c60b398eb40bfc96697d1",
                 "shasum": ""
             },
             "require": {
@@ -13109,7 +13113,7 @@
                 "mime-type"
             ],
             "support": {
-                "source": "https://github.com/symfony/mime/tree/v7.3.0"
+                "source": "https://github.com/symfony/mime/tree/v7.3.2"
             },
             "funding": [
                 {
@@ -13121,11 +13125,15 @@
                     "type": "github"
                 },
                 {
+                    "url": "https://github.com/nicolas-grekas",
+                    "type": "github"
+                },
+                {
                     "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-02-19T08:51:26+00:00"
+            "time": "2025-07-15T13:41:35+00:00"
         },
         {
             "name": "symfony/mobyt-notifier",
