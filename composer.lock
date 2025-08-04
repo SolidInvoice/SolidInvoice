@@ -12884,16 +12884,16 @@
         },
         {
             "name": "symfony/messenger",
-            "version": "v7.3.0",
+            "version": "v7.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/messenger.git",
-                "reference": "287961b893b55ac502e3704110440d0ad515dbee"
+                "reference": "f990f0d09deaa45955593be6aafbafe73b0682b9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/messenger/zipball/287961b893b55ac502e3704110440d0ad515dbee",
-                "reference": "287961b893b55ac502e3704110440d0ad515dbee",
+                "url": "https://api.github.com/repos/symfony/messenger/zipball/f990f0d09deaa45955593be6aafbafe73b0682b9",
+                "reference": "f990f0d09deaa45955593be6aafbafe73b0682b9",
                 "shasum": ""
             },
             "require": {
@@ -12953,7 +12953,7 @@
             "description": "Helps applications send and receive messages to/from other applications or via message queues",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/messenger/tree/v7.3.0"
+                "source": "https://github.com/symfony/messenger/tree/v7.3.2"
             },
             "funding": [
                 {
@@ -12965,11 +12965,15 @@
                     "type": "github"
                 },
                 {
+                    "url": "https://github.com/nicolas-grekas",
+                    "type": "github"
+                },
+                {
                     "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-05-22T15:02:37+00:00"
+            "time": "2025-07-15T11:36:08+00:00"
         },
         {
             "name": "symfony/microsoft-teams-notifier",
