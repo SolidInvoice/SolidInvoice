@@ -53,4 +53,20 @@ final class CompanyRepository extends ServiceEntityRepository
         $this->getEntityManager()->persist($company);
         $this->getEntityManager()->flush();
     }
+
+    public function deleteCompany(?Ulid $companyId): void
+    {
+        if (null === $companyId) {
+            return;
+        }
+
+        $company = $this->find($companyId);
+
+        if (! $company instanceof Company) {
+            return;
+        }
+
+        $this->getEntityManager()->remove($company);
+        $this->getEntityManager()->flush();
+    }
 }

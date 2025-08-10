@@ -17,8 +17,27 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use SolidInvoice\ClientBundle\Entity\AdditionalContactDetail;
+use SolidInvoice\ClientBundle\Entity\Address;
+use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\ClientBundle\Entity\Contact;
+use SolidInvoice\ClientBundle\Entity\ContactType;
+use SolidInvoice\ClientBundle\Entity\Credit;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\NotificationBundle\Entity\TransportSetting;
+use SolidInvoice\NotificationBundle\Entity\UserNotification;
+use SolidInvoice\PaymentBundle\Entity\Payment;
+use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
+use SolidInvoice\QuoteBundle\Entity\Line;
+use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\SettingsBundle\Entity\Setting;
+use SolidInvoice\TaxBundle\Entity\Tax;
+use SolidInvoice\UserBundle\Entity\ApiToken;
+use SolidInvoice\UserBundle\Entity\ApiTokenHistory;
 use SolidInvoice\UserBundle\Entity\User;
+use SolidInvoice\UserBundle\Entity\UserInvitation;
 use SolidWorx\Platform\SaasBundle\Subscriber\SubscribableInterface;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
@@ -50,6 +69,67 @@ class Company implements Stringable, SubscribableInterface
 
     #[Assert\NotBlank()]
     public ?string $currency = '';
+
+    // Related entities: Only added here to enable orphan removal
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: ApiTokenHistory::class, cascade: ['persist'], orphanRemoval: true)]
+    private Collection $apiTokenHistories;
+
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Tax::class, cascade: ['persist'], orphanRemoval: true)]
+    private Collection $taxes;
+
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: AdditionalContactDetail::class, cascade: ['persist'], orphanRemoval: true)]
+    private Collection $additionalContactDetails;
+
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Address::class, cascade: ['persist'], orphanRemoval: true)]
+    private Collection $addresses;
+
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Client::class, cascade: ['persist'], orphanRemoval: true)]
+    private Collection $clients;
+
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Contact::class, cascade: ['persist'], orphanRemoval: true)]
+    private Collection $contacts;
+
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: ContactType::class, cascade: ['persist'], orphanRemoval: true)]
+    private Collection $contactTypes;
+
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Credit::class, cascade: ['persist'], orphanRemoval: true)]
+    private Collection $credit;
+
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: UserInvitation::class, cascade: ['persist'], orphanRemoval: true)]
+    private Collection $userInvitations;
+
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: ApiToken::class, cascade: ['persist'], orphanRemoval: true)]
+    private Collection $apiTokens;
+
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Setting::class, cascade: ['persist'], orphanRemoval: true)]
+    private Collection $settings;
+
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Quote::class, cascade: ['persist'], orphanRemoval: true)]
+    private Collection $quotes;
+
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Line::class, cascade: ['persist'], orphanRemoval: true)]
+    private Collection $quoteLines;
+
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: PaymentMethod::class, cascade: ['persist'], orphanRemoval: true)]
+    private Collection $paymentMethods;
+
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Payment::class, cascade: ['persist'], orphanRemoval: true)]
+    private Collection $payments;
+
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: UserNotification::class, cascade: ['persist'], orphanRemoval: true)]
+    private Collection $userNotifications;
+
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: TransportSetting::class, cascade: ['persist'], orphanRemoval: true)]
+    private Collection $transportSettings;
+
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Invoice::class, cascade: ['persist'], orphanRemoval: true)]
+    private Collection $invoices;
+
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: RecurringInvoice::class, cascade: ['persist'], orphanRemoval: true)]
+    private Collection $recurringInvoices;
+
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: \SolidInvoice\InvoiceBundle\Entity\Line::class, cascade: ['persist'], orphanRemoval: true)]
+    private Collection $invoiceLines;
 
     public function __construct()
     {
