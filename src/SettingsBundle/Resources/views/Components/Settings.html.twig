@@ -59,22 +59,22 @@
                         {{ "Please proceed with caution since this action cannot be undone."|trans }}
                     </p>
                     <div class="form-group"
-                            {{ stimulus_controller('delete-company', {'company-name': company_name()}) }}
+                        {{ stimulus_controller('delete-company', {'company-name': company_name()}) }}
                     >
                         <button type="button"
-                                class="btn btn-danger"
-                                {{ stimulus_action('delete-company', 'showModal', 'click') }}
+                            class="btn btn-danger"
+                            {{ stimulus_action('delete-company', 'showModal', 'click') }}
                         >
                             {{ icon('trash') }} {{ "Delete Company"|trans }}
                         </button>
 
                         <div class="modal fade"
-                             id="deleteCompanyModal"
-                             tabindex="-1"
-                             role="dialog"
-                             aria-labelledby="deleteCompanyModalLabel"
-                             aria-hidden="true"
-                                {{ stimulus_target('delete-company', 'modal') }}
+                            id="deleteCompanyModal"
+                            tabindex="-1"
+                            role="dialog"
+                            aria-labelledby="deleteCompanyModalLabel"
+                            aria-hidden="true"
+                            {{ stimulus_target('delete-company', 'modal') }}
                         >
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
@@ -112,8 +112,8 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button"
-                                                class="btn btn-secondary"
-                                                data-dismiss="modal"
+                                            class="btn btn-secondary"
+                                            data-dismiss="modal"
                                         >
                                             {{ "Cancel"|trans }}
                                         </button>
@@ -129,8 +129,6 @@
                                                 {{ icon('trash') }} {{ "Delete Company"|trans }}
                                             </button>
                                         </form>
-
-
                                     </div>
                                 </div>
                             </div>
