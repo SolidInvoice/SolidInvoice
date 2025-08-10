@@ -19,7 +19,7 @@ use Symfony\Component\Serializer\Attribute as Serialize;
 
 trait CompanyAware
 {
-    #[ORM\ManyToOne(targetEntity: Company::class, cascade: ['remove'])]
+    #[ORM\ManyToOne(targetEntity: Company::class)]
     #[ORM\JoinColumn(nullable: false)]
     #[Serialize\Ignore()]
     protected Company $company;

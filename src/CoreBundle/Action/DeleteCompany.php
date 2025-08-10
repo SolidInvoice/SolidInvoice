@@ -18,7 +18,6 @@ use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 final class DeleteCompany extends AbstractController
@@ -40,9 +39,10 @@ final class DeleteCompany extends AbstractController
 
         $this->companyRepository->deleteCompany($this->companySelector->getCompany());
 
-        $session = $request->getSession();
-        assert($session instanceof SessionInterface);
-        $session->remove('company');
+        if ($request->hasSession()) {
+            $session = $request->getSession();
+            $session->remove('company');
+        }
 
         $this->addFlash('success', 'Company deleted successfully.');
 
