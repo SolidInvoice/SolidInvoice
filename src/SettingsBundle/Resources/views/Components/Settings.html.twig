@@ -8,7 +8,7 @@
                     {% for settingsSection, setting in appSettings %}
                         <li class="nav-item">
                             <a href="{{ path('_settings', {section: settingsSection}) }}" class="nav-link{{ settingsSection is same as section ? ' active' }}">
-                                {{ icon(settingIconMap.(settingsSection)|default('cog')) }}
+                                {{ icon(settingIconMap[settingsSection]|default('cog')) }}
                                 <p>{{ settingsSection|trans|title }}</p>
                             </a>
                         </li>
@@ -82,11 +82,9 @@
                                         <h5 class="modal-title" id="deleteCompanyModalLabel">
                                             {{ "Confirm Company Deletion"|trans }}
                                         </h5>
-                                        <button type="button"
-                                                class="btn-close"
-                                                data-dismiss="modal"
-                                                aria-label="Close"
-                                        ></button>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
                                     </div>
                                     <div class="modal-body">
                                         <div class="alert alert-danger">
@@ -102,12 +100,14 @@
                                                 {{ "Company Name"|trans }}
                                             </label>
                                             <input type="text"
-                                                   class="form-control"
-                                                   id="companyNameConfirmation"
-                                                    {{ stimulus_target('delete-company', 'companyNameInput') }}
-                                                    {{ stimulus_action('delete-company', 'validateInput', 'input') }}
-                                                   placeholder="{{ "Enter company name to confirm"|trans }}"
-                                            >
+                                               class="form-control"
+                                               id="companyNameConfirmation"
+                                               name="company_name"
+                                               form="deleteCompanyForm"
+                                               {{ stimulus_target('delete-company', 'companyNameInput') }}
+                                               {{ stimulus_action('delete-company', 'validateInput', 'input') }}
+                                               placeholder="{{ "Enter company name to confirm"|trans }}"
+                                           >
                                         </div>
                                     </div>
                                     <div class="modal-footer">
@@ -118,16 +118,13 @@
                                             {{ "Cancel"|trans }}
                                         </button>
 
-                                        <form action="{{ path('_delete_company') }}" method="post">
+                                        <form id="deleteCompanyForm" action="{{ path('_delete_company') }}" method="post">
                                             <input type="hidden" name="_csrf_token" value="{{ csrf_token('delete_company') }}">
-                                            <input type="hidden" name="company_name" value="{{ company_name() }}">
-                                            <input type="hidden" name="_action" value="delete_company">
 
                                             <button type="submit"
-                                                    class="btn btn-danger"
-                                                    {{ stimulus_target('delete-company', 'confirmButton') }}
-                                                    {{ stimulus_action('delete-company', 'confirmDelete', 'click') }}
-                                                    disabled
+                                                class="btn btn-danger"
+                                                {{ stimulus_target('delete-company', 'confirmButton') }}
+                                                disabled
                                             >
                                                 {{ icon('trash') }} {{ "Delete Company"|trans }}
                                             </button>
