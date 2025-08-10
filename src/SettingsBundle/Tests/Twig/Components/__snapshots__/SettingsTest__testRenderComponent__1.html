@@ -12,19 +12,19 @@
                         </li>
                                             <li class="nav-item">
                             <a href="/settings?section=email" class="nav-link">
-                                <i class="fa fa-cog"></i>
+                                <i class="fa fa-envelope"></i>
                                 <p>Email</p>
                             </a>
                         </li>
                                             <li class="nav-item">
                             <a href="/settings?section=invoice" class="nav-link">
-                                <i class="fa fa-cog"></i>
+                                <i class="fa fa-file-invoice"></i>
                                 <p>Invoice</p>
                             </a>
                         </li>
                                             <li class="nav-item">
                             <a href="/settings?section=quote" class="nav-link">
-                                <i class="fa fa-cog"></i>
+                                <i class="fa fa-file-text-o"></i>
                                 <p>Quote</p>
                             </a>
                         </li>
@@ -563,7 +563,66 @@
 </div>
                 </div>
             </div>
-        </div>
+
+                            <div class="card mb-3 card-danger">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            Danger Zone
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-danger">
+                            This section allows you to delete your company and all associated data.
+                        </p>
+                        <p>
+                            Please proceed with caution since this action cannot be undone.
+                        </p>
+                        <div class="form-group" data-controller="delete-company" data-delete-company-company-name-value="Company">
+                            <button type="button" class="btn btn-danger" data-action="click-&gt;delete-company#showModal">
+                                <i class="fa fa-trash"></i> Delete Company
+                            </button>
+
+                            <!-- Delete Company Confirmation Modal -->
+                            <div class="modal fade" id="deleteCompanyModal" tabindex="-1" role="dialog" aria-labelledby="deleteCompanyModalLabel" aria-hidden="true" data-delete-company-target="modal">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="deleteCompanyModalLabel">
+                                                Confirm Company Deletion
+                                            </h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="alert alert-danger">
+                                                <strong>Warning!</strong>
+                                                This action will permanently delete your company and all associated data. This cannot be undone.
+                                            </div>
+                                            <p>
+                                                To confirm deletion, please type the company name exactly as shown below:
+                                            </p>
+                                            <p class="fw-bold text-danger">Company</p>
+                                            <div class="form-group">
+                                                <label for="companyNameConfirmation" class="form-label">
+                                                    Company Name
+                                                </label>
+                                                <input type="text" class="form-control" id="companyNameConfirmation" data-delete-company-target="companyNameInput" data-action="input-&gt;delete-company#validateInput" placeholder="Enter company name to confirm">
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                Cancel
+                                            </button>
+                                            <button type="button" class="btn btn-danger" data-delete-company-target="confirmButton" data-action="click-&gt;delete-company#confirmDelete" disabled>
+                                                <i class="fa fa-trash"></i> Delete Company
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    </div>
 
         <div class="card-footer form-actions">
             <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Save</button>
