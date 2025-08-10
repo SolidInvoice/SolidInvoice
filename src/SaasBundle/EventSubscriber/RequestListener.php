@@ -11,11 +11,9 @@
 
 namespace SolidInvoice\SaasBundle\EventSubscriber;
 
-use DateTimeImmutable;
-use DateTimeZone;
+use Psr\Clock\ClockInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
-use SolidInvoice\UserBundle\Entity\User;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
 use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionManager;
@@ -28,7 +26,6 @@ use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Uid\Ulid;
 use Twig\Environment;
-use function assert;
 use function in_array;
 use function str_replace;
 
@@ -59,6 +56,7 @@ final readonly class RequestListener implements EventSubscriberInterface
         private Environment $twig,
         private Security $security,
         private UrlGeneratorInterface $urlGenerator,
+        private ClockInterface $clock,
     ) {
     }
 
@@ -79,9 +77,6 @@ final readonly class RequestListener implements EventSubscriberInterface
 
         switch ($subscription->getStatus()) {
             case SubscriptionStatus::PENDING:
-                $user = $this->security->getUser();
-                assert($user instanceof User);
-
                 $event->setResponse(
                     new Response(
                         $this->twig->render('@SolidInvoiceSaas/subscription/pending.html.twig', [
@@ -92,12 +87,9 @@ final readonly class RequestListener implements EventSubscriberInterface
                 break;
             case SubscriptionStatus::CANCELLED:
             case SubscriptionStatus::EXPIRED:
-                if ($subscription->getEndDate() > new DateTimeImmutable('now', new DateTimeZone('UTC'))) {
+                if ($subscription->getEndDate() > $this->clock->now()) {
                     return;
                 }
-
-                $user = $this->security->getUser();
-                assert($user instanceof User);
 
                 $event->setResponse(
                     new Response(
@@ -108,10 +100,7 @@ final readonly class RequestListener implements EventSubscriberInterface
                 );
                 break;
             case SubscriptionStatus::TRIAL:
-                if ($subscription->getEndDate() <= new DateTimeImmutable('now', new DateTimeZone('UTC'))) {
-                    $user = $this->security->getUser();
-                    assert($user instanceof User);
-
+                if ($subscription->getEndDate() <= $this->clock->now()) {
                     $event->setResponse(
                         new Response(
                             $this->twig->render('@SolidInvoiceSaas/subscription/pending.html.twig', [
@@ -138,12 +127,9 @@ final readonly class RequestListener implements EventSubscriberInterface
             return;
         }
 
-        if (($subscription->getStatus() !== SubscriptionStatus::TRIAL && $subscription->getStatus() !== SubscriptionStatus::CANCELLED) || $subscription->getEndDate() <= new DateTimeImmutable('now', new DateTimeZone('UTC'))) {
+        if (($subscription->getStatus() !== SubscriptionStatus::TRIAL && $subscription->getStatus() !== SubscriptionStatus::CANCELLED) || $subscription->getEndDate() <= $this->clock->now()) {
             return;
         }
-
-        $user = $this->security->getUser();
-        assert($user instanceof User);
 
         $content = $response->getContent();
 
