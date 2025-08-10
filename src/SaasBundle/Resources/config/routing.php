@@ -11,15 +11,18 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use SolidInvoice\SaasBundle\Controller\BillingController;
+use SolidInvoice\SaasBundle\Controller\PaymentSuccess;
+use SolidInvoice\SaasBundle\Controller\SubscribeController;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 return static function (RoutingConfigurator $routingConfigurator): void {
     $routingConfigurator->add('billing_index', '/')
-        ->controller(\SolidInvoice\SaasBundle\Controller\BillingController::class);
+        ->controller(BillingController::class);
 
     $routingConfigurator->add('saas_payment_success', '/payment/success')
-        ->controller(\SolidInvoice\SaasBundle\Controller\PaymentSuccess::class);
+        ->controller(PaymentSuccess::class);
 
     $routingConfigurator->add('saas_subscription_checkout', '/subscription/activate')
-        ->controller(\SolidInvoice\SaasBundle\Controller\PaymentSuccess::class);
+        ->controller(SubscribeController::class);
 };

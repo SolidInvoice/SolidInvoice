@@ -39,6 +39,8 @@ final readonly class RequestListener implements EventSubscriberInterface
         '_create_company',
         '_view_quote_external',
         '_view_invoice_external',
+        'saas_subscription_checkout',
+        'saas_payment_success',
 
         // Debug routes
         '_wdt',
@@ -104,6 +106,20 @@ final readonly class RequestListener implements EventSubscriberInterface
                         ]),
                     )
                 );
+                break;
+            case SubscriptionStatus::TRIAL:
+                if ($subscription->getEndDate() <= new DateTimeImmutable('now', new DateTimeZone('UTC'))) {
+                    $user = $this->security->getUser();
+                    assert($user instanceof User);
+
+                    $event->setResponse(
+                        new Response(
+                            $this->twig->render('@SolidInvoiceSaas/subscription/pending.html.twig', [
+                                'subscription' => $subscription,
+                            ]),
+                        )
+                    );
+                }
                 break;
         }
     }
