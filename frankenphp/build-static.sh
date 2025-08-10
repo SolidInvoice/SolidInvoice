@@ -63,7 +63,7 @@ defaultExtensions="apcu,bcmath,bz2,calendar,ctype,curl,dba,dom,exif,fileinfo,fil
 # if [ "${os}" != "linux" ] || [ "${SPC_LIBC}" = "glibc" ]; then
 # 	defaultExtensions="${defaultExtensions},ffi"
 # fi
-defaultExtensionLibs="bzip2,freetype,libavif,libjpeg,liblz4,libwebp,libzip,nghttp2"
+defaultExtensionLibs="bzip2,freetype,libavif,libjpeg,liblz4,libjxl,libwebp,libzip,nghttp2"
 
 md5binary="md5sum"
 if [ "${os}" = "darwin" ]; then
