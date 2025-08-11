@@ -53,7 +53,7 @@ class MenuItem extends BaseItem implements ItemInterface
 
     public function addHeader(string $header): ItemInterface
     {
-        return $this->addChild($header, ['attributes' => ['class' => 'nav-header']]);
+        return $this->addChild($header, ['attributes' => ['class' => 'nav-item-header']]);
     }
 
     public function isDivider(): bool
