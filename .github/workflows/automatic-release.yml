@@ -54,7 +54,7 @@ jobs:
           fetch-depth: 1
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@cf4cade2721270509d5b1c766ab3549210a39a2a
+        uses: shivammathur/setup-php@20529878ed81ef8e78ddf08b480401e6101a850f
         with:
           php-version: 8.4
           extensions: intl, gd, opcache, mysql, pdo_mysql, soap, zip, :xdebug
