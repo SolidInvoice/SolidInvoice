@@ -30,7 +30,7 @@ $theme-header-height: 70px;
 $theme-header-padding: 15px;*/
 //$screen-header-collapse: map.get($grid-breakpoints, md) !default;
 
-@import '~@tabler/core/src/scss/tabler';
+@import '~@tabler/core/scss/tabler';
 //@import '~@tabler/core/src/scss/tabler-vendors';
 
 $fa-font-path: "~@fortawesome/fontawesome-free/webfonts/";
@@ -47,4 +47,4 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts/";
 //$enable-deprecation-messages: false;
 
 //@import './styles';
-@import './theme';
+//@import './theme';

@@ -32,9 +32,8 @@
 {% endblock body_bottom %}
 
 {% block body %}
-    <aside class="navbar navbar-vertical navbar-expand-lg" data-bs-theme="dark">
+    <aside class="navbar navbar-vertical navbar-expand-lg navbar-dark" data-bs-theme="dark">
         <div class="container-fluid">
-
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu" aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -43,31 +42,33 @@
                 <a href="{{ url('_dashboard') }}">
                     {{ app_logo() }}
                 </a>
-                <a class="brand-link" href="{{ url('_dashboard') }}">
-                    <span class="brand-text font-weight-light">
-                        {{ company_name() }}
-                    </span>
-                </a>
             </h1>
 
-        <section class="sidebar">
-            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                <div class="image">
-                    {#<img src="{{ asset('/img/silhouette_m_300.png') }}" class="img-circle" alt="{{ 'User Image'|trans }}">#}
-                    <img src="https://gravatar.com/avatar/{{ app.user.email|md5 }}?d=mm" class="img-circle" alt="{{ 'User Image'|trans }}">
-                </div>
-                <div class="info text-white">
-                    <a href="{{ path('_profile') }}">{{ app.user.email }}</a>
-                </div>
-            </div>
+            <div class="collapse navbar-collapse" id="sidebar-menu">
+                <div class="d-flex flex-column">
+                    <div class="nav-item-label text-muted mb-2 mt-3">
+                        {{ company_name() }}
+                    </div>
 
-                {{ knp_menu_render('sidebar', {}, 'solidinvoice') }}
+                    <div class="nav-item d-flex gap-3 px-3 mb-3">
+                        <div class="nav-item-avatar">
+                            <span class="avatar avatar-sm rounded">
+                                <img src="https://gravatar.com/avatar/{{ app.user.email|md5 }}?d=mm" alt="{{ 'User Image'|trans }}">
+                            </span>
+                        </div>
+                        <div class="nav-item-info">
+                            <a href="{{ path('_profile') }}" class="text-reset">{{ app.user.email }}</a>
+                        </div>
+                    </div>
 
-                {% if block('sidebar') is defined %}
-                    <nav class="mt-2">
-                        {{ block('sidebar') }}
-                    </nav>
-                {% endif %}
+                    {{ knp_menu_render('sidebar', {}, 'solidinvoice') }}
+
+                    {% if block('sidebar') is defined %}
+                        <nav class="mt-2">
+                            {{ block('sidebar') }}
+                        </nav>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </aside>
@@ -94,17 +95,17 @@
 
 
         {% if block('heading') is defined and block('heading')|trim is not empty %}
-            <section class="content-header">
+            <div class="page-header-actions">
                 {{  block('heading') }}
-            </section>
+            </div>
         {% endif %}
 
-        <section class="page-body">
-            <div class="container-xl d-flex flex-column justify-content-center">
+        <div class="page-body">
+            <div class="container-xl">
                 {% include "@SolidInvoiceCore/flash.html.twig" %}
 
                 {{ block('content') is defined ? block('content') }}
             </div>
-        </section>
+        </div>
     </div>
 {% endblock body %}

@@ -54,7 +54,7 @@ class Renderer extends ListRenderer implements RendererInterface
         if (isset($options['attr'])) {
             $item->setChildrenAttributes($options['attr']);
         } else {
-            $item->setChildrenAttributes(['class' => 'navbar-nav pt-lg-3']);
+            $item->setChildrenAttributes(['class' => 'navbar-nav', 'id' => 'sidebar-menu']);
         }
 
         return parent::render($item, $options);
@@ -75,7 +75,7 @@ class Renderer extends ListRenderer implements RendererInterface
         if (isset($options['attr'])) {
             $menu->setChildrenAttributes($options['attr']);
         } else {
-            $menu->setChildrenAttributes(['class' => 'navbar-nav pt-lg-3']);
+            $menu->setChildrenAttributes(['class' => 'navbar-nav', 'id' => 'sidebar-menu']);
         }
 
         foreach ($storage as $builder) {
@@ -121,7 +121,7 @@ class Renderer extends ListRenderer implements RendererInterface
     protected function renderDivider(ItemInterface $item, array $options = []): string
     {
         return $this->format(
-            '<li' . $this->renderHtmlAttributes(['class' => 'divider' . $item->getExtra('divider')]) . '>',
+            '<li' . $this->renderHtmlAttributes(['class' => 'hr-text' . $item->getExtra('divider')]) . '>',
             'li',
             $item->getLevel(),
             $options
@@ -141,10 +141,10 @@ class Renderer extends ListRenderer implements RendererInterface
         }
 
         if ($options['allow_safe_labels'] && $item->getExtra('safe_label', false)) {
-            return $icon . $this->translator->trans($item->getLabel());
+            return $icon . '<span class="nav-link-title">' . $this->translator->trans($item->getLabel()) . '</span>';
         }
 
-        return sprintf('%s <p>%s</p>', $icon, $this->escape($this->translator->trans($item->getLabel())));
+        return sprintf('%s <span class="nav-link-title">%s</span>', $icon, $this->escape($this->translator->trans($item->getLabel())));
     }
 
     /**

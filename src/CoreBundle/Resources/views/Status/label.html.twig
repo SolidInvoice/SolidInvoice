@@ -7,4 +7,4 @@
  # with this source code in the file LICENSE.
  #}
 
-<span class="badge badge{{ entity.label ? " bg-" ~ entity.label ~ " text-" ~ entity.label ~ "-fg" }}"{% if tooltip is defined and tooltip is not empty %}title="{{ tooltip }}" rel="tooltip" {% endif %}>{{ entity.name|title }}</span>
+<span class="badge{{ entity.label ? " bg-" ~ entity.label ~ " text-" ~ entity.label ~ "-fg" }}"{% if tooltip is defined and tooltip is not empty %}title="{{ tooltip }}" rel="tooltip" {% endif %}>{{ entity.name|title }}</span>

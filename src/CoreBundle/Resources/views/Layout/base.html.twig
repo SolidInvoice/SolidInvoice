@@ -10,7 +10,7 @@
 {% set locale = app.request.locale|split('_')[0] %}
 
 <!DOCTYPE html>
-<html class="no-js" lang="{{ locale }}">
+<html lang="{{ locale }}">
 
 <head>
     <meta charset="utf-8">
@@ -19,7 +19,7 @@
     <title>{{ block('page_title') is defined  ? block('page_title') : (block('title') is defined ? block('title')) }}</title>
 
     <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <link rel="icon" type="image/x-icon" href="{{ asset('/favicon.ico') }}" />
     <link rel="shortcut icon" type="image/png" href="{{ asset('/favicon.ico') }}"/>
@@ -44,8 +44,14 @@
         {{ block('body') is defined ? block('body') }}
 
         {% if block('footer') is defined %}
-            <footer class="main-footer">
-                {{ block('footer') }}
+            <footer class="footer footer-transparent d-print-none">
+                <div class="container-xl">
+                    <div class="row text-center align-items-center flex-row-reverse">
+                        <div class="col-12 col-lg-auto mt-3 mt-lg-0">
+                            {{ block('footer') }}
+                        </div>
+                    </div>
+                </div>
             </footer>
         {% endif %}
 

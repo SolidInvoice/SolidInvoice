@@ -73,7 +73,7 @@
     <div class="input-group" {{ stimulus_controller('vat-validator', {'url': path('_tax_number_validate')}) }}>
         {{ form_widget(form, { attr: stimulus_target('vat-validator', 'input').toArray() }) }}
 
-        <span class="input-group-btn">
+        <span class="input-group-text">
             <a href="#" class="btn btn-secondary vat-validator" rel="tooltip" title="{{ 'EU Countries Only'|trans }}"
                 {{ stimulus_action('vat-validator', 'validate', 'click') }}
                 {{ stimulus_target('vat-validator', 'button') }}
@@ -132,7 +132,7 @@
         </div>
 
         {% if form.vars.button_delete is defined %}
-            {{ form_widget(form.vars.button_delete, {label_html: true, label: icon('trash-o') ~ ' ' ~ 'client.address.delete'|trans, attr: {class: 'btn btn-danger btn-flat float-right'}}) }}
+            {{ form_widget(form.vars.button_delete, {label_html: true, label: icon('trash-o') ~ ' ' ~ 'client.address.delete'|trans, attr: {class: 'btn btn-danger float-end'}}) }}
             <br class="clear" />
         {% endif %}
 
@@ -158,7 +158,7 @@
 
 {% block discount_row %}
     <label for="{{ form.value.vars.id }}">{{ label }}</label>
-    <div class="form-group multiple-form-group input-group">
+    <div class="mb-3 multiple-form-group input-group">
         {{ form_widget(form.value) }}
         {{ form_widget(form.type) }}
     </div>
@@ -172,7 +172,7 @@
     {%- if help is not empty -%}
         {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}
     {%- endif -%}
-    <{{ element|default('div') }}{% with {attr: row_attr|merge({class: (row_attr.class|default('') ~ ' form-group')|trim})} %}{{ block('attributes') }}{% endwith %} {{ stimulus_controller('logo_upload') }}>
+    <{{ element|default('div') }}{% with {attr: row_attr|merge({class: (row_attr.class|default('') ~ ' mb-3')|trim})} %}{{ block('attributes') }}{% endwith %} {{ stimulus_controller('logo_upload') }}>
     {{ app_logo(width=100, showDefault=false) }}
     {{- form_widget(form, widget_attr) -}}
     {{- form_help(form) -}}
