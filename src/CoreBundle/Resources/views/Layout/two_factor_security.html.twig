@@ -10,24 +10,32 @@
 {% extends '@SolidInvoiceCore/Layout/base.html.twig' %}
 
 {% block heading %}
-    <a class="brand-link" href="{{ url('_dashboard') }}">
+    <a class="navbar-brand" href="{{ url('_dashboard') }}">
         {{ app_logo() }}
 
-        <span class="brand-text font-weight-light">
+        <span class="brand-text fw-light">
             {{ company_name() }}
         </span>
     </a>
 {% endblock %}
 
 {% block body %}
-    <section class="content-header bg-white shadow mb-5 p-3">
-        {{ block('heading') is defined ? block('heading') }}
-    </section>
-
-    <section class="content">
-        <div class="container">
-            {% include "@SolidInvoiceCore/flash.html.twig" %}
+    <div class="page-wrapper">
+        <div class="page-header d-print-none">
+            <div class="container-xl">
+                <div class="row g-2 align-items-center">
+                    <div class="col">
+                        {{ block('heading') is defined ? block('heading') }}
+                    </div>
+                </div>
+            </div>
         </div>
-        {{ block('content') is defined ? block('content') }}
-    </section>
+
+        <div class="page-body">
+            <div class="container-xl">
+                {% include "@SolidInvoiceCore/flash.html.twig" %}
+                {{ block('content') is defined ? block('content') }}
+            </div>
+        </div>
+    </div>
 {% endblock body %}

@@ -1,5 +1,4 @@
-import 'admin-lte';
-import 'bootstrap';
+import '@tabler/core';
 
 import { startStimulusApp } from '@symfony/stimulus-bridge';
 
