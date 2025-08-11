@@ -127,7 +127,7 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
       - name: Download archive
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
         with:
           name: SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.tar.gz
           path: build/dist
@@ -200,7 +200,7 @@ jobs:
         uses: docker/setup-qemu-action@29109295f81e9208d7d86ff1c6c12d2833863392 # v3.6.0
 
       - name: Download archive
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
         with:
           name: SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.tar.gz
           path: build/dist
