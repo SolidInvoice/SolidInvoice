@@ -3,21 +3,17 @@ module solidinvoice
 go 1.24.0
 
 require (
-	github.com/bradfitz/gomemcache v0.0.0-20250403215159-8d39553ac7cf
 	github.com/caddyserver/caddy/v2 v2.10.0
 	github.com/charmbracelet/lipgloss v1.1.0
 	github.com/common-nighthawk/go-figure v0.0.0-20210622060536-734e95fb86be
 	github.com/dunglas/caddy-cbrotli v1.0.1
 	github.com/dunglas/frankenphp v1.5.0
 	github.com/dunglas/frankenphp/caddy v1.5.0
-	github.com/go-playground/validator/v10 v10.26.0
+	github.com/go-playground/validator/v10 v10.27.0
 	github.com/luno/jettison v0.0.0-20240722160230-b42bd507a5f6
 	github.com/luno/lu v0.0.0-20250306165345-9dc624600fb2
-	github.com/quic-go/quic-go v0.50.1
 	github.com/spf13/cobra v1.9.1
-	github.com/tatsuhiro-t/go-nghttp2 v0.0.0-20240125091020-1a2cbf860c2d
 	go.uber.org/zap v1.27.0
-	golang.org/x/net v0.38.0
 )
 
 require (
