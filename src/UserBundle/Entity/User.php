@@ -29,71 +29,31 @@ use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Uid\NilUlid;
 use Symfony\Component\Uid\Ulid;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: User::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[UniqueEntity(fields: ['email'], message: 'This email is already in use. Do you want to log in instead?')]
+// #[UniqueEntity(fields: ['email'], message: 'This email is already in use. Do you want to log in instead?')]
 #[ORM\Index(fields: ['googleId'])]
-class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringable, UserTwoFactorInterface
+//class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringable, UserTwoFactorInterface
+class User extends \SolidWorx\Platform\PlatformBundle\Model\User
 {
-    final public const string TABLE_NAME = 'users';
+    // final public const string TABLE_NAME = 'users';
 
     use TimeStampable;
-    use UserTwoFactor;
+    // use UserTwoFactor;
 
-    #[ORM\Column(type: UlidType::NAME, unique: true)]
+    /*#[ORM\Column(type: UlidType::NAME, unique: true)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UlidGenerator::class)]
-    private ?Ulid $id = null;
-
-    #[ORM\Column(name: 'first_name', type: Types::STRING, length: 45, nullable: true)]
-    #[Assert\NotBlank()]
-    private ?string $firstName = null;
-
-    #[ORM\Column(name: 'last_name', type: Types::STRING, length: 45, nullable: true)]
-    #[Assert\NotBlank()]
-    private ?string $lastName = null;
-
-    #[ORM\Column(name: 'mobile', type: Types::STRING, nullable: true)]
-    private ?string $mobile = null;
+    private ?Ulid $id = null;*/
 
     /**
      * @var Collection<int, ApiToken>
      */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: ApiToken::class, cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     private Collection $apiTokens;
-
-    #[ORM\Column(name: 'email', type: Types::STRING, length: 180, unique: true)]
-    #[Assert\NotBlank()]
-    #[Assert\Email(
-        message: 'The email "{{ value }}" is not a valid email address.',
-        mode: Assert\Email::VALIDATION_MODE_STRICT,
-    )]
-    private ?string $email = null;
-
-    #[ORM\Column(name: 'enabled', type: Types::BOOLEAN)]
-    private bool $enabled = false;
-
-    #[ORM\Column(name: 'verified', type: Types::BOOLEAN)]
-    private bool $verified = false;
-
-    #[ORM\Column(name: 'password', type: Types::STRING)]
-    private ?string $password = null;
-
-    private string $plainPassword = '';
-
-    #[ORM\Column(name: 'last_login', type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?DateTimeInterface $lastLogin = null;
-
-    /**
-     * @var string[]
-     */
-    #[ORM\Column(name: 'roles', type: 'array')]
-    private array $roles = [];
 
     /**
      * @var Collection<int, Company>
@@ -108,7 +68,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     {
         $this->apiTokens = new ArrayCollection();
         $this->companies = new ArrayCollection();
-        $this->id = new NilUlid();
+        parent::__construct();
     }
 
     /**

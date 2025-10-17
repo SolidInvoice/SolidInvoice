@@ -11,40 +11,45 @@
 
 namespace SolidInvoice\SaasBundle\Menu;
 
+use Knp\Menu\ItemInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
-use SolidInvoice\MenuBundle\Core\AuthenticatedMenu;
-use SolidInvoice\MenuBundle\ItemInterface;
+use SolidInvoice\MenuBundle\Builder\MenuPriority;
+use SolidWorx\Platform\PlatformBundle\Attributes\Menu\MenuBuilder;
 use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionManager;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-class Builder extends AuthenticatedMenu
+final class SaasMenu
 {
     public function __construct(
         private readonly CompanySelector $companySelector,
         private readonly CompanyRepository $companyRepository,
         private readonly SubscriptionManager $subscriptionManager,
-        AuthorizationCheckerInterface $authorizationChecker
     ) {
-        parent::__construct($authorizationChecker);
     }
 
-    public function systemMenu(ItemInterface $menu): void
+    #[MenuBuilder(name: 'sidebar', priority: MenuPriority::PRIORITY_SYSTEM->value)]
+    public function sidebar(ItemInterface $menu): void
     {
+        $systemMenu = $menu->getChild('menu.top.system');
+
+        if (! $systemMenu instanceof ItemInterface) {
+            return;
+        }
+
         $subscription = $this->subscriptionManager->getSubscriptionFor(
             $this->companyRepository->find($this->companySelector->getCompany())
         );
 
-        if ($subscription === null || null === $subscription->getSubscriptionId()) {
+        if (null === $subscription || null === $subscription->getSubscriptionId()) {
             return;
         }
 
-        $menu->addChild(
+        $systemMenu->addChild(
             'billing',
             [
                 'label' => 'Subscription',
                 'route' => 'billing_index',
-                'extras' => ['icon' => 'credit-card'],
+                'extras' => ['icon' => 'receipt-2'],
             ],
         );
     }

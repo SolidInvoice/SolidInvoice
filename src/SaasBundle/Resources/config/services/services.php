@@ -11,7 +11,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use SolidInvoice\SaasBundle\Menu\Builder;
+use SolidInvoice\SaasBundle\Menu\SaasMenu;
 use SolidInvoice\SaasBundle\SolidInvoiceSaasBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
@@ -30,7 +30,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->exclude(dirname(__DIR__, 3) . '/{DependencyInjection,Entity,Resources,Tests}');
 
     $services
-        ->set(Builder::class)
+        ->set(SaasMenu::class)
         ->tag('cs_core.menu', [
             'menu' => 'sidebar',
             'method' => 'systemMenu',

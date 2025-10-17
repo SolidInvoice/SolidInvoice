@@ -14,32 +14,38 @@ declare(strict_types=1);
 namespace SolidInvoice\QuoteBundle\Menu;
 
 use Knp\Menu\ItemInterface;
+use SolidInvoice\CoreBundle\Icon;
+use SolidInvoice\MenuBundle\Builder\MenuPriority;
+use SolidWorx\Platform\PlatformBundle\Attributes\Menu\MenuBuilder;
 
-/**
- * Menu items for quotes.
- */
-class QuoteMenu
+final class QuoteMenu
 {
-    public static function list(ItemInterface $item): ItemInterface
+    #[MenuBuilder(name: 'sidebar', priority: MenuPriority::PRIORITY_QUOTE->value)]
+    public function sidebar(ItemInterface $menu): void
     {
-        return $item->addChild(
+        $section = $menu->addChild(
+            'quote.menu.main',
+            [
+                'extras' => [
+                    'icon' => Icon::QUOTE,
+                ],
+            ],
+        );
+        $section->addChild(
             'quote.menu.list',
             [
                 'route' => '_quotes_index',
                 'extras' => [
-                    'icon' => 'file-text-o',
+                    'icon' => Icon::QUOTE,
                 ],
             ],
         );
-    }
 
-    public static function create(ItemInterface $item): ItemInterface
-    {
-        return $item->addChild(
+        $section->addChild(
             'client.menu.create.quote',
             [
                 'extras' => [
-                    'icon' => 'file-text-o',
+                    'icon' => Icon::QUOTE_ADD,
                 ],
                 'route' => '_quotes_create',
             ],

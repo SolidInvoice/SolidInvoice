@@ -1,0 +1,152 @@
+{#
+ # This file is part of SolidInvoice project.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends 'knp_menu.html.twig' %}
+
+{% block list %}
+    {% import 'knp_menu.html.twig' as ui %}
+    {% if item.hasChildren and options.depth is not same as(0) and item.displayChildren %}
+    {% if item.level == 0 %}
+    <ul{{ ui.attributes(listAttributes|default({})) }}>
+        {{ block('children') }}
+    </ul>
+    {% else %}
+    {# Tabler dropdown container #}
+      {% set ddClass = 'dropdown-menu' ~ ( (matcher.isCurrent(item) or matcher.isAncestor(item, options.matchingDepth)) ? ' show' : '' ) %}
+      <div class="{{ ddClass }}">
+        {{ block('children') }}
+      </div>
+    {% endif %}
+  {% endif %}
+{% endblock %}
+
+{% block children %}
+  {% set _opt = options %}
+  {% set _item = item %}
+
+  {% if options.depth is not none %}
+    {% set options = options|merge({ depth: _opt.depth - 1 }) %}
+  {% endif %}
+  {% if options.matchingDepth is not none and options.matchingDepth > 0 %}
+    {% set options = options|merge({ matchingDepth: _opt.matchingDepth - 1 }) %}
+  {% endif %}
+
+  {% set useColumns = item.getExtra('columns', false) and item.level > 0 %}
+  {% if useColumns %}<div class="dropdown-menu-columns"><div class="dropdown-menu-column">{% endif %}
+
+  {% for item in _item.children %}
+    {% if useColumns and not loop.first and item.getExtra('colbreak', false) %}
+      </div><div class="dropdown-menu-column">
+    {% endif %}
+    {{ block('item') }}
+  {% endfor %}
+
+  {% if useColumns %}</div></div>{% endif %}
+
+  {% set item = _item %}
+  {% set options = _opt %}
+{% endblock %}
+
+{% block item %}
+  {% if item.displayed %}
+      {% import 'knp_menu.html.twig' as ui %}
+      {% set isActive = matcher.isCurrent(item) or matcher.isAncestor(item, options.matchingDepth) %}
+      {% set hasChildren = item.hasChildren and options.depth is not same as(0) and item.displayChildren %}
+
+      {# TOP-LEVEL ITEMS -> <li class="nav-item [dropdown] [active]"> #}
+        {% if item.level == 0 %}
+            {% set liClasses = ['nav-item'] %}
+            {% if hasChildren %}{% set liClasses = liClasses|merge(['dropdown']) %}{% endif %}
+            {% if isActive %}{% set liClasses = liClasses|merge(['active']) %}{% endif %}
+            {% if item.attribute('class') %}{% set liClasses = liClasses|merge([item.attribute('class')]) %}{% endif %}
+
+        <li{{ ui.attributes(item.attributes|merge({ class: liClasses|join(' ') })) }}>
+            {% set isLink = item.uri is not empty and (not matcher.isCurrent(item) or options.currentAsLink) %}
+            {% set tag = isLink ? 'a' : 'span' %}
+            {% set linkClasses = ['nav-link'] %}
+            {% if hasChildren %}{% set linkClasses = linkClasses|merge(['dropdown-toggle']) %}{% endif %}
+            {% if isActive %}{% set linkClasses = linkClasses|merge(['active']) %}{% endif %}
+            {% set linkClasses = linkClasses|merge(['d-flex','align-items-center','text-reset']) %}
+
+            {% set linkAttrs = (isLink
+                ? item.linkAttributes|merge({ href: item.uri })
+                : item.labelAttributes
+                )|merge({
+                class: ( (isLink ? item.linkAttribute('class') : item.labelAttribute('class')) ~ ' ' ~ linkClasses|join(' ') )|trim
+            }) %}
+
+            {% if hasChildren %}
+                {% set linkAttrs = linkAttrs|merge({
+                    'data-bs-toggle': 'dropdown',
+                    'data-bs-auto-close': 'false',
+                    role: 'button',
+                    'aria-expanded': isActive ? 'true' : 'false'
+                }) %}
+            {% endif %}
+
+            <{{ tag }}{{ ui.attributes(linkAttrs) }}>
+            {% if item.getExtra('icon') %}
+                <span class="nav-link-icon d-md-none d-lg-inline-block">{{ item.getExtra('icon')|raw }}</span>
+            {% endif %}
+            <span class="nav-link-title">{{ block('label') }}</span>
+            </{{ tag }}>
+
+            {{ block('list') }}
+            </li>
+
+            {# DROPDOWN CONTENT LEVEL (>=1) -> links or nested dropend #}
+        {% else %}
+            {% if hasChildren %}
+                <div class="dropend">
+                {% set isLink = item.uri is not empty and (not matcher.isCurrent(item) or options.currentAsLink) %}
+                {% set tag = isLink ? 'a' : 'span' %}
+                {% set cls = ['dropdown-item','dropdown-toggle'] %}
+                {% if isActive %}{% set cls = cls|merge(['active']) %}{% endif %}
+                {% set attrs = (isLink
+                    ? item.linkAttributes|merge({ href: item.uri })
+                    : item.labelAttributes
+                    )|merge({
+                    class: ( (isLink ? item.linkAttribute('class') : item.labelAttribute('class')) ~ ' ' ~ cls|join(' ') )|trim,
+                    'data-bs-toggle': 'dropdown',
+                    'data-bs-auto-close': 'false',
+                    role: 'button',
+                    'aria-expanded': isActive ? 'true' : 'false'
+                }) %}
+                <{{ tag }}{{ ui.attributes(attrs) }}>{{ block('label') }}</{{ tag }}>
+                {{ block('list') }}
+                </div>
+            {% else %}
+                {% set isLink = item.uri is not empty and (not matcher.isCurrent(item) or options.currentAsLink) %}
+                {% set tag = isLink ? 'a' : 'span' %}
+                {% set cls = ['dropdown-item'] %}
+                {% if isActive %}{% set cls = cls|merge(['active']) %}{% endif %}
+                {% set attrs = (isLink
+                    ? item.linkAttributes|merge({ href: item.uri })
+                    : item.labelAttributes
+                    )|merge({
+                    class: ( (isLink ? item.linkAttribute('class') : item.labelAttribute('class')) ~ ' ' ~ cls|join(' ') )|trim
+                }) %}
+                <{{ tag }}{{ ui.attributes(attrs) }}>
+                {{ block('label') }}
+                {% if item.getExtra('badge') %}
+                    <span class="badge {{ item.getExtra('badge_class', 'badge-sm bg-green-lt text-uppercase ms-auto') }}">{{ item.getExtra('badge') }}</span>
+                {% endif %}
+                </{{ tag }}>
+            {% endif %}
+        {% endif %}
+  {% endif %}
+{% endblock %}
+
+{% block label %}
+    {% if options.allow_safe_labels and item.getExtra('safe_label', false) %}
+        {{ item.label|trans|raw }}
+    {% else %}
+        {{ item.label|trans }}
+    {% endif %}
+{% endblock %}

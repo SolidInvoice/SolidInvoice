@@ -43,8 +43,8 @@ class Builder extends AuthenticatedMenu
      */
     public function userMenu(ItemInterface $menu): void
     {
-        $menu->addDivider();
-        MainMenu::logout($menu);
+        $section = $menu->addDropdownSection('User', 'user');
+        MainMenu::logout($section);
     }
 
     /**
@@ -54,12 +54,11 @@ class Builder extends AuthenticatedMenu
      */
     public function systemMenu(ItemInterface $menu): void
     {
-        $menu->addDivider();
-        $menu->addHeader('System');
-        MainMenu::tax($menu);
-        MainMenu::users($menu);
-        MainMenu::integrations($menu);
-        MainMenu::settings($menu);
-        MainMenu::api($menu);
+        $section = $menu->addDropdownSection('System', 'cogs');
+        MainMenu::tax($section);
+        MainMenu::users($section);
+        MainMenu::integrations($section);
+        MainMenu::settings($section);
+        MainMenu::api($section);
     }
 }
