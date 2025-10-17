@@ -14,10 +14,31 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Menu;
 
 use Knp\Menu\ItemInterface;
+use SolidInvoice\MenuBundle\Builder\MenuPriority;
 use SolidInvoice\UserBundle\Entity\User;
+use SolidWorx\Platform\PlatformBundle\Attributes\Menu\MenuBuilder;
 
 class MainMenu
 {
+    #[MenuBuilder(name: 'sidebar', priority: MenuPriority::PRIORITY_SYSTEM->value)]
+    public function sidebar(ItemInterface $menu): void
+    {
+        $section = $menu->addChild(
+            'menu.top.system',
+            [
+                'extras' => [
+                    'icon' => 'device-laptop',
+                ],
+            ],
+        );
+
+        self::integrations($section);
+        self::tax($section);
+        self::api($section);
+        self::users($section);
+        self::settings($section);
+    }
+
     public static function user(ItemInterface $item, User $user): ItemInterface
     {
         $username = $user->getUserIdentifier() . ' <b class="caret"></b>';
@@ -48,7 +69,7 @@ class MainMenu
     {
         return $item->addChild(
             'menu.top.api',
-            ['route' => '_api_keys_index', 'extras' => ['icon' => 'user-secret']],
+            ['route' => '_api_keys_index', 'extras' => ['icon' => 'shield-lock']],
         );
     }
 
@@ -72,7 +93,7 @@ class MainMenu
                 'allow_safe_labels' => true,
                 'extras' => [
                     'safe_label' => true,
-                    'icon' => 'laptop',
+                    'icon' => 'device-laptop',
                 ],
             ],
         );
@@ -84,7 +105,7 @@ class MainMenu
             'menu.top.settings',
             [
                 'route' => '_settings',
-                'extras' => ['icon' => 'cog'],
+                'extras' => ['icon' => 'settings'],
             ],
         );
     }
@@ -95,7 +116,7 @@ class MainMenu
             'menu.top.integrations',
             [
                 'route' => '_notification_integration',
-                'extras' => ['icon' => 'bell'],
+                'extras' => ['icon' => 'apps'],
             ],
         );
     }
@@ -106,7 +127,7 @@ class MainMenu
             'menu.top.tax',
             [
                 'route' => '_tax_rates',
-                'extras' => ['icon' => 'money'],
+                'extras' => ['icon' => 'tax'],
             ],
         );
     }

@@ -1,3 +1,6 @@
+import Encore from '@solidworx/platform/webpack.config.js';
+
+/*
 const Encore = require('@symfony/webpack-encore'),
     { codecovWebpackPlugin } = require('@codecov/webpack-plugin'),
     ESLintPlugin = require('eslint-webpack-plugin')
@@ -48,4 +51,8 @@ Encore
 //.enableIntegrityHashes(Encore.isProduction())
 ;
 
-module.exports = Encore.getWebpackConfig();
+*/
+
+export default Encore
+    .addStyleEntry('login', './assets/scss/login.scss')
+    .getWebpackConfig();

@@ -36,6 +36,7 @@
         "@symfony/webpack-encore": "^5.1.0",
         "@types/bootstrap": "^5.2.10",
         "@types/jquery": "^3.5.29",
+        "bootstrap": "^5.3.8",
         "cloudinary": "^2.1.0",
         "eslint": "^9.21.0",
         "eslint-loader": "^4.0.2",

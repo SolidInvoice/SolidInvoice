@@ -4,6 +4,14 @@
             "modal": {
                 "enabled": true,
                 "fetch": "lazy"
+            },
+            "csrf-protection": {
+                "enabled": true,
+                "fetch": "lazy"
+            },
+            "loading": {
+                "enabled": true,
+                "fetch": "lazy"
             }
         },
         "@symfony/ux-autocomplete": {

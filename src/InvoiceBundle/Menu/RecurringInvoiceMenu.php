@@ -14,32 +14,35 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Menu;
 
 use Knp\Menu\ItemInterface;
+use SolidInvoice\CoreBundle\Icon;
+use SolidInvoice\MenuBundle\Builder\MenuPriority;
+use SolidWorx\Platform\PlatformBundle\Attributes\Menu\MenuBuilder;
 
-/**
- * Menu items for invoices.
- */
-class RecurringInvoiceMenu
+final class RecurringInvoiceMenu
 {
-    public static function list(ItemInterface $menu): ItemInterface
+    #[MenuBuilder(name: 'sidebar', priority: MenuPriority::PRIORITY_RECURRING_INVOICE->value)]
+    public function sidebar(ItemInterface $menu): void
     {
-        return $menu->addChild(
+        $recurringInvoices = $menu->addChild('invoice.menu.recurring.main', [
+            'extras' => [
+                'icon' => Icon::RECURRING_INVOICE,
+            ],
+        ]);
+
+        $recurringInvoices->addChild(
             'invoice.menu.recurring.list',
             [
                 'route' => '_invoices_index_recurring',
                 'extras' => [
-                    'icon' => 'sync-alt',
+                    'icon' => Icon::RECURRING_INVOICE,
                 ],
             ],
         );
-    }
-
-    public static function create(ItemInterface $menu): ItemInterface
-    {
-        return $menu->addChild(
+        $recurringInvoices->addChild(
             'invoice.menu.recurring.create',
             [
                 'extras' => [
-                    'icon' => 'plus',
+                    'icon' => Icon::RECURRING_INVOICE_ADD,
                 ],
                 'route' => '_invoices_create_recurring',
             ],

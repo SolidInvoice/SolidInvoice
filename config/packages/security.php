@@ -15,17 +15,13 @@ use SolidInvoice\ApiBundle\Event\Listener\AuthenticationFailHandler;
 use SolidInvoice\ApiBundle\Event\Listener\AuthenticationSuccessHandler;
 use SolidInvoice\ApiBundle\Security\ApiTokenAuthenticator;
 use SolidInvoice\ApiBundle\Security\Provider\ApiTokenUserProvider;
-use SolidInvoice\UserBundle\Entity\User;
+//use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Security\OAuth\OAuthAuthenticator;
-use SolidWorx\Platform\PlatformBundle\DependencyInjection\Extension\TwoFactorExtension;
+use SolidWorx\Platform\PlatformBundle\DependencyInjection\Extension\LoginExtension;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Config\SecurityConfig;
 
 return static function (SecurityConfig $config): void {
-    $config
-        ->passwordHasher(User::class)
-        ->algorithm('auto');
-
     $config
         ->passwordHasher(PasswordAuthenticatedUserInterface::class)
         ->algorithm('auto');
@@ -35,11 +31,6 @@ return static function (SecurityConfig $config): void {
         ->roleHierarchy('ROLE_SUPER_ADMIN', ['ROLE_ADMIN', 'ROLE_ALLOWED_TO_SWITCH'])
         ->roleHierarchy('ROLE_CLIENT', ['ROLE_USER'])
         ->roleHierarchy('ROLE_USER', []);
-
-    $config
-        ->provider('solidinvoice_user')
-        ->entity()
-        ->class(User::class);
 
     $config
         ->provider('api_token_user_provider')
@@ -79,40 +70,15 @@ return static function (SecurityConfig $config): void {
         ->provider('api_token_user_provider')
         ->customAuthenticators([ApiTokenAuthenticator::class]);
 
-    $mainFirewallConfig = $config
-        ->firewall('main')
-        ->pattern('^/')
-        ->entryPoint('form_login')
-        ->customAuthenticators([OAuthAuthenticator::class])
-        ->provider('solidinvoice_user')
-        ->lazy(true);
+    $mainFirewallConfig = LoginExtension::configureDefaultFormLogin($config, true);
 
     $mainFirewallConfig
-        ->rememberMe()
-        ->lifetime(3600)
-        ->path('/')
-        ->domain(null);
+        ->customAuthenticators([OAuthAuthenticator::class]);
 
     $mainFirewallConfig
         ->formLogin()
-        ->provider('solidinvoice_user')
-        ->enableCsrf(true)
-        ->checkPath('/login-check')
-        ->loginPath('/login')
-        ->alwaysUseDefaultTargetPath(true)
-        ->defaultTargetPath('/select-company');
-
-    $mainFirewallConfig
-        ->logout()
-        ->path('/logout')
-        ->target('/');
-
-    $mainFirewallConfig
-        ->loginThrottling()
-        ->maxAttempts(5)
-        ->interval('15 minutes');
-
-    TwoFactorExtension::configureSecurity($mainFirewallConfig, $config->accessControl());
+        ->defaultTargetPath('_select_company')
+    ;
 
     $config->accessControl()
         ->path('^(?:' .

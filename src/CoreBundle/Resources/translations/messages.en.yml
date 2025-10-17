@@ -5,7 +5,7 @@ menu:
         profile: Profile
         api: 'API Tokens'
         logout: Logout
-        system: 'System <b class="caret"></b>'
+        system: 'System'
         settings: Settings
         integrations: Integrations
         tax: 'Tax Rates'

@@ -90,10 +90,11 @@
                         <a href="{{ path('_api_keys_index') }}" class="dropdown-item">
                             {{ icon('lock') }}&nbsp;{{ 'API Keys'|trans }}
                         </a>
-                        <a href="{{ path('_logout') }}" class="dropdown-item">
+                        <twig:Ui:Security:LogoutLink />
+                        {#<a href="{{ path('_logout') }}" class="dropdown-item">
                             {{ icon('power-off') }}&nbsp;
                             {{ 'Logout'|trans }}
-                        </a>
+                        </a>#}
                     </div>
                 </div>
             </div>

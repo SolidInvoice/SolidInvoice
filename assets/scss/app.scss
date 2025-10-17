@@ -30,15 +30,21 @@ $theme-header-height: 70px;
 $theme-header-padding: 15px;*/
 //$screen-header-collapse: map.get($grid-breakpoints, md) !default;
 
-@import '~@tabler/core/scss/tabler';
+//@import '~@tabler/core/scss/tabler';
 //@import '~@tabler/core/src/scss/tabler-vendors';
 
-$fa-font-path: "~@fortawesome/fontawesome-free/webfonts/";
+/*$fa-font-path: "~@fortawesome/fontawesome-free/webfonts/";
 @import '~@fortawesome/fontawesome-free/scss/fontawesome';
 @import '~@fortawesome/fontawesome-free/scss/regular';
 @import '~@fortawesome/fontawesome-free/scss/solid';
 @import '~@fortawesome/fontawesome-free/scss/brands';
-@import '~@fortawesome/fontawesome-free/scss/shims';
+@import '~@fortawesome/fontawesome-free/scss/shims';*/
+
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
+
+@import './login';
 
 /*@import '~@fortawesome/fontawesome-free/scss/fontawesome';
 @import '~@fortawesome/fontawesome-free/scss/solid';*/
