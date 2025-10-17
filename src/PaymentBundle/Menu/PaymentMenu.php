@@ -14,30 +14,38 @@ declare(strict_types=1);
 namespace SolidInvoice\PaymentBundle\Menu;
 
 use Knp\Menu\ItemInterface;
+use SolidInvoice\MenuBundle\Builder\MenuPriority;
+use SolidWorx\Platform\PlatformBundle\Attributes\Menu\MenuBuilder;
 
-class PaymentMenu
+final class PaymentMenu
 {
-    public static function main(ItemInterface $item): ItemInterface
+    #[MenuBuilder(name: 'sidebar', priority: MenuPriority::PRIORITY_PAYMENT->value)]
+    public function sidebar(ItemInterface $menu): void
     {
-        return $item->addChild(
+        $section = $menu->addChild(
             'payment.menu.main',
             [
-                'route' => '_payments_index',
                 'extras' => [
                     'icon' => 'credit-card',
                 ],
             ],
         );
-    }
+        $section->addChild(
+            'payment.menu.main',
+            [
+                'route' => '_payments_index',
+                'extras' => [
+                    'icon' => 'cash',
+                ],
+            ],
+        );
 
-    public static function methods(ItemInterface $item): ItemInterface
-    {
-        return $item->addChild(
+        $section->addChild(
             'payment.menu.methods',
             [
                 'route' => '_payment_settings_index',
                 'extras' => [
-                    'icon' => 'credit-card',
+                    'icon' => 'receipt',
                 ],
             ],
         );

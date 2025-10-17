@@ -22,6 +22,8 @@ class MenuItem extends BaseItem implements ItemInterface
 {
     private const DIVIDER_KEY = 'divider';
 
+    private const DROPDOWN_KEY = 'dropdown';
+
     /**
      * @param ItemInterface|string $child
      * @param array<string, mixed> $options
@@ -56,8 +58,32 @@ class MenuItem extends BaseItem implements ItemInterface
         return $this->addChild($header, ['attributes' => ['class' => 'nav-item-header']]);
     }
 
+    /**
+     * Adds a dropdown section to the menu
+     */
+    public function addDropdownSection(string $label, ?string $icon = null): ItemInterface
+    {
+        $options = [
+            'attributes' => ['class' => 'dropdown'],
+            'extras' => [self::DROPDOWN_KEY => true],
+            'childrenAttributes' => ['class' => 'dropdown-menu show'],
+            'linkAttributes' => ['class' => 'nav-link dropdown-toggle show', 'data-bs-toggle' => 'dropdown', 'data-bs-auto-close' => 'false', 'aria-expanded' => 'true'],
+        ];
+
+        if ($icon !== null) {
+            $options['extras']['icon'] = $icon;
+        }
+
+        return $this->addChild($label, $options);
+    }
+
     public function isDivider(): bool
     {
         return null !== $this->getExtra(self::DIVIDER_KEY);
+    }
+
+    public function isDropdownSection(): bool
+    {
+        return $this->getExtra(self::DROPDOWN_KEY) === true;
     }
 }

@@ -23,7 +23,7 @@ use SplPriorityQueue;
 /**
  * @see \SolidInvoice\MenuBundle\Tests\ProviderTest
  */
-class Provider implements MenuProviderInterface
+class Provider /* implements MenuProviderInterface*/
 {
     /**
      * @var array<string, SplPriorityQueue<int, MenuBuilder>>
@@ -38,10 +38,6 @@ class Provider implements MenuProviderInterface
     public function get(string $name, array $options = []): ItemInterface
     {
         $root = $this->factory->createItem('root');
-
-        if (! $root instanceof MenuItem) {
-            dd($root);
-        }
 
         assert($root instanceof MenuItem);
 

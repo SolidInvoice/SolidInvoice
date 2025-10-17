@@ -15,32 +15,30 @@ namespace SolidInvoice\ClientBundle\Menu;
 
 use Knp\Menu\ItemInterface;
 use SolidInvoice\CoreBundle\Icon;
+use SolidInvoice\MenuBundle\Builder\MenuPriority;
+use SolidWorx\Platform\PlatformBundle\Attributes\Menu\MenuBuilder;
+use SolidWorx\Platform\PlatformBundle\Menu\Options;
 
-class ClientMenu
+final class ClientMenu
 {
-    public static function list(ItemInterface $item): ItemInterface
+    #[MenuBuilder(name: 'sidebar', priority: MenuPriority::PRIORITY_CLIENT->value)]
+    public function sidebar(ItemInterface $menu): void
     {
-        return $item->addChild(
-            'client.menu.list',
-            [
-                'extras' => [
-                    'icon' => Icon::CLIENT,
-                ],
-                'route' => '_clients_index',
-            ],
-        );
-    }
+        $section = $menu->addChild('client.menu.main', Options::create()->icon(Icon::CLIENT)->build());
 
-    public static function add(ItemInterface $item): ItemInterface
-    {
-        return $item->addChild(
+        $section->addChild(
+            'client.menu.list',
+            Options::create()
+                ->icon(Icon::CLIENT)
+                ->route('_clients_index')
+                ->build(),
+        );
+        $section->addChild(
             'client.menu.add',
-            [
-                'extras' => [
-                    'icon' => 'user-plus',
-                ],
-                'route' => '_clients_add',
-            ],
+            Options::create()
+                ->icon(Icon::CLIENT_ADD)
+                ->route('_clients_add')
+                ->build(),
         );
     }
 }

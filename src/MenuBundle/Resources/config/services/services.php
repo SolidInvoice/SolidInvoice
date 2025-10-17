@@ -35,8 +35,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set(Renderer::class)
         ->tag('knp_menu.renderer', ['alias' => 'solidinvoice']);
 
-    $services
+    /*$services
         ->set(Provider::class)
         ->args([service(Factory::class)])
-        ->tag('knp_menu.provider');
+        ->tag('knp_menu.provider');*/
 };

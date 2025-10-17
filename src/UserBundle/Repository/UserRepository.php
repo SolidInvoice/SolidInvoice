@@ -20,10 +20,7 @@ use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\UserBundle\Entity\User;
-use SolidWorx\Platform\PlatformBundle\Contracts\Doctrine\Repository\UserRepository as PlatformUserRepository;
-use SolidWorx\Platform\PlatformBundle\Contracts\Security\TwoFactor\UserTwoFactorInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use function assert;
 use function sprintf;
@@ -33,7 +30,7 @@ use function sprintf;
  *
  * @extends ServiceEntityRepository<User>
  */
-class UserRepository extends ServiceEntityRepository implements UserRepositoryInterface, PlatformUserRepository
+class UserRepository extends \SolidWorx\Platform\PlatformBundle\Repository\UserRepository implements UserRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -48,7 +45,7 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
 
         try {
             return (int) $qb->getQuery()->getSingleScalarResult();
-        } catch (NoResultException|NonUniqueResultException|Exception) {
+        } catch (NoResultException|NonUniqueResultException|Exception $e) {
             return 0;
         }
     }
@@ -65,11 +62,6 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
         return $this->loadUserByIdentifier($user->getEmail());
     }
 
-    public function supportsClass(string $class): bool
-    {
-        return $this->getEntityName() === $class || is_subclass_of($class, $this->getEntityName());
-    }
-
     public function getGridQuery(): QueryBuilder
     {
         $qb = $this->createQueryBuilder('u');
@@ -78,32 +70,5 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
             ->groupBy('u.id');
 
         return $qb;
-    }
-
-    public function save(UserTwoFactorInterface $user): void
-    {
-        $em = $this->getEntityManager();
-
-        $em->persist($user);
-        $em->flush();
-    }
-
-    public function loadUserByIdentifier(string $identifier): UserInterface
-    {
-        $q = $this
-            ->createQueryBuilder('u')
-            ->select('u')
-            ->where('(u.email = :email)')
-            ->andWhere('u.enabled = :enabled')
-            ->setParameter('email', $identifier)
-            ->setParameter('enabled', true)
-            ->getQuery();
-
-        try {
-            // The Query::getSingleResult() method throws an exception if there is no record matching the criteria.
-            return $q->getSingleResult();
-        } catch (NoResultException|NonUniqueResultException $e) {
-            throw new UserNotFoundException(sprintf('User "%s" does not exist.', $identifier), 0, $e);
-        }
     }
 }

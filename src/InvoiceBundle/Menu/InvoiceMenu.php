@@ -14,33 +14,37 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Menu;
 
 use Knp\Menu\ItemInterface;
+use SolidInvoice\CoreBundle\Icon;
+use SolidInvoice\MenuBundle\Builder\MenuPriority;
+use SolidWorx\Platform\PlatformBundle\Attributes\Menu\MenuBuilder;
 
-/**
- * Menu items for invoices.
- */
-class InvoiceMenu
+final class InvoiceMenu
 {
-    public static function list(ItemInterface $menu): ItemInterface
+    #[MenuBuilder(name: 'sidebar', priority: MenuPriority::PRIORITY_INVOICE->value)]
+    public function sidebar(ItemInterface $menu): void
     {
-        return $menu->addChild(
+        $invoices = $menu->addChild('invoice.menu.main', [
+            'extras' => [
+                'icon' => Icon::INVOICE,
+            ],
+        ]);
+
+        $invoices->addChild(
             'invoice.menu.list',
             [
                 'route' => '_invoices_index',
                 'extras' => [
-                    'icon' => 'file-text-o',
+                    'icon' => Icon::INVOICE,
                 ],
             ],
         );
-    }
 
-    public static function create(ItemInterface $menu): ItemInterface
-    {
-        return $menu->addChild(
+        $invoices->addChild(
             'client.menu.create.invoice',
             [
                 'route' => '_invoices_create',
                 'extras' => [
-                    'icon' => 'plus',
+                    'icon' => Icon::INVOICE_ADD,
                 ],
             ],
         );

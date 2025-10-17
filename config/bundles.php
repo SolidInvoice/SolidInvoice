@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-$bundles = [
+return [
     Symfony\Bundle\FrameworkBundle\FrameworkBundle::class => ['all' => true],
     Symfony\Bundle\SecurityBundle\SecurityBundle::class => ['all' => true],
     Symfony\Bundle\TwigBundle\TwigBundle::class => ['all' => true],
@@ -62,12 +62,8 @@ $bundles = [
     SymfonyCasts\Bundle\ResetPassword\SymfonyCastsResetPasswordBundle::class => ['all' => true],
     Zenstruck\Mailer\Test\ZenstruckMailerTestBundle::class => ['dev' => true, 'test' => true],
     SolidWorx\Platform\UiBundle\SolidWorxPlatformUiBundle::class => ['all' => true],
-    SolidWorx\Platform\PlatformBundle\SolidWorxPlatformBundle::class => ['all' => true],
+    //SolidWorx\Platform\PlatformBundle\SolidWorxPlatformBundle::class => ['all' => true],
+    Symfony\UX\Icons\UXIconsBundle::class => ['all' => true],
+    SolidWorx\Platform\SaasBundle\SolidWorxPlatformSaasBundle::class => ['all' => true],
+    SolidInvoice\SaasBundle\SolidInvoiceSaasBundle::class => ['all' => true],
 ];
-
-if (($_ENV['SOLIDINVOICE_PLATFORM'] ?? $_SERVER['SOLIDINVOICE_PLATFORM'] ?? null) === 'saas') {
-    $bundles[SolidWorx\Platform\SaasBundle\SolidWorxPlatformSaasBundle::class] = ['all' => true];
-    $bundles[SolidInvoice\SaasBundle\SolidInvoiceSaasBundle::class] = ['all' => true];
-}
-
-return $bundles;

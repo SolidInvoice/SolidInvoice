@@ -1,15 +1,14 @@
-body.login {
-
-    .wrapper {
+body {
+    .page {
         background: transparent url('../img/login.webp');
         background-size: cover;
     }
 
-    .content-wrapper {
+    /*.content-wrapper {
         background-color: transparent;
-    }
+    }*/
 
-    .login-page {
+    /*.login-page {
         background: none;
 
         @include media-breakpoint-up('lg') {
@@ -18,5 +17,5 @@ body.login {
                 width: 33%;
             }
         }
-    }
+    }*/
 }

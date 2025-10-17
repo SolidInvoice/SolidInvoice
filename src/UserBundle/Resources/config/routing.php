@@ -52,9 +52,9 @@ return static function (RoutingConfigurator $routingConfigurator): void {
         ->add('_user_accept_invite', '/invite/accept/{id}')
         ->controller(AcceptInvitation::class);
 
-    $routingConfigurator
+    /*$routingConfigurator
         ->add('_login', '/login')
-        ->controller(Login::class);
+        ->controller(Login::class);*/
 
     $routingConfigurator
         ->add('_register', '/register')
@@ -62,7 +62,7 @@ return static function (RoutingConfigurator $routingConfigurator): void {
 
     $routingConfigurator->add('_logout', '/logout');
 
-    $routingConfigurator->add('_login_check', '/login-check');
+    //$routingConfigurator->add('_login_check', '/login-check');
 
     $routingConfigurator
         ->add('_user_forgot_password', '/forgot-password')
