@@ -13,19 +13,9 @@ permissions:
     pull-requests: write
 
 jobs:
-  unit:
-    name: Unit ( PHP ${{ matrix.php }} )
 
+  phpunit-stress:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        php: [ '8.3', '8.4' ]
-        coverage: [ false ]
-        include:
-          - php: '8.3'
-            coverage: true
-      fail-fast: false
 
     env:
       SOLIDINVOICE_ENV: test
@@ -37,68 +27,16 @@ jobs:
       COVERAGE: 0
 
     steps:
-      - name: Harden Runner
-        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911
-        with:
-          egress-policy: block
-          allowed-endpoints: >
-            accounts.google.com:443
-            api.cloudinary.com:443
-            api.codecov.io:443
-            api.github.com:443
-            api.ipify.org:443
-            bun.sh:443
-            cdn.jsdelivr.net:443
-            chromedriver.storage.googleapis.com:443
-            cli.codecov.io:443
-            clients2.google.com:443
-            codecov.io:443
-            content-autofill.googleapis.com:443
-            content-autofill.googleapis.com:80
-            coveralls.io:443
-            dl.cloudsmith.io:443
-            dl.google.com:443
-            edgedl.me.gvt1.com:443
-            github.com:443
-            getcomposer.org:443
-            googlechromelabs.github.io:443
-            hosted-compute-watchdog-prod-iad-01.githubapp.com:443
-            ingest.codecov.io:443
-            keybase.io:443
-            o26192.ingest.us.sentry.io
-            objects.githubusercontent.com:443
-            optimizationguide-pa.googleapis.com:443
-            optimizationguide-pa.googleapis.com:80
-            redirector.gvt1.com:443
-            packagist.org:443
-            passwordsleakcheck-pa.googleapis.com
-            registry.npmjs.org:443
-            registry.yarnpkg.com:443
-            release-assets.githubusercontent.com:443
-            repo.packagist.org:443
-            setup-php.com:443
-            storage.googleapis.com:443
-            update.googleapis.com:80
-            uploader.codecov.io:443
-            www.google.com:443
-
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-
-      - uses: haya14busa/action-cond@94f77f7a80cd666cb3155084e428254fea4281fd
-        id: coverage_driver
-        with:
-          cond: ${{ matrix.coverage }}
-          if_true: pcov
-          if_false: none
 
       - name: Setup PHP
         uses: shivammathur/setup-php@20529878ed81ef8e78ddf08b480401e6101a850f
         with:
-          php-version: ${{ matrix.php }}
+          php-version: 8.3
           ini-values: date.timezone=Africa/Johannesburg, opcache.enable=1, opcache.enable_cli=1, opcache.memory_consumption=256, opcache.max_accelerated_files=32531, opcache.interned_strings_buffer=8, opcache.validate_timestamps=0, opcache.save_comments=1, opcache.fast_shutdown=0, memory_limit=-1
           extensions: intl, gd, opcache, mysql, pdo_mysql, soap, zip, :xdebug
-          coverage: ${{ steps.coverage_driver.outputs.value }}
+          coverage: none
 
       - uses: oven-sh/setup-bun@735343b667d3e6f658f44d0eca948eb6282f2b76 # v2
 
@@ -111,36 +49,12 @@ jobs:
 
       - run: bun run build
 
-      - name: Enable code coverage
-        if: matrix.coverage
-        run: echo "COVERAGE=1" >> $GITHUB_ENV
-
-      - name: Run test suite
+      - name: Stress until failure
         run: |
-         mkdir -p build/logs
-          if [ "$COVERAGE" = '1' ]; then
-            bin/phpunit --coverage-clover build/logs/clover.xml
-          else
-            bin/phpunit
-          fi
-
-      - name: Upload coverage results to Codecov
-        uses: codecov/codecov-action@18283e04ce6e62d37312384ff67231eb8fd56d24
-        if: matrix.coverage
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: build/logs/clover.xml
-          flags: unittests
-          fail_ci_if_error: true
-          verbose: true
-
-      - name: Add comment to PR with failure screenshots
-        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea
-        if: ${{ failure() }}
-        env:
-            CLOUDINARY_URL: cloudinary://${{ secrets.CLOUDINARY_API_KEY }}:${{ secrets.CLOUDINARY_API_SECRET }}@${{ secrets.CLOUDINARY_CLOUD_NAME }}
-            JOB_NAME: Unit ( PHP ${{ matrix.php }} )
-        with:
-          script: |
-            const script = require('./scripts/e2e-failure.js')
-            await script({github, context, core})
+          set -euo pipefail
+          i=0
+          while true; do
+            i=$((i+1))
+            echo "=== RUN $i ==="
+            bin/phpunit --debug || exit 1
+          done
