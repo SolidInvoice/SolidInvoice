@@ -1,0 +1,209 @@
+name: "Release"
+
+concurrency:
+  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.ref }}
+
+on:
+  push:
+    tags:
+      - "*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "SolidInvoice version"
+        required: false
+        type: string
+      release:
+        description: "Push builds to release"
+        required: false
+        type: boolean
+        default: true
+
+env:
+  SOLIDINVOICE_ENV: prod
+  SOLIDINVOICE_DEBUG: 0
+
+permissions:
+  contents: read
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      ref: ${{ steps.check.outputs.ref }}
+      release: ${{ steps.check.outputs.release }}
+    steps:
+      - name: Get version
+        id: check
+        run: |
+          ref="${{ (github.ref_type == 'tag' && github.ref_name) || (github.event_name == 'workflow_dispatch' && inputs.version) || '' }}"
+          if [[ -z "${ref}" ]]; then
+            ref="$(gh release view --repo solidinvoice/solidinvoice --json tagName --jq '.tagName')"
+          fi
+          echo "ref=${ref}" >> "${GITHUB_OUTPUT}"
+
+          if [[ "${{ github.event_name }}" == "push" && "${{ startsWith(github.ref, 'refs/tags/') }}" == "true" ]]; then
+            echo "release=1" >> "${GITHUB_OUTPUT}"
+          else
+            release_flag="${{ github.event.inputs.release == 'true' && '1' || '0' }}"
+            echo "release=${release_flag}" >> "${GITHUB_OUTPUT}"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build-dist:
+    permissions:
+      contents: write  # for actions/create-release to create a release
+    name: Build Assets
+    needs: [prepare]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@c6295a65d1254861815972266d5933fd6e532bdf
+        with:
+          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+
+      - name: Checkout code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@cf4cade2721270509d5b1c766ab3549210a39a2a
+        with:
+          coverage: none
+          ini-values: memory_limit=-1
+          php-version: 8.3
+
+      - uses: oven-sh/setup-bun@4bc047ad259df6fc24a6c9b0f9a0cb08cf17fbe5 # v2
+
+      - name: Build Release Artifact
+        run: "./scripts/build_dist.sh ${{ needs.prepare.outputs.ref }} ${{ needs.prepare.outputs.ref }}"
+        env:
+          RELEASE: ${{ needs.prepare.outputs.release }}
+          GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+
+      - name: Upload TAR archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.tar.gz
+          path: build/dist/SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.tar.gz
+
+      - name: Upload ZIP archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.zip
+          path: build/dist/SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.zip
+
+  build-mac:
+    name: Build ${{ matrix.os }}-${{ matrix.platform }} binaries
+    needs: [prepare, build-dist]
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: arm64
+            os: macos-14
+          - platform: x86_64
+            os: macos-13
+    runs-on: ${{ matrix.os }}
+    env:
+      HOMEBREW_NO_AUTO_UPDATE: 1
+      SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
+      PHP_VERSION: 8.3.20
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Download archive
+        uses: actions/download-artifact@v4
+        with:
+          name: SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.tar.gz
+          path: build/dist
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.24"
+          cache-dependency-path: frankenphp/go.sum
+
+      - name: Restore static-php cache
+        id: restore-static-php
+        uses: actions/cache/restore@v4
+        with:
+          path: frankenphp/dist/static-php-cli
+          key: ${{ matrix.os }}-${{ matrix.platform }}-static-php-cli-
+          restore-keys: |
+              ${{ matrix.os }}-${{ matrix.platform }}-static-php-cli-
+
+      - name: Build SolidInvoice
+        run: ./scripts/build_binary.sh ${{ needs.prepare.outputs.ref }}
+        env:
+          # GITHUB_TOKEN needs to be defined twice here.
+          # GH_TOKEN is used by the gh cli utility to upload the binary files
+          # GITHUB_TOKEN is used by static-php-cli script to make api calls to Github
+          GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+          RELEASE: ${{ needs.prepare.outputs.release }}
+
+      - name: Save static-php cache
+        if: steps.restore-static-php.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: frankenphp/dist/static-php-cli
+          key: ${{ matrix.os }}-${{ matrix.platform }}-static-php-cli-${{ hashFiles('frankenphp/dist/static-php-cli/cache_key') }}
+
+  build-linux:
+    name: Build binaries
+    needs: [prepare, build-dist]
+    permissions:
+      contents: write
+    runs-on: ubuntu-24.04
+    env:
+      HOMEBREW_NO_AUTO_UPDATE: 1
+      SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
+      PHP_VERSION: 8.3.20
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Login to DockerHub
+        uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3.4.0
+        with:
+          username: ${{ vars.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PAT }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+            driver: cloud
+            endpoint: "solidinvoice/solidinvoice-app-cloud"
+            install: true
+            platforms: linux/amd64,linux/arm64
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Download archive
+        uses: actions/download-artifact@v4
+        with:
+          name: SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.tar.gz
+          path: build/dist
+
+      - name: Build SolidInvoice
+        uses: docker/bake-action@v6
+        with:
+            targets: build-static
+            source: .
+            push: ${{ needs.prepare.outputs.release == '1' }}
+            set: |
+                build-static.cache-from=type=gha,scope=php
+                build-static.cache-to=type=gha,scope=php,mode=max,ignore-error=true
+        env:
+          # GITHUB_TOKEN needs to be defined twice here.
+          # GH_TOKEN is used by the gh cli utility to upload the binary files
+          # GITHUB_TOKEN is used by static-php-cli script to make api calls to Github
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE: ${{ needs.prepare.outputs.release }}
+          SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
