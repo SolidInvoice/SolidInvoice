@@ -120,7 +120,7 @@
                             {% for line in quote.lines %}
                                 <tr>
                                     <td class="column-description">
-                                        {{ line.description }}
+                                        {{ line.description|nl2br }}
                                     </td>
                                     <td class="column-price">
                                         {{ line.price|formatCurrency(quote.client.currency) }}
