@@ -1,0 +1,83 @@
+name: Static Analysis
+
+on: [ pull_request ]
+
+jobs:
+  phpstan:
+    name: PHPStan
+
+    runs-on: ubuntu-latest
+
+    env:
+      SOLIDINVOICE_ENV: test
+      SOLIDINVOICE_DEBUG: 1
+
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@c6295a65d1254861815972266d5933fd6e532bdf
+        with:
+          egress-policy: block
+          allowed-endpoints: >
+            185.125.188.54:443
+            185.125.188.55:443
+            185.125.188.59:443
+            api.codecov.io:443
+            api.github.com:443
+            api.launchpad.net:443
+            archive.ubuntu.com:80
+            azure.archive.ubuntu.com:80
+            bun.sh:443
+            cdn.jsdelivr.net:443
+            codecov.io:443
+            dl.cloudsmith.io:443
+            esm.ubuntu.com:443
+            esm.ubuntu.com:80
+            getcomposer.org:443
+            github.com:443
+            keys.openpgp.org:443
+            keyserver.ubuntu.com:443
+            motd.ubuntu.com:443
+            objects.githubusercontent.com:443
+            packages.microsoft.com:443
+            packages.microsoft.com:80
+            packagist.org:443
+            pecl.php.net:443
+            pecl.php.net:80
+            pgp.mit.edu:443
+            ppa.launchpad.net:80
+            ppa.launchpadcontent.net:443
+            ppa.launchpadcontent.net:80
+            registry.npmjs.org:443
+            registry.yarnpkg.com:443
+            release-assets.githubusercontent.com:443
+            repo.packagist.org:443
+            setup-php.com:443
+            security.ubuntu.com:443
+            security.ubuntu.com:80
+            storage.googleapis.com:443
+
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@cf4cade2721270509d5b1c766ab3549210a39a2a
+        with:
+          php-version-file: .php-version
+          ini-values: date.timezone=Europe/Paris, opcache.enable=1, opcache.enable_cli=1, opcache.memory_consumption=256, opcache.max_accelerated_files=32531, opcache.interned_strings_buffer=8, opcache.validate_timestamps=0, opcache.save_comments=1, opcache.fast_shutdown=0
+          extensions: intl, gd, opcache, mysql, pdo_mysql, :xdebug
+
+      - uses: ramsey/composer-install@e52779489de843a9f022c7b8faa648b608b02c70 # v3
+
+      - uses: oven-sh/setup-bun@4bc047ad259df6fc24a6c9b0f9a0cb08cf17fbe5 # v2
+
+      - run: bun install
+
+      - run: bun run build
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Warm up cache
+        run: bin/console cache:warmup -n -vvv -e test
+
+      - name: Run PHPStan
+        run: bin/phpstan analyse -c phpstan.test.neon

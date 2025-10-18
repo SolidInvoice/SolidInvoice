@@ -1,0 +1,209 @@
+name: DB Tests
+
+on:
+    pull_request:
+
+permissions:
+    contents: read
+    issues: write
+    pull-requests: write
+
+env:
+    SOLIDINVOICE_ENV: test
+    SOLIDINVOICE_DEBUG: 0
+    PANTHER_NO_HEADLESS: 0
+    PANTHER_APP_ENV: test
+    PANTHER_NO_SANDBOX: 1
+    PANTHER_CHROME_ARGUMENTS: --disable-dev-shm-usage
+    COVERAGE: 0
+
+jobs:
+  migrations:
+    name: DB (${{ matrix.db.name }} ${{ matrix.db.driver }} ${{ matrix.db.version }})
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        include:
+            - db:
+                name: MySQL
+                driver: pdo_mysql
+                scheme: mysql
+                version: 5.7
+                image: mysql
+                port: 3306
+                user: root
+            - db:
+                name: MySQL
+                driver: pdo_mysql
+                scheme: mysql
+                version: "8.0"
+                image: mysql
+                port: 3306
+                user: root
+            - db:
+                name: MySQL
+                driver: pdo_mysql
+                scheme: mysql
+                version: 8.3
+                image: mysql
+                port: 3306
+                user: root
+            - db:
+                name: MySQL
+                driver: pdo_mysql
+                scheme: mysql
+                version: 8.4
+                image: mysql
+                port: 3306
+                user: root
+            - db:
+                name: MySQL
+                driver: pdo_mysql
+                scheme: mysql
+                version: 9
+                image: mysql
+                port: 3306
+                user: root
+            - db:
+                name: MariaDB
+                driver: pdo_mysql
+                scheme: mysql
+                version: 10.4
+                image: mariadb
+                port: 3306
+                user: root
+            - db:
+                name: MariaDB
+                driver: pdo_mysql
+                scheme: mysql
+                version: 10.5
+                image: mariadb
+                port: 3306
+                user: root
+            - db:
+                name: MariaDB
+                driver: pdo_mysql
+                scheme: mysql
+                version: 10.6
+                image: mariadb
+                port: 3306
+                user: root
+            - db:
+                name: MariaDB
+                driver: pdo_mysql
+                scheme: mysql
+                version: 10.11
+                image: mariadb
+                port: 3306
+                user: root
+            - db:
+                name: MariaDB
+                driver: pdo_mysql
+                scheme: mysql
+                version: "11.0"
+                image: mariadb
+                port: 3306
+                user: root
+            - db:
+                name: MariaDB
+                driver: pdo_mysql
+                scheme: mysql
+                version: 11.4
+                image: mariadb
+                port: 3306
+                user: root
+            - db:
+                name: MariaDB
+                driver: pdo_mysql
+                scheme: mysql
+                version: 11
+                image: mariadb
+                port: 3306
+                user: root
+            - db:
+                name: PostgreSQL
+                driver: pdo_pgsql
+                scheme: postgres
+                version: 16
+                image: postgres
+                port: 5432
+                user: postgres
+            - db:
+                name: PostgreSQL
+                driver: pdo_pgsql
+                scheme: postgres
+                version: 17
+                image: postgres
+                port: 5432
+                user: postgres
+      fail-fast: false
+
+    services:
+      db:
+        image: ${{ matrix.db.image }}:${{ matrix.db.version }}
+        env:
+          ORACLE_PASSWORD: solidinvoice
+          MYSQL_ROOT_PASSWORD: solidinvoice
+          MYSQL_DATABASE: solidinvoice
+          POSTGRES_PASSWORD: solidinvoice
+        ports:
+          - "${{ matrix.db.port }}:${{ matrix.db.port }}"
+
+    env:
+      SOLIDINVOICE_DATABASE_URL: "${{ matrix.db.scheme }}://${{ matrix.db.user }}:solidinvoice@127.0.0.1:${{ matrix.db.port }}/solidinvoice"
+
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@c6295a65d1254861815972266d5933fd6e532bdf
+        with:
+          egress-policy: audit
+          allowed-endpoints: >
+            bun.sh:443
+            packagist.org:443
+            download.oracle.com:443
+            azure.archive.ubuntu.com:443
+            archive.ubuntu.com:443
+            security.ubuntu.com:443
+            esm.ubuntu.com:443
+            pecl.php.net:443
+            pear.php.net:443
+            api.launchpad.net:443
+            keyserver.ubuntu.com:443
+            pgp.mit.edu:443
+            keys.openpgp.org:443
+            ppa.launchpad.net:443
+            objects.githubusercontent.com:443
+            cdn.jsdelivr.net:443
+            setup-php.com:443
+            dl.cloudsmith.io:443
+            getcomposer.org:443
+            registry.npmjs.org:443
+            registry.yarnpkg.com:443
+
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@cf4cade2721270509d5b1c766ab3549210a39a2a
+        with:
+          php-version-file: .php-version
+          ini-values: date.timezone=Africa/Johannesburg, opcache.enable=1, opcache.enable_cli=1, opcache.memory_consumption=256, opcache.max_accelerated_files=32531, opcache.interned_strings_buffer=8, opcache.validate_timestamps=0, opcache.save_comments=1, opcache.fast_shutdown=0, memory_limit=-1, zend.assertions=1
+          extensions: intl, gd, opcache, ${{ matrix.db.driver }}, zip, :xdebug
+        env:
+          fail-fast: true
+
+      - uses: oven-sh/setup-bun@4bc047ad259df6fc24a6c9b0f9a0cb08cf17fbe5 # v2
+
+      - uses: ramsey/composer-install@e52779489de843a9f022c7b8faa648b608b02c70 # v3
+
+      - run: bun install
+
+      - run: bun run build
+
+      - name: Run test suite
+        # Installation currently only runs with SQLite,
+        # so let's skip it to prevent unneeded errors
+        # @TODO: Fix installation to work with other DBs
+        run: bin/phpunit --exclude-group=installation
