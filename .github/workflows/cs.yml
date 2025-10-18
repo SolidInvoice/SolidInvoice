@@ -18,12 +18,14 @@ jobs:
           egress-policy: block
           allowed-endpoints: >
             api.github.com:443
+            cdn.jsdelivr.net:443
             dl.cloudsmith.io:443
             getcomposer.org:443
             github.com:443
             objects.githubusercontent.com:443
             packagist.org:443
             release-assets.githubusercontent.com:443
+            setup-php.com:443
 
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
@@ -66,6 +68,7 @@ jobs:
             motd.ubuntu.com:443
             objects.githubusercontent.com:443
             raw.githubusercontent.com:443
+            release-assets.githubusercontent.com:443
             packages.microsoft.com:443
             packages.microsoft.com:80
             packagist.org:443
@@ -122,9 +125,8 @@ jobs:
             repo.packagist.org:443
             registry.npmjs.org:443
             registry.yarnpkg.com:443
+            release-assets.githubusercontent.com:443
             setup-php.com:443
-            getcomposer.org:443
-            dl.cloudsmith.io:443
             release-assets.githubusercontent.com:443
 
       - name: Checkout Code
