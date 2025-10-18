@@ -65,6 +65,7 @@ jobs:
             registry.npmjs.org:443
             registry.yarnpkg.com:443
             repo.packagist.org:443
+            setup-php.com:443
             storage.googleapis.com:443
             update.googleapis.com:80
             uploader.codecov.io:443
