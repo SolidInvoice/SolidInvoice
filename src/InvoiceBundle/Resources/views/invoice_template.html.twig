@@ -130,7 +130,7 @@
                             {% for item in invoice.lines %}
                                 <tr>
                                     <td class="column-description">
-                                        {{ item.description }}
+                                        {{ item.description|nl2br }}
                                     </td>
                                     <td class="column-price">
                                         {{ item.price|formatCurrency(invoice.client.currency) }}
