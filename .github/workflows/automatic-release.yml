@@ -57,7 +57,7 @@ jobs:
         uses: shivammathur/setup-php@20529878ed81ef8e78ddf08b480401e6101a850f
         with:
           php-version: 8.4
-          extensions: intl, gd, opcache, mysql, pdo_mysql, soap, zip, :xdebug
+          extensions: intl, gd, mysql, pdo_mysql, soap, zip, :xdebug
           coverage: none
 
       - uses: oven-sh/setup-bun@735343b667d3e6f658f44d0eca948eb6282f2b76 # v2

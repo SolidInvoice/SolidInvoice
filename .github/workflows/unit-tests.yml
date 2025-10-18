@@ -89,8 +89,8 @@ jobs:
         uses: shivammathur/setup-php@20529878ed81ef8e78ddf08b480401e6101a850f
         with:
           php-version: ${{ matrix.php }}
-          ini-values: date.timezone=Africa/Johannesburg, opcache.enable=1, opcache.enable_cli=1, opcache.memory_consumption=256, opcache.max_accelerated_files=32531, opcache.interned_strings_buffer=8, opcache.validate_timestamps=0, opcache.save_comments=1, opcache.fast_shutdown=0, memory_limit=-1
-          extensions: intl, gd, opcache, mysql, pdo_mysql, soap, zip, :xdebug
+          ini-values: date.timezone=Africa/Johannesburg, memory_limit=-1
+          extensions: intl, gd, mysql, pdo_mysql, soap, zip, :xdebug
           coverage: ${{ steps.coverage_driver.outputs.value }}
 
       - uses: oven-sh/setup-bun@735343b667d3e6f658f44d0eca948eb6282f2b76 # v2
