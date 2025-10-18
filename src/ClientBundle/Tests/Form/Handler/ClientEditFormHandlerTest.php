@@ -21,6 +21,8 @@ use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
 use SolidWorx\FormHandler\FormRequest;
+use Symfony\Component\HtmlSanitizer\HtmlSanitizer;
+use Symfony\Component\HtmlSanitizer\HtmlSanitizerConfig;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
@@ -79,7 +81,7 @@ class ClientEditFormHandlerTest extends FormHandlerTestCase
     {
         /** @var Client $client */
 
-        self::assertSame($this->clientName, $client->getName());
+        self::assertSame((new HtmlSanitizer(new HtmlSanitizerConfig()))->sanitize($this->clientName), $client->getName());
         self::assertInstanceOf(RedirectResponse::class, $response);
         self::assertInstanceOf(FlashResponse::class, $response);
         self::assertCount(1, iterator_to_array($response->getFlash()));
