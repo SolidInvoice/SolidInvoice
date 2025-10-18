@@ -47,6 +47,7 @@ jobs:
             registry.npmjs.org:443
             registry.yarnpkg.com:443
             repo.packagist.org:443
+            setup-php.com:443
             security.ubuntu.com:443
             security.ubuntu.com:80
             storage.googleapis.com:443
