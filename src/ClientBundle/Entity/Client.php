@@ -125,6 +125,7 @@ class Client implements Stringable
         // property: 'currency'
     )
     ]
+    #[Assert\Length(min: 3, max: 3, exactMessage: 'Currency code must be exactly {{ limit }} characters long.')]
     private ?string $currencyCode = null;
 
     private Currency $currency;
