@@ -158,6 +158,7 @@
         "symfony/twig-bridge": "^7.1",
         "symfony/twig-bundle": "^7.1",
         "symfony/twilio-notifier": "^7.1",
+        "symfony/type-info": "^7.1",
         "symfony/uid": "^7.1",
         "symfony/ux-autocomplete": "^2.12",
         "symfony/ux-dropzone": "*",
