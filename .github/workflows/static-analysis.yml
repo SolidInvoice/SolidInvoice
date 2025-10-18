@@ -25,6 +25,7 @@ jobs:
             archive.ubuntu.com:80
             azure.archive.ubuntu.com:80
             bun.sh:443
+            cdn.jsdelivr.net:443
             codecov.io:443
             dl.cloudsmith.io:443
             esm.ubuntu.com:443
