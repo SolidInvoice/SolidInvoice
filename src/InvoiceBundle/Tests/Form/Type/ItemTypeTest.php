@@ -18,8 +18,12 @@ use Money\Currency;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Form\Type\ItemType;
+use Symfony\Component\DependencyInjection\ServiceLocator;
+use Symfony\Component\Form\Extension\HtmlSanitizer\Type\TextTypeHtmlSanitizerExtension;
 use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\PreloadedExtension;
+use Symfony\Component\HtmlSanitizer\HtmlSanitizer;
+use Symfony\Component\HtmlSanitizer\HtmlSanitizerConfig;
 
 class ItemTypeTest extends FormTestCase
 {
@@ -55,6 +59,14 @@ class ItemTypeTest extends FormTestCase
         return [
             // register the type instances with the PreloadedExtension
             new PreloadedExtension([$itemType], []),
+        ];
+    }
+
+    protected function getTypeExtensions(): array
+    {
+        return [
+            new TextTypeHtmlSanitizerExtension(new ServiceLocator(['default' => fn () => new HtmlSanitizer(new HtmlSanitizerConfig())])),
+            ...parent::getTypeExtensions(),
         ];
     }
 }
