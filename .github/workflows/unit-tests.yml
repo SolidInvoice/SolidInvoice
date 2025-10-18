@@ -62,6 +62,7 @@ jobs:
             github.com:443
             getcomposer.org:443
             googlechromelabs.github.io:443
+            hosted-compute-watchdog-prod-iad-01.githubapp.com:443
             ingest.codecov.io:443
             keybase.io:443
             o26192.ingest.us.sentry.io
