@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "29c3cce74105293a40295d323f821487",
+    "content-hash": "e337d05fb92711011f625acc0aaef507",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -25450,16 +25450,16 @@
         },
         {
             "name": "zenstruck/foundry",
-            "version": "v2.6.2",
+            "version": "v2.7.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zenstruck/foundry.git",
-                "reference": "942874e5e0a386749cb30e155e3e8ef4fd45754e"
+                "reference": "bbaa207d397386237a6bad988956132450c9c1ca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zenstruck/foundry/zipball/942874e5e0a386749cb30e155e3e8ef4fd45754e",
-                "reference": "942874e5e0a386749cb30e155e3e8ef4fd45754e",
+                "url": "https://api.github.com/repos/zenstruck/foundry/zipball/bbaa207d397386237a6bad988956132450c9c1ca",
+                "reference": "bbaa207d397386237a6bad988956132450c9c1ca",
                 "shasum": ""
             },
             "require": {
@@ -25467,9 +25467,9 @@
                 "php": ">=8.1",
                 "symfony/deprecation-contracts": "^2.2|^3.0",
                 "symfony/polyfill-php84": "^1.32",
-                "symfony/property-access": "^6.4|^7.0",
-                "symfony/property-info": "^6.4|^7.0",
-                "symfony/var-exporter": "^6.4.9|~7.0.9|^7.1.2",
+                "symfony/property-access": "^6.4|^7.0|^8.0",
+                "symfony/property-info": "^6.4|^7.0|^8.0",
+                "symfony/var-exporter": "^6.4.9|~7.0.9|^7.1.2|^8.0",
                 "zenstruck/assert": "^1.4"
             },
             "conflict": {
@@ -25489,16 +25489,20 @@
                 "doctrine/orm": "^2.16|^3.0",
                 "doctrine/persistence": "^2.0|^3.0|^4.0",
                 "phpunit/phpunit": "^9.5.0 || ^10.0 || ^11.0 || ^12.0",
-                "symfony/console": "^6.4|^7.0",
-                "symfony/dotenv": "^6.4|^7.0",
+                "rector/rector": "^2.2",
+                "symfony/browser-kit": "^6.4|^7.0|^8.0",
+                "symfony/console": "^6.4|^7.0|^8.0",
+                "symfony/dotenv": "^6.4|^7.0|^8.0",
                 "symfony/framework-bundle": "^6.4|^7.0",
                 "symfony/maker-bundle": "^1.55",
-                "symfony/phpunit-bridge": "^6.4|^7.0",
-                "symfony/runtime": "^6.4|^7.0",
+                "symfony/phpunit-bridge": "^6.4|^7.0|^8.0",
+                "symfony/routing": "^6.4|^7.0|^8.0",
+                "symfony/runtime": "^6.4|^7.0|^8.0",
                 "symfony/translation-contracts": "^3.4",
-                "symfony/uid": "^6.4|^7.0",
-                "symfony/var-dumper": "^6.4|^7.0",
-                "symfony/yaml": "^6.4|^7.0"
+                "symfony/uid": "^6.4|^7.0|^8.0",
+                "symfony/var-dumper": "^6.4|^7.0|^8.0",
+                "symfony/yaml": "^6.4|^7.0|^8.0",
+                "webmozart/assert": "^1.11"
             },
             "type": "library",
             "extra": {
@@ -25519,7 +25523,8 @@
                 ],
                 "psr-4": {
                     "Zenstruck\\Foundry\\": "src/",
-                    "Zenstruck\\Foundry\\Psalm\\": "utils/psalm"
+                    "Zenstruck\\Foundry\\Psalm\\": "utils/psalm",
+                    "Zenstruck\\Foundry\\Utils\\Rector\\": "utils/rector/src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -25549,7 +25554,7 @@
             ],
             "support": {
                 "issues": "https://github.com/zenstruck/foundry/issues",
-                "source": "https://github.com/zenstruck/foundry/tree/v2.6.2"
+                "source": "https://github.com/zenstruck/foundry/tree/v2.7.5"
             },
             "funding": [
                 {
@@ -25561,7 +25566,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-08-05T14:02:22+00:00"
+            "time": "2025-10-10T11:41:47+00:00"
         },
         {
             "name": "zenstruck/mailer-test",

@@ -210,7 +210,7 @@
         "symfony/web-profiler-bundle": "^7.1",
         "symplify/easy-coding-standard": "^12.2",
         "zenstruck/browser": "^1.9",
-        "zenstruck/foundry": "^2.2",
+        "zenstruck/foundry": "^2.7",
         "zenstruck/mailer-test": "^1.4"
     },
     "replace": {
