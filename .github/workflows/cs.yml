@@ -148,9 +148,8 @@ jobs:
       - name: Super-Linter
         uses: github/super-linter/slim@4e8a7c2bf106c4c766c816b35ec612638dc9b6b2
         env:
-          # exclude noisy dirs for *all* linters
+          # exclude noisy dirs
           FILTER_REGEX_EXCLUDE: '(node_modules|vendor|dist|build|.git)'
-          VALIDATE_ALL_CODEBASE: false
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CSS_FILE_NAME: .stylelintrc.json
           VALIDATE_YAML: true
