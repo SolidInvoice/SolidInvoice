@@ -27,7 +27,7 @@ class TaxType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('name', null, ['sanitize_html' => true]);
+        $builder->add('name', null, ['sanitize_html' => true, 'allow_single_quotes' => true]);
         $builder->add('rate', PercentType::class, ['scale' => 2, 'type' => 'integer']);
 
         $builder->add(
