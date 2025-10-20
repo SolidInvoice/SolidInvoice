@@ -87,7 +87,7 @@ class TotalCalculator
                         $total = $total->plus($taxAmount);
                         break;
                     case Tax::TYPE_FLAT_RATE:
-                        $taxAmount = BigDecimal::of($rowTax->getRate())->multipliedBy(100);
+                        $taxAmount = BigDecimal::of($rowTax->getRate())->multipliedBy(100)->toScale(0, RoundingMode::HALF_EVEN);
                         $total = $total->plus($taxAmount);
                         break;
                     default:
