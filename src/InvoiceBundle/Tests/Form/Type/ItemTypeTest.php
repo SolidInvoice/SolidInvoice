@@ -15,6 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Tests\Form\Type;
 
 use Brick\Math\BigDecimal;
 use Money\Currency;
+use SolidInvoice\CoreBundle\Form\TypeExtension\UnsanitizeSingleQuotesTypeExtension;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Form\Type\ItemType;
@@ -66,6 +67,7 @@ class ItemTypeTest extends FormTestCase
     {
         return [
             new TextTypeHtmlSanitizerExtension(new ServiceLocator(['default' => fn () => new HtmlSanitizer(new HtmlSanitizerConfig())])),
+            new UnsanitizeSingleQuotesTypeExtension(),
             ...parent::getTypeExtensions(),
         ];
     }

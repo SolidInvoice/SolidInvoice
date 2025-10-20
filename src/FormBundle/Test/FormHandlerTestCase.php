@@ -21,6 +21,7 @@ use Money\Currency;
 use SolidInvoice\ClientBundle\Form\Type\ContactDetailType;
 use SolidInvoice\CoreBundle\Form\Extension\FormHelpExtension;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
+use SolidInvoice\CoreBundle\Form\TypeExtension\UnsanitizeSingleQuotesTypeExtension;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\InvoiceBundle\Form\Type\InvoiceType;
@@ -129,6 +130,7 @@ abstract class FormHandlerTestCase extends BaseTestCase
             new TextTypeHtmlSanitizerExtension(
                 new ServiceLocator(['default' => fn () => new HtmlSanitizer(new HtmlSanitizerConfig())])
             ),
+            new UnsanitizeSingleQuotesTypeExtension(),
         ];
     }
 }
