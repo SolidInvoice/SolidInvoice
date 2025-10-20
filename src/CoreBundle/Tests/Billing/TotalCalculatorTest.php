@@ -198,10 +198,10 @@ class TotalCalculatorTest extends KernelTestCase
 
         $updater->calculateTotals($invoice);
 
-        self::assertEquals(BigDecimal::of('36000.0'), $invoice->getTotal());
-        self::assertEquals(BigDecimal::of('36000.0'), $invoice->getBalance());
+        self::assertEquals(BigDecimal::of('36000'), $invoice->getTotal());
+        self::assertEquals(BigDecimal::of('36000'), $invoice->getBalance());
         self::assertEquals(BigDecimal::of(30000), $invoice->getBaseTotal());
-        self::assertEquals(BigDecimal::of('6000.0'), $invoice->getTax());
+        self::assertEquals(BigDecimal::of('6000'), $invoice->getTax());
     }
 
     /**
@@ -262,10 +262,10 @@ class TotalCalculatorTest extends KernelTestCase
 
         $updater->calculateTotals($invoice);
 
-        self::assertEquals(BigDecimal::of('35920.0'), $invoice->getTotal());
-        self::assertEquals(BigDecimal::of('35920.0'), $invoice->getBalance());
+        self::assertEquals(BigDecimal::of('35920'), $invoice->getTotal());
+        self::assertEquals(BigDecimal::of('35920'), $invoice->getBalance());
         self::assertEquals(BigDecimal::of(30000), $invoice->getBaseTotal());
-        self::assertEquals(BigDecimal::of('6000.0'), $invoice->getTax());
+        self::assertEquals(BigDecimal::of('6000'), $invoice->getTax());
     }
 
     /**
@@ -303,5 +303,54 @@ class TotalCalculatorTest extends KernelTestCase
         self::assertEquals(BigDecimal::of(30000), $invoice->getTotal());
         self::assertEquals(BigDecimal::of(29000), $invoice->getBalance());
         self::assertEquals(BigDecimal::of(30000), $invoice->getBaseTotal());
+    }
+
+    /**
+     * Test for the rounding issue that causes RoundingNecessaryException
+     * with specific price and tax combinations (issue #1824)
+     *
+     * @throws MathException
+     */
+    public function testUpdateWithTaxExclRoundingIssue(): void
+    {
+        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator());
+
+        $tax = new Tax();
+        $tax->setType(Tax::TYPE_EXCLUSIVE)
+            ->setRate(21);
+
+        // Test case 1: 3.32 EUR with 21% tax (problematic case from issue)
+        $invoice = new Invoice();
+        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'EUR']));
+        $item = new Line();
+        $item->setQty(1)
+            ->setPrice(332) // 3.32 EUR (stored as cents)
+            ->setTax($tax);
+
+        $invoice->addLine($item);
+
+        $updater->calculateTotals($invoice);
+
+        // Verify that the calculation completes without RoundingNecessaryException
+        self::assertEquals(BigDecimal::of(332), $invoice->getBaseTotal());
+        self::assertEquals(BigDecimal::of('70'), $invoice->getTax()); // 3.32 * 0.21 = 0.6972, rounded to 70 cents
+        self::assertEquals(BigDecimal::of('402'), $invoice->getTotal()); // 332 + 69.72 = 402 cents
+
+        // Test case 2: 3.33 EUR with 21% tax (another problematic case)
+        $invoice2 = new Invoice();
+        $invoice2->setClient(ClientFactory::createOne(['currencyCode' => 'EUR']));
+        $item2 = new Line();
+        $item2->setQty(1)
+            ->setPrice(333) // 3.33 EUR (stored as cents)
+            ->setTax($tax);
+
+        $invoice2->addLine($item2);
+
+        $updater->calculateTotals($invoice2);
+
+        // Verify that the calculation completes without RoundingNecessaryException
+        self::assertEquals(BigDecimal::of(333), $invoice2->getBaseTotal());
+        self::assertEquals(BigDecimal::of('70'), $invoice2->getTax()); // 3.33 * 0.21 = 0.6993, rounded to 70 cents
+        self::assertEquals(BigDecimal::of('403'), $invoice2->getTotal()); // 333 + 69.93 = 403 cents
     }
 }
