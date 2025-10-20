@@ -81,7 +81,7 @@ class TotalCalculator
                     $taxAmount = $rowTotal->toBigDecimal()->dividedBy(($rowTax->getRate() / 100) + 1, 2, RoundingMode::HALF_EVEN)->minus($rowTotal)->negated();
                     $subTotal = $subTotal->minus($taxAmount);
                 } else {
-                    $taxAmount = $rowTotal->toBigDecimal()->multipliedBy($rowTax->getRate() / 100);
+                    $taxAmount = $rowTotal->toBigDecimal()->multipliedBy($rowTax->getRate() / 100)->toScale(0, RoundingMode::HALF_EVEN);
                     $total = $total->plus($taxAmount);
                 }
 
