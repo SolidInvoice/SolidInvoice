@@ -56,6 +56,7 @@ final class ContactDetailType extends AbstractType
                     new Email(['groups' => 'email']),
                 ],
                 'sanitize_html' => true,
+                'allow_single_quotes' => true,
             ]
         );
     }
