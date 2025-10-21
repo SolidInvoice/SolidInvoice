@@ -24,7 +24,7 @@ jobs:
 
     steps:
     - name: Harden Runner
-      uses: step-security/harden-runner@c6295a65d1254861815972266d5933fd6e532bdf
+      uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911
       with:
         disable-sudo: true
         egress-policy: block
@@ -33,21 +33,22 @@ jobs:
           api.ipify.org:443
           github.com:443
           objects.githubusercontent.com:443
+          release-assets.githubusercontent.com:443
           uploads.github.com:443
 
     - name: Checkout repository
       uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@45775bd8235c68ba998cffa5171334d58593da47
+      uses: github/codeql-action/init@f443b600d91635bebf5b0d9ebc620189c0d6fba5
       with:
         languages: ${{ matrix.language }}
 
     - name: Autobuild
-      uses: github/codeql-action/autobuild@45775bd8235c68ba998cffa5171334d58593da47
+      uses: github/codeql-action/autobuild@f443b600d91635bebf5b0d9ebc620189c0d6fba5
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@45775bd8235c68ba998cffa5171334d58593da47
+      uses: github/codeql-action/analyze@f443b600d91635bebf5b0d9ebc620189c0d6fba5
 
   #qodana:
   #  permissions:
@@ -60,7 +61,7 @@ jobs:
   #
   #  steps:
   #    - name: Harden Runner
-  #      uses: step-security/harden-runner@c6295a65d1254861815972266d5933fd6e532bdf
+  #      uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911
   #      with:
   #        disable-sudo: true
   #        egress-policy: block
