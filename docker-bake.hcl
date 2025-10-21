@@ -7,7 +7,7 @@ variable "SOLIDINVOICE_VERSION" {
 }
 
 variable "PHP_VERSION" {
-    default = "8.3"
+    default = "8.4"
 }
 
 variable "LATEST" {

@@ -20,10 +20,10 @@ jobs:
 
     strategy:
       matrix:
-        php: [ '8.3', '8.4' ]
+        php: [ '8.4' ]
         coverage: [ false ]
         include:
-          - php: '8.3'
+          - php: '8.4'
             coverage: true
       fail-fast: false
 

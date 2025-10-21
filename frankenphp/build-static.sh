@@ -54,7 +54,7 @@ if [ -z "${PHP_VERSION}" ]; then
 		fi
 	}
 
-	PHP_VERSION="$(get_latest_php_version "8.3")"
+	PHP_VERSION="$(get_latest_php_version "8.4")"
 	export PHP_VERSION
 fi
 # default extension set
@@ -198,7 +198,7 @@ if ! type "go" >/dev/null 2>&1; then
 fi
 
 
-# See https://github.com/docker-library/php/blob/master/8.3/alpine3.20/zts/Dockerfile#L53-L55
+# See https://github.com/docker-library/php/blob/master/8.4/alpine3.20/zts/Dockerfile#L53-L55
 CGO_CFLAGS="-DSOLIDINVOICE_VERSION=${SOLIDINVOICE_VERSION} -I${PWD}/buildroot/include/ $(${spcCommand} spc-config "${PHP_EXTENSIONS}" --with-libs="${PHP_EXTENSION_LIBS}" --includes)"
 if [ -n "${DEBUG_SYMBOLS}" ]; then
 	CGO_CFLAGS="-g ${CGO_CFLAGS}"
