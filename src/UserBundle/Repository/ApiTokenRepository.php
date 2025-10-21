@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Repository;
 
+use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -22,6 +23,7 @@ use SolidInvoice\UserBundle\Entity\ApiTokenHistory;
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Uid\Ulid;
 use function array_column;
 use function array_combine;
 use function array_map;
@@ -52,7 +54,7 @@ class ApiTokenRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return array{id: mixed, name: mixed, ip: mixed, token: mixed, lastUsed: mixed}
+     * @return array{id: Ulid, name: string, token: string, created: DateTimeInterface, updated: DateTimeInterface, lastUsed: DateTimeInterface}
      */
     public function getApiTokensForUser(UserInterface $user): array
     {

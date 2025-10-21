@@ -11,10 +11,12 @@
 
 namespace SolidInvoice\UserBundle\Twig\Components;
 
+use DateTimeInterface;
 use SolidInvoice\UserBundle\Entity\ApiToken;
 use SolidInvoice\UserBundle\Repository\ApiTokenRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Uid\Ulid;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveArg;
@@ -36,7 +38,7 @@ final class ApiTokens extends AbstractController
     }
 
     /**
-     * @return array{id: mixed, name: mixed, ip: mixed, token: mixed, lastUsed: mixed}
+     * @return array{id: Ulid, name: string, token: string, created: DateTimeInterface, updated: DateTimeInterface, lastUsed: DateTimeInterface}
      */
     #[ExposeInTemplate]
     #[LiveListener(CreateApiToken::API_TOKEN_CREATED_EVENT)]
