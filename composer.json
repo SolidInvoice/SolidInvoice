@@ -16,7 +16,7 @@
     ],
     "homepage": "https://solidinvoice.co",
     "require": {
-        "php": ">=8.3",
+        "php": ">=8.4",
         "ext-curl": "*",
         "ext-gd": "*",
         "ext-intl": "*",
@@ -242,7 +242,7 @@
         },
         "bin-dir": "bin",
         "platform": {
-            "php": "8.3"
+            "php": "8.4"
         },
         "sort-packages": true
     },
