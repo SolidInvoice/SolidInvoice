@@ -26,7 +26,7 @@ class AppRequirements extends SymfonyRequirements
     public function __construct()
     {
         $this->addRequirement(
-            PHP_VERSION_ID >= 80200,
+            PHP_VERSION_ID >= 80400,
             sprintf('PHP version must be at least %s (%s installed)', '8.4.0', PHP_VERSION),
             sprintf(
                 'You are running PHP version "<strong>%s</strong>", but SolidInvoice needs at least PHP "<strong>%s</strong>" to run.
