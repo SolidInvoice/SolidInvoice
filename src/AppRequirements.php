@@ -23,6 +23,12 @@ use function sprintf;
  */
 class AppRequirements extends SymfonyRequirements
 {
+    /**
+     * Initialize application-specific runtime requirements and recommendations.
+     *
+     * Adds a minimum PHP version requirement (PHP 8.4.0), requires the OpenSSL extension,
+     * and recommends the mbstring and GD extensions for PDF generation.
+     */
     public function __construct()
     {
         $this->addRequirement(

@@ -42,6 +42,7 @@ if [ -n "${DEBUG_SYMBOLS}" ]; then
 fi
 # php version to build
 if [ -z "${PHP_VERSION}" ]; then
+	# get_latest_php_version echoes the latest PHP release whose version starts with the provided prefix (from php.net), or echoes the original input if no matching release is found or the fetch fails.
 	get_latest_php_version() {
 		input="$1"
 		json=$(curl -s "https://www.php.net/releases/index.php?json&version=$input")
