@@ -117,7 +117,7 @@ final class OAuthAuthenticator extends OAuth2Authenticator implements Authentica
         );
     }
 
-    public function start(Request $request, AuthenticationException $authException = null): Response
+    public function start(Request $request, ?AuthenticationException $authException = null): Response
     {
         return new RedirectResponse($this->router->generate('_login'));
     }

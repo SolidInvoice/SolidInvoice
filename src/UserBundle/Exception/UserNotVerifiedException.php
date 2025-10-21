@@ -16,7 +16,7 @@ use Throwable;
 
 final class UserNotVerifiedException extends CustomUserMessageAccountStatusException
 {
-    public function __construct(string $message = 'Email address not verified', int $code = 0, Throwable $previous = null)
+    public function __construct(string $message = 'Email address not verified', int $code = 0, ?Throwable $previous = null)
     {
         parent::__construct($message, [], $code, $previous);
     }
