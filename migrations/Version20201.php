@@ -186,7 +186,7 @@ final class Version20201 extends AbstractMigration
         $extLogEntries->addColumn('object_id', 'string', ['length' => 64, 'notnull' => false]);
         $extLogEntries->addColumn('object_class', 'string', ['length' => 255, 'notnull' => true]);
         $extLogEntries->addColumn('version', 'integer', ['notnull' => true]);
-        $extLogEntries->addColumn('data', 'array', ['notnull' => false]);
+        $extLogEntries->addColumn('data', 'json', ['notnull' => false]);
         $extLogEntries->addColumn('username', 'string', ['length' => 255, 'notnull' => false]);
         $extLogEntries->addIndex(['object_class'], 'log_class_lookup_idx');
         $extLogEntries->addIndex(['logged_at'], 'log_date_lookup_idx');

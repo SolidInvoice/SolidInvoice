@@ -16,13 +16,14 @@ use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
 use Brick\Math\RoundingMode;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\ConversionException;
+use Doctrine\DBAL\Types\Exception\InvalidFormat;
+use Doctrine\DBAL\Types\Exception\SerializationFailed;
 use Doctrine\DBAL\Types\Type;
 use function get_class;
 
 final class BigIntegerType extends Type
 {
-    public const NAME = 'BigInteger';
+    public const string NAME = 'BigInteger';
 
     public function getName(): string
     {
@@ -34,7 +35,7 @@ final class BigIntegerType extends Type
         return $platform->getBigIntTypeDeclarationSQL($column);
     }
 
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?BigInteger
     {
         if ($value === null) {
             return null;
@@ -43,7 +44,7 @@ final class BigIntegerType extends Type
         try {
             return BigInteger::of($value);
         } catch (MathException $e) {
-            throw ConversionException::conversionFailedSerialization($value, $this->getName(), $e::class, $e);
+            throw SerializationFailed::new($value, $this->getName(), $e->getMessage(), $e);
         }
     }
 
@@ -57,15 +58,10 @@ final class BigIntegerType extends Type
             try {
                 return $value->toScale(0, RoundingMode::HALF_EVEN)->toInt();
             } catch (MathException $e) {
-                throw ConversionException::conversionFailedSerialization($value, $this->getName(), $e::class, $e);
+                throw SerializationFailed::new($value, $this->getName(), $e->getMessage(), $e);
             }
         }
 
-        throw ConversionException::conversionFailedFormat($value, $this->getName(), get_class($value));
-    }
-
-    public function requiresSQLCommentHint(AbstractPlatform $platform): bool
-    {
-        return true;
+        throw InvalidFormat::new($value, $this->getName(), get_class($value));
     }
 }

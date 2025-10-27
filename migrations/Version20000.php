@@ -58,7 +58,7 @@ final class Version20000 extends AbstractMigration
                 ['object_id', 'string', ['length' => 64, 'notnull' => false]],
                 ['object_class', 'string', ['length' => 255, 'notnull' => true]],
                 ['version', 'integer', ['notnull' => true]],
-                ['data', 'array', ['notnull' => false]],
+                ['data', 'json', ['notnull' => false]],
                 ['username', 'string', ['length' => 255, 'notnull' => false]],
             ]
         )
@@ -93,7 +93,7 @@ final class Version20000 extends AbstractMigration
                 ['id', 'integer', ['autoincrement' => true, 'notnull' => true]],
                 ['name', 'string', ['length' => 45, 'notnull' => true]],
                 ['type', 'string', ['length' => 45, 'notnull' => true]],
-                ['field_options', 'array', ['notnull' => false]],
+                ['field_options', 'json', ['notnull' => false]],
                 ['required', 'boolean', ['notnull' => true]],
             ]
         )
@@ -268,7 +268,7 @@ final class Version20000 extends AbstractMigration
                 ['name', 'string', ['length' => 125, 'notnull' => true]],
                 ['gateway_name', 'string', ['length' => 125, 'notnull' => true]],
                 ['factory', 'string', ['length' => 125, 'notnull' => true]],
-                ['config', 'array', ['notnull' => false]],
+                ['config', 'json', ['notnull' => false]],
                 ['internal', 'boolean', ['notnull' => false]],
                 ['enabled', 'boolean', ['notnull' => false]],
                 ['deleted', 'datetime', ['notnull' => false]],
@@ -282,7 +282,7 @@ final class Version20000 extends AbstractMigration
             'security_token',
             [
                 ['hash', 'string', ['length' => 255, 'notnull' => true]],
-                ['details', 'object', ['notnull' => false]],
+                ['details', 'json', ['notnull' => false]],
                 ['after_url', 'text', ['notnull' => false]],
                 ['target_url', 'text', ['notnull' => true]],
                 ['gateway_name', 'string', ['length' => 255, 'notnull' => true]],
@@ -431,7 +431,7 @@ final class Version20000 extends AbstractMigration
                 ['ip', 'string', ['length' => 255, 'notnull' => true]],
                 ['resource', 'string', ['length' => 125, 'notnull' => true]],
                 ['method', 'string', ['length' => 25, 'notnull' => true]],
-                ['requestData', 'array', ['notnull' => true]],
+                ['requestData', 'json', ['notnull' => true]],
                 ['userAgent', 'string', ['length' => 255, 'notnull' => true]],
                 ['created', 'datetime', ['notnull' => true]],
                 ['updated', 'datetime', ['notnull' => true]],
@@ -454,7 +454,7 @@ final class Version20000 extends AbstractMigration
                 ['last_login', 'datetime', ['notnull' => false]],
                 ['confirmation_token', 'string', ['length' => 180, 'notnull' => false]],
                 ['password_requested_at', 'datetime', ['notnull' => false]],
-                ['roles', 'array', ['notnull' => true]],
+                ['roles', 'json', ['notnull' => true]],
                 ['mobile', 'string', ['length' => 255, 'notnull' => false]],
                 ['deleted', 'datetime', ['notnull' => false]],
                 ['created', 'datetime', ['notnull' => true]],

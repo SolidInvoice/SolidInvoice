@@ -59,7 +59,7 @@ class ContactType implements Stringable
     /**
      * @var array<int|string, int|string|list<string>>|null
      */
-    #[ORM\Column(name: 'field_options', type: 'array', nullable: true)]
+    #[ORM\Column(name: 'field_options', type: 'json', nullable: true)]
     #[Serialize\Groups(['none'])]
     private ?array $options = [];
 

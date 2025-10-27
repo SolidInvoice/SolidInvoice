@@ -92,7 +92,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     /**
      * @var string[]
      */
-    #[ORM\Column(name: 'roles', type: 'array')]
+    #[ORM\Column(name: 'roles', type: 'json')]
     private array $roles = [];
 
     /**

@@ -60,7 +60,7 @@ class PaymentMethod implements GatewayConfigInterface, Stringable
     /**
      * @var array<string, string>
      */
-    #[ORM\Column(name: 'config', type: 'array', nullable: true)]
+    #[ORM\Column(name: 'config', type: 'json', nullable: true)]
     private array $config = [];
 
     #[ORM\Column(name: 'internal', type: Types::BOOLEAN, nullable: true)]

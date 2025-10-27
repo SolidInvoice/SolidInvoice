@@ -31,7 +31,6 @@ return static function (DoctrineConfig $config): void {
         ->connection('default')
         ->url(env('SOLIDINVOICE_DATABASE_URL')->resolve())
         ->charset('UTF8')
-        ->useSavepoints(true)
     ;
 
     $dbalConfig
@@ -46,18 +45,10 @@ return static function (DoctrineConfig $config): void {
         ->type(BigIntegerType::NAME)
         ->class(BigIntegerType::class);
 
-    $ormConfig
-        ->autoGenerateProxyClasses(param('kernel.debug'))
-        ->enableLazyGhostObjects(true)
-        ->controllerResolver()
-        ->autoMapping(true)
-    ;
-
     $entityManagerConfig = $ormConfig->entityManager('default');
 
     $entityManagerConfig
         ->autoMapping(true)
-        ->reportFieldsWhereDeclared(true)
         ->validateXmlMapping(true)
         ->identityGenerationPreference(PostgreSQLPlatform::class, 'identity')
     ;

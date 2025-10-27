@@ -45,7 +45,7 @@ final class CreateDatabaseStep implements InstallationStepInterface
         );
 
         if ($params['driver'] === 'pdo_sqlite') {
-            $tmpConnection->connect();
+            $tmpConnection->getDriver()->connect($params);
             $tmpConnection->close();
         } else {
             $schemaManager = $tmpConnection->createSchemaManager();

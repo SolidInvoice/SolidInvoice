@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice;
 
-use Doctrine\DBAL\Types\Type;
-use SolidInvoice\CoreBundle\Doctrine\Type\JsonArrayType;
 use SolidWorx\FormHandler\FormHandler;
 use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\Platform\PlatformBundle\Kernel as BaseKernel;
@@ -30,11 +28,6 @@ class Kernel extends BaseKernel
     public function boot(): void
     {
         parent::boot();
-
-        if (! Type::hasType('json_array')) {
-            // Only here for BC to ensure migrations work. Remove in next minor release.
-            Type::addType('json_array', JsonArrayType::class);
-        }
     }
 
     public function getProjectDir(): string
