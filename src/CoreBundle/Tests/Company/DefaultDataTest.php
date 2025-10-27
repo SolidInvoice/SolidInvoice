@@ -19,8 +19,12 @@ use Mockery as M;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\ContactType;
 use SolidInvoice\CoreBundle\Company\DefaultData;
+use SolidInvoice\CoreBundle\Config\SystemConfigProvider;
 use SolidInvoice\CoreBundle\Entity\Company;
+use SolidInvoice\InvoiceBundle\Config\ConfigProvider as InvoiceConfigProvider;
+use SolidInvoice\MailerBundle\Config\ConfigProvider as MailerConfigProvider;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
+use SolidInvoice\QuoteBundle\Config\ConfigProvider as QuoteConfigProvider;
 use SolidInvoice\SettingsBundle\Entity\Setting;
 
 final class DefaultDataTest extends TestCase
@@ -54,7 +58,12 @@ final class DefaultDataTest extends TestCase
             ->expects('flush')
             ->once();
 
-        $defaultData = new DefaultData($registry, []);
+        $defaultData = new DefaultData($registry, [
+            new SystemConfigProvider(),
+            new InvoiceConfigProvider(),
+            new QuoteConfigProvider(),
+            new MailerConfigProvider(),
+        ]);
 
         $company = new Company();
         $company->setName('Test Company');
