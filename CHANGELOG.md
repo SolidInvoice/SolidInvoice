@@ -5,7 +5,7 @@ Changelog
 ------------------
 
 * Keep logo when updating setting instead of defaulting it back (#298)
-* Remove unsed parameter in SettingsFormHandler constructor (#297)
+* Remove unused parameter in SettingsFormHandler constructor (#297)
 * Removed fixed class from top menu (#280)
 * Update dependencies (#275)
 * Fix SolidInvoice website link in footer (#267)
@@ -103,7 +103,7 @@ Changelog
 * Update Dependencies (#202, #199)
 * Add button to print quotes and invoices (#193)
 * Display literal country name (#197)
-* Fix RequireJS not being inlcluded anymore
+* Fix RequireJS not being included anymore
 * Add server_version to doctrine/dbal configuration
 
 2.0.0 Alpha 1 / 2017-08-22
@@ -130,7 +130,7 @@ Changelog
 * Update config to a standardized format (#162)
 * Update Twig to 2.0 (#160)
 * Move bundles one folder up (#159)
-* Update dependencies to tha latest versions (#154)
+* Update dependencies to the latest versions (#154)
 * Update FOSUserBundle to 2 (#153)
 * Upgrade PHPUnit to the latest version (#149)
 
