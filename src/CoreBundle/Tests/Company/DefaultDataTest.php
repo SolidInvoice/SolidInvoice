@@ -54,7 +54,7 @@ final class DefaultDataTest extends TestCase
             ->expects('flush')
             ->once();
 
-        $defaultData = new DefaultData($registry);
+        $defaultData = new DefaultData($registry, []);
 
         $company = new Company();
         $company->setName('Test Company');
