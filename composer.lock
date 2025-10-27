@@ -17906,16 +17906,16 @@
         },
         {
             "name": "symfony/ux-toggle-password",
-            "version": "v2.30.0",
+            "version": "v2.31.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-toggle-password.git",
-                "reference": "414b1ea51b93c4c6c6cc3a485adbfc8764ea6dc8"
+                "reference": "a07ebe186264cd2ae77782893ef596c16c81a191"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-toggle-password/zipball/414b1ea51b93c4c6c6cc3a485adbfc8764ea6dc8",
-                "reference": "414b1ea51b93c4c6c6cc3a485adbfc8764ea6dc8",
+                "url": "https://api.github.com/repos/symfony/ux-toggle-password/zipball/a07ebe186264cd2ae77782893ef596c16c81a191",
+                "reference": "a07ebe186264cd2ae77782893ef596c16c81a191",
                 "shasum": ""
             },
             "require": {
@@ -17966,7 +17966,7 @@
                 "symfony-ux"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-toggle-password/tree/v2.30.0"
+                "source": "https://github.com/symfony/ux-toggle-password/tree/v2.31.0"
             },
             "funding": [
                 {
@@ -17986,7 +17986,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-08-27T15:25:48+00:00"
+            "time": "2025-10-16T07:24:06+00:00"
         },
         {
             "name": "symfony/ux-twig-component",
