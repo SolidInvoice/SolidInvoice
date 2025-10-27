@@ -17629,16 +17629,16 @@
         },
         {
             "name": "symfony/ux-dropzone",
-            "version": "v2.30.0",
+            "version": "v2.31.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-dropzone.git",
-                "reference": "4fe66fdf470657144ca0c703df2c5d096febc887"
+                "reference": "14719d40981484f5ea704ee060b7a4ecf1b5aca3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-dropzone/zipball/4fe66fdf470657144ca0c703df2c5d096febc887",
-                "reference": "4fe66fdf470657144ca0c703df2c5d096febc887",
+                "url": "https://api.github.com/repos/symfony/ux-dropzone/zipball/14719d40981484f5ea704ee060b7a4ecf1b5aca3",
+                "reference": "14719d40981484f5ea704ee060b7a4ecf1b5aca3",
                 "shasum": ""
             },
             "require": {
@@ -17688,7 +17688,7 @@
                 "symfony-ux"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-dropzone/tree/v2.30.0"
+                "source": "https://github.com/symfony/ux-dropzone/tree/v2.31.0"
             },
             "funding": [
                 {
@@ -17708,7 +17708,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-08-27T15:25:48+00:00"
+            "time": "2025-10-16T07:24:06+00:00"
         },
         {
             "name": "symfony/ux-icons",
