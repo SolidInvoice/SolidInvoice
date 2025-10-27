@@ -5287,16 +5287,16 @@
         },
         {
             "name": "mpociot/vat-calculator",
-            "version": "3.23.0",
+            "version": "3.24.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/driesvints/vat-calculator.git",
-                "reference": "2299e656be9f7c48e4f1238eaca195284c895c80"
+                "reference": "25ca7853f021b53a7b23aaca364acf929991ddd3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/driesvints/vat-calculator/zipball/2299e656be9f7c48e4f1238eaca195284c895c80",
-                "reference": "2299e656be9f7c48e4f1238eaca195284c895c80",
+                "url": "https://api.github.com/repos/driesvints/vat-calculator/zipball/25ca7853f021b53a7b23aaca364acf929991ddd3",
+                "reference": "25ca7853f021b53a7b23aaca364acf929991ddd3",
                 "shasum": ""
             },
             "require": {
@@ -5355,7 +5355,7 @@
             ],
             "support": {
                 "issues": "https://github.com/driesvints/vat-calculator/issues",
-                "source": "https://github.com/driesvints/vat-calculator/tree/3.23.0"
+                "source": "https://github.com/driesvints/vat-calculator/tree/3.24.0"
             },
             "funding": [
                 {
@@ -5367,7 +5367,7 @@
                     "type": "paypal"
                 }
             ],
-            "time": "2025-08-03T01:43:55+00:00"
+            "time": "2025-10-02T17:46:54+00:00"
         },
         {
             "name": "myclabs/deep-copy",
