@@ -44,7 +44,7 @@
     </h2>
 </htmlpageheader>
 
-<pagefooter name="footer" content-left="{{ "powered_by"|trans }} {{ constant('SolidInvoice\\CoreBundle\\SolidInvoiceCoreBundle::APP_NAME') }} - {{ app_version }}" content-right="Page {PAGENO} of {nb}" line="on" footer-style="border-top: 1px solid #000000; font-size: 9pt; text-align: center; padding-top: 3mm;" footer-style-left="" line="on" />
+<pagefooter name="footer" content-left="{{ setting('system/general/hide_powered_by') is not same as ('1') ? "powered_by"|trans ~ ' ' ~ constant('SolidInvoice\\CoreBundle\\SolidInvoiceCoreBundle::APP_NAME') ~ ' - ' ~ app_version }}" content-right="Page {PAGENO} of {nb}" line="on" footer-style="border-top: 1px solid #000000; font-size: 9pt; text-align: center; padding-top: 3mm;" footer-style-left="" line="on" />
 
 <sethtmlpageheader name="header" value="on" show-this-page="1" margin-bottom="25"/>
 
