@@ -162,6 +162,34 @@ final class RequestListenerTest extends TestCase
         self::assertFalse($event->isPropagationStopped());
     }
 
+    public function testItContinuesExecutionIfTheApplicationIsNotInstalledAndRequestingHomeRoute(): void
+    {
+        $router = $this->createMock(RouterInterface::class);
+        $router
+            ->expects(self::never())
+            ->method('generate');
+
+        $listener = new RequestListener(
+            $router,
+            $this->createMock(UserRepositoryInterface::class),
+            $this->createMock(ContainerInterface::class),
+            null,
+        );
+
+        $request = Request::createFromGlobals();
+        $request->attributes->set('_route', '_home');
+        $request->setSession(new Session(new MockArraySessionStorage()));
+
+        $event = new RequestEvent($this->createMock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
+
+        self::assertNull($event->getResponse());
+
+        $listener->onKernelRequest($event);
+
+        self::assertNull($event->getResponse());
+        self::assertFalse($event->isPropagationStopped());
+    }
+
     public function testItThrowsAnExceptionIfTheApplicationIsAlreadyInstalled(): void
     {
         $this->expectException(ApplicationInstalledException::class);

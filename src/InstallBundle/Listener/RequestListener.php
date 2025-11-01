@@ -46,6 +46,7 @@ final class RequestListener implements EventSubscriberInterface, ServiceSubscrib
         ...self::INSTALL_ROUTES,
         ...self::SETUP_ROUTES,
         'ux_live_component',
+        '_home',
     ];
 
     /**
