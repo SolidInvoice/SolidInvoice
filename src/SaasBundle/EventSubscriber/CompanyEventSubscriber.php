@@ -69,7 +69,7 @@ final class CompanyEventSubscriber
             } else {
                 // User is new, so we create a new free trial
                 $this->subscription->setStatus(SubscriptionStatus::TRIAL);
-                $this->subscription->setEndDate($this->subscription->getStartDate()->add(new \DateInterval('P7D'))); // @TODO: Trial should be configurable
+                $this->subscription->setEndDate($this->subscription->getStartDate()->add(new \DateInterval('P30D'))); // @TODO: Trial should be configurable
                 $this->trialRepository->createTrial($user, $this->subscription);
             }
 
