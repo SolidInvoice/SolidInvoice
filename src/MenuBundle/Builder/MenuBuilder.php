@@ -21,8 +21,8 @@ use SolidInvoice\MenuBundle\MenuItem;
 final class MenuBuilder
 {
     public function __construct(
-        protected BuilderInterface $class,
-        protected string $method
+        private BuilderInterface $class,
+        private string $method
     ) {
     }
 

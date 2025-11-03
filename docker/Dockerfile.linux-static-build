@@ -1,4 +1,4 @@
-FROM golang:1.24-alpine AS builder
+FROM golang:1.25-alpine AS builder
 
 ARG TARGETARCH
 ARG TARGETOS
@@ -83,7 +83,7 @@ COPY --link ./composer.json ./composer.json
 COPY --link ./composer.lock ./composer.lock
 
 WORKDIR /go/src/app/frankenphp
-RUN go mod graph | awk '{if ($1 !~ "@") print $2}' | xargs go get
+RUN go mod download
 
 WORKDIR /go/src/app
 

@@ -18,5 +18,6 @@ return static function (TogglerConfig $config): void {
     $config
         ->config()
         ->features('allow_registration', env('SOLIDINVOICE_ALLOW_REGISTRATION'))
+        ->features('google_oauth_login', '@=env("SOLIDINVOICE_OAUTH_CLIENT_GOOGLE_CLIENT_ID") !== null && env("SOLIDINVOICE_OAUTH_CLIENT_GOOGLE_CLIENT_SECRET") !== null')
     ;
 };

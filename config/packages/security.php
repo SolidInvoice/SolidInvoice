@@ -16,6 +16,8 @@ use SolidInvoice\ApiBundle\Event\Listener\AuthenticationSuccessHandler;
 use SolidInvoice\ApiBundle\Security\ApiTokenAuthenticator;
 use SolidInvoice\ApiBundle\Security\Provider\ApiTokenUserProvider;
 use SolidInvoice\UserBundle\Entity\User;
+use SolidInvoice\UserBundle\Security\OAuth\OAuthAuthenticator;
+use SolidWorx\Platform\PlatformBundle\DependencyInjection\Extension\TwoFactorExtension;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Config\SecurityConfig;
 
@@ -80,8 +82,10 @@ return static function (SecurityConfig $config): void {
     $mainFirewallConfig = $config
         ->firewall('main')
         ->pattern('^/')
-        ->lazy(true)
-    ;
+        ->entryPoint('form_login')
+        ->customAuthenticators([OAuthAuthenticator::class])
+        ->provider('solidinvoice_user')
+        ->lazy(true);
 
     $mainFirewallConfig
         ->rememberMe()
@@ -103,6 +107,13 @@ return static function (SecurityConfig $config): void {
         ->path('/logout')
         ->target('/');
 
+    $mainFirewallConfig
+        ->loginThrottling()
+        ->maxAttempts(5)
+        ->interval('15 minutes');
+
+    TwoFactorExtension::configureSecurity($mainFirewallConfig, $config->accessControl());
+
     $config->accessControl()
         ->path('^(?:' .
             '/_components/DatabaseConfig|' .
@@ -110,16 +121,22 @@ return static function (SecurityConfig $config): void {
             '/view/(quote|invoice)/[a-zA-Z0-9-]{36}$|' .
             '/(login|register)$|' .
             '/forgot-password|' .
+            '/oauth/connect|' .
             '/install(?:.*)|' .
+            '/verify$|' .
+            '/logout$|' .
             '/invite/accept/[a-zA-Z0-9-]{36}$|' .
             '/payments/create/[a-zA-Z0-9-]{36}$|' .
             '/payment/capture/(?:.*)|' .
             '/payments/done$' .
-        ')')
+            ')')
         ->roles(['PUBLIC_ACCESS']);
 
     $config->accessControl()
         ->path('^/')
-        ->roles(['ROLE_USER'])
-    ;
+        ->roles(['ROLE_USER']);
+
+    $config->accessControl()
+        ->path('^/2fa')
+        ->roles(['IS_AUTHENTICATED_2FA_IN_PROGRESS']);
 };

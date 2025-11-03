@@ -38,6 +38,19 @@ final class Settings extends AbstractController
     use DefaultActionTrait;
     use ComponentWithFormTrait;
 
+    /**
+     * @var array<string, string>
+     */
+    public array $settingIconMap = [
+        'company' => 'building',
+        'invoice' => 'file-invoice',
+        'quote' => 'file-text-o',
+        'email' => 'envelope',
+        'payment' => 'credit-card',
+        'tax' => 'balance-scale',
+        'system' => 'cog',
+    ];
+
     #[LiveProp(writable: true, onUpdated: 'onSectionChange', url: true)]
     public string $section = '';
 

@@ -36,7 +36,7 @@ bump_version() {
 }
 
 # Check for version argument
-if [ "$VERSION" ]; then
+if [ -n "$VERSION" ]; then
   next_version="$VERSION"
 else
   current_version=$(awk -F\' '/public const VERSION/ {print $2}' $FILE)

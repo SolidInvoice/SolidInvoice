@@ -21,28 +21,42 @@ use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\UserBundle\Repository\UserRepository;
+use SolidWorx\Platform\PlatformBundle\Contracts\Security\TwoFactor\UserTwoFactorInterface;
+use SolidWorx\Platform\PlatformBundle\Security\TwoFactor\Traits\UserTwoFactor;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Uid\NilUlid;
 use Symfony\Component\Uid\Ulid;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: User::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'This email is already in use. Do you want to log in instead?')]
-class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringable
+#[ORM\Index(fields: ['googleId'])]
+class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringable, UserTwoFactorInterface
 {
-    final public const TABLE_NAME = 'users';
+    final public const string TABLE_NAME = 'users';
 
     use TimeStampable;
+    use UserTwoFactor;
 
-    #[ORM\Column(type: UlidType::NAME)]
+    #[ORM\Column(type: UlidType::NAME, unique: true)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UlidGenerator::class)]
     private ?Ulid $id = null;
+
+    #[ORM\Column(name: 'first_name', type: Types::STRING, length: 45, nullable: true)]
+    #[Assert\NotBlank()]
+    private ?string $firstName = null;
+
+    #[ORM\Column(name: 'last_name', type: Types::STRING, length: 45, nullable: true)]
+    #[Assert\NotBlank()]
+    private ?string $lastName = null;
 
     #[ORM\Column(name: 'mobile', type: Types::STRING, nullable: true)]
     private ?string $mobile = null;
@@ -54,10 +68,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     private Collection $apiTokens;
 
     #[ORM\Column(name: 'email', type: Types::STRING, length: 180, unique: true)]
+    #[Assert\NotBlank()]
+    #[Assert\Email(
+        message: 'The email "{{ value }}" is not a valid email address.',
+        mode: Assert\Email::VALIDATION_MODE_STRICT,
+    )]
     private ?string $email = null;
 
     #[ORM\Column(name: 'enabled', type: Types::BOOLEAN)]
     private bool $enabled = false;
+
+    #[ORM\Column(name: 'verified', type: Types::BOOLEAN)]
+    private bool $verified = false;
 
     #[ORM\Column(name: 'password', type: Types::STRING)]
     private ?string $password = null;
@@ -79,18 +101,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     #[ORM\ManyToMany(targetEntity: Company::class, inversedBy: 'users', cascade: ['persist'])]
     private Collection $companies;
 
+    #[ORM\Column(name: 'google_id', type: Types::STRING, length: 45, nullable: true)]
+    private ?string $googleId = null;
+
     public function __construct()
     {
         $this->apiTokens = new ArrayCollection();
         $this->companies = new ArrayCollection();
-    }
-
-    /**
-     * Don't return the salt, and rely on password_hash to generate a salt.
-     */
-    public function getSalt(): ?string
-    {
-        return null;
+        $this->id = new NilUlid();
     }
 
     /**
@@ -123,11 +141,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         return $this;
     }
 
-    public function __toString(): string
-    {
-        return $this->email;
-    }
-
     public function addRole(string $role): self
     {
         $role = strtoupper($role);
@@ -140,33 +153,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         }
 
         return $this;
-    }
-
-    public function serialize(): string
-    {
-        return serialize([
-            $this->password,
-            $this->enabled,
-            $this->id,
-            $this->email,
-            $this->roles,
-            $this->mobile,
-            $this->created,
-            $this->updated,
-        ]);
-    }
-
-    public function unserialize(string $serialized): void
-    {
-        [
-            $this->password,
-            $this->enabled,
-            $this->id,
-            $this->email,
-            $this->roles,
-            $this->created,
-            $this->updated
-        ] = unserialize($serialized);
     }
 
     public function eraseCredentials(): void
@@ -224,6 +210,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         return $this->enabled;
     }
 
+    public function isVerified(): bool
+    {
+        return $this->verified;
+    }
+
     public function removeRole(string $role): self
     {
         if (false !== $key = array_search(strtoupper($role), $this->roles, true)) {
@@ -244,6 +235,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     public function setEnabled(bool $enabled): self
     {
         $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    public function setVerified(bool $verified): self
+    {
+        $this->verified = $verified;
 
         return $this;
     }
@@ -307,5 +305,46 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         }
 
         return $this;
+    }
+
+    public function getGoogleId(): ?string
+    {
+        return $this->googleId;
+    }
+
+    public function setGoogleId(?string $googleId): self
+    {
+        $this->googleId = $googleId;
+
+        return $this;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName(?string $firstName): static
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName(?string $lastName): static
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->email;
     }
 }

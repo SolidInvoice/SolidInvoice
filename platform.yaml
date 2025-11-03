@@ -1,0 +1,7 @@
+platform:
+    name: SolidInvoice
+    version: 2.4.x
+    security:
+        2fa:
+            enabled: true
+            base_template: "@SolidInvoiceCore/Layout/two_factor_security.html.twig"

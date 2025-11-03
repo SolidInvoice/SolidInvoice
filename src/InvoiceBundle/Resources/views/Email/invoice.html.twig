@@ -187,3 +187,12 @@
         {% endif %}
     {% endapply %}
 {%- endblock -%}
+
+{%- block footer -%}
+    {% if setting('system/general/hide_powered_by') is not same as ('1') %}
+        <hr />
+        <div style="font-size: 80%; color: #999999">
+            {{ "powered_by"|trans }} <a href="https://solidinvoice.co" target="_blank">{{ app_name }}</a> - {{ app_version }}
+        </div>
+    {% endif %}
+{%- endblock footer -%}

@@ -81,6 +81,8 @@ class ProfileEditHandlerTest extends FormHandlerTestCase
             'profile' => [
                 'mobile' => '9876543210',
                 'email' => 'test@example.com',
+                'first_name' => 'Test',
+                'last_name' => 'User',
             ],
         ];
     }

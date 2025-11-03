@@ -20,6 +20,8 @@ use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\UserBundle\Entity\User;
+use SolidWorx\Platform\PlatformBundle\Contracts\Doctrine\Repository\UserRepository as PlatformUserRepository;
+use SolidWorx\Platform\PlatformBundle\Contracts\Security\TwoFactor\UserTwoFactorInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -31,7 +33,7 @@ use function sprintf;
  *
  * @extends ServiceEntityRepository<User>
  */
-class UserRepository extends ServiceEntityRepository implements UserRepositoryInterface
+class UserRepository extends ServiceEntityRepository implements UserRepositoryInterface, PlatformUserRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -78,7 +80,7 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
         return $qb;
     }
 
-    public function save(UserInterface $user): void
+    public function save(UserTwoFactorInterface $user): void
     {
         $em = $this->getEntityManager();
 

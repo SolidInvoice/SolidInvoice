@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SettingsBundle\DependencyInjection;
 
+use SolidInvoice\SettingsBundle\Config\ProviderInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
@@ -29,5 +30,8 @@ class SolidInvoiceSettingsExtension extends Extension
     {
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->import('services/*.php');
+
+        $container->registerForAutoconfiguration(ProviderInterface::class)
+            ->addTag(ProviderInterface::class);
     }
 }

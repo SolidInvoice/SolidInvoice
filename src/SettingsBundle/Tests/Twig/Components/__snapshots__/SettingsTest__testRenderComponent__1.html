@@ -11,20 +11,20 @@
                             </a>
                         </li>
                                             <li class="nav-item">
-                            <a href="/settings?section=email" class="nav-link">
-                                <i class="fa fa-cog"></i>
-                                <p>Email</p>
-                            </a>
-                        </li>
-                                            <li class="nav-item">
                             <a href="/settings?section=invoice" class="nav-link">
-                                <i class="fa fa-cog"></i>
+                                <i class="fa fa-file-invoice"></i>
                                 <p>Invoice</p>
                             </a>
                         </li>
                                             <li class="nav-item">
+                            <a href="/settings?section=email" class="nav-link">
+                                <i class="fa fa-envelope"></i>
+                                <p>Email</p>
+                            </a>
+                        </li>
+                                            <li class="nav-item">
                             <a href="/settings?section=quote" class="nav-link">
-                                <i class="fa fa-cog"></i>
+                                <i class="fa fa-file-text-o"></i>
                                 <p>Quote</p>
                             </a>
                         </li>
@@ -384,7 +384,6 @@
 <option value="AFN">Afghan Afghani</option>
 <option value="ALL">Albanian Lek</option>
 <option value="AMD">Armenian Dram</option>
-<option value="ANG">Netherlands Antillean Guilder</option>
 <option value="AOA">Angolan Kwanza</option>
 <option value="ARS">Argentine Peso</option>
 <option value="AUD">Australian Dollar</option>
@@ -417,7 +416,6 @@
 <option value="COP">Colombian Peso</option>
 <option value="COU">Colombian Real Value Unit</option>
 <option value="CRC">Costa Rican Col&Atilde;&sup3;n</option>
-<option value="CUC">Cuban Convertible Peso</option>
 <option value="CUP">Cuban Peso</option>
 <option value="CVE">Cape Verdean Escudo</option>
 <option value="CZK">Czech Koruna</option>
@@ -540,12 +538,13 @@
 <option value="WST">Samoan Tala</option>
 <option value="XAF">Central African CFA Franc</option>
 <option value="XCD">East Caribbean Dollar</option>
+<option value="XCG">Caribbean guilder</option>
 <option value="XOF">West African CFA Franc</option>
 <option value="XPF">CFP Franc</option>
 <option value="YER">Yemeni Rial</option>
 <option value="ZAR">South African Rand</option>
 <option value="ZMW">Zambian Kwacha</option>
-<option value="ZWL">Zimbabwean Dollar (2009&acirc;&#128;&#147;2024)</option></select>
+<option value="ZWG">Zimbabwean Gold</option></select>
 </div>
 <div class="form-group">                
             <label class="control-label" for="settings_company_vat_number">Vat number</label><div class="input-group" data-controller="vat-validator" data-vat-validator-url-value="/tax/number/validate">
@@ -570,6 +569,72 @@
             <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Save</button>
         </div>
         </form>
-    </section>
+
+                    <hr>
+            <div class="card mb-3 card-danger">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        Danger Zone
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <p class="text-danger">
+                        This section allows you to delete your company and all associated data.
+                    </p>
+                    <p>
+                        Please proceed with caution since this action cannot be undone.
+                    </p>
+                    <div class="form-group" data-controller="delete-company" data-delete-company-company-name-value="SolidInvoice">
+                        <button type="button" class="btn btn-danger" data-action="click-&gt;delete-company#showModal">
+                            <i class="fa fa-trash"></i> Delete Company
+                        </button>
+
+                        <div class="modal fade" id="deleteCompanyModal" tabindex="-1" role="dialog" aria-labelledby="deleteCompanyModalLabel" aria-hidden="true" data-delete-company-target="modal">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="deleteCompanyModalLabel">
+                                            Confirm Company Deletion
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="alert alert-danger">
+                                            <strong>Warning!</strong>
+                                            This action will permanently delete your company and all associated data. This cannot be undone.
+                                        </div>
+                                        <p>
+                                            To confirm deletion, please type the company name exactly as shown below:
+                                        </p>
+                                        <p class="font-weight-bold text-danger">SolidInvoice</p>
+                                        <div class="form-group">
+                                            <label for="companyNameConfirmation" class="col-form-label">
+                                                Company Name
+                                            </label>
+                                            <input type="text" class="form-control" id="companyNameConfirmation" name="company_name" form="deleteCompanyForm" data-delete-company-target="companyNameInput" data-action="input-&gt;delete-company#validateInput" placeholder="Enter company name to confirm">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                            Cancel
+                                        </button>
+
+                                        <form id="deleteCompanyForm" action="/delete-company" method="post">
+                                            <input type="hidden" name="_csrf_token" value="">
+
+                                            <button type="submit" class="btn btn-danger" data-delete-company-target="confirmButton" disabled>
+                                                <i class="fa fa-trash"></i> Delete Company
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </section>
 </section>
 </body></html>

@@ -1,0 +1,33 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends '@SolidInvoiceCore/Layout/base.html.twig' %}
+
+{% block heading %}
+    <a class="brand-link" href="{{ url('_dashboard') }}">
+        {{ app_logo() }}
+
+        <span class="brand-text font-weight-light">
+            {{ company_name() }}
+        </span>
+    </a>
+{% endblock %}
+
+{% block body %}
+    <section class="content-header bg-white shadow mb-5 p-3">
+        {{ block('heading') is defined ? block('heading') }}
+    </section>
+
+    <section class="content">
+        <div class="container">
+            {% include "@SolidInvoiceCore/flash.html.twig" %}
+        </div>
+        {{ block('content') is defined ? block('content') }}
+    </section>
+{% endblock body %}

@@ -24,6 +24,8 @@ class ProfileTypeTest extends FormTestCase
         $mobile = $this->faker->phoneNumber;
 
         $formData = [
+            'firstName' => $this->faker->firstName,
+            'lastName' => $this->faker->lastName,
             'mobile' => $mobile,
         ];
 

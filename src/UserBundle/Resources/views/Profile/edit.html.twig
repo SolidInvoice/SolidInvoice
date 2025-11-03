@@ -7,11 +7,13 @@
  # with this source code in the file LICENSE.
  #}
 
-{% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
+{% set menuItem = 'profile' %}
+
+{% extends "@SolidInvoiceUser/Layout/profile.html.twig" %}
 
 {% block title %}{{ "Edit Profile" }}{% endblock title %}
 
-{% block content %}
+{% block profile_content %}
     <div class="card card-primary">
             {{ form_start(form) }}
         <div class="card-body">
@@ -27,4 +29,4 @@
         </div>
         {{ form_end(form) }}
     </div>
-{% endblock content %}
+{% endblock profile_content %}

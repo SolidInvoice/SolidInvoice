@@ -12,6 +12,7 @@ declare(strict_types=1);
  */
 
 use SolidInvoice\CoreBundle\Action\CreateCompany;
+use SolidInvoice\CoreBundle\Action\DeleteCompany;
 use SolidInvoice\CoreBundle\Action\SelectCompany;
 use SolidInvoice\CoreBundle\Action\ViewBilling;
 use Symfony\Bundle\FrameworkBundle\Controller\RedirectController;
@@ -49,4 +50,10 @@ return static function (RoutingConfigurator $routingConfigurator): void {
     $routingConfigurator
         ->add('_create_company', '/create-company')
         ->controller(CreateCompany::class);
+
+    $routingConfigurator
+        ->add('_delete_company', '/delete-company')
+        ->controller(DeleteCompany::class)
+        ->methods(['POST'])
+    ;
 };

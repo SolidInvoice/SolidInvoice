@@ -27,6 +27,7 @@ use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Uid\Ulid;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\SyntaxError;
@@ -108,7 +109,7 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
             new TwigFunction('app_logo', $this->displayAppLogo(...), ['is_safe' => ['html'], 'needs_environment' => true]),
 
             new TwigFunction('company_name', function (): string {
-                if ($this->security->getUser() instanceof UserInterface) {
+                if ($this->security->getUser() instanceof UserInterface || $this->companySelector->getCompany() instanceof Ulid) {
                     return $this->systemConfig->get('system/company/company_name') ?? SolidInvoiceCoreBundle::APP_NAME;
                 }
 

@@ -43,7 +43,7 @@ class ProfileEditFormHandler implements FormHandlerResponseInterface, FormHandle
         return $factory->create(ProfileType::class, $this->tokenStorage->getToken()?->getUser());
     }
 
-    public function getResponse(FormRequest $formRequest)
+    public function getResponse(FormRequest $formRequest): Template
     {
         return new Template(
             '@SolidInvoiceUser/Profile/edit.html.twig',

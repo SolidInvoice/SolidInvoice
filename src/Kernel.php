@@ -17,22 +17,16 @@ use Doctrine\DBAL\Types\Type;
 use SolidInvoice\CoreBundle\Doctrine\Type\JsonArrayType;
 use SolidWorx\FormHandler\FormHandler;
 use SolidWorx\FormHandler\FormHandlerInterface;
+use SolidWorx\Platform\PlatformBundle\Kernel as BaseKernel;
 use SolidWorx\Platform\SaasBundle\SolidWorxPlatformSaasBundle;
-use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 use function preg_replace;
 
 class Kernel extends BaseKernel
 {
-    use MicroKernelTrait {
-        configureContainer as private configureContainerTrait;
-        configureRoutes as private configureRoutesTrait;
-    }
-
     public function boot(): void
     {
         parent::boot();
@@ -50,7 +44,7 @@ class Kernel extends BaseKernel
 
     protected function configureContainer(ContainerConfigurator $container, LoaderInterface $loader, ContainerBuilder $builder): void
     {
-        $this->configureContainerTrait($container, $loader, $builder);
+        parent::configureContainer($container, $loader, $builder);
 
         $bundles = $this->getBundles();
 
@@ -67,7 +61,7 @@ class Kernel extends BaseKernel
 
     protected function configureRoutes(RoutingConfigurator $routes): void
     {
-        $this->configureRoutesTrait($routes);
+        parent::configureRoutes($routes);
 
         $bundles = $this->getBundles();
 
@@ -76,5 +70,10 @@ class Kernel extends BaseKernel
             $routes->import($configDir . '/{routes}/saas/*.{php,yaml}');
 
         }
+    }
+
+    private function getConfigDir(): string
+    {
+        return $this->getProjectDir() . '/config';
     }
 }

@@ -36,7 +36,7 @@ final class ApiTokens extends AbstractController
     }
 
     /**
-     * @return array{id: mixed, name: mixed, ip: mixed, token: mixed, lastUsed: mixed}
+     * @return list<array{id: Ulid, name: string, ip: string|null, token: string, lastUsed: DateTimeInterface|null}>
      */
     #[ExposeInTemplate]
     #[LiveListener(CreateApiToken::API_TOKEN_CREATED_EVENT)]

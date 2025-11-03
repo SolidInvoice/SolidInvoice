@@ -11,20 +11,20 @@
                             </a>
                         </li>
                                             <li class="nav-item">
-                            <a href="/settings?section=email" class="nav-link active">
-                                <i class="fa fa-cog"></i>
-                                <p>Email</p>
-                            </a>
-                        </li>
-                                            <li class="nav-item">
                             <a href="/settings?section=invoice" class="nav-link">
-                                <i class="fa fa-cog"></i>
+                                <i class="fa fa-file-invoice"></i>
                                 <p>Invoice</p>
                             </a>
                         </li>
                                             <li class="nav-item">
+                            <a href="/settings?section=email" class="nav-link active">
+                                <i class="fa fa-envelope"></i>
+                                <p>Email</p>
+                            </a>
+                        </li>
+                                            <li class="nav-item">
                             <a href="/settings?section=quote" class="nav-link">
-                                <i class="fa fa-cog"></i>
+                                <i class="fa fa-file-text-o"></i>
                                 <p>Quote</p>
                             </a>
                         </li>
@@ -45,7 +45,7 @@
                 <div class="card-body">
                     <div id="settings" data-model="norender|*">
 <div class="form-group">                
-            <label class="control-label" for="settings_from_address">From address</label><input type="text" id="settings_from_address" name="settings[from_address]" class="form-control" value="no-reply@solidinvoice.co">
+            <label class="control-label" for="settings_from_address">From address</label><input type="email" id="settings_from_address" name="settings[from_address]" class="form-control" value="no-reply@solidinvoice.co">
 </div>
 <div class="form-group">                
             <label class="control-label" for="settings_from_name">From name</label><input type="text" id="settings_from_name" name="settings[from_name]" class="form-control" value="SolidInvoice">
@@ -140,6 +140,7 @@
             <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Save</button>
         </div>
         </form>
-    </section>
+
+            </section>
 </section>
 </body></html>

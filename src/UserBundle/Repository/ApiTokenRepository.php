@@ -22,6 +22,7 @@ use SolidInvoice\UserBundle\Entity\ApiTokenHistory;
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Uid\Ulid;
 use function array_column;
 use function array_combine;
 use function array_map;
@@ -52,12 +53,13 @@ class ApiTokenRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return array{id: mixed, name: mixed, ip: mixed, token: mixed, lastUsed: mixed}
+     * @return list<array{id: Ulid, name: string, ip: string|null, token: string, lastUsed: DateTimeInterface|null}>
      */
     public function getApiTokensForUser(UserInterface $user): array
     {
         assert($user instanceof User);
 
+        /** @var list<array{id: Ulid, name: string, token: string}> $tokens */
         $tokens = $this->createQueryBuilder('t')
             ->select('t.id', 't.name', 't.token')
             ->where('t.user = :user')
@@ -72,6 +74,7 @@ class ApiTokenRepository extends ServiceEntityRepository
             ->from(ApiTokenHistory::class, 'h2')
             ->groupBy('h2.token');
 
+        /** @var list<array{token_id: string, max_created: DateTimeInterface, ip: string}> $history */
         $history = $subQb->getQuery()->getArrayResult();
 
         $historyMap = array_combine(array_column($history, 'token_id'), $history);

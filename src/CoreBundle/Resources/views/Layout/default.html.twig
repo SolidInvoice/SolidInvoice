@@ -44,12 +44,11 @@
         <section class="sidebar">
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                 <div class="image">
-                    {#<img src="http://t2.tagstat.com/im/people/silhouette_m_300.png" class="img-circle" alt="User Image">#}
-                    {#<img src="https://gravatar.com/avatar/{{ app.user.email|md5 }}?d=mm" class="img-circle" alt="User Image">#}
+                    {#<img src="{{ asset('/img/silhouette_m_300.png') }}" class="img-circle" alt="{{ 'User Image'|trans }}">#}
+                    <img src="https://gravatar.com/avatar/{{ app.user.email|md5 }}?d=mm" class="img-circle" alt="{{ 'User Image'|trans }}">
                 </div>
                 <div class="info text-white">
-                    <p>{{ app.user.userIdentifier }}</p>
-                    <a href="{{ path('_profile') }}">{{ icon('envelope') }} {{ app.user.email }}</a>
+                    <a href="{{ path('_profile') }}">{{ app.user.email }}</a>
                 </div>
             </div>
 

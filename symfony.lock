@@ -161,6 +161,18 @@
     "knplabs/knp-menu-bundle": {
         "version": "v2.3.0"
     },
+    "knpuniversity/oauth2-client-bundle": {
+        "version": "2.18",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "1.20",
+            "ref": "1ff300d8c030f55c99219cc55050b97a695af3f6"
+        },
+        "files": [
+            "config/packages/knpu_oauth2_client.yaml"
+        ]
+    },
     "laminas/laminas-eventmanager": {
         "version": "3.3.1"
     },
@@ -344,6 +356,19 @@
         },
         "files": [
             "config/packages/ramsey_uuid_doctrine.yaml"
+        ]
+    },
+    "scheb/2fa-bundle": {
+        "version": "7.11",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "6.0",
+            "ref": "1e6f68089146853a790b5da9946fc5974f6fcd49"
+        },
+        "files": [
+            "config/packages/scheb_2fa.yaml",
+            "config/routes/scheb_2fa.yaml"
         ]
     },
     "sentry/sentry-symfony": {
@@ -1116,6 +1141,18 @@
     "symfony/ux-dropzone": {
         "version": "v2.15.0"
     },
+    "symfony/ux-icons": {
+        "version": "2.30",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "2.17",
+            "ref": "803a3bbd5893f9584969ab8670290cdfb6a0a5b5"
+        },
+        "files": [
+            "assets/icons/symfony.svg"
+        ]
+    },
     "symfony/ux-live-component": {
         "version": "2.16",
         "recipe": {
@@ -1258,6 +1295,9 @@
         "files": [
             "config/packages/reset_password.yaml"
         ]
+    },
+    "symfonycasts/verify-email-bundle": {
+        "version": "v1.17.3"
     },
     "tijsverkoyen/css-to-inline-styles": {
         "version": "2.2.3"

@@ -40,8 +40,6 @@ mkdir -p "$DIST_DIR"
 
 cd "${BUILD_DIR}"
 
-git version
-
 git clone --branch "${BRANCH}" --depth 1 "${REPO}" "./SolidInvoice"
 cd "./SolidInvoice"
 

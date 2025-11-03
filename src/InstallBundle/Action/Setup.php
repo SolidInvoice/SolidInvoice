@@ -102,7 +102,7 @@ final class Setup
     }
 
     /**
-     * @param array{password: string, email_address: string} $data
+     * @param array{password: string, email_address: string, first_name: string, last_name: string} $data
      */
     private function createAdminUser(array $data): void
     {
@@ -113,7 +113,10 @@ final class Setup
         $password = $encoder->hash($data['password']);
 
         $user->setEmail($data['email_address'])
+            ->setFirstName($data['first_name'])
+            ->setLastName($data['last_name'])
             ->setPassword($password)
+            ->setVerified(true)
             ->setEnabled(true);
 
         $entityManager = $this->doctrine->getManager();

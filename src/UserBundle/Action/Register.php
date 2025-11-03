@@ -23,10 +23,8 @@ use SolidInvoice\UserBundle\Repository\UserRepository;
 use SolidWorx\Toggler\ToggleInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Uid\Ulid;
 use function assert;
@@ -34,7 +32,6 @@ use function assert;
 final class Register extends AbstractController
 {
     public function __construct(
-        private readonly UserInvitationRepository $repository,
         private readonly UserPasswordHasherInterface $userPasswordHasher,
         private readonly UserInvitationRepository $invitationRepository,
         private readonly UserRepository $userRepository,
@@ -47,18 +44,22 @@ final class Register extends AbstractController
         $invitation = null;
 
         if ($request->query->has('invitation')) {
-            $invitation = $this->repository->find(Ulid::fromString($request->query->get('invitation')));
+            $invitation = $this->invitationRepository->find(Ulid::fromString($request->query->get('invitation')));
 
             if (! $invitation instanceof UserInvitation) {
-                throw new NotFoundHttpException('Invitation is not valid');
+                throw $this->createNotFoundException('Invitation is not valid');
             }
         }
 
         if (! $request->query->has('invitation') && ! $toggle->isActive('allow_registration')) {
-            throw new NotFoundHttpException('Registration is disabled');
+            throw $this->createNotFoundException('Registration is disabled');
         }
 
-        $form = $this->getForm($invitation);
+        $form =
+            $invitation instanceof UserInvitation ?
+                $this->createForm(RegisterType::class, null, ['email' => $invitation->getEmail()]) :
+                $this->createForm(RegisterType::class);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -77,7 +78,12 @@ final class Register extends AbstractController
                 $user->addCompany($company);
             }
 
-            $user->setPassword($this->userPasswordHasher->hashPassword($user, $data->plainPassword));
+            if ($invitation instanceof UserInvitation) {
+                $user->setEmail($invitation->getEmail());
+                $user->addCompany($invitation->getCompany());
+            }
+
+            $user->setPassword($this->userPasswordHasher->hashPassword($user, $user->getPlainPassword()));
             $user->setEnabled(true);
             $user->eraseCredentials();
             $this->userRepository->save($user);
@@ -90,16 +96,5 @@ final class Register extends AbstractController
         }
 
         return $this->render('@SolidInvoiceUser/Security/register.html.twig', ['form' => $form]);
-    }
-
-    public function getForm(?UserInvitation $invitation = null): FormInterface
-    {
-        $options = [];
-
-        if ($invitation instanceof UserInvitation) {
-            $options['email'] = $invitation->getEmail();
-        }
-
-        return $this->createForm(RegisterType::class, null, $options);
     }
 }
