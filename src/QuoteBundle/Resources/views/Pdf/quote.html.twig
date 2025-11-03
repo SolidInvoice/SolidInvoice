@@ -235,14 +235,25 @@
     </div>
 </div>
 
-{% if quote.terms is not empty %}
+{% if quote.clientNotes is not empty or quote.terms is not empty %}
     <div class="row">
-        <div class="col-6">
-            <strong>{{ 'quote.terms'|trans }}</strong>
-            <p class="text-muted well well-sm no-shadow">
-                {{ quote.terms|nl2br }}
-            </p>
-        </div>
+        {% if quote.clientNotes is not empty %}
+            <div class="col-3">
+                <strong>{{ 'quote.notes'|trans }}</strong>
+                <p class="text-muted well well-sm no-shadow">
+                    {{ quote.clientNotes|nl2br }}
+                </p>
+            </div>
+        {% endif %}
+
+        {% if quote.terms is not empty %}
+            <div class="col-3">
+                <strong>{{ 'quote.terms'|trans }}</strong>
+                <p class="text-muted well well-sm no-shadow">
+                    {{ quote.terms|nl2br }}
+                </p>
+            </div>
+        {% endif %}
     </div>
 {% endif %}
 </body>

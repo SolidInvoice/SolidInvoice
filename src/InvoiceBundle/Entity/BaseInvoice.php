@@ -127,6 +127,11 @@ abstract class BaseInvoice
     #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write'])]
     protected ?string $notes = null;
 
+    #[ORM\Column(name: 'client_notes', type: Types::TEXT, nullable: true)]
+    #[Serialize\Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api'])]
+    #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write'])]
+    protected ?string $clientNotes = null;
+
     public function __construct()
     {
         $this->discount = new Discount();
@@ -217,6 +222,18 @@ abstract class BaseInvoice
     public function setNotes(?string $notes): self
     {
         $this->notes = $notes;
+
+        return $this;
+    }
+
+    public function getClientNotes(): ?string
+    {
+        return $this->clientNotes;
+    }
+
+    public function setClientNotes(?string $clientNotes): self
+    {
+        $this->clientNotes = $clientNotes;
 
         return $this;
     }

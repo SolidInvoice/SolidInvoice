@@ -11,7 +11,7 @@ quote:
     discount: Discount
     edit: 'Edit Quote'
     terms: Terms
-    notes: Notes
+    notes: Internal Notes
     title: 'Quote #%id%'
     save:
         send: 'Save and Send'

@@ -94,6 +94,7 @@ class QuoteType extends AbstractType
 
         $builder->add('terms');
         $builder->add('notes', null, ['help' => 'Notes will not be visible to the client']);
+        $builder->add('clientNotes', null, ['label' => 'External Notes', 'help' => 'Notes will be visible to the client']);
         $builder->add('total', HiddenMoneyType::class, ['currency' => $options['currency']]);
         $builder->add('baseTotal', HiddenMoneyType::class, ['currency' => $options['currency']]);
         $builder->add('tax', HiddenMoneyType::class, ['currency' => $options['currency']]);
