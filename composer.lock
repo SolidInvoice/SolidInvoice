@@ -70,16 +70,16 @@
         },
         {
             "name": "api-platform/core",
-            "version": "v4.2.2",
+            "version": "v4.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/api-platform/core.git",
-                "reference": "eb6396b0a2db169665d87af8883c69c1e6fd7d4b"
+                "reference": "1a395325500af3abf304ab8a894aee54c73ee72a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/api-platform/core/zipball/eb6396b0a2db169665d87af8883c69c1e6fd7d4b",
-                "reference": "eb6396b0a2db169665d87af8883c69c1e6fd7d4b",
+                "url": "https://api.github.com/repos/api-platform/core/zipball/1a395325500af3abf304ab8a894aee54c73ee72a",
+                "reference": "1a395325500af3abf304ab8a894aee54c73ee72a",
                 "shasum": ""
             },
             "require": {
@@ -285,9 +285,9 @@
             ],
             "support": {
                 "issues": "https://github.com/api-platform/core/issues",
-                "source": "https://github.com/api-platform/core/tree/v4.2.2"
+                "source": "https://github.com/api-platform/core/tree/v4.2.3"
             },
-            "time": "2025-10-09T08:35:20+00:00"
+            "time": "2025-10-31T15:07:56+00:00"
         },
         {
             "name": "async-aws/core",
