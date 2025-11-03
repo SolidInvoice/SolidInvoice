@@ -9457,16 +9457,16 @@
         },
         {
             "name": "symfony/cache",
-            "version": "v7.3.4",
+            "version": "v7.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/cache.git",
-                "reference": "bf8afc8ffd4bfd3d9c373e417f041d9f1e5b863f"
+                "reference": "4a55feb59664f49042a0824c0f955e2f4c1412ad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/cache/zipball/bf8afc8ffd4bfd3d9c373e417f041d9f1e5b863f",
-                "reference": "bf8afc8ffd4bfd3d9c373e417f041d9f1e5b863f",
+                "url": "https://api.github.com/repos/symfony/cache/zipball/4a55feb59664f49042a0824c0f955e2f4c1412ad",
+                "reference": "4a55feb59664f49042a0824c0f955e2f4c1412ad",
                 "shasum": ""
             },
             "require": {
@@ -9535,7 +9535,7 @@
                 "psr6"
             ],
             "support": {
-                "source": "https://github.com/symfony/cache/tree/v7.3.4"
+                "source": "https://github.com/symfony/cache/tree/v7.3.5"
             },
             "funding": [
                 {
@@ -9555,7 +9555,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-09-11T10:12:26+00:00"
+            "time": "2025-10-16T13:55:38+00:00"
         },
         {
             "name": "symfony/clickatell-notifier",
@@ -10914,16 +10914,16 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v7.3.2",
+            "version": "v7.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
-                "reference": "2a6614966ba1074fa93dae0bc804227422df4dfe"
+                "reference": "9f696d2f1e340484b4683f7853b273abff94421f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/2a6614966ba1074fa93dae0bc804227422df4dfe",
-                "reference": "2a6614966ba1074fa93dae0bc804227422df4dfe",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/9f696d2f1e340484b4683f7853b273abff94421f",
+                "reference": "9f696d2f1e340484b4683f7853b273abff94421f",
                 "shasum": ""
             },
             "require": {
@@ -10958,7 +10958,7 @@
             "description": "Finds files and directories via an intuitive fluent interface",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/finder/tree/v7.3.2"
+                "source": "https://github.com/symfony/finder/tree/v7.3.5"
             },
             "funding": [
                 {
@@ -10978,7 +10978,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-07-15T13:41:35+00:00"
+            "time": "2025-10-15T18:45:57+00:00"
         },
         {
             "name": "symfony/firebase-notifier",
@@ -11222,16 +11222,16 @@
         },
         {
             "name": "symfony/framework-bundle",
-            "version": "v7.3.4",
+            "version": "v7.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/framework-bundle.git",
-                "reference": "b13e7cec5a144c8dba6f4233a2c53c00bc29e140"
+                "reference": "ebd42b1fc2652b96d33520195ea0f6e55c36f09d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/framework-bundle/zipball/b13e7cec5a144c8dba6f4233a2c53c00bc29e140",
-                "reference": "b13e7cec5a144c8dba6f4233a2c53c00bc29e140",
+                "url": "https://api.github.com/repos/symfony/framework-bundle/zipball/ebd42b1fc2652b96d33520195ea0f6e55c36f09d",
+                "reference": "ebd42b1fc2652b96d33520195ea0f6e55c36f09d",
                 "shasum": ""
             },
             "require": {
@@ -11356,7 +11356,7 @@
             "description": "Provides a tight integration between Symfony components and the Symfony full-stack framework",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/framework-bundle/tree/v7.3.4"
+                "source": "https://github.com/symfony/framework-bundle/tree/v7.3.5"
             },
             "funding": [
                 {
@@ -11376,7 +11376,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-09-17T05:51:54+00:00"
+            "time": "2025-10-16T16:16:53+00:00"
         },
         {
             "name": "symfony/free-mobile-notifier",
@@ -25114,16 +25114,16 @@
         },
         {
             "name": "symfony/web-profiler-bundle",
-            "version": "v7.3.4",
+            "version": "v7.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/web-profiler-bundle.git",
-                "reference": "f305fa4add690bb7d6b14ab61f37c3bd061a3dd7"
+                "reference": "c2ed11cc0e9093fe0425ad52498d26a458842e0c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/web-profiler-bundle/zipball/f305fa4add690bb7d6b14ab61f37c3bd061a3dd7",
-                "reference": "f305fa4add690bb7d6b14ab61f37c3bd061a3dd7",
+                "url": "https://api.github.com/repos/symfony/web-profiler-bundle/zipball/c2ed11cc0e9093fe0425ad52498d26a458842e0c",
+                "reference": "c2ed11cc0e9093fe0425ad52498d26a458842e0c",
                 "shasum": ""
             },
             "require": {
@@ -25179,7 +25179,7 @@
                 "dev"
             ],
             "support": {
-                "source": "https://github.com/symfony/web-profiler-bundle/tree/v7.3.4"
+                "source": "https://github.com/symfony/web-profiler-bundle/tree/v7.3.5"
             },
             "funding": [
                 {
@@ -25199,7 +25199,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-09-25T08:03:55+00:00"
+            "time": "2025-10-06T13:36:11+00:00"
         },
         {
             "name": "symplify/easy-coding-standard",
