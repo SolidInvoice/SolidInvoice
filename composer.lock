@@ -16535,16 +16535,16 @@
         },
         {
             "name": "symfony/ux-live-component",
-            "version": "v2.30.0",
+            "version": "v2.31.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-live-component.git",
-                "reference": "332ab117586c755d2795c0db92c028a9eed71e1a"
+                "reference": "10776be28e15b731ba9d6e3eb43e840434442d67"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-live-component/zipball/332ab117586c755d2795c0db92c028a9eed71e1a",
-                "reference": "332ab117586c755d2795c0db92c028a9eed71e1a",
+                "url": "https://api.github.com/repos/symfony/ux-live-component/zipball/10776be28e15b731ba9d6e3eb43e840434442d67",
+                "reference": "10776be28e15b731ba9d6e3eb43e840434442d67",
                 "shasum": ""
             },
             "require": {
@@ -16562,10 +16562,10 @@
                 "symfony/type-info": "<7.2"
             },
             "require-dev": {
-                "doctrine/annotations": "^1.0",
+                "doctrine/annotations": "^1.0|^2.0",
                 "doctrine/collections": "^1.6.8|^2.0",
                 "doctrine/doctrine-bundle": "^2.4.3",
-                "doctrine/orm": "^2.9.4",
+                "doctrine/orm": "^2.9.4|^3.0",
                 "doctrine/persistence": "^2.5.2|^3.0",
                 "phpdocumentor/reflection-docblock": "5.x-dev",
                 "symfony/dependency-injection": "^5.4|^6.0|^7.0|^8.0",
@@ -16612,7 +16612,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-live-component/tree/v2.30.0"
+                "source": "https://github.com/symfony/ux-live-component/tree/v2.31.0"
             },
             "funding": [
                 {
@@ -16632,7 +16632,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-08-27T15:25:48+00:00"
+            "time": "2025-10-22T02:51:40+00:00"
         },
         {
             "name": "symfony/ux-toggle-password",
