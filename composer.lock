@@ -9882,16 +9882,16 @@
         },
         {
             "name": "symfony/contracts",
-            "version": "v3.6.0",
+            "version": "v3.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/contracts.git",
-                "reference": "6e489617c52619f6a4f92986dfd19eb52d83de1f"
+                "reference": "97a588e965e92e3f197085531cbe440d0fcf48c3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/contracts/zipball/6e489617c52619f6a4f92986dfd19eb52d83de1f",
-                "reference": "6e489617c52619f6a4f92986dfd19eb52d83de1f",
+                "url": "https://api.github.com/repos/symfony/contracts/zipball/97a588e965e92e3f197085531cbe440d0fcf48c3",
+                "reference": "97a588e965e92e3f197085531cbe440d0fcf48c3",
                 "shasum": ""
             },
             "require": {
@@ -9957,7 +9957,7 @@
                 "standards"
             ],
             "support": {
-                "source": "https://github.com/symfony/contracts/tree/v3.6.0"
+                "source": "https://github.com/symfony/contracts/tree/v3.6.1"
             },
             "funding": [
                 {
@@ -9969,11 +9969,15 @@
                     "type": "github"
                 },
                 {
+                    "url": "https://github.com/nicolas-grekas",
+                    "type": "github"
+                },
+                {
                     "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-05-01T12:12:53+00:00"
+            "time": "2025-07-15T17:58:03+00:00"
         },
         {
             "name": "symfony/css-selector",
@@ -15379,16 +15383,16 @@
         },
         {
             "name": "symfony/routing",
-            "version": "v7.3.4",
+            "version": "v7.3.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/routing.git",
-                "reference": "8dc648e159e9bac02b703b9fbd937f19ba13d07c"
+                "reference": "c97abe725f2a1a858deca629a6488c8fc20c3091"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/routing/zipball/8dc648e159e9bac02b703b9fbd937f19ba13d07c",
-                "reference": "8dc648e159e9bac02b703b9fbd937f19ba13d07c",
+                "url": "https://api.github.com/repos/symfony/routing/zipball/c97abe725f2a1a858deca629a6488c8fc20c3091",
+                "reference": "c97abe725f2a1a858deca629a6488c8fc20c3091",
                 "shasum": ""
             },
             "require": {
@@ -15440,7 +15444,7 @@
                 "url"
             ],
             "support": {
-                "source": "https://github.com/symfony/routing/tree/v7.3.4"
+                "source": "https://github.com/symfony/routing/tree/v7.3.6"
             },
             "funding": [
                 {
@@ -15460,7 +15464,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-09-11T10:12:26+00:00"
+            "time": "2025-11-05T07:57:47+00:00"
         },
         {
             "name": "symfony/runtime",
