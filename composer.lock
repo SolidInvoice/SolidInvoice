@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "58d21bb50436f799597606f333d2971a",
+    "content-hash": "7a87cec5174af5c60898418c5c128a0c",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -9977,6 +9977,83 @@
                 }
             ],
             "time": "2025-07-15T17:58:03+00:00"
+        },
+        {
+            "name": "symfony/crowdin-translation-provider",
+            "version": "v7.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/crowdin-translation-provider.git",
+                "reference": "8f6f7061093e32a1cb04bfa06157186176642d8b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/crowdin-translation-provider/zipball/8f6f7061093e32a1cb04bfa06157186176642d8b",
+                "reference": "8f6f7061093e32a1cb04bfa06157186176642d8b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.2",
+                "symfony/config": "^6.4|^7.0",
+                "symfony/http-client": "^6.4|^7.0",
+                "symfony/translation": "^7.2"
+            },
+            "type": "symfony-translation-bridge",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Translation\\Bridge\\Crowdin\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andrii Bodnar",
+                    "homepage": "https://github.com/andrii-bodnar"
+                },
+                {
+                    "name": "Mathieu Santostefano",
+                    "homepage": "https://github.com/welcomattic"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Crowdin Translation Provider Bridge",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "crowdin",
+                "provider",
+                "translation"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/crowdin-translation-provider/tree/v7.3.2"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/nicolas-grekas",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2025-07-15T11:30:57+00:00"
         },
         {
             "name": "symfony/css-selector",
