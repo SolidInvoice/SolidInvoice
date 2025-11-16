@@ -25,6 +25,7 @@ return static function (FrameworkConfig $config): void {
     $config->translator()
         ->provider('crowdin')
         ->dsn(env('CROWDIN_DSN')->default(''))
+        ->domains(['messages', 'email'])
         ->locales(Yaml::parseFile(dirname(__DIR__) . '/locales.yaml'))
     ;
 };
