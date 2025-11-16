@@ -5,7 +5,8 @@ tax:
         save: Save
         explanation: |
             <b>Inclusive</b>: The Tax is already included in the item price<br />
-            <b>Exclusive</b>: Tax is calculated on top of the item price
+            <b>Exclusive</b>: Tax is calculated on top of the item price<br />
+            <b>Flat Rate</b>: A fixed amount is charged regardless of the item price<br />
         type:
             select: Select
     inclusive: Inclusive

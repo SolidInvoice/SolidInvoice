@@ -70,6 +70,8 @@ class Tax implements Stringable
 
     final public const TYPE_EXCLUSIVE = 'Exclusive';
 
+    final public const TYPE_FLAT_RATE = 'Flat Rate';
+
     #[ORM\Column(name: 'id', type: UlidType::NAME)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
@@ -133,6 +135,7 @@ class Tax implements Stringable
         $types = [
             self::TYPE_INCLUSIVE,
             self::TYPE_EXCLUSIVE,
+            self::TYPE_FLAT_RATE,
         ];
 
         return array_combine($types, $types);
@@ -217,8 +220,13 @@ class Tax implements Stringable
 
     public function __toString(): string
     {
-        $type = self::TYPE_INCLUSIVE === $this->type ? 'inc' : 'exl';
+        [$rate, $type] = match ($this->getType()) {
+            self::TYPE_INCLUSIVE => [$this->rate . '%', 'inc'],
+            self::TYPE_EXCLUSIVE => [$this->rate . '%', 'exl'],
+            self::TYPE_FLAT_RATE => [$this->rate, 'flat'],
+            default => [$this->rate, 'n/a'],
+        };
 
-        return "{$this->rate}% {$this->name} ({$type})";
+        return "{$rate} {$this->name} ({$type})";
     }
 }

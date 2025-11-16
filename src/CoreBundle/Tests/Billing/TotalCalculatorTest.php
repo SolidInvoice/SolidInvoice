@@ -179,6 +179,35 @@ class TotalCalculatorTest extends KernelTestCase
      * @throws MathException
      * @throws NotSupported
      */
+    public function testUpdateWithTaxFlat(): void
+    {
+        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator());
+
+        $tax = new Tax();
+        $tax->setType(Tax::TYPE_FLAT_RATE)
+            ->setRate(2);
+
+        $invoice = new Invoice();
+        $invoice->setClient(ClientFactory::createOne(['currencyCode' => 'USD'])->_real());
+        $item = new Line();
+        $item->setQty(2)
+            ->setPrice(15000)
+            ->setTax($tax);
+
+        $invoice->addLine($item);
+
+        $updater->calculateTotals($invoice);
+
+        self::assertEquals(BigDecimal::of(30200), $invoice->getTotal());
+        self::assertEquals(BigDecimal::of(30200), $invoice->getBalance());
+        self::assertEquals(BigDecimal::of(30000.00), $invoice->getBaseTotal());
+        self::assertEquals(BigDecimal::of(200.00), $invoice->getTax());
+    }
+
+    /**
+     * @throws MathException
+     * @throws NotSupported
+     */
     public function testUpdateWithTaxExcl(): void
     {
         $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator());

@@ -77,12 +77,22 @@ class TotalCalculator
             $subTotal = $subTotal->plus($line->getTotal());
 
             if (($rowTax = $line->getTax()) instanceof Tax) {
-                if (Tax::TYPE_INCLUSIVE === $rowTax->getType()) {
-                    $taxAmount = $rowTotal->toBigDecimal()->dividedBy(($rowTax->getRate() / 100) + 1, 2, RoundingMode::HALF_EVEN)->minus($rowTotal)->negated();
-                    $subTotal = $subTotal->minus($taxAmount);
-                } else {
-                    $taxAmount = $rowTotal->toBigDecimal()->multipliedBy($rowTax->getRate() / 100)->toScale(0, RoundingMode::HALF_EVEN);
-                    $total = $total->plus($taxAmount);
+                switch ($rowTax->getType()) {
+                    case Tax::TYPE_INCLUSIVE:
+                        $taxAmount = $rowTotal->toBigDecimal()->dividedBy(($rowTax->getRate() / 100) + 1, 2, RoundingMode::HALF_EVEN)->minus($rowTotal)->negated();
+                        $subTotal = $subTotal->minus($taxAmount);
+                        break;
+                    case Tax::TYPE_EXCLUSIVE:
+                        $taxAmount = $rowTotal->toBigDecimal()->multipliedBy($rowTax->getRate() / 100)->toScale(0, RoundingMode::HALF_EVEN);
+                        $total = $total->plus($taxAmount);
+                        break;
+                    case Tax::TYPE_FLAT_RATE:
+                        $taxAmount = BigDecimal::of($rowTax->getRate())->multipliedBy(100);
+                        $total = $total->plus($taxAmount);
+                        break;
+                    default:
+                        $taxAmount = BigDecimal::zero();
+                        break;
                 }
 
                 $tax = $tax->plus($taxAmount);
