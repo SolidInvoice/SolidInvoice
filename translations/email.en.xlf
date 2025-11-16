@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="en">
+  <file id="email.en">
+    <unit id="qDBVya6" name="client.create.subject">
+      <segment>
+        <source>client.create.subject</source>
+        <target>A new client has been created</target>
+      </segment>
+    </unit>
+    <unit id="v.Kkac6" name="client.create.heading">
+      <segment>
+        <source>client.create.heading</source>
+        <target>A new client has been created.</target>
+      </segment>
+    </unit>
+    <unit id="q17jyWQ" name="client.create.contacts.heading">
+      <segment>
+        <source>client.create.contacts.heading</source>
+        <target>Contacts</target>
+      </segment>
+    </unit>
+    <unit id="49mde73" name="client.create.contacts.name">
+      <segment>
+        <source>client.create.contacts.name</source>
+        <target>Name</target>
+      </segment>
+    </unit>
+    <unit id="PJ77eII" name="client.create.details.id">
+      <segment>
+        <source>client.create.details.id</source>
+        <target>ID</target>
+      </segment>
+    </unit>
+    <unit id="bAhjSCa" name="client.create.details.name">
+      <segment>
+        <source>client.create.details.name</source>
+        <target>Name</target>
+      </segment>
+    </unit>
+    <unit id="BA7VQIG" name="client.create.details.website">
+      <segment>
+        <source>client.create.details.website</source>
+        <target>Website</target>
+      </segment>
+    </unit>
+    <unit id="lpZ9rbu" name="invoice.pay_now">
+      <segment>
+        <source>invoice.pay_now</source>
+        <target>Pay Now</target>
+      </segment>
+    </unit>
+    <unit id="nWL8ww2" name="invoice.status.subject">
+      <segment>
+        <source>invoice.status.subject</source>
+        <target>Invoice Status Change</target>
+      </segment>
+    </unit>
+    <unit id="3NFV6Ob" name="invoice.status_change.heading">
+      <segment>
+        <source>invoice.status_change.heading</source>
+        <target>An Invoice status has changed</target>
+      </segment>
+    </unit>
+    <unit id="bkYQSgi" name="invoice.status_change.id">
+      <segment>
+        <source>invoice.status_change.id</source>
+        <target>Invoice Id</target>
+      </segment>
+    </unit>
+    <unit id="vuaPlCU" name="invoice.status_change.old_status">
+      <segment>
+        <source>invoice.status_change.old_status</source>
+        <target>Original Status</target>
+      </segment>
+    </unit>
+    <unit id="7xtKB80" name="invoice.status_change.new_status">
+      <segment>
+        <source>invoice.status_change.new_status</source>
+        <target>New Status</target>
+      </segment>
+    </unit>
+    <unit id="QpDEduG" name="invoice.status_change.status">
+      <segment>
+        <source>invoice.status_change.status</source>
+        <target>Status</target>
+      </segment>
+    </unit>
+    <unit id="B7I4GUo" name="invoice.status_change.view_invoice">
+      <segment>
+        <source>invoice.status_change.view_invoice</source>
+        <target>View Invoice</target>
+      </segment>
+    </unit>
+    <unit id="cZ_UOQD" name="invoice.info">
+      <segment>
+        <source>invoice.info</source>
+        <target>You have received an invoice from %company% generated on %created%</target>
+      </segment>
+    </unit>
+    <unit id="NWvDeGc" name="payment.description">
+      <segment>
+        <source>payment.description</source>
+        <target>A new payment has been made</target>
+      </segment>
+    </unit>
+    <unit id="v4SHIzr" name="payment.capture.subject">
+      <segment>
+        <source>payment.capture.subject</source>
+        <target>A Payment has been made</target>
+      </segment>
+    </unit>
+    <unit id="RzNuZSH" name="payment.details.amount">
+      <segment>
+        <source>payment.details.amount</source>
+        <target>Amount</target>
+      </segment>
+    </unit>
+    <unit id="Pg_Dy.C" name="payment.details.currency">
+      <segment>
+        <source>payment.details.currency</source>
+        <target>Currency</target>
+      </segment>
+    </unit>
+    <unit id="XBveppg" name="payment.details.invoice">
+      <segment>
+        <source>payment.details.invoice</source>
+        <target>Invoice</target>
+      </segment>
+    </unit>
+    <unit id="K2IPf1m" name="payment.details.client">
+      <segment>
+        <source>payment.details.client</source>
+        <target>Client</target>
+      </segment>
+    </unit>
+    <unit id="0KQHkO0" name="payment.details.status">
+      <segment>
+        <source>payment.details.status</source>
+        <target>Status</target>
+      </segment>
+    </unit>
+    <unit id="CWPbem8" name="payment.details.method">
+      <segment>
+        <source>payment.details.method</source>
+        <target>Payment Method</target>
+      </segment>
+    </unit>
+    <unit id="67UVIbl" name="quote.status.subject">
+      <segment>
+        <source>quote.status.subject</source>
+        <target>Quote Status Change</target>
+      </segment>
+    </unit>
+    <unit id="Ti8Pu2E" name="quote.status_change.heading">
+      <segment>
+        <source>quote.status_change.heading</source>
+        <target>A Quote status has changed</target>
+      </segment>
+    </unit>
+    <unit id="FGW3yxN" name="quote.status_change.id">
+      <segment>
+        <source>quote.status_change.id</source>
+        <target>Quote Id</target>
+      </segment>
+    </unit>
+    <unit id="aj1szuL" name="quote.status_change.old_status">
+      <segment>
+        <source>quote.status_change.old_status</source>
+        <target>Original Status</target>
+      </segment>
+    </unit>
+    <unit id="VaC6Fl4" name="quote.status_change.new_status">
+      <segment>
+        <source>quote.status_change.new_status</source>
+        <target>New Status</target>
+      </segment>
+    </unit>
+    <unit id="2UJ7bVg" name="quote.status_change.status">
+      <segment>
+        <source>quote.status_change.status</source>
+        <target>Status</target>
+      </segment>
+    </unit>
+    <unit id="4z6HzEt" name="quote.status_change.view_quote">
+      <segment>
+        <source>quote.status_change.view_quote</source>
+        <target>View Quote</target>
+      </segment>
+    </unit>
+    <unit id="RiK03CN" name="quote.info">
+      <segment>
+        <source>quote.info</source>
+        <target>You have received a quote from %company% generated on %created%</target>
+      </segment>
+    </unit>
+    <unit id="JIBV7Yo" name="reset_password.subject">
+      <segment>
+        <source>reset_password.subject</source>
+        <target>Reset Password</target>
+      </segment>
+    </unit>
+    <unit id="4uJtRzU" name="reset_password.message_text">
+      <segment>
+        <source>reset_password.message_text</source>
+        <target>A password reset was requested for user %username%.
+
+If you did not request your password to be reset, you can safely ignore this message.
+
+To reset your password, please copy and paste the below link in your browser
+
+%confirmationUrl%
+</target>
+      </segment>
+    </unit>
+    <unit id="dv0YMp5" name="reset_password.message_html">
+      <segment>
+        <source>reset_password.message_html</source>
+        <target><![CDATA[A password reset was requested for user <strong>%username%</strong>.
+
+If you did not request your password to be reset, you can safely ignore this message.
+
+To reset your password, please follow the link below
+]]></target>
+      </segment>
+    </unit>
+    <unit id="TG_hdt9" name="reset_password.button_text">
+      <segment>
+        <source>reset_password.button_text</source>
+        <target>Reset Password</target>
+      </segment>
+    </unit>
+    <unit id="HszC75h" name="invitation.accept">
+      <segment>
+        <source>invitation.accept</source>
+        <target>Accept Invitation</target>
+      </segment>
+    </unit>
+    <unit id="pl9ndg." name="Confirm">
+      <segment>
+        <source>Confirm</source>
+        <target>__Confirm</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>

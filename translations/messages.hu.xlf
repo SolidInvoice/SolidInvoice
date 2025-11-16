@@ -1,0 +1,2267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="hu">
+  <file id="messages.hu">
+    <unit id="UXqVKry" name="invoice.menu.recurring.list">
+      <segment>
+        <source>invoice.menu.recurring.list</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id=".YzvAhz" name="invoice.menu.recurring.create">
+      <segment>
+        <source>invoice.menu.recurring.create</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="DB7wJzV" name="invoice.menu.list">
+      <segment>
+        <source>invoice.menu.list</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="eoDZ9kP" name="client.menu.create.invoice">
+      <segment>
+        <source>client.menu.create.invoice</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="2iukxY1" name="quote.menu.list">
+      <segment>
+        <source>quote.menu.list</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="V2Qk5XR" name="client.menu.create.quote">
+      <segment>
+        <source>client.menu.create.quote</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="0WNp7ZI" name="Currency">
+      <segment>
+        <source>Currency</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="jUb4FoO" name="Total Balance">
+      <segment>
+        <source>Total Balance</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="1SJ8CVD" name="Outstanding Balance">
+      <segment>
+        <source>Outstanding Balance</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="ZjgOynL" name="client.modal.credit.tip">
+      <segment>
+        <source>client.modal.credit.tip</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="Mg21o.7" name="client.delete_success">
+      <segment>
+        <source>client.delete_success</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="T81S2X5" name="client.menu.list">
+      <segment>
+        <source>client.menu.list</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="_nLKB86" name="client.menu.add">
+      <segment>
+        <source>client.menu.add</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="AmwdVMp" name="payment.menu.main">
+      <segment>
+        <source>payment.menu.main</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="gKBov_2" name="payment.menu.methods">
+      <segment>
+        <source>payment.menu.methods</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id=".83LL6q" name="billing">
+      <segment>
+        <source>billing</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="8PtfkyK" name="System Default">
+      <segment>
+        <source>System Default</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="Oxwrs3q" name="user">
+      <segment>
+        <source>user</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="10w5tEC" name="menu.top.profile">
+      <segment>
+        <source>menu.top.profile</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id=".VhCxKy" name="menu.top.api">
+      <segment>
+        <source>menu.top.api</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="njt4Su3" name="menu.top.logout">
+      <segment>
+        <source>menu.top.logout</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="Xazc1xC" name="menu.top.system">
+      <segment>
+        <source>menu.top.system</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="pnlCxGT" name="menu.top.settings">
+      <segment>
+        <source>menu.top.settings</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="aWOlVW8" name="menu.top.integrations">
+      <segment>
+        <source>menu.top.integrations</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="VfycTuq" name="menu.top.tax">
+      <segment>
+        <source>menu.top.tax</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="st_S0gL" name="menu.top.users">
+      <segment>
+        <source>menu.top.users</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="BrBatnM" name="abc">
+      <segment>
+        <source>abc</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="5QDNC6E" name="installation.title">
+      <segment>
+        <source>installation.title</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="Cf1OmsB" name="installation.finish.success">
+      <segment>
+        <source>installation.finish.success</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="T2SttCS" name="installation.finish.success_message">
+      <segment>
+        <source>installation.finish.success_message</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="2uNi3CS" name="installation.finish.login">
+      <segment>
+        <source>installation.finish.login</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="O6GczIg" name="installation.config.title.database_config">
+      <segment>
+        <source>installation.config.title.database_config</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="uXxENwl" name="installation.action.previous">
+      <segment>
+        <source>installation.action.previous</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="Ifbkg2u" name="installation.action.next">
+      <segment>
+        <source>installation.action.next</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="zqniTiu" name="installation.process.title.busy">
+      <segment>
+        <source>installation.process.title.busy</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="XyAt5Em" name="View output">
+      <segment>
+        <source>View output</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="yqfaihZ" name="waiting">
+      <segment>
+        <source>waiting</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="UFnGbEf" name="installation.process.title.done">
+      <segment>
+        <source>installation.process.title.done</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="XT9Z1fh" name="installation.requirements.not_met">
+      <segment>
+        <source>installation.requirements.not_met</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="A8_WNhP" name="installation.requirements.message">
+      <segment>
+        <source>installation.requirements.message</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="iaX_BkI" name="installation.config.title.requirements_check">
+      <segment>
+        <source>installation.config.title.requirements_check</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="E7RMQvK" name="installation.requirements.mandatory">
+      <segment>
+        <source>installation.requirements.mandatory</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="SS.Oizr" name="installation.requirements.optional">
+      <segment>
+        <source>installation.requirements.optional</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="aA0lxRN" name="installation.action.refresh">
+      <segment>
+        <source>installation.action.refresh</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="0WaSfNQ" name="installation.setup.title.system_settings">
+      <segment>
+        <source>installation.setup.title.system_settings</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="AS3CAEA" name="installation.setup.notice">
+      <segment>
+        <source>installation.setup.notice</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="7rmj4ZR" name="installation.setup.user_exists">
+      <segment>
+        <source>installation.setup.user_exists</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="atPnJ7F" name="installation.setup.title.admin_user">
+      <segment>
+        <source>installation.setup.title.admin_user</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="Tp_1Q41" name="powered_by">
+      <segment>
+        <source>powered_by</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="zls5F6H" name="tax.vat_number">
+      <segment>
+        <source>tax.vat_number</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="ukD49lp" name="invoice.item.heading.description">
+      <segment>
+        <source>invoice.item.heading.description</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="ATXhMCu" name="invoice.item.heading.price">
+      <segment>
+        <source>invoice.item.heading.price</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="xzoAIvG" name="invoice.item.heading.qty">
+      <segment>
+        <source>invoice.item.heading.qty</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="g9fHLsk" name="invoice.item.heading.tax">
+      <segment>
+        <source>invoice.item.heading.tax</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="tw2eKTF" name="invoice.item.heading.total">
+      <segment>
+        <source>invoice.item.heading.total</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="wgFAm35" name="invoice.subtotal">
+      <segment>
+        <source>invoice.subtotal</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="bnCsDTp" name="invoice.tax">
+      <segment>
+        <source>invoice.tax</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="zszIGUd" name="invoice.discount">
+      <segment>
+        <source>invoice.discount</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="lNMCHCv" name="invoice.balance">
+      <segment>
+        <source>invoice.balance</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="HJRpu.a" name="invoice.total">
+      <segment>
+        <source>invoice.total</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="0jE6YD1" name="invoice.terms">
+      <segment>
+        <source>invoice.terms</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="haruZz2" name="email">
+      <segment>
+        <source>email</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="1D8KHzm" name="invoice.title">
+      <segment>
+        <source>invoice.title</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="Mcn2pOQ" name="Invoice Date">
+      <segment>
+        <source>Invoice Date</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="4Dq_a7B" name="Due Date">
+      <segment>
+        <source>Due Date</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="RoWptcU" name="invoice.action.edit">
+      <segment>
+        <source>invoice.action.edit</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="C1yzjCy" name="invoice.save.cancel">
+      <segment>
+        <source>invoice.save.cancel</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="2yj7gY6" name="invoice.save.send">
+      <segment>
+        <source>invoice.save.send</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="qXdtijE" name="invoice.save.update">
+      <segment>
+        <source>invoice.save.update</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="RlCv7Dm" name="invoice.recurring.view.label">
+      <segment>
+        <source>invoice.recurring.view.label</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="QNOhs4_" name="invoice.notes">
+      <segment>
+        <source>invoice.notes</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="5025Tn0" name="invoice.action.print">
+      <segment>
+        <source>invoice.action.print</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="NDc7M.6" name="invoice.view.toolbar.clone">
+      <segment>
+        <source>invoice.view.toolbar.clone</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="dRNHWgg" name="Activate">
+      <segment>
+        <source>Activate</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="mERzWPy" name="invoice.view.toolbar.cancel">
+      <segment>
+        <source>invoice.view.toolbar.cancel</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="sA8mLdq" name="invoice.view.toolbar.edit">
+      <segment>
+        <source>invoice.view.toolbar.edit</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="ZI9jnUs" name="more">
+      <segment>
+        <source>more</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="qUoLcMC" name="Upcoming Occurrences">
+      <segment>
+        <source>Upcoming Occurrences</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="E56vHPD" name="invoice.action.create">
+      <segment>
+        <source>invoice.action.create</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="pSMqjgN" name="invoice.client.empty">
+      <segment>
+        <source>invoice.client.empty</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="UN4G1ue" name="invoice.client.create">
+      <segment>
+        <source>invoice.client.create</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="woehU.b" name="View active invoices">
+      <segment>
+        <source>View active invoices</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="2lYEzJ2" name="View archived invoices">
+      <segment>
+        <source>View archived invoices</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="1ZpbbZ3" name="invoice.list.status_legend">
+      <segment>
+        <source>invoice.list.status_legend</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="Y6K1PnT" name="invoice.action.pdf">
+      <segment>
+        <source>invoice.action.pdf</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="Gti.C6m" name="invoice.view.toolbar.view_quote">
+      <segment>
+        <source>invoice.view.toolbar.view_quote</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="3.1UJ9x" name="invoice.view.toolbar.pay_now">
+      <segment>
+        <source>invoice.view.toolbar.pay_now</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="xMNOcMi" name="Publish">
+      <segment>
+        <source>Publish</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="RanmlZl" name="invoice.view.toolbar.reopen">
+      <segment>
+        <source>invoice.view.toolbar.reopen</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="WB5hFDB" name="Payments">
+      <segment>
+        <source>Payments</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="EOz_d.2" name="invoice.add_payment">
+      <segment>
+        <source>invoice.add_payment</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="eJWq6vz" name="invoice.payment.capture">
+      <segment>
+        <source>invoice.payment.capture</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="CQ_qAC2" name="invoice.mark_paid">
+      <segment>
+        <source>invoice.mark_paid</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="XZQwUgZ" name="invoice.capture_payment">
+      <segment>
+        <source>invoice.capture_payment</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="7s33gPK" name="invoice.summary">
+      <segment>
+        <source>invoice.summary</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="zhjo248" name="billing.subtotal">
+      <segment>
+        <source>billing.subtotal</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="eNjX1rA" name="billing.tax">
+      <segment>
+        <source>billing.tax</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="o22vGqq" name="billing.discount">
+      <segment>
+        <source>billing.discount</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="FC6gKfQ" name="billing.total">
+      <segment>
+        <source>billing.total</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="atxE.sd" name="Save Recurring Invoice">
+      <segment>
+        <source>Save Recurring Invoice</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="80Xn5Mu" name="invoice.save.draft">
+      <segment>
+        <source>invoice.save.draft</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="mADzBIY" name="Recurring Settings">
+      <segment>
+        <source>Recurring Settings</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="GMuyaWt" name="invoice.recurring.variables.text">
+      <segment>
+        <source>invoice.recurring.variables.text</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="NSOtUpc" name="invoice.recurring.variables.day">
+      <segment>
+        <source>invoice.recurring.variables.day</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="XOYCORm" name="invoice.recurring.variables.day_name">
+      <segment>
+        <source>invoice.recurring.variables.day_name</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="t48S3pc" name="invoice.recurring.variables.month">
+      <segment>
+        <source>invoice.recurring.variables.month</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="RcxLtGa" name="invoice.recurring.variables.year">
+      <segment>
+        <source>invoice.recurring.variables.year</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="B4wGR8N" name="Invoice #">
+      <segment>
+        <source>Invoice #</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="z9OKodR" name="Save">
+      <segment>
+        <source>Save</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="EhytB4v" name="Cancel">
+      <segment>
+        <source>Cancel</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="x6BhdrR" name="Save Invoice">
+      <segment>
+        <source>Save Invoice</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="50.iPjH" name="invoice.view.online">
+      <segment>
+        <source>invoice.view.online</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="hUSZ7.1" name="dashboard.invoice.recent">
+      <segment>
+        <source>dashboard.invoice.recent</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id=".sNb820" name="dashboard.invoice.actions.view">
+      <segment>
+        <source>dashboard.invoice.actions.view</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="cDfypYE" name="dashboard.invoice.actions.edit">
+      <segment>
+        <source>dashboard.invoice.actions.edit</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="gmVOX2l" name="dashboard.invoice.actions.pay">
+      <segment>
+        <source>dashboard.invoice.actions.pay</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="AQDDU9p" name="dashboard.invoice.actions.created">
+      <segment>
+        <source>dashboard.invoice.actions.created</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="3S8uMj2" name="dashboard.invoice.view_all">
+      <segment>
+        <source>dashboard.invoice.view_all</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="mG1oyoh" name="dashboard.invoice.empty">
+      <segment>
+        <source>dashboard.invoice.empty</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="6Uc_Uw_" name="dashboard.invoice.create">
+      <segment>
+        <source>dashboard.invoice.create</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="PaKM6EC" name="dashboard.active_clients">
+      <segment>
+        <source>dashboard.active_clients</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="UrG84OT" name="dashboard.income_received">
+      <segment>
+        <source>dashboard.income_received</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id=".ZvudoQ" name="dashboard.pending_quotes">
+      <segment>
+        <source>dashboard.pending_quotes</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="Xx9u0Y." name="dashboard.outstanding_invoices">
+      <segment>
+        <source>dashboard.outstanding_invoices</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="6HFstrK" name="dashboard.quick_nav.title">
+      <segment>
+        <source>dashboard.quick_nav.title</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="OXd.sZy" name="dashboard.quick_nav.clients">
+      <segment>
+        <source>dashboard.quick_nav.clients</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="52ONwjA" name="dashboard.quick_nav.quotes">
+      <segment>
+        <source>dashboard.quick_nav.quotes</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="5YOi6fL" name="dashboard.quick_nav.invoices">
+      <segment>
+        <source>dashboard.quick_nav.invoices</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="ErOrk7c" name="dashboard.quick_nav.profile">
+      <segment>
+        <source>dashboard.quick_nav.profile</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="15KUh.1" name="dashboard.quick_nav.settings">
+      <segment>
+        <source>dashboard.quick_nav.settings</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="_Oaw3HE" name="dashboard.quote.recent">
+      <segment>
+        <source>dashboard.quote.recent</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="96Ykn6a" name="dashboard.quote.actions.view">
+      <segment>
+        <source>dashboard.quote.actions.view</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="8CsB8yV" name="dashboard.quote.actions.edit">
+      <segment>
+        <source>dashboard.quote.actions.edit</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="h42ubs." name="dashboard.quote.actions.created">
+      <segment>
+        <source>dashboard.quote.actions.created</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="z.zjmk0" name="dashboard.quote.view_all">
+      <segment>
+        <source>dashboard.quote.view_all</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="BL7FB0w" name="dashboard.quote.empty">
+      <segment>
+        <source>dashboard.quote.empty</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="81zjNq6" name="dashboard.quote.create">
+      <segment>
+        <source>dashboard.quote.create</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="kSiTQKJ" name="dashboard.client.recent">
+      <segment>
+        <source>dashboard.client.recent</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="jeUVDTo" name="dashboard.client.actions.view">
+      <segment>
+        <source>dashboard.client.actions.view</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="4zydOcn" name="dashboard.client.actions.edit">
+      <segment>
+        <source>dashboard.client.actions.edit</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="G_Wwmzo" name="dashboard.client.actions.create.quote">
+      <segment>
+        <source>dashboard.client.actions.create.quote</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="RG74_gR" name="dashboard.client.actions.create.invoice">
+      <segment>
+        <source>dashboard.client.actions.create.invoice</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="waBOWH2" name="dashboard.client.actions.created">
+      <segment>
+        <source>dashboard.client.actions.created</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="6ldioIn" name="dashboard.client.view_all">
+      <segment>
+        <source>dashboard.client.view_all</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="_eSe_fA" name="dashboard.client.empty">
+      <segment>
+        <source>dashboard.client.empty</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="HoM0_sc" name="dashboard.client.create">
+      <segment>
+        <source>dashboard.client.create</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="fHfVlZ9" name="dashboard.payment.recent">
+      <segment>
+        <source>dashboard.payment.recent</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="sn6rONT" name="dashboard.payment.actions.created">
+      <segment>
+        <source>dashboard.payment.actions.created</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="X3r2h_4" name="dashboard.payment.actions.invoice">
+      <segment>
+        <source>dashboard.payment.actions.invoice</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="7n2Eb_W" name="dashboard.payment.view_all">
+      <segment>
+        <source>dashboard.payment.view_all</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="T2rzBds" name="dashboard.payment.no_payments">
+      <segment>
+        <source>dashboard.payment.no_payments</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="AckGMAp" name="dashboard.title">
+      <segment>
+        <source>dashboard.title</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="FHveRPi" name="security.login.login">
+      <segment>
+        <source>security.login.login</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="7.9aUPL" name="security.register.title">
+      <segment>
+        <source>security.register.title</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="bn7bJjR" name="security.register.submit">
+      <segment>
+        <source>security.register.submit</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="Rh.f4OF" name="profile.show.title">
+      <segment>
+        <source>profile.show.title</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="LNfXtPI" name="exception.error.text">
+      <segment>
+        <source>exception.error.text</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="QeF6CpZ" name="security.login.username">
+      <segment>
+        <source>security.login.username</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="TT3C_o8" name="security.login.password">
+      <segment>
+        <source>security.login.password</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="O4_fL.W" name="security.login.remember">
+      <segment>
+        <source>security.login.remember</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="9vvRY39" name="security.login.forgot_password">
+      <segment>
+        <source>security.login.forgot_password</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="fi.3kXT" name="Forgot your password? Enter your email to reset your password.">
+      <segment>
+        <source>Forgot your password? Enter your email to reset your password.</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="l4dEvnP" name="forgot_password.request.submit">
+      <segment>
+        <source>forgot_password.request.submit</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="OiuMHgz" name="forgot_password.check_email">
+      <segment>
+        <source>forgot_password.check_email</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="D4AJbyL" name="This link will expire in %tokenLifetime%">
+      <segment>
+        <source>This link will expire in %tokenLifetime%</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="5Y34z39" name="Profile">
+      <segment>
+        <source>Profile</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="gGxnmUA" name="Notifications">
+      <segment>
+        <source>Notifications</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="_ixdii6" name="API Keys">
+      <segment>
+        <source>API Keys</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="pl9ndg." name="Confirm">
+      <segment>
+        <source>Confirm</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="qNghuqo" name="Close">
+      <segment>
+        <source>Close</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="QWD0nA4" name="profile.api.create">
+      <segment>
+        <source>profile.api.create</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="0VUai0U" name="Are you sure you want to revoke this token?">
+      <segment>
+        <source>Are you sure you want to revoke this token?</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="4ukUKlG" name="Request history for token %name%">
+      <segment>
+        <source>Request history for token %name%</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="umPqmsm" name="Copy to clipboard">
+      <segment>
+        <source>Copy to clipboard</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="IlHAFF4" name="View Token">
+      <segment>
+        <source>View Token</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="_KgP45h" name="profile.api.tokens.revoke">
+      <segment>
+        <source>profile.api.tokens.revoke</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="N5O2Ugd" name="profile.api.tokens.history">
+      <segment>
+        <source>profile.api.tokens.history</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="q8ivLIb" name="profile.api.tokens.used.last">
+      <segment>
+        <source>profile.api.tokens.used.last</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="DDeyV.0" name="profile.api.tokens.used.text">
+      <segment>
+        <source>profile.api.tokens.used.text</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="d1BqPKN" name="profile.api.tokens.used.never">
+      <segment>
+        <source>profile.api.tokens.used.never</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="J_UrVLT" name="profile.api.tokens.empty">
+      <segment>
+        <source>profile.api.tokens.empty</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="ALrh_B9" name="Manage Notifications">
+      <segment>
+        <source>Manage Notifications</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="c0yis7G" name="profile.api.history.last_calls_shown_note">
+      <segment>
+        <source>profile.api.history.last_calls_shown_note</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="THcOsWC" name="profile.api.history.last_calls_shown">
+      <segment>
+        <source>profile.api.history.last_calls_shown</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="75m4gfK" name="profile.api.history.list.date">
+      <segment>
+        <source>profile.api.history.list.date</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="PBB6hAB" name="profile.api.history.list.ip">
+      <segment>
+        <source>profile.api.history.list.ip</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="QCz.5qk" name="profile.api.history.list.resource">
+      <segment>
+        <source>profile.api.history.list.resource</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="c7h36IV" name="profile.api.history.list.user_agent">
+      <segment>
+        <source>profile.api.history.list.user_agent</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="lfsnpqU" name="profile.edit.submit">
+      <segment>
+        <source>profile.edit.submit</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="FAclFDW" name="profile.edit.cancel">
+      <segment>
+        <source>profile.edit.cancel</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="wbMeKOh" name="Name">
+      <segment>
+        <source>Name</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="eFjsUl4" name="profile.show.email">
+      <segment>
+        <source>profile.show.email</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="Wk8D2KA" name="profile.show.mobile">
+      <segment>
+        <source>profile.show.mobile</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="l.lLKTx" name="Link account with Google">
+      <segment>
+        <source>Link account with Google</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="BvnwuYh" name="Already Linked">
+      <segment>
+        <source>Already Linked</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="LakhkLO" name="Two Factor Authentication">
+      <segment>
+        <source>Two Factor Authentication</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="FdpiKgY" name="Enabled">
+      <segment>
+        <source>Enabled</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="cIsGMQ6" name="Not Enabled">
+      <segment>
+        <source>Not Enabled</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="OIzq7da" name="Configure">
+      <segment>
+        <source>Configure</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="ZQxlcPz" name="profile.show.change_password">
+      <segment>
+        <source>profile.show.change_password</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="IBOx7SG" name="profile.show.update_profile">
+      <segment>
+        <source>profile.show.update_profile</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="YN8esfy" name="Preferences">
+      <segment>
+        <source>Preferences</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="wrMmhj_" name="change_password.submit">
+      <segment>
+        <source>change_password.submit</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="18yUrkC" name="users.invite">
+      <segment>
+        <source>users.invite</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="uCFHnOY" name="client.cancel">
+      <segment>
+        <source>client.cancel</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="rRY3paB" name="users.save">
+      <segment>
+        <source>users.save</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="cxHbS4R" name="users.title">
+      <segment>
+        <source>users.title</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="BCGjfox" name="Users">
+      <segment>
+        <source>Users</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="KQ_vu4g" name="Invitations">
+      <segment>
+        <source>Invitations</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="8uyg4qr" name="profile.api.title">
+      <segment>
+        <source>profile.api.title</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="f2QjFMI" name="This link will expire in %resetTimestamp%.">
+      <segment>
+        <source>This link will expire in %resetTimestamp%.</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="Bounroh" name="quote.item.heading.description">
+      <segment>
+        <source>quote.item.heading.description</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="IdCvPje" name="quote.item.heading.price">
+      <segment>
+        <source>quote.item.heading.price</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="6yA7gKB" name="quote.item.heading.qty">
+      <segment>
+        <source>quote.item.heading.qty</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="L3K2qtc" name="quote.item.heading.tax">
+      <segment>
+        <source>quote.item.heading.tax</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="wkVMXRW" name="quote.item.heading.total">
+      <segment>
+        <source>quote.item.heading.total</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="XDr4Uet" name="quote.subtotal">
+      <segment>
+        <source>quote.subtotal</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="snzEsxU" name="quote.tax">
+      <segment>
+        <source>quote.tax</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="SA9WK4N" name="quote.discount">
+      <segment>
+        <source>quote.discount</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="KPLBD1S" name="quote.total">
+      <segment>
+        <source>quote.total</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="KC7jEpE" name="quote.terms">
+      <segment>
+        <source>quote.terms</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="7OazFSb" name="quote.edit">
+      <segment>
+        <source>quote.edit</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="GJU8cqK" name="quote.save.cancel">
+      <segment>
+        <source>quote.save.cancel</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="DI2EVGb" name="quote.save.send">
+      <segment>
+        <source>quote.save.send</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="fLSZIfY" name="quote.save.update">
+      <segment>
+        <source>quote.save.update</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="wQsB3OC" name="quote.create">
+      <segment>
+        <source>quote.create</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="wNJpgCg" name="quote.client.empty">
+      <segment>
+        <source>quote.client.empty</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="vfPxTJG" name="quote.client.create">
+      <segment>
+        <source>quote.client.create</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="tQHXVI0" name="quote.list.title">
+      <segment>
+        <source>quote.list.title</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="Er5JaXh" name="View active quotes">
+      <segment>
+        <source>View active quotes</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="gxp53Iz" name="View archived quotes">
+      <segment>
+        <source>View archived quotes</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="CKMmNgg" name="quote.list.status_legend">
+      <segment>
+        <source>quote.list.status_legend</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="0ycwsxO" name="quote.action.print">
+      <segment>
+        <source>quote.action.print</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="3__j6TA" name="quote.action.pdf">
+      <segment>
+        <source>quote.action.pdf</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="HiT0TJH" name="quote.title">
+      <segment>
+        <source>quote.title</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="cEy4CWG" name="quote.view.toolbar.view_invoice">
+      <segment>
+        <source>quote.view.toolbar.view_invoice</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="QOdnFb." name="quote.view.toolbar.clone">
+      <segment>
+        <source>quote.view.toolbar.clone</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="c76dyyX" name="quote.view.toolbar.accept">
+      <segment>
+        <source>quote.view.toolbar.accept</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="lci9Oi." name="quote.view.toolbar.decline">
+      <segment>
+        <source>quote.view.toolbar.decline</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="esuIva8" name="quote.view.toolbar.reopen">
+      <segment>
+        <source>quote.view.toolbar.reopen</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="ftniGDa" name="quote.view.toolbar.cancel">
+      <segment>
+        <source>quote.view.toolbar.cancel</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="9uRkhp." name="quote.view.toolbar.edit">
+      <segment>
+        <source>quote.view.toolbar.edit</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="DauZ6sF" name="quote.notes">
+      <segment>
+        <source>quote.notes</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="M5DiOOG" name="Quote #">
+      <segment>
+        <source>Quote #</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="X2Jr8bc" name="quote.summary">
+      <segment>
+        <source>quote.summary</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="gevvGmj" name="Save Quote">
+      <segment>
+        <source>Save Quote</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="6vNMEBr" name="quote.save.draft">
+      <segment>
+        <source>quote.save.draft</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="c2xxusp" name="quote.view.online">
+      <segment>
+        <source>quote.view.online</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="_8GTsAY" name="quote.created">
+      <segment>
+        <source>quote.created</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="vc82zMz" name="client.contact.details.extra">
+      <segment>
+        <source>client.contact.details.extra</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="MB8ufI0" name="Add Additional Details">
+      <segment>
+        <source>Add Additional Details</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="0MR_znL" name="invoices">
+      <segment>
+        <source>invoices</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="SE6QEPG" name="edit_client">
+      <segment>
+        <source>edit_client</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="mLUu7rY" name="client.info">
+      <segment>
+        <source>client.info</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="LGknS3i" name="client.address.info">
+      <segment>
+        <source>client.address.info</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="qXD1gy2" name="client.address.add">
+      <segment>
+        <source>client.address.add</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="Yfy2Tyd" name="client.contact.info">
+      <segment>
+        <source>client.contact.info</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="9om5Yl9" name="client.contact.add">
+      <segment>
+        <source>client.contact.add</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="2tayomD" name="client.save">
+      <segment>
+        <source>client.save</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="OivcZI7" name="clients">
+      <segment>
+        <source>clients</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="t1VoMG." name="client_create">
+      <segment>
+        <source>client_create</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="HwY.Swn" name="View active clients">
+      <segment>
+        <source>View active clients</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="7mf7Xw3" name="View archived clients">
+      <segment>
+        <source>View archived clients</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="hnPiTH." name="client.view.actions.edit">
+      <segment>
+        <source>client.view.actions.edit</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="DJ2RIHf" name="client.view.actions.delete">
+      <segment>
+        <source>client.view.actions.delete</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="fFRCfz_" name="Website">
+      <segment>
+        <source>Website</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="X79aNK4" name="client.view.currency">
+      <segment>
+        <source>client.view.currency</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="210K8aM" name="client.view.actions.create_quote">
+      <segment>
+        <source>client.view.actions.create_quote</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="MosQyMc" name="client.view.actions.create_invoice">
+      <segment>
+        <source>client.view.actions.create_invoice</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="K6HHXPu" name="client.stats.income">
+      <segment>
+        <source>client.stats.income</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="iSrleDI" name="client.stats.outstanding">
+      <segment>
+        <source>client.stats.outstanding</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="qwGeFYG" name="client.stats.tooltip.total_quotes">
+      <segment>
+        <source>client.stats.tooltip.total_quotes</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="aX7KZI1" name="client.stats.number_quotes">
+      <segment>
+        <source>client.stats.number_quotes</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="vMEBriQ" name="client.stats.tooltip.total_invoices">
+      <segment>
+        <source>client.stats.tooltip.total_invoices</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="i9TxAg1" name="client.stats.number_invoices">
+      <segment>
+        <source>client.stats.number_invoices</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="LYi0izt" name="client.stats.tooltip.total_outstanding">
+      <segment>
+        <source>client.stats.tooltip.total_outstanding</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="EqB6rxs" name="client.stats.outstanding_invoices">
+      <segment>
+        <source>client.stats.outstanding_invoices</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="Js0PI.1" name="client.stats.tooltip.total_paid">
+      <segment>
+        <source>client.stats.tooltip.total_paid</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="3Z7oOoN" name="client.stats.paid_invoices">
+      <segment>
+        <source>client.stats.paid_invoices</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="3F3jWca" name="client.view.tabs.info">
+      <segment>
+        <source>client.view.tabs.info</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="7YM_rRx" name="client.view.tabs.quotes">
+      <segment>
+        <source>client.view.tabs.quotes</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="63tlI._" name="client.view.tabs.invoices">
+      <segment>
+        <source>client.view.tabs.invoices</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="LuWrLV1" name="client.view.tabs.payments">
+      <segment>
+        <source>client.view.tabs.payments</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="Tis9gkg" name="payments">
+      <segment>
+        <source>payments</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="mamDp3L" name="add_client">
+      <segment>
+        <source>add_client</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="IKhSGcU" name="Add Address">
+      <segment>
+        <source>Add Address</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="fbGelJ5" name="client.heading.addresses">
+      <segment>
+        <source>client.heading.addresses</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="9G_FYfr" name="Add Contact">
+      <segment>
+        <source>Add Contact</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="7vLXxSu" name="client.view.actions.add_contact">
+      <segment>
+        <source>client.view.actions.add_contact</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="xXjNVw1" name="client.heading.contacts">
+      <segment>
+        <source>client.heading.contacts</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="xldMAD." name="Are you sure you want to delete the address?">
+      <segment>
+        <source>Are you sure you want to delete the address?</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="nD2DXSO" name="client.address.edit">
+      <segment>
+        <source>client.address.edit</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="phh3iik" name="client.address.delete">
+      <segment>
+        <source>client.address.delete</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="XrCN.KS" name="client.address.view_map">
+      <segment>
+        <source>client.address.view_map</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="OAarTrw" name="client.modal.add_credit">
+      <segment>
+        <source>client.modal.add_credit</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="UmTDiJB" name="client.view.actions.add_credit">
+      <segment>
+        <source>client.view.actions.add_credit</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="dM5J_22" name="client.stats.credit">
+      <segment>
+        <source>client.stats.credit</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="S0KOG9U" name="Are you sure you want to delete the contact?">
+      <segment>
+        <source>Are you sure you want to delete the contact?</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="wazB3Xz" name="contact_edit">
+      <segment>
+        <source>contact_edit</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="V8i_v8_" name="contact_delete">
+      <segment>
+        <source>contact_delete</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="cFbWPXT" name="client.contact.details.email">
+      <segment>
+        <source>client.contact.details.email</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="gU_WQXk" name="quotes">
+      <segment>
+        <source>quotes</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="soDFoIN" name="client.modal.action.close">
+      <segment>
+        <source>client.modal.action.close</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id=".LN9PSt" name="client.modal.action.save">
+      <segment>
+        <source>client.modal.action.save</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="h3W6_hA" name="change">
+      <segment>
+        <source>change</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="pNbHLag" name="client.contacts.info.list">
+      <segment>
+        <source>client.contacts.info.list</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="VXFwlwn" name="Settings">
+      <segment>
+        <source>Settings</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="FGVZsUg" name="settings.save">
+      <segment>
+        <source>settings.save</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="fYTfL1o" name="Danger Zone">
+      <segment>
+        <source>Danger Zone</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="OKpI39E" name="This section allows you to delete your company and all associated data.">
+      <segment>
+        <source>This section allows you to delete your company and all associated data.</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="tF13zas" name="Please proceed with caution since this action cannot be undone.">
+      <segment>
+        <source>Please proceed with caution since this action cannot be undone.</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="Mfg6bWt" name="Delete Company">
+      <segment>
+        <source>Delete Company</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="D1YJd3t" name="Confirm Company Deletion">
+      <segment>
+        <source>Confirm Company Deletion</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="j3XdGGH" name="Warning!">
+      <segment>
+        <source>Warning!</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="2fM_.ua">
+      <segment>
+        <source>This action will permanently delete your company and all associated data. This cannot be undone.</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id=".A2qzft" name="To confirm deletion, please type the company name exactly as shown below:">
+      <segment>
+        <source>To confirm deletion, please type the company name exactly as shown below:</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="ZpcaUFw" name="Company Name">
+      <segment>
+        <source>Company Name</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="E52Ahe6" name="Enter company name to confirm">
+      <segment>
+        <source>Enter company name to confirm</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="tYaKpJe" name="payment.methods.title">
+      <segment>
+        <source>payment.methods.title</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="OUXmkWT" name="payment.action.pay">
+      <segment>
+        <source>payment.action.pay</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="0a6aEOL" name="payment.create.tite">
+      <segment>
+        <source>payment.create.tite</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="IHK.pNd" name="payment.create.credit">
+      <segment>
+        <source>payment.create.credit</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="lyDA763" name="payment.create.cancel">
+      <segment>
+        <source>payment.create.cancel</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="Ujz4vnr" name="payment.list.title">
+      <segment>
+        <source>payment.list.title</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="QEG3aev" name="payment.list.status_legend">
+      <segment>
+        <source>payment.list.status_legend</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="njTKNps" name="payment.method.add">
+      <segment>
+        <source>payment.method.add</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="2E3W_Ux" name="save">
+      <segment>
+        <source>save</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="ayMjaSg" name="Subscription is canceleld">
+      <segment>
+        <source>Subscription is canceleld</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="cyY6LR5">
+      <segment>
+        <source>Your subscription is not canceled. If you would like to activate your subscription again, please click the button below.</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="Xvjxppn" name="Checkout">
+      <segment>
+        <source>Checkout</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="GJwajAi" name="Subscription not active">
+      <segment>
+        <source>Subscription not active</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="CE6F9HJ">
+      <segment>
+        <source>Your subscription is not active. If you have just completed the checkout, please wait a few moments then refresh the page.</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="OBpn6RS" name="If you have not completed the checkout, please click checkout below to continue.">
+      <segment>
+        <source>If you have not completed the checkout, please click checkout below to continue.</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="njo9Voz" name="Refresh">
+      <segment>
+        <source>Refresh</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="j_kHAw0" name="SMS">
+      <segment>
+        <source>SMS</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="uupXYC." name="Chat">
+      <segment>
+        <source>Chat</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="WGS1ZkG" name="Configure notification integrations">
+      <segment>
+        <source>Configure notification integrations</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="bMc_Yhf" name="Add and configure notification integrations to send notifications.">
+      <segment>
+        <source>Add and configure notification integrations to send notifications.</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="1_MZEgP" name="Actions">
+      <segment>
+        <source>Actions</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="uIyGPMB" name="No results found.">
+      <segment>
+        <source>No results found.</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="P0ylEsk" name="EU Countries Only">
+      <segment>
+        <source>EU Countries Only</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="jPtXcgB" name="Address">
+      <segment>
+        <source>Address</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="ueIcwxm" name="User Image">
+      <segment>
+        <source>User Image</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="sMRbz9D" name="Add Company">
+      <segment>
+        <source>Add Company</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="bQANfwb" name="menu.button.create">
+      <segment>
+        <source>menu.button.create</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="qRgbJUl" name="invoice.action.pay_now">
+      <segment>
+        <source>invoice.action.pay_now</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="tdd_ipy" name="tax.rates.add">
+      <segment>
+        <source>tax.rates.add</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id=".Tw.mVM" name="tax.rates.save">
+      <segment>
+        <source>tax.rates.save</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="h1ywLNH" name="tax.rates.title">
+      <segment>
+        <source>tax.rates.title</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="spiyl0A" name="2-step verification">
+      <segment>
+        <source>2-step verification</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="gQ4esKp" name="Please enter the code from your authenticator app.">
+      <segment>
+        <source>Please enter the code from your authenticator app.</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="qH4XA_O" name="Lost access to your authenticator app? You can use one of your backup codes.">
+      <segment>
+        <source>Lost access to your authenticator app? You can use one of your backup codes.</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="4VFNEZq" name="Trust this device">
+      <segment>
+        <source>Trust this device</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="HuzbcvR" name="Or use another method:">
+      <segment>
+        <source>Or use another method:</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="DlYQegL" name="We sent a verification code to your email.">
+      <segment>
+        <source>We sent a verification code to your email.</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="dFagOak" name="Please enter the code in the field below.">
+      <segment>
+        <source>Please enter the code in the field below.</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="jvQUb3U" name="Didn't receive it?">
+      <segment>
+        <source>Didn't receive it?</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="fSOzn7W" name="Resend code">
+      <segment>
+        <source>Resend code</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="7VeiRFc" name="Regenerate">
+      <segment>
+        <source>Regenerate</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id=".c7VIvP" name="Two-factor Authentication">
+      <segment>
+        <source>Two-factor Authentication</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="JZi_tm0" name="Email">
+      <segment>
+        <source>Email</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="olypvzo" name="Disable">
+      <segment>
+        <source>Disable</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="tK64T0a" name="Disabled">
+      <segment>
+        <source>Disabled</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="GtGBNUT" name="Enable">
+      <segment>
+        <source>Enable</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="HyzLVkF" name="Authenticator app">
+      <segment>
+        <source>Authenticator app</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="ttHGl.K" name="Recovery Options">
+      <segment>
+        <source>Recovery Options</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="4uQJ34J" name="Backup Codes">
+      <segment>
+        <source>Backup Codes</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id=".EmYZIu" name="View">
+      <segment>
+        <source>View</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="oVcmmMp" name="Trusted Device">
+      <segment>
+        <source>Trusted Device</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="CMnFWQR" name="Browser Trusted">
+      <segment>
+        <source>Browser Trusted</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="6T0AUvY" name="This device is trusted and won't require a 2FA code.">
+      <segment>
+        <source>This device is trusted and won't require a 2FA code.</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="JKl2Twv" name="Logout">
+      <segment>
+        <source>Logout</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="bwnneWY" name="Login to your account">
+      <segment>
+        <source>Login to your account</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="3PkXx5O" name="Email address">
+      <segment>
+        <source>Email address</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="GqmFSHc" name="Password">
+      <segment>
+        <source>Password</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="iva2itA" name="Remember me on this device">
+      <segment>
+        <source>Remember me on this device</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="pNIxNSX" name="Sign in">
+      <segment>
+        <source>Sign in</source>
+        <target></target>
+      </segment>
+    </unit>
+  </file>
+</xliff>

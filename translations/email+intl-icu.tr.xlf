@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="tr">
+  <file id="email.tr">
+    <unit id="3NFV6Ob" name="invoice.status_change.heading">
+      <segment>
+        <source>invoice.status_change.heading</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="bkYQSgi" name="invoice.status_change.id">
+      <segment>
+        <source>invoice.status_change.id</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="7xtKB80" name="invoice.status_change.new_status">
+      <segment>
+        <source>invoice.status_change.new_status</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="B7I4GUo" name="invoice.status_change.view_invoice">
+      <segment>
+        <source>invoice.status_change.view_invoice</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="QpDEduG" name="invoice.status_change.status">
+      <segment>
+        <source>invoice.status_change.status</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="lpZ9rbu" name="invoice.pay_now">
+      <segment>
+        <source>invoice.pay_now</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="cZ_UOQD" name="invoice.info">
+      <segment>
+        <source>invoice.info</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="JIBV7Yo" name="reset_password.subject">
+      <segment>
+        <source>reset_password.subject</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="dv0YMp5" name="reset_password.message_html">
+      <segment>
+        <source>reset_password.message_html</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="TG_hdt9" name="reset_password.button_text">
+      <segment>
+        <source>reset_password.button_text</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="pl9ndg." name="Confirm">
+      <segment>
+        <source>Confirm</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="4uJtRzU" name="reset_password.message_text">
+      <segment>
+        <source>reset_password.message_text</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="HszC75h" name="invitation.accept">
+      <segment>
+        <source>invitation.accept</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="Ti8Pu2E" name="quote.status_change.heading">
+      <segment>
+        <source>quote.status_change.heading</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="FGW3yxN" name="quote.status_change.id">
+      <segment>
+        <source>quote.status_change.id</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="VaC6Fl4" name="quote.status_change.new_status">
+      <segment>
+        <source>quote.status_change.new_status</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="4z6HzEt" name="quote.status_change.view_quote">
+      <segment>
+        <source>quote.status_change.view_quote</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="RiK03CN" name="quote.info">
+      <segment>
+        <source>quote.info</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="v.Kkac6" name="client.create.heading">
+      <segment>
+        <source>client.create.heading</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="bAhjSCa" name="client.create.details.name">
+      <segment>
+        <source>client.create.details.name</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="BA7VQIG" name="client.create.details.website">
+      <segment>
+        <source>client.create.details.website</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="q17jyWQ" name="client.create.contacts.heading">
+      <segment>
+        <source>client.create.contacts.heading</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="49mde73" name="client.create.contacts.name">
+      <segment>
+        <source>client.create.contacts.name</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="PJ77eII" name="client.create.details.id">
+      <segment>
+        <source>client.create.details.id</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="NWvDeGc" name="payment.description">
+      <segment>
+        <source>payment.description</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="XBveppg" name="payment.details.invoice">
+      <segment>
+        <source>payment.details.invoice</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="K2IPf1m" name="payment.details.client">
+      <segment>
+        <source>payment.details.client</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="CWPbem8" name="payment.details.method">
+      <segment>
+        <source>payment.details.method</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="Pg_Dy.C" name="payment.details.currency">
+      <segment>
+        <source>payment.details.currency</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="RzNuZSH" name="payment.details.amount">
+      <segment>
+        <source>payment.details.amount</source>
+        <target></target>
+      </segment>
+    </unit>
+    <unit id="0KQHkO0" name="payment.details.status">
+      <segment>
+        <source>payment.details.status</source>
+        <target></target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
