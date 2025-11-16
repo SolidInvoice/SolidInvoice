@@ -14,7 +14,6 @@ declare(strict_types=1);
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Config\FrameworkConfig;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 
 return static function (FrameworkConfig $config): void {
     $config
