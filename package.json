@@ -66,13 +66,12 @@
         "intl-messageformat": "^10.5.0",
         "jquery": "^3.7.1",
         "popper.js": "^1.16.1",
-        "regenerator-runtime": "^0.14.1",
-        "underscore": "^1.13.6"
+        "regenerator-runtime": "^0.14.1"
     },
     "engines": {
-        "node": ">=18.0.0"
+        "node": "22"
     },
-    "packageManager": "bun@1.2.10",
+    "packageManager": "bun@1.2.22",
     "trustedDependencies": [
         "@fortawesome/fontawesome-free",
         "core-js-pure"
