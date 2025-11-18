@@ -1,0 +1,18 @@
+[phases.setup]
+nixPkgs = [
+    "(php84.withExtensions (pe: pe.enabled ++ [pe.all.curl pe.all.gd pe.all.intl pe.all.openssl pe.all.pdo pe.all.soap pe.all.xsl]))",
+    "nginx",
+    "libmysqlclient",
+    "php84Packages.composer",
+    "nodejs",
+    "bun",
+    "php84Extensions.curl",
+    "php84Extensions.gd",
+    "php84Extensions.intl",
+    "php84Extensions.openssl",
+    "php84Extensions.pdo",
+    "php84Extensions.soap",
+    "php84Extensions.xsl",
+]
+
+aptPkgs = ["build-essential", "curl", "wget"]
