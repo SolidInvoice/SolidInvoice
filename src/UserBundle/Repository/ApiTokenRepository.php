@@ -73,7 +73,7 @@ class ApiTokenRepository extends ServiceEntityRepository
             ->createQueryBuilder()
             ->select('IDENTITY(h2.token) AS token_id', 'MAX(h2.created) AS max_created', 'h2.ip')
             ->from(ApiTokenHistory::class, 'h2')
-            ->groupBy('h2.token');
+            ->groupBy('h2.token', 'h2.ip');
 
         /** @var list<array{token_id: string, max_created: DateTimeInterface, ip: string}> $history */
         $history = $subQb->getQuery()->getArrayResult();
