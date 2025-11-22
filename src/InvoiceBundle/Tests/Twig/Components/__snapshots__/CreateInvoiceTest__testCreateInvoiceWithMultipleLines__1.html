@@ -19,7 +19,7 @@
                                     </div>
                                                                     </div>
 
-                                <div class="col-3 offset-3 text-right">
+                                <div class="col-6 col-md-3 offset-md-3 text-right">
                                         <label for="invoice_discount_value">Discount</label>
     <div class="form-group multiple-form-group input-group">
         <input type="text" id="invoice_discount_value" name="invoice[discount][value]" class="discount-value form-control" value="0">
@@ -31,7 +31,7 @@
                             </div>
 
                             <div class="row mb-4">
-                                <div class="col-6 pt-4" data-controller="billing-id">
+                                <div class="col-12 col-md-6 pt-4 mb-2 mb-md-0" data-controller="billing-id">
                                     <span data-billing-id-target="info">
                                         <span class="h4">
                                             Invoice #<span data-billing-id-target="value">1</span>
@@ -56,13 +56,13 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-3">
+                                <div class="col-6 col-md-3">
                                     <div class="form-group">                
                                 <label class="control-label required required" for="invoice_invoiceDate">Invoice date</label><input type="date" id="invoice_invoiceDate" name="invoice[invoiceDate]" data-required="required" class="form-control" value="2021-01-01">
 </div>
                                 </div>
 
-                                <div class="col-3">
+                                <div class="col-6 col-md-3">
                                     <div class="form-group">    
             <label class="control-label" for="invoice_due">Due Date</label><input type="date" id="invoice_due" name="invoice[due]" class="form-control">
 </div>
@@ -102,7 +102,7 @@
                                                         
                                                     </td>
                                                     <td class="column-price">
-                                                        <div class="input-group ">
+                                                        <div class="input-group flex-nowrap">
 <div class="input-group-prepend">
                     <span class="input-group-text">$ </span>
                 </div>
@@ -127,7 +127,7 @@
                                                         
                                                     </td>
                                                     <td class="column-price">
-                                                        <div class="input-group ">
+                                                        <div class="input-group flex-nowrap">
 <div class="input-group-prepend">
                     <span class="input-group-text">$ </span>
                 </div>
@@ -210,13 +210,13 @@
                         </div>
 
                         <div class="form-actions clearfix">
-                                                            <div class="float-right">
+                                                            <div class="float-md-right mb-2">
                                     <button type="submit" class="btn btn-primary" name="save" value="save">
                                         <i class="fa fa-save"></i> Save as Draft
                                     </button>
                                 </div>
-                                <div class="float-left">
-                                    <button type="submit" class="btn btn-success" name="save" value="pending">
+                                <div class="float-md-left d-flex justify-content-between">
+                                    <button type="submit" class="btn btn-success mr-md-2" name="save" value="pending">
                                         <i class="fa fa-envelope o"></i> Save and Send
                                     </button>
                                     <button type="submit" class="btn btn-info" name="save" value="publish">
