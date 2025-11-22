@@ -1,6 +1,7 @@
 #!/usr/bin/env php
 <?php
 
+use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\Kernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 
@@ -45,5 +46,9 @@ if (function_exists('ini_set')) {
 return static function (array $context) {
     $kernel = new Kernel($context['SOLIDINVOICE_ENV'], (bool) $context['SOLIDINVOICE_DEBUG']);
 
-    return new Application($kernel);
+    $application = new Application($kernel);
+    $application->setName(SolidInvoiceCoreBundle::APP_NAME);
+    $application->setVersion(SolidInvoiceCoreBundle::VERSION);
+
+    return $application;
 };
