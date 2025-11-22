@@ -1,7 +1,7 @@
 {% from "@SolidInvoiceSettings/macros.html.twig" import settings_section %}
 
 <section class="row"{{ attributes }}>
-    <aside class="col-3">
+    <aside class="col-md-3">
         <div class="card sticky-top">
             <div class="card-body">
                 <ul class="nav nav-pills nav-sidebar flex-column sidebar-menu" role="tablist">
@@ -18,7 +18,7 @@
         </div>
     </aside>
 
-    <section class="col-9">
+    <section class="col-md-9">
         {{ form_start(form, {
             attr: {
                 'data-action': 'live#action:prevent',

@@ -28,6 +28,19 @@ class Builder extends AuthenticatedMenu
      * @throws ServiceCircularReferenceException
      * @throws ServiceNotFoundException
      */
+    public function dashboardMenu(ItemInterface $menu): void
+    {
+        MainMenu::dashboard($menu);
+        $menu->addDivider();
+    }
+
+    /**
+     * Build the user menu.
+     *
+     * @throws InvalidArgumentException
+     * @throws ServiceCircularReferenceException
+     * @throws ServiceNotFoundException
+     */
     public function userMenu(ItemInterface $menu): void
     {
         $menu->addDivider();

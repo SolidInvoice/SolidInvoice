@@ -16,15 +16,15 @@
                 {{ form_widget(form) }}
 
                 <div class="form-group">
-                    <button data-loading="addAttribute(disabled)" type="submit" class="btn-success btn">
-                        {{ icon('save') }} Save
-                    </button>
-
                     {% if paymentMethod.id is not empty %}
-                        <button data-loading="addAttribute(disabled)" type="button" class="btn-danger btn float-right" data-action="live#action" data-live-action-param="delete">
+                        <button data-loading="addAttribute(disabled)" type="button" class="btn-danger btn float-left" data-action="live#action" data-live-action-param="delete">
                             {{ icon('trash') }} Delete
                         </button>
                     {% endif %}
+
+                    <button data-loading="addAttribute(disabled)" type="submit" class="btn-success btn float-right">
+                        {{ icon('save') }} Save
+                    </button>
                 </div>
             {{ form_end(form) }}
         </div>

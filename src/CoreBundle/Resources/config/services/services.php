@@ -60,6 +60,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set(Builder::class)
         ->tag('cs_core.menu', [
             'menu' => 'sidebar',
+            'method' => 'dashboardMenu',
+            'priority' => 200,
+        ])
+        ->tag('cs_core.menu', [
+            'menu' => 'sidebar',
             'method' => 'systemMenu',
             'priority' => -200,
         ])

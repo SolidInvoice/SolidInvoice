@@ -1,7 +1,7 @@
 <div {{ attributes }}>
     {% include "@SolidInvoiceCore/flash.html.twig" %}
     <section class="row">
-        <aside class="col-3">
+        <aside class="col-md-3">
             <div class="card">
                 <div class="card-body">
                     <div class="text-center mb-4">
@@ -39,7 +39,7 @@
                 </div>
             </div>
         </aside>
-        <section class="col-9">
+        <section class="col-md-9">
             {% if this.method is not empty %}
                 <twig:PaymentSettings method="{{ this.method }}" />
             {% endif %}

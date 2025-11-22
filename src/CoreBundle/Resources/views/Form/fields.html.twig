@@ -178,3 +178,8 @@
     {{- form_help(form) -}}
     </{{ element|default('div') }}>
 {% endblock image_upload_widget %}
+
+{% block money_widget -%}
+    {%- set group_class = 'flex-nowrap' -%}
+    {{ parent() }}
+{%- endblock money_widget %}
