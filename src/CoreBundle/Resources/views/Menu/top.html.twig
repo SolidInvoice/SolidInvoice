@@ -21,7 +21,8 @@
 
 {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
     <div class="btn-group float-right">
-        <button class="btn btn-sm dropdown-toggle m-0" type="button" data-toggle="dropdown">
+        <button class="btn btn-default btn-sm dropdown-toggle m-0" type="button" data-toggle="dropdown">
+            {{ app_logo(25) }}
             {{ company_name() }} <b class="caret"></b>
         </button>
         <ul class="dropdown-menu" role="menu">
@@ -47,7 +48,7 @@
         </ul>
     </div>
     &nbsp;&nbsp;
-    <div class="btn-group float-right" id="top-menu-create-button">
+    <div class="btn-group float-right d-none d-md-block" id="top-menu-create-button">
         <button class="btn btn-info btn-sm dropdown-toggle m-0" type="button" data-toggle="dropdown">
             {{ icon('plus') }} {{ 'menu.button.create'|trans }} <b class="caret"></b>
         </button>

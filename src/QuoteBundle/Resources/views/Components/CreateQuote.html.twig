@@ -19,13 +19,13 @@
                                     {% endif %}
                                 </div>
 
-                                <div class="col-3 offset-3 text-right">
+                                <div class="col-6 col-md-3 offset-md-3 text-right">
                                     {{ form_row(form.discount) }}
                                 </div>
                             </div>
 
                             <div class="row mb-4">
-                                <div class="col-6 pt-4" {{ stimulus_controller('billing-id') }}>
+                                <div class="col-12 col-md-6 pt-4 mb-2 mb-md-0" {{ stimulus_controller('billing-id') }}>
                                     <span {{ stimulus_target('billing-id', 'info') }}>
                                         <span class="h4">
                                             {{ 'Quote #'|trans }}<span {{ stimulus_target('billing-id', 'value') }}>{{ form.quoteId.vars.data }}</span>
@@ -192,23 +192,23 @@
 
                         <div class="form-actions clearfix">
                             {% if isEdit %}
-                            <div class="float-right">
-                                <button type="submit" class="btn btn-info" name="save" value="save">
-                                    {{ icon('check') }} {{ "Save Quote"|trans }}
-                                </button>
-                            </div>
+                                <div class="float-right">
+                                    <button type="submit" class="btn btn-info" name="save" value="save">
+                                        {{ icon('check') }} {{ "Save Quote"|trans }}
+                                    </button>
+                                </div>
                             {% else %}
-                                <div class="float-left">
-                                    <button type="submit" class="btn btn-success" name="save" value="pending">
+                                <div class="float-md-right mb-2">
+                                    <button type="submit" class="btn btn-primary" name="save" value="save">
+                                        {{ icon('save') }} {{ "quote.save.draft"|trans }}
+                                    </button>
+                                </div>
+                                <div class="float-md-left d-flex justify-content-between">
+                                    <button type="submit" class="btn btn-success mr-md-2" name="save" value="pending">
                                         {{ icon('envelope', ['o']) }} {{ ("quote.save.send")|trans }}
                                     </button>
                                     <button type="submit" class="btn btn-info" name="save" value="publish">
                                         {{ icon('check') }} {{ "Save Quote"|trans }}
-                                    </button>
-                                </div>
-                                <div class="float-right">
-                                    <button type="submit" class="btn btn-primary" name="save" value="save">
-                                        {{ icon('save') }} {{ "quote.save.draft"|trans }}
                                     </button>
                                 </div>
                             {% endif %}

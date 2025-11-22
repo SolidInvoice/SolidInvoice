@@ -4,7 +4,7 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-md-6 offset-3">
+        <div class="col-12 col-md-6 offset-md-3">
             <div class="card">
                 {{ form_start(form) }}
                 <div class="card-header with-border">
@@ -20,15 +20,15 @@
                         {% if allowCancel %}
                             <div class="col align-self-start">
                                 <a href="{{ path('_dashboard') }}" class="btn btn-warning btn-block">
-                                    Cancel
+                                    {{ icon('reply') }} {{ 'Cancel'|trans }}
                                 </a>
                             </div>
                         {% endif %}
-                        <div class="col-7">
+                        <div class="col-md-7 d-none d-md-block">
                         </div>
                         <div class="col" id="next_button">
                             <button type="submit" class="btn btn-success btn-block">
-                                Create {{ icon('save') }}
+                                {{ icon('save') }} {{ 'Create'|trans }}
                             </button>
                         </div>
                     </div>

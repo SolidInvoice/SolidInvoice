@@ -13,13 +13,21 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Action;
 
-use SolidInvoice\CoreBundle\Templating\Template;
+use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use Symfony\Component\HttpFoundation\Request;
 
 final class Index
 {
-    public function __invoke(Request $request)
+    public function __construct(
+        private readonly ClientRepository $clientRepository
+    ) {
+    }
+
+    #[\Symfony\Bridge\Twig\Attribute\Template('@SolidInvoiceClient/Default/index.html.twig')]
+    public function __invoke(Request $request): array
     {
-        return new Template('@SolidInvoiceClient/Default/index.html.twig');
+        return [
+            'count' => $this->clientRepository->count([]),
+        ];
     }
 }

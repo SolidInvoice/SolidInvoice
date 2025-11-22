@@ -7,7 +7,7 @@
  # with this source code in the file LICENSE.
  #}
 
-<div class="col-6">
+<div class="col-md-6 col-12">
     <div class="card mt-2">
         <div class="card-header{% if invoices is not empty%} border-bottom-0{% endif %}">
             <h5 class="card-title">
@@ -53,6 +53,8 @@
                             <div class="float-right">
                                 {{ invoice.total|formatCurrency }}
                                 <br />
+                            </div>
+                            <div>
                                 <small>
                                     <strong>
                                         {{ 'dashboard.invoice.actions.created'|trans }}
@@ -76,7 +78,7 @@
                     <h6>
                         {{ 'dashboard.invoice.empty'|trans }}
                     </h6>
-                    <a href="{{ path('_invoices_create') }}">
+                    <a href="{{ path('_invoices_create') }}" class="btn btn-default btn-sm">
                         {{ icon('plus') }} {{ 'dashboard.invoice.create'|trans }}
                     </a>
                 </div>

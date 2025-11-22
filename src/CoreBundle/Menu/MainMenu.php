@@ -18,6 +18,17 @@ use SolidInvoice\UserBundle\Entity\User;
 
 class MainMenu
 {
+    public static function dashboard(ItemInterface $item): ItemInterface
+    {
+        return $item->addChild(
+            'menu.top.dashboard',
+            [
+                'route' => '_dashboard',
+                'extras' => ['icon' => 'tachometer-alt'],
+            ],
+        );
+    }
+
     public static function user(ItemInterface $item, User $user): ItemInterface
     {
         $username = $user->getUserIdentifier() . ' <b class="caret"></b>';

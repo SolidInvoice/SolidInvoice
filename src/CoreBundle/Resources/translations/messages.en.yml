@@ -2,6 +2,7 @@ menu:
     button:
         create: Create
     top:
+        dashboard: Dashboard
         profile: Profile
         api: 'API Tokens'
         logout: Logout
