@@ -19,11 +19,7 @@ use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters = $containerConfigurator->parameters();
 
-    if ($containerConfigurator->env() === 'test') {
-        $parameters->set('env(SOLIDINVOICE_DATABASE_URL)', 'sqlite:///%kernel.cache_dir%/solidinvoice.db');
-    } else {
-        $parameters->set('env(SOLIDINVOICE_DATABASE_URL)', 'sqlite:///%env(SOLIDINVOICE_CONFIG_DIR)%/db/solidinvoice.db');
-    }
+    $parameters->set('env(SOLIDINVOICE_DATABASE_URL)', 'sqlite:///%env(SOLIDINVOICE_CONFIG_DIR)%/db/solidinvoice.db');
 
     $parameters->set('env(SOLIDINVOICE_LOCALE)', 'en');
     $parameters->set('env(SOLIDINVOICE_APP_SECRET)', null);

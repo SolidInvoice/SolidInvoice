@@ -46,6 +46,7 @@
         <server name="KERNEL_CLASS" value="SolidInvoice\Kernel" />
         <server name="SHELL_VERBOSITY" value="-1" />
         <server name="BROWSER_ALWAYS_START_WEBSERVER" value="1"/>
+        <server name="SOLIDINVOICE_DATABASE_URL" value="sqlite:///var/cache/test/solidinvoice.db"/>
     </php>
     <listeners>
         <listener class="Mockery\Adapter\Phpunit\TestListener"/>
