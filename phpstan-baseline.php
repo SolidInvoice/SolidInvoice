@@ -2,12 +2,6 @@
 
 $ignoreErrors = [];
 $ignoreErrors[] = [
-	// identifier: missingType.return
-	'message' => '#^Method SolidInvoice\\\\ClientBundle\\\\Action\\\\Index\\:\\:__invoke\\(\\) has no return type specified\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/src/ClientBundle/Action/Index.php',
-];
-$ignoreErrors[] = [
 	// identifier: missingType.iterableValue
 	'message' => '#^Method SolidInvoice\\\\ClientBundle\\\\Form\\\\ConstraintBuilder\\:\\:build\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#',
 	'count' => 1,
