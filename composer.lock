@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "aed8b3651b5f43fb22403c776423fb41",
+    "content-hash": "ab7d598de55533399edf22a8ef68525f",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -4784,12 +4784,12 @@
             "version": "3.20.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/driesvints/vat-calculator.git",
+                "url": "https://github.com/laravel/vat-calculator.git",
                 "reference": "dc7f6da8ba3b1e53d47df0399affbf82748d3f82"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/driesvints/vat-calculator/zipball/dc7f6da8ba3b1e53d47df0399affbf82748d3f82",
+                "url": "https://api.github.com/repos/laravel/vat-calculator/zipball/dc7f6da8ba3b1e53d47df0399affbf82748d3f82",
                 "reference": "dc7f6da8ba3b1e53d47df0399affbf82748d3f82",
                 "shasum": ""
             },
