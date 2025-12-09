@@ -129,13 +129,14 @@ abstract class FormTestCase extends KernelTestCase
     /**
      * @param string|FormInterface $form
      * @param array<string, mixed> $formData
+     * @param array<string, mixed> $formOptions
      */
-    protected function assertFormData($form, array $formData, mixed $object): void
+    protected function assertFormData($form, array $formData, mixed $object, array $formOptions = []): void
     {
         self::assertNotEmpty($formData);
 
         if (! $form instanceof FormInterface) {
-            $form = $this->factory->create($form, $object);
+            $form = $this->factory->create($form, $object, $formOptions);
         }
 
         // submit the data to the form directly
