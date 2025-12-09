@@ -17,7 +17,6 @@ use DateTime;
 use DateTimeInterface;
 use Defuse\Crypto\Exception\EnvironmentIsBrokenException;
 use Doctrine\Persistence\ManagerRegistry;
-use Mpociot\VatCalculator\VatCalculator;
 use SolidInvoice\CoreBundle\ConfigWriter;
 use SolidInvoice\CoreBundle\Entity\Version;
 use SolidInvoice\CoreBundle\Repository\VersionRepository;
@@ -33,15 +32,14 @@ use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Throwable;
 
-final class Setup
+final readonly class Setup
 {
     public function __construct(
-        private readonly PasswordHasherFactoryInterface $passwordHasherFactory,
-        private readonly FormFactoryInterface $formFactory,
-        private readonly ManagerRegistry $doctrine,
-        private readonly ConfigWriter $configWriter,
-        private readonly VatCalculator $vatCalculator,
-        private readonly RouterInterface $router
+        private PasswordHasherFactoryInterface $passwordHasherFactory,
+        private FormFactoryInterface $formFactory,
+        private ManagerRegistry $doctrine,
+        private ConfigWriter $configWriter,
+        private RouterInterface $router
     ) {
     }
 
@@ -76,7 +74,7 @@ final class Setup
     /**
      * @throws EnvironmentIsBrokenException|Throwable
      */
-    public function handleForm(Request $request): Template|RedirectResponse
+    public function handleForm(Request $request): Template | RedirectResponse
     {
         $form = $this->getForm();
 
