@@ -15,6 +15,7 @@ namespace SolidInvoice\ClientBundle\Tests\Form\Type;
 
 use Brick\Math\BigDecimal;
 use Brick\Math\Exception\MathException;
+use Money\Currency;
 use SolidInvoice\ClientBundle\Form\Type\CreditType;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
 use Symfony\Component\Form\FormTypeInterface;
@@ -37,7 +38,7 @@ class CreditTypeTest extends FormTestCase
             'amount' => BigDecimal::of($amount * 100),
         ];
 
-        $this->assertFormData(CreditType::class, $formData, $object);
+        $this->assertFormData(CreditType::class, $formData, $object, ['currency' => new Currency($this->faker->currencyCode())]);
     }
 
     /**
