@@ -40,7 +40,9 @@ final class ClientCredit extends AbstractController
 
     protected function instantiateForm(): FormInterface
     {
-        return $this->createForm(CreditType::class);
+        return $this->createForm(CreditType::class, null, [
+            'currency' => $this->client->getCurrency(),
+        ]);
     }
 
     #[LiveAction()]

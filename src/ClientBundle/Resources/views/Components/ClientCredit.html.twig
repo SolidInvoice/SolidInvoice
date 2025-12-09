@@ -1,6 +1,6 @@
 <div {{ attributes }}>
     <h3 id="client-credit-value">
-        {{ client.credit|formatCurrency }}
+        {{ client.credit|formatCurrency(client.currency) }}
     </h3>
     <a href="#" rel="tooltip" title="{{ 'client.view.actions.add_credit'|trans }}" data-toggle="modal" data-target="#add-client-credit">
         <i class="fas fa-plus-circle"></i> {{ 'client.stats.credit'|trans }}

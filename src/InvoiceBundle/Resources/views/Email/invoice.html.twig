@@ -38,7 +38,7 @@
                 "accountId": "{{ invoice.invoiceId }}",
                 "minimumPaymentDue": {
                     "@type": "PriceSpecification",
-                    "price": "{{ invoice.total|formatCurrency }}"
+                    "price": "{{ invoice.total|formatCurrency(invoice.client.currency) }}"
                 },
                 "paymentDue": "{{ invoice.due|date }}",
                 "paymentStatus": "PaymentDue",
@@ -48,7 +48,7 @@
                 },
                 "totalPaymentDue": {
                     "@type": "PriceSpecification",
-                    "price": "{{ invoice.balance|formatCurrency }}"
+                    "price": "{{ invoice.balance|formatCurrency(invoice.client.currency) }}"
                 }
             },
             {
@@ -92,7 +92,7 @@
                 <strong>{{ 'invoice.subtotal'|trans }}</strong>
             </columns>
             <columns class="thick-line text-right">
-                {{ invoice.baseTotal|formatCurrency }}
+                {{ invoice.baseTotal|formatCurrency(invoice.client.currency) }}
             </columns>
         </row>
         {% if invoice.tax.positive %}
@@ -102,7 +102,7 @@
                     <strong>{{ 'invoice.tax'|trans }}</strong>
                 </columns>
                 <columns>
-                    {{ invoice.tax|formatCurrency }}
+                    {{ invoice.tax|formatCurrency(invoice.client.currency) }}
                 </columns>
             </row>
         {% endif %}
@@ -113,7 +113,7 @@
                     <strong>{{ 'invoice.discount'|trans }}</strong>
                 </columns>
                 <columns>
-                    -{{ discount(invoice)|formatCurrency }}
+                    -{{ discount(invoice)|formatCurrency(invoice.client.currency) }}
                 </columns>
             </row>
         {% endif %}
@@ -127,7 +127,7 @@
                         {{ payment.method.name }}
                     </columns>
                     <columns>
-                        {{ (payment.total * -1)|formatCurrency }}
+                        {{ (payment.total * -1)|formatCurrency(invoice.client.currency) }}
                     </columns>
                 </row>
             {% endfor %}
@@ -144,9 +144,9 @@
             </columns>
             <columns>
                 {% if invoice.payments|length > 0 and not invoice.balance.zero %}
-                    {{ invoice.balance|formatCurrency }}
+                    {{ invoice.balance|formatCurrency(invoice.client.currency) }}
                 {% else %}
-                    {{ invoice.total|formatCurrency }}
+                    {{ invoice.total|formatCurrency(invoice.client.currency) }}
                 {% endif %}
             </columns>
         </row>
