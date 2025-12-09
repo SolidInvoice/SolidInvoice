@@ -51,7 +51,7 @@
                                 {{ invoice.client }}
                             </a>
                             <div class="float-right">
-                                {{ invoice.total|formatCurrency }}
+                                {{ invoice.total|formatCurrency(invoice.client.currency) }}
                                 <br />
                                 <small>
                                     <strong>

@@ -43,7 +43,7 @@
                                 {{ quote.client }}
                             </a>
                             <div class="float-right">
-                                {{ quote.total|formatCurrency }}
+                                {{ quote.total|formatCurrency(quote.client.currency) }}
                                 <br />
                                 <small>
                                     <strong>
