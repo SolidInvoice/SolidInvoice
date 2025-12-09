@@ -24,7 +24,6 @@ use SolidInvoice\CoreBundle\Repository\VersionRepository;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\InstallBundle\Form\Step\SystemInformationForm;
-use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
@@ -153,21 +152,6 @@ final class Setup
         ];
 
         $this->configWriter->save($config);
-
-        $countryCode = explode('_', $data['locale'])[1] ?? $data['locale'];
-
-        if ($this->vatCalculator->shouldCollectVAT($countryCode)) {
-            $rate = $this->vatCalculator->getTaxRateForCountry($countryCode);
-
-            $tax = new Tax();
-            $tax->setRate($rate * 100)
-                ->setType(Tax::TYPE_INCLUSIVE)
-                ->setName('VAT');
-
-            $em = $this->doctrine->getManager();
-            $em->persist($tax);
-            $em->flush();
-        }
     }
 
     private function render(FormInterface $form): Template
