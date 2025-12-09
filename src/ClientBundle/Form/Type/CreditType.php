@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Form\Type;
 
+use Money\Currency;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -39,8 +41,17 @@ class CreditType extends AbstractType
                 'help' => $this->translator->trans('client.modal.credit.tip', ['%amount%' => '-20']),
                 'help_html' => true,
                 'constraints' => new Assert\NotBlank(),
+                'currency' => $options['currency'],
             ]
         );
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setRequired([
+            'currency',
+        ]);
+        $resolver->setAllowedTypes('currency', [Currency::class]);
     }
 
     public function getBlockPrefix(): string

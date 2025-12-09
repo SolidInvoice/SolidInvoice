@@ -73,7 +73,7 @@
                 <strong>{{ 'quote.subtotal'|trans }}</strong>
             </columns>
             <columns class="thick-line text-right">
-                {{ quote.baseTotal|formatCurrency }}
+                {{ quote.baseTotal|formatCurrency(quote.client.currency) }}
             </columns>
         </row>
         {% if quote.tax.positive %}
@@ -83,7 +83,7 @@
                     <strong>{{ 'quote.tax'|trans }}</strong>
                 </columns>
                 <columns>
-                    {{ quote.tax|formatCurrency }}
+                    {{ quote.tax|formatCurrency(quote.client.currency) }}
                 </columns>
             </row>
         {% endif %}
@@ -94,7 +94,7 @@
                     <strong>{{ 'quote.discount'|trans }}</strong>
                 </columns>
                 <columns>
-                    -{{ discount(quote)|formatCurrency }}
+                    -{{ discount(quote)|formatCurrency(quote.client.currency) }}
                 </columns>
             </row>
         {% endif %}
@@ -105,7 +105,7 @@
                 </strong>
             </columns>
             <columns>
-                {{ quote.total|formatCurrency }}
+                {{ quote.total|formatCurrency(quote.client.currency) }}
             </columns>
         </row>
 
