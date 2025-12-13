@@ -38,29 +38,48 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <h1 class="navbar-brand navbar-brand-autodark">
-                <a href="{{ url('_dashboard') }}">
-                    {{ app_logo() }}
+            <div class="navbar-brand navbar-brand-autodark">
+                <a href="{{ path('_dashboard') }}" aria-label="{{ company_name() }}" class="d-flex align-items-center text-decoration-none link-white">
+                    {{ app_logo(showDefault: true) }}
+                    {#<small>
+                                The Boring Company (Pty) Ltd
+                            </small>#}
+                    <small class="d-flex flex-column text-wrap lh-sm text-start">
+                        {{ company_name() }}
+                    </small>
                 </a>
-            </h1>
+            </div>
+
+            <div class="navbar-nav flex-row d-lg-none">
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link d-flex lh-1 text-reset p-0 px-2" data-bs-toggle="dropdown" aria-label="Open user menu">
+                        <span class="avatar avatar-sm">
+                            <img src="https://gravatar.com/avatar/{{ app.user.email|md5 }}?d=mm" alt="{{ 'User Image'|trans }}">
+                        </span>
+                        <div class="d-none d-xl-block ps-2">
+                            <div>{{ app.user.email }}</div>
+                        </div>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                        <a href="{{ path('_profile') }}" class="dropdown-item">
+                            {{ icon('user') }}&nbsp;
+                            {{ 'Profile'|trans }}
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="{{ path('_api_keys_index') }}" class="dropdown-item">
+                            {{ icon('lock') }}&nbsp;{{ 'API Keys'|trans }}
+                        </a>
+                        <twig:Ui:Security:LogoutLink />
+                        {#<a href="{{ path('_logout') }}" class="dropdown-item">
+                            {{ icon('power-off') }}&nbsp;
+                            {{ 'Logout'|trans }}
+                        </a>#}
+                    </div>
+                </div>
+            </div>
 
             <div class="collapse navbar-collapse" id="sidebar-menu">
                 <div class="d-flex flex-column">
-                    <div class="nav-item-label text-muted mb-2 mt-3">
-                        {{ company_name() }}
-                    </div>
-
-                    <div class="nav-item d-flex gap-3 px-3 mb-3">
-                        <div class="nav-item-avatar">
-                            <span class="avatar avatar-sm rounded">
-                                <img src="https://gravatar.com/avatar/{{ app.user.email|md5 }}?d=mm" alt="{{ 'User Image'|trans }}">
-                            </span>
-                        </div>
-                        <div class="nav-item-info">
-                            <a href="{{ path('_profile') }}" class="text-reset">{{ app.user.email }}</a>
-                        </div>
-                    </div>
-
                     {{ render_menu('sidebar') }}
 
                     {% if block('sidebar') is defined %}

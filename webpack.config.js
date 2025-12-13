@@ -55,4 +55,5 @@ Encore
 
 export default Encore
     .addStyleEntry('login', './assets/scss/login.scss')
+    .enableStimulusBridge('./assets/controllers.json')
     .getWebpackConfig();
