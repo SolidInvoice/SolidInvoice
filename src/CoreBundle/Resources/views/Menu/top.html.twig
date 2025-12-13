@@ -20,15 +20,9 @@
 {% endif %}#}
 
 {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-    <header class="navbar navbar-expand-sm d-print-none">
+    <header class="navbar navbar-expand-sm d-none d-lg-flex d-print-none">
         <div class="container-xl">
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
             <div class="navbar-nav flex-row order-md-last">
-
                 <div class="nav-item dropdown">
                     <button class="btn btn-default d-flex dropdown-toggle" data-bs-toggle="dropdown" aria-label="Open user menu">
                         {{ company_name() }} <b class="caret"></b>
@@ -72,7 +66,7 @@
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
                         <span class="avatar avatar-sm">
-                            {{ icon('user') }}
+                            <img src="https://gravatar.com/avatar/{{ app.user.email|md5 }}?d=mm" alt="{{ 'User Image'|trans }}">
                         </span>
                         <div class="d-none d-xl-block ps-2">
                             <div>{{ app.user.email }}</div>

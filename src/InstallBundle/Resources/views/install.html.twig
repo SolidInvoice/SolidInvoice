@@ -68,7 +68,8 @@
     </div>
 {% endblock %}
 
-{% block scripts -%}
+{% block javascripts -%}
+    {{ parent() }}
     <script defer>
         const steps = [
             {% for step in steps -%}
@@ -153,4 +154,4 @@
             }
         }
     </script>
-{% endblock scripts %}
+{% endblock javascripts %}
