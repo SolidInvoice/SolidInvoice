@@ -21,24 +21,16 @@ use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\UserBundle\Repository\UserRepository;
-use SolidWorx\Platform\PlatformBundle\Contracts\Security\TwoFactor\UserTwoFactorInterface;
-use SolidWorx\Platform\PlatformBundle\Security\TwoFactor\Traits\UserTwoFactor;
-use Stringable;
-use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
-use Symfony\Bridge\Doctrine\Types\UlidType;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Uid\Ulid;
 
 #[ORM\Table(name: User::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 // #[UniqueEntity(fields: ['email'], message: 'This email is already in use. Do you want to log in instead?')]
-#[ORM\Index(fields: ['googleId'])]
+//#[ORM\Index(fields: ['googleId'])]
 //class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringable, UserTwoFactorInterface
 class User extends \SolidWorx\Platform\PlatformBundle\Model\User
 {
-    // final public const string TABLE_NAME = 'users';
+    final public const string TABLE_NAME = 'users';
 
     use TimeStampable;
     // use UserTwoFactor;

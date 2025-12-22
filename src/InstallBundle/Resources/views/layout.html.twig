@@ -9,11 +9,22 @@
 
 {% extends '@SolidInvoiceCore/Layout/default_no_nav.html.twig' %}
 
-{% block title %}
-    {{ app_logo() }}
-    {{ "installation.title"|trans({"%app_name%" : constant('SolidInvoice\\CoreBundle\\SolidInvoiceCoreBundle::APP_NAME')}) }}
-{% endblock title %}
+{% block body %}
+    <div class="page-wrapper">
+        <div class="page-body">
+            <div class="container-xl">
+                {% include "@SolidInvoiceCore/flash.html.twig" %}
+                {{ block('content') is defined ? block('content') }}
+            </div>
+        </div>
+    </div>
+{% endblock body %}
 
 {% block page_title %}
-    {{ "installation.title"|trans({"%app_name%" : constant('SolidInvoice\\CoreBundle\\SolidInvoiceCoreBundle::APP_NAME')}) }}
+    {{ "installation.title"|trans({"%app_name%" : app_name}) }}
 {% endblock page_title %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('installation') }}
+{% endblock stylesheets %}

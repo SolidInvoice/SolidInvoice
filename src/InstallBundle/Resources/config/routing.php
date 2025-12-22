@@ -11,31 +11,11 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use SolidInvoice\InstallBundle\Action\Config;
-use SolidInvoice\InstallBundle\Action\Finish;
 use SolidInvoice\InstallBundle\Action\Install;
-use SolidInvoice\InstallBundle\Action\Setup;
-use SolidInvoice\InstallBundle\Action\SystemRequirements;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 return static function (RoutingConfigurator $routingConfigurator): void {
     $routingConfigurator
-        ->add('_install_check_requirements', '/install')
-        ->controller(SystemRequirements::class);
-
-    $routingConfigurator
-        ->add('_install_config', '/install/config')
-        ->controller(Config::class);
-
-    $routingConfigurator
-        ->add('_install_install', '/install/install')
+        ->add('_system_install', '/install')
         ->controller(Install::class);
-
-    $routingConfigurator
-        ->add('_install_setup', '/install/setup')
-        ->controller(Setup::class);
-
-    $routingConfigurator
-        ->add('_install_finish', '/install/finish')
-        ->controller(Finish::class);
 };

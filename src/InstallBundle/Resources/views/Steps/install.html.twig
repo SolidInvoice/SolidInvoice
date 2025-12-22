@@ -1,0 +1,391 @@
+{# <div class="col-4 bg-light rounded-start p-4">
+    <div class="d-flex flex-column h-100">
+        <div class="flex-grow-1">
+            <h2 class="card-title pb-3">
+                {{ app_logo(showDefault: true) }}
+                {{ app_name }} {{ 'Installation'|trans }}
+            </h2>
+            <div class="vstack gap-4 my-4">
+                {% for step in form.vars.visible_steps|filter(v => v.name != 'start') %}
+                    <div class="d-flex gap-2 align-items-center {{ step.index > form.vars.cursor.stepIndex ? 'text-muted' }}">
+                        <span class="align-self-start">
+                            {% if step.is_current_step %}
+                                <span class="text-secondary" style="color: #f0a015 !important;">
+                                    {{ ux_icon('tabler:circle-dot', {width: 32, height: 32}) }}
+                                </span>
+                            {% elseif step.index > form.vars.cursor.stepIndex %}
+                                {{ ux_icon('tabler:circle-dashed', {width: 32, height: 32}) }}
+                            {% else %}
+                                <span class="text-primary">
+                                    {{ ux_icon('tabler:circle-check', {width: 32, height: 32}) }}
+                                </span>
+                            {% endif %}
+                        </span>
+                        <div class="d-flex flex-column"{{ step.is_current_step ? ' id="current_step_text"' }}>
+                            <strong>{{ step.name|u.replace('_', ' ').title(allWords: true) }}</strong>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-8">
+    {% set current_step = form.vars.cursor.currentStep %}
+    {% set current_step_block_name = 'installation_' ~ current_step ~ '_step' %}
+
+    <div class="card-body p-4 px-5 d-flex flex-column h-100">
+        <div class="flex-grow-1" style="min-height: 410px">
+            <h4 class="card-title" id="install-title">{{ field_label(form[current_step]) }}</h4>
+            <p class="card-text text-muted mb-4">{{ field_help(form[current_step]) }}</p>
+
+            <hr class="border-secondary-subtle">
+
+
+        </div>
+        <div>
+            <div class="d-flex justify-content-between border-top border-dark border-opacity-10 pt-3 mt-3">
+                <div class="d-flex gap-3">
+                    {% if form.navigator.previous is defined %}
+                        {{ form_widget(form.navigator.previous, {
+                            attr: {class: 'btn-outline-secondary'},
+                            icon: ux_icon('tabler:arrow-left', {width: 20, height: 20}),
+                        }) }}
+                    {% endif %}
+                </div>
+                <div class="d-flex gap-3">
+                    <span id="next-btn" class="d-none">
+                        {% if form.navigator.next is defined %}
+                            {{ form_widget(form.navigator.next, {
+                                attr: {class: 'btn-primary flex-row-reverse'},
+                                icon: ux_icon('tabler:arrow-right', {width: 20, height: 20}),
+                            }) }}
+                        {% endif %}
+                    </span>
+                    <button type="button" class="btn btn-primary disabled" id="continue_step" disabled>
+                        <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                        Installing...
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> #}
+
+{% embed '@SolidInvoiceInstall/Steps/default.html.twig' %}
+    {% block content %}
+        <div class="progress mb-4" id="installation-progress" style="height: 1.5rem;">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                <span class="fw-bold">0%</span>
+            </div>
+        </div>
+
+        <div class="vstack gap-3 mb-4" id="installation-steps">
+            {% for step in this.installationSteps %}
+                <div class="card" id="step-{{ step.label|u.snake }}-card">
+                    <div class="card-body p-3">
+                        <div class="d-flex align-items-start gap-3">
+                            <div class="flex-shrink-0" id="step-{{ step.label|u.snake }}-status">
+                                    <span class="text-muted">
+                                        {{ ux_icon('tabler:circle-dashed', {width: 24, height: 24}) }}
+                                    </span>
+                            </div>
+                            <div class="flex-grow-1 overflow-hidden">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <h5 class="card-title mb-0">{{ step.label }}</h5>
+                                    <div class="d-flex gap-2">
+                                        <button type="button"
+                                                class="btn btn-sm btn-danger d-none"
+                                                id="step-{{ step.label|u.snake }}-retry"
+                                                onclick="retryStep('{{ step.label|u.snake }}')"
+                                        >
+                                            {{ ux_icon('tabler:refresh', {width: 16, height: 16}) }}
+                                            <span class="ms-1">Retry</span>
+                                        </button>
+                                        <button type="button"
+                                                class="btn btn-sm btn-ghost-secondary d-none"
+                                                id="step-{{ step.label|u.snake }}-toggle"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#step-{{ step.label|u.snake }}-output"
+                                                aria-expanded="false"
+                                        >
+                                            {{ ux_icon('tabler:chevron-down', {width: 20, height: 20}) }}
+                                            <span class="ms-1">View logs</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="collapse mt-2" id="step-{{ step.label|u.snake }}-output">
+                                    <pre class="bg-dark text-light p-3 rounded small mb-0" style="max-height: 150px; overflow-y: auto; overflow-x: auto; white-space: pre-wrap; word-break: break-all;"><code id="step-{{ step.label|u.snake }}-output-content"></code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endblock content %}
+{% endembed %}
+
+<script defer>
+
+    const steps = [
+        {% for step in this.installationSteps -%}
+        '{{- step.label|u.snake -}}',
+        {% endfor -%}
+    ];
+
+    function runStep(index) {
+        if (index >= steps.length) {
+            // All steps completed
+            // document.querySelector('#continue_step').remove()
+            nextBtn.classList.remove('disabled');
+            nextBtn.innerHTML = originalBtnText;
+
+            document.querySelector('#install-title').textContent = 'Installation Complete';
+
+            progressBar.style.width = '100%';
+            progressBar.setAttribute('aria-valuenow', '100');
+            progressText.textContent = '100%';
+            progressBar.classList.remove('progress-bar-striped', 'progress-bar-animated');
+            progressBar.classList.add('bg-success');
+            return;
+        }
+
+        const stepId = steps[index];
+        executeStep(stepId, index);
+    }
+
+    function executeStep(stepId, index) {
+        const stepCard = document.querySelector(`#step-${stepId}-card`);
+        const outputCollapse = document.querySelector(`#step-${stepId}-output`);
+        const outputContent = document.querySelector(`#step-${stepId}-output-content`);
+        const toggleBtn = document.querySelector(`#step-${stepId}-toggle`);
+        const retryBtn = document.querySelector(`#step-${stepId}-retry`);
+
+        // Clear previous output and reset state
+        outputContent.textContent = '';
+        retryBtn.classList.add('d-none');
+        currentStepText.classList.remove('text-danger');
+
+        updateStatus(stepId, 'running');
+
+        // Scroll the current step into view
+        stepCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+        const eventSource = new EventSource(
+            `{{ path('_system_install') }}?action=${stepId}&token={{ csrf_token('system_installation') }}`,
+        );
+
+        eventSource.addEventListener('message', (event) => {
+            // Server sends plain text messages
+            const message = event.data.trim();
+
+            if (message) {
+                // Show toggle button when there's output
+                if (toggleBtn.classList.contains('d-none')) {
+                    toggleBtn.classList.remove('d-none');
+                }
+
+                // Append message to output
+                if (outputContent.textContent) {
+                    outputContent.textContent += '\n' + message;
+                } else {
+                    outputContent.textContent = message;
+                }
+
+                // Auto-scroll to bottom of output if it's expanded
+                if (outputCollapse.classList.contains('show')) {
+                    const pre = outputContent.parentElement;
+                    pre.scrollTop = pre.scrollHeight;
+                }
+            }
+        });
+
+        eventSource.addEventListener('complete', (event) => {
+            eventSource.close();
+            const data = JSON.parse(event.data);
+
+            if (data.status === 'success') {
+                updateStatus(stepId, 'done');
+                updateProgress(index + 1);
+                currentStep++;
+
+                // Small delay before next step for better UX
+                setTimeout(() => runStep(currentStep), 300);
+            }
+        });
+
+        eventSource.addEventListener('error', (event) => {
+            eventSource.close();
+
+            let errorData;
+            try {
+                errorData = JSON.parse(event.data);
+            } catch (e) {
+                // Connection error, not a step error
+                errorData = {
+                    status: 'error',
+                    message: 'Connection lost or step failed to complete',
+                    trace: '',
+                };
+            }
+
+            updateStatus(stepId, 'failed');
+
+            // Show error message in output
+            if (!toggleBtn.classList.contains('d-none')) {
+                if (outputContent.textContent) {
+                    outputContent.textContent += '\n\n';
+                }
+            } else {
+                toggleBtn.classList.remove('d-none');
+            }
+
+            outputContent.textContent += '❌ Error: ' + errorData.message;
+
+            if (errorData.trace) {
+                // outputContent.textContent += '\n\nStack trace:\n' + errorData.trace;
+            }
+
+            // Auto-expand to show error
+            if (!outputCollapse.classList.contains('show')) {
+                outputCollapse.classList.add('show');
+                toggleBtn.innerHTML = '{{ ux_icon('tabler:chevron-up', {width: 20, height: 20})|e('js') }}<span class="ms-1">Hide logs</span>';
+            }
+
+            // Auto-scroll to show error
+            const pre = outputContent.parentElement;
+            pre.scrollTop = pre.scrollHeight;
+
+            // Show retry button
+            retryBtn.classList.remove('d-none');
+
+            // Stop progress bar animation and turn it red
+            progressBar.classList.remove('progress-bar-striped', 'progress-bar-animated');
+            progressBar.classList.add('bg-danger');
+            currentStepText.classList.add('text-danger');
+        });
+
+        eventSource.onerror = (error) => {
+            // This handles connection errors
+            if (eventSource.readyState === EventSource.CLOSED) {
+                // Already handled by error event, do nothing
+                return;
+            }
+
+            eventSource.close();
+
+            updateStatus(stepId, 'failed');
+
+            // Show error message
+            if (!toggleBtn.classList.contains('d-none')) {
+                if (outputContent.textContent) {
+                    outputContent.textContent += '\n\n';
+                }
+            } else {
+                toggleBtn.classList.remove('d-none');
+            }
+
+            outputContent.textContent += '❌ Error: Connection lost or step failed to complete';
+
+            // Auto-expand to show error
+            if (!outputCollapse.classList.contains('show')) {
+                outputCollapse.classList.add('show');
+                toggleBtn.innerHTML = '{{ ux_icon('tabler:chevron-up', {width: 20, height: 20})|e('js') }}<span class="ms-1">Hide logs</span>';
+            }
+
+            // Show retry button
+            retryBtn.classList.remove('d-none');
+
+            // Stop progress bar animation and turn it red
+            progressBar.classList.remove('progress-bar-striped', 'progress-bar-animated');
+            progressBar.classList.add('bg-danger');
+
+            currentStepText.classList.add('text-danger');
+        };
+    }
+
+    function retryStep(stepId) {
+        const index = steps.indexOf(stepId);
+        if (index !== -1) {
+            // Reset progress bar
+            progressBar.classList.add('progress-bar-striped', 'progress-bar-animated');
+            progressBar.classList.remove('bg-danger', 'bg-success');
+
+            executeStep(stepId, index);
+        }
+    }
+
+    function updateStatus(stepId, status) {
+        const statusElement = document.querySelector(`#step-${stepId}-status`);
+        const card = document.querySelector(`#step-${stepId}-card`);
+
+        if (statusElement) {
+            switch (status) {
+                case 'running':
+                    statusElement.innerHTML = '<span class="text-primary spinner-border spinner-border-sm" role="status"></span>';
+                    card.classList.add('border-primary');
+                    card.classList.remove('border-success', 'border-danger');
+                    break;
+                case 'done':
+                    statusElement.innerHTML = '<span class="text-success">{{ ux_icon('tabler:circle-check-filled', {width: 24, height: 24})|e('js') }}</span>';
+                    card.classList.add('border-success');
+                    card.classList.remove('border-primary', 'border-danger');
+                    break;
+                case 'failed':
+                    statusElement.innerHTML = '<span class="text-danger">{{ ux_icon('tabler:circle-x-filled', {width: 24, height: 24})|e('js') }}</span>';
+                    card.classList.add('border-danger');
+                    card.classList.remove('border-primary', 'border-success');
+                    break;
+            }
+        }
+    }
+
+    function updateProgress(completedSteps) {
+        const progress = Math.round((completedSteps / steps.length) * 100);
+        progressBar.style.width = `${progress}%`;
+        progressBar.setAttribute('aria-valuenow', progress);
+        progressText.textContent = `${progress}%`;
+    }
+
+    let currentStep = 0;
+    let progressBar = null;
+    let progressText = null;
+    let currentStepText = null;
+    let nextBtn = null;
+    let originalBtnText = null;
+
+    window.addEventListener('DOMContentLoaded', function () {
+        progressBar = document.querySelector('#installation-progress .progress-bar');
+        progressText = progressBar.querySelector('span');
+        currentStepText = document.querySelector('#current_step_text');
+        nextBtn = document.querySelector('#installation_navigator_next');
+
+        nextBtn.classList.add('disabled');
+        originalBtnText = nextBtn.innerHTML;
+        nextBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span> Installing...';
+
+        // Auto-start installation when page loads
+        runStep(currentStep);
+    });
+
+    document.addEventListener('shown.bs.collapse', (event) => {
+        if (event.target.id.includes('step-') && event.target.id.includes('-output')) {
+            const stepId = event.target.id.replace('step-', '').replace('-output', '');
+            const toggleBtn = document.querySelector(`#step-${stepId}-toggle`);
+            if (toggleBtn) {
+                toggleBtn.innerHTML = '{{ ux_icon('tabler:chevron-up', {width: 20, height: 20})|e('js') }}<span class="ms-1">Hide logs</span>';
+            }
+        }
+    });
+
+    document.addEventListener('hidden.bs.collapse', (event) => {
+        if (event.target.id.includes('step-') && event.target.id.includes('-output')) {
+            const stepId = event.target.id.replace('step-', '').replace('-output', '');
+            const toggleBtn = document.querySelector(`#step-${stepId}-toggle`);
+            if (toggleBtn) {
+                toggleBtn.innerHTML = '{{ ux_icon('tabler:chevron-down', {width: 20, height: 20})|e('js') }}<span class="ms-1">View logs</span>';
+            }
+        }
+    });
+</script>

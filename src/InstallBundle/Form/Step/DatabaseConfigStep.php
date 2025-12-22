@@ -11,23 +11,25 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace SolidInvoice\InstallBundle\Form\Type;
+namespace SolidInvoice\InstallBundle\Form\Step;
 
+use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\InstallBundle\Doctrine\Drivers;
+use SolidInvoice\InstallBundle\DTO\DatabaseConfig;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Type;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfonycasts\DynamicForms\DependentField;
 use Symfonycasts\DynamicForms\DynamicFormBuilder;
+use function strtolower;
 
 /**
  * @see \SolidInvoice\InstallBundle\Tests\Form\Type\DatabaseConfigTypeTest
  */
-class DatabaseConfigType extends AbstractType
+class DatabaseConfigStep extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -40,7 +42,7 @@ class DatabaseConfigType extends AbstractType
                 'label' => 'Database Type',
                 'choices' => Drivers::getChoiceList(),
                 'placeholder' => 'Select Database Driver',
-                'constraints' => new NotBlank(),
+                'expanded' => true,
             ]
         );
 
@@ -48,20 +50,21 @@ class DatabaseConfigType extends AbstractType
             'host' => [
                 null,
                 [
-                    'constraints' => new NotBlank(),
+                    'attr' => [
+                        'placeholder' => 'localhost',
+                    ],
                 ],
             ],
             'port' => [
                 IntegerType::class,
                 [
-                    'constraints' => new Type(['type' => 'integer']),
                     'required' => false,
                 ],
             ],
             'user' => [
                 null,
                 [
-                    'constraints' => new NotBlank(),
+                    'required' => false,
                 ],
             ],
             'password' => [
@@ -75,8 +78,10 @@ class DatabaseConfigType extends AbstractType
                 null,
                 [
                     'label' => 'Database Name',
-                    'constraints' => new NotBlank(),
                     'required' => true,
+                    'attr' => [
+                        'placeholder' => strtolower(SolidInvoiceCoreBundle::APP_NAME),
+                    ],
                 ],
             ],
         ];
@@ -92,8 +97,10 @@ class DatabaseConfigType extends AbstractType
         }
     }
 
-    public function getBlockPrefix(): string
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        return 'database_config';
+        $resolver->setDefaults([
+            'data_class' => DatabaseConfig::class,
+        ]);
     }
 }

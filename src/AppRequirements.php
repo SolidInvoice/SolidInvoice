@@ -15,16 +15,27 @@ namespace SolidInvoice;
 
 use const PHP_VERSION;
 use const PHP_VERSION_ID;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Requirements\SymfonyRequirements;
+use function get_cfg_var;
+use function getcwd;
+use function is_writable;
 use function sprintf;
+use function str_replace;
 
 /**
  * @codeCoverageIgnore
  */
 class AppRequirements extends SymfonyRequirements
 {
-    public function __construct()
-    {
+    public function __construct(
+        #[Autowire(env: 'SOLIDINVOICE_CONFIG_DIR')]
+        string $configDir,
+        #[Autowire(param: 'kernel.cache_dir')]
+        string $cacheDir,
+        #[Autowire(param: 'kernel.logs_dir')]
+        string $logsDir,
+    ) {
         $this->addRequirement(
             PHP_VERSION_ID >= 80200,
             sprintf('PHP version must be at least %s (%s installed)', '8.3.0', PHP_VERSION),
@@ -36,6 +47,18 @@ class AppRequirements extends SymfonyRequirements
             ),
             sprintf('Install PHP %s or newer (installed version is %s)', '8.3.0', PHP_VERSION)
         );
+
+        $configDir = dirname($configDir);
+        foreach ([$configDir, $cacheDir, $logsDir] as $dir) {
+            $trimmedDir = str_replace(dirname(getcwd()), '.', $dir);
+
+            $this->addRequirement(
+                is_writable($dir),
+                sprintf('The "%s" directory must be writable', $trimmedDir),
+                sprintf('Make the "%s" directory writable by the web server user.', $trimmedDir),
+                sprintf('Give write permissions to the "%s" directory', $trimmedDir)
+            );
+        }
 
         parent::__construct();
 
@@ -56,6 +79,11 @@ class AppRequirements extends SymfonyRequirements
             'GD extension is required to generate PDF invoices and quotes',
             'Install the PHP GD extension'
         );
+    }
+
+    public function getPhpIniPath(): false | array | string
+    {
+        return get_cfg_var('cfg_file_path');
     }
 
     public function addRecommendation($fulfilled, $testMessage, $helpHtml, $helpText = null): void

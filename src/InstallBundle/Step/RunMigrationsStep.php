@@ -11,12 +11,18 @@
 
 namespace SolidInvoice\InstallBundle\Step;
 
+use Doctrine\Persistence\ManagerRegistry;
+use SolidInvoice\CoreBundle\Entity\Version;
+use SolidInvoice\CoreBundle\Repository\VersionRepository;
+use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
+use SolidInvoice\InstallBundle\DTO\Installation;
 use SolidInvoice\InstallBundle\Installer\Database\Migration;
 
-final class RunMigrationsStep implements InstallationStepInterface
+final readonly class RunMigrationsStep implements InstallationStepInterface
 {
     public function __construct(
-        private readonly Migration $migration
+        private Migration $migration,
+        private ManagerRegistry $registry,
     ) {
     }
 
@@ -25,9 +31,18 @@ final class RunMigrationsStep implements InstallationStepInterface
         return 10;
     }
 
-    public function execute(?callable $callback = null): void
+    public function execute(Installation $installationData, ?callable $callback = null): \Generator
     {
-        $this->migration->migrate($callback);
+        yield from $this->migration->migrate($callback);
+
+        $version = SolidInvoiceCoreBundle::VERSION;
+
+        $entityManager = $this->registry->getManager();
+
+        /** @var VersionRepository $repository */
+        $repository = $entityManager->getRepository(Version::class);
+
+        $repository->updateVersion($version);
     }
 
     public static function getLabel(): string

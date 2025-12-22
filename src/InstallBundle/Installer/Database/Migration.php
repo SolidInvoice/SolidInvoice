@@ -16,12 +16,15 @@ namespace SolidInvoice\InstallBundle\Installer\Database;
 use DateTimeImmutable;
 use Doctrine\Migrations\DependencyFactory;
 use Doctrine\Migrations\Version\ExecutionResult;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
+use Doctrine\Persistence\ManagerRegistry;
 
 final class Migration
 {
     public function __construct(
-        private readonly DependencyFactory $migrationDependencyFactory
+        private readonly DependencyFactory $migrationDependencyFactory,
+        private readonly ManagerRegistry $registry,
     ) {
     }
 
@@ -37,13 +40,14 @@ final class Migration
         return $newMigrationsCount === 0 && $executedUnavailableMigrationsCount === 0;
     }
 
-    public function migrate(?callable $callback = null): void
+    public function migrate(?callable $callback = null): \Generator
     {
         $metadataStorage = $this->migrationDependencyFactory->getMetadataStorage();
 
         $metadataStorage->ensureInitialized();
 
-        $em = $this->migrationDependencyFactory->getEntityManager();
+        $em = $this->registry->getManager();
+        assert($em instanceof EntityManagerInterface);
         $tables = $em->getMetadataFactory()->getAllMetadata();
 
         $planCalculator = $this->migrationDependencyFactory->getMigrationPlanCalculator();
@@ -57,12 +61,16 @@ final class Migration
         $updateSchemaSql = $schemaTool->getUpdateSchemaSql($tables, true);
         $conn = $em->getConnection();
 
-        foreach ($updateSchemaSql as $sql) {
-            $conn->executeStatement($sql);
+        if (count($updateSchemaSql) > 0) {
+            foreach ($updateSchemaSql as $sql) {
+                $conn->executeStatement($sql);
 
-            if (null !== $callback) {
-                $callback($sql);
+                if (null !== $callback) {
+                    yield from $callback($sql);
+                }
             }
+        } elseif (null !== $callback) {
+            yield from $callback('Database schema is already up to date.');
         }
 
         $now = new DateTimeImmutable();

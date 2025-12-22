@@ -36,6 +36,7 @@ final class Drivers
         // 'mssql' => 'pdo_sqlsrv', // Not Supported
         // 'sqlsrv' => 'pdo_sqlsrv', // Not Supported
         'mysql' => 'pdo_mysql',
+        'mariadb' => 'pdo_mysql',
         'postgres' => 'pdo_pgsql',
         'pgsql' => 'pdo_pgsql',
         'sqlite' => 'pdo_sqlite',
@@ -53,6 +54,9 @@ final class Drivers
         foreach ($installedDrivers as $driver) {
             if (array_key_exists($driver, self::$driverMap)) {
                 $choices[self::$driverMap[$driver]] = $driver;
+                if ('mysql' === $driver) {
+                    $choices['MariaDB'] = 'mariadb';
+                }
             }
         }
 
