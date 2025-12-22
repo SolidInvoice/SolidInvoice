@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * This file is part of SolidInvoice project.
  *
@@ -11,11 +9,10 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace SolidInvoice\InstallBundle;
+namespace SolidInvoice\InstallBundle\Form\Step;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\Form\AbstractType;
 
-final class SolidInvoiceInstallBundle extends Bundle
+final class SystemRequirementsStep extends AbstractType
 {
-    final public const string NAMESPACE = __NAMESPACE__;
 }

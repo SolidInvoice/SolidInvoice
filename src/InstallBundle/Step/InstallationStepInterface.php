@@ -11,16 +11,17 @@
 
 namespace SolidInvoice\InstallBundle\Step;
 
+use SolidInvoice\InstallBundle\DTO\Installation;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
 #[AutoconfigureTag(InstallationStepInterface::DI_TAG)]
 interface InstallationStepInterface
 {
-    public const DI_TAG = 'solidinvoice.installation_step';
+    public const string DI_TAG = 'solidinvoice.installation_step';
 
     public static function priority(): int;
 
-    public function execute(?callable $callback = null): void;
+    public function execute(Installation $installationData, ?callable $callback = null): \Generator;
 
     public static function getLabel(): string;
 }

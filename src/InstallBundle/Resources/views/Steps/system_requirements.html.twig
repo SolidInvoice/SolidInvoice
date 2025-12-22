@@ -1,0 +1,314 @@
+{% from _self import requirementCheck %}
+
+{% macro requirementCheck(requirement) %}
+    <div class="d-flex align-items-start gap-3 py-3 border-bottom">
+        <div class="flex-shrink-0">
+            {% if requirement.fulfilled %}
+                <span class="badge bg-success-subtle text-success rounded-circle p-1">
+                    {{ ux_icon('tabler:check', {width: 20, height: 20}) }}
+                </span>
+            {% elseif not requirement.optional %}
+                <span class="badge bg-danger-subtle text-danger rounded-circle p-1">
+                    {{ ux_icon('tabler:x', {width: 20, height: 20}) }}
+                </span>
+            {% else %}
+                <span class="badge bg-warning-subtle text-warning rounded-circle p-1">
+                    {{ ux_icon('tabler:alert-circle', {width: 20, height: 20}) }}
+                </span>
+            {% endif %}
+        </div>
+        <div class="flex-grow-1">
+            <div class="fw-semibold mb-1" style="overflow-wrap: anywhere;">{{ requirement.testMessage }}</div>
+            {% if not requirement.fulfilled %}
+                <div class="text-muted small">{{ requirement.helpHtml|raw }}</div>
+            {% endif %}
+        </div>
+        <div class="flex-shrink-0">
+            {% if requirement.fulfilled %}
+                <span class="badge bg-success text-white">{{ 'Passed'|trans }}</span>
+            {% else %}
+                <span class="badge bg-{{ requirement.optional ? 'warning' : 'danger' }} text-white">{{ requirement.optional ? 'Warning'|trans : 'Failed'|trans }}</span>
+            {% endif %}
+        </div>
+    </div>
+{% endmacro %}
+
+<div class="col-4 bg-light rounded-start p-4">
+    <div class="d-flex flex-column h-100">
+        <div class="flex-grow-1">
+            <h2 class="card-title pb-3">
+                {{ app_logo(showDefault: true) }}
+                {{ app_name }} {{ 'Installation'|trans }}
+            </h2>
+            <div class="vstack gap-4 my-4">
+                {% for step in form.vars.visible_steps|filter(v => v.name != 'start') %}
+                    <div class="d-flex gap-2 align-items-center {{ step.index > form.vars.cursor.stepIndex ? 'text-muted' }}">
+                        <span class="align-self-start">
+                            {% if step.is_current_step %}
+                                <span class="text-secondary" style="color: #f0a015 !important;">
+                                    {{ ux_icon('tabler:circle-dot', {width: 32, height: 32}) }}
+                                </span>
+                            {% elseif step.index > form.vars.cursor.stepIndex %}
+                                {{ ux_icon('tabler:circle-dashed', {width: 32, height: 32}) }}
+                            {% else %}
+                                <span class="text-primary">
+                                    {{ ux_icon('tabler:circle-check', {width: 32, height: 32}) }}
+                                </span>
+                            {% endif %}
+                        </span>
+                        <div class="d-flex flex-column">
+                            <strong>{{ step.name|u.replace('_', ' ').title(allWords: true) }}</strong>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-8">
+    {% set current_step = form.vars.cursor.currentStep %}
+    {% set current_step_block_name = 'installation_' ~ current_step ~ '_step' %}
+
+    <div class="card-body p-4 px-5 d-flex flex-column h-100">
+        <div class="flex-grow-1" style="min-height: 410px">
+            <h4 class="card-title">{{ field_label(form[current_step]) }}</h4>
+            <p class="card-text text-muted mb-4">{{ field_help(form[current_step]) }}</p>
+
+            <hr class="border-secondary-subtle">
+
+            {% if computed.appRequirements.failedRequirements|length > 0 %}
+                <div class="alert alert-danger d-flex align-items-center gap-3 mb-4">
+                    <div class="flex-shrink-0">
+                        {{ ux_icon('tabler:alert-triangle', {width: 24, height: 24}) }}
+                    </div>
+                    <div>
+                        <strong class="d-block mb-1">{{ 'installation.requirements.not_met'|trans }}</strong>
+                        <span>{{ 'installation.requirements.message'|trans }}</span>
+                    </div>
+                </div>
+            {% else %}
+                <div class="alert alert-success d-flex align-items-center gap-3 mb-4">
+                    <div class="flex-shrink-0">
+                        {{ ux_icon('tabler:check', {width: 24, height: 24}) }}
+                    </div>
+                    <div>
+                        <strong class="d-block mb-1">
+                            {{ 'installation.requirements.all_met'|trans }}
+                        </strong>
+                        <span>
+                            {{ 'installation.requirements.all_met_message'|trans }}
+                        </span>
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <div class="card border-primary">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <div class="text-muted small text-uppercase mb-1">{{ 'Required'|trans }}</div>
+                                    <div class="h3 mb-0">
+                                        {{ computed.appRequirements.requirements|filter(r => r.fulfilled)|length }} / {{ computed.appRequirements.requirements|length }}
+                                    </div>
+                                </div>
+                                <div class="text-primary">
+                                    {{ ux_icon('tabler:shield-check', {width: 40, height: 40}) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card border-info">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <div class="text-muted small text-uppercase mb-1">{{ 'Recommended'|trans }}</div>
+                                    <div class="h3 mb-0">
+                                        {{ computed.appRequirements.recommendations|filter(r => r.fulfilled)|length }} / {{ computed.appRequirements.recommendations|length }}
+                                    </div>
+                                </div>
+                                <div class="text-info">
+                                    {{ ux_icon('tabler:star', {width: 40, height: 40}) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-body p-0">
+                    <div class="accordion">
+                        <div class="accordion-item">
+                            <div class="accordion-header">
+                                <button class="accordion-button{{ computed.appRequirements.failedRequirements|length == 0 ? ' collapsed' }}" type="button" data-bs-toggle="collapse" data-bs-target="#mandatory-requirements" aria-expanded="{{ computed.appRequirements.failedRequirements|length > 0 ? 'true' : 'false' }}">
+                                    {{ ux_icon('tabler:checkbox', {width: 20, height: 20, class: 'text-' ~ (computed.appRequirements.failedRequirements|length > 0 ? 'danger' : 'primary')}) }}
+                                    <strong class="text-{{ computed.appRequirements.failedRequirements|length > 0 ? 'danger' : 'primary' }}">{{ 'installation.requirements.mandatory'|trans }}</strong>
+                                    <div class="accordion-button-toggle">
+                                        {{ ux_icon('tabler:chevron-down', {width: 24, height: 24}) }}
+                                    </div>
+                                </button>
+                            </div>
+                            <div id="mandatory-requirements" class="accordion-collapse collapse {{ computed.appRequirements.failedRequirements|length > 0 ? 'show' : 'hide' }}" data-bs-parent="#accordion-default">
+                                <div class="accordion-body text-dark">
+                                    {% for requirement in computed.appRequirements.requirements %}
+                                        {{ requirementCheck(requirement) }}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <div class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#optional-requirements" aria-expanded="false">
+                                    {{ ux_icon('tabler:info-circle', {width: 20, height: 20, class: 'text-info'}) }}
+                                    <strong class="text-info">{{ 'installation.requirements.optional'|trans }}</strong>
+                                    <div class="accordion-button-toggle">
+                                        {{ ux_icon('tabler:chevron-down', {width: 24, height: 24}) }}
+                                    </div>
+                                </button>
+                            </div>
+                            <div id="optional-requirements" class="accordion-collapse collapse hide" data-bs-parent="#accordion-default" style="">
+                                <div class="accordion-body text-dark">
+                                    {% for requirement in computed.appRequirements.recommendations %}
+                                        {{ requirementCheck(requirement) }}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card bg-light-subtle border-0 mb-4">
+                <div class="card-body">
+                    <div class="d-flex align-items-start gap-3">
+                        <div class="flex-shrink-0 text-primary">
+                            {{ ux_icon('tabler:info-circle', {width: 32, height: 32}) }}
+                        </div>
+                        <div class="flex-grow-1">
+                            <h5 class="card-title mb-3">{{ 'System Information'|trans }}</h5>
+                            <div class="vstack gap-2">
+                                <div class="d-flex align-items-start gap-2">
+                                    <div class="flex-shrink-0 text-muted" style="width: 160px;">
+                                        <strong>{{ 'Operating System'|trans }}:</strong>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <code class="text-dark">{{ constant('PHP_OS') }} ({{ constant('PHP_OS_FAMILY') }})</code>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-start gap-2">
+                                    <div class="flex-shrink-0 text-muted" style="width: 160px;">
+                                        <strong>{{ 'Web Server'|trans }}:</strong>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <code class="text-dark text-break">{{ app.request.server.get('SERVER_SOFTWARE', 'Unknown') }}</code>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-start gap-2">
+                                    <div class="flex-shrink-0 text-muted" style="width: 160px;">
+                                        <strong>{{ 'Current User'|trans }}:</strong>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <code class="text-dark">{{ this.getCurrentUser() }}</code>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-start gap-2">
+                                    <div class="flex-shrink-0 text-muted" style="width: 160px;">
+                                        <strong>{{ 'PHP Version'|trans }}:</strong>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <code class="text-dark">{{ constant('PHP_VERSION') }}</code>
+                                    </div>
+                                </div>
+                                {% if computed.appRequirements.getPhpIniPath() %}
+                                    <div class="d-flex align-items-start gap-2">
+                                        <div class="flex-shrink-0 text-muted" style="width: 160px;">
+                                            <strong>{{ 'PHP Config File'|trans }}:</strong>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <code class="text-dark text-break">{{ computed.appRequirements.getPhpIniPath() }}</code>
+                                            <div class="text-muted small mt-1">
+                                                {{ 'Edit this file to modify PHP settings'|trans }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                <div class="d-flex align-items-start gap-2">
+                                    <div class="flex-shrink-0 text-muted" style="width: 160px;">
+                                        <strong>{{ 'Memory Limit'|trans }}:</strong>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <code class="text-dark">{{ this.iniGet('memory_limit') }}</code>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-start gap-2">
+                                    <div class="flex-shrink-0 text-muted" style="width: 160px;">
+                                        <strong>{{ 'Max Execution Time'|trans }}:</strong>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <code class="text-dark">{{ this.iniGet('max_execution_time') }}s</code>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-start gap-2">
+                                    <div class="flex-shrink-0 text-muted" style="width: 160px;">
+                                        <strong>{{ 'Upload Max Size'|trans }}:</strong>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <code class="text-dark">{{ this.iniGet('upload_max_filesize') }}</code>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-start gap-2">
+                                    <div class="flex-shrink-0 text-muted" style="width: 160px;">
+                                        <strong>{{ 'Config Directory'|trans }}:</strong>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <code class="text-dark" style="overflow-wrap: anywhere;">{{ this.configDir }}</code>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-start gap-2">
+                                    <div class="flex-shrink-0 text-muted" style="width: 160px;">
+                                        <strong>{{ 'Cache Directory'|trans }}:</strong>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <code class="text-dark" style="overflow-wrap: anywhere;">{{ this.cacheDir }}</code>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-start gap-2">
+                                    <div class="flex-shrink-0 text-muted" style="width: 160px;">
+                                        <strong>{{ 'Log Directory'|trans }}:</strong>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <code class="text-dark" style="overflow-wrap: anywhere;">{{ this.logsDir }}</code>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="d-flex justify-content-between border-top border-dark border-opacity-10 pt-3 mt-3">
+                <div class="d-flex gap-3">
+                    {% if form.navigator.previous is defined %}
+                        {{ form_widget(form.navigator.previous, {
+                            attr: {class: 'btn-outline-secondary'},
+                            icon: ux_icon('tabler:arrow-left', {width: 20, height: 20}),
+                        }) }}
+                    {% endif %}
+                </div>
+                <div class="d-flex gap-3">
+                    {% if form.navigator.next is defined %}
+                        {{ form_widget(form.navigator.next, {
+                            attr: {class: 'btn-primary flex-row-reverse', disabled: computed.appRequirements.failedRequirements|length > 0},
+                            icon: ux_icon('tabler:arrow-right', {width: 20, height: 20}),
+                        }) }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

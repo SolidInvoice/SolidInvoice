@@ -183,3 +183,18 @@
     {%- set group_class = 'flex-nowrap' -%}
     {{ parent() }}
 {%- endblock money_widget %}
+
+{% block form_flow_action_widget %}
+    {% if icon is defined %}
+        {% set attr = attr|merge({class: attr.class ~ ' d-flex align-items-center gap-2'}) %}
+        {% set label_html = true %}
+        {% set label_text = label|default(name|humanize) %}
+        {%- set label -%}
+            {{ icon|raw }}
+            {%- if label_text is defined -%}
+                {{- label_text -}}
+            {%- endif -%}
+        {%- endset -%}
+    {% endif %}
+    {{ block('submit_widget') }}
+{% endblock %}

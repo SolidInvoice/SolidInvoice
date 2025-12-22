@@ -8,3 +8,8 @@
  #}
 
 {% extends '@Ui/Layout/base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('app') }}
+{% endblock stylesheets %}

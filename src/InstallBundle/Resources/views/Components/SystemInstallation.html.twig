@@ -1,0 +1,15 @@
+<div {{ attributes }}>
+    {% form_theme form '@SolidInvoiceInstall/Form/fields.html.twig' %}
+
+    {{ form_start(form, {
+        attr: {
+            enctype: 'multipart/form-data',
+            novalidate: true,
+        }
+    }) }}
+
+    <div class="row g-0" data-skip-morph>
+        {% include ['@SolidInvoiceInstall/Steps/' ~ form.vars.cursor.currentStep ~ '.html.twig', '@SolidInvoiceInstall/Steps/default.html.twig'] %}
+    </div>
+    {{ form_end(form) }}
+</div>

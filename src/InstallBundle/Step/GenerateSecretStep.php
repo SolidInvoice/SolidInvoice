@@ -13,7 +13,9 @@ namespace SolidInvoice\InstallBundle\Step;
 
 use Defuse\Crypto\Key;
 use SolidInvoice\CoreBundle\ConfigWriter;
+use SolidInvoice\InstallBundle\DTO\Installation;
 use Symfony\Bundle\FrameworkBundle\Secrets\AbstractVault;
+use function str_replace;
 
 final class GenerateSecretStep implements InstallationStepInterface
 {
@@ -28,13 +30,13 @@ final class GenerateSecretStep implements InstallationStepInterface
         return 30;
     }
 
-    public function execute(?callable $callback = null): void
+    public function execute(Installation $installationData, ?callable $callback = null): \Generator
     {
         $this->vault->generateKeys();
         $this->configWriter->save([
             'APP_SECRET' => Key::createNewRandomKey()->saveToAsciiSafeString(),
         ]);
-        $callback($this->vault->getLastMessage());
+        yield from $callback(str_replace('; you can commit it', '', $this->vault->getLastMessage()));
     }
 
     public static function getLabel(): string

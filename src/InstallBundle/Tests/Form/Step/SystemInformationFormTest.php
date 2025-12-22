@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InstallBundle\Tests\Form\Step;
 
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
-use SolidInvoice\InstallBundle\Form\Step\SystemInformationForm;
+use SolidInvoice\InstallBundle\Form\Step\UserAccountStep;
 use SolidInvoice\MoneyBundle\Form\Type\CurrencyType;
 use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Intl\Locales;
@@ -31,7 +31,7 @@ class SystemInformationFormTest extends FormTestCase
             'password' => null,
         ];
 
-        $this->assertFormData($this->factory->create(SystemInformationForm::class, null, ['userCount' => 0]), $formData, $formData);
+        $this->assertFormData($this->factory->create(UserAccountStep::class, null, ['userCount' => 0]), $formData, $formData);
     }
 
     protected function getExtensions(): array

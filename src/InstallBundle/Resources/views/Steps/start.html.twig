@@ -1,0 +1,110 @@
+{% do form.start.setRendered() %}
+
+<div class="col bg-light rounded p-4">
+    <div class="d-flex flex-column h-100">
+        <div class="flex-grow-1">
+            <div class="card-body p-4 px-5 d-flex flex-column h-100">
+                <div class="flex-grow-1" style="min-height: 410px">
+                    {# Welcome Header #}
+                    <div class="text-center mb-5">
+                        <h2 class="fw-bold text-dark mb-1">Welcome to</h2>
+                        <h1 class="display-5 fw-bold text-primary mb-3">{{ app_logo(showDefault: true) }}{{ app_name }}</h1>
+                        <p class="lead text-muted">{{ 'Your complete invoicing and billing solution'|trans }}</p>
+                    </div>
+
+                    <hr class="border-secondary-subtle mb-5">
+
+                    <div class="mb-5">
+                        <p class="fs-5 text-dark text-center">
+                            {{ 'Thank you for choosing SolidInvoice!'|trans }}
+                            <br />
+                            {{ 'You\'re about to set up a powerful, open-source invoicing platform that will help you manage your business finances with ease.'|trans }}
+                        </p>
+                    </div>
+
+                    <div class="row g-4 mb-5">
+                        <div class="col-md-6">
+                            <div class="d-flex gap-3">
+                                <div class="text-primary">
+                                    {{ ux_icon('tabler:file-invoice', {width: 32, height: 32}) }}
+                                </div>
+                                <div>
+                                    <h5 class="fw-bold mb-2">{{ 'Professional Invoicing'|trans }}</h5>
+                                    <p class="text-muted small mb-0">{{ 'Create beautiful, customized invoices and quotes in seconds'|trans }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex gap-3">
+                                <div class="text-success">
+                                    {{ ux_icon('tabler:credit-card', {width: 32, height: 32}) }}
+                                </div>
+                                <div>
+                                    <h5 class="fw-bold mb-2">{{ 'Online Payments'|trans }}</h5>
+                                    <p class="text-muted small mb-0">{{ 'Accept payments online with multiple payment gateway integrations'|trans }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex gap-3">
+                                <div class="text-info">
+                                    {{ ux_icon('tabler:users', {width: 32, height: 32}) }}
+                                </div>
+                                <div>
+                                    <h5 class="fw-bold mb-2">{{ 'Client Management'|trans }}</h5>
+                                    <p class="text-muted small mb-0">{{ 'Keep track of clients, contacts, and communication history'|trans }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex gap-3">
+                                <div class="text-warning">
+                                    {{ ux_icon('tabler:chart-bar', {width: 32, height: 32}) }}
+                                </div>
+                                <div>
+                                    <h5 class="fw-bold mb-2">{{ 'Financial Insights'|trans }}</h5>
+                                    <p class="text-muted small mb-0">{{ 'Track payments, expenses, and get detailed financial reports'|trans }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# <div class="mb-5">
+                                    <div class="bg-white rounded shadow-sm p-4 text-center" style="min-height: 200px; border: 2px dashed #dee2e6;">
+                                        <div class="d-flex align-items-center justify-content-center h-100">
+                                            <div>
+                                                {{ ux_icon('tabler:photo', {width: 64, height: 64, class: 'text-muted mb-3'}) }}
+                                                <p class="text-muted mb-0">{{ '[Screenshot Placeholder - Dashboard Preview]'|trans }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> #}
+
+                    <div class="alert alert-info border-0 shadow-sm">
+                        <div class="d-flex gap-3">
+                            <div>
+                                {{ ux_icon('tabler:info-circle', {width: 24, height: 24}) }}
+                            </div>
+                            <div>
+                                <h4 class="fw-bold mb-2">{{ 'Quick & Easy Setup'|trans }}</h4>
+                                <p class="mb-0 small">
+                                    {{ 'This installation wizard will guide you through the setup process.'|trans }}
+                                    <br />
+                                    {{ 'It will only take a few minutes to configure your database, set up your account, and get started with SolidInvoice.'|trans }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-5">
+                        <p class="text-muted mb-4">{{ 'Ready to get started?'|trans }}</p>
+                        {{ form_widget(form.navigator.next, {
+                            attr: {class: 'btn-primary btn-lg px-5'},
+                            label: 'Begin Installation'|trans,
+                        }) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
