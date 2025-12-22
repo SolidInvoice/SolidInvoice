@@ -13,6 +13,7 @@ namespace SolidInvoice\InstallBundle\Step;
 
 use Doctrine\DBAL\DriverManager;
 use Doctrine\Persistence\ManagerRegistry;
+use SolidInvoice\InstallBundle\DTO\Installation;
 use function in_array;
 
 final class CreateDatabaseStep implements InstallationStepInterface
@@ -27,7 +28,7 @@ final class CreateDatabaseStep implements InstallationStepInterface
         return 20;
     }
 
-    public function execute(?callable $callback = null): void
+    public function execute(Installation $installationData, ?callable $callback = null): \Generator
     {
         $connection = $this->doctrine->getConnection();
         $params = $connection->getParams();
@@ -53,6 +54,8 @@ final class CreateDatabaseStep implements InstallationStepInterface
                 $schemaManager->createDatabase($dbName);
             }
         }
+
+        yield from $callback('Database created');
     }
 
     public static function getLabel(): string

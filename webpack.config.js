@@ -4,6 +4,8 @@ import { codecovWebpackPlugin } from '@codecov/webpack-plugin';
 
 export default Encore
     .addStyleEntry('login', './assets/scss/login.scss')
+    .addStyleEntry('installation', './assets/scss/installation.scss')
+    .addStyleEntry('app', './assets/scss/app.scss')
     .enableStimulusBridge('./assets/controllers.json')
     .addPlugin(codecovWebpackPlugin({
         enableBundleAnalysis: Encore.isProduction() && process.env.CODECOV_TOKEN !== undefined,

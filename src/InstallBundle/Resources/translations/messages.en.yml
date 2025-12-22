@@ -16,10 +16,12 @@ installation:
         restart: Restart
         restart_process: 'Restart the installation process'
     requirements:
+        all_met: 'All system requirements are met'
+        all_met_message: 'You can proceed with the installation.'
         not_met: 'Some requirements were not met'
         message: 'Please ensure your system meets the minimum requirements before proceeding.'
-        mandatory: Mandatory
-        optional: Optional
+        mandatory: Required
+        optional: Recommended
     progress:
         step:
             system_check: 'Requirements Check'

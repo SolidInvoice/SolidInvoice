@@ -14,19 +14,30 @@ declare(strict_types=1);
 namespace SolidInvoice\InstallBundle\Action;
 
 use const JSON_THROW_ON_ERROR;
-use Doctrine\Persistence\ManagerRegistry;
-use SolidInvoice\InstallBundle\Installer\Database\Migration;
+use DateTimeInterface;
+use SolidInvoice\CoreBundle\ConfigWriter;
+use SolidInvoice\InstallBundle\DTO\Installation;
+use SolidInvoice\InstallBundle\Form\Type\InstallationType;
 use SolidInvoice\InstallBundle\Step\InstallationStepInterface;
+use SolidInvoice\UserBundle\Entity\User;
+use SolidInvoice\UserBundle\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ServiceLocator;
+use Symfony\Component\Form\Flow\FormFlowInterface;
+use Symfony\Component\HttpFoundation\EventStreamResponse;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpFoundation\ServerEvent;
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Uid\Uuid;
 use Throwable;
-use function flush;
-use function iterator_to_array;
+use function date;
 use function json_encode;
 use function Symfony\Component\String\u;
 
@@ -37,38 +48,91 @@ final class Install extends AbstractController
      */
     public function __construct(
         #[AutowireLocator(services: InstallationStepInterface::DI_TAG, defaultIndexMethod: 'getLabel', defaultPriorityMethod: 'priority')]
-        private readonly ServiceLocator $steps
+        private readonly ServiceLocator $steps,
+        private readonly CsrfTokenManagerInterface $csrfTokenManager,
+        private readonly ConfigWriter $configWriter,
+        private readonly UserRepository $userRepository,
+        private readonly Security $security,
+        private readonly ?string $installed,
     ) {
     }
 
-    public function __invoke(Request $request, ManagerRegistry $doctrine, Migration $migration): Response
+    public function __invoke(Request $request, #[MapQueryParameter] string $tab = 'details'): Response
     {
-        if ($request->query->has('action')) {
-            $action = u($request->query->get('action'))->replace('_', ' ')->title()->toString();
-
-            if (! $this->steps->has($action)) {
-                throw new BadRequestException('Invalid action');
-            }
-
-            $step = $this->steps->get($action);
-
-            return new StreamedResponse(function () use ($step): void {
-
-                try {
-                    $step->execute(function (string $content): void {
-                        echo 'data: ' . json_encode(['output' => $content], JSON_THROW_ON_ERROR) . "\n\n";
-                        flush();
-                    });
-
-                    echo 'data: ' . json_encode(['status' => 'done'], JSON_THROW_ON_ERROR) . "\n\n";
-                    flush();
-                } catch (Throwable $e) {
-                    echo 'data: ' . json_encode(['status' => 'failed', 'error' => $e->getMessage()], JSON_THROW_ON_ERROR) . "\n\n";
-                    flush();
-                }
-            }, headers: ['content-type' => 'text/event-stream']);
+        if ($this->installed) {
+            throw $this->createNotFoundException();
         }
 
-        return $this->render('@SolidInvoiceInstall/install.html.twig', ['steps' => iterator_to_array($this->steps->getIterator())]);
+        /** @var FormFlowInterface $form */
+        $form = $this->createForm(InstallationType::class, new Installation())
+            ->handleRequest($request);
+
+        if ($request->query->has('action') && $request->query->has('token')) {
+            return $this->handleInstallationStep($form, $request);
+        }
+
+        if ($form->isSubmitted() && $form->isValid() && $form->isFinished()) {
+            /** @var Installation $formData */
+            $formData = $form->getData();
+
+            $this->configWriter->save([
+                'installed' => date(DateTimeInterface::ATOM),
+                'locale' => $formData->userAccount->locale,
+                'installation_id' => Uuid::v4()->toString(),
+            ]);
+
+            $form->reset();
+
+            $user = $this->userRepository->findOneBy(['email' => $formData->userAccount->emailAddress]);
+            if ($user instanceof User) {
+                return $this->security->login($user, authenticatorName: 'security.authenticator.form_login.main', firewallName: 'main');
+            }
+
+            return $this->redirectToRoute('_login_main');
+        }
+
+        return $this->render('@SolidInvoiceInstall/install.html.twig', [
+            'form' => $form->getStepForm(),
+        ]);
+    }
+
+    private function handleInstallationStep(FormFlowInterface $form, Request $request): EventStreamResponse
+    {
+        /** @var Installation $data */
+        $data = $form->getData();
+
+        if (! $this->csrfTokenManager->isTokenValid(
+            new CsrfToken('system_installation', $request->query->get('token')),
+        )) {
+            throw new BadRequestHttpException();
+        }
+
+        $action = u($request->query->get('action'))->replace('_', ' ')->title()->toString();
+
+        if (! $this->steps->has($action)) {
+            throw new BadRequestException('Invalid action');
+        }
+
+        $step = $this->steps->get($action);
+
+        return new EventStreamResponse(function () use ($data, $step): \Generator {
+            try {
+                yield from $step->execute($data, function (string $content): \Generator {
+                    yield new ServerEvent($content);
+                });
+
+                yield new ServerEvent(json_encode(['status' => 'success'], JSON_THROW_ON_ERROR), 'complete');
+            } catch (Throwable $e) {
+                // Send error event with details
+                yield new ServerEvent(
+                    json_encode([
+                        'status' => 'error',
+                        'message' => $e->getMessage(),
+                        'trace' => $e->getTraceAsString(),
+                    ], JSON_THROW_ON_ERROR),
+                    'error'
+                );
+            }
+        });
     }
 }

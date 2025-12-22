@@ -1,0 +1,222 @@
+{% do form.finish.setRendered() %}
+
+<div class="col bg-light rounded p-4 position-relative" style="overflow: hidden;">
+    <canvas id="confetti-canvas" class="position-absolute top-0 start-0 w-100 h-100" style="pointer-events: none; z-index: 1;"></canvas>
+
+    <div class="d-flex flex-column h-100 position-relative" style="z-index: 2;">
+        <div class="flex-grow-1">
+            <div class="card-body p-4 px-5 d-flex flex-column h-100">
+                <div class="flex-grow-1" style="min-height: 410px">
+
+                    <div class="text-center mb-4">
+                        <div class="success-checkmark mb-4">
+                            <div class="check-icon">
+                                <span class="icon-line line-tip"></span>
+                                <span class="icon-line line-long"></span>
+                                <div class="icon-circle"></div>
+                                <div class="icon-fix"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mb-5">
+                        <h1 class="display-6 fw-bold text-success mb-3">
+                            {{ ux_icon('tabler:confetti', {width: 36, height: 36, class: 'me-2'}) }}
+                            {{ 'Installation Complete!'|trans }}
+                        </h1>
+                        <p class="lead text-dark mb-4">
+                            {{ 'Congratulations! SolidInvoice has been successfully installed and configured.'|trans }}
+                        </p>
+                    </div>
+
+                    <hr class="border-secondary-subtle mb-4">
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-12">
+                            <h4 class="fw-bold mb-3 text-center">{{ 'What\'s Next?'|trans }}</h4>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card h-100 border-primary shadow-sm">
+                                <div class="card-body text-center">
+                                    <div class="text-primary mb-3">
+                                        {{ ux_icon('tabler:users-plus', {width: 48, height: 48}) }}
+                                    </div>
+                                    <h5 class="fw-bold mb-2">{{ 'Add Clients'|trans }}</h5>
+                                    <p class="text-muted small mb-0">
+                                        {{ 'Start by adding your clients and their contact information'|trans }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card h-100 border-info shadow-sm">
+                                <div class="card-body text-center">
+                                    <div class="text-info mb-3">
+                                        {{ ux_icon('tabler:file-invoice', {width: 48, height: 48}) }}
+                                    </div>
+                                    <h5 class="fw-bold mb-2">{{ 'Create Invoice'|trans }}</h5>
+                                    <p class="text-muted small mb-0">
+                                        {{ 'Generate your first professional invoice in seconds'|trans }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card h-100 border-success shadow-sm">
+                                <div class="card-body text-center">
+                                    <div class="text-success mb-3">
+                                        {{ ux_icon('tabler:settings', {width: 48, height: 48}) }}
+                                    </div>
+                                    <h5 class="fw-bold mb-2">{{ 'Configure Settings'|trans }}</h5>
+                                    <p class="text-muted small mb-0">
+                                        {{ 'Customize your company details and preferences'|trans }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="alert alert-success border-0 shadow-sm mb-4">
+                        <div class="d-flex gap-3">
+                            <div class="flex-shrink-0">
+                                {{ ux_icon('tabler:info-circle', {width: 24, height: 24}) }}
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-2">{{ 'Installation Summary'|trans }}</h5>
+                                <ul class="mb-0 small">
+                                    <li>{{ 'Database has been created and configured'|trans }}</li>
+                                    <li>{{ 'All required migrations have been applied'|trans }}</li>
+                                    <li>{{ 'Your administrator account is ready to use'|trans }}</li>
+                                    <li>{{ 'Application is secured with a unique secret key'|trans }}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-column align-items-center mt-4">
+                        <p class="text-muted mb-3 text-center">{{ 'You\'re all set! Ready to start managing your invoices?'|trans }}</p>
+                        {{ form_widget(form.navigator.finish, {
+                            attr: {class: 'btn-success btn-lg px-5 shadow'},
+                            label: 'Launch SolidInvoice'|trans,
+                            icon: ux_icon('tabler:rocket', {width: 24, height: 24}),
+                        }) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Confetti Animation
+(function() {
+    const canvas = document.getElementById('confetti-canvas');
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const confettiCount = 150;
+    const gravity = 0.5;
+    const terminalVelocity = 5;
+    const drag = 0.075;
+    const colors = [
+        { front: '#206bc4', back: '#1a569d' }, // primary
+        { front: '#4CAF50', back: '#45a049' }, // success
+        { front: '#d63939', back: '#bd3030' }, // danger
+        { front: '#f59f00', back: '#dd8d00' }, // warning
+        { front: '#4299e1', back: '#3182ce' }, // info
+    ];
+
+    let confetti = [];
+
+    const randomRange = (min, max) => Math.random() * (max - min) + min;
+
+    class ConfettiPiece {
+        constructor() {
+            this.x = randomRange(0, canvas.width);
+            this.y = randomRange(-canvas.height, 0);
+            this.w = randomRange(8, 16);
+            this.h = randomRange(6, 12);
+            this.vx = randomRange(-4, 4);
+            this.vy = randomRange(-2, 0);
+            this.rotation = randomRange(0, 2 * Math.PI);
+            this.rotationSpeed = randomRange(-0.2, 0.2);
+            this.color = colors[Math.floor(randomRange(0, colors.length))];
+            this.front = true;
+        }
+
+        update() {
+            this.vy += gravity;
+            this.vy = Math.min(this.vy, terminalVelocity);
+            this.vx *= (1 - drag);
+            this.vy *= (1 - drag);
+
+            this.x += this.vx;
+            this.y += this.vy;
+            this.rotation += this.rotationSpeed;
+
+            // Flip effect
+            if (Math.abs(this.vx) < 0.1) {
+                this.front = !this.front;
+            }
+        }
+
+        draw() {
+            ctx.save();
+            ctx.translate(this.x, this.y);
+            ctx.rotate(this.rotation);
+
+            const scaleX = Math.cos(this.rotation * 2);
+            ctx.scale(scaleX, 1);
+
+            ctx.fillStyle = this.front ? this.color.front : this.color.back;
+            ctx.fillRect(-this.w / 2, -this.h / 2, this.w, this.h);
+
+            ctx.restore();
+        }
+
+        isOffScreen() {
+            return this.y > canvas.height + 20;
+        }
+    }
+
+    function initConfetti() {
+        confetti = [];
+        for (let i = 0; i < confettiCount; i++) {
+            confetti.push(new ConfettiPiece());
+        }
+    }
+
+    function render() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        confetti.forEach((piece, index) => {
+            piece.update();
+            piece.draw();
+
+            // Remove pieces that have fallen off screen
+            if (piece.isOffScreen()) {
+                confetti.splice(index, 1);
+            }
+        });
+
+        // Continue animation if there are still pieces
+        if (confetti.length > 0) {
+            requestAnimationFrame(render);
+        }
+    }
+
+    // Start confetti animation
+    initConfetti();
+    render();
+
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+    });
+})();
+</script>

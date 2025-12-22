@@ -1,0 +1,110 @@
+<div class="col-4 bg-light rounded-start p-4">
+    <div class="d-flex flex-column h-100">
+        <div class="flex-grow-1">
+            <h2 class="card-title pb-3">
+                {{ app_logo(showDefault: true) }}
+                {{ app_name }} {{ 'Installation'|trans }}
+                {# {{ 'System Installation'|trans }} #}
+            </h2>
+            <div class="vstack gap-4 my-4">
+                {% for step in form.vars.visible_steps|filter(v => v.name != 'start') %}
+                    <div class="d-flex gap-2 align-items-center {{ step.index > form.vars.cursor.stepIndex ? 'text-muted' }}">
+                                    <span class="align-self-start">
+                                        {% if step.is_current_step %}
+                                            <span class="text-secondary" style="color: #f0a015 !important;">
+                                                {{ ux_icon('tabler:circle-dot', {width: 32, height: 32}) }}
+                                            </span>
+                                        {% elseif step.index > form.vars.cursor.stepIndex %}
+                                            {{ ux_icon('tabler:circle-dashed', {width: 32, height: 32}) }}
+                                        {% else %}
+                                            <span class="text-primary">
+                                                {{ ux_icon('tabler:circle-check', {width: 32, height: 32}) }}
+                                            </span>
+                                        {% endif %}
+                                    </span>
+
+                        <div class="d-flex flex-column{{ step.is_current_step and not form.vars.valid ? ' text-danger' }}"{{ step.is_current_step ? ' id="current_step_text"' }}>
+                            <strong>{{ step.name|u.replace('_', ' ').title(allWords: true) }}</strong>
+                            {# <small class="text-muted">Review and submit</small> #}
+                            {# {% if step.name == 'start' %}
+                                            <strong>Personal Information</strong>
+                                            <small class="text-muted">Your identity details</small>
+                                        {% elseif step.name == 'documents' %}
+                                            <strong>Documents</strong>
+                                            <small class="text-muted">Upload verification files</small>
+                                        {% elseif step.name == 'review' %}
+                                            <strong>Review</strong>
+                                            <small class="text-muted">Review and submit</small>
+                                        {% else %}
+
+                                        {% endif %} #}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% if form.navigator.reset is defined %}
+            <div>
+                {{ form_widget(form.navigator.reset, {
+                    attr: {class: 'btn-light'},
+                    icon: ux_icon('tabler:restore', {width: 20, height: 20}),
+                }) }}
+            </div>
+        {% endif %}
+    </div>
+</div>
+<div class="col-8">
+    {% set current_step = form.vars.cursor.currentStep %}
+    {% set current_step_block_name = 'installation_' ~ current_step ~ '_step' %}
+
+    <div class="card-body p-4 px-5 d-flex flex-column h-100">
+        <div class="flex-grow-1" style="min-height: 410px">
+            <h4 class="card-title">{{ field_label(form[current_step]) }}</h4>
+            <p class="card-text text-muted mb-4">{{ field_help(form[current_step]) }}</p>
+
+            <hr class="border-secondary-subtle">
+
+            {% block content %}
+                {{ form_errors(form) }}
+
+                {% if block(current_step_block_name) is defined %}
+                    {{ block(current_step_block_name) }}
+                {% else %}
+                    {{ form_widget(form[current_step]) }}
+                {% endif %}
+            {% endblock content %}
+        </div>
+        <div>
+            <div class="d-flex justify-content-between border-top border-dark border-opacity-10 pt-3 mt-3">
+                <div class="d-flex gap-3">
+                    {% if form.navigator.previous is defined %}
+                        {{ form_widget(form.navigator.previous, {
+                            attr: {class: 'btn-outline-secondary'},
+                            icon: ux_icon('tabler:arrow-left', {width: 20, height: 20}),
+                        }) }}
+                    {% endif %}
+                </div>
+                <div class="d-flex gap-3">
+                    {% if form.navigator.next is defined %}
+                        {{ form_widget(form.navigator.next, {
+                            attr: {class: 'btn-primary flex-row-reverse'},
+                            icon: ux_icon('tabler:arrow-right', {width: 20, height: 20}),
+                        }) }}
+                    {% endif %}
+                    {% if form.navigator.install is defined %}
+                        {{ form_widget(form.navigator.install, {
+                            attr: {class: 'btn-primary flex-row-reverse'},
+                            icon: ux_icon('tabler:location', {width: 20, height: 20}),
+                        }) }}
+                    {% endif %}
+                    {% if form.navigator.finish is defined %}
+                        {{ form_widget(form.navigator.finish, {
+                            attr: {class: 'btn-primary flex-row-reverse'},
+                            icon: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-send"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg>',
+                        }) }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

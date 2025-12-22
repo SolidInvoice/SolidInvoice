@@ -13,27 +13,24 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Listener;
 
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
-use SolidInvoice\InstallBundle\Exception\ApplicationInstalledException;
-use SolidInvoice\UserBundle\Repository\UserRepositoryInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
 use function in_array;
 
 /**
- * Listener class to intercept requests
- * and redirect to the installer if necessary.
  * @see \SolidInvoice\InstallBundle\Tests\Listener\RequestListenerTest
  */
 final class RequestListener implements EventSubscriberInterface, ServiceSubscriberInterface
 {
-    public const INSTALLER_ROUTE = '_install_check_requirements';
+    public const string INSTALLER_ROUTE = '_system_install';
 
     public static bool $isDebug = false;
 
@@ -43,24 +40,21 @@ final class RequestListener implements EventSubscriberInterface, ServiceSubscrib
      * @var list<string>
      */
     private array $allowRoutes = [
-        ...self::INSTALL_ROUTES,
-        ...self::SETUP_ROUTES,
+        self::INSTALLER_ROUTE,
         'ux_live_component',
     ];
 
     /**
      * @var list<string>
      */
-    private const INSTALL_ROUTES = [
+    private const array INSTALL_ROUTES = [
         self::INSTALLER_ROUTE,
-        '_install_config',
-        '_install_install',
     ];
 
     /**
      * @var list<string>
      */
-    private const SETUP_ROUTES = [
+    private const array SETUP_ROUTES = [
         '_install_setup',
         '_install_finish',
     ];
@@ -68,7 +62,7 @@ final class RequestListener implements EventSubscriberInterface, ServiceSubscrib
     /**
      * @var list<string>
      */
-    private const DEBUG_ROUTES = [
+    private const array DEBUG_ROUTES = [
         '_wdt',
         '_wdt_stylesheet',
         '_profiler',
@@ -87,7 +81,6 @@ final class RequestListener implements EventSubscriberInterface, ServiceSubscrib
 
     public function __construct(
         private readonly RouterInterface $router,
-        private readonly UserRepositoryInterface $userRepository,
         private readonly ContainerInterface $locator,
         private readonly ?string $installed,
         private readonly bool $debug = false
@@ -98,24 +91,23 @@ final class RequestListener implements EventSubscriberInterface, ServiceSubscrib
     }
 
     /**
-     * @throws ApplicationInstalledException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function onKernelRequest(RequestEvent $event): void
     {
-        if (HttpKernelInterface::MAIN_REQUEST !== $event->getRequestType()) {
+        if (! $event->isMainRequest()) {
             return;
         }
 
         $request = $event->getRequest();
-        $route = $request->get('_route');
+        $route = $request->attributes->get('_route');
 
-        if (! $this->installed && ! isset($_SERVER['SOLIDINVOICE_APP_SECRET']) && in_array($route, $this->allowRoutes, true)) {
-            // This is a terrible hack to ensure any live components on the installation pages works,
-            // since the LiveComponentHydrator needs the kernel.secret parameter to be set
-            // (which uses the SOLIDINVOICE_APP_SECRET env var).
-            // Since we don't have this value yet (it will only be created during the installation process),
-            // we need to set the app secret to a unique value.
-            // Then we need to clear the env cache, to ensure an empty cached value is not used.
+        if (! $this->installed) {
+            if (null === $route || ! in_array($route, $this->allowRoutes, true)) {
+                $this->redirectToRoute($event, self::INSTALLER_ROUTE);
+            }
+
             $session = $request->getSession();
 
             if (! $session->isStarted()) {
@@ -130,26 +122,6 @@ final class RequestListener implements EventSubscriberInterface, ServiceSubscrib
                     $container->resetEnvCache();
                 }
             }
-        }
-
-        if (null !== $this->installed && '' !== $this->installed) {
-            // If the application is installed, but we don't have any users
-            // Redirect to the setup page
-            if ($this->userRepository->getUserCount() === 0) {
-                if (! in_array($route, [...self::SETUP_ROUTES, ...($this->debug ? self::DEBUG_ROUTES : [])], true)) {
-                    $this->redirectToRoute($event, '_install_setup');
-                }
-
-                return;
-            }
-
-            // If the application is installed, and we already have users, and the installer route is requested
-            // then throw an exception
-            if (in_array($route, self::INSTALL_ROUTES, true) && ! $request->getSession()->has('installation_step')) {
-                throw new ApplicationInstalledException();
-            }
-        } elseif (! in_array($route, $this->allowRoutes, true)) {
-            $this->redirectToRoute($event, self::INSTALLER_ROUTE);
         }
     }
 

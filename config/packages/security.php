@@ -81,7 +81,7 @@ return static function (SecurityConfig $config): void {
 
     $config->accessControl()
         ->path('^(?:' .
-            '/_components/DatabaseConfig|' .
+            '/_components/SystemInstallation|' .
             '/webhook/lemon_squeezy|' .
             '/view/(quote|invoice)/[a-zA-Z0-9-]{36}$|' .
             '/(login|register)$|' .

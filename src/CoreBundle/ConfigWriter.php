@@ -25,7 +25,7 @@ use function strtoupper;
 
 readonly class ConfigWriter
 {
-    public const CONFIG_PREFIX = 'SOLIDINVOICE_';
+    public const string CONFIG_PREFIX = 'SOLIDINVOICE_';
 
     private string $pathPrefix;
 

@@ -11,6 +11,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use SolidInvoice\AppRequirements;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\UX\StimulusBundle\Helper\StimulusHelper;
@@ -38,11 +39,13 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters->set('env(SOLIDINVOICE_CONFIG_DIR)', param('kernel.project_dir') . '/config/env');
     $parameters->set('application_version', SolidInvoiceCoreBundle::VERSION);
 
-    $containerConfigurator->services()
+    $services = $containerConfigurator->services();
+
+    $services
         ->set(Monolog\Processor\PsrLogMessageProcessor::class)
         ->tag('monolog.processor', ['handler' => 'sentry']);
 
-    $services = $containerConfigurator->services();
-
     $services->alias(StimulusHelper::class, 'stimulus.helper');
+    $services->set(AppRequirements::class)
+        ->autowire(true);
 };
