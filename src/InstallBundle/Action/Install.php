@@ -31,7 +31,6 @@ use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ServerEvent;
-use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
@@ -57,7 +56,7 @@ final class Install extends AbstractController
     ) {
     }
 
-    public function __invoke(Request $request, #[MapQueryParameter] string $tab = 'details'): Response
+    public function __invoke(Request $request): Response
     {
         if ($this->installed) {
             throw $this->createNotFoundException();
