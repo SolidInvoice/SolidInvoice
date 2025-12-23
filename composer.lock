@@ -5282,12 +5282,12 @@
             "version": "3.23.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/driesvints/vat-calculator.git",
+                "url": "https://github.com/laravel/vat-calculator.git",
                 "reference": "2299e656be9f7c48e4f1238eaca195284c895c80"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/driesvints/vat-calculator/zipball/2299e656be9f7c48e4f1238eaca195284c895c80",
+                "url": "https://api.github.com/repos/laravel/vat-calculator/zipball/2299e656be9f7c48e4f1238eaca195284c895c80",
                 "reference": "2299e656be9f7c48e4f1238eaca195284c895c80",
                 "shasum": ""
             },
