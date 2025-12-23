@@ -225,12 +225,6 @@
     "suggest": {
         "ext-zend-opcache": "For best performance"
     },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../../platform"
-        }
-    ],
     "autoload": {
         "psr-4": {
             "SolidInvoice\\": "src/"
