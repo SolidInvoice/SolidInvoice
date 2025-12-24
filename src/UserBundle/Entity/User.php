@@ -38,7 +38,7 @@ use Symfony\Component\Uid\Ulid;
 //class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringable, UserTwoFactorInterface
 class User extends \SolidWorx\Platform\PlatformBundle\Model\User
 {
-    // final public const string TABLE_NAME = 'users';
+    final public const string TABLE_NAME = 'users';
 
     use TimeStampable;
     // use UserTwoFactor;
