@@ -200,7 +200,7 @@
         "phpstan/phpstan-mockery": "^1.1.0",
         "phpstan/phpstan-phpunit": "^1.1.1",
         "phpstan/phpstan-symfony": "^1.2.13",
-        "phpunit/phpunit": "^10.4",
+        "phpunit/phpunit": "^12.5",
         "rector/rector": "^1.1",
         "roave/security-advisories": "dev-latest",
         "spatie/phpunit-snapshot-assertions": "^5.1",
