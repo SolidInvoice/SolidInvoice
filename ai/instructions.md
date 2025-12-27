@@ -78,8 +78,8 @@ This document provides comprehensive guidance for AI assistants working with the
 
 ### Distribution
 
-- **Docker:** Official SolidInvoice Docker images available on Docker Hub (solidinvoice/solidinvoice). Runs the Frankenphp binary inside the container.
-- **Frankenphp:** Official recommended installation method. Application is built into a single binary, which contains PHP, all required extension, the web server, and the application code.
+- **Docker:** Official SolidInvoice Docker images available on Docker Hub (solidinvoice/solidinvoice). Runs the FrankenPHP binary inside the container.
+- **FrankenPHP:** Official recommended installation method. Application is built into a single binary, which contains PHP, all required extensions, the web server, and the application code.
 - **Archive:** ZIP/TAR archives for manual installation (all assets pre-compiled)
 
 ---
@@ -102,7 +102,7 @@ This document provides comprehensive guidance for AI assistants working with the
 │   ├── routes/             # Route definitions
 │   └── services.php        # Service container config
 ├── docker/                 # Docker configuration
-├── frankenphp/             # Frankenphp code and config (Go files and shell scripts to build and compile the binary)
+├── frankenphp/             # FrankenPHP code and config (Go files and shell scripts to build and compile the binary)
 ├── migrations/             # Database migrations
 ├── public/                 # Web-accessible files
 ├── scripts/                # Shell scripts for various tasks
@@ -713,9 +713,9 @@ Two filters are always enabled:
 
 Location: `/migrations/`
 
-1. Migrations doesn't use raw SQL queries but instead uses the Doctrine Schema tool. All newly created migrations should use the Schema tool to update the database schema.
+1. Migrations don't use raw SQL queries but instead use the Doctrine Schema tool. All newly created migrations should use the Schema tool to update the database schema.
 
-2. Migrations doesn't use the standard naming convention from Doctrine. Instead, use a migration file per version. For example, for version 2.3.11, the migration file should be named `Version203011.php`.
+2. Migrations don't use the standard naming convention from Doctrine. Instead, use a migration file per version. For example, for version 2.3.11, the migration file should be named `Version203011.php`.
 
 3. From version 2.4 onwards, migrations are split into separate files using the following naming convention: `Version{major}{minor}{patch}_{partNumber}.php`. For example, for version 2.4.0, the migration files would be named `Version20400_1.php`, `Version20400_2.php`, etc.
 

@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-# This script is used to copy the AI instructions to the various files needed for different agents.
+# This script is used to copy the AI instructions to various files needed for different agents.
 
 AI_INSTRUCTIONS_FILE="ai/instructions.md"
 AGENT_FILES=(
