@@ -66,7 +66,7 @@ class PasswordChangeHandler implements FormHandlerResponseInterface, FormHandler
     {
         $route = $form->getOptions()->get('redirect_route', '_profile');
 
-        $data->setPassword($this->userPasswordHasher->hashPassword($data, $data->getPlainPassword()));
+        $data->setPassword($this->userPasswordHasher->hashPassword($data, $data->getPassword()));
         $data->eraseCredentials();
 
         $this->userRepository->save($data);

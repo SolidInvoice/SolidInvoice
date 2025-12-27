@@ -12,7 +12,6 @@ declare(strict_types=1);
  */
 
 use Payum\Core\Registry\RegistryInterface;
-use SolidInvoice\PaymentBundle\Menu\Builder;
 use SolidInvoice\PaymentBundle\PaymentAction\Offline\StatusAction;
 use SolidInvoice\PaymentBundle\PaymentAction\PaypalExpress\PaymentDetailsStatusAction;
 use SolidInvoice\PaymentBundle\Payum\Extension\UpdatePaymentDetailsExtension;
@@ -38,17 +37,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services
         ->load('SolidInvoice\\PaymentBundle\\Action\\', dirname(__DIR__, 3) . '/Action')
         ->tag('controller.service_arguments');
-
-    $services
-        ->set(Builder::class)
-        ->tag(
-            'cs_core.menu',
-            [
-                'menu' => 'sidebar',
-                'method' => 'mainMenu',
-                'priority' => -1,
-            ]
-        );
 
     $services
         ->set(PaymentDetailsStatusAction::class)

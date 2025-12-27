@@ -35,7 +35,7 @@ class Configuration implements ConfigurationInterface
                                 ->isRequired()
                                 ->cannotBeEmpty()
                             ->end()
-                            ->scalarNode('factory')
+                            ?->scalarNode('factory')
                                 ->isRequired()
                                 ->cannotBeEmpty()
                             ->end()

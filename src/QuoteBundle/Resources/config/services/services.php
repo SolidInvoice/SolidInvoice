@@ -11,7 +11,6 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use SolidInvoice\QuoteBundle\Menu\Builder;
 use SolidInvoice\QuoteBundle\SolidInvoiceQuoteBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
@@ -35,14 +34,4 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services
         ->load(SolidInvoiceQuoteBundle::NAMESPACE . '\\Action\\', dirname(__DIR__, 3) . '/Action')
         ->tag('controller.service_arguments');
-
-    $services
-        ->set(Builder::class)
-        ->tag(
-            'cs_core.menu',
-            [
-                'menu' => 'sidebar',
-                'method' => 'sidebar',
-            ]
-        );
 };

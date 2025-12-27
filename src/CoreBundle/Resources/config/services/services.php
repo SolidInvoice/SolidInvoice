@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 use Gedmo\Timestampable\TimestampableListener;
 use Mpociot\VatCalculator\VatCalculator;
-use SolidInvoice\CoreBundle\Menu\Builder;
 use SolidInvoice\CoreBundle\Routing\Loader\AbstractDirectoryLoader;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -55,24 +54,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     ;
 
     $services->set(CssToInlineStyles::class);
-
-    $services
-        ->set(Builder::class)
-        ->tag('cs_core.menu', [
-            'menu' => 'sidebar',
-            'method' => 'dashboardMenu',
-            'priority' => 200,
-        ])
-        ->tag('cs_core.menu', [
-            'menu' => 'sidebar',
-            'method' => 'systemMenu',
-            'priority' => -200,
-        ])
-        ->tag('cs_core.menu', [
-            'menu' => 'sidebar',
-            'method' => 'userMenu',
-            'priority' => -255,
-        ]);
 
     $services
         ->set(AbstractDirectoryLoader::class)

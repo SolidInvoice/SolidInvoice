@@ -83,7 +83,7 @@ final class Register extends AbstractController
                 $user->addCompany($invitation->getCompany());
             }
 
-            $user->setPassword($this->userPasswordHasher->hashPassword($user, $user->getPlainPassword()));
+            $user->setPassword($this->userPasswordHasher->hashPassword($user, $user->getPassword()));
             $user->setEnabled(true);
             $user->eraseCredentials();
             $this->userRepository->save($user);

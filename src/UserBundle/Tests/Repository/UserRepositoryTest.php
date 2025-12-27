@@ -118,16 +118,6 @@ final class UserRepositoryTest extends KernelTestCase
                 return [];
             }
 
-            public function getPassword(): ?string
-            {
-                return null;
-            }
-
-            public function getSalt(): ?string
-            {
-                return null;
-            }
-
             public function getUserIdentifier(): string
             {
                 return 'abc';

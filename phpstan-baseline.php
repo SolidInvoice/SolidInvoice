@@ -272,18 +272,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/MenuBundle/Factory.php',
 ];
 $ignoreErrors[] = [
-	// identifier: class.extendsFinalByPhpDoc
-	'message' => '#^Anonymous class extends @final class Knp\\\\Menu\\\\Matcher\\\\Matcher\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/src/MenuBundle/Renderer.php',
-];
-$ignoreErrors[] = [
-	// identifier: class.extendsFinalByPhpDoc
-	'message' => '#^Class SolidInvoice\\\\MenuBundle\\\\Renderer extends @final class Knp\\\\Menu\\\\Renderer\\\\ListRenderer\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/src/MenuBundle/Renderer.php',
-];
-$ignoreErrors[] = [
 	// identifier: missingType.parameter
 	'message' => '#^Method SolidInvoice\\\\MoneyBundle\\\\Calculator\\:\\:calculateDiscount\\(\\) has parameter \\$entity with no type specified\\.$#',
 	'count' => 1,
@@ -300,6 +288,12 @@ $ignoreErrors[] = [
 	'message' => '#^Method SolidInvoice\\\\PaymentBundle\\\\Action\\\\Settings\\:\\:__invoke\\(\\) has no return type specified\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/src/PaymentBundle/Action/Settings.php',
+];
+$ignoreErrors[] = [
+	// identifier: class.notFound
+	'message' => '#^Call to method arrayNode\\(\\) on an unknown class Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeBuilder\\<Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\ArrayNodeDefinition\\>\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/PaymentBundle/DependencyInjection/Configuration.php',
 ];
 $ignoreErrors[] = [
 	// identifier: missingType.parameter

@@ -54,7 +54,7 @@ class DatabaseConfigType extends AbstractType
             'port' => [
                 IntegerType::class,
                 [
-                    'constraints' => new Type(['type' => 'integer']),
+                    'constraints' => new Type('integer'),
                     'required' => false,
                 ],
             ],
