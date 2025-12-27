@@ -20,7 +20,7 @@
                         {% if invoice.client.credit.value is not empty %}
                             <div class="float-right">
                                 {{ 'payment.create.credit'|trans }}
-                                {{ invoice.client.credit.value|formatCurrency(invoice.client) }}
+                                {{ invoice.client.credit.value|formatCurrency(invoice.client.currency) }}
                             </div>
                         {% endif %}
 
