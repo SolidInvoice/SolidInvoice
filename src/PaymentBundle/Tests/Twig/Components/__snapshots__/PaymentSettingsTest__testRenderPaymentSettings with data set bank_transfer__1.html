@@ -10,12 +10,12 @@
         <div class="card-body">
             <form name="payment_methods" method="post" data-model="on(change)|*" data-action="live#action:prevent" data-live-action-param="save">
                 <div id="payment_methods" data-model="on(change)|*">
-<div class="form-group">                
-                                <label class="control-label required required" for="payment_methods_name">Name</label><input type="text" id="payment_methods_name" name="payment_methods[name]" data-required="required" maxlength="125" class="form-control" value="Bank Transfer">
+<div class="mb-3">                
+                                <label class="control-label required form-label required" for="payment_methods_name">Name</label><input type="text" id="payment_methods_name" name="payment_methods[name]" data-required="required" maxlength="125" class="form-control" value="Bank Transfer">
 </div>
-<div class="form-group"><div class="custom-control custom-switch">        
-        <input type="checkbox" id="payment_methods_enabled" name="payment_methods[enabled]" class="custom-control-input" value="1" checked>
-        <label class="switch-custom custom-control-label" for="payment_methods_enabled">Enabled</label>
+<div class="mb-3"><div class="form-check">
+<input type="checkbox" id="payment_methods_enabled" name="payment_methods[enabled]" class="form-check-input" value="1" checked>
+        <label class="switch-custom form-check-label" for="payment_methods_enabled">Enabled</label>
 </div></div>
 <input type="hidden" id="payment_methods__token" name="payment_methods[_token]" data-controller="csrf-protection">
 </div>
