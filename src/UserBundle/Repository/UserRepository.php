@@ -13,22 +13,17 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Repository;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\UserBundle\Entity\User;
-use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\User\UserInterface;
-use function assert;
-use function sprintf;
 
 /**
  * @see \SolidInvoice\UserBundle\Tests\Repository\UserRepositoryTest
  *
- * @extends ServiceEntityRepository<User>
+ * @extends \SolidWorx\Platform\PlatformBundle\Repository\UserRepository<User>
  */
 class UserRepository extends \SolidWorx\Platform\PlatformBundle\Repository\UserRepository implements UserRepositoryInterface
 {
@@ -48,18 +43,6 @@ class UserRepository extends \SolidWorx\Platform\PlatformBundle\Repository\UserR
         } catch (NoResultException|NonUniqueResultException|Exception $e) {
             return 0;
         }
-    }
-
-    public function refreshUser(UserInterface $user): UserInterface
-    {
-        $class = $user::class;
-        if (! $this->supportsClass($class)) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $class));
-        }
-
-        assert($user instanceof User);
-
-        return $this->loadUserByIdentifier($user->getEmail());
     }
 
     public function getGridQuery(): QueryBuilder

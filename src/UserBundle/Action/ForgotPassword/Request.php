@@ -64,7 +64,7 @@ final class Request extends AbstractController
         ]);
 
         // Do not reveal whether a user account was found or not.
-        if (! $user) {
+        if (! $user instanceof User) {
             return $this->redirectToRoute('_user_forgot_password_check_email');
         }
 

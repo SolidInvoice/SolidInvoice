@@ -11,7 +11,6 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use SolidInvoice\InvoiceBundle\Menu\Builder;
 use SolidInvoice\InvoiceBundle\SolidInvoiceInvoiceBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
@@ -37,14 +36,4 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services
         ->load(SolidInvoiceInvoiceBundle::NAMESPACE . '\\Action\\', dirname(__DIR__, 3) . '/Action')
         ->tag('controller.service_arguments');
-
-    $services
-        ->set('solidinvoice_invoice.menu', Builder::class)
-        ->tag(
-            'cs_core.menu',
-            [
-                'menu' => 'sidebar',
-                'method' => 'sidebar',
-            ]
-        );
 };

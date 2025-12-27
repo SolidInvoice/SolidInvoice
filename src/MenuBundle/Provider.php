@@ -15,7 +15,6 @@ namespace SolidInvoice\MenuBundle;
 
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
-use Knp\Menu\Provider\MenuProviderInterface;
 use SolidInvoice\MenuBundle\Builder\BuilderInterface;
 use SolidInvoice\MenuBundle\Builder\MenuBuilder;
 use SplPriorityQueue;
@@ -35,6 +34,9 @@ class Provider /* implements MenuProviderInterface*/
     ) {
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function get(string $name, array $options = []): ItemInterface
     {
         $root = $this->factory->createItem('root');
@@ -48,7 +50,7 @@ class Provider /* implements MenuProviderInterface*/
         return $root;
     }
 
-    public function has(string $name, array $options = []): bool
+    public function has(string $name): bool
     {
         return $this->hasBuilder($name);
     }

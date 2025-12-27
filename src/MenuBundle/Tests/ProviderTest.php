@@ -47,7 +47,7 @@ class ProviderTest extends TestCase
             ->once()
             ->withArgs([$q, []]);
 
-        self::assertSame($q, $provider->get('abc', []));
+        self::assertSame($q, $provider->get('abc'));
     }
 
     public function testHas(): void
@@ -58,7 +58,7 @@ class ProviderTest extends TestCase
         $builder = M::mock(BuilderInterface::class);
         $provider->addBuilder($builder, 'abc', 'foo', 1);
 
-        self::assertTrue($provider->has('abc', []));
-        self::assertFalse($provider->has('def', []));
+        self::assertTrue($provider->has('abc'));
+        self::assertFalse($provider->has('def'));
     }
 }

@@ -13,41 +13,20 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Entity;
 
-use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\UserBundle\Repository\UserRepository;
-use SolidWorx\Platform\PlatformBundle\Contracts\Security\TwoFactor\UserTwoFactorInterface;
-use SolidWorx\Platform\PlatformBundle\Security\TwoFactor\Traits\UserTwoFactor;
-use Stringable;
-use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
-use Symfony\Bridge\Doctrine\Types\UlidType;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Uid\Ulid;
 
 #[ORM\Table(name: User::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-// #[UniqueEntity(fields: ['email'], message: 'This email is already in use. Do you want to log in instead?')]
-#[ORM\Index(fields: ['googleId'])]
-//class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringable, UserTwoFactorInterface
 class User extends \SolidWorx\Platform\PlatformBundle\Model\User
 {
     final public const string TABLE_NAME = 'users';
 
     use TimeStampable;
-    // use UserTwoFactor;
-
-    /*#[ORM\Column(type: UlidType::NAME, unique: true)]
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: UlidGenerator::class)]
-    private ?Ulid $id = null;*/
 
     /**
      * @var Collection<int, ApiToken>
@@ -60,9 +39,6 @@ class User extends \SolidWorx\Platform\PlatformBundle\Model\User
      */
     #[ORM\ManyToMany(targetEntity: Company::class, inversedBy: 'users', cascade: ['persist'])]
     private Collection $companies;
-
-    #[ORM\Column(name: 'google_id', type: Types::STRING, length: 45, nullable: true)]
-    private ?string $googleId = null;
 
     public function __construct()
     {
@@ -82,161 +58,9 @@ class User extends \SolidWorx\Platform\PlatformBundle\Model\User
     /**
      * @param Collection<int, ApiToken> $apiTokens
      */
-    public function setApiTokens(Collection $apiTokens): self
+    public function setApiTokens(Collection $apiTokens): static
     {
         $this->apiTokens = $apiTokens;
-
-        return $this;
-    }
-
-    public function getMobile(): ?string
-    {
-        return $this->mobile;
-    }
-
-    public function setMobile(string $mobile): self
-    {
-        $this->mobile = $mobile;
-
-        return $this;
-    }
-
-    public function addRole(string $role): self
-    {
-        $role = strtoupper($role);
-        if ('ROLE_USER' === $role) {
-            return $this;
-        }
-
-        if (! in_array($role, $this->roles, true)) {
-            $this->roles[] = $role;
-        }
-
-        return $this;
-    }
-
-    public function eraseCredentials(): void
-    {
-        $this->plainPassword = '';
-    }
-
-    public function getId(): ?Ulid
-    {
-        return $this->id;
-    }
-
-    public function getUserIdentifier(): string
-    {
-        return $this->email;
-    }
-
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function getPlainPassword(): string
-    {
-        return $this->plainPassword;
-    }
-
-    public function getLastLogin(): ?DateTimeInterface
-    {
-        return $this->lastLogin;
-    }
-
-    public function getRoles(): array
-    {
-        $roles = $this->roles;
-
-        // we need to make sure to have at least one role
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
-    }
-
-    public function hasRole(string $role): bool
-    {
-        return in_array(strtoupper($role), $this->getRoles(), true);
-    }
-
-    public function isEnabled(): bool
-    {
-        return $this->enabled;
-    }
-
-    public function isVerified(): bool
-    {
-        return $this->verified;
-    }
-
-    public function removeRole(string $role): self
-    {
-        if (false !== $key = array_search(strtoupper($role), $this->roles, true)) {
-            unset($this->roles[$key]);
-            $this->roles = array_values($this->roles);
-        }
-
-        return $this;
-    }
-
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    public function setEnabled(bool $enabled): self
-    {
-        $this->enabled = $enabled;
-
-        return $this;
-    }
-
-    public function setVerified(bool $verified): self
-    {
-        $this->verified = $verified;
-
-        return $this;
-    }
-
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    public function setPlainPassword(?string $password): self
-    {
-        $this->plainPassword = (string) $password;
-
-        return $this;
-    }
-
-    public function setLastLogin(?DateTimeInterface $time = null): self
-    {
-        $this->lastLogin = $time;
-
-        return $this;
-    }
-
-    /**
-     * @param string[] $roles
-     */
-    public function setRoles(array $roles): self
-    {
-        $this->roles = [];
-
-        foreach ($roles as $role) {
-            $this->addRole($role);
-        }
 
         return $this;
     }
@@ -249,7 +73,7 @@ class User extends \SolidWorx\Platform\PlatformBundle\Model\User
         return $this->companies;
     }
 
-    public function addCompany(Company $company): self
+    public function addCompany(Company $company): static
     {
         if (! $this->companies->contains($company)) {
             $this->companies[] = $company;
@@ -258,53 +82,12 @@ class User extends \SolidWorx\Platform\PlatformBundle\Model\User
         return $this;
     }
 
-    public function removeCompany(Company $company): self
+    public function removeCompany(Company $company): static
     {
         if ($this->companies->contains($company)) {
             $this->companies->removeElement($company);
         }
 
         return $this;
-    }
-
-    public function getGoogleId(): ?string
-    {
-        return $this->googleId;
-    }
-
-    public function setGoogleId(?string $googleId): self
-    {
-        $this->googleId = $googleId;
-
-        return $this;
-    }
-
-    public function getFirstName(): ?string
-    {
-        return $this->firstName;
-    }
-
-    public function setFirstName(?string $firstName): static
-    {
-        $this->firstName = $firstName;
-
-        return $this;
-    }
-
-    public function getLastName(): ?string
-    {
-        return $this->lastName;
-    }
-
-    public function setLastName(?string $lastName): static
-    {
-        $this->lastName = $lastName;
-
-        return $this;
-    }
-
-    public function __toString(): string
-    {
-        return $this->email;
     }
 }

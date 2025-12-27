@@ -31,7 +31,7 @@ final class SmtpTransportConfigType extends AbstractType
             'host',
             null,
             [
-                'constraints' => new NotBlank(['groups' => 'smtp']),
+                'constraints' => new NotBlank(groups: ['smtp']),
             ]
         );
 
@@ -39,7 +39,7 @@ final class SmtpTransportConfigType extends AbstractType
             'port',
             IntegerType::class,
             [
-                'constraints' => new Type(['groups' => ['smtp'], 'type' => 'integer']),
+                'constraints' => new Type(type: 'integer', groups: ['smtp']),
                 'required' => false,
             ]
         );
