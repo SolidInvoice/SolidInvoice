@@ -44,10 +44,10 @@
                 </div>
                 <div class="card-body">
                     <div id="settings" data-model="norender|*">
-<fieldset class="form-group">                
+<fieldset class="mb-3">                
     <div id="settings_company">
-<div class="form-group">                
-            <label class="control-label" for="settings_company_logo">Logo</label><div class="form-group" data-controller="logo-upload">
+<div class="mb-3">                
+            <label class="control-label form-label" for="settings_company_logo">Logo</label><div class="mb-3" data-controller="logo-upload">
     <div class="dropzone-container" data-controller="symfony--ux-dropzone--dropzone">
         <input type="file" id="settings_company_logo" name="settings[company][logo]" placeholder="Drag and drop or browse" data-controller="" class="dropzone-input" data-symfony--ux-dropzone--dropzone-target="input">
 
@@ -63,12 +63,12 @@
     </div>
 </div>
 </div>
-<div class="form-group">                
-            <label class="control-label" for="settings_company_company_name">Company name</label><input type="text" id="settings_company_company_name" name="settings[company][company_name]" class="form-control" value="SolidInvoice">
+<div class="mb-3">                
+            <label class="control-label form-label" for="settings_company_company_name">Company name</label><input type="text" id="settings_company_company_name" name="settings[company][company_name]" class="form-control" value="SolidInvoice">
 </div>
-<fieldset class="form-group">                
+<fieldset class="mb-3">                
     <div id="settings_company_contact_details">
-<fieldset class="form-group">                
+<fieldset class="mb-3">                
         <legend>
         <h4>
             Address
@@ -79,39 +79,39 @@
 
         <div class="row">
             <div class="col-md-6">
-                <div class="form-group">                
-            <label class="control-label" for="settings_company_contact_details_address_street1">Street1</label><input type="text" id="settings_company_contact_details_address_street1" name="settings[company][contact_details][address][street1]" class="form-control">
+                <div class="mb-3">                
+            <label class="control-label form-label" for="settings_company_contact_details_address_street1">Street1</label><input type="text" id="settings_company_contact_details_address_street1" name="settings[company][contact_details][address][street1]" class="form-control">
 </div>
             </div>
             <div class="col-md-6">
-                <div class="form-group">                
-            <label class="control-label" for="settings_company_contact_details_address_street2">Street2</label><input type="text" id="settings_company_contact_details_address_street2" name="settings[company][contact_details][address][street2]" class="form-control">
-</div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">                
-            <label class="control-label" for="settings_company_contact_details_address_city">City</label><input type="text" id="settings_company_contact_details_address_city" name="settings[company][contact_details][address][city]" class="form-control">
-</div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">                
-            <label class="control-label" for="settings_company_contact_details_address_state">State</label><input type="text" id="settings_company_contact_details_address_state" name="settings[company][contact_details][address][state]" class="form-control">
+                <div class="mb-3">                
+            <label class="control-label form-label" for="settings_company_contact_details_address_street2">Street2</label><input type="text" id="settings_company_contact_details_address_street2" name="settings[company][contact_details][address][street2]" class="form-control">
 </div>
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-6">
-                <div class="form-group">                
-            <label class="control-label" for="settings_company_contact_details_address_zip">Zip</label><input type="text" id="settings_company_contact_details_address_zip" name="settings[company][contact_details][address][zip]" class="form-control">
+                <div class="mb-3">                
+            <label class="control-label form-label" for="settings_company_contact_details_address_city">City</label><input type="text" id="settings_company_contact_details_address_city" name="settings[company][contact_details][address][city]" class="form-control">
 </div>
             </div>
             <div class="col-md-6">
-                <div class="form-group">                
-            <label class="control-label" for="settings_company_contact_details_address_country">Country</label><select id="settings_company_contact_details_address_country" name="settings[company][contact_details][address][country]" data-controller="symfony--ux-autocomplete--autocomplete" data-symfony--ux-autocomplete--autocomplete-max-results-value="10" data-symfony--ux-autocomplete--autocomplete-loading-more-text-value="Loading more results..." data-symfony--ux-autocomplete--autocomplete-no-results-found-text-value="No results found" data-symfony--ux-autocomplete--autocomplete-no-more-results-text-value="No more results" data-symfony--ux-autocomplete--autocomplete-create-option-text-value="Add %placeholder%..." data-symfony--ux-autocomplete--autocomplete-preload-value="focus" class="form-control"><option value="">Select Country</option>
+                <div class="mb-3">                
+            <label class="control-label form-label" for="settings_company_contact_details_address_state">State</label><input type="text" id="settings_company_contact_details_address_state" name="settings[company][contact_details][address][state]" class="form-control">
+</div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">                
+            <label class="control-label form-label" for="settings_company_contact_details_address_zip">Zip</label><input type="text" id="settings_company_contact_details_address_zip" name="settings[company][contact_details][address][zip]" class="form-control">
+</div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">                
+            <label class="control-label form-label" for="settings_company_contact_details_address_country">Country</label><select id="settings_company_contact_details_address_country" name="settings[company][contact_details][address][country]" data-controller="symfony--ux-autocomplete--autocomplete" data-symfony--ux-autocomplete--autocomplete-max-results-value="10" data-symfony--ux-autocomplete--autocomplete-loading-more-text-value="Loading more results..." data-symfony--ux-autocomplete--autocomplete-no-results-found-text-value="No results found" data-symfony--ux-autocomplete--autocomplete-no-more-results-text-value="No more results" data-symfony--ux-autocomplete--autocomplete-create-option-text-value="Add %placeholder%..." data-symfony--ux-autocomplete--autocomplete-preload-value="focus" class="form-select"><option value="">Select Country</option>
 <option value="AF">Afghanistan</option>
 <option value="AX">&Atilde;&#133;land Islands</option>
 <option value="AL">Albania</option>
@@ -370,16 +370,16 @@
     </div>
 
 </fieldset>
-<div class="form-group">                
-            <label class="control-label" for="settings_company_contact_details_email">Email</label><input type="email" id="settings_company_contact_details_email" name="settings[company][contact_details][email]" class="form-control">
+<div class="mb-3">                
+            <label class="control-label form-label" for="settings_company_contact_details_email">Email</label><input type="email" id="settings_company_contact_details_email" name="settings[company][contact_details][email]" class="form-control">
 </div>
-<div class="form-group">                
-            <label class="control-label" for="settings_company_contact_details_phone_number">Phone number</label><input type="text" id="settings_company_contact_details_phone_number" name="settings[company][contact_details][phone_number]" class="form-control">
+<div class="mb-3">                
+            <label class="control-label form-label" for="settings_company_contact_details_phone_number">Phone number</label><input type="text" id="settings_company_contact_details_phone_number" name="settings[company][contact_details][phone_number]" class="form-control">
 </div>
 </div>
 </fieldset>
-<div class="form-group">                
-            <label class="control-label" for="settings_company_currency">Currency</label><select id="settings_company_currency" name="settings[company][currency]" data-controller="symfony--ux-autocomplete--autocomplete" data-symfony--ux-autocomplete--autocomplete-max-results-value="10" data-symfony--ux-autocomplete--autocomplete-loading-more-text-value="Loading more results..." data-symfony--ux-autocomplete--autocomplete-no-results-found-text-value="No results found" data-symfony--ux-autocomplete--autocomplete-no-more-results-text-value="No more results" data-symfony--ux-autocomplete--autocomplete-create-option-text-value="Add %placeholder%..." data-symfony--ux-autocomplete--autocomplete-preload-value="focus" class="form-control"><option value=""></option>
+<div class="mb-3">                
+            <label class="control-label form-label" for="settings_company_currency">Currency</label><select id="settings_company_currency" name="settings[company][currency]" data-controller="symfony--ux-autocomplete--autocomplete" data-symfony--ux-autocomplete--autocomplete-max-results-value="10" data-symfony--ux-autocomplete--autocomplete-loading-more-text-value="Loading more results..." data-symfony--ux-autocomplete--autocomplete-no-results-found-text-value="No results found" data-symfony--ux-autocomplete--autocomplete-no-more-results-text-value="No more results" data-symfony--ux-autocomplete--autocomplete-create-option-text-value="Add %placeholder%..." data-symfony--ux-autocomplete--autocomplete-preload-value="focus" class="form-select"><option value=""></option>
 <option value="AED">United Arab Emirates Dirham</option>
 <option value="AFN">Afghan Afghani</option>
 <option value="ALL">Albanian Lek</option>
@@ -546,11 +546,11 @@
 <option value="ZMW">Zambian Kwacha</option>
 <option value="ZWG">Zimbabwean Gold</option></select>
 </div>
-<div class="form-group">                
-            <label class="control-label" for="settings_company_vat_number">Vat number</label><div class="input-group" data-controller="vat-validator" data-vat-validator-url-value="/tax/number/validate">
+<div class="mb-3">                
+            <label class="control-label form-label" for="settings_company_vat_number">Vat number</label><div class="input-group" data-controller="vat-validator" data-vat-validator-url-value="/tax/number/validate">
         <input type="text" id="settings_company_vat_number" name="settings[company][vat_number]" data-vat-validator-target="input" class="form-control">
 
-        <span class="input-group-btn">
+        <span class="input-group-text">
             <a href="#" class="btn btn-secondary vat-validator" rel="tooltip" title="EU Countries Only" data-action="click-&gt;vat-validator#validate" data-vat-validator-target="button">
                 Validate
             </a>
