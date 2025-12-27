@@ -291,7 +291,7 @@ trait Money {
    bun install
    ```
 
-4 **Build frontend assets:**
+4. **Build frontend assets:**
 
    ```bash
    bun run dev  # Development mode
@@ -299,7 +299,7 @@ trait Money {
    bun run build  # Production build
    ```
 
-5 **Setup database:**
+5. **Setup database:**
 
    ```bash
    bin/console doctrine:database:create
