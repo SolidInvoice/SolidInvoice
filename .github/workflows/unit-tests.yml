@@ -47,6 +47,7 @@ jobs:
             api.codecov.io:443
             api.github.com:443
             api.ipify.org:443
+            api.iconify.design:443
             bun.sh:443
             cdn.jsdelivr.net:443
             chromedriver.storage.googleapis.com:443
