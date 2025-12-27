@@ -65,7 +65,7 @@ This document provides comprehensive guidance for AI assistants working with the
 | JavaScript Framework | Stimulus                 | 3.2+    |
 | UI Framework         | Bootstrap                | 4.6+    |
 | Icons                | FontAwesome              | 6.4+    |
-| Package Manager      | Bunb                     | 1.3+    |
+| Package Manager      | Bun                      | 1.3+    |
 
 ### Development Tools
 
@@ -300,6 +300,7 @@ trait Money {
    ```
 
 5 **Setup database:**
+
    ```bash
    bin/console doctrine:database:create
    bin/console doctrine:migrations:migrate
