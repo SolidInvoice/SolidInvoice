@@ -36,6 +36,11 @@ This document provides comprehensive guidance for AI assistants working with the
 **License:** MIT
 **Primary Author:** Pierre du Plessis
 
+### Current Status
+
+The current branch is in the process of a UI rewrite from AdminLTE (Bootstrap 4) to Tabler (Bootstrap 5.3).
+Any changes to templates or frontend code should be made in accordance with the new Tabler design system.
+
 ---
 
 ## Technology Stack
@@ -45,6 +50,7 @@ This document provides comprehensive guidance for AI assistants working with the
 | Component          | Technology              | Version                |
 |--------------------|-------------------------|------------------------|
 | Framework          | Symfony                 | 7.1+                   |
+| Platform           | SolidWorx/Platform      | dev-main               |
 | PHP                | PHP                     | 8.4+                   |
 | ORM                | Doctrine ORM            | 2.15+                  |
 | Migrations         | Doctrine Migrations     | 3.5+                   |
@@ -63,7 +69,7 @@ This document provides comprehensive guidance for AI assistants working with the
 | Build Tool           | Webpack (Symfony Encore) | 5.3+    |
 | CSS Preprocessor     | Sass                     | 1.63+   |
 | JavaScript Framework | Stimulus                 | 3.2+    |
-| UI Framework         | Bootstrap                | 4.6+    |
+| UI Framework         | Tabler (Bootstrap)       | 1.4+    |
 | Icons                | FontAwesome              | 6.4+    |
 | Package Manager      | Bun                      | 1.3+    |
 
@@ -235,6 +241,16 @@ Key events:
 - Symfony Workflow for invoice state management
 - States: draft, pending, recurring, paid, sent, viewed, cancelled
 - Graph-based workflow configuration
+
+#### 7. Platform
+
+This application is built using SolidWorx/Platform, which provides foundational services, base entities, and utilities to streamline development.
+SolidWorx/Platform is built in conjunction with SolidInvoice and is designed to be reusable across multiple projects.
+For any UI functionality, use the SolidWorx/PlatformUI package which provides Twig templates and components for common styles.
+In cases where a specific UI component is not available in PlatformUI, mention what is needed so that it can be added to the PlatformUI package for future use.
+
+- All repositories should extend from `SolidWorx\Platform\PlatformBundle\Repository\EntityRepository`.
+- All commands should extend from `SolidWorx\Platform\PlatformBundle\Console\Command`.
 
 ### Entity Traits (Cross-Cutting Concerns)
 
@@ -855,9 +871,9 @@ assets/
 
 ### Styling
 
-**Framework:** Bootstrap 4.6.2
+**Framework:** Tabler 1.4+ (Bootstrap 5.3)
 **Preprocessor:** Sass
-**Admin Template:** AdminLTE
+**Admin Template:** Tabler
 
 ### Build Commands
 
