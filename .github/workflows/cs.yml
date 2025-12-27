@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@c6295a65d1254861815972266d5933fd6e532bdf
+        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2
         with:
           egress-policy: block
           allowed-endpoints: >
@@ -27,15 +27,15 @@ jobs:
             release-assets.githubusercontent.com:443
             setup-php.com:443
 
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@cf4cade2721270509d5b1c766ab3549210a39a2a
+        uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f
         with:
           php-version-file: .php-version
           extensions: intl, gd, mysql, pdo_mysql
 
-      - uses: ramsey/composer-install@e52779489de843a9f022c7b8faa648b608b02c70 # v3
+      - uses: ramsey/composer-install@3cf229dc2919194e9e36783941438d17239e8520 # v3
 
       - name: Run EasyCodingStandard
         run: bin/ecs check
@@ -47,7 +47,7 @@ jobs:
 
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@c6295a65d1254861815972266d5933fd6e532bdf
+        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2
         with:
           egress-policy: block
           allowed-endpoints: >
@@ -67,8 +67,6 @@ jobs:
             keyserver.ubuntu.com:443
             motd.ubuntu.com:443
             objects.githubusercontent.com:443
-            raw.githubusercontent.com:443
-            release-assets.githubusercontent.com:443
             packages.microsoft.com:443
             packages.microsoft.com:80
             packagist.org:443
@@ -76,15 +74,17 @@ jobs:
             ppa.launchpad.net:80
             ppa.launchpadcontent.net:443
             ppa.launchpadcontent.net:80
+            raw.githubusercontent.com:443
+            release-assets.githubusercontent.com:443
             repo.packagist.org:443
             security.ubuntu.com:443
             security.ubuntu.com:80
             setup-php.com:443
 
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@cf4cade2721270509d5b1c766ab3549210a39a2a
+        uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f
         with:
           php-version-file: .php-version
 
@@ -97,6 +97,24 @@ jobs:
       - name: Run composer normalize
         run: composer normalize --no-update-lock --diff --dry-run
 
+  codespell:
+    name: Codespell
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+
+      - uses: codespell-project/actions-codespell@8f01853be192eb0f849a5c7d721450e7a467c579 # v2.2
+        with:
+          check_filenames: true
+          skip: bun.lock,composer.lock,go.mod,go.sum,./src/SettingsBundle/Tests/Twig/Components/__snapshots__/*,./src/ClientBundle/Tests/Twig/Components/__snapshots__/*
+
   lint:
     permissions:
       contents: read  # for actions/checkout to fetch code
@@ -107,7 +125,7 @@ jobs:
 
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@c6295a65d1254861815972266d5933fd6e532bdf
+        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2
         with:
           egress-policy: block
           allowed-endpoints: >
@@ -126,22 +144,21 @@ jobs:
             registry.yarnpkg.com:443
             release-assets.githubusercontent.com:443
             setup-php.com:443
-            release-assets.githubusercontent.com:443
 
       - name: Checkout Code
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
         with:
             fetch-depth: 0
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@cf4cade2721270509d5b1c766ab3549210a39a2a
+        uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f
         with:
           php-version-file: .php-version
           extensions: intl, gd, mysql, pdo_mysql, :xdebug
 
-      - uses: ramsey/composer-install@e52779489de843a9f022c7b8faa648b608b02c70 # v3
+      - uses: ramsey/composer-install@3cf229dc2919194e9e36783941438d17239e8520 # v3
 
-      - uses: oven-sh/setup-bun@4bc047ad259df6fc24a6c9b0f9a0cb08cf17fbe5 # v2
+      - uses: oven-sh/setup-bun@735343b667d3e6f658f44d0eca948eb6282f2b76 # v2
 
       - run: bun install
 

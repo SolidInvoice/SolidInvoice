@@ -18,7 +18,7 @@ jobs:
       issues: write
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@c6295a65d1254861815972266d5933fd6e532bdf
+        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2
         with:
           egress-policy: audit
           allowed-endpoints: >
@@ -48,19 +48,19 @@ jobs:
           echo "tag=v${version}" >>"$GITHUB_OUTPUT"
 
       - name: Checkout
-        uses: "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683"
+        uses: "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
         with:
           ref: ${{ steps.vars.outputs.branch }}
           fetch-depth: 1
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@cf4cade2721270509d5b1c766ab3549210a39a2a
+        uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f
         with:
           php-version: 8.4
           extensions: intl, gd, mysql, pdo_mysql, soap, zip, :xdebug
           coverage: none
 
-      - uses: oven-sh/setup-bun@4bc047ad259df6fc24a6c9b0f9a0cb08cf17fbe5 # v2
+      - uses: oven-sh/setup-bun@735343b667d3e6f658f44d0eca948eb6282f2b76 # v2
 
       - name: Install jq
         run: sudo apt-get install jq
