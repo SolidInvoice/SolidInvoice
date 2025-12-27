@@ -88,7 +88,7 @@ This document provides comprehensive guidance for AI assistants working with the
 
 ### Root Directory Layout
 
-```
+```text
 /home/user/SolidInvoice/
 ├── assets/                 # Frontend JavaScript and SCSS
 │   ├── controllers/        # Stimulus controllers
@@ -155,7 +155,7 @@ SolidInvoice uses a modular bundle architecture with 19 bundles:
 
 Each bundle follows this pattern:
 
-```
+```text
 BundleNameBundle/
 ├── Action/                      # Action classes (entry points for HTTP requests)
 ├── Entity/                      # Doctrine ORM entities
@@ -368,7 +368,7 @@ Every pull request triggers:
 
 ### Test Structure
 
-```
+```text
 src/BundleNameBundle/Tests/
 ├── Functional/
 │   ├── Api/           # API endpoint tests
@@ -787,7 +787,7 @@ Query parameters:
 
 Example:
 
-```
+```http request
 GET /api/invoices?page=2&itemsPerPage=50
 ```
 
@@ -844,13 +844,13 @@ Configuration: `webpack.config.js`
 
 ### Asset Organization
 
-```
+```text
 assets/
-├── core.ts              # Main entry point
-└── scss/
-    ├── app.scss             # Main styles
-    ├── email.scss           # Email templates
-    └── pdf.scss             # PDF styles
+├── core.ts                 # Main entry point
+└── scss/                   # Stylesheets
+    ├── app.scss            # Main styles
+    ├── email.scss          # Email templates
+    └── pdf.scss            # PDF styles
 ```
 
 ### Styling
@@ -873,7 +873,6 @@ bun run build # Optimized build
 # Linting
 bun run lint:js  # ESLint
 bun run lint:css # StyleLint
-
 ```
 
 ### Adding New JavaScript
@@ -955,10 +954,10 @@ bun run lint:css # StyleLint
 
 ### Project Links
 
-- **Homepage:** https://solidinvoice.co
-- **Repository:** https://github.com/SolidInvoice/SolidInvoice
-- **Issues:** https://github.com/SolidInvoice/SolidInvoice/issues
-- **Docker Hub:** https://hub.docker.com/r/solidinvoice/solidinvoice/
+- [**Homepage:**](https://solidinvoice.co)
+- [**Repository:**](https://github.com/SolidInvoice/SolidInvoice)
+- [**Issues:**](https://github.com/SolidInvoice/SolidInvoice/issues)
+- [**Docker Hub:**](https://hub.docker.com/r/solidinvoice/solidinvoice/)
 
 ---
 
