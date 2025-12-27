@@ -50,9 +50,9 @@ final class BillingIdGenerator
 
         return sprintf(
             '%s%s%s',
-            $this->config->get($settingSection . '/id_generation/prefix') ?? '',
+            $this->config->get($settingSection . '/id_generation/id_prefix') ?? '',
             $invoiceId,
-            $this->config->get($settingSection . '/id_generation/suffix') ?? ''
+            $this->config->get($settingSection . '/id_generation/id_suffix') ?? ''
         );
     }
 }
