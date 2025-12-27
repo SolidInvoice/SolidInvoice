@@ -113,7 +113,7 @@ jobs:
       - uses: codespell-project/actions-codespell@8f01853be192eb0f849a5c7d721450e7a467c579 # v2.2
         with:
           check_filenames: true
-          skip: bun.lock,composer.lock,go.mod,go.sum,./src/SettingsBundle/Tests/Twig/Components/__snapshots__/*,./src/ClientBundle/Tests/Twig/Components/__snapshots__/*
+          skip: bun.lock,composer.lock,go.mod,go.sum,./config/reference.php,./src/SettingsBundle/Tests/Twig/Components/__snapshots__/*,./src/ClientBundle/Tests/Twig/Components/__snapshots__/*
 
   lint:
     permissions:
