@@ -86,12 +86,12 @@ class InvoiceClonerTest extends TestCase
 
         $systemConfig->shouldReceive('get')
             ->once()
-            ->with('invoice/id_generation/prefix')
+            ->with('invoice/id_generation/id_prefix')
             ->andReturn('');
 
         $systemConfig->shouldReceive('get')
             ->once()
-            ->with('invoice/id_generation/suffix')
+            ->with('invoice/id_generation/id_suffix')
             ->andReturn('');
 
         $invoiceCloner = new InvoiceCloner($invoiceManager, new BillingIdGenerator(new ServiceLocator([

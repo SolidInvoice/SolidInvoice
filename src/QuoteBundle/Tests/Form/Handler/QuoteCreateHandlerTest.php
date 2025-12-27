@@ -200,13 +200,13 @@ final class QuoteCreateHandlerTest extends FormHandlerTestCase
         $systemConfig
             ->shouldReceive('get')
             ->once()
-            ->with('quote/id_generation/prefix')
+            ->with('quote/id_generation/id_prefix')
             ->andReturn('');
 
         $systemConfig
             ->shouldReceive('get')
             ->once()
-            ->with('quote/id_generation/suffix')
+            ->with('quote/id_generation/id_suffix')
             ->andReturn('');
 
         $randomNumberGenerator = M::mock(IdGeneratorInterface::class);
