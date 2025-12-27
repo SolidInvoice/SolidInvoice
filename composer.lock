@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "58d21bb50436f799597606f333d2971a",
+    "content-hash": "ffcaf556a1da3aa9c30806b2012f1cad",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -8727,7 +8727,7 @@
         },
         {
             "name": "solidworx/platform",
-            "version": "dev-main",
+            "version": "0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SolidWorx/platform.git",
@@ -8785,7 +8785,6 @@
                 "spatie/phpunit-snapshot-assertions": "^5.2",
                 "symplify/easy-coding-standard": "^12.5"
             },
-            "default-branch": true,
             "type": "symfony-bundle",
             "autoload": {
                 "psr-4": {
@@ -8805,7 +8804,7 @@
             ],
             "support": {
                 "issues": "https://github.com/SolidWorx/platform/issues",
-                "source": "https://github.com/SolidWorx/platform/tree/main"
+                "source": "https://github.com/SolidWorx/platform/tree/0.2.0"
             },
             "time": "2025-11-19T16:30:59+00:00"
         },
@@ -25701,7 +25700,6 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "roave/security-advisories": 20,
-        "solidworx/platform": 20,
         "solidworx/toggler": 10
     },
     "prefer-stable": false,
@@ -25721,5 +25719,5 @@
     "platform-overrides": {
         "php": "8.4"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }
