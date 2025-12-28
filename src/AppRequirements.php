@@ -81,6 +81,9 @@ class AppRequirements extends SymfonyRequirements
         );
     }
 
+    /**
+     * @return false|array<string, mixed>|string
+     */
     public function getPhpIniPath(): false | array | string
     {
         return get_cfg_var('cfg_file_path');
