@@ -55,7 +55,7 @@ final class VerifyEmail extends AbstractController
         } catch (VerifyEmailExceptionInterface $exception) {
             $this->addFlash('error', $this->translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
 
-            return $this->redirectToRoute('_login');
+            return $this->redirectToRoute('_login_main');
         }
 
         $this->addFlash('success', 'Your email address has been verified.');
@@ -66,6 +66,6 @@ final class VerifyEmail extends AbstractController
     private function invalid(): Response
     {
         $this->addFlash('error', 'The email verification link is invalid.');
-        return $this->redirectToRoute('_login');
+        return $this->redirectToRoute('_login_main');
     }
 }

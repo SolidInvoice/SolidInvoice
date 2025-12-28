@@ -9,8 +9,6 @@
  * with this source code in the file LICENSE.
  */
 
-namespace SolidInvoice\MenuBundle\Builder;
-
 enum MenuPriority: int
 {
     case PRIORITY_DASHBOARD = 100;

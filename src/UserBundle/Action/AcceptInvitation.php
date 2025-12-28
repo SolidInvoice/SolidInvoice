@@ -48,7 +48,7 @@ final class AcceptInvitation
 
             $this->repository->delete($invitation);
 
-            $route = $this->router->generate('_login');
+            $route = $this->router->generate('_login_main');
 
             return new class($route) extends RedirectResponse implements FlashResponse {
                 public function getFlash(): Generator

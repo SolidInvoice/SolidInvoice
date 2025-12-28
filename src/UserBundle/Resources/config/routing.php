@@ -23,7 +23,6 @@ use SolidInvoice\UserBundle\Action\Profile;
 use SolidInvoice\UserBundle\Action\Register;
 use SolidInvoice\UserBundle\Action\ResendUserInvite;
 use SolidInvoice\UserBundle\Action\Security\ChangePassword;
-use SolidInvoice\UserBundle\Action\Security\Login;
 use SolidInvoice\UserBundle\Action\Security\OAuthConnect;
 use SolidInvoice\UserBundle\Action\Security\OAuthConnectCheck;
 use SolidInvoice\UserBundle\Action\Security\TwoFactorIndex;
@@ -52,17 +51,11 @@ return static function (RoutingConfigurator $routingConfigurator): void {
         ->add('_user_accept_invite', '/invite/accept/{id}')
         ->controller(AcceptInvitation::class);
 
-    /*$routingConfigurator
-        ->add('_login', '/login')
-        ->controller(Login::class);*/
-
     $routingConfigurator
         ->add('_register', '/register')
         ->controller(Register::class);
 
     $routingConfigurator->add('_logout', '/logout');
-
-    //$routingConfigurator->add('_login_check', '/login-check');
 
     $routingConfigurator
         ->add('_user_forgot_password', '/forgot-password')

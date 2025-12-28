@@ -2,12 +2,6 @@
 
 {% block title %}
     Select Company
-
-    {#<form method="post" action="{{ path('_logout_main') }}">#}
-    {#<form method="post" action="{{ logout_path() }}">
-        <input type="hidden" {{ stimulus_controller('@solidworx/platform/csrf-protection') }} name="_csrf_token" value="{{ csrf_token('logout') }}"/>
-        <button type="submit">Logout</button>
-    </form>#}
     <twig:Ui:Security:LogoutLink size="sm" color="primary" outline icon="" />
 {% endblock title %}
 

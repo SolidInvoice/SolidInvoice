@@ -41,9 +41,6 @@
             <div class="navbar-brand navbar-brand-autodark">
                 <a href="{{ path('_dashboard') }}" aria-label="{{ company_name() }}" class="d-flex align-items-center text-decoration-none link-white">
                     {{ app_logo(showDefault: true) }}
-                    {#<small>
-                                The Boring Company (Pty) Ltd
-                            </small>#}
                     <small class="d-flex flex-column text-wrap lh-sm text-start">
                         {{ company_name() }}
                     </small>
@@ -70,10 +67,6 @@
                             {{ icon('lock') }}&nbsp;{{ 'API Keys'|trans }}
                         </a>
                         <twig:Ui:Security:LogoutLink />
-                        {#<a href="{{ path('_logout') }}" class="dropdown-item">
-                            {{ icon('power-off') }}&nbsp;
-                            {{ 'Logout'|trans }}
-                        </a>#}
                     </div>
                 </div>
             </div>

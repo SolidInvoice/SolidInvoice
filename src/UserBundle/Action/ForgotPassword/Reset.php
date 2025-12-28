@@ -87,7 +87,7 @@ final class Reset extends AbstractController
 
             $this->addFlash('success', 'Your password has been changed successfully. You can now log in.');
 
-            return $this->redirectToRoute('_login');
+            return $this->redirectToRoute('_login_main');
         }
 
         return $this->render('@SolidInvoiceUser/ForgotPassword/reset.html.twig', [

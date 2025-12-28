@@ -12,9 +12,9 @@
 namespace SolidInvoice\SaasBundle\Menu;
 
 use Knp\Menu\ItemInterface;
+use MenuPriority;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
-use SolidInvoice\MenuBundle\Builder\MenuPriority;
 use SolidWorx\Platform\PlatformBundle\Attributes\Menu\MenuBuilder;
 use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionManager;
 

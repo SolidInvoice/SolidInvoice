@@ -17,7 +17,6 @@ $bundles = [
     Doctrine\Bundle\DoctrineBundle\DoctrineBundle::class => ['all' => true],
     Symfony\WebpackEncoreBundle\WebpackEncoreBundle::class => ['all' => true],
     Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle::class => ['all' => true],
-    Knp\Bundle\MenuBundle\KnpMenuBundle::class => ['all' => true],
     Payum\Bundle\PayumBundle\PayumBundle::class => ['all' => true],
     Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle::class => ['all' => true],
     SolidWorx\FormHandler\FormHandlerBundle::class => ['all' => true],
@@ -32,7 +31,6 @@ $bundles = [
     SolidInvoice\InstallBundle\SolidInvoiceInstallBundle::class => ['all' => true],
     SolidInvoice\InvoiceBundle\SolidInvoiceInvoiceBundle::class => ['all' => true],
     SolidInvoice\MailerBundle\SolidInvoiceMailerBundle::class => ['all' => true],
-    SolidInvoice\MenuBundle\SolidInvoiceMenuBundle::class => ['all' => true],
     SolidInvoice\MoneyBundle\SolidInvoiceMoneyBundle::class => ['all' => true],
     SolidInvoice\NotificationBundle\SolidInvoiceNotificationBundle::class => ['all' => true],
     SolidInvoice\PaymentBundle\SolidInvoicePaymentBundle::class => ['all' => true],
@@ -45,7 +43,6 @@ $bundles = [
     Symfony\Bundle\DebugBundle\DebugBundle::class => ['dev' => true],
     Symfony\Bundle\MakerBundle\MakerBundle::class => ['dev' => true],
     Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class => ['dev' => true, 'test' => true],
-    Twig\Extra\TwigExtraBundle\TwigExtraBundle::class => ['all' => true],
     SolidWorx\Toggler\Symfony\TogglerBundle::class => ['all' => true],
     Zenstruck\Foundry\ZenstruckFoundryBundle::class => ['dev' => true, 'test' => true],
     Zenstruck\ScheduleBundle\ZenstruckScheduleBundle::class => ['all' => true],
@@ -62,7 +59,6 @@ $bundles = [
     SymfonyCasts\Bundle\ResetPassword\SymfonyCastsResetPasswordBundle::class => ['all' => true],
     Zenstruck\Mailer\Test\ZenstruckMailerTestBundle::class => ['dev' => true, 'test' => true],
     SolidWorx\Platform\UiBundle\SolidWorxPlatformUiBundle::class => ['all' => true],
-    Symfony\UX\Icons\UXIconsBundle::class => ['all' => true],
 ];
 
 if (($_ENV['SOLIDINVOICE_PLATFORM'] ?? $_SERVER['SOLIDINVOICE_PLATFORM'] ?? null) === 'saas') {

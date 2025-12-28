@@ -533,7 +533,7 @@ final class OAuthAuthenticatorTest extends TestCase
         $this->router
             ->expects($this->once())
             ->method('generate')
-            ->with('_login')
+            ->with('_login_main')
             ->willReturn('/login');
 
         $response = $this->authenticator->onAuthenticationFailure($request, $exception);
@@ -548,7 +548,7 @@ final class OAuthAuthenticatorTest extends TestCase
 
         $this->router->expects($this->once())
             ->method('generate')
-            ->with('_login')
+            ->with('_login_main')
             ->willReturn('/login');
 
         $response = $this->authenticator->start($request);

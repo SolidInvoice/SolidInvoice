@@ -7,18 +7,6 @@
  # with this source code in the file LICENSE.
  #}
 
-{#<ul class="navbar-nav{{ title|default(null) is empty ? ' w-100' }}">
-    <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-    </li>
-</ul>#}
-
-{#{% if title|default(null) is not empty %}
-    <h4 class="p-1 mt-2 w-100">
-        {{ title|raw }}
-    </h4>
-{% endif %}#}
-
 {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
     <header class="navbar navbar-expand-sm d-none d-lg-flex d-print-none">
         <div class="container-xl">
@@ -71,9 +59,6 @@
                         </span>
                         <div class="d-none d-xl-block ps-2">
                             <div>{{ app.user.email }}</div>
-                            {#{% if app.user.email is not same as(app.user.username) %}
-                                <div class="mt-1 small text-secondary">{{ app.user.username }}</div>
-                            {% endif %}#}
                         </div>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -86,10 +71,6 @@
                             {{ icon('lock') }}&nbsp;{{ 'API Keys'|trans }}
                         </a>
                         <twig:Ui:Security:LogoutLink />
-                        {#<a href="{{ path('_logout') }}" class="dropdown-item">
-                            {{ icon('power-off') }}&nbsp;
-                            {{ 'Logout'|trans }}
-                        </a>#}
                     </div>
                 </div>
             </div>

@@ -12,7 +12,7 @@
 namespace SolidInvoice\DashboardBundle\Menu;
 
 use Knp\Menu\ItemInterface;
-use SolidInvoice\MenuBundle\Builder\MenuPriority;
+use MenuPriority;
 use SolidWorx\Platform\PlatformBundle\Attributes\Menu\MenuBuilder;
 
 final class DashboardMenu
