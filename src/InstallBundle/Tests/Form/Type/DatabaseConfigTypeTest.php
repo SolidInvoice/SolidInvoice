@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InstallBundle\Tests\Form\Type;
 
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
+use SolidInvoice\InstallBundle\DTO\DatabaseConfig;
 use SolidInvoice\InstallBundle\Form\Step\DatabaseConfigStep;
 
 class DatabaseConfigTypeTest extends FormTestCase
@@ -29,6 +30,17 @@ class DatabaseConfigTypeTest extends FormTestCase
             'name' => 'testdb',
         ];
 
-        $this->assertFormData($this->factory->create(DatabaseConfigStep::class), $formData, $formData);
+        $this->assertFormData(
+            $this->factory->create(DatabaseConfigStep::class),
+            $formData,
+            new DatabaseConfig(
+                driver: 'mysql',
+                host: '127.0.0.1',
+                port: 1234,
+                user: 'root',
+                password: 'password',
+                name: 'testdb',
+            )
+        );
     }
 }
