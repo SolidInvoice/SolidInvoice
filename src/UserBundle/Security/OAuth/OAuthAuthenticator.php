@@ -113,12 +113,12 @@ final class OAuthAuthenticator extends OAuth2Authenticator implements Authentica
         $session->getFlashBag()->add('error', $message);
 
         return new RedirectResponse(
-            $this->router->generate('_login'),
+            $this->router->generate('_login_main'),
         );
     }
 
     public function start(Request $request, ?AuthenticationException $authException = null): Response
     {
-        return new RedirectResponse($this->router->generate('_login'));
+        return new RedirectResponse($this->router->generate('_login_main'));
     }
 }

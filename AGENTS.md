@@ -112,7 +112,7 @@ Any changes to templates or frontend code should be made in accordance with the 
 ├── migrations/             # Database migrations
 ├── public/                 # Web-accessible files
 ├── scripts/                # Shell scripts for various tasks
-├── src/                    # Application source code (19 bundles)
+├── src/                    # Application source code (18 bundles)
 ├── templates/              # Twig templates which overrides external bundle templates
 ├── tests/                  # Test bootstrap and utilities
 ├── var/                    # Runtime data (cache, logs)
@@ -121,7 +121,7 @@ Any changes to templates or frontend code should be made in accordance with the 
 
 ### Bundle Organization (src/)
 
-SolidInvoice uses a modular bundle architecture with 19 bundles:
+SolidInvoice uses a modular bundle architecture with 18 bundles:
 
 #### Business Logic Bundles
 
@@ -147,7 +147,6 @@ SolidInvoice uses a modular bundle architecture with 19 bundles:
 #### UI & Presentation
 
 - **DashboardBundle** - Dashboard widgets and analytics
-- **MenuBundle** - Menu building with KnpMenuBundle
 - **DataGridBundle** - Data grid/table rendering
 - **FormBundle** - Form customizations
 

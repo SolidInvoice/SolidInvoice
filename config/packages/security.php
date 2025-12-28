@@ -15,7 +15,6 @@ use SolidInvoice\ApiBundle\Event\Listener\AuthenticationFailHandler;
 use SolidInvoice\ApiBundle\Event\Listener\AuthenticationSuccessHandler;
 use SolidInvoice\ApiBundle\Security\ApiTokenAuthenticator;
 use SolidInvoice\ApiBundle\Security\Provider\ApiTokenUserProvider;
-//use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Security\OAuth\OAuthAuthenticator;
 use SolidWorx\Platform\PlatformBundle\DependencyInjection\Extension\LoginExtension;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;

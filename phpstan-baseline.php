@@ -266,12 +266,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/MailerBundle/Configurator/SesConfigurator.php',
 ];
 $ignoreErrors[] = [
-	// identifier: class.extendsFinalByPhpDoc
-	'message' => '#^Class SolidInvoice\\\\MenuBundle\\\\Factory extends @final class Knp\\\\Menu\\\\MenuFactory\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/src/MenuBundle/Factory.php',
-];
-$ignoreErrors[] = [
 	// identifier: missingType.parameter
 	'message' => '#^Method SolidInvoice\\\\MoneyBundle\\\\Calculator\\:\\:calculateDiscount\\(\\) has parameter \\$entity with no type specified\\.$#',
 	'count' => 1,
