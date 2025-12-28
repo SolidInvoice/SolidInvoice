@@ -11,7 +11,6 @@
 
 namespace SolidInvoice\InstallBundle\Form\FormFlow;
 
-use SolidInvoice\CoreBundle\ConfigWriter;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Flow\FormFlowCursor;
 use Symfony\Component\Form\Flow\Type\FinishFlowType;
@@ -23,25 +22,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 final class InstallNavigatorType extends AbstractType
 {
     public function __construct(
-        private readonly ConfigWriter $configWriter,
     ) {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        /*$builder->add(
-            'reset',
-            ResetFlowType::class,
-            [
-                'include_if' => fn (FormFlowCursor $cursor): bool => !$cursor->isFirstStep() && !$cursor->isLastStep(),
-            ]
-        );*/
-        /*$builder->add('back_to', PreviousFlowType::class, [
-            'validate' => false,
-            'validation_groups' => false,
-            'clear_submission' => false,
-            'include_if' => fn (FormFlowCursor $cursor) => !$cursor->isFirstStep(),
-        ]);*/
         $builder->add(
             'previous',
             PreviousFlowType::class,

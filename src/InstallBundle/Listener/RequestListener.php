@@ -47,21 +47,6 @@ final class RequestListener implements EventSubscriberInterface, ServiceSubscrib
     /**
      * @var list<string>
      */
-    private const array INSTALL_ROUTES = [
-        self::INSTALLER_ROUTE,
-    ];
-
-    /**
-     * @var list<string>
-     */
-    private const array SETUP_ROUTES = [
-        '_install_setup',
-        '_install_finish',
-    ];
-
-    /**
-     * @var list<string>
-     */
     private const array DEBUG_ROUTES = [
         '_wdt',
         '_wdt_stylesheet',

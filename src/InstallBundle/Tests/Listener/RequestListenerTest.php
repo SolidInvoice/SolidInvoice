@@ -17,7 +17,6 @@ use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use SolidInvoice\InstallBundle\Exception\ApplicationInstalledException;
 use SolidInvoice\InstallBundle\Listener\RequestListener;
-use SolidInvoice\UserBundle\Repository\UserRepositoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -51,7 +50,6 @@ final class RequestListenerTest extends TestCase
 
         $listener = new RequestListener(
             $router,
-            $this->createMock(UserRepositoryInterface::class),
             $this->createMock(ContainerInterface::class),
             null,
         );
@@ -83,7 +81,6 @@ final class RequestListenerTest extends TestCase
 
         $listener = new RequestListener(
             $router,
-            $this->createMock(UserRepositoryInterface::class),
             $this->createMock(ContainerInterface::class),
             null,
         );
@@ -114,7 +111,6 @@ final class RequestListenerTest extends TestCase
 
         $listener = new RequestListener(
             $router,
-            $this->createMock(UserRepositoryInterface::class),
             $this->createMock(ContainerInterface::class),
             null,
         );
@@ -142,7 +138,6 @@ final class RequestListenerTest extends TestCase
 
         $listener = new RequestListener(
             $router,
-            $this->createMock(UserRepositoryInterface::class),
             $this->createMock(ContainerInterface::class),
             null,
             true,
@@ -167,19 +162,13 @@ final class RequestListenerTest extends TestCase
         $this->expectException(ApplicationInstalledException::class);
 
         $router = $this->createMock(RouterInterface::class);
-        $userRepository = $this->createMock(UserRepositoryInterface::class);
 
         $router
             ->expects(self::never())
             ->method('generate');
 
-        $userRepository->expects(self::once())
-            ->method('getUserCount')
-            ->willReturn(1);
-
         $listener = new RequestListener(
             $router,
-            $userRepository,
             $this->createMock(ContainerInterface::class),
             date('Y-m-d H:i:s'),
         );
@@ -198,19 +187,13 @@ final class RequestListenerTest extends TestCase
     public function testItContinuesExecutionWhenNotRequestingInstallRoute(): void
     {
         $router = $this->createMock(RouterInterface::class);
-        $userRepository = $this->createMock(UserRepositoryInterface::class);
 
         $router
             ->expects(self::never())
             ->method('generate');
 
-        $userRepository->expects(self::once())
-            ->method('getUserCount')
-            ->willReturn(1);
-
         $listener = new RequestListener(
             $router,
-            $userRepository,
             $this->createMock(ContainerInterface::class),
             date('Y-m-d H:i:s'),
         );
@@ -232,7 +215,6 @@ final class RequestListenerTest extends TestCase
     public function testItRedirectsToTheSetupPageWhenNoUsersAreFound(): void
     {
         $router = $this->createMock(RouterInterface::class);
-        $userRepository = $this->createMock(UserRepositoryInterface::class);
 
         $router
             ->expects(self::once())
@@ -240,13 +222,8 @@ final class RequestListenerTest extends TestCase
             ->with('_install_setup')
             ->willReturn('/install/setup');
 
-        $userRepository->expects(self::once())
-            ->method('getUserCount')
-            ->willReturn(0);
-
         $listener = new RequestListener(
             $router,
-            $userRepository,
             $this->createMock(ContainerInterface::class),
             date('Y-m-d H:i:s'),
         );
@@ -270,7 +247,6 @@ final class RequestListenerTest extends TestCase
     public function testItRedirectsToTheSetupPageWhenDebugIsDisabled(): void
     {
         $router = $this->createMock(RouterInterface::class);
-        $userRepository = $this->createMock(UserRepositoryInterface::class);
 
         $router
             ->expects(self::once())
@@ -278,13 +254,8 @@ final class RequestListenerTest extends TestCase
             ->with('_install_setup')
             ->willReturn('/install/setup');
 
-        $userRepository->expects(self::once())
-            ->method('getUserCount')
-            ->willReturn(0);
-
         $listener = new RequestListener(
             $router,
-            $userRepository,
             $this->createMock(ContainerInterface::class),
             date('Y-m-d H:i:s'),
         );
@@ -308,19 +279,13 @@ final class RequestListenerTest extends TestCase
     public function testItContinuesExecutionWhenRequestingSetupRouteWithNoUsers(): void
     {
         $router = $this->createMock(RouterInterface::class);
-        $userRepository = $this->createMock(UserRepositoryInterface::class);
 
         $router
             ->expects(self::never())
             ->method('generate');
 
-        $userRepository->expects(self::once())
-            ->method('getUserCount')
-            ->willReturn(0);
-
         $listener = new RequestListener(
             $router,
-            $userRepository,
             $this->createMock(ContainerInterface::class),
             date('Y-m-d H:i:s'),
         );
@@ -342,19 +307,13 @@ final class RequestListenerTest extends TestCase
     public function testItDoesNotRedirectToTheSetupPageWhenDebugIsEnabled(): void
     {
         $router = $this->createMock(RouterInterface::class);
-        $userRepository = $this->createMock(UserRepositoryInterface::class);
 
         $router
             ->expects(self::never())
             ->method('generate');
 
-        $userRepository->expects(self::once())
-            ->method('getUserCount')
-            ->willReturn(0);
-
         $listener = new RequestListener(
             $router,
-            $userRepository,
             $this->createMock(ContainerInterface::class),
             date('Y-m-d H:i:s'),
             true,

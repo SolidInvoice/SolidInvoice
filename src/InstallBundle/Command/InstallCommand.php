@@ -28,6 +28,7 @@ use SolidInvoice\CoreBundle\ConfigWriter;
 use SolidInvoice\CoreBundle\Entity\Version;
 use SolidInvoice\CoreBundle\Repository\VersionRepository;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
+use SolidInvoice\InstallBundle\DTO\Installation;
 use SolidInvoice\InstallBundle\Exception\ApplicationInstalledException;
 use SolidInvoice\InstallBundle\Step\InstallationStepInterface;
 use SolidInvoice\UserBundle\Entity\User;
@@ -151,7 +152,7 @@ class InstallCommand extends Command
     {
         foreach ($this->installationSteps as $step) {
             $output->writeln(sprintf('<info>Running step: %s</info>', $step->getLabel()));
-            $step->execute(function (string $content) use ($output): void {
+            $step->execute(new Installation(), function (string $content) use ($output): void {
                 $output->writeln($content, OutputInterface::VERBOSITY_VERBOSE);
             });
         }
