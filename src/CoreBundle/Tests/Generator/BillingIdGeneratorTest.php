@@ -136,9 +136,9 @@ final class BillingIdGeneratorTest extends TestCase
         $systemConfig->expects(self::exactly(3))
             ->method('get')
             ->willReturnMap([
-                ['invoice/id_generation/strategy', 'auto_increment'],
-                ['invoice/id_generation/id_prefix', 'INV-'],
-                ['invoice/id_generation/id_suffix', '-00'],
+                ['invoice/id_generation/strategy', null, 'auto_increment'],
+                ['invoice/id_generation/id_prefix', null, 'INV-'],
+                ['invoice/id_generation/id_suffix', null, '-00'],
             ]);
 
         $generator = new BillingIdGenerator(
