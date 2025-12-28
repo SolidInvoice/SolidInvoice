@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Menu;
 
 use Knp\Menu\ItemInterface;
-use MenuPriority;
+use SolidInvoice\CoreBundle\Enum\Menu\MenuPriority;
 use SolidInvoice\CoreBundle\Icon;
 use SolidWorx\Platform\PlatformBundle\Attributes\Menu\MenuBuilder;
 

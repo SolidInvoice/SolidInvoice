@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SettingsBundle;
 
-use Doctrine\DBAL\Exception;
 use Money\Currency;
 use RuntimeException;
 use SolidInvoice\CoreBundle\Entity\Company;
@@ -25,7 +24,7 @@ use Throwable;
  */
 class SystemConfig
 {
-    final public const CURRENCY_CONFIG_PATH = 'system/company/currency';
+    final public const string CURRENCY_CONFIG_PATH = 'system/company/currency';
 
     /**
      * @var array<string, string>
@@ -34,7 +33,7 @@ class SystemConfig
 
     public function __construct(
         private readonly ?string $installed,
-        private readonly SettingsRepository $repository
+        private readonly SettingsRepository $repository,
     ) {
     }
 
@@ -44,7 +43,7 @@ class SystemConfig
             return null;
         }
 
-        return $this->repository->findOneBy(['key' => $key])?->getValue();
+        return $this->repository->getSetting($key, $company)?->getValue();
     }
 
     /**
@@ -76,7 +75,7 @@ class SystemConfig
                     ->orderBy('c.key')
                     ->getQuery()
                     ->getArrayResult();
-            } catch (Exception) {
+            } catch (Throwable) {
                 return;
             }
 
@@ -95,8 +94,7 @@ class SystemConfig
         $currency = $this->get(self::CURRENCY_CONFIG_PATH);
 
         if (null === $currency) {
-            //throw new RuntimeException('No currency set');
-            $currency = 'USD';
+            throw new RuntimeException('No currency set');
         }
 
         return new Currency($currency);
