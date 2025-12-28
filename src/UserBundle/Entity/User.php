@@ -40,6 +40,11 @@ class User extends \SolidWorx\Platform\PlatformBundle\Model\User
     #[ORM\ManyToMany(targetEntity: Company::class, inversedBy: 'users', cascade: ['persist'])]
     private Collection $companies;
 
+    /**
+     * @deprecated This should not be used anymore. Remove once all usages are gone.
+     */
+    public ?string $plainPassword = null;
+
     public function __construct()
     {
         $this->apiTokens = new ArrayCollection();

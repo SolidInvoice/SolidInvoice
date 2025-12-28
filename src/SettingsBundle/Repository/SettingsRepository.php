@@ -16,6 +16,7 @@ namespace SolidInvoice\SettingsBundle\Repository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use InvalidArgumentException;
+use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\SettingsBundle\Entity\Setting;
 use Throwable;
@@ -23,8 +24,10 @@ use function is_array;
 
 class SettingsRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
+    public function __construct(
+        ManagerRegistry $registry,
+        private readonly CompanySelector $companySelector,
+    ) {
         parent::__construct($registry, Setting::class);
     }
 
@@ -93,17 +96,18 @@ class SettingsRepository extends ServiceEntityRepository
 
     public function getSetting(string $key, ?Company $company): ?Setting
     {
-        $em = $this->getEntityManager();
-        $filters = $em->getFilters();
+        $params = ['key' => $key];
+
         if ($company instanceof Company) {
-            $filters->disable('company');
+            $this->companySelector->reset();
+            $params['company'] = $company;
         }
 
         try {
-            return $this->findOneBy(['key' => $key, 'company' => $company]);
+            return $this->findOneBy($params);
         } finally {
             if ($company instanceof Company) {
-                $filters->enable('company');
+                $this->companySelector->switchCompany($company->getId());
             }
         }
     }

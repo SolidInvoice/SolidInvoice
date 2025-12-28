@@ -12,8 +12,8 @@
 namespace SolidInvoice\SaasBundle\Menu;
 
 use Knp\Menu\ItemInterface;
-use MenuPriority;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\CoreBundle\Enum\Menu\MenuPriority;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidWorx\Platform\PlatformBundle\Attributes\Menu\MenuBuilder;
 use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionManager;
