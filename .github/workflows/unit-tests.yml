@@ -43,6 +43,7 @@ jobs:
           egress-policy: block
           allowed-endpoints: >
             accounts.google.com:443
+            android.clients.google.com:443
             api.cloudinary.com:443
             api.codecov.io:443
             api.github.com:443

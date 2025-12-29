@@ -128,7 +128,7 @@ final class InstallationTest extends PantherTestCase
             ->waitUntilSeeIn('h1', 'Installation Complete!')
             ->assertSee('Installation Complete!')
             ->click('button[name="installation[navigator][finish]"]')
-            ->assertNotOn('/install')
+            ->waitUntilSeeIn('h2', 'Login to your account')
             ->assertOn('/login');
     }
 

@@ -167,9 +167,6 @@ final class CreateUserStepTest extends TestCase
 
         // Execute without callback - should not throw exception
         $generator = $step->execute($installation, null);
-        iterator_to_array($generator);
-
-        // If we get here without exception, the test passes
-        self::assertTrue(true);
+        self::assertSame([], iterator_to_array($generator));
     }
 }
