@@ -40,10 +40,10 @@ final class SettingsTest extends LiveComponentTest
         $this->ensureSessionIsSet();
 
         $this->settingsComponent->set('section', 'email');
-        $this->assertMatchesHtmlSnapshot((string) $this->settingsComponent->render());
+        $this->assertMatchesHtmlSnapshot($this->replaceChecksum((string) $this->settingsComponent->render()));
 
         $this->settingsComponent->set('section', 'invoice');
-        $this->assertMatchesHtmlSnapshot((string) $this->settingsComponent->render());
+        $this->assertMatchesHtmlSnapshot($this->replaceChecksum((string) $this->settingsComponent->render()));
     }
 
     public function testRenderComponent(): void
@@ -51,7 +51,7 @@ final class SettingsTest extends LiveComponentTest
         $html = $this->settingsComponent->render()->toString();
         $html = preg_replace('/data-content="\d+"/', 'data-content=""', $html);
 
-        $this->assertMatchesHtmlSnapshot($html);
+        $this->assertMatchesHtmlSnapshot($this->replaceChecksum($html));
     }
 
     public function testSave(): void
@@ -72,7 +72,7 @@ final class SettingsTest extends LiveComponentTest
         self::assertInstanceOf(RedirectResponse::class, $response);
         self::assertSame('/settings?section=system', $response->getTargetUrl());
 
-        $this->assertMatchesHtmlSnapshot((string) $this->settingsComponent->render());
+        $this->assertMatchesHtmlSnapshot($this->replaceChecksum((string) $this->settingsComponent->render()));
     }
 
     public function testSaveOnDifferentSection(): void
@@ -99,7 +99,7 @@ final class SettingsTest extends LiveComponentTest
         self::assertInstanceOf(RedirectResponse::class, $response);
         self::assertSame('/settings?section=invoice', $response->getTargetUrl());
 
-        $this->assertMatchesHtmlSnapshot((string) $this->settingsComponent->render());
+        $this->assertMatchesHtmlSnapshot($this->replaceChecksum((string) $this->settingsComponent->render()));
 
         $this->settingsComponent = $this->createLiveComponent(
             name: Settings::class,
@@ -107,6 +107,6 @@ final class SettingsTest extends LiveComponentTest
         )->actingAs($this->getUser());
         $this->settingsComponent->set('section', 'invoice');
 
-        $this->assertMatchesHtmlSnapshot((string) $this->settingsComponent->render());
+        $this->assertMatchesHtmlSnapshot($this->replaceChecksum((string) $this->settingsComponent->render()));
     }
 }

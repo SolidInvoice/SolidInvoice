@@ -31,7 +31,7 @@ final class ClientFormTest extends LiveComponentTest
             ->createLiveComponent(name: ClientForm::class, client: $this->client)
             ->actingAs($this->getUser());
 
-        $this->assertMatchesHtmlSnapshot($component->render()->toString());
+        $this->assertMatchesHtmlSnapshot($this->replaceChecksum($component->render()->toString()));
     }
 
     public function testRenderWithExistingData(): void
@@ -56,7 +56,9 @@ final class ClientFormTest extends LiveComponentTest
             ->actingAs($user);
 
         $this->assertMatchesHtmlSnapshot(
-            $this->replaceUuid($component->render()->toString())
+            $this->replaceUuid(
+                $this->replaceChecksum($component->render()->toString())
+            )
         );
     }
 }
