@@ -65,7 +65,7 @@ final class InstallationTest extends PantherTestCase
 
         unset($this->browser);
     }
-    
+
     public function testSystemRequirements(): void
     {
         $req = new AppRequirements(
@@ -73,7 +73,7 @@ final class InstallationTest extends PantherTestCase
             self::getContainer()->getParameter('kernel.cache_dir'),
             self::getContainer()->getParameter('kernel.logs_dir'),
         );
-        
+
         self::assertSame([], $req->getFailedRequirements());
     }
 
