@@ -81,15 +81,9 @@ final class InstallationTest extends PantherTestCase
         $this->browser
             ->visit('/install')
             ->assertOn('/install')
-            ->use(
-                static fn (Client $client) => $client->waitFor('button[name="installation[navigator][next]"]')
-            )
             ->assertSee('Welcome to')
             ->click('button[name="installation[navigator][next]"]')
-            ->use(
-                static fn (Client $client) => $client->waitFor('button[name="installation[navigator][next]"]')
-            )
-            ->assertSee('System requirements')
+            ->waitUntilSeeIn('h4', 'System requirements')
             ->assertNotSee('Some requirements were not met')
             ->assertNotSeeElement('.alert-danger')
             ->click('button[name="installation[navigator][next]"]')
@@ -148,14 +142,8 @@ final class InstallationTest extends PantherTestCase
         $this->browser
             ->visit('/install')
             ->assertOn('/install')
-            ->use(
-                static fn (Client $client) => $client->waitFor('button[name="installation[navigator][next]"]')
-            )
             ->click('button[name="installation[navigator][next]"]')
-            ->use(
-                static fn (Client $client) => $client->waitFor('button[name="installation[navigator][next]"]')
-            )
-            ->assertSee('System requirements')
+            ->waitUntilSeeIn('h4', 'System requirements')
             ->assertSee('Required')
             ->assertSee('Recommended')
             ->assertSee('System Information')
@@ -175,14 +163,8 @@ final class InstallationTest extends PantherTestCase
         $this->browser
             ->visit('/install')
             ->assertOn('/install')
-            ->use(
-                static fn (Client $client) => $client->waitFor('button[name="installation[navigator][next]"]')
-            )
             ->click('button[name="installation[navigator][next]"]')
-            ->use(
-                static fn (Client $client) => $client->waitFor('button[name="installation[navigator][next]"]')
-            )
-            ->assertSee('System requirements')
+            ->waitUntilSeeIn('h4', 'System requirements')
             ->assertNotSee('Some requirements were not met')
             ->assertNotSeeElement('.alert-danger')
             ->click('button[name="installation[navigator][next]"]')
@@ -200,14 +182,8 @@ final class InstallationTest extends PantherTestCase
         $this->browser
             ->visit('/install')
             ->assertOn('/install')
-            ->use(
-                static fn (Client $client) => $client->waitFor('button[name="installation[navigator][next]"]')
-            )
             ->click('button[name="installation[navigator][next]"]')
-            ->use(
-                static fn (Client $client) => $client->waitFor('button[name="installation[navigator][next]"]')
-            )
-            ->assertSee('System requirements')
+            ->waitUntilSeeIn('h4', 'System requirements')
             ->assertNotSee('Some requirements were not met')
             ->assertNotSeeElement('.alert-danger')
             ->click('button[name="installation[navigator][next]"]')
@@ -216,10 +192,7 @@ final class InstallationTest extends PantherTestCase
             )
             ->assertSee('Database Config')
             ->click('button[name="installation[navigator][previous]"]')
-            ->use(
-                static fn (Client $client) => $client->waitFor('button[name="installation[navigator][next]"]')
-            )
-            ->assertSee('System requirements')
+            ->waitUntilSeeIn('h4', 'System requirements')
             ->assertNotSee('Some requirements were not met')
             ->assertNotSeeElement('.alert-danger')
         ;
@@ -230,14 +203,8 @@ final class InstallationTest extends PantherTestCase
         $this->browser
             ->visit('/install')
             ->assertOn('/install')
-            ->use(
-                static fn (Client $client) => $client->waitFor('button[name="installation[navigator][next]"]')
-            )
             ->click('button[name="installation[navigator][next]"]')
-            ->use(
-                static fn (Client $client) => $client->waitFor('button[name="installation[navigator][next]"]')
-            )
-            ->assertSee('System requirements')
+            ->waitUntilSeeIn('h4', 'System requirements')
             ->assertNotSee('Some requirements were not met')
             ->assertNotSeeElement('.alert-danger')
             ->click('button[name="installation[navigator][next]"]')
@@ -258,14 +225,8 @@ final class InstallationTest extends PantherTestCase
         $this->browser
             ->visit('/install')
             ->assertOn('/install')
-            ->use(
-                static fn (Client $client) => $client->waitFor('button[name="installation[navigator][next]"]')
-            )
             ->click('button[name="installation[navigator][next]"]')
-            ->use(
-                static fn (Client $client) => $client->waitFor('button[name="installation[navigator][next]"]')
-            )
-            ->assertSee('System requirements')
+            ->waitUntilSeeIn('h4', 'System requirements')
             ->assertNotSee('Some requirements were not met')
             ->assertNotSeeElement('.alert-danger')
             ->click('button[name="installation[navigator][next]"]')
@@ -291,14 +252,8 @@ final class InstallationTest extends PantherTestCase
         $this->browser
             ->visit('/install')
             ->assertOn('/install')
-            ->use(
-                static fn (Client $client) => $client->waitFor('button[name="installation[navigator][next]"]')
-            )
             ->click('button[name="installation[navigator][next]"]')
-            ->use(
-                static fn (Client $client) => $client->waitFor('button[name="installation[navigator][next]"]')
-            )
-            ->assertSee('System requirements')
+            ->waitUntilSeeIn('h4', 'System requirements')
             ->assertNotSee('Some requirements were not met')
             ->assertNotSeeElement('.alert-danger')
             ->click('button[name="installation[navigator][next]"]')
@@ -328,14 +283,8 @@ final class InstallationTest extends PantherTestCase
         $this->browser
             ->visit('/install')
             ->assertOn('/install')
-            ->use(
-                static fn (Client $client) => $client->waitFor('button[name="installation[navigator][next]"]')
-            )
             ->click('button[name="installation[navigator][next]"]')
-            ->use(
-                static fn (Client $client) => $client->waitFor('button[name="installation[navigator][next]"]')
-            )
-            ->assertSee('System requirements')
+            ->waitUntilSeeIn('h4', 'System requirements')
             ->assertNotSee('Some requirements were not met')
             ->assertNotSeeElement('.alert-danger')
             ->click('button[name="installation[navigator][next]"]')
@@ -375,15 +324,9 @@ final class InstallationTest extends PantherTestCase
         $this->browser
             ->visit('/install')
             ->assertOn('/install')
-            ->use(
-                static fn (Client $client) => $client->waitFor('button[name="installation[navigator][next]"]')
-            )
             ->assertSee('Welcome to')
             ->click('button[name="installation[navigator][next]"]')
-            ->use(
-                static fn (Client $client) => $client->waitFor('button[name="installation[navigator][next]"]')
-            )
-            ->assertSee('System requirements')
+            ->waitUntilSeeIn('h4', 'System requirements')
             ->assertNotSee('Some requirements were not met')
             ->assertNotSeeElement('.alert-danger')
             ->click('button[name="installation[navigator][next]"]')
@@ -418,10 +361,7 @@ final class InstallationTest extends PantherTestCase
             )
             ->assertSee('Database Config')
             ->click('button[name="installation[navigator][previous]"]')
-            ->use(
-                static fn (Client $client) => $client->waitFor('button[name="installation[navigator][next]"]')
-            )
-            ->assertSee('System requirements')
+            ->waitUntilSeeIn('h4', 'System requirements')
             ->assertNotSee('Some requirements were not met')
             ->assertNotSeeElement('.alert-danger')
         ;
@@ -436,14 +376,8 @@ final class InstallationTest extends PantherTestCase
         $this->browser
             ->visit('/install')
             ->assertOn('/install')
-            ->use(
-                static fn (Client $client) => $client->waitFor('button[name="installation[navigator][next]"]')
-            )
             ->click('button[name="installation[navigator][next]"]')
-            ->use(
-                static fn (Client $client) => $client->waitFor('button[name="installation[navigator][next]"]')
-            )
-            ->assertSee('System requirements')
+            ->waitUntilSeeIn('h4', 'System requirements')
             ->assertNotSee('Some requirements were not met')
             ->assertNotSeeElement('.alert-danger')
             ->click('button[name="installation[navigator][next]"]')
@@ -477,14 +411,8 @@ final class InstallationTest extends PantherTestCase
         $this->browser
             ->visit('/install')
             ->assertOn('/install')
-            ->use(
-                static fn (Client $client) => $client->waitFor('button[name="installation[navigator][next]"]')
-            )
             ->click('button[name="installation[navigator][next]"]')
-            ->use(
-                static fn (Client $client) => $client->waitFor('button[name="installation[navigator][next]"]')
-            )
-            ->assertSee('System requirements')
+            ->waitUntilSeeIn('h4', 'System requirements')
             ->assertNotSee('Some requirements were not met')
             ->assertNotSeeElement('.alert-danger')
             ->click('button[name="installation[navigator][next]"]')
@@ -520,14 +448,8 @@ final class InstallationTest extends PantherTestCase
         $this->browser
             ->visit('/install')
             ->assertOn('/install')
-            ->use(
-                static fn (Client $client) => $client->waitFor('button[name="installation[navigator][next]"]')
-            )
             ->click('button[name="installation[navigator][next]"]')
-            ->use(
-                static fn (Client $client) => $client->waitFor('button[name="installation[navigator][next]"]')
-            )
-            ->assertSee('System requirements')
+            ->waitUntilSeeIn('h4', 'System requirements')
             ->assertNotSee('Some requirements were not met')
             ->assertNotSeeElement('.alert-danger')
             ->click('button[name="installation[navigator][next]"]')
@@ -569,14 +491,8 @@ final class InstallationTest extends PantherTestCase
         $this->browser
             ->visit('/install')
             ->assertOn('/install')
-            ->use(
-                static fn (Client $client) => $client->waitFor('button[name="installation[navigator][next]"]')
-            )
             ->click('button[name="installation[navigator][next]"]')
-            ->use(
-                static fn (Client $client) => $client->waitFor('button[name="installation[navigator][next]"]')
-            )
-            ->assertSee('System requirements')
+            ->waitUntilSeeIn('h4', 'System requirements')
             ->assertNotSee('Some requirements were not met')
             ->assertNotSeeElement('.alert-danger')
             ->click('button[name="installation[navigator][next]"]')
