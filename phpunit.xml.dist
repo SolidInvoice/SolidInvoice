@@ -40,6 +40,7 @@
         <ini name="display_errors" value="1" />
         <ini name="error_reporting" value="-1" />
         <env name="PANTHER_NO_HEADLESS" value="0" />
+        <env name="PANTHER_APP_ENV" value="test" />
         <env name="SOLIDINVOICE_DATABASE_URL" value="sqlite:///%kernel.cache_dir%/solidinvoice.db"/>
         <server name="SOLIDINVOICE_APP_SECRET" value="$ecretf0rt3st" />
         <server name="SOLIDINVOICE_ENV" value="test" />

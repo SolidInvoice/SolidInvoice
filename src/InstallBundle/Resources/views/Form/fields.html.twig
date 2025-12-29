@@ -221,7 +221,7 @@
         {% for child in form.children %}
             {% set isSqlite = child.vars.value|lower == 'sqlite' %}
             <div class="{{ colClass }}">
-                <label class="form-selectgroup-item h-100 {{ isSqlite ? 'border-primary' : '' }}" style="{{ isSqlite ? 'box-shadow: 0 0 0 0.25rem rgba(var(--swp-primary-rgb), 0.1);' : '' }}">
+                <label class="form-selectgroup-item h-100 {{ isSqlite ? 'border-primary' : '' }}" style="{{ isSqlite ? 'box-shadow: 0 0 0 0.25rem rgba(var(--swp-primary-rgb), 0.1);' : '' }}" data-testid="database-driver-{{ child.vars.value|lower }}">
                     {{ form_widget(child, {'attr_class': 'form-selectgroup-input'}) }}
                     <span class="form-selectgroup-label d-flex flex-column align-items-center justify-content-center p-4 text-center h-100 position-relative">
 

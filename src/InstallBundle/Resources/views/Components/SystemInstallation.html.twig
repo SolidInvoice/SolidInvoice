@@ -1,12 +1,16 @@
 <div {{ attributes }}>
     {% form_theme form '@SolidInvoiceInstall/Form/fields.html.twig' %}
-
-    {{ form_start(form, {
-        attr: {
-            enctype: 'multipart/form-data',
-            novalidate: true,
-        }
-    }) }}
+    
+    {% set formAttr = {
+        enctype: 'multipart/form-data',
+        novalidate: true,
+    } %}
+   
+    {% if form.vars.cursor.currentStep is same as('user_account') %}
+        {% set formAttr = formAttr|merge({'data-model': 'norender|*'}) %}
+    {% endif %}
+    
+    {{ form_start(form, {attr: formAttr}) }}
 
     <div class="row g-0" data-skip-morph>
         {% include ['@SolidInvoiceInstall/Steps/' ~ form.vars.cursor.currentStep ~ '.html.twig', '@SolidInvoiceInstall/Steps/default.html.twig'] %}
