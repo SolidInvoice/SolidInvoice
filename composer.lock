@@ -5290,12 +5290,12 @@
             "version": "3.24.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/driesvints/vat-calculator.git",
+                "url": "https://github.com/laravel/vat-calculator.git",
                 "reference": "25ca7853f021b53a7b23aaca364acf929991ddd3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/driesvints/vat-calculator/zipball/25ca7853f021b53a7b23aaca364acf929991ddd3",
+                "url": "https://api.github.com/repos/laravel/vat-calculator/zipball/25ca7853f021b53a7b23aaca364acf929991ddd3",
                 "reference": "25ca7853f021b53a7b23aaca364acf929991ddd3",
                 "shasum": ""
             },
@@ -12011,7 +12011,7 @@
         },
         {
             "name": "symfony/http-kernel",
-            "version": "v7.4.8",
+            "version": "v7.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-kernel.git",
@@ -12106,7 +12106,7 @@
             "description": "Provides a structured process for converting a Request into a Response",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/http-kernel/tree/v7.4.8"
+                "source": "https://github.com/symfony/http-kernel/tree/v7.4.2"
             },
             "funding": [
                 {
