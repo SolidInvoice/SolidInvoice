@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 use SolidInvoice\UserBundle\Repository\UserRepository;
 use SolidInvoice\UserBundle\Repository\UserRepositoryInterface;
+use SolidInvoice\UserBundle\Repository\UserSettingRepository;
+use SolidInvoice\UserBundle\Repository\UserSettingRepositoryInterface;
 use SolidInvoice\UserBundle\SolidInvoiceUserBundle;
 use SolidWorx\Platform\PlatformBundle\Contracts\Doctrine\Repository\UserRepository as PlatformUserRepository;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -36,6 +38,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services->alias(UserRepositoryInterface::class, UserRepository::class);
     $services->alias(PlatformUserRepository::class, UserRepository::class);
+    $services->alias(UserSettingRepositoryInterface::class, UserSettingRepository::class);
 
     $services
         ->load(SolidInvoiceUserBundle::NAMESPACE . '\\DataFixtures\\ORM\\', dirname(__DIR__, 3) . '/DataFixtures/ORM/*')
