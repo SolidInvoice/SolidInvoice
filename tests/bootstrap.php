@@ -41,3 +41,5 @@ if (class_exists(Deprecation::class)) {
 
     $kernel->shutdown();
 })();
+
+date_default_timezone_set('Africa/Johannesburg');

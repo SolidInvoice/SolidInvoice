@@ -15,7 +15,6 @@ namespace SolidInvoice\InstallBundle\Tests\Listener;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
-use SolidInvoice\InstallBundle\Exception\ApplicationInstalledException;
 use SolidInvoice\InstallBundle\Listener\RequestListener;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -157,10 +156,8 @@ final class RequestListenerTest extends TestCase
         self::assertFalse($event->isPropagationStopped());
     }
 
-    public function testItThrowsAnExceptionIfTheApplicationIsAlreadyInstalled(): void
+    public function testItContinuesExecutionWhenApplicationIsInstalled(): void
     {
-        $this->expectException(ApplicationInstalledException::class);
-
         $router = $this->createMock(RouterInterface::class);
 
         $router
@@ -175,19 +172,52 @@ final class RequestListenerTest extends TestCase
 
         $request = Request::createFromGlobals();
         $request->setSession(new Session(new MockArraySessionStorage()));
+        $request->attributes->set('_route', '_home');
+
+        $event = new RequestEvent($this->createMock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
+
+        self::assertNull($event->getResponse());
+
+        $listener->onKernelRequest($event);
+
+        self::assertNull($event->getResponse());
+        self::assertFalse($event->isPropagationStopped());
+    }
+
+    public function testItSetsSessionIdAsAppSecretWhenNotInstalled(): void
+    {
+        $router = $this->createMock(RouterInterface::class);
+        $router
+            ->expects(self::never())
+            ->method('generate');
+
+        $listener = new RequestListener(
+            $router,
+            $this->createMock(ContainerInterface::class),
+            null,
+        );
+
+        $session = new Session(new MockArraySessionStorage());
+        $session->start();
+        $sessionId = $session->getId();
+
+        $request = Request::createFromGlobals();
+        $request->setSession($session);
         $request->attributes->set('_route', RequestListener::INSTALLER_ROUTE);
 
         $event = new RequestEvent($this->createMock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
 
-        self::assertNull($event->getResponse());
-
         $listener->onKernelRequest($event);
+
+        self::assertSame($sessionId, $_SERVER['SOLIDINVOICE_APP_SECRET']);
+        self::assertSame($sessionId, $_ENV['SOLIDINVOICE_APP_SECRET']);
+        self::assertNull($event->getResponse());
+        self::assertFalse($event->isPropagationStopped());
     }
 
-    public function testItContinuesExecutionWhenNotRequestingInstallRoute(): void
+    public function testItContinuesExecutionOnSubRequest(): void
     {
         $router = $this->createMock(RouterInterface::class);
-
         $router
             ->expects(self::never())
             ->method('generate');
@@ -195,16 +225,13 @@ final class RequestListenerTest extends TestCase
         $listener = new RequestListener(
             $router,
             $this->createMock(ContainerInterface::class),
-            date('Y-m-d H:i:s'),
+            null,
         );
 
         $request = Request::createFromGlobals();
         $request->setSession(new Session(new MockArraySessionStorage()));
-        $request->attributes->set('_route', '_home');
 
-        $event = new RequestEvent($this->createMock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
-
-        self::assertNull($event->getResponse());
+        $event = new RequestEvent($this->createMock(HttpKernelInterface::class), $request, HttpKernelInterface::SUB_REQUEST);
 
         $listener->onKernelRequest($event);
 
@@ -212,74 +239,9 @@ final class RequestListenerTest extends TestCase
         self::assertFalse($event->isPropagationStopped());
     }
 
-    public function testItRedirectsToTheSetupPageWhenNoUsersAreFound(): void
+    public function testItAllowsLiveComponentRouteWhenNotInstalled(): void
     {
         $router = $this->createMock(RouterInterface::class);
-
-        $router
-            ->expects(self::once())
-            ->method('generate')
-            ->with('_install_setup')
-            ->willReturn('/install/setup');
-
-        $listener = new RequestListener(
-            $router,
-            $this->createMock(ContainerInterface::class),
-            date('Y-m-d H:i:s'),
-        );
-
-        $request = Request::createFromGlobals();
-        $request->setSession(new Session(new MockArraySessionStorage()));
-        $request->attributes->set('_route', '_home');
-
-        $event = new RequestEvent($this->createMock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
-
-        self::assertNull($event->getResponse());
-
-        $listener->onKernelRequest($event);
-
-        $response = $event->getResponse();
-        self::assertInstanceOf(RedirectResponse::class, $response);
-        self::assertSame('/install/setup', $response->getTargetUrl());
-        self::assertTrue($event->isPropagationStopped());
-    }
-
-    public function testItRedirectsToTheSetupPageWhenDebugIsDisabled(): void
-    {
-        $router = $this->createMock(RouterInterface::class);
-
-        $router
-            ->expects(self::once())
-            ->method('generate')
-            ->with('_install_setup')
-            ->willReturn('/install/setup');
-
-        $listener = new RequestListener(
-            $router,
-            $this->createMock(ContainerInterface::class),
-            date('Y-m-d H:i:s'),
-        );
-
-        $request = Request::createFromGlobals();
-        $request->setSession(new Session(new MockArraySessionStorage()));
-        $request->attributes->set('_route', '_profiler');
-
-        $event = new RequestEvent($this->createMock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
-
-        self::assertNull($event->getResponse());
-
-        $listener->onKernelRequest($event);
-
-        $response = $event->getResponse();
-        self::assertInstanceOf(RedirectResponse::class, $response);
-        self::assertSame('/install/setup', $response->getTargetUrl());
-        self::assertTrue($event->isPropagationStopped());
-    }
-
-    public function testItContinuesExecutionWhenRequestingSetupRouteWithNoUsers(): void
-    {
-        $router = $this->createMock(RouterInterface::class);
-
         $router
             ->expects(self::never())
             ->method('generate');
@@ -287,45 +249,14 @@ final class RequestListenerTest extends TestCase
         $listener = new RequestListener(
             $router,
             $this->createMock(ContainerInterface::class),
-            date('Y-m-d H:i:s'),
+            null,
         );
 
         $request = Request::createFromGlobals();
         $request->setSession(new Session(new MockArraySessionStorage()));
-        $request->attributes->set('_route', '_install_setup');
+        $request->attributes->set('_route', 'ux_live_component');
 
         $event = new RequestEvent($this->createMock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
-
-        self::assertNull($event->getResponse());
-
-        $listener->onKernelRequest($event);
-
-        self::assertNull($event->getResponse());
-        self::assertFalse($event->isPropagationStopped());
-    }
-
-    public function testItDoesNotRedirectToTheSetupPageWhenDebugIsEnabled(): void
-    {
-        $router = $this->createMock(RouterInterface::class);
-
-        $router
-            ->expects(self::never())
-            ->method('generate');
-
-        $listener = new RequestListener(
-            $router,
-            $this->createMock(ContainerInterface::class),
-            date('Y-m-d H:i:s'),
-            true,
-        );
-
-        $request = Request::createFromGlobals();
-        $request->setSession(new Session(new MockArraySessionStorage()));
-        $request->attributes->set('_route', '_profiler');
-
-        $event = new RequestEvent($this->createMock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
-
-        self::assertNull($event->getResponse());
 
         $listener->onKernelRequest($event);
 
