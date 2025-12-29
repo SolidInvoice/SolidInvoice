@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Tests\Step;
 
-use Doctrine\Persistence\ManagerRegistry;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\InstallBundle\Step\CreateDatabaseStep;
 use SolidInvoice\InstallBundle\Step\InstallationStepInterface;
+use function is_a;
 
 /**
  * @covers \SolidInvoice\InstallBundle\Step\CreateDatabaseStep
@@ -35,9 +35,6 @@ final class CreateDatabaseStepTest extends TestCase
 
     public function testStepImplementsInstallationStepInterface(): void
     {
-        $doctrine = $this->createMock(ManagerRegistry::class);
-        $step = new CreateDatabaseStep($doctrine);
-
-        self::assertInstanceOf(InstallationStepInterface::class, $step);
+        self::assertTrue(is_a(CreateDatabaseStep::class, InstallationStepInterface::class, true));
     }
 }
