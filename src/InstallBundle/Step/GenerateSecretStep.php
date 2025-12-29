@@ -36,7 +36,10 @@ final class GenerateSecretStep implements InstallationStepInterface
         $this->configWriter->save([
             'APP_SECRET' => Key::createNewRandomKey()->saveToAsciiSafeString(),
         ]);
-        yield from $callback(str_replace('; you can commit it', '', $this->vault->getLastMessage()));
+
+        if ($callback !== null) {
+            yield from $callback(str_replace('; you can commit it', '', $this->vault->getLastMessage()));
+        }
     }
 
     public static function getLabel(): string

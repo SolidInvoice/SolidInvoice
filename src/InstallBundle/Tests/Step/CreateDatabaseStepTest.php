@@ -16,7 +16,6 @@ namespace SolidInvoice\InstallBundle\Tests\Step;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\InstallBundle\Step\CreateDatabaseStep;
 use SolidInvoice\InstallBundle\Step\InstallationStepInterface;
-use function is_a;
 
 /**
  * @covers \SolidInvoice\InstallBundle\Step\CreateDatabaseStep

@@ -55,7 +55,7 @@ final class CreateDatabaseStep implements InstallationStepInterface
             }
         }
 
-        yield from $callback('Database created');
+        yield from $callback("Database {$dbName} created");
     }
 
     public static function getLabel(): string
