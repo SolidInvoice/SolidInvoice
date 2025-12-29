@@ -34,7 +34,7 @@ final class CreateInvoiceTest extends LiveComponentTest
             ]
         )->actingAs($this->getUser());
 
-        $this->assertMatchesHtmlSnapshot($component->render()->toString());
+        $this->assertMatchesHtmlSnapshot($this->replaceChecksum($component->render()->toString()));
     }
 
     /**
@@ -53,7 +53,7 @@ final class CreateInvoiceTest extends LiveComponentTest
             ]
         )->actingAs($this->getUser());
 
-        $this->assertMatchesHtmlSnapshot($component->render()->toString());
+        $this->assertMatchesHtmlSnapshot($this->replaceChecksum($component->render()->toString()));
     }
 
     /**
@@ -87,6 +87,6 @@ final class CreateInvoiceTest extends LiveComponentTest
             ]
         )->actingAs($this->getUser());
 
-        $this->assertMatchesHtmlSnapshot($component->render()->toString());
+        $this->assertMatchesHtmlSnapshot($this->replaceChecksum($component->render()->toString()));
     }
 }

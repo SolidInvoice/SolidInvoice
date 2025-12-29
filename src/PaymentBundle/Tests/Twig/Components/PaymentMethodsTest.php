@@ -23,7 +23,7 @@ final class PaymentMethodsTest extends LiveComponentTest
             client: $this->client,
         )->actingAs($this->getUser());
 
-        $this->assertMatchesHtmlSnapshot($component->render()->toString());
+        $this->assertMatchesHtmlSnapshot($this->replaceChecksum($component->render()->toString()));
     }
 
     public function testSwitchPaymentMethod(): void
@@ -35,6 +35,6 @@ final class PaymentMethodsTest extends LiveComponentTest
 
         $component->set('method', 'cash');
 
-        $this->assertMatchesHtmlSnapshot($component->render()->toString());
+        $this->assertMatchesHtmlSnapshot($this->replaceChecksum($component->render()->toString()));
     }
 }
