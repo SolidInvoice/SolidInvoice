@@ -18,6 +18,7 @@ use Symfony\Component\Panther\Client;
 use Symfony\Component\Panther\PantherTestCase;
 use Zenstruck\Browser\PantherBrowser;
 use Zenstruck\Browser\Test\HasBrowser;
+use function sprintf;
 use function Zenstruck\Foundry\faker;
 
 /**
@@ -165,6 +166,7 @@ final class InstallationTest extends PantherTestCase
             ->assertOn('/install')
             ->click('button[name="installation[navigator][next]"]')
             ->waitUntilSeeIn('h4', 'System requirements')
+            ->takeScreenshot(sprintf('%s_system_requirements.png', $this->name()))
             ->assertNotSee('Some requirements were not met')
             ->assertNotSeeElement('.alert-danger')
             ->click('button[name="installation[navigator][next]"]')
