@@ -33,6 +33,14 @@
     </div>
 {% endmacro %}
 
+{% set progress = (((form.vars.cursor.steps|filter(v => v is same as(form.vars.cursor.currentStep))|keys|first+1)/form.vars.cursor.steps|length)*100)|round %}
+
+<div class="progress progress-sm card-progress">
+    <div class="progress-bar bg-primary" style="width: {{ progress }}%" role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100">
+        <span class="visually-hidden">{{ progress }}% Complete</span>
+    </div>
+</div>
+
 <div class="col-4 bg-light rounded-start p-4">
     <div class="d-flex flex-column h-100">
         <div class="flex-grow-1">

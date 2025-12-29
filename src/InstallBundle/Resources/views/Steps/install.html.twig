@@ -1,77 +1,3 @@
-{# <div class="col-4 bg-light rounded-start p-4">
-    <div class="d-flex flex-column h-100">
-        <div class="flex-grow-1">
-            <h2 class="card-title pb-3">
-                {{ app_logo(showDefault: true) }}
-                {{ app_name }} {{ 'Installation'|trans }}
-            </h2>
-            <div class="vstack gap-4 my-4">
-                {% for step in form.vars.visible_steps|filter(v => v.name != 'start') %}
-                    <div class="d-flex gap-2 align-items-center {{ step.index > form.vars.cursor.stepIndex ? 'text-muted' }}">
-                        <span class="align-self-start">
-                            {% if step.is_current_step %}
-                                <span class="text-secondary" style="color: #f0a015 !important;">
-                                    {{ ux_icon('tabler:circle-dot', {width: 32, height: 32}) }}
-                                </span>
-                            {% elseif step.index > form.vars.cursor.stepIndex %}
-                                {{ ux_icon('tabler:circle-dashed', {width: 32, height: 32}) }}
-                            {% else %}
-                                <span class="text-primary">
-                                    {{ ux_icon('tabler:circle-check', {width: 32, height: 32}) }}
-                                </span>
-                            {% endif %}
-                        </span>
-                        <div class="d-flex flex-column"{{ step.is_current_step ? ' id="current_step_text"' }}>
-                            <strong>{{ step.name|u.replace('_', ' ').title(allWords: true) }}</strong>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-</div>
-<div class="col-8">
-    {% set current_step = form.vars.cursor.currentStep %}
-    {% set current_step_block_name = 'installation_' ~ current_step ~ '_step' %}
-
-    <div class="card-body p-4 px-5 d-flex flex-column h-100">
-        <div class="flex-grow-1" style="min-height: 410px">
-            <h4 class="card-title" id="install-title">{{ field_label(form[current_step]) }}</h4>
-            <p class="card-text text-muted mb-4">{{ field_help(form[current_step]) }}</p>
-
-            <hr class="border-secondary-subtle">
-
-
-        </div>
-        <div>
-            <div class="d-flex justify-content-between border-top border-dark border-opacity-10 pt-3 mt-3">
-                <div class="d-flex gap-3">
-                    {% if form.navigator.previous is defined %}
-                        {{ form_widget(form.navigator.previous, {
-                            attr: {class: 'btn-outline-secondary'},
-                            icon: ux_icon('tabler:arrow-left', {width: 20, height: 20}),
-                        }) }}
-                    {% endif %}
-                </div>
-                <div class="d-flex gap-3">
-                    <span id="next-btn" class="d-none">
-                        {% if form.navigator.next is defined %}
-                            {{ form_widget(form.navigator.next, {
-                                attr: {class: 'btn-primary flex-row-reverse'},
-                                icon: ux_icon('tabler:arrow-right', {width: 20, height: 20}),
-                            }) }}
-                        {% endif %}
-                    </span>
-                    <button type="button" class="btn btn-primary disabled" id="continue_step" disabled>
-                        <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-                        Installing...
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> #}
-
 {% embed '@SolidInvoiceInstall/Steps/default.html.twig' %}
     {% block content %}
         <div class="progress mb-4" id="installation-progress" style="height: 1.5rem;">
@@ -140,6 +66,7 @@
             // document.querySelector('#continue_step').remove()
             nextBtn.classList.remove('disabled');
             nextBtn.innerHTML = originalBtnText;
+            nextBtn.disabled = false;
 
             document.querySelector('#install-title').textContent = 'Installation Complete';
 
@@ -364,6 +291,7 @@
         nextBtn.classList.add('disabled');
         originalBtnText = nextBtn.innerHTML;
         nextBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span> Installing...';
+        nextBtn.disabled = true;
 
         // Auto-start installation when page loads
         runStep(currentStep);
