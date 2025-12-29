@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Tests\Functional;
 
+use SolidInvoice\AppRequirements;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Panther\Client;
 use Symfony\Component\Panther\PantherTestCase;
@@ -63,6 +64,17 @@ final class InstallationTest extends PantherTestCase
         $fs->exists($configDir) && $fs->remove($configDir);
 
         unset($this->browser);
+    }
+    
+    public function testSystemRequirements(): void
+    {
+        $req = new AppRequirements(
+            self::getContainer()->getParameter('env(SOLIDINVOICE_CONFIG_DIR)'),
+            self::getContainer()->getParameter('kernel.cache_dir'),
+            self::getContainer()->getParameter('kernel.logs_dir'),
+        );
+        
+        self::assertSame([], $req->getFailedRequirements());
     }
 
     public function testItRedirectsToInstallationPage(): void
