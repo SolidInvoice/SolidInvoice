@@ -20,7 +20,10 @@ use SolidInvoice\MoneyBundle\Form\Type\CurrencyType;
 use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Intl\Locales;
 
-class SystemInformationFormTest extends FormTestCase
+/**
+ * @covers \SolidInvoice\InstallBundle\Form\Step\UserAccountStep
+ */
+final class SystemInformationFormTest extends FormTestCase
 {
     public function testSubmit(): void
     {
@@ -48,6 +51,90 @@ class SystemInformationFormTest extends FormTestCase
                 password: null,
             ),
         );
+    }
+
+    public function testSubmitWithPassword(): void
+    {
+        $locale = 'en';
+        $email = $this->faker->email;
+        $firstName = $this->faker->firstName;
+        $lastName = $this->faker->lastName;
+        $password = $this->faker->password(8, 20);
+
+        $formData = [
+            'locale' => $locale,
+            'emailAddress' => $email,
+            'firstName' => $firstName,
+            'lastName' => $lastName,
+            'password' => $password,
+        ];
+
+        $this->assertFormData(
+            $this->factory->create(UserAccountStep::class),
+            $formData,
+            new UserAccount(
+                locale: $locale,
+                firstName: $firstName,
+                lastName: $lastName,
+                emailAddress: $email,
+                password: $password,
+            ),
+        );
+    }
+
+    public function testFormViewHasRequiredFields(): void
+    {
+        $form = $this->factory->create(UserAccountStep::class);
+        $view = $form->createView();
+
+        self::assertArrayHasKey('locale', $view->children);
+        self::assertArrayHasKey('firstName', $view->children);
+        self::assertArrayHasKey('lastName', $view->children);
+        self::assertArrayHasKey('emailAddress', $view->children);
+        self::assertArrayHasKey('password', $view->children);
+    }
+
+    public function testConfigureOptions(): void
+    {
+        $form = $this->factory->create(UserAccountStep::class, new UserAccount());
+
+        self::assertInstanceOf(UserAccount::class, $form->getData());
+    }
+
+    public function testEmailFieldIsEmailType(): void
+    {
+        $form = $this->factory->create(UserAccountStep::class);
+        $view = $form->createView();
+
+        self::assertContains('email', $view->children['emailAddress']->vars['block_prefixes']);
+    }
+
+    public function testPasswordFieldIsPasswordType(): void
+    {
+        $form = $this->factory->create(UserAccountStep::class);
+        $view = $form->createView();
+
+        self::assertContains('password', $view->children['password']->vars['block_prefixes']);
+    }
+
+    public function testPasswordFieldHasCorrectClass(): void
+    {
+        $form = $this->factory->create(UserAccountStep::class);
+        $view = $form->createView();
+
+        self::assertSame('password-field', $view->children['password']->vars['attr']['class']);
+    }
+
+    public function testLocaleFieldIsChoiceTypeWhenIntlLoaded(): void
+    {
+        if (! extension_loaded('intl')) {
+            self::markTestSkipped('intl extension not loaded');
+        }
+
+        $form = $this->factory->create(UserAccountStep::class);
+        $view = $form->createView();
+
+        self::assertSame('choice', $view->children['locale']->vars['block_prefixes'][1]);
     }
 
     protected function getExtensions(): array
