@@ -118,6 +118,8 @@ abstract class LiveComponentTest extends KernelTestCase
 
     protected function replaceChecksum(string $content): string
     {
-        return preg_replace('#@checksum&quot;:&quot;(.*)&quot;#', '@checksum&quot;:&quot;REPLACED_CHECKSUM&quot;', $content);
+        $content = preg_replace('#@checksum&quot;:&quot;(.*)&quot;#', '@checksum&quot;:&quot;REPLACED_CHECKSUM&quot;', $content);
+
+        return preg_replace('#data-live-fingerprint-value="([^"]+)"#', 'data-live-fingerprint-value="REPLACED_FINGERPRINT"', $content);
     }
 }

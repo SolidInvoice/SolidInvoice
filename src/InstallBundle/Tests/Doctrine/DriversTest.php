@@ -32,7 +32,7 @@ final class DriversTest extends TestCase
         // Verify that all returned drivers are actually available
         $availableDrivers = PDO::getAvailableDrivers();
 
-        foreach ($choices as $label => $driver) {
+        foreach ($choices as $driver) {
             // MariaDB uses the mysql driver
             $actualDriver = $driver === 'mariadb' ? 'mysql' : $driver;
             self::assertContains($actualDriver, $availableDrivers, "Driver '{$driver}' should be available");

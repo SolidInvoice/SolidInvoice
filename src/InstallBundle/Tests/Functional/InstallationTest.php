@@ -16,6 +16,7 @@ namespace SolidInvoice\InstallBundle\Tests\Functional;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Panther\Client;
 use Symfony\Component\Panther\PantherTestCase;
+use Zenstruck\Browser\PantherBrowser;
 use Zenstruck\Browser\Test\HasBrowser;
 use function Zenstruck\Foundry\faker;
 
@@ -25,6 +26,8 @@ use function Zenstruck\Foundry\faker;
 final class InstallationTest extends PantherTestCase
 {
     use HasBrowser;
+
+    private PantherBrowser $browser;
 
     protected function setUp(): void
     {
@@ -41,24 +44,31 @@ final class InstallationTest extends PantherTestCase
 
         $fs = new Filesystem();
         $fs->exists($configDir) && $fs->remove($configDir);
+
+        $this->browser = $this->pantherBrowser();
     }
 
     protected function tearDown(): void
     {
         parent::tearDown();
 
+        $this->browser->use(
+            static fn (Client $client) => $client->getCookieJar()->clear()
+        );
+
         $configDir = self::getContainer()->getParameter('env(SOLIDINVOICE_CONFIG_DIR)');
 
         $fs = new Filesystem();
         $fs->exists($configDir) && $fs->remove($configDir);
+
+        unset($this->browser);
     }
 
     public function testItRedirectsToInstallationPage(): void
     {
-        $this->pantherBrowser()
+        $this->browser
             ->visit('/')
-            ->assertOn('/install')
-            ->use(static fn (Client $client) => $client->quit());
+            ->assertOn('/install');
     }
 
     public function testApplicationInstallationWithSqlite(): void
@@ -68,7 +78,7 @@ final class InstallationTest extends PantherTestCase
         $firstName = faker()->firstName();
         $lastName = faker()->lastName();
 
-        $this->pantherBrowser()
+        $this->browser
             ->visit('/install')
             ->assertOn('/install')
             ->use(
@@ -110,13 +120,12 @@ final class InstallationTest extends PantherTestCase
             ->assertSee('Installation Complete!')
             ->click('button[name="installation[navigator][finish]"]')
             ->assertNotOn('/install')
-            ->assertOn('/login')
-            ->use(static fn (Client $client) => $client->quit());
+            ->assertOn('/login');
     }
 
     public function testStartPageDisplaysWelcomeInformation(): void
     {
-        $this->pantherBrowser()
+        $this->browser
             ->visit('/install')
             ->assertOn('/install')
             ->use(
@@ -129,13 +138,12 @@ final class InstallationTest extends PantherTestCase
             ->assertSee('Online Payments')
             ->assertSee('Client Management')
             ->assertSee('Financial Insights')
-            ->assertSeeIn('button[type="submit"]', 'Begin Installation')
-            ->use(static fn (Client $client) => $client->quit());
+            ->assertSeeIn('button[type="submit"]', 'Begin Installation');
     }
 
     public function testSystemRequirementsPageDisplaysRequirementChecks(): void
     {
-        $this->pantherBrowser()
+        $this->browser
             ->visit('/install')
             ->assertOn('/install')
             ->use(
@@ -157,13 +165,12 @@ final class InstallationTest extends PantherTestCase
                 self::assertSame('accordion-collapse collapse hide', $client->getCrawler()->filter('#optional-requirements')->attr('class'));
             })
             ->assertNotSee('Some requirements were not met')
-            ->assertNotSee('.alert-danger')
-            ->use(static fn (Client $client) => $client->quit());
+            ->assertNotSee('.alert-danger');
     }
 
     public function testDatabaseConfigPageDisplaysDriverOptions(): void
     {
-        $this->pantherBrowser()
+        $this->browser
             ->visit('/install')
             ->assertOn('/install')
             ->use(
@@ -181,13 +188,12 @@ final class InstallationTest extends PantherTestCase
             ->assertSee('Database Config')
             ->assertSee('Choose your database connection')
             ->assertSee('Embedded Database')
-            ->assertSeeIn('label[data-testid="database-driver-sqlite"]', 'Recommended')
-            ->use(static fn (Client $client) => $client->quit());
+            ->assertSeeIn('label[data-testid="database-driver-sqlite"]', 'Recommended');
     }
 
     public function testInstallationPreviousButtonNavigatesBack(): void
     {
-        $this->pantherBrowser()
+        $this->browser
             ->visit('/install')
             ->assertOn('/install')
             ->use(
@@ -207,13 +213,12 @@ final class InstallationTest extends PantherTestCase
             ->use(
                 static fn (Client $client) => $client->waitFor('button[name="installation[navigator][next]"]')
             )
-            ->assertSee('System Requirements')
-            ->use(static fn (Client $client) => $client->quit());
+            ->assertSee('System Requirements');
     }
 
     public function testInstallationRequiresDatabaseDriver(): void
     {
-        $this->pantherBrowser()
+        $this->browser
             ->visit('/install')
             ->assertOn('/install')
             ->use(
@@ -234,13 +239,12 @@ final class InstallationTest extends PantherTestCase
                 static fn (Client $client) => $client->waitFor('.invalid-feedback')
             )
             ->assertSee('Database Config')
-            ->assertSee('Please select a database driver')
-            ->use(static fn (Client $client) => $client->quit());
+            ->assertSee('Please select a database driver');
     }
 
     public function testInstallationValidatesRequiredUserFields(): void
     {
-        $this->pantherBrowser()
+        $this->browser
             ->visit('/install')
             ->assertOn('/install')
             ->use(
@@ -266,13 +270,12 @@ final class InstallationTest extends PantherTestCase
                 static fn (Client $client) => $client->waitFor('.invalid-feedback')
             )
             ->assertSee('User Account')
-            ->assertSee('Please enter a first name')
-            ->use(static fn (Client $client) => $client->quit());
+            ->assertSee('Please enter a first name');
     }
 
     public function testUserAccountPageDisplaysAllFields(): void
     {
-        $this->pantherBrowser()
+        $this->browser
             ->visit('/install')
             ->assertOn('/install')
             ->use(
@@ -297,8 +300,7 @@ final class InstallationTest extends PantherTestCase
             ->assertSee('First Name')
             ->assertSee('Last Name')
             ->assertSee('Email')
-            ->assertSee('Password')
-            ->use(static fn (Client $client) => $client->quit());
+            ->assertSee('Password');
     }
 
     public function testReviewPageDisplaysConfigurationSummary(): void
@@ -308,7 +310,7 @@ final class InstallationTest extends PantherTestCase
         $firstName = faker()->firstName();
         $lastName = faker()->lastName();
 
-        $this->pantherBrowser()
+        $this->browser
             ->visit('/install')
             ->assertOn('/install')
             ->use(
@@ -343,8 +345,7 @@ final class InstallationTest extends PantherTestCase
             ->assertSee('SQLite')
             ->assertSee($firstName)
             ->assertSee($lastName)
-            ->assertSee($email)
-            ->use(static fn (Client $client) => $client->quit());
+            ->assertSee($email);
     }
 
     public function testNavigationBetweenAllSteps(): void
@@ -354,7 +355,7 @@ final class InstallationTest extends PantherTestCase
         $firstName = faker()->firstName();
         $lastName = faker()->lastName();
 
-        $this->pantherBrowser()
+        $this->browser
             ->visit('/install')
             ->assertOn('/install')
             ->use(
@@ -401,8 +402,7 @@ final class InstallationTest extends PantherTestCase
             ->use(
                 static fn (Client $client) => $client->waitFor('button[name="installation[navigator][next]"]')
             )
-            ->assertSee('System Requirements')
-            ->use(static fn (Client $client) => $client->quit());
+            ->assertSee('System Requirements');
     }
 
     public function testInstallationPasswordValidation(): void
@@ -411,7 +411,7 @@ final class InstallationTest extends PantherTestCase
         $firstName = faker()->firstName();
         $lastName = faker()->lastName();
 
-        $this->pantherBrowser()
+        $this->browser
             ->visit('/install')
             ->assertOn('/install')
             ->use(
@@ -441,8 +441,7 @@ final class InstallationTest extends PantherTestCase
                 static fn (Client $client) => $client->waitFor('.invalid-feedback')
             )
             ->assertSee('User Account')
-            ->assertSee('This value is too short. It should have 6 characters or more.')
-            ->use(static fn (Client $client) => $client->quit());
+            ->assertSee('This value is too short. It should have 6 characters or more.');
     }
 
     public function testInstallationEmailValidation(): void
@@ -451,7 +450,7 @@ final class InstallationTest extends PantherTestCase
         $firstName = faker()->firstName();
         $lastName = faker()->lastName();
 
-        $this->pantherBrowser()
+        $this->browser
             ->visit('/install')
             ->assertOn('/install')
             ->use(
@@ -467,6 +466,7 @@ final class InstallationTest extends PantherTestCase
                 static fn (Client $client) => $client->waitFor('input[name="installation[database_config][driver]"][value="sqlite"]')
             )
             ->click('label[data-testid="database-driver-sqlite"]')
+            ->wait(200)
             ->click('button[name="installation[navigator][next]"]')
             ->use(
                 static fn (Client $client) => $client->waitFor('input[name="installation[user_account][firstName]"]')
@@ -481,8 +481,7 @@ final class InstallationTest extends PantherTestCase
                 static fn (Client $client) => $client->waitFor('.invalid-feedback')
             )
             ->assertSee('User Account')
-            ->assertSee('This value is not a valid email address.')
-            ->use(static fn (Client $client) => $client->quit());
+            ->assertSee('This value is not a valid email address.');
     }
 
     public function testFinishPageDisplaysSuccessInformation(): void
@@ -492,7 +491,7 @@ final class InstallationTest extends PantherTestCase
         $firstName = faker()->firstName();
         $lastName = faker()->lastName();
 
-        $this->pantherBrowser()
+        $this->browser
             ->visit('/install')
             ->assertOn('/install')
             ->use(
@@ -529,8 +528,7 @@ final class InstallationTest extends PantherTestCase
             ->waitUntilSeeIn('h1', 'Installation Complete!')
             ->assertSee('Installation Complete!')
             ->assertSee("What's Next?")
-            ->assertSee('Launch SolidInvoice')
-            ->use(static fn (Client $client) => $client->quit());
+            ->assertSee('Launch SolidInvoice');
     }
 
     public function testInstallationStepDisplaysProgress(): void
@@ -540,7 +538,7 @@ final class InstallationTest extends PantherTestCase
         $firstName = faker()->firstName();
         $lastName = faker()->lastName();
 
-        $this->pantherBrowser()
+        $this->browser
             ->visit('/install')
             ->assertOn('/install')
             ->use(
@@ -576,7 +574,6 @@ final class InstallationTest extends PantherTestCase
             ->assertSee('Generating secret')
             ->assertSee('Creating database')
             ->assertSee('Creating database schema')
-            ->assertSee('Creating admin user')
-            ->use(static fn (Client $client) => $client->quit());
+            ->assertSee('Creating admin user');
     }
 }
