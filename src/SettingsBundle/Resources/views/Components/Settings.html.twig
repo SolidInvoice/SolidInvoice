@@ -70,15 +70,13 @@
             }
         }) }}
 
-        {# Section Header #}
-        <div class="settings-header">
-            <h2 class="settings-title">{{ currentSectionMeta.title }}</h2>
-            {% if currentSectionMeta.description %}
-                <p class="settings-description">
-                    {{ currentSectionMeta.description }}
-                </p>
-            {% endif %}
-        </div>
+        {# Section Description #}
+        {% if currentSectionMeta.description %}
+            <div class="alert alert-info d-flex align-items-center gap-2 mb-4" role="alert">
+                {{ ux_icon('tabler:info-circle', {width: 20, height: 20, class: 'flex-shrink-0'}) }}
+                <div>{{ currentSectionMeta.description }}</div>
+            </div>
+        {% endif %}
 
         {# Settings Content Card #}
         <div class="card settings-content-card">
@@ -87,35 +85,37 @@
                 {% if section == 'system' %}
                     {# Company Settings - Custom Layout #}
                     {% if form.company is defined %}
-                        {# Logo Section #}
-                        {% if form.company.logo is defined %}
-                            <div class="settings-section mb-4 pb-4 border-bottom">
-                                <h5 class="settings-section-title mb-3">
-                                    {{ ux_icon('tabler:photo', {width: 20, height: 20}) }}
-                                    {{ 'Company Logo'|trans }}
-                                </h5>
-                                <p class="text-muted small mb-3">
-                                    {{ 'Upload your company logo to display on invoices and quotes.'|trans }}
-                                </p>
-                                {{ form_row(form.company.logo) }}
-                            </div>
-                        {% endif %}
-
-                        {# Company Info Section #}
-                        <div class="settings-section mb-4 pb-4 border-bottom">
-                            <h5 class="settings-section-title mb-3">
-                                {{ ux_icon('tabler:building', {width: 20, height: 20}) }}
-                                {{ 'Company Information'|trans }}
-                            </h5>
-                            <div class="row g-3">
+                        {# Company Profile Section - Name first, then Logo #}
+                        <div class="mb-4 pb-4 border-bottom">
+                            <h4 class="d-flex align-items-center gap-2 mb-3">
+                                {{ ux_icon('tabler:building', {width: 22, height: 22, class: 'text-primary'}) }}
+                                {{ 'Company Profile'|trans }}
+                            </h4>
+                            <div class="row g-4">
                                 {% if form.company.company_name is defined %}
-                                    <div class="col-md-6">
+                                    <div class="col-12">
                                         {{ form_row(form.company.company_name, {
                                             label: 'Company Name'|trans,
                                             attr: {placeholder: 'Your company name'|trans}
                                         }) }}
                                     </div>
                                 {% endif %}
+                                {% if form.company.logo is defined %}
+                                    <div class="col-12">
+                                        <label class="form-label">{{ 'Company Logo'|trans }}</label>
+                                        {{ form_row(form.company.logo) }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        {# Business Details Section #}
+                        <div class="mb-4 pb-4 border-bottom">
+                            <h4 class="d-flex align-items-center gap-2 mb-3">
+                                {{ ux_icon('tabler:file-text', {width: 22, height: 22, class: 'text-primary'}) }}
+                                {{ 'Business Details'|trans }}
+                            </h4>
+                            <div class="row g-3">
                                 {% if form.company.currency is defined %}
                                     <div class="col-md-6">
                                         {{ form_row(form.company.currency, {
@@ -125,7 +125,7 @@
                                     </div>
                                 {% endif %}
                                 {% if form.company.vat_number is defined %}
-                                    <div class="col-12">
+                                    <div class="col-md-6">
                                         {{ form_row(form.company.vat_number, {
                                             label: 'VAT / Tax Number'|trans,
                                             help: 'Your company VAT or tax identification number. Click Validate to verify EU VAT numbers.'|trans
@@ -137,11 +137,11 @@
 
                         {# Contact Details Section #}
                         {% if form.company.contact_details is defined %}
-                            <div class="settings-section mb-4 pb-4 border-bottom">
-                                <h5 class="settings-section-title mb-3">
-                                    {{ ux_icon('tabler:map-pin', {width: 20, height: 20}) }}
+                            <div class="mb-4 pb-4 border-bottom">
+                                <h4 class="d-flex align-items-center gap-2 mb-3">
+                                    {{ ux_icon('tabler:map-pin', {width: 22, height: 22, class: 'text-primary'}) }}
                                     {{ 'Contact Details'|trans }}
-                                </h5>
+                                </h4>
                                 <p class="text-muted small mb-3">
                                     {{ 'This information will appear on your invoices and quotes.'|trans }}
                                 </p>
@@ -175,11 +175,11 @@
 
                     {# General Settings Section #}
                     {% if form.general is defined %}
-                        <div class="settings-section">
-                            <h5 class="settings-section-title mb-3">
-                                {{ ux_icon('tabler:settings', {width: 20, height: 20}) }}
+                        <div>
+                            <h4 class="d-flex align-items-center gap-2 mb-3">
+                                {{ ux_icon('tabler:settings', {width: 22, height: 22, class: 'text-primary'}) }}
                                 {{ 'General Settings'|trans }}
-                            </h5>
+                            </h4>
                             {{ form_widget(form.general) }}
                         </div>
                     {% endif %}
@@ -188,11 +188,11 @@
                     {# Invoice/Quote Settings - Custom Layout #}
 
                     {# Display Settings #}
-                    <div class="settings-section mb-4 pb-4 border-bottom">
-                        <h5 class="settings-section-title mb-3">
-                            {{ ux_icon('tabler:eye', {width: 20, height: 20}) }}
+                    <div class="mb-4 pb-4 border-bottom">
+                        <h4 class="d-flex align-items-center gap-2 mb-3">
+                            {{ ux_icon('tabler:eye', {width: 22, height: 22, class: 'text-primary'}) }}
                             {{ 'Display Settings'|trans }}
-                        </h5>
+                        </h4>
                         {% if form.watermark is defined %}
                             {{ form_row(form.watermark, {
                                 label: 'Show Status Watermark'|trans,
@@ -202,11 +202,11 @@
                     </div>
 
                     {# Email Settings #}
-                    <div class="settings-section mb-4 pb-4 border-bottom">
-                        <h5 class="settings-section-title mb-3">
-                            {{ ux_icon('tabler:mail', {width: 20, height: 20}) }}
+                    <div class="mb-4 pb-4 border-bottom">
+                        <h4 class="d-flex align-items-center gap-2 mb-3">
+                            {{ ux_icon('tabler:mail', {width: 22, height: 22, class: 'text-primary'}) }}
                             {{ 'Email Notifications'|trans }}
-                        </h5>
+                        </h4>
                         <div class="row g-3">
                             {% if form.email_subject is defined %}
                                 <div class="col-12">
@@ -231,11 +231,11 @@
 
                     {# ID Generation Settings #}
                     {% if form.id_generation is defined %}
-                        <div class="settings-section">
-                            <h5 class="settings-section-title mb-3">
-                                {{ ux_icon('tabler:hash', {width: 20, height: 20}) }}
+                        <div>
+                            <h4 class="d-flex align-items-center gap-2 mb-3">
+                                {{ ux_icon('tabler:hash', {width: 22, height: 22, class: 'text-primary'}) }}
                                 {{ 'Numbering Scheme'|trans }}
-                            </h5>
+                            </h4>
                             <p class="text-muted small mb-3">
                                 {{ 'Configure how ' ~ section ~ ' numbers are generated.'|trans }}
                             </p>
@@ -286,11 +286,11 @@
                     {# Email Settings - Custom Layout #}
 
                     {# Sender Information #}
-                    <div class="settings-section mb-4 pb-4 border-bottom">
-                        <h5 class="settings-section-title mb-3">
-                            {{ ux_icon('tabler:user', {width: 20, height: 20}) }}
+                    <div class="mb-4 pb-4 border-bottom">
+                        <h4 class="d-flex align-items-center gap-2 mb-3">
+                            {{ ux_icon('tabler:user', {width: 22, height: 22, class: 'text-primary'}) }}
                             {{ 'Sender Information'|trans }}
-                        </h5>
+                        </h4>
                         <p class="text-muted small mb-3">
                             {{ 'Configure how your emails appear to recipients.'|trans }}
                         </p>
@@ -318,11 +318,11 @@
 
                     {# Mail Provider Settings #}
                     {% if form.sending_options is defined %}
-                        <div class="settings-section">
-                            <h5 class="settings-section-title mb-3">
-                                {{ ux_icon('tabler:server', {width: 20, height: 20}) }}
+                        <div>
+                            <h4 class="d-flex align-items-center gap-2 mb-3">
+                                {{ ux_icon('tabler:server', {width: 22, height: 22, class: 'text-primary'}) }}
                                 {{ 'Email Delivery'|trans }}
-                            </h5>
+                            </h4>
                             <p class="text-muted small mb-3">
                                 {{ 'Choose and configure your email delivery service.'|trans }}
                             </p>
@@ -361,9 +361,9 @@
                     </div>
                     <div class="card-body">
                         <div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between gap-3">
-                            <div class="danger-zone-info">
-                                <h6 class="mb-1">{{ 'Delete Company'|trans }}</h6>
-                                <p class="text-muted small mb-0">
+                            <div>
+                                <h4 class="mb-1">{{ 'Delete Company'|trans }}</h4>
+                                <p class="text-muted mb-0">
                                     {{ 'Permanently delete your company and all associated data. This action cannot be undone.'|trans }}
                                 </p>
                             </div>

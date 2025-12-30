@@ -1,6 +1,6 @@
 /**
  * Settings Page Styles
- * Tabs-based layout with centered content
+ * Only custom styles that can't be achieved with Bootstrap/Tabler utilities
  */
 
 @import '~bootstrap/scss/functions';
@@ -8,54 +8,42 @@
 @import '~bootstrap/scss/mixins';
 
 // ============================================================================
-// Settings Page Container
+// Settings Page Container - Max-width centering
 // ============================================================================
 
 .settings-page {
-    padding-bottom: 2rem;
     max-width: 900px;
     margin: 0 auto;
+    padding-bottom: 2rem;
 }
 
 // ============================================================================
-// Tabs Navigation (uses Tabler's native nav-tabs with alt styling)
+// Tabs Navigation - Custom underline style
 // ============================================================================
 
-.settings-page {
-    // Tab styling - cleaner look
-    > .nav-tabs {
-        border-bottom-color: #e6e8eb;
+.settings-page > .nav-tabs {
+    border-bottom-color: #e6e8eb;
 
-        .nav-link {
-            padding: 0.5rem 1rem;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: #626976;
-            border: none;
-            border-radius: 0;
-            border-bottom: 2px solid transparent;
-            margin-bottom: -1px;
-            background: transparent;
-            transition: color 0.15s ease, border-color 0.15s ease;
+    .nav-link {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #626976;
+        border: none;
+        border-radius: 0;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -1px;
+        background: transparent;
 
-            &:hover {
-                color: var(--swp-primary);
-                border-bottom-color: rgba(var(--swp-primary-rgb), 0.3);
-            }
-
-            &.active {
-                color: var(--swp-primary);
-                border-bottom-color: var(--swp-primary);
-                background: transparent;
-            }
-
-            .nav-link-icon {
-                opacity: 0.7;
-            }
+        &:hover {
+            color: var(--swp-primary);
+            border-bottom-color: rgba(var(--swp-primary-rgb), 0.3);
         }
 
-        .nav-item + .nav-item {
-            margin-left: 0.25rem;
+        &.active {
+            color: var(--swp-primary);
+            border-bottom-color: var(--swp-primary);
+            background: transparent;
         }
     }
 }
@@ -82,158 +70,23 @@
 }
 
 // ============================================================================
-// Content Wrapper (centered)
-// ============================================================================
-
-.settings-content-wrapper {
-    max-width: 100%;
-}
-
-// ============================================================================
-// Settings Header
-// ============================================================================
-
-.settings-header {
-    margin-bottom: 1.25rem;
-
-    .settings-title {
-        font-size: 1.25rem;
-        font-weight: 600;
-        color: var(--swp-body-color);
-        margin-bottom: 0.25rem;
-    }
-
-    .settings-description {
-        font-size: 0.875rem;
-        color: #64748b;
-        line-height: 1.5;
-        margin-bottom: 0;
-    }
-}
-
-// ============================================================================
-// Settings Content Card
+// Settings Card - Disable hover transform
 // ============================================================================
 
 .settings-content-card {
     &:hover {
         transform: none;
     }
-
-    .card-body {
-        padding: 1.5rem;
-
-        @include media-breakpoint-up(md) {
-            padding: 2rem;
-        }
-    }
-
-    .card-footer {
-        padding: 1rem 1.5rem;
-        border-top: 1px solid rgba(0, 0, 0, 0.05);
-
-        @include media-breakpoint-up(md) {
-            padding: 1.25rem 2rem;
-        }
-    }
 }
 
 // ============================================================================
-// Settings Sections
-// ============================================================================
-
-.settings-section {
-    &:last-child {
-        margin-bottom: 0;
-        padding-bottom: 0;
-        border-bottom: none;
-    }
-}
-
-.settings-section-title {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--swp-body-color);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-
-    svg,
-    i {
-        color: var(--swp-primary);
-        opacity: 0.8;
-    }
-}
-
-// ============================================================================
-// Settings Toggle Field (extends generic form-switch-field)
-// ============================================================================
-
-.settings-toggle-field {
-    @extend .form-switch-field;
-}
-
-.settings-switch {
-    @extend .form-switch-wrapper;
-
-    .settings-switch-label {
-        @extend .form-check-label;
-    }
-}
-
-// ============================================================================
-// Settings Form Fields (extends generic form-field)
-// ============================================================================
-
-.settings-field {
-    @extend .form-field;
-
-    .settings-label {
-        font-weight: 500;
-        color: var(--swp-body-color);
-        margin-bottom: 0.5rem;
-    }
-}
-
-.settings-help {
-    @extend .form-help;
-}
-
-// ============================================================================
-// Settings Groups (extends generic form-group-card)
-// ============================================================================
-
-.settings-group {
-    @extend .form-group-card;
-
-    .settings-group-header {
-        margin-bottom: 1rem;
-    }
-
-    .settings-group-title {
-        font-size: 0.9375rem;
-        font-weight: 600;
-        color: var(--swp-body-color);
-        margin: 0;
-    }
-
-    .settings-group-content {
-        .settings-field:last-child {
-            margin-bottom: 0;
-        }
-    }
-}
-
-// ============================================================================
-// Logo Upload (Settings-specific)
+// Logo Upload - Custom dropzone styling
 // ============================================================================
 
 .logo-upload-card {
-    border: 1px solid #e2e8f0;
-
     .logo-preview-frame {
-        width: 72px;
-        height: 72px;
+        width: 80px;
+        height: 80px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -260,173 +113,45 @@
         }
     }
 
-    .logo-upload-dropzone {
-        .dropzone-wrapper {
-            .dropzone {
-                border: 2px dashed #cbd5e1;
-                border-radius: 0.5rem;
-                padding: 1rem;
-                text-align: center;
-                background: #fff;
-                transition: border-color 0.2s ease, background-color 0.2s ease;
-                min-height: auto;
+    .dropzone {
+        border: 2px dashed #cbd5e1;
+        border-radius: 0.5rem;
+        min-height: auto;
 
-                &:hover,
-                &.dropzone-dragover {
-                    border-color: var(--swp-primary);
-                    background-color: rgba(var(--swp-primary-rgb), 0.02);
-                }
-            }
-        }
-    }
-
-    @include media-breakpoint-down(sm) {
-        flex-direction: column !important;
-        align-items: stretch !important;
-
-        .logo-upload-preview {
-            align-self: center;
+        &:hover,
+        &.dropzone-dragover {
+            border-color: var(--swp-primary);
+            background-color: rgba(var(--swp-primary-rgb), 0.02);
         }
     }
 }
 
 // ============================================================================
-// Settings Address Widget
+// Danger Zone - Custom border styling
 // ============================================================================
 
-.settings-address-group {
-    @extend .address-widget;
-}
+.settings-danger-zone .card {
+    border-width: 2px;
 
-// ============================================================================
-// Mail Transport Settings
-// ============================================================================
-
-.mail-transport-settings {
-    .mail-provider-select {
-        .form-label {
-            font-weight: 500;
-        }
-    }
-
-    .mail-provider-config {
-        &.d-none {
-            display: none !important;
-        }
-
-        .card {
-            margin-top: 1rem;
-
-            .card-body {
-                padding: 1.25rem;
-            }
-        }
+    &:hover {
+        transform: none;
     }
 }
 
 // ============================================================================
-// Danger Zone
+// Delete Company Modal - Enhanced styling
 // ============================================================================
-
-.settings-danger-zone {
-    .card {
-        border-width: 2px;
-
-        &:hover {
-            transform: none;
-        }
-    }
-
-    .card-header {
-        background-color: rgba(var(--swp-danger-rgb), 0.05);
-    }
-
-    .danger-zone-info {
-        h6 {
-            font-weight: 600;
-        }
-    }
-}
 
 #deleteCompanyModal {
     .modal-content {
         border-radius: 1rem;
-        border: none;
         box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    }
-
-    .modal-header {
-        padding: 1.5rem 1.5rem 0.5rem;
-    }
-
-    .modal-body {
-        padding: 1rem 1.5rem;
-    }
-
-    .modal-footer {
-        padding: 0.75rem 1.5rem 1.5rem;
     }
 
     .font-monospace {
         background-color: #fef2f2;
         padding: 0.5rem 1rem;
         border-radius: 0.5rem;
-        display: inline-block;
-    }
-}
-
-// ============================================================================
-// Animations
-// ============================================================================
-
-@keyframes settingsSectionFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(8px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.settings-section {
-    animation: settingsSectionFadeIn 0.3s ease forwards;
-
-    @for $i from 1 through 5 {
-        &:nth-child(#{$i}) {
-            animation-delay: #{$i * 0.05}s;
-        }
-    }
-}
-
-// ============================================================================
-// Responsive Adjustments
-// ============================================================================
-
-@include media-breakpoint-down(sm) {
-    .settings-header {
-        .settings-title {
-            font-size: 1.125rem;
-        }
-
-        .settings-description {
-            font-size: 0.8125rem;
-        }
-    }
-
-    .settings-content-card {
-        .card-body {
-            padding: 1rem;
-        }
-
-        .card-footer {
-            padding: 1rem;
-        }
-    }
-
-    .settings-section-title {
-        font-size: 0.9375rem;
     }
 }
 
@@ -436,7 +161,7 @@
 
 @media print {
     .settings-page {
-        .settings-tabs,
+        .nav-tabs,
         .settings-danger-zone,
         .card-footer {
             display: none !important;

@@ -9,30 +9,9 @@
 
 {% extends '@SolidInvoiceCore/Form/fields.html.twig' %}
 
-{# Settings-specific checkbox styling - uses settings CSS classes #}
-{% block checkbox_row %}
-    {% set row_attr = row_attr|merge({class: (row_attr.class|default('') ~ ' settings-toggle-field')|trim}) %}
-    <div{% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %}>
-        <div class="form-check form-switch settings-switch">
-            {{- form_widget(form) -}}
-            {{- form_label(form) -}}
-        </div>
-        {{- form_help(form) -}}
-        {{- form_errors(form) -}}
-    </div>
-{% endblock checkbox_row %}
-
-{% block checkbox_label %}
-    <label class="form-check-label settings-switch-label" for="{{ id }}">
-        {% if label is not same as(false) %}
-            {{ label|default(name|humanize)|replace({'_': ' '})|title|trans }}
-        {% endif %}
-    </label>
-{% endblock checkbox_label %}
-
-{# Settings Address Widget - improved layout #}
+{# Settings Address Widget - improved layout with Bootstrap grid #}
 {% block settings_address_widget %}
-    <div class="settings-address-group card bg-light border-0">
+    <div class="card bg-light border-0">
         <div class="card-body py-3">
             <div class="row g-3">
                 <div class="col-12">
@@ -58,18 +37,19 @@
     </div>
 {% endblock settings_address_widget %}
 
-{# Image Upload Widget - clean logo upload with preview #}
+{# Image Upload Widget - logo upload with preview only if logo exists #}
 {% block image_upload_widget %}
-    <div class="logo-upload-card d-flex align-items-center gap-4 p-3 bg-light rounded-3">
-        <div class="logo-upload-preview flex-shrink-0">
-            <div class="logo-preview-frame">
-                {{ app_logo(width=72, showDefault=false) }}
+    {% set currentLogo = app_logo(width=80, showDefault=false) %}
+    <div class="logo-upload-card d-flex align-items-start gap-4 p-3 bg-light rounded-3 border">
+        {% if currentLogo is not empty %}
+            <div class="flex-shrink-0">
+                <div class="logo-preview-frame">
+                    {{ currentLogo|raw }}
+                </div>
             </div>
-        </div>
-        <div class="logo-upload-dropzone flex-grow-1">
-            <div class="dropzone-wrapper">
-                {{ block('dropzone_widget') }}
-            </div>
+        {% endif %}
+        <div class="flex-grow-1">
+            {{ block('dropzone_widget') }}
             <p class="text-muted small mt-2 mb-0">
                 {{ 'Recommended: Square image, at least 200x200px. PNG or JPG format.'|trans }}
             </p>
@@ -77,12 +57,12 @@
     </div>
 {% endblock image_upload_widget %}
 
-{# Mail Transport Type - enhanced layout #}
+{# Mail Transport Type - provider selector with config panels #}
 {% block mail_transport_widget %}
-    <div class="mail-transport-settings" {{ stimulus_controller('mailsettings') }}>
+    <div {{ stimulus_controller('mailsettings') }}>
         {% for child in form %}
             {% if child.vars.name == 'provider' %}
-                <div class="mail-provider-select mb-3">
+                <div class="mb-3">
                     {{ form_row(child) }}
                 </div>
             {% else %}
