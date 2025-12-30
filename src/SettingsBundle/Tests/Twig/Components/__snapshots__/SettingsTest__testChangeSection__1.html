@@ -1,59 +1,97 @@
 <html><body>
-<section class="row" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="Settings" data-live-url-value="/_components/Settings" data-live-query-mapping-value='{"section":{"name":"section"}}' data-live-props-value='{"section":"email","formName":"settings","settings":{"from_address":"no-reply@solidinvoice.co","from_name":"SolidInvoice","sending_options":{"provider":{"provider":"","Gmail":{"username":"","password":""},"Mailchimp-Mandrill":{"key":""},"Mailgun":{"domain":"","key":""},"Postmark":{"key":""},"Sendgrid":{"key":""},"Amazon-SES":{"accessKey":"","accessSecret":"","region":""},"SMTP":{"host":"","port":"","user":"","password":""}}},"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
-    <aside class="col-md-3">
-        <div class="card sticky-top">
-            <div class="card-body">
-                <ul class="nav nav-pills nav-sidebar flex-column sidebar-menu" role="tablist">
-                                            <li class="nav-item">
-                            <a href="/settings?section=system" class="nav-link">
-                                <i class="fa fa-cog"></i>
-                                <p>System</p>
-                            </a>
-                        </li>
-                                            <li class="nav-item">
-                            <a href="/settings?section=invoice" class="nav-link">
-                                <i class="fa fa-file-invoice"></i>
-                                <p>Invoice</p>
-                            </a>
-                        </li>
-                                            <li class="nav-item">
-                            <a href="/settings?section=email" class="nav-link active">
-                                <i class="fa fa-envelope"></i>
-                                <p>Email</p>
-                            </a>
-                        </li>
-                                            <li class="nav-item">
-                            <a href="/settings?section=quote" class="nav-link">
-                                <i class="fa fa-file-text-o"></i>
-                                <p>Quote</p>
-                            </a>
-                        </li>
-                                    </ul>
-            </div>
-        </div>
-    </aside>
+<div class="settings-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="Settings" data-live-url-value="/_components/Settings" data-live-query-mapping-value='{"section":{"name":"section"}}' data-live-props-value='{"section":"email","formName":"settings","settings":{"from_address":"no-reply@solidinvoice.co","from_name":"SolidInvoice","sending_options":{"provider":{"provider":"","Gmail":{"username":"","password":""},"Mailchimp-Mandrill":{"key":""},"Mailgun":{"domain":"","key":""},"Postmark":{"key":""},"Sendgrid":{"key":""},"Amazon-SES":{"accessKey":"","accessSecret":"","region":""},"SMTP":{"host":"","port":"","user":"","password":""}}},"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
+        <ul class="nav nav-tabs mb-4" role="tablist">
+                                <li class="nav-item">
+                <a href="/settings?section=system" class="nav-link">
+                    <span class="nav-link-icon d-none d-sm-inline-block">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21h18M9 8h1m-1 4h1m-1 4h1m4-8h1m-1 4h1m-1 4h1M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"></path></svg>
+                    </span>
+                    <span>Company</span>
+                </a>
+            </li>
+                                <li class="nav-item">
+                <a href="/settings?section=invoice" class="nav-link">
+                    <span class="nav-link-icon d-none d-sm-inline-block">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14 3v4a1 1 0 0 0 1 1h4"></path><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2M9 7h1m-1 6h6m-2 4h2"></path></g></svg>
+                    </span>
+                    <span>Invoices</span>
+                </a>
+            </li>
+                                <li class="nav-item">
+                <a href="/settings?section=email" class="nav-link active" aria-current="page">
+                    <span class="nav-link-icon d-none d-sm-inline-block">
+                        <svg viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><path d="m3 7l9 6l9-6"></path></g></svg>
+                    </span>
+                    <span>Email</span>
+                </a>
+            </li>
+                                <li class="nav-item">
+                <a href="/settings?section=quote" class="nav-link">
+                    <span class="nav-link-icon d-none d-sm-inline-block">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14 3v4a1 1 0 0 0 1 1h4"></path><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2M9 9h1m-1 4h6m-6 4h6"></path></g></svg>
+                    </span>
+                    <span>Quotes</span>
+                </a>
+            </li>
+            </ul>
 
-    <section class="col-md-9">
-        <form name="settings" method="post" data-model="norender|*" data-action="live#action:prevent" data-live-action-param="prevent|files|save">
-        <div class="tab-content">
-            <div class="card mb-3">
-                <div class="card-header">
-                    <h3 class="card-title">
-                        Email
-                    </h3>
-                </div>
-                <div class="card-body">
-                    <div id="settings" data-model="norender|*">
-<div class="mb-3">                
-            <label class="control-label form-label" for="settings_from_address">From address</label><input type="email" id="settings_from_address" name="settings[from_address]" class="form-control" value="no-reply@solidinvoice.co">
+        <div class="settings-content-wrapper">
+        <form name="settings" method="post" data-model="norender|*" class="settings-form" data-action="live#action:prevent" data-live-action-param="prevent|files|save">
+
+                <div class="settings-header">
+            <h2 class="settings-title">Email</h2>
+                            <p class="settings-description">
+                    Set up your email sending preferences and mail server configuration.
+                </p>
+                    </div>
+
+                <div class="card settings-content-card">
+            <div class="card-body">
+                                                    
+                                        <div class="settings-section mb-4 pb-4 border-bottom">
+                        <h5 class="settings-section-title mb-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0-8 0M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"></path></svg>
+                            Sender Information
+                        </h5>
+                        <p class="text-muted small mb-3">
+                            Configure how your emails appear to recipients.
+                        </p>
+                        <div class="row g-3">
+                                                            <div class="col-md-6">
+                                    <div class="mb-3">    
+            <label class="control-label form-label" for="settings_from_name">From Name</label><input type="text" id="settings_from_name" name="settings[from_name]" placeholder="Your Company Name" aria-describedby="settings_from_name_help" class="form-control" value="SolidInvoice"><div class="form-text text-muted form-help-text mt-1">
+            <small>The name that appears in the "From" field.</small>
+        </div>
 </div>
-<div class="mb-3">                
-            <label class="control-label form-label" for="settings_from_name">From name</label><input type="text" id="settings_from_name" name="settings[from_name]" class="form-control" value="SolidInvoice">
+                                </div>
+                                                                                        <div class="col-md-6">
+                                    <div class="mb-3">    
+            <label class="control-label form-label" for="settings_from_address">From Email Address</label>    <div class="input-group input-icon-group">
+        <span class="input-group-text">
+            <svg viewbox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><path d="m3 7l9 6l9-6"></path></g></svg>
+        </span>
+        <input type="email" id="settings_from_address" name="settings[from_address]" class="form-control" value="no-reply@solidinvoice.co" placeholder="no-reply@yourcompany.com" aria-describedby="settings_from_address_help">
+    </div>
+<div class="form-text text-muted form-help-text mt-1">
+            <small>Replies will be sent to this address.</small>
+        </div>
 </div>
-<fieldset class="mb-3">                
-    <div id="settings_sending_options"><fieldset class="mb-3">                
-    <div id="settings_sending_options_provider" data-controller="mailsettings">
-<div class="mb-3">    
+                                </div>
+                                                    </div>
+                    </div>
+
+                                                                <div class="settings-section">
+                            <h5 class="settings-section-title mb-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v2a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3m0 6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v2a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3zm4-7v.01M7 16v.01"></path></svg>
+                                Email Delivery
+                            </h5>
+                            <p class="text-muted small mb-3">
+                                Choose and configure your email delivery service.
+                            </p>
+                            <div id="settings_sending_options"><fieldset class="mb-3">                
+        <div class="mail-transport-settings" data-controller="mailsettings">
+                                    <div class="mail-provider-select mb-3">
+                    <div class="mb-3">    
             <label class="control-label form-label" for="settings_sending_options_provider_provider">Mail Provider</label><select id="settings_sending_options_provider_provider" name="settings[sending_options][provider][provider]" data-mailsettings-target="provider" data-controller="symfony--ux-autocomplete--autocomplete" data-symfony--ux-autocomplete--autocomplete-max-results-value="10" data-symfony--ux-autocomplete--autocomplete-loading-more-text-value="Loading more results..." data-symfony--ux-autocomplete--autocomplete-no-results-found-text-value="No results found" data-symfony--ux-autocomplete--autocomplete-no-more-results-text-value="No more results" data-symfony--ux-autocomplete--autocomplete-create-option-text-value="Add %placeholder%..." data-symfony--ux-autocomplete--autocomplete-preload-value="focus" class="form-select"><option value="">Choose Mail Provider</option>
 <option value="Gmail">Gmail</option>
 <option value="Mailchimp Mandrill">Mailchimp Mandrill</option>
@@ -63,8 +101,11 @@
 <option value="Amazon SES">Amazon SES</option>
 <option value="SMTP">SMTP</option></select>
 </div>
-<fieldset class="mb-0 provider-Gmail d-none" data-provider="Gmail">                
-    <div id="settings_sending_options_provider_Gmail">
+                </div>
+                                                <div class="mail-provider-config mb-0 provider-Gmail d-none" data-provider="Gmail">
+                    <div class="card bg-light border-0 mt-3">
+                        <div class="card-body">
+                            <div id="settings_sending_options_provider_Gmail">
 <div class="mb-3">                
             <label class="control-label form-label" for="settings_sending_options_provider_Gmail_username">Username</label><input type="text" id="settings_sending_options_provider_Gmail_username" name="settings[sending_options][provider][Gmail][username]" class="form-control">
 </div>
@@ -72,14 +113,22 @@
             <label class="control-label form-label" for="settings_sending_options_provider_Gmail_password">Password</label><div class="toggle-password-container"><input type="password" id="settings_sending_options_provider_Gmail_password" name="settings[sending_options][provider][Gmail][password]" data-controller="symfony--ux-toggle-password--toggle-password" data-symfony--ux-toggle-password--toggle-password-hidden-label-value="Hide" data-symfony--ux-toggle-password--toggle-password-visible-label-value="Show" data-symfony--ux-toggle-password--toggle-password-hidden-icon-value="Default" data-symfony--ux-toggle-password--toggle-password-visible-icon-value="Default" data-symfony--ux-toggle-password--toggle-password-button-classes-value='["toggle-password-button"]' class="form-control"></div>
 </div>
 </div>
-</fieldset>
-<fieldset class="mb-0 provider-Mailchimp-Mandrill d-none" data-provider="Mailchimp-Mandrill">                
-    <div id="settings_sending_options_provider_Mailchimp-Mandrill"><div class="mb-3">                
+                        </div>
+                    </div>
+                </div>
+                                                <div class="mail-provider-config mb-0 provider-Mailchimp-Mandrill d-none" data-provider="Mailchimp-Mandrill">
+                    <div class="card bg-light border-0 mt-3">
+                        <div class="card-body">
+                            <div id="settings_sending_options_provider_Mailchimp-Mandrill"><div class="mb-3">                
             <label class="control-label form-label" for="settings_sending_options_provider_Mailchimp-Mandrill_key">Key</label><input type="text" id="settings_sending_options_provider_Mailchimp-Mandrill_key" name="settings[sending_options][provider][Mailchimp-Mandrill][key]" class="form-control">
 </div></div>
-</fieldset>
-<fieldset class="mb-0 provider-Mailgun d-none" data-provider="Mailgun">                
-    <div id="settings_sending_options_provider_Mailgun">
+                        </div>
+                    </div>
+                </div>
+                                                <div class="mail-provider-config mb-0 provider-Mailgun d-none" data-provider="Mailgun">
+                    <div class="card bg-light border-0 mt-3">
+                        <div class="card-body">
+                            <div id="settings_sending_options_provider_Mailgun">
 <div class="mb-3">                
             <label class="control-label form-label" for="settings_sending_options_provider_Mailgun_domain">Domain</label><input type="text" id="settings_sending_options_provider_Mailgun_domain" name="settings[sending_options][provider][Mailgun][domain]" class="form-control">
 </div>
@@ -87,19 +136,31 @@
             <label class="control-label form-label" for="settings_sending_options_provider_Mailgun_key">Key</label><input type="text" id="settings_sending_options_provider_Mailgun_key" name="settings[sending_options][provider][Mailgun][key]" class="form-control">
 </div>
 </div>
-</fieldset>
-<fieldset class="mb-0 provider-Postmark d-none" data-provider="Postmark">                
-    <div id="settings_sending_options_provider_Postmark"><div class="mb-3">                
+                        </div>
+                    </div>
+                </div>
+                                                <div class="mail-provider-config mb-0 provider-Postmark d-none" data-provider="Postmark">
+                    <div class="card bg-light border-0 mt-3">
+                        <div class="card-body">
+                            <div id="settings_sending_options_provider_Postmark"><div class="mb-3">                
             <label class="control-label form-label" for="settings_sending_options_provider_Postmark_key">Key</label><input type="text" id="settings_sending_options_provider_Postmark_key" name="settings[sending_options][provider][Postmark][key]" class="form-control">
 </div></div>
-</fieldset>
-<fieldset class="mb-0 provider-Sendgrid d-none" data-provider="Sendgrid">                
-    <div id="settings_sending_options_provider_Sendgrid"><div class="mb-3">                
+                        </div>
+                    </div>
+                </div>
+                                                <div class="mail-provider-config mb-0 provider-Sendgrid d-none" data-provider="Sendgrid">
+                    <div class="card bg-light border-0 mt-3">
+                        <div class="card-body">
+                            <div id="settings_sending_options_provider_Sendgrid"><div class="mb-3">                
             <label class="control-label form-label" for="settings_sending_options_provider_Sendgrid_key">Key</label><input type="text" id="settings_sending_options_provider_Sendgrid_key" name="settings[sending_options][provider][Sendgrid][key]" class="form-control">
 </div></div>
-</fieldset>
-<fieldset class="mb-0 provider-Amazon-SES d-none" data-provider="Amazon-SES">                
-    <div id="settings_sending_options_provider_Amazon-SES">
+                        </div>
+                    </div>
+                </div>
+                                                <div class="mail-provider-config mb-0 provider-Amazon-SES d-none" data-provider="Amazon-SES">
+                    <div class="card bg-light border-0 mt-3">
+                        <div class="card-body">
+                            <div id="settings_sending_options_provider_Amazon-SES">
 <div class="mb-3">                
             <label class="control-label form-label" for="settings_sending_options_provider_Amazon-SES_accessKey">Access key</label><input type="text" id="settings_sending_options_provider_Amazon-SES_accessKey" name="settings[sending_options][provider][Amazon-SES][accessKey]" class="form-control">
 </div>
@@ -110,9 +171,13 @@
             <label class="control-label form-label" for="settings_sending_options_provider_Amazon-SES_region">Region</label><input type="text" id="settings_sending_options_provider_Amazon-SES_region" name="settings[sending_options][provider][Amazon-SES][region]" placeholder="eu-west-1" class="form-control">
 </div>
 </div>
-</fieldset>
-<fieldset class="mb-0 provider-SMTP d-none" data-provider="SMTP">                
-    <div id="settings_sending_options_provider_SMTP">
+                        </div>
+                    </div>
+                </div>
+                                                <div class="mail-provider-config mb-0 provider-SMTP d-none" data-provider="SMTP">
+                    <div class="card bg-light border-0 mt-3">
+                        <div class="card-body">
+                            <div id="settings_sending_options_provider_SMTP">
 <div class="mb-3">                
             <label class="control-label form-label" for="settings_sending_options_provider_SMTP_host">Host</label><input type="text" id="settings_sending_options_provider_SMTP_host" name="settings[sending_options][provider][SMTP][host]" class="form-control">
 </div>
@@ -126,21 +191,28 @@
             <label class="control-label form-label" for="settings_sending_options_provider_SMTP_password">Password</label><div class="toggle-password-container"><input type="password" id="settings_sending_options_provider_SMTP_password" name="settings[sending_options][provider][SMTP][password]" data-controller="symfony--ux-toggle-password--toggle-password" data-symfony--ux-toggle-password--toggle-password-hidden-label-value="Hide" data-symfony--ux-toggle-password--toggle-password-visible-label-value="Show" data-symfony--ux-toggle-password--toggle-password-hidden-icon-value="Default" data-symfony--ux-toggle-password--toggle-password-visible-icon-value="Default" data-symfony--ux-toggle-password--toggle-password-button-classes-value='["toggle-password-button"]' class="form-control"></div>
 </div>
 </div>
-</fieldset>
-</div>
+                        </div>
+                    </div>
+                </div>
+                        </div>
 </fieldset></div>
-</fieldset>
-<input type="hidden" id="settings__token" name="settings[_token]" data-controller="csrf-protection">
-</div>
+                        </div>
+                    
+                            </div>
+
+                        <div class="card-footer bg-transparent border-top">
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary d-flex align-items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M6 4h10l4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2"></path><path d="M10 14a2 2 0 1 0 4 0a2 2 0 1 0-4 0m4-10v4H8V4"></path></g></svg>
+                        <span>Save Settings</span>
+                    </button>
                 </div>
             </div>
         </div>
 
-        <div class="card-footer form-actions">
-            <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Save</button>
-        </div>
-        </form>
+        <input type="hidden" id="settings__token" name="settings[_token]" data-controller="csrf-protection">
+</form>
 
-            </section>
-</section>
+                    </div>
+</div>
 </body></html>
