@@ -14,13 +14,76 @@
     {% for attrname, attrvalue in attr %}{% if attrname in ['placeholder', 'title'] %}{{ attrname }}="{{ attrvalue|trans({}, translation_domain) }}" {% else %}{{ attrname }}="{{ attrvalue }}" {% endif %}{% endfor %}
 {%- endblock widget_attributes %}
 
+{# Form Help Text - elegant styling #}
 {% block form_help -%}
     {%- if help is not empty -%}
-        <div class="alert alert-info mt-2">
-            {{ parent()|replace({'text-muted': ''})|raw }}
+        <div class="form-text text-muted form-help-text mt-1">
+            <small>{{ help|trans }}</small>
         </div>
     {%- endif -%}
 {%- endblock form_help %}
+
+{# Checkbox as Toggle Switch #}
+{% block checkbox_row %}
+    {% set row_attr = row_attr|merge({class: (row_attr.class|default('') ~ ' form-switch-field')|trim}) %}
+    <div{% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %}>
+        <div class="form-check form-switch form-switch-wrapper">
+            {{- form_widget(form) -}}
+            {{- form_label(form) -}}
+        </div>
+        {{- form_help(form) -}}
+        {{- form_errors(form) -}}
+    </div>
+{% endblock checkbox_row %}
+
+{% block checkbox_widget %}
+    <input type="checkbox"
+           id="{{ id }}"
+           name="{{ full_name }}"
+           class="form-check-input"
+           {% if value is defined %}value="{{ value }}"{% endif %}
+           {% if checked %}checked="checked"{% endif %}
+           {% if disabled %}disabled="disabled"{% endif %}
+           {% if required %}required="required"{% endif %}
+           {% for attrname, attrvalue in attr %}{{ attrname }}="{{ attrvalue }}" {% endfor %}
+    >
+{% endblock checkbox_widget %}
+
+{% block checkbox_label %}
+    <label class="form-check-label" for="{{ id }}">
+        {% if label is not same as(false) %}
+            {{ label|default(name|humanize)|replace({'_': ' '})|title|trans }}
+        {% endif %}
+    </label>
+{% endblock checkbox_label %}
+
+{# Email Type - with icon #}
+{% block email_widget %}
+    <div class="input-group input-icon-group">
+        <span class="input-group-text">
+            {{ ux_icon('tabler:mail', {width: 18, height: 18}) }}
+        </span>
+        <input type="email"
+               id="{{ id }}"
+               name="{{ full_name }}"
+               class="form-control{{ errors|length > 0 ? ' is-invalid' : '' }}"
+               {% if value is defined and value is not null %}value="{{ value }}"{% endif %}
+               {% if disabled %}disabled="disabled"{% endif %}
+               {% if required %}required="required"{% endif %}
+               {% for attrname, attrvalue in attr %}{{ attrname }}="{{ attrvalue }}" {% endfor %}
+        >
+    </div>
+{% endblock email_widget %}
+
+{# Currency Type with icon #}
+{% block currency_widget %}
+    <div class="input-group input-icon-group">
+        <span class="input-group-text">
+            {{ ux_icon('tabler:coins', {width: 18, height: 18}) }}
+        </span>
+        {{ block('choice_widget') }}
+    </div>
+{% endblock currency_widget %}
 
 {% block notification_widget -%}
     <strong>{{ label|default(name)|humanize|title }}</strong>
@@ -70,17 +133,29 @@
 {% endblock contact_widget %}
 
 {% block tax_number_widget -%}
-    <div class="input-group" {{ stimulus_controller('vat-validator', {'url': path('_tax_number_validate')}) }}>
-        {{ form_widget(form, { attr: stimulus_target('vat-validator', 'input').toArray() }) }}
-
+    <div class="input-group input-icon-group input-validate-group" {{ stimulus_controller('vat-validator', {'url': path('_tax_number_validate')}) }}>
         <span class="input-group-text">
-            <a href="#" class="btn btn-secondary vat-validator" rel="tooltip" title="{{ 'EU Countries Only'|trans }}"
+            {{ ux_icon('tabler:percentage', {width: 18, height: 18}) }}
+        </span>
+        <input type="text"
+               id="{{ id }}"
+               name="{{ full_name }}"
+               class="form-control"
+               {% if value is defined and value is not null %}value="{{ value }}"{% endif %}
+               {% if disabled %}disabled="disabled"{% endif %}
+               placeholder="{{ 'e.g. GB123456789'|trans }}"
+               {{ stimulus_target('vat-validator', 'input') }}
+               {% for attrname, attrvalue in attr %}{{ attrname }}="{{ attrvalue }}" {% endfor %}
+        >
+        <button type="button"
+                class="btn btn-outline-secondary btn-validate d-flex align-items-center gap-1"
                 {{ stimulus_action('vat-validator', 'validate', 'click') }}
                 {{ stimulus_target('vat-validator', 'button') }}
-            >
-                {{ 'tax.form.input.validate'|trans }}
-            </a>
-        </span>
+                title="{{ 'Validate VAT Number (EU Countries Only)'|trans }}"
+        >
+            {{ ux_icon('tabler:circle-check', {width: 16, height: 16}) }}
+            <span>{{ 'Validate'|trans }}</span>
+        </button>
     </div>
 {%- endblock tax_number_widget %}
 

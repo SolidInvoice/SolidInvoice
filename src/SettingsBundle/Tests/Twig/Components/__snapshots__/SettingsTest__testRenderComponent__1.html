@@ -1,54 +1,70 @@
 <html><body>
-<section class="row" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="Settings" data-live-url-value="/_components/Settings" data-live-query-mapping-value='{"section":{"name":"section"}}' data-live-props-value='{"section":"system","formName":"settings","settings":{"company":{"logo":"","company_name":"SolidInvoice","contact_details":{"address":{"street1":"","street2":"","city":"","state":"","zip":"","country":""},"email":"","phone_number":""},"currency":"USD","vat_number":""},"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
-    <aside class="col-md-3">
-        <div class="card sticky-top">
+<div class="settings-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="Settings" data-live-url-value="/_components/Settings" data-live-query-mapping-value='{"section":{"name":"section"}}' data-live-props-value='{"section":"system","formName":"settings","settings":{"company":{"logo":"","company_name":"SolidInvoice","contact_details":{"address":{"street1":"","street2":"","city":"","state":"","zip":"","country":""},"email":"","phone_number":""},"currency":"USD","vat_number":""},"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
+        <ul class="nav nav-tabs mb-4" role="tablist">
+                                <li class="nav-item">
+                <a href="/settings?section=system" class="nav-link active" aria-current="page">
+                    <span class="nav-link-icon d-none d-sm-inline-block">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21h18M9 8h1m-1 4h1m-1 4h1m4-8h1m-1 4h1m-1 4h1M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"></path></svg>
+                    </span>
+                    <span>Company</span>
+                </a>
+            </li>
+                                <li class="nav-item">
+                <a href="/settings?section=invoice" class="nav-link">
+                    <span class="nav-link-icon d-none d-sm-inline-block">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14 3v4a1 1 0 0 0 1 1h4"></path><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2M9 7h1m-1 6h6m-2 4h2"></path></g></svg>
+                    </span>
+                    <span>Invoices</span>
+                </a>
+            </li>
+                                <li class="nav-item">
+                <a href="/settings?section=email" class="nav-link">
+                    <span class="nav-link-icon d-none d-sm-inline-block">
+                        <svg viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><path d="m3 7l9 6l9-6"></path></g></svg>
+                    </span>
+                    <span>Email</span>
+                </a>
+            </li>
+                                <li class="nav-item">
+                <a href="/settings?section=quote" class="nav-link">
+                    <span class="nav-link-icon d-none d-sm-inline-block">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14 3v4a1 1 0 0 0 1 1h4"></path><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2M9 9h1m-1 4h6m-6 4h6"></path></g></svg>
+                    </span>
+                    <span>Quotes</span>
+                </a>
+            </li>
+            </ul>
+
+        <div class="settings-content-wrapper">
+        <form name="settings" method="post" data-model="norender|*" class="settings-form" data-action="live#action:prevent" data-live-action-param="prevent|files|save" enctype="multipart/form-data">
+
+                <div class="settings-header">
+            <h2 class="settings-title">Company</h2>
+                            <p class="settings-description">
+                    Configure your company information, branding, and general preferences.
+                </p>
+                    </div>
+
+                <div class="card settings-content-card">
             <div class="card-body">
-                <ul class="nav nav-pills nav-sidebar flex-column sidebar-menu" role="tablist">
-                                            <li class="nav-item">
-                            <a href="/settings?section=system" class="nav-link active">
-                                <i class="fa fa-cog"></i>
-                                <p>System</p>
-                            </a>
-                        </li>
-                                            <li class="nav-item">
-                            <a href="/settings?section=invoice" class="nav-link">
-                                <i class="fa fa-file-invoice"></i>
-                                <p>Invoice</p>
-                            </a>
-                        </li>
-                                            <li class="nav-item">
-                            <a href="/settings?section=email" class="nav-link">
-                                <i class="fa fa-envelope"></i>
-                                <p>Email</p>
-                            </a>
-                        </li>
-                                            <li class="nav-item">
-                            <a href="/settings?section=quote" class="nav-link">
-                                <i class="fa fa-file-text-o"></i>
-                                <p>Quote</p>
-                            </a>
-                        </li>
-                                    </ul>
+                                                                                                                                                    <div class="settings-section mb-4 pb-4 border-bottom">
+                                <h5 class="settings-section-title mb-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M15 8h.01M3 6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3z"></path><path d="m3 16l5-5c.928-.893 2.072-.893 3 0l5 5"></path><path d="m14 14l1-1c.928-.893 2.072-.893 3 0l3 3"></path></g></svg>
+                                    Company Logo
+                                </h5>
+                                <p class="text-muted small mb-3">
+                                    Upload your company logo to display on invoices and quotes.
+                                </p>
+                                <div class="mb-3">                
+            <label class="control-label form-label" for="settings_company_logo">Logo</label>    <div class="logo-upload-card d-flex align-items-center gap-4 p-3 bg-light rounded-3">
+        <div class="logo-upload-preview flex-shrink-0">
+            <div class="logo-preview-frame">
+                
             </div>
         </div>
-    </aside>
-
-    <section class="col-md-9">
-        <form name="settings" method="post" data-model="norender|*" data-action="live#action:prevent" data-live-action-param="prevent|files|save" enctype="multipart/form-data">
-        <div class="tab-content">
-            <div class="card mb-3">
-                <div class="card-header">
-                    <h3 class="card-title">
-                        System
-                    </h3>
-                </div>
-                <div class="card-body">
-                    <div id="settings" data-model="norender|*">
-<fieldset class="mb-3">                
-    <div id="settings_company">
-<div class="mb-3">                
-            <label class="control-label form-label" for="settings_company_logo">Logo</label><div class="mb-3" data-controller="logo-upload">
-    <div class="dropzone-container" data-controller="symfony--ux-dropzone--dropzone">
+        <div class="logo-upload-dropzone flex-grow-1">
+            <div class="dropzone-wrapper">
+                <div class="dropzone-container" data-controller="symfony--ux-dropzone--dropzone">
         <input type="file" id="settings_company_logo" name="settings[company][logo]" placeholder="Drag and drop or browse" data-controller="" class="dropzone-input" data-symfony--ux-dropzone--dropzone-target="input">
 
         <div class="dropzone-placeholder" data-symfony--ux-dropzone--dropzone-target="placeholder">Drag and drop or browse</div>
@@ -61,56 +77,281 @@
             <div data-symfony--ux-dropzone--dropzone-target="previewFilename" class="dropzone-preview-filename"></div>
         </div>
     </div>
-</div>
-</div>
-<div class="mb-3">                
-            <label class="control-label form-label" for="settings_company_company_name">Company name</label><input type="text" id="settings_company_company_name" name="settings[company][company_name]" class="form-control" value="SolidInvoice">
-</div>
-<fieldset class="mb-3">                
-    <div id="settings_company_contact_details">
-<fieldset class="mb-3">                
-        <legend>
-        <h4>
-            Address
-        </h4>
-    </legend>
-
-            <div class="widget">
-
-        <div class="row">
-            <div class="col-md-6">
-                <div class="mb-3">                
-            <label class="control-label form-label" for="settings_company_contact_details_address_street1">Street1</label><input type="text" id="settings_company_contact_details_address_street1" name="settings[company][contact_details][address][street1]" class="form-control">
-</div>
             </div>
-            <div class="col-md-6">
-                <div class="mb-3">                
-            <label class="control-label form-label" for="settings_company_contact_details_address_street2">Street2</label><input type="text" id="settings_company_contact_details_address_street2" name="settings[company][contact_details][address][street2]" class="form-control">
-</div>
-            </div>
+            <p class="text-muted small mt-2 mb-0">
+                Recommended: Square image, at least 200x200px. PNG or JPG format.
+            </p>
         </div>
-
-        <div class="row">
-            <div class="col-md-6">
-                <div class="mb-3">                
-            <label class="control-label form-label" for="settings_company_contact_details_address_city">City</label><input type="text" id="settings_company_contact_details_address_city" name="settings[company][contact_details][address][city]" class="form-control">
+    </div>
 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="mb-3">                
-            <label class="control-label form-label" for="settings_company_contact_details_address_state">State</label><input type="text" id="settings_company_contact_details_address_state" name="settings[company][contact_details][address][state]" class="form-control">
+                            </div>
+                        
+                                                <div class="settings-section mb-4 pb-4 border-bottom">
+                            <h5 class="settings-section-title mb-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21h18M9 8h1m-1 4h1m-1 4h1m4-8h1m-1 4h1m-1 4h1M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"></path></svg>
+                                Company Information
+                            </h5>
+                            <div class="row g-3">
+                                                                    <div class="col-md-6">
+                                        <div class="mb-3">    
+            <label class="control-label form-label" for="settings_company_company_name">Company Name</label><input type="text" id="settings_company_company_name" name="settings[company][company_name]" placeholder="Your company name" class="form-control" value="SolidInvoice">
 </div>
-            </div>
+                                    </div>
+                                                                                                    <div class="col-md-6">
+                                        <div class="mb-3">    
+            <label class="control-label form-label" for="settings_company_currency">Default Currency</label>    <div class="input-group input-icon-group">
+        <span class="input-group-text">
+            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M9 14c0 1.657 2.686 3 6 3s6-1.343 6-3s-2.686-3-6-3s-6 1.343-6 3"></path><path d="M9 14v4c0 1.656 2.686 3 6 3s6-1.344 6-3v-4M3 6c0 1.072 1.144 2.062 3 2.598s4.144.536 6 0S15 7.072 15 6s-1.144-2.062-3-2.598s-4.144-.536-6 0S3 4.928 3 6"></path><path d="M3 6v10c0 .888.772 1.45 2 2"></path><path d="M3 11c0 .888.772 1.45 2 2"></path></g></svg>
+        </span>
+        <select id="settings_company_currency" name="settings[company][currency]" data-controller="symfony--ux-autocomplete--autocomplete" data-symfony--ux-autocomplete--autocomplete-max-results-value="10" data-symfony--ux-autocomplete--autocomplete-loading-more-text-value="Loading more results..." data-symfony--ux-autocomplete--autocomplete-no-results-found-text-value="No results found" data-symfony--ux-autocomplete--autocomplete-no-more-results-text-value="No more results" data-symfony--ux-autocomplete--autocomplete-create-option-text-value="Add %placeholder%..." data-symfony--ux-autocomplete--autocomplete-preload-value="focus" aria-describedby="settings_company_currency_help" class="form-select"><option value=""></option>
+<option value="AED">United Arab Emirates Dirham</option>
+<option value="AFN">Afghan Afghani</option>
+<option value="ALL">Albanian Lek</option>
+<option value="AMD">Armenian Dram</option>
+<option value="AOA">Angolan Kwanza</option>
+<option value="ARS">Argentine Peso</option>
+<option value="AUD">Australian Dollar</option>
+<option value="AWG">Aruban Florin</option>
+<option value="AZN">Azerbaijani Manat</option>
+<option value="BAM">Bosnia-Herzegovina Convertible Mark</option>
+<option value="BBD">Barbadian Dollar</option>
+<option value="BDT">Bangladeshi Taka</option>
+<option value="BGN">Bulgarian Lev</option>
+<option value="BHD">Bahraini Dinar</option>
+<option value="BIF">Burundian Franc</option>
+<option value="BMD">Bermudan Dollar</option>
+<option value="BND">Brunei Dollar</option>
+<option value="BOB">Bolivian Boliviano</option>
+<option value="BOV">Bolivian Mvdol</option>
+<option value="BRL">Brazilian Real</option>
+<option value="BSD">Bahamian Dollar</option>
+<option value="BTN">Bhutanese Ngultrum</option>
+<option value="BWP">Botswanan Pula</option>
+<option value="BYN">Belarusian Ruble</option>
+<option value="BZD">Belize Dollar</option>
+<option value="CAD">Canadian Dollar</option>
+<option value="CDF">Congolese Franc</option>
+<option value="CHE">WIR Euro</option>
+<option value="CHF">Swiss Franc</option>
+<option value="CHW">WIR Franc</option>
+<option value="CLF">Chilean Unit of Account (UF)</option>
+<option value="CLP">Chilean Peso</option>
+<option value="CNY">Chinese Yuan</option>
+<option value="COP">Colombian Peso</option>
+<option value="COU">Colombian Real Value Unit</option>
+<option value="CRC">Costa Rican Col&Atilde;&sup3;n</option>
+<option value="CUP">Cuban Peso</option>
+<option value="CVE">Cape Verdean Escudo</option>
+<option value="CZK">Czech Koruna</option>
+<option value="DJF">Djiboutian Franc</option>
+<option value="DKK">Danish Krone</option>
+<option value="DOP">Dominican Peso</option>
+<option value="DZD">Algerian Dinar</option>
+<option value="EGP">Egyptian Pound</option>
+<option value="ERN">Eritrean Nakfa</option>
+<option value="ETB">Ethiopian Birr</option>
+<option value="EUR">Euro</option>
+<option value="FJD">Fijian Dollar</option>
+<option value="FKP">Falkland Islands Pound</option>
+<option value="GBP">British Pound</option>
+<option value="GEL">Georgian Lari</option>
+<option value="GHS">Ghanaian Cedi</option>
+<option value="GIP">Gibraltar Pound</option>
+<option value="GMD">Gambian Dalasi</option>
+<option value="GNF">Guinean Franc</option>
+<option value="GTQ">Guatemalan Quetzal</option>
+<option value="GYD">Guyanaese Dollar</option>
+<option value="HKD">Hong Kong Dollar</option>
+<option value="HNL">Honduran Lempira</option>
+<option value="HTG">Haitian Gourde</option>
+<option value="HUF">Hungarian Forint</option>
+<option value="IDR">Indonesian Rupiah</option>
+<option value="ILS">Israeli New Shekel</option>
+<option value="INR">Indian Rupee</option>
+<option value="IQD">Iraqi Dinar</option>
+<option value="IRR">Iranian Rial</option>
+<option value="ISK">Icelandic Kr&Atilde;&sup3;na</option>
+<option value="JMD">Jamaican Dollar</option>
+<option value="JOD">Jordanian Dinar</option>
+<option value="JPY">Japanese Yen</option>
+<option value="KES">Kenyan Shilling</option>
+<option value="KGS">Kyrgyz Som</option>
+<option value="KHR">Cambodian Riel</option>
+<option value="KMF">Comorian Franc</option>
+<option value="KPW">North Korean Won</option>
+<option value="KRW">South Korean Won</option>
+<option value="KWD">Kuwaiti Dinar</option>
+<option value="KYD">Cayman Islands Dollar</option>
+<option value="KZT">Kazakhstani Tenge</option>
+<option value="LAK">Laotian Kip</option>
+<option value="LBP">Lebanese Pound</option>
+<option value="LKR">Sri Lankan Rupee</option>
+<option value="LRD">Liberian Dollar</option>
+<option value="LSL">Lesotho Loti</option>
+<option value="LYD">Libyan Dinar</option>
+<option value="MAD">Moroccan Dirham</option>
+<option value="MDL">Moldovan Leu</option>
+<option value="MGA">Malagasy Ariary</option>
+<option value="MKD">Macedonian Denar</option>
+<option value="MMK">Myanmar Kyat</option>
+<option value="MNT">Mongolian Tugrik</option>
+<option value="MOP">Macanese Pataca</option>
+<option value="MRU">Mauritanian Ouguiya</option>
+<option value="MUR">Mauritian Rupee</option>
+<option value="MVR">Maldivian Rufiyaa</option>
+<option value="MWK">Malawian Kwacha</option>
+<option value="MXN">Mexican Peso</option>
+<option value="MXV">Mexican Investment Unit</option>
+<option value="MYR">Malaysian Ringgit</option>
+<option value="MZN">Mozambican Metical</option>
+<option value="NAD">Namibian Dollar</option>
+<option value="NGN">Nigerian Naira</option>
+<option value="NIO">Nicaraguan C&Atilde;&sup3;rdoba</option>
+<option value="NOK">Norwegian Krone</option>
+<option value="NPR">Nepalese Rupee</option>
+<option value="NZD">New Zealand Dollar</option>
+<option value="OMR">Omani Rial</option>
+<option value="PAB">Panamanian Balboa</option>
+<option value="PEN">Peruvian Sol</option>
+<option value="PGK">Papua New Guinean Kina</option>
+<option value="PHP">Philippine Peso</option>
+<option value="PKR">Pakistani Rupee</option>
+<option value="PLN">Polish Zloty</option>
+<option value="PYG">Paraguayan Guarani</option>
+<option value="QAR">Qatari Riyal</option>
+<option value="RON">Romanian Leu</option>
+<option value="RSD">Serbian Dinar</option>
+<option value="RUB">Russian Ruble</option>
+<option value="RWF">Rwandan Franc</option>
+<option value="SAR">Saudi Riyal</option>
+<option value="SBD">Solomon Islands Dollar</option>
+<option value="SCR">Seychellois Rupee</option>
+<option value="SDG">Sudanese Pound</option>
+<option value="SEK">Swedish Krona</option>
+<option value="SGD">Singapore Dollar</option>
+<option value="SHP">St. Helena Pound</option>
+<option value="SLE">Sierra Leonean Leone</option>
+<option value="SOS">Somali Shilling</option>
+<option value="SRD">Surinamese Dollar</option>
+<option value="SSP">South Sudanese Pound</option>
+<option value="STN">S&Atilde;&pound;o Tom&Atilde;&copy; &amp; Pr&Atilde;&shy;ncipe Dobra</option>
+<option value="SVC">Salvadoran Col&Atilde;&sup3;n</option>
+<option value="SYP">Syrian Pound</option>
+<option value="SZL">Swazi Lilangeni</option>
+<option value="THB">Thai Baht</option>
+<option value="TJS">Tajikistani Somoni</option>
+<option value="TMT">Turkmenistani Manat</option>
+<option value="TND">Tunisian Dinar</option>
+<option value="TOP">Tongan Pa&Ecirc;&raquo;anga</option>
+<option value="TRY">Turkish Lira</option>
+<option value="TTD">Trinidad &amp; Tobago Dollar</option>
+<option value="TWD">New Taiwan Dollar</option>
+<option value="TZS">Tanzanian Shilling</option>
+<option value="UAH">Ukrainian Hryvnia</option>
+<option value="UGX">Ugandan Shilling</option>
+<option value="USD" selected>US Dollar</option>
+<option value="USN">US Dollar (Next day)</option>
+<option value="UYI">Uruguayan Peso (Indexed Units)</option>
+<option value="UYU">Uruguayan Peso</option>
+<option value="UYW">Uruguayan Nominal Wage Index Unit</option>
+<option value="UZS">Uzbekistani Som</option>
+<option value="VED">Bol&Atilde;&shy;var Soberano</option>
+<option value="VES">Venezuelan Bol&Atilde;&shy;var</option>
+<option value="VND">Vietnamese Dong</option>
+<option value="VUV">Vanuatu Vatu</option>
+<option value="WST">Samoan Tala</option>
+<option value="XAF">Central African CFA Franc</option>
+<option value="XCD">East Caribbean Dollar</option>
+<option value="XCG">Caribbean guilder</option>
+<option value="XOF">West African CFA Franc</option>
+<option value="XPF">CFP Franc</option>
+<option value="YER">Yemeni Rial</option>
+<option value="ZAR">South African Rand</option>
+<option value="ZMW">Zambian Kwacha</option>
+<option value="ZWG">Zimbabwean Gold</option></select>
+    </div>
+<div class="form-text text-muted form-help-text mt-1">
+            <small>The default currency used for new invoices and quotes.</small>
         </div>
-
-        <div class="row">
-            <div class="col-md-6">
-                <div class="mb-3">                
-            <label class="control-label form-label" for="settings_company_contact_details_address_zip">Zip</label><input type="text" id="settings_company_contact_details_address_zip" name="settings[company][contact_details][address][zip]" class="form-control">
 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="mb-3">                
+                                    </div>
+                                                                                                    <div class="col-12">
+                                        <div class="mb-3">    
+            <label class="control-label form-label" for="settings_company_vat_number">VAT / Tax Number</label><div class="input-group input-icon-group input-validate-group" data-controller="vat-validator" data-vat-validator-url-value="/tax/number/validate">
+        <span class="input-group-text">
+            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 17a1 1 0 1 0 2 0a1 1 0 1 0-2 0M6 7a1 1 0 1 0 2 0a1 1 0 1 0-2 0m0 11L18 6"></path></svg>
+        </span>
+        <input type="text" id="settings_company_vat_number" name="settings[company][vat_number]" class="form-control" value="" placeholder="e.g. GB123456789" data-vat-validator-target="input" aria-describedby="settings_company_vat_number_help">
+        <button type="button" class="btn btn-outline-secondary btn-validate d-flex align-items-center gap-1" data-action="click-&gt;vat-validator#validate" data-vat-validator-target="button" title="Validate VAT Number (EU Countries Only)">
+            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0"></path><path d="m9 12l2 2l4-4"></path></g></svg>
+            <span>Validate</span>
+        </button>
+    </div>
+<div class="form-text text-muted form-help-text mt-1">
+            <small>Your company VAT or tax identification number. Click Validate to verify EU VAT numbers.</small>
+        </div>
+</div>
+                                    </div>
+                                                            </div>
+                        </div>
+
+                                                                            <div class="settings-section mb-4 pb-4 border-bottom">
+                                <h5 class="settings-section-title mb-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0-6 0"></path><path d="M17.657 16.657L13.414 20.9a2 2 0 0 1-2.827 0l-4.244-4.243a8 8 0 1 1 11.314 0"></path></g></svg>
+                                    Contact Details
+                                </h5>
+                                <p class="text-muted small mb-3">
+                                    This information will appear on your invoices and quotes.
+                                </p>
+                                <div class="row g-3">
+                                                                            <div class="col-md-6">
+                                            <div class="mb-3">    
+            <label class="control-label form-label" for="settings_company_contact_details_email">Contact Email</label>    <div class="input-group input-icon-group">
+        <span class="input-group-text">
+            <svg viewbox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><path d="m3 7l9 6l9-6"></path></g></svg>
+        </span>
+        <input type="email" id="settings_company_contact_details_email" name="settings[company][contact_details][email]" class="form-control" value="" placeholder="contact@yourcompany.com">
+    </div>
+</div>
+                                        </div>
+                                                                                                                <div class="col-md-6">
+                                            <div class="mb-3">    
+            <label class="control-label form-label" for="settings_company_contact_details_phone_number">Phone Number</label><input type="text" id="settings_company_contact_details_phone_number" name="settings[company][contact_details][phone_number]" placeholder="+1 (555) 123-4567" class="form-control">
+</div>
+                                        </div>
+                                                                    </div>
+                                                                    <div class="mt-3">
+                                        <label class="form-label fw-medium mb-2">Business Address</label>
+                                            <div class="settings-address-group card bg-light border-0">
+        <div class="card-body py-3">
+            <div class="row g-3">
+                <div class="col-12">
+                    <div class="mb-3">    
+            <label class="control-label form-label" for="settings_company_contact_details_address_street1">Street Address</label><input type="text" id="settings_company_contact_details_address_street1" name="settings[company][contact_details][address][street1]" placeholder="Street address line 1" class="form-control">
+</div>
+                </div>
+                <div class="col-12">
+                    <div class="mb-3">    
+            <label class="control-label form-label" for="settings_company_contact_details_address_street2">Street Address 2</label><input type="text" id="settings_company_contact_details_address_street2" name="settings[company][contact_details][address][street2]" placeholder="Apartment, suite, unit, etc. (optional)" class="form-control">
+</div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">    
+            <label class="control-label form-label" for="settings_company_contact_details_address_city">City</label><input type="text" id="settings_company_contact_details_address_city" name="settings[company][contact_details][address][city]" placeholder="City" class="form-control">
+</div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">    
+            <label class="control-label form-label" for="settings_company_contact_details_address_state">State / Province</label><input type="text" id="settings_company_contact_details_address_state" name="settings[company][contact_details][address][state]" placeholder="State or province" class="form-control">
+</div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">    
+            <label class="control-label form-label" for="settings_company_contact_details_address_zip">Postal Code</label><input type="text" id="settings_company_contact_details_address_zip" name="settings[company][contact_details][address][zip]" placeholder="ZIP / Postal code" class="form-control">
+</div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">    
             <label class="control-label form-label" for="settings_company_contact_details_address_country">Country</label><select id="settings_company_contact_details_address_country" name="settings[company][contact_details][address][country]" data-controller="symfony--ux-autocomplete--autocomplete" data-symfony--ux-autocomplete--autocomplete-max-results-value="10" data-symfony--ux-autocomplete--autocomplete-loading-more-text-value="Loading more results..." data-symfony--ux-autocomplete--autocomplete-no-results-found-text-value="No results found" data-symfony--ux-autocomplete--autocomplete-no-more-results-text-value="No more results" data-symfony--ux-autocomplete--autocomplete-create-option-text-value="Add %placeholder%..." data-symfony--ux-autocomplete--autocomplete-preload-value="focus" class="form-select"><option value="">Select Country</option>
 <option value="AF">Afghanistan</option>
 <option value="AX">&Atilde;&#133;land Islands</option>
@@ -362,279 +603,99 @@
 <option value="ZM">Zambia</option>
 <option value="ZW">Zimbabwe</option></select>
 </div>
+                </div>
             </div>
         </div>
-
-        
-        <br class="clear">
     </div>
 
-</fieldset>
-<div class="mb-3">                
-            <label class="control-label form-label" for="settings_company_contact_details_email">Email</label><input type="email" id="settings_company_contact_details_email" name="settings[company][contact_details][email]" class="form-control">
-</div>
-<div class="mb-3">                
-            <label class="control-label form-label" for="settings_company_contact_details_phone_number">Phone number</label><input type="text" id="settings_company_contact_details_phone_number" name="settings[company][contact_details][phone_number]" class="form-control">
-</div>
-</div>
-</fieldset>
-<div class="mb-3">                
-            <label class="control-label form-label" for="settings_company_currency">Currency</label><select id="settings_company_currency" name="settings[company][currency]" data-controller="symfony--ux-autocomplete--autocomplete" data-symfony--ux-autocomplete--autocomplete-max-results-value="10" data-symfony--ux-autocomplete--autocomplete-loading-more-text-value="Loading more results..." data-symfony--ux-autocomplete--autocomplete-no-results-found-text-value="No results found" data-symfony--ux-autocomplete--autocomplete-no-more-results-text-value="No more results" data-symfony--ux-autocomplete--autocomplete-create-option-text-value="Add %placeholder%..." data-symfony--ux-autocomplete--autocomplete-preload-value="focus" class="form-select"><option value=""></option>
-<option value="AED">United Arab Emirates Dirham</option>
-<option value="AFN">Afghan Afghani</option>
-<option value="ALL">Albanian Lek</option>
-<option value="AMD">Armenian Dram</option>
-<option value="AOA">Angolan Kwanza</option>
-<option value="ARS">Argentine Peso</option>
-<option value="AUD">Australian Dollar</option>
-<option value="AWG">Aruban Florin</option>
-<option value="AZN">Azerbaijani Manat</option>
-<option value="BAM">Bosnia-Herzegovina Convertible Mark</option>
-<option value="BBD">Barbadian Dollar</option>
-<option value="BDT">Bangladeshi Taka</option>
-<option value="BGN">Bulgarian Lev</option>
-<option value="BHD">Bahraini Dinar</option>
-<option value="BIF">Burundian Franc</option>
-<option value="BMD">Bermudan Dollar</option>
-<option value="BND">Brunei Dollar</option>
-<option value="BOB">Bolivian Boliviano</option>
-<option value="BOV">Bolivian Mvdol</option>
-<option value="BRL">Brazilian Real</option>
-<option value="BSD">Bahamian Dollar</option>
-<option value="BTN">Bhutanese Ngultrum</option>
-<option value="BWP">Botswanan Pula</option>
-<option value="BYN">Belarusian Ruble</option>
-<option value="BZD">Belize Dollar</option>
-<option value="CAD">Canadian Dollar</option>
-<option value="CDF">Congolese Franc</option>
-<option value="CHE">WIR Euro</option>
-<option value="CHF">Swiss Franc</option>
-<option value="CHW">WIR Franc</option>
-<option value="CLF">Chilean Unit of Account (UF)</option>
-<option value="CLP">Chilean Peso</option>
-<option value="CNY">Chinese Yuan</option>
-<option value="COP">Colombian Peso</option>
-<option value="COU">Colombian Real Value Unit</option>
-<option value="CRC">Costa Rican Col&Atilde;&sup3;n</option>
-<option value="CUP">Cuban Peso</option>
-<option value="CVE">Cape Verdean Escudo</option>
-<option value="CZK">Czech Koruna</option>
-<option value="DJF">Djiboutian Franc</option>
-<option value="DKK">Danish Krone</option>
-<option value="DOP">Dominican Peso</option>
-<option value="DZD">Algerian Dinar</option>
-<option value="EGP">Egyptian Pound</option>
-<option value="ERN">Eritrean Nakfa</option>
-<option value="ETB">Ethiopian Birr</option>
-<option value="EUR">Euro</option>
-<option value="FJD">Fijian Dollar</option>
-<option value="FKP">Falkland Islands Pound</option>
-<option value="GBP">British Pound</option>
-<option value="GEL">Georgian Lari</option>
-<option value="GHS">Ghanaian Cedi</option>
-<option value="GIP">Gibraltar Pound</option>
-<option value="GMD">Gambian Dalasi</option>
-<option value="GNF">Guinean Franc</option>
-<option value="GTQ">Guatemalan Quetzal</option>
-<option value="GYD">Guyanaese Dollar</option>
-<option value="HKD">Hong Kong Dollar</option>
-<option value="HNL">Honduran Lempira</option>
-<option value="HTG">Haitian Gourde</option>
-<option value="HUF">Hungarian Forint</option>
-<option value="IDR">Indonesian Rupiah</option>
-<option value="ILS">Israeli New Shekel</option>
-<option value="INR">Indian Rupee</option>
-<option value="IQD">Iraqi Dinar</option>
-<option value="IRR">Iranian Rial</option>
-<option value="ISK">Icelandic Kr&Atilde;&sup3;na</option>
-<option value="JMD">Jamaican Dollar</option>
-<option value="JOD">Jordanian Dinar</option>
-<option value="JPY">Japanese Yen</option>
-<option value="KES">Kenyan Shilling</option>
-<option value="KGS">Kyrgyz Som</option>
-<option value="KHR">Cambodian Riel</option>
-<option value="KMF">Comorian Franc</option>
-<option value="KPW">North Korean Won</option>
-<option value="KRW">South Korean Won</option>
-<option value="KWD">Kuwaiti Dinar</option>
-<option value="KYD">Cayman Islands Dollar</option>
-<option value="KZT">Kazakhstani Tenge</option>
-<option value="LAK">Laotian Kip</option>
-<option value="LBP">Lebanese Pound</option>
-<option value="LKR">Sri Lankan Rupee</option>
-<option value="LRD">Liberian Dollar</option>
-<option value="LSL">Lesotho Loti</option>
-<option value="LYD">Libyan Dinar</option>
-<option value="MAD">Moroccan Dirham</option>
-<option value="MDL">Moldovan Leu</option>
-<option value="MGA">Malagasy Ariary</option>
-<option value="MKD">Macedonian Denar</option>
-<option value="MMK">Myanmar Kyat</option>
-<option value="MNT">Mongolian Tugrik</option>
-<option value="MOP">Macanese Pataca</option>
-<option value="MRU">Mauritanian Ouguiya</option>
-<option value="MUR">Mauritian Rupee</option>
-<option value="MVR">Maldivian Rufiyaa</option>
-<option value="MWK">Malawian Kwacha</option>
-<option value="MXN">Mexican Peso</option>
-<option value="MXV">Mexican Investment Unit</option>
-<option value="MYR">Malaysian Ringgit</option>
-<option value="MZN">Mozambican Metical</option>
-<option value="NAD">Namibian Dollar</option>
-<option value="NGN">Nigerian Naira</option>
-<option value="NIO">Nicaraguan C&Atilde;&sup3;rdoba</option>
-<option value="NOK">Norwegian Krone</option>
-<option value="NPR">Nepalese Rupee</option>
-<option value="NZD">New Zealand Dollar</option>
-<option value="OMR">Omani Rial</option>
-<option value="PAB">Panamanian Balboa</option>
-<option value="PEN">Peruvian Sol</option>
-<option value="PGK">Papua New Guinean Kina</option>
-<option value="PHP">Philippine Peso</option>
-<option value="PKR">Pakistani Rupee</option>
-<option value="PLN">Polish Zloty</option>
-<option value="PYG">Paraguayan Guarani</option>
-<option value="QAR">Qatari Riyal</option>
-<option value="RON">Romanian Leu</option>
-<option value="RSD">Serbian Dinar</option>
-<option value="RUB">Russian Ruble</option>
-<option value="RWF">Rwandan Franc</option>
-<option value="SAR">Saudi Riyal</option>
-<option value="SBD">Solomon Islands Dollar</option>
-<option value="SCR">Seychellois Rupee</option>
-<option value="SDG">Sudanese Pound</option>
-<option value="SEK">Swedish Krona</option>
-<option value="SGD">Singapore Dollar</option>
-<option value="SHP">St. Helena Pound</option>
-<option value="SLE">Sierra Leonean Leone</option>
-<option value="SOS">Somali Shilling</option>
-<option value="SRD">Surinamese Dollar</option>
-<option value="SSP">South Sudanese Pound</option>
-<option value="STN">S&Atilde;&pound;o Tom&Atilde;&copy; &amp; Pr&Atilde;&shy;ncipe Dobra</option>
-<option value="SVC">Salvadoran Col&Atilde;&sup3;n</option>
-<option value="SYP">Syrian Pound</option>
-<option value="SZL">Swazi Lilangeni</option>
-<option value="THB">Thai Baht</option>
-<option value="TJS">Tajikistani Somoni</option>
-<option value="TMT">Turkmenistani Manat</option>
-<option value="TND">Tunisian Dinar</option>
-<option value="TOP">Tongan Pa&Ecirc;&raquo;anga</option>
-<option value="TRY">Turkish Lira</option>
-<option value="TTD">Trinidad &amp; Tobago Dollar</option>
-<option value="TWD">New Taiwan Dollar</option>
-<option value="TZS">Tanzanian Shilling</option>
-<option value="UAH">Ukrainian Hryvnia</option>
-<option value="UGX">Ugandan Shilling</option>
-<option value="USD" selected>US Dollar</option>
-<option value="USN">US Dollar (Next day)</option>
-<option value="UYI">Uruguayan Peso (Indexed Units)</option>
-<option value="UYU">Uruguayan Peso</option>
-<option value="UYW">Uruguayan Nominal Wage Index Unit</option>
-<option value="UZS">Uzbekistani Som</option>
-<option value="VED">Bol&Atilde;&shy;var Soberano</option>
-<option value="VES">Venezuelan Bol&Atilde;&shy;var</option>
-<option value="VND">Vietnamese Dong</option>
-<option value="VUV">Vanuatu Vatu</option>
-<option value="WST">Samoan Tala</option>
-<option value="XAF">Central African CFA Franc</option>
-<option value="XCD">East Caribbean Dollar</option>
-<option value="XCG">Caribbean guilder</option>
-<option value="XOF">West African CFA Franc</option>
-<option value="XPF">CFP Franc</option>
-<option value="YER">Yemeni Rial</option>
-<option value="ZAR">South African Rand</option>
-<option value="ZMW">Zambian Kwacha</option>
-<option value="ZWG">Zimbabwean Gold</option></select>
-</div>
-<div class="mb-3">                
-            <label class="control-label form-label" for="settings_company_vat_number">Vat number</label><div class="input-group" data-controller="vat-validator" data-vat-validator-url-value="/tax/number/validate">
-        <input type="text" id="settings_company_vat_number" name="settings[company][vat_number]" data-vat-validator-target="input" class="form-control">
+                                    </div>
+                                                            </div>
+                                            
+                                        
+                            </div>
 
-        <span class="input-group-text">
-            <a href="#" class="btn btn-secondary vat-validator" rel="tooltip" title="EU Countries Only" data-action="click-&gt;vat-validator#validate" data-vat-validator-target="button">
-                Validate
-            </a>
-        </span>
-    </div>
-</div>
-</div>
-</fieldset>
-<input type="hidden" id="settings__token" name="settings[_token]" data-controller="csrf-protection">
-</div>
+                        <div class="card-footer bg-transparent border-top">
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary d-flex align-items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M6 4h10l4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2"></path><path d="M10 14a2 2 0 1 0 4 0a2 2 0 1 0-4 0m4-10v4H8V4"></path></g></svg>
+                        <span>Save Settings</span>
+                    </button>
                 </div>
             </div>
         </div>
 
-        <div class="card-footer form-actions">
-            <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Save</button>
-        </div>
-        </form>
+        <input type="hidden" id="settings__token" name="settings[_token]" data-controller="csrf-protection">
+</form>
 
-                    <hr>
-            <div class="card mb-3 card-danger">
-                <div class="card-header">
-                    <h3 class="card-title">
-                        Danger Zone
-                    </h3>
+                            <div class="settings-danger-zone mt-4">
+                <div class="card border-danger">
+                    <div class="card-header bg-danger bg-opacity-10 border-danger">
+                        <h5 class="card-title text-danger mb-0 d-flex align-items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v4m-1.637-9.409L2.257 17.125a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636-2.87L13.637 3.59a1.914 1.914 0 0 0-3.274 0M12 16h.01"></path></svg>
+                            Danger Zone
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between gap-3">
+                            <div class="danger-zone-info">
+                                <h6 class="mb-1">Delete Company</h6>
+                                <p class="text-muted small mb-0">
+                                    Permanently delete your company and all associated data. This action cannot be undone.
+                                </p>
+                            </div>
+                            <button type="button" class="btn btn-outline-danger flex-shrink-0 d-flex align-items-center gap-2" data-controller="delete-company" data-delete-company-company-name-value="SolidInvoice" data-action="click-&gt;delete-company#showModal">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16m-10 4v6m4-6v6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"></path></svg>
+                                <span>Delete Company</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <p class="text-danger">
-                        This section allows you to delete your company and all associated data.
-                    </p>
-                    <p>
-                        Please proceed with caution since this action cannot be undone.
-                    </p>
-                    <div class="form-group" data-controller="delete-company" data-delete-company-company-name-value="SolidInvoice">
-                        <button type="button" class="btn btn-danger" data-action="click-&gt;delete-company#showModal">
-                            <i class="fa fa-trash"></i> Delete Company
-                        </button>
 
-                        <div class="modal fade" id="deleteCompanyModal" tabindex="-1" role="dialog" aria-labelledby="deleteCompanyModalLabel" aria-hidden="true" data-delete-company-target="modal">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="deleteCompanyModalLabel">
-                                            Confirm Company Deletion
-                                        </h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="alert alert-danger">
-                                            <strong>Warning!</strong>
-                                            This action will permanently delete your company and all associated data. This cannot be undone.
-                                        </div>
-                                        <p>
-                                            To confirm deletion, please type the company name exactly as shown below:
-                                        </p>
-                                        <p class="font-weight-bold text-danger">SolidInvoice</p>
-                                        <div class="form-group">
-                                            <label for="companyNameConfirmation" class="col-form-label">
-                                                Company Name
-                                            </label>
-                                            <input type="text" class="form-control" id="companyNameConfirmation" name="company_name" form="deleteCompanyForm" data-delete-company-target="companyNameInput" data-action="input-&gt;delete-company#validateInput" placeholder="Enter company name to confirm">
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                                            Cancel
-                                        </button>
-
-                                        <form id="deleteCompanyForm" action="/delete-company" method="post">
-                                            <input type="hidden" name="_csrf_token" value="">
-
-                                            <button type="submit" class="btn btn-danger" data-delete-company-target="confirmButton" disabled>
-                                                <i class="fa fa-trash"></i> Delete Company
-                                            </button>
-                                        </form>
+                                <div class="modal fade" id="deleteCompanyModal" tabindex="-1" role="dialog" aria-labelledby="deleteCompanyModalLabel" aria-hidden="true" data-delete-company-target="modal">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header border-0 pb-0">
+                                <h5 class="modal-title text-danger d-flex align-items-center gap-2" id="deleteCompanyModalLabel">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v4m-1.637-9.409L2.257 17.125a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636-2.87L13.637 3.59a1.914 1.914 0 0 0-3.274 0M12 16h.01"></path></svg>
+                                    Confirm Company Deletion
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="alert alert-danger d-flex align-items-start gap-2">
+                                    <svg viewbox="0 0 24 24" fill="currentColor" width="20" height="20" class="flex-shrink-0 mt-1" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0m9-4v4m0 4h.01"></path></svg>
+                                    <div>
+                                        <strong>Warning!</strong>
+                                        This action will permanently delete your company and all associated data including invoices, quotes, clients, and payments. This cannot be undone.
                                     </div>
                                 </div>
+                                <p class="mb-2">
+                                    To confirm deletion, please type the company name exactly as shown below:
+                                </p>
+                                <p class="fw-bold text-danger fs-5 mb-3 font-monospace">SolidInvoice</p>
+                                <div class="mb-3">
+                                    <label for="companyNameConfirmation" class="form-label">
+                                        Company Name
+                                    </label>
+                                    <input type="text" class="form-control" id="companyNameConfirmation" name="company_name" form="deleteCompanyForm" autocomplete="off" data-delete-company-target="companyNameInput" data-action="input-&gt;delete-company#validateInput" placeholder="Enter company name to confirm">
+                                </div>
+                            </div>
+                            <div class="modal-footer border-0 pt-0">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    Cancel
+                                </button>
+                                <form id="deleteCompanyForm" action="/delete-company" method="post" class="d-inline">
+                                    <input type="hidden" name="_csrf_token" value="">
+                                    <button type="submit" class="btn btn-danger d-flex align-items-center gap-2" data-delete-company-target="confirmButton" disabled>
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16m-10 4v6m4-6v6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"></path></svg>
+                                        <span>Delete Company</span>
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            </section>
-</section>
+            </div>
+</div>
 </body></html>

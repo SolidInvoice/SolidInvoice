@@ -1,0 +1,335 @@
+/**
+ * Generic Form Component Styles
+ * Reusable form styling for the entire application
+ */
+
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
+
+// ============================================================================
+// Form Field Base Styles
+// ============================================================================
+
+.form-field {
+    .form-label {
+        font-weight: 500;
+        color: var(--swp-body-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .form-control,
+    .form-select {
+        border-color: #e2e8f0;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+        &:focus {
+            border-color: var(--swp-primary);
+            box-shadow: 0 0 0 0.2rem rgba(var(--swp-primary-rgb), 0.15);
+        }
+    }
+
+    .input-group-text {
+        background-color: #f8fafc;
+        border-color: #e2e8f0;
+        color: #64748b;
+    }
+}
+
+// ============================================================================
+// Form Help Text
+// ============================================================================
+
+.form-help {
+    color: #64748b;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    margin-top: 0.25rem;
+}
+
+// Improved help text styling (replaces alert-based help)
+.form-text.text-muted,
+.form-help-text {
+    color: #64748b;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+
+    small {
+        font-size: inherit;
+    }
+}
+
+// ============================================================================
+// Toggle Switch (Checkbox as Switch)
+// ============================================================================
+
+.form-switch-field {
+    padding: 0.875rem 1rem;
+    background-color: #f8fafc;
+    border-radius: 0.5rem;
+    border: 1px solid #e2e8f0;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+
+    &:hover {
+        border-color: rgba(var(--swp-primary-rgb), 0.3);
+        background-color: rgba(var(--swp-primary-rgb), 0.02);
+    }
+}
+
+.form-switch-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0;
+
+    .form-check-input {
+        width: 2.5rem;
+        height: 1.25rem;
+        margin-top: 0;
+        cursor: pointer;
+        background-color: #cbd5e1;
+        border: none;
+        transition: background-color 0.2s ease;
+
+        &:checked {
+            background-color: var(--swp-primary);
+        }
+
+        &:focus {
+            box-shadow: 0 0 0 0.2rem rgba(var(--swp-primary-rgb), 0.25);
+        }
+    }
+
+    .form-check-label {
+        font-weight: 500;
+        cursor: pointer;
+        margin-bottom: 0;
+        flex: 1;
+    }
+}
+
+// ============================================================================
+// Input with Icon (Input Groups)
+// ============================================================================
+
+.input-icon-group {
+    .input-group-text {
+        background-color: #f8fafc;
+        border-color: #e2e8f0;
+        color: #64748b;
+
+        svg {
+            width: 18px;
+            height: 18px;
+        }
+    }
+
+    .form-control {
+        border-left: none;
+
+        &:focus {
+            border-color: var(--swp-primary);
+            box-shadow: 0 0 0 0.2rem rgba(var(--swp-primary-rgb), 0.15);
+
+            ~ .input-group-text,
+            + .input-group-text {
+                border-color: var(--swp-primary);
+            }
+        }
+    }
+
+    // When icon is on the left
+    .input-group-text:first-child {
+        border-right: none;
+
+        + .form-control {
+            border-left: none;
+        }
+    }
+}
+
+// ============================================================================
+// Validation Button in Input Group
+// ============================================================================
+
+.input-validate-group {
+    .btn-validate {
+        display: flex;
+        align-items: center;
+        gap: 0.375rem;
+        font-size: 0.875rem;
+
+        svg {
+            width: 16px;
+            height: 16px;
+        }
+    }
+}
+
+// ============================================================================
+// Form Groups (Nested/Grouped Fields)
+// ============================================================================
+
+.form-group-card {
+    padding: 1.25rem;
+    background-color: #f8fafc;
+    border-radius: 0.75rem;
+    border: 1px solid #e2e8f0;
+
+    .form-group-header {
+        margin-bottom: 1rem;
+    }
+
+    .form-group-title {
+        font-size: 0.9375rem;
+        font-weight: 600;
+        color: var(--swp-body-color);
+        margin: 0;
+    }
+
+    .form-group-content {
+        .mb-3:last-child {
+            margin-bottom: 0 !important;
+        }
+    }
+}
+
+// ============================================================================
+// Address Widget
+// ============================================================================
+
+.address-widget {
+    .card-body {
+        padding: 1rem;
+    }
+
+    .form-label {
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    .form-control,
+    .form-select {
+        font-size: 0.9375rem;
+    }
+}
+
+// ============================================================================
+// Form Validation States
+// ============================================================================
+
+.form-control.is-invalid,
+.form-select.is-invalid {
+    border-color: var(--swp-danger, #dc3545);
+    padding-right: calc(1.5em + 0.75rem);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+
+    &:focus {
+        border-color: var(--swp-danger, #dc3545);
+        box-shadow: 0 0 0 0.2rem rgba(var(--swp-danger-rgb, 220, 53, 69), 0.25);
+    }
+}
+
+.invalid-feedback {
+    font-size: 0.8125rem;
+    margin-top: 0.375rem;
+}
+
+// ============================================================================
+// File Upload / Dropzone Styling
+// ============================================================================
+
+.file-upload-area {
+    border: 2px dashed #cbd5e1;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    text-align: center;
+    background: #fff;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+    cursor: pointer;
+
+    &:hover,
+    &.dragover {
+        border-color: var(--swp-primary);
+        background-color: rgba(var(--swp-primary-rgb), 0.02);
+    }
+
+    .upload-icon {
+        color: #94a3b8;
+        margin-bottom: 0.5rem;
+    }
+
+    .upload-text {
+        color: #64748b;
+        font-size: 0.875rem;
+    }
+
+    .upload-hint {
+        color: #94a3b8;
+        font-size: 0.75rem;
+        margin-top: 0.25rem;
+    }
+}
+
+// Symfony UX Dropzone styling
+.dropzone {
+    border: 2px dashed #cbd5e1;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    text-align: center;
+    background: #fff;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+    min-height: auto;
+
+    &:hover,
+    &.dropzone-dragover {
+        border-color: var(--swp-primary);
+        background-color: rgba(var(--swp-primary-rgb), 0.02);
+    }
+}
+
+// ============================================================================
+// Section Titles (for organized forms)
+// ============================================================================
+
+.form-section-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--swp-body-color);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+
+    svg,
+    i {
+        color: var(--swp-primary);
+        opacity: 0.8;
+        width: 20px;
+        height: 20px;
+    }
+}
+
+// ============================================================================
+// Responsive Adjustments
+// ============================================================================
+
+@include media-breakpoint-down(sm) {
+    .form-switch-field {
+        padding: 0.75rem;
+    }
+
+    .form-switch-wrapper {
+        .form-check-input {
+            width: 2.25rem;
+            height: 1.125rem;
+        }
+    }
+
+    .form-group-card {
+        padding: 1rem;
+    }
+}

@@ -1,0 +1,445 @@
+/**
+ * Settings Page Styles
+ * Tabs-based layout with centered content
+ */
+
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
+
+// ============================================================================
+// Settings Page Container
+// ============================================================================
+
+.settings-page {
+    padding-bottom: 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+// ============================================================================
+// Tabs Navigation (uses Tabler's native nav-tabs with alt styling)
+// ============================================================================
+
+.settings-page {
+    // Tab styling - cleaner look
+    > .nav-tabs {
+        border-bottom-color: #e6e8eb;
+
+        .nav-link {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #626976;
+            border: none;
+            border-radius: 0;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            background: transparent;
+            transition: color 0.15s ease, border-color 0.15s ease;
+
+            &:hover {
+                color: var(--swp-primary);
+                border-bottom-color: rgba(var(--swp-primary-rgb), 0.3);
+            }
+
+            &.active {
+                color: var(--swp-primary);
+                border-bottom-color: var(--swp-primary);
+                background: transparent;
+            }
+
+            .nav-link-icon {
+                opacity: 0.7;
+            }
+        }
+
+        .nav-item + .nav-item {
+            margin-left: 0.25rem;
+        }
+    }
+}
+
+// Mobile: horizontal scrolling tabs
+@include media-breakpoint-down(md) {
+    .settings-page > .nav-tabs {
+        margin-left: -1rem;
+        margin-right: -1rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        flex-wrap: nowrap;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-item {
+            flex-shrink: 0;
+        }
+    }
+}
+
+// ============================================================================
+// Content Wrapper (centered)
+// ============================================================================
+
+.settings-content-wrapper {
+    max-width: 100%;
+}
+
+// ============================================================================
+// Settings Header
+// ============================================================================
+
+.settings-header {
+    margin-bottom: 1.25rem;
+
+    .settings-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--swp-body-color);
+        margin-bottom: 0.25rem;
+    }
+
+    .settings-description {
+        font-size: 0.875rem;
+        color: #64748b;
+        line-height: 1.5;
+        margin-bottom: 0;
+    }
+}
+
+// ============================================================================
+// Settings Content Card
+// ============================================================================
+
+.settings-content-card {
+    &:hover {
+        transform: none;
+    }
+
+    .card-body {
+        padding: 1.5rem;
+
+        @include media-breakpoint-up(md) {
+            padding: 2rem;
+        }
+    }
+
+    .card-footer {
+        padding: 1rem 1.5rem;
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+
+        @include media-breakpoint-up(md) {
+            padding: 1.25rem 2rem;
+        }
+    }
+}
+
+// ============================================================================
+// Settings Sections
+// ============================================================================
+
+.settings-section {
+    &:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+}
+
+.settings-section-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--swp-body-color);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    svg,
+    i {
+        color: var(--swp-primary);
+        opacity: 0.8;
+    }
+}
+
+// ============================================================================
+// Settings Toggle Field (extends generic form-switch-field)
+// ============================================================================
+
+.settings-toggle-field {
+    @extend .form-switch-field;
+}
+
+.settings-switch {
+    @extend .form-switch-wrapper;
+
+    .settings-switch-label {
+        @extend .form-check-label;
+    }
+}
+
+// ============================================================================
+// Settings Form Fields (extends generic form-field)
+// ============================================================================
+
+.settings-field {
+    @extend .form-field;
+
+    .settings-label {
+        font-weight: 500;
+        color: var(--swp-body-color);
+        margin-bottom: 0.5rem;
+    }
+}
+
+.settings-help {
+    @extend .form-help;
+}
+
+// ============================================================================
+// Settings Groups (extends generic form-group-card)
+// ============================================================================
+
+.settings-group {
+    @extend .form-group-card;
+
+    .settings-group-header {
+        margin-bottom: 1rem;
+    }
+
+    .settings-group-title {
+        font-size: 0.9375rem;
+        font-weight: 600;
+        color: var(--swp-body-color);
+        margin: 0;
+    }
+
+    .settings-group-content {
+        .settings-field:last-child {
+            margin-bottom: 0;
+        }
+    }
+}
+
+// ============================================================================
+// Logo Upload (Settings-specific)
+// ============================================================================
+
+.logo-upload-card {
+    border: 1px solid #e2e8f0;
+
+    .logo-preview-frame {
+        width: 72px;
+        height: 72px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+        border-radius: 0.5rem;
+        border: 2px dashed #cbd5e1;
+        overflow: hidden;
+
+        img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        &:empty::before {
+            content: '';
+            width: 32px;
+            height: 32px;
+            background-color: #cbd5e1;
+            mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect width='18' height='18' x='3' y='3' rx='2' ry='2'/%3E%3Ccircle cx='9' cy='9' r='2'/%3E%3Cpath d='m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21'/%3E%3C/svg%3E");
+            mask-size: contain;
+            mask-repeat: no-repeat;
+            mask-position: center;
+        }
+    }
+
+    .logo-upload-dropzone {
+        .dropzone-wrapper {
+            .dropzone {
+                border: 2px dashed #cbd5e1;
+                border-radius: 0.5rem;
+                padding: 1rem;
+                text-align: center;
+                background: #fff;
+                transition: border-color 0.2s ease, background-color 0.2s ease;
+                min-height: auto;
+
+                &:hover,
+                &.dropzone-dragover {
+                    border-color: var(--swp-primary);
+                    background-color: rgba(var(--swp-primary-rgb), 0.02);
+                }
+            }
+        }
+    }
+
+    @include media-breakpoint-down(sm) {
+        flex-direction: column !important;
+        align-items: stretch !important;
+
+        .logo-upload-preview {
+            align-self: center;
+        }
+    }
+}
+
+// ============================================================================
+// Settings Address Widget
+// ============================================================================
+
+.settings-address-group {
+    @extend .address-widget;
+}
+
+// ============================================================================
+// Mail Transport Settings
+// ============================================================================
+
+.mail-transport-settings {
+    .mail-provider-select {
+        .form-label {
+            font-weight: 500;
+        }
+    }
+
+    .mail-provider-config {
+        &.d-none {
+            display: none !important;
+        }
+
+        .card {
+            margin-top: 1rem;
+
+            .card-body {
+                padding: 1.25rem;
+            }
+        }
+    }
+}
+
+// ============================================================================
+// Danger Zone
+// ============================================================================
+
+.settings-danger-zone {
+    .card {
+        border-width: 2px;
+
+        &:hover {
+            transform: none;
+        }
+    }
+
+    .card-header {
+        background-color: rgba(var(--swp-danger-rgb), 0.05);
+    }
+
+    .danger-zone-info {
+        h6 {
+            font-weight: 600;
+        }
+    }
+}
+
+#deleteCompanyModal {
+    .modal-content {
+        border-radius: 1rem;
+        border: none;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+
+    .modal-header {
+        padding: 1.5rem 1.5rem 0.5rem;
+    }
+
+    .modal-body {
+        padding: 1rem 1.5rem;
+    }
+
+    .modal-footer {
+        padding: 0.75rem 1.5rem 1.5rem;
+    }
+
+    .font-monospace {
+        background-color: #fef2f2;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        display: inline-block;
+    }
+}
+
+// ============================================================================
+// Animations
+// ============================================================================
+
+@keyframes settingsSectionFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.settings-section {
+    animation: settingsSectionFadeIn 0.3s ease forwards;
+
+    @for $i from 1 through 5 {
+        &:nth-child(#{$i}) {
+            animation-delay: #{$i * 0.05}s;
+        }
+    }
+}
+
+// ============================================================================
+// Responsive Adjustments
+// ============================================================================
+
+@include media-breakpoint-down(sm) {
+    .settings-header {
+        .settings-title {
+            font-size: 1.125rem;
+        }
+
+        .settings-description {
+            font-size: 0.8125rem;
+        }
+    }
+
+    .settings-content-card {
+        .card-body {
+            padding: 1rem;
+        }
+
+        .card-footer {
+            padding: 1rem;
+        }
+    }
+
+    .settings-section-title {
+        font-size: 0.9375rem;
+    }
+}
+
+// ============================================================================
+// Print Styles
+// ============================================================================
+
+@media print {
+    .settings-page {
+        .settings-tabs,
+        .settings-danger-zone,
+        .card-footer {
+            display: none !important;
+        }
+    }
+}
