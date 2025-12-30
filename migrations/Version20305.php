@@ -26,7 +26,7 @@ final class Version20305 extends AbstractMigration
 {
     public function isTransactional(): bool
     {
-        return ! $this->platform instanceof MySqlPlatform && ! $this->platform instanceof OraclePlatform;
+        return ! $this->platform instanceof MySQLPlatform && ! $this->platform instanceof OraclePlatform;
     }
 
     public function up(Schema $schema): void

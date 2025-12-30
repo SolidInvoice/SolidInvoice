@@ -105,6 +105,7 @@ final class InstallationTest extends PantherTestCase
             )
             ->assertSee('Database Config')
             ->click('label[data-testid="database-driver-sqlite"]')
+            ->wait(200)
             ->click('button[name="installation[navigator][next]"]')
             ->use(
                 static fn (Client $client) => $client->waitFor('button[name="installation[navigator][next]"]')
@@ -248,6 +249,7 @@ final class InstallationTest extends PantherTestCase
                 static fn (Client $client) => $client->waitFor('input[name="installation[database_config][driver]"][value="sqlite"]')
             )
             ->click('label[data-testid="database-driver-sqlite"]')
+            ->wait(200)
             ->click('button[name="installation[navigator][next]"]')
             ->use(
                 static fn (Client $client) => $client->waitFor('input[name="installation[user_account][firstName]"]')
@@ -275,6 +277,7 @@ final class InstallationTest extends PantherTestCase
                 static fn (Client $client) => $client->waitFor('input[name="installation[database_config][driver]"][value="sqlite"]')
             )
             ->click('label[data-testid="database-driver-sqlite"]')
+            ->wait(200)
             ->click('button[name="installation[navigator][next]"]')
             ->use(
                 static fn (Client $client) => $client->waitFor('input[name="installation[user_account][firstName]"]')
@@ -306,6 +309,7 @@ final class InstallationTest extends PantherTestCase
                 static fn (Client $client) => $client->waitFor('input[name="installation[database_config][driver]"][value="sqlite"]')
             )
             ->click('label[data-testid="database-driver-sqlite"]')
+            ->wait(200)
             ->click('button[name="installation[navigator][next]"]')
             ->use(
                 static fn (Client $client) => $client->waitFor('input[name="installation[user_account][firstName]"]')
@@ -349,6 +353,7 @@ final class InstallationTest extends PantherTestCase
             )
             ->assertSee('Database Config')
             ->click('label[data-testid="database-driver-sqlite"]')
+            ->wait(200)
             ->click('button[name="installation[navigator][next]"]')
             ->use(
                 static fn (Client $client) => $client->waitFor('input[name="installation[user_account][firstName]"]')
@@ -399,6 +404,7 @@ final class InstallationTest extends PantherTestCase
                 static fn (Client $client) => $client->waitFor('label[data-testid="database-driver-sqlite"]')
             )
             ->click('label[data-testid="database-driver-sqlite"]')
+            ->wait(200)
             ->click('button[name="installation[navigator][next]"]')
             ->use(
                 static fn (Client $client) => $client->waitFor('input[name="installation[user_account][firstName]"]')
@@ -471,6 +477,7 @@ final class InstallationTest extends PantherTestCase
                 static fn (Client $client) => $client->waitFor('input[name="installation[database_config][driver]"][value="sqlite"]')
             )
             ->click('label[data-testid="database-driver-sqlite"]')
+            ->wait(200)
             ->click('button[name="installation[navigator][next]"]')
             ->use(
                 static fn (Client $client) => $client->waitFor('input[name="installation[user_account][firstName]"]')
@@ -514,6 +521,7 @@ final class InstallationTest extends PantherTestCase
                 static fn (Client $client) => $client->waitFor('input[name="installation[database_config][driver]"][value="sqlite"]')
             )
             ->click('label[data-testid="database-driver-sqlite"]')
+            ->wait(200)
             ->click('button[name="installation[navigator][next]"]')
             ->use(
                 static fn (Client $client) => $client->waitFor('input[name="installation[user_account][firstName]"]')

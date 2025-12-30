@@ -29,7 +29,7 @@ readonly class UserConfig
     public function get(UserSettingType $key, ?User $user = null): ?string
     {
         $user ??= $this->security->getUser();
-        /** @var User $user */
+        /** @var User|null $user */
 
         if (null === $user) {
             return null;
@@ -41,7 +41,7 @@ readonly class UserConfig
     public function set(UserSettingType $key, ?string $value, ?User $user = null): void
     {
         $user ??= $this->security->getUser();
-        /** @var User $user */
+        /** @var User|null $user */
 
         if (null === $user) {
             return;
@@ -53,7 +53,7 @@ readonly class UserConfig
     public function has(UserSettingType $key, ?User $user = null): bool
     {
         $user ??= $this->security->getUser();
-        /** @var User $user */
+        /** @var User|null $user */
 
         if (null === $user) {
             return false;
@@ -65,7 +65,7 @@ readonly class UserConfig
     public function remove(UserSettingType $key, ?User $user = null): void
     {
         $user ??= $this->security->getUser();
-        /** @var User $user */
+        /** @var User|null $user */
 
         if (null === $user) {
             return;
@@ -80,7 +80,7 @@ readonly class UserConfig
     public function getAll(?User $user = null): array
     {
         $user ??= $this->security->getUser();
-        /** @var User $user */
+        /** @var User|null $user */
 
         if (null === $user) {
             return [];
