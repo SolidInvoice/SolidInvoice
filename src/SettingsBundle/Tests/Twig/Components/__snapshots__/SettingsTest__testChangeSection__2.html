@@ -52,7 +52,7 @@
             </label>
 </div>
 <div id="settings_watermark_help" class="form-text text-muted form-help-text mt-1">
-            <small>settings.watermark.help</small>
+            <small>Display a visual watermark (e.g., PAID, DRAFT) on the Invoice document.</small>
         </div>
 </div>
 
@@ -66,8 +66,8 @@
                     <div class="row g-3">
                                                     <div class="col-12">
                                 <div class="mb-3">    
-            <label class="control-label form-label" for="settings_email_subject">Email Subject Line</label><input type="text" id="settings_email_subject" name="settings[email_subject]" placeholder="settings.email_subject.placeholder" aria-describedby="settings_email_subject_help" class="form-control" value="New Invoice - #{id}"><div id="settings_email_subject_help" class="form-text text-muted form-help-text mt-1">
-            <small>settings.email_subject.help</small>
+            <label class="control-label form-label" for="settings_email_subject">Email Subject Line</label><input type="text" id="settings_email_subject" name="settings[email_subject]" placeholder="New Invoice - #{id}" aria-describedby="settings_email_subject_help" class="form-control" value="New Invoice - #{id}"><div id="settings_email_subject_help" class="form-text text-muted form-help-text mt-1">
+            <small>Use {id} to include the Invoice number. Example: "New Invoice - #{id}"</small>
         </div>
 </div>
                             </div>
@@ -80,7 +80,7 @@
         <input type="email" id="settings_bcc_address" name="settings[bcc_address]" class="form-control" value="" placeholder="bcc@yourcompany.com" aria-describedby="settings_bcc_address_help">
     </div>
 <div id="settings_bcc_address_help" class="form-text text-muted form-help-text mt-1">
-            <small>settings.bcc_address.help</small>
+            <small>Receive a blind carbon copy of every Invoice email sent.</small>
         </div>
 </div>
                             </div>
@@ -93,7 +93,7 @@
                             Numbering Scheme
                         </h3>
                         <p class="text-muted small mb-3">
-                            settings.numbering.description
+                            Configure how Invoice numbers are generated.
                         </p>
                         <div class="row g-3">
                                                             <div class="col-12">
@@ -104,7 +104,7 @@
 <option value="timestamp">Timestamp</option>
 <option value="ulid">Ulid</option>
 <option value="uuid">Uuid</option></select><div id="settings_id_generation_strategy_help" class="form-text text-muted form-help-text mt-1">
-            <small>settings.numbering_strategy.help</small>
+            <small>Choose how Invoice IDs are generated.</small>
         </div>
 </div>
                                 </div>
