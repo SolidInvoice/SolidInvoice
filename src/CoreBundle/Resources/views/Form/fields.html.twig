@@ -17,7 +17,7 @@
 {# Form Help Text - elegant styling #}
 {% block form_help -%}
     {%- if help is not empty -%}
-        <div class="form-text text-muted form-help-text mt-1">
+        <div id="{{ id }}_help" class="form-text text-muted form-help-text mt-1">
             <small>{{ help|trans }}</small>
         </div>
     {%- endif -%}
@@ -41,10 +41,12 @@
            id="{{ id }}"
            name="{{ full_name }}"
            class="form-check-input"
+           role="switch"
            {% if value is defined %}value="{{ value }}"{% endif %}
-           {% if checked %}checked="checked"{% endif %}
-           {% if disabled %}disabled="disabled"{% endif %}
-           {% if required %}required="required"{% endif %}
+           {% if checked %}checked="checked" aria-checked="true"{% else %}aria-checked="false"{% endif %}
+           {% if disabled %}disabled="disabled" aria-disabled="true"{% endif %}
+           {% if required %}required="required" aria-required="true"{% endif %}
+           {% if help is defined and help is not empty %}aria-describedby="{{ id }}_help"{% endif %}
            {% for attrname, attrvalue in attr %}{{ attrname }}="{{ attrvalue }}" {% endfor %}
     >
 {% endblock checkbox_widget %}
@@ -52,7 +54,7 @@
 {% block checkbox_label %}
     <label class="form-check-label" for="{{ id }}">
         {% if label is not same as(false) %}
-            {{ label|default(name|humanize)|replace({'_': ' '})|title|trans }}
+            {{ label|default(name|humanize)|replace({'_': ' '})|trans|title }}
         {% endif %}
     </label>
 {% endblock checkbox_label %}

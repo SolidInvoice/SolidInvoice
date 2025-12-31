@@ -55,7 +55,7 @@
                     {# Company Profile Section - Name first, then Logo #}
                     <div class="mb-4 pb-4 border-bottom">
                         <h3 class="d-flex align-items-center gap-2 mb-3">
-                            {{ ux_icon('tabler:building', {width: 22, height: 22, class: 'text-primary'}) }}
+                            {{ ux_icon('tabler:building', {width: 22, height: 22, class: 'text-primary', 'aria-hidden': 'true'}) }}
                             {{ 'Company Profile'|trans }}
                         </h3>
                         <div class="row g-4">
@@ -79,7 +79,7 @@
                     {# Business Details Section #}
                     <div class="mb-4 pb-4 border-bottom">
                         <h3 class="d-flex align-items-center gap-2 mb-3">
-                            {{ ux_icon('tabler:file-text', {width: 22, height: 22, class: 'text-primary'}) }}
+                            {{ ux_icon('tabler:file-text', {width: 22, height: 22, class: 'text-primary', 'aria-hidden': 'true'}) }}
                             {{ 'Business Details'|trans }}
                         </h3>
                         <div class="row g-3">
@@ -106,7 +106,7 @@
                     {% if form.company.contact_details is defined %}
                         <div class="mb-4 pb-4 border-bottom">
                             <h3 class="d-flex align-items-center gap-2 mb-3">
-                                {{ ux_icon('tabler:map-pin', {width: 22, height: 22, class: 'text-primary'}) }}
+                                {{ ux_icon('tabler:map-pin', {width: 22, height: 22, class: 'text-primary', 'aria-hidden': 'true'}) }}
                                 {{ 'Contact Details'|trans }}
                             </h3>
                             <p class="text-muted small mb-3">
@@ -144,7 +144,7 @@
                 {% if form.general is defined %}
                     <div>
                         <h3 class="d-flex align-items-center gap-2 mb-3">
-                            {{ ux_icon('tabler:settings', {width: 22, height: 22, class: 'text-primary'}) }}
+                            {{ ux_icon('tabler:settings', {width: 22, height: 22, class: 'text-primary', 'aria-hidden': 'true'}) }}
                             {{ 'General Settings'|trans }}
                         </h3>
                         {{ form_widget(form.general) }}
@@ -157,13 +157,13 @@
                 {# Display Settings #}
                 <div class="mb-4 pb-4 border-bottom">
                     <h3 class="d-flex align-items-center gap-2 mb-3">
-                        {{ ux_icon('tabler:eye', {width: 22, height: 22, class: 'text-primary'}) }}
+                        {{ ux_icon('tabler:eye', {width: 22, height: 22, class: 'text-primary', 'aria-hidden': 'true'}) }}
                         {{ 'Display Settings'|trans }}
                     </h3>
                     {% if form.watermark is defined %}
                         {{ form_row(form.watermark, {
                             label: 'Show Status Watermark'|trans,
-                            help: 'Display a visual watermark (e.g., PAID, DRAFT) on the ' ~ section ~ ' document.'|trans
+                            help: 'settings.watermark.help'|trans({'%type%': section|trans})
                         }) }}
                     {% endif %}
                 </div>
@@ -171,7 +171,7 @@
                 {# Email Settings #}
                 <div class="mb-4 pb-4 border-bottom">
                     <h3 class="d-flex align-items-center gap-2 mb-3">
-                        {{ ux_icon('tabler:mail', {width: 22, height: 22, class: 'text-primary'}) }}
+                        {{ ux_icon('tabler:mail', {width: 22, height: 22, class: 'text-primary', 'aria-hidden': 'true'}) }}
                         {{ 'Email Notifications'|trans }}
                     </h3>
                     <div class="row g-3">
@@ -179,8 +179,8 @@
                             <div class="col-12">
                                 {{ form_row(form.email_subject, {
                                     label: 'Email Subject Line'|trans,
-                                    help: 'Use {id} to include the ' ~ section ~ ' number. Example: "New ' ~ section|capitalize ~ ' - #{id}"'|trans,
-                                    attr: {placeholder: 'New ' ~ section|capitalize ~ ' - #{id}'|trans}
+                                    help: 'settings.email_subject.help'|trans({'%type%': section|trans}),
+                                    attr: {placeholder: 'settings.email_subject.placeholder'|trans({'%type%': section|trans|title})}
                                 }) }}
                             </div>
                         {% endif %}
@@ -188,8 +188,8 @@
                             <div class="col-12">
                                 {{ form_row(form.bcc_address, {
                                     label: 'BCC Email Address'|trans,
-                                    help: 'Receive a blind carbon copy of every ' ~ section ~ ' email sent.'|trans,
-                                    attr: {placeholder: 'bcc@yourcompany.com'|trans}
+                                    help: 'settings.bcc_address.help'|trans({'%type%': section|trans}),
+                                    attr: {placeholder: 'bcc@yourcompany.com'}
                                 }) }}
                             </div>
                         {% endif %}
@@ -200,18 +200,18 @@
                 {% if form.id_generation is defined %}
                     <div>
                         <h3 class="d-flex align-items-center gap-2 mb-3">
-                            {{ ux_icon('tabler:hash', {width: 22, height: 22, class: 'text-primary'}) }}
+                            {{ ux_icon('tabler:hash', {width: 22, height: 22, class: 'text-primary', 'aria-hidden': 'true'}) }}
                             {{ 'Numbering Scheme'|trans }}
                         </h3>
                         <p class="text-muted small mb-3">
-                            {{ 'Configure how ' ~ section ~ ' numbers are generated.'|trans }}
+                            {{ 'settings.numbering.description'|trans({'%type%': section|trans}) }}
                         </p>
                         <div class="row g-3">
                             {% if form.id_generation.strategy is defined %}
                                 <div class="col-12">
                                     {{ form_row(form.id_generation.strategy, {
                                         label: 'Numbering Strategy'|trans,
-                                        help: 'Choose how ' ~ section ~ ' IDs are generated.'|trans
+                                        help: 'settings.numbering_strategy.help'|trans({'%type%': section|trans})
                                     }) }}
                                 </div>
                             {% endif %}
@@ -255,7 +255,7 @@
                 {# Sender Information #}
                 <div class="mb-4 pb-4 border-bottom">
                     <h3 class="d-flex align-items-center gap-2 mb-3">
-                        {{ ux_icon('tabler:user', {width: 22, height: 22, class: 'text-primary'}) }}
+                        {{ ux_icon('tabler:user', {width: 22, height: 22, class: 'text-primary', 'aria-hidden': 'true'}) }}
                         {{ 'Sender Information'|trans }}
                     </h3>
                     <p class="text-muted small mb-3">
@@ -287,7 +287,7 @@
                 {% if form.sending_options is defined %}
                     <div>
                         <h3 class="d-flex align-items-center gap-2 mb-3">
-                            {{ ux_icon('tabler:server', {width: 22, height: 22, class: 'text-primary'}) }}
+                            {{ ux_icon('tabler:server', {width: 22, height: 22, class: 'text-primary', 'aria-hidden': 'true'}) }}
                             {{ 'Email Delivery'|trans }}
                         </h3>
                         <p class="text-muted small mb-3">
@@ -306,8 +306,8 @@
         {# Save Button Footer #}
         <div class="card-footer bg-transparent border-top">
             <div class="d-flex justify-content-end">
-                <button type="submit" class="btn btn-primary d-flex align-items-center gap-2">
-                    {{ ux_icon('tabler:device-floppy', {width: 18, height: 18}) }}
+                <button type="submit" class="btn btn-primary d-flex align-items-center gap-2" aria-label="{{ 'Save Settings'|trans }}">
+                    {{ ux_icon('tabler:device-floppy', {width: 18, height: 18, 'aria-hidden': 'true'}) }}
                     <span>{{ 'Save Settings'|trans }}</span>
                 </button>
             </div>
@@ -318,11 +318,11 @@
 
     {# Danger Zone - Only for System Section #}
     {% if section is same as('system') %}
-        <div class="settings-danger-zone mt-4">
+        <div class="settings-danger-zone mt-4" role="region" aria-labelledby="danger-zone-heading">
             <div class="card border-danger">
                 <div class="card-header bg-danger bg-opacity-10 border-danger">
-                    <h5 class="card-title text-danger mb-0 d-flex align-items-center gap-2">
-                        {{ ux_icon('tabler:alert-triangle', {width: 20, height: 20}) }}
+                    <h5 class="card-title text-danger mb-0 d-flex align-items-center gap-2" id="danger-zone-heading">
+                        {{ ux_icon('tabler:alert-triangle', {width: 20, height: 20, 'aria-hidden': 'true'}) }}
                         {{ 'Danger Zone'|trans }}
                     </h5>
                 </div>
@@ -336,9 +336,10 @@
                         </div>
                         <button type="button"
                                 class="btn btn-outline-danger flex-shrink-0 d-flex align-items-center gap-2"
+                                aria-label="{{ 'Delete Company'|trans }}"
                                 {{ stimulus_controller('delete-company', {'company-name': company_name()}) }}
                                 {{ stimulus_action('delete-company', 'showModal', 'click') }}>
-                            {{ ux_icon('tabler:trash', {width: 16, height: 16}) }}
+                            {{ ux_icon('tabler:trash', {width: 16, height: 16, 'aria-hidden': 'true'}) }}
                             <span>{{ 'Delete Company'|trans }}</span>
                         </button>
                     </div>
@@ -349,22 +350,21 @@
             <div class="modal fade"
                  id="deleteCompanyModal"
                  tabindex="-1"
-                 role="dialog"
                  aria-labelledby="deleteCompanyModalLabel"
                  aria-hidden="true"
-                    {{ stimulus_target('delete-company', 'modal') }}>
-                <div class="modal-dialog modal-dialog-centered" role="document">
+                 {{ stimulus_target('delete-company', 'modal') }}>
+                <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header border-0 pb-0">
                             <h5 class="modal-title text-danger d-flex align-items-center gap-2" id="deleteCompanyModalLabel">
-                                {{ ux_icon('tabler:alert-triangle', {width: 20, height: 20}) }}
+                                {{ ux_icon('tabler:alert-triangle', {width: 20, height: 20, 'aria-hidden': 'true'}) }}
                                 {{ 'Confirm Company Deletion'|trans }}
                             </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ 'Close'|trans }}"></button>
                         </div>
                         <div class="modal-body">
-                            <div class="alert alert-danger d-flex align-items-start gap-2">
-                                {{ ux_icon('tabler:alert-circle', {width: 20, height: 20, class: 'flex-shrink-0 mt-1'}) }}
+                            <div class="alert alert-danger d-flex align-items-start gap-2" role="alert">
+                                {{ ux_icon('tabler:alert-circle', {width: 20, height: 20, class: 'flex-shrink-0 mt-1', 'aria-hidden': 'true'}) }}
                                 <div>
                                     <strong>{{ 'Warning!'|trans }}</strong>
                                     {{ 'This action will permanently delete your company and all associated data including invoices, quotes, clients, and payments. This cannot be undone.'|trans }}
@@ -373,7 +373,7 @@
                             <p class="mb-2">
                                 {{ 'To confirm deletion, please type the company name exactly as shown below:'|trans }}
                             </p>
-                            <p class="fw-bold text-danger fs-5 mb-3 font-monospace">{{ company_name() }}</p>
+                            <p class="fw-bold text-danger fs-5 mb-3 font-monospace" aria-label="{{ 'Company name to type'|trans }}">{{ company_name() }}</p>
                             <div class="mb-3">
                                 <label for="companyNameConfirmation" class="form-label">
                                     {{ 'Company Name'|trans }}
@@ -384,10 +384,10 @@
                                        name="company_name"
                                        form="deleteCompanyForm"
                                        autocomplete="off"
-                                        {{ stimulus_target('delete-company', 'companyNameInput') }}
-                                        {{ stimulus_action('delete-company', 'validateInput', 'input') }}
-                                       placeholder="{{ 'Enter company name to confirm'|trans }}"
-                                >
+                                       aria-required="true"
+                                       {{ stimulus_target('delete-company', 'companyNameInput') }}
+                                       {{ stimulus_action('delete-company', 'validateInput', 'input') }}
+                                       placeholder="{{ 'Enter company name to confirm'|trans }}">
                             </div>
                         </div>
                         <div class="modal-footer border-0 pt-0">
@@ -398,10 +398,10 @@
                                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('delete_company') }}">
                                 <button type="submit"
                                         class="btn btn-danger d-flex align-items-center gap-2"
+                                        aria-label="{{ 'Delete Company'|trans }}"
                                         {{ stimulus_target('delete-company', 'confirmButton') }}
-                                        disabled
-                                >
-                                    {{ ux_icon('tabler:trash', {width: 16, height: 16}) }}
+                                        disabled>
+                                    {{ ux_icon('tabler:trash', {width: 16, height: 16, 'aria-hidden': 'true'}) }}
                                     <span>{{ 'Delete Company'|trans }}</span>
                                 </button>
                             </form>

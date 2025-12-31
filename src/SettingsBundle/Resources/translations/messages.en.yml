@@ -2,3 +2,14 @@ settings:
     save: Save
     saved:
         success: 'Settings saved successfully!'
+    watermark:
+        help: 'Display a visual watermark (e.g., PAID, DRAFT) on the %type% document.'
+    email_subject:
+        help: 'Use {id} to include the %type% number. Example: "New %type% - #{id}"'
+        placeholder: 'New %type% - #{id}'
+    bcc_address:
+        help: 'Receive a blind carbon copy of every %type% email sent.'
+    numbering:
+        description: 'Configure how %type% numbers are generated.'
+    numbering_strategy:
+        help: 'Choose how %type% IDs are generated.'
