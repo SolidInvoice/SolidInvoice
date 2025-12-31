@@ -1020,6 +1020,571 @@ bun run lint:css # StyleLint
 
 ---
 
-**Last Updated:** 2025-12-27
-**Document Version:** 1.0.0
-**SolidInvoice Version:** 2.3.11
+## Design System Guide
+
+This section provides comprehensive guidelines for implementing consistent, modern UI across all SolidInvoice pages. **All UI changes MUST follow these guidelines.**
+
+### Design Philosophy
+
+SolidInvoice follows a **Clean & Minimal** design aesthetic:
+
+- **Content-focused**: Reduce visual noise, let data speak
+- **Consistent spacing**: Use the 8px-based spacing scale
+- **Subtle interactions**: Purposeful animations, no decorative effects
+- **Accessible by default**: Proper contrast, focus states, ARIA attributes
+
+### Design Tokens
+
+All design values are defined as CSS custom properties with the `--swp-` prefix in `/assets/scss/design-system/_tokens.scss`.
+
+#### Color Palette
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `--swp-primary` | `#2e963a` | Main CTAs, links, active states |
+| `--swp-primary-dark` | `#1f6c29` | Hover/active states |
+| `--swp-primary-light` | `#e8f5e9` | Backgrounds, badges |
+| `--swp-secondary` | `#f0a015` | Accent color (use sparingly) |
+| `--swp-success` | `#10b981` | Success states, confirmations |
+| `--swp-danger` | `#ef4444` | Errors, destructive actions |
+| `--swp-warning` | `#f59e0b` | Warnings, cautions |
+| `--swp-info` | `#3b82f6` | Informational content |
+
+**Gray Scale (Slate-based):**
+- `--swp-gray-50` to `--swp-gray-900` for text and backgrounds
+- `--swp-text-primary`, `--swp-text-secondary`, `--swp-text-muted` for text hierarchy
+
+#### Spacing Scale (8px base)
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `--swp-space-1` | `0.25rem` (4px) | Tiny gaps |
+| `--swp-space-2` | `0.5rem` (8px) | Icon gaps, tight spacing |
+| `--swp-space-3` | `0.75rem` (12px) | Button padding |
+| `--swp-space-4` | `1rem` (16px) | Standard form spacing |
+| `--swp-space-6` | `1.5rem` (24px) | Card padding |
+| `--swp-space-8` | `2rem` (32px) | Section spacing |
+
+#### Border Radius
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `--swp-radius-sm` | `6px` | Small elements, badges |
+| `--swp-radius-md` | `8px` | Buttons, form controls |
+| `--swp-radius-lg` | `12px` | Cards |
+| `--swp-radius-xl` | `16px` | Modals |
+
+#### Shadows
+
+| Token | Usage |
+|-------|-------|
+| `--swp-shadow-sm` | Cards, subtle elevation |
+| `--swp-shadow-md` | Hover states, dropdowns |
+| `--swp-shadow-lg` | Modals, popovers |
+| `--swp-shadow-primary` | Primary button glow |
+
+### Typography Guidelines
+
+| Element | Size Token | Weight | Color |
+|---------|------------|--------|-------|
+| Page title | `--swp-text-2xl` | `--swp-font-semibold` | `--swp-text-primary` |
+| Card title | `--swp-text-lg` | `--swp-font-semibold` | `--swp-text-primary` |
+| Section title | `--swp-text-md` | `--swp-font-semibold` | `--swp-text-primary` |
+| Body text | `--swp-text-base` | `--swp-font-normal` | `--swp-body-color` |
+| Help text | `--swp-text-sm` | `--swp-font-normal` | `--swp-text-muted` |
+| Labels | `--swp-text-sm` | `--swp-font-medium` | `--swp-text-secondary` |
+| Table headers | `--swp-text-xs` | `--swp-font-semibold` | `--swp-text-muted` |
+
+---
+
+### Platform UI Components (REQUIRED)
+
+**Always use SolidWorx/Platform UI components when available.** These are Twig components that provide consistent, accessible UI elements.
+
+**Available Components:**
+
+| Component | Location | Docs |
+|-----------|----------|------|
+| `<twig:Ui:Alert>` | `vendor/solidworx/platform/src/Bundle/Ui/templates/components/Alert.html.twig` | `vendor/solidworx/platform/src/Bundle/Ui/Docs/Alert.md` |
+| `<twig:Ui:Card>` | `vendor/solidworx/platform/src/Bundle/Ui/templates/components/Card.html.twig` | `vendor/solidworx/platform/src/Bundle/Ui/Docs/Card.md` |
+| `<twig:Ui:Modal>` | `vendor/solidworx/platform/src/Bundle/Ui/templates/components/Modal.html.twig` | `vendor/solidworx/platform/src/Bundle/Ui/Docs/Modal.md` |
+
+**Usage Examples:**
+
+```twig
+{# Card Component #}
+<twig:Ui:Card title="Invoice Details" subtitle="View and edit">
+    <p>Card body content here</p>
+
+    <twig:block name="footer">
+        <button class="btn btn-ghost" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-primary">{{ ux_icon('tabler:device-floppy') }} Save</button>
+    </twig:block>
+</twig:Ui:Card>
+
+{# Alert Component #}
+<twig:Ui:Alert type="success" icon="tabler:check" title="Saved!" :dismissible="true">
+    Your changes have been saved successfully.
+</twig:Ui:Alert>
+
+{# Modal Component #}
+<twig:Ui:Modal id="confirm-modal" title="Confirm Action" status="danger">
+    <p>Are you sure you want to proceed?</p>
+
+    <twig:block name="footer">
+        <button class="btn btn-ghost" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-danger">Confirm</button>
+    </twig:block>
+</twig:Ui:Modal>
+```
+
+**When a style/feature is needed but not supported:**
+1. First, create custom HTML to achieve the desired result
+2. Note what feature is missing for future addition to SolidWorx/Platform/UiBundle
+3. New components will be added to Platform over time
+
+**Do NOT:**
+- Create custom implementations when a Platform component exists
+- Override Platform component styles with inline styles
+- Duplicate Platform component functionality
+
+---
+
+### Component Usage
+
+#### Buttons
+
+**Variants and when to use:**
+
+| Class | Usage |
+|-------|-------|
+| `btn-primary` | Main page action, form submit (Save, Create, Confirm) |
+| `btn-secondary` | Secondary accent actions (rarely used) |
+| `btn-outline-primary` | Secondary actions, Cancel buttons |
+| `btn-outline-secondary` | Tertiary actions |
+| `btn-ghost` | Minimal actions, navigation-like buttons |
+| `btn-danger` | Destructive actions ONLY (Delete, Remove) |
+| `btn-outline-danger` | Less prominent destructive actions |
+
+**Icon usage in buttons:**
+```html
+<button class="btn btn-primary">
+    {{ ux_icon('tabler:device-floppy') }} Save
+</button>
+```
+
+- Icon BEFORE text
+- Use `gap-2` (handled by `.btn` class)
+- Icon size: 18px default, 16px for small, 20px for large
+
+**Button states:**
+- Hover: Subtle lift (`translateY(-1px)`) + shadow increase
+- Active: Return to baseline + reduced shadow
+- Disabled: 50% opacity, no pointer events
+- Loading: Use `.btn-loading` class for spinner
+
+#### Cards
+
+**Standard card structure:**
+```html
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Title</h3>
+        <div class="card-header-actions">
+            <!-- Optional action buttons -->
+        </div>
+    </div>
+    <div class="card-body">
+        <!-- Content -->
+    </div>
+    <div class="card-footer">
+        <!-- Action buttons -->
+    </div>
+</div>
+```
+
+**Card variants:**
+- Default: White background, subtle shadow, 12px radius
+- `.card-flat`: No shadow, light border (for nested cards)
+- `.card-interactive`: Hover lift effect (for clickable cards)
+- `.card-muted`: Gray background (for secondary content)
+- `.card-status-*`: Colored top border indicator
+
+**Card sections (within body):**
+```html
+<div class="card-section">
+    <div class="card-section-header">
+        <h4 class="card-section-title">
+            {{ ux_icon('tabler:icon') }} Section Title
+        </h4>
+    </div>
+    <!-- Section content -->
+</div>
+```
+
+#### Forms
+
+**Standard form field structure:**
+```html
+<div class="mb-4">
+    <label class="form-label required">Field Label</label>
+    <input type="text" class="form-control" />
+    <div class="form-help">Help text appears here</div>
+</div>
+```
+
+**Form layouts:**
+- Single column: Default for settings, simple forms
+- Two columns: Use `.row` with `.col-md-6` for related fields
+- Use `.form-row-2` or `.form-row-3` for grid layouts
+
+**Toggle switches:**
+```html
+<div class="form-switch-field">
+    <div class="form-check form-switch form-switch-wrapper">
+        <input type="checkbox" class="form-check-input" role="switch" />
+        <label class="form-check-label">Toggle Label</label>
+    </div>
+    <div class="form-help">Help text</div>
+</div>
+```
+
+**Input with icon:**
+```html
+<div class="input-group input-icon-group">
+    <span class="input-group-text">
+        {{ ux_icon('tabler:mail', {width: 18, height: 18}) }}
+    </span>
+    <input type="email" class="form-control" />
+</div>
+```
+
+---
+
+### Form Actions Pattern (CRITICAL)
+
+**Every form MUST follow this pattern:**
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│ [Cancel (btn-ghost)]                     [Save (btn-primary + icon)]│
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**Standard implementation:**
+```html
+<div class="card-footer">
+    <div class="form-actions">
+        <button type="button" class="btn btn-ghost">
+            {{ 'Cancel'|trans }}
+        </button>
+        <button type="submit" class="btn btn-primary">
+            {{ ux_icon('tabler:device-floppy') }} {{ 'Save'|trans }}
+        </button>
+    </div>
+</div>
+```
+
+**Rules:**
+1. Cancel button: Ghost or outline style, positioned LEFT or BEFORE save
+2. Save button: Primary style, with floppy disk icon, positioned RIGHT
+3. Use `.form-actions-spread` to push Cancel to far left
+4. Danger actions (Delete): Use separate confirmation flow, NOT in main form actions
+
+**Multi-action forms:**
+```html
+<div class="form-actions form-actions-spread">
+    <button type="button" class="btn btn-ghost">Cancel</button>
+    <div class="d-flex gap-2">
+        <button type="button" class="btn btn-outline-primary">Save as Draft</button>
+        <button type="submit" class="btn btn-primary">
+            {{ ux_icon('tabler:device-floppy') }} Save
+        </button>
+    </div>
+</div>
+```
+
+---
+
+### Page Patterns
+
+#### Settings Pages
+
+**Rules:**
+- Max-width: 900px, centered (use `.settings-page`)
+- Use horizontal tabs for **2-7 sections**
+- Use sidebar navigation for **8+ sections**
+- Each settings group in its own card
+- Section headers with icon + title
+- Danger zone at the bottom with red border
+
+**Tab navigation:**
+```html
+<nav class="settings-tabs">
+    <a href="#company" class="settings-tab active">
+        {{ ux_icon('tabler:building') }} Company
+    </a>
+    <a href="#invoices" class="settings-tab">
+        {{ ux_icon('tabler:file-invoice') }} Invoices
+    </a>
+</nav>
+```
+
+**Danger zone:**
+```html
+<div class="settings-danger-zone">
+    <div class="card-header">
+        <div class="settings-card-icon">
+            {{ ux_icon('tabler:alert-triangle') }}
+        </div>
+        <div>
+            <h3 class="settings-card-title">Danger Zone</h3>
+            <p class="settings-card-description">Irreversible actions</p>
+        </div>
+    </div>
+    <div class="card-body">
+        <!-- Danger actions with confirmation -->
+    </div>
+</div>
+```
+
+#### List Pages (DataGrid)
+
+**Structure:**
+```html
+<div class="list-page">
+    <!-- 1. Page header with title + Create button -->
+    <div class="list-header">
+        <h1 class="list-title">Invoices</h1>
+        <div class="list-actions">
+            <a href="#" class="btn btn-primary">
+                {{ ux_icon('tabler:plus') }} Create Invoice
+            </a>
+        </div>
+    </div>
+
+    <!-- 2. Search/Filter bar (optional) -->
+    <div class="list-filters">
+        <div class="list-search">...</div>
+        <div class="list-filter-group">...</div>
+    </div>
+
+    <!-- 3. Data table -->
+    <div class="list-content">
+        <table class="table">...</table>
+    </div>
+
+    <!-- 4. Pagination -->
+    <div class="list-footer">
+        <span class="list-footer-info">Showing 1-10 of 50</span>
+        <nav class="pagination">...</nav>
+    </div>
+</div>
+```
+
+**Empty state:**
+```html
+<div class="list-empty">
+    <div class="list-empty-icon">
+        {{ ux_icon('tabler:file-invoice') }}
+    </div>
+    <h3 class="list-empty-title">No invoices yet</h3>
+    <p class="list-empty-description">Create your first invoice to get started.</p>
+    <a href="#" class="btn btn-primary">
+        {{ ux_icon('tabler:plus') }} Create Invoice
+    </a>
+</div>
+```
+
+#### Form Pages (Create/Edit)
+
+**Structure:**
+```html
+<div class="form-page">
+    <form>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Create Invoice</h3>
+            </div>
+            <div class="card-body">
+                <!-- Form fields -->
+            </div>
+            <div class="card-footer">
+                <div class="form-actions">
+                    <button type="button" class="btn btn-ghost">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        {{ ux_icon('tabler:device-floppy') }} Save
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+```
+
+---
+
+### Modals
+
+**Standard modal:**
+```html
+<div class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal Title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Content -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+```
+
+**Sizes:** `.modal-sm` (400px), default (500px), `.modal-lg` (800px), `.modal-xl` (1140px)
+
+**Danger/Delete confirmation:**
+```html
+<div class="modal fade modal-danger">
+    <div class="modal-dialog modal-confirm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="modal-confirm-icon icon-danger">
+                    {{ ux_icon('tabler:trash') }}
+                </div>
+                <h3 class="modal-confirm-title">Delete Invoice?</h3>
+                <p class="modal-confirm-message">This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost">Cancel</button>
+                <button class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+```
+
+---
+
+### Alerts
+
+**Types and usage:**
+- `alert-success`: Confirmation of completed action
+- `alert-danger`: Error messages, failed operations
+- `alert-warning`: Cautions, important notices
+- `alert-info`: Helpful tips, neutral information
+- `alert-primary`: Brand-related notifications
+
+**Structure:**
+```html
+<div class="alert alert-success" role="alert">
+    {{ ux_icon('tabler:check') }}
+    <div class="alert-content">
+        <div class="alert-title">Success!</div>
+        <div class="alert-message">Invoice has been saved.</div>
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+```
+
+---
+
+### Tables/DataGrids
+
+**Table styling:**
+- Headers: Uppercase, small text (`--swp-text-xs`), muted color
+- Rows: Adequate padding (`1rem 1.5rem`), subtle hover
+- Borders: Light gray (`--swp-border-light`), minimal
+- No alternating row colors (hover is enough)
+
+**Column types:**
+- `.table-actions`: Right-aligned, action buttons
+- `.table-checkbox`: Checkbox column (narrow)
+- `.table-date`: Date column (no wrap)
+- `.table-amount`: Right-aligned, monospace
+- `.table-id`: Monospace, muted
+
+---
+
+### Animation Guidelines
+
+**Transitions:**
+- Hover effects: `150-200ms`
+- State changes: `200-300ms`
+- Modal open/close: `200ms`
+
+**What to animate:**
+- Hover: Shadow increase, subtle lift (`translateY(-1px)`)
+- Focus: Visible focus ring with primary color
+- Button press: Return to baseline
+
+**What NOT to animate:**
+- Text content changes
+- Active states (should be instant)
+- Background images
+
+---
+
+### Accessibility Checklist
+
+- [ ] All interactive elements have visible focus states
+- [ ] Color contrast ratio: 4.5:1 for text, 3:1 for UI
+- [ ] Form fields have associated labels
+- [ ] Required fields marked with `aria-required="true"`
+- [ ] Error messages linked with `aria-describedby`
+- [ ] Icon-only buttons have `aria-label`
+- [ ] Modals trap focus and close on Escape
+- [ ] Loading states announced to screen readers
+
+---
+
+### File Reference
+
+**Design System (SolidInvoice custom styles):**
+
+| File | Purpose |
+|------|---------|
+| `/assets/scss/design-system/_tokens.scss` | Design tokens (colors, spacing, shadows, transitions) |
+| `/assets/scss/design-system/_typography.scss` | Typography scale and utility classes |
+| `/assets/scss/_forms.scss` | Form field enhancements |
+| `/assets/scss/settings.scss` | Settings page specific styles |
+| `/src/CoreBundle/Resources/views/Form/fields.html.twig` | Form field templates |
+
+**Platform UI Components:**
+
+| File | Purpose |
+|------|---------|
+| `vendor/solidworx/platform/src/Bundle/Ui/Docs/Card.md` | Card component documentation |
+| `vendor/solidworx/platform/src/Bundle/Ui/Docs/Alert.md` | Alert component documentation |
+| `vendor/solidworx/platform/src/Bundle/Ui/Docs/Modal.md` | Modal component documentation |
+
+**Note:** Button, table, modal, and alert styling comes from **Tabler/Bootstrap**. Do not create custom component SCSS files that duplicate framework styles.
+
+---
+
+### Quick Reference Checklist
+
+When implementing any UI:
+
+1. ✅ **Use Platform UI components** (`<twig:Ui:Card>`, `<twig:Ui:Alert>`, `<twig:Ui:Modal>`) when available
+2. ✅ Use design tokens for all colors, spacing, shadows
+3. ✅ Follow form actions pattern (Cancel left/ghost, Save right/primary with icon)
+4. ✅ Use appropriate button variant for the action type
+5. ✅ Settings pages use tabs for < 8 sections
+6. ✅ Tables use Tabler/Bootstrap default styling
+7. ✅ Accessibility: focus states, ARIA labels, proper contrast
+8. ✅ Transitions are subtle and functional (150-300ms)
+9. ✅ No hardcoded color/spacing values - use CSS variables
+10. ✅ **Do NOT duplicate Bootstrap/Tabler styles** - use framework defaults
+
+---
+
+**Last Updated:** 2025-12-31
+**Document Version:** 1.1.0
+**SolidInvoice Version:** 3.0.0-dev

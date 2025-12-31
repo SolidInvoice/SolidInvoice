@@ -1,58 +1,91 @@
 /**
- * Generic Form Component Styles
- * Reusable form styling for the entire application
+ * SolidInvoice Design System - Form Styles
+ *
+ * Generic form component styles for the entire application.
+ * Uses design system tokens for consistent styling.
  */
 
-@import '~bootstrap/scss/functions';
-@import '~bootstrap/scss/variables';
-@import '~bootstrap/scss/mixins';
+// ============================================================================
+// FORM CONTROL BASE STYLES
+// ============================================================================
+
+.form-control,
+.form-select {
+    border-radius: var(--swp-input-radius);
+    border-color: var(--swp-input-border);
+    padding: var(--swp-input-padding-y) var(--swp-input-padding-x);
+    font-size: var(--swp-text-base);
+    transition: border-color var(--swp-transition-fast),
+                box-shadow var(--swp-transition-fast);
+
+    &:focus {
+        border-color: var(--swp-input-focus-border);
+        box-shadow: var(--swp-input-focus-ring);
+    }
+
+    &::placeholder {
+        color: var(--swp-text-light);
+    }
+}
 
 // ============================================================================
-// Form Field Base Styles
+// FORM LABELS
+// ============================================================================
+
+.form-label {
+    font-size: var(--swp-text-sm);
+    font-weight: var(--swp-font-medium);
+    color: var(--swp-text-secondary);
+    margin-bottom: var(--swp-space-2);
+
+    // Required indicator
+    &.required::after {
+        content: ' *';
+        color: var(--swp-danger);
+    }
+}
+
+// ============================================================================
+// FORM FIELD WRAPPER
 // ============================================================================
 
 .form-field {
     .form-label {
-        font-weight: 500;
+        font-weight: var(--swp-font-medium);
         color: var(--swp-body-color);
-        margin-bottom: 0.5rem;
+        margin-bottom: var(--swp-space-2);
     }
 
     .form-control,
     .form-select {
-        border-color: #e2e8f0;
-        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        border-color: var(--swp-border);
+        transition: border-color var(--swp-transition-fast),
+                    box-shadow var(--swp-transition-fast);
 
         &:focus {
             border-color: var(--swp-primary);
-            box-shadow: 0 0 0 0.2rem rgba(var(--swp-primary-rgb), 0.15);
+            box-shadow: var(--swp-ring-primary);
         }
     }
 
     .input-group-text {
-        background-color: #f8fafc;
-        border-color: #e2e8f0;
-        color: #64748b;
+        background-color: var(--swp-gray-50);
+        border-color: var(--swp-border);
+        color: var(--swp-text-muted);
     }
 }
 
 // ============================================================================
-// Form Help Text
+// FORM HELP TEXT
 // ============================================================================
 
-.form-help {
-    color: #64748b;
-    font-size: 0.8125rem;
-    line-height: 1.4;
-    margin-top: 0.25rem;
-}
-
-// Improved help text styling (replaces alert-based help)
-.form-text.text-muted,
+.form-help,
+.form-text,
 .form-help-text {
-    color: #64748b;
-    font-size: 0.8125rem;
-    line-height: 1.4;
+    color: var(--swp-text-muted);
+    font-size: var(--swp-text-sm);
+    line-height: var(--swp-leading-normal);
+    margin-top: var(--swp-space-1);
 
     small {
         font-size: inherit;
@@ -60,26 +93,27 @@
 }
 
 // ============================================================================
-// Toggle Switch (Checkbox as Switch)
+// TOGGLE SWITCH (Checkbox as Switch)
 // ============================================================================
 
 .form-switch-field {
-    padding: 0.875rem 1rem;
-    background-color: #f8fafc;
-    border-radius: 0.5rem;
-    border: 1px solid #e2e8f0;
-    transition: border-color 0.2s ease, background-color 0.2s ease;
+    padding: var(--swp-space-3-5) var(--swp-space-4);
+    background-color: var(--swp-gray-50);
+    border-radius: var(--swp-radius-md);
+    border: 1px solid var(--swp-border);
+    transition: border-color var(--swp-transition-fast),
+                background-color var(--swp-transition-fast);
 
     &:hover {
         border-color: rgba(var(--swp-primary-rgb), 0.3);
-        background-color: rgba(var(--swp-primary-rgb), 0.02);
+        background-color: var(--swp-primary-lighter);
     }
 }
 
 .form-switch-wrapper {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: var(--swp-space-3);
     margin-bottom: 0;
 
     .form-check-input {
@@ -87,21 +121,21 @@
         height: 1.25rem;
         margin-top: 0;
         cursor: pointer;
-        background-color: #cbd5e1;
+        background-color: var(--swp-gray-300);
         border: none;
-        transition: background-color 0.2s ease;
+        transition: background-color var(--swp-transition-fast);
 
         &:checked {
             background-color: var(--swp-primary);
         }
 
         &:focus {
-            box-shadow: 0 0 0 0.2rem rgba(var(--swp-primary-rgb), 0.25);
+            box-shadow: var(--swp-ring-primary);
         }
     }
 
     .form-check-label {
-        font-weight: 500;
+        font-weight: var(--swp-font-medium);
         cursor: pointer;
         margin-bottom: 0;
         flex: 1;
@@ -109,14 +143,14 @@
 }
 
 // ============================================================================
-// Input with Icon (Input Groups)
+// INPUT WITH ICON (Input Groups)
 // ============================================================================
 
 .input-icon-group {
     .input-group-text {
-        background-color: #f8fafc;
-        border-color: #e2e8f0;
-        color: #64748b;
+        background-color: var(--swp-gray-50);
+        border-color: var(--swp-border);
+        color: var(--swp-text-muted);
 
         svg {
             width: 18px;
@@ -129,7 +163,7 @@
 
         &:focus {
             border-color: var(--swp-primary);
-            box-shadow: 0 0 0 0.2rem rgba(var(--swp-primary-rgb), 0.15);
+            box-shadow: var(--swp-ring-primary);
 
             ~ .input-group-text,
             + .input-group-text {
@@ -149,15 +183,15 @@
 }
 
 // ============================================================================
-// Validation Button in Input Group
+// VALIDATION BUTTON IN INPUT GROUP
 // ============================================================================
 
 .input-validate-group {
     .btn-validate {
         display: flex;
         align-items: center;
-        gap: 0.375rem;
-        font-size: 0.875rem;
+        gap: var(--swp-space-1-5);
+        font-size: var(--swp-text-sm);
 
         svg {
             width: 16px;
@@ -167,159 +201,289 @@
 }
 
 // ============================================================================
-// Form Groups (Nested/Grouped Fields)
+// FORM GROUPS (Nested/Grouped Fields)
 // ============================================================================
 
 .form-group-card {
-    padding: 1.25rem;
-    background-color: #f8fafc;
-    border-radius: 0.75rem;
-    border: 1px solid #e2e8f0;
+    padding: var(--swp-space-5);
+    background-color: var(--swp-gray-50);
+    border-radius: var(--swp-radius-lg);
+    border: 1px solid var(--swp-border);
 
     .form-group-header {
-        margin-bottom: 1rem;
+        margin-bottom: var(--swp-space-4);
     }
 
     .form-group-title {
-        font-size: 0.9375rem;
-        font-weight: 600;
+        font-size: var(--swp-text-base);
+        font-weight: var(--swp-font-semibold);
         color: var(--swp-body-color);
         margin: 0;
     }
 
     .form-group-content {
-        .mb-3:last-child {
+        .mb-3:last-child,
+        .mb-4:last-child {
             margin-bottom: 0 !important;
         }
     }
 }
 
 // ============================================================================
-// Address Widget
+// ADDRESS WIDGET
 // ============================================================================
 
 .address-widget {
     .card-body {
-        padding: 1rem;
+        padding: var(--swp-space-4);
     }
 
     .form-label {
-        font-size: 0.875rem;
-        font-weight: 500;
+        font-size: var(--swp-text-sm);
+        font-weight: var(--swp-font-medium);
     }
 
     .form-control,
     .form-select {
-        font-size: 0.9375rem;
+        font-size: var(--swp-text-base);
     }
 }
 
 // ============================================================================
-// Form Validation States
+// FORM VALIDATION STATES
 // ============================================================================
 
 .form-control.is-invalid,
 .form-select.is-invalid {
-    border-color: var(--swp-danger, #dc3545);
+    border-color: var(--swp-danger);
     padding-right: calc(1.5em + 0.75rem);
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23ef4444'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23ef4444' stroke='none'/%3e%3c/svg%3e");
     background-repeat: no-repeat;
     background-position: right calc(0.375em + 0.1875rem) center;
     background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
 
     &:focus {
-        border-color: var(--swp-danger, #dc3545);
-        box-shadow: 0 0 0 0.2rem rgba(var(--swp-danger-rgb, 220, 53, 69), 0.25);
+        border-color: var(--swp-danger);
+        box-shadow: var(--swp-ring-danger);
+    }
+}
+
+.form-control.is-valid,
+.form-select.is-valid {
+    border-color: var(--swp-success);
+
+    &:focus {
+        border-color: var(--swp-success);
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
     }
 }
 
 .invalid-feedback {
-    font-size: 0.8125rem;
-    margin-top: 0.375rem;
+    color: var(--swp-danger);
+    font-size: var(--swp-text-sm);
+    margin-top: var(--swp-space-1-5);
+}
+
+.valid-feedback {
+    color: var(--swp-success);
+    font-size: var(--swp-text-sm);
+    margin-top: var(--swp-space-1-5);
 }
 
 // ============================================================================
-// File Upload / Dropzone Styling
+// FILE UPLOAD / DROPZONE STYLING
 // ============================================================================
 
 .file-upload-area {
-    border: 2px dashed #cbd5e1;
-    border-radius: 0.5rem;
-    padding: 1.5rem;
+    border: 2px dashed var(--swp-gray-300);
+    border-radius: var(--swp-radius-md);
+    padding: var(--swp-space-6);
     text-align: center;
-    background: #fff;
-    transition: border-color 0.2s ease, background-color 0.2s ease;
+    background: var(--swp-surface);
+    transition: border-color var(--swp-transition-fast),
+                background-color var(--swp-transition-fast);
     cursor: pointer;
 
     &:hover,
     &.dragover {
         border-color: var(--swp-primary);
-        background-color: rgba(var(--swp-primary-rgb), 0.02);
+        background-color: var(--swp-primary-lighter);
     }
 
     .upload-icon {
-        color: #94a3b8;
-        margin-bottom: 0.5rem;
+        color: var(--swp-text-light);
+        margin-bottom: var(--swp-space-2);
+
+        svg {
+            width: 32px;
+            height: 32px;
+        }
     }
 
     .upload-text {
-        color: #64748b;
-        font-size: 0.875rem;
+        color: var(--swp-text-muted);
+        font-size: var(--swp-text-sm);
     }
 
     .upload-hint {
-        color: #94a3b8;
-        font-size: 0.75rem;
-        margin-top: 0.25rem;
+        color: var(--swp-text-light);
+        font-size: var(--swp-text-xs);
+        margin-top: var(--swp-space-1);
     }
 }
 
 // Symfony UX Dropzone styling
 .dropzone {
-    border: 2px dashed #cbd5e1;
-    border-radius: 0.5rem;
-    padding: 1rem;
+    border: 2px dashed var(--swp-gray-300);
+    border-radius: var(--swp-radius-md);
+    padding: var(--swp-space-4);
     text-align: center;
-    background: #fff;
-    transition: border-color 0.2s ease, background-color 0.2s ease;
+    background: var(--swp-surface);
+    transition: border-color var(--swp-transition-fast),
+                background-color var(--swp-transition-fast);
     min-height: auto;
 
     &:hover,
     &.dropzone-dragover {
         border-color: var(--swp-primary);
-        background-color: rgba(var(--swp-primary-rgb), 0.02);
+        background-color: var(--swp-primary-lighter);
     }
 }
 
 // ============================================================================
-// Section Titles (for organized forms)
+// SECTION TITLES (For organized forms)
 // ============================================================================
 
 .form-section-title {
-    font-size: 1rem;
-    font-weight: 600;
+    font-size: var(--swp-text-md);
+    font-weight: var(--swp-font-semibold);
     color: var(--swp-body-color);
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
+    gap: var(--swp-space-2);
+    margin-bottom: var(--swp-space-4);
 
     svg,
     i {
         color: var(--swp-primary);
-        opacity: 0.8;
+        opacity: 0.9;
         width: 20px;
         height: 20px;
     }
 }
 
 // ============================================================================
-// Responsive Adjustments
+// FORM ACTIONS (Card footer with buttons)
 // ============================================================================
 
-@include media-breakpoint-down(sm) {
+/**
+ * Standard Form Actions Pattern:
+ *
+ * ┌─────────────────────────────────────────────────────────────┐
+ * │ [Cancel (ghost)]                      [Save (primary + icon)]│
+ * └─────────────────────────────────────────────────────────────┘
+ *
+ * - Cancel: Left side OR ghost style
+ * - Save: Right side, primary style, with save icon
+ */
+
+.form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--swp-space-3);
+    padding: var(--swp-space-4) var(--swp-space-6);
+    background: var(--swp-gray-50);
+    border-top: 1px solid var(--swp-border-light);
+
+    // When used in a card footer
+    .card-footer & {
+        padding: 0;
+        background: transparent;
+        border-top: none;
+    }
+
+    // Spread buttons (cancel left, save right)
+    &.form-actions-spread {
+        justify-content: space-between;
+    }
+}
+
+// ============================================================================
+// INLINE FORM
+// ============================================================================
+
+.form-inline {
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-3);
+    flex-wrap: wrap;
+
+    .form-control,
+    .form-select {
+        width: auto;
+    }
+}
+
+// ============================================================================
+// HORIZONTAL FORM
+// ============================================================================
+
+.form-horizontal {
+    .form-group,
+    .mb-3,
+    .mb-4 {
+        display: grid;
+        grid-template-columns: 200px 1fr;
+        gap: var(--swp-space-4);
+        align-items: start;
+
+        @media (max-width: 768px) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .form-label {
+        padding-top: var(--swp-space-2-5);
+        margin-bottom: 0;
+        text-align: right;
+
+        @media (max-width: 768px) {
+            text-align: left;
+            padding-top: 0;
+        }
+    }
+}
+
+// ============================================================================
+// COMPACT FORM
+// ============================================================================
+
+.form-compact {
+    .mb-3,
+    .mb-4 {
+        margin-bottom: var(--swp-space-3) !important;
+    }
+
+    .form-control,
+    .form-select {
+        padding: var(--swp-space-2) var(--swp-space-3);
+        font-size: var(--swp-text-sm);
+    }
+
+    .form-label {
+        font-size: var(--swp-text-xs);
+        margin-bottom: var(--swp-space-1);
+    }
+}
+
+// ============================================================================
+// RESPONSIVE ADJUSTMENTS
+// ============================================================================
+
+@media (max-width: 576px) {
     .form-switch-field {
-        padding: 0.75rem;
+        padding: var(--swp-space-3);
     }
 
     .form-switch-wrapper {
@@ -330,6 +494,16 @@
     }
 
     .form-group-card {
-        padding: 1rem;
+        padding: var(--swp-space-4);
+    }
+
+    .form-actions {
+        padding: var(--swp-space-3) var(--swp-space-4);
+        flex-wrap: wrap;
+
+        .btn {
+            flex: 1;
+            min-width: 100px;
+        }
     }
 }

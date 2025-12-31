@@ -1,0 +1,13 @@
+/**
+ * SolidInvoice Design System - Main Index
+ *
+ * Imports all design system foundation files.
+ * This file should be imported early in app.scss,
+ * after Bootstrap functions/variables but before components.
+ */
+
+// Core design tokens (colors, spacing, shadows, etc.)
+@import 'tokens';
+
+// Typography system
+@import 'typography';
