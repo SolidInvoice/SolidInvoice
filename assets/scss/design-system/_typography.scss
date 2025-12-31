@@ -1,0 +1,226 @@
+/**
+ * SolidInvoice Design System - Typography
+ *
+ * Typography scale, font families, weights, and line heights.
+ * Uses system fonts for optimal performance and native feel.
+ */
+
+// ============================================================================
+// FONT FAMILIES
+// ============================================================================
+
+:root {
+    // System font stack - Modern, performant, native feel
+    --swp-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                     'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
+                     'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+                     'Noto Color Emoji';
+
+    // Monospace for code, numbers in tables
+    --swp-font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Monaco,
+                     Consolas, 'Liberation Mono', 'Courier New', monospace;
+
+    // Default font family
+    --swp-font-family: var(--swp-font-sans);
+}
+
+// ============================================================================
+// FONT SIZES
+// ============================================================================
+
+:root {
+    --swp-text-xs: 0.75rem;       // 12px - Fine print, badges
+    --swp-text-sm: 0.8125rem;     // 13px - Help text, captions
+    --swp-text-base: 0.9375rem;   // 15px - Body text (slightly larger than 14px for readability)
+    --swp-text-md: 1rem;          // 16px - Emphasized body
+    --swp-text-lg: 1.125rem;      // 18px - Card titles, section headers
+    --swp-text-xl: 1.25rem;       // 20px - Page subtitles
+    --swp-text-2xl: 1.5rem;       // 24px - Page titles
+    --swp-text-3xl: 1.875rem;     // 30px - Hero titles
+    --swp-text-4xl: 2.25rem;      // 36px - Large display
+    --swp-text-5xl: 3rem;         // 48px - Extra large display
+}
+
+// ============================================================================
+// LINE HEIGHTS
+// ============================================================================
+
+:root {
+    --swp-leading-none: 1;
+    --swp-leading-tight: 1.25;
+    --swp-leading-snug: 1.375;
+    --swp-leading-normal: 1.5;
+    --swp-leading-relaxed: 1.625;
+    --swp-leading-loose: 2;
+}
+
+// ============================================================================
+// FONT WEIGHTS
+// ============================================================================
+
+:root {
+    --swp-font-thin: 100;
+    --swp-font-extralight: 200;
+    --swp-font-light: 300;
+    --swp-font-normal: 400;
+    --swp-font-medium: 500;
+    --swp-font-semibold: 600;
+    --swp-font-bold: 700;
+    --swp-font-extrabold: 800;
+    --swp-font-black: 900;
+}
+
+// ============================================================================
+// LETTER SPACING
+// ============================================================================
+
+:root {
+    --swp-tracking-tighter: -0.05em;
+    --swp-tracking-tight: -0.025em;
+    --swp-tracking-normal: 0;
+    --swp-tracking-wide: 0.025em;
+    --swp-tracking-wider: 0.05em;
+    --swp-tracking-widest: 0.1em;
+}
+
+// ============================================================================
+// TYPOGRAPHY UTILITY CLASSES
+// ============================================================================
+
+// Page title - Large, prominent heading
+.text-page-title {
+    font-size: var(--swp-text-2xl);
+    font-weight: var(--swp-font-semibold);
+    line-height: var(--swp-leading-tight);
+    color: var(--swp-text-primary);
+    letter-spacing: var(--swp-tracking-tight);
+}
+
+// Page subtitle
+.text-page-subtitle {
+    font-size: var(--swp-text-base);
+    font-weight: var(--swp-font-normal);
+    line-height: var(--swp-leading-normal);
+    color: var(--swp-text-muted);
+}
+
+// Card title
+.text-card-title {
+    font-size: var(--swp-text-lg);
+    font-weight: var(--swp-font-semibold);
+    line-height: var(--swp-leading-snug);
+    color: var(--swp-text-primary);
+}
+
+// Card subtitle
+.text-card-subtitle {
+    font-size: var(--swp-text-sm);
+    font-weight: var(--swp-font-normal);
+    line-height: var(--swp-leading-normal);
+    color: var(--swp-text-muted);
+}
+
+// Section title (with icon pattern)
+.text-section-title {
+    font-size: var(--swp-text-md);
+    font-weight: var(--swp-font-semibold);
+    line-height: var(--swp-leading-snug);
+    color: var(--swp-text-primary);
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-2);
+
+    svg,
+    i {
+        color: var(--swp-primary);
+        opacity: 0.9;
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+    }
+}
+
+// Label text (form labels, table headers)
+.text-label {
+    font-size: var(--swp-text-sm);
+    font-weight: var(--swp-font-medium);
+    line-height: var(--swp-leading-normal);
+    color: var(--swp-text-secondary);
+}
+
+// Body text
+.text-body {
+    font-size: var(--swp-text-base);
+    font-weight: var(--swp-font-normal);
+    line-height: var(--swp-leading-relaxed);
+    color: var(--swp-body-color);
+}
+
+// Small/Help text
+.text-help {
+    font-size: var(--swp-text-sm);
+    font-weight: var(--swp-font-normal);
+    line-height: var(--swp-leading-normal);
+    color: var(--swp-text-muted);
+}
+
+// Monospace text (for IDs, codes)
+.text-mono {
+    font-family: var(--swp-font-mono);
+    font-size: var(--swp-text-sm);
+}
+
+// Table header text
+.text-table-header {
+    font-size: var(--swp-text-xs);
+    font-weight: var(--swp-font-semibold);
+    line-height: var(--swp-leading-normal);
+    color: var(--swp-text-muted);
+    text-transform: uppercase;
+    letter-spacing: var(--swp-tracking-wider);
+}
+
+// Emphasized/Highlight text
+.text-emphasis {
+    font-weight: var(--swp-font-semibold);
+    color: var(--swp-text-primary);
+}
+
+// Muted text
+.text-subtle {
+    color: var(--swp-text-muted);
+}
+
+// Link styling
+.text-link {
+    color: var(--swp-link-color);
+    text-decoration: none;
+    transition: color var(--swp-transition-fast);
+
+    &:hover {
+        color: var(--swp-link-hover-color);
+        text-decoration: underline;
+    }
+}
+
+// Truncate text with ellipsis
+.text-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+// Multi-line truncation (requires -webkit)
+.text-line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.text-line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}

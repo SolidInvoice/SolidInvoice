@@ -28,6 +28,7 @@ node_modules
 .php-cs-fixer.cache
 .phpunit.result.cache
 .env
+.claude/settings.local.json 
 yarn-error.log
 yarn.lock
 package-lock.json

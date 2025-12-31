@@ -1,0 +1,281 @@
+/**
+ * SolidInvoice Design System - Design Tokens
+ *
+ * Core design tokens defining colors, spacing, shadows, border radius,
+ * and transitions. All values are exposed as CSS custom properties
+ * with the `--swp-` prefix for runtime theming support.
+ */
+
+// ============================================================================
+// COLOR PALETTE
+// ============================================================================
+
+:root {
+    // -------------------------------------------------------------------------
+    // Brand Colors (Primary & Secondary)
+    // -------------------------------------------------------------------------
+
+    // Primary: Green - Used for main CTAs, links, active states
+    --swp-primary: #2e963a;
+    --swp-primary-rgb: 46, 150, 58;
+    --swp-primary-hover: #268032;
+    --swp-primary-dark: #1f6c29;
+    --swp-primary-light: #e8f5e9;
+    --swp-primary-lighter: #f1f9f2;
+
+    // Secondary: Orange - Used sparingly for accents
+    --swp-secondary: #f0a015;
+    --swp-secondary-rgb: 240, 160, 21;
+    --swp-secondary-hover: #d89012;
+    --swp-secondary-dark: #c8820e;
+    --swp-secondary-light: #fff8e1;
+    --swp-secondary-lighter: #fffcf0;
+
+    // -------------------------------------------------------------------------
+    // Neutral Colors (Slate-based gray scale for modern feel)
+    // -------------------------------------------------------------------------
+
+    --swp-gray-50: #f8fafc;
+    --swp-gray-100: #f1f5f9;
+    --swp-gray-200: #e2e8f0;
+    --swp-gray-300: #cbd5e1;
+    --swp-gray-400: #94a3b8;
+    --swp-gray-500: #64748b;
+    --swp-gray-600: #475569;
+    --swp-gray-700: #334155;
+    --swp-gray-800: #1e293b;
+    --swp-gray-900: #0f172a;
+
+    // -------------------------------------------------------------------------
+    // Semantic Colors (Feedback & Status)
+    // -------------------------------------------------------------------------
+
+    // Success
+    --swp-success: #10b981;
+    --swp-success-rgb: 16, 185, 129;
+    --swp-success-hover: #059669;
+    --swp-success-light: #d1fae5;
+    --swp-success-lighter: #ecfdf5;
+
+    // Danger
+    --swp-danger: #ef4444;
+    --swp-danger-rgb: 239, 68, 68;
+    --swp-danger-hover: #dc2626;
+    --swp-danger-light: #fee2e2;
+    --swp-danger-lighter: #fef2f2;
+
+    // Warning
+    --swp-warning: #f59e0b;
+    --swp-warning-rgb: 245, 158, 11;
+    --swp-warning-hover: #d97706;
+    --swp-warning-light: #fef3c7;
+    --swp-warning-lighter: #fffbeb;
+
+    // Info
+    --swp-info: #3b82f6;
+    --swp-info-rgb: 59, 130, 246;
+    --swp-info-hover: #2563eb;
+    --swp-info-light: #dbeafe;
+    --swp-info-lighter: #eff6ff;
+
+    // -------------------------------------------------------------------------
+    // Surface Colors
+    // -------------------------------------------------------------------------
+
+    --swp-body-bg: #f4f6f8;
+    --swp-surface: #ffffff;
+    --swp-surface-hover: #f8fafc;
+    --swp-surface-elevated: #ffffff;
+    --swp-surface-overlay: rgba(15, 23, 42, 0.5);
+
+    // -------------------------------------------------------------------------
+    // Text Colors
+    // -------------------------------------------------------------------------
+
+    --swp-body-color: #333333;
+    --swp-text-primary: #1e293b;
+    --swp-text-secondary: #475569;
+    --swp-text-muted: #64748b;
+    --swp-text-light: #94a3b8;
+    --swp-text-inverse: #ffffff;
+
+    // -------------------------------------------------------------------------
+    // Border Colors
+    // -------------------------------------------------------------------------
+
+    --swp-border: #e2e8f0;
+    --swp-border-light: #f1f5f9;
+    --swp-border-dark: #cbd5e1;
+
+    // -------------------------------------------------------------------------
+    // Link Colors
+    // -------------------------------------------------------------------------
+
+    --swp-link-color: var(--swp-primary);
+    --swp-link-hover-color: var(--swp-primary-dark);
+}
+
+// ============================================================================
+// SPACING SCALE (8px base)
+// ============================================================================
+
+:root {
+    --swp-space-0: 0;
+    --swp-space-px: 1px;
+    --swp-space-0-5: 0.125rem;  // 2px
+    --swp-space-1: 0.25rem;     // 4px
+    --swp-space-1-5: 0.375rem;  // 6px
+    --swp-space-2: 0.5rem;      // 8px
+    --swp-space-2-5: 0.625rem;  // 10px
+    --swp-space-3: 0.75rem;     // 12px
+    --swp-space-3-5: 0.875rem;  // 14px
+    --swp-space-4: 1rem;        // 16px
+    --swp-space-5: 1.25rem;     // 20px
+    --swp-space-6: 1.5rem;      // 24px
+    --swp-space-7: 1.75rem;     // 28px
+    --swp-space-8: 2rem;        // 32px
+    --swp-space-9: 2.25rem;     // 36px
+    --swp-space-10: 2.5rem;     // 40px
+    --swp-space-11: 2.75rem;    // 44px
+    --swp-space-12: 3rem;       // 48px
+    --swp-space-14: 3.5rem;     // 56px
+    --swp-space-16: 4rem;       // 64px
+    --swp-space-20: 5rem;       // 80px
+    --swp-space-24: 6rem;       // 96px
+}
+
+// ============================================================================
+// BORDER RADIUS
+// ============================================================================
+
+:root {
+    --swp-radius-none: 0;
+    --swp-radius-sm: 0.375rem;    // 6px - Small elements, tags
+    --swp-radius-md: 0.5rem;      // 8px - Form controls, buttons
+    --swp-radius-lg: 0.75rem;     // 12px - Cards, modals
+    --swp-radius-xl: 1rem;        // 16px - Large cards, dialogs
+    --swp-radius-2xl: 1.5rem;     // 24px - Extra large elements
+    --swp-radius-full: 9999px;    // Pill shape
+}
+
+// ============================================================================
+// SHADOWS (Subtle, modern elevation)
+// ============================================================================
+
+:root {
+    // Elevation shadows
+    --swp-shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --swp-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+    --swp-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    --swp-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    --swp-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    --swp-shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+    // Inner shadow
+    --swp-shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+
+    // Colored shadows for buttons and interactive elements
+    --swp-shadow-primary: 0 4px 14px 0 rgba(46, 150, 58, 0.25);
+    --swp-shadow-primary-lg: 0 8px 20px 0 rgba(46, 150, 58, 0.3);
+    --swp-shadow-danger: 0 4px 14px 0 rgba(239, 68, 68, 0.25);
+    --swp-shadow-danger-lg: 0 8px 20px 0 rgba(239, 68, 68, 0.3);
+
+    // Focus ring shadow
+    --swp-ring-primary: 0 0 0 3px rgba(46, 150, 58, 0.15);
+    --swp-ring-danger: 0 0 0 3px rgba(239, 68, 68, 0.15);
+    --swp-ring-offset: 0 0 0 2px var(--swp-surface);
+}
+
+// ============================================================================
+// TRANSITIONS
+// ============================================================================
+
+:root {
+    // Durations
+    --swp-duration-fast: 150ms;
+    --swp-duration-base: 200ms;
+    --swp-duration-slow: 300ms;
+    --swp-duration-slower: 400ms;
+
+    // Timing functions
+    --swp-ease-linear: linear;
+    --swp-ease-in: cubic-bezier(0.4, 0, 1, 1);
+    --swp-ease-out: cubic-bezier(0, 0, 0.2, 1);
+    --swp-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+    --swp-ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    // Common transitions
+    --swp-transition-fast: var(--swp-duration-fast) var(--swp-ease-in-out);
+    --swp-transition-base: var(--swp-duration-base) var(--swp-ease-in-out);
+    --swp-transition-slow: var(--swp-duration-slow) var(--swp-ease-in-out);
+
+    // Property-specific transitions
+    --swp-transition-colors: color var(--swp-transition-fast),
+                             background-color var(--swp-transition-fast),
+                             border-color var(--swp-transition-fast);
+    --swp-transition-shadow: box-shadow var(--swp-transition-base);
+    --swp-transition-transform: transform var(--swp-transition-base);
+    --swp-transition-all: all var(--swp-transition-base);
+}
+
+// ============================================================================
+// Z-INDEX SCALE
+// ============================================================================
+
+:root {
+    --swp-z-dropdown: 1000;
+    --swp-z-sticky: 1020;
+    --swp-z-fixed: 1030;
+    --swp-z-modal-backdrop: 1040;
+    --swp-z-modal: 1050;
+    --swp-z-popover: 1060;
+    --swp-z-tooltip: 1070;
+    --swp-z-toast: 1080;
+}
+
+// ============================================================================
+// COMPONENT-SPECIFIC TOKENS
+// ============================================================================
+
+:root {
+    // Card
+    --swp-card-bg: var(--swp-surface);
+    --swp-card-border: var(--swp-border-light);
+    --swp-card-radius: var(--swp-radius-lg);
+    --swp-card-shadow: var(--swp-shadow-sm);
+    --swp-card-padding: var(--swp-space-6);
+    --swp-card-header-padding: var(--swp-space-4) var(--swp-space-6);
+    --swp-card-footer-padding: var(--swp-space-4) var(--swp-space-6);
+
+    // Form controls
+    --swp-input-bg: var(--swp-surface);
+    --swp-input-border: var(--swp-border);
+    --swp-input-radius: var(--swp-radius-md);
+    --swp-input-padding-y: var(--swp-space-2-5);
+    --swp-input-padding-x: var(--swp-space-4);
+    --swp-input-focus-border: var(--swp-primary);
+    --swp-input-focus-ring: var(--swp-ring-primary);
+
+    // Buttons
+    --swp-btn-radius: var(--swp-radius-md);
+    --swp-btn-padding-y: var(--swp-space-2-5);
+    --swp-btn-padding-x: var(--swp-space-4);
+    --swp-btn-font-weight: 500;
+
+    // Modal
+    --swp-modal-bg: var(--swp-surface);
+    --swp-modal-radius: var(--swp-radius-xl);
+    --swp-modal-shadow: var(--swp-shadow-xl);
+    --swp-modal-padding: var(--swp-space-6);
+
+    // Table
+    --swp-table-bg: var(--swp-surface);
+    --swp-table-border: var(--swp-border-light);
+    --swp-table-header-bg: var(--swp-gray-50);
+    --swp-table-row-hover-bg: var(--swp-gray-50);
+    --swp-table-cell-padding: var(--swp-space-4) var(--swp-space-6);
+
+    // Alert
+    --swp-alert-radius: var(--swp-radius-md);
+    --swp-alert-padding: var(--swp-space-4);
+}
