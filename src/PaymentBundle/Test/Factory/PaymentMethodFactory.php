@@ -63,7 +63,7 @@ final class PaymentMethodFactory extends PersistentProxyObjectFactory
     protected function defaults(): array
     {
         return [
-            'name' => self::faker()->text(),
+            'name' => self::faker()->name(),
             'gatewayName' => self::faker()->name(),
             'factoryName' => self::faker()->name(),
             'config' => [],
