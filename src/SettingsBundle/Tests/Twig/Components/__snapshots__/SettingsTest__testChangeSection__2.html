@@ -51,9 +51,7 @@
                     Show Status Watermark
             </label>
 </div>
-<div id="settings_watermark_help" class="form-text text-muted form-help-text mt-1">
-            <small>Display a visual watermark (e.g., PAID, DRAFT) on the Invoice document.</small>
-        </div>
+<div class="form-text text-muted mb-0" id="settings_watermark_help">Display a visual watermark (e.g., PAID, DRAFT) on the Invoice document.</div>
 </div>
 
                                     </div>
@@ -66,9 +64,7 @@
                     <div class="row g-3">
                                                     <div class="col-12">
                                 <div class="mb-3">    
-            <label class="control-label form-label" for="settings_email_subject">Email Subject Line</label><input type="text" id="settings_email_subject" name="settings[email_subject]" placeholder="New Invoice - #{id}" aria-describedby="settings_email_subject_help" class="form-control" value="New Invoice - #{id}"><div id="settings_email_subject_help" class="form-text text-muted form-help-text mt-1">
-            <small>Use {id} to include the Invoice number. Example: "New Invoice - #{id}"</small>
-        </div>
+            <label class="control-label form-label" for="settings_email_subject">Email Subject Line</label><input type="text" id="settings_email_subject" name="settings[email_subject]" placeholder="New Invoice - #{id}" aria-describedby="settings_email_subject_help" class="form-control" value="New Invoice - #{id}"><div class="form-text text-muted mb-0" id="settings_email_subject_help">Use {id} to include the Invoice number. Example: "New Invoice - #{id}"</div>
 </div>
                             </div>
                                                                             <div class="col-12">
@@ -79,9 +75,7 @@
         </span>
         <input type="email" id="settings_bcc_address" name="settings[bcc_address]" class="form-control" value="" placeholder="bcc@yourcompany.com" aria-describedby="settings_bcc_address_help">
     </div>
-<div id="settings_bcc_address_help" class="form-text text-muted form-help-text mt-1">
-            <small>Receive a blind carbon copy of every Invoice email sent.</small>
-        </div>
+<div class="form-text text-muted mb-0" id="settings_bcc_address_help">Receive a blind carbon copy of every Invoice email sent.</div>
 </div>
                             </div>
                                             </div>
@@ -103,23 +97,17 @@
 <option value="random_number">Random Number</option>
 <option value="timestamp">Timestamp</option>
 <option value="ulid">Ulid</option>
-<option value="uuid">Uuid</option></select><div id="settings_id_generation_strategy_help" class="form-text text-muted form-help-text mt-1">
-            <small>Choose how Invoice IDs are generated.</small>
-        </div>
+<option value="uuid">Uuid</option></select><div class="form-text text-muted mb-0" id="settings_id_generation_strategy_help">Choose how Invoice IDs are generated.</div>
 </div>
                                 </div>
                                                                                         <div class="col-md-6">
                                     <div class="mb-3">    
-            <label class="control-label form-label" for="settings_id_generation_id_prefix">ID Prefix</label><input type="text" id="settings_id_generation_id_prefix" name="settings[id_generation][id_prefix]" placeholder="INV-" aria-describedby="settings_id_generation_id_prefix_help" class="form-control"><div id="settings_id_generation_id_prefix_help" class="form-text text-muted form-help-text mt-1">
-            <small>Added before the number. E.g., "INV-" results in INV-001</small>
-        </div>
+            <label class="control-label form-label" for="settings_id_generation_id_prefix">ID Prefix</label><input type="text" id="settings_id_generation_id_prefix" name="settings[id_generation][id_prefix]" placeholder="INV-" aria-describedby="settings_id_generation_id_prefix_help" class="form-control"><div class="form-text text-muted mb-0" id="settings_id_generation_id_prefix_help">Added before the number. E.g., "INV-" results in INV-001</div>
 </div>
                                 </div>
                                                                                         <div class="col-md-6">
                                     <div class="mb-3">    
-            <label class="control-label form-label" for="settings_id_generation_id_suffix">ID Suffix</label><input type="text" id="settings_id_generation_id_suffix" name="settings[id_generation][id_suffix]" placeholder="-2024" aria-describedby="settings_id_generation_id_suffix_help" class="form-control"><div id="settings_id_generation_id_suffix_help" class="form-text text-muted form-help-text mt-1">
-            <small>Added after the number. E.g., "-2024" results in 001-2024</small>
-        </div>
+            <label class="control-label form-label" for="settings_id_generation_id_suffix">ID Suffix</label><input type="text" id="settings_id_generation_id_suffix" name="settings[id_generation][id_suffix]" placeholder="-2024" aria-describedby="settings_id_generation_id_suffix_help" class="form-control"><div class="form-text text-muted mb-0" id="settings_id_generation_id_suffix_help">Added after the number. E.g., "-2024" results in 001-2024</div>
 </div>
                                 </div>
                                                     </div>
