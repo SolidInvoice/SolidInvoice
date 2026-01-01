@@ -1,0 +1,46 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+<div class="col-12 mb-4">
+    <twig:Ui:Card>
+        <twig:block name="header">
+            <h3 class="card-title mb-0">{{ 'dashboard.actions.title'|trans }}</h3>
+        </twig:block>
+
+        <div class="quick-actions-grid">
+            <a href="{{ path('_invoices_create') }}" class="quick-action-btn quick-action-btn--primary">
+                <span class="quick-action-icon">
+                    {{ ux_icon('tabler:file-plus', {width: 24, height: 24}) }}
+                </span>
+                <span class="quick-action-label">{{ 'dashboard.actions.create_invoice'|trans }}</span>
+            </a>
+
+            <a href="{{ path('_quotes_create') }}" class="quick-action-btn quick-action-btn--secondary">
+                <span class="quick-action-icon">
+                    {{ ux_icon('tabler:file-description', {width: 24, height: 24}) }}
+                </span>
+                <span class="quick-action-label">{{ 'dashboard.actions.create_quote'|trans }}</span>
+            </a>
+
+            <a href="{{ path('_clients_add') }}" class="quick-action-btn quick-action-btn--info">
+                <span class="quick-action-icon">
+                    {{ ux_icon('tabler:user-plus', {width: 24, height: 24}) }}
+                </span>
+                <span class="quick-action-label">{{ 'dashboard.actions.add_client'|trans }}</span>
+            </a>
+
+            <a href="{{ path('_payments_index') }}" class="quick-action-btn quick-action-btn--success">
+                <span class="quick-action-icon">
+                    {{ ux_icon('tabler:cash', {width: 24, height: 24}) }}
+                </span>
+                <span class="quick-action-label">{{ 'dashboard.actions.view_payments'|trans }}</span>
+            </a>
+        </div>
+    </twig:Ui:Card>
+</div>

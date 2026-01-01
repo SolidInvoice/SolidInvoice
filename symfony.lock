@@ -1138,6 +1138,9 @@
             "config/routes/ux_autocomplete.yaml"
         ]
     },
+    "symfony/ux-chartjs": {
+        "version": "v2.31.0"
+    },
     "symfony/ux-dropzone": {
         "version": "v2.15.0"
     },

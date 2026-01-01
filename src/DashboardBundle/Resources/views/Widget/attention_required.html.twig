@@ -1,0 +1,128 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+<div class="col-12 mb-4">
+    <twig:Ui:Card>
+        <twig:block name="header">
+            <div class="d-flex align-items-center gap-2">
+                {{ ux_icon('tabler:bell', {width: 20, height: 20, class: 'text-warning'}) }}
+                <h3 class="card-title mb-0">{{ 'dashboard.attention.title'|trans }}</h3>
+            </div>
+        </twig:block>
+
+        {% if not hasItems %}
+            <div class="attention-empty">
+                <div class="attention-empty-icon">
+                    {{ ux_icon('tabler:check', {width: 40, height: 40}) }}
+                </div>
+                <p class="attention-empty-text">{{ 'dashboard.attention.no_items'|trans }}</p>
+            </div>
+        {% else %}
+            <div class="attention-sections">
+                {% if overdueInvoices is not empty %}
+                    <div class="attention-section">
+                        <div class="attention-section-header attention-section-header--danger">
+                            {{ ux_icon('tabler:alert-triangle', {width: 16, height: 16}) }}
+                            <span>{{ 'dashboard.attention.overdue_invoices'|trans }}</span>
+                            <span class="attention-badge attention-badge--danger">{{ overdueInvoices|length }}</span>
+                        </div>
+                        <div class="attention-items">
+                            {% for invoice in overdueInvoices %}
+                                <a href="{{ path('_invoices_view', {id: invoice.id}) }}" class="attention-item attention-item--danger">
+                                    <div class="attention-item-main">
+                                        <span class="attention-item-id">#{{ invoice.invoiceId }}</span>
+                                        <span class="attention-item-client">{{ invoice.client.name }}</span>
+                                    </div>
+                                    <div class="attention-item-meta">
+                                        <span class="attention-item-amount">{{ invoice.total|formatCurrency(invoice.client.currency) }}</span>
+                                        {% if invoice.due %}
+                                            <span class="attention-item-date text-danger">
+                                                {{ invoice.due|date('M j') }}
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if draftInvoices is not empty %}
+                    <div class="attention-section">
+                        <div class="attention-section-header attention-section-header--warning">
+                            {{ ux_icon('tabler:file-text', {width: 16, height: 16}) }}
+                            <span>{{ 'dashboard.attention.draft_invoices'|trans }}</span>
+                            <span class="attention-badge attention-badge--warning">{{ draftInvoices|length }}</span>
+                        </div>
+                        <div class="attention-items">
+                            {% for invoice in draftInvoices %}
+                                <a href="{{ path('_invoices_view', {id: invoice.id}) }}" class="attention-item">
+                                    <div class="attention-item-main">
+                                        <span class="attention-item-id">#{{ invoice.invoiceId ?: 'Draft' }}</span>
+                                        <span class="attention-item-client">{{ invoice.client.name }}</span>
+                                    </div>
+                                    <div class="attention-item-meta">
+                                        <span class="attention-item-amount">{{ invoice.total|formatCurrency(invoice.client.currency) }}</span>
+                                    </div>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if pendingQuotes is not empty %}
+                    <div class="attention-section">
+                        <div class="attention-section-header attention-section-header--info">
+                            {{ ux_icon('tabler:file-description', {width: 16, height: 16}) }}
+                            <span>{{ 'dashboard.attention.pending_quotes'|trans }}</span>
+                            <span class="attention-badge attention-badge--info">{{ pendingQuotes|length }}</span>
+                        </div>
+                        <div class="attention-items">
+                            {% for quote in pendingQuotes %}
+                                <a href="{{ path('_quotes_view', {id: quote.id}) }}" class="attention-item">
+                                    <div class="attention-item-main">
+                                        <span class="attention-item-id">#{{ quote.quoteId }}</span>
+                                        <span class="attention-item-client">{{ quote.client.name }}</span>
+                                    </div>
+                                    <div class="attention-item-meta">
+                                        <span class="attention-item-amount">{{ quote.total|formatCurrency(quote.client.currency) }}</span>
+                                        <span class="attention-item-date">{{ quote.created|date('M j') }}</span>
+                                    </div>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if upcomingRecurring is not empty %}
+                    <div class="attention-section">
+                        <div class="attention-section-header attention-section-header--primary">
+                            {{ ux_icon('tabler:repeat', {width: 16, height: 16}) }}
+                            <span>{{ 'dashboard.attention.upcoming_recurring'|trans }}</span>
+                            <span class="attention-badge attention-badge--primary">{{ upcomingRecurring|length }}</span>
+                        </div>
+                        <div class="attention-items">
+                            {% for recurring in upcomingRecurring %}
+                                <a href="{{ path('_invoices_view_recurring', {id: recurring.id}) }}" class="attention-item">
+                                    <div class="attention-item-main">
+                                        <span class="attention-item-client">{{ recurring.client.name }}</span>
+                                    </div>
+                                    <div class="attention-item-meta">
+                                        <span class="attention-item-amount">{{ recurring.total|formatCurrency(recurring.client.currency) }}</span>
+                                        <span class="attention-item-date">{{ recurring.dateStart|date('M j') }}</span>
+                                    </div>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+    </twig:Ui:Card>
+</div>

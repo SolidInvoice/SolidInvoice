@@ -1,0 +1,37 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+<div class="col-12 mb-4">
+    <twig:Ui:Card>
+        <twig:block name="header">
+            <h3 class="card-title mb-0">{{ 'dashboard.charts.distribution_title'|trans }}</h3>
+        </twig:block>
+
+        <div class="dashboard-donut-container">
+            {% if hasData %}
+                <div class="dashboard-donut-center">
+                    <span class="dashboard-donut-total">{{ total }}</span>
+                    <span class="dashboard-donut-label">{{ 'dashboard.charts.invoices'|trans }}</span>
+                </div>
+                {{ render_chart(chart, {'class': 'dashboard-donut-chart'}) }}
+            {% else %}
+                <div class="dashboard-chart-empty">
+                    <div class="dashboard-chart-empty-icon">
+                        {{ ux_icon('tabler:chart-donut', {width: 48, height: 48}) }}
+                    </div>
+                    <p class="dashboard-chart-empty-text">{{ 'dashboard.charts.no_invoices'|trans }}</p>
+                    <a href="{{ path('_invoices_create') }}" class="btn btn-primary btn-sm">
+                        {{ ux_icon('tabler:plus', {width: 16, height: 16}) }}
+                        {{ 'dashboard.actions.create_invoice'|trans }}
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </twig:Ui:Card>
+</div>

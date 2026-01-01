@@ -1,0 +1,153 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+<div class="col-12 mb-4">
+    <twig:Ui:Card>
+        <twig:block name="header">
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <h3 class="card-title mb-0">{{ 'dashboard.activity.title'|trans }}</h3>
+                <a href="{{ path('_invoices_index') }}" class="btn btn-sm btn-ghost">
+                    {{ 'dashboard.activity.view_all'|trans }}
+                    {{ ux_icon('tabler:arrow-right', {width: 16, height: 16}) }}
+                </a>
+            </div>
+        </twig:block>
+
+        {% if not hasActivities %}
+            <div class="activity-empty">
+                <div class="activity-empty-icon">
+                    {{ ux_icon('tabler:activity', {width: 40, height: 40}) }}
+                </div>
+                <p class="activity-empty-text">{{ 'dashboard.activity.no_activity'|trans }}</p>
+                <a href="{{ path('_invoices_create') }}" class="btn btn-primary btn-sm">
+                    {{ ux_icon('tabler:plus', {width: 16, height: 16}) }}
+                    {{ 'dashboard.actions.create_invoice'|trans }}
+                </a>
+            </div>
+        {% else %}
+            <div class="activity-timeline">
+                {% for activity in activities %}
+                    <div class="activity-item">
+                        {# Icon indicating the type of activity #}
+                        <div class="activity-icon activity-icon--{{ activity.type }}">
+                            {% if activity.type == 'payment' %}
+                                {{ ux_icon('tabler:cash', {width: 16, height: 16}) }}
+                            {% elseif activity.type == 'invoice_sent' %}
+                                {{ ux_icon('tabler:send', {width: 16, height: 16}) }}
+                            {% elseif activity.type == 'quote_accepted' %}
+                                {{ ux_icon('tabler:circle-check', {width: 16, height: 16}) }}
+                            {% elseif activity.type == 'quote_declined' %}
+                                {{ ux_icon('tabler:circle-x', {width: 16, height: 16}) }}
+                            {% elseif activity.type == 'recurring_generated' %}
+                                {{ ux_icon('tabler:repeat', {width: 16, height: 16}) }}
+                            {% else %}
+                                {{ ux_icon('tabler:file-invoice', {width: 16, height: 16}) }}
+                            {% endif %}
+                        </div>
+
+                        {# Main content area #}
+                        <div class="activity-content">
+                            {# Top row: What happened #}
+                            <div class="activity-description">
+                                {% if activity.type == 'payment' %}
+                                    <span class="activity-label activity-label--success">{{ 'dashboard.activity.label.payment'|trans }}</span>
+                                    <span class="activity-text">
+                                        {{ 'dashboard.activity.payment_for_invoice'|trans }}
+                                        <a href="{{ path('_invoices_view', {id: activity.invoiceUlid}) }}" class="activity-doc-link">
+                                            #{{ activity.invoiceId }}
+                                        </a>
+                                    </span>
+                                {% elseif activity.type == 'invoice_sent' %}
+                                    <span class="activity-label activity-label--primary">{{ 'dashboard.activity.label.invoice'|trans }}</span>
+                                    <span class="activity-text">
+                                        <a href="{{ path('_invoices_view', {id: activity.id}) }}" class="activity-doc-link">
+                                            #{{ activity.invoiceId }}
+                                        </a>
+                                        {{ 'dashboard.activity.sent_to_client'|trans }}
+                                    </span>
+                                {% elseif activity.type == 'quote_accepted' %}
+                                    <span class="activity-label activity-label--success">{{ 'dashboard.activity.label.quote'|trans }}</span>
+                                    <span class="activity-text">
+                                        <a href="{{ path('_quotes_view', {id: activity.id}) }}" class="activity-doc-link">
+                                            #{{ activity.quoteId }}
+                                        </a>
+                                        {{ 'dashboard.activity.was_accepted'|trans }}
+                                    </span>
+                                {% elseif activity.type == 'quote_declined' %}
+                                    <span class="activity-label activity-label--danger">{{ 'dashboard.activity.label.quote'|trans }}</span>
+                                    <span class="activity-text">
+                                        <a href="{{ path('_quotes_view', {id: activity.id}) }}" class="activity-doc-link">
+                                            #{{ activity.quoteId }}
+                                        </a>
+                                        {{ 'dashboard.activity.was_declined'|trans }}
+                                    </span>
+                                {% elseif activity.type == 'recurring_generated' %}
+                                    <span class="activity-label activity-label--info">{{ 'dashboard.activity.label.recurring'|trans }}</span>
+                                    <span class="activity-text">
+                                        <a href="{{ path('_invoices_view', {id: activity.id}) }}" class="activity-doc-link">
+                                            #{{ activity.invoiceId }}
+                                        </a>
+                                        {{ 'dashboard.activity.generated_from_recurring'|trans }}
+                                    </span>
+                                {% else %}
+                                    <span class="activity-label">{{ 'dashboard.activity.label.invoice'|trans }}</span>
+                                    <span class="activity-text">
+                                        <a href="{{ path('_invoices_view', {id: activity.id}) }}" class="activity-doc-link">
+                                            #{{ activity.invoiceId }}
+                                        </a>
+                                        {{ 'dashboard.activity.was_created'|trans }}
+                                    </span>
+                                {% endif %}
+                            </div>
+
+                            {# Bottom row: Client, amount, time #}
+                            <div class="activity-details">
+                                <a href="{{ path('_clients_view', {id: activity.clientId}) }}" class="activity-client-link">
+                                    {{ ux_icon('tabler:user', {width: 14, height: 14}) }}
+                                    {{ activity.client }}
+                                </a>
+                                <span class="activity-separator">·</span>
+                                <span class="activity-amount">
+                                    {{ activity.amount|formatCurrency(activity.currency) }}
+                                </span>
+                                <span class="activity-separator">·</span>
+                                <span class="activity-time">
+                                    {{ activity.date|diff }}
+                                </span>
+                            </div>
+                        </div>
+
+                        {# Action button #}
+                        <div class="activity-action">
+                            {% if activity.type == 'payment' %}
+                                <a href="{{ path('_invoices_view', {id: activity.invoiceUlid}) }}"
+                                   class="btn btn-sm btn-ghost activity-action-btn"
+                                   title="{{ 'dashboard.activity.view_invoice'|trans }}">
+                                    {{ ux_icon('tabler:eye', {width: 16, height: 16}) }}
+                                </a>
+                            {% elseif activity.type starts with 'quote' %}
+                                <a href="{{ path('_quotes_view', {id: activity.id}) }}"
+                                   class="btn btn-sm btn-ghost activity-action-btn"
+                                   title="{{ 'dashboard.activity.view_quote'|trans }}">
+                                    {{ ux_icon('tabler:eye', {width: 16, height: 16}) }}
+                                </a>
+                            {% else %}
+                                <a href="{{ path('_invoices_view', {id: activity.id}) }}"
+                                   class="btn btn-sm btn-ghost activity-action-btn"
+                                   title="{{ 'dashboard.activity.view_invoice'|trans }}">
+                                    {{ ux_icon('tabler:eye', {width: 16, height: 16}) }}
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </twig:Ui:Card>
+</div>

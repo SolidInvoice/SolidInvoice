@@ -103,6 +103,7 @@ class PaymentRepository extends ServiceEntityRepository
                 'p.created',
                 'p.completed',
                 'p.status',
+                'i.id as invoice_ulid',
                 'i.invoiceId as invoice',
                 'm.name as method',
                 'p.message',
@@ -323,5 +324,75 @@ class PaymentRepository extends ServiceEntityRepository
         }
 
         return BigInteger::of($result[0]['total']);
+    }
+
+    /**
+     * Get revenue grouped by month and currency for dashboard chart.
+     *
+     * @return array<string, array<string, int>>
+     */
+    public function getRevenueByMonthGrouped(int $months = 12): array
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        $qb->select('p.totalAmount', 'p.created', 'p.currencyCode')
+            ->where('p.created >= :date')
+            ->andWhere('p.status = :status')
+            ->setParameter('date', new DateTime(sprintf('-%d months', $months)))
+            ->setParameter('status', Status::STATUS_CAPTURED)
+            ->orderBy('p.created', Criteria::ASC);
+
+        $results = [];
+
+        foreach ($qb->getQuery()->getArrayResult() as $result) {
+            /** @var DateTime $created */
+            $created = $result['created'];
+            $month = $created->format('Y-m');
+            $currency = $result['currencyCode'];
+
+            if (! isset($results[$month])) {
+                $results[$month] = [];
+            }
+
+            if (! isset($results[$month][$currency])) {
+                $results[$month][$currency] = 0;
+            }
+
+            $results[$month][$currency] += $result['totalAmount'];
+        }
+
+        return $results;
+    }
+
+    /**
+     * Get total payments received in the current month grouped by currency.
+     *
+     * @return array<string, BigInteger>
+     * @throws MathException
+     */
+    public function getPaymentsThisMonth(): array
+    {
+        $startOfMonth = new DateTime('first day of this month midnight');
+        $endOfMonth = new DateTime('last day of this month 23:59:59');
+
+        $qb = $this->createQueryBuilder('p');
+
+        $qb->select('SUM(p.totalAmount) as total', 'p.currencyCode')
+            ->where('p.status = :status')
+            ->andWhere('p.created >= :start')
+            ->andWhere('p.created <= :end')
+            ->groupBy('p.currencyCode')
+            ->setParameter('status', Status::STATUS_CAPTURED)
+            ->setParameter('start', $startOfMonth)
+            ->setParameter('end', $endOfMonth);
+
+        $results = [];
+        foreach ($qb->getQuery()->getArrayResult() as $result) {
+            if (null !== $result['currencyCode'] && null !== $result['total']) {
+                $results[$result['currencyCode']] = BigInteger::of($result['total']);
+            }
+        }
+
+        return $results;
     }
 }

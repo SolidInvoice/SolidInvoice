@@ -12,17 +12,21 @@
 {% block page_title %}{{ 'dashboard.title'|trans }}{% endblock %}
 
 {% block title %}
-    {{ icon('dashboard') }}&nbsp;{{ block('page_title') is defined ? block('page_title') }}
+    {{ ux_icon('tabler:layout-dashboard', {width: 20, height: 20}) }}&nbsp;{{ block('page_title') is defined ? block('page_title') }}
 {% endblock %}
 
 {% block content %}
-    <div class="widget my-3">
-        <div class="row">
+    <div class="dashboard-page">
+        <div class="row mb-4">
             {{ render_dashboard_widget('top') }}
         </div>
         <div class="row">
-            {{ render_dashboard_widget('left_column') }}
-            {{ render_dashboard_widget('right_column') }}
+            <div class="col-lg-8">
+                {{ render_dashboard_widget('left_column') }}
+            </div>
+            <div class="col-lg-4">
+                {{ render_dashboard_widget('right_column') }}
+            </div>
         </div>
     </div>
 {% endblock content %}

@@ -25,6 +25,12 @@
                 }
             }
         },
+        "@symfony/ux-chartjs": {
+            "chart": {
+                "enabled": true,
+                "fetch": "lazy"
+            }
+        },
         "@symfony/ux-dropzone": {
             "dropzone": {
                 "enabled": true,

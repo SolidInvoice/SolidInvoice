@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Repository;
 
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\ClientBundle\Entity\Client;
@@ -93,5 +95,34 @@ class RecurringInvoiceRepository extends ServiceEntityRepository
             ->setParameter('status', 'active')
             ->getQuery()
             ->toIterable();
+    }
+
+    /**
+     * Get upcoming recurring invoices that will be generated within the next N days.
+     *
+     * @return RecurringInvoice[]
+     */
+    public function getUpcomingRecurringInvoices(int $days = 7, int $limit = 3): array
+    {
+        $now = new DateTime();
+        $futureDate = new DateTime(sprintf('+%d days', $days));
+
+        $qb = $this->createQueryBuilder('ri');
+
+        $qb
+            ->innerJoin('ri.client', 'c')
+            ->addSelect('c')
+            ->innerJoin('ri.recurringOptions', 'ro')
+            ->addSelect('ro')
+            ->where('ri.status = :status')
+            ->andWhere('ri.dateStart <= :futureDate')
+            ->andWhere('(ri.dateEnd IS NULL OR ri.dateEnd >= :now)')
+            ->setParameter('status', 'active')
+            ->setParameter('now', $now)
+            ->setParameter('futureDate', $futureDate)
+            ->orderBy('ri.dateStart', Criteria::ASC)
+            ->setMaxResults($limit);
+
+        return $qb->getQuery()->getResult();
     }
 }

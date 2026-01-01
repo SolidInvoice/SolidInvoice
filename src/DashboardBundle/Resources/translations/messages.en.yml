@@ -4,6 +4,71 @@ dashboard:
     income_received: 'Income Received'
     pending_quotes: 'Pending Quotes'
     outstanding_invoices: 'Outstanding Invoices'
+
+    # Hero Stats
+    hero:
+        outstanding: 'Outstanding'
+        overdue: 'Overdue'
+        this_month: 'This Month'
+        total_revenue: 'Total Revenue'
+
+    # Charts
+    charts:
+        revenue_title: 'Revenue Trend'
+        revenue_subtitle: 'Last 12 months'
+        distribution_title: 'Invoice Status'
+        invoices: 'Invoices'
+        no_data: 'No revenue data yet'
+        no_data_hint: 'Payments will appear here once received'
+        no_invoices: 'No invoices yet'
+
+    # Attention Required
+    attention:
+        title: 'Attention Required'
+        overdue_invoices: 'Overdue Invoices'
+        draft_invoices: 'Draft Invoices'
+        pending_quotes: 'Pending Quotes'
+        upcoming_recurring: 'Upcoming Recurring'
+        no_items: 'All caught up! Nothing needs your attention.'
+
+    # Quick Actions
+    actions:
+        title: 'Quick Actions'
+        create_invoice: 'New Invoice'
+        create_quote: 'New Quote'
+        add_client: 'Add Client'
+        view_payments: 'Payments'
+
+    # Activity Feed
+    activity:
+        title: 'Recent Activity'
+        view_all: 'View All'
+        no_activity: 'No recent activity'
+        # Labels (badges)
+        label:
+            payment: 'Payment'
+            invoice: 'Invoice'
+            quote: 'Quote'
+            recurring: 'Recurring'
+        # Action descriptions
+        payment_for_invoice: 'received for'
+        sent_to_client: 'sent to client'
+        was_accepted: 'was accepted'
+        was_declined: 'was declined'
+        was_created: 'was created'
+        generated_from_recurring: 'generated automatically'
+        # Action buttons
+        view_invoice: 'View Invoice'
+        view_quote: 'View Quote'
+        # Legacy (kept for compatibility)
+        payment_received: 'Payment from %client%'
+        invoice_created: 'created for'
+        invoice_sent: 'sent to'
+        quote_accepted: 'accepted by'
+        quote_declined: 'declined by'
+        recurring_generated: 'generated from recurring'
+
+    # Legacy keys (kept for compatibility)
     create:
         new: 'Create New'
         client: Client
