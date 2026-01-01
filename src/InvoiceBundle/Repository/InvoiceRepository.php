@@ -285,4 +285,156 @@ class InvoiceRepository extends ServiceEntityRepository
 
         $em->getFilters()->enable('archivable');
     }
+
+    /**
+     * Get overdue invoices with client information for dashboard.
+     *
+     * @return Invoice[]
+     */
+    public function getOverdueInvoices(int $limit = 5): array
+    {
+        $qb = $this->createQueryBuilder('i');
+
+        $qb
+            ->innerJoin('i.client', 'c')
+            ->addSelect('c')
+            ->where('i.status = :status')
+            ->setParameter('status', Graph::STATUS_OVERDUE)
+            ->orderBy('i.due', Criteria::ASC)
+            ->setMaxResults($limit);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * Get draft invoices with client information for dashboard.
+     *
+     * @return Invoice[]
+     */
+    public function getDraftInvoices(int $limit = 5): array
+    {
+        $qb = $this->createQueryBuilder('i');
+
+        $qb
+            ->innerJoin('i.client', 'c')
+            ->addSelect('c')
+            ->where('i.status = :status')
+            ->setParameter('status', Graph::STATUS_DRAFT)
+            ->orderBy('i.created', Criteria::DESC)
+            ->setMaxResults($limit);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * Get total outstanding amount grouped by currency for dashboard stats.
+     *
+     * @return array<string, BigInteger>
+     * @throws MathException
+     */
+    public function getTotalOutstandingByCurrency(): array
+    {
+        $qb = $this->createQueryBuilder('i');
+
+        $qb->select('SUM(i.balance) as total', 'c.currencyCode')
+            ->innerJoin('i.client', 'c')
+            ->where('i.status IN (:statuses)')
+            ->setParameter('statuses', [Graph::STATUS_PENDING, Graph::STATUS_OVERDUE])
+            ->groupBy('c.currencyCode');
+
+        $results = [];
+        foreach ($qb->getQuery()->getArrayResult() as $result) {
+            if (null !== $result['currencyCode'] && null !== $result['total']) {
+                $results[$result['currencyCode']] = BigInteger::of($result['total']);
+            }
+        }
+
+        return $results;
+    }
+
+    /**
+     * Get overdue invoice totals grouped by currency for dashboard stats.
+     *
+     * @return array<string, BigInteger>
+     * @throws MathException
+     */
+    public function getOverdueAmountByCurrency(): array
+    {
+        $qb = $this->createQueryBuilder('i');
+
+        $qb->select('SUM(i.balance) as total', 'c.currencyCode')
+            ->innerJoin('i.client', 'c')
+            ->where('i.status = :status')
+            ->setParameter('status', Graph::STATUS_OVERDUE)
+            ->groupBy('c.currencyCode');
+
+        $results = [];
+        foreach ($qb->getQuery()->getArrayResult() as $result) {
+            if (null !== $result['currencyCode'] && null !== $result['total']) {
+                $results[$result['currencyCode']] = BigInteger::of($result['total']);
+            }
+        }
+
+        return $results;
+    }
+
+    /**
+     * Get invoice count by status for distribution chart.
+     *
+     * @return array<string, int>
+     */
+    public function getCountByStatusAll(): array
+    {
+        $qb = $this->createQueryBuilder('i');
+
+        $qb->select('i.status', 'COUNT(i.id) as count')
+            ->groupBy('i.status');
+
+        $results = [];
+        foreach ($qb->getQuery()->getArrayResult() as $result) {
+            $results[$result['status']] = (int) $result['count'];
+        }
+
+        return $results;
+    }
+
+    /**
+     * Get recently sent invoices (pending status) for activity feed.
+     *
+     * @return Invoice[]
+     */
+    public function getRecentlySentInvoices(int $limit = 5): array
+    {
+        $qb = $this->createQueryBuilder('i');
+
+        $qb
+            ->innerJoin('i.client', 'c')
+            ->addSelect('c')
+            ->where('i.status = :status')
+            ->setParameter('status', Graph::STATUS_PENDING)
+            ->orderBy('i.updated', Criteria::DESC)
+            ->setMaxResults($limit);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * Get recently generated recurring invoices for activity feed.
+     *
+     * @return Invoice[]
+     */
+    public function getRecentRecurringGeneratedInvoices(int $limit = 5): array
+    {
+        $qb = $this->createQueryBuilder('i');
+
+        $qb
+            ->innerJoin('i.client', 'c')
+            ->addSelect('c')
+            ->innerJoin('i.recurringInvoice', 'ri')
+            ->addSelect('ri')
+            ->orderBy('i.created', Criteria::DESC)
+            ->setMaxResults($limit);
+
+        return $qb->getQuery()->getResult();
+    }
 }

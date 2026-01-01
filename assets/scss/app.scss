@@ -96,6 +96,9 @@ $alert-secondary-text: $orange-dark;
 // Settings page custom styles
 @import './settings';
 
+// Dashboard custom styles
+@import './dashboard';
+
 // ============================================================================
 // 8. LEGACY BOOTSTRAP OVERRIDES (To be cleaned up)
 // ============================================================================
@@ -104,9 +107,9 @@ $alert-secondary-text: $orange-dark;
 // to the appropriate component files in the design system.
 
 // Keep legacy active nav styling for now
-.nav-link.active {
+/*.nav-link.active {
     background-color: #eef2ff;
     color: #4f46e5;
     border-radius: 8px;
     font-weight: 600;
-}
+}*/

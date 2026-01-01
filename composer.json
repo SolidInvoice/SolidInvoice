@@ -161,6 +161,7 @@
         "symfony/type-info": "^7.1",
         "symfony/uid": "^7.1",
         "symfony/ux-autocomplete": "^2.12",
+        "symfony/ux-chartjs": "^2.31",
         "symfony/ux-dropzone": "*",
         "symfony/ux-live-component": "^2.15",
         "symfony/ux-toggle-password": "^2.24",

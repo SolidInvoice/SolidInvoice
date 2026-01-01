@@ -1,0 +1,85 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+<div class="col-12">
+    <div class="dashboard-hero-stats">
+        <div class="stat-card">
+            <div class="stat-card-content">
+                <div class="stat-icon stat-icon--primary">
+                    {{ ux_icon('tabler:file-invoice', {width: 24, height: 24}) }}
+                </div>
+                <div class="stat-info">
+                    <span class="stat-label">{{ 'dashboard.hero.outstanding'|trans }}</span>
+                    <span class="stat-value">
+                        {% for currency, amount in totalOutstanding %}
+                            {{ amount|formatCurrency(currency) }}{% if not loop.last %}<br>{% endif %}
+                        {% else %}
+                            {{ 0|formatCurrency }}
+                        {% endfor %}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="stat-card stat-card--danger">
+            <div class="stat-card-content">
+                <div class="stat-icon stat-icon--danger">
+                    {{ ux_icon('tabler:alert-triangle', {width: 24, height: 24}) }}
+                </div>
+                <div class="stat-info">
+                    <span class="stat-label">{{ 'dashboard.hero.overdue'|trans }}</span>
+                    <span class="stat-value stat-value--danger">{{ overdueCount }}</span>
+                    {% if overdueAmount is not empty %}
+                        <span class="stat-subvalue">
+                            {% for currency, amount in overdueAmount %}
+                                {{ amount|formatCurrency(currency) }}{% if not loop.last %}, {% endif %}
+                            {% endfor %}
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-card-content">
+                <div class="stat-icon stat-icon--success">
+                    {{ ux_icon('tabler:calendar-stats', {width: 24, height: 24}) }}
+                </div>
+                <div class="stat-info">
+                    <span class="stat-label">{{ 'dashboard.hero.this_month'|trans }}</span>
+                    <span class="stat-value">
+                        {% for currency, amount in paymentsThisMonth %}
+                            {{ amount|formatCurrency(currency) }}{% if not loop.last %}<br>{% endif %}
+                        {% else %}
+                            {{ 0|formatCurrency }}
+                        {% endfor %}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="stat-card stat-card--success">
+            <div class="stat-card-content">
+                <div class="stat-icon stat-icon--success">
+                    {{ ux_icon('tabler:trending-up', {width: 24, height: 24}) }}
+                </div>
+                <div class="stat-info">
+                    <span class="stat-label">{{ 'dashboard.hero.total_revenue'|trans }}</span>
+                    <span class="stat-value stat-value--success">
+                        {% for currency, amount in totalRevenue %}
+                            {{ amount|formatCurrency(currency) }}{% if not loop.last %}<br>{% endif %}
+                        {% else %}
+                            {{ 0|formatCurrency }}
+                        {% endfor %}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

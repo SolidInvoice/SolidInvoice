@@ -12,11 +12,12 @@ declare(strict_types=1);
  */
 
 use SolidInvoice\DashboardBundle\SolidInvoiceDashboardBundle;
-use SolidInvoice\DashboardBundle\Widgets\RecentClientsWidget;
-use SolidInvoice\DashboardBundle\Widgets\RecentInvoicesWidget;
-use SolidInvoice\DashboardBundle\Widgets\RecentPaymentsWidget;
-use SolidInvoice\DashboardBundle\Widgets\RecentQuotesWidget;
-use SolidInvoice\DashboardBundle\Widgets\StatsWidget;
+use SolidInvoice\DashboardBundle\Widgets\AttentionRequiredWidget;
+use SolidInvoice\DashboardBundle\Widgets\HeroStatsWidget;
+use SolidInvoice\DashboardBundle\Widgets\InvoiceDistributionWidget;
+use SolidInvoice\DashboardBundle\Widgets\QuickActionsWidget;
+use SolidInvoice\DashboardBundle\Widgets\RecentActivityWidget;
+use SolidInvoice\DashboardBundle\Widgets\RevenueChartWidget;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -33,36 +34,46 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->load(SolidInvoiceDashboardBundle::NAMESPACE . '\\', dirname(__DIR__, 3))
         ->exclude(dirname(__DIR__, 3) . '/{DependencyInjection,Entity,Resources,Tests}');
 
+    // Top row - Hero Stats
     $services
-        ->set(StatsWidget::class)
+        ->set(HeroStatsWidget::class)
         ->tag('dashboard.widget', [
-            'priority' => 100,
+            'priority' => 200,
             'location' => 'top',
         ]);
 
+    // Left column - Charts and Activity
     $services
-        ->set(RecentClientsWidget::class)
+        ->set(RevenueChartWidget::class)
         ->tag('dashboard.widget', [
             'priority' => 100,
             'location' => 'left_column',
         ]);
 
     $services
-        ->set(RecentPaymentsWidget::class)
+        ->set(RecentActivityWidget::class)
         ->tag('dashboard.widget', [
             'priority' => 90,
             'location' => 'left_column',
         ]);
 
+    // Right column - Attention, Actions, Distribution
     $services
-        ->set(RecentQuotesWidget::class)
+        ->set(AttentionRequiredWidget::class)
         ->tag('dashboard.widget', [
             'priority' => 100,
             'location' => 'right_column',
         ]);
 
     $services
-        ->set(RecentInvoicesWidget::class)
+        ->set(QuickActionsWidget::class)
+        ->tag('dashboard.widget', [
+            'priority' => 95,
+            'location' => 'right_column',
+        ]);
+
+    $services
+        ->set(InvoiceDistributionWidget::class)
         ->tag('dashboard.widget', [
             'priority' => 90,
             'location' => 'right_column',

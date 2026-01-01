@@ -153,30 +153,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	// identifier: missingType.iterableValue
-	'message' => '#^Method SolidInvoice\\\\DashboardBundle\\\\Widgets\\\\RecentClientsWidget\\:\\:getData\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/src/DashboardBundle/Widgets/RecentClientsWidget.php',
-];
-$ignoreErrors[] = [
-	// identifier: missingType.iterableValue
-	'message' => '#^Method SolidInvoice\\\\DashboardBundle\\\\Widgets\\\\RecentInvoicesWidget\\:\\:getData\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/src/DashboardBundle/Widgets/RecentInvoicesWidget.php',
-];
-$ignoreErrors[] = [
-	// identifier: missingType.iterableValue
-	'message' => '#^Method SolidInvoice\\\\DashboardBundle\\\\Widgets\\\\RecentPaymentsWidget\\:\\:getData\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/src/DashboardBundle/Widgets/RecentPaymentsWidget.php',
-];
-$ignoreErrors[] = [
-	// identifier: missingType.iterableValue
-	'message' => '#^Method SolidInvoice\\\\DashboardBundle\\\\Widgets\\\\RecentQuotesWidget\\:\\:getData\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/src/DashboardBundle/Widgets/RecentQuotesWidget.php',
-];
-$ignoreErrors[] = [
-	// identifier: missingType.iterableValue
 	'message' => '#^Method SolidInvoice\\\\DashboardBundle\\\\Widgets\\\\WidgetInterface\\:\\:getData\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/src/DashboardBundle/Widgets/WidgetInterface.php',

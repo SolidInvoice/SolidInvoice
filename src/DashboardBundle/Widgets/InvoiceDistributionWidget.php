@@ -1,0 +1,133 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of SolidInvoice project.
+ *
+ * (c) Pierre du Plessis <open-source@solidworx.co>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace SolidInvoice\DashboardBundle\Widgets;
+
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
+use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
+use Symfony\UX\Chartjs\Model\Chart;
+
+class InvoiceDistributionWidget implements WidgetInterface
+{
+    private readonly ObjectManager $manager;
+
+    /**
+     * Status colors matching the design system.
+     *
+     * @var array<string, array{color: string, label: string}>
+     */
+    private const STATUS_CONFIG = [
+        Graph::STATUS_PAID => ['color' => 'rgb(16, 185, 129)', 'label' => 'Paid'],
+        Graph::STATUS_PENDING => ['color' => 'rgb(59, 130, 246)', 'label' => 'Pending'],
+        Graph::STATUS_OVERDUE => ['color' => 'rgb(239, 68, 68)', 'label' => 'Overdue'],
+        Graph::STATUS_DRAFT => ['color' => 'rgb(148, 163, 184)', 'label' => 'Draft'],
+        Graph::STATUS_CANCELLED => ['color' => 'rgb(100, 116, 139)', 'label' => 'Cancelled'],
+    ];
+
+    public function __construct(
+        ManagerRegistry $registry,
+        private readonly ChartBuilderInterface $chartBuilder,
+    ) {
+        $this->manager = $registry->getManager();
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getData(): array
+    {
+        /** @var InvoiceRepository $invoiceRepository */
+        $invoiceRepository = $this->manager->getRepository(Invoice::class);
+
+        $statusCounts = $invoiceRepository->getCountByStatusAll();
+
+        // Filter to only include statuses we want to display
+        $relevantStatuses = [
+            Graph::STATUS_PAID,
+            Graph::STATUS_PENDING,
+            Graph::STATUS_OVERDUE,
+            Graph::STATUS_DRAFT,
+        ];
+
+        $labels = [];
+        $data = [];
+        $colors = [];
+
+        foreach ($relevantStatuses as $status) {
+            $count = $statusCounts[$status] ?? 0;
+            if ($count > 0 || $status === Graph::STATUS_PENDING) {
+                $config = self::STATUS_CONFIG[$status];
+                $labels[] = $config['label'];
+                $data[] = $count;
+                $colors[] = $config['color'];
+            }
+        }
+
+        $hasData = array_sum($data) > 0;
+
+        $chart = $this->chartBuilder->createChart(Chart::TYPE_DOUGHNUT);
+        $chart->setData([
+            'labels' => $labels,
+            'datasets' => [
+                [
+                    'data' => $data,
+                    'backgroundColor' => $colors,
+                    'borderWidth' => 0,
+                    'hoverOffset' => 8,
+                ],
+            ],
+        ]);
+
+        $chart->setOptions([
+            'responsive' => true,
+            'maintainAspectRatio' => false,
+            'cutout' => '70%',
+            'plugins' => [
+                'legend' => [
+                    'display' => true,
+                    'position' => 'bottom',
+                    'labels' => [
+                        'usePointStyle' => true,
+                        'pointStyle' => 'circle',
+                        'padding' => 16,
+                        'color' => '#475569',
+                    ],
+                ],
+                'tooltip' => [
+                    'backgroundColor' => 'rgba(30, 41, 59, 0.9)',
+                    'titleColor' => '#fff',
+                    'bodyColor' => '#fff',
+                    'borderColor' => 'rgba(255, 255, 255, 0.1)',
+                    'borderWidth' => 1,
+                    'padding' => 12,
+                    'cornerRadius' => 8,
+                ],
+            ],
+        ]);
+
+        return [
+            'chart' => $chart,
+            'hasData' => $hasData,
+            'total' => array_sum($data),
+        ];
+    }
+
+    public function getTemplate(): string
+    {
+        return '@SolidInvoiceDashboard/Widget/invoice_distribution.html.twig';
+    }
+}

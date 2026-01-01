@@ -91,7 +91,7 @@
             <div class="container-xl">
                 <div class="row g-2 align-items-center">
                     <div class="col">
-                        {% if block('title') is defined and block('title')|trim is not empty %}
+                        {% if block('title') is defined and block('title') is defined and block('title')|trim is not empty %}
                             {% if block('pretitle') is defined and block('pretitle')|trim is not empty %}
                                 <div class="page-pretitle">
                                     {{ block('pretitle')|raw }}

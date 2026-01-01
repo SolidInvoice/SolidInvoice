@@ -167,4 +167,44 @@ class QuoteRepository extends ServiceEntityRepository
 
         $em->getFilters()->enable('archivable');
     }
+
+    /**
+     * Get pending quotes with client information for dashboard.
+     *
+     * @return Quote[]
+     */
+    public function getPendingQuotes(int $limit = 5): array
+    {
+        $qb = $this->createQueryBuilder('q');
+
+        $qb
+            ->innerJoin('q.client', 'c')
+            ->addSelect('c')
+            ->where('q.status = :status')
+            ->setParameter('status', 'pending')
+            ->orderBy('q.created', Criteria::DESC)
+            ->setMaxResults($limit);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * Get recently responded quotes (accepted or declined) for activity feed.
+     *
+     * @return Quote[]
+     */
+    public function getRecentlyRespondedQuotes(int $limit = 5): array
+    {
+        $qb = $this->createQueryBuilder('q');
+
+        $qb
+            ->innerJoin('q.client', 'c')
+            ->addSelect('c')
+            ->where('q.status IN (:statuses)')
+            ->setParameter('statuses', ['accepted', 'declined'])
+            ->orderBy('q.updated', Criteria::DESC)
+            ->setMaxResults($limit);
+
+        return $qb->getQuery()->getResult();
+    }
 }
