@@ -40,9 +40,7 @@ abstract class WidgetTestCase extends KernelTestCase
      */
     protected function renderWidget(WidgetInterface $widget): string
     {
-        $html = $this->twig->render($widget->getTemplate(), $widget->getData());
-
-        return $this->normalizeHtml($html);
+        return $this->normalizeHtml($this->twig->render($widget->getTemplate(), $widget->getData()));
     }
 
     /**
@@ -60,10 +58,6 @@ abstract class WidgetTestCase extends KernelTestCase
 
         // Replace ULIDs
         $html = preg_replace('#[0-9A-Za-z]{26}#', '01JBYEQCR7DJ2YW4EXP6FYJZCR', $html);
-
-        // Normalize whitespace
-        $html = preg_replace('/\s+/', ' ', $html);
-        $html = preg_replace('/>\s+</', '><', $html);
 
         return trim($html);
     }
