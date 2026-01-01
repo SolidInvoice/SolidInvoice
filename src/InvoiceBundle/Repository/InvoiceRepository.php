@@ -197,7 +197,9 @@ class InvoiceRepository extends ServiceEntityRepository
 
         array_walk($ids, function (string $id) use ($em): void {
             $entity = $this->find($id);
-            $em->remove($entity);
+            if ($entity) {
+                $em->remove($entity);
+            }
         });
 
         $em->flush();

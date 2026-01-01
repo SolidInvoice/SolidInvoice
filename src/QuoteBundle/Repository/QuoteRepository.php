@@ -20,6 +20,7 @@ use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\QuoteBundle\Model\Graph;
 
 /**
  * @extends ServiceEntityRepository<Quote>
@@ -46,7 +47,7 @@ class QuoteRepository extends ServiceEntityRepository
 
         try {
             return (int) $query->getSingleScalarResult();
-        } catch (NoResultException | NonUniqueResultException $e) {
+        } catch (NoResultException | NonUniqueResultException) {
             return 0;
         }
     }
@@ -181,7 +182,7 @@ class QuoteRepository extends ServiceEntityRepository
             ->innerJoin('q.client', 'c')
             ->addSelect('c')
             ->where('q.status = :status')
-            ->setParameter('status', 'pending')
+            ->setParameter('status', Graph::STATUS_PENDING)
             ->orderBy('q.created', Criteria::DESC)
             ->setMaxResults($limit);
 
@@ -201,7 +202,7 @@ class QuoteRepository extends ServiceEntityRepository
             ->innerJoin('q.client', 'c')
             ->addSelect('c')
             ->where('q.status IN (:statuses)')
-            ->setParameter('statuses', ['accepted', 'declined'])
+            ->setParameter('statuses', [Graph::STATUS_ACCEPTED, Graph::STATUS_DECLINED])
             ->orderBy('q.updated', Criteria::DESC)
             ->setMaxResults($limit);
 
