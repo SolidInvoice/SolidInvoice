@@ -257,6 +257,7 @@ final class PaymentRepositoryTest extends KernelTestCase
                     'invoice' => 'INV-FOO',
                     'method' => 'test-payment',
                     'message' => 'test',
+                    'invoice_ulid' => $payment->getInvoice()->getId(),
                 ]
             ],
             $this
@@ -379,6 +380,7 @@ final class PaymentRepositoryTest extends KernelTestCase
                     'invoice' => 'INV-FOO',
                     'method' => 'test-payment',
                     'message' => 'test',
+                    'invoice_ulid' => $payment->getInvoice()->getId(),
                 ]
             ],
             $this
@@ -489,7 +491,8 @@ final class PaymentRepositoryTest extends KernelTestCase
                     'client_id' => $client->getId(),
                     'client' => $client->getName(),
                     'message' => 'test',
-                    'amount' => BigInteger::of(500123)
+                    'amount' => BigInteger::of(500123),
+                    'invoice_ulid' => $payment->getInvoice()->getId(),
                 ]
             ],
             $this

@@ -117,20 +117,20 @@ class RecentActivityWidget implements WidgetInterface
 
         // Sort by date descending
         usort($activities, static function (array $a, array $b): int {
-            $dateA = $a['date'] instanceof DateTimeInterface ? $a['date'] : null;
-            $dateB = $b['date'] instanceof DateTimeInterface ? $b['date'] : null;
+            $dateOne = $a['date'] instanceof DateTimeInterface ? $a['date'] : null;
+            $dateTwo = $b['date'] instanceof DateTimeInterface ? $b['date'] : null;
 
-            if (null === $dateA && null === $dateB) {
+            if (null === $dateOne && null === $dateTwo) {
                 return 0;
             }
-            if (null === $dateA) {
+            if (null === $dateOne) {
                 return 1;
             }
-            if (null === $dateB) {
+            if (null === $dateTwo) {
                 return -1;
             }
 
-            return $dateB <=> $dateA;
+            return $dateTwo <=> $dateOne;
         });
 
         // Limit to 10 items
