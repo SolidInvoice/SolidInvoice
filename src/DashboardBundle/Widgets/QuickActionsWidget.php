@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DashboardBundle\Widgets;
 
-class QuickActionsWidget implements WidgetInterface
+final class QuickActionsWidget implements WidgetInterface
 {
     /**
      * @return array<string, mixed>

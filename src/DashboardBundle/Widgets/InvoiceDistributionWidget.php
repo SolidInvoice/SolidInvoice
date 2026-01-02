@@ -21,16 +21,16 @@ use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 
-class InvoiceDistributionWidget implements WidgetInterface
+final readonly class InvoiceDistributionWidget implements WidgetInterface
 {
-    private readonly ObjectManager $manager;
+    private ObjectManager $manager;
 
     /**
      * Status colors matching the design system.
      *
      * @var array<string, array{color: string, label: string}>
      */
-    private const STATUS_CONFIG = [
+    private const array STATUS_CONFIG = [
         Graph::STATUS_PAID => ['color' => 'rgb(16, 185, 129)', 'label' => 'Paid'],
         Graph::STATUS_PENDING => ['color' => 'rgb(59, 130, 246)', 'label' => 'Pending'],
         Graph::STATUS_OVERDUE => ['color' => 'rgb(239, 68, 68)', 'label' => 'Overdue'],
@@ -40,7 +40,7 @@ class InvoiceDistributionWidget implements WidgetInterface
 
     public function __construct(
         ManagerRegistry $registry,
-        private readonly ChartBuilderInterface $chartBuilder,
+        private ChartBuilderInterface $chartBuilder,
     ) {
         $this->manager = $registry->getManager();
     }
