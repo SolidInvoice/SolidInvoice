@@ -16,6 +16,7 @@ namespace SolidInvoice\PaymentBundle\Repository;
 use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
+use DateMalformedStringException;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -329,7 +330,8 @@ class PaymentRepository extends ServiceEntityRepository
     /**
      * Get revenue grouped by month and currency for dashboard chart.
      *
-     * @return array<string, array<string, int>>
+     * @return array<string, array<string, BigInteger>>
+     * @throws DateMalformedStringException
      */
     public function getRevenueByMonthGrouped(int $months = 12): array
     {
@@ -342,6 +344,7 @@ class PaymentRepository extends ServiceEntityRepository
             ->setParameter('status', Status::STATUS_CAPTURED)
             ->orderBy('p.created', Criteria::ASC);
 
+        /** @var array<string, array<string, BigInteger>> $results */
         $results = [];
 
         foreach ($qb->getQuery()->getArrayResult() as $result) {
@@ -355,10 +358,10 @@ class PaymentRepository extends ServiceEntityRepository
             }
 
             if (! isset($results[$month][$currency])) {
-                $results[$month][$currency] = 0;
+                $results[$month][$currency] = BigInteger::zero();
             }
 
-            $results[$month][$currency] += $result['totalAmount'];
+            $results[$month][$currency] = $results[$month][$currency]->plus(BigNumber::of($result['totalAmount']));
         }
 
         return $results;
