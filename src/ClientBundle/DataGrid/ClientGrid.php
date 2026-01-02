@@ -14,6 +14,7 @@ namespace SolidInvoice\ClientBundle\DataGrid;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
 use SolidInvoice\DataGridBundle\GridBuilder\Batch\BatchAction;
+use Symfony\Component\Translation\TranslatableMessage;
 
 #[AsDataGrid(name: 'client_grid', title: 'Clients')]
 final class ClientGrid extends BaseClientGrid
@@ -28,5 +29,15 @@ final class ClientGrid extends BaseClientGrid
             ->action(static function (ClientRepository $repository, array $selectedItems): void {
                 $repository->archiveClients($selectedItems);
             });
+    }
+
+    public function getCreateRoute(): ?string
+    {
+        return '_clients_add';
+    }
+
+    public function getCreateLabel(): ?TranslatableMessage
+    {
+        return new TranslatableMessage('Create Client');
     }
 }

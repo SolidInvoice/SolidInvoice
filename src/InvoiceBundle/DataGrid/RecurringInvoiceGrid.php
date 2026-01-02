@@ -49,7 +49,8 @@ final class RecurringInvoiceGrid extends Grid
     {
         return [
             StringColumn::new('client')
-                ->searchable(false),
+                ->searchable(false)
+                ->linkToRoute('_clients_view', ['id' => 'client.id']),
             StringColumn::new('frequency')
                 ->formatValue(fn (RecurringInvoice $recurringInvoice): string => $this->schedule->getFrequency($recurringInvoice->getRecurringOptions())),
             DateTimeColumn::new('dateStart')
@@ -93,5 +94,10 @@ final class RecurringInvoiceGrid extends Grid
             ->action(static function (RecurringInvoiceRepository $repository, array $selectedItems): void {
                 $repository->deleteInvoices($selectedItems);
             });
+    }
+
+    public function getCreateRoute(): ?string
+    {
+        return '_invoices_create_recurring';
     }
 }
