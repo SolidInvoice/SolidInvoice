@@ -13,27 +13,31 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DashboardBundle\Widgets;
 
+use DateMalformedStringException;
 use DateTimeImmutable;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 
-class RevenueChartWidget implements WidgetInterface
+final readonly class RevenueChartWidget implements WidgetInterface
 {
-    private readonly ObjectManager $manager;
+    private ObjectManager $manager;
 
     public function __construct(
         ManagerRegistry $registry,
-        private readonly ChartBuilderInterface $chartBuilder,
+        private ChartBuilderInterface $chartBuilder,
+        private SystemConfig $systemConfig,
     ) {
         $this->manager = $registry->getManager();
     }
 
     /**
      * @return array<string, mixed>
+     * @throws DateMalformedStringException
      */
     public function getData(): array
     {
@@ -63,7 +67,7 @@ class RevenueChartWidget implements WidgetInterface
 
         // If no data, default to a single currency placeholder
         if ([] === $currencies) {
-            $currencies = ['USD'];
+            $currencies = [$this->systemConfig->getCurrency()];
         }
 
         // Build datasets for each currency

@@ -22,9 +22,9 @@ use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
 
-class AttentionRequiredWidget implements WidgetInterface
+final readonly class AttentionRequiredWidget implements WidgetInterface
 {
-    private readonly ObjectManager $manager;
+    private ObjectManager $manager;
 
     public function __construct(ManagerRegistry $registry)
     {

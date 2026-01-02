@@ -23,9 +23,9 @@ use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
 
-class RecentActivityWidget implements WidgetInterface
+final readonly class RecentActivityWidget implements WidgetInterface
 {
-    private readonly ObjectManager $manager;
+    private ObjectManager $manager;
 
     public function __construct(ManagerRegistry $registry)
     {

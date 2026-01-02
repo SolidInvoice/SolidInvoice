@@ -21,9 +21,9 @@ use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 
-class HeroStatsWidget implements WidgetInterface
+final readonly class HeroStatsWidget implements WidgetInterface
 {
-    private readonly ObjectManager $manager;
+    private ObjectManager $manager;
 
     public function __construct(ManagerRegistry $registry)
     {
