@@ -44,6 +44,8 @@ abstract class Column
      */
     private array $linkParameters = [];
 
+    private ?string $cellClass = null;
+
     final public function __construct(
         protected string $field
     ) {
@@ -118,7 +120,17 @@ abstract class Column
         $this->linkParameters = $parameters;
 
         return $this;
+    }
 
+    /**
+     * Set CSS class(es) for the table cell.
+     * Common classes: col-id (monospace), col-date, col-money (right-aligned), col-status
+     */
+    public function cellClass(string $class): static
+    {
+        $this->cellClass = $class;
+
+        return $this;
     }
 
     /* ============================ GETTERS ============================ */
@@ -174,5 +186,10 @@ abstract class Column
     public function getLinkParameters(): array
     {
         return $this->linkParameters;
+    }
+
+    public function getCellClass(): ?string
+    {
+        return $this->cellClass;
     }
 }

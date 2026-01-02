@@ -53,4 +53,15 @@ interface GridInterface
     public function filters(): iterable;
 
     public function query(EntityManagerInterface $entityManager, Query $query): Query;
+
+    /**
+     * Returns the route name for creating a new entity.
+     * Used for the empty state CTA button.
+     */
+    public function getCreateRoute(): ?string;
+
+    /**
+     * Returns the label for the create button in the empty state.
+     */
+    public function getCreateLabel(): ?string;
 }

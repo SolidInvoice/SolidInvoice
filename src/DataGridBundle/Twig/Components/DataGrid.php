@@ -43,6 +43,7 @@ use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
+use Symfony\UX\TwigComponent\Attribute\PostMount;
 use Twig\Error\LoaderError;
 use Twig\Error\SyntaxError;
 use function array_map;
@@ -84,6 +85,14 @@ class DataGrid extends AbstractController
     public string $search = '';
 
     /**
+     * Hidden column field names.
+     *
+     * @var list<string>
+     */
+    #[LiveProp(writable: true, url: true)]
+    public array $hiddenColumns = [];
+
+    /**
      * @var list<string>
      */
     #[LiveProp(writable: true, onUpdated: 'onSelectedItem', url: false)]
@@ -96,7 +105,19 @@ class DataGrid extends AbstractController
      * @var array<string, mixed>
      */
     #[LiveProp(writable: true, url: true)]
-    public array $filters = [];
+    public array $gridFilters = [];
+
+    /**
+     * Initialize formValues from filters after mount.
+     * This ensures URL-persisted filters are properly applied to the form.
+     */
+    #[PostMount(priority: 10)]
+    public function initializeFormFromFilters(): void
+    {
+        if ($this->gridFilters !== []) {
+            $this->formValues = $this->gridFilters;
+        }
+    }
 
     public function selectAll(): void
     {
@@ -140,12 +161,6 @@ class DataGrid extends AbstractController
     #[ExposeInTemplate]
     public function getPaginator(): Pagerfanta
     {
-        if ($this->formValues !== []) {
-            $values = $this->formValues;
-            unset($values['_token']);
-            $this->filters = $this->clearNestedValues($values);
-        }
-
         $grid = $this->getGrid();
 
         $query = $this->source->fetch($grid);
@@ -220,7 +235,13 @@ class DataGrid extends AbstractController
 
     public function entityId(object $entity): mixed
     {
-        $metaData = $this->registry->getManagerForClass($entity::class)?->getClassMetadata($entity::class);
+        $manager = $this->registry->getManagerForClass($entity::class);
+
+        if ($manager === null) {
+            throw new \RuntimeException(sprintf('No entity manager found for class "%s"', $entity::class));
+        }
+
+        $metaData = $manager->getClassMetadata($entity::class);
 
         return $metaData->getIdentifierValues($entity)[$metaData->getIdentifier()[0]];
     }
@@ -265,11 +286,124 @@ class DataGrid extends AbstractController
         }
     }
 
+    /**
+     * Execute a batch action on a single entity (from the row dropdown menu).
+     *
+     * @throws ContainerExceptionInterface
+     * @throws InvalidGridException
+     */
+    #[LiveAction]
+    public function executeSingleAction(
+        #[LiveArg('actionName')]
+        string $actionName,
+        #[LiveArg('entityId')]
+        string $entityId
+    ): void {
+        $grid = $this->getGrid();
+
+        foreach ($grid->batchActions() as $action) {
+            if ($action->getLabel() !== $actionName) {
+                continue;
+            }
+
+            $actionFn = $action->getAction();
+
+            if (null === $actionFn) {
+                $this->addFlash('warning', 'Action not implemented.');
+                return;
+            }
+
+            $actionFn($this->registry->getRepository($grid->entityFQCN()), [$entityId]);
+
+            $this->addFlash('success', 'Success');
+            $this->dispatchBrowserEvent('modal:close');
+
+            return;
+        }
+
+        $this->addFlash('warning', 'Action not found.');
+    }
+
+    /**
+     * Apply filters from the submitted form.
+     * This is called when the user clicks "Apply Filters".
+     */
+    #[LiveAction]
+    public function applyFilters(): void
+    {
+        // Get the submitted form values
+        $this->submitForm();
+
+        if ($this->formValues !== []) {
+            $values = $this->formValues;
+            unset($values['_token']);
+            $this->gridFilters = $this->clearNestedValues($values);
+        }
+
+        // Reset page to 1 when filters change
+        $this->page = 1;
+    }
+
     #[LiveAction]
     public function clearFilters(): void
     {
-        $this->filters = [];
+        $this->gridFilters = [];
         $this->resetForm();
+    }
+
+    #[LiveAction]
+    public function clearSelection(): void
+    {
+        $this->selectedItems = [];
+        $this->selectedAll = false;
+    }
+
+    #[LiveAction]
+    public function removeFilter(#[LiveArg('filterKey')] string $filterKey): void
+    {
+        unset($this->gridFilters[$filterKey]);
+        $this->resetForm();
+    }
+
+    /**
+     * Check if a column is visible.
+     */
+    public function isColumnVisible(string $field): bool
+    {
+        return ! in_array($field, $this->hiddenColumns, true);
+    }
+
+    /**
+     * Get visible columns for the grid.
+     *
+     * @return list<Column>
+     */
+    #[ExposeInTemplate]
+    public function getVisibleColumns(): array
+    {
+        return array_values(array_filter(
+            $this->getGrid()->columns(),
+            fn (Column $column) => $this->isColumnVisible($column->getField())
+        ));
+    }
+
+    #[LiveAction]
+    public function toggleColumn(#[LiveArg('field')] string $field): void
+    {
+        if (in_array($field, $this->hiddenColumns, true)) {
+            $this->hiddenColumns = array_values(array_filter(
+                $this->hiddenColumns,
+                static fn (string $col) => $col !== $field
+            ));
+        } else {
+            $this->hiddenColumns[] = $field;
+        }
+    }
+
+    #[LiveAction]
+    public function resetColumns(): void
+    {
+        $this->hiddenColumns = [];
     }
 
     /**
@@ -278,7 +412,7 @@ class DataGrid extends AbstractController
      */
     protected function instantiateForm(): FormInterface
     {
-        $form = $this->createFormBuilder($this->filters);
+        $form = $this->createFormBuilder($this->gridFilters);
 
         foreach ($this->getGrid()->filters() as $name => $filter) {
             $form->add($name, $filter->form(), array_merge(['label' => false], $filter->formOptions()));
@@ -316,9 +450,11 @@ class DataGrid extends AbstractController
         $searchFields = array_map(static fn (Column $column) => $column->getField(), $searchFields);
         (new SearchFilter($searchFields))->filter($builder, $this->search);
 
+        // Use the filters LiveProp (URL-persisted) instead of formValues
         foreach ($grid->filters() as $column => $filter) {
-            if ('' !== ($this->formValues[$column] ?? '')) {
-                $filter->filter($builder, $this->formValues[$column]);
+            $filterValue = $this->gridFilters[$column] ?? '';
+            if ($filterValue !== '' && $filterValue !== []) {
+                $filter->filter($builder, $filterValue);
             }
         }
     }

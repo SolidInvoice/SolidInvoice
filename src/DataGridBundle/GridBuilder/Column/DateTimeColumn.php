@@ -13,6 +13,12 @@ namespace SolidInvoice\DataGridBundle\GridBuilder\Column;
 
 class DateTimeColumn extends Column
 {
+    public static function new(string $field): static
+    {
+        return parent::new($field)
+            ->cellClass('col-date');
+    }
+
     private string $format = 'Y-m-d H:i:s';
 
     public function format(string $format): self

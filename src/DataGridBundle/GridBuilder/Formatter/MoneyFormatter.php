@@ -13,6 +13,7 @@ namespace SolidInvoice\DataGridBundle\GridBuilder\Formatter;
 
 use Money\Money;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
+use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\Translation\TranslatableMessage;
 
@@ -20,7 +21,7 @@ final class MoneyFormatter implements FormatterInterface
 {
     public function __construct(
         private readonly SystemConfig $config,
-        private readonly \SolidInvoice\MoneyBundle\Formatter\MoneyFormatter $moneyFormatter
+        private readonly MoneyFormatterInterface $moneyFormatter
     ) {
     }
 

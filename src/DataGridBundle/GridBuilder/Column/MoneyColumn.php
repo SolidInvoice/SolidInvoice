@@ -13,4 +13,9 @@ namespace SolidInvoice\DataGridBundle\GridBuilder\Column;
 
 final class MoneyColumn extends Column
 {
+    public static function new(string $field): static
+    {
+        return parent::new($field)
+            ->cellClass('col-money');
+    }
 }

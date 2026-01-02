@@ -96,4 +96,21 @@ abstract class Grid implements GridInterface
     {
         return $query;
     }
+
+    /**
+     * Returns the route name for creating a new entity.
+     * Override this method in your grid to enable the empty state CTA.
+     */
+    public function getCreateRoute(): ?string
+    {
+        return null;
+    }
+
+    /**
+     * Returns the label for the create button in the empty state.
+     */
+    public function getCreateLabel(): ?string
+    {
+        return 'Create';
+    }
 }
