@@ -27,10 +27,10 @@ use function ucwords;
  * Output:
  *   <span class="datagrid-status status-{variant}">{Label}</span>
  */
-final class StatusFormatter implements FormatterInterface
+final readonly class StatusFormatter implements FormatterInterface
 {
     public function __construct(
-        private readonly TranslatorInterface $translator,
+        private TranslatorInterface $translator,
     ) {
     }
 
