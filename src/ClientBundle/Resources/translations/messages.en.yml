@@ -10,6 +10,9 @@ client:
     info: 'Client Info'
     save: 'Save Client'
     cancel: 'Cancel'
+    tabs:
+        active: 'Active'
+        archived: 'Archived'
     address:
         info: 'Address Info'
         add: 'Add Address'
@@ -40,6 +43,10 @@ client:
         outstanding: 'Outstanding'
         outstanding_invoices: 'Outstanding Invoices'
         paid_invoices: 'Paid Invoices'
+        active_clients: 'Active Clients'
+        archived_clients: 'Archived Clients'
+        total_contacts: 'Total Contacts'
+        outstanding_balance: 'Outstanding Balance'
         number_quotes: '{0} Quotes|{1} Quote|]1,Inf] Quotes'
         number_invoices: '{0} Invoices|{1} Invoice|]1,Inf] Invoices'
         tooltip:

@@ -102,15 +102,16 @@
                             </h2>
                         {% endif %}
                     </div>
+                    {% if block('heading') is defined and block('heading')|trim is not empty %}
+                        <div class="col-auto ms-auto d-print-none">
+                            <div class="btn-list">
+                                {{ block('heading') }}
+                            </div>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
-
-        {% if block('heading') is defined and block('heading')|trim is not empty %}
-            <div class="page-header-actions">
-                {{  block('heading') }}
-            </div>
-        {% endif %}
 
         <div class="page-body">
             <div class="container-xl">
