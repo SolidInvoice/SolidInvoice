@@ -26,6 +26,7 @@ use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\DateTimeColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Query;
+use Symfony\Component\Translation\TranslatableMessage;
 
 abstract class Grid implements GridInterface
 {
@@ -109,8 +110,8 @@ abstract class Grid implements GridInterface
     /**
      * Returns the label for the create button in the empty state.
      */
-    public function getCreateLabel(): ?string
+    public function getCreateLabel(): ?TranslatableMessage
     {
-        return 'Create';
+        return new TranslatableMessage('Create');
     }
 }

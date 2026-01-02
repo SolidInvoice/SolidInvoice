@@ -18,6 +18,7 @@ use SolidInvoice\DataGridBundle\GridBuilder\Query;
 use SolidInvoice\DataGridBundle\Source\ORMSource;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use Symfony\Bridge\Doctrine\Types\UlidType;
+use Symfony\Component\Translation\TranslatableMessage;
 use function array_key_exists;
 
 #[AsDataGrid(name: 'invoice_grid', title: 'Active Invoices')]
@@ -39,6 +40,10 @@ final class InvoiceGrid extends BaseInvoiceGrid
     {
         $query = parent::query($entityManager, $query);
 
+        $query->getQueryBuilder()
+            ->select(ORMSource::ALIAS, 'client')
+            ->innerJoin(ORMSource::ALIAS . '.client', 'client');
+
         if (array_key_exists('client_id', $this->context)) {
             $query
                 ->getQueryBuilder()
@@ -47,5 +52,15 @@ final class InvoiceGrid extends BaseInvoiceGrid
         }
 
         return $query;
+    }
+
+    public function getCreateRoute(): ?string
+    {
+        return '_invoices_create';
+    }
+
+    public function getCreateLabel(): ?TranslatableMessage
+    {
+        return new TranslatableMessage('Create Invoice');
     }
 }

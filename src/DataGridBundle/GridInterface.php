@@ -19,6 +19,7 @@ use SolidInvoice\DataGridBundle\GridBuilder\Action\Action;
 use SolidInvoice\DataGridBundle\GridBuilder\Batch\BatchAction;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
 use SolidInvoice\DataGridBundle\GridBuilder\Query;
+use Symfony\Component\Translation\TranslatableMessage;
 
 interface GridInterface
 {
@@ -63,5 +64,5 @@ interface GridInterface
     /**
      * Returns the label for the create button in the empty state.
      */
-    public function getCreateLabel(): ?string;
+    public function getCreateLabel(): ?TranslatableMessage;
 }

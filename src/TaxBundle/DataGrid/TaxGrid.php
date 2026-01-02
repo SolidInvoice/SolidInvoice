@@ -62,4 +62,9 @@ MSG)
             EditAction::new('_tax_rates_edit', ['id' => 'id']),
         ];
     }
+
+    public function getCreateRoute(): ?string
+    {
+        return '_tax_rates_add';
+    }
 }
