@@ -37,7 +37,8 @@ abstract class BaseQuoteGrid extends Grid
     {
         return [
             StringColumn::new('quoteId')
-                ->label('Quote #'),
+                ->label('Quote #')
+                ->cellClass('col-id'),
             StringColumn::new('client')
                 ->searchable(false)
                 ->linkToRoute('_clients_view', ['id' => 'client.id']),

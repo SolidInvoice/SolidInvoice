@@ -1,0 +1,1162 @@
+/**
+ * SolidInvoice DataGrid Component Styles
+ *
+ * Modern, clean data grid styling following the SolidInvoice design system.
+ * Uses design tokens from _tokens.scss for consistency.
+ */
+
+// ============================================================================
+// DATAGRID BASE
+// ============================================================================
+
+.datagrid {
+    // Container for the entire datagrid component
+    // Note: overflow is NOT set to hidden to allow dropdowns to extend beyond bounds
+    position: relative;
+    display: block;
+
+    // Flash messages inside the datagrid
+    > .alert {
+        margin-bottom: var(--swp-space-4);
+    }
+}
+
+.datagrid-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--swp-space-4);
+    padding: var(--swp-space-4) var(--swp-space-6);
+    border-bottom: 1px solid var(--swp-border-light);
+    background: var(--swp-surface);
+}
+
+.datagrid-title {
+    font-size: var(--swp-text-lg);
+    font-weight: var(--swp-font-semibold);
+    color: var(--swp-text-primary);
+    margin: 0;
+}
+
+// ============================================================================
+// SEARCH & FILTER BAR
+// ============================================================================
+
+.datagrid-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--swp-space-4);
+    padding: var(--swp-space-4) var(--swp-space-6);
+    background: var(--swp-surface);
+    border-bottom: 1px solid var(--swp-border-light);
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+.datagrid-toolbar-start {
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-3);
+    flex: 1;
+    min-width: 0;
+}
+
+.datagrid-toolbar-end {
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-2);
+    flex-shrink: 0;
+}
+
+.datagrid-search {
+    position: relative;
+    flex: 1;
+    max-width: 320px;
+
+    .datagrid-search-icon {
+        position: absolute;
+        left: var(--swp-space-3);
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--swp-text-muted);
+        pointer-events: none;
+        width: 18px;
+        height: 18px;
+    }
+
+    .datagrid-search-input {
+        width: 100%;
+        padding: var(--swp-space-2) var(--swp-space-4) var(--swp-space-2) var(--swp-space-10);
+        font-size: var(--swp-text-sm);
+        color: var(--swp-text-primary);
+        background: var(--swp-gray-50);
+        border: 1px solid transparent;
+        border-radius: var(--swp-radius-md);
+        transition: background-color var(--swp-transition-fast),
+                    border-color var(--swp-transition-fast),
+                    box-shadow var(--swp-transition-fast);
+
+        &::placeholder {
+            color: var(--swp-text-muted);
+        }
+
+        &:hover {
+            background: var(--swp-gray-100);
+        }
+
+        &:focus {
+            background: var(--swp-surface);
+            border-color: var(--swp-primary);
+            box-shadow: var(--swp-ring-primary);
+            outline: none;
+        }
+    }
+}
+
+// ============================================================================
+// ACTIVE FILTERS (Chips in toolbar)
+// ============================================================================
+
+.datagrid-active-filters {
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-2);
+    flex-wrap: wrap;
+}
+
+.datagrid-active-filter {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--swp-space-1);
+    padding: var(--swp-space-1) var(--swp-space-2);
+    font-size: var(--swp-text-xs);
+    color: var(--swp-text-primary);
+    background: var(--swp-gray-100);
+    border: 1px solid var(--swp-border);
+    border-radius: var(--swp-radius-md);
+    cursor: pointer;
+    transition: all var(--swp-transition-fast);
+
+    &:hover {
+        background: var(--swp-danger-lighter);
+        border-color: var(--swp-danger-light);
+
+        .datagrid-active-filter-remove {
+            color: var(--swp-danger);
+        }
+    }
+
+    .datagrid-active-filter-key {
+        font-weight: var(--swp-font-medium);
+        color: var(--swp-text-muted);
+
+        &::after {
+            content: ':';
+            margin-right: var(--swp-space-1);
+        }
+    }
+
+    .datagrid-active-filter-value {
+        max-width: 150px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .datagrid-active-filter-remove {
+        width: 14px;
+        height: 14px;
+        margin-left: var(--swp-space-1);
+        color: var(--swp-text-muted);
+        transition: color var(--swp-transition-fast);
+    }
+}
+
+// ============================================================================
+// FILTER PANEL (Dropdown)
+// ============================================================================
+
+.datagrid-filter-dropdown {
+    position: relative;
+}
+
+.datagrid-filter-panel {
+    width: 320px;
+    max-height: calc(100vh - 200px);
+    padding: 0 !important;
+    border: 1px solid var(--swp-border);
+    border-radius: var(--swp-radius-lg);
+    box-shadow: var(--swp-shadow-lg);
+    overflow: hidden;
+
+    // Ensure nested dropdowns (like select2) appear above the panel
+    .dropdown-menu,
+    .select2-container--open {
+        z-index: 1060 !important;
+    }
+}
+
+.datagrid-filter-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--swp-space-3) var(--swp-space-4);
+    background: var(--swp-gray-50);
+    border-bottom: 1px solid var(--swp-border-light);
+}
+
+.datagrid-filter-panel-title {
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-2);
+    margin: 0;
+    font-size: var(--swp-text-sm);
+    font-weight: var(--swp-font-semibold);
+    color: var(--swp-text-primary);
+
+    svg {
+        width: 16px;
+        height: 16px;
+        color: var(--swp-text-muted);
+    }
+}
+
+.datagrid-filter-panel-body {
+    padding: var(--swp-space-4);
+    max-height: calc(100vh - 350px);
+    overflow-y: auto;
+}
+
+.datagrid-filter-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--swp-space-4);
+}
+
+.datagrid-filter-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--swp-space-2);
+
+    // Ensure dropdowns within fields have proper z-index
+    .form-select,
+    select {
+        position: relative;
+        z-index: 1;
+    }
+
+    // Date range fields
+    .row {
+        --bs-gutter-x: 0.5rem;
+    }
+}
+
+.datagrid-filter-label {
+    font-size: var(--swp-text-xs);
+    font-weight: var(--swp-font-semibold);
+    color: var(--swp-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.datagrid-filter-widget {
+    // Container for form widgets
+
+    // Date range fields - display inline (side by side)
+    // The DateRangeFormType creates a container div with start/end date fields
+    > div:has(> div > input[type="date"]) {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--swp-space-2);
+
+        > div {
+            // Each date field container
+            .form-label {
+                display: block;
+                font-size: var(--swp-text-xs);
+                font-weight: var(--swp-font-medium);
+                color: var(--swp-text-muted);
+                margin-bottom: var(--swp-space-1);
+            }
+
+            input[type="date"] {
+                width: 100%;
+            }
+        }
+    }
+
+    // Expanded choice (checkboxes/radios) - render as standard checkboxes
+    .form-check {
+        display: flex !important;
+        align-items: center;
+        gap: var(--swp-space-2);
+        padding: var(--swp-space-2) var(--swp-space-3);
+        margin: 0;
+        border-radius: var(--swp-radius-sm);
+        transition: background-color var(--swp-transition-fast);
+
+        &:hover {
+            background: var(--swp-gray-50);
+        }
+
+        // Override any switch styles - force regular checkbox appearance
+        &.form-switch {
+            padding-left: var(--swp-space-3);
+        }
+
+        .form-check-input {
+            width: 16px !important;
+            height: 16px !important;
+            min-width: 16px;
+            margin: 0 !important;
+            margin-top: 0 !important;
+            flex-shrink: 0;
+            border-radius: 3px !important;
+            border: 1px solid var(--swp-border-dark);
+            background-color: var(--swp-surface);
+            cursor: pointer;
+
+            &:checked {
+                background-color: var(--swp-primary);
+                border-color: var(--swp-primary);
+            }
+
+            &:focus {
+                box-shadow: var(--swp-ring-primary);
+            }
+
+            // Remove switch/pill appearance
+            &[type="checkbox"] {
+                border-radius: 3px !important;
+                background-image: none;
+
+                &:checked {
+                    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
+                }
+            }
+        }
+
+        .form-check-label {
+            display: inline-block !important;
+            font-size: var(--swp-text-sm);
+            font-weight: var(--swp-font-normal);
+            color: var(--swp-text-primary);
+            cursor: pointer;
+            margin-left: var(--swp-space-2);
+            user-select: none;
+        }
+    }
+
+    // Space between checkboxes
+    .form-check + .form-check {
+        margin-top: var(--swp-space-1);
+    }
+}
+
+.datagrid-filter-panel-footer {
+    padding-top: var(--swp-space-4);
+    margin-top: var(--swp-space-2);
+    border-top: 1px solid var(--swp-border-light);
+}
+
+// Form elements within filter panel
+.datagrid-filter-panel {
+    // Standard form controls
+    .form-control,
+    .form-select {
+        font-size: var(--swp-text-sm);
+        padding: var(--swp-space-2) var(--swp-space-3);
+        border-radius: var(--swp-radius-md);
+        border-color: var(--swp-border);
+
+        &:focus {
+            border-color: var(--swp-primary);
+            box-shadow: var(--swp-ring-primary);
+        }
+    }
+
+    // Hide nested labels from DateRangeFormType (we show our own)
+    .datagrid-filter-field > .form-label {
+        display: none;
+    }
+
+    // Date range sub-labels
+    .datagrid-filter-field .row {
+        .form-label {
+            display: block;
+            font-size: var(--swp-text-xs);
+            font-weight: var(--swp-font-normal);
+            color: var(--swp-text-muted);
+            margin-bottom: var(--swp-space-1);
+        }
+
+        > div {
+            padding-left: var(--swp-space-1);
+            padding-right: var(--swp-space-1);
+
+            &:first-child {
+                padding-left: 0;
+            }
+
+            &:last-child {
+                padding-right: 0;
+            }
+        }
+    }
+
+    // Multiple choice checkboxes
+    .form-check {
+        display: flex;
+        align-items: center;
+        gap: var(--swp-space-2);
+        padding: var(--swp-space-1-5) var(--swp-space-2);
+        margin: 0;
+        border-radius: var(--swp-radius-sm);
+        transition: background-color var(--swp-transition-fast);
+
+        &:hover {
+            background: var(--swp-gray-50);
+        }
+
+        .form-check-input {
+            width: 16px;
+            height: 16px;
+            margin: 0;
+            flex-shrink: 0;
+        }
+
+        .form-check-label {
+            font-size: var(--swp-text-sm);
+            color: var(--swp-text-primary);
+            cursor: pointer;
+        }
+    }
+
+    // When multiple checkboxes in a list
+    .form-check + .form-check {
+        margin-top: var(--swp-space-1);
+    }
+
+    // Select dropdown adjustments
+    select[multiple] {
+        min-height: 120px;
+        padding: var(--swp-space-1);
+
+        option {
+            padding: var(--swp-space-2);
+            border-radius: var(--swp-radius-sm);
+
+            &:checked {
+                background: var(--swp-primary-lighter);
+                color: var(--swp-primary-dark);
+            }
+        }
+    }
+}
+
+// ============================================================================
+// COLUMN VISIBILITY
+// ============================================================================
+
+.datagrid-column-picker {
+    .dropdown-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        color: var(--swp-text-secondary);
+        background: transparent;
+        border: 1px solid var(--swp-border);
+        border-radius: var(--swp-radius-md);
+        cursor: pointer;
+        transition: color var(--swp-transition-fast),
+                    background-color var(--swp-transition-fast),
+                    border-color var(--swp-transition-fast);
+
+        &:hover {
+            color: var(--swp-text-primary);
+            background: var(--swp-gray-50);
+            border-color: var(--swp-border-dark);
+        }
+
+        &::after {
+            display: none; // Hide default dropdown caret
+        }
+    }
+
+    .dropdown-menu {
+        min-width: 200px;
+        max-height: 320px;
+        overflow-y: auto;
+        padding: var(--swp-space-2);
+    }
+
+    .dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: var(--swp-space-2);
+        padding: var(--swp-space-2) var(--swp-space-3);
+        font-size: var(--swp-text-sm);
+        color: var(--swp-text-primary);
+        border-radius: var(--swp-radius-sm);
+        cursor: pointer;
+
+        &:hover {
+            background: var(--swp-gray-50);
+        }
+
+        input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--swp-primary);
+        }
+    }
+}
+
+// ============================================================================
+// TABLE STYLES
+// ============================================================================
+
+.datagrid-table-wrapper {
+    overflow-x: auto;
+}
+
+.datagrid-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--swp-text-sm);
+
+    th,
+    td {
+        padding: var(--swp-space-3) var(--swp-space-4);
+        text-align: left;
+        vertical-align: middle;
+        border-bottom: 1px solid var(--swp-border-light);
+    }
+
+    th {
+        font-size: var(--swp-text-xs);
+        font-weight: var(--swp-font-semibold);
+        color: var(--swp-text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        background: var(--swp-gray-50);
+        white-space: nowrap;
+        user-select: none;
+    }
+
+    tbody tr {
+        transition: background-color var(--swp-transition-fast);
+
+        &:hover {
+            background: var(--swp-surface-hover);
+        }
+
+        &.selected {
+            background: var(--swp-primary-lighter);
+
+            &:hover {
+                background: var(--swp-primary-light);
+            }
+        }
+    }
+
+    // Column types
+    .col-checkbox {
+        width: 40px;
+        text-align: center;
+    }
+
+    .col-id {
+        font-family: var(--swp-font-mono);
+        font-size: var(--swp-text-xs);
+        color: var(--swp-text-muted);
+    }
+
+    .col-date {
+        white-space: nowrap;
+    }
+
+    .col-amount,
+    .col-money {
+        text-align: right;
+        font-family: var(--swp-font-mono);
+        font-weight: var(--swp-font-medium);
+    }
+
+    .col-status {
+        white-space: nowrap;
+    }
+
+    .col-actions {
+        width: 1%;
+        white-space: nowrap;
+        text-align: right;
+    }
+}
+
+// Sortable column headers
+.datagrid-sort-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--swp-space-1);
+    color: var(--swp-text-muted);
+    text-decoration: none;
+    transition: color var(--swp-transition-fast);
+
+    &:hover {
+        color: var(--swp-text-primary);
+    }
+
+    &.sorted {
+        color: var(--swp-primary);
+    }
+
+    .datagrid-sort-icon {
+        width: 14px;
+        height: 14px;
+        opacity: 0;
+        transition: opacity var(--swp-transition-fast);
+    }
+
+    &:hover .datagrid-sort-icon,
+    &.sorted .datagrid-sort-icon {
+        opacity: 1;
+    }
+}
+
+// ============================================================================
+// ROW ACTIONS (Icon Buttons)
+// ============================================================================
+
+.datagrid-row-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--swp-space-1);
+}
+
+.datagrid-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    color: var(--swp-text-muted);
+    background: transparent;
+    border: none;
+    border-radius: var(--swp-radius-md);
+    text-decoration: none;
+    cursor: pointer;
+    transition: color var(--swp-transition-fast),
+                background-color var(--swp-transition-fast);
+
+    svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    &:hover {
+        color: var(--swp-primary);
+        background: var(--swp-primary-lighter);
+    }
+
+    &.action-view:hover {
+        color: var(--swp-info);
+        background: var(--swp-info-lighter);
+    }
+
+    &.action-edit:hover {
+        color: var(--swp-primary);
+        background: var(--swp-primary-lighter);
+    }
+
+    &.action-delete:hover {
+        color: var(--swp-danger);
+        background: var(--swp-danger-lighter);
+    }
+}
+
+// Three-dot menu button
+.datagrid-more-btn {
+    opacity: 0.6;
+    transition: opacity var(--swp-transition-fast),
+                color var(--swp-transition-fast),
+                background-color var(--swp-transition-fast);
+
+    &:hover,
+    &[aria-expanded="true"] {
+        opacity: 1;
+        color: var(--swp-text-primary);
+        background: var(--swp-gray-100);
+    }
+}
+
+// Three-dot dropdown menu container
+.datagrid-more-menu {
+    .dropdown-menu {
+        min-width: 160px;
+        padding: var(--swp-space-1);
+        border-radius: var(--swp-radius-md);
+        box-shadow: var(--swp-shadow-md);
+    }
+
+    .dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: var(--swp-space-2);
+        padding: var(--swp-space-2) var(--swp-space-3);
+        font-size: var(--swp-text-sm);
+        color: var(--swp-text-primary);
+        border-radius: var(--swp-radius-sm);
+        cursor: pointer;
+
+        svg {
+            width: 16px;
+            height: 16px;
+            color: var(--swp-text-muted);
+        }
+
+        &:hover {
+            background: var(--swp-gray-50);
+        }
+
+        &.text-danger {
+            color: var(--swp-danger);
+
+            svg {
+                color: var(--swp-danger);
+            }
+
+            &:hover {
+                background: var(--swp-danger-lighter);
+            }
+        }
+    }
+
+    .dropdown-divider {
+        margin: var(--swp-space-1) 0;
+    }
+}
+
+// Show more button on row hover only (subtle UX)
+tbody tr:not(:hover) .datagrid-more-btn {
+    opacity: 0;
+}
+
+tbody tr:hover .datagrid-more-btn,
+.datagrid-more-menu.show .datagrid-more-btn {
+    opacity: 0.6;
+}
+
+// ============================================================================
+// CHECKBOX STYLES
+// ============================================================================
+
+.datagrid-checkbox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        margin: 0;
+        accent-color: var(--swp-primary);
+        cursor: pointer;
+    }
+}
+
+// ============================================================================
+// EMPTY STATE
+// ============================================================================
+
+.datagrid-empty {
+    padding: var(--swp-space-16) var(--swp-space-6);
+    text-align: center;
+}
+
+.datagrid-empty-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto var(--swp-space-6);
+    color: var(--swp-gray-300);
+    background: var(--swp-gray-50);
+    border-radius: var(--swp-radius-full);
+
+    svg {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+.datagrid-empty-title {
+    margin: 0 0 var(--swp-space-2);
+    font-size: var(--swp-text-lg);
+    font-weight: var(--swp-font-semibold);
+    color: var(--swp-text-primary);
+}
+
+.datagrid-empty-message {
+    margin: 0 0 var(--swp-space-6);
+    font-size: var(--swp-text-sm);
+    color: var(--swp-text-muted);
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.datagrid-empty-action {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--swp-space-2);
+}
+
+// ============================================================================
+// FLOATING BULK ACTION BAR
+// ============================================================================
+
+.datagrid-bulk-bar {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    z-index: 9999; // Very high to ensure visibility above everything
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: transform 300ms cubic-bezier(0, 0, 0.2, 1),
+                opacity 300ms cubic-bezier(0, 0, 0.2, 1),
+                visibility 0s 300ms;
+
+    &.visible {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transition: transform 300ms cubic-bezier(0, 0, 0.2, 1),
+                    opacity 300ms cubic-bezier(0, 0, 0.2, 1),
+                    visibility 0s;
+    }
+}
+
+.datagrid-bulk-bar-inner {
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-4);
+    padding: var(--swp-space-3) var(--swp-space-4) var(--swp-space-3) var(--swp-space-6);
+    background: var(--swp-gray-900);
+    border-radius: var(--swp-radius-xl);
+    box-shadow: var(--swp-shadow-xl);
+}
+
+.datagrid-bulk-count {
+    font-size: var(--swp-text-sm);
+    font-weight: var(--swp-font-semibold);
+    color: var(--swp-text-inverse);
+    white-space: nowrap;
+
+    .count {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 24px;
+        height: 24px;
+        padding: 0 var(--swp-space-2);
+        margin-right: var(--swp-space-1);
+        font-size: var(--swp-text-xs);
+        color: var(--swp-gray-900);
+        background: var(--swp-gray-100);
+        border-radius: var(--swp-radius-full);
+    }
+}
+
+.datagrid-bulk-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-2);
+}
+
+.datagrid-bulk-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--swp-space-2);
+    padding: var(--swp-space-2) var(--swp-space-4);
+    font-size: var(--swp-text-sm);
+    font-weight: var(--swp-font-medium);
+    color: var(--swp-text-inverse);
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: var(--swp-radius-md);
+    cursor: pointer;
+    transition: background-color var(--swp-transition-fast);
+
+    svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    &.btn-danger {
+        color: var(--swp-danger-light);
+
+        &:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+    }
+}
+
+.datagrid-bulk-divider {
+    width: 1px;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.datagrid-bulk-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    color: var(--swp-gray-400);
+    background: transparent;
+    border: none;
+    border-radius: var(--swp-radius-md);
+    cursor: pointer;
+    transition: color var(--swp-transition-fast),
+                background-color var(--swp-transition-fast);
+
+    svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    &:hover {
+        color: var(--swp-text-inverse);
+        background: rgba(255, 255, 255, 0.1);
+    }
+}
+
+// ============================================================================
+// PAGINATION FOOTER
+// ============================================================================
+
+.datagrid-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--swp-space-4);
+    padding: var(--swp-space-4) var(--swp-space-6);
+    border-top: 1px solid var(--swp-border-light);
+    background: var(--swp-surface);
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        gap: var(--swp-space-3);
+    }
+}
+
+.datagrid-footer-info {
+    font-size: var(--swp-text-sm);
+    color: var(--swp-text-muted);
+}
+
+.datagrid-per-page {
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-2);
+    font-size: var(--swp-text-sm);
+    color: var(--swp-text-muted);
+
+    select {
+        padding: var(--swp-space-1-5) var(--swp-space-3);
+        font-size: var(--swp-text-sm);
+        color: var(--swp-text-primary);
+        background: var(--swp-surface);
+        border: 1px solid var(--swp-border);
+        border-radius: var(--swp-radius-md);
+        cursor: pointer;
+
+        &:focus {
+            border-color: var(--swp-primary);
+            box-shadow: var(--swp-ring-primary);
+            outline: none;
+        }
+    }
+}
+
+.datagrid-pagination {
+    .pagination {
+        display: flex;
+        align-items: center;
+        gap: var(--swp-space-1);
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .page-item {
+        .page-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 32px;
+            height: 32px;
+            padding: 0 var(--swp-space-2);
+            font-size: var(--swp-text-sm);
+            color: var(--swp-text-secondary);
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: var(--swp-radius-md);
+            text-decoration: none;
+            transition: color var(--swp-transition-fast),
+                        background-color var(--swp-transition-fast),
+                        border-color var(--swp-transition-fast);
+
+            &:hover {
+                color: var(--swp-text-primary);
+                background: var(--swp-gray-50);
+                border-color: var(--swp-border);
+            }
+        }
+
+        &.active .page-link {
+            color: var(--swp-primary);
+            background: var(--swp-primary-lighter);
+            border-color: var(--swp-primary-light);
+            font-weight: var(--swp-font-medium);
+        }
+
+        &.disabled .page-link {
+            color: var(--swp-text-light);
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+    }
+}
+
+// ============================================================================
+// STATUS BADGES
+// ============================================================================
+
+.datagrid-status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--swp-space-1);
+    padding: var(--swp-space-0-5) var(--swp-space-2);
+    font-size: var(--swp-text-xs);
+    font-weight: var(--swp-font-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+    border-radius: var(--swp-radius-sm);
+
+    &.status-success {
+        color: #065f46;
+        background: var(--swp-success-lighter);
+    }
+
+    &.status-danger {
+        color: #991b1b;
+        background: var(--swp-danger-lighter);
+    }
+
+    &.status-warning {
+        color: #92400e;
+        background: var(--swp-warning-lighter);
+    }
+
+    &.status-info {
+        color: #1e40af;
+        background: var(--swp-info-lighter);
+    }
+
+    &.status-primary {
+        color: var(--swp-primary-dark);
+        background: var(--swp-primary-lighter);
+    }
+
+    &.status-secondary {
+        color: var(--swp-gray-700);
+        background: var(--swp-gray-100);
+    }
+}
+
+// ============================================================================
+// RELATIVE DATE
+// ============================================================================
+
+.datagrid-relative-date {
+    cursor: help;
+    border-bottom: 1px dotted var(--swp-gray-300);
+}
+
+// ============================================================================
+// LOADING STATE
+// ============================================================================
+
+.datagrid-loading {
+    position: relative;
+
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: rgba(255, 255, 255, 0.7);
+        z-index: 10;
+    }
+}
+
+.datagrid-loading-indicator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 11;
+}
+
+// ============================================================================
+// RESPONSIVE ADJUSTMENTS
+// ============================================================================
+
+@media (max-width: 768px) {
+    .datagrid-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .datagrid-search {
+        max-width: none;
+    }
+
+    .datagrid-table {
+        th,
+        td {
+            padding: var(--swp-space-2) var(--swp-space-3);
+        }
+    }
+
+    .datagrid-bulk-bar-inner {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: var(--swp-space-3);
+        padding: var(--swp-space-4);
+    }
+
+    .datagrid-bulk-divider {
+        display: none;
+    }
+}

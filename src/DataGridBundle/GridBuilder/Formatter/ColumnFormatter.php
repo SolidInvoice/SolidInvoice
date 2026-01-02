@@ -17,6 +17,8 @@ use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\CurrencyColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\DateTimeColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\MoneyColumn;
+use SolidInvoice\DataGridBundle\GridBuilder\Column\RelativeDateColumn;
+use SolidInvoice\DataGridBundle\GridBuilder\Column\StatusColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\UrlColumn;
 use Symfony\Component\DependencyInjection\ServiceLocator;
@@ -56,9 +58,11 @@ final class ColumnFormatter implements ServiceSubscriberInterface, FormatterInte
         return [
             CurrencyColumn::class => CurrencyFormatter::class,
             DateTimeColumn::class => DateTimeFormatter::class,
+            MoneyColumn::class => MoneyFormatter::class,
+            RelativeDateColumn::class => RelativeDateFormatter::class,
+            StatusColumn::class => StatusFormatter::class,
             StringColumn::class => StringFormatter::class,
             UrlColumn::class => UrlFormatter::class,
-            MoneyColumn::class => MoneyFormatter::class,
         ];
     }
 }

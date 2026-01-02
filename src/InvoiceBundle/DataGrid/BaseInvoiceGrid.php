@@ -18,8 +18,8 @@ use SolidInvoice\DataGridBundle\Grid;
 use SolidInvoice\DataGridBundle\GridBuilder\Action\EditAction;
 use SolidInvoice\DataGridBundle\GridBuilder\Action\ViewAction;
 use SolidInvoice\DataGridBundle\GridBuilder\Batch\BatchAction;
-use SolidInvoice\DataGridBundle\GridBuilder\Column\DateTimeColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\MoneyColumn;
+use SolidInvoice\DataGridBundle\GridBuilder\Column\RelativeDateColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Filter\ChoiceFilter;
 use SolidInvoice\DataGridBundle\GridBuilder\Filter\DateRangeFilter;
@@ -41,7 +41,7 @@ abstract class BaseInvoiceGrid extends Grid
         return [
             StringColumn::new('invoiceId')
                 ->label('Invoice #'),
-            DateTimeColumn::new('invoiceDate')
+            RelativeDateColumn::new('invoiceDate')
                 ->format('d F Y')
                 ->filter(new DateRangeFilter('invoiceDate')),
             StringColumn::new('client')
@@ -49,11 +49,11 @@ abstract class BaseInvoiceGrid extends Grid
                 ->linkToRoute('_clients_view', ['id' => 'client.id']),
             MoneyColumn::new('balance')
                 ->formatValue(fn (BigNumber $value, Invoice $invoice) => new Money((string) $value, $invoice->getClient()?->getCurrency())),
-            DateTimeColumn::new('due')
+            RelativeDateColumn::new('due')
                 ->label('Due Date')
                 ->format('d F Y')
                 ->filter(new DateRangeFilter('due')),
-            DateTimeColumn::new('paidDate')
+            RelativeDateColumn::new('paidDate')
                 ->format('d F Y')
                 ->filter(new DateRangeFilter('paidDate')),
             StringColumn::new('status')

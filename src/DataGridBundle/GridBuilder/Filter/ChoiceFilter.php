@@ -63,11 +63,19 @@ final class ChoiceFilter implements ColumnFilterInterface
 
     public function formOptions(): array
     {
-        return [
-            'placeholder' => 'Choose a value',
-            'multiple' => $this->multiple,
+        $options = [
             'choices' => array_flip($this->choices),
+            'multiple' => $this->multiple,
         ];
+
+        if ($this->multiple) {
+            // Render as checkboxes for better UX
+            $options['expanded'] = true;
+        } else {
+            $options['placeholder'] = 'Choose a value';
+        }
+
+        return $options;
     }
 
     public function filter(QueryBuilder $queryBuilder, mixed $value): void

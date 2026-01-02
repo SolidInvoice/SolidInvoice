@@ -18,12 +18,16 @@ use PHPUnit\Framework\TestCase;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\CurrencyColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\DateTimeColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\MoneyColumn;
+use SolidInvoice\DataGridBundle\GridBuilder\Column\RelativeDateColumn;
+use SolidInvoice\DataGridBundle\GridBuilder\Column\StatusColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\UrlColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Formatter\ColumnFormatter;
 use SolidInvoice\DataGridBundle\GridBuilder\Formatter\CurrencyFormatter;
 use SolidInvoice\DataGridBundle\GridBuilder\Formatter\DateTimeFormatter;
 use SolidInvoice\DataGridBundle\GridBuilder\Formatter\MoneyFormatter;
+use SolidInvoice\DataGridBundle\GridBuilder\Formatter\RelativeDateFormatter;
+use SolidInvoice\DataGridBundle\GridBuilder\Formatter\StatusFormatter;
 use SolidInvoice\DataGridBundle\GridBuilder\Formatter\StringFormatter;
 use SolidInvoice\DataGridBundle\GridBuilder\Formatter\UrlFormatter;
 use SolidInvoice\SettingsBundle\SystemConfig;
@@ -85,9 +89,11 @@ final class ColumnFormatterTest extends TestCase
         $this->assertSame([
             CurrencyColumn::class => CurrencyFormatter::class,
             DateTimeColumn::class => DateTimeFormatter::class,
+            MoneyColumn::class => MoneyFormatter::class,
+            RelativeDateColumn::class => RelativeDateFormatter::class,
+            StatusColumn::class => StatusFormatter::class,
             StringColumn::class => StringFormatter::class,
             UrlColumn::class => UrlFormatter::class,
-            MoneyColumn::class => MoneyFormatter::class,
         ], $services);
     }
 }

@@ -91,7 +91,7 @@
             <div class="container-xl">
                 <div class="row g-2 align-items-center">
                     <div class="col">
-                        {% if block('title')|default(null) is not empty %}
+                        {% if block('title') is defined %}
                             {#<div class="page-pretitle">
                                 {{ block('title')|raw }}
                             </div>#}

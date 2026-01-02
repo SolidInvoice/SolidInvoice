@@ -24,6 +24,18 @@ class Action
 
     private string $label = '';
 
+    /**
+     * Primary actions show as icon buttons in the row.
+     * Non-primary actions appear in the three-dot dropdown menu.
+     */
+    private bool $primary = true;
+
+    private bool $confirm = false;
+
+    private string $confirmMessage = 'Are you sure?';
+
+    private string $color = '';
+
     final public function __construct()
     {
     }
@@ -61,6 +73,37 @@ class Action
         return $this;
     }
 
+    /**
+     * Mark action as non-primary to show it in the dropdown menu instead of as an icon.
+     */
+    public function inMenu(): static
+    {
+        $this->primary = false;
+
+        return $this;
+    }
+
+    /**
+     * Require confirmation before executing the action.
+     */
+    public function confirm(string $message = 'Are you sure?'): static
+    {
+        $this->confirm = true;
+        $this->confirmMessage = $message;
+
+        return $this;
+    }
+
+    /**
+     * Set the color/variant for the action (e.g., 'danger' for destructive actions).
+     */
+    public function color(string $color): static
+    {
+        $this->color = $color;
+
+        return $this;
+    }
+
     public function getRoute(): string
     {
         return $this->route;
@@ -82,5 +125,25 @@ class Action
     public function getLabel(): string
     {
         return $this->label;
+    }
+
+    public function isPrimary(): bool
+    {
+        return $this->primary;
+    }
+
+    public function shouldConfirm(): bool
+    {
+        return $this->confirm;
+    }
+
+    public function getConfirmMessage(): string
+    {
+        return $this->confirmMessage;
+    }
+
+    public function getColor(): string
+    {
+        return $this->color;
     }
 }
