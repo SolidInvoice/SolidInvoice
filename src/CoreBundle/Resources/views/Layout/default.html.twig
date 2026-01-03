@@ -1,11 +1,11 @@
 {#
- # This file is part of SolidInvoice package.
- #
- # (c) Pierre du Plessis <open-source@solidworx.co>
- #
- # This source file is subject to the MIT license that is bundled
- # with this source code in the file LICENSE.
- #}
+# This file is part of SolidInvoice package.
+#
+# (c) Pierre du Plessis <open-source@solidworx.co>
+#
+# This source file is subject to the MIT license that is bundled
+# with this source code in the file LICENSE.
+#}
 
 {% extends '@SolidInvoiceCore/Layout/base.html.twig' %}
 
@@ -87,11 +87,11 @@
     {{ block('header') }}
 
     <div class="page-wrapper">
-        <div class="page-header d-print-none">
-            <div class="container-xl">
-                <div class="row g-2 align-items-center">
-                    <div class="col">
-                        {% if block('title') is defined and block('title') is defined and block('title')|trim is not empty %}
+        {% if block('title') is defined and block('title') is defined and block('title')|trim is not empty %}
+            <div class="page-header d-print-none">
+                <div class="container-xl">
+                    <div class="row g-2 align-items-center">
+                        <div class="col">
                             {% if block('pretitle') is defined and block('pretitle')|trim is not empty %}
                                 <div class="page-pretitle">
                                     {{ block('pretitle')|raw }}
@@ -100,18 +100,19 @@
                             <h2 class="page-title">
                                 {{ block('title')|raw }}
                             </h2>
-                        {% endif %}
-                    </div>
-                    {% if block('heading') is defined and block('heading')|trim is not empty %}
-                        <div class="col-auto ms-auto d-print-none">
-                            <div class="btn-list">
-                                {{ block('heading') }}
-                            </div>
                         </div>
-                    {% endif %}
+                    </div>
                 </div>
             </div>
-        </div>
+        {% endif %}
+
+        {% if block('heading') is defined and block('heading')|trim is not empty %}
+            <div class="col-auto ms-auto d-print-none">
+                <div class="btn-list">
+                    {{ block('heading') }}
+                </div>
+            </div>
+        {% endif %}
 
         <div class="page-body">
             <div class="container-xl">

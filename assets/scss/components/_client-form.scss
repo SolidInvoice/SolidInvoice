@@ -1,0 +1,626 @@
+/**
+ * SolidInvoice - Client Form Styles
+ *
+ * Modern, elegant client creation form with clean visual hierarchy.
+ * Uses design system tokens for consistent styling.
+ */
+
+// ============================================================================
+// CLIENT FORM PAGE CONTAINER
+// ============================================================================
+
+.client-form-page {
+    min-height: 100%;
+}
+
+.client-form-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding-bottom: var(--swp-space-24);
+}
+
+// ============================================================================
+// PAGE HEADER
+// ============================================================================
+
+.client-form-header {
+    margin-bottom: var(--swp-space-8);
+    padding: var(--swp-space-6) 0;
+}
+
+.client-form-header-content {
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-4);
+}
+
+.client-form-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.15) 100%);
+    border-radius: var(--swp-radius-lg);
+    color: var(--swp-primary);
+}
+
+.client-form-title {
+    font-size: 1.75rem;
+    font-weight: var(--swp-font-bold);
+    color: var(--swp-text-primary);
+    margin: 0;
+    letter-spacing: -0.025em;
+}
+
+.client-form-subtitle {
+    font-size: var(--swp-text-base);
+    color: var(--swp-text-muted);
+    margin: var(--swp-space-1) 0 0 0;
+}
+
+// ============================================================================
+// FORM SECTIONS
+// ============================================================================
+
+.client-form-sections {
+    display: flex;
+    flex-direction: column;
+    gap: var(--swp-space-6);
+}
+
+.client-form-section {
+    background: var(--swp-surface);
+    border: 1px solid var(--swp-border);
+    border-radius: var(--swp-radius-lg);
+    overflow: hidden;
+    transition: box-shadow var(--swp-transition-base),
+                border-color var(--swp-transition-base);
+
+    &:hover {
+        box-shadow: var(--swp-shadow-sm);
+    }
+
+    &:focus-within {
+        border-color: rgba(var(--swp-primary-rgb), 0.3);
+        box-shadow: 0 0 0 3px rgba(var(--swp-primary-rgb), 0.08);
+    }
+}
+
+.client-form-section-optional {
+    background: var(--swp-gray-50);
+    border-style: dashed;
+
+    .section-header {
+        background: transparent;
+    }
+}
+
+// ============================================================================
+// SECTION HEADER
+// ============================================================================
+
+.section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--swp-space-3);
+    padding: var(--swp-space-5) var(--swp-space-6);
+    background: var(--swp-gray-50);
+    border-bottom: 1px solid var(--swp-border-light);
+}
+
+.section-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: var(--swp-surface);
+    border-radius: var(--swp-radius-md);
+    color: var(--swp-primary);
+    flex-shrink: 0;
+    box-shadow: var(--swp-shadow-xs);
+}
+
+.section-icon-required {
+    background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.2) 100%);
+}
+
+.section-header-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.section-title {
+    font-size: var(--swp-text-lg);
+    font-weight: var(--swp-font-semibold);
+    color: var(--swp-text-primary);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-2);
+    flex-wrap: wrap;
+}
+
+.section-description {
+    font-size: var(--swp-text-sm);
+    color: var(--swp-text-muted);
+    margin: var(--swp-space-1) 0 0 0;
+    line-height: 1.5;
+}
+
+// Badges for Required/Optional
+.required-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: var(--swp-font-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--swp-primary-dark);
+    background: var(--swp-primary-light);
+    border-radius: var(--swp-radius-full);
+}
+
+.optional-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: var(--swp-font-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--swp-text-muted);
+    background: var(--swp-gray-200);
+    border-radius: var(--swp-radius-full);
+}
+
+// ============================================================================
+// SECTION CONTENT
+// ============================================================================
+
+.section-content {
+    padding: var(--swp-space-6);
+}
+
+// ============================================================================
+// FORM GRID (For Client Info Fields)
+// ============================================================================
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--swp-space-4);
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.form-field-wide {
+    grid-column: 1 / -1;
+}
+
+// ============================================================================
+// CONTACT CARD
+// ============================================================================
+
+.contacts-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--swp-space-4);
+}
+
+.contact-card {
+    background: var(--swp-gray-50);
+    border: 1px solid var(--swp-border);
+    border-radius: var(--swp-radius-md);
+    transition: border-color var(--swp-transition-fast),
+                box-shadow var(--swp-transition-fast);
+
+    &:focus-within {
+        border-color: rgba(var(--swp-primary-rgb), 0.4);
+        box-shadow: 0 0 0 3px rgba(var(--swp-primary-rgb), 0.08);
+    }
+}
+
+.contact-card-header {
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-3);
+    padding: var(--swp-space-3) var(--swp-space-4);
+    background: var(--swp-surface);
+    border-bottom: 1px solid var(--swp-border-light);
+}
+
+.contact-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: var(--swp-primary-light);
+    border-radius: var(--swp-radius-full);
+    color: var(--swp-primary);
+}
+
+.contact-card-title {
+    flex: 1;
+}
+
+.contact-label {
+    font-size: var(--swp-text-sm);
+    font-weight: var(--swp-font-semibold);
+    color: var(--swp-text-primary);
+}
+
+.contact-card-actions {
+    display: flex;
+    gap: var(--swp-space-2);
+}
+
+.contact-card-body {
+    padding: var(--swp-space-4);
+}
+
+.contact-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--swp-space-3);
+
+    @media (max-width: 576px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.contact-field-email {
+    grid-column: 1 / -1;
+}
+
+// ============================================================================
+// ADDITIONAL CONTACT DETAILS
+// ============================================================================
+
+.additional-details-section {
+    margin-top: var(--swp-space-4);
+    padding-top: var(--swp-space-4);
+    border-top: 1px dashed var(--swp-border);
+}
+
+.additional-details-header {
+    margin-bottom: var(--swp-space-3);
+}
+
+.additional-details-label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--swp-space-2);
+    font-size: var(--swp-text-sm);
+    font-weight: var(--swp-font-medium);
+    color: var(--swp-text-secondary);
+}
+
+.additional-details-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--swp-space-2);
+}
+
+.additional-detail-row {
+    display: grid;
+    grid-template-columns: 140px 1fr auto;
+    gap: var(--swp-space-2);
+    align-items: start;
+
+    @media (max-width: 576px) {
+        grid-template-columns: 1fr;
+        gap: var(--swp-space-2);
+
+        .additional-detail-action {
+            justify-self: end;
+        }
+    }
+}
+
+.additional-detail-action {
+    display: flex;
+    align-items: center;
+    padding-top: var(--swp-space-1);
+}
+
+.additional-details-add {
+    margin-top: var(--swp-space-3);
+}
+
+.add-detail-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--swp-space-1);
+    font-size: var(--swp-text-sm);
+}
+
+// ============================================================================
+// ADDRESS CARD
+// ============================================================================
+
+.addresses-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--swp-space-4);
+}
+
+.address-card {
+    background: var(--swp-surface);
+    border: 1px solid var(--swp-border);
+    border-radius: var(--swp-radius-md);
+    overflow: hidden;
+    transition: border-color var(--swp-transition-fast),
+                box-shadow var(--swp-transition-fast);
+
+    &:focus-within {
+        border-color: rgba(var(--swp-primary-rgb), 0.4);
+        box-shadow: 0 0 0 3px rgba(var(--swp-primary-rgb), 0.08);
+    }
+}
+
+.address-card-header {
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-3);
+    padding: var(--swp-space-3) var(--swp-space-4);
+    background: var(--swp-gray-50);
+    border-bottom: 1px solid var(--swp-border-light);
+}
+
+.address-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: var(--swp-info-light);
+    border-radius: var(--swp-radius-full);
+    color: var(--swp-info);
+}
+
+.address-card-title {
+    flex: 1;
+}
+
+.address-label {
+    font-size: var(--swp-text-sm);
+    font-weight: var(--swp-font-semibold);
+    color: var(--swp-text-primary);
+}
+
+.address-card-actions {
+    display: flex;
+    gap: var(--swp-space-2);
+}
+
+.address-card-body {
+    padding: var(--swp-space-4);
+}
+
+.address-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--swp-space-3);
+
+    @media (max-width: 576px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.address-field-street {
+    // Default behavior
+}
+
+.address-field-city,
+.address-field-state {
+    // Half-width on desktop
+}
+
+.address-field-zip,
+.address-field-country {
+    // Half-width on desktop
+}
+
+// ============================================================================
+// ADD ITEM ACTION BUTTON
+// ============================================================================
+
+.add-item-action {
+    margin-top: var(--swp-space-4);
+    padding-top: var(--swp-space-4);
+    border-top: 1px dashed var(--swp-border);
+}
+
+.add-item-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--swp-space-2);
+    padding: var(--swp-space-2-5) var(--swp-space-4);
+    font-weight: var(--swp-font-medium);
+    border-style: dashed;
+    transition: all var(--swp-transition-fast);
+
+    &:hover {
+        background: var(--swp-primary-lighter);
+        border-style: solid;
+    }
+
+    &::before {
+        content: '+';
+        font-size: 1.25em;
+        font-weight: 300;
+    }
+}
+
+// ============================================================================
+// FORM ACTIONS (Sticky Footer)
+// ============================================================================
+
+.client-form-actions {
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--swp-surface);
+    border-top: 1px solid var(--swp-border);
+    padding: var(--swp-space-4) 0;
+    margin-top: var(--swp-space-8);
+    z-index: 10;
+
+    // Subtle shadow to indicate sticky
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.client-form-actions-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 var(--swp-space-4);
+}
+
+// Save button with enhanced styling
+.btn-save {
+    padding: var(--swp-space-3) var(--swp-space-6);
+    font-weight: var(--swp-font-semibold);
+    box-shadow: var(--swp-shadow-primary);
+
+    &:hover {
+        box-shadow: var(--swp-shadow-primary-lg);
+        transform: translateY(-1px);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+}
+
+// ============================================================================
+// BUTTON ICON STYLING
+// ============================================================================
+
+.btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border-radius: var(--swp-radius-md);
+
+    svg {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+.btn-ghost-danger {
+    color: var(--swp-text-muted);
+    background: transparent;
+    border: none;
+
+    &:hover {
+        color: var(--swp-danger);
+        background: var(--swp-danger-lighter);
+    }
+
+    &:focus {
+        box-shadow: var(--swp-ring-danger);
+    }
+}
+
+// ============================================================================
+// RESPONSIVE ADJUSTMENTS
+// ============================================================================
+
+@media (max-width: 768px) {
+    .client-form-container {
+        padding: 0 var(--swp-space-4);
+        padding-bottom: var(--swp-space-20);
+    }
+
+    .client-form-header {
+        margin-bottom: var(--swp-space-6);
+        padding: var(--swp-space-4) 0;
+    }
+
+    .client-form-icon {
+        width: 48px;
+        height: 48px;
+    }
+
+    .client-form-title {
+        font-size: 1.5rem;
+    }
+
+    .section-header {
+        padding: var(--swp-space-4);
+    }
+
+    .section-content {
+        padding: var(--swp-space-4);
+    }
+
+    .section-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .client-form-actions-inner {
+        gap: var(--swp-space-3);
+
+        .btn {
+            flex: 1;
+        }
+    }
+}
+
+// ============================================================================
+// ANIMATION FOR NEW ITEMS
+// ============================================================================
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.contact-card,
+.address-card {
+    animation: slideIn 0.2s ease-out;
+}
+
+// ============================================================================
+// EMPTY STATE STYLING
+// ============================================================================
+
+.contacts-list:empty::before,
+.addresses-list:empty::before {
+    content: '';
+    display: none;
+}
+
+.empty-contacts-hint,
+.empty-addresses-hint {
+    padding: var(--swp-space-6);
+    text-align: center;
+    background: var(--swp-surface);
+    border: 2px dashed var(--swp-border);
+    border-radius: var(--swp-radius-md);
+
+    p {
+        font-size: var(--swp-text-sm);
+    }
+}

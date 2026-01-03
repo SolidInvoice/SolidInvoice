@@ -9,25 +9,78 @@
 
 {{ form_errors(form) }}
 
-<div class="row">
-    <div class="col-lg-6 col-md-6">
-        {{ form_row(form.firstName) }}
+<div class="contact-card">
+    <div class="contact-card-header">
+        <div class="contact-avatar">
+            {{ ux_icon('tabler:user', {width: 20, height: 20}) }}
+        </div>
+        <div class="contact-card-title">
+            <span class="contact-label">{{ 'Contact' }}</span>
+        </div>
+        <div class="contact-card-actions">
+            {{ form_widget(form.vars.button_delete, {
+                label: '',
+                attr: {
+                    class: 'btn btn-ghost-danger btn-sm',
+                    title: 'client.contact.delete'|trans,
+                    'aria-label': 'client.contact.delete'|trans
+                }
+            }) }}
+        </div>
     </div>
-    <div class="col-lg-6 col-md-6">
-        {{ form_row(form.lastName) }}
+
+    <div class="contact-card-body">
+        <div class="contact-form-grid">
+            <div class="contact-field contact-field-name">
+                {{ form_row(form.firstName, {
+                    attr: {
+                        placeholder: 'John'|trans
+                    }
+                }) }}
+            </div>
+            <div class="contact-field contact-field-name">
+                {{ form_row(form.lastName, {
+                    attr: {
+                        placeholder: 'Doe'|trans
+                    }
+                }) }}
+            </div>
+            <div class="contact-field contact-field-email">
+                {{ form_row(form.email, {
+                    attr: {
+                        placeholder: 'john.doe@example.com'
+                    }
+                }) }}
+            </div>
+        </div>
+
+        {# Additional Contact Details Section #}
+        {% if form.additionalContactDetails is defined %}
+            <div class="additional-details-section">
+                <div class="additional-details-header">
+                    <span class="additional-details-label">
+                        {{ ux_icon('tabler:phone', {width: 16, height: 16}) }}
+                        {{ 'client.contact.details.extra'|trans }}
+                    </span>
+                </div>
+
+                <div class="additional-details-list">
+                    {% for detail in form.additionalContactDetails %}
+                        {{ form_row(detail) }}
+                    {% endfor %}
+                </div>
+
+                {{ form_errors(form.additionalContactDetails) }}
+
+                <div class="additional-details-add">
+                    {{ form_widget(form.additionalContactDetails.vars.button_add, {
+                        label: 'Add Additional Details'|trans,
+                        attr: {
+                            class: 'btn btn-sm btn-ghost add-detail-btn'
+                        }
+                    }) }}
+                </div>
+            </div>
+        {% endif %}
     </div>
 </div>
-
-{{ form_row(form.email) }}
-
-<h5>
-    {{ 'client.contact.details.extra'|trans }}
-</h5>
-
-{% set addBtn = form_widget(form.additionalContactDetails.vars.button_add, {label: '+ ' ~ 'Add Additional Details'|trans, attr: {class: 'btn btn-outline-primary'}}) %}
-
-{{ form_row(form.additionalContactDetails) }}
-
-{{ form_errors(form.additionalContactDetails) }}
-
-{{ addBtn|raw }}

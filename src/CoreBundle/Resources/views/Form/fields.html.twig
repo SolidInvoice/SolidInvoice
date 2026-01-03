@@ -208,44 +208,60 @@
 
 {# Address Widget - Design System layout #}
 {% block address_widget %}
-    {% set id = random() %}
-    <div class="address-widget">
-        <div class="row g-3">
-            <div class="col-md-6">
-                {{ form_row(form.street1) }}
+    <div class="address-card">
+        <div class="address-card-header">
+            <div class="address-icon">
+                {{ ux_icon('tabler:map-pin', {width: 20, height: 20}) }}
             </div>
-            <div class="col-md-6">
-                {{ form_row(form.street2) }}
+            <div class="address-card-title">
+                <span class="address-label">{{ 'address'|trans }}</span>
             </div>
+            {% if form.vars.button_delete is defined %}
+                <div class="address-card-actions">
+                    {{ form_widget(form.vars.button_delete, {
+                        label: '',
+                        attr: {
+                            class: 'btn btn-ghost-danger btn-sm',
+                            title: 'client.address.delete'|trans,
+                            'aria-label': 'client.address.delete'|trans
+                        }
+                    }) }}
+                </div>
+            {% endif %}
         </div>
 
-        <div class="row g-3 mt-2">
-            <div class="col-md-6">
-                {{ form_row(form.city) }}
-            </div>
-            <div class="col-md-6">
-                {{ form_row(form.state) }}
+        <div class="address-card-body">
+            <div class="address-form-grid">
+                <div class="address-field address-field-street">
+                    {{ form_row(form.street1, {
+                        attr: { placeholder: '123 Main Street'|trans }
+                    }) }}
+                </div>
+                <div class="address-field address-field-street">
+                    {{ form_row(form.street2, {
+                        attr: { placeholder: 'Apartment, suite, unit, etc.'|trans }
+                    }) }}
+                </div>
+                <div class="address-field address-field-city">
+                    {{ form_row(form.city, {
+                        attr: { placeholder: 'City'|trans }
+                    }) }}
+                </div>
+                <div class="address-field address-field-state">
+                    {{ form_row(form.state, {
+                        attr: { placeholder: 'State/Province'|trans }
+                    }) }}
+                </div>
+                <div class="address-field address-field-zip">
+                    {{ form_row(form.zip, {
+                        attr: { placeholder: 'Postal Code'|trans }
+                    }) }}
+                </div>
+                <div class="address-field address-field-country">
+                    {{ form_row(form.country) }}
+                </div>
             </div>
         </div>
-
-        <div class="row g-3 mt-2">
-            <div class="col-md-6">
-                {{ form_row(form.zip) }}
-            </div>
-            <div class="col-md-6">
-                {{ form_row(form.country) }}
-            </div>
-        </div>
-
-        {% if form.vars.button_delete is defined %}
-            <div class="mt-3 d-flex justify-content-end">
-                {{ form_widget(form.vars.button_delete, {
-                    label_html: true,
-                    label: ux_icon('tabler:trash', {width: 16, height: 16}) ~ ' ' ~ 'client.address.delete'|trans,
-                    attr: {class: 'btn btn-outline-danger btn-sm'}
-                }) }}
-            </div>
-        {% endif %}
     </div>
 {% endblock address_widget %}
 
