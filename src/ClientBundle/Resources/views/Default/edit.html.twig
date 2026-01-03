@@ -9,8 +9,6 @@
 
 {% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
-{% block title %}{{ 'edit_client'|trans }} - {{ client }}{% endblock %}
-
 {% block content %}
     <twig:ClientForm :client="client" />
 {% endblock %}
