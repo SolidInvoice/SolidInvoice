@@ -7,24 +7,41 @@
  # with this source code in the file LICENSE.
  #}
 
-<div class="row-fluid">
-    <fieldset>
-        <legend>
-            <h4>
-                {{ client.name }}
-                <small>
-                    (<a href="#" data-action="live#action:prevent" data-live-action-param="clearClient">{{ "change"|trans }}</a>)
-                </small>
-            </h4>
-        </legend>
+<div class="selected-client-card">
+    <div class="selected-client-header">
+        <span class="selected-client-name">
+            {{ ux_icon('tabler:building', {width: 20, height: 20}) }}
+            {{ client.name }}
+        </span>
+        <a href="#" class="selected-client-change" data-action="live#action:prevent" data-live-action-param="clearClient">
+            {{ 'change'|trans }}
+        </a>
+    </div>
 
-        {% if type is defined %}
-            <small>{{ 'client.contacts.info.list'|trans({'%type%': type}) }}</small>
-        {% endif %}
+    {% if type is defined %}
+        <p class="text-muted mb-3">{{ 'client.contacts.info.list'|trans({'%type%': type}) }}</p>
+    {% endif %}
 
-        {% if form.users is defined %}
+    {% if form.users is defined %}
+        <div class="selected-client-contacts">
+            <div class="contacts-label" id="contacts-label">
+                {{ ux_icon('tabler:mail', {width: 16, height: 16}) }}
+                {{ 'invoice.send_to'|trans }}
+            </div>
+
             {{ form_errors(form.users) }}
-            {{ form_row(form.users) }}
-        {% endif %}
-    </fieldset>
+
+            <div class="contacts-list" role="group" aria-labelledby="contacts-label">
+                {% for user in form.users %}
+                    <label class="contact-checkbox">
+                        {{ form_widget(user) }}
+                        <span class="contact-name">{{ user.vars.label }}</span>
+                        {% if user.vars.data.email is defined %}
+                            <span class="contact-email">({{ user.vars.data.email }})</span>
+                        {% endif %}
+                    </label>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
 </div>

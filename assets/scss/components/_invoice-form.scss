@@ -1,0 +1,1085 @@
+/**
+ * SolidInvoice - Invoice Form Styles
+ *
+ * Modern, clean invoice creation form with 2-column layout,
+ * sticky totals sidebar, and collapsible sections.
+ * Uses design system tokens for consistent styling.
+ */
+
+// ============================================================================
+// INVOICE FORM PAGE CONTAINER
+// ============================================================================
+
+.invoice-form-page {
+    min-height: 100%;
+}
+
+.invoice-form-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding-bottom: var(--swp-space-24);
+}
+
+// ============================================================================
+// PAGE HEADER
+// ============================================================================
+
+.invoice-form-header {
+    margin-bottom: var(--swp-space-6);
+    padding: var(--swp-space-6) 0;
+}
+
+.invoice-form-header-content {
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-4);
+}
+
+.invoice-form-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.15) 100%);
+    border-radius: var(--swp-radius-lg);
+    color: var(--swp-primary);
+}
+
+.invoice-form-title {
+    font-size: 1.75rem;
+    font-weight: var(--swp-font-bold);
+    color: var(--swp-text-primary);
+    margin: 0;
+    letter-spacing: -0.025em;
+}
+
+.invoice-form-subtitle {
+    font-size: var(--swp-text-base);
+    color: var(--swp-text-muted);
+    margin: var(--swp-space-1) 0 0 0;
+}
+
+// ============================================================================
+// INVOICE DETAILS SECTION (Client, Invoice ID, Dates, Discount)
+// ============================================================================
+
+.invoice-details-section {
+    background: var(--swp-surface);
+    border: 1px solid var(--swp-border);
+    border-radius: var(--swp-radius-lg);
+    padding: var(--swp-space-6);
+    margin-bottom: var(--swp-space-6);
+    transition: box-shadow var(--swp-transition-base);
+
+    &:focus-within {
+        border-color: rgba(var(--swp-primary-rgb), 0.3);
+        box-shadow: 0 0 0 3px rgba(var(--swp-primary-rgb), 0.08);
+    }
+}
+
+.invoice-details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--swp-space-6);
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.invoice-details-left {
+    display: flex;
+    flex-direction: column;
+    gap: var(--swp-space-4);
+}
+
+.invoice-details-right {
+    display: flex;
+    flex-direction: column;
+    gap: var(--swp-space-4);
+}
+
+// Invoice ID with inline edit
+.invoice-id-display {
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-2);
+    margin-bottom: var(--swp-space-2);
+
+    .invoice-id-label {
+        font-size: var(--swp-text-2xl);
+        font-weight: var(--swp-font-semibold);
+        color: var(--swp-text-primary);
+    }
+
+    .invoice-id-value {
+        font-size: var(--swp-text-2xl);
+        font-weight: var(--swp-font-bold);
+        color: var(--swp-primary);
+    }
+
+    .invoice-id-edit {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        border-radius: var(--swp-radius-sm);
+        color: var(--swp-text-muted);
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        transition: all var(--swp-transition-fast);
+
+        &:hover {
+            color: var(--swp-primary);
+            background: var(--swp-primary-light);
+        }
+    }
+}
+
+.invoice-id-form {
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-2);
+
+    .form-control {
+        max-width: 200px;
+    }
+
+    .btn {
+        padding: var(--swp-space-2);
+    }
+}
+
+// Date fields row
+.invoice-dates-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--swp-space-4);
+
+    @media (max-width: 576px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+// ============================================================================
+// CLIENT SELECTION
+// ============================================================================
+
+.client-selection {
+    margin-bottom: var(--swp-space-4);
+}
+
+.selected-client-card {
+    background: var(--swp-gray-50);
+    border: 1px solid var(--swp-border);
+    border-radius: var(--swp-radius-md);
+    padding: var(--swp-space-4);
+    animation: slideIn 0.2s ease-out;
+}
+
+.selected-client-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--swp-space-3);
+}
+
+.selected-client-name {
+    font-size: var(--swp-text-lg);
+    font-weight: var(--swp-font-semibold);
+    color: var(--swp-text-primary);
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-2);
+}
+
+.selected-client-change {
+    font-size: var(--swp-text-sm);
+    color: var(--swp-primary);
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.selected-client-contacts {
+    border-top: 1px dashed var(--swp-border);
+    padding-top: var(--swp-space-3);
+    margin-top: var(--swp-space-3);
+}
+
+.contacts-label {
+    font-size: var(--swp-text-sm);
+    font-weight: var(--swp-font-medium);
+    color: var(--swp-text-secondary);
+    margin-bottom: var(--swp-space-2);
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-2);
+}
+
+.contacts-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--swp-space-2);
+}
+
+.contact-checkbox {
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-2);
+    padding: var(--swp-space-2) var(--swp-space-3);
+    background: var(--swp-surface);
+    border-radius: var(--swp-radius-sm);
+    transition: background var(--swp-transition-fast);
+
+    &:hover {
+        background: var(--swp-gray-100);
+    }
+
+    .form-check-input {
+        margin: 0;
+    }
+
+    .contact-name {
+        font-weight: var(--swp-font-medium);
+    }
+
+    .contact-email {
+        font-size: var(--swp-text-sm);
+        color: var(--swp-text-muted);
+    }
+}
+
+// ============================================================================
+// MAIN CONTENT - 2 COLUMN LAYOUT
+// ============================================================================
+
+.invoice-form-main {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: var(--swp-space-6);
+    align-items: start;
+
+    @media (max-width: 1100px) {
+        grid-template-columns: 1fr 280px;
+    }
+
+    @media (max-width: 900px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+// ============================================================================
+// LINE ITEMS SECTION
+// ============================================================================
+
+.invoice-items-section {
+    background: var(--swp-surface);
+    border: 1px solid var(--swp-border);
+    border-radius: var(--swp-radius-lg);
+    overflow: hidden;
+}
+
+.invoice-items-header {
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-3);
+    padding: var(--swp-space-4) var(--swp-space-6);
+    background: var(--swp-gray-50);
+    border-bottom: 1px solid var(--swp-border-light);
+}
+
+.invoice-items-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.2) 100%);
+    border-radius: var(--swp-radius-md);
+    color: var(--swp-primary);
+}
+
+.invoice-items-title {
+    font-size: var(--swp-text-lg);
+    font-weight: var(--swp-font-semibold);
+    color: var(--swp-text-primary);
+    margin: 0;
+}
+
+.invoice-items-body {
+    padding: var(--swp-space-4);
+}
+
+// Line items list (responsive grid)
+.invoice-items-list {
+    margin-bottom: var(--swp-space-4);
+}
+
+.invoice-items-header-row {
+    display: grid;
+    grid-template-columns: 2fr minmax(100px, 1fr) 70px minmax(100px, 1fr) 90px 48px;
+    gap: var(--swp-space-4);
+    padding: var(--swp-space-3);
+    border-bottom: 1px solid var(--swp-border);
+
+    > div {
+        font-size: var(--swp-text-xs);
+        font-weight: var(--swp-font-semibold);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--swp-text-muted);
+        white-space: nowrap;
+    }
+
+    .column-total {
+        text-align: right;
+    }
+
+    .column-actions {
+        text-align: center;
+    }
+
+    @media (max-width: 900px) {
+        display: none;
+    }
+}
+
+// Without tax column - give description even more space
+.invoice-items-list:not(:has(.column-tax)) {
+    .invoice-items-header-row {
+        grid-template-columns: 3fr minmax(100px, 1fr) 70px 90px 48px;
+    }
+
+    .invoice-item-row {
+        grid-template-columns: 3fr minmax(100px, 1fr) 70px 90px 48px;
+
+        @media (max-width: 900px) {
+            grid-template-columns: 1fr;
+        }
+    }
+}
+
+.invoice-item-row {
+    display: grid;
+    grid-template-columns: 2fr minmax(100px, 1fr) 70px minmax(100px, 1fr) 90px 48px;
+    gap: var(--swp-space-4);
+    padding: var(--swp-space-3);
+    border-bottom: 1px solid var(--swp-border-light);
+    align-items: start;
+    transition: background var(--swp-transition-fast);
+
+    > div {
+        min-width: 0; // Prevent grid blowout
+    }
+
+    &:hover {
+        background: var(--swp-gray-50);
+    }
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    .column-description {
+        min-width: 0; // Prevent grid blowout
+        overflow: hidden;
+
+        textarea {
+            min-height: 60px;
+            resize: vertical;
+            width: 100%;
+            max-width: 100%;
+        }
+    }
+
+    .column-price,
+    .column-qty,
+    .column-tax {
+        input,
+        select {
+            width: 100%;
+        }
+    }
+
+    .column-qty {
+        input {
+            text-align: center;
+        }
+    }
+
+    .column-total {
+        text-align: right;
+        padding-top: var(--swp-space-2);
+
+        .item-total-value {
+            font-weight: var(--swp-font-semibold);
+            color: var(--swp-text-primary);
+            white-space: nowrap;
+        }
+    }
+
+    .column-actions {
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        padding-top: var(--swp-space-1);
+    }
+
+    .mobile-label {
+        display: none;
+    }
+
+    // Mobile responsive layout
+    @media (max-width: 900px) {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+            "desc desc"
+            "price qty"
+            "tax tax"
+            "actions total";
+        gap: var(--swp-space-3);
+        padding: var(--swp-space-4);
+        margin-bottom: var(--swp-space-3);
+        background: var(--swp-gray-50);
+        border: 1px solid var(--swp-border);
+        border-radius: var(--swp-radius-md);
+
+        &:hover {
+            background: var(--swp-gray-50);
+        }
+
+        &:last-child {
+            border-bottom: 1px solid var(--swp-border);
+        }
+
+        .mobile-label {
+            display: block;
+            font-size: var(--swp-text-xs);
+            font-weight: var(--swp-font-semibold);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--swp-text-muted);
+            margin-bottom: var(--swp-space-1);
+        }
+
+        .column-description {
+            grid-area: desc;
+
+            textarea {
+                width: 100%;
+                min-height: 80px;
+            }
+        }
+
+        .column-price {
+            grid-area: price;
+
+            input {
+                width: 100%;
+            }
+        }
+
+        .column-qty {
+            grid-area: qty;
+
+            input {
+                width: 100%;
+            }
+        }
+
+        .column-tax {
+            grid-area: tax;
+
+            select {
+                width: 100%;
+            }
+        }
+
+        .column-actions {
+            grid-area: actions;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: var(--swp-space-3);
+            border-top: 1px dashed var(--swp-border);
+        }
+
+        .column-total {
+            grid-area: total;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: var(--swp-space-2);
+            padding-top: var(--swp-space-3);
+            border-top: 1px dashed var(--swp-border);
+
+            .mobile-label {
+                display: inline;
+                margin-bottom: 0;
+            }
+
+            .item-total-value {
+                font-size: var(--swp-text-lg);
+                font-weight: var(--swp-font-semibold);
+                color: var(--swp-primary);
+            }
+        }
+    }
+}
+
+// Remove item button
+.remove-item-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 1px solid var(--swp-border);
+    background: var(--swp-surface);
+    color: var(--swp-text-muted);
+    border-radius: var(--swp-radius-sm);
+    cursor: pointer;
+    transition: all var(--swp-transition-fast);
+
+    svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    &:hover {
+        color: var(--swp-danger);
+        background: var(--swp-danger-lighter);
+        border-color: var(--swp-danger);
+    }
+
+    &:focus {
+        outline: 2px solid var(--swp-primary);
+        outline-offset: 2px;
+    }
+}
+
+// Add item button
+.add-item-action {
+    padding-top: var(--swp-space-4);
+    border-top: 1px dashed var(--swp-border);
+}
+
+.add-item-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: var(--swp-space-2);
+    font-weight: var(--swp-font-medium);
+    color: var(--swp-primary);
+    background: transparent;
+    border: 2px dashed var(--swp-border);
+    border-radius: var(--swp-radius-md);
+    cursor: pointer;
+    transition: all var(--swp-transition-fast);
+
+    &:hover {
+        background: var(--swp-primary-lighter);
+        border-color: var(--swp-primary);
+        border-style: solid;
+    }
+}
+
+// ============================================================================
+// TOTALS SIDEBAR (Sticky on Desktop)
+// ============================================================================
+
+.invoice-totals-sidebar {
+    position: sticky;
+    top: var(--swp-space-6);
+
+    @media (max-width: 992px) {
+        position: static;
+    }
+}
+
+.invoice-totals-card {
+    background: var(--swp-surface);
+    border: 1px solid var(--swp-border);
+    border-radius: var(--swp-radius-lg);
+    overflow: hidden;
+}
+
+.invoice-totals-header {
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-3);
+    padding: var(--swp-space-4) var(--swp-space-5);
+    background: var(--swp-gray-50);
+    border-bottom: 1px solid var(--swp-border-light);
+}
+
+.invoice-totals-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--swp-success-light) 0%, rgba(var(--swp-success-rgb), 0.2) 100%);
+    border-radius: var(--swp-radius-md);
+    color: var(--swp-success);
+}
+
+.invoice-totals-title {
+    font-size: var(--swp-text-lg);
+    font-weight: var(--swp-font-semibold);
+    color: var(--swp-text-primary);
+    margin: 0;
+}
+
+.invoice-totals-body {
+    padding: var(--swp-space-5);
+}
+
+.totals-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--swp-space-3) 0;
+
+    &:not(:last-child) {
+        border-bottom: 1px solid var(--swp-border-light);
+    }
+}
+
+.totals-label {
+    font-size: var(--swp-text-sm);
+    color: var(--swp-text-secondary);
+}
+
+.totals-value {
+    font-size: var(--swp-text-base);
+    font-weight: var(--swp-font-medium);
+    color: var(--swp-text-primary);
+}
+
+.totals-row-discount {
+    .totals-value {
+        color: var(--swp-danger);
+    }
+}
+
+.totals-row-total {
+    padding-top: var(--swp-space-4);
+    margin-top: var(--swp-space-2);
+    border-top: 2px solid var(--swp-border-dark);
+
+    .totals-label {
+        font-size: var(--swp-text-lg);
+        font-weight: var(--swp-font-semibold);
+        color: var(--swp-text-primary);
+    }
+
+    .totals-value {
+        font-size: var(--swp-text-2xl);
+        font-weight: var(--swp-font-bold);
+        color: var(--swp-primary);
+    }
+}
+
+// Discount field in sidebar
+.discount-field {
+    margin-top: var(--swp-space-4);
+    padding-top: var(--swp-space-4);
+    border-top: 1px dashed var(--swp-border);
+
+    .form-label {
+        font-size: var(--swp-text-sm);
+        font-weight: var(--swp-font-medium);
+        color: var(--swp-text-secondary);
+    }
+}
+
+// ============================================================================
+// TERMS & NOTES COLLAPSIBLE SECTION
+// ============================================================================
+
+.invoice-terms-section {
+    margin-top: var(--swp-space-6);
+    background: var(--swp-gray-50);
+    border: 1px dashed var(--swp-border);
+    border-radius: var(--swp-radius-lg);
+    overflow: hidden;
+
+    &[open] {
+        background: var(--swp-surface);
+        border-style: solid;
+
+        .terms-summary {
+            border-bottom: 1px solid var(--swp-border-light);
+        }
+
+        .terms-summary-icon {
+            transform: rotate(90deg);
+        }
+    }
+}
+
+.terms-summary {
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-3);
+    padding: var(--swp-space-4) var(--swp-space-5);
+    cursor: pointer;
+    list-style: none;
+    transition: background var(--swp-transition-fast);
+
+    &::-webkit-details-marker {
+        display: none;
+    }
+
+    &:hover {
+        background: var(--swp-gray-100);
+    }
+}
+
+.terms-summary-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    color: var(--swp-text-muted);
+    transition: transform var(--swp-transition-fast);
+}
+
+.terms-summary-text {
+    flex: 1;
+}
+
+.terms-summary-title {
+    font-size: var(--swp-text-base);
+    font-weight: var(--swp-font-medium);
+    color: var(--swp-text-primary);
+}
+
+.terms-summary-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: var(--swp-font-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--swp-text-muted);
+    background: var(--swp-gray-200);
+    border-radius: var(--swp-radius-full);
+    margin-left: var(--swp-space-2);
+}
+
+.terms-content {
+    padding: var(--swp-space-6);
+}
+
+.terms-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--swp-space-4);
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+// ============================================================================
+// FORM ACTIONS (Sticky Footer)
+// ============================================================================
+
+.invoice-form-actions {
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--swp-surface);
+    border-top: 1px solid var(--swp-border);
+    padding: var(--swp-space-4) 0;
+    margin-top: var(--swp-space-8);
+    z-index: 10;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.invoice-form-actions-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 var(--swp-space-4);
+}
+
+// Primary save button with enhanced styling
+.btn-save-primary {
+    padding: var(--swp-space-3) var(--swp-space-6);
+    font-weight: var(--swp-font-semibold);
+    box-shadow: var(--swp-shadow-primary);
+
+    &:hover {
+        box-shadow: var(--swp-shadow-primary-lg);
+        transform: translateY(-1px);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+}
+
+// Split button group for save actions
+.save-button-group {
+    box-shadow: var(--swp-shadow-primary);
+    border-radius: var(--swp-radius-md);
+
+    .btn-save-primary {
+        box-shadow: none;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+
+        &:hover {
+            box-shadow: none;
+            transform: none;
+        }
+    }
+
+    .dropdown-toggle-split {
+        padding: var(--swp-space-3) var(--swp-space-3);
+        border-left: 1px solid rgba(255, 255, 255, 0.2);
+
+        &::after {
+            vertical-align: middle;
+        }
+    }
+
+    .dropdown-menu {
+        min-width: 180px;
+        padding: var(--swp-space-2);
+        border-radius: var(--swp-radius-md);
+        box-shadow: var(--swp-shadow-lg);
+        border: 1px solid var(--swp-border);
+    }
+
+    .dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: var(--swp-space-2);
+        padding: var(--swp-space-2-5) var(--swp-space-3);
+        border-radius: var(--swp-radius-sm);
+        font-weight: var(--swp-font-medium);
+        color: var(--swp-text-primary);
+        transition: all var(--swp-transition-fast);
+
+        svg {
+            color: var(--swp-text-muted);
+            transition: color var(--swp-transition-fast);
+        }
+
+        &:hover {
+            background: var(--swp-primary-lighter);
+            color: var(--swp-primary);
+
+            svg {
+                color: var(--swp-primary);
+            }
+        }
+    }
+
+    &:hover {
+        box-shadow: var(--swp-shadow-primary-lg);
+    }
+}
+
+// ============================================================================
+// MOBILE LINE ITEM CARDS
+// ============================================================================
+
+@media (max-width: 768px) {
+    .invoice-items-table {
+        display: none;
+    }
+
+    .invoice-items-cards {
+        display: flex;
+        flex-direction: column;
+        gap: var(--swp-space-4);
+    }
+}
+
+@media (min-width: 769px) {
+    .invoice-items-cards {
+        display: none;
+    }
+}
+
+.invoice-item-card {
+    background: var(--swp-gray-50);
+    border: 1px solid var(--swp-border);
+    border-radius: var(--swp-radius-md);
+    padding: var(--swp-space-4);
+    animation: slideIn 0.2s ease-out;
+
+    &:focus-within {
+        border-color: rgba(var(--swp-primary-rgb), 0.4);
+        box-shadow: 0 0 0 3px rgba(var(--swp-primary-rgb), 0.08);
+    }
+}
+
+.invoice-item-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--swp-space-3);
+}
+
+.invoice-item-card-number {
+    font-size: var(--swp-text-sm);
+    font-weight: var(--swp-font-semibold);
+    color: var(--swp-text-muted);
+}
+
+.invoice-item-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--swp-space-3);
+}
+
+.invoice-item-card-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: var(--swp-space-3);
+}
+
+.invoice-item-card-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: var(--swp-space-3);
+    margin-top: var(--swp-space-3);
+    border-top: 1px dashed var(--swp-border);
+
+    .item-total-label {
+        font-size: var(--swp-text-sm);
+        color: var(--swp-text-muted);
+    }
+
+    .item-total-value {
+        font-size: var(--swp-text-lg);
+        font-weight: var(--swp-font-semibold);
+        color: var(--swp-primary);
+    }
+}
+
+// ============================================================================
+// ANIMATIONS
+// ============================================================================
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+// ============================================================================
+// RESPONSIVE ADJUSTMENTS
+// ============================================================================
+
+@media (max-width: 768px) {
+    .invoice-form-container {
+        padding: 0 var(--swp-space-4);
+        padding-bottom: var(--swp-space-20);
+    }
+
+    .invoice-form-header {
+        margin-bottom: var(--swp-space-4);
+        padding: var(--swp-space-4) 0;
+    }
+
+    .invoice-form-icon {
+        width: 48px;
+        height: 48px;
+    }
+
+    .invoice-form-title {
+        font-size: 1.5rem;
+    }
+
+    .invoice-details-section,
+    .invoice-items-section,
+    .invoice-totals-card {
+        border-radius: var(--swp-radius-md);
+    }
+
+    .invoice-form-actions-inner {
+        gap: var(--swp-space-3);
+
+        .btn {
+            flex: 1;
+        }
+    }
+
+    .invoice-id-display {
+        flex-wrap: wrap;
+
+        .invoice-id-label,
+        .invoice-id-value {
+            font-size: var(--swp-text-xl);
+        }
+    }
+}
+
+// ============================================================================
+// EMPTY STATE
+// ============================================================================
+
+.invoice-items-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--swp-space-12) var(--swp-space-6);
+    text-align: center;
+    background: var(--swp-gray-50);
+    border: 2px dashed var(--swp-border);
+    border-radius: var(--swp-radius-md);
+    margin-bottom: var(--swp-space-4);
+}
+
+.invoice-items-empty-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    background: var(--swp-gray-100);
+    border-radius: var(--swp-radius-full);
+    color: var(--swp-text-muted);
+    margin-bottom: var(--swp-space-4);
+}
+
+.invoice-items-empty-title {
+    font-size: var(--swp-text-lg);
+    font-weight: var(--swp-font-semibold);
+    color: var(--swp-text-primary);
+    margin: 0 0 var(--swp-space-2) 0;
+}
+
+.invoice-items-empty-text {
+    font-size: var(--swp-text-sm);
+    color: var(--swp-text-muted);
+    margin: 0;
+}
