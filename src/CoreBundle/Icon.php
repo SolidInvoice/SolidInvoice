@@ -19,7 +19,7 @@ class Icon
 
     final public const INVOICE = 'file-invoice';
 
-    final public const QUOTE = 'file-invoice';
+    final public const QUOTE = 'file-text';
 
     final public const PAYMENT = 'credit-card';
 

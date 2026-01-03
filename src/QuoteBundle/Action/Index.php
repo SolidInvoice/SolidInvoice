@@ -13,31 +13,62 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Action;
 
-use SolidInvoice\CoreBundle\Templating\Template;
+use Doctrine\ORM\EntityManagerInterface;
 use SolidInvoice\QuoteBundle\Model\Graph;
 use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 
-final class Index
+final readonly class Index
 {
     public function __construct(
-        private readonly QuoteRepository $repository
+        private QuoteRepository $repository,
+        private EntityManagerInterface $entityManager,
     ) {
     }
 
-    public function __invoke(Request $request)
+    /**
+     * @return array<string, mixed>
+     */
+    #[Template('@SolidInvoiceQuote/Default/index.html.twig')]
+    public function __invoke(Request $request): array
     {
-        return new Template(
-            '@SolidInvoiceQuote/Default/index.html.twig',
-            [
-                'status_list_count' => [
-                    Graph::STATUS_PENDING => $this->repository->getTotalQuotes(Graph::STATUS_PENDING),
-                    Graph::STATUS_ACCEPTED => $this->repository->getTotalQuotes(Graph::STATUS_ACCEPTED),
-                    Graph::STATUS_CANCELLED => $this->repository->getTotalQuotes(Graph::STATUS_CANCELLED),
-                    Graph::STATUS_DRAFT => $this->repository->getTotalQuotes(Graph::STATUS_DRAFT),
-                    Graph::STATUS_DECLINED => $this->repository->getTotalQuotes(Graph::STATUS_DECLINED),
-                ],
-            ]
-        );
+        $isArchived = $request->query->get('archived', '0') === '1';
+
+        // Get quote counts by status
+        $pendingCount = $this->repository->getTotalQuotes(Graph::STATUS_PENDING);
+        $acceptedCount = $this->repository->getTotalQuotes(Graph::STATUS_ACCEPTED);
+        $cancelledCount = $this->repository->getTotalQuotes(Graph::STATUS_CANCELLED);
+        $draftCount = $this->repository->getTotalQuotes(Graph::STATUS_DRAFT);
+        $declinedCount = $this->repository->getTotalQuotes(Graph::STATUS_DECLINED);
+
+        // Calculate total active quotes
+        $totalActiveQuotes = $pendingCount + $acceptedCount + $cancelledCount + $draftCount + $declinedCount;
+
+        // Get archived quotes count (need to temporarily disable the filter)
+        $filters = $this->entityManager->getFilters();
+        $filters->disable('archivable');
+        try {
+            $totalArchivedQuotes = $this->repository->count(['archived' => true]);
+        } finally {
+            $filters->enable('archivable');
+        }
+
+        return [
+            'isArchived' => $isArchived,
+            'totalActiveQuotes' => $totalActiveQuotes,
+            'totalArchivedQuotes' => $totalArchivedQuotes,
+            'pendingCount' => $pendingCount,
+            'acceptedCount' => $acceptedCount,
+            'declinedCount' => $declinedCount,
+            'draftCount' => $draftCount,
+            'status_list_count' => [
+                Graph::STATUS_PENDING => $pendingCount,
+                Graph::STATUS_ACCEPTED => $acceptedCount,
+                Graph::STATUS_CANCELLED => $cancelledCount,
+                Graph::STATUS_DRAFT => $draftCount,
+                Graph::STATUS_DECLINED => $declinedCount,
+            ],
+        ];
     }
 }

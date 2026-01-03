@@ -177,12 +177,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	// identifier: missingType.return
-	'message' => '#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\Index\\:\\:__invoke\\(\\) has no return type specified\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/src/InvoiceBundle/Action/Index.php',
-];
-$ignoreErrors[] = [
-	// identifier: missingType.return
 	'message' => '#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\RecurringIndex\\:\\:__invoke\\(\\) has no return type specified\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/src/InvoiceBundle/Action/RecurringIndex.php',
@@ -366,12 +360,6 @@ $ignoreErrors[] = [
 	'message' => '#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\CloneQuote\\:\\:__invoke\\(\\) has no return type specified\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/src/QuoteBundle/Action/CloneQuote.php',
-];
-$ignoreErrors[] = [
-	// identifier: missingType.return
-	'message' => '#^Method SolidInvoice\\\\QuoteBundle\\\\Action\\\\Index\\:\\:__invoke\\(\\) has no return type specified\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/src/QuoteBundle/Action/Index.php',
 ];
 $ignoreErrors[] = [
 	// identifier: missingType.iterableValue

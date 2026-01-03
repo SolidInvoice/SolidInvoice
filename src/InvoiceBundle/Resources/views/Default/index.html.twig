@@ -7,62 +7,164 @@
  # with this source code in the file LICENSE.
  #}
 
-
 {% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
-{% block title %}{{ (recurring ? "invoice.list.recurring_title" : "invoice.list.title")|trans }}{% endblock %}
+{% block title %}
+    {{ ux_icon('tabler:file-invoice', {width: 24, height: 24, class: 'me-2'}) }}{{ (recurring ? "invoice.list.recurring_title" : "invoice.list.title")|trans }}
+{% endblock title %}
+
+{% block heading %}
+    {% if recurring %}
+        <a class="btn btn-primary" href="{{ path("_invoices_create_recurring") }}">
+            {{ ux_icon('tabler:plus', {width: 18, height: 18}) }}
+            {{ "invoice.action.create_recurring"|trans }}
+        </a>
+    {% else %}
+        <a class="btn btn-primary" href="{{ path("_invoices_create") }}">
+            {{ ux_icon('tabler:plus', {width: 18, height: 18}) }}
+            {{ "invoice.action.create"|trans }}
+        </a>
+    {% endif %}
+{% endblock %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-md-12">
-            <div class="widget">
-            {% if recurring %}
-                <twig:DataGrid name="recurring_invoice_grid" />
-            {% else %}
-                {% if app.request.query.get('archived', '0') is same as('1') %}
-                    <twig:DataGrid name="archived_invoice_grid" />
-                {% else %}
-                    <twig:DataGrid name="invoice_grid" />
-                {% endif %}
-
-                <div class="text-center">
-                    {% if app.request.query.get('archived', '0') is same as('1') %}
-                        <a class="btn btn-sm btn-outline-info text-center" href="?archived=0">{{ 'View active invoices'|trans }}</a>
-                    {% else %}
-                        <a class="btn btn-sm btn-outline-info text-center" href="?archived=1">{{ 'View archived invoices'|trans }}</a>
-                    {% endif %}
-                </div>
-
-                <h5>{{ "invoice.list.status_legend"|trans }}</h5>
-
-                {% for status in invoice_label() %}
-                    {{ status|raw }}
-                {% endfor %}
-            {% endif %}
-            </div>
-
-        </div>
-        {#{% if not recurring %}
-            <div class="col-md-3">
-                <div class="card right-nav">
+    {% if recurring %}
+        {# Recurring Invoices - Simple card layout #}
+        <twig:Ui:Card>
+            <twig:DataGrid name="recurring_invoice_grid" />
+        </twig:Ui:Card>
+    {% else %}
+        {# Stats Row #}
+        <div class="row row-deck row-cards mb-4">
+            <div class="col-sm-6 col-lg-3">
+                <div class="card card-sm">
                     <div class="card-body">
-                        <a class="btn btn-block btn-info action-button" href="{{ path("_invoices_create") }}">
-                            {{ icon('file', ['text', 'o']) }} {{ "invoice.action.create"|trans }}
-                        </a>
-
-                        <ul class="list-group list-group-unbordered">
-                            {% for status, count in status_list_count %}
-                                <li class="list-group-item">
-                                    <span class="badge badge-pill">{{ count }}</span>
-                                    {{ ('invoice.stats.count.' ~ status)|trans({'%count%': count}) }}
-                                </li>
-                            {% endfor %}
-                        </ul>
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <span class="bg-primary text-white avatar">
+                                    {{ ux_icon('tabler:file-invoice', {width: 24, height: 24}) }}
+                                </span>
+                            </div>
+                            <div class="col">
+                                <div class="font-weight-medium">
+                                    {{ totalActiveInvoices }}
+                                </div>
+                                <div class="text-secondary">
+                                    {{ 'invoice.stats.total_invoices'|trans }}
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
                 </div>
             </div>
-        {% endif %}#}
-    </div>
+
+            <div class="col-sm-6 col-lg-3">
+                <div class="card card-sm">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <span class="bg-warning text-white avatar">
+                                    {{ ux_icon('tabler:clock', {width: 24, height: 24}) }}
+                                </span>
+                            </div>
+                            <div class="col">
+                                <div class="font-weight-medium">
+                                    {{ pendingCount }}
+                                    {% if overdueCount > 0 %}
+                                        <span class="text-danger ms-1">({{ overdueCount }} {{ 'invoice.stats.overdue'|trans }})</span>
+                                    {% endif %}
+                                </div>
+                                <div class="text-secondary">
+                                    {{ 'invoice.stats.pending_invoices'|trans }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-3">
+                <div class="card card-sm">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <span class="bg-success text-white avatar">
+                                    {{ ux_icon('tabler:cash', {width: 24, height: 24}) }}
+                                </span>
+                            </div>
+                            <div class="col">
+                                <div class="font-weight-medium">
+                                    {% for currency, amount in total_income %}
+                                        {{ amount|formatCurrency(currency) }}{% if not loop.last %}<br>{% endif %}
+                                    {% else %}
+                                        {{ 0|formatCurrency }}
+                                    {% endfor %}
+                                </div>
+                                <div class="text-secondary">
+                                    {{ 'invoice.stats.total_income'|trans }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-3">
+                <div class="card card-sm">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <span class="bg-danger text-white avatar">
+                                    {{ ux_icon('tabler:currency-dollar', {width: 24, height: 24}) }}
+                                </span>
+                            </div>
+                            <div class="col">
+                                <div class="font-weight-medium">
+                                    {% for currency, amount in total_outstanding %}
+                                        {{ amount|formatCurrency(currency) }}{% if not loop.last %}<br>{% endif %}
+                                    {% else %}
+                                        {{ 0|formatCurrency }}
+                                    {% endfor %}
+                                </div>
+                                <div class="text-secondary">
+                                    {{ 'invoice.stats.outstanding_balance'|trans }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# Invoice List Card #}
+        <twig:Ui:Card>
+            <twig:block name="header">
+                <div class="d-flex justify-content-between align-items-center w-100">
+                    <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs" role="tablist" aria-label="{{ 'invoice.tabs.label'|trans }}">
+                        <li class="nav-item" role="presentation">
+                            <a href="{{ path('_invoices_index') }}" class="nav-link{{ not isArchived ? ' active' : '' }}" role="tab" aria-selected="{{ not isArchived ? 'true' : 'false' }}">
+                                {{ ux_icon('tabler:file-invoice', {width: 16, height: 16}) }}
+                                {{ 'invoice.tabs.active'|trans }}
+                                <span class="badge bg-primary-lt ms-2">{{ totalActiveInvoices }}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a href="{{ path('_invoices_index', {archived: 1}) }}" class="nav-link{{ isArchived ? ' active' : '' }}" role="tab" aria-selected="{{ isArchived ? 'true' : 'false' }}">
+                                {{ ux_icon('tabler:archive', {width: 16, height: 16}) }}
+                                {{ 'invoice.tabs.archived'|trans }}
+                                <span class="badge bg-secondary-lt ms-2">{{ totalArchivedInvoices }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </twig:block>
+
+            {% if isArchived %}
+                <twig:DataGrid name="archived_invoice_grid" />
+            {% else %}
+                <twig:DataGrid name="invoice_grid" />
+            {% endif %}
+        </twig:Ui:Card>
+    {% endif %}
 {% endblock content %}
 
