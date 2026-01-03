@@ -18,6 +18,10 @@ variable "NIGHTLY" {
     default = false
 }
 
+variable "PREVIEW" {
+    default = false
+}
+
 variable "RELEASE" {
     default = 0
 }
@@ -70,6 +74,7 @@ target "build-static" {
     tags = compact(distinct(flatten([
             LATEST ? "${IMAGE_NAME}:latest" : "",
             NIGHTLY ? "${IMAGE_NAME}:nightly" : "",
+            PREVIEW ? flatten(["${IMAGE_NAME}:next", "${IMAGE_NAME}:3.0-dev"]) : "",
             SOLIDINVOICE_VERSION == "2.4.x" ? [] : [for v in semver(SOLIDINVOICE_VERSION) : "${IMAGE_NAME}:${v}"]
     ])))
     args = {
@@ -79,6 +84,7 @@ target "build-static" {
         NO_COMPRESS = "${NO_COMPRESS}"
         LATEST = "${LATEST}"
         NIGHTLY = "${NIGHTLY}"
+        PREVIEW = "${PREVIEW}"
     }
     secret = ["id=github-token,env=GITHUB_TOKEN"]
 }
