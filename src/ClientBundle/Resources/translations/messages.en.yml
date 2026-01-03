@@ -38,11 +38,13 @@ client:
             edit: 'Edit'
             delete: 'Delete'
     stats:
-        income: 'Income'
+        income: 'Total Income'
         credit: 'Credit Balance'
         outstanding: 'Outstanding'
         outstanding_invoices: 'Outstanding Invoices'
         paid_invoices: 'Paid Invoices'
+        invoices: 'Invoices'
+        quotes: 'Quotes'
         active_clients: 'Active Clients'
         archived_clients: 'Archived Clients'
         total_contacts: 'Total Contacts'
@@ -97,6 +99,25 @@ client:
     contacts:
       info:
         list: 'Select contacts to send %type% to'
+      empty:
+        title: 'No contacts yet'
+        description: 'Add contacts to send invoices and quotes to this client.'
+    addresses:
+      empty:
+        title: 'No addresses yet'
+        description: 'Add an address for this client''s billing or shipping needs.'
+    quotes:
+      empty:
+        title: 'No quotes yet'
+        description: 'Create a quote to propose pricing to this client.'
+    invoices:
+      empty:
+        title: 'No invoices yet'
+        description: 'Create an invoice when you''re ready to bill this client.'
+    delete:
+      confirm:
+        title: 'Delete %name%?'
+        message: 'This will permanently delete this client and all associated data including invoices, quotes, and payments. This action cannot be undone.'
 
 email: 'Email'
 clients: 'Clients'

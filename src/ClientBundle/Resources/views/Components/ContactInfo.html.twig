@@ -1,36 +1,27 @@
 <div {{ attributes }}>
-    <div class="card card-primary card-outline">
+    <div class="client-contact-card card">
         <div class="card-header">
-            <h3 class="card-title">
-                <i class="fas fa-user"></i> {{ computed.contact }}
-            </h3>
-            <div class="card-tools">
-                <a href="#" rel="tooltip" title="{{ "contact_edit"|trans }}" class="btn btn-tool" data-model="edit" data-value="true" data-action="live#update:prevent">
-                    {{ icon('pencil') }}
-                </a>
-
-                {% if this.canDelete %}
-                    <a href="#" rel="tooltip" title="{{ "contact_delete"|trans }}" class="delete-contact btn btn-tool" data-toggle="modal" data-target="#{{ 'delete-' ~ computed.contact.id }}">
-                        {{ icon('trash-o') }}
-                    </a>
-
-                    {% component BootstrapModal with {id: 'delete-' ~ computed.contact.id} %}
-                        {% block modal_header %}
-                            <h5>{{ 'Confirm'|trans }}</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        {% endblock %}
-                        {% block modal_body %}
-                            {{ 'Are you sure you want to delete the contact?'|trans }}
-                        {% endblock %}
-                        {% block modal_footer %}
-                            <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'Close'|trans }}</button>
-                            <button type="button" class="btn btn-primary" data-action="live#action:prevent" data-live-action-param="delete">{{ 'Confirm'|trans }}</button>
-                        {% endblock %}
-                    {% endcomponent %}
-                {% endif %}
-
+            <div class="d-flex align-items-center justify-content-between w-100">
+                <div class="d-flex align-items-center gap-2">
+                    <span class="client-contact-avatar">
+                        {{ ux_icon('tabler:user', {width: 16, height: 16}) }}
+                    </span>
+                    <span class="client-contact-name">{{ computed.contact }}</span>
+                </div>
+                <div class="d-flex gap-1">
+                    <button type="button" class="btn btn-ghost-secondary btn-icon btn-icon-sm"
+                            title="{{ 'contact_edit'|trans }}"
+                            data-model="edit" data-value="true" data-action="live#update:prevent">
+                        {{ ux_icon('tabler:pencil', {width: 16, height: 16}) }}
+                    </button>
+                    {% if this.canDelete %}
+                        <button type="button" class="btn btn-ghost-danger btn-icon btn-icon-sm"
+                                title="{{ 'contact_delete'|trans }}"
+                                data-bs-toggle="modal" data-bs-target="#delete-contact-{{ computed.contact.id }}">
+                            {{ ux_icon('tabler:trash', {width: 16, height: 16}) }}
+                        </button>
+                    {% endif %}
+                </div>
             </div>
         </div>
 
@@ -41,27 +32,62 @@
                     'data-live-action-param': 'save'
                 }}) }}
 
-                    {{ form_row(form) }}
+                {{ form_row(form) }}
 
-                    <button type="button" class="btn btn-default" data-model="edit" data-value="false" data-action="live#update:prevent">{{ 'Cancel'|trans }}</button>
-                    <button type="submit" class="btn btn-primary">{{ 'Save'|trans }}</button>
+                <div class="client-form-actions">
+                    <button type="button" class="btn btn-ghost" data-model="edit" data-value="false" data-action="live#update:prevent">
+                        {{ 'Cancel'|trans }}
+                    </button>
+                    <button type="submit" class="btn btn-primary d-flex align-items-center gap-1">
+                        {{ ux_icon('tabler:device-floppy', {width: 16, height: 16}) }}
+                        {{ 'Save'|trans }}
+                    </button>
+                </div>
                 {{ form_end(form) }}
             {% else %}
-                <dl class="dl-horizontal">
-                    <dt>{{ 'client.contact.details.email'|trans }}:</dt>
-                    <dd>{{ computed.contact.email }}</dd>
-                </dl>
+                <div class="client-contact-detail">
+                    <span class="client-contact-detail-icon">
+                        {{ ux_icon('tabler:mail', {width: 16, height: 16}) }}
+                    </span>
+                    <div>
+                        <div class="client-contact-detail-label">{{ 'client.contact.details.email'|trans }}</div>
+                        <div class="client-contact-detail-value">
+                            <a href="mailto:{{ computed.contact.email }}">{{ computed.contact.email }}</a>
+                        </div>
+                    </div>
+                </div>
 
                 {% if computed.contact.additionalContactDetails|length > 0 %}
-                    <h5>{{ 'client.contact.details.extra'|trans }}</h5>
-                    <dl class="dl-horizontal">
+                    <div class="client-contact-extra">
+                        <div class="client-contact-extra-title">{{ 'client.contact.details.extra'|trans }}</div>
                         {% for details in computed.contact.additionalContactDetails %}
-                            <dt>{{ details.type|title }}:</dt>
-                            <dd>{{ details.value }}</dd>
+                            <div class="client-contact-extra-item">
+                                <span class="client-contact-extra-label">{{ details.type|title }}:</span>
+                                <span class="client-contact-extra-value">{{ details.value }}</span>
+                            </div>
                         {% endfor %}
-                    </dl>
+                    </div>
                 {% endif %}
             {% endif %}
         </div>
     </div>
+
+    {% if this.canDelete %}
+        <twig:Ui:Modal id="delete-contact-{{ computed.contact.id }}" title="{{ 'Confirm'|trans }}" status="danger" :centered="true">
+            <div class="text-center py-3">
+                <div class="mb-3">
+                    {{ ux_icon('tabler:user-minus', {width: 48, height: 48, class: 'text-danger'}) }}
+                </div>
+                <p>{{ 'Are you sure you want to delete the contact?'|trans }}</p>
+            </div>
+
+            <twig:block name="footer">
+                <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">{{ 'Cancel'|trans }}</button>
+                <button type="button" class="btn btn-danger d-flex align-items-center gap-1" data-action="live#action:prevent" data-live-action-param="delete">
+                    {{ ux_icon('tabler:trash', {width: 16, height: 16}) }}
+                    {{ 'Confirm'|trans }}
+                </button>
+            </twig:block>
+        </twig:Ui:Modal>
+    {% endif %}
 </div>

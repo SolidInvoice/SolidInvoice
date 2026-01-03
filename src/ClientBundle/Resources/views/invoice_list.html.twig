@@ -7,14 +7,20 @@
  # with this source code in the file LICENSE.
  #}
 
-<div class="card no-border">
-    <div class="card-header">
-        <h3 class="card-title">
-            {{ icon('file', ['text', 'o']) }} {{ "invoices"|trans }}
-        </h3>
-    </div>
-    <div class="card-body">
+<div class="py-3">
+    {% if client.invoices|length > 0 %}
         <twig:DataGrid name="invoice_grid" context="{{ {'client_id': client.id} }}" />
-    </div>
+    {% else %}
+        <div class="client-empty-state">
+            <div class="client-empty-icon">
+                {{ ux_icon('tabler:file-invoice', {width: 32, height: 32}) }}
+            </div>
+            <p class="client-empty-title">{{ 'client.invoices.empty.title'|trans }}</p>
+            <p class="client-empty-description">{{ 'client.invoices.empty.description'|trans }}</p>
+            <a href="{{ path('_invoices_create', {'client': client.id}) }}" class="btn btn-primary d-flex align-items-center gap-1 mx-auto" style="width: fit-content;">
+                {{ ux_icon('tabler:plus', {width: 16, height: 16}) }}
+                {{ 'client.view.actions.create_invoice'|trans }}
+            </a>
+        </div>
+    {% endif %}
 </div>
-
