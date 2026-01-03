@@ -7,34 +7,34 @@
  # with this source code in the file LICENSE.
  #}
 
-<div {{ attributes.defaults({class: 'invoice-form-page'}) }}>
+<div {{ attributes.defaults({class: 'billing-form-page'}) }}>
     {% set currency = invoice.client ? invoice.client.currency : null %}
 
     {{ form_start(form) }}
 
-    <div class="invoice-form-container">
+    <div class="billing-form-container">
         {# Page Header #}
-        <div class="invoice-form-header">
-            <div class="invoice-form-header-content">
-                <div class="invoice-form-icon">
+        <div class="billing-form-header">
+            <div class="billing-form-header-content">
+                <div class="billing-form-icon">
                     {{ ux_icon('tabler:file-invoice', {width: 28, height: 28}) }}
                 </div>
                 <div>
                     {% if isEdit %}
-                        <h1 class="invoice-form-title">{{ 'invoice.edit.title'|trans }}</h1>
+                        <h1 class="billing-form-title">{{ 'invoice.edit.title'|trans }}</h1>
                     {% else %}
-                        <h1 class="invoice-form-title">{{ 'invoice.create.title'|trans }}</h1>
-                        <p class="invoice-form-subtitle">{{ 'invoice.create.subtitle'|trans }}</p>
+                        <h1 class="billing-form-title">{{ 'invoice.create.title'|trans }}</h1>
+                        <p class="billing-form-subtitle">{{ 'invoice.create.subtitle'|trans }}</p>
                     {% endif %}
                 </div>
             </div>
         </div>
 
         {# Invoice Details Section (Client, Invoice ID, Dates) #}
-        <div class="invoice-details-section">
-            <div class="invoice-details-grid">
+        <div class="billing-details-section">
+            <div class="billing-details-grid">
                 {# Left Column: Client Selection + Invoice ID #}
-                <div class="invoice-details-left">
+                <div class="billing-details-left">
                     {# Client Selection #}
                     <div class="client-selection">
                         <div{{ form.client.vars.data is not empty ? ' class="d-none"' }}>
@@ -48,18 +48,18 @@
                     {# Invoice ID #}
                     <div {{ stimulus_controller('billing-id') }}>
                         <span {{ stimulus_target('billing-id', 'info') }}>
-                            <div class="invoice-id-display">
-                                <span class="invoice-id-label">{{ 'invoice.label'|trans }}</span>
-                                <span class="invoice-id-value" {{ stimulus_target('billing-id', 'value') }}>{{ form.invoiceId.vars.data }}</span>
+                            <div class="billing-id-display">
+                                <span class="billing-id-label">{{ 'invoice.label'|trans }}</span>
+                                <span class="billing-id-value" {{ stimulus_target('billing-id', 'value') }}>{{ form.invoiceId.vars.data }}</span>
                                 {% if editInvoiceId is not defined or editInvoiceId is not same as(false) %}
-                                    <button type="button" class="invoice-id-edit" {{ stimulus_action('billing-id', 'edit') }} aria-label="{{ 'invoice.id.edit'|trans }}" title="{{ 'Edit'|trans }}">
+                                    <button type="button" class="billing-id-edit" {{ stimulus_action('billing-id', 'edit') }} aria-label="{{ 'invoice.id.edit'|trans }}" title="{{ 'Edit'|trans }}">
                                         {{ ux_icon('tabler:pencil', {width: 16, height: 16}) }}
                                     </button>
                                 {% endif %}
                             </div>
                         </span>
 
-                        <div class="d-none invoice-id-form" {{ stimulus_target('billing-id', 'form') }}>
+                        <div class="d-none billing-id-form" {{ stimulus_target('billing-id', 'form') }}>
                             {{ form_label(form.invoiceId) }}
                             <div class="input-group">
                                 {{ form_widget(form.invoiceId, {attr: {class: 'form-control'}}) }}
@@ -75,7 +75,7 @@
                 </div>
 
                 {# Right Column: Dates + Discount #}
-                <div class="invoice-details-right">
+                <div class="billing-details-right">
                     <div class="invoice-dates-row">
                         {{ form_row(form.invoiceDate) }}
                         {{ form_row(form.due) }}
@@ -86,30 +86,30 @@
         </div>
 
         {# Main Content: 2-Column Layout #}
-        <div class="invoice-form-main">
+        <div class="billing-form-main">
             {# Line Items Section #}
-            <div class="invoice-items-section">
-                <div class="invoice-items-header">
-                    <div class="invoice-items-icon">
+            <div class="billing-items-section">
+                <div class="billing-items-header">
+                    <div class="billing-items-icon">
                         {{ ux_icon('tabler:list-details', {width: 20, height: 20}) }}
                     </div>
-                    <h2 class="invoice-items-title">{{ 'invoice.items.title'|trans }}</h2>
+                    <h2 class="billing-items-title">{{ 'invoice.items.title'|trans }}</h2>
                 </div>
 
-                <div class="invoice-items-body">
+                <div class="billing-items-body">
                     {# Empty State #}
                     {% if form.lines|length == 0 %}
-                        <div class="invoice-items-empty">
-                            <div class="invoice-items-empty-icon">
+                        <div class="billing-items-empty">
+                            <div class="billing-items-empty-icon">
                                 {{ ux_icon('tabler:file-plus', {width: 32, height: 32}) }}
                             </div>
-                            <h3 class="invoice-items-empty-title">{{ 'invoice.items.empty.title'|trans }}</h3>
-                            <p class="invoice-items-empty-text">{{ 'invoice.items.empty.description'|trans }}</p>
+                            <h3 class="billing-items-empty-title">{{ 'invoice.items.empty.title'|trans }}</h3>
+                            <p class="billing-items-empty-text">{{ 'invoice.items.empty.description'|trans }}</p>
                         </div>
                     {% else %}
                         {# Responsive Line Items - Table on desktop, stacked on mobile via CSS #}
-                        <div class="invoice-items-list">
-                            <div class="invoice-items-header-row">
+                        <div class="billing-items-list">
+                            <div class="billing-items-header-row">
                                 <div class="column-description">{{ 'invoice.item.heading.description'|trans }}</div>
                                 <div class="column-price">{{ 'invoice.item.heading.price'|trans }}</div>
                                 <div class="column-qty">{{ 'invoice.item.heading.qty'|trans }}</div>
@@ -121,7 +121,7 @@
                             </div>
 
                             {% for index, item in form.lines %}
-                                <div class="invoice-item-row">
+                                <div class="billing-item-row">
                                     <div class="column-description">
                                         <span class="mobile-label">{{ 'invoice.item.heading.description'|trans }}</span>
                                         {{ form_widget(item.description, {attr: {placeholder: 'invoice.item.description.placeholder'|trans, rows: 2}}) }}
@@ -173,16 +173,16 @@
             </div>
 
             {# Totals Sidebar #}
-            <div class="invoice-totals-sidebar">
-                <div class="invoice-totals-card">
-                    <div class="invoice-totals-header">
-                        <div class="invoice-totals-icon">
+            <div class="billing-totals-sidebar">
+                <div class="billing-totals-card">
+                    <div class="billing-totals-header">
+                        <div class="billing-totals-icon">
                             {{ ux_icon('tabler:calculator', {width: 20, height: 20}) }}
                         </div>
-                        <h2 class="invoice-totals-title">{{ 'invoice.totals.title'|trans }}</h2>
+                        <h2 class="billing-totals-title">{{ 'invoice.totals.title'|trans }}</h2>
                     </div>
 
-                    <div class="invoice-totals-body">
+                    <div class="billing-totals-body">
                         <div class="totals-row">
                             <span class="totals-label">{{ 'billing.subtotal'|trans }}</span>
                             <span class="totals-value">{{ invoice.baseTotal|formatCurrency(currency) }}</span>
@@ -210,7 +210,7 @@
         </div>
 
         {# Terms & Notes - Collapsible Section #}
-        <details class="invoice-terms-section"{{ hasTermsOrNotes ? ' open' : '' }}>
+        <details class="billing-terms-section"{{ hasTermsOrNotes ? ' open' : '' }}>
             <summary class="terms-summary" aria-label="{{ 'invoice.terms_notes.toggle'|trans }}">
                 <span class="terms-summary-icon">
                     {{ ux_icon('tabler:chevron-right', {width: 18, height: 18}) }}
@@ -234,8 +234,8 @@
         {{ form_widget(form.tax) }}
 
         {# Sticky Form Actions #}
-        <div class="invoice-form-actions">
-            <div class="invoice-form-actions-inner">
+        <div class="billing-form-actions">
+            <div class="billing-form-actions-inner">
                 <a href="{{ path('_invoices_index') }}" class="btn btn-ghost">
                     {{ ux_icon('tabler:arrow-left', {width: 18, height: 18}) }}
                     {{ 'Cancel'|trans }}

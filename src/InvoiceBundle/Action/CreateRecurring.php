@@ -45,6 +45,13 @@ final class CreateRecurring
         $invoice->addLine(new RecurringInvoiceLine());
         $invoice->setClient($client);
 
+        // Auto-select all client contacts
+        if ($client instanceof Client) {
+            foreach ($client->getContacts() as $contact) {
+                $invoice->addUser($contact);
+            }
+        }
+
         $options = [
             'invoice' => $invoice,
             'form_options' => $client instanceof Client ? ['currency' => $client->getCurrency()] : [],

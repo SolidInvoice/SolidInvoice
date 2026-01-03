@@ -1,24 +1,24 @@
 <html><body>
-<div class="invoice-form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="CreateInvoice" data-live-url-value="/_components/CreateInvoice" data-live-props-value='{"formData":[],"isEdit":false,"previousClientId":null,"formName":"invoice","invoice":{"client":"","discount":{"type":"percentage","value":0},"lines":[{"description":"","price":"100.00","qty":"1"},{"description":"","price":"100.00","qty":"1"}],"invoiceId":"1","terms":"","notes":"","total":0,"baseTotal":0,"tax":0,"invoiceDate":"2021-01-01","due":"","__dynamic_error":"","_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
+<div class="billing-form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="CreateInvoice" data-live-url-value="/_components/CreateInvoice" data-live-props-value='{"formData":[],"isEdit":false,"previousClientId":null,"formName":"invoice","invoice":{"client":"","discount":{"type":"percentage","value":0},"lines":[{"description":"","price":"100.00","qty":"1"},{"description":"","price":"100.00","qty":"1"}],"invoiceId":"1","terms":"","notes":"","total":0,"baseTotal":0,"tax":0,"invoiceDate":"2021-01-01","due":"","__dynamic_error":"","_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
     
     <form name="invoice" method="post" data-model="on(change)|*">
 
-    <div class="invoice-form-container">
-                <div class="invoice-form-header">
-            <div class="invoice-form-header-content">
-                <div class="invoice-form-icon">
+    <div class="billing-form-container">
+                <div class="billing-form-header">
+            <div class="billing-form-header-content">
+                <div class="billing-form-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="28" height="28" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14 3v4a1 1 0 0 0 1 1h4"></path><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2M9 7h1m-1 6h6m-2 4h2"></path></g></svg>
                 </div>
                 <div>
-                                            <h1 class="invoice-form-title">Create Invoice</h1>
-                        <p class="invoice-form-subtitle">Build professional invoices for your clients</p>
+                                            <h1 class="billing-form-title">Create Invoice</h1>
+                        <p class="billing-form-subtitle">Build professional invoices for your clients</p>
                                     </div>
             </div>
         </div>
 
-                <div class="invoice-details-section">
-            <div class="invoice-details-grid">
-                                <div class="invoice-details-left">
+                <div class="billing-details-section">
+            <div class="billing-details-grid">
+                                <div class="billing-details-left">
                                         <div class="client-selection">
                         <div>
                             <div class="mb-3">                        
@@ -30,16 +30,16 @@
 
                                         <div data-controller="billing-id">
                         <span data-billing-id-target="info">
-                            <div class="invoice-id-display">
-                                <span class="invoice-id-label">Invoice #</span>
-                                <span class="invoice-id-value" data-billing-id-target="value">1</span>
-                                                                    <button type="button" class="invoice-id-edit" data-action="billing-id#edit" aria-label="Edit invoice ID" title="Edit">
+                            <div class="billing-id-display">
+                                <span class="billing-id-label">Invoice #</span>
+                                <span class="billing-id-value" data-billing-id-target="value">1</span>
+                                                                    <button type="button" class="billing-id-edit" data-action="billing-id#edit" aria-label="Edit invoice ID" title="Edit">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 20h4L18.5 9.5a2.828 2.828 0 1 0-4-4L4 16zm9.5-13.5l4 4"></path></svg>
                                     </button>
                                                             </div>
                         </span>
 
-                        <div class="d-none invoice-id-form" data-billing-id-target="form">
+                        <div class="d-none billing-id-form" data-billing-id-target="form">
                                             
                                 <label class="control-label required form-label required" for="invoice_invoiceId">Invoice id</label>
                             <div class="input-group">
@@ -55,7 +55,7 @@
                     </div>
                 </div>
 
-                                <div class="invoice-details-right">
+                                <div class="billing-details-right">
                     <div class="invoice-dates-row">
                         <div class="mb-3">                
                                 <label class="control-label required form-label required" for="invoice_invoiceDate">Invoice date</label><input type="date" id="invoice_invoiceDate" name="invoice[invoiceDate]" data-required="required" class="form-control" value="2021-01-01">
@@ -75,18 +75,18 @@
             </div>
         </div>
 
-                <div class="invoice-form-main">
-                        <div class="invoice-items-section">
-                <div class="invoice-items-header">
-                    <div class="invoice-items-icon">
+                <div class="billing-form-main">
+                        <div class="billing-items-section">
+                <div class="billing-items-header">
+                    <div class="billing-items-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5h8m-8 4h5m-5 6h8m-8 4h5M3 5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1zm0 10a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"></path></svg>
                     </div>
-                    <h2 class="invoice-items-title">Line Items</h2>
+                    <h2 class="billing-items-title">Line Items</h2>
                 </div>
 
-                <div class="invoice-items-body">
-                                                                                        <div class="invoice-items-list">
-                            <div class="invoice-items-header-row">
+                <div class="billing-items-body">
+                                                                                        <div class="billing-items-list">
+                            <div class="billing-items-header-row">
                                 <div class="column-description">Description</div>
                                 <div class="column-price">Price</div>
                                 <div class="column-qty">Qty</div>
@@ -94,7 +94,7 @@
                                 <div class="column-actions"></div>
                             </div>
 
-                                                            <div class="invoice-item-row">
+                                                            <div class="billing-item-row">
                                     <div class="column-description">
                                         <span class="mobile-label">Description</span>
                                         <textarea id="invoice_lines_0_description" name="invoice[lines][0][description]" class="input-medium invoice-item-name form-control" placeholder="Describe the service or product..." rows="2"></textarea>
@@ -120,7 +120,7 @@
                                                                                     <button type="button" id="invoice_lines_0_delete" name="invoice[lines][0][delete]" data-action="live#action" data-live-action-param="removeCollectionItem" data-live-name-param="invoice[lines]" data-live-index-param="0" class="remove-item-btn btn" title="Remove Item" aria-label="Remove Item"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16m-10 4v6m4-6v6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"></path></svg></button>
                                                                             </div>
                                 </div>
-                                                            <div class="invoice-item-row">
+                                                            <div class="billing-item-row">
                                     <div class="column-description">
                                         <span class="mobile-label">Description</span>
                                         <textarea id="invoice_lines_1_description" name="invoice[lines][1][description]" class="input-medium invoice-item-name form-control" placeholder="Describe the service or product..." rows="2"></textarea>
@@ -154,16 +154,16 @@
                 </div>
             </div>
 
-                        <div class="invoice-totals-sidebar">
-                <div class="invoice-totals-card">
-                    <div class="invoice-totals-header">
-                        <div class="invoice-totals-icon">
+                        <div class="billing-totals-sidebar">
+                <div class="billing-totals-card">
+                    <div class="billing-totals-header">
+                        <div class="billing-totals-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M4 5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"></path><path d="M8 8a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1zm0 6v.01m4-.01v.01m4-.01v.01M8 17v.01m4-.01v.01m4-.01v.01"></path></g></svg>
                         </div>
-                        <h2 class="invoice-totals-title">Summary</h2>
+                        <h2 class="billing-totals-title">Summary</h2>
                     </div>
 
-                    <div class="invoice-totals-body">
+                    <div class="billing-totals-body">
                         <div class="totals-row">
                             <span class="totals-label">SubTotal</span>
                             <span class="totals-value">$200.00</span>
@@ -184,7 +184,7 @@
             </div>
         </div>
 
-                <details class="invoice-terms-section">
+                <details class="billing-terms-section">
             <summary class="terms-summary" aria-label="Toggle terms and notes section">
                 <span class="terms-summary-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 6l6 6l-6 6"></path></svg>
@@ -210,8 +210,8 @@
         <input type="hidden" id="invoice_baseTotal" name="invoice[baseTotal]" value="0">
         <input type="hidden" id="invoice_tax" name="invoice[tax]" value="0">
 
-                <div class="invoice-form-actions">
-            <div class="invoice-form-actions-inner">
+                <div class="billing-form-actions">
+            <div class="billing-form-actions-inner">
                 <a href="/invoices/" class="btn btn-ghost">
                     <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l6 6m-6-6l6-6"></path></svg>
                     Cancel

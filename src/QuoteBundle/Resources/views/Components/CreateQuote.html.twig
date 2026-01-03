@@ -1,222 +1,269 @@
-<div {{ attributes }}>
-    {% set currency = quote.client.currency|default(null) %}
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+<div {{ attributes.defaults({class: 'billing-form-page'}) }}>
+    {% set currency = quote.client ? quote.client.currency : null %}
 
     {{ form_start(form) }}
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <section class="invoice">
 
-                        <div class="col-12">
-                            <div class="row">
-                                <div class="col-6">
-                                    <div{{ form.client.vars.data is not empty ? ' class="d-none"' }}>
-                                        {{ form_row(form.client, {attr: {'data-action': 'live#$render'}}) }}
+    <div class="billing-form-container">
+        {# Page Header #}
+        <div class="billing-form-header">
+            <div class="billing-form-header-content">
+                <div class="billing-form-icon">
+                    {{ ux_icon('tabler:file-text', {width: 28, height: 28}) }}
+                </div>
+                <div>
+                    {% if isEdit %}
+                        <h1 class="billing-form-title">{{ 'quote.edit.title'|trans }}</h1>
+                    {% else %}
+                        <h1 class="billing-form-title">{{ 'quote.create.title'|trans }}</h1>
+                        <p class="billing-form-subtitle">{{ 'quote.create.subtitle'|trans }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        {# Quote Details Section (Client, Quote ID, Discount) #}
+        <div class="billing-details-section">
+            <div class="billing-details-grid billing-details-grid--no-dates">
+                {# Left Column: Client Selection + Quote ID #}
+                <div class="billing-details-left">
+                    {# Client Selection #}
+                    <div class="client-selection">
+                        <div{{ form.client.vars.data is not empty ? ' class="d-none"' }}>
+                            {{ form_row(form.client, {attr: {'data-action': 'live#$render'}}) }}
+                        </div>
+                        {% if form.client.vars.data %}
+                            {% include "@SolidInvoiceClient/Ajax/info.html.twig" with {'client': form.client.vars.data, 'form': form} %}
+                        {% endif %}
+                    </div>
+
+                    {# Quote ID #}
+                    <div {{ stimulus_controller('billing-id') }}>
+                        <span {{ stimulus_target('billing-id', 'info') }}>
+                            <div class="billing-id-display">
+                                <span class="billing-id-label">{{ 'quote.label'|trans }}</span>
+                                <span class="billing-id-value" {{ stimulus_target('billing-id', 'value') }}>{{ form.quoteId.vars.data }}</span>
+                                {% if editQuoteId is not defined or editQuoteId is not same as(false) %}
+                                    <button type="button" class="billing-id-edit" {{ stimulus_action('billing-id', 'edit') }} aria-label="{{ 'quote.id.edit'|trans }}" title="{{ 'Edit'|trans }}">
+                                        {{ ux_icon('tabler:pencil', {width: 16, height: 16}) }}
+                                    </button>
+                                {% endif %}
+                            </div>
+                        </span>
+
+                        <div class="d-none billing-id-form" {{ stimulus_target('billing-id', 'form') }}>
+                            {{ form_label(form.quoteId) }}
+                            <div class="input-group">
+                                {{ form_widget(form.quoteId, {attr: {class: 'form-control'}}) }}
+                                <button class="btn btn-outline-primary" type="button" {{ stimulus_action('billing-id', 'save') }} aria-label="{{ 'quote.id.save'|trans }}" title="{{ 'Save'|trans }}">
+                                    {{ ux_icon('tabler:check', {width: 18, height: 18}) }}
+                                </button>
+                                <button class="btn btn-outline-secondary" type="button" {{ stimulus_action('billing-id', 'cancel') }} aria-label="{{ 'quote.id.cancel'|trans }}" title="{{ 'Cancel'|trans }}">
+                                    {{ ux_icon('tabler:x', {width: 18, height: 18}) }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {# Right Column: Discount only (no dates for quotes) #}
+                <div class="billing-details-right">
+                    {{ form_row(form.discount) }}
+                </div>
+            </div>
+        </div>
+
+        {# Main Content: 2-Column Layout #}
+        <div class="billing-form-main">
+            {# Line Items Section #}
+            <div class="billing-items-section">
+                <div class="billing-items-header">
+                    <div class="billing-items-icon">
+                        {{ ux_icon('tabler:list-details', {width: 20, height: 20}) }}
+                    </div>
+                    <h2 class="billing-items-title">{{ 'quote.items.title'|trans }}</h2>
+                </div>
+
+                <div class="billing-items-body">
+                    {# Empty State #}
+                    {% if form.lines|length == 0 %}
+                        <div class="billing-items-empty">
+                            <div class="billing-items-empty-icon">
+                                {{ ux_icon('tabler:file-plus', {width: 32, height: 32}) }}
+                            </div>
+                            <h3 class="billing-items-empty-title">{{ 'quote.items.empty.title'|trans }}</h3>
+                            <p class="billing-items-empty-text">{{ 'quote.items.empty.description'|trans }}</p>
+                        </div>
+                    {% else %}
+                        {# Responsive Line Items - Table on desktop, stacked on mobile via CSS #}
+                        <div class="billing-items-list">
+                            <div class="billing-items-header-row">
+                                <div class="column-description">{{ 'quote.item.heading.description'|trans }}</div>
+                                <div class="column-price">{{ 'quote.item.heading.price'|trans }}</div>
+                                <div class="column-qty">{{ 'quote.item.heading.qty'|trans }}</div>
+                                {% if hasTax %}
+                                    <div class="column-tax">{{ 'quote.item.heading.tax'|trans }}</div>
+                                {% endif %}
+                                <div class="column-total">{{ 'quote.item.heading.total'|trans }}</div>
+                                <div class="column-actions"></div>
+                            </div>
+
+                            {% for index, item in form.lines %}
+                                <div class="billing-item-row">
+                                    <div class="column-description">
+                                        <span class="mobile-label">{{ 'quote.item.heading.description'|trans }}</span>
+                                        {{ form_widget(item.description, {attr: {placeholder: 'quote.item.description.placeholder'|trans, rows: 2}}) }}
+                                        {{ form_errors(item.description) }}
                                     </div>
-                                    {% if form.client.vars.data %}
-                                        {% include "@SolidInvoiceClient/Ajax/info.html.twig" with {'client' : form.client.vars.data, 'form' : form} %}
+                                    <div class="column-price">
+                                        <span class="mobile-label">{{ 'quote.item.heading.price'|trans }}</span>
+                                        {{ form_widget(item.price) }}
+                                        {{ form_errors(item.price) }}
+                                    </div>
+                                    <div class="column-qty">
+                                        <span class="mobile-label">{{ 'quote.item.heading.qty'|trans }}</span>
+                                        {{ form_widget(item.qty) }}
+                                        {{ form_errors(item.qty) }}
+                                    </div>
+                                    {% if hasTax %}
+                                        <div class="column-tax">
+                                            <span class="mobile-label">{{ 'quote.item.heading.tax'|trans }}</span>
+                                            {{ form_widget(item.tax) }}
+                                            {{ form_errors(item.tax) }}
+                                        </div>
                                     {% endif %}
-                                </div>
-
-                                <div class="col-6 col-md-3 offset-md-3 text-right">
-                                    {{ form_row(form.discount) }}
-                                </div>
-                            </div>
-
-                            <div class="row mb-4">
-                                <div class="col-12 col-md-6 pt-4 mb-2 mb-md-0" {{ stimulus_controller('billing-id') }}>
-                                    <span {{ stimulus_target('billing-id', 'info') }}>
-                                        <span class="h4">
-                                            {{ 'Quote #'|trans }}<span {{ stimulus_target('billing-id', 'value') }}>{{ form.quoteId.vars.data }}</span>
-                                        </span>
-                                        {% if editQuoteId is not defined or editQuoteId is not same as(false) %}
-                                            <a href="#" {{ stimulus_action('billing-id', 'edit') }}>{{ icon('pencil') }}</a>
+                                    <div class="column-total">
+                                        <span class="mobile-label">{{ 'quote.item.heading.total'|trans }}</span>
+                                        <span class="item-total-value">{{ item.vars.value.total|formatCurrency(currency) }}</span>
+                                    </div>
+                                    <div class="column-actions">
+                                        {% if form.lines|length > 1 %}
+                                            {{ form_widget(item.vars.button_delete, {
+                                                label: ux_icon('tabler:trash', {width: 16, height: 16})|raw,
+                                                label_html: true,
+                                                attr: {class: 'remove-item-btn', title: 'quote.item.remove'|trans, 'aria-label': 'quote.item.remove'|trans}
+                                            }) }}
                                         {% endif %}
-                                    </span>
-
-                                    <div class="d-none" {{ stimulus_target('billing-id', 'form') }}>
-
-                                        {{ form_label(form.quoteId) }}
-                                        <div class="input-group mb-3">
-                                            {{ form_widget(form.quoteId) }}
-                                            <div class="input-group-append">
-                                                <button class="btn btn-outline-secondary" type="button" {{ stimulus_action('billing-id', 'save') }} title="{{ 'Save'|trans }}" rel="tooltip">
-                                                    {{ icon('save') }}
-                                                </button>
-                                                <button class="btn btn-outline-secondary" type="button" {{ stimulus_action('billing-id', 'cancel') }} title="{{ 'Cancel'|trans }}" rel="tooltip">
-                                                    {{ icon('cancel') }}
-                                                </button>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
-                                {#<div class="col-3">
-                                    {{ form_row(form.quoteDate) }}
-                                </div>#}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
 
-                                {#<div class="col-3">
-                                    {{ form_row(form.due) }}
-                                </div>#}
-                            </div>
+                    {# Add Item Button #}
+                    <div class="add-item-action">
+                        {{ form_widget(form.lines.vars.button_add, {
+                            label: 'quote.item.add'|trans,
+                            attr: {class: 'add-item-btn btn-sm'}
+                        }) }}
+                    </div>
+                </div>
+            </div>
+
+            {# Totals Sidebar #}
+            <div class="billing-totals-sidebar">
+                <div class="billing-totals-card">
+                    <div class="billing-totals-header">
+                        <div class="billing-totals-icon">
+                            {{ ux_icon('tabler:calculator', {width: 20, height: 20}) }}
+                        </div>
+                        <h2 class="billing-totals-title">{{ 'quote.totals.title'|trans }}</h2>
+                    </div>
+
+                    <div class="billing-totals-body">
+                        <div class="totals-row">
+                            <span class="totals-label">{{ 'billing.subtotal'|trans }}</span>
+                            <span class="totals-value">{{ quote.baseTotal|formatCurrency(currency) }}</span>
                         </div>
 
-                        <div class="row invoice-container">
-                            <div class="col">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h3 class="card-title"><strong>{{ 'quote.summary'|trans }}</strong></h3>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="table-responsive">
-                                            <table class="table table-condensed">
-                                                <thead>
-                                                <tr>
-                                                    <th>
-                                                        {{ "quote.item.heading.description"|trans }}
-                                                    </th>
-                                                    <th>
-                                                        {{ "quote.item.heading.price"|trans }}
-                                                    </th>
-                                                    <th>
-                                                        {{ "quote.item.heading.qty"|trans }}
-                                                    </th>
-                                                    {% if hasTax %}
-                                                        <th>
-                                                            {{ "quote.item.heading.tax"|trans }}
-                                                        </th>
-                                                    {% endif %}
-                                                    <th class="text-right">{{ 'quote.item.heading.total'|trans }}</th>
-                                                    <th></th>
-                                                </tr>
-                                                </thead>
-                                                <tr>
-                                                    {% for index, item in form.lines %}
-                                                <tr>
-                                                    <td class="column-description">
-                                                        {{ form_widget(item.description) }}
-                                                        {{ form_errors(item.description) }}
-                                                    </td>
-                                                    <td class="column-price">
-                                                        {{ form_widget(item.price) }}
-                                                        {{ form_errors(item.price) }}
-                                                    </td>
-                                                    <td class="column-qty">
-                                                        {{ form_widget(item.qty) }}
-                                                        {{ form_errors(item.qty) }}
-                                                    </td>
-                                                    {% if hasTax %}
-                                                        <td class="column-total text-right">
-                                                            {{ form_widget(item.tax) }}
-                                                            {{ form_errors(item.tax) }}
-                                                        </td>
-                                                    {% endif %}
-                                                    <td class="column-total text-right">
-                                                        {{ item.vars.value.total|formatCurrency(currency) }}
-                                                    </td>
-                                                    <td class="column-trash text-center">
-                                                        {% if form.lines|length > 1 %}
-                                                            {{ form_row(item.vars.button_delete, {label: ' ', attr: {class: 'remove-item text-danger fas fa-times-circle'}}) }}
-                                                        {% endif %}
-                                                    </td>
-                                                </tr>
-                                                {% endfor %}
-                                                </tbody>
-                                                <tfoot>
-                                                <tr>
-                                                    <td colspan="{{ hasTax ? 4 : 3 }}" class="thick-line text-right"><strong>{{ 'billing.subtotal'|trans }}</strong></td>
-                                                    <td class="thick-line text-right">
-                                                        <div class="sub-total">
-                                                            {{ quote.baseTotal|formatCurrency(currency) }}
-                                                        </div>
-                                                    </td>
-                                                    <td class="thick-line">
-                                                    </td>
-                                                </tr>
-                                                {% if hasTax %}
-                                                    <tr>
-                                                        <td colspan="{{ hasTax ? 4 : 3 }}" class="no-line text-right"><strong>{{ 'billing.tax'|trans }}</strong></td>
-                                                        <td class="no-line text-right">
-                                                        <span class="tax">
-                                                            {{ quote.tax|formatCurrency(currency) }}
-                                                        </span>
-                                                        </td>
-                                                        <td class="no-line">
-                                                        </td>
-                                                    </tr>
-                                                {% endif %}
-                                                <tr>
-                                                    <td colspan="{{ hasTax ? 4 : 3 }}" class="no-line text-right"><strong>{{ 'billing.discount'|trans }}</strong></td>
-                                                    <td class="no-line text-right">
-                                                        <span class="text-danger discount">
-                                                            {{ discount(quote)|formatCurrency(currency) }}
-                                                        </span>
-                                                    </td>
-                                                    <td class="no-line">
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="{{ hasTax ? 4 : 3 }}" class="no-line text-right"><strong>{{ 'billing.total'|trans }}</strong></td>
-                                                    <td class="no-line text-right">
-                                                        <div class="total">
-                                                            {{ quote.total|formatCurrency(currency) }}
-                                                        </div>
-                                                    </td>
-                                                    <td class="no-line"></td>
-                                                </tr>
-                                                </tfoot>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
+                        {% if hasTax %}
+                            <div class="totals-row">
+                                <span class="totals-label">{{ 'billing.tax'|trans }}</span>
+                                <span class="totals-value">{{ quote.tax|formatCurrency(currency) }}</span>
                             </div>
+                        {% endif %}
+
+                        <div class="totals-row totals-row-discount">
+                            <span class="totals-label">{{ 'billing.discount'|trans }}</span>
+                            <span class="totals-value">{{ discount(quote)|formatCurrency(currency) }}</span>
                         </div>
 
-                        <div class="row">
-                            <div class="col add-item-col">
-                                {{ form_widget(form.lines.vars.button_add, {label: '+ Add Item', attr: {class: 'add-item'}}) }}
-                            </div>
+                        <div class="totals-row totals-row-total">
+                            <span class="totals-label">{{ 'billing.total'|trans }}</span>
+                            <span class="totals-value">{{ quote.total|formatCurrency(currency) }}</span>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        {# Terms & Notes - Collapsible Section #}
+        <details class="billing-terms-section"{{ hasTermsOrNotes ? ' open' : '' }}>
+            <summary class="terms-summary" aria-label="{{ 'quote.terms_notes.toggle'|trans }}">
+                <span class="terms-summary-icon">
+                    {{ ux_icon('tabler:chevron-right', {width: 18, height: 18}) }}
+                </span>
+                <span class="terms-summary-text">
+                    <span class="terms-summary-title">{{ 'quote.terms_notes.title'|trans }}</span>
+                    <span class="terms-summary-badge">{{ 'optional'|trans }}</span>
+                </span>
+            </summary>
+            <div class="terms-content">
+                <div class="terms-grid">
+                    {{ form_row(form.terms) }}
+                    {{ form_row(form.notes) }}
+                </div>
+            </div>
+        </details>
 
-                        <br class="clear" />
+        {# Hidden fields #}
+        {{ form_widget(form.total) }}
+        {{ form_widget(form.baseTotal) }}
+        {{ form_widget(form.tax) }}
 
-                        <div class="row">
-                            <div class="col-6">
-                                {{ form_row(form.terms) }}
-                            </div>
-                            <div class="col-6">
-                                {{ form_row(form.notes) }}
-                            </div>
-                        </div>
+        {# Sticky Form Actions #}
+        <div class="billing-form-actions">
+            <div class="billing-form-actions-inner">
+                <a href="{{ path('_quotes_index') }}" class="btn btn-ghost">
+                    {{ ux_icon('tabler:arrow-left', {width: 18, height: 18}) }}
+                    {{ 'Cancel'|trans }}
+                </a>
 
-                        <div class="form-actions clearfix">
-                            {% if isEdit %}
-                                <div class="float-right">
-                                    <button type="submit" class="btn btn-info" name="save" value="save">
-                                        {{ icon('check') }} {{ "Save Quote"|trans }}
-                                    </button>
-                                </div>
-                            {% else %}
-                                <div class="float-md-right mb-2">
-                                    <button type="submit" class="btn btn-primary" name="save" value="save">
-                                        {{ icon('save') }} {{ "quote.save.draft"|trans }}
-                                    </button>
-                                </div>
-                                <div class="float-md-left d-flex justify-content-between">
-                                    <button type="submit" class="btn btn-success mr-md-2" name="save" value="pending">
-                                        {{ icon('envelope', ['o']) }} {{ ("quote.save.send")|trans }}
-                                    </button>
-                                    <button type="submit" class="btn btn-info" name="save" value="publish">
-                                        {{ icon('check') }} {{ "Save Quote"|trans }}
-                                    </button>
-                                </div>
-                            {% endif %}
-                        </div>
-                    </section>
+                <div class="btn-group save-button-group">
+                    {% if isEdit %}
+                        <button type="submit" class="btn btn-primary btn-save-primary" name="save" value="save">
+                            {{ ux_icon('tabler:device-floppy', {width: 18, height: 18}) }}
+                            {{ 'quote.save.update'|trans }}
+                        </button>
+                    {% else %}
+                        <button type="submit" class="btn btn-primary btn-save-primary" name="save" value="draft">
+                            {{ ux_icon('tabler:device-floppy', {width: 18, height: 18}) }}
+                            {{ 'quote.save.draft'|trans }}
+                        </button>
+                        <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span class="visually-hidden">{{ 'Toggle Dropdown'|trans }}</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <button type="submit" class="dropdown-item" name="save" value="pending">
+                                    {{ ux_icon('tabler:send', {width: 16, height: 16}) }}
+                                    {{ 'quote.save.send'|trans }}
+                                </button>
+                            </li>
+                        </ul>
+                    {% endif %}
                 </div>
             </div>
         </div>
     </div>
+
     {{ form_end(form) }}
 </div>

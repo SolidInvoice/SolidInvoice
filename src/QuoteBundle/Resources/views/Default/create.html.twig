@@ -1,14 +1,6 @@
 {% set isEdit = isEdit|default(false) %}
 {% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
-{% block title %}
-    {% if quote is defined %}
-        {{ 'quote.title'|trans({'%id%' : quote.quoteId}) }}
-    {% else %}
-        {{ 'quote.create'|trans }}
-    {% endif %}
-{% endblock %}
-
 {% block content %}
     <twig:CreateQuote :form="form" :quote="quote" :isEdit="isEdit" />
 {% endblock content %}

@@ -48,7 +48,15 @@ final class Create
         $quote->addLine(new Line());
 
         if (1 === $totalClientsCount && ! $client instanceof Client) {
-            $quote->setClient($this->repository->findOneBy([]));
+            $client = $this->repository->findOneBy([]);
+            $quote->setClient($client);
+        }
+
+        // Auto-select all client contacts
+        if ($client instanceof Client) {
+            foreach ($client->getContacts() as $contact) {
+                $quote->addUser($contact);
+            }
         }
 
         $options = [
