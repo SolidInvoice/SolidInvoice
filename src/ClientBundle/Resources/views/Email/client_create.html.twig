@@ -24,7 +24,8 @@
             <row>
                 <columns large="6"><strong>{{ 'client.create.details.website'|trans({}, 'email') }}</strong></columns>
                 <columns large="6" class="text-right">
-                    <a href="{{ client.website }}" rel="external" target="_blank">
+                    {% set website_url = client.website starts with 'http://' or client.website starts with 'https://' ? client.website : 'https://' ~ client.website %}
+                    <a href="{{ website_url }}" rel="external" target="_blank">
                         {{ client.website }}
                     </a>
                 </columns>
