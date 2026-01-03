@@ -7,6 +7,7 @@
  # with this source code in the file LICENSE.
  #}
 
+
 <div class="selected-client-card">
     <div class="selected-client-header">
         <span class="selected-client-name">
@@ -26,7 +27,7 @@
         <div class="selected-client-contacts">
             <div class="contacts-label" id="contacts-label">
                 {{ ux_icon('tabler:mail', {width: 16, height: 16}) }}
-                {{ 'invoice.send_to'|trans }}
+                {{ quote is defined ? 'quote.send_to'|trans : 'invoice.send_to'|trans }}
             </div>
 
             {{ form_errors(form.users) }}
