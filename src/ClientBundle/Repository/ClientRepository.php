@@ -188,5 +188,6 @@ class ClientRepository extends ServiceEntityRepository
     public function delete(Client $client): void
     {
         $this->getEntityManager()->remove($client);
+        $this->getEntityManager()->flush();
     }
 }
