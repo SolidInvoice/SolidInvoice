@@ -28,7 +28,8 @@
                 </div>
                 <div class="client-hero-meta">
                     {% if client.website %}
-                        <a href="{{ client.website }}" class="client-hero-meta-item" rel="external noopener" target="_blank">
+                        {% set website_url = client.website starts with 'http://' or client.website starts with 'https://' ? client.website : 'https://' ~ client.website %}
+                        <a href="{{ website_url }}" class="client-hero-meta-item" rel="external noopener" target="_blank">
                             {{ ux_icon('tabler:world', {width: 16, height: 16}) }}
                             <span>{{ client.website }}</span>
                             {{ ux_icon('tabler:external-link', {width: 14, height: 14}) }}
@@ -227,10 +228,14 @@
 
         <twig:block name="footer">
             <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">{{ 'Cancel'|trans }}</button>
-            <a href="{{ path('_xhr_clients_delete', {'id': client.id}) }}" class="btn btn-danger d-flex align-items-center gap-2">
-                {{ ux_icon('tabler:trash', {width: 16, height: 16}) }}
-                {{ 'client.view.actions.delete'|trans }}
-            </a>
+            <form method="post" action="{{ path('_clients_delete', {'id': client.id}) }}" style="display: inline;">
+                <input type="hidden" name="_method" value="DELETE">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ client.id) }}">
+                <button type="submit" class="btn btn-danger d-flex align-items-center gap-2">
+                    {{ ux_icon('tabler:trash', {width: 16, height: 16}) }}
+                    {{ 'client.view.actions.delete'|trans }}
+                </button>
+            </form>
         </twig:block>
     </twig:Ui:Modal>
 {% endblock content %}

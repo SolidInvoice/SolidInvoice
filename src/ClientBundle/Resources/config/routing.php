@@ -12,6 +12,7 @@ declare(strict_types=1);
  */
 
 use SolidInvoice\ClientBundle\Action\Add;
+use SolidInvoice\ClientBundle\Action\Delete;
 use SolidInvoice\ClientBundle\Action\Edit;
 use SolidInvoice\ClientBundle\Action\Index;
 use SolidInvoice\ClientBundle\Action\View;
@@ -33,6 +34,11 @@ return static function (RoutingConfigurator $routingConfigurator): void {
     $routingConfigurator
         ->add('_clients_view', '/view/{id}')
         ->controller(View::class);
+
+    $routingConfigurator
+        ->add('_clients_delete', '/delete/{id}')
+        ->controller(Delete::class)
+        ->methods(['DELETE', 'POST']);
 
     $routingConfigurator->import('@SolidInvoiceClientBundle/Resources/config/routing/ajax.php')
         ->prefix('/xhr');
