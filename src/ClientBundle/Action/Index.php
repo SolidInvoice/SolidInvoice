@@ -21,12 +21,12 @@ use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 
-final class Index
+final readonly class Index
 {
     public function __construct(
-        private readonly ClientRepository $clientRepository,
-        private readonly InvoiceRepository $invoiceRepository,
-        private readonly EntityManagerInterface $entityManager,
+        private ClientRepository $clientRepository,
+        private InvoiceRepository $invoiceRepository,
+        private EntityManagerInterface $entityManager,
     ) {
     }
 
@@ -48,12 +48,7 @@ final class Index
         $filters->enable('archivable');
 
         // Get total contacts count
-        $totalContacts = (int) $this->entityManager
-            ->getRepository(Contact::class)
-            ->createQueryBuilder('c')
-            ->select('COUNT(c.id)')
-            ->getQuery()
-            ->getSingleScalarResult();
+        $totalContacts = $this->entityManager->getRepository(Contact::class)->count([]);
 
         // Get outstanding amounts by currency
         $totalOutstanding = $this->invoiceRepository->getTotalOutstandingByCurrency();
