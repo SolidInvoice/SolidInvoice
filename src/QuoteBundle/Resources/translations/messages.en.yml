@@ -75,7 +75,15 @@ quote:
             view: View
             edit: Edit
             delete: Delete
+    tabs:
+        active: 'Active'
+        archived: 'Archived'
+        label: 'Quote list navigation'
     stats:
+        total_quotes: 'Total Quotes'
+        pending_quotes: 'Pending'
+        accepted_quotes: 'Accepted'
+        declined_quotes: 'Declined'
         count:
             pending: '{0} Pending Quotes|{1} Pending Quote|]1,Inf] Pending Quotes'
             accepted: '{0} Accepted Quotes|{1} Accepted Quote|]1,Inf] Accepted Quotes'

@@ -9,53 +9,136 @@
 
 {% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
-{% block title %}{{ "quote.list.title"|trans }}{% endblock %}
+{% block title %}
+    {{ ux_icon('tabler:file-text', {width: 24, height: 24, class: 'me-2'}) }}{{ "quote.list.title"|trans }}
+{% endblock title %}
+
+{% block heading %}
+    <a class="btn btn-primary" href="{{ path("_quotes_create") }}">
+        {{ ux_icon('tabler:plus', {width: 18, height: 18}) }}
+        {{ "quote.create"|trans }}
+    </a>
+{% endblock %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-md-12">
-            <div class="widget">
-                {% if app.request.query.get('archived', '0') is same as('1') %}
-                    <twig:DataGrid name="archived_quote_grid" />
-                {% else %}
-                    <twig:DataGrid name="quote_grid" />
-                {% endif %}
-            </div>
-
-            <div class="text-center">
-                {% if app.request.query.get('archived', '0') is same as('1') %}
-                    <a class="btn btn-sm btn-outline-info text-center" href="?archived=0">{{ 'View active quotes'|trans }}</a>
-                {% else %}
-                    <a class="btn btn-sm btn-outline-info text-center" href="?archived=1">{{ 'View archived quotes'|trans }}</a>
-                {% endif %}
-            </div>
-
-            <h5>{{ "quote.list.status_legend"|trans }}</h5>
-
-            {% for status in quote_label() %}
-                {{ status|raw }}
-            {% endfor %}
-        </div>
-        {#<div class="col-md-3">
-            <div class="card right-nav">
+    {# Stats Row #}
+    <div class="row row-deck row-cards mb-4">
+        <div class="col-sm-6 col-lg-3">
+            <div class="card card-sm">
                 <div class="card-body">
-                    <a class="btn btn-block btn-info action-button" href="{{ path("_quotes_create") }}">
-                        {{ icon('file', ['text', 'o']) }} {{ "quote.create"|trans }}
-                    </a>
-
-                    <ul class="list-group list-group-unbordered">
-                        {% for status, count in status_list_count %}
-                            <li class="list-group-item">
-                                <label class="badge badge-pill">
-                                    {{ count }}
-                                </label>
-
-                                {{ ('quote.stats.count.' ~ status)|trans({'%count%': count}) }}
-                            </li>
-                        {% endfor %}
-                    </ul>
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="bg-primary text-white avatar">
+                                {{ ux_icon('tabler:file-text', {width: 24, height: 24}) }}
+                            </span>
+                        </div>
+                        <div class="col">
+                            <div class="font-weight-medium">
+                                {{ totalActiveQuotes }}
+                            </div>
+                            <div class="text-secondary">
+                                {{ 'quote.stats.total_quotes'|trans }}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>#}
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="bg-warning text-white avatar">
+                                {{ ux_icon('tabler:clock', {width: 24, height: 24}) }}
+                            </span>
+                        </div>
+                        <div class="col">
+                            <div class="font-weight-medium">
+                                {{ pendingCount }}
+                            </div>
+                            <div class="text-secondary">
+                                {{ 'quote.stats.pending_quotes'|trans }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="bg-success text-white avatar">
+                                {{ ux_icon('tabler:check', {width: 24, height: 24}) }}
+                            </span>
+                        </div>
+                        <div class="col">
+                            <div class="font-weight-medium">
+                                {{ acceptedCount }}
+                            </div>
+                            <div class="text-secondary">
+                                {{ 'quote.stats.accepted_quotes'|trans }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="bg-danger text-white avatar">
+                                {{ ux_icon('tabler:x', {width: 24, height: 24}) }}
+                            </span>
+                        </div>
+                        <div class="col">
+                            <div class="font-weight-medium">
+                                {{ declinedCount }}
+                            </div>
+                            <div class="text-secondary">
+                                {{ 'quote.stats.declined_quotes'|trans }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    {# Quote List Card #}
+    <twig:Ui:Card>
+        <twig:block name="header">
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs" role="tablist" aria-label="{{ 'quote.tabs.label'|trans }}">
+                    <li class="nav-item" role="presentation">
+                        <a href="{{ path('_quotes_index') }}" class="nav-link{{ not isArchived ? ' active' : '' }}" role="tab" aria-selected="{{ not isArchived ? 'true' : 'false' }}">
+                            {{ ux_icon('tabler:file-text', {width: 16, height: 16}) }}
+                            {{ 'quote.tabs.active'|trans }}
+                            <span class="badge bg-primary-lt ms-2">{{ totalActiveQuotes }}</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a href="{{ path('_quotes_index', {archived: 1}) }}" class="nav-link{{ isArchived ? ' active' : '' }}" role="tab" aria-selected="{{ isArchived ? 'true' : 'false' }}">
+                            {{ ux_icon('tabler:archive', {width: 16, height: 16}) }}
+                            {{ 'quote.tabs.archived'|trans }}
+                            <span class="badge bg-secondary-lt ms-2">{{ totalArchivedQuotes }}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </twig:block>
+
+        {% if isArchived %}
+            <twig:DataGrid name="archived_quote_grid" />
+        {% else %}
+            <twig:DataGrid name="quote_grid" />
+        {% endif %}
+    </twig:Ui:Card>
 {% endblock content %}

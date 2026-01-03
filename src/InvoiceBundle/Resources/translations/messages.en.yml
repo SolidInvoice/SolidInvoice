@@ -75,7 +75,16 @@ invoice:
             reopen: 'Invoice has been re-opened'
             archive: 'Invoice has been archived'
             activate: 'Invoice has been activated'
+    tabs:
+        active: 'Active'
+        archived: 'Archived'
+        label: 'Invoice list navigation'
     stats:
+        total_invoices: 'Total Invoices'
+        pending_invoices: 'Pending'
+        overdue: 'overdue'
+        total_income: 'Total Income'
+        outstanding_balance: 'Outstanding'
         count:
             pending: '{0} Pending Invoices|{1} Pending Invoice|]1,Inf] Pending Invoices'
             draft: '{0} Draft Invoices|{1} Draft Invoice|]1,Inf] Draft Invoices'
