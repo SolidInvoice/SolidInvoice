@@ -26,8 +26,12 @@
                     {{ ux_icon('tabler:building-store', {width: 28, height: 28}) }}
                 </div>
                 <div>
-                    <h1 class="client-form-title">{{ 'add_client'|trans }}</h1>
-                    <p class="client-form-subtitle">{{ 'client.form.subtitle'|trans }}</p>
+                    {% if client is not empty %}
+                        <h1 class="client-form-title">{{ 'edit_client'|trans }} - {{ client }}</h1>
+                    {% else %}
+                        <h1 class="client-form-title">{{ 'add_client'|trans }}</h1>
+                        <p class="client-form-subtitle">{{ 'client.form.subtitle'|trans }}</p>
+                    {% endif %}
                 </div>
             </div>
         </div>
