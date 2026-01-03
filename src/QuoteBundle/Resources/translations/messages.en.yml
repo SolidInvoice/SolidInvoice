@@ -25,6 +25,7 @@ quote:
         draft: 'Save as Draft'
         update: Update
         cancel: Cancel
+    send_to: 'Send quote to:'
     items:
         title: 'Line Items'
         empty:
