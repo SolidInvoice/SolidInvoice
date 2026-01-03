@@ -1,24 +1,51 @@
 <html><body>
-<div id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="ClientForm" data-live-url-value="/_components/ClientForm" data-live-props-value='{"formData":null,"formName":"client","client":{"name":"","website":"","currencyCode":"","vat_number":"","contacts":[{"firstName":"","lastName":"","email":"","additionalContactDetails":[]}],"addresses":[{"street1":"","street2":"","city":"","state":"","zip":"","country":""}],"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
-    <form name="client" method="post" data-model="on(change)|*" data-action="live#action:prevent" data-live-action-param="save">
+<div class="client-form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="ClientForm" data-live-url-value="/_components/ClientForm" data-live-props-value='{"formData":null,"formName":"client","client":{"name":"","website":"","currencyCode":"","vat_number":"","contacts":[{"firstName":"","lastName":"","email":"","additionalContactDetails":[]}],"addresses":[{"street1":"","street2":"","city":"","state":"","zip":"","country":""}],"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
+    <form name="client" method="post" data-model="on(change)|*" data-action="live#action:prevent" data-live-action-param="save" class="client-form">
 
     
 
-    <div class="row">
-        <div class="col-lg-6 col-md-6" id="client-address-collection">
-            <div class="card card-primary card-outline">
-                <div class="card-header with-border">
-                    <h3 class="card-title">Client Info</h3>
+    <div class="client-form-container">
+                <div class="client-form-header">
+            <div class="client-form-header-content">
+                <div class="client-form-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="28" height="28" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21h18M3 7v1a3 3 0 0 0 6 0V7m0 1a3 3 0 0 0 6 0V7m0 1a3 3 0 0 0 6 0V7H3l2-4h14l2 4M5 21V10.85M19 21V10.85M9 21v-4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v4"></path></svg>
+                </div>
+                <div>
+                    <h1 class="client-form-title">Add Client</h1>
+                    <p class="client-form-subtitle">client.form.subtitle</p>
+                </div>
+            </div>
+        </div>
+
+                <div class="client-form-sections">
+
+                        <section class="client-form-section" id="client-info">
+                <div class="section-header">
+                    <div class="section-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21h18M9 8h1m-1 4h1m-1 4h1m4-8h1m-1 4h1m-1 4h1M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"></path></svg>
+                    </div>
+                    <div class="section-header-text">
+                        <h2 class="section-title">Client Info</h2>
+                        <p class="section-description">client.form.info_description</p>
+                    </div>
                 </div>
 
-                <div class="card-body">
-                    <div class="mb-3">                
-                                <label class="control-label required form-label required" for="client_name">Name</label><input type="text" id="client_name" name="client[name]" data-required="required" maxlength="125" class="form-control">
+                <div class="section-content">
+                    <div class="form-grid">
+                        <div class="form-field form-field-wide">
+                            <div class="mb-3">                
+                                <label class="control-label required form-label required" for="client_name">Name</label><input type="text" id="client_name" name="client[name]" data-required="required" maxlength="125" placeholder="Acme Corporation" class="form-control">
 </div>
-                    <div class="mb-3">                
-            <label class="control-label form-label" for="client_website">Website</label><input type="text" id="client_website" name="client[website]" inputmode="url" class="form-control">
+                        </div>
+
+                        <div class="form-field">
+                            <div class="mb-3">                
+            <label class="control-label form-label" for="client_website">Website</label><input type="text" id="client_website" name="client[website]" inputmode="url" placeholder="https://example.com" class="form-control">
 </div>
-                    <div class="mb-3">                
+                        </div>
+
+                        <div class="form-field">
+                            <div class="mb-3">                
             <label class="control-label form-label" for="client_currencyCode">Currency code</label>    <div class="input-group input-icon-group">
         <span class="input-group-text">
             <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M9 14c0 1.657 2.686 3 6 3s6-1.343 6-3s-2.686-3-6-3s-6 1.343-6 3"></path><path d="M9 14v4c0 1.656 2.686 3 6 3s6-1.344 6-3v-4M3 6c0 1.072 1.144 2.062 3 2.598s4.144.536 6 0S15 7.072 15 6s-1.144-2.062-3-2.598s-4.144-.536-6 0S3 4.928 3 6"></path><path d="M3 6v10c0 .888.772 1.45 2 2"></path><path d="M3 11c0 .888.772 1.45 2 2"></path></g></svg>
@@ -191,7 +218,10 @@
 <option value="ZWG">Zimbabwean Gold</option></select>
     </div>
 </div>
-                    <div class="mb-3">                
+                        </div>
+
+                        <div class="form-field form-field-wide">
+                            <div class="mb-3">                
             <label class="control-label form-label" for="client_vat_number">Vat number</label><div class="input-group input-icon-group input-validate-group" data-controller="vat-validator" data-vat-validator-url-value="/tax/number/validate">
         <span class="input-group-text">
             <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 17a1 1 0 1 0 2 0a1 1 0 1 0-2 0M6 7a1 1 0 1 0 2 0a1 1 0 1 0-2 0m0 11L18 6"></path></svg>
@@ -203,54 +233,157 @@
         </button>
     </div>
 </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </section>
 
-            <div class="card card-primary card-outline">
-                <div class="card-header with-border">
-                    <h3 class="card-title">Address Info</h3>
+                        <section class="client-form-section" id="client-contacts-collection">
+                <div class="section-header">
+                    <div class="section-icon section-icon-required">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7a4 4 0 1 0 8 0a4 4 0 1 0-8 0M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2m1-17.87a4 4 0 0 1 0 7.75M21 21v-2a4 4 0 0 0-3-3.85"></path></svg>
+                    </div>
+                    <div class="section-header-text">
+                        <h2 class="section-title">
+                            Contact Info
+                            <span class="required-badge">required</span>
+                        </h2>
+                        <p class="section-description">client.form.contact_description</p>
+                    </div>
                 </div>
+
+                <div class="section-content">
+                    <div class="contacts-list">
+                                                    <fieldset class="mb-3">                
+        
+
+
+<div class="contact-card">
+    <div class="contact-card-header">
+        <div class="contact-avatar">
+            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0-8 0M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"></path></svg>
+        </div>
+        <div class="contact-card-title">
+            <span class="contact-label">Contact</span>
+        </div>
+        <div class="contact-card-actions">
+            <button type="button" id="client_contacts_0_delete" name="client[contacts][0][delete]" data-action="live#action" data-live-action-param="removeCollectionItem" data-live-name-param="client[contacts]" data-live-index-param="0" class="btn btn-ghost-danger btn-sm btn" title="Delete Contact" aria-label="Delete Contact">Delete</button>
+        </div>
+    </div>
+
+    <div class="contact-card-body">
+        <div class="contact-form-grid">
+            <div class="contact-field contact-field-name">
+                <div class="mb-3">                
+                                <label class="control-label required form-label required" for="client_contacts_0_firstName">First name</label><input type="text" id="client_contacts_0_firstName" name="client[contacts][0][firstName]" data-required="required" maxlength="125" placeholder="John" class="form-control">
+</div>
+            </div>
+            <div class="contact-field contact-field-name">
+                <div class="mb-3">                
+            <label class="control-label form-label" for="client_contacts_0_lastName">Last name</label><input type="text" id="client_contacts_0_lastName" name="client[contacts][0][lastName]" maxlength="125" placeholder="Doe" class="form-control">
+</div>
+            </div>
+            <div class="contact-field contact-field-email">
+                <div class="mb-3">                
+                                <label class="control-label required form-label required" for="client_contacts_0_email">Email</label>    <div class="input-group input-icon-group">
+        <span class="input-group-text">
+            <svg viewbox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><path d="m3 7l9 6l9-6"></path></g></svg>
+        </span>
+        <input type="email" id="client_contacts_0_email" name="client[contacts][0][email]" class="form-control" value="" required="required" maxlength="255" placeholder="john.doe@example.com">
+    </div>
+</div>
+            </div>
+        </div>
+
+                            <div class="additional-details-section">
+                <div class="additional-details-header">
+                    <span class="additional-details-label">
+                        <svg viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg>
+                        Additional Contact Details
+                    </span>
+                </div>
+
+                <div class="additional-details-list">
+                                    </div>
 
                 
-                <div class="card-body">
-                    <div class="client_addresses">
-                        <fieldset class="mb-3">                
-    <div id="client_addresses"><fieldset class="mb-3">                
-            <div class="address-widget">
-        <div class="row g-3">
-            <div class="col-md-6">
-                <div class="mb-3">                
-            <label class="control-label form-label" for="client_addresses_0_street1">Street1</label><input type="text" id="client_addresses_0_street1" name="client[addresses][0][street1]" class="form-control">
-</div>
-            </div>
-            <div class="col-md-6">
-                <div class="mb-3">                
-            <label class="control-label form-label" for="client_addresses_0_street2">Street2</label><input type="text" id="client_addresses_0_street2" name="client[addresses][0][street2]" class="form-control">
-</div>
-            </div>
-        </div>
 
-        <div class="row g-3 mt-2">
-            <div class="col-md-6">
-                <div class="mb-3">                
-            <label class="control-label form-label" for="client_addresses_0_city">City</label><input type="text" id="client_addresses_0_city" name="client[addresses][0][city]" class="form-control">
-</div>
+                <div class="additional-details-add">
+                    <button type="button" id="client_contacts_0_additionalContactDetails_add" name="client[contacts][0][additionalContactDetails][add]" data-action="live#action" data-live-action-param="addCollectionItem" data-live-name-param="client[contacts][0][additionalContactDetails]" class="btn btn-sm btn-ghost add-detail-btn btn">Add Additional Details</button>
+                </div>
             </div>
-            <div class="col-md-6">
-                <div class="mb-3">                
-            <label class="control-label form-label" for="client_addresses_0_state">State</label><input type="text" id="client_addresses_0_state" name="client[addresses][0][state]" class="form-control">
-</div>
             </div>
-        </div>
+</div>
+</fieldset>
+                                            </div>
 
-        <div class="row g-3 mt-2">
-            <div class="col-md-6">
-                <div class="mb-3">                
-            <label class="control-label form-label" for="client_addresses_0_zip">Zip</label><input type="text" id="client_addresses_0_zip" name="client[addresses][0][zip]" class="form-control">
-</div>
+                    
+
+                    <div class="add-item-action">
+                        <button type="button" id="client_contacts_add" name="client[contacts][add]" data-action="live#action" data-live-action-param="addCollectionItem" data-live-name-param="client[contacts]" class="btn btn-outline-primary add-item-btn btn">Add Contact</button>
+                    </div>
+                </div>
+            </section>
+
+                        <section class="client-form-section client-form-section-optional" id="client-address-collection">
+                <div class="section-header">
+                    <div class="section-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0-6 0"></path><path d="M17.657 16.657L13.414 20.9a2 2 0 0 1-2.827 0l-4.244-4.243a8 8 0 1 1 11.314 0"></path></g></svg>
+                    </div>
+                    <div class="section-header-text">
+                        <h2 class="section-title">
+                            Address Info
+                            <span class="optional-badge">optional</span>
+                        </h2>
+                        <p class="section-description">client.form.address_description</p>
+                    </div>
+                </div>
+
+                <div class="section-content">
+                    <div class="addresses-list">
+                                                    <fieldset class="mb-3">                
+        <div class="address-card">
+        <div class="address-card-header">
+            <div class="address-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0-6 0"></path><path d="M17.657 16.657L13.414 20.9a2 2 0 0 1-2.827 0l-4.244-4.243a8 8 0 1 1 11.314 0"></path></g></svg>
             </div>
-            <div class="col-md-6">
-                <div class="mb-3">                
+            <div class="address-card-title">
+                <span class="address-label">address</span>
+            </div>
+                            <div class="address-card-actions">
+                    <button type="button" id="client_addresses_0_delete" name="client[addresses][0][delete]" data-action="live#action" data-live-action-param="removeCollectionItem" data-live-name-param="client[addresses]" data-live-index-param="0" class="btn btn-ghost-danger btn-sm btn" title="Delete Address" aria-label="Delete Address">Delete</button>
+                </div>
+                    </div>
+
+        <div class="address-card-body">
+            <div class="address-form-grid">
+                <div class="address-field address-field-street">
+                    <div class="mb-3">                
+            <label class="control-label form-label" for="client_addresses_0_street1">Street1</label><input type="text" id="client_addresses_0_street1" name="client[addresses][0][street1]" placeholder="123 Main Street" class="form-control">
+</div>
+                </div>
+                <div class="address-field address-field-street">
+                    <div class="mb-3">                
+            <label class="control-label form-label" for="client_addresses_0_street2">Street2</label><input type="text" id="client_addresses_0_street2" name="client[addresses][0][street2]" placeholder="Apartment, suite, unit, etc." class="form-control">
+</div>
+                </div>
+                <div class="address-field address-field-city">
+                    <div class="mb-3">                
+            <label class="control-label form-label" for="client_addresses_0_city">City</label><input type="text" id="client_addresses_0_city" name="client[addresses][0][city]" placeholder="City" class="form-control">
+</div>
+                </div>
+                <div class="address-field address-field-state">
+                    <div class="mb-3">                
+            <label class="control-label form-label" for="client_addresses_0_state">State</label><input type="text" id="client_addresses_0_state" name="client[addresses][0][state]" placeholder="State/Province" class="form-control">
+</div>
+                </div>
+                <div class="address-field address-field-zip">
+                    <div class="mb-3">                
+            <label class="control-label form-label" for="client_addresses_0_zip">Zip</label><input type="text" id="client_addresses_0_zip" name="client[addresses][0][zip]" placeholder="Postal Code" class="form-control">
+</div>
+                </div>
+                <div class="address-field address-field-country">
+                    <div class="mb-3">                
             <label class="control-label form-label" for="client_addresses_0_country">Country</label><select id="client_addresses_0_country" name="client[addresses][0][country]" data-controller="symfony--ux-autocomplete--autocomplete" data-symfony--ux-autocomplete--autocomplete-max-results-value="10" data-symfony--ux-autocomplete--autocomplete-loading-more-text-value="Loading more results..." data-symfony--ux-autocomplete--autocomplete-no-results-found-text-value="No results found" data-symfony--ux-autocomplete--autocomplete-no-more-results-text-value="No more results" data-symfony--ux-autocomplete--autocomplete-create-option-text-value="Add %placeholder%..." data-symfony--ux-autocomplete--autocomplete-preload-value="focus" class="form-select"><option value="">Select Country</option>
 <option value="AF">Afghanistan</option>
 <option value="AX">&Atilde;&#133;land Islands</option>
@@ -502,103 +635,38 @@
 <option value="ZM">Zambia</option>
 <option value="ZW">Zimbabwe</option></select>
 </div>
+                </div>
             </div>
         </div>
-
-                    <div class="mt-3 d-flex justify-content-end">
-                <button type="button" id="client_addresses_0_delete" name="client[addresses][0][delete]" data-action="live#action" data-live-action-param="removeCollectionItem" data-live-name-param="client[addresses]" data-live-index-param="0" class="btn btn-outline-danger btn-sm btn"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16m-10 4v6m4-6v6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"></path></svg> Delete Address</button>
-            </div>
-            </div>
-</fieldset></div>
+    </div>
 </fieldset>
+                                            </div>
+
+                    
+
+                    <div class="add-item-action">
+                        <button type="button" id="client_addresses_add" name="client[addresses][add]" data-action="live#action" data-live-action-param="addCollectionItem" data-live-name-param="client[addresses]" class="btn btn-outline-primary add-item-btn btn">Add Address</button>
                     </div>
                 </div>
-
-                <div class="card-footer">
-                    <button type="button" id="client_addresses_add" name="client[addresses][add]" data-action="live#action" data-live-action-param="addCollectionItem" data-live-name-param="client[addresses]" class="btn btn-outline-primary btn">+ Add Address</button>
-                </div>
-            </div>
+            </section>
         </div>
-        <div class="col-lg-6 col-md-6" id="client-contacts-collection">
-            <div class="card card-primary card-outline">
-                <div class="card-header with-border">
-                    <h3 class="card-title">Contact Info</h3>
-                </div>
 
-                
-                <div class="card-body">
-                    <div class="client_contacts">
-                        <fieldset class="mb-3">                
-    <div id="client_contacts">
-<fieldset class="mb-3">                
-        
+        <input type="hidden" id="client__token" name="client[_token]" data-controller="csrf-protection">
 
-
-<div class="row">
-    <div class="col-lg-6 col-md-6">
-        <div class="mb-3">                
-                                <label class="control-label required form-label required" for="client_contacts_0_firstName">First name</label><input type="text" id="client_contacts_0_firstName" name="client[contacts][0][firstName]" data-required="required" maxlength="125" class="form-control">
-</div>
-    </div>
-    <div class="col-lg-6 col-md-6">
-        <div class="mb-3">                
-            <label class="control-label form-label" for="client_contacts_0_lastName">Last name</label><input type="text" id="client_contacts_0_lastName" name="client[contacts][0][lastName]" maxlength="125" class="form-control">
-</div>
-    </div>
-</div>
-
-<div class="mb-3">                
-                                <label class="control-label required form-label required" for="client_contacts_0_email">Email</label>    <div class="input-group input-icon-group">
-        <span class="input-group-text">
-            <svg viewbox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><path d="m3 7l9 6l9-6"></path></g></svg>
-        </span>
-        <input type="email" id="client_contacts_0_email" name="client[contacts][0][email]" class="form-control" value="" required="required" maxlength="255">
-    </div>
-</div>
-
-<h5>
-    Additional Contact Details
-</h5>
-
-
-<fieldset class="mb-3">    
-    <div id="client_contacts_0_additionalContactDetails"></div>
-</fieldset>
-
-
-
-<button type="button" id="client_contacts_0_additionalContactDetails_add" name="client[contacts][0][additionalContactDetails][add]" data-action="live#action" data-live-action-param="addCollectionItem" data-live-name-param="client[contacts][0][additionalContactDetails]" class="btn btn-outline-primary btn">+ Add Additional Details</button>
-</fieldset>
-<div class="mb-3"><button type="button" id="client_contacts_0_delete" name="client[contacts][0][delete]" data-action="live#action" data-live-action-param="removeCollectionItem" data-live-name-param="client[contacts]" data-live-index-param="0" class="btn-secondary btn">Delete</button></div>
-</div>
-</fieldset>
-                    </div>
-                </div>
-
-                <div class="card-footer">
-                    <button type="button" id="client_contacts_add" name="client[contacts][add]" data-action="live#action" data-live-action-param="addCollectionItem" data-live-name-param="client[contacts]" class="btn btn-outline-primary btn">+ Add Contact</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <input type="hidden" id="client__token" name="client[_token]" data-controller="csrf-protection">
-
-    <div class="control-group pb-2 pb-md-0">
-        <div class="controls clearfix">
-            <div class="float-left">
-                <button type="button" class="btn btn-warning" onclick="history.back()">
-                    <i class="fa fa-reply"></i> Cancel
+                <div class="client-form-actions">
+            <div class="client-form-actions-inner">
+                <button type="button" class="btn btn-ghost" onclick="history.back()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l6 6m-6-6l6-6"></path></svg>
+                    Cancel
+                </button>
+                <button type="submit" class="btn btn-primary btn-save">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M6 4h10l4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2"></path><path d="M10 14a2 2 0 1 0 4 0a2 2 0 1 0-4 0m4-10v4H8V4"></path></g></svg>
+                    Save Client
                 </button>
             </div>
-            <div class="float-right">
-                <button type="submit" class="btn btn-success">
-                    <i class="fa fa-save"></i> Save Client
-                </button>
-            </div>
-            <br class="clear">
         </div>
     </div>
+
     </form>
 </div>
 </body></html>
