@@ -1,26 +1,21 @@
-<div {{ attributes }}>
-    <h3 id="client-credit-value">
+<div {{ attributes }} class="d-flex align-items-center justify-content-between gap-3">
+    <div class="client-credit-amount" id="client-credit-value">
         {{ client.credit|formatCurrency(client.currency) }}
-    </h3>
-    <a href="#" rel="tooltip" title="{{ 'client.view.actions.add_credit'|trans }}" data-toggle="modal" data-target="#add-client-credit">
-        <i class="fas fa-plus-circle"></i> {{ 'client.stats.credit'|trans }}
-    </a>
+    </div>
+    <button type="button" class="btn btn-sm btn-outline-info d-flex align-items-center gap-1" data-bs-toggle="modal" data-bs-target="#add-client-credit">
+        {{ ux_icon('tabler:plus', {width: 14, height: 14}) }}
+        {{ 'client.view.actions.add_credit'|trans }}
+    </button>
 
-    <twig:BootstrapModal id="add-client-credit">
-        <twig:block name="modal_header">
-            <h5>{{ 'client.modal.add_credit'|trans }}</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
+    <twig:Ui:Modal id="add-client-credit" title="{{ 'client.modal.add_credit'|trans }}">
+        {{ form(form) }}
+
+        <twig:block name="footer">
+            <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">{{ 'Cancel'|trans }}</button>
+            <button type="button" class="btn btn-primary d-flex align-items-center gap-1" data-action="live#action:prevent" data-live-action-param="save">
+                {{ ux_icon('tabler:device-floppy', {width: 16, height: 16}) }}
+                {{ 'Save'|trans }}
             </button>
         </twig:block>
-        <twig:block name="modal_body">
-            <div class="row-fluid">
-                {{ form(form) }}
-            </div>
-        </twig:block>
-        <twig:block name="modal_footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'Close'|trans }}</button>
-            <button type="button" class="btn btn-primary" data-action="live#action:prevent" data-live-action-param="save">{{ 'Save'|trans }}</button>
-        </twig:block>
-    </twig:BootstrapModal>
+    </twig:Ui:Modal>
 </div>

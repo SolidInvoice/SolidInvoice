@@ -1,33 +1,26 @@
 <div {{ attributes }}>
-    <div class="card card-primary card-outline">
+    <div class="client-address-card card">
         <div class="card-header">
-            <div class="card-tools">
-                <a href="#" rel="tooltip" title="{{ "client.address.edit"|trans }}" class="btn btn-tool" data-model="edit" data-value="true" data-action="live#update:prevent">
-                    {{ icon('pencil') }}
-                </a>
-
-
-                <a href="#" rel="tooltip" title="{{ "client.address.delete"|trans }}" class="btn btn-tool" data-toggle="modal" data-target="#{{ 'delete-' ~ computed.address.id }}">
-                    <i class="fa fa-trash-o"></i>
-                </a>
-
-                {% component BootstrapModal with {id: 'delete-' ~ computed.address.id} %}
-                    {% block modal_header %}
-                        <h5>{{ 'Confirm'|trans }}</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    {% endblock %}
-                    {% block modal_body %}
-                        {{ 'Are you sure you want to delete the address?'|trans }}
-                    {% endblock %}
-                    {% block modal_footer %}
-                        <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'Close'|trans }}</button>
-                        <button type="button" class="btn btn-primary" data-action="live#action:prevent" data-live-action-param="delete">{{ 'Confirm'|trans }}</button>
-                    {% endblock %}
-                {% endcomponent %}
+            <div class="d-flex align-items-center justify-content-between w-100">
+                <span class="d-flex align-items-center gap-2">
+                    {{ ux_icon('tabler:map-pin', {width: 16, height: 16, class: 'text-muted'}) }}
+                    <span class="fw-medium">{{ 'Address'|trans }}</span>
+                </span>
+                <div class="d-flex gap-1">
+                    <button type="button" class="btn btn-ghost-secondary btn-icon btn-icon-sm"
+                            title="{{ 'client.address.edit'|trans }}"
+                            data-model="edit" data-value="true" data-action="live#update:prevent">
+                        {{ ux_icon('tabler:pencil', {width: 16, height: 16}) }}
+                    </button>
+                    <button type="button" class="btn btn-ghost-danger btn-icon btn-icon-sm"
+                            title="{{ 'client.address.delete'|trans }}"
+                            data-bs-toggle="modal" data-bs-target="#delete-address-{{ computed.address.id }}">
+                        {{ ux_icon('tabler:trash', {width: 16, height: 16}) }}
+                    </button>
+                </div>
             </div>
         </div>
+
         <div class="card-body">
             {% if this.edit %}
                 {{ form_start(form, {attr: {
@@ -37,20 +30,43 @@
 
                 {{ form_row(form) }}
 
-                <button type="button" class="btn btn-default" data-model="edit" data-value="false" data-action="live#update:prevent">{{ 'Cancel'|trans }}</button>
-                <button type="submit" class="btn btn-primary">{{ 'Save'|trans }}</button>
+                <div class="client-form-actions">
+                    <button type="button" class="btn btn-ghost" data-model="edit" data-value="false" data-action="live#update:prevent">
+                        {{ 'Cancel'|trans }}
+                    </button>
+                    <button type="submit" class="btn btn-primary d-flex align-items-center gap-1">
+                        {{ ux_icon('tabler:device-floppy', {width: 16, height: 16}) }}
+                        {{ 'Save'|trans }}
+                    </button>
+                </div>
                 {{ form_end(form) }}
             {% else %}
-                {{ icon('map-marker') }}
-                {{ computed.address }}
-
-                <div class="float-right">
-                    <i class="fa fa-map-marker"></i>
-                    <a href="https://maps.google.com/?q={{ computed.address.street1 }}+{{ computed.address.street2 }}+{{ computed.address.city }}+{{ computed.address.state }}+{{ computed.address.zip }}+{{ computed.address.country }}" target="_blank">
-                        {{ 'client.address.view_map'|trans }}
-                    </a>
-                </div>
+                <div class="client-address-text">{{ computed.address }}</div>
+                <a href="https://maps.google.com/?q={{ computed.address.street1 }}+{{ computed.address.street2 }}+{{ computed.address.city }}+{{ computed.address.state }}+{{ computed.address.zip }}+{{ computed.address.country }}"
+                   target="_blank"
+                   rel="noopener"
+                   class="btn btn-sm btn-outline-secondary client-address-map-link">
+                    {{ ux_icon('tabler:map', {width: 14, height: 14}) }}
+                    {{ 'client.address.view_map'|trans }}
+                </a>
             {% endif %}
         </div>
     </div>
+
+    <twig:Ui:Modal id="delete-address-{{ computed.address.id }}" title="{{ 'Confirm'|trans }}" status="danger" :centered="true">
+        <div class="text-center py-3">
+            <div class="mb-3">
+                {{ ux_icon('tabler:map-pin-off', {width: 48, height: 48, class: 'text-danger'}) }}
+            </div>
+            <p>{{ 'Are you sure you want to delete the address?'|trans }}</p>
+        </div>
+
+        <twig:block name="footer">
+            <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">{{ 'Cancel'|trans }}</button>
+            <button type="button" class="btn btn-danger d-flex align-items-center gap-1" data-action="live#action:prevent" data-live-action-param="delete">
+                {{ ux_icon('tabler:trash', {width: 16, height: 16}) }}
+                {{ 'Confirm'|trans }}
+            </button>
+        </twig:block>
+    </twig:Ui:Modal>
 </div>

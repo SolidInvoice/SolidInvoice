@@ -1,0 +1,514 @@
+/**
+ * Client Page Styles
+ *
+ * Custom styles for the Client view page.
+ * Follows the design system tokens and modern SaaS aesthetic.
+ */
+
+// ============================================================================
+// CLIENT HERO SECTION
+// ============================================================================
+
+.client-hero {
+    padding: var(--swp-space-6);
+    background: var(--swp-surface);
+    border-radius: var(--swp-radius-lg);
+    border: 1px solid var(--swp-border-light);
+    box-shadow: var(--swp-shadow-sm);
+    margin-bottom: var(--swp-space-6);
+}
+
+.client-hero-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--swp-text-primary);
+    margin-bottom: 0;
+    line-height: 1.2;
+}
+
+.client-hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--swp-space-4);
+    color: var(--swp-text-muted);
+    font-size: 0.875rem;
+
+    a {
+        color: var(--swp-text-muted);
+        text-decoration: none;
+        transition: color var(--swp-transition-fast);
+
+        &:hover {
+            color: var(--swp-primary);
+        }
+    }
+}
+
+.client-hero-meta-item {
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-1-5);
+}
+
+// ============================================================================
+// STAT CARDS
+// ============================================================================
+
+.client-stat-card {
+    .card-body {
+        padding: var(--swp-space-5);
+    }
+}
+
+.client-stat-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--swp-text-muted);
+    margin-bottom: var(--swp-space-2);
+}
+
+.client-stat-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--swp-text-primary);
+}
+
+.client-stat-value--success {
+    color: var(--swp-success);
+}
+
+.client-stat-value--danger {
+    color: var(--swp-danger);
+}
+
+.client-stat-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--swp-space-2);
+    margin-top: var(--swp-space-2);
+}
+
+// ============================================================================
+// CLIENT CREDIT SECTION
+// ============================================================================
+
+.client-credit-card {
+    margin-bottom: var(--swp-space-6);
+
+    .card-body {
+        padding: var(--swp-space-5);
+    }
+}
+
+.client-credit-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--swp-radius-lg);
+    background: var(--swp-info-lighter);
+    color: var(--swp-info);
+}
+
+.client-credit-amount {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--swp-text-primary);
+    margin-bottom: 0;
+}
+
+.client-credit-label {
+    font-size: 0.75rem;
+    color: var(--swp-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+// ============================================================================
+// TABS NAVIGATION
+// ============================================================================
+
+.client-tabs-card {
+    .card-header {
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+
+    /*.nav-tabs {
+        border-bottom: 1px solid var(--swp-border);
+        margin: 0 calc(-1 * var(--swp-space-6));
+        padding: 0 var(--swp-space-6);
+    }*/
+
+    .nav-link {
+        padding: var(--swp-space-3) var(--swp-space-4);
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--swp-text-secondary);
+        border: none;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -1px;
+        background: transparent;
+        transition: color var(--swp-transition-fast), border-color var(--swp-transition-fast);
+        display: flex;
+        align-items: center;
+        gap: var(--swp-space-2);
+
+        &:hover {
+            color: var(--swp-primary);
+            border-bottom-color: rgba(46, 150, 58, 0.3);
+        }
+
+        &.active {
+            color: var(--swp-primary);
+            border-bottom-color: var(--swp-primary);
+        }
+
+        .badge {
+            font-size: 0.65rem;
+            font-weight: 600;
+            padding: 0.2em 0.5em;
+        }
+    }
+
+    .tab-content {
+        padding-top: var(--swp-space-4);
+    }
+}
+
+// ============================================================================
+// SECTION HEADERS
+// ============================================================================
+
+.client-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--swp-space-4);
+}
+
+.client-section-title {
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-2);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--swp-text-primary);
+    margin-bottom: 0;
+
+    .badge {
+        font-size: 0.7rem;
+        font-weight: 600;
+    }
+}
+
+// ============================================================================
+// CONTACT & ADDRESS CARDS
+// ============================================================================
+
+.client-contact-card,
+.client-address-card {
+    height: 100%;
+    transition: box-shadow var(--swp-transition-base);
+
+    &:hover {
+        box-shadow: var(--swp-shadow-md);
+    }
+
+    .card-header {
+        padding: var(--swp-space-3) var(--swp-space-4);
+        background: transparent;
+        border-bottom: 1px solid var(--swp-border-light);
+    }
+
+    .card-body {
+        padding: var(--swp-space-4);
+    }
+}
+
+.client-contact-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--swp-radius-md);
+    background: var(--swp-primary-lighter);
+    color: var(--swp-primary);
+    font-size: 0.875rem;
+}
+
+.client-contact-name {
+    font-weight: 500;
+    color: var(--swp-text-primary);
+}
+
+.client-contact-detail {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--swp-space-2);
+    margin-bottom: var(--swp-space-2);
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.client-contact-detail-icon {
+    color: var(--swp-text-muted);
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.client-contact-detail-label {
+    font-size: 0.75rem;
+    color: var(--swp-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.client-contact-detail-value {
+    color: var(--swp-text-primary);
+
+    a {
+        color: var(--swp-primary);
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+// ============================================================================
+// EMPTY STATES
+// ============================================================================
+
+.client-empty-state {
+    text-align: center;
+    padding: var(--swp-space-10) var(--swp-space-4);
+}
+
+.client-empty-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border-radius: var(--swp-radius-full);
+    background: var(--swp-gray-100);
+    color: var(--swp-text-light);
+    margin-bottom: var(--swp-space-4);
+}
+
+.client-empty-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--swp-text-primary);
+    margin-bottom: var(--swp-space-2);
+}
+
+.client-empty-description {
+    font-size: 0.875rem;
+    color: var(--swp-text-muted);
+    margin-bottom: var(--swp-space-4);
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+// ============================================================================
+// ICON BUTTONS
+// ============================================================================
+
+.btn-icon {
+    padding: var(--swp-space-1-5);
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--swp-radius-md);
+}
+
+.btn-icon-sm {
+    width: 28px;
+    height: 28px;
+    padding: var(--swp-space-1);
+}
+
+.btn-ghost-secondary {
+    color: var(--swp-text-secondary);
+    background: transparent;
+    border: none;
+
+    &:hover {
+        color: var(--swp-text-primary);
+        background: var(--swp-gray-100);
+    }
+
+    &:focus {
+        box-shadow: var(--swp-ring-primary);
+    }
+}
+
+.btn-ghost-danger {
+    color: var(--swp-danger);
+    background: transparent;
+    border: none;
+
+    &:hover {
+        color: var(--swp-danger-hover);
+        background: var(--swp-danger-lighter);
+    }
+
+    &:focus {
+        box-shadow: var(--swp-ring-danger);
+    }
+}
+
+// ============================================================================
+// FORM ACTIONS
+// ============================================================================
+
+.client-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--swp-space-2);
+    margin-top: var(--swp-space-4);
+    padding-top: var(--swp-space-4);
+    border-top: 1px solid var(--swp-border-light);
+}
+
+// ============================================================================
+// ADDRESS DISPLAY
+// ============================================================================
+
+.client-address-text {
+    white-space: pre-line;
+    color: var(--swp-text-primary);
+    line-height: 1.5;
+    margin-bottom: var(--swp-space-3);
+}
+
+.client-address-map-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--swp-space-1-5);
+    font-size: 0.875rem;
+}
+
+// ============================================================================
+// ADDITIONAL CONTACT DETAILS
+// ============================================================================
+
+.client-contact-extra {
+    margin-top: var(--swp-space-3);
+    padding-top: var(--swp-space-3);
+    border-top: 1px solid var(--swp-border-light);
+}
+
+.client-contact-extra-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--swp-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin-bottom: var(--swp-space-2);
+}
+
+.client-contact-extra-item {
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-2);
+    font-size: 0.875rem;
+    margin-bottom: var(--swp-space-1);
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.client-contact-extra-label {
+    color: var(--swp-text-muted);
+    min-width: 80px;
+}
+
+.client-contact-extra-value {
+    color: var(--swp-text-primary);
+}
+
+// ============================================================================
+// RESPONSIVE STYLES
+// ============================================================================
+
+@media (max-width: 991.98px) {
+    .client-hero {
+        padding: var(--swp-space-4);
+    }
+
+    .client-hero-title {
+        font-size: 1.5rem;
+    }
+
+    .client-stat-value {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .client-hero {
+        text-align: center;
+    }
+
+    .client-hero-meta {
+        justify-content: center;
+    }
+
+    .client-tabs-card .nav-tabs {
+        margin: 0 calc(-1 * var(--swp-space-4));
+        padding: 0 var(--swp-space-4);
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        -webkit-overflow-scrolling: touch;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+
+    .client-tabs-card .nav-item {
+        flex-shrink: 0;
+    }
+
+    .client-section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--swp-space-2);
+    }
+}
+
+// ============================================================================
+// PRINT STYLES
+// ============================================================================
+
+@media print {
+    .client-hero .dropdown,
+    .client-hero .btn,
+    .client-section-header .btn,
+    .btn-ghost-secondary,
+    .btn-ghost-danger,
+    .client-form-actions {
+        display: none !important;
+    }
+
+    .client-hero {
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+}

@@ -1,48 +1,57 @@
-<div {{ attributes }}>
-    <div class="card">
-        <div class="card-header">
-            <div class="card-tools float-right">
-                <a href="#" class="btn btn-success btn-sm" data-toggle="modal" data-target="#{{ 'add-contact' }}">
-                    {{ icon('user') }} {{ "client.view.actions.add_contact"|trans }}
-                </a>
-
-                {{ form_start(form, {
-                    attr: {
-                        'data-action': 'live#action:prevent',
-                        'data-live-action-param': 'save'
-                    }
-                }) }}
-                {% component BootstrapModal with {id: 'add-contact'} %}
-                    {% block modal_header %}
-                        <h5>{{ 'Add Contact'|trans }}</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    {% endblock %}
-                    {% block modal_body %}
-
-                        {{ form_row(form) }}
-
-                    {% endblock %}
-                    {% block modal_footer %}
-                        <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'Close'|trans }}</button>
-                        <button type="submit" class="btn btn-primary">{{ 'Save'|trans }}</button>
-                    {% endblock %}
-                {% endcomponent %}
-                {{ form_end(form) }}
-            </div>
-
-            <h3 class="card-title">
-                {{ icon('users')}} {{ "client.heading.contacts"|trans }}
-            </h3>
-        </div>
-
-        <div class="card-body row">
-            {% for contact in client.contacts %}
-                <div class="col-6">
-                    <twig:ContactInfo :contact="contact" :key="contact.id" canDelete="{{ client.contacts|length > 1 }}" />
-                </div>
-            {% endfor %}
-        </div>
+<div {{ attributes }} class="mb-5">
+    {# Section Header #}
+    <div class="client-section-header">
+        <h3 class="client-section-title">
+            {{ ux_icon('tabler:users', {width: 20, height: 20, class: 'text-primary'}) }}
+            {{ 'client.heading.contacts'|trans }}
+            <span class="badge bg-secondary-lt">{{ client.contacts|length }}</span>
+        </h3>
+        <button type="button" class="btn btn-sm btn-primary d-flex align-items-center gap-1" data-bs-toggle="modal" data-bs-target="#add-contact">
+            {{ ux_icon('tabler:plus', {width: 16, height: 16}) }}
+            {{ 'client.view.actions.add_contact'|trans }}
+        </button>
     </div>
+
+    {# Contacts Grid #}
+    <div class="row g-3">
+        {% for contact in client.contacts %}
+            <div class="col-md-6">
+                <twig:ContactInfo :contact="contact" :key="contact.id" canDelete="{{ client.contacts|length > 1 }}" />
+            </div>
+        {% else %}
+            <div class="col-12">
+                <div class="client-empty-state">
+                    <div class="client-empty-icon">
+                        {{ ux_icon('tabler:user-off', {width: 32, height: 32}) }}
+                    </div>
+                    <p class="client-empty-title">{{ 'client.contacts.empty.title'|trans }}</p>
+                    <p class="client-empty-description">{{ 'client.contacts.empty.description'|trans }}</p>
+                    <button type="button" class="btn btn-primary d-flex align-items-center gap-1 mx-auto" data-bs-toggle="modal" data-bs-target="#add-contact">
+                        {{ ux_icon('tabler:plus', {width: 16, height: 16}) }}
+                        {{ 'client.view.actions.add_contact'|trans }}
+                    </button>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {# Add Contact Modal #}
+    {{ form_start(form, {
+        attr: {
+            'data-action': 'live#action:prevent',
+            'data-live-action-param': 'save'
+        }
+    }) }}
+    <twig:Ui:Modal id="add-contact" title="{{ 'Add Contact'|trans }}">
+        {{ form_row(form) }}
+
+        <twig:block name="footer">
+            <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">{{ 'Cancel'|trans }}</button>
+            <button type="submit" class="btn btn-primary d-flex align-items-center gap-1">
+                {{ ux_icon('tabler:device-floppy', {width: 16, height: 16}) }}
+                {{ 'Save'|trans }}
+            </button>
+        </twig:block>
+    </twig:Ui:Modal>
+    {{ form_end(form) }}
 </div>

@@ -16,188 +16,221 @@
 {% endblock page_title %}
 
 {% block content %}
-    {% set totalAddresses = client.addresses|length %}
-
-    <div class="row">
-        <div class="col-md-3">
-            <div class="card card-primary">
-                <div class="card-body box-profile">
-
-                    <h3 class="profile-username text-center">{{ client.name }}</h3>
-
-                    <p class="text-muted text-center">
-                        <h4 class="text-center">{{ client_label(client.status) }}</h4>
-                    </p>
-                    <p>
-                        <span>
-                            <a href="{{ path('_clients_edit', {'id' : client.id}) }}" class="btn btn-warning btn-sm">
-                                {{ icon('edit') }} {{ "client.view.actions.edit"|trans }}
-                            </a>
+    {# ========================================================================
+       HERO SECTION
+       ======================================================================== #}
+    <div class="client-hero">
+        <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
+            <div>
+                <div class="d-flex align-items-center gap-3 mb-2">
+                    <h1 class="client-hero-title">{{ client.name }}</h1>
+                    {{ client_label(client.status) }}
+                </div>
+                <div class="client-hero-meta">
+                    {% if client.website %}
+                        <a href="{{ client.website }}" class="client-hero-meta-item" rel="external noopener" target="_blank">
+                            {{ ux_icon('tabler:world', {width: 16, height: 16}) }}
+                            <span>{{ client.website }}</span>
+                            {{ ux_icon('tabler:external-link', {width: 14, height: 14}) }}
+                        </a>
+                    {% endif %}
+                    {% if client.currencyCode %}
+                        <span class="client-hero-meta-item">
+                            {{ ux_icon('tabler:currency-dollar', {width: 16, height: 16}) }}
+                            <span>{{ client.currencyCode }}</span>
                         </span>
-                        <span class="float-right">
-                            <a href="{{ path('_xhr_clients_delete', {'id' : client.id}) }}" class="btn btn-danger btn-sm" id="delete-client">
-                                {{ icon('trash-o') }} {{ "client.view.actions.delete"|trans }}
-                            </a>
+                    {% endif %}
+                    {% if client.vatNumber is not empty %}
+                        <span class="client-hero-meta-item">
+                            {{ ux_icon('tabler:receipt-tax', {width: 16, height: 16}) }}
+                            <span>{{ client.vatNumber }}</span>
                         </span>
-                    </p>
-
-                    <ul class="list-group list-group-unbordered">
-
-                        {% if client.website %}
-                            <li class="list-group-item">
-                                <b>{{ icon('globe') }} {{ 'Website'|trans }}</b> <a href="{{ client.website }}" class="float-right" rel="external">{{ client.website }}</a>
-                                <small>{{ icon('external-link') }}</small>
-                            </li>
-                        {% endif %}
-
-                        {% if client.currency %}
-                            <li class="list-group-item">
-                                <b>{{ icon('money') }} {{ 'client.view.currency'|trans }}</b> <span class="float-right">
-                                    {{ client.currencyCode is empty ? 'System Default' : client.currencyCode }}
-                                </span>
-                            </li>
-                        {% endif %}
-
-                        {% if client.vatNumber is not empty %}
-                            <li class="list-group-item">
-                                <b>{{ 'tax.vat_number'|trans }}</b> <span class="float-right">{{ client.vatNumber }}</span>
-                            </li>
-                        {% endif %}
-
-                        <li class="list-group-item">
-                            <div class="text-center text-info">
-                                <twig:ClientCredit :client="client" />
-                            </div>
-
-                        </li>
-                    </ul>
-
-                    <a href="{{ path("_quotes_create", {"client" : client.id}) }}" class="btn btn-info btn-block">
-                        {{ icon('file-text-o') }} {{ "client.view.actions.create_quote"|trans }}
-                    </a>
-                    <a href="{{ path("_invoices_create", {"client" : client.id}) }}" class="btn btn-info btn-block">
-                        {{ icon('file-text-o') }} {{ "client.view.actions.create_invoice"|trans }}
-                    </a>
+                    {% endif %}
                 </div>
             </div>
 
-            <div class="card card-primary">
-                <div class="card-header with-border">
-                    <h3 class="card-title">{{ icon('bar-chart') }} Stats</h3>
-                </div>
-                <div class="card-body">
-                    <div class="small-box bg-green">
-                        <div class="inner">
-                            <h3>{{ total_income(client)|formatCurrency(client.currency) }}</h3>
-
-                            <p>{{ "client.stats.income"|trans }}</p>
-                        </div>
-                        <div class="icon">
-                            {{ icon('money') }}
-                        </div>
-                    </div>
-
-                    <hr>
-
-                    <div class="small-box bg-red">
-                        <div class="inner">
-                            <h3>{{ total_outstanding(client)|formatCurrency(client.currency) }}</h3>
-
-                            <p>{{ "client.stats.outstanding"|trans }}</p>
-                        </div>
-                        <div class="icon">
-                            {{ icon('money') }}
-                        </div>
-                    </div>
-
-                    <ul class="list-group list-group-unbordered">
-                        <li class="list-group-item">
-                            <span rel="tooltip" title="{{ "client.stats.tooltip.total_quotes"|trans }}" class="badge badge-pill bg-aqua">
-                                {{ client.quotes|length }}
-                            </span>
-                            {{ "client.stats.number_quotes"|trans({'%count%': client.quotes|length}) }}
-                        </li>
-                        <li class="list-group-item">
-                            <span rel="tooltip" title="{{ "client.stats.tooltip.total_invoices"|trans }}" class="badge badge-pill bg-aqua">
-                                {{ client.invoices|length }}
-                            </span>
-                            {{ "client.stats.number_invoices"|trans({'%count%': client.invoices|length}) }}
-                        </li>
-                        <li class="list-group-item">
-                            <span class="badge badge-pill bg-aqua" rel="tooltip" title="{{ "client.stats.tooltip.total_outstanding"|trans }}">
-                                {{ total_invoices_pending }}
-                            </span>
-                            {{ "client.stats.outstanding_invoices"|trans }}
-                        </li>
-                        <li class="list-group-item">
-                            <span class="badge badge-pill bg-aqua" rel="tooltip" title="{{ "client.stats.tooltip.total_paid"|trans }}">
-                                {{ total_invoices_paid }}
-                            </span>
-                            {{ "client.stats.paid_invoices"|trans }}
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-        </div>
-        <div class="col-md-9">
-            <div class="widget">
-                <div role="tabpanel" class="nav-tabs-custom">
-                    <!-- Nav tabs -->
-                    <ul class="nav nav-tabs" role="tablist">
-                        <li role="presentation" class="nav-item">
-                            <a href="#client-info" aria-controls="client-info" role="tab" data-toggle="tab" class="nav-link active">
-                                {{ 'client.view.tabs.info'|trans }}
-                            </a>
-                        </li>
-                        <li role="presentation" class="nav-item">
-                            <a href="#quotes" aria-controls="quotes" role="tab" data-toggle="tab" class="nav-link">
-                                {{ 'client.view.tabs.quotes'|trans }}
-                            </a>
-                        </li>
-                        <li role="presentation" class="nav-item">
-                            <a href="#invoices" aria-controls="invoices" role="tab" data-toggle="tab" class="nav-link">
-                                {{ 'client.view.tabs.invoices'|trans }}
-                            </a>
-                        </li>
-                        {% if payments|length > 0 %}
-                            <li role="presentation" class="nav-item">
-                                <a href="#payments" aria-controls="payments" role="tab" data-toggle="tab" class="nav-link">
-                                    {{ 'client.view.tabs.payments'|trans }}
-                                </a>
-                            </li>
-                        {% endif %}
-                    </ul>
-
-                    <!-- Tab panes -->
-                    <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane active" id="client-info">
-                            <twig:ContactCollection :client="client" count="{{ client.contacts|length }}" />
-                            <twig:AddressCollection :client="client" count="{{ client.addresses|length }}" />
-                        </div>
-                        <div role="tabpanel" class="tab-pane" id="quotes">
-                            {% include "@SolidInvoiceClient/quote_list.html.twig" %}
-                        </div>
-                        <div role="tabpanel" class="tab-pane" id="invoices">
-                            {% include "@SolidInvoiceClient/invoice_list.html.twig" %}
-                        </div>
-                        {% if payments|length > 0 %}
-                            <div role="tabpanel" class="tab-pane" id="payments">
-                                <div class="card no-border">
-                                    <div class="card-header">
-                                        <h3 class="card-title">
-                                            {{ icon('credit-card') }} {{ "payments"|trans }}
-                                        </h3>
-                                    </div>
-                                    <div class="card-body">
-                                        {% include "@SolidInvoicePayment/Payment/list.html.twig" with {"data" : {'client': client.id}} only %}
-                                    </div>
-                                </div>
-                            </div>
-                        {% endif %}
+            {# Quick Actions #}
+            <div class="d-flex flex-wrap gap-2">
+                <a href="{{ path('_quotes_create', {'client': client.id}) }}" class="btn btn-outline-primary">
+                    {{ ux_icon('tabler:file-text', {width: 18, height: 18}) }}
+                    {{ 'client.view.actions.create_quote'|trans }}
+                </a>
+                <a href="{{ path('_invoices_create', {'client': client.id}) }}" class="btn btn-primary">
+                    {{ ux_icon('tabler:file-invoice', {width: 18, height: 18}) }}
+                    {{ 'client.view.actions.create_invoice'|trans }}
+                </a>
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="{{ 'More actions'|trans }}">
+                        {{ ux_icon('tabler:dots-vertical', {width: 18, height: 18}) }}
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end">
+                        <a class="dropdown-item d-flex align-items-center gap-2" href="{{ path('_clients_edit', {'id': client.id}) }}">
+                            {{ ux_icon('tabler:pencil', {width: 16, height: 16}) }}
+                            {{ 'client.view.actions.edit'|trans }}
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item text-danger d-flex align-items-center gap-2" href="#" data-bs-toggle="modal" data-bs-target="#delete-client-modal">
+                            {{ ux_icon('tabler:trash', {width: 16, height: 16}) }}
+                            {{ 'client.view.actions.delete'|trans }}
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    {# ========================================================================
+       METRICS ROW
+       ======================================================================== #}
+    <div class="row row-cards mb-4">
+        {# Total Income #}
+        <div class="col-sm-6 col-lg-3">
+            <twig:Ui:Card status="success" statusPosition="top">
+                <div class="client-stat-label">{{ 'client.stats.income'|trans }}</div>
+                <div class="client-stat-value client-stat-value--success">
+                    {{ total_income(client)|formatCurrency(client.currency) }}
+                </div>
+            </twig:Ui:Card>
+        </div>
+
+        {# Outstanding #}
+        <div class="col-sm-6 col-lg-3">
+            <twig:Ui:Card status="danger" statusPosition="top">
+                <div class="client-stat-label">{{ 'client.stats.outstanding'|trans }}</div>
+                <div class="client-stat-value client-stat-value--danger">
+                    {{ total_outstanding(client)|formatCurrency(client.currency) }}
+                </div>
+            </twig:Ui:Card>
+        </div>
+
+        {# Invoices Count #}
+        <div class="col-sm-6 col-lg-3">
+            <twig:Ui:Card>
+                <div class="client-stat-label">{{ 'client.stats.invoices'|trans }}</div>
+                <div class="client-stat-value">{{ client.invoices|length }}</div>
+                <div class="client-stat-badges">
+                    <span class="badge bg-success-lt" title="{{ 'client.stats.tooltip.total_paid'|trans }}">
+                        {{ total_invoices_paid }} {{ 'paid'|trans }}
+                    </span>
+                    <span class="badge bg-warning-lt" title="{{ 'client.stats.tooltip.total_outstanding'|trans }}">
+                        {{ total_invoices_pending }} {{ 'pending'|trans }}
+                    </span>
+                </div>
+            </twig:Ui:Card>
+        </div>
+
+        {# Quotes Count #}
+        <div class="col-sm-6 col-lg-3">
+            <twig:Ui:Card>
+                <div class="client-stat-label">{{ 'client.stats.quotes'|trans }}</div>
+                <div class="client-stat-value">{{ client.quotes|length }}</div>
+            </twig:Ui:Card>
+        </div>
+    </div>
+
+    {# ========================================================================
+       CLIENT CREDIT SECTION
+       ======================================================================== #}
+    <div class="client-credit-card">
+        <twig:Ui:Card status="info" statusPosition="start">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="client-credit-icon">
+                        {{ ux_icon('tabler:wallet', {width: 24, height: 24}) }}
+                    </div>
+                    <div>
+                        <div class="client-credit-label">{{ 'client.stats.credit'|trans }}</div>
+                        <twig:ClientCredit :client="client" />
+                    </div>
+                </div>
+            </div>
+        </twig:Ui:Card>
+    </div>
+
+    {# ========================================================================
+       TABS SECTION
+       ======================================================================== #}
+    <div class="client-tabs-card card">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#client-info" type="button" role="tab" aria-controls="client-info" aria-selected="true">
+                        {{ ux_icon('tabler:info-circle', {width: 16, height: 16}) }}
+                        <span>{{ 'client.view.tabs.info'|trans }}</span>
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="quotes-tab" data-bs-toggle="tab" data-bs-target="#quotes" type="button" role="tab" aria-controls="quotes" aria-selected="false">
+                        {{ ux_icon('tabler:file-text', {width: 16, height: 16}) }}
+                        <span>{{ 'client.view.tabs.quotes'|trans }}</span>
+                        <span class="badge bg-secondary-lt">{{ client.quotes|length }}</span>
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="invoices-tab" data-bs-toggle="tab" data-bs-target="#invoices" type="button" role="tab" aria-controls="invoices" aria-selected="false">
+                        {{ ux_icon('tabler:file-invoice', {width: 16, height: 16}) }}
+                        <span>{{ 'client.view.tabs.invoices'|trans }}</span>
+                        <span class="badge bg-secondary-lt">{{ client.invoices|length }}</span>
+                    </button>
+                </li>
+                {% if payments|length > 0 %}
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="payments-tab" data-bs-toggle="tab" data-bs-target="#payments" type="button" role="tab" aria-controls="payments" aria-selected="false">
+                            {{ ux_icon('tabler:credit-card', {width: 16, height: 16}) }}
+                            <span>{{ 'client.view.tabs.payments'|trans }}</span>
+                            <span class="badge bg-secondary-lt">{{ payments|length }}</span>
+                        </button>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+
+        <div class="card-body">
+            <div class="tab-content">
+                {# Info Tab #}
+                <div class="tab-pane fade show active" id="client-info" role="tabpanel" aria-labelledby="info-tab">
+                    <twig:ContactCollection :client="client" count="{{ client.contacts|length }}" />
+                    <twig:AddressCollection :client="client" count="{{ client.addresses|length }}" />
+                </div>
+
+                {# Quotes Tab #}
+                <div class="tab-pane fade" id="quotes" role="tabpanel" aria-labelledby="quotes-tab">
+                    {% include "@SolidInvoiceClient/quote_list.html.twig" %}
+                </div>
+
+                {# Invoices Tab #}
+                <div class="tab-pane fade" id="invoices" role="tabpanel" aria-labelledby="invoices-tab">
+                    {% include "@SolidInvoiceClient/invoice_list.html.twig" %}
+                </div>
+
+                {# Payments Tab #}
+                {% if payments|length > 0 %}
+                    <div class="tab-pane fade" id="payments" role="tabpanel" aria-labelledby="payments-tab">
+                        {% include "@SolidInvoicePayment/Payment/list.html.twig" with {"data": {'client': client.id}} only %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    {# ========================================================================
+       DELETE CLIENT MODAL
+       ======================================================================== #}
+    <twig:Ui:Modal id="delete-client-modal" title="{{ 'Confirm'|trans }}" status="danger" :centered="true">
+        <div class="text-center py-3">
+            <div class="mb-3">
+                {{ ux_icon('tabler:alert-triangle', {width: 48, height: 48, class: 'text-danger'}) }}
+            </div>
+            <h3>{{ 'client.delete.confirm.title'|trans({'%name%': client.name}) }}</h3>
+            <p class="text-muted">{{ 'client.delete.confirm.message'|trans }}</p>
+        </div>
+
+        <twig:block name="footer">
+            <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">{{ 'Cancel'|trans }}</button>
+            <a href="{{ path('_xhr_clients_delete', {'id': client.id}) }}" class="btn btn-danger d-flex align-items-center gap-2">
+                {{ ux_icon('tabler:trash', {width: 16, height: 16}) }}
+                {{ 'client.view.actions.delete'|trans }}
+            </a>
+        </twig:block>
+    </twig:Ui:Modal>
 {% endblock content %}
