@@ -12,21 +12,3 @@
 {% extends "@SolidInvoiceInvoice/Default/create.html.twig" %}
 
 {% block page_title %}{{ "invoice.action.edit"|trans }}{% endblock %}
-
-{% block form_buttons %}
-        <div class="float-left">
-            <a href="{{ path(recurring ? '_invoices_view_recurring' : '_invoices_view', {'id' : invoice.id}) }}" class="btn btn-warning">
-                {{ icon('reply') }} {{ "invoice.save.cancel"|trans }}
-            </a>
-            {% if not recurring %}
-                <button type="submit" class="btn btn-success" name="save" value="pending">
-                    {{ icon('envelope', ['o']) }} {{ "invoice.save.send"|trans }}
-                </button>
-            {% endif %}
-        </div>
-        <div class="float-right">
-            <button type="submit" class="btn btn-primary" name="save" value="draft">
-                {{ icon('save') }} {{ "invoice.save.update"|trans }}
-            </button>
-        </div>
-{% endblock form_buttons %}

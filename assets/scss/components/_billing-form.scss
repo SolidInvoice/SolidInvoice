@@ -1,5 +1,5 @@
 /**
- * SolidInvoice - Invoice Form Styles
+ * SolidInvoice - Billing Form Styles
  *
  * Modern, clean invoice creation form with 2-column layout,
  * sticky totals sidebar, and collapsible sections.
@@ -7,14 +7,14 @@
  */
 
 // ============================================================================
-// INVOICE FORM PAGE CONTAINER
+// BILLING FORM PAGE CONTAINER
 // ============================================================================
 
-.invoice-form-page {
+.billing-form-page {
     min-height: 100%;
 }
 
-.invoice-form-container {
+.billing-form-container {
     max-width: 1100px;
     margin: 0 auto;
     padding-bottom: var(--swp-space-24);
@@ -24,18 +24,18 @@
 // PAGE HEADER
 // ============================================================================
 
-.invoice-form-header {
+.billing-form-header {
     margin-bottom: var(--swp-space-6);
     padding: var(--swp-space-6) 0;
 }
 
-.invoice-form-header-content {
+.billing-form-header-content {
     display: flex;
     align-items: center;
     gap: var(--swp-space-4);
 }
 
-.invoice-form-icon {
+.billing-form-icon {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -46,7 +46,7 @@
     color: var(--swp-primary);
 }
 
-.invoice-form-title {
+.billing-form-title {
     font-size: 1.75rem;
     font-weight: var(--swp-font-bold);
     color: var(--swp-text-primary);
@@ -54,17 +54,17 @@
     letter-spacing: -0.025em;
 }
 
-.invoice-form-subtitle {
+.billing-form-subtitle {
     font-size: var(--swp-text-base);
     color: var(--swp-text-muted);
     margin: var(--swp-space-1) 0 0 0;
 }
 
 // ============================================================================
-// INVOICE DETAILS SECTION (Client, Invoice ID, Dates, Discount)
+// BILLING DETAILS SECTION (Client, Invoice ID, Dates, Discount)
 // ============================================================================
 
-.invoice-details-section {
+.billing-details-section {
     background: var(--swp-surface);
     border: 1px solid var(--swp-border);
     border-radius: var(--swp-radius-lg);
@@ -78,7 +78,7 @@
     }
 }
 
-.invoice-details-grid {
+.billing-details-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--swp-space-6);
@@ -86,40 +86,48 @@
     @media (max-width: 768px) {
         grid-template-columns: 1fr;
     }
+
+    // Modifier for forms without date fields (e.g., Quotes)
+    &--no-dates {
+        .billing-details-right {
+            justify-content: flex-start;
+            padding-top: var(--swp-space-2);
+        }
+    }
 }
 
-.invoice-details-left {
+.billing-details-left {
     display: flex;
     flex-direction: column;
     gap: var(--swp-space-4);
 }
 
-.invoice-details-right {
+.billing-details-right {
     display: flex;
     flex-direction: column;
     gap: var(--swp-space-4);
 }
 
 // Invoice ID with inline edit
-.invoice-id-display {
+.billing-id-display {
     display: flex;
     align-items: center;
     gap: var(--swp-space-2);
     margin-bottom: var(--swp-space-2);
 
-    .invoice-id-label {
+    .billing-id-label {
         font-size: var(--swp-text-2xl);
         font-weight: var(--swp-font-semibold);
         color: var(--swp-text-primary);
     }
 
-    .invoice-id-value {
+    .billing-id-value {
         font-size: var(--swp-text-2xl);
         font-weight: var(--swp-font-bold);
         color: var(--swp-primary);
     }
 
-    .invoice-id-edit {
+    .billing-id-edit {
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -139,7 +147,7 @@
     }
 }
 
-.invoice-id-form {
+.billing-id-form {
     display: flex;
     align-items: center;
     gap: var(--swp-space-2);
@@ -259,7 +267,7 @@
 // MAIN CONTENT - 2 COLUMN LAYOUT
 // ============================================================================
 
-.invoice-form-main {
+.billing-form-main {
     display: grid;
     grid-template-columns: 1fr 320px;
     gap: var(--swp-space-6);
@@ -278,14 +286,14 @@
 // LINE ITEMS SECTION
 // ============================================================================
 
-.invoice-items-section {
+.billing-items-section {
     background: var(--swp-surface);
     border: 1px solid var(--swp-border);
     border-radius: var(--swp-radius-lg);
     overflow: hidden;
 }
 
-.invoice-items-header {
+.billing-items-header {
     display: flex;
     align-items: center;
     gap: var(--swp-space-3);
@@ -294,7 +302,7 @@
     border-bottom: 1px solid var(--swp-border-light);
 }
 
-.invoice-items-icon {
+.billing-items-icon {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -305,25 +313,25 @@
     color: var(--swp-primary);
 }
 
-.invoice-items-title {
+.billing-items-title {
     font-size: var(--swp-text-lg);
     font-weight: var(--swp-font-semibold);
     color: var(--swp-text-primary);
     margin: 0;
 }
 
-.invoice-items-body {
+.billing-items-body {
     padding: var(--swp-space-4);
 }
 
 // Line items list (responsive grid)
-.invoice-items-list {
+.billing-items-list {
     margin-bottom: var(--swp-space-4);
 }
 
-.invoice-items-header-row {
+.billing-items-header-row {
     display: grid;
-    grid-template-columns: 2fr minmax(100px, 1fr) 70px minmax(100px, 1fr) 90px 48px;
+    grid-template-columns: 2fr minmax(120px, 1fr) 70px minmax(100px, 1fr) minmax(100px, 1fr) 48px;
     gap: var(--swp-space-4);
     padding: var(--swp-space-3);
     border-bottom: 1px solid var(--swp-border);
@@ -351,13 +359,13 @@
 }
 
 // Without tax column - give description even more space
-.invoice-items-list:not(:has(.column-tax)) {
-    .invoice-items-header-row {
-        grid-template-columns: 3fr minmax(100px, 1fr) 70px 90px 48px;
+.billing-items-list:not(:has(.column-tax)) {
+    .billing-items-header-row {
+        grid-template-columns: 3fr minmax(120px, 1fr) 70px minmax(100px, 1fr) 48px;
     }
 
-    .invoice-item-row {
-        grid-template-columns: 3fr minmax(100px, 1fr) 70px 90px 48px;
+    .billing-item-row {
+        grid-template-columns: 3fr minmax(120px, 1fr) 70px minmax(100px, 1fr) 48px;
 
         @media (max-width: 900px) {
             grid-template-columns: 1fr;
@@ -365,9 +373,9 @@
     }
 }
 
-.invoice-item-row {
+.billing-item-row {
     display: grid;
-    grid-template-columns: 2fr minmax(100px, 1fr) 70px minmax(100px, 1fr) 90px 48px;
+    grid-template-columns: 2fr minmax(120px, 1fr) 70px minmax(100px, 1fr) minmax(100px, 1fr) 48px;
     gap: var(--swp-space-4);
     padding: var(--swp-space-3);
     border-bottom: 1px solid var(--swp-border-light);
@@ -597,7 +605,7 @@
 // TOTALS SIDEBAR (Sticky on Desktop)
 // ============================================================================
 
-.invoice-totals-sidebar {
+.billing-totals-sidebar {
     position: sticky;
     top: var(--swp-space-6);
 
@@ -606,14 +614,14 @@
     }
 }
 
-.invoice-totals-card {
+.billing-totals-card {
     background: var(--swp-surface);
     border: 1px solid var(--swp-border);
     border-radius: var(--swp-radius-lg);
     overflow: hidden;
 }
 
-.invoice-totals-header {
+.billing-totals-header {
     display: flex;
     align-items: center;
     gap: var(--swp-space-3);
@@ -622,7 +630,7 @@
     border-bottom: 1px solid var(--swp-border-light);
 }
 
-.invoice-totals-icon {
+.billing-totals-icon {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -633,14 +641,14 @@
     color: var(--swp-success);
 }
 
-.invoice-totals-title {
+.billing-totals-title {
     font-size: var(--swp-text-lg);
     font-weight: var(--swp-font-semibold);
     color: var(--swp-text-primary);
     margin: 0;
 }
 
-.invoice-totals-body {
+.billing-totals-body {
     padding: var(--swp-space-5);
 }
 
@@ -707,7 +715,7 @@
 // TERMS & NOTES COLLAPSIBLE SECTION
 // ============================================================================
 
-.invoice-terms-section {
+.billing-terms-section {
     margin-top: var(--swp-space-6);
     background: var(--swp-gray-50);
     border: 1px dashed var(--swp-border);
@@ -798,7 +806,7 @@
 // FORM ACTIONS (Sticky Footer)
 // ============================================================================
 
-.invoice-form-actions {
+.billing-form-actions {
     position: sticky;
     bottom: 0;
     left: 0;
@@ -811,7 +819,7 @@
     box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
 }
 
-.invoice-form-actions-inner {
+.billing-form-actions-inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -904,11 +912,11 @@
 // ============================================================================
 
 @media (max-width: 768px) {
-    .invoice-items-table {
+    .billing-items-table {
         display: none;
     }
 
-    .invoice-items-cards {
+    .billing-items-cards {
         display: flex;
         flex-direction: column;
         gap: var(--swp-space-4);
@@ -916,12 +924,12 @@
 }
 
 @media (min-width: 769px) {
-    .invoice-items-cards {
+    .billing-items-cards {
         display: none;
     }
 }
 
-.invoice-item-card {
+.billing-item-card {
     background: var(--swp-gray-50);
     border: 1px solid var(--swp-border);
     border-radius: var(--swp-radius-md);
@@ -934,32 +942,32 @@
     }
 }
 
-.invoice-item-card-header {
+.billing-item-card-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: var(--swp-space-3);
 }
 
-.invoice-item-card-number {
+.billing-item-card-number {
     font-size: var(--swp-text-sm);
     font-weight: var(--swp-font-semibold);
     color: var(--swp-text-muted);
 }
 
-.invoice-item-card-body {
+.billing-item-card-body {
     display: flex;
     flex-direction: column;
     gap: var(--swp-space-3);
 }
 
-.invoice-item-card-row {
+.billing-item-card-row {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: var(--swp-space-3);
 }
 
-.invoice-item-card-total {
+.billing-item-card-total {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -999,32 +1007,32 @@
 // ============================================================================
 
 @media (max-width: 768px) {
-    .invoice-form-container {
+    .billing-form-container {
         padding: 0 var(--swp-space-4);
         padding-bottom: var(--swp-space-20);
     }
 
-    .invoice-form-header {
+    .billing-form-header {
         margin-bottom: var(--swp-space-4);
         padding: var(--swp-space-4) 0;
     }
 
-    .invoice-form-icon {
+    .billing-form-icon {
         width: 48px;
         height: 48px;
     }
 
-    .invoice-form-title {
+    .billing-form-title {
         font-size: 1.5rem;
     }
 
-    .invoice-details-section,
-    .invoice-items-section,
-    .invoice-totals-card {
+    .billing-details-section,
+    .billing-items-section,
+    .billing-totals-card {
         border-radius: var(--swp-radius-md);
     }
 
-    .invoice-form-actions-inner {
+    .billing-form-actions-inner {
         gap: var(--swp-space-3);
 
         .btn {
@@ -1032,11 +1040,11 @@
         }
     }
 
-    .invoice-id-display {
+    .billing-id-display {
         flex-wrap: wrap;
 
-        .invoice-id-label,
-        .invoice-id-value {
+        .billing-id-label,
+        .billing-id-value {
             font-size: var(--swp-text-xl);
         }
     }
@@ -1046,7 +1054,7 @@
 // EMPTY STATE
 // ============================================================================
 
-.invoice-items-empty {
+.billing-items-empty {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1059,7 +1067,7 @@
     margin-bottom: var(--swp-space-4);
 }
 
-.invoice-items-empty-icon {
+.billing-items-empty-icon {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1071,14 +1079,14 @@
     margin-bottom: var(--swp-space-4);
 }
 
-.invoice-items-empty-title {
+.billing-items-empty-title {
     font-size: var(--swp-text-lg);
     font-weight: var(--swp-font-semibold);
     color: var(--swp-text-primary);
     margin: 0 0 var(--swp-space-2) 0;
 }
 
-.invoice-items-empty-text {
+.billing-items-empty-text {
     font-size: var(--swp-text-sm);
     color: var(--swp-text-muted);
     margin: 0;

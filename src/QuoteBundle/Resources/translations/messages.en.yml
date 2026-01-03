@@ -1,15 +1,22 @@
 quote:
+    label: 'Quote #'
     list:
         status_legend: 'Quote Status Legend'
         title: Quotes
     summary: 'Quote Summary'
-    create: 'Create Quote'
+    create:
+        title: 'Create Quote'
+        subtitle: 'Build professional quotes for your clients'
+        new: 'Create Quote'
+        success: 'Quote created successfully'
     created: Created
     total: Total
     subtotal: Sub-Total
     tax: Tax
     discount: Discount
-    edit: 'Edit Quote'
+    edit:
+        title: 'Edit Quote'
+        success: 'Quote updated successfully'
     terms: Terms
     notes: Notes
     title: 'Quote #%id%'
@@ -18,15 +25,32 @@ quote:
         draft: 'Save as Draft'
         update: Update
         cancel: Cancel
+    items:
+        title: 'Line Items'
+        empty:
+            title: 'No items yet'
+            description: 'Add your first item to get started'
     item:
         add: 'Add Item'
         remove: 'Remove Item'
+        number: 'Item %number%'
+        description:
+            placeholder: 'Describe the service or product...'
         heading:
             description: Description
             price: Price
             qty: Qty
             tax: Tax
             total: Total
+    totals:
+        title: 'Summary'
+    terms_notes:
+        title: 'Terms & Notes'
+        toggle: 'Toggle terms and notes section'
+    id:
+        edit: 'Edit quote ID'
+        save: 'Save quote ID'
+        cancel: 'Cancel editing quote ID'
     action:
         edit:
             success: 'Quote updated successfully'
