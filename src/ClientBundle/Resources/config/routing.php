@@ -39,7 +39,4 @@ return static function (RoutingConfigurator $routingConfigurator): void {
         ->add('_clients_delete', '/delete/{id}')
         ->controller(Delete::class)
         ->methods(['DELETE', 'POST']);
-
-    $routingConfigurator->import('@SolidInvoiceClientBundle/Resources/config/routing/ajax.php')
-        ->prefix('/xhr');
 };
