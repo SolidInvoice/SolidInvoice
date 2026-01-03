@@ -1,4 +1,5 @@
 invoice:
+    label: 'Invoice #'
     list:
         status_legend: 'Invoice Status Legend'
         title: Invoices
@@ -20,20 +21,41 @@ invoice:
         empty: 'You have not created any clients yet.'
         create: 'Please add one now'
     create:
+        title: 'Create Invoice'
+        subtitle: 'Build professional invoices for your clients'
         new: 'Create Invoice'
         success: 'Invoice created successfully'
     edit:
+        title: 'Edit Invoice'
         success: 'Invoice updated successfully'
         paid: 'You can''t edit invoices that is already paid'
+    items:
+        title: 'Line Items'
+        empty:
+            title: 'No items yet'
+            description: 'Add your first item to get started'
     item:
         add: 'Add Item'
         remove: 'Remove Item'
+        number: 'Item %number%'
+        description:
+            placeholder: 'Describe the service or product...'
         heading:
             description: Description
             price: Price
             qty: Qty
             total: Total
             tax: Tax
+    totals:
+        title: 'Summary'
+    terms_notes:
+        title: 'Terms & Notes'
+        toggle: 'Toggle terms and notes section'
+    send_to: 'Send invoice to:'
+    id:
+        edit: 'Edit invoice ID'
+        save: 'Save invoice ID'
+        cancel: 'Cancel editing invoice ID'
     save:
         send: 'Save and Send'
         enable: 'Save and Enable'
