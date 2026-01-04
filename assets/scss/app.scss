@@ -102,6 +102,12 @@ $alert-secondary-text: $orange-dark;
 // Client page custom styles
 @import './client';
 
+// Invoice view page styles
+@import './invoice-view';
+
+// Quote view page styles
+@import './quote-view';
+
 // ============================================================================
 // 8. LEGACY BOOTSTRAP OVERRIDES (To be cleaned up)
 // ============================================================================

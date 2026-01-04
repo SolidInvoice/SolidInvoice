@@ -225,6 +225,13 @@ class Client implements Stringable
         return $this->id;
     }
 
+    public function setId(Ulid $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
     public function getName(): ?string
     {
         return $this->name;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -14,10 +16,12 @@ namespace SolidInvoice\QuoteBundle\Tests\Action;
 use DateTimeImmutable;
 use Psr\Log\NullLogger;
 use ReflectionClass;
+use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Pdf\Generator;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\QuoteBundle\Action\View;
 use SolidInvoice\QuoteBundle\Entity\Line;
 use SolidInvoice\QuoteBundle\Entity\Quote;
@@ -36,6 +40,10 @@ final class ViewTest extends KernelTestCase
     use EnsureApplicationInstalled;
     use MatchesSnapshots;
     use Factories;
+
+    private const CLIENT_ID = '01JGXKV8QZ0000000000000001';
+
+    private const QUOTE_ID = '181aaf4a-0097-11ef-9b64-5a2cf21a5680';
 
     /**
      * @dataProvider quoteStatusProvider
@@ -59,6 +67,7 @@ final class ViewTest extends KernelTestCase
             'website' => 'https://www.example.com',
             'vatNumber' => 'GB123456789',
         ])->_real();
+        $client->setId(Ulid::fromString(self::CLIENT_ID));
 
         /** @var Quote $quote */
         $quote = QuoteFactory::new()
@@ -82,11 +91,10 @@ final class ViewTest extends KernelTestCase
             ])
             ->_real();
 
-        $uuid = Ulid::fromString('181aaf4a-0097-11ef-9b64-5a2cf21a5680');
+        $uuid = Ulid::fromString(self::QUOTE_ID);
         $quote->setId($uuid)
-            ->setUuid(Uuid::fromString('181aaf4a-0097-11ef-9b64-5a2cf21a5680'))
-            ->setQuoteId('QUOT-2021-0001')
-        ;
+            ->setUuid(Uuid::fromString(self::QUOTE_ID));
+        $quote->setQuoteId('QUOT-2021-0001');
 
         $template = $action($request, $quote);
 
@@ -107,5 +115,244 @@ final class ViewTest extends KernelTestCase
                 yield "Status {$value}" => [$value];
             }
         }
+    }
+
+    public function testViewWithDiscount(): void
+    {
+        $request = Request::createFromGlobals();
+        $requestStack = self::getContainer()->get('request_stack');
+        $requestStack->push($request);
+
+        $twig = self::getContainer()->get(Environment::class);
+
+        $action = new View(
+            new Generator('', new NullLogger()),
+            $twig
+        );
+
+        $client = ClientFactory::createOne([
+            'currencyCode' => 'USD',
+            'name' => 'Johnston PLC',
+            'website' => 'https://www.example.com',
+            'vatNumber' => 'GB123456789',
+        ])->_real();
+        $client->setId(Ulid::fromString(self::CLIENT_ID));
+
+        $discount = new Discount();
+        $discount->setType(Discount::TYPE_PERCENTAGE);
+        $discount->setValue(10);
+
+        /** @var Quote $quote */
+        $quote = QuoteFactory::new()
+            ->withoutPersisting()
+            ->create([
+                'client' => $client,
+                'status' => Graph::STATUS_PENDING,
+                'total' => '90.00',
+                'baseTotal' => '100.00',
+                'created' => new DateTimeImmutable('2021-09-01'),
+                'lines' => [
+                    (new Line())
+                        ->setDescription('Test Line')
+                        ->setPrice('100.00')
+                        ->setQty(1),
+                ],
+                'terms' => 'Test Terms',
+                'notes' => 'Test Notes',
+                'discount' => $discount,
+                'tax' => 0,
+            ])
+            ->_real();
+
+        $uuid = Ulid::fromString(self::QUOTE_ID);
+        $quote->setId($uuid)
+            ->setUuid(Uuid::fromString(self::QUOTE_ID));
+        $quote->setQuoteId('QUOT-2021-0001');
+
+        $template = $action($request, $quote);
+
+        $response = $twig->resolveTemplate($template->getTemplate())->renderBlock('content', $template->getParams());
+
+        $this->assertMatchesHtmlSnapshot($response);
+    }
+
+    public function testViewWithTax(): void
+    {
+        $request = Request::createFromGlobals();
+        $requestStack = self::getContainer()->get('request_stack');
+        $requestStack->push($request);
+
+        $twig = self::getContainer()->get(Environment::class);
+
+        $action = new View(
+            new Generator('', new NullLogger()),
+            $twig
+        );
+
+        $client = ClientFactory::createOne([
+            'currencyCode' => 'USD',
+            'name' => 'Johnston PLC',
+            'website' => 'https://www.example.com',
+            'vatNumber' => 'GB123456789',
+        ])->_real();
+        $client->setId(Ulid::fromString(self::CLIENT_ID));
+
+        /** @var Quote $quote */
+        $quote = QuoteFactory::new()
+            ->withoutPersisting()
+            ->create([
+                'client' => $client,
+                'status' => Graph::STATUS_PENDING,
+                'total' => '115.00',
+                'baseTotal' => '100.00',
+                'created' => new DateTimeImmutable('2021-09-01'),
+                'lines' => [
+                    (new Line())
+                        ->setDescription('Test Line with Tax')
+                        ->setPrice('100.00')
+                        ->setQty(1),
+                ],
+                'terms' => 'Test Terms',
+                'notes' => 'Test Notes',
+                'discount' => new Discount(),
+                'tax' => '15.00',
+            ])
+            ->_real();
+
+        $uuid = Ulid::fromString(self::QUOTE_ID);
+        $quote->setId($uuid)
+            ->setUuid(Uuid::fromString(self::QUOTE_ID));
+        $quote->setQuoteId('QUOT-2021-0001');
+
+        $template = $action($request, $quote);
+
+        $response = $twig->resolveTemplate($template->getTemplate())->renderBlock('content', $template->getParams());
+
+        $this->assertMatchesHtmlSnapshot($response);
+    }
+
+    public function testViewWithRelatedInvoice(): void
+    {
+        $request = Request::createFromGlobals();
+        $requestStack = self::getContainer()->get('request_stack');
+        $requestStack->push($request);
+
+        $twig = self::getContainer()->get(Environment::class);
+
+        $action = new View(
+            new Generator('', new NullLogger()),
+            $twig
+        );
+
+        $client = ClientFactory::createOne([
+            'currencyCode' => 'USD',
+            'name' => 'Johnston PLC',
+            'website' => 'https://www.example.com',
+            'vatNumber' => 'GB123456789',
+        ])->_real();
+        $client->setId(Ulid::fromString(self::CLIENT_ID));
+
+        // Create a related invoice
+        $invoice = new Invoice();
+        $invoiceUuid = Ulid::fromString('281aaf4a-0097-11ef-9b64-5a2cf21a5680');
+        $invoice->setId($invoiceUuid)
+            ->setInvoiceId('INV-2021-0001')
+            ->setStatus('pending')
+            ->setClient($client);
+
+        /** @var Quote $quote */
+        $quote = QuoteFactory::new()
+            ->withoutPersisting()
+            ->create([
+                'client' => $client,
+                'status' => Graph::STATUS_ACCEPTED,
+                'total' => '100.00',
+                'baseTotal' => '100.00',
+                'created' => new DateTimeImmutable('2021-09-01'),
+                'lines' => [
+                    (new Line())
+                        ->setDescription('Test Line')
+                        ->setPrice('100.00')
+                        ->setQty(1),
+                ],
+                'terms' => 'Test Terms',
+                'notes' => 'Test Notes',
+                'discount' => new Discount(),
+                'tax' => 0,
+            ])
+            ->_real();
+
+        $uuid = Ulid::fromString(self::QUOTE_ID);
+        $quote->setId($uuid)
+            ->setUuid(Uuid::fromString(self::QUOTE_ID))
+            ->setInvoice($invoice);
+        $quote->setQuoteId('QUOT-2021-0001');
+
+        $template = $action($request, $quote);
+
+        $response = $twig->resolveTemplate($template->getTemplate())->renderBlock('content', $template->getParams());
+
+        $this->assertMatchesHtmlSnapshot($response);
+    }
+
+    public function testViewWithClientContacts(): void
+    {
+        $request = Request::createFromGlobals();
+        $requestStack = self::getContainer()->get('request_stack');
+        $requestStack->push($request);
+
+        $twig = self::getContainer()->get(Environment::class);
+
+        $action = new View(
+            new Generator('', new NullLogger()),
+            $twig
+        );
+
+        $contact = new Contact();
+        $contact->setFirstName('John')
+            ->setLastName('Doe')
+            ->setEmail('john.doe@example.com');
+
+        $client = ClientFactory::createOne([
+            'currencyCode' => 'USD',
+            'name' => 'Johnston PLC',
+            'website' => 'https://www.example.com',
+            'vatNumber' => 'GB123456789',
+        ])->_real();
+        $client->setId(Ulid::fromString(self::CLIENT_ID));
+
+        /** @var Quote $quote */
+        $quote = QuoteFactory::new()
+            ->withoutPersisting()
+            ->create([
+                'client' => $client,
+                'status' => Graph::STATUS_PENDING,
+                'total' => '100.00',
+                'baseTotal' => '100.00',
+                'created' => new DateTimeImmutable('2021-09-01'),
+                'lines' => [
+                    (new Line())
+                        ->setDescription('Test Line')
+                        ->setPrice('100.00')
+                        ->setQty(1),
+                ],
+                'terms' => 'Test Terms',
+                'notes' => 'Test Notes',
+                'discount' => new Discount(),
+                'tax' => 0,
+                'users' => [$contact],
+            ])
+            ->_real();
+
+        $uuid = Ulid::fromString(self::QUOTE_ID);
+        $quote->setId($uuid)
+            ->setUuid(Uuid::fromString(self::QUOTE_ID));
+        $quote->setQuoteId('QUOT-2021-0001');
+
+        $template = $action($request, $quote);
+
+        $response = $twig->resolveTemplate($template->getTemplate())->renderBlock('content', $template->getParams());
+
+        $this->assertMatchesHtmlSnapshot($response);
     }
 }

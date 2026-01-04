@@ -28,6 +28,7 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
@@ -466,5 +467,15 @@ class Quote
     {
         $this->id = $uuid;
         return $this;
+    }
+
+    public function isValid(): bool
+    {
+        // We need to handle cases where a quote is archived, but the corresponding invoice is still available.
+        try {
+            return ! $this->isArchived();
+        } catch (EntityNotFoundException) {
+            return false;
+        }
     }
 }

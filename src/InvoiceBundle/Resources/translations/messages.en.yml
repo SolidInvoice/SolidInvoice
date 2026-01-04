@@ -1,5 +1,9 @@
 invoice:
     label: 'Invoice #'
+    from: 'From'
+    to: 'To'
+    due_date: 'Due Date'
+    paid_date: 'Paid Date'
     list:
         status_legend: 'Invoice Status Legend'
         title: Invoices
@@ -17,6 +21,7 @@ invoice:
     notes: Notes
     terms: Terms
     client:
+        title: 'Client'
         choose: 'Choose a client'
         empty: 'You have not created any clients yet.'
         create: 'Please add one now'
@@ -72,11 +77,13 @@ invoice:
             edit: Edit
             reopen: Re-Open
             clone: Clone
-            view_quote: View Quote
+            view_quote: 'View Quote'
+            archive: Archive
         payments: Payments
     clone:
         success: 'Invoice cloned successfully'
     payment:
+        label: 'Payment'
         capture: 'Do you want to capture a payment for this invoice?'
     mark_paid: 'Mark Paid'
     capture_payment: 'Capture Payment'

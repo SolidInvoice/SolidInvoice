@@ -7,8 +7,6 @@
  # with this source code in the file LICENSE.
  #}
 
-{% set currency = invoice.client.currency %}
-
 {% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
 {% block page_title %}
@@ -16,122 +14,449 @@
 {% endblock page_title %}
 
 {% block content %}
-    <div class="float-right no-print mt-3">
-        <div class="btn-toolbar" role="toolbar">
-            <div class="btn-group mr-2" role="group">
-                {% if invoice.quote is not null %}
-                    <a href="{{ path('_quotes_view', {'id' : invoice.quote.id}) }}" class="btn btn-secondary">
-                        {{ icon('file-text-o') }} {{ "invoice.view.toolbar.view_quote"|trans }}
-                    </a>
-                {% endif %}
-                <a href="{{ path('_invoices_clone', {'id' : invoice.id}) }}" class="btn btn-secondary">
-                    {{ icon('clone') }} {{ "invoice.view.toolbar.clone"|trans }}
-                </a>
-
-                {% if workflow_can(invoice, 'pay') %}
-                    <a href="{{ path('_payments_create', {'uuid' : invoice.uuid}) }}" class="btn btn-primary">
-                        {{ icon('credit-card') }} {{ "invoice.view.toolbar.pay_now"|trans }}
-                    </a>
-                {% endif %}
-
-                {% if invoice.status in ['pending', 'draft', 'overdue'] %}
-                    <a href="{{ path('_send_invoice', {'id' : invoice.id}) }}" class="btn btn-info">
-                        {{ icon('envelope-o') }} {{ (invoice.status not in ['draft'] ? "invoice.view.toolbar.send" : "Publish and Send")|trans }}
-                    </a>
-                {% endif %}
-
-                {% if workflow_can(invoice, 'accept') %}
-                    <a href="{{ path('_action_invoice', {'action' : 'accept', 'id' : invoice.id}) }}" class="btn btn-primary">
-                        {{ icon('check') }} {{ "Publish"|trans }}
-                    </a>
-                {% endif %}
-
-                {% if workflow_can(invoice, 'reopen') %}
-                    <a href="{{ path('_action_invoice', {'action' : 'reopen', 'id' : invoice.id}) }}" class="btn btn-secondary">
-                        {{ icon('reply') }} {{ "invoice.view.toolbar.reopen"|trans }}
-                    </a>
-                {% endif %}
-
-                {% if workflow_can(invoice, 'cancel') %}
-                    <a href="{{ path('_action_invoice', {'action' : 'cancel', 'id' : invoice.id}) }}"
-                       class="btn btn-warning">
-                        {{ icon('ban') }} {{ "invoice.view.toolbar.cancel"|trans }}
-                    </a>
-                {% endif %}
-
-                {% if workflow_can(invoice, 'edit') %}
-                    <a href="{{ path('_invoices_edit', {'id' : invoice.id}) }}" class="btn btn-secondary">
-                        {{ icon('edit') }} {{ "invoice.view.toolbar.edit"|trans }}
-                    </a>
-                {% endif %}
+{% set currency = invoice.client.currency %}
+<div class="invoice-view-page">
+    <div class="invoice-view-header no-print">
+        <div class="invoice-view-header-left">
+            <div class="invoice-view-icon">
+                {{ ux_icon('tabler:file-invoice', {width: 32, height: 32}) }}
             </div>
+            <div class="invoice-view-title-group">
+                <h1 class="invoice-view-title">{{ "invoice.title"|trans({"%id%" : invoice.invoiceId}) }}</h1>
+                <div class="invoice-view-meta">
+                    {{ invoice_label(invoice.status) }}
+                    {% if invoice.due is not empty %}
+                        <span class="invoice-view-due">
+                            {{ ux_icon('tabler:calendar', {width: 14, height: 14}) }}
+                            {{ 'invoice.due_date'|trans }}: {{ invoice.due|date('M d, Y') }}
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="invoice-view-header-actions">
+            {# Always available actions #}
+            <div class="invoice-view-utility-actions">
+                <a href="javascript:window.print()" class="btn btn-ghost btn-icon" title="{{ 'invoice.action.print'|trans }}">
+                    {{ ux_icon('tabler:printer', {width: 20, height: 20}) }}
+                </a>
+                {% if can_print_pdf() %}
+                    <a href="{{ path('_invoices_view', {'id': invoice.id, '_format': 'pdf'}) }}" target="_blank" class="btn btn-ghost btn-icon" title="{{ 'invoice.action.pdf'|trans }}">
+                        {{ ux_icon('tabler:file-type-pdf', {width: 20, height: 20}) }}
+                    </a>
+                {% endif %}
+
+                {# More Actions Dropdown #}
+                <div class="dropdown">
+                    <button class="btn btn-ghost btn-icon" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="{{ 'More Actions'|trans }}">
+                        {{ ux_icon('tabler:dots-vertical', {width: 20, height: 20}) }}
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        {% if invoice.quote is not null and invoice.quote.valid %}
+                            <li>
+                                <a class="dropdown-item" href="{{ path('_quotes_view', {'id' : invoice.quote.id}) }}">
+                                    {{ ux_icon('tabler:file-text', {width: 16, height: 16}) }}
+                                    {{ "invoice.view.toolbar.view_quote"|trans }}
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                        {% endif %}
+
+                        <li>
+                            <a class="dropdown-item" href="{{ path('_invoices_clone', {'id' : invoice.id}) }}">
+                                {{ ux_icon('tabler:copy', {width: 16, height: 16}) }}
+                                {{ "invoice.view.toolbar.clone"|trans }}
+                            </a>
+                        </li>
+
+                        {% if workflow_can(invoice, 'edit') %}
+                            <li>
+                                <a class="dropdown-item" href="{{ path('_invoices_edit', {'id' : invoice.id}) }}">
+                                    {{ ux_icon('tabler:pencil', {width: 16, height: 16}) }}
+                                    {{ "invoice.view.toolbar.edit"|trans }}
+                                </a>
+                            </li>
+                        {% endif %}
+
+                        {% if workflow_can(invoice, 'reopen') %}
+                            <li>
+                                <a class="dropdown-item" href="{{ path('_action_invoice', {'action' : 'reopen', 'id' : invoice.id}) }}">
+                                    {{ ux_icon('tabler:refresh', {width: 16, height: 16}) }}
+                                    {{ "invoice.view.toolbar.reopen"|trans }}
+                                </a>
+                            </li>
+                        {% endif %}
+
+                        {% if workflow_can(invoice, 'archive') %}
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item" href="{{ path('_action_invoice', {'action' : 'archive', 'id' : invoice.id}) }}">
+                                    {{ ux_icon('tabler:archive', {width: 16, height: 16}) }}
+                                    {{ "invoice.view.toolbar.archive"|trans }}
+                                </a>
+                            </li>
+                        {% endif %}
+
+                        {% if workflow_can(invoice, 'cancel') %}
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item text-danger" href="{{ path('_action_invoice', {'action' : 'cancel', 'id' : invoice.id}) }}">
+                                    {{ ux_icon('tabler:x', {width: 16, height: 16}) }}
+                                    {{ "invoice.view.toolbar.cancel"|trans }}
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+
+            {# Hero Action - Changes based on invoice state #}
+            {% if workflow_can(invoice, 'pay') %}
+                <a href="{{ path('_payments_create', {'uuid' : invoice.uuid}) }}" class="btn btn-primary btn-hero {{ invoice.status == 'overdue' ? 'btn-hero-urgent' : '' }}">
+                    {{ ux_icon('tabler:credit-card', {width: 18, height: 18}) }}
+                    {{ "invoice.view.toolbar.pay_now"|trans }}
+                </a>
+            {% elseif workflow_can(invoice, 'accept') %}
+                <div class="btn-group">
+                    <a href="{{ path('_action_invoice', {'action' : 'accept', 'id' : invoice.id}) }}" class="btn btn-primary btn-hero">
+                        {{ ux_icon('tabler:check', {width: 18, height: 18}) }}
+                        {{ "Publish"|trans }}
+                    </a>
+                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="visually-hidden">{{ 'Toggle Dropdown'|trans }}</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a class="dropdown-item" href="{{ path('_send_invoice', {'id' : invoice.id}) }}">
+                                {{ ux_icon('tabler:send', {width: 16, height: 16}) }}
+                                {{ "Publish and Send"|trans }}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            {% elseif invoice.status in ['pending', 'overdue'] %}
+                <a href="{{ path('_send_invoice', {'id' : invoice.id}) }}" class="btn btn-primary btn-hero">
+                    {{ ux_icon('tabler:send', {width: 18, height: 18}) }}
+                    {{ "invoice.view.toolbar.send"|trans }}
+                </a>
+            {% endif %}
         </div>
     </div>
 
-    <br class="clear"/>
-    <br class="clear"/>
+    {# ═══════════════════════════════════════════════════════════════════════
+       MAIN CONTENT - Invoice Document + Sidebar
+    ═══════════════════════════════════════════════════════════════════════ #}
+    <div class="invoice-view-content">
+        {# Invoice Document (Main Area) #}
+        <div class="invoice-view-document">
+            <div class="invoice-document-card">
+                {# Document Header - From/To #}
+                <div class="invoice-document-header">
+                    <div class="invoice-party invoice-party-from">
+                        <div class="invoice-party-label">{{ 'invoice.from'|trans }}</div>
+                        <h3 class="invoice-party-name">{{ company_name() }}</h3>
 
-    {% embed "@SolidInvoiceInvoice/invoice_template.html.twig" %}
-        {% block footer %}
-            {{ parent() }}
+                        {% set vatNumber = setting('system/company/vat_number') %}
+                        {% if vatNumber is not empty %}
+                            <div class="invoice-party-detail">
+                                <span class="detail-label">{{ 'tax.vat_number'|trans }}</span>
+                                <span class="detail-value">{{ vatNumber }}</span>
+                            </div>
+                        {% endif %}
 
-            {% if invoice.notes is not empty %}
-                <div class="col-6 no-print">
-                    <strong>{{ 'invoice.notes'|trans }}</strong>
-                    <p class="text-muted well well-sm no-shadow">
-                        {{ invoice.notes }}
-                    </p>
+                        {% set email = setting('system/company/contact_details/email') %}
+                        {% if email is not empty %}
+                            <div class="invoice-party-detail">
+                                {{ ux_icon('tabler:mail', {width: 14, height: 14}) }}
+                                <span class="detail-value">{{ email }}</span>
+                            </div>
+                        {% endif %}
+
+                        {% set phoneNumber = setting('system/company/contact_details/phone_number') %}
+                        {% if phoneNumber is not empty %}
+                            <div class="invoice-party-detail">
+                                {{ ux_icon('tabler:phone', {width: 14, height: 14}) }}
+                                <span class="detail-value">{{ phoneNumber }}</span>
+                            </div>
+                        {% endif %}
+
+                        {% set address = setting('system/company/contact_details/address', null, true) %}
+                        {% if address is not null and address|filter(v => v) is not empty %}
+                            <div class="invoice-party-detail">
+                                {{ ux_icon('tabler:map-pin', {width: 14, height: 14}) }}
+                                <span class="detail-value">{{ address(address)|replace({"\n": ", "}) }}</span>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="invoice-party invoice-party-to">
+                        <div class="invoice-party-label">{{ 'invoice.to'|trans }}</div>
+                        <h3 class="invoice-party-name">{{ invoice.client }}</h3>
+
+                        {% if invoice.client.website is not empty %}
+                            <div class="invoice-party-detail">
+                                {{ ux_icon('tabler:world', {width: 14, height: 14}) }}
+                                <a href="{{ invoice.client.website }}" rel="external" target="_blank" class="detail-value">
+                                    {{ invoice.client.website }}
+                                </a>
+                            </div>
+                        {% endif %}
+
+                        {% if invoice.client.vatNumber is not empty %}
+                            <div class="invoice-party-detail">
+                                <span class="detail-label">{{ 'tax.vat_number'|trans }}</span>
+                                <span class="detail-value">{{ invoice.client.vatNumber }}</span>
+                            </div>
+                        {% endif %}
+
+                        {% for address in invoice.client.addresses %}
+                            <div class="invoice-party-detail">
+                                {{ ux_icon('tabler:map-pin', {width: 14, height: 14}) }}
+                                <span class="detail-value">{{ address|replace({"\n": ", "}) }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
-            {% endif %}
 
-            <div class="row no-print">
-                <div class="col-12">
-                    <div class="btn-group">
-                        <a href="javascript:window.print()" class="btn btn-secondary">{{ icon('print') }} {{ 'invoice.action.print'|trans }}</a>
-                        {% if can_print_pdf() %}
-                            <a href="{{ path('_invoices_view', {'id': invoice.id, '_format': 'pdf'}) }}" target="_blank" class="btn btn-secondary">{{ icon('file-pdf-o') }} {{ 'invoice.action.pdf'|trans }}</a>
+                {# Line Items Table #}
+                <div class="invoice-document-items">
+                    <table class="invoice-items-table">
+                        <thead>
+                            <tr>
+                                <th class="column-description">{{ 'invoice.item.heading.description'|trans }}</th>
+                                <th class="column-price">{{ 'invoice.item.heading.price'|trans }}</th>
+                                <th class="column-qty">{{ 'invoice.item.heading.qty'|trans }}</th>
+                                {% if invoice.tax.positive %}
+                                    <th class="column-tax">{{ 'invoice.item.heading.tax'|trans }}</th>
+                                {% endif %}
+                                <th class="column-total">{{ 'invoice.item.heading.total'|trans }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in invoice.lines %}
+                                <tr>
+                                    <td class="column-description" data-label="{{ 'invoice.item.heading.description'|trans }}">{{ item.description|nl2br }}</td>
+                                    <td class="column-price" data-label="{{ 'invoice.item.heading.price'|trans }}">{{ item.price|formatCurrency(currency) }}</td>
+                                    <td class="column-qty" data-label="{{ 'invoice.item.heading.qty'|trans }}">{{ item.qty }}</td>
+                                    {% if invoice.tax.positive %}
+                                        <td class="column-tax" data-label="{{ 'invoice.item.heading.tax'|trans }}">{{ item.tax }}</td>
+                                    {% endif %}
+                                    <td class="column-total" data-label="{{ 'invoice.item.heading.total'|trans }}">{{ item.total|formatCurrency(currency) }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                {# Totals Section #}
+                <div class="invoice-document-totals">
+                    <div class="invoice-totals-grid">
+                        <div class="totals-row">
+                            <span class="totals-label">{{ 'invoice.subtotal'|trans }}</span>
+                            <span class="totals-value">{{ invoice.baseTotal|formatCurrency(currency) }}</span>
+                        </div>
+
+                        {% if invoice.tax.positive %}
+                            <div class="totals-row">
+                                <span class="totals-label">{{ 'invoice.tax'|trans }}</span>
+                                <span class="totals-value">{{ invoice.tax|formatCurrency(currency) }}</span>
+                            </div>
+                        {% endif %}
+
+                        {% if invoice.hasDiscount %}
+                            <div class="totals-row totals-row-discount">
+                                <span class="totals-label">{{ 'invoice.discount'|trans }}</span>
+                                <span class="totals-value">-{{ discount(invoice)|formatCurrency(currency) }}</span>
+                            </div>
+                        {% endif %}
+
+                        {# Show partial payments in totals #}
+                        {% if invoice.payments|length > 0 and not invoice.balance.isZero %}
+                            {% for payment in invoice.payments|filter((v) => v.status == 'captured') %}
+                                <div class="totals-row totals-row-payment">
+                                    <span class="totals-label">
+                                        {{ 'invoice.payment.label'|trans }}: {{ payment.method.name }}
+                                    </span>
+                                    <span class="totals-value">-{{ payment.amount.amount|formatCurrency(currency) }}</span>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+                        {% set hasOutstandingBalance = invoice.payments|length > 0 and not invoice.balance.isZero %}
+                        <div class="totals-row totals-row-final">
+                            <span class="totals-label">
+                                {{ hasOutstandingBalance ? 'invoice.balance'|trans : 'invoice.total'|trans }}
+                            </span>
+                            <span class="totals-value">
+                                {{ (hasOutstandingBalance ? invoice.balance : invoice.total)|formatCurrency(currency) }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                {# Terms & Notes #}
+                {% if invoice.terms is not empty or invoice.notes is not empty %}
+                    <div class="invoice-document-footer">
+                        {% if invoice.terms is not empty %}
+                            <div class="invoice-footer-section">
+                                <h4 class="invoice-footer-title">{{ 'invoice.terms'|trans }}</h4>
+                                <p class="invoice-footer-text">{{ invoice.terms|nl2br }}</p>
+                            </div>
+                        {% endif %}
+
+                        {% if invoice.notes is not empty %}
+                            <div class="invoice-footer-section no-print">
+                                <h4 class="invoice-footer-title">{{ 'invoice.notes'|trans }}</h4>
+                                <p class="invoice-footer-text">{{ invoice.notes|nl2br }}</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        {# Sidebar #}
+        <div class="invoice-view-sidebar no-print">
+            {# Client Card #}
+            <div class="invoice-sidebar-card">
+                <div class="invoice-sidebar-card-header">
+                    <div class="invoice-sidebar-card-icon">
+                        {{ ux_icon('tabler:building', {width: 18, height: 18}) }}
+                    </div>
+                    <h3 class="invoice-sidebar-card-title">{{ 'invoice.client.title'|trans }}</h3>
+                </div>
+                <div class="invoice-sidebar-card-body">
+                    <div class="client-info">
+                        <a href="{{ path('_clients_view', {'id': invoice.client.id}) }}" class="client-name">
+                            {{ invoice.client }}
+                        </a>
+
+                        {% if invoice.users|length > 0 %}
+                            <div class="client-contacts">
+                                {% for user in invoice.users %}
+                                    <div class="client-contact">
+                                        <div class="contact-name">{{ user }}</div>
+                                        <div class="contact-email">
+                                            {{ ux_icon('tabler:mail', {width: 12, height: 12}) }}
+                                            {{ user.email }}
+                                        </div>
+                                        {% for info in user.additionalContactDetails %}
+                                            <div class="contact-detail">
+                                                {{ info.type|title }}: {{ info.value }}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% endfor %}
+                            </div>
                         {% endif %}
                     </div>
                 </div>
             </div>
-        {% endblock footer %}
-    {% endembed %}
 
-    {% if payments|length > 0 %}
-        <div class="invoice box no-print">
-            <div class="card-body">
-                <h3 class="page-header">
-                    {{ icon('credit-card') }} {{ "Payments"|trans }}
-                </h3>
-
-                <div class="widget">
-                    {% include "@SolidInvoicePayment/Payment/list.html.twig" with {"data" : {'invoice' : invoice.id}, 'grid' : 'invoice_payment_grid'} only %}
+            {# Invoice Summary Card #}
+            <div class="invoice-sidebar-card">
+                <div class="invoice-sidebar-card-header">
+                    <div class="invoice-sidebar-card-icon">
+                        {{ ux_icon('tabler:receipt', {width: 18, height: 18}) }}
+                    </div>
+                    <h3 class="invoice-sidebar-card-title">{{ 'invoice.summary'|trans }}</h3>
+                </div>
+                <div class="invoice-sidebar-card-body">
+                    <div class="invoice-summary-grid">
+                        <div class="summary-item">
+                            <span class="summary-label">{{ 'invoice.status'|trans }}</span>
+                            <span class="summary-value">{{ invoice_label(invoice.status) }}</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">{{ 'invoice.total'|trans }}</span>
+                            <span class="summary-value summary-value-amount">{{ invoice.total|formatCurrency(currency) }}</span>
+                        </div>
+                        {% if invoice.payments|length > 0 and not invoice.balance.isZero %}
+                            <div class="summary-item">
+                                <span class="summary-label">{{ 'invoice.balance'|trans }}</span>
+                                <span class="summary-value summary-value-balance">{{ invoice.balance|formatCurrency(currency) }}</span>
+                            </div>
+                        {% endif %}
+                        <div class="summary-item">
+                            <span class="summary-label">{{ 'Invoice Date'|trans }}</span>
+                            <span class="summary-value">{{ invoice.invoiceDate|date('M d, Y') }}</span>
+                        </div>
+                        {% if invoice.due is not empty %}
+                            <div class="summary-item {{ invoice.status == 'overdue' ? 'summary-item-overdue' : '' }}">
+                                <span class="summary-label">{{ 'Due Date'|trans }}</span>
+                                <span class="summary-value">{{ invoice.due|date('M d, Y') }}</span>
+                            </div>
+                        {% endif %}
+                        {% if invoice.paidDate is not empty %}
+                            <div class="summary-item summary-item-paid">
+                                <span class="summary-label">{{ 'invoice.paid_date'|trans }}</span>
+                                <span class="summary-value">{{ invoice.paidDate|date('M d, Y') }}</span>
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
-        </div>
-    {% endif %}
 
-    <div class="modal fade" id="payment-modal" tabindex="-1" role="dialog" aria-labelledby="payment-modal-label"
-         aria-hidden="true">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="payment-modal-label">{{ 'invoice.add_payment'|trans }}</h4>
-            </div>
-            <div class="modal-body">
-                <p>{{ 'invoice.payment.capture'|trans }}</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                    {{ 'invoice.save.cancel'|trans }}
-                </button>
-                <a href="{{ path('_action_invoice', {'action' : 'pay', 'id' : invoice.id}) }}" class="btn btn-success">
-                    {{ icon('money') }} {{ 'invoice.mark_paid'|trans }}
-                </a>
-                <a href="{{ path('_payments_create', {'uuid' : invoice.uuid}) }}" class="btn btn-primary">
-                    {{ icon('credit-card') }} {{ 'invoice.capture_payment'|trans }}
-                </a>
-            </div>
+            {# Payments Card (if any) #}
+            {% if payments|length > 0 %}
+                <div class="invoice-sidebar-card">
+                    <div class="invoice-sidebar-card-header">
+                        <div class="invoice-sidebar-card-icon">
+                            {{ ux_icon('tabler:credit-card', {width: 18, height: 18}) }}
+                        </div>
+                        <h3 class="invoice-sidebar-card-title">{{ 'Payments'|trans }}</h3>
+                    </div>
+                    <div class="invoice-sidebar-card-body">
+                        <div class="payments-list">
+                            {% for payment in payments %}
+                                <div class="payment-card {{ payment.status == 'captured' ? 'payment-card-captured' : '' }}">
+                                    <div class="payment-card-header">
+                                        <div class="payment-amount">{{ payment.totalAmount|formatCurrency(currency) }}</div>
+                                        <div class="payment-status">{{ payment_label(payment.status) }}</div>
+                                    </div>
+                                    <div class="payment-card-body">
+                                        {% if payment.method is not empty %}
+                                            <div class="payment-method">
+                                                {{ ux_icon('tabler:credit-card', {width: 14, height: 14}) }}
+                                                {{ payment.method }}
+                                            </div>
+                                        {% endif %}
+                                        {% if payment.completed is not empty %}
+                                            <div class="payment-date">
+                                                {{ ux_icon('tabler:calendar', {width: 14, height: 14}) }}
+                                                {{ payment.completed|date('M d, Y') }}
+                                            </div>
+                                        {% endif %}
+                                        {% if payment.message is not empty %}
+                                            <div class="payment-message">{{ payment.message }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            {# Related Quote Card (if exists) #}
+            {% if invoice.quote is not null and invoice.quote.valid %}
+                <div class="invoice-sidebar-card invoice-sidebar-card-muted">
+                    <div class="invoice-sidebar-card-header">
+                        <div class="invoice-sidebar-card-icon">
+                            {{ ux_icon('tabler:file-text', {width: 18, height: 18}) }}
+                        </div>
+                        <h3 class="invoice-sidebar-card-title">{{ 'Related Quote'|trans }}</h3>
+                    </div>
+                    <div class="invoice-sidebar-card-body">
+                        <a href="{{ path('_quotes_view', {'id' : invoice.quote.id}) }}" class="related-quote-link">
+                            {{ ux_icon('tabler:external-link', {width: 14, height: 14}) }}
+                            {{ 'quote.title'|trans({'%id%': invoice.quote.quoteId}) }}
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
         </div>
     </div>
+</div>
 {% endblock content %}

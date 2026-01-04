@@ -1,0 +1,593 @@
+/**
+ * Quote View Page Styles
+ *
+ * Modern, stunning quote view page with hybrid layout:
+ * - Header with title, status, and actions
+ * - Main document area with quote content
+ * - Sidebar with summary, client info, and related invoice
+ */
+
+// ============================================================================
+// PAGE LAYOUT
+// ============================================================================
+
+.quote-view-page {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: var(--swp-space-6);
+}
+
+// ============================================================================
+// PAGE HEADER
+// ============================================================================
+
+.quote-view-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--swp-space-4);
+    padding: var(--swp-space-4) var(--swp-space-6);
+    background: var(--swp-surface);
+    border-radius: var(--swp-radius-lg);
+    box-shadow: var(--swp-shadow-sm);
+    margin-bottom: var(--swp-space-6);
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+.quote-view-header-left {
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-4);
+}
+
+.quote-view-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, var(--swp-primary-light) 0%, var(--swp-primary-lighter) 100%);
+    border-radius: var(--swp-radius-lg);
+    color: var(--swp-primary);
+}
+
+.quote-view-title-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--swp-space-1);
+}
+
+.quote-view-title {
+    font-size: var(--swp-text-xl, 1.25rem);
+    font-weight: var(--swp-font-semibold, 600);
+    color: var(--swp-text-primary);
+    margin: 0;
+    line-height: 1.3;
+}
+
+.quote-view-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-3);
+    flex-wrap: wrap;
+}
+
+.quote-view-date {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--swp-space-1);
+    font-size: var(--swp-text-sm, 0.875rem);
+    color: var(--swp-text-muted);
+
+    svg {
+        opacity: 0.7;
+    }
+}
+
+// Header Actions
+.quote-view-header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-3);
+
+    @media (max-width: 768px) {
+        width: 100%;
+        justify-content: flex-end;
+    }
+}
+
+.quote-view-utility-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-1);
+}
+
+// Dropdown styling for quote page
+.quote-view-header .dropdown-menu {
+    min-width: 200px;
+    padding: var(--swp-space-2);
+    border: 1px solid var(--swp-border-light);
+    box-shadow: var(--swp-shadow-lg);
+    border-radius: var(--swp-radius-lg);
+
+    .dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: var(--swp-space-2);
+        padding: var(--swp-space-2) var(--swp-space-3);
+        border-radius: var(--swp-radius-sm);
+        font-size: var(--swp-text-sm, 0.875rem);
+
+        &:hover {
+            background: var(--swp-gray-50);
+        }
+
+        &.text-danger:hover {
+            background: var(--swp-danger-lighter);
+        }
+
+        svg {
+            opacity: 0.7;
+        }
+    }
+
+    .dropdown-divider {
+        margin: var(--swp-space-2) 0;
+        border-color: var(--swp-border-light);
+    }
+}
+
+// ============================================================================
+// MAIN CONTENT LAYOUT
+// ============================================================================
+
+.quote-view-content {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: var(--swp-space-6);
+
+    @media (max-width: 1024px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+// ============================================================================
+// QUOTE DOCUMENT (Main Area)
+// ============================================================================
+
+.quote-view-document {
+    min-width: 0; // Prevent overflow
+}
+
+.quote-document-card {
+    background: var(--swp-surface);
+    border-radius: var(--swp-radius-lg);
+    box-shadow: var(--swp-shadow-sm);
+    overflow: hidden;
+}
+
+// Document Header (From/To)
+.quote-document-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--swp-space-8);
+    padding: var(--swp-space-6);
+    background: linear-gradient(180deg, var(--swp-gray-50) 0%, var(--swp-surface) 100%);
+    border-bottom: 1px solid var(--swp-border-light);
+
+    @media (max-width: 640px) {
+        grid-template-columns: 1fr;
+        gap: var(--swp-space-6);
+    }
+}
+
+.quote-party {
+    display: flex;
+    flex-direction: column;
+    gap: var(--swp-space-2);
+}
+
+.quote-party-label {
+    font-size: var(--swp-text-xs, 0.75rem);
+    font-weight: var(--swp-font-semibold, 600);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--swp-text-muted);
+}
+
+.quote-party-name {
+    font-size: var(--swp-text-lg, 1.125rem);
+    font-weight: var(--swp-font-semibold, 600);
+    color: var(--swp-text-primary);
+    margin: 0 0 var(--swp-space-2) 0;
+}
+
+.quote-party-detail {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--swp-space-2);
+    font-size: var(--swp-text-sm, 0.875rem);
+    color: var(--swp-text-secondary);
+    line-height: 1.5;
+
+    svg {
+        flex-shrink: 0;
+        margin-top: 2px;
+        opacity: 0.6;
+    }
+
+    .detail-label {
+        font-weight: var(--swp-font-medium, 500);
+        color: var(--swp-text-muted);
+
+        &::after {
+            content: ":";
+            margin-right: var(--swp-space-1);
+        }
+    }
+
+    .detail-value {
+        color: var(--swp-text-secondary);
+    }
+
+    a.detail-value {
+        color: var(--swp-primary);
+
+        &:hover {
+            color: var(--swp-primary-dark);
+            text-decoration: underline;
+        }
+    }
+}
+
+// Line Items Table
+.quote-document-items {
+    padding: var(--swp-space-6);
+
+    @media (max-width: 640px) {
+        padding: var(--swp-space-4);
+    }
+}
+
+.quote-items-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    thead {
+        th {
+            padding: var(--swp-space-3) var(--swp-space-4);
+            font-size: var(--swp-text-xs, 0.75rem);
+            font-weight: var(--swp-font-semibold, 600);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--swp-text-muted);
+            background: var(--swp-gray-50);
+            border-bottom: 2px solid var(--swp-border);
+            text-align: left;
+
+            &.column-price,
+            &.column-qty,
+            &.column-tax,
+            &.column-total {
+                text-align: right;
+            }
+        }
+
+        // Hide table header on mobile
+        @media (max-width: 640px) {
+            display: none;
+        }
+    }
+
+    tbody {
+        tr {
+            transition: background-color var(--swp-transition-fast);
+
+            &:hover {
+                background: var(--swp-gray-50);
+            }
+
+            // Stack rows as cards on mobile
+            @media (max-width: 640px) {
+                display: block;
+                padding: var(--swp-space-4);
+                margin-bottom: var(--swp-space-3);
+                background: var(--swp-gray-50);
+                border-radius: var(--swp-radius-md);
+                border: 1px solid var(--swp-border-light);
+
+                &:hover {
+                    background: var(--swp-gray-100);
+                }
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+        }
+
+        td {
+            padding: var(--swp-space-4);
+            font-size: var(--swp-text-sm, 0.875rem);
+            color: var(--swp-text-secondary);
+            border-bottom: 1px solid var(--swp-border-light);
+            vertical-align: top;
+
+            &.column-description {
+                color: var(--swp-text-primary);
+                font-weight: var(--swp-font-medium, 500);
+            }
+
+            &.column-price,
+            &.column-qty,
+            &.column-tax,
+            &.column-total {
+                text-align: right;
+                white-space: nowrap;
+            }
+
+            &.column-total {
+                font-weight: var(--swp-font-semibold, 600);
+                color: var(--swp-text-primary);
+            }
+
+            // Stack cells on mobile
+            @media (max-width: 640px) {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                padding: var(--swp-space-2) 0;
+                border-bottom: 1px solid var(--swp-border-light);
+                text-align: right;
+
+                &::before {
+                    content: attr(data-label);
+                    font-size: var(--swp-text-xs, 0.75rem);
+                    font-weight: var(--swp-font-semibold, 600);
+                    text-transform: uppercase;
+                    letter-spacing: 0.05em;
+                    color: var(--swp-text-muted);
+                    text-align: left;
+                    flex-shrink: 0;
+                    margin-right: var(--swp-space-3);
+                }
+
+                &.column-description {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    text-align: left;
+                    padding-bottom: var(--swp-space-3);
+                    margin-bottom: var(--swp-space-2);
+                    border-bottom: 2px solid var(--swp-border);
+
+                    &::before {
+                        margin-bottom: var(--swp-space-1);
+                    }
+                }
+
+                &.column-total {
+                    border-bottom: none;
+                    padding-bottom: 0;
+                }
+            }
+        }
+    }
+
+    // Column widths (desktop only)
+    @media (min-width: 641px) {
+        .column-description {
+            width: auto;
+        }
+
+        .column-price {
+            width: 120px;
+        }
+
+        .column-qty {
+            width: 80px;
+        }
+
+        .column-tax {
+            width: 100px;
+        }
+
+        .column-total {
+            width: 120px;
+        }
+    }
+}
+
+// Totals Section
+.quote-document-totals {
+    display: flex;
+    justify-content: flex-end;
+    padding: var(--swp-space-6);
+    padding-top: 0;
+}
+
+.quote-totals-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--swp-space-2);
+    min-width: 280px;
+    padding: var(--swp-space-4);
+    background: var(--swp-gray-50);
+    border-radius: var(--swp-radius-md);
+}
+
+// Document Footer (Terms & Notes)
+.quote-document-footer {
+    padding: var(--swp-space-6);
+    border-top: 1px solid var(--swp-border-light);
+    background: var(--swp-gray-50);
+}
+
+.quote-footer-section {
+    & + & {
+        margin-top: var(--swp-space-4);
+        padding-top: var(--swp-space-4);
+        border-top: 1px solid var(--swp-border-light);
+    }
+}
+
+.quote-footer-title {
+    font-size: var(--swp-text-sm, 0.875rem);
+    font-weight: var(--swp-font-semibold, 600);
+    color: var(--swp-text-primary);
+    margin: 0 0 var(--swp-space-2) 0;
+}
+
+.quote-footer-text {
+    font-size: var(--swp-text-sm, 0.875rem);
+    color: var(--swp-text-secondary);
+    margin: 0;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+// ============================================================================
+// SIDEBAR
+// ============================================================================
+
+.quote-view-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--swp-space-4);
+
+    @media (max-width: 1024px) {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+}
+
+.quote-sidebar-card {
+    background: var(--swp-surface);
+    border-radius: var(--swp-radius-lg);
+    box-shadow: var(--swp-shadow-sm);
+    overflow: hidden;
+}
+
+.quote-sidebar-card-success {
+    border-left: 4px solid var(--swp-success);
+}
+
+.quote-sidebar-card-header {
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-3);
+    padding: var(--swp-space-4);
+    border-bottom: 1px solid var(--swp-border-light);
+}
+
+.quote-sidebar-card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: var(--swp-primary-light);
+    border-radius: var(--swp-radius-sm);
+    color: var(--swp-primary);
+}
+
+.quote-sidebar-card-success .quote-sidebar-card-icon {
+    background: var(--swp-success-lighter);
+    color: var(--swp-success);
+}
+
+.quote-sidebar-card-title {
+    font-size: var(--swp-text-sm, 0.875rem);
+    font-weight: var(--swp-font-semibold, 600);
+    color: var(--swp-text-primary);
+    margin: 0;
+}
+
+.quote-sidebar-card-body {
+    padding: var(--swp-space-4);
+}
+
+// Summary Grid
+.quote-summary-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--swp-space-3);
+}
+
+// Related Invoice Link
+.related-invoice-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--swp-space-2);
+    font-size: var(--swp-text-sm, 0.875rem);
+    font-weight: var(--swp-font-medium, 500);
+    color: var(--swp-primary);
+    text-decoration: none;
+
+    &:hover {
+        color: var(--swp-primary-dark);
+        text-decoration: underline;
+    }
+}
+
+.related-invoice-status {
+    margin-top: var(--swp-space-2);
+}
+
+// ============================================================================
+// PRINT STYLES
+// ============================================================================
+
+@media print {
+    .quote-view-page {
+        max-width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    .quote-view-content {
+        display: block;
+    }
+
+    .quote-view-document {
+        width: 100%;
+    }
+
+    .quote-document-card {
+        box-shadow: none;
+        border: none;
+    }
+
+    .quote-document-header {
+        background: none;
+        padding: 20px 0;
+    }
+
+    .quote-items-table {
+        thead th {
+            background: var(--swp-gray-50) !important;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+    }
+
+    .quote-totals-grid {
+        background: var(--swp-gray-50) !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .quote-document-footer {
+        background: var(--swp-gray-50) !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    // Force hide no-print elements
+    .no-print {
+        display: none !important;
+    }
+}
