@@ -219,13 +219,13 @@
                             <h2 class="payment-form-title">{{ 'payment.details'|trans }}</h2>
                         </div>
 
-                        <div class="payment-form-body">
+                        <div class="payment-form-body" {{ stimulus_controller('payment-method-select') }}>
                             {# Payment Method Selection #}
                             <div class="mb-4">
                                 <label class="form-label required">
                                     {{ 'payment.method.label'|trans }}
                                 </label>
-                                <div class="payment-methods-grid" {{ stimulus_controller('payment-method-select') }}>
+                                <div class="payment-methods-grid">
                                     {% for choice in form.payment_method.vars.choices %}
                                         {% set method = choice.data %}
                                         {% set isOffline = method.offline %}
