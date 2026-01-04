@@ -1,5 +1,7 @@
 quote:
     label: 'Quote #'
+    from: 'From'
+    to: 'To'
     list:
         status_legend: 'Quote Status Legend'
         title: Quotes
@@ -69,6 +71,7 @@ quote:
             reopen: Re-Open
             clone: Clone
             view_invoice: View Invoice
+            archive: Archive
         online: 'View this quote online at: %url%'
     clone:
         success: 'Quote cloned successfully'
@@ -78,6 +81,7 @@ quote:
     reopened: 'Quote Re-Opened'
     sent: 'Quote Sent'
     client:
+        title: 'Client'
         choose: 'Choose a client'
         empty: 'You have not created any clients yet.'
         create: 'Please add one now'
@@ -93,6 +97,7 @@ quote:
             sent: 'Quote Sent'
             publish: 'Quote Published'
             send: 'Quote Sent'
+            archive: 'Quote has been Archived'
     archive:
         success: 'Quote Archived'
     grid:

@@ -46,6 +46,8 @@ final class Transition
 
         if ($marking->has(Graph::STATUS_ACCEPTED)) {
             $route = $this->router->generate('_invoices_view', ['id' => $quote->getInvoice()->getId()]);
+        } elseif ($marking->has(Graph::STATUS_ARCHIVED)) {
+            $route = $this->router->generate('_quotes_index');
         }
 
         return new class($action, $route) extends RedirectResponse implements FlashResponse {

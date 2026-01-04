@@ -18,6 +18,7 @@ use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Exception\InvalidTransitionException;
+use SolidInvoice\QuoteBundle\Model\Graph;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
@@ -39,11 +40,15 @@ final class Transition
             throw new InvalidTransitionException($action);
         }
 
-        $this->invoiceStateMachine->apply($invoice, $action);
+        $marking = $this->invoiceStateMachine->apply($invoice, $action);
 
         $this->save($invoice);
 
         $route = $this->router->generate('_invoices_view', ['id' => $invoice->getId()]);
+
+        if ($marking->has(Graph::STATUS_ARCHIVED)) {
+            $route = $this->router->generate('_invoices_index');
+        }
 
         return new class($action, $route) extends RedirectResponse implements FlashResponse {
             public function __construct(

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -14,6 +16,7 @@ namespace SolidInvoice\InvoiceBundle\Tests\Action;
 use DateTimeImmutable;
 use Psr\Log\NullLogger;
 use ReflectionClass;
+use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Pdf\Generator;
@@ -25,6 +28,7 @@ use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
+use SolidInvoice\QuoteBundle\Entity\Quote;
 use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,6 +41,10 @@ final class ViewTest extends KernelTestCase
     use EnsureApplicationInstalled;
     use MatchesSnapshots;
     use Factories;
+
+    private const CLIENT_ID = '01JGXKV8QZ0000000000000001';
+
+    private const INVOICE_ID = '181aaf4a-0097-11ef-9b64-5a2cf21a5680';
 
     /**
      * @dataProvider invoiceStatusProvider
@@ -55,14 +63,13 @@ final class ViewTest extends KernelTestCase
             $twig
         );
 
-        $client = ClientFactory::new()
-            ->withoutPersisting()
-            ->create([
-                'currencyCode' => 'USD',
-                'name' => 'Johnston PLC',
-                'website' => 'https://www.example.com',
-                'vatNumber' => 'GB123456789',
-            ])->_real();
+        $client = ClientFactory::createOne([
+            'currencyCode' => 'USD',
+            'name' => 'Johnston PLC',
+            'website' => 'https://www.example.com',
+            'vatNumber' => 'GB123456789',
+        ])->_real();
+        $client->setId(Ulid::fromString(self::CLIENT_ID));
 
         /** @var Invoice $invoice */
         $invoice = InvoiceFactory::new()
@@ -85,13 +92,14 @@ final class ViewTest extends KernelTestCase
                 'discount' => new Discount(),
                 'due' => new DateTimeImmutable('2021-09-30'),
                 'invoiceDate' => new DateTimeImmutable('2021-09-30'),
+                'paidDate' => null,
                 'tax' => 0,
             ])
             ->_real();
 
-        $uuid = Ulid::fromString('181aaf4a-0097-11ef-9b64-5a2cf21a5680');
+        $uuid = Ulid::fromString(self::INVOICE_ID);
         $invoice->setId($uuid)
-            ->setUuid(Uuid::fromString('181aaf4a-0097-11ef-9b64-5a2cf21a5680'))
+            ->setUuid(Uuid::fromString(self::INVOICE_ID))
             ->setInvoiceId('INV-2021-0001')
         ;
 
@@ -118,14 +126,13 @@ final class ViewTest extends KernelTestCase
             $twig
         );
 
-        $client = ClientFactory::new()
-            ->withoutPersisting()
-            ->create([
-                'currencyCode' => 'USD',
-                'name' => 'Johnston PLC',
-                'website' => 'https://www.example.com',
-                'vatNumber' => 'GB123456789',
-            ])->_real();
+        $client = ClientFactory::createOne([
+            'currencyCode' => 'USD',
+            'name' => 'Johnston PLC',
+            'website' => 'https://www.example.com',
+            'vatNumber' => 'GB123456789',
+        ])->_real();
+        $client->setId(Ulid::fromString(self::CLIENT_ID));
 
         /** @var Invoice $invoice */
         $invoice = InvoiceFactory::new()
@@ -148,6 +155,7 @@ final class ViewTest extends KernelTestCase
                 'discount' => new Discount(),
                 'due' => new DateTimeImmutable('2021-09-30'),
                 'invoiceDate' => new DateTimeImmutable('2021-09-30'),
+                'paidDate' => null,
                 'tax' => 0,
             ])
             ->_real();
@@ -159,9 +167,9 @@ final class ViewTest extends KernelTestCase
         $payment->setCurrencyCode('USD');
         $invoice->addPayment($payment);
 
-        $uuid = Ulid::fromString('181aaf4a-0097-11ef-9b64-5a2cf21a5680');
+        $uuid = Ulid::fromString(self::INVOICE_ID);
         $invoice->setId($uuid)
-            ->setUuid(Uuid::fromString('181aaf4a-0097-11ef-9b64-5a2cf21a5680'))
+            ->setUuid(Uuid::fromString(self::INVOICE_ID))
             ->setInvoiceId('INV-2021-0001')
             ->updateLines()
         ;
@@ -185,5 +193,337 @@ final class ViewTest extends KernelTestCase
                 yield "Status {$value}" => [$value];
             }
         }
+    }
+
+    public function testViewWithDiscount(): void
+    {
+        $request = Request::createFromGlobals();
+        $requestStack = self::getContainer()->get('request_stack');
+        $requestStack->push($request);
+
+        $twig = self::getContainer()->get('twig');
+
+        $action = new View(
+            self::getContainer()->get('doctrine')->getRepository(Payment::class),
+            new Generator('', new NullLogger()),
+            $twig
+        );
+
+        $client = ClientFactory::createOne([
+            'currencyCode' => 'USD',
+            'name' => 'Johnston PLC',
+            'website' => 'https://www.example.com',
+            'vatNumber' => 'GB123456789',
+        ])->_real();
+        $client->setId(Ulid::fromString(self::CLIENT_ID));
+
+        $discount = new Discount();
+        $discount->setType(Discount::TYPE_PERCENTAGE);
+        $discount->setValue(10);
+
+        /** @var Invoice $invoice */
+        $invoice = InvoiceFactory::new()
+            ->withoutPersisting()
+            ->create([
+                'client' => $client,
+                'status' => Graph::STATUS_PENDING,
+                'total' => 90,
+                'balance' => 90,
+                'baseTotal' => 100,
+                'created' => new DateTimeImmutable('2021-09-01'),
+                'lines' => [
+                    (new Line())
+                        ->setDescription('Test Item')
+                        ->setPrice(100)
+                        ->setQty(1),
+                ],
+                'terms' => 'Test Terms',
+                'notes' => 'Test Notes',
+                'discount' => $discount,
+                'due' => new DateTimeImmutable('2021-09-30'),
+                'invoiceDate' => new DateTimeImmutable('2021-09-30'),
+                'paidDate' => null,
+                'tax' => 0,
+            ])
+            ->_real();
+
+        $uuid = Ulid::fromString(self::INVOICE_ID);
+        $invoice->setId($uuid)
+            ->setUuid(Uuid::fromString(self::INVOICE_ID))
+            ->setInvoiceId('INV-2021-0001')
+        ;
+
+        $template = $action($request, $invoice);
+
+        $response = $twig->resolveTemplate($template->getTemplate())->renderBlock('content', $template->getParams());
+
+        $this->assertMatchesHtmlSnapshot($response);
+    }
+
+    public function testViewWithTax(): void
+    {
+        $request = Request::createFromGlobals();
+        $requestStack = self::getContainer()->get('request_stack');
+        $requestStack->push($request);
+
+        $twig = self::getContainer()->get('twig');
+
+        $action = new View(
+            self::getContainer()->get('doctrine')->getRepository(Payment::class),
+            new Generator('', new NullLogger()),
+            $twig
+        );
+
+        $client = ClientFactory::createOne([
+            'currencyCode' => 'USD',
+            'name' => 'Johnston PLC',
+            'website' => 'https://www.example.com',
+            'vatNumber' => 'GB123456789',
+        ])->_real();
+        $client->setId(Ulid::fromString(self::CLIENT_ID));
+
+        /** @var Invoice $invoice */
+        $invoice = InvoiceFactory::new()
+            ->withoutPersisting()
+            ->create([
+                'client' => $client,
+                'status' => Graph::STATUS_PENDING,
+                'total' => 115,
+                'balance' => 115,
+                'baseTotal' => 100,
+                'created' => new DateTimeImmutable('2021-09-01'),
+                'lines' => [
+                    (new Line())
+                        ->setDescription('Test Item with Tax')
+                        ->setPrice(100)
+                        ->setQty(1),
+                ],
+                'terms' => 'Test Terms',
+                'notes' => 'Test Notes',
+                'discount' => new Discount(),
+                'due' => new DateTimeImmutable('2021-09-30'),
+                'invoiceDate' => new DateTimeImmutable('2021-09-30'),
+                'paidDate' => null,
+                'tax' => 15,
+            ])
+            ->_real();
+
+        $uuid = Ulid::fromString(self::INVOICE_ID);
+        $invoice->setId($uuid)
+            ->setUuid(Uuid::fromString(self::INVOICE_ID))
+            ->setInvoiceId('INV-2021-0001')
+        ;
+
+        $template = $action($request, $invoice);
+
+        $response = $twig->resolveTemplate($template->getTemplate())->renderBlock('content', $template->getParams());
+
+        $this->assertMatchesHtmlSnapshot($response);
+    }
+
+    public function testViewWithRelatedQuote(): void
+    {
+        $request = Request::createFromGlobals();
+        $requestStack = self::getContainer()->get('request_stack');
+        $requestStack->push($request);
+
+        $twig = self::getContainer()->get('twig');
+
+        $action = new View(
+            self::getContainer()->get('doctrine')->getRepository(Payment::class),
+            new Generator('', new NullLogger()),
+            $twig
+        );
+
+        $client = ClientFactory::createOne([
+            'currencyCode' => 'USD',
+            'name' => 'Johnston PLC',
+            'website' => 'https://www.example.com',
+            'vatNumber' => 'GB123456789',
+        ])->_real();
+        $client->setId(Ulid::fromString(self::CLIENT_ID));
+
+        // Create a related quote
+        $quote = new Quote();
+        $quoteUuid = Ulid::fromString('281aaf4a-0097-11ef-9b64-5a2cf21a5680');
+        $quote->setId($quoteUuid)
+            ->setStatus('accepted')
+            ->setClient($client);
+        $quote->setQuoteId('QUOT-2021-0001');
+
+        /** @var Invoice $invoice */
+        $invoice = InvoiceFactory::new()
+            ->withoutPersisting()
+            ->create([
+                'client' => $client,
+                'status' => Graph::STATUS_PENDING,
+                'total' => 100,
+                'balance' => 100,
+                'baseTotal' => 100,
+                'created' => new DateTimeImmutable('2021-09-01'),
+                'lines' => [
+                    (new Line())
+                        ->setDescription('Test Item')
+                        ->setPrice(100)
+                        ->setQty(1),
+                ],
+                'terms' => 'Test Terms',
+                'notes' => 'Test Notes',
+                'discount' => new Discount(),
+                'due' => new DateTimeImmutable('2021-09-30'),
+                'invoiceDate' => new DateTimeImmutable('2021-09-30'),
+                'paidDate' => null,
+                'tax' => 0,
+            ])
+            ->_real();
+
+        $uuid = Ulid::fromString(self::INVOICE_ID);
+        $invoice->setId($uuid)
+            ->setUuid(Uuid::fromString(self::INVOICE_ID))
+            ->setInvoiceId('INV-2021-0001')
+            ->setQuote($quote)
+        ;
+
+        $template = $action($request, $invoice);
+
+        $response = $twig->resolveTemplate($template->getTemplate())->renderBlock('content', $template->getParams());
+
+        $this->assertMatchesHtmlSnapshot($response);
+    }
+
+    public function testViewWithClientContacts(): void
+    {
+        $request = Request::createFromGlobals();
+        $requestStack = self::getContainer()->get('request_stack');
+        $requestStack->push($request);
+
+        $twig = self::getContainer()->get('twig');
+
+        $action = new View(
+            self::getContainer()->get('doctrine')->getRepository(Payment::class),
+            new Generator('', new NullLogger()),
+            $twig
+        );
+
+        $contact = new Contact();
+        $contact->setFirstName('John')
+            ->setLastName('Doe')
+            ->setEmail('john.doe@example.com');
+
+        $client = ClientFactory::createOne([
+            'currencyCode' => 'USD',
+            'name' => 'Johnston PLC',
+            'website' => 'https://www.example.com',
+            'vatNumber' => 'GB123456789',
+        ])->_real();
+        $client->setId(Ulid::fromString(self::CLIENT_ID));
+
+        /** @var Invoice $invoice */
+        $invoice = InvoiceFactory::new()
+            ->withoutPersisting()
+            ->create([
+                'client' => $client,
+                'status' => Graph::STATUS_PENDING,
+                'total' => 100,
+                'balance' => 100,
+                'baseTotal' => 100,
+                'created' => new DateTimeImmutable('2021-09-01'),
+                'lines' => [
+                    (new Line())
+                        ->setDescription('Test Item')
+                        ->setPrice(100)
+                        ->setQty(1),
+                ],
+                'terms' => 'Test Terms',
+                'notes' => 'Test Notes',
+                'discount' => new Discount(),
+                'due' => new DateTimeImmutable('2021-09-30'),
+                'invoiceDate' => new DateTimeImmutable('2021-09-30'),
+                'paidDate' => null,
+                'tax' => 0,
+                'users' => [$contact],
+            ])
+            ->_real();
+
+        $uuid = Ulid::fromString(self::INVOICE_ID);
+        $invoice->setId($uuid)
+            ->setUuid(Uuid::fromString(self::INVOICE_ID))
+            ->setInvoiceId('INV-2021-0001')
+        ;
+
+        $template = $action($request, $invoice);
+
+        $response = $twig->resolveTemplate($template->getTemplate())->renderBlock('content', $template->getParams());
+
+        $this->assertMatchesHtmlSnapshot($response);
+    }
+
+    public function testViewWithPartialPayment(): void
+    {
+        $request = Request::createFromGlobals();
+        $requestStack = self::getContainer()->get('request_stack');
+        $requestStack->push($request);
+
+        $twig = self::getContainer()->get('twig');
+
+        $action = new View(
+            self::getContainer()->get('doctrine')->getRepository(Payment::class),
+            new Generator('', new NullLogger()),
+            $twig
+        );
+
+        $client = ClientFactory::createOne([
+            'currencyCode' => 'USD',
+            'name' => 'Johnston PLC',
+            'website' => 'https://www.example.com',
+            'vatNumber' => 'GB123456789',
+        ])->_real();
+        $client->setId(Ulid::fromString(self::CLIENT_ID));
+
+        /** @var Invoice $invoice */
+        $invoice = InvoiceFactory::new()
+            ->withoutPersisting()
+            ->create([
+                'client' => $client,
+                'status' => Graph::STATUS_PENDING,
+                'total' => 100,
+                'balance' => 50,
+                'baseTotal' => 100,
+                'created' => new DateTimeImmutable('2021-09-01'),
+                'lines' => [
+                    (new Line())
+                        ->setDescription('Test Item')
+                        ->setPrice(100)
+                        ->setQty(1),
+                ],
+                'terms' => 'Test Terms',
+                'notes' => 'Test Notes',
+                'discount' => new Discount(),
+                'due' => new DateTimeImmutable('2021-09-30'),
+                'invoiceDate' => new DateTimeImmutable('2021-09-30'),
+                'paidDate' => null,
+                'tax' => 0,
+            ])
+            ->_real();
+
+        $payment = new Payment();
+        $payment->setTotalAmount(50);
+        $payment->setMethod((new PaymentMethod())->setName('Credit Card'));
+        $payment->setStatus('captured');
+        $payment->setCurrencyCode('USD');
+        $invoice->addPayment($payment);
+
+        $uuid = Ulid::fromString(self::INVOICE_ID);
+        $invoice->setId($uuid)
+            ->setUuid(Uuid::fromString(self::INVOICE_ID))
+            ->setInvoiceId('INV-2021-0001')
+            ->updateLines()
+        ;
+
+        $template = $action($request, $invoice);
+
+        $response = $twig->resolveTemplate($template->getTemplate())->renderBlock('content', $template->getParams());
+
+        $this->assertMatchesHtmlSnapshot($response);
     }
 }
