@@ -15,6 +15,7 @@ namespace SolidInvoice\QuoteBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
@@ -202,7 +203,7 @@ class QuoteRepository extends ServiceEntityRepository
             ->innerJoin('q.client', 'c')
             ->addSelect('c')
             ->where('q.status IN (:statuses)')
-            ->setParameter('statuses', [Graph::STATUS_ACCEPTED, Graph::STATUS_DECLINED])
+            ->setParameter('statuses', [Graph::STATUS_ACCEPTED, Graph::STATUS_DECLINED], ArrayParameterType::STRING)
             ->orderBy('q.updated', Criteria::DESC)
             ->setMaxResults($limit);
 

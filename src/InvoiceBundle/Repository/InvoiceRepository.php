@@ -18,6 +18,7 @@ use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
@@ -341,7 +342,7 @@ class InvoiceRepository extends ServiceEntityRepository
         $qb->select('SUM(i.balance) as total', 'c.currencyCode')
             ->innerJoin('i.client', 'c')
             ->where('i.status IN (:statuses)')
-            ->setParameter('statuses', [Graph::STATUS_PENDING, Graph::STATUS_OVERDUE])
+            ->setParameter('statuses', [Graph::STATUS_PENDING, Graph::STATUS_OVERDUE], ArrayParameterType::STRING)
             ->groupBy('c.currencyCode');
 
         $results = [];
