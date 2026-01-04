@@ -159,7 +159,7 @@ class Line implements LineInterface, Stringable
         return $this->id;
     }
 
-    public function setDescription(string $description): LineInterface
+    public function setDescription(string $description): static
     {
         $this->description = $description;
 
@@ -174,7 +174,7 @@ class Line implements LineInterface, Stringable
     /**
      * @throws MathException
      */
-    public function setPrice(BigNumber|float|int|string $price): LineInterface
+    public function setPrice(BigNumber|float|int|string $price): static
     {
         $this->price = BigNumber::of($price);
 
@@ -186,7 +186,7 @@ class Line implements LineInterface, Stringable
         return $this->price;
     }
 
-    public function setQty(float $qty): LineInterface
+    public function setQty(float $qty): static
     {
         $this->qty = $qty;
 
@@ -198,7 +198,7 @@ class Line implements LineInterface, Stringable
         return $this->qty;
     }
 
-    public function setInvoice(?Invoice $invoice): LineInterface
+    public function setInvoice(?Invoice $invoice): static
     {
         $this->invoice = $invoice;
 
@@ -213,7 +213,7 @@ class Line implements LineInterface, Stringable
     /**
      * @throws MathException
      */
-    public function setTotal(BigNumber|float|int|string $total): LineInterface
+    public function setTotal(BigNumber|float|int|string $total): static
     {
         $this->total = BigNumber::of($total);
 
@@ -230,7 +230,7 @@ class Line implements LineInterface, Stringable
         return $this->tax;
     }
 
-    public function setTax(?Tax $tax): LineInterface
+    public function setTax(?Tax $tax): static
     {
         $this->tax = $tax;
 
@@ -241,9 +241,11 @@ class Line implements LineInterface, Stringable
      * @throws MathException
      */
     #[ORM\PrePersist]
-    public function updateTotal(): void
+    public function updateTotal(): static
     {
         $this->total = $this->getPrice()->toBigDecimal()->multipliedBy($this->qty);
+
+        return $this;
     }
 
     public function __toString(): string

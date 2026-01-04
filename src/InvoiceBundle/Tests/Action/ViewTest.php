@@ -73,6 +73,7 @@ final class ViewTest extends KernelTestCase
 
         /** @var Invoice $invoice */
         $invoice = InvoiceFactory::new()
+            ->withoutPersisting()
             ->create([
                 'client' => $client,
                 'status' => $status,
@@ -84,7 +85,8 @@ final class ViewTest extends KernelTestCase
                     (new Line())
                         ->setDescription('Test Item')
                         ->setPrice(100)
-                        ->setQty(1),
+                        ->setQty(1)
+                        ->updateTotal(),
                 ],
                 'terms' => 'Test Terms',
                 'notes' => 'Test Notes',
@@ -135,6 +137,7 @@ final class ViewTest extends KernelTestCase
 
         /** @var Invoice $invoice */
         $invoice = InvoiceFactory::new()
+            ->withoutPersisting()
             ->create([
                 'client' => $client,
                 'status' => 'paid',
@@ -146,7 +149,8 @@ final class ViewTest extends KernelTestCase
                     (new Line())
                         ->setDescription('Test Item')
                         ->setPrice(100)
-                        ->setQty(1),
+                        ->setQty(1)
+                        ->updateTotal(),
                 ],
                 'terms' => 'Test Terms',
                 'notes' => 'Test Notes',
@@ -221,6 +225,7 @@ final class ViewTest extends KernelTestCase
 
         /** @var Invoice $invoice */
         $invoice = InvoiceFactory::new()
+            ->withoutPersisting()
             ->create([
                 'client' => $client,
                 'status' => Graph::STATUS_PENDING,
@@ -232,7 +237,8 @@ final class ViewTest extends KernelTestCase
                     (new Line())
                         ->setDescription('Test Item')
                         ->setPrice(100)
-                        ->setQty(1),
+                        ->setQty(1)
+                        ->updateTotal(),
                 ],
                 'terms' => 'Test Terms',
                 'notes' => 'Test Notes',
@@ -281,6 +287,7 @@ final class ViewTest extends KernelTestCase
 
         /** @var Invoice $invoice */
         $invoice = InvoiceFactory::new()
+            ->withoutPersisting()
             ->create([
                 'client' => $client,
                 'status' => Graph::STATUS_PENDING,
@@ -292,7 +299,8 @@ final class ViewTest extends KernelTestCase
                     (new Line())
                         ->setDescription('Test Item with Tax')
                         ->setPrice(100)
-                        ->setQty(1),
+                        ->setQty(1)
+                        ->updateTotal(),
                 ],
                 'terms' => 'Test Terms',
                 'notes' => 'Test Notes',
@@ -349,6 +357,7 @@ final class ViewTest extends KernelTestCase
 
         /** @var Invoice $invoice */
         $invoice = InvoiceFactory::new()
+            ->withoutPersisting()
             ->create([
                 'client' => $client,
                 'status' => Graph::STATUS_PENDING,
@@ -360,7 +369,8 @@ final class ViewTest extends KernelTestCase
                     (new Line())
                         ->setDescription('Test Item')
                         ->setPrice(100)
-                        ->setQty(1),
+                        ->setQty(1)
+                        ->updateTotal(),
                 ],
                 'terms' => 'Test Terms',
                 'notes' => 'Test Notes',
@@ -415,6 +425,7 @@ final class ViewTest extends KernelTestCase
 
         /** @var Invoice $invoice */
         $invoice = InvoiceFactory::new()
+            ->withoutPersisting()
             ->create([
                 'client' => $client,
                 'status' => Graph::STATUS_PENDING,
@@ -426,7 +437,8 @@ final class ViewTest extends KernelTestCase
                     (new Line())
                         ->setDescription('Test Item')
                         ->setPrice(100)
-                        ->setQty(1),
+                        ->setQty(1)
+                        ->updateTotal(),
                 ],
                 'terms' => 'Test Terms',
                 'notes' => 'Test Notes',
@@ -476,6 +488,7 @@ final class ViewTest extends KernelTestCase
 
         /** @var Invoice $invoice */
         $invoice = InvoiceFactory::new()
+            ->withoutPersisting()
             ->create([
                 'client' => $client,
                 'status' => Graph::STATUS_PENDING,
@@ -487,7 +500,8 @@ final class ViewTest extends KernelTestCase
                     (new Line())
                         ->setDescription('Test Item')
                         ->setPrice(100)
-                        ->setQty(1),
+                        ->setQty(1)
+                        ->updateTotal(),
                 ],
                 'terms' => 'Test Terms',
                 'notes' => 'Test Notes',
