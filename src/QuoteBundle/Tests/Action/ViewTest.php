@@ -16,6 +16,7 @@ namespace SolidInvoice\QuoteBundle\Tests\Action;
 use DateTimeImmutable;
 use Psr\Log\NullLogger;
 use ReflectionClass;
+use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
@@ -71,6 +72,7 @@ final class ViewTest extends KernelTestCase
 
         /** @var Quote $quote */
         $quote = QuoteFactory::new()
+            ->withoutPersisting()
             ->create([
                 'client' => $client,
                 'status' => $status,
@@ -81,7 +83,8 @@ final class ViewTest extends KernelTestCase
                     (new Line())
                         ->setDescription('Test Line')
                         ->setPrice('100.00')
-                        ->setQty(1),
+                        ->setQty(1)
+                        ->updateTotal(),
                 ],
                 'terms' => 'Test Terms',
                 'notes' => 'Test Notes',
@@ -143,6 +146,7 @@ final class ViewTest extends KernelTestCase
 
         /** @var Quote $quote */
         $quote = QuoteFactory::new()
+            ->withoutPersisting()
             ->create([
                 'client' => $client,
                 'status' => Graph::STATUS_PENDING,
@@ -153,7 +157,8 @@ final class ViewTest extends KernelTestCase
                     (new Line())
                         ->setDescription('Test Line')
                         ->setPrice('100.00')
-                        ->setQty(1),
+                        ->setQty(1)
+                        ->updateTotal(),
                 ],
                 'terms' => 'Test Terms',
                 'notes' => 'Test Notes',
@@ -197,6 +202,7 @@ final class ViewTest extends KernelTestCase
 
         /** @var Quote $quote */
         $quote = QuoteFactory::new()
+            ->withoutPersisting()
             ->create([
                 'client' => $client,
                 'status' => Graph::STATUS_PENDING,
@@ -207,7 +213,8 @@ final class ViewTest extends KernelTestCase
                     (new Line())
                         ->setDescription('Test Line with Tax')
                         ->setPrice('100.00')
-                        ->setQty(1),
+                        ->setQty(1)
+                        ->updateTotal(),
                 ],
                 'terms' => 'Test Terms',
                 'notes' => 'Test Notes',
@@ -241,6 +248,7 @@ final class ViewTest extends KernelTestCase
             $twig
         );
 
+        /** @var Client $client */
         $client = ClientFactory::createOne([
             'currencyCode' => 'USD',
             'name' => 'Johnston PLC',
@@ -252,13 +260,15 @@ final class ViewTest extends KernelTestCase
         // Create a related invoice
         $invoice = new Invoice();
         $invoiceUuid = Ulid::fromString('281aaf4a-0097-11ef-9b64-5a2cf21a5680');
-        $invoice->setId($invoiceUuid)
+        $invoice
+            ->setClient($client)
+            ->setId($invoiceUuid)
             ->setInvoiceId('INV-2021-0001')
-            ->setStatus('pending')
-            ->setClient($client);
+            ->setStatus('pending');
 
         /** @var Quote $quote */
         $quote = QuoteFactory::new()
+            ->withoutPersisting()
             ->create([
                 'client' => $client,
                 'status' => Graph::STATUS_ACCEPTED,
@@ -269,7 +279,8 @@ final class ViewTest extends KernelTestCase
                     (new Line())
                         ->setDescription('Test Line')
                         ->setPrice('100.00')
-                        ->setQty(1),
+                        ->setQty(1)
+                        ->updateTotal(),
                 ],
                 'terms' => 'Test Terms',
                 'notes' => 'Test Notes',
@@ -319,6 +330,7 @@ final class ViewTest extends KernelTestCase
 
         /** @var Quote $quote */
         $quote = QuoteFactory::new()
+            ->withoutPersisting()
             ->create([
                 'client' => $client,
                 'status' => Graph::STATUS_PENDING,
@@ -329,7 +341,8 @@ final class ViewTest extends KernelTestCase
                     (new Line())
                         ->setDescription('Test Line')
                         ->setPrice('100.00')
-                        ->setQty(1),
+                        ->setQty(1)
+                        ->updateTotal(),
                 ],
                 'terms' => 'Test Terms',
                 'notes' => 'Test Notes',
