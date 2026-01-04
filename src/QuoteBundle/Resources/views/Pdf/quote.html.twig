@@ -232,7 +232,7 @@
         {% for line in quote.lines %}
             <tr{% if loop.index is even %} style="background-color: #fafbfc;"{% endif %}>
                 <td class="col-description" style="padding: 12px 16px; font-size: 9pt; color: #1e293b; border-bottom: 1px solid #f1f5f9; vertical-align: top;">
-                    {{ line.description|escape|nl2br }}
+                    {{ line.description|nl2br }}
                 </td>
                 <td class="col-price" style="padding: 12px 16px; font-size: 9pt; color: #1e293b; border-bottom: 1px solid #f1f5f9; text-align: right; font-family: 'Courier New', monospace;">
                     {{ line.price|formatCurrency(currency) }}
@@ -318,7 +318,7 @@
             {{ 'quote.terms'|trans }}
         </div>
         <div class="terms-content" style="font-size: 9pt; color: #475569; line-height: 1.6;">
-            {{ quote.terms|escape|nl2br }}
+            {{ quote.terms|nl2br }}
         </div>
     </div>
 {% endif %}
