@@ -2,6 +2,15 @@ quote:
     label: 'Quote #'
     from: 'From'
     to: 'To'
+    pdf:
+        title: 'QUOTE'
+        date: 'Quote Date'
+        valid_until: 'Valid Until'
+        total: 'Quote Total'
+        prepared_for: 'Prepared For'
+        expired: 'EXPIRED'
+        expires_today: 'EXPIRES TODAY'
+        valid_for_days: 'Valid for %days% days'
     list:
         status_legend: 'Quote Status Legend'
         title: Quotes

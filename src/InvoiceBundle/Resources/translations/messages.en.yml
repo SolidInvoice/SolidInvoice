@@ -2,8 +2,19 @@ invoice:
     label: 'Invoice #'
     from: 'From'
     to: 'To'
+    date: 'Invoice Date'
     due_date: 'Due Date'
     paid_date: 'Paid Date'
+    total_due: 'Total Due'
+    balance_due: 'Balance Due'
+    pdf:
+        title: 'INVOICE'
+        overdue_by: 'OVERDUE BY %days% DAYS'
+        due_today: 'DUE TODAY'
+        due_in_days: 'Due in %days% days'
+        payment_title: 'Pay This Invoice Online'
+        payment_description: 'Click the button or visit the URL below to pay securely online.'
+        payment_url_label: 'Payment URL'
     list:
         status_legend: 'Invoice Status Legend'
         title: Invoices
