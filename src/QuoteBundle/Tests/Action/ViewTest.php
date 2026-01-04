@@ -71,7 +71,6 @@ final class ViewTest extends KernelTestCase
 
         /** @var Quote $quote */
         $quote = QuoteFactory::new()
-            ->withoutPersisting()
             ->create([
                 'client' => $client,
                 'status' => $status,
@@ -144,7 +143,6 @@ final class ViewTest extends KernelTestCase
 
         /** @var Quote $quote */
         $quote = QuoteFactory::new()
-            ->withoutPersisting()
             ->create([
                 'client' => $client,
                 'status' => Graph::STATUS_PENDING,
@@ -199,7 +197,6 @@ final class ViewTest extends KernelTestCase
 
         /** @var Quote $quote */
         $quote = QuoteFactory::new()
-            ->withoutPersisting()
             ->create([
                 'client' => $client,
                 'status' => Graph::STATUS_PENDING,
@@ -262,7 +259,6 @@ final class ViewTest extends KernelTestCase
 
         /** @var Quote $quote */
         $quote = QuoteFactory::new()
-            ->withoutPersisting()
             ->create([
                 'client' => $client,
                 'status' => Graph::STATUS_ACCEPTED,
@@ -323,7 +319,6 @@ final class ViewTest extends KernelTestCase
 
         /** @var Quote $quote */
         $quote = QuoteFactory::new()
-            ->withoutPersisting()
             ->create([
                 'client' => $client,
                 'status' => Graph::STATUS_PENDING,
