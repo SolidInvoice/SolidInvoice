@@ -5,12 +5,36 @@ payment:
         discount: Discount
         base_total: 'Base Total'
         total: Total
+        title: 'Pay Invoice #%id%'
         tite: 'Payment for invoice #%id%'
+        subtitle: 'Complete your payment securely'
         balance: 'Outstanding balance'
         credit: 'Credit:'
         exception:
             not_enough_credit: 'Not have enough credit available'
             amount_exceeds_balance: 'Amount captured exceeds outstanding balance'
+    invoice_summary: 'Invoice Summary'
+    client: 'Client'
+    invoice_details: 'Invoice Details'
+    line_items: 'Line Items'
+    details: 'Payment Details'
+    balance_remaining: 'Balance remaining'
+    amount:
+        label: 'Payment Amount'
+        help: 'Enter the amount you wish to pay'
+    capture_online:
+        label: 'Process payment online'
+        help: 'When enabled, you will be redirected to the payment gateway to complete the payment'
+    reference:
+        label: 'Reference'
+        placeholder: 'e.g. Transaction ID, Check Number'
+        help: 'Optional reference number for this payment'
+    notes:
+        label: 'Notes'
+        placeholder: 'Add any additional notes about this payment...'
+        help: 'These notes are for internal use only'
+    history:
+        title: 'Payment History'
     flash:
         status:
             success: 'Payment has been completed'
@@ -46,6 +70,10 @@ payment:
         add: 'Add Payment Method'
         added: 'Payment Method Successfully Added!'
         updated: 'Payment Method Successfully Updated!'
+        label: 'Payment Method'
+        credit: 'Credit'
+        offline: 'Offline'
+        online: 'Online'
     methods:
         title: 'Payment Methods'
     menu:

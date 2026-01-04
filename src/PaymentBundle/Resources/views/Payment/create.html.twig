@@ -9,46 +9,336 @@
 
 {% extends '@SolidInvoiceCore/Layout/' ~ (app.user is not empty ? 'default' : 'default_no_nav') ~ '.html.twig' %}
 
-{% block title %}{{ "payment.create.tite"|trans|replace({"%id%" : invoice.invoiceId}) }}{% endblock %}
-
 {% block content %}
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <div class="with-border">
-                        {% if invoice.client.credit.value is not empty %}
-                            <div class="float-right">
-                                {{ 'payment.create.credit'|trans }}
-                                {{ invoice.client.credit.value|formatCurrency(invoice.client.currency) }}
-                            </div>
-                        {% endif %}
+    <div class="payment-page">
+        {{ form_start(form) }}
 
-                        <h3>
-                            {{ invoice.client.name }}
-                            <small>{{ client_label(invoice.client.status) }}</small>
-                        </h3>
+        <div class="payment-container">
+            {# Page Header #}
+            <div class="payment-header">
+                <div class="payment-header-content">
+                    <div class="payment-header-icon">
+                        {{ ux_icon('tabler:credit-card', {width: 28, height: 28}) }}
                     </div>
-                    {% embed "@SolidInvoiceInvoice/invoice_template.html.twig" %}
-                        {% block header %}{% endblock header %}
-                        {% block footer %}{% endblock footer %}
-                    {% endembed %}
+                    <div>
+                        <h1 class="payment-header-title">{{ 'payment.create.title'|trans({"%id%" : invoice.invoiceId}) }}</h1>
+                        <p class="payment-header-subtitle">{{ 'payment.create.subtitle'|trans }}</p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    {{ form_start(form) }}
-                    {{ form_widget(form) }}
 
-                    <button type="submit" class="btn btn-info">{{ icon('credit-card') }} {{ 'payment.action.pay'|trans }}</button>
-                    <a href="javascript:history.go(-1)" class="btn btn-warning">
-                        {{ icon('reply') }} {{ 'payment.create.cancel'|trans }}
-                    </a>
-                    {{ form_end(form) }}
+            <div class="payment-layout">
+                {# Left Column: Invoice Summary #}
+                <div class="payment-invoice-summary">
+                    <div class="invoice-summary-card">
+                        <div class="invoice-summary-header">
+                            <div class="invoice-summary-icon">
+                                {{ ux_icon('tabler:file-invoice', {width: 20, height: 20}) }}
+                            </div>
+                            <h2 class="invoice-summary-title">{{ 'payment.invoice_summary'|trans }}</h2>
+                        </div>
+
+                        <div class="invoice-summary-body">
+                            {# Client Info #}
+                            <div class="summary-section">
+                                <div class="summary-section-label">
+                                    {{ ux_icon('tabler:building', {width: 16, height: 16}) }}
+                                    {{ 'payment.client'|trans }}
+                                </div>
+                                <div class="summary-client-info">
+                                    <a href="{{ path('_clients_view', {id: invoice.client.id}) }}" class="client-name-link">
+                                        {{ invoice.client.name }}
+                                        {{ ux_icon('tabler:external-link', {width: 14, height: 14}) }}
+                                    </a>
+                                    {{ client_label(invoice.client.status) }}
+                                </div>
+                                {% if invoice.client.credit.value is not empty %}
+                                    <div class="client-credit-badge">
+                                        {{ ux_icon('tabler:wallet', {width: 14, height: 14}) }}
+                                        {{ 'payment.create.credit'|trans }}
+                                        <strong>{{ invoice.client.credit.value|formatCurrency(invoice.client.currency) }}</strong>
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            {# Invoice Details #}
+                            <div class="summary-section">
+                                <div class="summary-section-label">
+                                    {{ ux_icon('tabler:receipt', {width: 16, height: 16}) }}
+                                    {{ 'payment.invoice_details'|trans }}
+                                </div>
+                                <div class="invoice-details-grid">
+                                    <div class="detail-item">
+                                        <span class="detail-label">{{ 'invoice.label'|trans }}</span>
+                                        <span class="detail-value">
+                                            <a href="{{ path('_invoices_view', {id: invoice.id}) }}" class="invoice-id-link">
+                                                {{ invoice.invoiceId }}
+                                                {{ ux_icon('tabler:external-link', {width: 12, height: 12}) }}
+                                            </a>
+                                        </span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">{{ 'Invoice Date'|trans }}</span>
+                                        <span class="detail-value">{{ invoice.invoiceDate|date('d M Y') }}</span>
+                                    </div>
+                                    {% if invoice.due is not empty %}
+                                        <div class="detail-item">
+                                            <span class="detail-label">{{ 'Due Date'|trans }}</span>
+                                            <span class="detail-value{% if invoice.due < date() %} text-danger{% endif %}">
+                                                {{ invoice.due|date('d M Y') }}
+                                            </span>
+                                        </div>
+                                    {% endif %}
+                                    <div class="detail-item">
+                                        <span class="detail-label">{{ 'Status'|trans }}</span>
+                                        <span class="detail-value">{{ invoice_label(invoice.status) }}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {# Line Items Preview #}
+                            <div class="summary-section">
+                                <div class="summary-section-label">
+                                    {{ ux_icon('tabler:list-details', {width: 16, height: 16}) }}
+                                    {{ 'payment.line_items'|trans }}
+                                </div>
+                                <div class="line-items-preview">
+                                    {% for item in invoice.lines %}
+                                        <div class="line-item-row">
+                                            <span class="line-item-desc">{{ item.description|striptags|u.truncate(40, '...') }}</span>
+                                            <span class="line-item-amount">{{ item.total|formatCurrency(invoice.client.currency) }}</span>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            {# Totals #}
+                            <div class="summary-totals">
+                                <div class="totals-row">
+                                    <span class="totals-label">{{ 'invoice.subtotal'|trans }}</span>
+                                    <span class="totals-value">{{ invoice.baseTotal|formatCurrency(invoice.client.currency) }}</span>
+                                </div>
+                                {% if invoice.tax.positive %}
+                                    <div class="totals-row">
+                                        <span class="totals-label">{{ 'invoice.tax'|trans }}</span>
+                                        <span class="totals-value">{{ invoice.tax|formatCurrency(invoice.client.currency) }}</span>
+                                    </div>
+                                {% endif %}
+                                {% if invoice.hasDiscount %}
+                                    <div class="totals-row totals-row-discount">
+                                        <span class="totals-label">{{ 'invoice.discount'|trans }}</span>
+                                        <span class="totals-value">-{{ discount(invoice)|formatCurrency(invoice.client.currency) }}</span>
+                                    </div>
+                                {% endif %}
+                                {% if invoice.payments|length > 0 and not invoice.balance.isZero %}
+                                    {% for payment in invoice.payments|filter((v) => v.status == 'captured') %}
+                                        <div class="totals-row totals-row-payment">
+                                            <span class="totals-label">
+                                                {{ 'Payment'|trans }}: {{ payment.method.name }}
+                                            </span>
+                                            <span class="totals-value">-{{ payment.amount.amount|formatCurrency(invoice.client.currency) }}</span>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                                <div class="totals-row totals-row-balance">
+                                    <span class="totals-label">
+                                        {% if invoice.payments|length > 0 and not invoice.balance.isZero %}
+                                            {{ 'invoice.balance'|trans }}
+                                        {% else %}
+                                            {{ 'invoice.total'|trans }}
+                                        {% endif %}
+                                    </span>
+                                    <span class="totals-value">
+                                        {% if invoice.payments|length > 0 and not invoice.balance.isZero %}
+                                            {{ invoice.balance|formatCurrency(invoice.client.currency) }}
+                                        {% else %}
+                                            {{ invoice.total|formatCurrency(invoice.client.currency) }}
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# Payment History #}
+                    {% if invoice.payments|length > 0 %}
+                        <div class="payment-history-card">
+                            <div class="payment-history-header">
+                                <div class="payment-history-icon">
+                                    {{ ux_icon('tabler:history', {width: 18, height: 18}) }}
+                                </div>
+                                <h3 class="payment-history-title">{{ 'payment.history.title'|trans }}</h3>
+                                <span class="payment-history-count">{{ invoice.payments|length }}</span>
+                            </div>
+                            <div class="payment-history-body">
+                                <div class="payments-list">
+                                    {% for payment in invoice.payments %}
+                                        <div class="payment-card {{ payment.status == 'captured' ? 'payment-card-captured' : (payment.status == 'failed' ? 'payment-card-failed' : '') }}">
+                                            <div class="payment-card-header">
+                                                <div class="payment-amount">{{ payment.totalAmount|formatCurrency(invoice.client.currency) }}</div>
+                                                <div class="payment-status">{{ payment_label(payment.status) }}</div>
+                                            </div>
+                                            <div class="payment-card-body">
+                                                {% if payment.method is not empty %}
+                                                    <div class="payment-detail">
+                                                        {{ ux_icon('tabler:credit-card', {width: 14, height: 14}) }}
+                                                        <span>{{ payment.method.name }}</span>
+                                                    </div>
+                                                {% endif %}
+                                                {% if payment.completed is not empty %}
+                                                    <div class="payment-detail">
+                                                        {{ ux_icon('tabler:calendar', {width: 14, height: 14}) }}
+                                                        <span>{{ payment.completed|date('M d, Y \\a\\t H:i') }}</span>
+                                                    </div>
+                                                {% endif %}
+                                                {% if payment.reference is not empty %}
+                                                    <div class="payment-detail">
+                                                        {{ ux_icon('tabler:hash', {width: 14, height: 14}) }}
+                                                        <span>{{ payment.reference }}</span>
+                                                    </div>
+                                                {% endif %}
+                                                {% if payment.message is not empty %}
+                                                    <div class="payment-message">{{ payment.message }}</div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+
+                {# Right Column: Payment Form #}
+                <div class="payment-form-section">
+                    <div class="payment-form-card">
+                        <div class="payment-form-header">
+                            <div class="payment-form-icon">
+                                {{ ux_icon('tabler:wallet', {width: 20, height: 20}) }}
+                            </div>
+                            <h2 class="payment-form-title">{{ 'payment.details'|trans }}</h2>
+                        </div>
+
+                        <div class="payment-form-body">
+                            {# Payment Method Selection #}
+                            <div class="mb-4">
+                                <label class="form-label required">
+                                    {{ 'payment.method.label'|trans }}
+                                </label>
+                                <div class="payment-methods-grid" {{ stimulus_controller('payment-method-select') }}>
+                                    {% for choice in form.payment_method.vars.choices %}
+                                        {% set method = choice.data %}
+                                        {% set isOffline = method.offline %}
+                                        {% set isPreferred = method in form.payment_method.vars.preferred_choices %}
+                                        <label class="payment-method-card{% if isPreferred %} payment-method-preferred{% endif %}"
+                                               {{ stimulus_target('payment-method-select', 'card') }}
+                                               data-offline="{{ isOffline ? 'true' : 'false' }}">
+                                            <input type="radio"
+                                                   name="{{ form.payment_method.vars.full_name }}"
+                                                   value="{{ choice.value }}"
+                                                   class="payment-method-input"
+                                                   {{ stimulus_action('payment-method-select', 'select') }}
+                                                   {% if form.payment_method.vars.data and form.payment_method.vars.data.id.toString() == choice.value %}checked{% endif %}
+                                                   required>
+                                            <span class="payment-method-content">
+                                                <span class="payment-method-icon">
+                                                    {% if method.gatewayName == 'credit' %}
+                                                        {{ ux_icon('tabler:wallet', {width: 24, height: 24}) }}
+                                                    {% elseif isOffline %}
+                                                        {{ ux_icon('tabler:cash', {width: 24, height: 24}) }}
+                                                    {% else %}
+                                                        {{ ux_icon('tabler:credit-card', {width: 24, height: 24}) }}
+                                                    {% endif %}
+                                                </span>
+                                                <span class="payment-method-name">{{ choice.label }}</span>
+                                                {% if method.gatewayName == 'credit' %}
+                                                    <span class="payment-method-badge payment-method-badge-credit">
+                                                        {{ 'payment.method.credit'|trans }}
+                                                    </span>
+                                                {% elseif isOffline %}
+                                                    <span class="payment-method-badge">
+                                                        {{ 'payment.method.offline'|trans }}
+                                                    </span>
+                                                {% else %}
+                                                    <span class="payment-method-badge payment-method-badge-online">
+                                                        {{ 'payment.method.online'|trans }}
+                                                    </span>
+                                                {% endif %}
+                                            </span>
+                                            <span class="payment-method-check">
+                                                {{ ux_icon('tabler:check', {width: 18, height: 18}) }}
+                                            </span>
+                                        </label>
+                                    {% endfor %}
+                                </div>
+                                {% do form.payment_method.setRendered %}
+                                {{ form_errors(form.payment_method) }}
+                            </div>
+
+                            {# Amount Field #}
+                            <div class="mb-4">
+                                <div class="amount-field-wrapper">
+                                    {{ form_label(form.amount, 'payment.amount.label'|trans, {label_attr: {class: 'form-label required'}}) }}
+                                    <div class="amount-balance-hint">
+                                        {{ 'payment.balance_remaining'|trans }}:
+                                        <strong>{{ invoice.balance|formatCurrency(invoice.client.currency) }}</strong>
+                                    </div>
+                                </div>
+                                {{ form_widget(form.amount) }}
+                                {{ form_errors(form.amount) }}
+                                <small class="form-text text-muted">{{ 'payment.amount.help'|trans }}</small>
+                            </div>
+
+                            {% if form.capture_online is defined %}
+                                {# Capture Online Toggle #}
+                                <div class="mb-4" {{ stimulus_target('payment-method-select', 'captureOnline') }}>
+                                    <div class="capture-online-field">
+                                        <div class="form-check form-switch">
+                                            {{ form_widget(form.capture_online, {attr: {class: 'form-check-input'}}) }}
+                                            {{ form_label(form.capture_online, 'payment.capture_online.label'|trans, {label_attr: {class: 'form-check-label'}}) }}
+                                        </div>
+                                        <small class="form-text text-muted d-block mt-2">{{ 'payment.capture_online.help'|trans }}</small>
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            {# Reference Field #}
+                            {% if form.reference is defined %}
+                                <div class="mb-4">
+                                    {{ form_label(form.reference, 'payment.reference.label'|trans, {label_attr: {class: 'form-label'}}) }}
+                                    {{ form_widget(form.reference, {attr: {class: 'form-control', placeholder: 'payment.reference.placeholder'|trans}}) }}
+                                    {{ form_errors(form.reference) }}
+                                    <small class="form-text text-muted">{{ 'payment.reference.help'|trans }}</small>
+                                </div>
+                            {% endif %}
+
+                            {# Notes Field #}
+                            {% if form.notes is defined %}
+                                <div class="mb-4">
+                                    {{ form_label(form.notes, 'payment.notes.label'|trans, {label_attr: {class: 'form-label'}}) }}
+                                    {{ form_widget(form.notes, {attr: {class: 'form-control', placeholder: 'payment.notes.placeholder'|trans, rows: 3}}) }}
+                                    {{ form_errors(form.notes) }}
+                                    <small class="form-text text-muted">{{ 'payment.notes.help'|trans }}</small>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        {# Form Actions #}
+                        <div class="payment-form-footer">
+                            <a href="javascript:history.go(-1)" class="btn btn-ghost">
+                                {{ ux_icon('tabler:arrow-left', {width: 18, height: 18}) }}
+                                {{ 'Cancel'|trans }}
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-pay">
+                                {{ ux_icon('tabler:credit-card', {width: 18, height: 18}) }}
+                                {{ 'payment.action.pay'|trans }}
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+
+        {{ form_end(form) }}
     </div>
 {% endblock %}
