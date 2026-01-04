@@ -22,6 +22,9 @@ billing:
     discount: Discount
     total: Total
 powered_by: 'Powered By'
+pdf:
+    page: 'Page'
+    of: 'of'
 invalid_file: 'Invalid File'
 create_new: 'Create New'
 invoice: Invoice

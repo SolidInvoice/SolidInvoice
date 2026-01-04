@@ -26,12 +26,12 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-final class View
+final readonly class View
 {
     public function __construct(
-        private readonly PaymentRepository $paymentRepository,
-        private readonly Generator $pdfGenerator,
-        private readonly Environment $twig
+        private PaymentRepository $paymentRepository,
+        private Generator $pdfGenerator,
+        private Environment $twig
     ) {
     }
 

@@ -36,12 +36,13 @@ class Generator
     {
         $mpdf = new Mpdf([
             'tempDir' => $this->cacheDir . '/pdf',
-            'margin_left' => 20,
+            'margin_left' => 15,
             'margin_right' => 15,
-            'margin_top' => 48,
+            'margin_top' => 20,
             'margin_bottom' => 25,
             'margin_header' => 10,
             'margin_footer' => 10,
+            'default_font' => 'helvetica',
         ]);
 
         $mpdf->showWatermarkText = true;
