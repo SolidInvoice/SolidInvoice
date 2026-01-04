@@ -74,7 +74,7 @@ target "build-static" {
     tags = compact(distinct(flatten([
             LATEST ? "${IMAGE_NAME}:latest" : "",
             NIGHTLY ? "${IMAGE_NAME}:nightly" : "",
-            PREVIEW ? flatten(["${IMAGE_NAME}:next", "${IMAGE_NAME}:3.0-dev"]) : "",
+            PREVIEW ? flatten(["${IMAGE_NAME}:next", "${IMAGE_NAME}:3.0-dev"]) : flatten([]),
             SOLIDINVOICE_VERSION == "2.4.x" ? [] : [for v in semver(SOLIDINVOICE_VERSION) : "${IMAGE_NAME}:${v}"]
     ])))
     args = {
