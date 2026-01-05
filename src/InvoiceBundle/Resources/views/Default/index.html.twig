@@ -130,10 +130,17 @@
                 <div class="d-flex justify-content-between align-items-center w-100">
                     <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs" role="tablist" aria-label="{{ 'invoice.tabs.label'|trans }}">
                         <li class="nav-item" role="presentation">
-                            <a href="{{ path('_invoices_index_recurring') }}" class="nav-link{{ not isArchived ? ' active' : '' }}" role="tab" aria-selected="{{ not isArchived ? 'true' : 'false' }}">
+                            <a href="{{ path('_invoices_index_recurring') }}" class="nav-link{{ not isArchived and not isCompleted ? ' active' : '' }}" role="tab" aria-selected="{{ not isArchived and not isCompleted ? 'true' : 'false' }}">
                                 {{ ux_icon('tabler:repeat', {width: 16, height: 16}) }}
                                 {{ 'invoice.tabs.recurring_active'|trans }}
                                 <span class="badge bg-primary-lt ms-2">{{ totalActiveRecurring }}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a href="{{ path('_invoices_index_recurring', {completed: 1}) }}" class="nav-link{{ isCompleted ? ' active' : '' }}" role="tab" aria-selected="{{ isCompleted ? 'true' : 'false' }}">
+                                {{ ux_icon('tabler:check', {width: 16, height: 16}) }}
+                                {{ 'invoice.tabs.recurring_completed'|trans }}
+                                <span class="badge bg-success-lt ms-2">{{ completeCount }}</span>
                             </a>
                         </li>
                         <li class="nav-item" role="presentation">
@@ -149,6 +156,8 @@
 
             {% if isArchived %}
                 <twig:DataGrid name="archived_recurring_invoice_grid" />
+            {% elseif isCompleted %}
+                <twig:DataGrid name="completed_recurring_invoice_grid" />
             {% else %}
                 <twig:DataGrid name="recurring_invoice_grid" />
             {% endif %}

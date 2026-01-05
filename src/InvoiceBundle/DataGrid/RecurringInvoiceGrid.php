@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -11,10 +13,21 @@
 
 namespace SolidInvoice\InvoiceBundle\DataGrid;
 
+use Doctrine\ORM\EntityManagerInterface;
 use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
+use SolidInvoice\DataGridBundle\GridBuilder\Query;
 
 #[AsDataGrid(name: self::GRID_NAME, title: 'Recurring Invoices')]
 class RecurringInvoiceGrid extends BaseRecurringInvoiceGrid
 {
     final public const GRID_NAME = 'recurring_invoice_grid';
+
+    public function query(EntityManagerInterface $entityManager, Query $query): Query
+    {
+        $queryBuilder = $query->getQueryBuilder();
+        $queryBuilder->andWhere(sprintf('%s.status != :completedStatus', $query->getRootAlias()))
+            ->setParameter('completedStatus', 'complete');
+
+        return parent::query($entityManager, $query);
+    }
 }

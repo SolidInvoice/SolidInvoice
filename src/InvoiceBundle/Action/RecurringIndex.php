@@ -29,6 +29,7 @@ final readonly class RecurringIndex
     public function __invoke(Request $request): Template
     {
         $isArchived = $request->query->get('archived', '0') === '1';
+        $isCompleted = $request->query->get('completed', '0') === '1';
 
         // Get recurring invoice counts by status
         $activeCount = $this->repository->getCountByStatus('active');
@@ -63,6 +64,7 @@ final readonly class RecurringIndex
             [
                 'recurring' => true,
                 'isArchived' => $isArchived,
+                'isCompleted' => $isCompleted,
                 'totalActiveRecurring' => $totalActiveRecurring,
                 'totalArchivedRecurring' => $totalArchivedRecurring,
                 'activeCount' => $activeCount,
