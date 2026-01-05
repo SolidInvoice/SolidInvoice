@@ -179,7 +179,7 @@ invoice:
         view_all: 'View all %count% invoices'
         date_start: 'Start Date'
         date_end: 'End Date'
-        date_end_info: 'If no end date is specified, the invoice will recur infinately'
+        date_end_info: 'If no end date is specified, the invoice will recur indefinitely'
         type:
             label: 'Recurring Type'
             placeholder: 'Select a recurring type'

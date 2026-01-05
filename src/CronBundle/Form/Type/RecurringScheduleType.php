@@ -101,7 +101,7 @@ final class RecurringScheduleType extends AbstractType
             }
         });
 
-        $builder->addDependent('dayOfTheMonth', ['recurringType'], function (DependentField $field, ?ScheduleRecurringType $recurringType): void {
+        $builder->addDependent('dayOfTheMonth', ['type'], function (DependentField $field, ?ScheduleRecurringType $recurringType): void {
             if ($recurringType === ScheduleRecurringType::YEARLY) {
                 $yearlyDayChoices = [];
                 for ($day = 1; $day <= 31; $day++) {
@@ -135,7 +135,7 @@ final class RecurringScheduleType extends AbstractType
                             'placeholder' => 'invoice.recurring.end_occurrence_placeholder',
                         ],
                         'html5' => true,
-                        'empty_data' => '0',
+                        'empty_data' => '1',
                         'required' => false,
                     ]
                 );
@@ -180,12 +180,16 @@ final class RecurringScheduleType extends AbstractType
 
     private function formatOrdinal(int $number): string
     {
-        $suffix = ['th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th'];
+        if (class_exists(\NumberFormatter::class)) {
+            $formatter = new \NumberFormatter(\Locale::getDefault(), \NumberFormatter::ORDINAL);
+            $formatted = $formatter->format($number);
 
-        if ((($number % 100) >= 11) && (($number % 100) <= 13)) {
-            return $number . 'th';
+            if (false !== $formatted) {
+                return $formatted;
+            }
         }
 
-        return $number . $suffix[$number % 10];
+        // Fallback to plain number if NumberFormatter is not available
+        return (string) $number;
     }
 }
