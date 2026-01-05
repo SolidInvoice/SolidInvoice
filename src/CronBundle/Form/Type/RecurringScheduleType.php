@@ -101,7 +101,7 @@ final class RecurringScheduleType extends AbstractType
             }
         });
 
-        $builder->addDependent('dayOfTheMonth', ['type'], function (DependentField $field, ?ScheduleRecurringType $recurringType): void {
+        $builder->addDependent('dayOfTheMonth', ['recurringType'], function (DependentField $field, ?ScheduleRecurringType $recurringType): void {
             if ($recurringType === ScheduleRecurringType::YEARLY) {
                 $yearlyDayChoices = [];
                 for ($day = 1; $day <= 31; $day++) {
