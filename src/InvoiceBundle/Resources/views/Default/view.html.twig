@@ -196,9 +196,11 @@
 
                         {% if invoice.client.website is not empty %}
                             <div class="invoice-party-detail">
+                            {% set website_url = invoice.client.website starts with 'http://' or invoice.client.website starts with 'https://' ? invoice.client.website : 'https://' ~ invoice.client.website %}
                                 {{ ux_icon('tabler:world', {width: 14, height: 14}) }}
-                                <a href="{{ invoice.client.website }}" rel="external" target="_blank" class="detail-value">
-                                    {{ invoice.client.website }}
+                                <a href="{{ website_url }}" class="detail-value" rel="external noopener" target="_blank">
+                                    <span>{{ invoice.client.website }}</span>
+                                    {{ ux_icon('tabler:external-link', {width: 14, height: 14}) }}
                                 </a>
                             </div>
                         {% endif %}
