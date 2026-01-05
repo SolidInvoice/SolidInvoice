@@ -26,8 +26,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfonycasts\DynamicForms\DependentField;
 use Symfonycasts\DynamicForms\DynamicFormBuilder;
-use function array_combine;
-use function range;
 
 final class RecurringScheduleType extends AbstractType
 {
@@ -38,9 +36,9 @@ final class RecurringScheduleType extends AbstractType
         $builder
             ->add('type', EnumType::class, [
                 'class' => ScheduleRecurringType::class,
-                'placeholder' => 'Select a recurring type',
+                'placeholder' => 'invoice.recurring.type.placeholder',
                 'expanded' => true,
-                'label' => 'Recurring Type',
+                'label' => 'invoice.recurring.type.label',
             ]);
 
         $builder->addDependent('days', ['type'], function (DependentField $field, ?ScheduleRecurringType $recurringType): void {
@@ -48,49 +46,54 @@ final class RecurringScheduleType extends AbstractType
                 case ScheduleRecurringType::WEEKLY:
                     $field->add(ChoiceType::class, [
                         'choices' => [
-                            'Monday' => 0,
-                            'Tuesday' => 1,
-                            'Wednesday' => 3,
-                            'Thursday' => 4,
-                            'Friday' => 5,
-                            'Saturday' => 6,
-                            'Sunday' => 7,
+                            'invoice.recurring.days.monday' => 0,
+                            'invoice.recurring.days.tuesday' => 1,
+                            'invoice.recurring.days.wednesday' => 2,
+                            'invoice.recurring.days.thursday' => 3,
+                            'invoice.recurring.days.friday' => 4,
+                            'invoice.recurring.days.saturday' => 5,
+                            'invoice.recurring.days.sunday' => 6,
                         ],
                         'multiple' => true,
                         'expanded' => true,
+                        'label' => 'invoice.recurring.repeats_on',
+                        'choice_translation_domain' => 'messages',
                     ]);
                     break;
                 case ScheduleRecurringType::MONTHLY:
-                    $monthlyChoices = array_combine(range(1, 29), range(1, 29));
-                    // $monthlyChoices['Last day of the month'] = -1;
+                    $monthlyChoices = [];
+                    for ($day = 1; $day <= 31; $day++) {
+                        $monthlyChoices[$this->formatOrdinal($day)] = $day;
+                    }
 
                     $field->add(ChoiceType::class, [
                         'choices' => $monthlyChoices,
                         'multiple' => true,
                         'expanded' => false,
-                        'label' => 'Days of the month',
+                        'label' => 'invoice.recurring.days_of_month',
+                        'attr' => ['class' => 'form-select'],
                     ]);
                     break;
                 case ScheduleRecurringType::YEARLY:
-                    $yearChoices = [
-                        'January' => 1,
-                        'February' => 2,
-                        'March' => 3,
-                        'April' => 4,
-                        'May' => 5,
-                        'June' => 6,
-                        'July' => 7,
-                        'August' => 8,
-                        'September' => 9,
-                        'October' => 10,
-                        'November' => 11,
-                        'December' => 12,
-                    ];
                     $field->add(ChoiceType::class, [
-                        'label' => 'Months',
-                        'choices' => $yearChoices,
+                        'label' => 'invoice.recurring.repeats_in_months',
+                        'choices' => [
+                            'invoice.recurring.months.january' => 1,
+                            'invoice.recurring.months.february' => 2,
+                            'invoice.recurring.months.march' => 3,
+                            'invoice.recurring.months.april' => 4,
+                            'invoice.recurring.months.may' => 5,
+                            'invoice.recurring.months.june' => 6,
+                            'invoice.recurring.months.july' => 7,
+                            'invoice.recurring.months.august' => 8,
+                            'invoice.recurring.months.september' => 9,
+                            'invoice.recurring.months.october' => 10,
+                            'invoice.recurring.months.november' => 11,
+                            'invoice.recurring.months.december' => 12,
+                        ],
                         'multiple' => true,
                         'expanded' => true,
+                        'choice_translation_domain' => 'messages',
                     ]);
                     break;
                 case ScheduleRecurringType::DAILY:
@@ -100,12 +103,19 @@ final class RecurringScheduleType extends AbstractType
 
         $builder->addDependent('dayOfTheMonth', ['recurringType'], function (DependentField $field, ?ScheduleRecurringType $recurringType): void {
             if ($recurringType === ScheduleRecurringType::YEARLY) {
+                $yearlyDayChoices = [];
+                for ($day = 1; $day <= 31; $day++) {
+                    $yearlyDayChoices[$this->formatOrdinal($day)] = $day;
+                }
+
                 $field->add(ChoiceType::class, [
-                    'choices' => array_combine(range(1, 31), range(1, 31)),
+                    'choices' => $yearlyDayChoices,
                     'required' => false,
-                    'placeholder' => false,
+                    'placeholder' => 'invoice.recurring.day_of_month.placeholder',
                     'multiple' => false,
                     'expanded' => false,
+                    'label' => 'invoice.recurring.day_of_month',
+                    'attr' => ['class' => 'form-select'],
                 ]);
             }
         });
@@ -119,8 +129,11 @@ final class RecurringScheduleType extends AbstractType
                 $field->add(
                     NumberType::class,
                     [
-                        'label' => 'End After x Occurrences',
-                        'attr' => ['min' => 0],
+                        'label' => 'invoice.recurring.end_after_occurrences',
+                        'attr' => [
+                            'min' => 1,
+                            'placeholder' => 'invoice.recurring.end_occurrence_placeholder',
+                        ],
                         'html5' => true,
                         'empty_data' => '0',
                         'required' => false,
@@ -138,7 +151,7 @@ final class RecurringScheduleType extends AbstractType
                 $field->add(
                     DateType::class,
                     [
-                        'label' => 'End Date',
+                        'label' => 'invoice.recurring.end_date',
                         'required' => false,
                         'input' => 'datetime_immutable',
                         'attr' => [
@@ -152,7 +165,7 @@ final class RecurringScheduleType extends AbstractType
         });
 
         $builder->add('endType', EnumType::class, [
-            'label' => 'End Recurrence',
+            'label' => 'invoice.recurring.end_type',
             'class' => ScheduleEndType::class,
             'choice_label' => static fn (ScheduleEndType $type) => $type->formLabel(),
             'expanded' => true,
@@ -163,5 +176,16 @@ final class RecurringScheduleType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefault('data_class', RecurringOptions::class);
+    }
+
+    private function formatOrdinal(int $number): string
+    {
+        $suffix = ['th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th'];
+
+        if ((($number % 100) >= 11) && (($number % 100) <= 13)) {
+            return $number . 'th';
+        }
+
+        return $number . $suffix[$number % 10];
     }
 }

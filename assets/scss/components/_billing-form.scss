@@ -448,10 +448,10 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         grid-template-areas:
-            "desc desc"
-            "price qty"
-            "tax tax"
-            "actions total";
+            'desc desc'
+            'price qty'
+            'tax tax'
+            'actions total';
         gap: var(--swp-space-3);
         padding: var(--swp-space-4);
         margin-bottom: var(--swp-space-3);
@@ -1090,4 +1090,514 @@
     font-size: var(--swp-text-sm);
     color: var(--swp-text-muted);
     margin: 0;
+}
+
+// ============================================================================
+// RECURRING INVOICE STYLES
+// ============================================================================
+
+// Recurring Schedule Section (on create/edit page)
+.recurring-schedule-section {
+    margin-block: var(--swp-space-6);
+    padding: var(--swp-space-5);
+    background: var(--swp-surface);
+    border: 1px solid var(--swp-border);
+    border-radius: var(--swp-radius-lg);
+
+    .section-header {
+        display: flex;
+        align-items: flex-start;
+        gap: var(--swp-space-3);
+        margin-block-end: var(--swp-space-5);
+        padding-block-end: var(--swp-space-4);
+        border-block-end: 1px solid var(--swp-border-light);
+
+        .section-header-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: var(--swp-radius-md);
+            background: linear-gradient(135deg, var(--swp-primary) 0%, var(--swp-primary-dark) 100%);
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .section-header-content {
+            flex: 1;
+
+            .section-title {
+                font-size: var(--swp-text-lg);
+                font-weight: var(--swp-font-semibold);
+                color: var(--swp-text-primary);
+                margin: 0 0 var(--swp-space-1) 0;
+            }
+
+            .section-description {
+                font-size: var(--swp-text-sm);
+                color: var(--swp-text-secondary);
+                margin: 0;
+            }
+        }
+    }
+
+    .recurring-schedule-content {
+        display: flex;
+        flex-direction: column;
+        gap: var(--swp-space-4);
+    }
+}
+
+// Recurring Options Wrapper - Style form fields rendered by DynamicFormBuilder
+.recurring-options-wrapper {
+
+    // Type field (radio buttons) - Make them visual cards
+    [id$='_type'], [id$='_endType'] {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr);
+        gap: var(--swp-space-3);
+        margin-block-start: var(--swp-space-2);
+
+        @media (max-width: 768px) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .form-check-label.required:after {
+            display: none;
+        }
+
+        > .form-check {
+            position: relative;
+            margin: 0;
+            padding: 0;
+
+            input[type='radio'] {
+                position: absolute;
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+
+            label {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: var(--swp-space-1);
+                padding: var(--swp-space-3);
+                border: 2px solid var(--swp-border);
+                border-radius: var(--swp-radius-md);
+                background: var(--swp-surface);
+                transition: all 0.2s ease;
+                min-height: 70px;
+                cursor: pointer;
+                margin: 0;
+                font-size: var(--swp-text-sm);
+                font-weight: var(--swp-font-medium);
+                color: var(--swp-text-primary);
+                text-align: center;
+            }
+
+            &:hover label {
+                border-color: var(--swp-primary);
+                background: var(--swp-primary-lighter);
+            }
+
+            input[type='radio']:checked + label {
+                border-color: var(--swp-primary);
+                background: var(--swp-primary);
+                color: white;
+            }
+        }
+    }
+
+    [id$='_endType'] {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+
+    // Days field for Weekly/Yearly (checkboxes for days/months) - Make them button toggles
+    [id$='_days'] {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+        gap: var(--swp-space-2);
+        margin-block-start: var(--swp-space-2);
+
+        @media (max-width: 768px) {
+            grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+        }
+
+        > .form-check {
+            position: relative;
+            margin: 0;
+            padding: 0;
+
+            input[type='checkbox'] {
+                position: absolute;
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+
+            label {
+                display: flex !important;
+                align-items: center;
+                justify-content: center;
+                padding: var(--swp-space-3) var(--swp-space-2);
+                border: 2px solid var(--swp-border);
+                border-radius: var(--swp-radius-md);
+                background: var(--swp-surface);
+                font-size: var(--swp-text-sm);
+                font-weight: var(--swp-font-medium);
+                color: var(--swp-text-primary) !important;
+                transition: all 0.2s ease;
+                min-height: 44px;
+                text-align: center;
+                cursor: pointer;
+                margin: 0;
+                opacity: 1 !important;
+                visibility: visible !important;
+
+                // Ensure text content is visible
+                &::before,
+                &::after {
+                    content: none !important;
+                }
+            }
+
+            &:hover label {
+                border-color: var(--swp-primary);
+                background: var(--swp-primary-lighter);
+            }
+
+            input[type='checkbox']:checked + label {
+                border-color: var(--swp-primary);
+                background: var(--swp-primary);
+                color: white !important;
+            }
+        }
+    }
+}
+
+.recurring-frequency-display {
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-3);
+    padding: var(--swp-space-4);
+    background: linear-gradient(135deg, var(--swp-primary-lighter) 0%, rgba(var(--swp-primary-rgb), 0.05) 100%);
+    border: 1px solid rgba(var(--swp-primary-rgb), 0.2);
+    border-radius: var(--swp-radius-md);
+
+    .recurring-frequency-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        background: var(--swp-primary-light);
+        border-radius: var(--swp-radius-md);
+        color: var(--swp-primary);
+        flex-shrink: 0;
+    }
+
+    .recurring-frequency-text {
+        flex: 1;
+        font-size: var(--swp-text-base);
+        color: var(--swp-text-primary);
+
+        strong {
+            font-weight: var(--swp-font-semibold);
+            color: var(--swp-primary);
+        }
+    }
+}
+
+// Variable Help - Collapsible Info Box
+.recurring-variables-help {
+    margin-block-start: var(--swp-space-3);
+    padding: var(--swp-space-3);
+    border: 1px solid var(--tblr-info-border-subtle);
+    border-radius: var(--swp-radius-md);
+    background: var(--tblr-info-bg-subtle);
+
+    .variables-summary {
+        display: flex;
+        align-items: center;
+        gap: var(--swp-space-2);
+        font-size: var(--swp-text-sm);
+        font-weight: var(--swp-font-medium);
+        color: var(--tblr-info);
+        cursor: pointer;
+        list-style: none;
+        user-select: none;
+
+        &::-webkit-details-marker {
+            display: none;
+        }
+
+        svg {
+            flex-shrink: 0;
+        }
+
+        &:hover {
+            color: var(--tblr-info-emphasis);
+        }
+    }
+
+    .variables-content {
+        margin-block-start: var(--swp-space-3);
+        padding-block-start: var(--swp-space-3);
+        border-block-start: 1px solid var(--tblr-info-border-subtle);
+
+        .variables-description {
+            font-size: var(--swp-text-sm);
+            color: var(--swp-text-secondary);
+            margin-block-end: var(--swp-space-3);
+        }
+
+        .variables-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 var(--swp-space-3) 0;
+
+            li {
+                display: flex;
+                align-items: baseline;
+                gap: var(--swp-space-2);
+                padding: var(--swp-space-2) 0;
+                font-size: var(--swp-text-sm);
+                line-height: 1.6;
+
+                code {
+                    padding: 2px 8px;
+                    background: var(--swp-surface);
+                    border: 1px solid var(--swp-border);
+                    border-radius: var(--swp-radius-sm);
+                    font-family: var(--swp-font-mono);
+                    font-size: var(--swp-text-xs);
+                    color: var(--swp-primary);
+                    font-weight: var(--swp-font-medium);
+                    white-space: nowrap;
+                }
+
+                .variable-description {
+                    color: var(--swp-text-muted);
+                }
+            }
+        }
+
+        .variable-example {
+            padding: var(--swp-space-3);
+            background: var(--swp-surface);
+            border-inline-start: 3px solid var(--tblr-info);
+            border-radius: var(--swp-radius-sm);
+            font-size: var(--swp-text-sm);
+
+            strong {
+                color: var(--swp-text-primary);
+                font-weight: var(--swp-font-semibold);
+            }
+
+            .example-text {
+                display: block;
+                margin-block-start: var(--swp-space-2);
+                color: var(--swp-text-secondary);
+                font-family: var(--swp-font-mono);
+                font-size: var(--swp-text-xs);
+            }
+        }
+    }
+
+    &[open] .variables-summary {
+        margin-block-end: 0;
+    }
+}
+
+// ============================================================================
+// RECURRING INVOICE VIEW PAGE SIDEBAR
+// ============================================================================
+
+// Highlighted card (e.g., Recurring Schedule card)
+.invoice-sidebar-card-highlight {
+    border-left: 3px solid var(--swp-primary);
+    background: linear-gradient(to right, rgba(var(--swp-primary-rgb), 0.03), transparent);
+}
+
+// Recurring Schedule Grid (label | value pairs)
+.recurring-schedule-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--swp-space-3);
+}
+
+.recurring-schedule-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: var(--swp-space-2) 0;
+
+    &:not(:last-child) {
+        border-bottom: 1px solid var(--swp-border-light);
+    }
+}
+
+.recurring-schedule-label {
+    font-size: var(--swp-text-sm);
+    font-weight: var(--swp-font-bold);
+    color: var(--swp-text-secondary);
+}
+
+.recurring-schedule-value {
+    font-size: var(--swp-text-sm);
+    font-weight: var(--swp-font-medium);
+    color: var(--swp-text-primary);
+    text-align: right;
+}
+
+// Upcoming Occurrences List
+.occurrences-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--swp-space-2);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.occurrence-item {
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-3);
+    padding: var(--swp-space-3);
+    background: var(--swp-gray-50);
+    border: 1px solid var(--swp-border-light);
+    border-radius: var(--swp-radius-md);
+    transition: all var(--swp-transition-fast);
+
+    &:hover {
+        background: var(--swp-surface);
+        border-color: rgba(var(--swp-primary-rgb), 0.3);
+        transform: translateX(2px);
+    }
+}
+
+.occurrence-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: var(--swp-primary-lighter);
+    border-radius: var(--swp-radius-md);
+    color: var(--swp-primary);
+    flex-shrink: 0;
+}
+
+.occurrence-date {
+    font-size: var(--swp-text-sm);
+    font-weight: var(--swp-font-medium);
+    color: var(--swp-text-primary);
+}
+
+// Generated Invoices List
+.generated-invoices-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--swp-space-2);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.generated-invoice-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--swp-space-3);
+    padding: var(--swp-space-3);
+    background: var(--swp-gray-50);
+    border: 1px solid var(--swp-border-light);
+    border-radius: var(--swp-radius-md);
+    transition: all var(--swp-transition-fast);
+
+    &:hover {
+        background: var(--swp-surface);
+        border-color: rgba(var(--swp-primary-rgb), 0.3);
+    }
+}
+
+.generated-invoice-link {
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-2);
+    flex: 1;
+    min-width: 0;
+    text-decoration: none;
+    color: var(--swp-text-primary);
+    transition: color var(--swp-transition-fast);
+
+    &:hover {
+        color: var(--swp-primary);
+
+        .generated-invoice-number {
+            color: var(--swp-primary);
+        }
+    }
+}
+
+.generated-invoice-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: var(--swp-success-lighter);
+    border-radius: var(--swp-radius-sm);
+    color: var(--swp-success);
+    flex-shrink: 0;
+}
+
+.generated-invoice-number {
+    font-size: var(--swp-text-sm);
+    font-weight: var(--swp-font-semibold);
+    color: var(--swp-text-primary);
+    transition: color var(--swp-transition-fast);
+}
+
+.generated-invoice-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-2);
+    flex-shrink: 0;
+}
+
+.generated-invoice-total {
+    font-size: var(--swp-text-sm);
+    font-weight: var(--swp-font-medium);
+    color: var(--swp-text-secondary);
+    white-space: nowrap;
+}
+
+.view-all-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--swp-space-2);
+    padding: var(--swp-space-3);
+    margin-top: var(--swp-space-2);
+    font-size: var(--swp-text-sm);
+    font-weight: var(--swp-font-medium);
+    color: var(--swp-primary);
+    text-decoration: none;
+    background: var(--swp-primary-lighter);
+    border: 1px solid rgba(var(--swp-primary-rgb), 0.2);
+    border-radius: var(--swp-radius-md);
+    transition: all var(--swp-transition-fast);
+
+    &:hover {
+        background: rgba(var(--swp-primary-rgb), 0.15);
+        border-color: var(--swp-primary);
+        transform: translateY(-1px);
+    }
 }

@@ -177,12 +177,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	// identifier: missingType.return
-	'message' => '#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\RecurringIndex\\:\\:__invoke\\(\\) has no return type specified\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/src/InvoiceBundle/Action/RecurringIndex.php',
-];
-$ignoreErrors[] = [
-	// identifier: missingType.return
 	'message' => '#^Method SolidInvoice\\\\InvoiceBundle\\\\Action\\\\RecurringTransition\\:\\:__invoke\\(\\) has no return type specified\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/src/InvoiceBundle/Action/RecurringTransition.php',

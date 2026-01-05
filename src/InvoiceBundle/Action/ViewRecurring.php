@@ -15,11 +15,35 @@ namespace SolidInvoice\InvoiceBundle\Action;
 
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\InvoiceBundle\Recurring\RecurringSchedule;
 
-final class ViewRecurring
+final readonly class ViewRecurring
 {
+    public function __construct(
+        private RecurringSchedule $recurringSchedule
+    ) {
+    }
+
     public function __invoke(RecurringInvoice $invoice): Template
     {
-        return new Template('@SolidInvoiceInvoice/Default/view_recurring.html.twig', ['invoice' => $invoice]);
+        // Get next 5 upcoming occurrences for active invoices
+        $nextOccurrences = [];
+        if ($invoice->getStatus() === 'active') {
+            $nextOccurrences = iterator_to_array(
+                $this->recurringSchedule->getNextOccurrences($invoice->getRecurringOptions(), 5)
+            );
+        }
+
+        // Get last 5 generated invoices (collection is ordered by created DESC via OrderBy annotation)
+        $invoicesCollection = $invoice->getInvoices();
+        $totalGenerated = $invoicesCollection->count();
+        $generatedInvoices = $invoicesCollection->slice(0, 5);
+
+        return new Template('@SolidInvoiceInvoice/Default/view_recurring.html.twig', [
+            'invoice' => $invoice,
+            'nextOccurrences' => $nextOccurrences,
+            'generatedInvoices' => $generatedInvoices,
+            'totalGenerated' => $totalGenerated,
+        ]);
     }
 }

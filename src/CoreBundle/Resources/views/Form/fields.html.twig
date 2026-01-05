@@ -52,41 +52,24 @@
     {%- endif -%}
 {%- endblock form_help %}
 
-{# Checkbox as Toggle Switch #}
+{# Checkbox as Toggle Switch (for standalone checkboxes only) #}
 {% block checkbox_row %}
-    {% set row_attr = row_attr|merge({class: (row_attr.class|default('') ~ ' form-switch-field')|trim}) %}
-    <div{% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %}>
-        <div class="form-check form-switch form-switch-wrapper">
-            {{- form_widget(form) -}}
-            {{- form_label(form) -}}
+    {# Only apply switch styling to standalone checkboxes, not expanded choice items #}
+    {% if parent_label_class is not defined %}
+        {# This is a standalone checkbox - render as switch toggle #}
+        {% set row_attr = row_attr|merge({class: (row_attr.class|default('') ~ ' form-switch-field')|trim}) %}
+        <div{% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %}>
+            <div class="form-switch-wrapper">
+                {{- form_widget(form, {parent_label_class: 'checkbox-switch'}) -}}
+            </div>
+            {{- form_help(form) -}}
+            {{- form_errors(form) -}}
         </div>
-        {{- form_help(form) -}}
-        {{- form_errors(form) -}}
-    </div>
+    {% else %}
+        {# This is part of an expanded choice - use parent behavior #}
+        {{ parent() }}
+    {% endif %}
 {% endblock checkbox_row %}
-
-{% block checkbox_widget %}
-    <input type="checkbox"
-           id="{{ id }}"
-           name="{{ full_name }}"
-           class="form-check-input"
-           role="switch"
-           {% if value is defined %}value="{{ value }}"{% endif %}
-           {% if checked %}checked="checked" aria-checked="true"{% else %}aria-checked="false"{% endif %}
-           {% if disabled %}disabled="disabled" aria-disabled="true"{% endif %}
-           {% if required %}required="required" aria-required="true"{% endif %}
-           {% if help is defined and help is not empty %}aria-describedby="{{ id }}_help"{% endif %}
-           {% for attrname, attrvalue in attr %}{{ attrname }}="{{ attrvalue }}" {% endfor %}
-    >
-{% endblock checkbox_widget %}
-
-{% block checkbox_label %}
-    <label class="form-check-label" for="{{ id }}">
-        {% if label is not same as(false) %}
-            {{ label|default(name|humanize)|replace({'_': ' '})|trans|title }}
-        {% endif %}
-    </label>
-{% endblock checkbox_label %}
 
 {# Email Type - with icon #}
 {% block email_widget %}

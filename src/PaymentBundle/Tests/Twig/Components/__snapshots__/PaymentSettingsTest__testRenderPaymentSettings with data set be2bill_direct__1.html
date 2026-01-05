@@ -12,36 +12,33 @@
                 <div id="payment_methods" data-model="on(change)|*">
 <div class="mb-3">                
                                 <label class="control-label required form-label required" for="payment_methods_name">Name</label><input type="text" id="payment_methods_name" name="payment_methods[name]" data-required="required" maxlength="125" class="form-control">
-</div>        <div class="form-switch-field">
-        <div class="form-check form-switch form-switch-wrapper">    <input type="checkbox" id="payment_methods_enabled" name="payment_methods[enabled]" class="form-check-input" role="switch" value="1" aria-checked="false">
-    <label class="form-check-label" for="payment_methods_enabled">
-                    Enabled
-            </label>
+</div>                                <div class="form-switch-field">
+            <div class="form-switch-wrapper"><div class="form-check form-switch">
+<input type="checkbox" id="payment_methods_enabled" name="payment_methods[enabled]" class="form-check-input" value="1">
+        <label class="switch-custom form-check-label checkbox-switch" for="payment_methods_enabled">Enabled</label>
+</div></div>
 </div>
-</div>
-        <div class="form-switch-field">
-        <div class="form-check form-switch form-switch-wrapper">    <input type="checkbox" id="payment_methods_internal" name="payment_methods[internal]" class="form-check-input" role="switch" value="1" aria-checked="false" aria-describedby="payment_methods_internal_help">
-    <label class="form-check-label" for="payment_methods_internal">
-                    Internal Use Only
-            </label>
-</div>
+                                    <div class="form-switch-field">
+            <div class="form-switch-wrapper"><div class="form-check form-switch">
+<input type="checkbox" id="payment_methods_internal" name="payment_methods[internal]" class="form-check-input" value="1">
+        <label class="switch-custom form-check-label checkbox-switch" for="payment_methods_internal">Internal use only</label>
+</div></div>
 <div class="form-text text-muted mb-0" id="payment_methods_internal_help">Selecting this option will make this payment option only available for internal use. Clients won't be able to select the method to complete a payment.</div>
 </div>
-<fieldset class="mb-3">                
+    <fieldset class="mb-3">                
     <div id="payment_methods_config">
 <div class="mb-3">                
                                 <label class="control-label required form-label required" for="payment_methods_config_identifier">Identifier</label><input type="text" id="payment_methods_config_identifier" name="payment_methods[config][identifier]" data-required="required" class="form-control">
 </div>
 <div class="mb-3">                
                                 <label class="control-label required form-label required" for="payment_methods_config_password">Password</label><div class="toggle-password-container"><input type="password" id="payment_methods_config_password" name="payment_methods[config][password]" data-required="required" data-controller="symfony--ux-toggle-password--toggle-password" data-symfony--ux-toggle-password--toggle-password-hidden-label-value="Hide" data-symfony--ux-toggle-password--toggle-password-visible-label-value="Show" data-symfony--ux-toggle-password--toggle-password-hidden-icon-value="Default" data-symfony--ux-toggle-password--toggle-password-visible-icon-value="Default" data-symfony--ux-toggle-password--toggle-password-button-classes-value='["toggle-password-button"]' class="form-control"></div>
-</div>        <div class="form-switch-field">
-        <div class="form-check form-switch form-switch-wrapper">    <input type="checkbox" id="payment_methods_config_sandbox" name="payment_methods[config][sandbox]" class="form-check-input" role="switch" value="1" aria-checked="false">
-    <label class="form-check-label" for="payment_methods_config_sandbox">
-                    Sandbox
-            </label>
+</div>                                <div class="form-switch-field">
+            <div class="form-switch-wrapper"><div class="form-check form-switch">
+<input type="checkbox" id="payment_methods_config_sandbox" name="payment_methods[config][sandbox]" class="form-check-input" value="1">
+        <label class="form-check-label checkbox-switch" for="payment_methods_config_sandbox">Sandbox</label>
+</div></div>
 </div>
-</div>
-</div>
+    </div>
 </fieldset>
 <input type="hidden" id="payment_methods__token" name="payment_methods[_token]" data-controller="csrf-protection">
 </div>
