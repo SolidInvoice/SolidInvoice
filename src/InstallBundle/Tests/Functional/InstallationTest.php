@@ -53,6 +53,10 @@ final class InstallationTest extends PantherTestCase
     {
         parent::tearDown();
 
+        if ($this->status()->isFailure() || $this->status()->isError()) {
+            $this->browser->takeScreenshot($this->toString() . '.png');
+        }
+
         $this->browser->use(
             static fn (Client $client) => $client->getCookieJar()->clear()
         );
