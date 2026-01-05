@@ -30,10 +30,11 @@ final class RecurringOptionsExtension extends AbstractExtension
         return [
             new TwigFunction('recurring_frequency', $this->getRecurringFrequency(...)),
             new TwigFunction('recurring_occurrences', $this->schedule->getNextOccurrences(...)),
+            new TwigFunction('recurring_end_date', $this->schedule->getEndDate(...)),
         ];
     }
 
-    public function getRecurringFrequency(RecurringOptions $recurringOptions): string
+    public function getRecurringFrequency(RecurringOptions $recurringOptions, bool $includeStartEndDates = true): string
     {
         $frequency = $this->schedule->getFrequency($recurringOptions);
 
@@ -51,6 +52,10 @@ final class RecurringOptionsExtension extends AbstractExtension
         }*/
 
         if (! $recurringOptions->hasEndType()) {
+            return $frequency;
+        }
+
+        if (! $includeStartEndDates) {
             return $frequency;
         }
 

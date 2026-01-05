@@ -128,6 +128,7 @@ class RecurringInvoice extends BaseInvoice
      * @var Collection<int, Invoice>
      */
     #[ORM\OneToMany(mappedBy: 'recurringInvoice', targetEntity: Invoice::class)]
+    #[ORM\OrderBy(['created' => 'DESC'])]
     private Collection $invoices;
 
     #[ORM\OneToOne(mappedBy: 'recurringInvoice', cascade: ['persist', 'remove'])]

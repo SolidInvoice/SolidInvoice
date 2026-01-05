@@ -191,6 +191,18 @@ return static function (FrameworkConfig $config): void {
         ])
         ->to([InvoiceGraph::STATUS_DRAFT]);
 
+    $recurringInvoiceWorkflow
+        ->transition()
+        ->name('pause')
+        ->from([InvoiceGraph::STATUS_ACTIVE])
+        ->to(['paused']);
+
+    $recurringInvoiceWorkflow
+        ->transition()
+        ->name('resume')
+        ->from(['paused'])
+        ->to([InvoiceGraph::STATUS_ACTIVE]);
+
     $quoteWorkflow = $workflow
         ->workflows('quote')
         ->type('state_machine')

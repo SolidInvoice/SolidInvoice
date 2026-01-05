@@ -35,7 +35,7 @@
             <div class="contacts-list" role="group" aria-labelledby="contacts-label">
                 {% for user in form.users %}
                     <label class="contact-checkbox">
-                        {{ form_widget(user) }}
+                        {{ form_widget(user, {'label': false}) }}
                         <span class="contact-name">{{ user.vars.label }}</span>
                         {% if user.vars.data.email is defined %}
                             <span class="contact-email">({{ user.vars.data.email }})</span>

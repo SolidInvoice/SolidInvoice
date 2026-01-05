@@ -29,9 +29,129 @@
 
 {% block content %}
     {% if recurring %}
-        {# Recurring Invoices - Simple card layout #}
+        {# Recurring Invoices Stats Row #}
+        <div class="row row-deck row-cards mb-4">
+            <div class="col-sm-6 col-lg-3">
+                <div class="card card-sm">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <span class="bg-primary text-white avatar">
+                                    {{ ux_icon('tabler:repeat', {width: 24, height: 24}) }}
+                                </span>
+                            </div>
+                            <div class="col">
+                                <div class="font-weight-medium">
+                                    {{ totalActiveRecurring }}
+                                </div>
+                                <div class="text-secondary">
+                                    {{ 'invoice.stats.active_recurring'|trans }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-3">
+                <div class="card card-sm">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <span class="bg-info text-white avatar">
+                                    {{ ux_icon('tabler:calendar-event', {width: 24, height: 24}) }}
+                                </span>
+                            </div>
+                            <div class="col">
+                                <div class="font-weight-medium">
+                                    {{ upcomingIn7Days }}
+                                </div>
+                                <div class="text-secondary">
+                                    {{ 'invoice.stats.upcoming_7_days'|trans }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-3">
+                <div class="card card-sm">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <span class="bg-warning text-white avatar">
+                                    {{ ux_icon('tabler:list-check', {width: 24, height: 24}) }}
+                                </span>
+                            </div>
+                            <div class="col">
+                                <div class="font-weight-medium">
+                                    {{ 'invoice.stats.status_format'|trans({
+                                        '%active%': activeCount,
+                                        '%draft%': draftCount,
+                                        '%paused%': pausedCount
+                                    }) }}
+                                </div>
+                                <div class="text-secondary">
+                                    {{ 'invoice.stats.status_breakdown'|trans }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-3">
+                <div class="card card-sm">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <span class="bg-success text-white avatar">
+                                    {{ ux_icon('tabler:file-invoice', {width: 24, height: 24}) }}
+                                </span>
+                            </div>
+                            <div class="col">
+                                <div class="font-weight-medium">
+                                    {{ totalGeneratedInvoices }}
+                                </div>
+                                <div class="text-secondary">
+                                    {{ 'invoice.stats.total_generated'|trans }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# Recurring Invoice List Card with Tabs #}
         <twig:Ui:Card>
-            <twig:DataGrid name="recurring_invoice_grid" />
+            <twig:block name="header">
+                <div class="d-flex justify-content-between align-items-center w-100">
+                    <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs" role="tablist" aria-label="{{ 'invoice.tabs.label'|trans }}">
+                        <li class="nav-item" role="presentation">
+                            <a href="{{ path('_invoices_index_recurring') }}" class="nav-link{{ not isArchived ? ' active' : '' }}" role="tab" aria-selected="{{ not isArchived ? 'true' : 'false' }}">
+                                {{ ux_icon('tabler:repeat', {width: 16, height: 16}) }}
+                                {{ 'invoice.tabs.recurring_active'|trans }}
+                                <span class="badge bg-primary-lt ms-2">{{ totalActiveRecurring }}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a href="{{ path('_invoices_index_recurring', {archived: 1}) }}" class="nav-link{{ isArchived ? ' active' : '' }}" role="tab" aria-selected="{{ isArchived ? 'true' : 'false' }}">
+                                {{ ux_icon('tabler:archive', {width: 16, height: 16}) }}
+                                {{ 'invoice.tabs.recurring_archived'|trans }}
+                                <span class="badge bg-secondary-lt ms-2">{{ totalArchivedRecurring }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </twig:block>
+
+            {% if isArchived %}
+                <twig:DataGrid name="archived_recurring_invoice_grid" />
+            {% else %}
+                <twig:DataGrid name="recurring_invoice_grid" />
+            {% endif %}
         </twig:Ui:Card>
     {% else %}
         {# Stats Row #}

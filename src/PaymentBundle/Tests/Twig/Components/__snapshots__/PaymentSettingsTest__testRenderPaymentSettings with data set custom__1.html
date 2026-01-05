@@ -12,14 +12,13 @@
                 <div id="payment_methods" data-model="on(change)|*">
 <div class="mb-3">                
                                 <label class="control-label required form-label required" for="payment_methods_name">Name</label><input type="text" id="payment_methods_name" name="payment_methods[name]" data-required="required" maxlength="125" class="form-control">
-</div>        <div class="form-switch-field">
-        <div class="form-check form-switch form-switch-wrapper">    <input type="checkbox" id="payment_methods_enabled" name="payment_methods[enabled]" class="form-check-input" role="switch" value="1" aria-checked="false">
-    <label class="form-check-label" for="payment_methods_enabled">
-                    Enabled
-            </label>
+</div>                                <div class="form-switch-field">
+            <div class="form-switch-wrapper"><div class="form-check form-switch">
+<input type="checkbox" id="payment_methods_enabled" name="payment_methods[enabled]" class="form-check-input" value="1">
+        <label class="switch-custom form-check-label checkbox-switch" for="payment_methods_enabled">Enabled</label>
+</div></div>
 </div>
-</div>
-<input type="hidden" id="payment_methods__token" name="payment_methods[_token]" data-controller="csrf-protection">
+    <input type="hidden" id="payment_methods__token" name="payment_methods[_token]" data-controller="csrf-protection">
 </div>
 
                 <div class="form-group">
