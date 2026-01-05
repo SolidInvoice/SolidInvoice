@@ -38,9 +38,9 @@
         <div class="invoice-view-header-actions">
             {# Always available actions #}
             <div class="invoice-view-utility-actions">
-                <a href="javascript:window.print()" class="btn btn-ghost btn-icon" title="{{ 'invoice.action.print'|trans }}">
+                <button type="button" onclick="window.print()" class="btn btn-ghost btn-icon" title="{{ 'invoice.action.print'|trans }}">
                     {{ ux_icon('tabler:printer', {width: 20, height: 20}) }}
-                </a>
+                </button>
                 {% if can_print_pdf() %}
                     <a href="{{ path('_invoices_view', {'id': invoice.id, '_format': 'pdf'}) }}" target="_blank" class="btn btn-ghost btn-icon" title="{{ 'invoice.action.pdf'|trans }}">
                         {{ ux_icon('tabler:file-type-pdf', {width: 20, height: 20}) }}

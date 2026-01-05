@@ -80,18 +80,20 @@ class RecurringInvoiceRepository extends ServiceEntityRepository
         $filters = $this->getEntityManager()->getFilters();
         $filters->disable('archivable');
 
-        $em = $this->getEntityManager();
+        try {
+            $em = $this->getEntityManager();
 
-        /** @var RecurringInvoice[] $invoices */
-        $invoices = $this->findBy(['id' => $ids]);
+            /** @var RecurringInvoice[] $invoices */
+            $invoices = $this->findBy(['id' => $ids]);
 
-        foreach ($invoices as $invoice) {
-            $em->remove($invoice);
+            foreach ($invoices as $invoice) {
+                $em->remove($invoice);
+            }
+
+            $em->flush();
+        } finally {
+            $filters->enable('archivable');
         }
-
-        $em->flush();
-
-        $filters->enable('archivable');
     }
 
     /**
@@ -105,21 +107,23 @@ class RecurringInvoiceRepository extends ServiceEntityRepository
 
         $em->getFilters()->disable('archivable');
 
-        foreach ($ids as $id) {
-            $invoice = $this->find($id);
+        try {
+            foreach ($ids as $id) {
+                $invoice = $this->find($id);
 
-            if (! $invoice instanceof RecurringInvoice) {
-                continue;
+                if (! $invoice instanceof RecurringInvoice) {
+                    continue;
+                }
+
+                $invoice->setArchived(null);
+
+                $em->persist($invoice);
             }
 
-            $invoice->setArchived(null);
-
-            $em->persist($invoice);
+            $em->flush();
+        } finally {
+            $em->getFilters()->enable('archivable');
         }
-
-        $em->flush();
-
-        $em->getFilters()->enable('archivable');
     }
 
     /**
@@ -204,7 +208,7 @@ class RecurringInvoiceRepository extends ServiceEntityRepository
         foreach ($activeInvoices as $invoice) {
             $nextRunDate = $this->recurringSchedule->getNextRunDate($invoice->getRecurringOptions());
 
-            if ($nextRunDate && $nextRunDate->diffInDays($now, false) <= $days) {
+            if ($nextRunDate && $nextRunDate->isAfter($now) && $nextRunDate->diffInDays($now) <= $days) {
                 $count++;
             }
         }
@@ -267,6 +271,10 @@ class RecurringInvoiceRepository extends ServiceEntityRepository
             }
 
             $recurringType = $invoice->getRecurringOptions()->getType();
+
+            if (null === $recurringType) {
+                continue;
+            }
 
             // Normalize to monthly revenue
             $monthlyAmount = match ($recurringType) {

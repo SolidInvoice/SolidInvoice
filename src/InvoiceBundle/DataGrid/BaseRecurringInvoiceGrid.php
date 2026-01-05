@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -63,13 +65,31 @@ abstract class BaseRecurringInvoiceGrid extends Grid
                 ->twigFunction('invoice_label')
                 ->filter(ChoiceFilter::new('status', Graph::statusArray())->multiple()),
             MoneyColumn::new('total')
-                ->formatValue(fn (float|BigNumber $value, RecurringInvoice $invoice) => new Money((string) $value, $invoice->getClient()?->getCurrency())),
+                ->formatValue(function (float|BigNumber $value, RecurringInvoice $invoice): Money {
+                    $client = $invoice->getClient();
+                    if ($client === null) {
+                        throw new \InvalidArgumentException(sprintf('RecurringInvoice #%s must have a client with currency', $invoice->getId()));
+                    }
+                    return new Money((string) $value, $client->getCurrency());
+                }),
             MoneyColumn::new('tax')
-                ->formatValue(fn (float|BigNumber $value, RecurringInvoice $invoice) => new Money((string) $value, $invoice->getClient()?->getCurrency())),
+                ->formatValue(function (float|BigNumber $value, RecurringInvoice $invoice): Money {
+                    $client = $invoice->getClient();
+                    if ($client === null) {
+                        throw new \InvalidArgumentException(sprintf('RecurringInvoice #%s must have a client with currency', $invoice->getId()));
+                    }
+                    return new Money((string) $value, $client->getCurrency());
+                }),
             MoneyColumn::new('discount.value')
                 ->label('Discount')
                 ->searchable(false)
-                ->formatValue(fn (float|BigNumber $value, RecurringInvoice $invoice) => new Money((string) $value, $invoice->getClient()?->getCurrency())),
+                ->formatValue(function (float|BigNumber $value, RecurringInvoice $invoice): Money {
+                    $client = $invoice->getClient();
+                    if ($client === null) {
+                        throw new \InvalidArgumentException(sprintf('RecurringInvoice #%s must have a client with currency', $invoice->getId()));
+                    }
+                    return new Money((string) $value, $client->getCurrency());
+                }),
         ];
     }
 
