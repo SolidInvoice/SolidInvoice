@@ -122,6 +122,7 @@ invoice:
         archived: 'Archived'
         label: 'Invoice list navigation'
         recurring_active: 'Active'
+        recurring_completed: 'Completed'
         recurring_archived: 'Archived'
     stats:
         total_invoices: 'Total Invoices'
