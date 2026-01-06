@@ -36,8 +36,8 @@ class Payex extends AbstractType
             'encryption_key',
             PasswordType::class,
             [
-                'always_empty' => false,
                 'constraints' => new NotBlank(),
+                'always_empty' => false,
             ]
         );
 

@@ -1,0 +1,829 @@
+/**
+ * Payment Marketplace Styles
+ * Only custom styles that can't be achieved with Bootstrap/Tabler utilities
+ */
+
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
+
+// ============================================================================
+// Payment Marketplace Container
+// ============================================================================
+
+.payment-marketplace {
+    padding-bottom: var(--swp-space-8);
+}
+
+// ============================================================================
+// Mobile Tabs Navigation
+// ============================================================================
+
+.payment-marketplace > .nav-tabs {
+    border-bottom: 1px solid var(--swp-border);
+
+    .nav-link {
+        padding: var(--swp-space-3) var(--swp-space-4);
+        font-size: var(--swp-text-sm);
+        font-weight: 500;
+        color: var(--swp-text-secondary);
+        border: none;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -1px;
+        background: transparent;
+        display: flex;
+        align-items: center;
+        gap: var(--swp-space-2);
+        transition: var(--swp-transition-colors);
+
+        &:hover {
+            color: var(--swp-primary);
+            border-bottom-color: rgba(var(--swp-primary-rgb), 0.3);
+        }
+
+        &.active {
+            color: var(--swp-primary);
+            border-bottom-color: var(--swp-primary);
+            background: transparent;
+        }
+
+        .badge-sm {
+            font-size: 0.625rem;
+            padding: 0.125rem 0.375rem;
+            font-weight: 600;
+        }
+    }
+}
+
+// ============================================================================
+// Marketplace Panel - Left Side
+// ============================================================================
+
+.marketplace-panel {
+    position: sticky;
+    top: var(--swp-space-4);
+    max-height: calc(100vh - var(--swp-space-16));
+    overflow-y: auto;
+    padding: var(--swp-space-6);
+    background: var(--swp-surface);
+    border-radius: var(--swp-radius-lg);
+    border: 1px solid var(--swp-border-light);
+    box-shadow: var(--swp-shadow-sm);
+
+    // Custom scrollbar styling
+    &::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: var(--swp-gray-100);
+        border-radius: var(--swp-radius-full);
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: var(--swp-gray-300);
+        border-radius: var(--swp-radius-full);
+        transition: var(--swp-transition-colors);
+
+        &:hover {
+            background: var(--swp-gray-400);
+        }
+    }
+}
+
+.marketplace-header {
+    h5 {
+        font-size: var(--swp-text-lg);
+        font-weight: 600;
+        color: var(--swp-text-primary);
+        letter-spacing: -0.01em;
+    }
+
+    p {
+        line-height: 1.5;
+    }
+
+    .input-group {
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        border-radius: var(--swp-radius-md);
+        overflow: hidden;
+
+        .input-group-text {
+            border-right: 0;
+            color: var(--swp-text-muted);
+            background: var(--swp-surface);
+        }
+
+        .form-control {
+            border-left: 0;
+            padding-left: 0;
+            background: var(--swp-surface);
+
+            &:focus {
+                box-shadow: 0 0 0 3px rgba(var(--swp-primary-rgb), 0.1);
+                border-color: var(--swp-primary);
+
+                ~ .input-group-text {
+                    border-color: var(--swp-primary);
+                }
+            }
+
+            &::placeholder {
+                color: var(--swp-text-muted);
+                opacity: 0.6;
+            }
+        }
+    }
+}
+
+// ============================================================================
+// Gateway Cards Grid
+// ============================================================================
+
+.gateway-grid {
+    display: grid;
+    gap: var(--swp-space-3);
+}
+
+.gateway-card {
+    background: var(--swp-surface);
+    border: 1px solid var(--swp-border-light);
+    border-radius: var(--swp-radius-lg);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    position: relative;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+
+    &:hover {
+        border-color: var(--swp-primary);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 0 0 1px var(--swp-primary);
+        transform: translateY(-2px);
+
+        .gateway-icon {
+            background: linear-gradient(135deg, var(--swp-primary-light) 0%, var(--swp-primary) 100%);
+            color: var(--swp-primary);
+            box-shadow: 0 4px 8px rgba(var(--swp-primary-rgb), 0.2);
+        }
+    }
+
+    &.is-configured {
+        background: linear-gradient(135deg, rgba(var(--swp-success-rgb), 0.05) 0%, rgba(var(--swp-success-rgb), 0.02) 100%);
+        border-color: rgba(var(--swp-success-rgb), 0.3);
+
+        .gateway-icon {
+            background: linear-gradient(135deg, var(--swp-success-light) 0%, var(--swp-success) 100%);
+            color: white;
+        }
+
+        &:hover {
+            background: linear-gradient(135deg, rgba(var(--swp-success-rgb), 0.08) 0%, rgba(var(--swp-success-rgb), 0.04) 100%);
+            border-color: var(--swp-success);
+        }
+    }
+
+    &.is-custom-gateway {
+        background: linear-gradient(135deg, rgba(var(--swp-primary-rgb), 0.04) 0%, rgba(var(--swp-primary-rgb), 0.01) 100%);
+        border: 2px dashed rgba(var(--swp-primary-rgb), 0.3);
+        position: relative;
+        margin-bottom: var(--swp-space-6);
+
+        // Add horizontal divider after custom gateway
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: calc(-1 * var(--swp-space-6) / 2);
+            left: var(--swp-space-4);
+            right: var(--swp-space-4);
+            height: 1px;
+            background: linear-gradient(90deg,
+                transparent 0%,
+                var(--swp-border) 15%,
+                var(--swp-border) 85%,
+                transparent 100%);
+        }
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, var(--swp-primary), var(--swp-primary-dark));
+            border-radius: var(--swp-radius-lg);
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.2s ease;
+        }
+
+        .gateway-icon {
+            background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.2) 100%);
+            color: var(--swp-primary);
+            border: 2px solid rgba(var(--swp-primary-rgb), 0.2);
+        }
+
+        &:hover {
+            background: linear-gradient(135deg, rgba(var(--swp-primary-rgb), 0.08) 0%, rgba(var(--swp-primary-rgb), 0.02) 100%);
+            border-color: var(--swp-primary);
+            border-style: solid;
+
+            &::before {
+                opacity: 0.08;
+            }
+
+            .gateway-icon {
+                background: linear-gradient(135deg, var(--swp-primary) 0%, var(--swp-primary-dark) 100%);
+                color: white;
+                border-color: var(--swp-primary);
+            }
+        }
+    }
+
+    .gateway-card-body {
+        padding: var(--swp-space-4);
+    }
+
+    .gateway-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 52px;
+        height: 52px;
+        background: linear-gradient(135deg, var(--swp-gray-100) 0%, var(--swp-gray-200) 100%);
+        border-radius: var(--swp-radius-lg);
+        color: var(--swp-text-secondary);
+        flex-shrink: 0;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+    }
+
+    h6 {
+        font-size: var(--swp-text-base);
+        font-weight: 600;
+        color: var(--swp-text-primary);
+        margin-bottom: 0;
+        letter-spacing: -0.01em;
+    }
+
+    .text-muted {
+        font-size: var(--swp-text-sm);
+        line-height: 1.5;
+        color: var(--swp-text-muted);
+    }
+
+    .btn {
+        font-size: var(--swp-text-sm);
+        padding: var(--swp-space-2) var(--swp-space-3);
+        display: inline-flex;
+        align-items: center;
+        gap: var(--swp-space-1);
+        font-weight: 500;
+        transition: all 0.2s ease;
+
+        &:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(var(--swp-primary-rgb), 0.2);
+        }
+    }
+
+    .badge-sm {
+        font-size: 0.625rem;
+        padding: 0.2rem 0.5rem;
+        font-weight: 600;
+        border-radius: var(--swp-radius-full);
+        letter-spacing: 0.02em;
+    }
+}
+
+// ============================================================================
+// Active Methods Panel - Right Side
+// ============================================================================
+
+.active-methods-panel {
+    h5 {
+        font-size: var(--swp-text-lg);
+        font-weight: 600;
+        color: var(--swp-text-primary);
+        letter-spacing: -0.01em;
+    }
+
+    > .d-flex > .badge {
+        font-size: 0.75rem;
+        padding: 0.35rem 0.75rem;
+        font-weight: 600;
+        border-radius: var(--swp-radius-full);
+        background: linear-gradient(135deg, var(--swp-gray-100) 0%, var(--swp-gray-200) 100%);
+        color: var(--swp-text-primary);
+        border: 1px solid var(--swp-border-light);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+}
+
+.active-methods-list {
+    display: grid;
+    gap: var(--swp-space-3);
+}
+
+.active-method-card {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid var(--swp-border-light);
+    border-radius: var(--swp-radius-lg);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+    background: var(--swp-surface);
+
+    &:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(var(--swp-primary-rgb), 0.1);
+        transform: translateY(-2px);
+        border-color: rgba(var(--swp-primary-rgb), 0.2);
+
+        .payment-method-icon {
+            background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.15) 100%);
+            box-shadow: 0 4px 8px rgba(var(--swp-primary-rgb), 0.15);
+            color: var(--swp-primary);
+        }
+
+        .btn-outline-secondary {
+            border-color: var(--swp-primary);
+            color: var(--swp-primary);
+            background: rgba(var(--swp-primary-rgb), 0.04);
+        }
+    }
+
+    .card-body {
+        padding: var(--swp-space-5);
+    }
+
+    h6 {
+        font-size: 1.0625rem;
+        font-weight: 600;
+        color: var(--swp-text-primary);
+        margin-bottom: 0;
+        letter-spacing: -0.01em;
+    }
+
+    .payment-method-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 56px;
+        height: 56px;
+        background: linear-gradient(135deg, var(--swp-gray-100) 0%, var(--swp-gray-200) 100%);
+        border-radius: var(--swp-radius-lg);
+        color: var(--swp-text-secondary);
+        flex-shrink: 0;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+
+        svg {
+            width: 28px;
+            height: 28px;
+        }
+    }
+
+    .badge {
+        font-size: 0.6875rem;
+        padding: 0.3rem 0.75rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: var(--swp-space-1);
+        border-radius: var(--swp-radius-full);
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+
+        &.bg-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+            color: white;
+            box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+        }
+
+        &.bg-secondary {
+            background: linear-gradient(135deg, var(--swp-gray-400) 0%, var(--swp-gray-500) 100%) !important;
+            color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    }
+
+    .btn {
+        padding: var(--swp-space-2) var(--swp-space-3);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+        border-radius: var(--swp-radius-md);
+        min-width: 40px;
+        min-height: 40px;
+
+        &:hover {
+            transform: translateY(-1px);
+        }
+
+        &.btn-outline-secondary {
+            border-width: 1.5px;
+            font-weight: 500;
+
+            svg {
+                width: 18px;
+                height: 18px;
+            }
+        }
+    }
+}
+
+// ============================================================================
+// Empty States
+// ============================================================================
+
+.empty-state {
+    padding: var(--swp-space-12) var(--swp-space-4);
+
+    svg {
+        opacity: 0.3;
+    }
+
+    p {
+        font-size: var(--swp-text-sm);
+        color: var(--swp-text-muted);
+    }
+}
+
+.empty-state-card {
+    .card {
+        border: 2px dashed var(--swp-border);
+        background: var(--swp-gray-50);
+        transition: var(--swp-transition-all);
+
+        &:hover {
+            border-color: var(--swp-primary);
+            background: var(--swp-primary-lighter);
+        }
+    }
+
+    svg {
+        opacity: 0.3;
+        color: var(--swp-text-muted);
+    }
+
+    h5 {
+        font-size: var(--swp-text-lg);
+        font-weight: 600;
+        color: var(--swp-text-primary);
+    }
+
+    p {
+        font-size: var(--swp-text-sm);
+        color: var(--swp-text-secondary);
+    }
+}
+
+// ============================================================================
+// Configuration Form Styles
+// ============================================================================
+
+.payment-marketplace {
+    // Fix close button alignment in card header
+    .card-header {
+        .d-flex {
+            width: 100%;
+
+            > div:first-child {
+                flex: 1;
+            }
+
+            .btn-icon {
+                flex-shrink: 0;
+            }
+        }
+    }
+
+    // Add spacing between form switch fields (the containers with backgrounds)
+    form {
+        .form-switch-field + .form-switch-field {
+            margin-top: var(--swp-space-4);
+        }
+
+        // Add spacing between regular form fields
+        .mb-3 + .mb-3 {
+            margin-top: var(--swp-space-3);
+        }
+    }
+}
+
+// ============================================================================
+// Payment Configuration Modal
+// ============================================================================
+
+.payment-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1040;
+    animation: fadeIn 0.2s ease;
+    backdrop-filter: blur(2px);
+}
+
+.payment-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1050;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--swp-space-4);
+    animation: fadeIn 0.2s ease;
+    overflow-y: auto;
+}
+
+.payment-modal-container {
+    background: var(--swp-surface);
+    border-radius: var(--swp-radius-xl);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+                0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    width: 100%;
+    max-width: 800px;
+    max-height: calc(100vh - var(--swp-space-8));
+    display: flex;
+    flex-direction: column;
+    animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.payment-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--swp-space-6);
+    border-bottom: 1px solid var(--swp-border);
+    flex-shrink: 0;
+}
+
+.payment-modal-title {
+    font-size: var(--swp-text-xl);
+    font-weight: 600;
+    color: var(--swp-text-primary);
+    margin: 0;
+}
+
+.payment-modal-close {
+    flex-shrink: 0;
+    margin-left: var(--swp-space-4);
+}
+
+.payment-modal-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--swp-space-6);
+
+    // Remove card styling from PaymentSettings when inside modal
+    > div > .card {
+        border: none;
+        box-shadow: none;
+        background: transparent;
+
+        .card-header {
+            display: none; // Hide the card header since modal has its own
+        }
+
+        .card-body {
+            padding: 0;
+        }
+
+        .card-footer {
+            padding: var(--swp-space-6) 0 0 0;
+            border-top: 1px solid var(--swp-border);
+            margin-top: var(--swp-space-6);
+            background: transparent;
+        }
+    }
+}
+
+// Animations
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+// Mobile adaptations
+@include media-breakpoint-down(md) {
+    .payment-modal {
+        padding: 0;
+        align-items: flex-end;
+    }
+
+    .payment-modal-container {
+        max-width: 100%;
+        max-height: 90vh;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        animation: slideUpMobile 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes slideUpMobile {
+        from {
+            transform: translateY(100%);
+        }
+        to {
+            transform: translateY(0);
+        }
+    }
+}
+
+// ============================================================================
+// Delete Confirmation Nested Modal
+// ============================================================================
+
+.delete-confirmation-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1060;
+    animation: fadeIn 0.15s ease;
+    backdrop-filter: blur(4px);
+}
+
+.delete-confirmation-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1070;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--swp-space-4);
+    animation: fadeIn 0.15s ease;
+}
+
+.delete-confirmation-container {
+    background: var(--swp-surface);
+    border-radius: var(--swp-radius-lg);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    width: 100%;
+    max-width: 480px;
+    animation: scaleIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.delete-confirmation-header {
+    padding: var(--swp-space-6);
+    border-bottom: 1px solid var(--swp-border);
+
+    h4 {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: var(--swp-text-primary);
+    }
+
+    .delete-icon-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+        border-radius: var(--swp-radius-md);
+        background: var(--swp-danger-light);
+        flex-shrink: 0;
+    }
+}
+
+.delete-confirmation-body {
+    padding: var(--swp-space-6);
+    color: var(--swp-text-secondary);
+    line-height: 1.6;
+}
+
+.delete-confirmation-footer {
+    padding: var(--swp-space-4) var(--swp-space-6);
+    border-top: 1px solid var(--swp-border);
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--swp-space-3);
+    background: var(--swp-gray-50);
+    border-bottom-left-radius: var(--swp-radius-lg);
+    border-bottom-right-radius: var(--swp-radius-lg);
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+// Prevent body scroll when modal is open
+body:has(.payment-modal) {
+    overflow: hidden;
+}
+
+// ============================================================================
+// Utility Classes
+// ============================================================================
+
+.min-w-0 {
+    min-width: 0;
+}
+
+.badge-sm {
+    font-size: 0.625rem;
+    padding: 0.125rem 0.5rem;
+    font-weight: 500;
+    border-radius: var(--swp-radius-sm);
+}
+
+// ============================================================================
+// Mobile Responsive
+// ============================================================================
+
+@include media-breakpoint-down(md) {
+    .marketplace-panel {
+        position: static;
+        max-height: none;
+        margin-bottom: var(--swp-space-4);
+    }
+
+    .gateway-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .active-method-card {
+        .d-flex {
+            flex-direction: column;
+            align-items: flex-start !important;
+            gap: var(--swp-space-3);
+
+            .btn-group,
+            .d-flex.gap-2 {
+                width: 100%;
+
+                .btn {
+                    flex: 1;
+                }
+            }
+        }
+    }
+
+    // Horizontal scrolling tabs on mobile
+    .payment-marketplace > .nav-tabs {
+        margin-left: calc(var(--swp-space-4) * -1);
+        margin-right: calc(var(--swp-space-4) * -1);
+        padding-left: var(--swp-space-4);
+        padding-right: var(--swp-space-4);
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        flex-wrap: nowrap;
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-item {
+            flex-shrink: 0;
+        }
+    }
+}
+
+// ============================================================================
+// Print Styles
+// ============================================================================
+
+@media print {
+    .payment-marketplace {
+        .nav-tabs,
+        .marketplace-panel,
+        .btn {
+            display: none !important;
+        }
+
+        .active-method-card {
+            break-inside: avoid;
+        }
+    }
+}

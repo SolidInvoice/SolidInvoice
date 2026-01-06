@@ -1,14 +1,34 @@
 <html><body>
-<div id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="PaymentSettings" data-live-url-value="/_components/PaymentSettings" data-live-query-mapping-value='{"method":{"name":"method"}}' data-live-props-value='{"method":"authorize_net_aim","formName":"payment_methods","payment_methods":{"name":"","enabled":null,"internal":null,"config":{"login_id":"","transaction_key":"","sandbox":null},"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
-    <div class="card">
-        <div class="card-header with-border">
-            <h3 class="card-title">
-                Add New Authorize Net Aim Payment Method
-            </h3>
-        </div>
+<div id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="PaymentSettings" data-live-url-value="/_components/PaymentSettings" data-live-query-mapping-value='{"method":{"name":"method"}}' data-live-props-value='{"method":"authorize_net_aim","showDeleteConfirmation":null,"formName":"payment_methods","payment_methods":{"name":"","enabled":null,"internal":null,"config":{"login_id":"","transaction_key":"","sandbox":null},"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
+    
 
-        <div class="card-body">
-            <form name="payment_methods" method="post" data-model="on(change)|*" data-action="live#action:prevent" data-live-action-param="save">
+
+
+<div class="card">
+    
+    
+                    
+                
+                    <div class="card-header">
+                            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <h3 class="card-title mb-1 d-flex align-items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="20" height="20" class="text-primary" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3zm0 2h18M7 15h.01M11 15h2"></path></svg>
+                        Configure Authorize Net Aim
+                    </h3>
+                    <p class="text-muted small mb-0">
+                        Configure payment gateway settings and credentials
+                    </p>
+                </div>
+                <a href="/payments/methods" class="btn btn-ghost btn-icon" aria-label="Close">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 6L6 18M6 6l12 12"></path></svg>
+                </a>
+            </div>
+                    </div>
+        
+                                            <div class="card-body">
+                    <form name="payment_methods" method="post" data-model="on(change)|*" data-action="live#action:prevent" data-live-action-param="save">
+            <div class="mb-4">
                 <div id="payment_methods" data-model="on(change)|*">
 <div class="mb-3">                
                                 <label class="control-label required form-label required" for="payment_methods_name">Name</label><input type="text" id="payment_methods_name" name="payment_methods[name]" data-required="required" maxlength="125" class="form-control">
@@ -42,15 +62,27 @@
 </fieldset>
 <input type="hidden" id="payment_methods__token" name="payment_methods[_token]" data-controller="csrf-protection">
 </div>
+            </div>
+        </form>
 
-                <div class="form-group">
-                    
-                    <button data-loading="addAttribute(disabled)" type="submit" class="btn-success btn float-right">
-                        <i class="fa fa-save"></i> Save
-                    </button>
+        
                 </div>
-            </form>
+                    
+                
+                    <div class="card-footer">
+                            <div class="d-flex justify-content-between align-items-center gap-3">
+                                    <a href="/payments/methods" class="btn btn-ghost d-flex align-items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 6L6 18M6 6l12 12"></path></svg>
+                        <span>Close</span>
+                    </a>
+                                <button type="submit" class="btn btn-primary d-flex align-items-center gap-2" data-action="live#action" data-live-action-param="save" data-loading="addAttribute(disabled)" aria-label="Save payment method">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M6 4h10l4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2"></path><path d="M10 14a2 2 0 1 0 4 0a2 2 0 1 0-4 0m4-10v4H8V4"></path></g></svg>
+                    <span>Save Payment Method</span>
+                </button>
+            </div>
+                    </div>
+        
+                    </div>
+
         </div>
-    </div>
-</div>
 </body></html>

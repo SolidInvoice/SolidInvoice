@@ -36,8 +36,8 @@ class Be2billOffsite extends AbstractType
             'password',
             PasswordType::class,
             [
-                'always_empty' => false,
                 'constraints' => new NotBlank(),
+                'always_empty' => false,
             ]
         );
 
