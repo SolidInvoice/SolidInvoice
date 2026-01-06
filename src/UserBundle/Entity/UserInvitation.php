@@ -23,17 +23,18 @@ use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Uid\Ulid;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: UserInvitation::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: UserInvitationRepository::class)]
 #[UniqueEntity(fields: ['email', 'company'], message: 'users.invitation.exists')]
 class UserInvitation
 {
-    final public const TABLE_NAME = 'user_invitations';
+    final public const string TABLE_NAME = 'user_invitations';
 
     use CompanyAware;
 
-    final public const STATUS_PENDING = 'pending';
+    final public const string STATUS_PENDING = 'pending';
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
@@ -42,6 +43,8 @@ class UserInvitation
     private ?Ulid $id = null;
 
     #[ORM\Column(type: Types::STRING, length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Email(mode: Assert\Email::VALIDATION_MODE_STRICT)]
     private string $email = '';
 
     #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE)]

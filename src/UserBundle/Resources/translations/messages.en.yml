@@ -64,7 +64,7 @@ security:
         success: 'Your account has been created. Please verify your email address before logging in.'
 
 users:
-  invite: 'Invite User'
+  invite_user: 'Invite User'
   invitation:
     success: 'Invitation sent successfully!'
     accept:
@@ -84,6 +84,31 @@ users:
     actions:
         edit: 'Edit'
         delete: 'Delete'
+  stats:
+    active_users: 'Active Users'
+    pending_invitations: 'Pending Invitations'
+    recently_joined: 'Recently Joined (30d)'
+  tabs:
+    active_users: 'Active Users'
+    pending_invitations: 'Pending Invitations'
+  empty:
+    title: 'No users yet'
+    description: 'Get started by inviting your first team member to collaborate.'
+  invitations:
+    empty:
+      title: 'No pending invitations'
+      description: 'All invitations have been accepted or there are no pending invitations.'
+  invite:
+    title: 'Invite User'
+    subtitle: 'Send an invitation to a new user to join your organization'
+    details:
+      title: 'Invitation Details'
+      description: 'Enter the email address of the person you want to invite'
+    email:
+      label: 'Email Address'
+      help: 'The user will receive an invitation email with instructions to set up their account'
+    send: 'Send Invitation'
+    info: 'The invited user will receive an email with a link to accept the invitation and set up their account. The invitation link will expire after 7 days.'
 
 change_password:
     submit: 'Save'

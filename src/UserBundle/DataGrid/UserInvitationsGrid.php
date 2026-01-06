@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -14,7 +16,8 @@ namespace SolidInvoice\UserBundle\DataGrid;
 use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
 use SolidInvoice\DataGridBundle\Grid;
 use SolidInvoice\DataGridBundle\GridBuilder\Action\Action;
-use SolidInvoice\DataGridBundle\GridBuilder\Column\DateTimeColumn;
+use SolidInvoice\DataGridBundle\GridBuilder\Column\RelativeDateColumn;
+use SolidInvoice\DataGridBundle\GridBuilder\Column\StatusColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
 use SolidInvoice\UserBundle\Entity\UserInvitation;
 
@@ -29,10 +32,19 @@ final class UserInvitationsGrid extends Grid
     public function columns(): array
     {
         return [
-            StringColumn::new('email'),
-            DateTimeColumn::new('created'),
-            StringColumn::new('status'),
-            StringColumn::new('invitedBy'),
+            StringColumn::new('email')
+                ->label('Email Address'),
+            RelativeDateColumn::new('created')
+                ->label('Invited'),
+            StatusColumn::new('status')
+                ->label('Status')
+                ->statusMap([
+                    'pending' => 'warning',
+                    'accepted' => 'success',
+                    'expired' => 'danger',
+                ]),
+            StringColumn::new('invitedBy.email')
+                ->label('Invited By'),
         ];
     }
 
@@ -41,7 +53,7 @@ final class UserInvitationsGrid extends Grid
         return [
             Action::new('_user_resend_invite', ['id' => 'id'])
                 ->label('Resend Invitation')
-                ->icon('envelope')
+                ->icon('mail'),
         ];
     }
 }

@@ -14,11 +14,27 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Action;
 
 use SolidInvoice\CoreBundle\Templating\Template;
+use SolidInvoice\UserBundle\Repository\UserInvitationRepository;
+use SolidInvoice\UserBundle\Repository\UserRepository;
 
 final class Users
 {
+    public function __construct(
+        private readonly UserRepository $userRepository,
+        private readonly UserInvitationRepository $invitationRepository,
+    ) {
+    }
+
     public function __invoke(): Template
     {
-        return new Template('@SolidInvoiceUser/Users/index.html.twig');
+        $totalActiveUsers = $this->userRepository->getUserCount();
+        $totalPendingInvitations = $this->invitationRepository->countPendingInvitations();
+        $recentlyJoinedCount = $this->userRepository->getRecentlyJoinedCount(30);
+
+        return new Template('@SolidInvoiceUser/Users/index.html.twig', [
+            'totalActiveUsers' => $totalActiveUsers,
+            'totalPendingInvitations' => $totalPendingInvitations,
+            'recentlyJoinedCount' => $recentlyJoinedCount,
+        ]);
     }
 }

@@ -1,41 +1,163 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
 {% extends '@SolidInvoiceCore/Layout/default.html.twig' %}
 
-{% block title %}{{ 'users.title'|trans }}{% endblock title %}
-
-{% block content %}
-    <div class="widget">
-        {#{{ render_multiple_grid('users_list', 'users_invitations') }}#}
-        {#<twig:DataGrid name="users_list" />#}
-
-        <div class="mb-2">
-            <div class="float-right">
-                <div class="btn-group btn-group-sm" role="group">
-                    <a href="?grid=users" class="btn btn-dark{{ app.request.query.get('grid', 'users') is same as('users') ? ' active disabled' }}">
-                        {{ icon('user') }}
-                        {{ 'Users'|trans }}
-                    </a>
-                    <a href="?grid=invitations" class="btn btn-dark{{ app.request.query.get('grid') is same as('invitations') ? ' active disabled' }}">
-                        {{ icon('envelope') }}
-                        {{ 'Invitations'|trans }}
-                    </a>
-                </div>
-            </div>
-            <br class="clear">
-        </div>
-
-        {% if app.request.query.get('grid', 'users') is same as('users') %}
-            <twig:DataGrid name="users_list" />
-        {% else %}
-            <twig:DataGrid name="user_invitations" />
-        {% endif %}
-    </div>
-{% endblock content %}
+{% block title %}
+    {{ ux_icon('tabler:users', {width: 24, height: 24, class: 'me-2'}) }}
+    {{ 'users.title'|trans }}
+{% endblock title %}
 
 {% block heading %}
-    <div class="float-right header-button">
-        <a class="btn btn-info" href="{{ path("_user_invite") }}">
-            {{ icon('user') }} {{ "users.invite"|trans }}
-        </a>
+    <a class="btn btn-primary" href="{{ path("_user_invite") }}">
+        {{ ux_icon('tabler:user-plus', {width: 18, height: 18}) }}
+        {{ "users.invite_user"|trans }}
+    </a>
+{% endblock %}
+
+{% block content %}
+    {# KPI Stats Row #}
+    <div class="row row-deck row-cards mb-4">
+        <div class="col-sm-6 col-lg-4">
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="bg-primary text-white avatar">
+                                {{ ux_icon('tabler:users', {width: 24, height: 24}) }}
+                            </span>
+                        </div>
+                        <div class="col">
+                            <div class="font-weight-medium">
+                                {{ totalActiveUsers }}
+                            </div>
+                            <div class="text-secondary">
+                                {{ 'users.stats.active_users'|trans }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-4">
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="bg-warning text-white avatar">
+                                {{ ux_icon('tabler:mail-forward', {width: 24, height: 24}) }}
+                            </span>
+                        </div>
+                        <div class="col">
+                            <div class="font-weight-medium">
+                                {{ totalPendingInvitations }}
+                            </div>
+                            <div class="text-secondary">
+                                {{ 'users.stats.pending_invitations'|trans }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-4">
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="bg-info text-white avatar">
+                                {{ ux_icon('tabler:user-check', {width: 24, height: 24}) }}
+                            </span>
+                        </div>
+                        <div class="col">
+                            <div class="font-weight-medium">
+                                {{ recentlyJoinedCount }}
+                            </div>
+                            <div class="text-secondary">
+                                {{ 'users.stats.recently_joined'|trans }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <br class="clear" />
+
+    {# Users & Invitations Card with Tabs #}
+    <twig:Ui:Card>
+        <twig:block name="header">
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button type="button" class="nav-link active" data-bs-toggle="tab" data-bs-target="#users-tab" role="tab" aria-controls="users-tab" aria-selected="true">
+                            {{ ux_icon('tabler:users', {width: 16, height: 16}) }}
+                            {{ 'users.tabs.active_users'|trans }}
+                            <span class="badge bg-primary-lt ms-2">{{ totalActiveUsers }}</span>
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button type="button" class="nav-link" data-bs-toggle="tab" data-bs-target="#invitations-tab" role="tab" aria-controls="invitations-tab" aria-selected="false">
+                            {{ ux_icon('tabler:mail', {width: 16, height: 16}) }}
+                            {{ 'users.tabs.pending_invitations'|trans }}
+                            <span class="badge bg-warning-lt ms-2">{{ totalPendingInvitations }}</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </twig:block>
+
+        <div class="tab-content">
+            <div class="tab-pane active show" id="users-tab" role="tabpanel" aria-labelledby="users-tab">
+                {% if totalActiveUsers == 0 %}
+                    <div class="empty">
+                        <div class="empty-icon">
+                            {{ ux_icon('tabler:users', {width: 48, height: 48, class: 'text-secondary'}) }}
+                        </div>
+                        <p class="empty-title">{{ 'users.empty.title'|trans }}</p>
+                        <p class="empty-subtitle text-secondary">
+                            {{ 'users.empty.description'|trans }}
+                        </p>
+                        <div class="empty-action">
+                            <a href="{{ path('_user_invite') }}" class="btn btn-primary">
+                                {{ ux_icon('tabler:user-plus', {width: 18, height: 18}) }}
+                                {{ 'users.invite_user'|trans }}
+                            </a>
+                        </div>
+                    </div>
+                {% else %}
+                    <twig:DataGrid name="users_list" />
+                {% endif %}
+            </div>
+
+            <div class="tab-pane" id="invitations-tab" role="tabpanel" aria-labelledby="invitations-tab">
+                {% if totalPendingInvitations == 0 %}
+                    <div class="empty">
+                        <div class="empty-icon">
+                            {{ ux_icon('tabler:mail-opened', {width: 48, height: 48, class: 'text-secondary'}) }}
+                        </div>
+                        <p class="empty-title">{{ 'users.invitations.empty.title'|trans }}</p>
+                        <p class="empty-subtitle text-secondary">
+                            {{ 'users.invitations.empty.description'|trans }}
+                        </p>
+                        <div class="empty-action">
+                            <a href="{{ path('_user_invite') }}" class="btn btn-primary">
+                                {{ ux_icon('tabler:user-plus', {width: 18, height: 18}) }}
+                                {{ 'users.invite_user'|trans }}
+                            </a>
+                        </div>
+                    </div>
+                {% else %}
+                    <twig:DataGrid name="user_invitations" />
+                {% endif %}
+            </div>
+        </div>
+    </twig:Ui:Card>
 {% endblock %}

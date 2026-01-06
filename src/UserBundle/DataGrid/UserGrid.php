@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -13,7 +15,8 @@ namespace SolidInvoice\UserBundle\DataGrid;
 
 use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
 use SolidInvoice\DataGridBundle\Grid;
-use SolidInvoice\DataGridBundle\GridBuilder\Column\DateTimeColumn;
+use SolidInvoice\DataGridBundle\GridBuilder\Column\RelativeDateColumn;
+use SolidInvoice\DataGridBundle\GridBuilder\Column\StatusColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
 use SolidInvoice\UserBundle\Entity\User;
 
@@ -28,17 +31,23 @@ final class UserGrid extends Grid
     public function columns(): array
     {
         return [
-            StringColumn::new('email'),
-            StringColumn::new('mobile'),
-            DateTimeColumn::new('lastLogin'),
-            StringColumn::new('enabled'),
+            StringColumn::new('email')
+                ->label('Email Address'),
+            StringColumn::new('mobile')
+                ->label('Mobile')
+                ->formatValue(fn ($value) => $value ?: '—'),
+            RelativeDateColumn::new('created')
+                ->label('Joined'),
+            RelativeDateColumn::new('lastLogin')
+                ->label('Last Login')
+                ->formatValue(fn ($value) => $value ?: 'Never'),
+            StatusColumn::new('enabled')
+                ->label('Status')
+                ->formatValue(fn ($value) => $value ? 'Active' : 'Disabled')
+                ->statusMap([
+                    'active' => 'success',
+                    'disabled' => 'danger',
+                ]),
         ];
     }
-
-    /*public function actions(): array
-    {
-        return [
-            Action::new('_user_resend_invite', ['id' => 'id'])
-        ];
-    }*/
 }

@@ -49,9 +49,25 @@ class UserRepository extends \SolidWorx\Platform\PlatformBundle\Repository\UserR
     {
         $qb = $this->createQueryBuilder('u');
 
-        $qb->select('u.id', 'u.email', 'u.enabled', 'u.created')
+        $qb->select('u.id', 'u.email', 'u.mobile', 'u.enabled', 'u.created', 'u.lastLogin')
             ->groupBy('u.id');
 
         return $qb;
+    }
+
+    public function getRecentlyJoinedCount(int $days = 30): int
+    {
+        $qb = $this->createQueryBuilder('u');
+        $date = new \DateTimeImmutable("-{$days} days");
+
+        $qb->select('COUNT(u.id)')
+            ->where('u.created >= :date')
+            ->setParameter('date', $date);
+
+        try {
+            return (int) $qb->getQuery()->getSingleScalarResult();
+        } catch (NoResultException|NonUniqueResultException|Exception $e) {
+            return 0;
+        }
     }
 }
