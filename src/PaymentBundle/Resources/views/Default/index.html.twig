@@ -37,7 +37,7 @@
                                 {% endif %}
                             </div>
                             <div class="text-secondary">
-                                Total Received
+                                {{ 'payment.stats.total_received'|trans }}
                             </div>
                         </div>
                     </div>
@@ -66,7 +66,7 @@
                                 {% endif %}
                             </div>
                             <div class="text-secondary">
-                                This Month
+                                {{ 'payment.stats.this_month'|trans }}
                             </div>
                         </div>
                     </div>
@@ -89,7 +89,7 @@
                                 {{ stats.pending_count }}
                             </div>
                             <div class="text-secondary">
-                                Pending
+                                {{ 'payment.stats.pending'|trans }}
                             </div>
                         </div>
                     </div>
@@ -112,7 +112,7 @@
                                 {{ stats.failed_count }}
                             </div>
                             <div class="text-secondary">
-                                Failed
+                                {{ 'payment.stats.failed'|trans }}
                             </div>
                         </div>
                     </div>
