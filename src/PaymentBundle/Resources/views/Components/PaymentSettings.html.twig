@@ -73,6 +73,8 @@
     {# Delete Confirmation Nested Modal #}
     {% if showDeleteConfirmation %}
         <div class="delete-confirmation-backdrop"
+             role="presentation"
+             aria-hidden="true"
              data-action="click->live#action"
              data-live-action-param="cancelDelete">
         </div>
