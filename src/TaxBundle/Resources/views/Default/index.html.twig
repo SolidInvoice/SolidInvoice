@@ -9,19 +9,22 @@
 
 {% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
-{% block title %}{{ 'tax.rates.title'|trans }}{% endblock title %}
+{% block title %}
+    {{ ux_icon('tabler:receipt-tax', {width: 24, height: 24, class: 'me-2'}) }}
+    {{ 'tax.rates.title'|trans }}
+{% endblock title %}
 
 {% block content %}
-    <div class="widget">
-	    <twig:DataGrid name="tax_grid" />
+    <div class="card">
+        <div class="card-body">
+            <twig:DataGrid name="tax_grid" />
+        </div>
     </div>
 {% endblock %}
 
 {% block heading %}
-    <div class="float-right header-button">
-        <a class="btn btn-info" href="{{ path("_tax_rates_add") }}">
-        {{ icon('money') }} {{ "tax.rates.add"|trans }}
-        </a>
-    </div>
-    <br class="clear" />
+    <a class="btn btn-primary" href="{{ path("_tax_rates_add") }}">
+        {{ ux_icon('tabler:plus', {width: 18, height: 18}) }}
+        {{ "tax.rates.add"|trans }}
+    </a>
 {% endblock %}
