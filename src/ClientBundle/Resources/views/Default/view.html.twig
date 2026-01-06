@@ -29,7 +29,7 @@
                 <div class="client-hero-meta">
                     {% if client.website %}
                         {% set website_url = client.website starts with 'http://' or client.website starts with 'https://' ? client.website : 'https://' ~ client.website %}
-                        <a href="{{ website_url }}" class="client-hero-meta-item" rel="external noopener" target="_blank">
+                        <a href="{{ website_url }}" class="client-hero-meta-item" rel="external noreferrer noopener" target="_blank">
                             {{ ux_icon('tabler:world', {width: 16, height: 16}) }}
                             <span>{{ client.website }}</span>
                             {{ ux_icon('tabler:external-link', {width: 14, height: 14}) }}
