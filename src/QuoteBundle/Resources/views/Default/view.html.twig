@@ -210,9 +210,11 @@
 
                         {% if quote.client.website is not empty %}
                             <div class="quote-party-detail">
-                                {{ ux_icon('tabler:world', {width: 14, height: 14}) }}
-                                <a href="{{ quote.client.website }}" rel="external" target="_blank" class="detail-value">
-                                    {{ quote.client.website }}
+                                {% set website_url = quote.client.website starts with 'http://' or quote.client.website starts with 'https://' ? quote.client.website : 'https://' ~ quote.client.website %}
+                                {{ ux_icon('tabler:world', {width: 16, height: 16}) }}
+                                <a href="{{ website_url }}" class="client-hero-meta-item" rel="external noreferrer noopener" target="_blank">
+                                    <span>{{ quote.client.website }}</span>
+                                    {{ ux_icon('tabler:external-link', {width: 14, height: 14}) }}
                                 </a>
                             </div>
                         {% endif %}
