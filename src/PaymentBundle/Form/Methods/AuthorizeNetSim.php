@@ -45,6 +45,7 @@ class AuthorizeNetSim extends AbstractType
             PasswordType::class,
             [
                 'constraints' => new NotBlank(),
+                'always_empty' => false,
             ]
         );
 

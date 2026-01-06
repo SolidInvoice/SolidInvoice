@@ -1,32 +1,120 @@
+{#
+# This file is part of SolidInvoice package.
+#
+# (c) Pierre du Plessis <open-source@solidworx.co>
+#
+# This source file is subject to the MIT license that is bundled
+# with this source code in the file LICENSE.
+#}
+
 <div {{ attributes }}>
-    <div class="card">
-        <div class="card-header with-border">
-            <h3 class="card-title">
-                {{ paymentMethod.name|default('Add New ' ~ this.method|humanize|title ~ ' Payment Method') }}
-            </h3>
-        </div>
+    <twig:Ui:Card>
+        <twig:block name="header">
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <h3 class="card-title mb-1 d-flex align-items-center gap-2">
+                        {{ ux_icon(gatewayIcon, {width: 20, height: 20, class: 'text-primary'}) }}
+                        {{ paymentMethod.name|default('Configure ' ~ method|humanize|title) }}
+                    </h3>
+                    <p class="text-muted small mb-0">
+                        {{ 'Configure payment gateway settings and credentials'|trans }}
+                    </p>
+                </div>
+                <a href="{{ path('_payment_settings_index') }}"
+                   class="btn btn-ghost btn-icon"
+                   aria-label="{{ 'Close'|trans }}">
+                    {{ ux_icon('tabler:x', {width: 20, height: 20}) }}
+                </a>
+            </div>
+        </twig:block>
 
-        <div class="card-body">
-            {{ form_start(form, {
-                attr: {
-                    'data-action': 'live#action:prevent',
-                    'data-live-action-param': 'save'
-                }
-            }) }}
+        {{ form_start(form, {
+            attr: {
+                'data-action': 'live#action:prevent',
+                'data-live-action-param': 'save'
+            }
+        }) }}
+            <div class="mb-4">
                 {{ form_widget(form) }}
+            </div>
+        {{ form_end(form) }}
 
-                <div class="form-group">
-                    {% if paymentMethod.id is not empty %}
-                        <button data-loading="addAttribute(disabled)" type="button" class="btn-danger btn float-left" data-action="live#action" data-live-action-param="delete">
-                            {{ icon('trash') }} Delete
-                        </button>
-                    {% endif %}
+        <twig:block name="footer">
+            <div class="d-flex justify-content-between align-items-center gap-3">
+                {% if paymentMethod.id is not empty %}
+                    <button type="button"
+                            class="btn btn-outline-danger d-flex align-items-center gap-2"
+                            data-action="live#action"
+                            data-live-action-param="showDeleteConfirmation"
+                            aria-label="{{ 'Delete payment method'|trans }}">
+                        {{ ux_icon('tabler:trash', {width: 18, height: 18}) }}
+                        <span>{{ 'Delete'|trans }}</span>
+                    </button>
+                {% else %}
+                    <a href="{{ path('_payment_settings_index') }}"
+                       class="btn btn-ghost d-flex align-items-center gap-2">
+                        {{ ux_icon('tabler:x', {width: 18, height: 18}) }}
+                        <span>{{ 'Close'|trans }}</span>
+                    </a>
+                {% endif %}
+                <button type="submit"
+                        class="btn btn-primary d-flex align-items-center gap-2"
+                        data-action="live#action"
+                        data-live-action-param="save"
+                        data-loading="addAttribute(disabled)"
+                        aria-label="{{ 'Save payment method'|trans }}">
+                    {{ ux_icon('tabler:device-floppy', {width: 18, height: 18}) }}
+                    <span>{{ 'Save Payment Method'|trans }}</span>
+                </button>
+            </div>
+        </twig:block>
+    </twig:Ui:Card>
 
-                    <button data-loading="addAttribute(disabled)" type="submit" class="btn-success btn float-right">
-                        {{ icon('save') }} Save
+    {# Delete Confirmation Nested Modal #}
+    {% if showDeleteConfirmation %}
+        <div class="delete-confirmation-backdrop"
+             data-action="click->live#action"
+             data-live-action-param="cancelDelete">
+        </div>
+        <div class="delete-confirmation-modal"
+             role="dialog"
+             aria-modal="true"
+             aria-labelledby="delete-modal-title">
+            <div class="delete-confirmation-container">
+                <div class="delete-confirmation-header">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="delete-icon-wrapper">
+                            {{ ux_icon('tabler:alert-triangle', {width: 24, height: 24, class: 'text-danger'}) }}
+                        </div>
+                        <div>
+                            <h4 id="delete-modal-title" class="mb-1">{{ 'Delete Payment Method'|trans }}</h4>
+                            <p class="text-muted small mb-0">{{ 'This action cannot be undone'|trans }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="delete-confirmation-body">
+                    <p class="mb-0">
+                        {{ 'Are you sure you want to delete'|trans }} <strong>{{ paymentMethod.name }}</strong>?
+                        {{ 'This will remove the payment method and cannot be reversed.'|trans }}
+                    </p>
+                </div>
+                <div class="delete-confirmation-footer">
+                    <button type="button"
+                            class="btn btn-ghost"
+                            data-action="live#action"
+                            data-live-action-param="cancelDelete">
+                        {{ 'Cancel'|trans }}
+                    </button>
+                    <button type="button"
+                            class="btn btn-danger d-flex align-items-center gap-2"
+                            data-action="live#action"
+                            data-live-action-param="confirmDelete"
+                            data-loading="addAttribute(disabled)">
+                        {{ ux_icon('tabler:trash', {width: 16, height: 16}) }}
+                        <span>{{ 'Delete Payment Method'|trans }}</span>
                     </button>
                 </div>
-            {{ form_end(form) }}
+            </div>
         </div>
-    </div>
+    {% endif %}
 </div>

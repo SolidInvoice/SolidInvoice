@@ -118,6 +118,14 @@ class PaymentMethod implements GatewayConfigInterface, Stringable
      */
     public function setConfig(array $config): self
     {
+        // Preserve existing password values if new values are empty
+        foreach ($config as $key => $value) {
+            if ($value === '' && isset($this->config[$key]) && $this->config[$key] !== '') {
+                // Keep the existing value for empty fields (likely passwords)
+                $config[$key] = $this->config[$key];
+            }
+        }
+
         $this->config = $config;
 
         return $this;

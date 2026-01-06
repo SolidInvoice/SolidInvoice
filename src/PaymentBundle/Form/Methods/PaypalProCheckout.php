@@ -37,8 +37,8 @@ class PaypalProCheckout extends AbstractType
             PasswordType::class,
             [
                 // 'help' => 'payment.settings.password.hint',
+                'constraints' => new NotBlank(),
                 'always_empty' => false,
-                'constraints' => new NotBlank(), // @TODO: This constraint should only be added when saving for the first time
             ]
         );
 
