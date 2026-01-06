@@ -210,6 +210,13 @@
                             </th>
                         {% endif %}
 
+                        {# Expand Column for Row Details #}
+                        {% if grid.hasRowDetails() %}
+                            <th class="col-expand">
+                                <span class="visually-hidden">{{ 'Expand'|trans }}</span>
+                            </th>
+                        {% endif %}
+
                         {# Data Columns #}
                         {% for column in this.getVisibleColumns() %}
                             <th>
@@ -246,7 +253,7 @@
                     {% if paginator.nbResults is same as(0) %}
                         {# Empty State #}
                         <tr>
-                            <td colspan="{{ this.getVisibleColumns()|length + (grid.batchActions|length > 0 ? 1 : 0) + (grid.actions|length > 0 ? 1 : 0) }}">
+                            <td colspan="{{ this.getVisibleColumns()|length + (grid.batchActions|length > 0 ? 1 : 0) + (grid.hasRowDetails() ? 1 : 0) + (grid.actions|length > 0 ? 1 : 0) }}">
                                 <div class="datagrid-empty">
                                     <div class="datagrid-empty-icon">
                                         {{ ux_icon('tabler:database-off', {width: 40, height: 40}) }}
@@ -275,7 +282,7 @@
                     {% else %}
                         {# Data Rows #}
                         {% for row in paginator %}
-                            <tr class="{{ this.entityId(row) in selectedItems ? 'selected' : '' }}">
+                            <tr class="{{ this.entityId(row) in selectedItems ? 'selected' : '' }}" {% if grid.hasRowDetails() %}{{ stimulus_controller('datagrid-row-expand') }}{% endif %}>
                                 {# Selection Checkbox #}
                                 {% if grid.batchActions|length > 0 %}
                                     <td class="col-checkbox">
@@ -289,6 +296,22 @@
                                                 aria-label="{{ 'Select row'|trans }}"
                                             />
                                         </div>
+                                    </td>
+                                {% endif %}
+
+                                {# Expand Button #}
+                                {% if grid.hasRowDetails() %}
+                                    <td class="col-expand">
+                                        <button
+                                            type="button"
+                                            class="datagrid-expand-btn"
+                                            {{ stimulus_action('datagrid-row-expand', 'toggle') }}
+                                            aria-label="{{ 'Expand row'|trans }}"
+                                        >
+                                            <span {{ stimulus_target('datagrid-row-expand', 'expandIcon') }}>
+                                                {{ ux_icon('tabler:chevron-right', {width: 16, height: 16}) }}
+                                            </span>
+                                        </button>
                                     </td>
                                 {% endif %}
 
@@ -398,6 +421,22 @@
                                     </td>
                                 {% endif %}
                             </tr>
+
+                            {# Expandable Row Detail #}
+                            {% if grid.hasRowDetails() %}
+                                <tr class="datagrid-detail-row">
+                                    <td colspan="{{ this.getVisibleColumns()|length + (grid.batchActions|length > 0 ? 1 : 0) + (grid.hasRowDetails() ? 1 : 0) + (grid.actions|length > 0 ? 1 : 0) }}">
+                                        <div class="datagrid-detail-content">
+                                            {# Render as Twig component for ApiTokenHistory #}
+                                            {% if grid.getRowDetailTemplate() == '@SolidInvoiceUser/Components/ApiTokenHistory.html.twig' %}
+                                                <twig:ApiTokenHistory :token="this.entityId(row)" />
+                                            {% else %}
+                                                {% include grid.getRowDetailTemplate() with {token: this.entityId(row)} %}
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endif %}
                         {% endfor %}
                     {% endif %}
                 </tbody>

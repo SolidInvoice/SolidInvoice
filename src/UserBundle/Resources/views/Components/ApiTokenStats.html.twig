@@ -1,0 +1,97 @@
+<div {{ attributes }} class="row row-deck row-cards mb-4">
+    {# Active Tokens #}
+    <div class="col-sm-6 col-lg-3">
+        <div class="card card-sm">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <span class="bg-primary text-white avatar">
+                            {{ ux_icon('tabler:key', {width: 24, height: 24}) }}
+                        </span>
+                    </div>
+                    <div class="col">
+                        <div class="font-weight-medium">
+                            {{ stats.activeTokens }}
+                        </div>
+                        <div class="text-secondary">
+                            {{ 'Active Tokens'|trans }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# API Calls This Month #}
+    <div class="col-sm-6 col-lg-3">
+        <div class="card card-sm">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <span class="bg-info text-white avatar">
+                            {{ ux_icon('tabler:api', {width: 24, height: 24}) }}
+                        </span>
+                    </div>
+                    <div class="col">
+                        <div class="font-weight-medium">
+                            {{ stats.apiCallsThisMonth|number_format }}
+                        </div>
+                        <div class="text-secondary">
+                            {{ 'API Calls This Month'|trans }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# Last Activity #}
+    <div class="col-sm-6 col-lg-3">
+        <div class="card card-sm">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <span class="bg-success text-white avatar">
+                            {{ ux_icon('tabler:clock', {width: 24, height: 24}) }}
+                        </span>
+                    </div>
+                    <div class="col">
+                        <div class="font-weight-medium">
+                            {% if stats.lastActivity %}
+                                {{ stats.lastActivity|date('d M Y') }}
+                            {% else %}
+                                {{ 'Never'|trans }}
+                            {% endif %}
+                        </div>
+                        <div class="text-secondary">
+                            {{ 'Last Activity'|trans }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# Most Used Token #}
+    <div class="col-sm-6 col-lg-3">
+        <div class="card card-sm">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <span class="bg-warning text-white avatar">
+                            {{ ux_icon('tabler:star', {width: 24, height: 24}) }}
+                        </span>
+                    </div>
+                    <div class="col">
+                        <div class="font-weight-medium">
+                            {{ stats.mostUsedToken|default('-')|u.truncate(18, '...') }}
+                        </div>
+                        <div class="text-secondary">
+                            {{ 'Most Used Token'|trans }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

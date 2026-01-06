@@ -1,0 +1,63 @@
+import { Controller } from '@hotwired/stimulus';
+import { Modal } from 'bootstrap';
+
+/**
+ * Coordinates the modal hide/show sequence for API token creation
+ * to ensure Bootstrap modal cleanup completes before LiveComponent re-renders
+ */
+export default class extends Controller<HTMLElement> {
+    private shouldClearOnHide: boolean = false;
+    private modalElement: HTMLElement | null = null;
+
+    connect(): void {
+        // Find the actual modal element within our wrapper
+        this.modalElement = this.element.querySelector('.modal');
+
+        if (this.modalElement) {
+            // Listen for when modal is fully hidden on the modal element itself
+            this.modalElement.addEventListener('hidden.bs.modal', this.handleModalHidden.bind(this));
+        }
+    }
+
+    disconnect(): void {
+        if (this.modalElement) {
+            this.modalElement.removeEventListener('hidden.bs.modal', this.handleModalHidden.bind(this));
+        }
+    }
+
+    confirmAndClose(event: Event): void {
+        event.preventDefault();
+
+        if (!this.modalElement) {
+            return;
+        }
+
+        // Set flag that we should clear state after modal hides
+        this.shouldClearOnHide = true;
+
+        // Close the modal - Bootstrap will handle animation and cleanup
+        const modalInstance = Modal.getInstance(this.modalElement);
+        if (modalInstance) {
+            modalInstance.hide();
+        }
+    }
+
+    private handleModalHidden(): void {
+        // Only clear state if we initiated the close via the confirm button
+        if (this.shouldClearOnHide) {
+            this.shouldClearOnHide = false;
+
+            // Modal is now fully hidden and cleaned up
+            // Find the LiveComponent and trigger clearToken action
+            const liveComponent = this.element.closest('[data-controller*="live"]');
+            if (liveComponent instanceof HTMLElement) {
+                // Trigger the live action using the data attribute
+                const event = new CustomEvent('live:call', {
+                    detail: { action: 'clearToken' },
+                    bubbles: true
+                });
+                liveComponent.dispatchEvent(event);
+            }
+        }
+    }
+}

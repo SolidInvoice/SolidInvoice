@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -20,6 +22,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\FormInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
+use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
@@ -33,10 +36,31 @@ final class CreateApiToken extends AbstractController
 
     public const API_TOKEN_CREATED_EVENT = 'api.token.created';
 
+    #[LiveProp]
+    public ?string $createdToken = null;
+
+    #[LiveProp]
+    public ?string $createdTokenName = null;
+
     public function __construct(
         private readonly Security $security,
         private readonly ApiTokenManager $apiTokenManager,
     ) {
+    }
+
+    public function getModalTitle(): string
+    {
+        return $this->createdToken ? 'API Token Created Successfully' : 'Create New API Token';
+    }
+
+    public function getModalStatus(): string
+    {
+        return $this->createdToken ? 'success' : '';
+    }
+
+    public function shouldShowModal(): bool
+    {
+        return (bool) $this->createdToken;
     }
 
     protected function instantiateForm(): FormInterface
@@ -59,11 +83,21 @@ final class CreateApiToken extends AbstractController
         $entityManager->persist($token);
         $entityManager->flush();
 
-        $this->addFlash('success', 'Api Token created');
+        // Store token for one-time display
+        $this->createdToken = $token->getToken();
+        $this->createdTokenName = $token->getName();
+
+        $this->addFlash('success', 'API Token created successfully');
 
         $this->emit(self::API_TOKEN_CREATED_EVENT);
-        $this->dispatchBrowserEvent('modal:close');
 
         $this->resetForm();
+    }
+
+    #[LiveAction]
+    public function clearToken(): void
+    {
+        $this->createdToken = null;
+        $this->createdTokenName = null;
     }
 }

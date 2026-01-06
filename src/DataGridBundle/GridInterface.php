@@ -65,4 +65,15 @@ interface GridInterface
      * Returns the label for the create button in the empty state.
      */
     public function getCreateLabel(): ?TranslatableMessage;
+
+    /**
+     * Returns true if this grid supports expandable row details.
+     */
+    public function hasRowDetails(): bool;
+
+    /**
+     * Returns the template path for rendering expandable row details.
+     * Only used if hasRowDetails() returns true.
+     */
+    public function getRowDetailTemplate(): ?string;
 }

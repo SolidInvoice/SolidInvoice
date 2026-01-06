@@ -1,30 +1,72 @@
 <div {{ attributes }}>
-    <a href="#" class="btn btn-info" data-toggle="modal" data-target="#{{ 'create-' ~ attributes.all.id }}">
-        {{ icon('plus') }} {{ 'profile.api.create'|trans }}
+    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#{{ 'api-token-' ~ attributes.all.id }}">
+        {{ ux_icon('tabler:plus', {width: 18, height: 18}) }} {{ 'Create API Token'|trans }}
     </a>
 
-    {{ form_start(form, {
-        attr: {
-            'data-action': 'live#action:prevent',
-            'data-live-action-param': 'save'
-        }
-    }) }}
+    {# Single Modal - content changes based on state #}
+    <div {{ stimulus_controller('api-token-modal') }}>
+        <twig:Ui:Modal
+            id="{{ 'api-token-' ~ attributes.all.id }}"
+            title="{{ this.modalTitle|trans }}"
+            status="{{ this.modalStatus }}"
+            :show="this.shouldShowModal"
+        >
+            <twig:block name="body">
+                {{ form_start(form, {
+                    attr: {
+                        'data-action': 'live#action:prevent',
+                        'data-live-action-param': 'save'
+                    }
+                }) }}
 
-    {% component BootstrapModal with {id: 'create-' ~ attributes.all.id} %}
-        {% block modal_header %}
-            <h5>{{ 'Confirm'|trans }}</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        {% endblock %}
-        {% block modal_body %}
-            {{ form_row(form) }}
-        {% endblock %}
-        {% block modal_footer %}
-            <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'Close'|trans }}</button>
-            <button type="submit" class="btn btn-primary">{{ 'Confirm'|trans }}</button>
-        {% endblock %}
-    {% endcomponent %}
+                {% if not createdToken %}
+                    {# Create Form #}
+                    {{ form_row(form.name) }}
+                    {{ form_row(form.description) }}
+                {% else %}
+                    {# Success - Show Token Once #}
+                    <twig:Ui:Alert type="warning" icon="tabler:alert-triangle" :dismissible="false">
+                        <strong>{{ 'Important!'|trans }}</strong>
+                        {{ 'Copy this token now. For security reasons, it will not be shown again.'|trans }}
+                    </twig:Ui:Alert>
 
-    {{ form_end(form) }}
+                    <div class="mb-3">
+                        <label class="form-label"><strong>{{ 'Token Name'|trans }}:</strong></label>
+                        <div>{{ createdTokenName }}</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label"><strong>{{ 'Token Value'|trans }}:</strong></label>
+                        <div class="input-group" {{ stimulus_controller('clipboard', {'success-content': 'Copied!'}) }}>
+                            <input readonly="readonly" value="{{ createdToken }}" class="form-control font-monospace" {{ stimulus_target('clipboard', 'source') }} />
+                            <button class="btn btn-primary" type="button" {{ stimulus_target('clipboard', 'button') }} {{ stimulus_action('clipboard', 'copy') }}>
+                                {{ ux_icon('tabler:copy', {width: 18, height: 18}) }}
+                                {{ 'Copy'|trans }}
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="text-muted small">
+                        {{ 'Use this token in the X-API-TOKEN header for API requests.'|trans }}
+                    </div>
+                {% endif %}
+            </twig:block>
+
+            <twig:block name="footer">
+                {% if not createdToken %}
+                    <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">{{ 'Cancel'|trans }}</button>
+                    <button type="submit" class="btn btn-primary">{{ 'Create Token'|trans }}</button>
+                {% else %}
+                    <button
+                        type="button"
+                        class="btn btn-primary ms-auto"
+                        {{ stimulus_action('api-token-modal', 'confirmAndClose') }}
+                    >
+                        {{ 'I have copied the token'|trans }}
+                    </button>
+                {% endif %}
+                {{ form_end(form) }}
+            </twig:block>
+        </twig:Ui:Modal>
+    </div>
 </div>

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -11,46 +13,40 @@
 
 namespace SolidInvoice\UserBundle\Twig\Components;
 
-use InvalidArgumentException;
+use Doctrine\ORM\EntityManagerInterface;
 use SolidInvoice\UserBundle\Entity\ApiToken;
-use SolidInvoice\UserBundle\Entity\ApiTokenHistory as ApiTokenHistoryEntity;
 use SolidInvoice\UserBundle\Repository\ApiTokenHistoryRepository;
-use SolidInvoice\UserBundle\Repository\ApiTokenRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
-use Symfony\UX\LiveComponent\Attribute\LiveProp;
-use Symfony\UX\LiveComponent\DefaultActionTrait;
+use Symfony\Component\Uid\Ulid;
+use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsLiveComponent]
-final class ApiTokenHistory extends AbstractController
+#[AsTwigComponent]
+final class ApiTokenHistory
 {
-    use DefaultActionTrait;
-
-    #[LiveProp(writable: true)]
     public ?string $token = null;
 
     public function __construct(
-        private readonly ApiTokenRepository $apiTokenRepository,
-        private readonly ApiTokenHistoryRepository $apiTokenHistoryRepository,
+        private readonly ApiTokenHistoryRepository $historyRepository,
+        private readonly EntityManagerInterface $entityManager,
     ) {
     }
 
     /**
-     * @return iterable<int, ApiTokenHistoryEntity>
+     * @return list<\SolidInvoice\UserBundle\Entity\ApiTokenHistory>
      */
     #[ExposeInTemplate]
-    public function history(): iterable
+    public function getHistory(): array
     {
-        return $this->apiTokenHistoryRepository->getHistoryForToken($this->apiToken());
-    }
-
-    private function apiToken(): ApiToken
-    {
-        if (! $this->token) {
-            throw new InvalidArgumentException('Token ID is empty');
+        if (null === $this->token) {
+            return [];
         }
 
-        return $this->apiTokenRepository->find($this->token);
+        $apiToken = $this->entityManager->find(ApiToken::class, Ulid::fromString($this->token));
+
+        if (null === $apiToken) {
+            return [];
+        }
+
+        return iterator_to_array($this->historyRepository->getHistoryForToken($apiToken));
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -11,19 +13,16 @@
 
 namespace SolidInvoice\UserBundle\Twig\Components;
 
-use DateTimeInterface;
 use SolidInvoice\UserBundle\Entity\ApiToken;
 use SolidInvoice\UserBundle\Repository\ApiTokenRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\Uid\Ulid;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveArg;
-use Symfony\UX\LiveComponent\Attribute\LiveListener;
 use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
-use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
 #[AsLiveComponent]
 final class ApiTokens extends AbstractController
@@ -37,20 +36,18 @@ final class ApiTokens extends AbstractController
     ) {
     }
 
-    /**
-     * @return list<array{id: Ulid, name: string, ip: string|null, token: string, lastUsed: DateTimeInterface|null}>
-     */
-    #[ExposeInTemplate]
-    #[LiveListener(CreateApiToken::API_TOKEN_CREATED_EVENT)]
-    public function apiTokens(): array
-    {
-        return $this->apiTokenRepository->getApiTokensForUser($this->security->getUser());
-    }
-
     #[LiveAction]
     public function revoke(#[LiveArg] ApiToken $token): void
     {
+        $currentUser = $this->security->getUser();
+
+        if ($token->getUser() !== $currentUser) {
+            throw new AccessDeniedException('You cannot revoke tokens that do not belong to you');
+        }
+
         $this->apiTokenRepository->revoke($token);
+        $this->emit('api.token.revoked');
         $this->dispatchBrowserEvent('modal:close');
+        $this->addFlash('success', 'API Token revoked successfully');
     }
 }

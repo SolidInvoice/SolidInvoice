@@ -14,19 +14,31 @@
 {% block title %}{{ "profile.api.title"|trans }}{% endblock title %}
 
 {% block profile_content %}
-    <div class="card">
-        <div class="card-header">
-            <div class="alert alert-info float-left">
-                To view the API documentation, visit the <a href="{{ path('api_doc') }}" target="_blank">API documentation</a> page.
-            </div>
+    {# Stats Row #}
+    <twig:ApiTokenStats />
 
-            <div class="float-right header-button">
+    {# One-time token display alert #}
+    {% if app.request.hasPreviousSession and app.flashes('success') %}
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {# Main Card #}
+    <twig:Ui:Card>
+        <twig:block name="header">
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <div class="alert alert-info mb-0">
+                    {{ ux_icon('tabler:info-circle', {width: 20, height: 20}) }}
+                    To view the API documentation, visit the <a href="{{ path('api_doc') }}" target="_blank" class="alert-link">API documentation</a> page.
+                </div>
                 <twig:CreateApiToken />
             </div>
-        </div>
-        <div class="card-body">
+        </twig:block>
 
-            <twig:ApiTokens />
-        </div>
-    </div>
+        <twig:ApiTokenList />
+    </twig:Ui:Card>
 {% endblock profile_content %}
