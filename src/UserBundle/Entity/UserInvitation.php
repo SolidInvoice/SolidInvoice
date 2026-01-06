@@ -60,6 +60,7 @@ class UserInvitation
     public function __construct()
     {
         $this->created = new DateTimeImmutable();
+        $this->status = self::STATUS_PENDING;
     }
 
     public function getId(): ?Ulid

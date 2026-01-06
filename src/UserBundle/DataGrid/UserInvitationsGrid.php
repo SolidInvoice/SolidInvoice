@@ -39,9 +39,7 @@ final class UserInvitationsGrid extends Grid
             StatusColumn::new('status')
                 ->label('Status')
                 ->statusMap([
-                    'pending' => 'warning',
-                    'accepted' => 'success',
-                    'expired' => 'danger',
+                    UserInvitation::STATUS_PENDING => 'warning',
                 ]),
             StringColumn::new('invitedBy.email')
                 ->label('Invited By'),

@@ -165,6 +165,44 @@ final class UserRepositoryTest extends KernelTestCase
         self::assertSame(2, $this->repository->getUserCount());
     }
 
+    public function testGetRecentlyJoinedCount(): void
+    {
+        self::assertSame(0, $this->repository->getRecentlyJoinedCount());
+
+        // Create a user that joined recently (within 30 days)
+        $recentUser = new User();
+        $recentUser->setEmail($this->faker->email)
+            ->setPassword($this->faker->password)
+            ->addCompany($this->company);
+        $this->repository->save($recentUser);
+
+        self::assertSame(1, $this->repository->getRecentlyJoinedCount());
+        self::assertSame(1, $this->repository->getRecentlyJoinedCount(30));
+
+        // Create a user that joined more than 30 days ago
+        $oldUser = new User();
+        $oldUser->setEmail($this->faker->email)
+            ->setPassword($this->faker->password)
+            ->addCompany($this->company);
+
+        $registry = self::getContainer()->get('doctrine');
+        $em = $registry->getManager();
+        $em->persist($oldUser);
+        $em->flush();
+
+        // Use reflection to set the created date to 40 days ago
+        $reflection = new \ReflectionClass($oldUser);
+        $property = $reflection->getProperty('created');
+        $property->setValue($oldUser, new \DateTimeImmutable('-40 days'));
+        $em->flush();
+
+        // Should still count only the recent user (within 30 days)
+        self::assertSame(1, $this->repository->getRecentlyJoinedCount(30));
+
+        // But if we check for 50 days, both should be counted
+        self::assertSame(2, $this->repository->getRecentlyJoinedCount(50));
+    }
+
     public function testSupportsClass(): void
     {
         self::assertFalse($this->repository->supportsClass(self::class));
@@ -176,7 +214,7 @@ final class UserRepositoryTest extends KernelTestCase
         $queryBuilder = $this->repository->getGridQuery();
         self::assertInstanceOf(QueryBuilder::class, $queryBuilder);
         $alias = $queryBuilder->getRootAliases()[0];
-        $fields = implode(', ', ["{$alias}.id", "{$alias}.email", "{$alias}.enabled", "{$alias}.created"]);
+        $fields = implode(', ', ["{$alias}.id", "{$alias}.email", "{$alias}.mobile", "{$alias}.enabled", "{$alias}.created", "{$alias}.lastLogin"]);
         self::assertCount(1, $queryBuilder->getDQLPart('select'));
         self::assertSame($fields, (string) $queryBuilder->getDQLPart('select')[0]);
     }

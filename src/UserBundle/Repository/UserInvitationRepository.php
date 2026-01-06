@@ -40,7 +40,7 @@ final class UserInvitationRepository extends ServiceEntityRepository
 
         $qb->select('u.id', 'u.status', 'u.email', 'u.created', 'inviter.email as inviterEmail')
             ->leftJoin('u.invitedBy', 'inviter')
-            ->groupBy('u.id', 'inviter.email');
+            ->groupBy('u.id');
 
         return $qb;
     }

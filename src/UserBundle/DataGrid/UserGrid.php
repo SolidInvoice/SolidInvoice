@@ -43,7 +43,7 @@ final class UserGrid extends Grid
                 ->formatValue(fn ($value) => $value ?: 'Never'),
             StatusColumn::new('enabled')
                 ->label('Status')
-                ->formatValue(fn ($value) => $value ? 'Active' : 'Disabled')
+                ->formatValue(fn ($value) => $value ? 'active' : 'disabled')
                 ->statusMap([
                     'active' => 'success',
                     'disabled' => 'danger',
