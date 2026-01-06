@@ -96,4 +96,90 @@ class ApiTokenRepository extends ServiceEntityRepository
         $em->remove($token);
         $em->flush();
     }
+
+    public function getActiveTokenCountForUser(UserInterface $user): int
+    {
+        assert($user instanceof User);
+
+        try {
+            return (int) $this->createQueryBuilder('t')
+                ->select('COUNT(t.id)')
+                ->where('t.user = :user')
+                ->setParameter('user', $user->getId(), UlidType::NAME)
+                ->getQuery()
+                ->getSingleScalarResult();
+        } catch (NoResultException | NonUniqueResultException) {
+            return 0;
+        }
+    }
+
+    public function getApiCallsThisMonthForUser(UserInterface $user): int
+    {
+        assert($user instanceof User);
+
+        $firstDayOfMonth = new \DateTime('first day of this month 00:00:00');
+
+        try {
+            return (int) $this->createQueryBuilder('t')
+                ->select('COUNT(h.id)')
+                ->innerJoin('t.history', 'h')
+                ->where('t.user = :user')
+                ->andWhere('h.created >= :firstDay')
+                ->setParameter('user', $user->getId(), UlidType::NAME)
+                ->setParameter('firstDay', $firstDayOfMonth)
+                ->getQuery()
+                ->getSingleScalarResult();
+        } catch (NoResultException | NonUniqueResultException) {
+            return 0;
+        }
+    }
+
+    public function getLastActivityForUser(UserInterface $user): ?DateTimeInterface
+    {
+        assert($user instanceof User);
+
+        try {
+            $result = $this->createQueryBuilder('t')
+                ->select('h.created')
+                ->innerJoin('t.history', 'h')
+                ->where('t.user = :user')
+                ->setParameter('user', $user->getId(), UlidType::NAME)
+                ->orderBy('h.created', 'DESC')
+                ->setMaxResults(1)
+                ->getQuery()
+                ->getSingleScalarResult();
+
+            if ($result instanceof DateTimeInterface) {
+                return $result;
+            }
+
+            if (is_string($result)) {
+                return new \DateTimeImmutable($result);
+            }
+
+            return null;
+        } catch (NoResultException | NonUniqueResultException) {
+            return null;
+        }
+    }
+
+    public function getMostUsedTokenForUser(UserInterface $user): ?string
+    {
+        assert($user instanceof User);
+
+        try {
+            return $this->createQueryBuilder('t')
+                ->select('t.name')
+                ->innerJoin('t.history', 'h')
+                ->where('t.user = :user')
+                ->groupBy('t.id')
+                ->orderBy('COUNT(h.id)', 'DESC')
+                ->setMaxResults(1)
+                ->setParameter('user', $user->getId(), UlidType::NAME)
+                ->getQuery()
+                ->getSingleScalarResult();
+        } catch (NoResultException | NonUniqueResultException) {
+            return null;
+        }
+    }
 }

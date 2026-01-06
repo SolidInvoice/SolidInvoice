@@ -141,4 +141,16 @@ class ApiTokenHistory
 
         return $this;
     }
+
+    public function getStatusCode(): ?int
+    {
+        return $this->requestData['status_code'] ?? null;
+    }
+
+    public function setStatusCode(int $statusCode): self
+    {
+        $this->requestData['status_code'] = $statusCode;
+
+        return $this;
+    }
 }

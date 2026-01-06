@@ -114,4 +114,21 @@ abstract class Grid implements GridInterface
     {
         return new TranslatableMessage('Create');
     }
+
+    /**
+     * Returns true if this grid supports expandable row details.
+     */
+    public function hasRowDetails(): bool
+    {
+        return false;
+    }
+
+    /**
+     * Returns the template path for rendering expandable row details.
+     * Only used if hasRowDetails() returns true.
+     */
+    public function getRowDetailTemplate(): ?string
+    {
+        return null;
+    }
 }

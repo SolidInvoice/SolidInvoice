@@ -1,27 +1,64 @@
-<div {{ attributes }}>
-    <div class="alert alert-warning">
-        <strong>{{ icon('exclamation-triangle') }} {{ 'profile.api.history.last_calls_shown_note'|trans }} </strong>
-        {{ 'profile.api.history.last_calls_shown'|trans }}
+<div {{ attributes.defaults({class: 'api-token-history'}) }}>
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <h4 class="mb-0">{{ 'Request History'|trans }}</h4>
+        <span class="text-muted small">{{ 'Last 100 requests'|trans }}</span>
     </div>
 
-    <table class="table table-responsive table-sm">
-        <thead>
-            <tr>
-                <th>{{ 'profile.api.history.list.date'|trans }}</th>
-                <th>{{ 'profile.api.history.list.ip'|trans }}</th>
-                <th>{{ 'profile.api.history.list.resource'|trans }}</th>
-                <th>{{ 'profile.api.history.list.user_agent'|trans }}</th>
-            </tr>
-        </thead>
-        {% for item in history %}
-            <tbody>
-            <tr>
-                <td>{{ item.created|date }}</td>
-                <td>{{ item.ip }}</td>
-                <td>[{{ item.method }}] {{ item.resource }}</td>
-                <td>{{ item.userAgent }}</td>
-            </tr>
-            </tbody>
-        {% endfor %}
-    </table>
+    {% set history = this.getHistory() %}
+
+    {% if history|length > 0 %}
+        <div class="table-responsive">
+            <table class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>{{ 'Date'|trans }}</th>
+                        <th>{{ 'Method'|trans }}</th>
+                        <th>{{ 'Endpoint'|trans }}</th>
+                        <th>{{ 'Status'|trans }}</th>
+                        <th>{{ 'IP Address'|trans }}</th>
+                        <th>{{ 'User Agent'|trans }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in history %}
+                        <tr>
+                            <td class="text-nowrap">{{ record.created|date('d M Y H:i') }}</td>
+                            <td>
+                                <span class="badge badge-outline text-{{ record.method == 'GET' ? 'blue' : (record.method == 'POST' ? 'green' : (record.method == 'PUT' ? 'orange' : (record.method == 'DELETE' ? 'red' : 'gray'))) }}">
+                                    {{ record.method }}
+                                </span>
+                            </td>
+                            <td class="font-monospace small">
+                                {{ record.resource|length > 50 ? record.resource|slice(0, 50) ~ '...' : record.resource }}
+                            </td>
+                            <td>
+                                {% set statusCode = record.statusCode %}
+                                {% if statusCode %}
+                                    <span class="badge badge-outline text-{{ statusCode >= 200 and statusCode < 300 ? 'green' : (statusCode >= 400 and statusCode < 500 ? 'orange' : (statusCode >= 500 ? 'red' : 'gray')) }}">
+                                        {{ statusCode }}
+                                    </span>
+                                {% else %}
+                                    <span class="text-muted">-</span>
+                                {% endif %}
+                            </td>
+                            <td class="font-monospace small">{{ record.ip }}</td>
+                            <td class="text-muted small">
+                                {{ record.userAgent|length > 40 ? record.userAgent|slice(0, 40) ~ '...' : record.userAgent }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty">
+            <div class="empty-icon">
+                {{ ux_icon('tabler:history', {width: 48, height: 48}) }}
+            </div>
+            <p class="empty-title">{{ 'No request history'|trans }}</p>
+            <p class="empty-subtitle text-muted">
+                {{ 'No API requests have been made with this token yet.'|trans }}
+            </p>
+        </div>
+    {% endif %}
 </div>

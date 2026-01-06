@@ -50,6 +50,9 @@ class ApiToken
     #[ORM\Column(type: Types::STRING, length: 125)]
     private ?string $token = null;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $description = null;
+
     /**
      * @var Collection<int, ApiTokenHistory>
      */
@@ -129,5 +132,22 @@ class ApiToken
         $this->user = $user;
 
         return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getUsageCount(): int
+    {
+        return $this->history->count();
     }
 }

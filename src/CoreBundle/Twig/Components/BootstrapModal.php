@@ -19,4 +19,6 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 class BootstrapModal
 {
     public ?string $id = null;
+
+    public bool $show = false;
 }

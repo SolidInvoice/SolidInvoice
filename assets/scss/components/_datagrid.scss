@@ -1160,3 +1160,137 @@ tbody tr:hover .datagrid-more-btn,
         display: none;
     }
 }
+
+// ============================================================================
+// EXPANDABLE ROWS
+// ============================================================================
+
+.datagrid-table {
+    // Expand column styling
+    .col-expand {
+        width: 40px;
+        text-align: center;
+        padding-right: var(--swp-space-2);
+    }
+}
+
+.datagrid-expand-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    color: var(--swp-text-muted);
+    background: transparent;
+    border: none;
+    border-radius: var(--swp-radius-sm);
+    cursor: pointer;
+    transition: color var(--swp-transition-fast),
+                background-color var(--swp-transition-fast);
+
+    span {
+        display: inline-flex;
+        transition: transform 200ms ease;
+    }
+
+    &:hover {
+        color: var(--swp-text-primary);
+        background: var(--swp-gray-100);
+    }
+}
+
+// Detail row (hidden by default)
+.datagrid-detail-row {
+    display: none;
+    background: var(--swp-gray-50);
+
+    &.visible {
+        display: table-row;
+    }
+
+    td {
+        padding: 0;
+        border-bottom: none;
+    }
+}
+
+.datagrid-detail-content {
+    padding: var(--swp-space-4) var(--swp-space-6);
+    animation: slideDown 200ms ease;
+
+    // Override nested datagrid card styles when inside detail row
+    .card {
+        box-shadow: none;
+        border: 1px solid var(--swp-border-light);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+// ============================================================================
+// API TOKEN HISTORY (Expandable Row Detail)
+// ============================================================================
+
+.api-token-history {
+    h4 {
+        font-size: 1rem;
+        font-weight: var(--swp-font-weight-semibold);
+        color: var(--swp-text-primary);
+    }
+
+    .table {
+        margin-bottom: 0;
+        background: var(--swp-white);
+        border: 1px solid var(--swp-border-light);
+        border-radius: var(--swp-radius-md);
+        overflow: hidden;
+
+        thead th {
+            font-size: 0.75rem;
+            font-weight: var(--swp-font-weight-semibold);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--swp-text-muted);
+            background: var(--swp-gray-50);
+            border-bottom: 2px solid var(--swp-border-light);
+            padding: var(--swp-space-2) var(--swp-space-3);
+        }
+
+        tbody {
+            tr {
+                transition: background-color var(--swp-transition-fast);
+
+                &:hover {
+                    background-color: var(--swp-surface-hover);
+                }
+
+                td {
+                    padding: var(--swp-space-2) var(--swp-space-3);
+                    vertical-align: middle;
+                    font-size: 0.875rem;
+                    border-bottom: 1px solid var(--swp-border-light);
+                }
+            }
+
+            tr:last-child td {
+                border-bottom: none;
+            }
+        }
+    }
+
+    .badge {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem;
+        font-weight: var(--swp-font-weight-medium);
+    }
+}
