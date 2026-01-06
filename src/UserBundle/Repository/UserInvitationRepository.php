@@ -17,6 +17,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\UserBundle\Entity\UserInvitation;
@@ -36,8 +38,9 @@ final class UserInvitationRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('u');
 
-        $qb->select('u.id', 'u.status', 'u.email', 'u.created')
-            ->groupBy('u.id');
+        $qb->select('u.id', 'u.status', 'u.email', 'u.created', 'inviter.email as inviterEmail')
+            ->leftJoin('u.invitedBy', 'inviter')
+            ->groupBy('u.id', 'inviter.email');
 
         return $qb;
     }
@@ -70,5 +73,20 @@ final class UserInvitationRepository extends ServiceEntityRepository
     {
         $this->_em->persist($data);
         $this->_em->flush();
+    }
+
+    public function countPendingInvitations(): int
+    {
+        $qb = $this->createQueryBuilder('u');
+
+        $qb->select('COUNT(u.id)')
+            ->where('u.status = :status')
+            ->setParameter('status', UserInvitation::STATUS_PENDING);
+
+        try {
+            return (int) $qb->getQuery()->getSingleScalarResult();
+        } catch (NoResultException|NonUniqueResultException|Exception $e) {
+            return 0;
+        }
     }
 }

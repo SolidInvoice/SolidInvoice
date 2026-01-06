@@ -9,31 +9,78 @@
 
 {% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
-{% block title %}{{ 'users.invite'|trans }}{% endblock %}
-
 {% block content %}
-    <div class="card card-primary">
-        <div class="card-body">
-            {{ form_start(form) }}
-            {{ form_row(form) }}
+<div class="user-invite-page">
+    {{ form_start(form) }}
 
-            <div class="control-group">
-                <div class="controls clearfix">
-                    <div class="float-left">
-                        <button type="button" class="btn btn-warning" onclick="history.back()">
-                            {{ icon('reply') }} {{ 'client.cancel'|trans }}
-                        </button>
+    {{ form_errors(form) }}
+
+    <div class="user-invite-container">
+        {# Page Header #}
+        <div class="user-invite-header">
+            <div class="user-invite-header-content">
+                <div class="user-invite-icon">
+                    {{ ux_icon('tabler:user-plus', {width: 28, height: 28}) }}
+                </div>
+                <div>
+                    <h1 class="user-invite-title">{{ 'users.invite.title'|trans }}</h1>
+                    <p class="user-invite-subtitle">{{ 'users.invite.subtitle'|trans }}</p>
+                </div>
+            </div>
+        </div>
+
+        {# Main Form Content #}
+        <div class="user-invite-sections">
+            <section class="user-invite-section" id="invitation-details">
+                <div class="section-header">
+                    <div class="section-icon">
+                        {{ ux_icon('tabler:mail', {width: 20, height: 20}) }}
                     </div>
-                    <div class="float-right">
-                        <div class="btn-group">
-                            <button type="submit" class="btn btn-success">{{ icon('save') }} {{ 'users.save'|trans }}</button>
+                    <div class="section-header-text">
+                        <h2 class="section-title">{{ 'users.invite.details.title'|trans }}</h2>
+                        <p class="section-description">{{ 'users.invite.details.description'|trans }}</p>
+                    </div>
+                </div>
+
+                <div class="section-content">
+                    <div class="form-grid">
+                        <div class="form-field form-field-wide">
+                            {{ form_row(form.email, {
+                                label: 'users.invite.email.label'|trans,
+                                help: 'users.invite.email.help'|trans,
+                                attr: {
+                                    placeholder: 'example@company.com',
+                                    autocomplete: 'email'
+                                }
+                            }) }}
                         </div>
                     </div>
                 </div>
+            </section>
+
+            {# Info Box #}
+            <twig:Ui:Alert type="info" icon="tabler:info-circle">
+                {{ 'users.invite.info'|trans }}
+            </twig:Ui:Alert>
+        </div>
+
+        {{ form_rest(form) }}
+
+        {# Sticky Footer with Actions #}
+        <div class="user-invite-actions">
+            <div class="user-invite-actions-inner">
+                <a href="{{ path('_users_list') }}" class="btn btn-ghost">
+                    {{ ux_icon('tabler:arrow-left', {width: 18, height: 18}) }}
+                    {{ 'client.cancel'|trans }}
+                </a>
+                <button type="submit" class="btn btn-primary btn-save">
+                    {{ ux_icon('tabler:send', {width: 18, height: 18}) }}
+                    {{ 'users.invite.send'|trans }}
+                </button>
             </div>
-
-
-            {{ form_end(form) }}
         </div>
     </div>
-{% endblock content %}
+
+    {{ form_end(form) }}
+</div>
+{% endblock %}
