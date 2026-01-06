@@ -9,17 +9,120 @@
 
 {% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
-{% block title %}{{ icon('credit-card') }} {{ 'payment.list.title'|trans }}{% endblock title %}
-{% block page_title %}{{ 'payment.list.title'|trans }}{% endblock page_title %}
+{% block title %}
+    {{ ux_icon('tabler:credit-card', {width: 24, height: 24, class: 'me-2'}) }}{{ 'payment.list.title'|trans }}
+{% endblock title %}
 
 {% block content %}
-    <div class="card filterable">
-	    <twig:DataGrid name="payments_grid" />
+    {# KPI Statistics Cards #}
+    <div class="row row-deck row-cards mb-4">
+        {# Total Received Card #}
+        <div class="col-sm-6 col-lg-3">
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="bg-success text-white avatar">
+                                {{ ux_icon('tabler:currency-dollar', {width: 24, height: 24}) }}
+                            </span>
+                        </div>
+                        <div class="col">
+                            <div class="font-weight-medium">
+                                {% if stats.total_income|length > 0 %}
+                                    {% for currency, data in stats.total_income %}
+                                        {{ data.amount|formatCurrency(data.currency) }}
+                                    {% endfor %}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </div>
+                            <div class="text-secondary">
+                                Total Received
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# This Month Card #}
+        <div class="col-sm-6 col-lg-3">
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="bg-primary text-white avatar">
+                                {{ ux_icon('tabler:calendar-month', {width: 24, height: 24}) }}
+                            </span>
+                        </div>
+                        <div class="col">
+                            <div class="font-weight-medium">
+                                {% if stats.this_month|length > 0 %}
+                                    {% for currency, data in stats.this_month %}
+                                        {{ data.amount|formatCurrency(data.currency) }}
+                                    {% endfor %}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </div>
+                            <div class="text-secondary">
+                                This Month
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# Pending Payments Card #}
+        <div class="col-sm-6 col-lg-3">
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="bg-warning text-white avatar">
+                                {{ ux_icon('tabler:clock', {width: 24, height: 24}) }}
+                            </span>
+                        </div>
+                        <div class="col">
+                            <div class="font-weight-medium">
+                                {{ stats.pending_count }}
+                            </div>
+                            <div class="text-secondary">
+                                Pending
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# Failed Payments Card #}
+        <div class="col-sm-6 col-lg-3">
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="bg-danger text-white avatar">
+                                {{ ux_icon('tabler:alert-circle', {width: 24, height: 24}) }}
+                            </span>
+                        </div>
+                        <div class="col">
+                            <div class="font-weight-medium">
+                                {{ stats.failed_count }}
+                            </div>
+                            <div class="text-secondary">
+                                Failed
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <h5>{{ "payment.list.status_legend"|trans }}</h5>
-
-    {% for status in payment_label() %}
-	    {{ status|raw }}
-    {% endfor %}
+    {# Payment List Card #}
+    <twig:Ui:Card class="filterable">
+        <twig:DataGrid name="payments_grid" />
+    </twig:Ui:Card>
 {% endblock content %}

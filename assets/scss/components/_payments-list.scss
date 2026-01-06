@@ -1,0 +1,16 @@
+/**
+ * Payments List Page Styles
+ *
+ * Minimal styling for the payments list page with KPI cards.
+ * Most styles come from Tabler/Bootstrap - this file only adds specific customizations.
+ */
+
+// KPI Statistics Cards - subtle hover effect
+.row-deck .card-sm {
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+}
