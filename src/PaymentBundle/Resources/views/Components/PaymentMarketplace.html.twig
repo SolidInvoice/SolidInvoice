@@ -201,6 +201,7 @@
     {# Configuration Modal #}
     {% if selectedGateway is not empty %}
         <div class="payment-modal-backdrop"
+             role="presentation"
              data-action="click->live#action"
              data-live-action-param="closeModal">
         </div>
