@@ -66,6 +66,11 @@ payment:
             currency: Currency
             payment_date: 'Payment Date'
             status: Status
+    stats:
+        total_received: 'Total Received'
+        this_month: 'This Month'
+        pending: 'Pending'
+        failed: 'Failed'
     method:
         add: 'Add Payment Method'
         added: 'Payment Method Successfully Added!'
