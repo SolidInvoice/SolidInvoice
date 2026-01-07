@@ -140,23 +140,21 @@ class ApiTokenRepository extends ServiceEntityRepository
 
         try {
             $result = $this->createQueryBuilder('t')
-                ->select('h')
+                ->select('h.created')
                 ->innerJoin('t.history', 'h')
                 ->where('t.user = :user')
                 ->setParameter('user', $user->getId(), UlidType::NAME)
                 ->orderBy('h.created', 'DESC')
                 ->setMaxResults(1)
                 ->getQuery()
-                ->getOneOrNullResult();
+                ->getSingleScalarResult();
 
             if (null === $result) {
                 return null;
             }
 
-            assert($result instanceof ApiTokenHistory);
-
-            return $result->getCreated();
-        } catch (NonUniqueResultException) {
+            return $result instanceof DateTimeInterface ? $result : null;
+        } catch (NoResultException | NonUniqueResultException) {
             return null;
         }
     }
