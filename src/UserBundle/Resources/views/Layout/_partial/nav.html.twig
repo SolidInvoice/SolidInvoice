@@ -1,53 +1,37 @@
-<div class="card card-primary card-outline">
-    <div class="card-header">
-        <h3 class="card-title">
-            {{ 'Profile'|trans }}
-        </h3>
+<aside class="profile-sidebar">
+    <div class="profile-nav-card">
+        <nav class="profile-nav">
+            <a href="{{ path('_profile') }}" class="profile-nav-item{{ menuItem is defined and menuItem is same as('profile') ? ' active' : '' }}">
+                <span class="profile-nav-icon">
+                    {{ ux_icon('tabler:user', {width: 20, height: 20}) }}
+                </span>
+                <span class="profile-nav-text">{{ 'Profile'|trans }}</span>
+            </a>
+            <a href="{{ path('_change_password') }}" class="profile-nav-item{{ menuItem is defined and menuItem is same as('change-password') ? ' active' : '' }}">
+                <span class="profile-nav-icon">
+                    {{ ux_icon('tabler:lock', {width: 20, height: 20}) }}
+                </span>
+                <span class="profile-nav-text">{{ 'Change Password'|trans }}</span>
+            </a>
+            <a href="{{ path('_2fa_list') }}" class="profile-nav-item{{ menuItem is defined and menuItem is same as('2fa') ? ' active' : '' }}">
+                <span class="profile-nav-icon">
+                    {{ ux_icon('tabler:shield-check', {width: 20, height: 20}) }}
+                </span>
+                <span class="profile-nav-text">{{ 'Two-Factor Authentication'|trans }}</span>
+            </a>
+            <a href="{{ path('_profile_notifications') }}" class="profile-nav-item{{ menuItem is defined and menuItem is same as('notification') ? ' active' : '' }}">
+                <span class="profile-nav-icon">
+                    {{ ux_icon('tabler:bell', {width: 20, height: 20}) }}
+                </span>
+                <span class="profile-nav-text">{{ 'Notifications'|trans }}</span>
+            </a>
+            <a href="{{ path('_api_keys_index') }}" class="profile-nav-item{{ menuItem is defined and menuItem is same as('api-tokens') ? ' active' : '' }}">
+                <span class="profile-nav-icon">
+                    {{ ux_icon('tabler:key', {width: 20, height: 20}) }}
+                </span>
+                <span class="profile-nav-text">{{ 'API Keys'|trans }}</span>
+            </a>
+        </nav>
     </div>
-    <div class="card-body">
-        <ul class="nav nav-pills nav-sidebar flex-column sidebar-menu" role="tablist">
-            {# <li class="nav-header nav-item first">
-                <span> <p>User Profile Settings</p></span>
-            </li> #}
-            <li class="nav-item">
-                <a href="{{ path('_profile') }}" class="nav-link{{ menuItem is defined and menuItem is same as('profile') ? ' active'}}">
-                    {{ icon('user') }}
-
-                    <span class="icon">{{ 'Profile'|trans }}</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ path('_change_password') }}" class="nav-link{{ menuItem is defined and menuItem is same as('change-password') ? ' active'}}">
-                    {{ icon('lock') }}
-
-                    <span class="icon">{{ 'Change Password' }}</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ path('_2fa_list') }}" class="nav-link{{ menuItem is defined and menuItem is same as('2fa') ? ' active'}}">
-                    {{ icon('shield-halved') }}
-
-                    <span class="icon">{{ 'Two-Factor Authentication' }}</span>
-                </a>
-            </li>
-            {# <li class="nav-header nav-item first">
-                <span> <p>Company Specific Settings</p></span>
-            </li> #}
-            <li class="nav-item">
-                <a href="{{ path('_profile_notifications') }}" class="nav-link{{ menuItem is defined and menuItem is same as('notification') ? ' active'}}">
-                    {{ icon('bell') }}
-
-                    <span class="icon">{{ 'Notifications'|trans }}</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ path('_api_keys_index') }}" class="nav-link{{ menuItem is defined and menuItem is same as('api-tokens') ? ' active'}}">
-                    {{ icon('user-secret') }}
-
-                    <span class="icon">{{ 'API Keys'|trans }}</span>
-                </a>
-            </li>
-        </ul>
-    </div>
-</div>
+</aside>
 

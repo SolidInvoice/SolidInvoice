@@ -16,6 +16,7 @@ namespace SolidInvoice\UserBundle\Form\Handler;
 use Generator;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Templating\Template;
+use SolidInvoice\UserBundle\DTO\ChangePassword;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Form\Type\ChangePasswordType;
 use SolidInvoice\UserBundle\Repository\UserRepositoryInterface;
@@ -46,7 +47,7 @@ class PasswordChangeHandler implements FormHandlerResponseInterface, FormHandler
 
     public function getForm(FormFactoryInterface $factory, Options $options)
     {
-        return $factory->create(ChangePasswordType::class, $options->get('user', $this->tokenStorage->getToken()->getUser()), ['confirm_password' => $options->get('confirm_password', true)]);
+        return $factory->create(ChangePasswordType::class, new ChangePassword(), ['confirm_password' => $options->get('confirm_password', true)]);
     }
 
     public function getResponse(FormRequest $formRequest)
@@ -60,16 +61,24 @@ class PasswordChangeHandler implements FormHandlerResponseInterface, FormHandler
     }
 
     /**
-     * @param User $data
+     * @param ChangePassword $data
      */
     public function onSuccess(FormRequest $form, $data): ?Response
     {
         $route = $form->getOptions()->get('redirect_route', '_profile');
 
-        $data->setPassword($this->userPasswordHasher->hashPassword($data, $data->getPassword()));
-        $data->eraseCredentials();
+        /** @var User $user */
+        $user = $this->tokenStorage->getToken()->getUser();
 
-        $this->userRepository->save($data);
+        // Hash the NEW plain password from the DTO and set it on the User entity
+        if (null !== $data->plainPassword) {
+            $hashedPassword = $this->userPasswordHasher->hashPassword($user, $data->plainPassword);
+            $user->setPassword($hashedPassword);
+        }
+
+        $user->eraseCredentials();
+
+        $this->userRepository->save($user);
 
         $route = $this->router->generate($route);
 

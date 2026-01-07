@@ -14,6 +14,7 @@ profile:
         change_password: 'Change Password'
         update_profile: 'Update Profile'
     edit:
+        title: 'Update Profile'
         success: 'Your profile has been updated'
         cancel: Cancel
         submit: Save

@@ -13,27 +13,20 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Form\Type;
 
-use SolidInvoice\UserBundle\Entity\User;
+use SolidInvoice\UserBundle\DTO\ChangePassword;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ChangePasswordType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         if (true === $options['confirm_password']) {
-            $builder->add('current_password', PasswordType::class, [
+            $builder->add('currentPassword', PasswordType::class, [
                 'label' => 'Current Password',
-                'mapped' => false,
-                'constraints' => [
-                    new NotBlank(),
-                    new UserPassword(),
-                ],
                 'attr' => [
                     'autocomplete' => 'current-password',
                 ],
@@ -47,8 +40,12 @@ class ChangePasswordType extends AbstractType
                     'autocomplete' => 'new-password',
                 ],
             ],
-            'first_options' => ['label' => 'New Password'],
-            'second_options' => ['label' => 'Confirm New Password'],
+            'first_options' => [
+                'label' => 'New Password',
+            ],
+            'second_options' => [
+                'label' => 'Confirm New Password',
+            ],
             'invalid_message' => 'The passwords doesn\'t match',
         ]);
     }
@@ -56,7 +53,7 @@ class ChangePasswordType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
+            'data_class' => ChangePassword::class,
             'confirm_password' => true,
             'csrf_token_id' => 'change_password',
         ]);
