@@ -41,4 +41,7 @@
 
         <twig:ApiTokenList />
     </twig:Ui:Card>
+
+    {# History Modal #}
+    <twig:ApiTokenHistoryModal :tokenId="app.request.query.get('view_history')" />
 {% endblock profile_content %}
