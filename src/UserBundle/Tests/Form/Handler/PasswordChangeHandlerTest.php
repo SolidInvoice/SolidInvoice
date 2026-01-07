@@ -17,6 +17,7 @@ use Mockery as M;
 use Mockery\MockInterface;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\FormBundle\Test\FormHandlerTestCase;
+use SolidInvoice\UserBundle\DTO\ChangePassword;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Form\Handler\PasswordChangeHandler;
 use SolidInvoice\UserBundle\Repository\UserRepository;
@@ -26,8 +27,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactory;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Authentication\Token\NullToken;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 final class PasswordChangeHandlerTest extends FormHandlerTestCase
 {
@@ -50,6 +51,8 @@ final class PasswordChangeHandlerTest extends FormHandlerTestCase
 
     private string $password;
 
+    private User $user;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -63,11 +66,12 @@ final class PasswordChangeHandlerTest extends FormHandlerTestCase
         $this->tokenStorage = M::mock(TokenStorageInterface::class);
         $this->router = M::mock(RouterInterface::class);
         $this->password = $this->faker->password;
+        $this->user = new User();
+        $this->user->setEmail($this->faker->email);
 
+        $token = new UsernamePasswordToken($this->user, 'main', $this->user->getRoles());
         $this->tokenStorage->shouldReceive('getToken')
-            ->once()
-            ->withNoArgs()
-            ->andReturn(new NullToken());
+            ->andReturn($token);
     }
 
     public function getHandler(): PasswordChangeHandler
@@ -79,19 +83,18 @@ final class PasswordChangeHandlerTest extends FormHandlerTestCase
     {
         self::assertInstanceOf(RedirectResponse::class, $response);
         self::assertInstanceOf(FlashResponse::class, $response);
+        self::assertInstanceOf(ChangePassword::class, $data);
         self::assertSame('profile', $response->getTargetUrl());
-        self::assertTrue(password_verify($this->password, (string) $data->getPassword()));
+        self::assertTrue(password_verify($this->password, (string) $this->user->getPassword()));
         self::assertSame(FlashResponse::FLASH_SUCCESS, $response->getFlash()->key());
     }
 
     /**
-     * @return array{user: User}
+     * @return array<string, mixed>
      */
     protected function getHandlerOptions(): array
     {
-        return [
-            'user' => new User(),
-        ];
+        return [];
     }
 
     /**

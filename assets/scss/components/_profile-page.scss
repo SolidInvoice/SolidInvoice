@@ -1,0 +1,650 @@
+/**
+ * SolidInvoice - Profile Page Styles
+ *
+ * Modern, elegant user profile section with clean visual hierarchy.
+ * Uses design system tokens for consistent styling.
+ * Includes: sidebar navigation, profile view, and form pages.
+ */
+
+// ============================================================================
+// SIDEBAR NAVIGATION
+// ============================================================================
+
+.profile-sidebar {
+    position: sticky;
+    top: var(--swp-space-6);
+
+    @media (max-width: 991.98px) {
+        position: static;
+        margin-bottom: var(--swp-space-4);
+    }
+}
+
+.profile-nav-card {
+    background: var(--swp-surface);
+    border: 1px solid var(--swp-border);
+    border-radius: var(--swp-radius-lg);
+    overflow: hidden;
+    box-shadow: var(--swp-shadow-sm);
+}
+
+.profile-nav {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-nav-item {
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-3);
+    padding: var(--swp-space-3) var(--swp-space-4);
+    color: var(--swp-text-secondary);
+    text-decoration: none;
+    transition: all var(--swp-transition-base);
+    border-left: 3px solid transparent;
+    font-size: var(--swp-text-base);
+
+    &:hover {
+        background: var(--swp-gray-50);
+        color: var(--swp-text-primary);
+        text-decoration: none;
+    }
+
+    &.active {
+        background: var(--swp-primary-lighter);
+        color: var(--swp-primary);
+        border-left-color: var(--swp-primary);
+        font-weight: var(--swp-font-semibold);
+    }
+}
+
+.profile-nav-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: currentColor;
+}
+
+.profile-nav-text {
+    flex: 1;
+}
+
+// ============================================================================
+// PROFILE VIEW - HEADER WITH AVATAR
+// ============================================================================
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-4);
+    padding: var(--swp-space-6);
+    background: var(--swp-surface);
+    border: 1px solid var(--swp-border);
+    border-radius: var(--swp-radius-lg);
+    margin-bottom: var(--swp-space-6);
+    box-shadow: var(--swp-shadow-sm);
+
+    @media (max-width: 767.98px) {
+        flex-direction: column;
+        text-align: center;
+        padding: var(--swp-space-5);
+    }
+}
+
+.profile-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: var(--swp-radius-full);
+    background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.2) 100%);
+    color: var(--swp-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: var(--swp-font-bold);
+    flex-shrink: 0;
+    letter-spacing: -0.02em;
+}
+
+.profile-header-info {
+    flex: 1;
+}
+
+.profile-name {
+    font-size: 1.5rem;
+    font-weight: var(--swp-font-bold);
+    color: var(--swp-text-primary);
+    margin: 0;
+    line-height: 1.3;
+    letter-spacing: -0.025em;
+}
+
+.profile-email {
+    font-size: var(--swp-text-base);
+    color: var(--swp-text-muted);
+    margin: var(--swp-space-1) 0 0;
+}
+
+// ============================================================================
+// PROFILE VIEW - INFORMATION SECTIONS
+// ============================================================================
+
+.profile-section {
+    background: var(--swp-surface);
+    border: 1px solid var(--swp-border);
+    border-radius: var(--swp-radius-lg);
+    overflow: hidden;
+    margin-bottom: var(--swp-space-6);
+    box-shadow: var(--swp-shadow-sm);
+    transition: box-shadow var(--swp-transition-base),
+                border-color var(--swp-transition-base);
+
+    &:hover {
+        border-color: var(--swp-border-dark);
+    }
+}
+
+.profile-section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--swp-space-3);
+    padding: var(--swp-space-5) var(--swp-space-6);
+    background: var(--swp-gray-50);
+    border-bottom: 1px solid var(--swp-border);
+}
+
+.section-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.1) 100%);
+    border-radius: var(--swp-radius-md);
+    color: var(--swp-primary);
+    flex-shrink: 0;
+}
+
+.section-icon-security {
+    background: linear-gradient(135deg, rgba(var(--swp-success-rgb), 0.15) 0%, rgba(var(--swp-success-rgb), 0.05) 100%);
+    color: var(--swp-success);
+}
+
+.profile-section-title {
+    flex: 1;
+    padding-top: var(--swp-space-1);
+}
+
+.section-title {
+    font-size: var(--swp-text-lg);
+    font-weight: var(--swp-font-semibold);
+    color: var(--swp-text-primary);
+    margin: 0 0 var(--swp-space-1);
+    line-height: 1.4;
+}
+
+.section-description {
+    font-size: var(--swp-text-sm);
+    color: var(--swp-text-muted);
+    margin: 0;
+    line-height: 1.5;
+}
+
+.profile-section-body {
+    padding: var(--swp-space-6);
+}
+
+.profile-section-footer {
+    padding: var(--swp-space-4) var(--swp-space-6);
+    background: var(--swp-gray-50);
+    border-top: 1px solid var(--swp-border);
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--swp-space-3);
+}
+
+// ============================================================================
+// PROFILE VIEW - DETAIL GRID
+// ============================================================================
+
+.profile-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--swp-space-5);
+
+    @media (max-width: 767.98px) {
+        grid-template-columns: 1fr;
+        gap: var(--swp-space-4);
+    }
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--swp-space-1);
+}
+
+.detail-item-wide {
+    grid-column: 1 / -1;
+}
+
+.detail-label {
+    font-size: var(--swp-text-sm);
+    color: var(--swp-text-muted);
+    font-weight: var(--swp-font-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+.detail-value {
+    font-size: var(--swp-text-base);
+    color: var(--swp-text-primary);
+    font-weight: var(--swp-font-medium);
+}
+
+// ============================================================================
+// PROFILE VIEW - SECURITY STATUS
+// ============================================================================
+
+.security-status {
+    display: flex;
+    flex-direction: column;
+    gap: var(--swp-space-4);
+}
+
+.security-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--swp-space-4);
+    background: var(--swp-gray-50);
+    border: 1px solid var(--swp-border);
+    border-radius: var(--swp-radius-md);
+    transition: border-color var(--swp-transition-base);
+
+    &:hover {
+        border-color: var(--swp-border-dark);
+    }
+}
+
+.security-item-info {
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-3);
+    flex: 1;
+}
+
+.security-item-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--swp-radius-md);
+    flex-shrink: 0;
+}
+
+.security-item-icon-success {
+    background: rgba(var(--swp-success-rgb), 0.1);
+    color: var(--swp-success);
+}
+
+.security-item-icon-warning {
+    background: rgba(var(--swp-warning-rgb), 0.1);
+    color: var(--swp-warning);
+}
+
+.security-item-content {
+    flex: 1;
+}
+
+.security-item-title {
+    font-size: var(--swp-text-base);
+    font-weight: var(--swp-font-medium);
+    color: var(--swp-text-primary);
+    margin: 0 0 var(--swp-space-0-5);
+}
+
+.security-item-description {
+    font-size: var(--swp-text-sm);
+    color: var(--swp-text-muted);
+    margin: 0;
+}
+
+.security-item-action {
+    flex-shrink: 0;
+    margin-left: var(--swp-space-3);
+}
+
+// ============================================================================
+// FORM PAGES - PAGE CONTAINER
+// ============================================================================
+
+.profile-form-page {
+    min-height: 100%;
+}
+
+.profile-form-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding-bottom: var(--swp-space-24);
+}
+
+// ============================================================================
+// FORM PAGES - HEADER
+// ============================================================================
+
+.profile-form-header {
+    margin-bottom: var(--swp-space-8);
+    padding: var(--swp-space-6) 0;
+}
+
+.profile-form-header-content {
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-4);
+}
+
+.profile-form-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.15) 100%);
+    border-radius: var(--swp-radius-lg);
+    color: var(--swp-primary);
+    flex-shrink: 0;
+}
+
+.profile-form-icon-security {
+    background: linear-gradient(135deg, rgba(var(--swp-success-rgb), 0.2) 0%, rgba(var(--swp-success-rgb), 0.1) 100%);
+    color: var(--swp-success);
+}
+
+.profile-form-title {
+    font-size: 1.75rem;
+    font-weight: var(--swp-font-bold);
+    color: var(--swp-text-primary);
+    margin: 0;
+    letter-spacing: -0.025em;
+}
+
+.profile-form-subtitle {
+    font-size: var(--swp-text-base);
+    color: var(--swp-text-muted);
+    margin: var(--swp-space-1) 0 0 0;
+}
+
+// ============================================================================
+// FORM PAGES - SECTIONS
+// ============================================================================
+
+.profile-form-sections {
+    display: flex;
+    flex-direction: column;
+    gap: var(--swp-space-6);
+}
+
+.profile-form-section {
+    background: var(--swp-surface);
+    border: 1px solid var(--swp-border);
+    border-radius: var(--swp-radius-lg);
+    overflow: hidden;
+    transition: box-shadow var(--swp-transition-base),
+                border-color var(--swp-transition-base);
+
+    &:hover {
+        border-color: var(--swp-border-dark);
+    }
+
+    &:focus-within {
+        border-color: var(--swp-primary);
+        box-shadow: var(--swp-ring-primary);
+    }
+}
+
+// Section header (reuse from profile view)
+.profile-form-section .section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--swp-space-3);
+    padding: var(--swp-space-5) var(--swp-space-6) var(--swp-space-4);
+    background: var(--swp-gray-50);
+    border-bottom: 1px solid var(--swp-border);
+}
+
+.profile-form-section .section-content {
+    padding: var(--swp-space-6);
+}
+
+.section-header-text {
+    flex: 1;
+    padding-top: var(--swp-space-1);
+}
+
+// ============================================================================
+// FORM PAGES - FORM GRID
+// ============================================================================
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--swp-space-4);
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-field-wide {
+    grid-column: 1 / -1;
+}
+
+// ============================================================================
+// FORM PAGES - STICKY FOOTER
+// ============================================================================
+
+.profile-form-actions {
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--swp-surface);
+    border-top: 1px solid var(--swp-border);
+    padding: var(--swp-space-4) 0;
+    margin-top: var(--swp-space-8);
+    z-index: 10;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.profile-form-actions-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 var(--swp-space-4);
+}
+
+// ============================================================================
+// GOOGLE SIGN-IN BUTTON
+// ============================================================================
+
+.google-signin-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--swp-space-2);
+    background: var(--swp-surface);
+    border-color: var(--swp-border);
+    color: var(--swp-text-primary);
+    transition: all var(--swp-transition-base);
+
+    &:hover {
+        background: var(--swp-gray-50);
+        border-color: var(--swp-border-dark);
+        color: var(--swp-text-primary);
+        box-shadow: var(--swp-shadow-sm);
+    }
+
+    &:active {
+        transform: translateY(1px);
+    }
+
+    svg {
+        flex-shrink: 0;
+    }
+}
+
+// ============================================================================
+// PASSWORD REQUIREMENTS (OPTIONAL)
+// ============================================================================
+
+.password-requirements {
+    background: rgba(var(--swp-info-rgb), 0.05);
+    border: 1px solid rgba(var(--swp-info-rgb), 0.2);
+    border-radius: var(--swp-radius-md);
+    padding: var(--swp-space-4);
+    margin-bottom: var(--swp-space-6);
+}
+
+.password-requirements-header {
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-2);
+    margin-bottom: var(--swp-space-3);
+
+    .section-icon {
+        width: 32px;
+        height: 32px;
+        background: rgba(var(--swp-info-rgb), 0.15);
+        color: var(--swp-info);
+    }
+
+    h3 {
+        font-size: var(--swp-text-base);
+        font-weight: var(--swp-font-semibold);
+        color: var(--swp-text-primary);
+        margin: 0;
+    }
+}
+
+.password-requirements-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+        font-size: var(--swp-text-sm);
+        color: var(--swp-text-secondary);
+        padding: var(--swp-space-1) 0 var(--swp-space-1) var(--swp-space-6);
+        position: relative;
+
+        &::before {
+            content: '✓';
+            position: absolute;
+            left: var(--swp-space-2);
+            color: var(--swp-info);
+            font-weight: var(--swp-font-bold);
+        }
+    }
+}
+
+// ============================================================================
+// RESPONSIVE DESIGN
+// ============================================================================
+
+@media (max-width: 767.98px) {
+    // Form pages
+    .profile-form-page {
+        padding: var(--swp-space-4);
+    }
+
+    .profile-form-header {
+        padding: var(--swp-space-4) 0;
+    }
+
+    .profile-form-header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--swp-space-3);
+    }
+
+    .profile-form-icon {
+        width: 48px;
+        height: 48px;
+    }
+
+    .profile-form-title {
+        font-size: 1.5rem;
+    }
+
+    .profile-form-section .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: var(--swp-space-4) var(--swp-space-4) var(--swp-space-3);
+    }
+
+    .section-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .profile-form-section .section-content {
+        padding: var(--swp-space-4);
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: var(--swp-space-3);
+    }
+
+    .profile-form-actions-inner {
+        flex-direction: column;
+        gap: var(--swp-space-3);
+
+        .btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+
+    // Profile section footer buttons
+    .profile-section-footer {
+        flex-direction: column;
+
+        .btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+}
+
+// Tablet adjustments
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .profile-sidebar {
+        margin-bottom: var(--swp-space-6);
+    }
+}
+
+// ============================================================================
+// PRINT STYLES
+// ============================================================================
+
+@media print {
+    .profile-form-actions,
+    .profile-section-footer,
+    .profile-sidebar {
+        display: none !important;
+    }
+
+    .profile-form-page {
+        padding: 0;
+    }
+
+    .profile-form-container {
+        max-width: none;
+    }
+}
