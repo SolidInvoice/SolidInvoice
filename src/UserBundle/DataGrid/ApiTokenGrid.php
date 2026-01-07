@@ -16,6 +16,7 @@ namespace SolidInvoice\UserBundle\DataGrid;
 use Doctrine\ORM\EntityManagerInterface;
 use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
 use SolidInvoice\DataGridBundle\Grid;
+use SolidInvoice\DataGridBundle\GridBuilder\Action\Action;
 use SolidInvoice\DataGridBundle\GridBuilder\Batch\BatchAction;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\RelativeDateColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
@@ -74,29 +75,17 @@ final class ApiTokenGrid extends Grid
 
     public function actions(): array
     {
-        return [];
-    }
-
-    /**
-     * Returns the template for rendering expandable row details.
-     * This will display the API request history for each token.
-     */
-    public function getRowDetailTemplate(): ?string
-    {
-        return '@SolidInvoiceUser/Components/ApiTokenHistory.html.twig';
-    }
-
-    /**
-     * Returns true if this grid supports expandable rows.
-     */
-    public function hasRowDetails(): bool
-    {
-        return true;
+        return [
+            Action::new('_api_keys_index', ['view_history' => 'id'])
+                ->label('View History')
+                ->icon('history')
+                ->inMenu(),
+        ];
     }
 
     public function batchActions(): iterable
     {
-        yield BatchAction::new('Revoke Selected')
+        yield BatchAction::new('Revoke')
             ->icon('ban')
             ->color('danger')
             ->action(function (ApiTokenRepository $repository, array $selectedItems): void {
@@ -127,6 +116,7 @@ final class ApiTokenGrid extends Grid
 
         $query->getQueryBuilder()
             ->leftJoin(ORMSource::ALIAS . '.history', 'h')
+            ->addSelect('h')
             ->where(ORMSource::ALIAS . '.user = :user')
             ->setParameter('user', $user->getId(), UlidType::NAME)
             ->orderBy(ORMSource::ALIAS . '.created', 'DESC');

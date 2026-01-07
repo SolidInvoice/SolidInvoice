@@ -1,0 +1,55 @@
+<div {{ attributes.defaults({
+    'data-controller': 'api-token-history-modal'
+}) }}>
+    <div class="modal modal-blur fade"
+         id="apiTokenHistoryModal"
+         tabindex="-1"
+         aria-labelledby="apiTokenHistoryModalLabel"
+         aria-hidden="true"
+         data-bs-backdrop="static"
+         data-bs-keyboard="false">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                {% if this.token %}
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="apiTokenHistoryModalLabel">
+                            {{ ux_icon('tabler:history', {width: 20, height: 20, class: 'me-2'}) }}
+                            API Request History - {{ this.token.name }}
+                        </h5>
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-0">
+                        <div class="alert alert-info m-3 mb-0" role="alert">
+                            {{ ux_icon('tabler:info-circle', {width: 20, height: 20, class: 'me-2'}) }}
+                            Showing API requests made with this token.
+                        </div>
+                        <div class="p-3">
+                            <twig:DataGrid
+                                    name="api_token_history_grid"
+                                    :context="{ token_id: this.token.id }"
+                            />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button"
+                                class="btn"
+                                data-bs-dismiss="modal">
+                            Close
+                        </button>
+                    </div>
+                {% else %}
+                    <div class="modal-body">
+                        <div class="text-center py-5">
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

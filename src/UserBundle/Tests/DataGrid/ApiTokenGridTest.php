@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Tests\DataGrid;
 
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\DataGridBundle\GridBuilder\Column\RelativeDateColumn;
+use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
 use SolidInvoice\UserBundle\DataGrid\ApiTokenGrid;
 use SolidInvoice\UserBundle\Entity\ApiToken;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -33,20 +35,26 @@ final class ApiTokenGridTest extends TestCase
         self::assertSame(ApiToken::class, $grid->entityFQCN());
     }
 
-    public function testHasRowDetailsReturnsTrue(): void
+    public function testColumnsReturnsCorrectConfiguration(): void
     {
         $grid = $this->createGrid();
+        $columns = $grid->columns();
 
-        self::assertTrue($grid->hasRowDetails());
+        self::assertCount(5, $columns);
+        self::assertInstanceOf(StringColumn::class, $columns[0]);
+        self::assertInstanceOf(StringColumn::class, $columns[1]);
+        self::assertInstanceOf(StringColumn::class, $columns[2]);
+        self::assertInstanceOf(RelativeDateColumn::class, $columns[3]);
+        self::assertInstanceOf(RelativeDateColumn::class, $columns[4]);
     }
 
-    public function testGetRowDetailTemplateReturnsCorrectPath(): void
+    public function testActionsReturnsViewHistoryAction(): void
     {
         $grid = $this->createGrid();
+        $actions = $grid->actions();
 
-        self::assertSame(
-            '@SolidInvoiceUser/Components/ApiTokenHistory.html.twig',
-            $grid->getRowDetailTemplate()
-        );
+        self::assertCount(1, $actions);
+        self::assertSame('View History', $actions[0]->getLabel());
+        self::assertSame('history', $actions[0]->getIcon());
     }
 }
