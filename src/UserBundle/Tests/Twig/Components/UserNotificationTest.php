@@ -37,6 +37,9 @@ final class UserNotificationTest extends TestCase
 
     private TransportSettingRepository $transportSettingRepository;
 
+    /**
+     * @var ServiceLocator<NotificationMessage>
+     */
     private ServiceLocator $notificationLocator;
 
     protected function setUp(): void
