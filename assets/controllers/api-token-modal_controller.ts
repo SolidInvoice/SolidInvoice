@@ -1,5 +1,6 @@
 import { Controller } from '@hotwired/stimulus';
 import { Modal } from 'bootstrap';
+import { getComponent } from '@symfony/ux-live-component';
 
 /**
  * Coordinates the modal hide/show sequence for API token creation
@@ -8,7 +9,7 @@ import { Modal } from 'bootstrap';
 export default class extends Controller<HTMLElement> {
     private shouldClearOnHide: boolean = false;
     private modalElement: HTMLElement | null = null;
-    private boundHandleModalHidden: () => void;
+    private boundHandleModalHidden: () => Promise<void>;
 
     constructor(context: any) {
         super(context);
@@ -48,7 +49,7 @@ export default class extends Controller<HTMLElement> {
         }
     }
 
-    private handleModalHidden(): void {
+    private async handleModalHidden(): Promise<void> {
         // Only clear state if we initiated the close via the confirm button
         if (this.shouldClearOnHide) {
             this.shouldClearOnHide = false;
@@ -57,12 +58,9 @@ export default class extends Controller<HTMLElement> {
             // Find the LiveComponent and trigger clearToken action
             const liveComponent = this.element.closest('[data-controller*="live"]');
             if (liveComponent instanceof HTMLElement) {
-                // Trigger the live action using the data attribute
-                const event = new CustomEvent('live:call', {
-                    detail: { action: 'clearToken' },
-                    bubbles: true
-                });
-                liveComponent.dispatchEvent(event);
+                // Use official Symfony UX LiveComponent API
+                const component = await getComponent(liveComponent);
+                await component.action('clearToken');
             }
         }
     }

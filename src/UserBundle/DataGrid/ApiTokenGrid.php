@@ -127,7 +127,6 @@ final class ApiTokenGrid extends Grid
 
         $query->getQueryBuilder()
             ->leftJoin(ORMSource::ALIAS . '.history', 'h')
-            ->addSelect('h')
             ->where(ORMSource::ALIAS . '.user = :user')
             ->setParameter('user', $user->getId(), UlidType::NAME)
             ->orderBy(ORMSource::ALIAS . '.created', 'DESC');
