@@ -8,6 +8,12 @@ import { Modal } from 'bootstrap';
 export default class extends Controller<HTMLElement> {
     private shouldClearOnHide: boolean = false;
     private modalElement: HTMLElement | null = null;
+    private boundHandleModalHidden: () => void;
+
+    constructor(context: any) {
+        super(context);
+        this.boundHandleModalHidden = this.handleModalHidden.bind(this);
+    }
 
     connect(): void {
         // Find the actual modal element within our wrapper
@@ -15,13 +21,13 @@ export default class extends Controller<HTMLElement> {
 
         if (this.modalElement) {
             // Listen for when modal is fully hidden on the modal element itself
-            this.modalElement.addEventListener('hidden.bs.modal', this.handleModalHidden.bind(this));
+            this.modalElement.addEventListener('hidden.bs.modal', this.boundHandleModalHidden);
         }
     }
 
     disconnect(): void {
         if (this.modalElement) {
-            this.modalElement.removeEventListener('hidden.bs.modal', this.handleModalHidden.bind(this));
+            this.modalElement.removeEventListener('hidden.bs.modal', this.boundHandleModalHidden);
         }
     }
 

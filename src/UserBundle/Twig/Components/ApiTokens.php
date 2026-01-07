@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Twig\Components;
 
 use SolidInvoice\UserBundle\Entity\ApiToken;
+use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Repository\ApiTokenRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -41,7 +42,14 @@ final class ApiTokens extends AbstractController
     {
         $currentUser = $this->security->getUser();
 
-        if ($token->getUser() !== $currentUser) {
+        if (! $currentUser instanceof User) {
+            throw new AccessDeniedException('You must be logged in to revoke tokens');
+        }
+
+        $tokenUser = $token->getUser();
+        assert($tokenUser instanceof User);
+
+        if ($tokenUser->getId() !== $currentUser->getId()) {
             throw new AccessDeniedException('You cannot revoke tokens that do not belong to you');
         }
 

@@ -117,7 +117,7 @@ class ApiTokenRepository extends ServiceEntityRepository
     {
         assert($user instanceof User);
 
-        $firstDayOfMonth = new \DateTime('first day of this month 00:00:00');
+        $firstDayOfMonth = new \DateTimeImmutable('first day of this month 00:00:00');
 
         try {
             return (int) $this->createQueryBuilder('t')
@@ -140,25 +140,23 @@ class ApiTokenRepository extends ServiceEntityRepository
 
         try {
             $result = $this->createQueryBuilder('t')
-                ->select('h.created')
+                ->select('h')
                 ->innerJoin('t.history', 'h')
                 ->where('t.user = :user')
                 ->setParameter('user', $user->getId(), UlidType::NAME)
                 ->orderBy('h.created', 'DESC')
                 ->setMaxResults(1)
                 ->getQuery()
-                ->getSingleScalarResult();
+                ->getOneOrNullResult();
 
-            if ($result instanceof DateTimeInterface) {
-                return $result;
+            if (null === $result) {
+                return null;
             }
 
-            if (is_string($result)) {
-                return new \DateTimeImmutable($result);
-            }
+            assert($result instanceof ApiTokenHistory);
 
-            return null;
-        } catch (NoResultException | NonUniqueResultException) {
+            return $result->getCreated();
+        } catch (NonUniqueResultException) {
             return null;
         }
     }

@@ -42,7 +42,7 @@ final class ApiTokenHistoryGridTest extends TestCase
 
         $queryBuilder
             ->expects(self::once())
-            ->method('where')
+            ->method('andWhere')
             ->with('IDENTITY(' . ORMSource::ALIAS . '.token) = :token')
             ->willReturnSelf();
 
@@ -80,7 +80,7 @@ final class ApiTokenHistoryGridTest extends TestCase
 
         $queryBuilder
             ->expects(self::never())
-            ->method('where');
+            ->method('andWhere');
 
         $queryBuilder
             ->expects(self::never())

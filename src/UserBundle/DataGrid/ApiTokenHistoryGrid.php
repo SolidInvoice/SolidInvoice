@@ -86,7 +86,7 @@ final class ApiTokenHistoryGrid extends Grid
         // Filter by token ID if provided in context
         if (isset($this->context['token_id'])) {
             $query->getQueryBuilder()
-                ->where('IDENTITY(' . ORMSource::ALIAS . '.token) = :token')
+                ->andWhere('IDENTITY(' . ORMSource::ALIAS . '.token) = :token')
                 ->setParameter('token', $this->context['token_id'], UlidType::NAME);
         }
 
