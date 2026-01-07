@@ -99,11 +99,21 @@ final class ApiTokenGrid extends Grid
         yield BatchAction::new('Revoke Selected')
             ->icon('ban')
             ->color('danger')
-            ->action(static function (ApiTokenRepository $repository, array $selectedItems): void {
+            ->action(function (ApiTokenRepository $repository, array $selectedItems): void {
+                $currentUser = $this->security->getUser();
+
+                if (! $currentUser instanceof User) {
+                    return;
+                }
+
                 foreach ($selectedItems as $tokenId) {
                     $token = $repository->find($tokenId);
                     if ($token instanceof ApiToken) {
-                        $repository->revoke($token);
+                        $tokenUser = $token->getUser();
+                        assert($tokenUser instanceof User);
+                        if ($tokenUser->getId() === $currentUser->getId()) {
+                            $repository->revoke($token);
+                        }
                     }
                 }
             });
@@ -116,6 +126,8 @@ final class ApiTokenGrid extends Grid
         assert($user instanceof User);
 
         $query->getQueryBuilder()
+            ->leftJoin(ORMSource::ALIAS . '.history', 'h')
+            ->addSelect('h')
             ->where(ORMSource::ALIAS . '.user = :user')
             ->setParameter('user', $user->getId(), UlidType::NAME)
             ->orderBy(ORMSource::ALIAS . '.created', 'DESC');

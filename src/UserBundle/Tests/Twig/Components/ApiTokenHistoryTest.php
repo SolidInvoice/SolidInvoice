@@ -13,22 +13,24 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Tests\Twig\Components;
 
-use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\UserBundle\Entity\ApiToken;
-use SolidInvoice\UserBundle\Entity\ApiTokenHistory as ApiTokenHistoryEntity;
+use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Repository\ApiTokenHistoryRepository;
+use SolidInvoice\UserBundle\Repository\ApiTokenRepository;
 use SolidInvoice\UserBundle\Twig\Components\ApiTokenHistory;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Uid\Ulid;
 
 final class ApiTokenHistoryTest extends TestCase
 {
     public function testGetHistoryReturnsEmptyArrayWhenTokenIsNull(): void
     {
-        $repository = $this->createMock(ApiTokenHistoryRepository::class);
-        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $historyRepository = $this->createMock(ApiTokenHistoryRepository::class);
+        $tokenRepository = $this->createMock(ApiTokenRepository::class);
+        $security = $this->createMock(Security::class);
 
-        $component = new ApiTokenHistory($repository, $entityManager);
+        $component = new ApiTokenHistory($historyRepository, $tokenRepository, $security);
         $component->token = null;
 
         self::assertSame([], $component->getHistory());
@@ -36,53 +38,64 @@ final class ApiTokenHistoryTest extends TestCase
 
     public function testGetHistoryReturnsEmptyArrayWhenTokenNotFound(): void
     {
-        $repository = $this->createMock(ApiTokenHistoryRepository::class);
-        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $historyRepository = $this->createMock(ApiTokenHistoryRepository::class);
+        $tokenRepository = $this->createMock(ApiTokenRepository::class);
+        $security = $this->createMock(Security::class);
 
         $tokenId = Ulid::generate();
 
-        $entityManager
+        $tokenRepository
             ->expects(self::once())
             ->method('find')
-            ->with(ApiToken::class, $tokenId)
+            ->with($tokenId)
             ->willReturn(null);
 
-        $component = new ApiTokenHistory($repository, $entityManager);
+        $component = new ApiTokenHistory($historyRepository, $tokenRepository, $security);
         $component->token = (string) $tokenId;
 
         self::assertSame([], $component->getHistory());
     }
 
-    public function testGetHistoryReturnsHistoryRecordsForToken(): void
+    public function testGetHistoryReturnsEmptyArrayWhenUserDoesNotOwnToken(): void
     {
-        $repository = $this->createMock(ApiTokenHistoryRepository::class);
-        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $historyRepository = $this->createMock(ApiTokenHistoryRepository::class);
+        $tokenRepository = $this->createMock(ApiTokenRepository::class);
+        $security = $this->createMock(Security::class);
 
         $tokenId = Ulid::generate();
+
+        // Create a user that owns the token
+        $tokenOwner = $this->createStub(User::class);
+        $tokenOwner->method('getId')->willReturn(Ulid::fromString('01HN0000000000000000000001'));
+
+        // Create a different current user
+        $currentUser = $this->createStub(User::class);
+        $currentUser->method('getId')->willReturn(Ulid::fromString('01HN0000000000000000000002'));
+
         $apiToken = $this->createMock(ApiToken::class);
+        $apiToken->method('getUser')->willReturn($tokenOwner);
 
-        $history1 = $this->createMock(ApiTokenHistoryEntity::class);
-        $history2 = $this->createMock(ApiTokenHistoryEntity::class);
-
-        $entityManager
+        $tokenRepository
             ->expects(self::once())
             ->method('find')
-            ->with(ApiToken::class, $tokenId)
+            ->with($tokenId)
             ->willReturn($apiToken);
 
-        $repository
+        $security
             ->expects(self::once())
-            ->method('getHistoryForToken')
-            ->with($apiToken)
-            ->willReturn(new \ArrayIterator([$history1, $history2]));
+            ->method('getUser')
+            ->willReturn($currentUser);
 
-        $component = new ApiTokenHistory($repository, $entityManager);
+        // History repository should NOT be called due to authorization check
+        $historyRepository
+            ->expects(self::never())
+            ->method('getHistoryForToken');
+
+        $component = new ApiTokenHistory($historyRepository, $tokenRepository, $security);
         $component->token = (string) $tokenId;
 
         $result = $component->getHistory();
 
-        self::assertCount(2, $result);
-        self::assertSame($history1, $result[0]);
-        self::assertSame($history2, $result[1]);
+        self::assertSame([], $result);
     }
 }

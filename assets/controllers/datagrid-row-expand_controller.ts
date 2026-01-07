@@ -7,6 +7,7 @@ export default class extends Controller<HTMLTableRowElement> {
     static targets = ['expandIcon'];
 
     declare readonly expandIconTarget: HTMLElement;
+    declare readonly hasExpandIconTarget: boolean;
     private detailRow: HTMLTableRowElement | null = null;
 
     connect(): void {
@@ -37,7 +38,9 @@ export default class extends Controller<HTMLTableRowElement> {
 
         this.element.classList.add('expanded');
         this.detailRow.classList.add('visible');
-        this.expandIconTarget.style.transform = 'rotate(90deg)';
+        if (this.hasExpandIconTarget) {
+            this.expandIconTarget.style.transform = 'rotate(90deg)';
+        }
     }
 
     collapse(): void {
@@ -47,6 +50,8 @@ export default class extends Controller<HTMLTableRowElement> {
 
         this.element.classList.remove('expanded');
         this.detailRow.classList.remove('visible');
-        this.expandIconTarget.style.transform = 'rotate(0deg)';
+        if (this.hasExpandIconTarget) {
+            this.expandIconTarget.style.transform = 'rotate(0deg)';
+        }
     }
 }

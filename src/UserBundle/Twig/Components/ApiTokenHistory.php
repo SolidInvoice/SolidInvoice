@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Twig\Components;
 
-use Doctrine\ORM\EntityManagerInterface;
-use SolidInvoice\UserBundle\Entity\ApiToken;
+use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Repository\ApiTokenHistoryRepository;
+use SolidInvoice\UserBundle\Repository\ApiTokenRepository;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Uid\Ulid;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
@@ -27,7 +28,8 @@ final class ApiTokenHistory
 
     public function __construct(
         private readonly ApiTokenHistoryRepository $historyRepository,
-        private readonly EntityManagerInterface $entityManager,
+        private readonly ApiTokenRepository $tokenRepository,
+        private readonly Security $security,
     ) {
     }
 
@@ -41,9 +43,15 @@ final class ApiTokenHistory
             return [];
         }
 
-        $apiToken = $this->entityManager->find(ApiToken::class, Ulid::fromString($this->token));
+        $apiToken = $this->tokenRepository->find(Ulid::fromString($this->token));
 
         if (null === $apiToken) {
+            return [];
+        }
+
+        // Verify token belongs to current user
+        $currentUser = $this->security->getUser();
+        if (! $currentUser instanceof User || $apiToken->getUser()->getId() !== $currentUser->getId()) {
             return [];
         }
 
