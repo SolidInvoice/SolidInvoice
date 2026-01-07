@@ -55,7 +55,8 @@ final class NotificationCategoryTest extends TestCase
     {
         $labels = array_map(static fn (NotificationCategory $category) => $category->getLabel(), NotificationCategory::cases());
 
-        self::assertSame(count($labels), count(array_unique($labels)));
+        $uniqueLabels = array_unique($labels);
+        self::assertCount(count($labels), $uniqueLabels);
     }
 
     public function testEachCategoryHasIcon(): void
