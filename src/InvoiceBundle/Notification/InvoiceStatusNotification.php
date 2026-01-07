@@ -14,13 +14,20 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Notification;
 
 use SolidInvoice\NotificationBundle\Attribute\AsNotification;
+use SolidInvoice\NotificationBundle\Enum\NotificationCategory;
 use SolidInvoice\NotificationBundle\Notification\NotificationMessage;
 use Symfony\Bridge\Twig\Mime\NotificationEmail;
 use Symfony\Component\Notifier\Message\EmailMessage;
 use Symfony\Component\Notifier\Recipient\EmailRecipientInterface;
 use Twig\Environment;
 
-#[AsNotification(name: self::EVENT)]
+#[AsNotification(
+    name: self::EVENT,
+    title: 'Invoice Status Changed',
+    description: 'When an invoice status changes (draft, sent, paid, etc.)',
+    icon: 'tabler:file-invoice',
+    category: NotificationCategory::INVOICE,
+)]
 class InvoiceStatusNotification extends NotificationMessage
 {
     public const EVENT = 'invoice_status_update';

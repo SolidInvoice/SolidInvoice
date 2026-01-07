@@ -13,8 +13,10 @@ namespace SolidInvoice\UserBundle\Twig\Components;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use SolidInvoice\NotificationBundle\Attribute\AsNotification;
 use SolidInvoice\NotificationBundle\Entity\TransportSetting;
 use SolidInvoice\NotificationBundle\Entity\UserNotification as UserNotificationEntity;
+use SolidInvoice\NotificationBundle\Enum\NotificationCategory;
 use SolidInvoice\NotificationBundle\Notification\NotificationMessage;
 use SolidInvoice\NotificationBundle\Repository\TransportSettingRepository;
 use SolidInvoice\NotificationBundle\Repository\UserNotificationRepository;
@@ -48,15 +50,15 @@ final class UserNotification extends AbstractController
     public array $notificationList = [];
 
     /**
-     * @param ServiceLocator<NotificationMessage> $notificationList
+     * @param ServiceLocator<NotificationMessage> $notificationLocator
      */
     public function __construct(
         private readonly UserNotificationRepository $userNotificationRepository,
         private readonly TransportSettingRepository $transportSettingRepository,
         #[TaggedLocator('solid_invoice_notification.notification', 'name')]
-        ServiceLocator $notificationList,
+        private readonly ServiceLocator $notificationLocator,
     ) {
-        $this->notificationList = array_keys($notificationList->getProvidedServices());
+        $this->notificationList = array_keys($notificationLocator->getProvidedServices());
     }
 
     protected function instantiateForm(): FormInterface
@@ -99,6 +101,99 @@ final class UserNotification extends AbstractController
     public function allTransports(): array
     {
         return $this->transportSettingRepository->findAll();
+    }
+
+    /**
+     * @return array<string, list<string>>
+     */
+    #[ExposeInTemplate]
+    public function groupNotificationsByCategory(): array
+    {
+        $grouped = [];
+
+        foreach ($this->notificationList as $event) {
+            $attribute = $this->getNotificationAttribute($event);
+            if ($attribute === null) {
+                continue;
+            }
+
+            $categoryLabel = $attribute->category->getLabel();
+            if (! isset($grouped[$categoryLabel])) {
+                $grouped[$categoryLabel] = [];
+            }
+
+            $grouped[$categoryLabel][] = $event;
+        }
+
+        return $grouped;
+    }
+
+    public function getEventTitle(string $event): string
+    {
+        $attribute = $this->getNotificationAttribute($event);
+
+        return $attribute?->title ?? ucwords(str_replace('_', ' ', $event));
+    }
+
+    public function getEventDescription(string $event): string
+    {
+        $attribute = $this->getNotificationAttribute($event);
+
+        return $attribute?->description ?? '';
+    }
+
+    public function getEventIcon(string $event): string
+    {
+        $attribute = $this->getNotificationAttribute($event);
+
+        return $attribute?->icon ?? 'tabler:bell';
+    }
+
+    public function getCategoryIcon(string $categoryLabel): string
+    {
+        // Extract enum from label
+        foreach (NotificationCategory::cases() as $category) {
+            if ($category->getLabel() === $categoryLabel) {
+                return $category->getIcon();
+            }
+        }
+
+        return 'tabler:bell';
+    }
+
+    public function getTransportIcon(string $transport): string
+    {
+        $transportLower = strtolower($transport);
+
+        return match (true) {
+            str_contains($transportLower, 'slack') => 'tabler:brand-slack',
+            str_contains($transportLower, 'discord') => 'tabler:brand-discord',
+            str_contains($transportLower, 'telegram') => 'tabler:brand-telegram',
+            str_contains($transportLower, 'teams') => 'tabler:brand-teams',
+            str_contains($transportLower, 'twilio') => 'tabler:message',
+            str_contains($transportLower, 'sms') => 'tabler:message',
+            str_contains($transportLower, 'vonage') => 'tabler:message',
+            str_contains($transportLower, 'messagebird') => 'tabler:message',
+            default => 'tabler:bell',
+        };
+    }
+
+    private function getNotificationAttribute(string $eventName): ?AsNotification
+    {
+        if (! $this->notificationLocator->has($eventName)) {
+            return null;
+        }
+
+        $notification = $this->notificationLocator->get($eventName);
+        $reflection = new \ReflectionClass($notification);
+
+        $attributes = $reflection->getAttributes(AsNotification::class);
+
+        if (count($attributes) === 0) {
+            return null;
+        }
+
+        return $attributes[0]->newInstance();
     }
 
     #[LiveAction()]

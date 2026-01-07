@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\ClientBundle\Notification;
 
 use SolidInvoice\NotificationBundle\Attribute\AsNotification;
+use SolidInvoice\NotificationBundle\Enum\NotificationCategory;
 use SolidInvoice\NotificationBundle\Notification\NotificationMessage;
 use SolidInvoice\NotificationBundle\Notification\Options\Reference\TemplateReference;
 use SolidInvoice\NotificationBundle\Notification\Options\Reference\TranslationReference;
@@ -27,7 +28,13 @@ use Symfony\Component\Notifier\Recipient\EmailRecipientInterface;
 use Symfony\Component\Notifier\Recipient\RecipientInterface;
 use Twig\Environment;
 
-#[AsNotification(name: ClientCreateNotification::EVENT)]
+#[AsNotification(
+    name: ClientCreateNotification::EVENT,
+    title: 'Client Created',
+    description: 'When a new client is added to your account',
+    icon: 'tabler:user-plus',
+    category: NotificationCategory::CLIENT,
+)]
 class ClientCreateNotification extends NotificationMessage
 {
     public const EVENT = 'client_create';
