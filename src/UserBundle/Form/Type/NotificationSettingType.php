@@ -50,10 +50,16 @@ final class NotificationSettingType extends AbstractType
             'transports',
             ChoiceType::class,
             [
-                'label' => 'Integrations',
+                'label' => false,
                 'choices' => $integrations,
                 'multiple' => true,
                 'expanded' => true,
+                'attr' => [
+                    'class' => 'notification-channels-list',
+                ],
+                'label_attr' => [
+                    'class' => 'channel-checkbox-label',
+                ],
             ]
         );
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -12,12 +14,17 @@
 namespace SolidInvoice\NotificationBundle\Attribute;
 
 use Attribute;
+use SolidInvoice\NotificationBundle\Enum\NotificationCategory;
 
 #[Attribute(Attribute::TARGET_CLASS)]
 final class AsNotification
 {
     public function __construct(
-        public string $name
+        public string $name,
+        public string $title = '',
+        public string $description = '',
+        public string $icon = 'tabler:bell',
+        public NotificationCategory $category = NotificationCategory::OTHER,
     ) {
     }
 }

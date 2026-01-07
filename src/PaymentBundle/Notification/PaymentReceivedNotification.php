@@ -14,13 +14,20 @@ declare(strict_types=1);
 namespace SolidInvoice\PaymentBundle\Notification;
 
 use SolidInvoice\NotificationBundle\Attribute\AsNotification;
+use SolidInvoice\NotificationBundle\Enum\NotificationCategory;
 use SolidInvoice\NotificationBundle\Notification\NotificationMessage;
 use Symfony\Bridge\Twig\Mime\NotificationEmail;
 use Symfony\Component\Notifier\Message\EmailMessage;
 use Symfony\Component\Notifier\Recipient\EmailRecipientInterface;
 use Twig\Environment;
 
-#[AsNotification(name: self::EVENT)]
+#[AsNotification(
+    name: self::EVENT,
+    title: 'Payment Received',
+    description: 'When a payment is received for an invoice',
+    icon: 'tabler:cash',
+    category: NotificationCategory::PAYMENT,
+)]
 class PaymentReceivedNotification extends NotificationMessage
 {
     public const EVENT = 'payment_made';

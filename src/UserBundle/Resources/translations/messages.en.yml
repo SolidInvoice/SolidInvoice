@@ -122,3 +122,36 @@ forgot_password:
         An email has been sent. It contains a link you must click to reset your password.
 
         If you don't get an email check your spam folder or try again.
+
+notifications:
+    title: 'Notification Preferences'
+    subtitle: 'Choose which events trigger notifications and where you receive them'
+    available_channels: 'Available Channels'
+    notify_via: 'Notify via:'
+    add_integration: 'Add Integration'
+    save_preferences: 'Save Preferences'
+    manage_integrations: 'Manage Integrations'
+    notification_channels: 'Notification Channels'
+    integrations_count: 'You have %count% integration(s) configured'
+    email_always_available: 'Email notifications are always available. Add integrations to receive notifications via other channels.'
+    empty:
+        title: 'No Notifications Available'
+        description: 'Notification events will appear here when they are available in the system'
+    events:
+        client_created:
+            title: 'Client Created'
+            description: 'When a new client is added to your account'
+        invoice_status_changed:
+            title: 'Invoice Status Changed'
+            description: 'When an invoice status changes (draft, sent, paid, etc.)'
+        payment_received:
+            title: 'Payment Received'
+            description: 'When a payment is received for an invoice'
+        quote_status_changed:
+            title: 'Quote Status Changed'
+            description: 'When a quote status changes (draft, sent, accepted, etc.)'
+    categories:
+        client: 'Client Notifications'
+        invoice: 'Invoice Notifications'
+        payment: 'Payment Notifications'
+        quote: 'Quote Notifications'
