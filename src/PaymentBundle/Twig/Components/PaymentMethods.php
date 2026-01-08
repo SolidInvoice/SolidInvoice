@@ -22,7 +22,7 @@ use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 use Symfony\UX\TwigComponent\Attribute\PreMount;
 use function array_keys;
 
-#[AsLiveComponent(name: 'PaymentMethods')]
+#[AsLiveComponent]
 final class PaymentMethods extends AbstractController
 {
     use DefaultActionTrait;

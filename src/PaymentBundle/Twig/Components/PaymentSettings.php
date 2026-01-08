@@ -35,7 +35,7 @@ use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 use function assert;
 
-#[AsLiveComponent(name: 'PaymentSettings')]
+#[AsLiveComponent]
 final class PaymentSettings extends AbstractController
 {
     use DefaultActionTrait;

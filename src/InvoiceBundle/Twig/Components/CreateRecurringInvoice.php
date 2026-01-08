@@ -27,7 +27,7 @@ use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\LiveComponent\LiveCollectionTrait;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsLiveComponent()]
+#[AsLiveComponent]
 final class CreateRecurringInvoice extends AbstractController
 {
     use DefaultActionTrait;

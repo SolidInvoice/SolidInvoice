@@ -1,0 +1,354 @@
+<html><body>
+<div class="notification-marketplace" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="NotificationMarketplace" data-live-url-value="/_components/NotificationMarketplace" data-live-query-mapping-value='{"view":{"name":"view"},"selectedIntegration":{"name":"selectedIntegration"},"transport":{"name":"transport"},"type":{"name":"type"},"activeTab":{"name":"activeTab"}}' data-live-props-value='{"view":"marketplace","selectedIntegration":"","transport":"","type":"","activeTab":"chat","searchQuery":"","@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
+    
+
+        <ul class="nav nav-tabs d-md-none mb-4" role="tablist">
+        <li class="nav-item">
+            <a href="/notifications/integrations?view=marketplace" class="nav-link active" aria-current="page">
+                <span class="nav-link-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1zm0 10a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1zm10 0a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1zm0-8h6m-3-3v6"></path></svg>
+                </span>
+                <span>Marketplace</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="/notifications/integrations?view=configured" class="nav-link">
+                <span class="nav-link-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.5 5.5L5 7l2.5-2.5m-4 7L5 13l2.5-2.5m-4 7L5 19l2.5-2.5M11 6h9m-9 6h9m-9 6h9"></path></svg>
+                </span>
+                <span>Configured <span class="badge badge-sm bg-secondary-subtle text-secondary ms-1">0</span></span>
+            </a>
+        </li>
+    </ul>
+
+        <div class="row g-4">
+                <div class="col-md-5 col-lg-4 ">
+            <div class="marketplace-panel">
+                <div class="marketplace-header mb-4">
+                    <h5 class="mb-2 d-flex align-items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="20" height="20" class="text-primary" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 5a2 2 0 0 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3H4a4 4 0 0 0 2-3v-3a7 7 0 0 1 4-6M9 17v1a3 3 0 0 0 6 0v-1m6-10.273A11.05 11.05 0 0 0 18.206 3M3 6.727A11.05 11.05 0 0 1 5.792 3"></path></svg>
+                        Notification Integrations
+                    </h5>
+                    <p class="text-muted small mb-3">
+                        Send notifications via SMS or chat platforms
+                    </p>
+
+                                        <div class="input-group">
+                        <span class="input-group-text bg-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0-14 0m18 11l-6-6"></path></svg>
+                        </span>
+                        <input type="text" class="form-control" placeholder="Search integrations..." data-model="searchQuery" aria-label="Search notification integrations">
+                                            </div>
+
+                                        <ul class="nav nav-tabs marketplace-tabs mt-4 mb-0" role="tablist">
+                        <li class="nav-item flex-fill">
+                            <a href="/notifications/integrations?activeTab=sms" class="nav-link w-100">
+                                <span class="nav-link-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9h8m-8 4h6m-5 5H6a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3h-3l-3 3z"></path></svg>
+                                </span>
+                                <span>SMS</span>
+                            </a>
+                        </li>
+                        <li class="nav-item flex-fill">
+                            <a href="/notifications/integrations?activeTab=chat" class="nav-link active w-100" aria-current="page">
+                                <span class="nav-link-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m3 20l1.3-3.9C1.976 12.663 2.874 8.228 6.4 5.726c3.526-2.501 8.59-2.296 11.845.48c3.255 2.777 3.695 7.266 1.029 10.501S11.659 20.922 7.7 19z"></path></svg>
+                                </span>
+                                <span>Chat</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                                <div class="integration-grid">
+                    
+                                                                            <div class="integration-section">
+                                <div class="integration-section-header">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m12 17.75l-6.172 3.245l1.179-6.873l-5-4.867l6.9-1l3.086-6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path></svg>
+                                    Featured Providers
+                                </div>
+                                <div class="integration-cards-grid">
+                                                            <div class="integration-card ">
+                                    <div class="integration-card-body">
+                                        <div class="integration-card-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="32" height="32" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M8 12a1 1 0 1 0 2 0a1 1 0 0 0-2 0m6 0a1 1 0 1 0 2 0a1 1 0 0 0-2 0"></path><path d="M15.5 17c0 1 1.5 3 2 3c1.5 0 2.833-1.667 3.5-3c.667-1.667.5-5.833-1.5-11.5c-1.457-1.015-3-1.34-4.5-1.5l-.972 1.923a11.9 11.9 0 0 0-4.053 0L9 4c-1.5.16-3.043.485-4.5 1.5c-2 5.667-2.167 9.833-1.5 11.5c.667 1.333 2 3 3.5 3c.5 0 2-2 2-3"></path><path d="M7 16.5c3.5 1 6.5 1 10 0"></path></g></svg>
+                                        </div>
+                                        <div class="integration-card-content">
+                                            <h6 class="integration-card-title">Discord</h6>
+                                                                                        <p class="integration-card-description">Send messages to Discord servers</p>
+                                        </div>
+                                        <div class="integration-card-action">
+                                            <a href="/notifications/integrations?transport=Discord&amp;type=chatter&amp;activeTab=chat" class="btn btn-sm btn-outline-primary w-100">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="14" height="14" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m-7-7h14"></path></svg>
+                                                Configure
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                                            <div class="integration-card ">
+                                    <div class="integration-card-body">
+                                        <div class="integration-card-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="32" height="32" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m3 20l1.3-3.9C1.976 12.663 2.874 8.228 6.4 5.726c3.526-2.501 8.59-2.296 11.845.48c3.255 2.777 3.695 7.266 1.029 10.501S11.659 20.922 7.7 19z"></path></svg>
+                                        </div>
+                                        <div class="integration-card-content">
+                                            <h6 class="integration-card-title">MicrosoftTeams</h6>
+                                                                                        <p class="integration-card-description">Post messages to Microsoft Teams channels</p>
+                                        </div>
+                                        <div class="integration-card-action">
+                                            <a href="/notifications/integrations?transport=MicrosoftTeams&amp;type=chatter&amp;activeTab=chat" class="btn btn-sm btn-outline-primary w-100">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="14" height="14" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m-7-7h14"></path></svg>
+                                                Configure
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                                            <div class="integration-card ">
+                                    <div class="integration-card-body">
+                                        <div class="integration-card-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="32" height="32" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 12V6a2 2 0 0 1 4 0v6m0-2a2 2 0 1 1 2 2h-6m0 0h6a2 2 0 0 1 0 4h-6m2 0a2 2 0 1 1-2 2v-6m0 0v6a2 2 0 0 1-4 0v-6m0 2a2 2 0 1 1-2-2h6m0 0H6a2 2 0 0 1 0-4h6m-2 0a2 2 0 1 1 2-2v6"></path></svg>
+                                        </div>
+                                        <div class="integration-card-content">
+                                            <h6 class="integration-card-title">Slack</h6>
+                                                                                        <p class="integration-card-description">Send notifications to Slack channels</p>
+                                        </div>
+                                        <div class="integration-card-action">
+                                            <a href="/notifications/integrations?transport=Slack&amp;type=chatter&amp;activeTab=chat" class="btn btn-sm btn-outline-primary w-100">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="14" height="14" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m-7-7h14"></path></svg>
+                                                Configure
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                                            <div class="integration-card ">
+                                    <div class="integration-card-body">
+                                        <div class="integration-card-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="32" height="32" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 10l-4 4l6 6l4-16l-18 7l4 2l2 6l3-4"></path></svg>
+                                        </div>
+                                        <div class="integration-card-content">
+                                            <h6 class="integration-card-title">Telegram</h6>
+                                                                                        <p class="integration-card-description">Send notifications via Telegram bots</p>
+                                        </div>
+                                        <div class="integration-card-action">
+                                            <a href="/notifications/integrations?transport=Telegram&amp;type=chatter&amp;activeTab=chat" class="btn btn-sm btn-outline-primary w-100">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="14" height="14" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m-7-7h14"></path></svg>
+                                                Configure
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                                            </div>
+                            </div>
+                        
+                                                                            <div class="integration-section mt-5">
+                                <div class="integration-section-header">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1zm0 10a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1zm10 0a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1zm0-8h6m-3-3v6"></path></svg>
+                                    All Providers
+                                </div>
+                                <div class="integration-cards-grid">
+                                                            <div class="integration-card ">
+                                    <div class="integration-card-body">
+                                        <div class="integration-card-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="32" height="32" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 18.5a15.2 15.2 0 0 1-7.37 1.44A14.6 14.6 0 0 1 3 17m16.5 4c.907-1.411 1.451-3.323 1.5-5c-1.197-.773-2.577-.935-4-1M3 11V6.5a1.5 1.5 0 0 1 3 0V11M3 9h3m3-4l1.2 6L12 7l1.8 4L15 5m3 5.25c0 .414.336.75.75.75H20a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1h-1a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h1.25a.75.75 0 0 1 .75.75"></path></svg>
+                                        </div>
+                                        <div class="integration-card-content">
+                                            <h6 class="integration-card-title">AmazonSns</h6>
+                                                                                        <p class="integration-card-description">Send SMS and push notifications with Amazon SNS</p>
+                                        </div>
+                                        <div class="integration-card-action">
+                                            <a href="/notifications/integrations?transport=AmazonSns&amp;type=chatter&amp;activeTab=chat" class="btn btn-sm btn-outline-primary w-100">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="14" height="14" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m-7-7h14"></path></svg>
+                                                Configure
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                                            <div class="integration-card ">
+                                    <div class="integration-card-body">
+                                        <div class="integration-card-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="32" height="32" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 8l-4 4l4 4m10-8l4 4l-4 4M14 4l-4 16"></path></svg>
+                                        </div>
+                                        <div class="integration-card-content">
+                                            <h6 class="integration-card-title">FakeChat</h6>
+                                                                                        <p class="integration-card-description">Test chat notifications in development</p>
+                                        </div>
+                                        <div class="integration-card-action">
+                                            <a href="/notifications/integrations?transport=FakeChat&amp;type=chatter&amp;activeTab=chat" class="btn btn-sm btn-outline-primary w-100">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="14" height="14" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m-7-7h14"></path></svg>
+                                                Configure
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                                            <div class="integration-card ">
+                                    <div class="integration-card-body">
+                                        <div class="integration-card-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="32" height="32" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m4.53 17.05l6.15-11.72h-.02c.38-.74 1.28-1.02 2.01-.63c.26.14.48.36.62.62l1.06 2.01"></path><path d="M15.47 6.45c.58-.59 1.53-.59 2.11-.01c.22.22.36.5.41.81l1.5 9.11c.1.62-.2 1.24-.76 1.54l-6.07 2.9c-.46.25-1.01.26-1.46 0l-6.02-2.92c-.55-.31-.85-.92-.75-1.54L6.39 4.3c.12-.82.89-1.38 1.7-1.25c.46.07.87.36 1.09.77l1.24 1.76m-5.85 11.6L15.5 6.5"></path></g></svg>
+                                        </div>
+                                        <div class="integration-card-content">
+                                            <h6 class="integration-card-title">Firebase</h6>
+                                                                                        <p class="integration-card-description">Send chat notifications via Firebase</p>
+                                        </div>
+                                        <div class="integration-card-action">
+                                            <a href="/notifications/integrations?transport=Firebase&amp;type=chatter&amp;activeTab=chat" class="btn btn-sm btn-outline-primary w-100">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="14" height="14" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m-7-7h14"></path></svg>
+                                                Configure
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                                            <div class="integration-card ">
+                                    <div class="integration-card-body">
+                                        <div class="integration-card-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="32" height="32" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2c2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2a4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6c-.6.6-.6 1.2-.5 2V21"></path></svg>
+                                        </div>
+                                        <div class="integration-card-content">
+                                            <h6 class="integration-card-title">Gitter</h6>
+                                                                                        <p class="integration-card-description">Send chat notifications via Gitter</p>
+                                        </div>
+                                        <div class="integration-card-action">
+                                            <a href="/notifications/integrations?transport=Gitter&amp;type=chatter&amp;activeTab=chat" class="btn btn-sm btn-outline-primary w-100">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="14" height="14" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m-7-7h14"></path></svg>
+                                                Configure
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                                            <div class="integration-card ">
+                                    <div class="integration-card-body">
+                                        <div class="integration-card-icon">
+                                            <svg viewbox="0 0 24 24" fill="currentColor" width="32" height="32" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.945 11a9 9 0 1 1-3.284-5.997l-2.655 2.392A5.5 5.5 0 1 0 17.125 14H13v-3z"></path></svg>
+                                        </div>
+                                        <div class="integration-card-content">
+                                            <h6 class="integration-card-title">GoogleChat</h6>
+                                                                                        <p class="integration-card-description">Send notifications to Google Chat spaces</p>
+                                        </div>
+                                        <div class="integration-card-action">
+                                            <a href="/notifications/integrations?transport=GoogleChat&amp;type=chatter&amp;activeTab=chat" class="btn btn-sm btn-outline-primary w-100">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="14" height="14" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m-7-7h14"></path></svg>
+                                                Configure
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                                            <div class="integration-card ">
+                                    <div class="integration-card-body">
+                                        <div class="integration-card-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="32" height="32" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M8 11v5m0-8v.01M12 16v-5m4 5v-3a2 2 0 1 0-4 0"></path><path d="M3 7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4z"></path></g></svg>
+                                        </div>
+                                        <div class="integration-card-content">
+                                            <h6 class="integration-card-title">LinkedIn</h6>
+                                                                                        <p class="integration-card-description">Send chat notifications via LinkedIn</p>
+                                        </div>
+                                        <div class="integration-card-action">
+                                            <a href="/notifications/integrations?transport=LinkedIn&amp;type=chatter&amp;activeTab=chat" class="btn btn-sm btn-outline-primary w-100">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="14" height="14" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m-7-7h14"></path></svg>
+                                                Configure
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                                            <div class="integration-card ">
+                                    <div class="integration-card-body">
+                                        <div class="integration-card-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="32" height="32" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m3 20l1.3-3.9A9 8 0 1 1 7.7 19z"></path></svg>
+                                        </div>
+                                        <div class="integration-card-content">
+                                            <h6 class="integration-card-title">Mattermost</h6>
+                                                                                        <p class="integration-card-description">Self-hosted team communication</p>
+                                        </div>
+                                        <div class="integration-card-action">
+                                            <a href="/notifications/integrations?transport=Mattermost&amp;type=chatter&amp;activeTab=chat" class="btn btn-sm btn-outline-primary w-100">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="14" height="14" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m-7-7h14"></path></svg>
+                                                Configure
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                                            <div class="integration-card ">
+                                    <div class="integration-card-body">
+                                        <div class="integration-card-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="32" height="32" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M18 8a3 3 0 0 1 0 6m-8-6v11a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-5"></path><path d="m12 8l4.524-3.77A.9.9 0 0 1 18 4.922v12.156a.9.9 0 0 1-1.476.692L12 14H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"></path></g></svg>
+                                        </div>
+                                        <div class="integration-card-content">
+                                            <h6 class="integration-card-title">Mercure</h6>
+                                                                                        <p class="integration-card-description">Send chat notifications via Mercure</p>
+                                        </div>
+                                        <div class="integration-card-action">
+                                            <a href="/notifications/integrations?transport=Mercure&amp;type=chatter&amp;activeTab=chat" class="btn btn-sm btn-outline-primary w-100">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="14" height="14" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m-7-7h14"></path></svg>
+                                                Configure
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                                            <div class="integration-card ">
+                                    <div class="integration-card-body">
+                                        <div class="integration-card-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="32" height="32" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M4 13a8 8 0 0 1 7 7a6 6 0 0 0 3-5a9 9 0 0 0 6-8a3 3 0 0 0-3-3a9 9 0 0 0-8 6a6 6 0 0 0-5 3"></path><path d="M7 14a6 6 0 0 0-3 6a6 6 0 0 0 6-3m4-8a1 1 0 1 0 2 0a1 1 0 1 0-2 0"></path></g></svg>
+                                        </div>
+                                        <div class="integration-card-content">
+                                            <h6 class="integration-card-title">RocketChat</h6>
+                                                                                        <p class="integration-card-description">Open-source team chat platform</p>
+                                        </div>
+                                        <div class="integration-card-action">
+                                            <a href="/notifications/integrations?transport=RocketChat&amp;type=chatter&amp;activeTab=chat" class="btn btn-sm btn-outline-primary w-100">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="14" height="14" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m-7-7h14"></path></svg>
+                                                Configure
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                                            <div class="integration-card ">
+                                    <div class="integration-card-body">
+                                        <div class="integration-card-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="32" height="32" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 14l-3-3h-7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1zm-7 1v2a1 1 0 0 1-1 1H6l-3 3V11a1 1 0 0 1 1-1h2"></path></svg>
+                                        </div>
+                                        <div class="integration-card-content">
+                                            <h6 class="integration-card-title">Zulip</h6>
+                                                                                        <p class="integration-card-description">Send chat notifications via Zulip</p>
+                                        </div>
+                                        <div class="integration-card-action">
+                                            <a href="/notifications/integrations?transport=Zulip&amp;type=chatter&amp;activeTab=chat" class="btn btn-sm btn-outline-primary w-100">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="14" height="14" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m-7-7h14"></path></svg>
+                                                Configure
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                                            </div>
+                            </div>
+                                                            </div>
+            </div>
+        </div>
+
+                <div class="col-md-7 col-lg-8 d-none d-md-block">
+            <div class="configured-integrations-panel">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <h5 class="mb-0 d-flex align-items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="20" height="20" class="text-primary" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.5 5.5L5 7l2.5-2.5m-4 7L5 13l2.5-2.5m-4 7L5 19l2.5-2.5M11 6h9m-9 6h9m-9 6h9"></path></svg>
+                        Configured Integrations
+                    </h5>
+                    <span class="badge" style="background-color: var(--swp-gray-100); color: var(--swp-text-primary);">0</span>
+                </div>
+
+                                    <div class="empty-state-card">
+                        <div class="card">
+                            <div class="card-body text-center py-5">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="64" height="64" class="mb-3 text-muted opacity-50" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.346 5.353Q9.661 5.16 10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3m-1 3H4a4 4 0 0 0 2-3v-3a7 7 0 0 1 1.273-3.707M9 17v1a3 3 0 0 0 6 0v-1M3 3l18 18"></path></svg>
+                                <h5 class="mb-2">No integrations configured</h5>
+                                <p class="text-muted mb-4">
+                                    Configure your first notification integration to start sending SMS or chat notifications.
+                                </p>
+                                <a href="/notifications/integrations?view=marketplace" class="btn btn-primary d-inline-flex align-items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m-7-7h14"></path></svg>
+                                    Browse Integrations
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                            </div>
+        </div>
+    </div>
+
+        </div>
+</body></html>

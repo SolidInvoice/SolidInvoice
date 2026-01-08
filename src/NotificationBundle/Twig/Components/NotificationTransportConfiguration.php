@@ -14,8 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\NotificationBundle\Twig\Components;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
+use LogicException;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\NotificationBundle\Configurator\ConfiguratorInterface;
 use SolidInvoice\NotificationBundle\Entity\TransportSetting;
@@ -38,7 +37,7 @@ use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 use function assert;
 
-#[AsLiveComponent(name: 'NotificationTransportConfiguration')]
+#[AsLiveComponent]
 final class NotificationTransportConfiguration extends AbstractController
 {
     use ComponentWithFormTrait;
@@ -117,20 +116,11 @@ final class NotificationTransportConfiguration extends AbstractController
     #[ExposeInTemplate]
     public function isNewSetting(): bool
     {
-        $setting = $this->transportSetting();
-
-        // Check if the entity has an ID (persisted) or not (new)
-        try {
-            $setting->getId();
-            return false; // Has ID, so it's an existing setting
-        } catch (\Error) {
-            return true; // No ID, so it's a new setting
-        }
+        return $this->transportSetting()->getId() === null;
     }
 
     /**
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
+     * @throws LogicException
      */
     protected function instantiateForm(): FormInterface
     {
@@ -143,7 +133,7 @@ final class NotificationTransportConfiguration extends AbstractController
 
         // Ensure type is set for new integrations
         if ($this->type === null || $this->type === '') {
-            throw new \LogicException('Transport type must be specified for new integrations');
+            throw new LogicException('Transport type must be specified for new integrations');
         }
 
         return $this->createForm(
