@@ -30,4 +30,10 @@ final class TransportSettingRepository extends ServiceEntityRepository
         $this->_em->persist($setting);
         $this->_em->flush();
     }
+
+    public function delete(TransportSetting $setting): void
+    {
+        $this->_em->remove($setting);
+        $this->_em->flush();
+    }
 }

@@ -17,6 +17,7 @@ use Symfony\Component\DependencyInjection\Attribute\TaggedLocator;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -45,19 +46,41 @@ final class TransportSettingType extends AbstractType
 
         $builder = new DynamicFormBuilder($builder);
 
-        $builder
-            ->add('name')
-            ->add('transport', ChoiceType::class, [
+        $builder->add('name');
+
+        // If transport is pre-filled (from URL), use hidden field. Otherwise show dropdown.
+        $data = $builder->getData();
+        $isNewWithPreselectedTransport = false;
+
+        if ($data instanceof TransportSetting && ! isset($data->id)) {
+            try {
+                $transport = $data->getTransport();
+                $isNewWithPreselectedTransport = $transport !== null && $transport !== '';
+            } catch (\Error) {
+                // Property not initialized yet - show dropdown
+                $isNewWithPreselectedTransport = false;
+            }
+        }
+
+        $builder->add('transport', HiddenType::class);
+        /*if ($isNewWithPreselectedTransport) {
+            // New integration with pre-selected transport - hide the field
+        } else {
+            // Existing integration or new without pre-selection - show dropdown
+            $builder->add('transport', ChoiceType::class, [
                 'choices' => $transports[$options['type']],
                 'placeholder' => 'Integration',
                 'label' => 'Integration',
-            ])->addDependent('settings', 'transport', function (DependentField $field, ?string $setting): void {
-                if (null === $setting) {
-                    return;
-                }
+            ]);
+        }*/
 
-                $field->add($this->transportConfigurations->get($setting)->getForm());
-            });
+        $builder->addDependent('settings', 'transport', function (DependentField $field, ?string $setting): void {
+            if (null === $setting) {
+                return;
+            }
+
+            $field->add($this->transportConfigurations->get($setting)->getForm());
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver): void

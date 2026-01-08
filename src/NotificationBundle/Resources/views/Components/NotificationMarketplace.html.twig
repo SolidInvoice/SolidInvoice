@@ -1,0 +1,285 @@
+{#
+# This file is part of SolidInvoice package.
+#
+# (c) Pierre du Plessis <open-source@solidworx.co>
+#
+# This source file is subject to the MIT license that is bundled
+# with this source code in the file LICENSE.
+#}
+
+<div class="notification-marketplace" {{ attributes }}>
+    {% include "@SolidInvoiceCore/flash.html.twig" %}
+
+    {# Mobile View Tabs (Marketplace/Configured) #}
+    <ul class="nav nav-tabs d-md-none mb-4" role="tablist">
+        <li class="nav-item">
+            <a href="{{ path('_notification_integration', {view: 'marketplace'}) }}"
+               class="nav-link{{ view == 'marketplace' ? ' active' : '' }}"
+               {% if view == 'marketplace' %}aria-current="page"{% endif %}>
+                <span class="nav-link-icon">
+                    {{ ux_icon('tabler:apps', {width: 16, height: 16}) }}
+                </span>
+                <span>{{ 'Marketplace'|trans }}</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ path('_notification_integration', {view: 'configured'}) }}"
+               class="nav-link{{ view == 'configured' ? ' active' : '' }}"
+               {% if view == 'configured' %}aria-current="page"{% endif %}>
+                <span class="nav-link-icon">
+                    {{ ux_icon('tabler:list-check', {width: 16, height: 16}) }}
+                </span>
+                <span>{{ 'Configured'|trans }} <span class="badge badge-sm bg-secondary-subtle text-secondary ms-1">{{ configuredIntegrations|length }}</span></span>
+            </a>
+        </li>
+    </ul>
+
+    {# Desktop Split View #}
+    <div class="row g-4">
+        {# Left Panel: Integration Marketplace #}
+        <div class="col-md-5 col-lg-4 {{ view == 'configured' ? 'd-none d-md-block' : '' }}">
+            <div class="marketplace-panel">
+                <div class="marketplace-header mb-4">
+                    <h5 class="mb-2 d-flex align-items-center gap-2">
+                        {{ ux_icon('tabler:bell-ringing', {width: 20, height: 20, class: 'text-primary'}) }}
+                        {{ 'Notification Integrations'|trans }}
+                    </h5>
+                    <p class="text-muted small mb-3">
+                        {{ 'Send notifications via SMS or chat platforms'|trans }}
+                    </p>
+
+                    {# Search Input #}
+                    <div class="input-group">
+                        <span class="input-group-text bg-white">
+                            {{ ux_icon('tabler:search', {width: 18, height: 18}) }}
+                        </span>
+                        <input type="text"
+                               class="form-control"
+                               placeholder="{{ 'Search integrations...'|trans }}"
+                               data-model="searchQuery"
+                               aria-label="{{ 'Search notification integrations'|trans }}">
+                        {% if searchQuery %}
+                            <button type="button"
+                                    class="btn btn-ghost btn-icon position-absolute end-0 top-50 translate-middle-y"
+                                    style="z-index: 10; right: 8px !important;"
+                                    data-action="live#action"
+                                    data-live-action-param="clearSearch"
+                                    aria-label="{{ 'Clear search'|trans }}">
+                                {{ ux_icon('tabler:x', {width: 16, height: 16}) }}
+                            </button>
+                        {% endif %}
+                    </div>
+
+                    {# SMS/Chat Tab Navigation #}
+                    <ul class="nav nav-tabs marketplace-tabs mt-4 mb-0" role="tablist">
+                        <li class="nav-item flex-fill">
+                            <a href="{{ path('_notification_integration', {activeTab: 'sms'}) }}"
+                               class="nav-link{{ activeTab == 'sms' ? ' active' : '' }} w-100"
+                               {% if activeTab == 'sms' %}aria-current="page"{% endif %}>
+                                <span class="nav-link-icon">
+                                    {{ ux_icon('tabler:message-2', {width: 16, height: 16}) }}
+                                </span>
+                                <span>{{ 'SMS'|trans }}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item flex-fill">
+                            <a href="{{ path('_notification_integration', {activeTab: 'chat'}) }}"
+                               class="nav-link{{ activeTab == 'chat' ? ' active' : '' }} w-100"
+                               {% if activeTab == 'chat' %}aria-current="page"{% endif %}>
+                                <span class="nav-link-icon">
+                                    {{ ux_icon('tabler:message-circle', {width: 16, height: 16}) }}
+                                </span>
+                                <span>{{ 'Chat'|trans }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                {# Integration Cards Grid #}
+                <div class="integration-grid">
+                    {% if featuredIntegrations|length > 0 or regularIntegrations|length > 0 %}
+
+                        {# Featured Providers Section #}
+                        {% if featuredIntegrations|length > 0 %}
+                            <div class="integration-section">
+                                <div class="integration-section-header">
+                                    {{ ux_icon('tabler:star', {width: 16, height: 16}) }}
+                                    {{ 'Featured Providers'|trans }}
+                                </div>
+                                <div class="integration-cards-grid">
+                            {% for integration in featuredIntegrations %}
+                                <div class="integration-card {{ integration.isConfigured ? 'is-configured' : '' }}">
+                                    <div class="integration-card-body">
+                                        <div class="integration-card-icon">
+                                            {{ ux_icon(integration.icon, {width: 32, height: 32}) }}
+                                        </div>
+                                        <div class="integration-card-content">
+                                            <h6 class="integration-card-title">{{ integration.displayName }}</h6>
+                                            {% if integration.isConfigured %}
+                                                <span class="badge badge-sm badge-configured">
+                                                    {{ ux_icon('tabler:check', {width: 12, height: 12}) }}
+                                                </span>
+                                            {% endif %}
+                                            <p class="integration-card-description">{{ integration.description }}</p>
+                                        </div>
+                                        <div class="integration-card-action">
+                                            <a href="{{ path('_notification_integration', {transport: integration.name, type: integration.type, activeTab: activeTab}) }}"
+                                               class="btn btn-sm btn-outline-primary w-100">
+                                                {{ ux_icon('tabler:plus', {width: 14, height: 14}) }}
+                                                {{ 'Configure'|trans }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        {# All Providers Section #}
+                        {% if regularIntegrations|length > 0 %}
+                            <div class="integration-section {% if featuredIntegrations|length > 0 %}mt-5{% endif %}">
+                                <div class="integration-section-header">
+                                    {{ ux_icon('tabler:apps', {width: 16, height: 16}) }}
+                                    {{ 'All Providers'|trans }}
+                                </div>
+                                <div class="integration-cards-grid">
+                            {% for integration in regularIntegrations %}
+                                <div class="integration-card {{ integration.isConfigured ? 'is-configured' : '' }}">
+                                    <div class="integration-card-body">
+                                        <div class="integration-card-icon">
+                                            {{ ux_icon(integration.icon, {width: 32, height: 32}) }}
+                                        </div>
+                                        <div class="integration-card-content">
+                                            <h6 class="integration-card-title">{{ integration.displayName }}</h6>
+                                            {% if integration.isConfigured %}
+                                                <span class="badge badge-sm badge-configured">
+                                                    {{ ux_icon('tabler:check', {width: 12, height: 12}) }}
+                                                </span>
+                                            {% endif %}
+                                            <p class="integration-card-description">{{ integration.description }}</p>
+                                        </div>
+                                        <div class="integration-card-action">
+                                            <a href="{{ path('_notification_integration', {transport: integration.name, type: integration.type, activeTab: activeTab}) }}"
+                                               class="btn btn-sm btn-outline-primary w-100">
+                                                {{ ux_icon('tabler:plus', {width: 14, height: 14}) }}
+                                                {{ 'Configure'|trans }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <div class="empty-state text-center py-5">
+                            {{ ux_icon('tabler:search-off', {width: 48, height: 48, class: 'mb-3 text-muted opacity-50'}) }}
+                            <p class="text-muted mb-0">{{ 'No integrations found matching your search'|trans }}</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        {# Right Panel: Configured Integrations List #}
+        <div class="col-md-7 col-lg-8 {{ view == 'marketplace' ? 'd-none d-md-block' : '' }}">
+            <div class="configured-integrations-panel">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <h5 class="mb-0 d-flex align-items-center gap-2">
+                        {{ ux_icon('tabler:list-check', {width: 20, height: 20, class: 'text-primary'}) }}
+                        {{ 'Configured Integrations'|trans }}
+                    </h5>
+                    <span class="badge" style="background-color: var(--swp-gray-100); color: var(--swp-text-primary);">{{ configuredIntegrations|length }}</span>
+                </div>
+
+                {% if configuredIntegrations|length > 0 %}
+                    <div class="configured-integrations-list">
+                        {% for setting in configuredIntegrations %}
+                            <div class="card configured-integration-card">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-start justify-content-between gap-3">
+                                        <div class="d-flex align-items-start gap-3 flex-grow-1 min-w-0">
+                                            <div class="integration-method-icon">
+                                                {{ ux_icon(this.getIntegrationIcon(setting.transport), {width: 24, height: 24}) }}
+                                            </div>
+                                            <div class="flex-grow-1 min-w-0">
+                                                <h6 class="mb-2">{{ setting.name }}</h6>
+                                                <div class="d-flex align-items-center gap-2 flex-wrap">
+                                                    <span class="badge badge-sm">
+                                                        {{ this.getIntegrationTypeLabel(setting.transport) }}
+                                                    </span>
+                                                    <span class="badge badge-sm bg-primary text-white">
+                                                        {{ setting.transport }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex gap-2 flex-shrink-0">
+                                            <a href="{{ path('_notification_integration', {selectedIntegration: setting.id.toRfc4122(), type: this.getIntegrationType(setting.transport), activeTab: activeTab}) }}"
+                                               class="btn btn-outline-secondary btn-sm"
+                                               aria-label="{{ 'Edit %name%'|trans({'%name%': setting.name}) }}">
+                                                {{ ux_icon('tabler:edit', {width: 16, height: 16}) }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="empty-state-card">
+                        <div class="card">
+                            <div class="card-body text-center py-5">
+                                {{ ux_icon('tabler:bell-off', {width: 64, height: 64, class: 'mb-3 text-muted opacity-50'}) }}
+                                <h5 class="mb-2">{{ 'No integrations configured'|trans }}</h5>
+                                <p class="text-muted mb-4">
+                                    {{ 'Configure your first notification integration to start sending SMS or chat notifications.'|trans }}
+                                </p>
+                                <a href="{{ path('_notification_integration', {view: 'marketplace'}) }}"
+                                   class="btn btn-primary d-inline-flex align-items-center gap-2">
+                                    {{ ux_icon('tabler:plus', {width: 18, height: 18}) }}
+                                    {{ 'Browse Integrations'|trans }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    {# Configuration Modal #}
+    {% if selectedIntegration is not empty or transport is not empty %}
+        <div class="notification-modal-backdrop"
+             role="presentation"
+             data-action="click->live#action"
+             data-live-action-param="closeModal">
+        </div>
+        <div class="notification-modal"
+             role="dialog"
+             aria-modal="true"
+             aria-labelledby="notification-modal-title"
+             data-controller="notification-modal">
+            <div class="notification-modal-container">
+                <div class="notification-modal-header">
+                    <h3 id="notification-modal-title" class="notification-modal-title">
+                        {{ 'Configure Notification Integration'|trans }}
+                    </h3>
+                    <a href="{{ path('_notification_integration', {activeTab: activeTab}) }}"
+                       class="btn btn-ghost btn-icon notification-modal-close"
+                       aria-label="{{ 'Close'|trans }}"
+                       title="{{ 'Close (Esc)'|trans }}">
+                        {{ ux_icon('tabler:x', {width: 20, height: 20}) }}
+                    </a>
+                </div>
+                <div class="notification-modal-body">
+                    <twig:NotificationTransportConfiguration
+                        setting="{{ selectedIntegration|default('') }}"
+                        transport="{{ transport }}"
+                        type="{{ type }}" />
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
