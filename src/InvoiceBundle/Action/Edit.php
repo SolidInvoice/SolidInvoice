@@ -13,50 +13,90 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Action;
 
-use Exception;
-use Generator;
-use SolidInvoice\CoreBundle\Response\FlashResponse;
+use Brick\Math\Exception\MathException;
+use Doctrine\Persistence\ManagerRegistry;
+use SolidInvoice\CoreBundle\Billing\TotalCalculator;
+use SolidInvoice\CoreBundle\Templating\Template;
+use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
-use SolidInvoice\InvoiceBundle\Form\Handler\InvoiceEditHandler;
+use SolidInvoice\InvoiceBundle\Form\Type\InvoiceType;
 use SolidInvoice\InvoiceBundle\Model\Graph;
-use SolidWorx\FormHandler\FormHandler;
-use SolidWorx\FormHandler\FormRequest;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Uid\Ulid;
+use Symfony\Component\Workflow\WorkflowInterface;
+use function assert;
 
 final class Edit
 {
     public function __construct(
+        private readonly FormFactoryInterface $formFactory,
         private readonly RouterInterface $router,
-        private readonly FormHandler $formHandler,
+        private readonly WorkflowInterface $invoiceStateMachine,
+        private readonly ManagerRegistry $doctrine,
+        private readonly MailerInterface $mailer,
+        private readonly TotalCalculator $totalCalculator,
     ) {
     }
 
     /**
-     * @return FormRequest|RedirectResponse
-     * @throws Exception
+     * @throws MathException
      */
-    public function __invoke(Request $request, Invoice $invoice)
+    public function __invoke(Request $request, Invoice $invoice): Template | Response
     {
         if (Graph::STATUS_PAID === $invoice->getStatus()) {
-            $route = $this->router->generate('_invoices_index');
+            $session = $request->getSession();
+            assert($session instanceof Session);
+            $session->getFlashBag()->add('warning', 'invoice.edit.paid');
 
-            return new class($route) extends RedirectResponse implements FlashResponse {
-                public function getFlash(): Generator
-                {
-                    yield FlashResponse::FLASH_WARNING => 'invoice.edit.paid';
-                }
-            };
+            return new RedirectResponse($this->router->generate('_invoices_index'));
         }
 
-        $options = [
-            'invoice' => $invoice,
-            'form_options' => [
-                'currency' => $invoice->getClient()->getCurrency(),
-            ],
-        ];
+        $form = $this->formFactory->create(InvoiceType::class, $invoice, [
+            'currency' => $invoice->getClient()->getCurrency(),
+        ]);
+        $form->handleRequest($request);
 
-        return $this->formHandler->handle(InvoiceEditHandler::class, $options);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $action = $request->request->get('save');
+
+            if (! $invoice->getId() instanceof Ulid) {
+                $this->invoiceStateMachine->apply($invoice, Graph::TRANSITION_NEW);
+            }
+
+            if (Graph::STATUS_PENDING === $action || 'publish' === $action) {
+                $this->invoiceStateMachine->apply($invoice, Graph::TRANSITION_ACCEPT);
+            }
+
+            $this->doctrine->getManager()->flush();
+
+            if (Graph::STATUS_PENDING === $action) {
+                $this->mailer->send(new InvoiceEmail($invoice));
+            }
+
+            $session = $request->getSession();
+            assert($session instanceof Session);
+            $session->getFlashBag()->add('success', 'invoice.edit.success');
+
+            return new RedirectResponse($this->router->generate('_invoices_view', ['id' => $invoice->getId()]));
+        }
+
+        if ($form->isSubmitted() && ! $form->isValid()) {
+            $this->totalCalculator->calculateTotals($invoice);
+        }
+
+        return new Template(
+            '@SolidInvoiceInvoice/Default/edit.html.twig',
+            [
+                'recurring' => false,
+                'form' => $form->createView(),
+                'invoice' => $invoice,
+            ]
+        );
     }
 }

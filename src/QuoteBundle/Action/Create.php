@@ -13,30 +13,42 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Action;
 
-use Exception;
+use Brick\Math\Exception\MathException;
+use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
+use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\QuoteBundle\Entity\Line;
 use SolidInvoice\QuoteBundle\Entity\Quote;
-use SolidInvoice\QuoteBundle\Form\Handler\QuoteCreateHandler;
-use SolidWorx\FormHandler\FormHandler;
-use SolidWorx\FormHandler\FormRequest;
+use SolidInvoice\QuoteBundle\Form\Type\QuoteType;
+use SolidInvoice\QuoteBundle\Model\Graph;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Uid\Ulid;
+use Symfony\Component\Workflow\WorkflowInterface;
+use function assert;
 
 final class Create
 {
     public function __construct(
         private readonly ClientRepository $repository,
-        private readonly FormHandler $handler
+        private readonly FormFactoryInterface $formFactory,
+        private readonly RouterInterface $router,
+        private readonly WorkflowInterface $quoteStateMachine,
+        private readonly ManagerRegistry $doctrine,
+        private readonly TotalCalculator $totalCalculator,
     ) {
     }
 
     /**
-     * @return Template|FormRequest
-     * @throws Exception
+     * @throws MathException
      */
-    public function __invoke(Request $request, ?Client $client = null)
+    public function __invoke(Request $request, ?Client $client = null): Template | Response
     {
         $totalClientsCount = $this->repository->getTotalClients();
         if (0 === $totalClientsCount) {
@@ -59,11 +71,46 @@ final class Create
             }
         }
 
-        $options = [
-            'quote' => $quote,
-            'form_options' => $client instanceof Client ? ['currency' => $client->getCurrency()] : [],
-        ];
+        $formOptions = $client instanceof Client ? ['currency' => $client->getCurrency()] : [];
+        $form = $this->formFactory->create(QuoteType::class, $quote, $formOptions);
+        $form->handleRequest($request);
 
-        return $this->handler->handle(QuoteCreateHandler::class, $options);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $action = $request->request->get('save');
+
+            if (! $quote->getId() instanceof Ulid) {
+                $this->quoteStateMachine->apply($quote, Graph::TRANSITION_NEW);
+            }
+
+            if (Graph::STATUS_PENDING === $action) {
+                $this->quoteStateMachine->apply($quote, Graph::TRANSITION_SEND);
+            }
+
+            if ('publish' === $action) {
+                $this->quoteStateMachine->apply($quote, Graph::TRANSITION_PUBLISH);
+            }
+
+            $entityManager = $this->doctrine->getManager();
+            $entityManager->persist($quote);
+            $entityManager->flush();
+
+            $session = $request->getSession();
+            assert($session instanceof Session);
+            $session->getFlashBag()->add('success', 'quote.action.create.success');
+
+            return new RedirectResponse($this->router->generate('_quotes_view', ['id' => $quote->getId()]));
+        }
+
+        if ($form->isSubmitted() && ! $form->isValid()) {
+            $this->totalCalculator->calculateTotals($quote);
+        }
+
+        return new Template(
+            '@SolidInvoiceQuote/Default/create.html.twig',
+            [
+                'quote' => $quote,
+                'form' => $form->createView(),
+            ]
+        );
     }
 }

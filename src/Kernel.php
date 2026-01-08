@@ -15,8 +15,6 @@ namespace SolidInvoice;
 
 use Doctrine\DBAL\Types\Type;
 use SolidInvoice\CoreBundle\Doctrine\Type\JsonArrayType;
-use SolidWorx\FormHandler\FormHandler;
-use SolidWorx\FormHandler\FormHandlerInterface;
 use SolidWorx\Platform\PlatformBundle\Kernel as BaseKernel;
 use SolidWorx\Platform\SaasBundle\SolidWorxPlatformSaasBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -52,11 +50,6 @@ class Kernel extends BaseKernel
             $configDir = preg_replace('{/config$}', '/{config}', $this->getConfigDir());
             $container->import($configDir . '/{packages}/saas/*.{php,yaml}');
         }
-
-        $builder->registerForAutoconfiguration(FormHandlerInterface::class)
-            ->addTag('form.handler');
-
-        $builder->setAlias(FormHandler::class, 'solidworx.form_handler');
     }
 
     protected function configureRoutes(RoutingConfigurator $routes): void

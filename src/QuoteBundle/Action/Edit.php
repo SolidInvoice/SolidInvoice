@@ -13,32 +13,78 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Action;
 
-use Exception;
+use Brick\Math\Exception\MathException;
+use Doctrine\Persistence\ManagerRegistry;
+use SolidInvoice\CoreBundle\Billing\TotalCalculator;
+use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\QuoteBundle\Entity\Quote;
-use SolidInvoice\QuoteBundle\Form\Handler\QuoteEditHandler;
-use SolidWorx\FormHandler\FormHandler;
-use SolidWorx\FormHandler\FormRequest;
+use SolidInvoice\QuoteBundle\Form\Type\QuoteType;
+use SolidInvoice\QuoteBundle\Model\Graph;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Uid\Ulid;
+use Symfony\Component\Workflow\WorkflowInterface;
+use function assert;
 
 final class Edit
 {
     public function __construct(
-        private readonly FormHandler $handler,
+        private readonly FormFactoryInterface $formFactory,
+        private readonly RouterInterface $router,
+        private readonly WorkflowInterface $quoteStateMachine,
+        private readonly ManagerRegistry $doctrine,
+        private readonly TotalCalculator $totalCalculator,
     ) {
     }
 
     /**
-     * @throws Exception
+     * @throws MathException
      */
-    public function __invoke(Request $request, Quote $quote): FormRequest
+    public function __invoke(Request $request, Quote $quote): Template | Response
     {
-        $options = [
-            'quote' => $quote,
-            'form_options' => [
-                'currency' => $quote->getClient()->getCurrency(),
-            ],
-        ];
+        $form = $this->formFactory->create(QuoteType::class, $quote, [
+            'currency' => $quote->getClient()->getCurrency(),
+        ]);
+        $form->handleRequest($request);
 
-        return $this->handler->handle(QuoteEditHandler::class, $options);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $action = $request->request->get('save');
+
+            if (! $quote->getId() instanceof Ulid) {
+                $this->quoteStateMachine->apply($quote, Graph::TRANSITION_NEW);
+            }
+
+            if (Graph::STATUS_PENDING === $action) {
+                $this->quoteStateMachine->apply($quote, Graph::TRANSITION_SEND);
+            }
+
+            if ('publish' === $action) {
+                $this->quoteStateMachine->apply($quote, Graph::TRANSITION_PUBLISH);
+            }
+
+            $this->doctrine->getManager()->flush();
+
+            $session = $request->getSession();
+            assert($session instanceof Session);
+            $session->getFlashBag()->add('success', 'quote.action.edit.success');
+
+            return new RedirectResponse($this->router->generate('_quotes_view', ['id' => $quote->getId()]));
+        }
+
+        if ($form->isSubmitted() && ! $form->isValid()) {
+            $this->totalCalculator->calculateTotals($quote);
+        }
+
+        return new Template(
+            '@SolidInvoiceQuote/Default/edit.html.twig',
+            [
+                'form' => $form->createView(),
+                'quote' => $quote,
+            ]
+        );
     }
 }

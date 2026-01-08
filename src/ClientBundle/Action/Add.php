@@ -13,20 +13,45 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Action;
 
-use SolidInvoice\ClientBundle\Form\Handler\ClientCreateFormHandler;
-use SolidWorx\FormHandler\FormHandler;
-use SolidWorx\FormHandler\FormRequest;
+use Doctrine\Persistence\ManagerRegistry;
+use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\ClientBundle\Form\Type\ClientType;
+use SolidInvoice\CoreBundle\Templating\Template;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Routing\RouterInterface;
+use function assert;
 
 final class Add
 {
     public function __construct(
-        private readonly FormHandler $handler
+        private readonly FormFactoryInterface $formFactory,
+        private readonly RouterInterface $router,
+        private readonly ManagerRegistry $doctrine
     ) {
     }
 
-    public function __invoke(Request $request): FormRequest
+    public function __invoke(Request $request): Template | Response
     {
-        return $this->handler->handle(ClientCreateFormHandler::class);
+        $client = new Client();
+        $form = $this->formFactory->create(ClientType::class, $client);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->doctrine->getManager();
+            $entityManager->persist($client);
+            $entityManager->flush();
+
+            $session = $request->getSession();
+            assert($session instanceof Session);
+            $session->getFlashBag()->add('success', 'client.create.success');
+
+            return new RedirectResponse($this->router->generate('_clients_view', ['id' => $client->getId()]));
+        }
+
+        return new Template('@SolidInvoiceClient/Default/add.html.twig', ['form' => $form->createView()]);
     }
 }

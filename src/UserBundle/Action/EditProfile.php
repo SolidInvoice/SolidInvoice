@@ -13,14 +13,49 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Action;
 
-use SolidInvoice\UserBundle\Form\Handler\ProfileEditFormHandler;
-use SolidWorx\FormHandler\FormHandler;
-use SolidWorx\FormHandler\FormRequest;
+use SolidInvoice\CoreBundle\Templating\Template;
+use SolidInvoice\UserBundle\Form\Type\ProfileType;
+use SolidInvoice\UserBundle\Repository\UserRepositoryInterface;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use function assert;
 
 final class EditProfile
 {
-    public function __invoke(FormHandler $formHandler): FormRequest
+    public function __construct(
+        private readonly FormFactoryInterface $formFactory,
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly RouterInterface $router
+    ) {
+    }
+
+    public function __invoke(Request $request): Template | Response
     {
-        return $formHandler->handle(ProfileEditFormHandler::class);
+        $user = $this->tokenStorage->getToken()?->getUser();
+        $form = $this->formFactory->create(ProfileType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->userRepository->save($user);
+
+            $session = $request->getSession();
+            assert($session instanceof Session);
+            $session->getFlashBag()->add('success', 'profile.edit.success');
+
+            return new RedirectResponse($this->router->generate('_profile'));
+        }
+
+        return new Template(
+            '@SolidInvoiceUser/Profile/edit.html.twig',
+            [
+                'form' => $form->createView(),
+            ]
+        );
     }
 }
