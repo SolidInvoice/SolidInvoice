@@ -15,8 +15,8 @@ namespace SolidInvoice\PaymentBundle\Action;
 
 use Brick\Math\Exception\MathException;
 use DateMalformedStringException;
-use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\PaymentBundle\Manager\PaymentStats;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 
 final readonly class Index
@@ -27,16 +27,15 @@ final readonly class Index
     }
 
     /**
+     * @return array{stats: array<string, mixed>}
      * @throws MathException
      * @throws DateMalformedStringException
      */
-    public function __invoke(Request $request): Template
+    #[Template('@SolidInvoicePayment/Default/index.html.twig')]
+    public function __invoke(Request $request): array
     {
-        return new Template(
-            '@SolidInvoicePayment/Default/index.html.twig',
-            [
-                'stats' => $this->paymentStats->getStatistics(),
-            ]
-        );
+        return [
+            'stats' => $this->paymentStats->getStatistics(),
+        ];
     }
 }

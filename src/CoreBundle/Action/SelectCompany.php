@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Action;
 
+use Doctrine\Common\Collections\Collection;
 use SolidInvoice\CoreBundle\Entity\Company;
-use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\UserBundle\Entity\User;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Uid\Ulid;
@@ -32,9 +34,10 @@ final class SelectCompany
     }
 
     /**
-     * @return Template|RedirectResponse
+     * @return array{companies: Collection<int, Company>}|Response
      */
-    public function __invoke(Request $request)
+    #[Template('@SolidInvoiceCore/Company/select.html.twig')]
+    public function __invoke(Request $request): array|Response
     {
         $user = $this->security->getUser();
 
@@ -51,7 +54,7 @@ final class SelectCompany
             return new RedirectResponse($this->router->generate('_dashboard'));
         }
 
-        return new Template('@SolidInvoiceCore/Company/select.html.twig', ['companies' => $companies]);
+        return ['companies' => $companies];
     }
 
     public function switchCompany(Request $request, string $id): RedirectResponse

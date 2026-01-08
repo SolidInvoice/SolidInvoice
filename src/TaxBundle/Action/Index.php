@@ -13,13 +13,17 @@ declare(strict_types=1);
 
 namespace SolidInvoice\TaxBundle\Action;
 
-use SolidInvoice\CoreBundle\Templating\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 
 final class Index
 {
-    public function __invoke(Request $request): Template
+    /**
+     * @return array{}
+     */
+    #[Template('@SolidInvoiceTax/Default/index.html.twig')]
+    public function __invoke(Request $request): array
     {
-        return new Template('@SolidInvoiceTax/Default/index.html.twig');
+        return [];
     }
 }

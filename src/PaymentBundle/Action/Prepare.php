@@ -22,7 +22,6 @@ use Payum\Core\Payum;
 use Payum\Core\Registry\RegistryInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
-use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Model\Graph;
@@ -34,8 +33,10 @@ use SolidInvoice\PaymentBundle\Event\PaymentEvents;
 use SolidInvoice\PaymentBundle\Form\Type\PaymentType;
 use SolidInvoice\PaymentBundle\Model\Status;
 use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -76,9 +77,11 @@ final class Prepare
     }
 
     /**
+     * @return array{form: FormView, invoice: Invoice, internal: array<int, string>}|Response|null
      * @throws Exception
      */
-    public function __invoke(Request $request, string $uuid): Template | Response | null
+    #[Template('@SolidInvoicePayment/Payment/create.html.twig')]
+    public function __invoke(Request $request, string $uuid): array | Response | null
     {
         $invoice = $this->invoiceRepository->findOneBy(['uuid' => $uuid]);
 
@@ -150,14 +153,11 @@ final class Prepare
                         $session->getFlashbag()->add(FlashResponse::FLASH_DANGER, $invalid);
                     }
 
-                    return new Template(
-                        '@SolidInvoicePayment/Payment/create.html.twig',
-                        [
-                            'form' => $form->createView(),
-                            'invoice' => $invoice,
-                            'internal' => $offlinePaymentGateways,
-                        ]
-                    );
+                    return [
+                        'form' => $form->createView(),
+                        'invoice' => $invoice,
+                        'internal' => $offlinePaymentGateways,
+                    ];
                 }
             }
 
@@ -206,14 +206,11 @@ final class Prepare
             return new RedirectResponse($this->router->generate('_payments_index'));
         }
 
-        return new Template(
-            '@SolidInvoicePayment/Payment/create.html.twig',
-            [
-                'form' => $form->createView(),
-                'invoice' => $invoice,
-                'internal' => $offlinePaymentGateways,
-            ]
-        );
+        return [
+            'form' => $form->createView(),
+            'invoice' => $invoice,
+            'internal' => $offlinePaymentGateways,
+        ];
     }
 
     protected function getUser(): ?UserInterface

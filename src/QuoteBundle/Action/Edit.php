@@ -16,11 +16,12 @@ namespace SolidInvoice\QuoteBundle\Action;
 use Brick\Math\Exception\MathException;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
-use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Form\Type\QuoteType;
 use SolidInvoice\QuoteBundle\Model\Graph;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,9 +43,11 @@ final class Edit
     }
 
     /**
+     * @return array{form: FormView, quote: Quote}|Response
      * @throws MathException
      */
-    public function __invoke(Request $request, Quote $quote): Template | Response
+    #[Template('@SolidInvoiceQuote/Default/edit.html.twig')]
+    public function __invoke(Request $request, Quote $quote): array | Response
     {
         $form = $this->formFactory->create(QuoteType::class, $quote, [
             'currency' => $quote->getClient()->getCurrency(),
@@ -79,12 +82,9 @@ final class Edit
             $this->totalCalculator->calculateTotals($quote);
         }
 
-        return new Template(
-            '@SolidInvoiceQuote/Default/edit.html.twig',
-            [
-                'form' => $form->createView(),
-                'quote' => $quote,
-            ]
-        );
+        return [
+            'form' => $form->createView(),
+            'quote' => $quote,
+        ];
     }
 }

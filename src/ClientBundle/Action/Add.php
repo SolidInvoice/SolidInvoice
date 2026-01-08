@@ -16,8 +16,9 @@ namespace SolidInvoice\ClientBundle\Action;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Form\Type\ClientType;
-use SolidInvoice\CoreBundle\Templating\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,7 +35,11 @@ final class Add
     ) {
     }
 
-    public function __invoke(Request $request): Template | Response
+    /**
+     * @return array{form: FormView}|Response
+     */
+    #[Template('@SolidInvoiceClient/Default/add.html.twig')]
+    public function __invoke(Request $request): array | Response
     {
         $client = new Client();
         $form = $this->formFactory->create(ClientType::class, $client);
@@ -52,6 +57,6 @@ final class Add
             return new RedirectResponse($this->router->generate('_clients_view', ['id' => $client->getId()]));
         }
 
-        return new Template('@SolidInvoiceClient/Default/add.html.twig', ['form' => $form->createView()]);
+        return ['form' => $form->createView()];
     }
 }

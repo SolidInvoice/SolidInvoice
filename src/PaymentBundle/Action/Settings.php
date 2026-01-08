@@ -13,13 +13,17 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Action;
 
-use SolidInvoice\CoreBundle\Templating\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 
 final class Settings
 {
-    public function __invoke(Request $request): Template
+    /**
+     * @return array{}
+     */
+    #[Template('@SolidInvoicePayment/Settings/index.html.twig')]
+    public function __invoke(Request $request): array
     {
-        return new Template('@SolidInvoicePayment/Settings/index.html.twig');
+        return [];
     }
 }

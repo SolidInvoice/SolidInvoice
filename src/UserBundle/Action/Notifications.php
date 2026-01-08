@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -11,14 +13,19 @@
 
 namespace SolidInvoice\UserBundle\Action;
 
-use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\UserBundle\Form\Type\NotificationType;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 
 final class Notifications extends AbstractController
 {
-    public function __invoke(Request $request): Template
+    /**
+     * @return array{form: FormView}
+     */
+    #[Template('@SolidInvoiceUser/Notifications/index.html.twig')]
+    public function __invoke(Request $request): array
     {
         $form = $this->createForm(NotificationType::class);
 
@@ -30,6 +37,6 @@ final class Notifications extends AbstractController
             dd($data);
         }
 
-        return new Template('@SolidInvoiceUser/Notifications/index.html.twig', ['form' => $form->createView()]);
+        return ['form' => $form->createView()];
     }
 }
