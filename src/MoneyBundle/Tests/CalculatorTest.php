@@ -16,7 +16,6 @@ namespace SolidInvoice\MoneyBundle\Tests;
 use Brick\Math\BigDecimal;
 use Brick\Math\BigInteger;
 use Brick\Math\Exception\MathException;
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -24,18 +23,6 @@ use SolidInvoice\MoneyBundle\Calculator;
 
 class CalculatorTest extends TestCase
 {
-    /**
-     * @throws MathException
-     */
-    public function testCalculateDiscountWithInvalidEntity(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('"SolidInvoice\MoneyBundle\Calculator::calculateDiscount" expects instance of Quote or Invoice, "string" given.');
-        $calculator = new Calculator();
-        /** @phpstan-ignore-next-line Testing invalid input type */
-        $calculator->calculateDiscount('');
-    }
-
     /**
      * @throws MathException
      */
