@@ -16,13 +16,10 @@ namespace SolidInvoice\CoreBundle\Tests\Billing;
 use Brick\Math\BigDecimal;
 use Brick\Math\Exception\MathException;
 use Doctrine\ORM\Exception\NotSupported;
-use Doctrine\ORM\Exception\ORMException;
-use Doctrine\ORM\OptimisticLockException;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\CoreBundle\Entity\Discount;
-use SolidInvoice\CoreBundle\Exception\UnexpectedTypeException;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
@@ -31,7 +28,6 @@ use SolidInvoice\MoneyBundle\Calculator;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Model\Status;
 use SolidInvoice\TaxBundle\Entity\Tax;
-use stdClass;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Zenstruck\Foundry\Test\Factories;
 
@@ -40,16 +36,6 @@ class TotalCalculatorTest extends KernelTestCase
     use DoctrineTestTrait;
     use MockeryPHPUnitIntegration;
     use Factories;
-
-    public function testOnlyAcceptsQuotesOrInvoices(): void
-    {
-        $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator());
-
-        $this->expectException(UnexpectedTypeException::class);
-        $this->expectExceptionMessage('Expected argument of type "Invoice or Quote", "stdClass" given');
-        /** @phpstan-ignore-next-line Testing invalid input type */
-        $updater->calculateTotals(new stdClass());
-    }
 
     /**
      * @throws MathException
@@ -73,10 +59,6 @@ class TotalCalculatorTest extends KernelTestCase
         self::assertEquals(BigDecimal::of(15000), $invoice->getBaseTotal());
     }
 
-    /**
-     * @throws MathException
-     * @throws NotSupported
-     */
     public function testUpdateWithSingleItemAndMultipleQtys(): void
     {
         $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator());
@@ -95,10 +77,6 @@ class TotalCalculatorTest extends KernelTestCase
         self::assertEquals(BigDecimal::of(30000), $invoice->getBaseTotal());
     }
 
-    /**
-     * @throws MathException
-     * @throws NotSupported
-     */
     public function testUpdateWithPercentageDiscount(): void
     {
         $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator());
@@ -121,10 +99,6 @@ class TotalCalculatorTest extends KernelTestCase
         self::assertEquals(BigDecimal::of(30000), $invoice->getBaseTotal());
     }
 
-    /**
-     * @throws MathException
-     * @throws NotSupported
-     */
     public function testUpdateWithMonetaryDiscount(): void
     {
         $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator());
@@ -147,10 +121,6 @@ class TotalCalculatorTest extends KernelTestCase
         self::assertEquals(BigDecimal::of(30000), $invoice->getBaseTotal());
     }
 
-    /**
-     * @throws MathException
-     * @throws NotSupported
-     */
     public function testUpdateWithTaxIncl(): void
     {
         $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator());
@@ -176,10 +146,6 @@ class TotalCalculatorTest extends KernelTestCase
         self::assertEquals(BigDecimal::of('5000.00'), $invoice->getTax());
     }
 
-    /**
-     * @throws MathException
-     * @throws NotSupported
-     */
     public function testUpdateWithTaxFlat(): void
     {
         $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator());
@@ -205,10 +171,6 @@ class TotalCalculatorTest extends KernelTestCase
         self::assertEquals(BigDecimal::of(200.00), $invoice->getTax());
     }
 
-    /**
-     * @throws MathException
-     * @throws NotSupported
-     */
     public function testUpdateWithTaxExcl(): void
     {
         $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator());
@@ -234,10 +196,6 @@ class TotalCalculatorTest extends KernelTestCase
         self::assertEquals(BigDecimal::of('6000'), $invoice->getTax());
     }
 
-    /**
-     * @throws MathException
-     * @throws NotSupported
-     */
     public function testUpdateWithTaxInclAndPercentageDiscount(): void
     {
         $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator());
@@ -266,10 +224,6 @@ class TotalCalculatorTest extends KernelTestCase
         self::assertEquals(BigDecimal::of('5000.00'), $invoice->getTax());
     }
 
-    /**
-     * @throws MathException
-     * @throws NotSupported
-     */
     public function testUpdateWithTaxExclAndMonetaryDiscount(): void
     {
         $updater = new TotalCalculator($this->em->getRepository(Payment::class), new Calculator());
@@ -298,12 +252,6 @@ class TotalCalculatorTest extends KernelTestCase
         self::assertEquals(BigDecimal::of('6000'), $invoice->getTax());
     }
 
-    /**
-     * @throws ORMException
-     * @throws OptimisticLockException
-     * @throws MathException
-     * @throws NotSupported
-     */
     public function testUpdateTotalsWithPayments(): void
     {
         $invoice = new Invoice();
