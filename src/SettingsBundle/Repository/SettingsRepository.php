@@ -22,6 +22,9 @@ use SolidInvoice\SettingsBundle\Entity\Setting;
 use Throwable;
 use function is_array;
 
+/**
+ * @extends ServiceEntityRepository<Setting>
+ */
 class SettingsRepository extends ServiceEntityRepository
 {
     public function __construct(

@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class Settings
 {
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Template
     {
         return new Template('@SolidInvoicePayment/Settings/index.html.twig');
     }

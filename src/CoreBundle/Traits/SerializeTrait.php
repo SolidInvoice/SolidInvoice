@@ -33,6 +33,7 @@ trait SerializeTrait
     }
 
     /**
+     * @param list<string> $groups
      * @throws Exception
      */
     protected function serialize(mixed $object, array $groups = [], ?Response $response = null): Response

@@ -29,7 +29,7 @@ final class CloneInvoice
     ) {
     }
 
-    public function __invoke(Request $request, Invoice $invoice)
+    public function __invoke(Request $request, Invoice $invoice): RedirectResponse
     {
         $newInvoice = $this->cloner->clone($invoice);
 

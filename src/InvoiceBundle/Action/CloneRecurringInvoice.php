@@ -29,7 +29,7 @@ final class CloneRecurringInvoice
     ) {
     }
 
-    public function __invoke(Request $request, RecurringInvoice $invoice)
+    public function __invoke(Request $request, RecurringInvoice $invoice): RedirectResponse
     {
         $newInvoice = $this->cloner->clone($invoice);
 

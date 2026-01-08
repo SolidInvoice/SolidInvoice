@@ -20,6 +20,9 @@ use SolidInvoice\InvoiceBundle\Entity\Line as InvoiceItem;
 use SolidInvoice\QuoteBundle\Entity\Line as QuoteItem;
 use SolidInvoice\TaxBundle\Entity\Tax;
 
+/**
+ * @extends ServiceEntityRepository<Tax>
+ */
 class TaxRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -29,6 +32,7 @@ class TaxRepository extends ServiceEntityRepository
 
     /**
      * Gets an array of all the available tax rates.
+     * @return list<array{name: string, rate: float, type: string}>
      */
     public function getTaxList(): array
     {

@@ -56,11 +56,11 @@ class UpdatePaymentDetailsExtension implements ExtensionInterface
         }
     }
 
-    public function onReply(ReplyInterface $reply, $request, ActionInterface $action): void
+    public function onReply(ReplyInterface $reply, mixed $request, ActionInterface $action): void
     {
     }
 
-    public function onException(Exception $exception, $request, ?ActionInterface $action = null): void
+    public function onException(Exception $exception, mixed $request, ?ActionInterface $action = null): void
     {
     }
 }

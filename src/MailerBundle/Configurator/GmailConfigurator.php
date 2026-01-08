@@ -31,6 +31,9 @@ final class GmailConfigurator implements ConfiguratorInterface
         return 'Gmail';
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     public function configure(array $config): Dsn
     {
         return Dsn::fromString(\sprintf('gmail+smtp://%s:%s@default', $config['username'], $config['password']));

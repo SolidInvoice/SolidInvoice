@@ -32,6 +32,7 @@ class CalculatorTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('"SolidInvoice\MoneyBundle\Calculator::calculateDiscount" expects instance of Quote or Invoice, "string" given.');
         $calculator = new Calculator();
+        /** @phpstan-ignore-next-line Testing invalid input type */
         $calculator->calculateDiscount('');
     }
 

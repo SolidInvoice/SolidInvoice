@@ -35,6 +35,10 @@ class PaymentMethodSettingsType extends AbstractType
         }
     }
 
+    /**
+     * @param array<string, mixed> $settings
+     * @return array<string, mixed>
+     */
     private function getOptions(array $settings): array
     {
         $options = [];
@@ -70,7 +74,7 @@ class PaymentMethodSettingsType extends AbstractType
         return 'method_settings';
     }
 
-    private function getType($type): string
+    private function getType(string $type): string
     {
         return match ($type) {
             'password' => PasswordType::class,

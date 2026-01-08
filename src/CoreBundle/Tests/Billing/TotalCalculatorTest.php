@@ -47,6 +47,7 @@ class TotalCalculatorTest extends KernelTestCase
 
         $this->expectException(UnexpectedTypeException::class);
         $this->expectExceptionMessage('Expected argument of type "Invoice or Quote", "stdClass" given');
+        /** @phpstan-ignore-next-line Testing invalid input type */
         $updater->calculateTotals(new stdClass());
     }
 

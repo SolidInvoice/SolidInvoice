@@ -14,23 +14,31 @@ declare(strict_types=1);
 namespace SolidInvoice\PaymentBundle\Manager;
 
 use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Persistence\ObjectRepository;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
+use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
 
 class PaymentSettingsManager
 {
     /**
-     * @var ObjectRepository
+     * @var PaymentMethodRepository
      */
     protected $repository;
 
+    /**
+     * @var array<string, array<string, string>>
+     */
     private array $settings = [];
 
     public function __construct(ManagerRegistry $doctrine)
     {
-        $this->repository = $doctrine->getRepository(PaymentMethod::class);
+        /** @var PaymentMethodRepository $repository */
+        $repository = $doctrine->getRepository(PaymentMethod::class);
+        $this->repository = $repository;
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function get(string $paymentMethod): array
     {
         if (! isset($this->settings[$paymentMethod])) {

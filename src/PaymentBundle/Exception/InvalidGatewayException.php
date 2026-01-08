@@ -17,7 +17,7 @@ use Exception;
 
 class InvalidGatewayException extends Exception
 {
-    public function __construct($gateway)
+    public function __construct(string $gateway)
     {
         $message = sprintf('Invalid gateway: %s', $gateway);
 

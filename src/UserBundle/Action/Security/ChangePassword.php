@@ -15,10 +15,11 @@ namespace SolidInvoice\UserBundle\Action\Security;
 
 use SolidInvoice\UserBundle\Form\Handler\PasswordChangeHandler;
 use SolidWorx\FormHandler\FormHandler;
+use SolidWorx\FormHandler\FormRequest;
 
 final class ChangePassword
 {
-    public function __invoke(FormHandler $formHandler)
+    public function __invoke(FormHandler $formHandler): FormRequest
     {
         return $formHandler->handle(PasswordChangeHandler::class);
     }

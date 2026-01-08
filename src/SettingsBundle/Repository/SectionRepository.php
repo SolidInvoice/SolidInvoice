@@ -17,6 +17,9 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\SettingsBundle\Entity\Setting;
 
+/**
+ * @extends ServiceEntityRepository<Setting>
+ */
 class SectionRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -28,6 +31,7 @@ class SectionRepository extends ServiceEntityRepository
      * Returns an array of all the top-level sections.
      *
      * @param string $cacheKey
+     * @return list<Setting>
      */
     public function getTopLevelSections(bool $cache = false, $cacheKey = 'solidinvoice_settings_top_section_sections', int $lifetime = 604800): array
     {

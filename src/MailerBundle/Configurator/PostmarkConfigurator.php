@@ -31,6 +31,9 @@ final class PostmarkConfigurator implements ConfiguratorInterface
         return 'Postmark';
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     public function configure(array $config): Dsn
     {
         return Dsn::fromString(\sprintf('postmark+api://%s@default', $config['key']));

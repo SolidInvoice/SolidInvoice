@@ -24,6 +24,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('payment');
+        /** @phpstan-ignore-next-line Symfony Config component compatibility */
         $treeBuilder->getRootNode()
             ->children()
                 ->arrayNode('gateways')

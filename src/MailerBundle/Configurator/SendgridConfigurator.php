@@ -31,6 +31,9 @@ final class SendgridConfigurator implements ConfiguratorInterface
         return 'Sendgrid';
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     public function configure(array $config): Dsn
     {
         return Dsn::fromString(\sprintf('sendgrid+api://%s@default', $config['key']));

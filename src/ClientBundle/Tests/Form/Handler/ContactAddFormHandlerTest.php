@@ -46,6 +46,9 @@ class ContactAddFormHandlerTest extends FormHandlerTestCase
         return ['contact' => (new Contact())->setClient($client)];
     }
 
+    /**
+     * @return array{contact: array{firstName: string, email: string}}
+     */
     public function getFormData(): array
     {
         return [

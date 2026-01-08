@@ -47,7 +47,7 @@ abstract class AbstractClientFormHandler implements FormHandlerInterface, FormHa
 
     public function getForm(FormFactoryInterface $factory, Options $options): FormInterface
     {
-        return $factory->create(ClientType::class, $options->get('client', new Client()));
+        return $factory->create(ClientType::class, $options->get('client') ?? new Client());
     }
 
     public function onSuccess(FormRequest $form, $contact): ?Response

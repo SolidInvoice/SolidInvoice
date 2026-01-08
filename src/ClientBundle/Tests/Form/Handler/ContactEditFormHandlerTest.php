@@ -56,6 +56,9 @@ class ContactEditFormHandlerTest extends FormHandlerTestCase
         return $handler;
     }
 
+    /**
+     * @return array{contact: Contact}
+     */
     protected function getHandlerOptions(): array
     {
         $company = CompanyFactory::new()->create()->_real();
@@ -75,6 +78,9 @@ class ContactEditFormHandlerTest extends FormHandlerTestCase
         ];
     }
 
+    /**
+     * @return array{contact: array{firstName: string, email: string}}
+     */
     public function getFormData(): array
     {
         return [

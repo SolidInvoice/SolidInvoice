@@ -21,6 +21,9 @@ use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\CoreBundle\Entity\Version;
 
+/**
+ * @extends ServiceEntityRepository<Version>
+ */
 class VersionRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

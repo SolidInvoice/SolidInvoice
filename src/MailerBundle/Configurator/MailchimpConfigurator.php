@@ -31,6 +31,9 @@ final class MailchimpConfigurator implements ConfiguratorInterface
         return 'Mailchimp Mandrill';
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     public function configure(array $config): Dsn
     {
         return Dsn::fromString(\sprintf('mandrill+api://%s@default', $config['key']));

@@ -18,7 +18,6 @@ use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
 use Brick\Math\RoundingMode;
-use SolidInvoice\CoreBundle\Exception\UnexpectedTypeException;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\MoneyBundle\Calculator;
@@ -40,12 +39,8 @@ class TotalCalculator
     /**
      * @throws MathException
      */
-    public function calculateTotals($entity): void
+    public function calculateTotals(BaseInvoice|Quote $entity): void
     {
-        if (! $entity instanceof BaseInvoice && ! $entity instanceof Quote) {
-            throw new UnexpectedTypeException($entity, 'Invoice or Quote');
-        }
-
         $this->updateTotal($entity);
 
         if ($entity instanceof Invoice) {
@@ -60,9 +55,8 @@ class TotalCalculator
     /**
      * @throws MathException
      */
-    private function updateTotal($entity): void
+    private function updateTotal(BaseInvoice|Quote $entity): void
     {
-        /** @var BaseInvoice|Quote $entity */
 
         $total = BigDecimal::zero();
         $subTotal = BigDecimal::zero();

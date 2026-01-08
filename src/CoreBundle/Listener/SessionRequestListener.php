@@ -39,6 +39,7 @@ class SessionRequestListener implements EventSubscriberInterface
         $response = $event->getResponse();
 
         if ($response instanceof FlashResponse) {
+            /** @phpstan-ignore-next-line Symfony FlashBag API compatibility */
             $flashBag = $event->getRequest()->getSession()->getFlashBag();
             foreach ($response->getFlash() as $type => $message) {
                 // Default to info for undefined types

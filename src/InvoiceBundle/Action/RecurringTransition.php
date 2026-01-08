@@ -33,7 +33,7 @@ final class RecurringTransition
     ) {
     }
 
-    public function __invoke(Request $request, string $action, RecurringInvoice $invoice)
+    public function __invoke(Request $request, string $action, RecurringInvoice $invoice): RedirectResponse
     {
         if (! $this->recurringInvoiceStateMachine->can($invoice, $action)) {
             throw new InvalidTransitionException($action);

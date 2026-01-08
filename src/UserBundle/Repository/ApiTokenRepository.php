@@ -28,6 +28,9 @@ use function array_column;
 use function array_combine;
 use function array_map;
 
+/**
+ * @extends ServiceEntityRepository<ApiToken>
+ */
 class ApiTokenRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

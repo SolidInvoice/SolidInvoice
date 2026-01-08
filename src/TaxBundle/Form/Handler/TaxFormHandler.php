@@ -45,7 +45,7 @@ class TaxFormHandler implements FormHandlerInterface, FormHandlerSuccessInterfac
 
     public function getForm(FormFactoryInterface $factory, Options $options)
     {
-        return $factory->create(TaxType::class, $options->get('tax', new Tax()));
+        return $factory->create(TaxType::class, $options->get('tax') ?? new Tax());
     }
 
     public function onSuccess(FormRequest $form, $data): ?Response
