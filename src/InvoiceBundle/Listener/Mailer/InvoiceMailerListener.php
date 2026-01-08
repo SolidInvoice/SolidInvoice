@@ -38,6 +38,8 @@ class InvoiceMailerListener implements EventSubscriberInterface
 
     public function onInvoiceAccepted(InvoiceEvent $event): void
     {
-        $this->mailer->send(new InvoiceEmail($event->getInvoice()));
+        $invoice = $event->getInvoice();
+        assert($invoice instanceof \SolidInvoice\InvoiceBundle\Entity\Invoice);
+        $this->mailer->send(new InvoiceEmail($invoice));
     }
 }

@@ -21,5 +21,8 @@ interface ConfiguratorInterface
 
     public function getForm(): string;
 
+    /**
+     * @param array<string, mixed> $config
+     */
     public function configure(array $config): Dsn;
 }

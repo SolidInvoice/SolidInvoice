@@ -20,6 +20,7 @@ class StatusRequest extends BaseGetStatus
 {
     public function markNew(): void
     {
+        /** @phpstan-ignore-next-line Payum library compatibility */
         $this->status = Status::STATUS_NEW;
     }
 
@@ -30,6 +31,7 @@ class StatusRequest extends BaseGetStatus
 
     public function markSuspended(): void
     {
+        /** @phpstan-ignore-next-line Payum library compatibility */
         $this->status = Status::STATUS_SUSPENDED;
     }
 
@@ -40,6 +42,7 @@ class StatusRequest extends BaseGetStatus
 
     public function markExpired(): void
     {
+        /** @phpstan-ignore-next-line Payum library compatibility */
         $this->status = Status::STATUS_EXPIRED;
     }
 
@@ -50,6 +53,7 @@ class StatusRequest extends BaseGetStatus
 
     public function markCanceled(): void
     {
+        /** @phpstan-ignore-next-line Payum library compatibility */
         $this->status = Status::STATUS_CANCELLED;
     }
 
@@ -60,6 +64,7 @@ class StatusRequest extends BaseGetStatus
 
     public function markPending(): void
     {
+        /** @phpstan-ignore-next-line Payum library compatibility */
         $this->status = Status::STATUS_PENDING;
     }
 
@@ -70,6 +75,7 @@ class StatusRequest extends BaseGetStatus
 
     public function markFailed(): void
     {
+        /** @phpstan-ignore-next-line Payum library compatibility */
         $this->status = Status::STATUS_FAILED;
     }
 
@@ -80,6 +86,7 @@ class StatusRequest extends BaseGetStatus
 
     public function markUnknown(): void
     {
+        /** @phpstan-ignore-next-line Payum library compatibility */
         $this->status = Status::STATUS_UNKNOWN;
     }
 
@@ -90,6 +97,7 @@ class StatusRequest extends BaseGetStatus
 
     public function markCaptured(): void
     {
+        /** @phpstan-ignore-next-line Payum library compatibility */
         $this->status = Status::STATUS_CAPTURED;
     }
 
@@ -105,6 +113,7 @@ class StatusRequest extends BaseGetStatus
 
     public function markAuthorized(): void
     {
+        /** @phpstan-ignore-next-line Payum library compatibility */
         $this->status = Status::STATUS_AUTHORIZED;
     }
 
@@ -115,6 +124,7 @@ class StatusRequest extends BaseGetStatus
 
     public function markRefunded(): void
     {
+        /** @phpstan-ignore-next-line Payum library compatibility */
         $this->status = Status::STATUS_REFUNDED;
     }
 

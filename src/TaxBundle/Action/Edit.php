@@ -16,6 +16,7 @@ namespace SolidInvoice\TaxBundle\Action;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidInvoice\TaxBundle\Form\Handler\TaxFormHandler;
 use SolidWorx\FormHandler\FormHandler;
+use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\Request;
 
 final class Edit
@@ -25,7 +26,7 @@ final class Edit
     ) {
     }
 
-    public function __invoke(Request $request, Tax $tax)
+    public function __invoke(Request $request, Tax $tax): FormRequest
     {
         return $this->handler->handle(TaxFormHandler::class, ['tax' => $tax]);
     }

@@ -31,6 +31,9 @@ final class MailgunConfigurator implements ConfiguratorInterface
         return 'Mailgun';
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     public function configure(array $config): Dsn
     {
         return Dsn::fromString(\sprintf('mailgun+api://%s:%s@default', $config['key'], $config['domain']));

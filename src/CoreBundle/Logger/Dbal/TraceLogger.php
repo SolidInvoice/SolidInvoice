@@ -23,7 +23,7 @@ class TraceLogger implements SQLLogger
     /**
      * Executed SQL queries.
      *
-     * @var array
+     * @var array<int, array{sql: string, params: array<int|string, mixed>|null, types: array<int|string, mixed>|null, executionMS: float, trace: list<string>}>
      */
     public $queries = [];
 
@@ -61,7 +61,10 @@ class TraceLogger implements SQLLogger
         }
     }
 
-    private function getBactrace()
+    /**
+     * @return list<string>
+     */
+    private function getBactrace(): array
     {
         $backtrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS);
 
@@ -76,7 +79,11 @@ class TraceLogger implements SQLLogger
         return [];
     }
 
-    private function formatTrace(array $trace)
+    /**
+     * @param list<array<string, mixed>> $trace
+     * @return list<string>
+     */
+    private function formatTrace(array $trace): array
     {
         $backtrace = [];
 

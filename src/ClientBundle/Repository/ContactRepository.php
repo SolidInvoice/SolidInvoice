@@ -21,6 +21,7 @@ use SolidInvoice\ClientBundle\Entity\Contact;
  * ContactRepository.
  *
  * Custom Repository class for managing contacts
+ * @extends ServiceEntityRepository<Contact>
  */
 class ContactRepository extends ServiceEntityRepository
 {

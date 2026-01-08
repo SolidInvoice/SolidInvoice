@@ -21,6 +21,9 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
  */
 class PdfResponse extends Response
 {
+    /**
+     * @param array<string, string> $headers
+     */
     public function __construct(string $content, string $fileName, string $contentDisposition = ResponseHeaderBag::DISPOSITION_INLINE, int $status = Response::HTTP_OK, array $headers = [])
     {
         parent::__construct($content, $status, $headers);

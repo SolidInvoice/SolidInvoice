@@ -75,6 +75,9 @@ class ProfileEditHandlerTest extends FormHandlerTestCase
         self::assertSame(FlashResponse::FLASH_SUCCESS, $response->getFlash()->key());
     }
 
+    /**
+     * @return array{profile: array{mobile: string, email: string, first_name: string, last_name: string}}
+     */
     public function getFormData(): array
     {
         return [

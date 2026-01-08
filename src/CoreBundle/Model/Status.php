@@ -25,7 +25,7 @@ abstract class Status
     /**
      * Contains a list of all the statuses and their corresponding labels.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $statusLabels = [];
 
@@ -53,6 +53,7 @@ abstract class Status
 
     /**
      * Return an array of all the available statuses.
+     * @return list<string>
      */
     public function getStatusList(): array
     {

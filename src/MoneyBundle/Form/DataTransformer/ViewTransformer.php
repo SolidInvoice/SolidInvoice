@@ -22,6 +22,9 @@ use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\RoundingMode;
 use Symfony\Component\Form\DataTransformerInterface;
 
+/**
+ * @implements DataTransformerInterface<BigNumber, float>
+ */
 class ViewTransformer implements DataTransformerInterface
 {
     /**

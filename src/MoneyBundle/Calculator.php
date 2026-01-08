@@ -16,7 +16,6 @@ namespace SolidInvoice\MoneyBundle;
 use Brick\Math\BigDecimal;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
-use InvalidArgumentException;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
@@ -30,12 +29,8 @@ final class Calculator
     /**
      * @throws MathException
      */
-    public function calculateDiscount($entity): BigNumber
+    public function calculateDiscount(Quote|BaseInvoice $entity): BigNumber
     {
-        if (! $entity instanceof Quote && ! $entity instanceof BaseInvoice) {
-            throw new InvalidArgumentException(sprintf('"%s" expects instance of Quote or Invoice, "%s" given.', __METHOD__, get_debug_type($entity)));
-        }
-
         $discount = $entity->getDiscount();
 
         $invoiceTotal = $entity->getBaseTotal()->toBigDecimal()->plus($entity->getTax());

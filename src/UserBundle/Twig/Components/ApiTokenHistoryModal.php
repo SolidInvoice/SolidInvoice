@@ -65,7 +65,12 @@ final class ApiTokenHistoryModal
 
         // Verify token belongs to current user
         $currentUser = $this->security->getUser();
-        if (! $currentUser instanceof User || $token->getUser()->getId() !== $currentUser->getId()) {
+        if (! $currentUser instanceof User) {
+            return null;
+        }
+
+        assert($token->getUser() instanceof User);
+        if ($token->getUser()->getId() !== $currentUser->getId()) {
             return null;
         }
 

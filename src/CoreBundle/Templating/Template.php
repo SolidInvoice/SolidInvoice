@@ -21,6 +21,7 @@ class Template
 
     /**
      * @param string $template #Template
+     * @param array<string, mixed> $params
      */
     public function __construct(
         private ?string $template = null,
@@ -35,6 +36,9 @@ class Template
         return $this->template;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getParams(): array
     {
         return $this->params;

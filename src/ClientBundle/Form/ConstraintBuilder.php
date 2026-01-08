@@ -19,6 +19,8 @@ class ConstraintBuilder
 
     /**
      * @static
+     * @param array<int, string> $options
+     * @return array<int, object>
      */
     public static function build(array $options): array
     {

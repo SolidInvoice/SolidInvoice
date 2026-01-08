@@ -52,6 +52,9 @@ class ClientEditFormHandlerTest extends FormHandlerTestCase
         return $handler;
     }
 
+    /**
+     * @return array{client: Client}
+     */
     protected function getHandlerOptions(): array
     {
         $client = new Client();
@@ -66,6 +69,9 @@ class ClientEditFormHandlerTest extends FormHandlerTestCase
         ];
     }
 
+    /**
+     * @return array{client: array{name: string}}
+     */
     public function getFormData(): array
     {
         return [

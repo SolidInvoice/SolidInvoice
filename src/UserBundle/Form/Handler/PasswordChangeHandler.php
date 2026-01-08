@@ -47,7 +47,7 @@ class PasswordChangeHandler implements FormHandlerResponseInterface, FormHandler
 
     public function getForm(FormFactoryInterface $factory, Options $options)
     {
-        return $factory->create(ChangePasswordType::class, new ChangePassword(), ['confirm_password' => $options->get('confirm_password', true)]);
+        return $factory->create(ChangePasswordType::class, new ChangePassword(), ['confirm_password' => $options->get('confirm_password') ?? true]);
     }
 
     public function getResponse(FormRequest $formRequest)
@@ -65,7 +65,7 @@ class PasswordChangeHandler implements FormHandlerResponseInterface, FormHandler
      */
     public function onSuccess(FormRequest $form, $data): ?Response
     {
-        $route = $form->getOptions()->get('redirect_route', '_profile');
+        $route = $form->getOptions()->get('redirect_route') ?? '_profile';
 
         /** @var User $user */
         $user = $this->tokenStorage->getToken()->getUser();

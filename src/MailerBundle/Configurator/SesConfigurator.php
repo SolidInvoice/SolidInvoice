@@ -31,6 +31,9 @@ final class SesConfigurator implements ConfiguratorInterface
         return 'Amazon SES';
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     public function configure(array $config): Dsn
     {
         $dsn = \sprintf('ses+api://%s:%s@default', $config['accessKey'], $config['accessSecret']);

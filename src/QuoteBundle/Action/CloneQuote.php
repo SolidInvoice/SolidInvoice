@@ -29,7 +29,7 @@ final class CloneQuote
     ) {
     }
 
-    public function __invoke(Request $request, Quote $quote)
+    public function __invoke(Request $request, Quote $quote): RedirectResponse
     {
         $newQuote = $this->cloner->clone($quote);
 
