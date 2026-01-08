@@ -13,20 +13,46 @@ declare(strict_types=1);
 
 namespace SolidInvoice\TaxBundle\Action;
 
-use SolidInvoice\TaxBundle\Form\Handler\TaxFormHandler;
-use SolidWorx\FormHandler\FormHandler;
+use Doctrine\Persistence\ManagerRegistry;
+use SolidInvoice\CoreBundle\Templating\Template;
+use SolidInvoice\TaxBundle\Entity\Tax;
+use SolidInvoice\TaxBundle\Form\Type\TaxType;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use SolidWorx\FormHandler\FormRequest;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Routing\RouterInterface;
+use function assert;
 
 final class Add
 {
     public function __construct(
-        private readonly FormHandler $handler
+        private readonly FormFactoryInterface $formFactory,
+        private readonly RouterInterface $router,
+        private readonly ManagerRegistry $doctrine
     ) {
     }
 
-    public function __invoke(Request $request): FormRequest
+    public function __invoke(Request $request): Template | Response
     {
-        return $this->handler->handle(TaxFormHandler::class);
+        $tax = new Tax();
+        $form = $this->formFactory->create(TaxType::class, $tax);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->doctrine->getManager();
+            $entityManager->persist($tax);
+            $entityManager->flush();
+
+            $session = $request->getSession();
+            assert($session instanceof Session);
+            $session->getFlashBag()->add('success', 'Tax rate successfully saved');
+
+            return new RedirectResponse($this->router->generate('_tax_rates'));
+        }
+
+        return new Template('@SolidInvoiceTax/Default/form.html.twig', ['form' => $form->createView()]);
     }
 }

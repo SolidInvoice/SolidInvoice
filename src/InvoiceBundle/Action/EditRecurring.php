@@ -13,33 +13,75 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Action;
 
-use Exception;
+use Brick\Math\Exception\MathException;
+use Doctrine\Persistence\ManagerRegistry;
+use SolidInvoice\CoreBundle\Billing\TotalCalculator;
+use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
-use SolidInvoice\InvoiceBundle\Form\Handler\InvoiceEditHandler;
-use SolidWorx\FormHandler\FormHandler;
-use SolidWorx\FormHandler\FormRequest;
+use SolidInvoice\InvoiceBundle\Form\Type\RecurringInvoiceType;
+use SolidInvoice\InvoiceBundle\Model\Graph;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Uid\Ulid;
+use Symfony\Component\Workflow\WorkflowInterface;
+use function assert;
 
 final class EditRecurring
 {
     public function __construct(
-        private readonly FormHandler $formHandler,
+        private readonly FormFactoryInterface $formFactory,
+        private readonly RouterInterface $router,
+        private readonly WorkflowInterface $recurringInvoiceStateMachine,
+        private readonly ManagerRegistry $doctrine,
+        private readonly TotalCalculator $totalCalculator,
     ) {
     }
 
     /**
-     * @throws Exception
+     * @throws MathException
      */
-    public function __invoke(Request $request, RecurringInvoice $invoice): FormRequest
+    public function __invoke(Request $request, RecurringInvoice $invoice): Template | Response
     {
-        $options = [
-            'invoice' => $invoice,
-            'recurring' => true,
-            'form_options' => [
-                'currency' => $invoice->getClient()->getCurrency(),
-            ],
-        ];
+        $form = $this->formFactory->create(RecurringInvoiceType::class, $invoice, [
+            'currency' => $invoice->getClient()->getCurrency(),
+        ]);
+        $form->handleRequest($request);
 
-        return $this->formHandler->handle(InvoiceEditHandler::class, $options);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $action = $request->request->get('save');
+
+            if (! $invoice->getId() instanceof Ulid) {
+                $this->recurringInvoiceStateMachine->apply($invoice, Graph::TRANSITION_NEW);
+            }
+
+            if ('publish' === $action) {
+                $this->recurringInvoiceStateMachine->apply($invoice, Graph::TRANSITION_ACTIVATE);
+            }
+
+            $this->doctrine->getManager()->flush();
+
+            $session = $request->getSession();
+            assert($session instanceof Session);
+            $session->getFlashBag()->add('success', 'invoice.edit.success');
+
+            return new RedirectResponse($this->router->generate('_invoices_view_recurring', ['id' => $invoice->getId()]));
+        }
+
+        if ($form->isSubmitted() && ! $form->isValid()) {
+            $this->totalCalculator->calculateTotals($invoice);
+        }
+
+        return new Template(
+            '@SolidInvoiceInvoice/Default/edit.html.twig',
+            [
+                'recurring' => true,
+                'form' => $form->createView(),
+                'invoice' => $invoice,
+            ]
+        );
     }
 }

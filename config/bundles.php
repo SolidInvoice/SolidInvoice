@@ -19,7 +19,6 @@ $bundles = [
     Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle::class => ['all' => true],
     Payum\Bundle\PayumBundle\PayumBundle::class => ['all' => true],
     Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle::class => ['all' => true],
-    SolidWorx\FormHandler\FormHandlerBundle::class => ['all' => true],
     ApiPlatform\Symfony\Bundle\ApiPlatformBundle::class => ['all' => true],
     SolidInvoice\ApiBundle\SolidInvoiceApiBundle::class => ['all' => true],
     SolidInvoice\ClientBundle\SolidInvoiceClientBundle::class => ['all' => true],
