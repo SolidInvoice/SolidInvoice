@@ -98,9 +98,9 @@ final class ViewTest extends KernelTestCase
             ->setUuid(Uuid::fromString(self::QUOTE_ID));
         $quote->setQuoteId('QUOT-2021-0001');
 
-        $template = $action($request, $quote);
+        $params = $action($request, $quote);
 
-        $response = $twig->resolveTemplate($template->getTemplate())->renderBlock('content', $template->getParams());
+        $response = $twig->resolveTemplate('@SolidInvoiceQuote/Default/view.html.twig')->renderBlock('content', $params);
 
         $this->assertMatchesHtmlSnapshot($response);
     }
@@ -172,9 +172,9 @@ final class ViewTest extends KernelTestCase
             ->setUuid(Uuid::fromString(self::QUOTE_ID));
         $quote->setQuoteId('QUOT-2021-0001');
 
-        $template = $action($request, $quote);
+        $params = $action($request, $quote);
 
-        $response = $twig->resolveTemplate($template->getTemplate())->renderBlock('content', $template->getParams());
+        $response = $twig->resolveTemplate('@SolidInvoiceQuote/Default/view.html.twig')->renderBlock('content', $params);
 
         $this->assertMatchesHtmlSnapshot($response);
     }
@@ -228,9 +228,9 @@ final class ViewTest extends KernelTestCase
             ->setUuid(Uuid::fromString(self::QUOTE_ID));
         $quote->setQuoteId('QUOT-2021-0001');
 
-        $template = $action($request, $quote);
+        $params = $action($request, $quote);
 
-        $response = $twig->resolveTemplate($template->getTemplate())->renderBlock('content', $template->getParams());
+        $response = $twig->resolveTemplate('@SolidInvoiceQuote/Default/view.html.twig')->renderBlock('content', $params);
 
         $this->assertMatchesHtmlSnapshot($response);
     }
@@ -295,9 +295,9 @@ final class ViewTest extends KernelTestCase
             ->setInvoice($invoice);
         $quote->setQuoteId('QUOT-2021-0001');
 
-        $template = $action($request, $quote);
+        $params = $action($request, $quote);
 
-        $response = $twig->resolveTemplate($template->getTemplate())->renderBlock('content', $template->getParams());
+        $response = $twig->resolveTemplate('@SolidInvoiceQuote/Default/view.html.twig')->renderBlock('content', $params);
 
         $this->assertMatchesHtmlSnapshot($response);
     }
@@ -357,9 +357,9 @@ final class ViewTest extends KernelTestCase
             ->setUuid(Uuid::fromString(self::QUOTE_ID));
         $quote->setQuoteId('QUOT-2021-0001');
 
-        $template = $action($request, $quote);
+        $params = $action($request, $quote);
 
-        $response = $twig->resolveTemplate($template->getTemplate())->renderBlock('content', $template->getParams());
+        $response = $twig->resolveTemplate('@SolidInvoiceQuote/Default/view.html.twig')->renderBlock('content', $params);
 
         $this->assertMatchesHtmlSnapshot($response);
     }

@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Action;
 
-use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\UserBundle\Form\Type\ProfileType;
 use SolidInvoice\UserBundle\Repository\UserRepositoryInterface;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,7 +36,11 @@ final class EditProfile
     ) {
     }
 
-    public function __invoke(Request $request): Template | Response
+    /**
+     * @return array{form: FormView}|Response
+     */
+    #[Template('@SolidInvoiceUser/Profile/edit.html.twig')]
+    public function __invoke(Request $request): array | Response
     {
         $user = $this->tokenStorage->getToken()?->getUser();
         $form = $this->formFactory->create(ProfileType::class, $user);
@@ -51,11 +56,8 @@ final class EditProfile
             return new RedirectResponse($this->router->generate('_profile'));
         }
 
-        return new Template(
-            '@SolidInvoiceUser/Profile/edit.html.twig',
-            [
-                'form' => $form->createView(),
-            ]
-        );
+        return [
+            'form' => $form->createView(),
+        ];
     }
 }

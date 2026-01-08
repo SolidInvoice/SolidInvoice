@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace SolidInvoice\ClientBundle\Action;
 
 use SolidInvoice\ClientBundle\Entity\Client;
-use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
+use Symfony\Bridge\Twig\Attribute\Template;
 
 final class View
 {
@@ -27,18 +27,19 @@ final class View
     ) {
     }
 
-    public function __invoke(Client $client): Template
+    /**
+     * @return array{client: Client, payments: array<string, mixed>, total_invoices_pending: int, total_invoices_paid: int, total_income: mixed, total_outstanding: int}
+     */
+    #[Template('@SolidInvoiceClient/Default/view.html.twig')]
+    public function __invoke(Client $client): array
     {
-        return new Template(
-            '@SolidInvoiceClient/Default/view.html.twig',
-            [
-                'client' => $client,
-                'payments' => $this->paymentRepository->getPaymentsForClient($client),
-                'total_invoices_pending' => $this->invoiceRepository->getCountByStatus(Graph::STATUS_PENDING, $client),
-                'total_invoices_paid' => $this->invoiceRepository->getCountByStatus(Graph::STATUS_PAID, $client),
-                'total_income' => $this->paymentRepository->getTotalIncomeForClient($client),
-                'total_outstanding' => $this->invoiceRepository->getTotalOutstanding($client),
-            ]
-        );
+        return [
+            'client' => $client,
+            'payments' => $this->paymentRepository->getPaymentsForClient($client),
+            'total_invoices_pending' => $this->invoiceRepository->getCountByStatus(Graph::STATUS_PENDING, $client),
+            'total_invoices_paid' => $this->invoiceRepository->getCountByStatus(Graph::STATUS_PAID, $client),
+            'total_income' => $this->paymentRepository->getTotalIncomeForClient($client),
+            'total_outstanding' => $this->invoiceRepository->getTotalOutstanding($client),
+        ];
     }
 }

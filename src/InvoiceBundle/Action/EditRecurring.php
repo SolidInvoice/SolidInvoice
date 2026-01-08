@@ -16,11 +16,12 @@ namespace SolidInvoice\InvoiceBundle\Action;
 use Brick\Math\Exception\MathException;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
-use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Form\Type\RecurringInvoiceType;
 use SolidInvoice\InvoiceBundle\Model\Graph;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,9 +43,11 @@ final class EditRecurring
     }
 
     /**
+     * @return array{recurring: bool, form: FormView, invoice: RecurringInvoice}|Response
      * @throws MathException
      */
-    public function __invoke(Request $request, RecurringInvoice $invoice): Template | Response
+    #[Template('@SolidInvoiceInvoice/Default/edit.html.twig')]
+    public function __invoke(Request $request, RecurringInvoice $invoice): array | Response
     {
         $form = $this->formFactory->create(RecurringInvoiceType::class, $invoice, [
             'currency' => $invoice->getClient()->getCurrency(),
@@ -75,13 +78,10 @@ final class EditRecurring
             $this->totalCalculator->calculateTotals($invoice);
         }
 
-        return new Template(
-            '@SolidInvoiceInvoice/Default/edit.html.twig',
-            [
-                'recurring' => true,
-                'form' => $form->createView(),
-                'invoice' => $invoice,
-            ]
-        );
+        return [
+            'recurring' => true,
+            'form' => $form->createView(),
+            'invoice' => $invoice,
+        ];
     }
 }

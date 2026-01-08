@@ -16,12 +16,13 @@ namespace SolidInvoice\InvoiceBundle\Action;
 use Brick\Math\Exception\MathException;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
-use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Form\Type\InvoiceType;
 use SolidInvoice\InvoiceBundle\Model\Graph;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -45,9 +46,11 @@ final class Edit
     }
 
     /**
+     * @return array{recurring: bool, form: FormView, invoice: Invoice}|Response
      * @throws MathException
      */
-    public function __invoke(Request $request, Invoice $invoice): Template | Response
+    #[Template('@SolidInvoiceInvoice/Default/edit.html.twig')]
+    public function __invoke(Request $request, Invoice $invoice): array | Response
     {
         if (Graph::STATUS_PAID === $invoice->getStatus()) {
             $session = $request->getSession();
@@ -90,13 +93,10 @@ final class Edit
             $this->totalCalculator->calculateTotals($invoice);
         }
 
-        return new Template(
-            '@SolidInvoiceInvoice/Default/edit.html.twig',
-            [
-                'recurring' => false,
-                'form' => $form->createView(),
-                'invoice' => $invoice,
-            ]
-        );
+        return [
+            'recurring' => false,
+            'form' => $form->createView(),
+            'invoice' => $invoice,
+        ];
     }
 }

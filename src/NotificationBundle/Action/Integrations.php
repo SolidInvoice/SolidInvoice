@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -11,14 +13,18 @@
 
 namespace SolidInvoice\NotificationBundle\Action;
 
-use SolidInvoice\CoreBundle\Templating\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 
 final class Integrations extends AbstractController
 {
-    public function __invoke(Request $request): Template
+    /**
+     * @return array{}
+     */
+    #[Template('@SolidInvoiceNotification/Integration/add.html.twig')]
+    public function __invoke(Request $request): array
     {
-        return new Template('@SolidInvoiceNotification/Integration/add.html.twig');
+        return [];
     }
 }

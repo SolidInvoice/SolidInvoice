@@ -13,13 +13,17 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Action;
 
-use SolidInvoice\CoreBundle\Templating\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 
 final class ApiIndex
 {
-    public function __invoke(Request $request): Template
+    /**
+     * @return array{}
+     */
+    #[Template('@SolidInvoiceUser/Api/index.html.twig')]
+    public function __invoke(Request $request): array
     {
-        return new Template('@SolidInvoiceUser/Api/index.html.twig');
+        return [];
     }
 }

@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Action;
 
-use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\UserBundle\Repository\UserInvitationRepository;
 use SolidInvoice\UserBundle\Repository\UserRepository;
+use Symfony\Bridge\Twig\Attribute\Template;
 
 final class Users
 {
@@ -25,16 +25,20 @@ final class Users
     ) {
     }
 
-    public function __invoke(): Template
+    /**
+     * @return array{totalActiveUsers: int, totalPendingInvitations: int, recentlyJoinedCount: int}
+     */
+    #[Template('@SolidInvoiceUser/Users/index.html.twig')]
+    public function __invoke(): array
     {
         $totalActiveUsers = $this->userRepository->getUserCount();
         $totalPendingInvitations = $this->invitationRepository->countPendingInvitations();
         $recentlyJoinedCount = $this->userRepository->getRecentlyJoinedCount(30);
 
-        return new Template('@SolidInvoiceUser/Users/index.html.twig', [
+        return [
             'totalActiveUsers' => $totalActiveUsers,
             'totalPendingInvitations' => $totalPendingInvitations,
             'recentlyJoinedCount' => $recentlyJoinedCount,
-        ]);
+        ];
     }
 }

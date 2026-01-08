@@ -13,12 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Action\Security;
 
-use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\UserBundle\DTO\ChangePassword as ChangePasswordDTO;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Form\Type\ChangePasswordType;
 use SolidInvoice\UserBundle\Repository\UserRepositoryInterface;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,7 +28,6 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use function assert;
-use SolidWorx\FormHandler\FormRequest;
 
 final class ChangePassword
 {
@@ -40,7 +40,11 @@ final class ChangePassword
     ) {
     }
 
-    public function __invoke(Request $request): Template | Response
+    /**
+     * @return array{form: FormView}|Response
+     */
+    #[Template('@SolidInvoiceUser/ChangePassword/change_password.html.twig')]
+    public function __invoke(Request $request): array | Response
     {
         $changePasswordDTO = new ChangePasswordDTO();
         $form = $this->formFactory->create(ChangePasswordType::class, $changePasswordDTO, ['confirm_password' => true]);
@@ -67,11 +71,8 @@ final class ChangePassword
             return new RedirectResponse($this->router->generate('_profile'));
         }
 
-        return new Template(
-            '@SolidInvoiceUser/ChangePassword/change_password.html.twig',
-            [
-                'form' => $form->createView(),
-            ]
-        );
+        return [
+            'form' => $form->createView(),
+        ];
     }
 }

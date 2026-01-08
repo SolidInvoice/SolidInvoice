@@ -18,12 +18,11 @@ use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
-use SolidInvoice\CoreBundle\Templating\Template;
 use SolidInvoice\QuoteBundle\Entity\Line;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Form\Type\QuoteType;
 use SolidInvoice\QuoteBundle\Model\Graph;
-use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,11 +32,10 @@ use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Workflow\WorkflowInterface;
 use function assert;
 
-final class Create
+final class Create extends AbstractController
 {
     public function __construct(
         private readonly ClientRepository $repository,
-        private readonly FormFactoryInterface $formFactory,
         private readonly RouterInterface $router,
         private readonly WorkflowInterface $quoteStateMachine,
         private readonly ManagerRegistry $doctrine,
@@ -48,11 +46,11 @@ final class Create
     /**
      * @throws MathException
      */
-    public function __invoke(Request $request, ?Client $client = null): Template | Response
+    public function __invoke(Request $request, ?Client $client = null): Response
     {
         $totalClientsCount = $this->repository->getTotalClients();
         if (0 === $totalClientsCount) {
-            return new Template('@SolidInvoiceQuote/Default/empty_clients.html.twig');
+            return $this->render('@SolidInvoiceQuote/Default/empty_clients.html.twig');
         }
 
         $quote = new Quote();
@@ -72,7 +70,7 @@ final class Create
         }
 
         $formOptions = $client instanceof Client ? ['currency' => $client->getCurrency()] : [];
-        $form = $this->formFactory->create(QuoteType::class, $quote, $formOptions);
+        $form = $this->createForm(QuoteType::class, $quote, $formOptions);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -105,12 +103,9 @@ final class Create
             $this->totalCalculator->calculateTotals($quote);
         }
 
-        return new Template(
-            '@SolidInvoiceQuote/Default/create.html.twig',
-            [
-                'quote' => $quote,
-                'form' => $form->createView(),
-            ]
-        );
+        return $this->render('@SolidInvoiceQuote/Default/create.html.twig', [
+            'quote' => $quote,
+            'form' => $form,
+        ]);
     }
 }
