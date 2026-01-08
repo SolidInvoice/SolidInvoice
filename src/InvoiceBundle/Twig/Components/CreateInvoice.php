@@ -31,7 +31,7 @@ use Symfony\UX\LiveComponent\LiveCollectionTrait;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 use Symfony\UX\TwigComponent\Attribute\PostMount;
 
-#[AsLiveComponent()]
+#[AsLiveComponent]
 final class CreateInvoice extends AbstractController
 {
     use DefaultActionTrait;

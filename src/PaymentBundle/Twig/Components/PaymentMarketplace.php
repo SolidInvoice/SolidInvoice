@@ -29,7 +29,7 @@ use function str_replace;
 use function strtolower;
 use function ucwords;
 
-#[AsLiveComponent(name: 'PaymentMarketplace')]
+#[AsLiveComponent]
 final class PaymentMarketplace extends AbstractController
 {
     use DefaultActionTrait;

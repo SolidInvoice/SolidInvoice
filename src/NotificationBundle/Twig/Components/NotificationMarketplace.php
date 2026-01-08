@@ -35,7 +35,7 @@ use function strtolower;
 use function ucwords;
 use function usort;
 
-#[AsLiveComponent(name: 'NotificationMarketplace')]
+#[AsLiveComponent]
 final class NotificationMarketplace extends AbstractController
 {
     use DefaultActionTrait;

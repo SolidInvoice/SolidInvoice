@@ -32,7 +32,7 @@ use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Throwable;
 use function str_replace;
 
-#[AsLiveComponent(name: 'Settings')]
+#[AsLiveComponent]
 final class Settings extends AbstractController
 {
     use DefaultActionTrait;
