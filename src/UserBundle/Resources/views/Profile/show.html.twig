@@ -11,7 +11,7 @@
 
 {% extends "@SolidInvoiceUser/Layout/profile.html.twig" %}
 
-{% block title %}{{ "profile.show.title"|trans({"%username%" : app.user.userIdentifier}) }}{% endblock title %}
+{% block title %}{{ ux_icon('tabler:user', {width: 24, height: 24, class: 'me-2'}) }}{{ "profile.show.title"|trans({"%username%" : app.user.userIdentifier}) }}{% endblock title %}
 
 {% block profile_content %}
     {# Profile Header with Avatar #}

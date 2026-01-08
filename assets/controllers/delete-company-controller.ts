@@ -1,5 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
-import $ from 'jquery';
+import { Modal } from 'bootstrap';
 
 /* stimulusFetch: 'lazy' */
 export default class extends Controller<HTMLElement> {
@@ -11,20 +11,32 @@ export default class extends Controller<HTMLElement> {
     declare readonly confirmButtonTarget: HTMLButtonElement;
     declare readonly companyNameValue: string;
 
-    private modal: JQuery|null = null;
+    private modalInstance: Modal | null = null;
 
     connect() {
-        this.modal = $(this.modalTarget);
+        if (this.modalTarget) {
+            this.modalInstance = new Modal(this.modalTarget);
+        }
+    }
+
+    disconnect() {
+        if (this.modalInstance) {
+            this.modalInstance.dispose();
+        }
     }
 
     showModal() {
-        this.modal?.modal('show');
+        if (this.modalInstance) {
+            this.modalInstance.show();
+        }
         this.companyNameInputTarget.value = '';
         this.updateConfirmButton();
     }
 
     hideModal() {
-        this.modal?.modal('hide');
+        if (this.modalInstance) {
+            this.modalInstance.hide();
+        }
     }
 
     validateInput() {

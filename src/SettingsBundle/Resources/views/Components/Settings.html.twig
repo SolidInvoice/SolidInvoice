@@ -318,7 +318,8 @@
 
     {# Danger Zone - Only for System Section #}
     {% if section is same as('system') %}
-        <div class="settings-danger-zone mt-4" role="region" aria-labelledby="danger-zone-heading">
+        <div class="settings-danger-zone mt-4" role="region" aria-labelledby="danger-zone-heading"
+             {{ stimulus_controller('delete-company', {'company-name': company_name()}) }}>
             <div class="card border-danger">
                 <div class="card-header bg-danger bg-opacity-10 border-danger">
                     <h5 class="card-title text-danger mb-0 d-flex align-items-center gap-2" id="danger-zone-heading">
@@ -337,7 +338,6 @@
                         <button type="button"
                                 class="btn btn-outline-danger flex-shrink-0 d-flex align-items-center gap-2"
                                 aria-label="{{ 'Delete Company'|trans }}"
-                                {{ stimulus_controller('delete-company', {'company-name': company_name()}) }}
                                 {{ stimulus_action('delete-company', 'showModal', 'click') }}>
                             {{ ux_icon('tabler:trash', {width: 16, height: 16, 'aria-hidden': 'true'}) }}
                             <span>{{ 'Delete Company'|trans }}</span>

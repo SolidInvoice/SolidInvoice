@@ -481,13 +481,15 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    width: 100%;
     max-width: 900px;
     margin: 0 auto;
     padding: 0 var(--swp-space-4);
 }
 
 // Save button with enhanced styling
-.btn-save {
+.btn-save,
+.btn-save-primary {
     padding: var(--swp-space-3) var(--swp-space-6);
     font-weight: var(--swp-font-semibold);
     box-shadow: var(--swp-shadow-primary);
