@@ -11,7 +11,7 @@
 
 {% extends "@SolidInvoiceUser/Layout/profile.html.twig" %}
 
-{% block title %}{{ "profile.edit.title"|trans }}{% endblock title %}
+{% block title %}{{ ux_icon('tabler:user-edit', {width: 24, height: 24, class: 'me-2'}) }}{{ "profile.edit.title"|trans }}{% endblock title %}
 
 {% block profile_content %}
     <div class="profile-form-page">
