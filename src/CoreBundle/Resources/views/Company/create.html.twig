@@ -10,19 +10,42 @@
 {% extends "@SolidInvoiceCore/Layout/default_no_nav.html.twig" %}
 
 {% block content %}
-    <div class="page page-center company-create-page">
+    <div class="company-create-page">
+        {# Application Header #}
+        <header class="company-page-header">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center py-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="company-page-logo">
+                            {{ app_logo('48', showDefault: true, showOnlyAppIcon: true) }}
+                        </div>
+                        <div class="company-page-brand">
+                            <h1 class="h3 mb-0">{{ app_name }}</h1>
+                        </div>
+                    </div>
+                    {% if allowCancel %}
+                        <div>
+                            <a href="{{ path('_dashboard') }}" class="btn btn-ghost btn-sm">
+                                {{ ux_icon('tabler:arrow-left', {width: 24, height: 24}) }} {{ 'Back'|trans }}
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </header>
+
         <div class="container py-5">
             <div class="row justify-content-center">
                 <div class="col-12 col-lg-8 col-xl-7">
                     {# Header Section #}
-                    <div class="text-center mb-5">
-                        <div class="mb-3">
-                            <span class="avatar avatar-xl rounded-circle bg-primary-lt">
-                                {{ ux_icon('tabler:building', {width: 48, height: 48, class: 'text-primary'}) }}
+                    <div class="company-page-intro text-center mb-5">
+                        <div class="d-flex align-items-center justify-content-center gap-3 mb-2">
+                            <span class="avatar avatar-md rounded-circle bg-primary-lt">
+                                {{ ux_icon('tabler:building', {width: 24, height: 24, class: 'text-primary'}) }}
                             </span>
+                            <h2 class="h3 mb-0">{{ 'Create Your Company'|trans }}</h2>
                         </div>
-                        <h1 class="display-5 fw-bold mb-2">{{ 'Create Your Company'|trans }}</h1>
-                        <p class="text-secondary fs-5 mb-0">{{ 'Set up your workspace and start managing your business in minutes'|trans }}</p>
+                        <p class="text-secondary mb-0">{{ 'Set up your workspace and start managing your business in minutes'|trans }}</p>
                     </div>
 
                     {{ form_start(form, {'attr': {'class': 'form-smooth'}}) }}
@@ -117,12 +140,7 @@
 
                             <twig:block name="footer">
                                 <div class="card-footer bg-transparent p-4">
-                                    <div class="d-flex flex-column flex-md-row gap-3 {% if allowCancel %}justify-content-between{% else %}justify-content-end{% endif %}">
-                                        {% if allowCancel %}
-                                            <a href="{{ path('_dashboard') }}" class="btn btn-ghost btn-lg">
-                                                {{ ux_icon('tabler:arrow-left') }} {{ 'Cancel'|trans }}
-                                            </a>
-                                        {% endif %}
+                                    <div class="d-flex justify-content-end">
                                         <button type="submit" class="btn btn-primary btn-lg px-5">
                                             {{ ux_icon('tabler:rocket') }} {{ 'Create Company'|trans }}
                                         </button>

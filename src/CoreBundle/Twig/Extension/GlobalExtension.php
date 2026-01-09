@@ -126,11 +126,11 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
     /**
      * @throws InvalidArgumentException|ServiceCircularReferenceException|ServiceNotFoundException|LoaderError|SyntaxError
      */
-    public function displayAppLogo(Environment $env, string $width = 'auto', ?Company $company = null, bool $showDefault = false): string
+    public function displayAppLogo(Environment $env, string $width = 'auto', ?Company $company = null, bool $showDefault = false, bool $showOnlyAppIcon = false): string
     {
         $logo = $showDefault ? self::DEFAULT_LOGO : null;
 
-        if ($this->installed) {
+        if ($this->installed && !$showOnlyAppIcon) {
             $logo = $this->systemConfig->get('system/company/logo', $company);
 
             if (null === $logo) {
