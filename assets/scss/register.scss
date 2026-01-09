@@ -1,0 +1,134 @@
+/*
+ * This file is part of SolidInvoice project.
+ *
+ * (c) Pierre du Plessis <open-source@solidworx.co>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+/**
+ * Registration Page - Split-Screen Layout
+ *
+ * Modern, conversion-optimized registration page with:
+ * - Split-screen design (form + features)
+ * - Password strength indicator
+ * - Responsive mobile/desktop layouts
+ * - Background image with gradient overlay
+ */
+
+// Container reset for full-width split layout
+.registration-split-layout {
+    padding: 0;
+    max-width: 100%;
+
+    .row {
+        margin: 0;
+    }
+}
+
+// Left side: Registration form
+.registration-form-side {
+    background: #ffffff;
+    padding: 2rem 1.5rem;
+
+    @media (min-width: 992px) {
+        padding: 3rem;
+    }
+}
+
+// Form container with max-width constraint
+.registration-form-container {
+    padding: 0 1rem;
+
+    @media (min-width: 768px) {
+        padding: 0 2rem;
+    }
+}
+
+// Right side: Features showcase
+.registration-features-side {
+    background: linear-gradient(135deg, rgba(6, 111, 209, 0.95) 0%, rgba(4, 82, 155, 0.95) 100%),
+                url('../img/login.webp');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+
+    // Gradient overlay for better text readability
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(6, 111, 209, 0.9) 0%, rgba(4, 82, 155, 0.9) 100%);
+    }
+}
+
+// Features content positioning
+.registration-features-content {
+    position: relative;
+    z-index: 1;
+    padding: 3rem;
+}
+
+// Password Strength Meter
+.password-strength-meter {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+
+    .progress {
+        background-color: var(--swp-gray-200, #e9ecef);
+        border-radius: 2px;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        transition: width 0.3s ease, background-color 0.3s ease;
+
+        // Weak password (red)
+        &[data-strength="weak"] {
+            background-color: var(--swp-danger, #d63939);
+        }
+
+        // Medium password (orange)
+        &[data-strength="medium"] {
+            background-color: var(--swp-warning, #f76707);
+        }
+
+        // Strong password (green)
+        &[data-strength="strong"] {
+            background-color: var(--swp-success, #2fb344);
+        }
+    }
+}
+
+// Mobile responsive behavior
+@media (max-width: 991px) {
+    .registration-features-side {
+        display: none !important;
+    }
+
+    .registration-form-side {
+        min-height: 100vh;
+    }
+}
+
+// Utility classes for features section
+.border-white-10 {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.text-white-50 {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+// Feature icon container styling
+.registration-features-content {
+    .bg-white {
+        .tabler-icon {
+            color: var(--swp-primary, #066fd1);
+        }
+    }
+}

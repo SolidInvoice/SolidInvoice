@@ -15,25 +15,28 @@ namespace SolidInvoice\UserBundle\Form\Type;
 
 use SolidInvoice\UserBundle\DTO\Registration;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Email;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\PasswordStrength;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class RegisterType extends AbstractType
 {
+    public function __construct(
+        private readonly TranslatorInterface $translator
+    ) {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $emailOptions = [
             'required' => true,
-            'constraints' => [
-                new NotBlank(),
-                new Email(['mode' => Email::VALIDATION_MODE_STRICT]),
+            'attr' => [
+                'placeholder' => $this->translator->trans('security.register.placeholders.email'),
+                'autocomplete' => 'email',
+                'autofocus' => true,
             ],
         ];
 
@@ -48,30 +51,22 @@ final class RegisterType extends AbstractType
         $builder->add('company', null, [
             'required' => true,
             'label' => 'Company Name',
-            'constraints' => new NotBlank(),
         ]);
-        $builder->add(
-            'plainPassword',
-            RepeatedType::class,
-            [
-                'required' => true,
-                'type' => PasswordType::class,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter a password',
-                    ]),
-                    new Length([
-                        'min' => 8,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
-                        // max length allowed by Symfony for security reasons
-                        'max' => 4096,
-                    ]),
-                    new PasswordStrength(minScore: PasswordStrength::STRENGTH_WEAK),
-                ],
-                'first_options' => ['label' => 'Password'],
-                'second_options' => ['label' => 'Repeat Password'],
-            ]
-        );
+        $builder->add('plainPassword', PasswordType::class, [
+            'required' => true,
+            'label' => 'Password',
+            'use_toggle_form_theme' => false,
+            'toggle' => false,
+            'attr' => [
+                'placeholder' => 'Create a strong password',
+                'autocomplete' => 'new-password',
+            ],
+        ]);
+        $builder->add('acceptTerms', CheckboxType::class, [
+            'required' => true,
+            'label' => 'I agree to the  <a href="https://solidinvoice.co/terms-of-service" target="_blank" class="link-primary" rel="external noreferrer noopener">Terms & Conditions</a> and <a href="https://solidinvoice.co/privacy-policy" target="_blank" class="link-primary" rel="external noreferrer noopener">Privacy Policy</a>',
+            'label_html' => true,
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

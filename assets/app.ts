@@ -12,6 +12,7 @@ import PasswordVisibility from '@stimulus-components/password-visibility';
 import Clipboard from '@stimulus-components/clipboard';
 
 import { startStimulusApp } from '@symfony/stimulus-bridge';
+import PasswordStrength from './controllers/password-strength-controller';
 
 export const app = startStimulusApp(require.context(
     '@symfony/stimulus-bridge/lazy-controller-loader!./controllers',
@@ -22,6 +23,7 @@ export const app = startStimulusApp(require.context(
 app.register('checkbox-select-all', CheckboxSelectAll);
 app.register('password-visibility', PasswordVisibility);
 app.register('clipboard', Clipboard);
+app.register('password-strength', PasswordStrength);
 
 app.register('csrf-protection', CsrfProtection);
 app.register('loading', Loading);

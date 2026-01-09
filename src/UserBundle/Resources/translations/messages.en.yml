@@ -58,11 +58,47 @@ security:
         forgot_password: 'Forgot Password'
     register:
         title: Register
-        email: Email
+        heading: 'Create your free account'
+        subheading: 'Get started with SolidInvoice today'
+        email: 'Email Address'
         password: Password
         password_confirm: 'Confirm Password'
+        cta: 'Create your free account'
         submit: Register
         success: 'Your account has been created. Please verify your email address before logging in.'
+        terms_agreement: 'I agree to the Terms & Conditions and Privacy Policy'
+        features:
+            title: 'Start invoicing in minutes'
+            subtitle: 'Join thousands of freelancers and small businesses managing their finances with SolidInvoice'
+            invoices:
+                title: 'Professional Invoices'
+                description: 'Create beautiful, customizable invoices in seconds'
+            clients:
+                title: 'Client Management'
+                description: 'Keep all your client information organized in one place'
+            payments:
+                title: 'Payment Tracking'
+                description: 'Accept payments online and track every transaction'
+            tax:
+                title: 'Tax Management'
+                description: 'Automatic tax calculations and detailed reporting'
+        trust:
+            encryption: 'Bank-level encryption'
+            opensource: 'Open Source'
+            control: 'Your data, your control'
+        links:
+            login: 'Already have an account?'
+            signin: 'Sign in'
+            google: 'Sign up with Google'
+        placeholders:
+            email: 'your@email.com'
+            company: 'Your Company Name'
+            password: 'Create a strong password'
+        strength:
+            label: 'At least 8 characters'
+            weak: 'Weak password'
+            medium: 'Medium strength'
+            strong: 'Strong password'
 
 users:
   invite_user: 'Invite User'
