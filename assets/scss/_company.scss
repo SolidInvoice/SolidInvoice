@@ -1,0 +1,235 @@
+/**
+ * Company Pages Styles
+ *
+ * Styles for company selection and creation pages
+ * All styles are scoped to .company-select-page and .company-create-page
+ * to avoid conflicts with other pages.
+ */
+
+// ============================================================================
+// Company Selection Page
+// ============================================================================
+
+.company-select-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+
+    .avatar-lg {
+        width: 3.5rem;
+        height: 3.5rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .avatar-2xl {
+        width: 4rem;
+        height: 4rem;
+        font-size: 1.25rem;
+        font-weight: 600;
+    }
+
+    .bg-primary-lt {
+        background-color: rgba(var(--swp-primary-rgb), 0.1) !important;
+    }
+
+    .bg-success-lt {
+        background-color: rgba(var(--swp-success-rgb), 0.1) !important;
+    }
+
+    .avatar-initials {
+        font-weight: 600;
+        font-size: 1.25rem;
+        letter-spacing: -0.02em;
+    }
+
+    // Main Card Container
+    .card.shadow-sm {
+        box-shadow: var(--swp-shadow-lg) !important;
+        border: none;
+        background: var(--swp-surface);
+    }
+
+    // Company Cards
+    .card-company {
+        transition: var(--swp-transition-all);
+        border: 2px solid var(--swp-border);
+        background: var(--swp-surface);
+        box-shadow: var(--swp-shadow-md);
+        border-radius: var(--swp-radius-lg);
+
+        &:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--swp-shadow-xl);
+            border-color: var(--swp-primary);
+
+            .company-arrow {
+                transform: translateX(4px);
+            }
+
+            h3 {
+                color: var(--swp-primary);
+            }
+        }
+
+        &:active {
+            transform: translateY(-2px);
+        }
+    }
+
+    .company-avatar {
+        flex-shrink: 0;
+
+        .avatar {
+            box-shadow: var(--swp-shadow-sm);
+        }
+
+        // Avatar with logo image
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: var(--swp-space-2);
+        }
+
+        // Avatar with initials - force solid primary background
+        .avatar.bg-primary {
+            background-color: var(--swp-primary) !important;
+            background-image: none !important;
+        }
+
+        // Avatar initials text - force white color
+        .avatar-initials,
+        .avatar.bg-primary span {
+            color: var(--swp-text-inverse) !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+
+    .company-arrow {
+        flex-shrink: 0;
+        transition: transform var(--swp-duration-base) var(--swp-ease-in-out);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .min-w-0 {
+        min-width: 0;
+    }
+
+    // Create Company Card
+    .card-create-company {
+        background: linear-gradient(135deg, rgba(var(--swp-success-rgb), 0.05) 0%, rgba(var(--swp-success-rgb), 0.02) 100%);
+        border: 2px dashed var(--swp-border);
+        transition: var(--swp-transition-all);
+
+        &:hover {
+            border-color: var(--swp-success);
+            background: linear-gradient(135deg, rgba(var(--swp-success-rgb), 0.08) 0%, rgba(var(--swp-success-rgb), 0.04) 100%);
+        }
+    }
+
+    .w-md-auto {
+        width: auto !important;
+    }
+
+    // Responsive adjustments
+    @media (max-width: 767.98px) {
+        .avatar-lg {
+            width: 3rem;
+            height: 3rem;
+
+            svg {
+                width: 24px;
+                height: 24px;
+            }
+        }
+
+        .avatar-2xl {
+            width: 3rem;
+            height: 3rem;
+            font-size: 1rem;
+        }
+
+        .h2 {
+            font-size: 1.5rem;
+        }
+    }
+
+    @media (min-width: 768px) {
+        .w-md-auto {
+            width: auto !important;
+        }
+    }
+}
+
+// ============================================================================
+// Company Creation Page
+// ============================================================================
+
+.company-create-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+
+    .form-smooth {
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--swp-primary);
+            box-shadow: 0 0 0 0.25rem rgba(var(--swp-primary-rgb), 0.1);
+        }
+    }
+
+    .form-hint {
+        font-size: 0.875rem;
+        color: var(--swp-text-secondary);
+        display: flex;
+        align-items: center;
+    }
+
+    .avatar-xl {
+        width: 5rem;
+        height: 5rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .bg-primary-lt {
+        background-color: rgba(var(--swp-primary-rgb), 0.1) !important;
+    }
+
+    .card {
+        box-shadow: var(--swp-shadow-lg);
+        border: none;
+    }
+
+    .alert {
+        border-radius: var(--swp-radius-lg);
+        border: 1px solid transparent;
+
+        &.alert-info {
+            background-color: rgba(var(--swp-info-rgb), 0.08);
+            border-color: rgba(var(--swp-info-rgb), 0.2);
+        }
+
+        &.alert-warning {
+            background-color: rgba(var(--swp-warning-rgb), 0.08);
+            border-color: rgba(var(--swp-warning-rgb), 0.2);
+        }
+
+        &.alert-success {
+            background-color: rgba(var(--swp-success-rgb), 0.08);
+            border-color: rgba(var(--swp-success-rgb), 0.2);
+        }
+    }
+
+    .btn-primary {
+        font-weight: 600;
+        letter-spacing: 0.01em;
+    }
+}

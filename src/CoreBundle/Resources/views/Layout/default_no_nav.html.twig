@@ -19,15 +19,17 @@
 
 {% block body %}
     <div class="page-wrapper">
-        <div class="page-header d-print-none">
-            <div class="container-xl">
-                <div class="row g-2 align-items-center">
-                    <div class="col">
-                        {{ block('heading') is defined ? block('heading') }}
+        {% if block('heading') is defined and block('heading')|trim is not empty %}
+            <div class="page-header d-print-none">
+                <div class="container-xl">
+                    <div class="row g-2 align-items-center">
+                        <div class="col">
+                            {{ block('heading') }}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        {% endif %}
 
         <div class="page-body">
             <div class="container-xl">

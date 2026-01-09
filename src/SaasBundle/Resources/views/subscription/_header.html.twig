@@ -37,10 +37,8 @@
                         </ul>
                     </div>
                 {% endif %}
-                <a href="{{ path('_logout') }}" class="btn btn-ghost" aria-label="{{ 'Logout'|trans }}">
-                    {{ ux_icon('tabler:logout', {width: 18, height: 18}) }}
-                    {{ 'Logout'|trans }}
-                </a>
+
+                <twig:Ui:Security:LogoutLink />
             </div>
         </div>
     </div>

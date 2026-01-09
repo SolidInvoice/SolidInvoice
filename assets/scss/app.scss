@@ -93,6 +93,9 @@ $alert-secondary-text: $orange-dark;
 // 7. PAGE-SPECIFIC STYLES
 // ============================================================================
 
+// Company page custom styles
+@import './company';
+
 // Settings page custom styles
 @import './settings';
 
