@@ -39,7 +39,7 @@ final class CreateCompany extends AbstractController
         private readonly CompanyRepository $companyRepository,
         private readonly RouterInterface $router,
         private readonly ToggleInterface $toggler,
-        private readonly TrialRepository $trialRepository,
+        private readonly ?TrialRepository $trialRepository = null,
         private readonly ?PlanRepository $planRepository = null,
     ) {
     }
@@ -67,10 +67,11 @@ final class CreateCompany extends AbstractController
         }
 
         $planPrice = null;
-        $userHasTrial = $this->trialRepository->userHasTrial($user);
+        $userHasTrial = false;
 
         if ($this->toggler->isActive('saas_enabled')) {
-            $plan = $this->planRepository->findOneBy([]);
+            $userHasTrial = $this->trialRepository?->userHasTrial($user);
+            $plan = $this->planRepository?->findOneBy([]);
             if ($plan instanceof Plan) {
                 $formatter = new IntlMoneyFormatter(
                     new \NumberFormatter('en_US', \NumberFormatter::CURRENCY),
