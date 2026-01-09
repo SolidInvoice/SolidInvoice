@@ -1,40 +1,150 @@
+{##
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
 {% extends "@SolidInvoiceCore/Layout/default_no_nav.html.twig" %}
 
-{% block title %}Create Company{% endblock title %}
-
 {% block content %}
-    <div class="row">
-        <div class="col-12 col-md-6 offset-md-3">
-            <div class="card">
-                {{ form_start(form) }}
-                <div class="card-header">
-                    <h3 class="card-title" id="install-title">
-                        Create Company
-                    </h3>
-                </div>
-                <div class="card-body">
-                    {{ form_row(form) }}
-                </div>
-                <div class="card-footer">
-                    <div class="row">
-                        {% if allowCancel %}
-                            <div class="col align-self-start">
-                                <a href="{{ path('_dashboard') }}" class="btn btn-warning w-100">
-                                    {{ icon('reply') }} {{ 'Cancel'|trans }}
-                                </a>
-                            </div>
-                        {% endif %}
-                        <div class="col-md-7 d-none d-md-block">
+    <div class="page page-center company-create-page">
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-12 col-lg-8 col-xl-7">
+                    {# Header Section #}
+                    <div class="text-center mb-5">
+                        <div class="mb-3">
+                            <span class="avatar avatar-xl rounded-circle bg-primary-lt">
+                                {{ ux_icon('tabler:building', {width: 48, height: 48, class: 'text-primary'}) }}
+                            </span>
                         </div>
-                        <div class="col" id="next_button">
-                            <button type="submit" class="btn btn-success w-100">
-                                {{ icon('save') }} {{ 'Create'|trans }}
-                            </button>
+                        <h1 class="display-5 fw-bold mb-2">{{ 'Create Your Company'|trans }}</h1>
+                        <p class="text-secondary fs-5 mb-0">{{ 'Set up your workspace and start managing your business in minutes'|trans }}</p>
+                    </div>
+
+                    {{ form_start(form, {'attr': {'class': 'form-smooth'}}) }}
+                        <twig:Ui:Card>
+                            <div class="card-body p-4 p-md-5">
+                                {# Form Fields #}
+                                <div class="mb-4">
+                                    <div class="row g-4">
+                                        <div class="col-12">
+                                            {{ form_row(form.name, {
+                                                'attr': {
+                                                    'class': 'form-control-lg',
+                                                    'placeholder': 'e.g., Acme Corporation'|trans,
+                                                    'autofocus': 'autofocus'
+                                                }
+                                            }) }}
+                                            <div class="form-hint mt-2">
+                                                {{ ux_icon('tabler:info-circle', {width: 14, height: 14, class: 'me-1'}) }}
+                                                {{ 'This will be displayed on your invoices and quotes'|trans }}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12">
+                                            {{ form_row(form.currency, {
+                                                'attr': {
+                                                    'class': 'form-select-lg'
+                                                }
+                                            }) }}
+                                            <div class="form-hint mt-2">
+                                                {{ ux_icon('tabler:currency-dollar', {width: 14, height: 14, class: 'me-1'}) }}
+                                                {{ 'All invoices and payments will use this currency'|trans }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {# Divider #}
+                                <hr class="my-4">
+
+                                {# Pricing Information #}
+                                {% toggle 'saas_enabled' %}
+                                    {% if userHasTrial %}
+                                        <div class="alert alert-warning d-flex align-items-start" role="alert">
+                                            <div class="me-3">
+                                                {{ ux_icon('tabler:credit-card', {width: 24, height: 24}) }}
+                                            </div>
+                                            <div class="flex-fill">
+                                                <div class="alert-title fw-semibold">{{ 'Payment Required'|trans }}</div>
+                                                <div class="text-secondary">
+                                                    {{ 'You have already used your free trial.'|trans }}
+                                                    {% if planPrice is defined and planPrice %}
+                                                        {{ 'Creating this company will start a subscription at'|trans }} <strong>{{ planPrice }}</strong> {{ 'and require payment.'|trans }}
+                                                    {% else %}
+                                                        {{ 'Creating this company will require payment.'|trans }}
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <div class="alert alert-info d-flex align-items-start" role="alert">
+                                            <div class="me-3">
+                                                {{ ux_icon('tabler:gift', {width: 24, height: 24}) }}
+                                            </div>
+                                            <div class="flex-fill">
+                                                <div class="alert-title fw-semibold">{{ 'Start Your Free Trial'|trans }}</div>
+                                                <div class="text-secondary mb-2">
+                                                    {{ 'Get full access for 30 days, completely free. No credit card required.'|trans }}
+                                                </div>
+                                                {% if planPrice is defined and planPrice %}
+                                                    <div class="d-flex align-items-center gap-2 mt-2">
+                                                        <span class="badge bg-info-lt">{{ 'Then'|trans }} {{ planPrice }}/{{ 'month'|trans }}</span>
+                                                        <span class="text-muted small">{{ 'Cancel anytime'|trans }}</span>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% else %}
+                                    <div class="alert alert-success d-flex align-items-start" role="alert">
+                                        <div class="me-3">
+                                            {{ ux_icon('tabler:infinity', {width: 24, height: 24}) }}
+                                        </div>
+                                        <div class="flex-fill">
+                                            <div class="alert-title fw-semibold">{{ 'Self-Hosted Freedom'|trans }}</div>
+                                            <div class="text-secondary">
+                                                {{ 'Create unlimited companies at no additional cost. Your data, your control.'|trans }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endtoggle %}
+                            </div>
+
+                            <twig:block name="footer">
+                                <div class="card-footer bg-transparent p-4">
+                                    <div class="d-flex flex-column flex-md-row gap-3 {% if allowCancel %}justify-content-between{% else %}justify-content-end{% endif %}">
+                                        {% if allowCancel %}
+                                            <a href="{{ path('_dashboard') }}" class="btn btn-ghost btn-lg">
+                                                {{ ux_icon('tabler:arrow-left') }} {{ 'Cancel'|trans }}
+                                            </a>
+                                        {% endif %}
+                                        <button type="submit" class="btn btn-primary btn-lg px-5">
+                                            {{ ux_icon('tabler:rocket') }} {{ 'Create Company'|trans }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </twig:block>
+                        </twig:Ui:Card>
+                    {{ form_end(form) }}
+
+                    {# Help Section #}
+                    <div class="text-center mt-4">
+                        <div class="d-flex align-items-center justify-content-center gap-3 flex-wrap">
+                            <span class="text-secondary">
+                                {{ ux_icon('tabler:help-circle', {width: 16, height: 16}) }}
+                                {{ 'Need assistance?'|trans }}
+                            </span>
+                            <a href="https://docs.solidinvoice.co" target="_blank" class="link-primary text-decoration-none">
+                                {{ 'View Documentation'|trans }} {{ ux_icon('tabler:external-link', {width: 14, height: 14}) }}
+                            </a>
                         </div>
                     </div>
                 </div>
-
-                {{ form_end(form) }}
             </div>
         </div>
     </div>

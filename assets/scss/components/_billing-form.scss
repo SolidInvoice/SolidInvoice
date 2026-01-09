@@ -1317,9 +1317,9 @@
 .recurring-variables-help {
     margin-block-start: var(--swp-space-3);
     padding: var(--swp-space-3);
-    border: 1px solid var(--tblr-info-border-subtle);
+    border: 1px solid var(--swp-info-border-subtle);
     border-radius: var(--swp-radius-md);
-    background: var(--tblr-info-bg-subtle);
+    background: var(--swp-info-bg-subtle);
 
     .variables-summary {
         display: flex;
@@ -1327,7 +1327,7 @@
         gap: var(--swp-space-2);
         font-size: var(--swp-text-sm);
         font-weight: var(--swp-font-medium);
-        color: var(--tblr-info);
+        color: var(--swp-info);
         cursor: pointer;
         list-style: none;
         user-select: none;
@@ -1341,14 +1341,14 @@
         }
 
         &:hover {
-            color: var(--tblr-info-emphasis);
+            color: var(--swp-info-emphasis);
         }
     }
 
     .variables-content {
         margin-block-start: var(--swp-space-3);
         padding-block-start: var(--swp-space-3);
-        border-block-start: 1px solid var(--tblr-info-border-subtle);
+        border-block-start: 1px solid var(--swp-info-border-subtle);
 
         .variables-description {
             font-size: var(--swp-text-sm);
@@ -1390,7 +1390,7 @@
         .variable-example {
             padding: var(--swp-space-3);
             background: var(--swp-surface);
-            border-inline-start: 3px solid var(--tblr-info);
+            border-inline-start: 3px solid var(--swp-info);
             border-radius: var(--swp-radius-sm);
             font-size: var(--swp-text-sm);
 

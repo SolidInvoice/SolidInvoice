@@ -1,27 +1,103 @@
+{##
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
 {% extends "@SolidInvoiceCore/Layout/default_no_nav.html.twig" %}
 
-{% block title %}
-    Select Company
-    <twig:Ui:Security:LogoutLink size="sm" color="primary" outline icon="" />
-{% endblock title %}
-
 {% block content %}
-
-    <div class="row">
-        <div class="col-md-6 offset-md-3">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title" id="install-title">
-                        {{ 'Choose Company'|trans }}
-                    </h3>
+    <div class="company-select-page">
+        <div class="container-xl">
+            {# Compact Header with Logout #}
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="d-flex align-items-center gap-3">
+                    <span class="avatar avatar-lg rounded-circle bg-primary-lt">
+                        {{ ux_icon('tabler:users', {width: 32, height: 32, class: 'text-primary'}) }}
+                    </span>
+                    <div>
+                        <h1 class="h2 mb-1">{{ 'Welcome Back %name%'|trans({'%name%': app.user.firstName}) }}</h1>
+                        <p class="text-secondary mb-0">{{ 'Select a company to continue'|trans }}</p>
+                    </div>
                 </div>
-                <div class="list-group list-group-flush list-group-hoverable">
-                    {% for company in companies %}
-                        <a href="{{ path('_switch_company', {'id': company.id}) }}" class="list-group-item list-group-item-action">
-                            {{ app_logo('50', company) }}
-                            {{ company }}
-                        </a>
-                    {% endfor %}
+                <div>
+                    <twig:Ui:Security:LogoutLink size="sm" color="ghost" outline icon="" />
+                </div>
+            </div>
+
+            {# Main Company Selection Card #}
+            <div class="row justify-content-center">
+                <div class="col-12 col-xl-10">
+                    <div class="card shadow-sm">
+                        <div class="card-body p-4 p-md-5">
+                            {# Company Grid #}
+                            <div class="row row-cols-1 row-cols-md-2 g-4">
+                                {% for company in companies %}
+                                    <div class="col">
+                                        <a href="{{ path('_switch_company', {'id': company.id}) }}" class="card card-company h-100 text-decoration-none">
+                                            <div class="card-body p-4">
+                                                <div class="d-flex align-items-center gap-3">
+                                                    <div class="company-avatar">
+                                                        {% set companyLogo = app_logo('64', company) %}
+                                                        {% if companyLogo is not empty and companyLogo != '' %}
+                                                            <div class="avatar avatar-2xl rounded-circle">
+                                                                {{ companyLogo }}
+                                                            </div>
+                                                        {% else %}
+                                                            {% set companyName = company|default('Company') %}
+                                                            {% set initials = companyName|slice(0, 2)|upper %}
+                                                            <div class="avatar avatar-2xl rounded-circle bg-primary text-white" data-initials="{{ initials }}">
+                                                                <span class="avatar-initials">{{ initials }}</span>
+                                                            </div>
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="flex-fill min-w-0">
+                                                        <h3 class="h4 mb-1 text-truncate">{{ company }}</h3>
+                                                        <p class="text-secondary mb-0 small">
+                                                            {{ 'Click to access'|trans }}
+                                                        </p>
+                                                    </div>
+                                                    <div class="company-arrow">
+                                                        {{ ux_icon('tabler:chevron-right', {width: 20, height: 20, class: 'text-muted'}) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                            {# Divider #}
+                            <hr class="my-4">
+
+                            {# Create New Company CTA #}
+                            <div class="card card-create-company">
+                                <div class="card-body p-4">
+                                    <div class="row align-items-center g-3">
+                                        <div class="col-auto">
+                                            <div class="avatar avatar-lg rounded-circle bg-success-lt">
+                                                {{ ux_icon('tabler:plus', {width: 32, height: 32, class: 'text-success'}) }}
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <h4 class="h5 mb-1">{{ 'Create New Company'|trans }}</h4>
+                                            <p class="text-secondary mb-0 small">
+                                                {{ 'Set up another workspace to manage a different business'|trans }}
+                                            </p>
+                                        </div>
+                                        <div class="col-12 col-md-auto">
+                                            <a href="{{ path('_create_company') }}" class="btn btn-success w-100 w-md-auto">
+                                                {{ ux_icon('tabler:building-plus') }} {{ 'Create Company'|trans }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

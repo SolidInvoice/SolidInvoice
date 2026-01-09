@@ -13,10 +13,17 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Action;
 
+use Money\Currencies\ISOCurrencies;
+use Money\Formatter\IntlMoneyFormatter;
+use Money\Money;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Form\Type\CompanyType;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
+use SolidInvoice\SaasBundle\Repository\TrialRepository;
 use SolidInvoice\UserBundle\Entity\User;
+use SolidWorx\Platform\SaasBundle\Entity\Plan;
+use SolidWorx\Platform\SaasBundle\Repository\PlanRepository;
+use SolidWorx\Toggler\ToggleInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -31,6 +38,9 @@ final class CreateCompany extends AbstractController
         private readonly Security $security,
         private readonly CompanyRepository $companyRepository,
         private readonly RouterInterface $router,
+        private readonly ToggleInterface $toggler,
+        private readonly TrialRepository $trialRepository,
+        private readonly ?PlanRepository $planRepository = null,
     ) {
     }
 
@@ -56,11 +66,27 @@ final class CreateCompany extends AbstractController
             return new RedirectResponse($this->router->generate('_dashboard'));
         }
 
+        $planPrice = null;
+        $userHasTrial = $this->trialRepository->userHasTrial($user);
+
+        if ($this->toggler->isActive('saas_enabled')) {
+            $plan = $this->planRepository->findOneBy([]);
+            if ($plan instanceof Plan) {
+                $formatter = new IntlMoneyFormatter(
+                    new \NumberFormatter('en_US', \NumberFormatter::CURRENCY),
+                    new ISOCurrencies()
+                );
+                $planPrice = $formatter->format(Money::USD($plan->getPrice()));
+            }
+        }
+
         return $this->render(
             '@SolidInvoiceCore/Company/create.html.twig',
             [
                 'form' => $form,
                 'allowCancel' => ! $user->getCompanies()->isEmpty(),
+                'planPrice' => $planPrice,
+                'userHasTrial' => $userHasTrial,
             ]
         );
     }
