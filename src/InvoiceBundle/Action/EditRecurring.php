@@ -27,7 +27,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Workflow\WorkflowInterface;
 use function assert;
 
@@ -56,10 +55,6 @@ final class EditRecurring
 
         if ($form->isSubmitted() && $form->isValid()) {
             $action = $request->request->get('save');
-
-            if (! $invoice->getId() instanceof Ulid) {
-                $this->recurringInvoiceStateMachine->apply($invoice, Graph::TRANSITION_NEW);
-            }
 
             if ('publish' === $action) {
                 $this->recurringInvoiceStateMachine->apply($invoice, Graph::TRANSITION_ACTIVATE);

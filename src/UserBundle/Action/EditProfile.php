@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Action;
 
+use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Form\Type\ProfileType;
 use SolidInvoice\UserBundle\Repository\UserRepositoryInterface;
 use Symfony\Bridge\Twig\Attribute\Template;
@@ -24,6 +25,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use function assert;
 
 final class EditProfile
@@ -43,6 +45,10 @@ final class EditProfile
     public function __invoke(Request $request): array | Response
     {
         $user = $this->tokenStorage->getToken()?->getUser();
+        if (! $user instanceof User) {
+            throw new AccessDeniedException('User must be authenticated to edit profile.');
+        }
+
         $form = $this->formFactory->create(ProfileType::class, $user);
         $form->handleRequest($request);
 
