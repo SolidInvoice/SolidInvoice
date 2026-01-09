@@ -27,7 +27,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Workflow\WorkflowInterface;
 use function assert;
 
@@ -49,17 +48,17 @@ final class Edit
     #[Template('@SolidInvoiceQuote/Default/edit.html.twig')]
     public function __invoke(Request $request, Quote $quote): array | Response
     {
-        $form = $this->formFactory->create(QuoteType::class, $quote, [
-            'currency' => $quote->getClient()->getCurrency(),
-        ]);
+        $client = $quote->getClient();
+        $formOptions = [];
+        if (null !== $client) {
+            $formOptions['currency'] = $client->getCurrency();
+        }
+
+        $form = $this->formFactory->create(QuoteType::class, $quote, $formOptions);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $action = $request->request->get('save');
-
-            if (! $quote->getId() instanceof Ulid) {
-                $this->quoteStateMachine->apply($quote, Graph::TRANSITION_NEW);
-            }
 
             if (Graph::STATUS_PENDING === $action) {
                 $this->quoteStateMachine->apply($quote, Graph::TRANSITION_SEND);

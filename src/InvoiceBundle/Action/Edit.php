@@ -29,7 +29,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Workflow\WorkflowInterface;
 use function assert;
 
@@ -60,17 +59,22 @@ final class Edit
             return new RedirectResponse($this->router->generate('_invoices_index'));
         }
 
+        $client = $invoice->getClient();
+        if (null === $client) {
+            $session = $request->getSession();
+            assert($session instanceof Session);
+            $session->getFlashBag()->add('danger', 'invoice.edit.no_client');
+
+            return new RedirectResponse($this->router->generate('_invoices_index'));
+        }
+
         $form = $this->formFactory->create(InvoiceType::class, $invoice, [
-            'currency' => $invoice->getClient()->getCurrency(),
+            'currency' => $client->getCurrency(),
         ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $action = $request->request->get('save');
-
-            if (! $invoice->getId() instanceof Ulid) {
-                $this->invoiceStateMachine->apply($invoice, Graph::TRANSITION_NEW);
-            }
 
             if (Graph::STATUS_PENDING === $action || 'publish' === $action) {
                 $this->invoiceStateMachine->apply($invoice, Graph::TRANSITION_ACCEPT);

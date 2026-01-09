@@ -27,6 +27,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use function assert;
 
 final class ChangePassword
@@ -51,8 +52,15 @@ final class ChangePassword
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var User $user */
-            $user = $this->tokenStorage->getToken()->getUser();
+            $token = $this->tokenStorage->getToken();
+            if (null === $token) {
+                throw new AccessDeniedException('User must be authenticated to change password.');
+            }
+
+            $user = $token->getUser();
+            if (! $user instanceof User) {
+                throw new AccessDeniedException('User must be authenticated to change password.');
+            }
 
             // Hash the NEW plain password from the DTO and set it on the User entity
             if (null !== $changePasswordDTO->plainPassword) {

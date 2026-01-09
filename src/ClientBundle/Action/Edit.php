@@ -49,7 +49,7 @@ final class Edit
 
             $session = $request->getSession();
             assert($session instanceof Session);
-            $session->getFlashBag()->add('success', 'client.create.success');
+            $session->getFlashBag()->add('success', 'client.edit.success');
 
             return new RedirectResponse($this->router->generate('_clients_view', ['id' => $client->getId()]));
         }
