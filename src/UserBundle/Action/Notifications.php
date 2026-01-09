@@ -13,30 +13,17 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Action;
 
-use SolidInvoice\UserBundle\Form\Type\NotificationType;
 use Symfony\Bridge\Twig\Attribute\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 
-final class Notifications extends AbstractController
+final class Notifications
 {
     /**
-     * @return array{form: FormView}
+     * @return array{}
      */
     #[Template('@SolidInvoiceUser/Notifications/index.html.twig')]
     public function __invoke(Request $request): array
     {
-        $form = $this->createForm(NotificationType::class);
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-
-            dd($data);
-        }
-
-        return ['form' => $form->createView()];
+        return [];
     }
 }
