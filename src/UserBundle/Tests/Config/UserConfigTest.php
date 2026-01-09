@@ -168,7 +168,7 @@ final class UserConfigTest extends TestCase
     public function testRemoveWithCurrentUser(): void
     {
         $this->security->shouldReceive('getUser')->andReturn($this->user);
-        $this->repository->shouldReceive('remove')
+        $this->repository->shouldReceive('removeSetting')
             ->once()
             ->with($this->user, UserSettingType::Timezone);
 
@@ -181,7 +181,7 @@ final class UserConfigTest extends TestCase
         $specificUser = new User();
         $specificUser->setEmail('other@example.com');
 
-        $this->repository->shouldReceive('remove')
+        $this->repository->shouldReceive('removeSetting')
             ->once()
             ->with($specificUser, UserSettingType::Timezone);
 
