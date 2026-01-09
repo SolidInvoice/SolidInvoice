@@ -13,25 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\NotificationBundle\Tests\Twig\Components;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
 use SolidInvoice\CoreBundle\Test\LiveComponentTest;
 use SolidInvoice\NotificationBundle\Entity\TransportSetting;
-use SolidInvoice\NotificationBundle\Repository\TransportSettingRepository;
 use SolidInvoice\NotificationBundle\Twig\Components\NotificationMarketplace;
 
 final class NotificationMarketplaceTest extends LiveComponentTest
 {
-    private TransportSettingRepository $repository;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        /** @var Registry $doctrine */
-        $doctrine = self::getContainer()->get('doctrine');
-        $this->repository = $doctrine->getRepository(TransportSetting::class);
-    }
-
     public function testRenderDefaultView(): void
     {
         $component = $this->createLiveComponent(
