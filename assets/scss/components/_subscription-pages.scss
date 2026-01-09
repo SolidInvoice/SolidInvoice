@@ -1,0 +1,450 @@
+/**
+ * SolidInvoice - Subscription Pages Styles
+ *
+ * Modern, conversion-focused subscription state pages.
+ * States: trial expired, cancelled, pending
+ * Uses design system tokens for consistent styling.
+ */
+
+// ============================================================================
+// BASE PAGE LAYOUT
+// ============================================================================
+
+.subscription-page {
+    min-height: calc(100vh - var(--swp-space-24));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--swp-space-12) var(--swp-space-4);
+    background: linear-gradient(to bottom, var(--swp-gray-50), var(--swp-surface));
+}
+
+.subscription-container {
+    max-width: 640px;
+    width: 100%;
+    text-align: center;
+    padding: var(--swp-space-10);
+    background: linear-gradient(to bottom, #ffffff, #fafbfc);
+    border: none;
+    border-radius: var(--swp-radius-xl);
+    box-shadow: var(--swp-shadow-xl);
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+// ============================================================================
+// HEADER SECTION
+// ============================================================================
+
+// Page header (above subscription container)
+.subscription-page-header {
+    background: var(--swp-surface);
+    border-bottom: 1px solid var(--swp-border);
+    box-shadow: var(--swp-shadow-sm);
+
+    .h4 {
+        font-weight: 600;
+        color: var(--swp-text-primary);
+    }
+}
+
+.subscription-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: var(--swp-radius-xl);
+    margin: 0 auto var(--swp-space-8);
+    transition: transform var(--swp-transition-base);
+
+    svg {
+        width: 32px;
+        height: 32px;
+    }
+}
+
+.subscription-icon-warning {
+    background: linear-gradient(135deg, var(--swp-warning-light) 0%, var(--swp-warning-lighter) 100%);
+    color: var(--swp-warning);
+}
+
+.subscription-icon-danger {
+    background: linear-gradient(135deg, var(--swp-danger-light) 0%, var(--swp-danger-lighter) 100%);
+    color: var(--swp-danger);
+}
+
+.subscription-icon-info {
+    background: linear-gradient(135deg, var(--swp-info-light) 0%, var(--swp-info-lighter) 100%);
+    color: var(--swp-info);
+}
+
+.subscription-icon-paused {
+    background: linear-gradient(135deg, var(--swp-gray-100) 0%, var(--swp-gray-50) 100%);
+    color: var(--swp-text-secondary);
+}
+
+.subscription-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--swp-text-primary);
+    margin: 0 0 var(--swp-space-3);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+}
+
+.subscription-subtitle {
+    font-size: 1.125rem;
+    color: var(--swp-text-secondary);
+    margin: 0 0 var(--swp-space-10);
+    line-height: 1.7;
+}
+
+// ============================================================================
+// BENEFITS SECTION
+// ============================================================================
+
+.subscription-benefits {
+    background: var(--swp-surface);
+    border: 1px solid var(--swp-border);
+    border-radius: var(--swp-radius-lg);
+    padding: var(--swp-space-6);
+    margin-bottom: var(--swp-space-8);
+    text-align: left;
+    box-shadow: var(--swp-shadow-xs);
+
+    h3 {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--swp-text-primary);
+        margin: 0 0 var(--swp-space-4);
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    li {
+        display: flex;
+        align-items: center;
+        gap: var(--swp-space-3);
+        padding: var(--swp-space-2-5) 0;
+        color: var(--swp-text-secondary);
+        font-size: 0.9375rem;
+
+        svg {
+            width: 20px;
+            height: 20px;
+            color: var(--swp-success);
+            flex-shrink: 0;
+        }
+    }
+}
+
+// Cancelled page: red icons for locked features
+.subscription-cancelled-page .subscription-benefits li svg {
+    color: var(--swp-danger);
+}
+
+// ============================================================================
+// ACTIONS SECTION
+// ============================================================================
+
+.subscription-actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--swp-space-3);
+    margin-bottom: var(--swp-space-4);
+
+    .btn-lg {
+        padding: var(--swp-space-3-5) var(--swp-space-6);
+        font-size: 1rem;
+        font-weight: 600;
+        box-shadow: var(--swp-shadow-primary);
+        transition: all var(--swp-transition-base);
+
+        svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        &:hover {
+            box-shadow: var(--swp-shadow-primary-lg);
+            transform: translateY(-3px);
+        }
+
+        &:focus-visible {
+            outline: none;
+            box-shadow: var(--swp-shadow-primary-lg), var(--swp-ring-primary);
+        }
+
+        &:active {
+            transform: translateY(0);
+        }
+    }
+
+    .btn-ghost {
+        svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        &:hover {
+            background: var(--swp-gray-50);
+        }
+
+        &:focus-visible {
+            outline: none;
+            box-shadow: var(--swp-ring-primary);
+        }
+    }
+}
+
+// Add subtle pulse animation to CTA on trial/cancelled/pending/paused pages
+.subscription-expired-page .subscription-actions .btn-primary,
+.subscription-cancelled-page .subscription-actions .btn-primary,
+.subscription-pending-page .subscription-actions .btn-primary,
+.subscription-paused-page .subscription-actions .btn-primary {
+    animation: ctaPulse 2s ease-in-out infinite;
+}
+
+@keyframes ctaPulse {
+    0%, 100% {
+        box-shadow: var(--swp-shadow-primary);
+    }
+    50% {
+        box-shadow: var(--swp-shadow-primary-lg);
+    }
+}
+
+// ============================================================================
+// STATE-SPECIFIC PAGES
+// ============================================================================
+
+// Trial Expired - Orange/Warning theme
+.subscription-expired-page {
+    .subscription-container {
+        border-top: 4px solid var(--swp-warning);
+    }
+}
+
+// Cancelled - Red/Danger theme
+.subscription-cancelled-page {
+    .subscription-container {
+        border-top: 4px solid var(--swp-danger);
+    }
+
+    .subscription-countdown {
+        background: var(--swp-danger-lighter);
+        border: 1px solid var(--swp-danger-light);
+        border-radius: var(--swp-radius-md);
+        padding: var(--swp-space-4);
+        margin-bottom: var(--swp-space-6);
+
+        .countdown-label {
+            font-size: 0.875rem;
+            color: var(--swp-text-muted);
+            margin-bottom: var(--swp-space-1);
+        }
+
+        .countdown-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--swp-danger);
+        }
+    }
+}
+
+// Pending - Blue/Info theme (activation required)
+.subscription-pending-page {
+    .subscription-container {
+        border-top: 4px solid var(--swp-info);
+    }
+}
+
+// Paused - Gray/Neutral theme
+.subscription-paused-page {
+    .subscription-container {
+        border-top: 4px solid var(--swp-text-secondary);
+    }
+
+    .subscription-benefits li svg {
+        color: var(--swp-text-secondary);
+    }
+}
+
+// ============================================================================
+// ALERT BANNER (Top of page injection)
+// ============================================================================
+
+.alert-banner {
+    border-radius: 0;
+    border-left: 0;
+    border-right: 0;
+    border-top: 0;
+    margin-bottom: 0;
+    padding: var(--swp-space-3) var(--swp-space-4);
+
+    .d-flex {
+        align-items: center;
+    }
+
+    .alert-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .btn-sm {
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    // Warning banner (trial)
+    &.alert-warning {
+        background: var(--swp-warning-lighter);
+        border-bottom-color: var(--swp-warning-light);
+        color: var(--swp-text-primary);
+
+        .btn-warning {
+            background: var(--swp-warning);
+            color: white;
+            border: none;
+
+            &:hover {
+                background: var(--swp-warning-hover);
+            }
+        }
+    }
+
+    // Danger banner (cancelled)
+    &.alert-danger {
+        background: var(--swp-danger-lighter);
+        border-bottom-color: var(--swp-danger-light);
+        color: var(--swp-text-primary);
+
+        .btn-danger {
+            background: var(--swp-danger);
+            color: white;
+            border: none;
+
+            &:hover {
+                background: var(--swp-danger-hover);
+            }
+        }
+    }
+}
+
+// ============================================================================
+// RESPONSIVE DESIGN
+// ============================================================================
+
+@media (max-width: 767.98px) {
+    .subscription-page {
+        padding: var(--swp-space-6) var(--swp-space-3);
+    }
+
+    .subscription-page-header {
+        .d-flex {
+            flex-direction: column;
+            align-items: flex-start !important;
+            gap: var(--swp-space-3);
+        }
+
+        .btn-group {
+            width: 100%;
+
+            .btn {
+                width: 100%;
+            }
+        }
+    }
+
+    .subscription-container {
+        padding: var(--swp-space-6);
+    }
+
+    .subscription-icon {
+        width: 48px;
+        height: 48px;
+
+        svg {
+            width: 28px;
+            height: 28px;
+        }
+    }
+
+    .subscription-title {
+        font-size: 1.375rem;
+    }
+
+    .subscription-subtitle {
+        font-size: 1rem;
+    }
+
+    .subscription-benefits {
+        padding: var(--swp-space-4);
+    }
+
+    .subscription-actions {
+        .btn {
+            width: 100%;
+        }
+    }
+
+    .alert-banner {
+        .d-flex {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: var(--swp-space-3);
+        }
+
+        .btn-sm {
+            width: 100%;
+        }
+    }
+}
+
+// Tablet adjustments
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .subscription-container {
+        max-width: 600px;
+        padding: var(--swp-space-8);
+    }
+}
+
+// ============================================================================
+// PRINT STYLES
+// ============================================================================
+
+@media print {
+    .subscription-page {
+        padding: 0;
+    }
+
+    .subscription-container {
+        box-shadow: none;
+        border: 1px solid var(--swp-border);
+    }
+
+    .subscription-actions {
+        display: none;
+    }
+
+    .alert-banner {
+        display: none;
+    }
+}

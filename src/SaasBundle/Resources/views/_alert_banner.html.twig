@@ -1,0 +1,32 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #
+ # Subscription alert banner component
+ # Displays subscription warnings/notifications at the top of pages
+ #
+ # @param string type - alert type (warning, danger, info)
+ # @param string icon - Tabler icon name (e.g., 'tabler:clock-hour-4')
+ # @param string title - bold title text
+ # @param string message - main message text
+ # @param string cta_label - button text
+ # @param string cta_url - button URL
+ #}
+
+<div class="alert alert-{{ type }} alert-banner mb-0" role="alert">
+    <div class="d-flex align-items-center gap-3">
+        <div class="alert-icon">
+            {{ ux_icon(icon, {width: 24, height: 24}) }}
+        </div>
+        <div class="flex-grow-1">
+            <strong>{{ title }}</strong> - {{ message }}
+        </div>
+        <a href="{{ cta_url }}" class="btn btn-{{ type }} btn-sm">
+            {{ cta_label }}
+        </a>
+    </div>
+</div>

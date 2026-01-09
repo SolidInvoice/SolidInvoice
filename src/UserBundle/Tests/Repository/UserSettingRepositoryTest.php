@@ -141,7 +141,7 @@ final class UserSettingRepositoryTest extends KernelTestCase
         self::assertNotNull($this->repository->getSetting($this->user, UserSettingType::Timezone));
 
         // Remove it
-        $this->repository->remove($this->user, UserSettingType::Timezone);
+        $this->repository->removeSetting($this->user, UserSettingType::Timezone);
 
         self::assertNull($this->repository->getSetting($this->user, UserSettingType::Timezone));
     }
@@ -149,7 +149,7 @@ final class UserSettingRepositoryTest extends KernelTestCase
     public function testRemoveDoesNothingWhenSettingDoesNotExist(): void
     {
         // This should not throw an exception
-        $this->repository->remove($this->user, UserSettingType::Timezone);
+        $this->repository->removeSetting($this->user, UserSettingType::Timezone);
 
         self::assertNull($this->repository->getSetting($this->user, UserSettingType::Timezone));
     }

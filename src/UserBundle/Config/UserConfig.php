@@ -71,7 +71,7 @@ readonly class UserConfig
             return;
         }
 
-        $this->repository->remove($user, $key);
+        $this->repository->removeSetting($user, $key);
     }
 
     /**

@@ -16,24 +16,24 @@
 {% block content %}
     {% set availableCompanies = app.user.companies|filter(v => v.id != company_id()) %}
 
-    <div class="subscription-page subscription-pending-page">
+    <div class="subscription-page subscription-expired-page">
         <div class="subscription-container">
             {# Hero Icon #}
-            <div class="subscription-icon subscription-icon-info">
-                {{ ux_icon('tabler:rocket', {width: 32, height: 32}) }}
+            <div class="subscription-icon subscription-icon-warning">
+                {{ ux_icon('tabler:clock-hour-4', {width: 32, height: 32}) }}
             </div>
 
             {# Headline #}
-            <h1 class="subscription-title">{{ 'Activate Your Subscription'|trans }}</h1>
+            <h1 class="subscription-title">{{ 'Your trial has ended'|trans }}</h1>
             <p class="subscription-subtitle">
-                {% trans with {'%price%': subscription.plan.price|formatCurrency('USD')} %}
-                    Start using SolidInvoice by activating your subscription at %price%/month. Get access to all features and start managing your invoices today.
+                {% trans with {'%days%': subscription.startDate.diff(subscription.endDate).days|abs, '%date%': subscription.endDate|date('F j, Y'), '%price%': subscription.plan.price|formatCurrency('USD')} %}
+                    Your %days%-day trial ended on %date%. Activate your subscription at %price%/month to continue using SolidInvoice.
                 {% endtrans %}
             </p>
 
             {# Benefits Reminder #}
             <div class="subscription-benefits">
-                <h3>{{ 'Get started with these features:'|trans }}</h3>
+                <h3>{{ 'Continue enjoying these features:'|trans }}</h3>
                 <ul>
                     <li>
                         {{ ux_icon('tabler:check', {width: 20, height: 20}) }}
@@ -68,28 +68,15 @@
                 </a>
             </div>
 
-            {# Edge Case: Just Completed Payment #}
-            <twig:Ui:Alert type="info" class="mt-4 text-start">
-                <div class="d-flex align-items-start gap-2">
-                    {{ ux_icon('tabler:info-circle', {width: 20, height: 20}) }}
-                    <div>
-                        <strong>{{ 'Just completed checkout?'|trans }}</strong><br>
-                        {% trans %}
-                            If you just completed the payment process, your subscription may take a moment to activate. You can refresh this page or wait a few seconds.
-                        {% endtrans %}
-                    </div>
-                </div>
-            </twig:Ui:Alert>
-
             {# Info Alert for Multiple Companies #}
             {% if availableCompanies|length > 0 %}
-                <twig:Ui:Alert type="info" class="mt-3 text-start">
+                <twig:Ui:Alert type="info" class="mt-4 text-start">
                     <div class="d-flex align-items-center gap-2">
                         {{ ux_icon('tabler:building', {width: 20, height: 20}) }}
                         <div>
-                            {{ 'Already activated?'|trans }}
+                            {{ 'You have access to other companies.'|trans }}
                             <a href="{{ path('_switch_company', {'id': availableCompanies|first.id}) }}" class="alert-link">
-                                {{ 'Switch to another company'|trans }}
+                                {{ 'Switch to %company%'|trans({'%company%': availableCompanies|first}) }}
                             </a>
                         </div>
                     </div>
