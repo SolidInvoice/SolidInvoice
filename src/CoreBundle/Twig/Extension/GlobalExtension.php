@@ -130,7 +130,7 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
     {
         $logo = $showDefault ? self::DEFAULT_LOGO : null;
 
-        if ($this->installed && !$showOnlyAppIcon) {
+        if ($this->installed && ! $showOnlyAppIcon) {
             $logo = $this->systemConfig->get('system/company/logo', $company);
 
             if (null === $logo) {

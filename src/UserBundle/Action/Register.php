@@ -76,6 +76,7 @@ final class Register extends AbstractController
                 $company = (new Company())->setName($data->company);
                 $company->currency = 'USD'; // @TODO: Make this configurable, or get the currency from registration
                 $user->addCompany($company);
+                $user->setPassword($data->plainPassword);
             }
 
             if ($invitation instanceof UserInvitation) {
