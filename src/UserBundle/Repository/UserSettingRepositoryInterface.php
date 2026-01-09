@@ -23,7 +23,7 @@ interface UserSettingRepositoryInterface
 
     public function saveSetting(User $user, UserSettingType $key, ?string $value): void;
 
-    public function remove(User $user, UserSettingType $key): void;
+    public function removeSetting(User $user, UserSettingType $key): void;
 
     /**
      * @return array<string, string|null>

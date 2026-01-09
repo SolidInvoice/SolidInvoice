@@ -53,7 +53,7 @@ final class UserSettingRepository extends EntityRepository implements UserSettin
         $this->getEntityManager()->flush();
     }
 
-    public function remove(User $user, UserSettingType $key): void
+    public function removeSetting(User $user, UserSettingType $key): void
     {
         $setting = $this->getSetting($user, $key);
 

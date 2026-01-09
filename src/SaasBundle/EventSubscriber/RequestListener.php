@@ -16,7 +16,7 @@ use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
-use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionManager;
+use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionProviderInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,15 +27,14 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Uid\Ulid;
 use Twig\Environment;
 use function in_array;
-use function str_replace;
 
 final readonly class RequestListener implements EventSubscriberInterface
 {
     private const array SKIPPED_ROUTES = [
         '_switch_company',
-        '_create_company',
         '_view_quote_external',
         '_view_invoice_external',
+        'billing_index',
         'saas_subscription_checkout',
         'saas_payment_success',
 
@@ -52,7 +51,7 @@ final readonly class RequestListener implements EventSubscriberInterface
     public function __construct(
         private CompanySelector $companySelector,
         private CompanyRepository $companyRepository,
-        private SubscriptionManager $subscriptionManager,
+        private SubscriptionProviderInterface $subscriptionManager,
         private Environment $twig,
         private Security $security,
         private UrlGeneratorInterface $urlGenerator,
@@ -71,6 +70,7 @@ final readonly class RequestListener implements EventSubscriberInterface
     public function onRequest(RequestEvent $event): void
     {
         $subscription = $this->getSubscription($event->getRequest());
+
         if (! $subscription instanceof Subscription) {
             return;
         }
@@ -80,6 +80,15 @@ final readonly class RequestListener implements EventSubscriberInterface
                 $event->setResponse(
                     new Response(
                         $this->twig->render('@SolidInvoiceSaas/subscription/pending.html.twig', [
+                            'subscription' => $subscription,
+                        ]),
+                    )
+                );
+                break;
+            case SubscriptionStatus::PAUSED:
+                $event->setResponse(
+                    new Response(
+                        $this->twig->render('@SolidInvoiceSaas/subscription/paused.html.twig', [
                             'subscription' => $subscription,
                         ]),
                     )
@@ -103,7 +112,7 @@ final readonly class RequestListener implements EventSubscriberInterface
                 if ($subscription->getEndDate() <= $this->clock->now()) {
                     $event->setResponse(
                         new Response(
-                            $this->twig->render('@SolidInvoiceSaas/subscription/pending.html.twig', [
+                            $this->twig->render('@SolidInvoiceSaas/subscription/trial_expired.html.twig', [
                                 'subscription' => $subscription,
                             ]),
                         )
@@ -133,17 +142,43 @@ final readonly class RequestListener implements EventSubscriberInterface
 
         $content = $response->getContent();
 
+        if ($content === false || $content === '') {
+            return;
+        }
+
         $checkoutUrl = $this->urlGenerator->generate('saas_subscription_checkout');
 
-        $message = match ($subscription->getStatus()) {
-            SubscriptionStatus::CANCELLED => '<strong>Subscription Canceled</strong> - Your subscription has been canceled. Your access will be revoked on ' . $subscription->getEndDate()->format('Y-m-d H:i:s') . '.<br /><a href="' . $checkoutUrl . '" class="btn btn-default btn-sm">Renew now</a> to avoid losing access.',
-            SubscriptionStatus::TRIAL => '<strong>Trial Ending Soon</strong> - Your trial is active until ' . $subscription->getEndDate()->format('Y-m-d H:i:s') . '.<br />Please <a href="' . $checkoutUrl . '" class="btn btn-default btn-sm">activate</a> your subscription now.',
+        [$type, $icon, $title, $message, $ctaLabel] = match ($subscription->getStatus()) {
+            SubscriptionStatus::CANCELLED => [
+                'danger',
+                'tabler:alert-circle',
+                'Subscription Cancelled',
+                'Your subscription has been cancelled. Your access will be revoked on ' . $subscription->getEndDate()->format('F j, Y') . '.',
+                'Renew Subscription',
+            ],
+            SubscriptionStatus::TRIAL => [
+                'warning',
+                'tabler:clock-hour-4',
+                'Trial Ending Soon',
+                'Your trial is active until ' . $subscription->getEndDate()->format('F j, Y') . '. Please activate your subscription to continue.',
+                'Activate Subscription',
+            ],
         };
 
-        $content = str_replace(
-            '<div class="wrapper">',
-            '<div class="wrapper"><div class="main-header bg-yellow p-2 text-center text-white">' . $message . '</div>',
+        $banner = $this->twig->render('@SolidInvoiceSaas/_alert_banner.html.twig', [
+            'type' => $type,
+            'icon' => $icon,
+            'title' => $title,
+            'message' => $message,
+            'cta_label' => $ctaLabel,
+            'cta_url' => $checkoutUrl,
+        ]);
+
+        $content = preg_replace(
+            '/<div class="page-wrapper">/',
+            '<div class="page-wrapper">' . $banner,
             $content,
+            1
         );
 
         $response->setContent($content);
