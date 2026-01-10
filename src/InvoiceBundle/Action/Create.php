@@ -81,7 +81,8 @@ final class Create extends AbstractController
                 $this->invoiceStateMachine->apply($invoice, Graph::TRANSITION_NEW);
             }
 
-            if (Graph::STATUS_PENDING === $action || 'publish' === $action) {
+            // Publish the invoice if the action is 'send' or 'publish'
+            if ('send' === $action || 'publish' === $action) {
                 $this->invoiceStateMachine->apply($invoice, Graph::TRANSITION_ACCEPT);
             }
 
@@ -89,7 +90,8 @@ final class Create extends AbstractController
             $entityManager->persist($invoice);
             $entityManager->flush();
 
-            if (Graph::STATUS_PENDING === $action) {
+            // Send the invoice only if the action is 'send'
+            if ('send' === $action) {
                 $this->mailer->send(new InvoiceEmail($invoice));
             }
 

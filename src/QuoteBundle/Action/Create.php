@@ -80,10 +80,12 @@ final class Create extends AbstractController
                 $this->quoteStateMachine->apply($quote, Graph::TRANSITION_NEW);
             }
 
-            if (Graph::STATUS_PENDING === $action) {
+            // Send the quote (publish and notify client)
+            if ('send' === $action) {
                 $this->quoteStateMachine->apply($quote, Graph::TRANSITION_SEND);
             }
 
+            // Publish the quote (without sending)
             if ('publish' === $action) {
                 $this->quoteStateMachine->apply($quote, Graph::TRANSITION_PUBLISH);
             }

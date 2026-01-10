@@ -117,6 +117,10 @@
                     {{ ux_icon('tabler:credit-card', {width: 18, height: 18}) }}
                     {{ "invoice.view.toolbar.pay_now"|trans }}
                 </a>
+                <a href="{{ path('_send_invoice', {'id' : invoice.id}) }}" class="btn btn-primary btn-hero {{ invoice.status == 'overdue' ? 'btn-hero-urgent' : '' }}">
+                    {{ ux_icon('tabler:send', {width: 18, height: 18}) }}
+                    {{ "invoice.view.toolbar.send"|trans }}
+                </a>
             {% elseif workflow_can(invoice, 'accept') %}
                 <div class="btn-group">
                     <a href="{{ path('_action_invoice', {'action' : 'accept', 'id' : invoice.id}) }}" class="btn btn-primary btn-hero">
@@ -135,11 +139,6 @@
                         </li>
                     </ul>
                 </div>
-            {% elseif invoice.status in ['pending', 'overdue'] %}
-                <a href="{{ path('_send_invoice', {'id' : invoice.id}) }}" class="btn btn-primary btn-hero">
-                    {{ ux_icon('tabler:send', {width: 18, height: 18}) }}
-                    {{ "invoice.view.toolbar.send"|trans }}
-                </a>
             {% endif %}
         </div>
     </div>

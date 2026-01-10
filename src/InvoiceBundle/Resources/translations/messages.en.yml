@@ -74,6 +74,7 @@ invoice:
         cancel: 'Cancel editing invoice ID'
     save:
         send: 'Save and Send'
+        publish: 'Publish'
         enable: 'Save and Enable'
         draft: 'Save as Draft'
         cancel: Cancel
