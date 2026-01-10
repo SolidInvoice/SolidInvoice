@@ -1,3 +1,5 @@
+@import "variables";
+
 .wrapper {
     width: 100%; }
 
@@ -894,14 +896,14 @@ small {
     color: #626976; }
 
 a {
-    color: #2e963a;
+    color: #206bc4;
     text-decoration: none; }
 a:hover {
-    color: #1f6c29; }
+    color: #1a5a9e; }
 a:active {
-    color: #1f6c29; }
+    color: #1a5a9e; }
 a:visited {
-    color: #2e963a; }
+    color: #206bc4; }
 
 h1 a,
 h1 a:visited,
@@ -915,7 +917,7 @@ h5 a,
 h5 a:visited,
 h6 a,
 h6 a:visited {
-    color: #2e963a; }
+    color: #206bc4; }
 
 pre {
     background: #f4f6fa;
@@ -927,7 +929,7 @@ pre code span.callout {
     color: #626976;
     font-weight: bold; }
 pre code span.callout-strong {
-    color: #f59e0b;
+    color: #f76707;
     font-weight: bold; }
 
 table.hr {
@@ -969,8 +971,8 @@ table.button {
 table.button table td {
     text-align: left;
     color: #ffffff;
-    background: #2e963a;
-    border: 2px solid #2e963a; }
+    background: #206bc4;
+    border: 2px solid #206bc4; }
 table.button table td a {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     font-size: 16px;
@@ -979,7 +981,7 @@ table.button table td a {
     text-decoration: none;
     display: inline-block;
     padding: 8px 16px 8px 16px;
-    border: 0 solid #2e963a;
+    border: 0 solid #206bc4;
     border-radius: 6px; }
 table.button.radius table td {
     border-radius: 3px;
@@ -1037,13 +1039,13 @@ table.button.expanded center {
 table.button:hover table td,
 table.button:visited table td,
 table.button:active table td {
-    background: #1f6c29;
+    background: #1a5a9e;
     color: #ffffff; }
 
 table.button:hover table a,
 table.button:visited table a,
 table.button:active table a {
-    border: 0 solid #1f6c29; }
+    border: 0 solid #1a5a9e; }
 
 table.button.secondary table td {
     background: #626976;
@@ -1071,11 +1073,11 @@ table.button.secondary table td a:visited {
     color: #ffffff; }
 
 table.button.success table td {
-    background: #10b981;
-    border: 0px solid #10b981; }
+    background: #2fb344;
+    border: 0px solid #2fb344; }
 
 table.button.success table a {
-    border: 0 solid #10b981; }
+    border: 0 solid #2fb344; }
 
 table.button.success:hover table td {
     background: #259f38; }
@@ -1084,11 +1086,11 @@ table.button.success:hover table a {
     border: 0 solid #259f38; }
 
 table.button.alert table td {
-    background: #ef4444;
-    border: 0px solid #ef4444; }
+    background: #d63939;
+    border: 0px solid #d63939; }
 
 table.button.alert table a {
-    border: 0 solid #ef4444; }
+    border: 0 solid #d63939; }
 
 table.button.alert:hover table td {
     background: #b52e2e; }
@@ -1097,11 +1099,11 @@ table.button.alert:hover table a {
     border: 0 solid #b52e2e; }
 
 table.button.warning table td {
-    background: #f59e0b;
-    border: 0px solid #f59e0b; }
+    background: #f76707;
+    border: 0px solid #f76707; }
 
 table.button.warning table a {
-    border: 0px solid #f59e0b; }
+    border: 0px solid #f76707; }
 
 table.button.warning:hover table td {
     background: #d35600; }
@@ -1120,7 +1122,7 @@ th.callout-inner {
     background: #ffffff; }
 th.callout-inner.primary {
     background: #e8f1fc;
-    border: 1px solid #2e963a;
+    border: 1px solid #206bc4;
     color: #1e293b; }
 th.callout-inner.secondary {
     background: #f4f6fa;
@@ -1128,15 +1130,15 @@ th.callout-inner.secondary {
     color: #1e293b; }
 th.callout-inner.success {
     background: #e7f7ea;
-    border: 1px solid #10b981;
+    border: 1px solid #2fb344;
     color: #1e293b; }
 th.callout-inner.warning {
     background: #fef0e6;
-    border: 1px solid #f59e0b;
+    border: 1px solid #f76707;
     color: #1e293b; }
 th.callout-inner.alert {
     background: #fbeaea;
-    border: 1px solid #ef4444;
+    border: 1px solid #d63939;
     color: #1e293b; }
 
 .thumbnail {
@@ -1159,7 +1161,7 @@ table.menu th.menu-item {
     padding-right: 10px; }
 table.menu td.menu-item a,
 table.menu th.menu-item a {
-    color: #2e963a; }
+    color: #2199e8; }
 
 table.menu.vertical td.menu-item,
 table.menu.vertical th.menu-item {

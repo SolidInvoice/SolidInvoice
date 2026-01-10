@@ -1,0 +1,11 @@
+notification:
+    preferences: 'Notification Preferences'
+    settings:
+        info: 'You can update your notification settings'
+        link: here
+
+invoice:
+    view:
+        online: 'View this online at %url%'
+
+powered_by: 'Powered by'

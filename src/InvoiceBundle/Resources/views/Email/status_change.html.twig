@@ -8,6 +8,7 @@
  #}
 
 {% extends "@SolidInvoiceCore/Layout/Email/notification.html.twig" %}
+{% import "@SolidInvoiceCore/Layout/Email/components.html.twig" as email %}
 
 {%- block title -%}
     {{ 'invoice.status_change.heading'|trans({}, 'email') }}
@@ -16,28 +17,44 @@
 {%- block content -%}
     {% apply inky_to_html %}
         <row>
-            <columns><strong>{{ 'invoice.status_change.id'|trans({}, 'email') }}</strong></columns>
-            <columns><a href="{{ url('_invoices_view', {'id' : invoice.id}) }}">{{ invoice.invoiceId ?? invoice.id }}</a></columns>
+            <columns>
+                <p style="color: #1e293b; font-size: 16px; line-height: 1.5; margin: 0 0 24px 0; Margin: 0 0 24px 0;">
+                    {{ 'invoice.status_change.message'|trans({}, 'email') }}
+                </p>
+            </columns>
         </row>
-        <row>
-            <columns><strong>{{ 'invoice.status_change.new_status'|trans({}, 'email') }}</strong></columns>
-            <columns>{{ invoice_label(invoice.status) }}</columns>
-        </row>
-
-        <center data-parsed="">
-            <table class="button success float-center">
-                <tr>
-                    <td>
-                        <table>
-                            <tr>
-                                <td>
-                                    <a href="{{ url('_invoices_view', {'id' : invoice.id}) }}">{{ 'invoice.status_change.view_invoice'|trans({}, 'email') }}</a>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-            </table>
-        </center>
     {% endapply %}
+
+    {{ email.spacer('sm') }}
+
+    {# Invoice details #}
+    {{ email.info_row('invoice.status_change.id'|trans({}, 'email'), invoice.invoiceId ?? invoice.id) }}
+
+    {% if invoice.client %}
+        {{ email.spacer('xs') }}
+        {{ email.info_row('Client', invoice.client.name) }}
+    {% endif %}
+
+    {{ email.spacer('sm') }}
+
+    {# Status display #}
+    {% apply inky_to_html %}
+        <row>
+            <columns>
+                <p style="font-weight: 600; color: #1e293b; margin: 0 0 8px 0; Margin: 0 0 8px 0;">
+                    {{ 'invoice.status_change.new_status'|trans({}, 'email') }}
+                </p>
+                <div style="margin: 8px 0; Margin: 8px 0;">
+                    {{ invoice_label(invoice.status) }}
+                </div>
+            </columns>
+        </row>
+    {% endapply %}
+
+    {{ email.divider('md') }}
+
+    {# View button #}
+    {{ email.button('invoice.status_change.view_invoice'|trans({}, 'email'), url('_invoices_view', {'id': invoice.id}), 'primary', 'large') }}
+
+    {{ email.spacer('md') }}
 {%- endblock -%}

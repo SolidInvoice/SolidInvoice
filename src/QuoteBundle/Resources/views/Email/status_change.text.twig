@@ -8,7 +8,15 @@
  #}
 
 {{ 'quote.status_change.heading'|trans({}, 'email') }}
--------------------
+{{ '='|repeat(60) }}
+
+{{ 'quote.status_change.message'|trans({}, 'email') }}
 
 {{ 'quote.status_change.id'|trans({}, 'email') }}: {{ quote.quoteId }}
+{% if quote.client -%}
+{{ 'Client' }}: {{ quote.client.name }}
+{% endif -%}
 {{ 'quote.status_change.new_status'|trans({}, 'email') }}: {{ quote.status }}
+
+{{ '-'|repeat(60) }}
+{{ 'quote.status_change.view_quote'|trans({}, 'email') }}: {{ url('_quotes_view', {'id': quote.id}) }}

@@ -1,9 +1,19 @@
 quote:
+    title: 'Quote %id%'
+    view: 'View Quote'
+    created: 'Created'
+    expires: 'Expires'
+    subtotal: 'Subtotal'
+    tax: 'Tax'
+    discount: 'Discount'
+    total: 'Total'
+    terms: 'Terms & Conditions'
     status:
         subject: 'Quote Status Change'
     status_change:
         heading: 'A Quote status has changed'
-        id: 'Quote Id'
+        message: 'A quote status has been updated.'
+        id: 'Quote'
         old_status: 'Original Status'
         new_status: 'New Status'
         status: 'Status'

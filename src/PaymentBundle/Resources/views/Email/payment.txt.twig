@@ -8,19 +8,25 @@
  #}
 
 {{ 'payment.description'|trans({}, 'email') }}
+{{ '='|repeat(60) }}
 
-{% if payment.invoice is not empty %}
-    {{ 'payment.details.invoice'|trans({}, 'email') }}: {{ payment.invoice.invoiceId }}
-{% endif %}
-
-{% if payment.client is not empty %}
-    {{ 'payment.details.client'|trans({}, 'email') }}: {{ payment.client }}
-{% endif %}
-
-{{ 'payment.details.method'|trans({}, 'email') }}: {{ payment.method }}
-
-{{ 'payment.details.currency'|trans({}, 'email') }}: {{ payment.currencyCode }}
+{{ 'payment.notification.message'|trans({}, 'email') }}
 
 {{ 'payment.details.amount'|trans({}, 'email') }}: {{ payment.totalAmount|formatCurrency(payment.currencyCode) }}
 
+{% if payment.invoice is not empty %}
+{{ 'payment.details.invoice'|trans({}, 'email') }}: {{ payment.invoice.invoiceId }}
+{% endif %}
+
+{% if payment.client is not empty %}
+{{ 'payment.details.client'|trans({}, 'email') }}: {{ payment.client.name }}
+{% endif %}
+
+{{ 'payment.details.method'|trans({}, 'email') }}: {{ payment.method.name ?? payment.method }}
+{{ 'payment.details.date'|trans({}, 'email') }}: {{ payment.created|date }}
 {{ 'payment.details.status'|trans({}, 'email') }}: {{ payment.status }}
+
+{% if payment.invoice is not empty %}
+{{ '-'|repeat(60) }}
+{{ 'payment.view_invoice'|trans({}, 'email') }}: {{ url('_invoices_view', {'id': payment.invoice.id}) }}
+{% endif %}
