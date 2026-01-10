@@ -33,6 +33,7 @@ quote:
     title: 'Quote #%id%'
     save:
         send: 'Save and Send'
+        publish: 'Publish'
         draft: 'Save as Draft'
         update: Update
         cancel: Cancel

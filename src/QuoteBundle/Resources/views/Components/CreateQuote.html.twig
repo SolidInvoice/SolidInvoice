@@ -243,6 +243,23 @@
                             {{ ux_icon('tabler:device-floppy', {width: 18, height: 18}) }}
                             {{ 'quote.save.update'|trans }}
                         </button>
+                        <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span class="visually-hidden">{{ 'Toggle Dropdown'|trans }}</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <button type="submit" class="dropdown-item" name="save" value="publish">
+                                    {{ ux_icon('tabler:check', {width: 16, height: 16}) }}
+                                    {{ 'quote.save.publish'|trans }}
+                                </button>
+                            </li>
+                            <li>
+                                <button type="submit" class="dropdown-item" name="save" value="send">
+                                    {{ ux_icon('tabler:send', {width: 16, height: 16}) }}
+                                    {{ 'quote.save.send'|trans }}
+                                </button>
+                            </li>
+                        </ul>
                     {% else %}
                         <button type="submit" class="btn btn-primary btn-save-primary" name="save" value="draft">
                             {{ ux_icon('tabler:device-floppy', {width: 18, height: 18}) }}
@@ -253,7 +270,13 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li>
-                                <button type="submit" class="dropdown-item" name="save" value="pending">
+                                <button type="submit" class="dropdown-item" name="save" value="publish">
+                                    {{ ux_icon('tabler:check', {width: 16, height: 16}) }}
+                                    {{ 'quote.save.publish'|trans }}
+                                </button>
+                            </li>
+                            <li>
+                                <button type="submit" class="dropdown-item" name="save" value="send">
                                     {{ ux_icon('tabler:send', {width: 16, height: 16}) }}
                                     {{ 'quote.save.send'|trans }}
                                 </button>

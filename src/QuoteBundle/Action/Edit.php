@@ -60,10 +60,12 @@ final class Edit
         if ($form->isSubmitted() && $form->isValid()) {
             $action = $request->request->get('save');
 
-            if (Graph::STATUS_PENDING === $action) {
+            // Send the quote (publish and notify client)
+            if ('send' === $action) {
                 $this->quoteStateMachine->apply($quote, Graph::TRANSITION_SEND);
             }
 
+            // Publish the quote (without sending)
             if ('publish' === $action) {
                 $this->quoteStateMachine->apply($quote, Graph::TRANSITION_PUBLISH);
             }
