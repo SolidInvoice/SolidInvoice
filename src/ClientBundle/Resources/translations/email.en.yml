@@ -12,3 +12,4 @@ client:
             name: 'Client Name'
             website: Website
             vat_number: 'VAT Number'
+            email: Email
