@@ -132,3 +132,13 @@
         }
     }
 }
+
+// Background image for centered card layout (invited registration)
+// Applied when using the security.html.twig layout (not split-screen)
+body {
+    .page.page-center {
+        background: transparent url('../img/login.webp');
+        background-size: cover;
+        background-position: center;
+    }
+}

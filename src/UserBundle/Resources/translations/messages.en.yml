@@ -67,6 +67,16 @@ security:
         submit: Register
         success: 'Your account has been created. Please verify your email address before logging in.'
         terms_agreement: 'I agree to the Terms & Conditions and Privacy Policy'
+        invited:
+            title: 'Accept Invitation'
+            heading: 'Set up your account'
+            subheading: 'Complete your registration to join your team'
+            company_info: 'Join %company_name%'
+            invited_by: 'Invited by %inviter_email%'
+            first_name: 'First Name'
+            last_name: 'Last Name'
+            cta: 'Accept & Create Account'
+            success: 'Welcome! Your account has been created successfully.'
         features:
             title: 'Start invoicing in minutes'
             subtitle: 'Join thousands of freelancers and small businesses managing their finances with SolidInvoice'
@@ -94,6 +104,8 @@ security:
             email: 'your@email.com'
             company: 'Your Company Name'
             password: 'Create a strong password'
+            first_name: 'John'
+            last_name: 'Doe'
         strength:
             label: 'At least 8 characters'
             weak: 'Weak password'

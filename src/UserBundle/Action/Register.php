@@ -14,9 +14,11 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Action;
 
 use SolidInvoice\CoreBundle\Entity\Company;
+use SolidInvoice\UserBundle\DTO\InvitedRegistration;
 use SolidInvoice\UserBundle\DTO\Registration;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Entity\UserInvitation;
+use SolidInvoice\UserBundle\Form\Type\InvitedRegisterType;
 use SolidInvoice\UserBundle\Form\Type\RegisterType;
 use SolidInvoice\UserBundle\Repository\UserInvitationRepository;
 use SolidInvoice\UserBundle\Repository\UserRepository;
@@ -44,7 +46,11 @@ final class Register extends AbstractController
         $invitation = null;
 
         if ($request->query->has('invitation')) {
-            $invitation = $this->invitationRepository->find(Ulid::fromString($request->query->get('invitation')));
+            try {
+                $invitation = $this->invitationRepository->find(Ulid::fromString($request->query->get('invitation')));
+            } catch (\InvalidArgumentException) {
+                throw $this->createNotFoundException('Invitation is not valid');
+            }
 
             if (! $invitation instanceof UserInvitation) {
                 throw $this->createNotFoundException('Invitation is not valid');
@@ -57,45 +63,52 @@ final class Register extends AbstractController
 
         $form =
             $invitation instanceof UserInvitation ?
-                $this->createForm(RegisterType::class, null, ['email' => $invitation->getEmail()]) :
+                $this->createForm(InvitedRegisterType::class, null, ['email' => $invitation->getEmail()]) :
                 $this->createForm(RegisterType::class);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            assert($data instanceof Registration);
-
             $user = new User();
 
             if ($invitation instanceof UserInvitation) {
+                $data = $form->getData();
+                assert($data instanceof InvitedRegistration);
+
                 $user->setEmail($invitation->getEmail());
+                $user->setFirstName($data->firstName);
+                $user->setLastName($data->lastName);
                 $user->addCompany($invitation->getCompany());
             } else {
+                $data = $form->getData();
+                assert($data instanceof Registration);
+
                 $user->setEmail($data->email);
                 $company = (new Company())->setName($data->company);
                 $company->currency = 'USD'; // @TODO: Make this configurable, or get the currency from registration
                 $user->addCompany($company);
-                $user->setPassword($data->plainPassword);
             }
 
-            if ($invitation instanceof UserInvitation) {
-                $user->setEmail($invitation->getEmail());
-                $user->addCompany($invitation->getCompany());
-            }
-
-            $user->setPassword($this->userPasswordHasher->hashPassword($user, $user->getPassword()));
+            $user->setPassword($this->userPasswordHasher->hashPassword($user, $data->plainPassword));
             $user->setEnabled(true);
             $user->eraseCredentials();
             $this->userRepository->save($user);
 
             if ($invitation instanceof UserInvitation) {
                 $this->invitationRepository->delete($invitation);
+                $this->addFlash('success', 'security.register.invited.success');
             }
 
             return $this->security->login($user, 'security.authenticator.form_login.main', 'main');
         }
 
-        return $this->render('@SolidInvoiceUser/Security/register.html.twig', ['form' => $form]);
+        $template = $invitation instanceof UserInvitation
+            ? '@SolidInvoiceUser/Security/register-invited.html.twig'
+            : '@SolidInvoiceUser/Security/register.html.twig';
+
+        return $this->render($template, [
+            'form' => $form,
+            'invitation' => $invitation,
+        ]);
     }
 }

@@ -1,0 +1,138 @@
+{#
+# This file is part of SolidInvoice package.
+#
+# (c) Pierre du Plessis <open-source@solidworx.co>
+#
+# This source file is subject to the MIT license that is bundled
+# with this source code in the file LICENSE.
+#}
+
+{% extends '@Ui/Layout/security.html.twig' %}
+
+{% block page_title %}{{ app_name }} - {{ "security.register.invited.title"|trans }}{% endblock page_title %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    {{ encore_entry_link_tags('register') }}
+{% endblock stylesheets %}
+
+{% block content %}
+    <div class="text-center mb-4">
+        <span class="navbar-brand navbar-brand-autodark text-white h1">
+            {{ app_logo(showDefault: true, showOnlyAppIcon: true) }} {{ app_name }}
+        </span>
+    </div>
+
+    {# Company Information Section #}
+    <div class="card card-md mb-3">
+        <div class="card-body text-center">
+            {{ app_logo(company: invitation.company, showDefault: false, width: 64) }}
+            <h2 class="mb-2">
+                {{ "security.register.invited.company_info"|trans({'%company_name%': invitation.company.name}) }}
+            </h2>
+            <p class="text-secondary mb-0">
+                {{ ux_icon('tabler:mail', {width: 16, height: 16}) }}
+                {{ "security.register.invited.invited_by"|trans({'%inviter_email%': invitation.invitedBy.email}) }}
+            </p>
+        </div>
+    </div>
+
+    {# Registration Form #}
+    <div class="card card-md">
+        <div class="card-body">
+            <h2 class="h2 text-center mb-4">
+                {{ "security.register.invited.heading"|trans }}
+            </h2>
+
+            {{ form_start(form) }}
+                {# Email Field (readonly) #}
+                <div class="mb-3">
+                    {{ form_row(form.email) }}
+                </div>
+
+                {# First Name Field #}
+                <div class="mb-3">
+                    {{ form_label(form.firstName) }}
+                    <div class="input-group input-group-flat">
+                        <div class="input-group-text">
+                            {{ ux_icon('tabler:user', {width: 24, height: 24}) }}
+                        </div>
+                        {{ form_widget(form.firstName, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                    {{ form_errors(form.firstName) }}
+                </div>
+
+                {# Last Name Field #}
+                <div class="mb-3">
+                    {{ form_label(form.lastName) }}
+                    <div class="input-group input-group-flat">
+                        <div class="input-group-text">
+                            {{ ux_icon('tabler:user', {width: 24, height: 24}) }}
+                        </div>
+                        {{ form_widget(form.lastName, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                    {{ form_errors(form.lastName) }}
+                </div>
+
+                {# Password Field with visibility toggle and strength meter #}
+                <div class="mb-3">
+                    {{ form_label(form.plainPassword, 'Password'|trans) }}
+                    <div class="input-group input-group-flat" {{ stimulus_controller('password-visibility', controllerClasses = { 'hidden': 'd-none' }) }}>
+                        <div class="input-group-text">
+                            {{ ux_icon('tabler:password', {width: 24, height: 24}) }}
+                        </div>
+
+                        {{ form_widget(form.plainPassword, {
+                            'attr': {
+                                'class': 'form-control',
+                            }|merge(stimulus_target('password-visibility', 'input'))|merge(
+                                stimulus_target('password-strength', 'input'))
+                        }) }}
+
+                        <span class="input-group-text">
+                            <a href="#" class="link-secondary" data-bs-toggle="tooltip" aria-label="Show password" data-bs-original-title="Show password" {{ stimulus_action('password-visibility', 'toggle') }}>
+                                <span {{ stimulus_target('password-visibility', 'icon') }}>
+                                    {{ ux_icon('tabler:eye', {width: 24, height: 24}) }}
+                                </span>
+                                <span {{ stimulus_target('password-visibility', 'icon') }} class="d-none">
+                                    {{ ux_icon('tabler:eye-closed', {width: 24, height: 24}) }}
+                                </span>
+                            </a>
+                        </span>
+                    </div>
+
+                    {# Password Strength Meter #}
+                    <div class="password-strength-meter mt-2" {{ stimulus_controller('password-strength') }}>
+                        <div class="progress" style="height: 4px;">
+                            <div class="progress-bar" {{ stimulus_target('password-strength', 'bar') }} role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <small class="text-secondary" {{ stimulus_target('password-strength', 'label') }}></small>
+                    </div>
+
+                    {{ form_errors(form.plainPassword) }}
+                </div>
+
+                {# Accept Terms Checkbox #}
+                <div class="mb-3">
+                    {{ form_row(form.acceptTerms) }}
+                </div>
+
+                {# Submit Button #}
+                <div class="form-footer">
+                    <button type="submit" class="btn btn-primary btn-lg w-100">
+                        {{ "security.register.invited.cta"|trans }}
+                    </button>
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+    {# Login Link #}
+    <div class="text-center text-secondary mt-3">
+        {{ "Already have an account?"|trans }}
+        <a href="{{ path('_login_main') }}" tabindex="-1" class="link-primary">
+            {{ 'Login'|trans }}
+        </a>
+    </div>
+{% endblock content %}
