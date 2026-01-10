@@ -99,6 +99,8 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
             new TwigFilter('diff', $this->dateDiff(...)),
 
             new TwigFilter('md5', 'md5'),
+
+            new TwigFilter('repeat', fn (string $string, int $times): string => str_repeat($string, $times)),
         ];
     }
 

@@ -34,12 +34,12 @@
 
     {% if client.website is not empty %}
         {% set website_url = client.website starts with 'http://' or client.website starts with 'https://' ? client.website : 'https://' ~ client.website %}
-        {{ email.info_row('client.create.details.website'|trans({}, 'email'), '<a href="' ~ website_url ~ '" rel="external noreferrer noopener" target="_blank" style="color: #206bc4; text-decoration: none;">' ~ client.website ~ '</a>') }}
+        {{ email.info_row('client.create.details.website'|trans({}, 'email'), '<a href="' ~ website_url|e('html_attr') ~ '" rel="external noreferrer noopener" target="_blank" style="color: #206bc4; text-decoration: none;">' ~ client.website|e ~ '</a>') }}
         {{ email.spacer('xs') }}
     {% endif %}
 
     {% if client.vatNumber is not empty %}
-        {{ email.info_row('VAT Number', client.vatNumber) }}
+        {{ email.info_row('client.create.details.vat_number'|trans({}, 'email'), client.vatNumber) }}
         {{ email.spacer('xs') }}
     {% endif %}
 
@@ -60,7 +60,7 @@
         {% for contact in client.contacts %}
             {{ email.info_row('client.create.contacts.name'|trans({}, 'email'), contact.firstName ~ ' ' ~ contact.lastName) }}
             {{ email.spacer('xs') }}
-            {{ email.info_row('client.contact.details.email'|trans({}, 'Client'), contact.email) }}
+            {{ email.info_row('client.contact.details.email'|trans({}, 'email'), contact.email) }}
             {% if not loop.last %}
                 {{ email.spacer('sm') }}
             {% endif %}

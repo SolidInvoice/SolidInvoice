@@ -1,5 +1,6 @@
 invoice:
     title: 'Invoice %id%'
+    number: 'Invoice #'
     pay_now: 'Pay Now'
     created: 'Created'
     due: 'Due Date'
@@ -9,6 +10,7 @@ invoice:
     total: 'Total'
     balance: 'Balance Due'
     terms: 'Terms & Conditions'
+    payment_method: 'Payment (%method%)'
     view:
         online: 'View this online at %url%'
     status:
@@ -17,6 +19,7 @@ invoice:
         heading: 'An Invoice status has changed'
         message: 'An invoice status has been updated.'
         id: 'Invoice'
+        client: 'Client'
         old_status: 'Original Status'
         new_status: 'New Status'
         status: 'Status'

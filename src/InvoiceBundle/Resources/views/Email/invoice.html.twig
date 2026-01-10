@@ -71,7 +71,7 @@
     {{ email.spacer('sm') }}
 
     {# Invoice details section #}
-    {{ email.info_row('Invoice #', invoice.invoiceId) }}
+    {{ email.info_row('invoice.number'|trans({}, 'email'), invoice.invoiceId) }}
     {{ email.spacer('xs') }}
     {{ email.info_row('invoice.created'|trans({}, 'email'), invoice.created|date) }}
 
@@ -98,7 +98,7 @@
     {% if invoice.payments|length > 0 and not invoice.balance.zero %}
         {% for payment in invoice.payments|filter((v) => v.status == 'captured') %}
             {{ email.spacer('xs') }}
-            {{ email.info_row('Payment (' ~ payment.method.name ~ ')', (payment.total * -1)|formatCurrency(invoice.client.currency)) }}
+            {{ email.info_row('invoice.payment_method'|trans({'%method%': payment.method.name}, 'email'), (payment.total * -1)|formatCurrency(invoice.client.currency)) }}
         {% endfor %}
     {% endif %}
 
