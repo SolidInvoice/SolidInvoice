@@ -1,26 +1,55 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
 {% extends '@SolidInvoiceCore/Layout/Email/base.html.twig' %}
+{% import "@SolidInvoiceCore/Layout/Email/components.html.twig" as email %}
 
 {%- block title -%}
-    Please confirm your email address
+    {{ 'email.confirmation.title'|trans({}, 'email') }}
 {%- endblock -%}
 
 {%- block content -%}
-    {% apply nl2br %}
-        {% autoescape false %}
-            Please confirm your email address by clicking the link below:
-        {% endautoescape %}
+    {% apply inky_to_html %}
+        <row>
+            <columns>
+                <p style="color: #1e293b; font-size: 16px; line-height: 1.5; margin: 0 0 16px 0; Margin: 0 0 16px 0;">
+                    {{ 'email.confirmation.message'|trans({}, 'email') }}
+                </p>
+            </columns>
+        </row>
     {% endapply %}
-    <table class="button expand large float-center">
-        <tr>
-            <td>
-                <table>
-                    <tr>
-                        <td>
-                            <a href="{{ signedUrl }}" rel="external" target="_blank">{{ 'Confirm'|trans([], 'email') }}</a>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
+
+    {{ email.spacer('md') }}
+
+    {# Confirm button #}
+    {{ email.button('email.confirmation.button'|trans({}, 'email'), signedUrl, 'primary', 'large') }}
+
+    {{ email.spacer('md') }}
+
+    {# Alternative link #}
+    {% apply inky_to_html %}
+        <row>
+            <columns>
+                <p style="color: #626976; font-size: 14px; line-height: 1.5; margin: 0; Margin: 0; text-align: center;">
+                    {{ 'email.confirmation.alternative'|trans({}, 'email') }}
+                </p>
+                <p style="color: #206bc4; font-size: 14px; margin: 8px 0 0 0; Margin: 8px 0 0 0; text-align: center; word-break: break-all;">
+                    <a href="{{ signedUrl }}" rel="external" target="_blank" style="color: #206bc4; text-decoration: none;">{{ signedUrl }}</a>
+                </p>
+            </columns>
+        </row>
+    {% endapply %}
+
+    {{ email.spacer('md') }}
+
+    {# Security notice #}
+    {{ email.alert_box('email.confirmation.security'|trans({}, 'email'), 'info') }}
+
+    {{ email.spacer('sm') }}
 {%- endblock -%}

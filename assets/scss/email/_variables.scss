@@ -1,0 +1,147 @@
+/**
+ * Email Design Tokens
+ *
+ * Maps SolidInvoice design system tokens to email-safe values.
+ * Email clients don't support CSS custom properties (var(--swp-*)),
+ * so we use SCSS variables that compile to static values.
+ */
+
+// ============================================================================
+// BRAND COLORS (from design system)
+// ============================================================================
+
+// Primary: Green - Main CTAs, links, active states
+$email-primary: #2e963a;
+$email-primary-hover: #268032;
+$email-primary-dark: #1f6c29;
+$email-primary-light: #e8f5e9;
+$email-primary-lighter: #f1f9f2;
+
+// Secondary: Orange - Accents
+$email-secondary: #f0a015;
+$email-secondary-hover: #d89012;
+$email-secondary-dark: #c8820e;
+$email-secondary-light: #fff8e1;
+
+// ============================================================================
+// NEUTRAL COLORS (Slate-based gray scale)
+// ============================================================================
+
+$email-gray-50: #f8fafc;
+$email-gray-100: #f1f5f9;
+$email-gray-200: #e2e8f0;
+$email-gray-300: #cbd5e1;
+$email-gray-400: #94a3b8;
+$email-gray-500: #64748b;
+$email-gray-600: #475569;
+$email-gray-700: #334155;
+$email-gray-800: #1e293b;
+$email-gray-900: #0f172a;
+
+// ============================================================================
+// SEMANTIC COLORS (Feedback & Status)
+// ============================================================================
+
+// Success
+$email-success: #10b981;
+$email-success-hover: #059669;
+$email-success-light: #d1fae5;
+$email-success-lighter: #ecfdf5;
+
+// Danger
+$email-danger: #ef4444;
+$email-danger-hover: #dc2626;
+$email-danger-light: #fee2e2;
+$email-danger-lighter: #fef2f2;
+
+// Warning
+$email-warning: #f59e0b;
+$email-warning-hover: #d97706;
+$email-warning-light: #fef3c7;
+$email-warning-lighter: #fffbeb;
+
+// Info
+$email-info: #3b82f6;
+$email-info-hover: #2563eb;
+$email-info-light: #dbeafe;
+$email-info-lighter: #eff6ff;
+
+// ============================================================================
+// SURFACE & BACKGROUND
+// ============================================================================
+
+$email-body-bg: #f4f6f8;
+$email-surface: #ffffff;
+$email-surface-hover: #f8fafc;
+
+// ============================================================================
+// TEXT COLORS
+// ============================================================================
+
+$email-text-primary: #1e293b;
+$email-text-secondary: #475569;
+$email-text-muted: #64748b;
+$email-text-light: #94a3b8;
+$email-text-inverse: #ffffff;
+
+// ============================================================================
+// BORDERS
+// ============================================================================
+
+$email-border: #e2e8f0;
+$email-border-light: #f1f5f9;
+$email-border-dark: #cbd5e1;
+
+// ============================================================================
+// SPACING (8px base, in pixels for email compatibility)
+// ============================================================================
+
+$email-space-xs: 8px;    // Small
+$email-space-sm: 16px;   // Medium-small
+$email-space-md: 24px;   // Medium
+$email-space-lg: 32px;   // Large
+$email-space-xl: 48px;   // Extra large
+
+// ============================================================================
+// BORDER RADIUS
+// ============================================================================
+
+$email-radius-sm: 6px;   // Small elements
+$email-radius-md: 8px;   // Buttons, inputs
+$email-radius-lg: 12px;  // Cards
+
+// ============================================================================
+// SHADOWS (Email-safe, subtle)
+// ============================================================================
+
+$email-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+$email-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+$email-shadow-card: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+// ============================================================================
+// TYPOGRAPHY
+// ============================================================================
+
+$email-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+$email-font-size-base: 16px;
+$email-font-size-small: 14px;
+$email-font-size-large: 18px;
+$email-line-height-base: 1.5;
+$email-line-height-tight: 1.3;
+
+// ============================================================================
+// BUTTON STYLES
+// ============================================================================
+
+$email-btn-padding-y: 12px;
+$email-btn-padding-x: 24px;
+$email-btn-font-weight: 600;
+$email-btn-radius: $email-radius-md;
+
+// ============================================================================
+// CARD STYLES
+// ============================================================================
+
+$email-card-padding: $email-space-md;
+$email-card-radius: $email-radius-lg;
+$email-card-shadow: $email-shadow-card;

@@ -8,6 +8,7 @@
  #}
 
 {% extends "@SolidInvoiceCore/Layout/Email/notification.html.twig" %}
+{% import "@SolidInvoiceCore/Layout/Email/components.html.twig" as email %}
 
 {%- block title -%}
     {{ 'payment.description'|trans({}, 'email') }}
@@ -15,41 +16,59 @@
 
 {%- block content -%}
     {% apply inky_to_html %}
-        {% if payment.invoice is not empty %}
-            <row>
-                <columns><strong>{{ 'payment.details.invoice'|trans({}, 'email') }}</strong></columns>
-                <columns>
-                    <a href="{{ url('_invoices_view', {'id' : payment.invoice.id }) }}">{{ payment.invoice.invoiceId }}</a>
-                </columns>
-            </row>
-        {% endif %}
-
-        {% if payment.client is not empty %}
-            <row>
-                <columns><strong>{{ 'payment.details.client'|trans({}, 'email') }}</strong></columns>
-                <columns><a href="{{ url('_clients_view', {'id' : payment.client.id}) }}">{{ payment.client }}</a></columns>
-            </row>
-        {% endif %}
-
         <row>
-            <columns><strong>{{ 'payment.details.method'|trans({}, 'email') }}</strong></columns>
-            <columns>{{ payment.method }}</columns>
+            <columns>
+                <p style="color: #1e293b; font-size: 16px; line-height: 1.5; margin: 0 0 24px 0; Margin: 0 0 24px 0;">
+                    {{ 'payment.notification.message'|trans({}, 'email') }}
+                </p>
+            </columns>
         </row>
-
-        <row>
-            <columns><strong>{{ 'payment.details.currency'|trans({}, 'email') }}</strong></columns>
-            <columns>{{ payment.currencyCode }}</columns>
-        </row>
-
-        <row>
-            <columns><strong>{{ 'payment.details.amount'|trans({}, 'email') }}</strong></columns>
-            <columns>{{ payment.totalAmount|formatCurrency(payment.currencyCode) }}</columns>
-        </row>
-
-        <row>
-            <columns><strong>{{ 'payment.details.status'|trans({}, 'email') }}</strong></columns>
-            <columns>{{ payment_label(payment.status) }}</columns>
-        </row>
-
     {% endapply %}
+
+    {{ email.spacer('sm') }}
+
+    {# Payment amount - highlighted in success style #}
+    {{ email.info_row('payment.details.amount'|trans({}, 'email'), payment.totalAmount|formatCurrency(payment.currencyCode), true) }}
+
+    {{ email.spacer('sm') }}
+
+    {# Payment details #}
+    {% if payment.invoice is not empty %}
+        {{ email.info_row('payment.details.invoice'|trans({}, 'email'), payment.invoice.invoiceId) }}
+        {{ email.spacer('xs') }}
+    {% endif %}
+
+    {% if payment.client is not empty %}
+        {{ email.info_row('payment.details.client'|trans({}, 'email'), payment.client.name) }}
+        {{ email.spacer('xs') }}
+    {% endif %}
+
+    {{ email.info_row('payment.details.method'|trans({}, 'email'), payment.method.name ?? payment.method) }}
+    {{ email.spacer('xs') }}
+    {{ email.info_row('payment.details.date'|trans({}, 'email'), payment.created|date) }}
+
+    {{ email.spacer('sm') }}
+
+    {# Status display #}
+    {% apply inky_to_html %}
+        <row>
+            <columns>
+                <p style="font-weight: 600; color: #1e293b; margin: 0 0 8px 0; Margin: 0 0 8px 0;">
+                    {{ 'payment.details.status'|trans({}, 'email') }}
+                </p>
+                <div style="margin: 8px 0; Margin: 8px 0;">
+                    {{ payment_label(payment.status) }}
+                </div>
+            </columns>
+        </row>
+    {% endapply %}
+
+    {% if payment.invoice is not empty %}
+        {{ email.divider('md') }}
+
+        {# View invoice button #}
+        {{ email.button('payment.view_invoice'|trans({}, 'email'), url('_invoices_view', {'id': payment.invoice.id}), 'success', 'large') }}
+    {% endif %}
+
+    {{ email.spacer('md') }}
 {%- endblock -%}

@@ -1,10 +1,22 @@
 invoice:
+    title: 'Invoice %id%'
     pay_now: 'Pay Now'
+    created: 'Created'
+    due: 'Due Date'
+    subtotal: 'Subtotal'
+    tax: 'Tax'
+    discount: 'Discount'
+    total: 'Total'
+    balance: 'Balance Due'
+    terms: 'Terms & Conditions'
+    view:
+        online: 'View this online at %url%'
     status:
         subject: 'Invoice Status Change'
     status_change:
         heading: 'An Invoice status has changed'
-        id: 'Invoice Id'
+        message: 'An invoice status has been updated.'
+        id: 'Invoice'
         old_status: 'Original Status'
         new_status: 'New Status'
         status: 'Status'

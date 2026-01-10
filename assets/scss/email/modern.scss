@@ -1,0 +1,399 @@
+/**
+ * Modern Email Enhancements
+ *
+ * These styles provide modern visual enhancements for capable email clients
+ * while gracefully degrading in older clients (Outlook 2007-2013, etc.)
+ *
+ * Uses SolidInvoice design system colors for brand consistency.
+ */
+
+@import "variables";
+
+// ============================================================================
+// MODERN CARD STYLES
+// ============================================================================
+
+.modern-card {
+    background: $email-surface;
+    border-radius: $email-card-radius;
+    box-shadow: $email-card-shadow;
+    padding: $email-card-padding;
+    margin-bottom: $email-space-sm;
+    Margin-bottom: $email-space-sm;
+}
+
+.modern-card-header {
+    background: $email-body-bg;
+    border-radius: $email-card-radius $email-card-radius 0 0;
+    padding: $email-space-sm $email-space-md;
+    border-bottom: 1px solid $email-border;
+}
+
+.modern-card-body {
+    padding: $email-space-md;
+}
+
+.modern-card-footer {
+    background: $email-body-bg;
+    border-radius: 0 0 $email-card-radius $email-card-radius;
+    padding: $email-space-sm $email-space-md;
+    border-top: 1px solid $email-border;
+}
+
+// ============================================================================
+// ENHANCED BUTTON STYLES
+// ============================================================================
+
+table.button.modern table td {
+    border-radius: $email-btn-radius;
+    box-shadow: 0 2px 4px rgba(46, 150, 58, 0.2); // Primary shadow
+}
+
+table.button.modern.success table td {
+    box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2); // Success shadow
+}
+
+table.button.modern.warning table td {
+    box-shadow: 0 2px 4px rgba(245, 158, 11, 0.2); // Warning shadow
+}
+
+table.button.modern.alert table td {
+    box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2); // Danger shadow
+}
+
+// Button hover states for modern clients
+@media screen and (min-width: 596px) {
+    table.button.modern:hover table td {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(46, 150, 58, 0.3);
+    }
+
+    table.button.modern.success:hover table td {
+        box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+    }
+
+    table.button.modern.warning:hover table td {
+        box-shadow: 0 4px 8px rgba(245, 158, 11, 0.3);
+    }
+
+    table.button.modern.alert:hover table td {
+        box-shadow: 0 4px 8px rgba(239, 68, 68, 0.3);
+    }
+}
+
+// ============================================================================
+// MODERN TABLE STYLES
+// ============================================================================
+
+table.modern-info-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+
+    tr {
+        border-bottom: 1px solid $email-border;
+
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+
+    td {
+        padding: 12px 0;
+
+        &.label {
+            color: $email-text-muted;
+            font-size: $email-font-size-small;
+            font-weight: 500;
+        }
+
+        &.value {
+            text-align: right;
+            color: $email-text-primary;
+            font-size: $email-font-size-base;
+            font-weight: 600;
+        }
+    }
+
+    tr.highlight {
+        background: $email-body-bg;
+
+        td {
+            padding: $email-space-sm 12px;
+            font-size: $email-font-size-large;
+            font-weight: 700;
+            color: $email-text-primary;
+        }
+    }
+}
+
+// ============================================================================
+// DIVIDERS
+// ============================================================================
+
+hr.modern-divider {
+    border: none;
+    border-top: 1px solid $email-border;
+    margin: $email-space-md 0;
+    Margin: $email-space-md 0;
+
+    &.thick {
+        border-top: 2px solid $email-border;
+    }
+
+    &.primary {
+        border-top-color: $email-primary;
+    }
+}
+
+// ============================================================================
+// HERO SECTION
+// ============================================================================
+
+.modern-hero {
+    background: linear-gradient(135deg, $email-primary 0%, $email-primary-dark 100%);
+    color: $email-text-inverse;
+    padding: $email-space-lg $email-space-md;
+    text-align: center;
+    border-radius: $email-card-radius $email-card-radius 0 0;
+
+    h1 {
+        color: $email-text-inverse;
+        font-size: 28px;
+        font-weight: 700;
+        margin: 0;
+        Margin: 0;
+    }
+
+    p {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: $email-font-size-base;
+        margin: $email-space-xs 0 0 0;
+        Margin: $email-space-xs 0 0 0;
+    }
+}
+
+// ============================================================================
+// STATUS BADGES
+// ============================================================================
+
+.status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    &.success {
+        background: $email-success-light;
+        color: $email-success;
+    }
+
+    &.warning {
+        background: $email-warning-light;
+        color: $email-warning;
+    }
+
+    &.danger {
+        background: $email-danger-light;
+        color: $email-danger;
+    }
+
+    &.info {
+        background: $email-info-light;
+        color: $email-info;
+    }
+
+    &.muted {
+        background: $email-body-bg;
+        color: $email-text-muted;
+    }
+}
+
+// ============================================================================
+// INFO ROWS FOR LISTS
+// ============================================================================
+
+.info-row {
+    padding: 12px 0;
+    border-bottom: 1px solid $email-border;
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    &.highlight {
+        background: $email-body-bg;
+        padding: $email-space-sm 12px;
+        border-radius: $email-radius-sm;
+        margin: $email-space-xs 0;
+        Margin: $email-space-xs 0;
+    }
+}
+
+// ============================================================================
+// TYPOGRAPHY ENHANCEMENTS
+// ============================================================================
+
+.text-muted { color: $email-text-muted; }
+.text-primary { color: $email-primary; }
+.text-success { color: $email-success; }
+.text-warning { color: $email-warning; }
+.text-danger { color: $email-danger; }
+
+.text-small {
+    font-size: $email-font-size-small;
+    line-height: $email-line-height-base;
+}
+
+.text-large {
+    font-size: $email-font-size-large;
+    line-height: $email-line-height-base;
+}
+
+.font-weight-bold { font-weight: 700; }
+.font-weight-semibold { font-weight: 600; }
+.font-weight-medium { font-weight: 500; }
+
+// ============================================================================
+// SPACING UTILITIES
+// ============================================================================
+
+.mb-xs { margin-bottom: $email-space-xs; Margin-bottom: $email-space-xs; }
+.mb-sm { margin-bottom: $email-space-sm; Margin-bottom: $email-space-sm; }
+.mb-md { margin-bottom: $email-space-md; Margin-bottom: $email-space-md; }
+.mb-lg { margin-bottom: $email-space-lg; Margin-bottom: $email-space-lg; }
+.mb-xl { margin-bottom: $email-space-xl; Margin-bottom: $email-space-xl; }
+
+.mt-xs { margin-top: $email-space-xs; Margin-top: $email-space-xs; }
+.mt-sm { margin-top: $email-space-sm; Margin-top: $email-space-sm; }
+.mt-md { margin-top: $email-space-md; Margin-top: $email-space-md; }
+.mt-lg { margin-top: $email-space-lg; Margin-top: $email-space-lg; }
+.mt-xl { margin-top: $email-space-xl; Margin-top: $email-space-xl; }
+
+.p-xs { padding: $email-space-xs; }
+.p-sm { padding: $email-space-sm; }
+.p-md { padding: $email-space-md; }
+.p-lg { padding: $email-space-lg; }
+.p-xl { padding: $email-space-xl; }
+
+// ============================================================================
+// CONTAINER ENHANCEMENTS
+// ============================================================================
+
+table.container.modern {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    border-radius: $email-card-radius;
+}
+
+// ============================================================================
+// HEADER & FOOTER ENHANCEMENTS
+// ============================================================================
+
+table.header.modern {
+    background: $email-body-bg;
+    border-radius: $email-card-radius $email-card-radius 0 0;
+}
+
+table.footer.modern {
+    background: $email-body-bg;
+    border-top: 1px solid $email-border;
+    padding-top: $email-space-md;
+    color: $email-text-muted;
+    font-size: $email-font-size-small;
+
+    a {
+        color: $email-primary;
+        text-decoration: underline;
+    }
+}
+
+// ============================================================================
+// LINK STYLES
+// ============================================================================
+
+a.modern-link {
+    color: $email-primary;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(46, 150, 58, 0.3);
+
+    &:hover {
+        border-bottom-color: $email-primary;
+    }
+}
+
+// ============================================================================
+// ALERT/CALLOUT BOXES
+// ============================================================================
+
+.alert-box {
+    padding: $email-space-sm;
+    border-radius: $email-radius-sm;
+    border-left: 4px solid;
+    margin: $email-space-sm 0;
+    Margin: $email-space-sm 0;
+
+    &.info {
+        background: $email-info-light;
+        border-left-color: $email-info;
+        color: $email-text-primary;
+    }
+
+    &.success {
+        background: $email-success-light;
+        border-left-color: $email-success;
+        color: $email-text-primary;
+    }
+
+    &.warning {
+        background: $email-warning-light;
+        border-left-color: $email-warning;
+        color: $email-text-primary;
+    }
+
+    &.danger {
+        background: $email-danger-light;
+        border-left-color: $email-danger;
+        color: $email-text-primary;
+    }
+}
+
+// ============================================================================
+// MOBILE OPTIMIZATIONS
+// ============================================================================
+
+@media only screen and (max-width: 596px) {
+    .modern-card {
+        border-radius: 0;
+        padding: $email-space-sm;
+    }
+
+    .modern-hero {
+        padding: $email-space-md $email-space-sm;
+        border-radius: 0;
+    }
+
+    table.modern-info-table {
+        td.label,
+        td.value {
+            display: block;
+            text-align: left;
+            padding: 6px 0;
+        }
+
+        td.value {
+            font-size: $email-font-size-large;
+            padding-top: 0;
+        }
+    }
+}
+
+// ============================================================================
+// GRACEFUL DEGRADATION FOR OUTLOOK 2007-2013
+// ============================================================================
+
+/* Outlook 2007-2013 doesn't support border-radius, box-shadow, or gradients.
+   These styles ensure emails still look professional in Outlook. */
+

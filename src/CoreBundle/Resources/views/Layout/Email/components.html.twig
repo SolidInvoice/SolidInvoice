@@ -1,0 +1,370 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{#
+ # Email Component Macro Library
+ #
+ # This file contains reusable Twig macros for building modern, consistent email templates.
+ # All components use Inky markup for maximum email client compatibility.
+ #
+ # Usage:
+ #   {% import "@SolidInvoiceCore/Layout/Email/components.html.twig" as email %}
+ #   {{ email.button('Click Here', 'https://example.com') }}
+ #}
+
+{#
+ # Button Component
+ #
+ # Creates a modern CTA button with Foundation for Emails + modern styling
+ #
+ # Parameters:
+ #   text (string, required): Button text
+ #   url (string, required): Button URL
+ #   style (string, optional): Button style - 'primary', 'success', 'warning', 'alert', 'secondary' (default: 'primary')
+ #   size (string, optional): Button size - 'tiny', 'small', 'large' (default: 'large')
+ #   modern (boolean, optional): Apply modern styling with shadows and hover effects (default: true)
+ #
+ # Example:
+ #   {{ email.button('Pay Now', invoice_url, 'primary', 'large') }}
+ #   {{ email.button('View Quote', quote_url, 'success') }}
+ #}
+{% macro button(text, url, style='primary', size='large', modern=true) %}
+    {% apply inky_to_html %}
+        <table class="button {{ style }} {{ size }} expand float-center{% if modern %} modern{% endif %}">
+            <tr>
+                <td>
+                    <table>
+                        <tr>
+                            <td>
+                                <a href="{{ url }}" rel="external" target="_blank">{{ text }}</a>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    {% endapply %}
+{% endmacro %}
+
+{#
+ # Hero Header Component
+ #
+ # Creates a large, prominent header section for emails
+ #
+ # Parameters:
+ #   title (string, required): Main title text
+ #   subtitle (string, optional): Subtitle text (default: '')
+ #   modern (boolean, optional): Apply modern gradient background (default: false)
+ #
+ # Example:
+ #   {{ email.hero_header('Invoice #INV-001', 'Due on December 31, 2024') }}
+ #}
+{% macro hero_header(title, subtitle='', modern=false) %}
+    {% apply inky_to_html %}
+        <row>
+            <columns>
+                <div class="{% if modern %}modern-hero{% else %}text-center{% endif %}" style="padding: 24px 0;">
+                    <h1 style="margin: 0; Margin: 0; {% if not modern %}color: #1e293b;{% endif %}">{{ title }}</h1>
+                    {% if subtitle %}
+                        <p style="margin: 8px 0 0 0; Margin: 8px 0 0 0; {% if not modern %}color: #626976;{% endif %} font-size: 16px;">{{ subtitle }}</p>
+                    {% endif %}
+                </div>
+            </columns>
+        </row>
+    {% endapply %}
+{% endmacro %}
+
+{#
+ # Info Row Component
+ #
+ # Creates a label/value pair row for displaying information
+ #
+ # Parameters:
+ #   label (string, required): Label text (left side)
+ #   value (string, required): Value text (right side)
+ #   highlight (boolean, optional): Highlight the row with background (default: false)
+ #   label_width (number, optional): Column width for label - 4, 6, 8 (default: 6)
+ #
+ # Example:
+ #   {{ email.info_row('Invoice Number', 'INV-001') }}
+ #   {{ email.info_row('Total Amount', '$1,500.00', true) }}
+ #}
+{% macro info_row(label, value, highlight=false, label_width=6) %}
+    {% set value_width = 12 - label_width %}
+    {% apply inky_to_html %}
+        <row class="{% if highlight %}info-row highlight{% endif %}" style="{% if highlight %}background: #f4f6fa; padding: 12px; border-radius: 6px;{% endif %}">
+            <columns large="{{ label_width }}" small="12">
+                <strong style="{% if highlight %}font-size: 18px; font-weight: 700;{% else %}color: #626976; font-weight: 600;{% endif %}">{{ label }}</strong>
+            </columns>
+            <columns large="{{ value_width }}" small="12" class="text-right">
+                <span style="{% if highlight %}font-size: 18px; font-weight: 700;{% else %}font-weight: 600;{% endif %} color: #1e293b;">{{ value }}</span>
+            </columns>
+        </row>
+    {% endapply %}
+{% endmacro %}
+
+{#
+ # Info Table Component
+ #
+ # Creates a clean table for displaying multiple label/value pairs
+ #
+ # Parameters:
+ #   rows (array, required): Array of {label, value, highlight} objects
+ #
+ # Example:
+ #   {{ email.info_table([
+ #       {label: 'Subtotal', value: '$1,200.00'},
+ #       {label: 'Tax', value: '$180.00'},
+ #       {label: 'Total', value: '$1,380.00', highlight: true}
+ #   ]) }}
+ #}
+{% macro info_table(rows) %}
+    {% for row in rows %}
+        {{ _self.info_row(row.label, row.value, row.highlight|default(false)) }}
+        {% if not loop.last %}
+            <table class="spacer">
+                <tbody>
+                <tr>
+                    <td height="8px" style="font-size:8px;line-height:8px;">&#xA0;</td>
+                </tr>
+                </tbody>
+            </table>
+        {% endif %}
+    {% endfor %}
+{% endmacro %}
+
+{#
+ # Card Component
+ #
+ # Creates a white content card with optional padding and shadow
+ #
+ # Parameters:
+ #   content (string, required): Card content (can be HTML)
+ #   padding (string, optional): Padding size - 'xs', 'sm', 'md', 'lg', 'xl' (default: 'md')
+ #   modern (boolean, optional): Apply modern styling with shadow and rounded corners (default: true)
+ #
+ # Example:
+ #   {{ email.card('<p>Your card content here</p>', 'lg') }}
+ #}
+{% macro card(content, padding='md', modern=true) %}
+    {% set padding_values = {
+        'xs': '8px',
+        'sm': '16px',
+        'md': '24px',
+        'lg': '32px',
+        'xl': '48px'
+    } %}
+    {% set padding_value = padding_values[padding]|default('24px') %}
+
+    <div class="{% if modern %}modern-card{% endif %}" style="background: #ffffff; padding: {{ padding_value }}; {% if modern %}border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);{% endif %} margin-bottom: 16px; Margin-bottom: 16px;">
+        {{ content|raw }}
+    </div>
+{% endmacro %}
+
+{#
+ # Divider Component
+ #
+ # Creates a horizontal divider line
+ #
+ # Parameters:
+ #   spacing (string, optional): Spacing size - 'xs', 'sm', 'md', 'lg', 'xl' (default: 'md')
+ #   style (string, optional): Divider style - 'normal', 'thick', 'primary' (default: 'normal')
+ #
+ # Example:
+ #   {{ email.divider('lg') }}
+ #   {{ email.divider('md', 'thick') }}
+ #}
+{% macro divider(spacing='md', style='normal') %}
+    {% set spacing_values = {
+        'xs': '8px',
+        'sm': '16px',
+        'md': '24px',
+        'lg': '32px',
+        'xl': '48px'
+    } %}
+    {% set spacing_value = spacing_values[spacing]|default('24px') %}
+    {% set border_width = style == 'thick' ? '2px' : '1px' %}
+    {% set border_color = style == 'primary' ? '#206bc4' : '#e6e7e9' %}
+
+    <hr class="modern-divider {{ style }}" style="border: none; border-top: {{ border_width }} solid {{ border_color }}; margin: {{ spacing_value }} 0; Margin: {{ spacing_value }} 0;" />
+{% endmacro %}
+
+{#
+ # Spacer Component
+ #
+ # Creates vertical spacing
+ #
+ # Parameters:
+ #   size (string, optional): Spacing size - 'xs', 'sm', 'md', 'lg', 'xl' (default: 'md')
+ #
+ # Example:
+ #   {{ email.spacer('lg') }}
+ #}
+{% macro spacer(size='md') %}
+    {% set spacing_values = {
+        'xs': '8',
+        'sm': '16',
+        'md': '24',
+        'lg': '32',
+        'xl': '48'
+    } %}
+    {% set spacing_value = spacing_values[size]|default('24') %}
+
+    <table class="spacer">
+        <tbody>
+        <tr>
+            <td height="{{ spacing_value }}px" style="font-size:{{ spacing_value }}px;line-height:{{ spacing_value }}px;">&#xA0;</td>
+        </tr>
+        </tbody>
+    </table>
+{% endmacro %}
+
+{#
+ # Footer Component
+ #
+ # Creates an email footer with company info and optional powered by text
+ #
+ # Parameters:
+ #   show_powered_by (boolean, optional): Show "Powered by SolidInvoice" text (default: true)
+ #   show_preferences (boolean, optional): Show notification preferences link (default: false)
+ #
+ # Example:
+ #   {{ email.footer(true, false) }}
+ #   {{ email.footer(false, true) }}
+ #}
+{% macro footer(show_powered_by=true, show_preferences=false) %}
+    {% apply inky_to_html %}
+        <row>
+            <columns>
+                <center>
+                    {% if show_powered_by and setting('system/general/hide_powered_by') is not same as('1') %}
+                        <p style="font-size: 14px; color: #626976; margin: 0; Margin: 0;">
+                            {{ "powered_by"|trans }} <a href="https://solidinvoice.co" target="_blank" style="color: #206bc4; text-decoration: none;">{{ app_name }}</a> - {{ app_version }}
+                        </p>
+                    {% endif %}
+
+                    {% if show_preferences %}
+                        <p style="font-size: 14px; color: #626976; margin: 8px 0 0 0; Margin: 8px 0 0 0;">
+                            <a href="{{ url('_settings_notifications') }}" target="_blank" style="color: #206bc4; text-decoration: none;">
+                                {{ 'notification.preferences'|trans }}
+                            </a>
+                        </p>
+                    {% endif %}
+                </center>
+            </columns>
+        </row>
+    {% endapply %}
+{% endmacro %}
+
+{#
+ # Status Badge Component
+ #
+ # Creates a colored status badge
+ #
+ # Parameters:
+ #   text (string, required): Badge text
+ #   style (string, optional): Badge style - 'success', 'warning', 'danger', 'info', 'muted' (default: 'info')
+ #
+ # Example:
+ #   {{ email.status_badge('Paid', 'success') }}
+ #   {{ email.status_badge('Pending', 'warning') }}
+ #}
+{% macro status_badge(text, style='info') %}
+    {% set badge_styles = {
+        'success': 'background: #e7f7ea; color: #2fb344;',
+        'warning': 'background: #fef0e6; color: #f76707;',
+        'danger': 'background: #fbeaea; color: #d63939;',
+        'info': 'background: #e8f1fc; color: #206bc4;',
+        'muted': 'background: #f4f6fa; color: #626976;'
+    } %}
+    {% set badge_style = badge_styles[style]|default(badge_styles.info) %}
+
+    <span class="status-badge {{ style }}" style="display: inline-block; padding: 4px 12px; border-radius: 4px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; {{ badge_style }}">
+        {{ text }}
+    </span>
+{% endmacro %}
+
+{#
+ # Alert Box Component
+ #
+ # Creates a highlighted alert/callout box
+ #
+ # Parameters:
+ #   content (string, required): Alert content
+ #   style (string, optional): Alert style - 'info', 'success', 'warning', 'danger' (default: 'info')
+ #
+ # Example:
+ #   {{ email.alert_box('Please review this invoice carefully.', 'info') }}
+ #   {{ email.alert_box('Payment received successfully!', 'success') }}
+ #}
+{% macro alert_box(content, style='info') %}
+    {% set alert_styles = {
+        'info': 'background: #e8f1fc; border-left-color: #206bc4;',
+        'success': 'background: #e7f7ea; border-left-color: #2fb344;',
+        'warning': 'background: #fef0e6; border-left-color: #f76707;',
+        'danger': 'background: #fbeaea; border-left-color: #d63939;'
+    } %}
+    {% set alert_style = alert_styles[style]|default(alert_styles.info) %}
+
+    <div class="alert-box {{ style }}" style="padding: 16px; border-radius: 6px; border-left: 4px solid; margin: 16px 0; Margin: 16px 0; {{ alert_style }} color: #1e293b;">
+        {{ content|raw }}
+    </div>
+{% endmacro %}
+
+{#
+ # Company Header Component
+ #
+ # Creates a header section with company logo and name
+ #
+ # Parameters:
+ #   logo_size (int, optional): Logo size in pixels (default: 100)
+ #   modern (boolean, optional): Apply modern background styling (default: false)
+ #
+ # Example:
+ #   {{ email.company_header(120, true) }}
+ #}
+{% macro company_header(logo_size=100, modern=false) %}
+    {% apply inky_to_html %}
+        <row class="{% if modern %}modern{% endif %}" style="{% if modern %}background: #f4f6fa; padding: 16px 0;{% endif %}">
+            <columns large="6" small="12" style="padding:16px">
+                {{ app_logo(logo_size) }}
+            </columns>
+            <columns large="6" small="12" style="padding:16px;">
+                <p class="text-right" style="font-size: 22px; font-weight: 700; color: #1e293b; margin: 0; Margin: 0;">
+                    {{ setting('system/company/company_name') }}
+                </p>
+            </columns>
+        </row>
+    {% endapply %}
+{% endmacro %}
+
+{#
+ # View Online Link Component
+ #
+ # Creates a subtle "View this online" link at the top of emails
+ #
+ # Parameters:
+ #   url (string, required): URL to view online
+ #   text (string, optional): Link text (default: translated version)
+ #
+ # Example:
+ #   {{ email.view_online_link(invoice_url) }}
+ #}
+{% macro view_online_link(url, text='') %}
+    {% if not text %}
+        {% set link_html = '<a rel="external" target="_blank" href="' ~ url ~ '" style="color: #2e963a; text-decoration: none;">' ~ url ~ '</a>' %}
+        {% set text = 'invoice.view.online'|trans({'%url%': link_html}, 'email') %}
+    {% endif %}
+
+    <div style="text-align: center; padding: 12px 0;" class="text-center">
+        <p style="font-size: 14px; color: #64748b; margin: 0; Margin: 0;">
+            {{ text|raw }}
+        </p>
+    </div>
+{% endmacro %}

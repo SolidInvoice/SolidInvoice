@@ -10,6 +10,9 @@
 {% extends "@SolidInvoiceCore/Layout/Email/base.html.twig" %}
 
 {%- block footer -%}
-    <hr />
-    <small>You can update your notification settings <a href="{{ url('_profile_notifications') }}">here</a></small>
+    <hr class="modern-divider" style="border: none; border-top: 1px solid #e6e7e9; margin: 16px 0 16px 0; Margin: 16px 0 16px 0;" />
+    <p style="font-size: 14px; color: #626976; text-align: center; margin: 0; Margin: 0;">
+        {{ 'notification.settings.info'|trans({}, 'email') }}
+        <a href="{{ url('_profile_notifications') }}" style="color: #206bc4; text-decoration: none; font-weight: 600;">{{ 'notification.settings.link'|trans({}, 'email') }}</a>
+    </p>
 {%- endblock -%}

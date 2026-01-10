@@ -7,26 +7,16 @@
  # with this source code in the file LICENSE.
  #}
 {% extends "@SolidInvoiceCore/Layout/Email/base.html.twig" %}
+{% import "@SolidInvoiceCore/Layout/Email/components.html.twig" as email %}
 
 {% set invoicePath = url("_view_invoice_external", {"uuid" : invoice.uuid}) %}
 
 {%- block title -%}
-    {{ "invoice.title"|trans({"%id%" : invoice.invoiceId}) }}
+    {{ "invoice.title"|trans({"%id%" : invoice.invoiceId}, 'email') }}
 {%- endblock -%}
 
 {%- block header -%}
-    <div style="text-align: center" class="text-center">
-        <p>
-        <div style="font-size: 80%; color: #999999">
-            {% set link %}
-                <a rel="external" target="_blank" href="{{ invoicePath }}">{{ invoicePath }}</a>
-            {% endset %}
-            {% autoescape false %}
-                {{ "invoice.view.online"|trans({"%url%" : link}) }}
-            {% endautoescape %}
-        </div>
-        </p>
-    </div>
+    {{ email.view_online_link(invoicePath) }}
 {%- endblock -%}
 
 {%- block head_extra -%}
@@ -67,132 +57,85 @@
 
 
 {%- block content -%}
+    {# Invoice intro message #}
     {% apply inky_to_html %}
-        {{ 'invoice.info'|trans({'%company%': setting('system/company/company_name'), '%created%': invoice.created|date}, 'email') }}
-
-        <table class="spacer">
-            <tbody>
-            <tr>
-                <td height="16px" style="font-size:16px;line-height:16px;">&#xA0;</td>
-            </tr>
-            </tbody>
-        </table>
-
         <row>
             <columns>
-                <strong>Invoice #</strong>
-            </columns>
-            <columns>
-                {{ invoice.invoiceId }}
-            </columns>
-        </row>
-
-        <row>
-            <columns>
-                <strong>{{ 'invoice.subtotal'|trans }}</strong>
-            </columns>
-            <columns class="thick-line text-right">
-                {{ invoice.baseTotal|formatCurrency(invoice.client.currency) }}
+                <p style="color: #1e293b; font-size: 16px; line-height: 1.5; margin: 0 0 24px 0; Margin: 0 0 24px 0;">
+                    {{ 'invoice.info'|trans({'%company%': setting('system/company/company_name'), '%created%': invoice.created|date}, 'email') }}
+                </p>
             </columns>
         </row>
-        {% if invoice.tax.positive %}
-            <row>
-
-                <columns>
-                    <strong>{{ 'invoice.tax'|trans }}</strong>
-                </columns>
-                <columns>
-                    {{ invoice.tax|formatCurrency(invoice.client.currency) }}
-                </columns>
-            </row>
-        {% endif %}
-
-        {% if invoice.discount.type is not empty %}
-            <row>
-                <columns>
-                    <strong>{{ 'invoice.discount'|trans }}</strong>
-                </columns>
-                <columns>
-                    -{{ discount(invoice)|formatCurrency(invoice.client.currency) }}
-                </columns>
-            </row>
-        {% endif %}
-        {% if invoice.payments|length > 0 and not invoice.balance.zero %}
-            {% for payment in invoice.payments|filter((v) => v.status == 'captured') %}
-                <row>
-                    <columns>
-                        <strong>
-                            Payment
-                        </strong>
-                        {{ payment.method.name }}
-                    </columns>
-                    <columns>
-                        {{ (payment.total * -1)|formatCurrency(invoice.client.currency) }}
-                    </columns>
-                </row>
-            {% endfor %}
-        {% endif %}
-        <row>
-            <columns>
-                <strong>
-                    {% if invoice.payments|length > 0 and not invoice.balance.zero %}
-                        {{ 'invoice.balance'|trans }}
-                    {% else %}
-                        {{ 'invoice.total'|trans }}
-                    {% endif %}
-                </strong>
-            </columns>
-            <columns>
-                {% if invoice.payments|length > 0 and not invoice.balance.zero %}
-                    {{ invoice.balance|formatCurrency(invoice.client.currency) }}
-                {% else %}
-                    {{ invoice.total|formatCurrency(invoice.client.currency) }}
-                {% endif %}
-            </columns>
-        </row>
-
-        <row>
-            {% if invoice.terms is not empty %}
-                <columns small="12">
-                    <strong>{{ 'invoice.terms'|trans }}</strong>
-                    <p>
-                        {{ invoice.terms|nl2br }}
-                    </p>
-                </columns>
-            {% endif %}
-        </row>
-
-        {% if payments_configured(false) %}
-            <hr/>
-            <table class="spacer">
-                <tbody>
-                <tr>
-                    <td height="16px" style="font-size:16px;line-height:16px;">&#xA0;</td>
-                </tr>
-                </tbody>
-            </table>
-            <table class="button success expand large float-center">
-                <tr>
-                    <td>
-                        <table>
-                            <tr>
-                                <td>
-                                    <a href="{{ url('_payments_create', {'uuid' : invoice.uuid}) }}" rel="external" target="_blank">{{ 'invoice.pay_now'|trans([], 'email') }}</a>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-            </table>
-        {% endif %}
     {% endapply %}
+
+    {{ email.spacer('sm') }}
+
+    {# Invoice details section #}
+    {{ email.info_row('Invoice #', invoice.invoiceId) }}
+    {{ email.spacer('xs') }}
+    {{ email.info_row('invoice.created'|trans({}, 'email'), invoice.created|date) }}
+
+    {% if invoice.due %}
+        {{ email.spacer('xs') }}
+        {{ email.info_row('invoice.due'|trans({}, 'email'), invoice.due|date) }}
+    {% endif %}
+
+    {{ email.divider('md') }}
+
+    {# Financial breakdown #}
+    {{ email.info_row('invoice.subtotal'|trans({}, 'email'), invoice.baseTotal|formatCurrency(invoice.client.currency)) }}
+
+    {% if invoice.tax.positive %}
+        {{ email.spacer('xs') }}
+        {{ email.info_row('invoice.tax'|trans({}, 'email'), invoice.tax|formatCurrency(invoice.client.currency)) }}
+    {% endif %}
+
+    {% if invoice.discount.type is not empty %}
+        {{ email.spacer('xs') }}
+        {{ email.info_row('invoice.discount'|trans({}, 'email'), '-' ~ discount(invoice)|formatCurrency(invoice.client.currency)) }}
+    {% endif %}
+
+    {% if invoice.payments|length > 0 and not invoice.balance.zero %}
+        {% for payment in invoice.payments|filter((v) => v.status == 'captured') %}
+            {{ email.spacer('xs') }}
+            {{ email.info_row('Payment (' ~ payment.method.name ~ ')', (payment.total * -1)|formatCurrency(invoice.client.currency)) }}
+        {% endfor %}
+    {% endif %}
+
+    {{ email.spacer('sm') }}
+
+    {# Total/Balance - highlighted #}
+    {{ email.info_row(
+        invoice.payments|length > 0 and not invoice.balance.zero ? 'invoice.balance'|trans({}, 'email') : 'invoice.total'|trans({}, 'email'),
+        invoice.payments|length > 0 and not invoice.balance.zero ? invoice.balance|formatCurrency(invoice.client.currency) : invoice.total|formatCurrency(invoice.client.currency),
+        true
+    ) }}
+
+    {# Terms section if present #}
+    {% if invoice.terms is not empty %}
+        {{ email.divider('md') }}
+
+        {% apply inky_to_html %}
+            <row>
+                <columns small="12">
+                    <p style="font-weight: 600; color: #1e293b; margin: 0 0 8px 0; Margin: 0 0 8px 0;">{{ 'invoice.terms'|trans({}, 'email') }}</p>
+                    <div style="color: #626976; font-size: 14px; line-height: 1.6;">
+                        {{ invoice.terms|nl2br }}
+                    </div>
+                </columns>
+            </row>
+        {% endapply %}
+    {% endif %}
+
+    {# Payment button #}
+    {% if payments_configured(false) %}
+        {{ email.divider('lg') }}
+        {{ email.button('invoice.pay_now'|trans([], 'email'), url('_payments_create', {'uuid': invoice.uuid}), 'primary', 'large') }}
+    {% endif %}
+
+    {{ email.spacer('md') }}
 {%- endblock -%}
 
 {%- block footer -%}
-    {% if setting('system/general/hide_powered_by') is not same as ('1') %}
-        <hr />
-        <div style="font-size: 80%; color: #999999">
-            {{ "powered_by"|trans }} <a href="https://solidinvoice.co" target="_blank">{{ app_name }}</a> - {{ app_version }}
-        </div>
-    {% endif %}
+    {{ email.footer(true, false) }}
 {%- endblock footer -%}

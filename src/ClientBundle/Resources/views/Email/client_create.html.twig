@@ -8,58 +8,69 @@
  #}
 
 {% extends "@SolidInvoiceCore/Layout/Email/notification.html.twig" %}
+{% import "@SolidInvoiceCore/Layout/Email/components.html.twig" as email %}
 
 {%- block title -%}
     {{ 'client.create.heading'|trans({}, 'email') }}
 {%- endblock -%}
 
 {%- block content -%}
-
     {% apply inky_to_html %}
         <row>
-            <columns large="6"><strong>{{ 'client.create.details.name'|trans({}, 'email') }}</strong></columns>
-            <columns large="6" class="text-right">{{ client.name }}</columns>
+            <columns>
+                <p style="color: #1e293b; font-size: 16px; line-height: 1.5; margin: 0 0 24px 0; Margin: 0 0 24px 0;">
+                    {{ 'client.create.message'|trans({}, 'email') }}
+                </p>
+            </columns>
         </row>
-        {% if client.website is not empty %}
+    {% endapply %}
+
+    {{ email.spacer('sm') }}
+
+    {# Client details #}
+    {{ email.info_row('client.create.details.name'|trans({}, 'email'), client.name, true) }}
+
+    {{ email.spacer('sm') }}
+
+    {% if client.website is not empty %}
+        {% set website_url = client.website starts with 'http://' or client.website starts with 'https://' ? client.website : 'https://' ~ client.website %}
+        {{ email.info_row('client.create.details.website'|trans({}, 'email'), '<a href="' ~ website_url ~ '" rel="external noreferrer noopener" target="_blank" style="color: #206bc4; text-decoration: none;">' ~ client.website ~ '</a>') }}
+        {{ email.spacer('xs') }}
+    {% endif %}
+
+    {% if client.vatNumber is not empty %}
+        {{ email.info_row('VAT Number', client.vatNumber) }}
+        {{ email.spacer('xs') }}
+    {% endif %}
+
+    {# Contacts section #}
+    {% if client.contacts|length > 0 %}
+        {{ email.divider('md') }}
+
+        {% apply inky_to_html %}
             <row>
-                <columns large="6"><strong>{{ 'client.create.details.website'|trans({}, 'email') }}</strong></columns>
-                <columns large="6" class="text-right">
-                    {% set website_url = client.website starts with 'http://' or client.website starts with 'https://' ? client.website : 'https://' ~ client.website %}
-                    <a href="{{ website_url }}" rel="external noreferrer noopener" target="_blank">
-                        {{ client.website }}
-                    </a>
+                <columns>
+                    <h3 style="color: #1e293b; font-size: 18px; font-weight: 700; margin: 0 0 16px 0; Margin: 0 0 16px 0;">
+                        {{ 'client.create.contacts.heading'|trans({}, 'email') }}
+                    </h3>
                 </columns>
             </row>
-        {% endif %}
-
-        <h4>{{ 'client.create.contacts.heading'|trans({}, 'email') }}</h4>
+        {% endapply %}
 
         {% for contact in client.contacts %}
-            <row>
-                <columns large="6"><strong>{{ 'client.create.contacts.name'|trans({}, 'email') }}</strong></columns>
-                <columns large="6" class="text-right">{{ contact.firstName }} {{ contact.lastName }}</columns>
-            </row>
-            <row>
-                <columns large="6"><strong>{{ 'client.contact.details.email'|trans }}</strong></columns>
-                <columns large="6" class="text-right">{{ contact.email }}</columns>
-            </row>
-            <br />
+            {{ email.info_row('client.create.contacts.name'|trans({}, 'email'), contact.firstName ~ ' ' ~ contact.lastName) }}
+            {{ email.spacer('xs') }}
+            {{ email.info_row('client.contact.details.email'|trans({}, 'Client'), contact.email) }}
+            {% if not loop.last %}
+                {{ email.spacer('sm') }}
+            {% endif %}
         {% endfor %}
+    {% endif %}
 
-        <center data-parsed="">
-            <table class="button success float-center">
-                <tr>
-                    <td>
-                        <table>
-                            <tr>
-                                <td>
-                                    <a href="{{ url('_clients_view', {'id' : client.id}) }}">View Client</a>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-            </table>
-        </center>
-    {% endapply %}
+    {{ email.divider('md') }}
+
+    {# View button #}
+    {{ email.button('client.create.view_client'|trans({}, 'email'), url('_clients_view', {'id': client.id}), 'primary', 'large') }}
+
+    {{ email.spacer('md') }}
 {%- endblock -%}

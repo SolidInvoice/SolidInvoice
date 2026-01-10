@@ -1,5 +1,5 @@
 reset_password:
-    subject: 'Reset Password'
+    subject: 'Reset your password for %username%'
     message_text: |
         A password reset was requested for user %username%.
 
@@ -15,6 +15,23 @@ reset_password:
 
         To reset your password, please follow the link below
     button_text: 'Reset Password'
+    alternative: 'If the button above doesn''t work, copy and paste this link into your browser:'
+    security: 'If you didn''t request a password reset, you can safely ignore this email. Your password won''t be changed.'
+
+email:
+    confirmation:
+        title: 'Please confirm your email address'
+        message: 'Please confirm your email address by clicking the button below. This helps us ensure the security of your account.'
+        button: 'Confirm Email Address'
+        alternative: 'If the button above doesn''t work, copy and paste this link into your browser:'
+        security: 'If you didn''t create an account, you can safely ignore this email.'
 
 invitation:
+    title: 'Invitation to join %company%'
+    message: 'You have been invited to join %company% on SolidInvoice.'
+    instructions: 'Click the button below to set your password and join the team.'
+    company: Company
+    email: 'Your Email'
     accept: 'Accept Invitation'
+    alternative: 'If the button above doesn''t work, copy and paste this link into your browser:'
+    info: 'If you weren''t expecting this invitation, you can safely ignore this email.'

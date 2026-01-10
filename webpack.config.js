@@ -7,6 +7,8 @@ export default Encore
     .addStyleEntry('register', './assets/scss/register.scss')
     .addStyleEntry('installation', './assets/scss/installation.scss')
     .addStyleEntry('pdf', './assets/scss/pdf.scss')
+    .addStyleEntry('email-colors', './assets/scss/email/email-colors.scss')
+    .addStyleEntry('email-modern', './assets/scss/email/modern.scss')
     .addEntry('app', './assets/app.ts')
     .enableStimulusBridge('./assets/controllers.json')
     .addPlugin(codecovWebpackPlugin({

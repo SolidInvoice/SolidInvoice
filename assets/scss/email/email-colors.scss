@@ -1,0 +1,251 @@
+/**
+ * Email Color Overrides
+ *
+ * Overrides Foundation for Emails default colors with SolidInvoice design system colors.
+ * This file is loaded after foundation.css to apply brand-specific colors.
+ */
+
+@import "variables";
+
+// ============================================================================
+// BODY & CONTAINER
+// ============================================================================
+
+@media only screen {
+    html {
+        background: $email-body-bg;
+    }
+}
+
+table.body {
+    background: $email-body-bg;
+}
+
+table.container {
+    background: $email-surface;
+}
+
+// ============================================================================
+// TYPOGRAPHY & TEXT COLORS
+// ============================================================================
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+    color: $email-text-primary;
+}
+
+p {
+    color: $email-text-primary;
+}
+
+small {
+    color: $email-text-muted;
+}
+
+// ============================================================================
+// LINKS
+// ============================================================================
+
+a {
+    color: $email-primary;
+
+    &:hover {
+        color: $email-primary-dark;
+    }
+
+    &:active {
+        color: $email-primary-dark;
+    }
+
+    &:visited {
+        color: $email-primary;
+    }
+}
+
+// ============================================================================
+// BUTTONS (Foundation for Emails button styles)
+// ============================================================================
+
+table.button {
+    table td {
+        text-align: left;
+        color: $email-text-inverse;
+        background: $email-primary;
+        border: 2px solid $email-primary;
+
+        a {
+            border: 0 solid $email-primary;
+            color: $email-text-inverse;
+            background: $email-primary;
+            font-weight: $email-btn-font-weight;
+        }
+    }
+
+    &:hover table td,
+    &:active table td,
+    &:visited table td {
+        background: $email-primary-hover;
+    }
+
+    &:hover table a,
+    &:active table a,
+    &:visited table a {
+        border: 0 solid $email-primary-hover;
+    }
+
+    // Button variants
+    &.primary table td {
+        background: $email-primary;
+        border-color: $email-primary;
+
+        a {
+            background: $email-primary;
+            border-color: $email-primary;
+        }
+    }
+
+    &.secondary table td {
+        background: $email-secondary;
+        border-color: $email-secondary;
+
+        a {
+            background: $email-secondary;
+            border-color: $email-secondary;
+        }
+    }
+
+    &.success table td {
+        background: $email-success;
+        border-color: $email-success;
+
+        a {
+            background: $email-success;
+            border-color: $email-success;
+        }
+    }
+
+    &.warning table td {
+        background: $email-warning;
+        border-color: $email-warning;
+
+        a {
+            background: $email-warning;
+            border-color: $email-warning;
+        }
+    }
+
+    &.alert table td {
+        background: $email-danger;
+        border-color: $email-danger;
+
+        a {
+            background: $email-danger;
+            border-color: $email-danger;
+        }
+    }
+}
+
+// ============================================================================
+// CALLOUTS & ALERTS
+// ============================================================================
+
+.callout {
+    border: 1px solid $email-border;
+    background: $email-surface;
+
+    &.primary {
+        background: $email-primary-light;
+        border-color: $email-primary;
+    }
+
+    &.secondary {
+        background: $email-secondary-light;
+        border-color: $email-secondary;
+    }
+
+    &.success {
+        background: $email-success-light;
+        border-color: $email-success;
+    }
+
+    &.warning {
+        background: $email-warning-light;
+        border-color: $email-warning;
+    }
+
+    &.alert {
+        background: $email-danger-light;
+        border-color: $email-danger;
+    }
+}
+
+// ============================================================================
+// HR / DIVIDERS
+// ============================================================================
+
+hr {
+    background-color: $email-border;
+    border-top: 1px solid $email-border;
+}
+
+// ============================================================================
+// MENU
+// ============================================================================
+
+table.menu {
+    a {
+        color: $email-primary;
+    }
+
+    .text-center a {
+        color: $email-primary;
+    }
+}
+
+// ============================================================================
+// UTILITY CLASSES
+// ============================================================================
+
+.text-center {
+    color: inherit;
+}
+
+.text-muted {
+    color: $email-text-muted;
+}
+
+.text-primary {
+    color: $email-primary;
+}
+
+.text-success {
+    color: $email-success;
+}
+
+.text-warning {
+    color: $email-warning;
+}
+
+.text-danger {
+    color: $email-danger;
+}
+
+// ============================================================================
+// BACKGROUNDS
+// ============================================================================
+
+.bg-primary {
+    background-color: $email-primary;
+}
+
+.bg-success {
+    background-color: $email-success;
+}
+
+.bg-warning {
+    background-color: $email-warning;
+}
+
+.bg-danger {
+    background-color: $email-danger;
+}

@@ -8,18 +8,30 @@
  #}
 
 {{ 'client.create.heading'|trans({}, 'email') }}
+{{ '='|repeat(60) }}
 
-{{ 'client.create.details.id'|trans({}, 'email') }}: {{ client.id }}
+{{ 'client.create.message'|trans({}, 'email') }}
+
 {{ 'client.create.details.name'|trans({}, 'email') }}: {{ client.name }}
 {% if client.website is not empty -%}
-    {{ 'client.create.details.website'|trans({}, 'email') }}: {{ client.website }}
-{%- endif %}
+{{ 'client.create.details.website'|trans({}, 'email') }}: {{ client.website }}
+{% endif -%}
+{% if client.vatNumber is not empty -%}
+{{ 'VAT Number' }}: {{ client.vatNumber }}
+{% endif %}
 
+{% if client.contacts|length > 0 %}
+{{ '-'|repeat(60) }}
 {{ 'client.create.contacts.heading'|trans({}, 'email') }}
-------------
 
 {% for contact in client.contacts %}
-    {{ 'client.create.contacts.name'|trans({}, 'email') }}: {{ contact.firstName }} {{ contact.lastName }}
+{{ 'client.create.contacts.name'|trans({}, 'email') }}: {{ contact.firstName }} {{ contact.lastName }}
+{{ 'client.contact.details.email'|trans({}, 'Client') }}: {{ contact.email }}
+{% if not loop.last %}
 
-    {{ 'client.contact.details.email'|trans }}: {{ contact.email }}
+{% endif %}
 {% endfor %}
+{% endif %}
+
+{{ '-'|repeat(60) }}
+{{ 'client.create.view_client'|trans({}, 'email') }}: {{ url('_clients_view', {'id': client.id}) }}

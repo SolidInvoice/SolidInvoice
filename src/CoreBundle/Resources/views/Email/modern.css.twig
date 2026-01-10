@@ -1,0 +1,394 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+/* Modern Email Enhancements
+ * These styles provide modern visual enhancements for capable email clients
+ * while gracefully degrading in older clients (Outlook 2007-2013, etc.)
+ */
+
+/* Modern Card Styles */
+.modern-card {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    padding: 24px;
+    margin-bottom: 16px;
+    Margin-bottom: 16px;
+}
+
+.modern-card-header {
+    background: #f4f6fa;
+    border-radius: 8px 8px 0 0;
+    padding: 16px 24px;
+    border-bottom: 1px solid #e6e7e9;
+}
+
+.modern-card-body {
+    padding: 24px;
+}
+
+.modern-card-footer {
+    background: #f4f6fa;
+    border-radius: 0 0 8px 8px;
+    padding: 16px 24px;
+    border-top: 1px solid #e6e7e9;
+}
+
+/* Enhanced Button Styles */
+table.button.modern table td {
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(46, 150, 58, 0.2);
+}
+
+table.button.modern.success table td {
+    box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+}
+
+table.button.modern.warning table td {
+    box-shadow: 0 2px 4px rgba(245, 158, 11, 0.2);
+}
+
+table.button.modern.alert table td {
+    box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
+}
+
+/* Button hover states for modern clients */
+@media screen and (min-width: 596px) {
+    table.button.modern:hover table td {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(46, 150, 58, 0.3);
+    }
+
+    table.button.modern.success:hover table td {
+        box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+    }
+
+    table.button.modern.warning:hover table td {
+        box-shadow: 0 4px 8px rgba(245, 158, 11, 0.3);
+    }
+
+    table.button.modern.alert:hover table td {
+        box-shadow: 0 4px 8px rgba(239, 68, 68, 0.3);
+    }
+}
+
+/* Modern Table Styles */
+table.modern-info-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+table.modern-info-table tr {
+    border-bottom: 1px solid #e6e7e9;
+}
+
+table.modern-info-table tr:last-child {
+    border-bottom: none;
+}
+
+table.modern-info-table td {
+    padding: 12px 0;
+}
+
+table.modern-info-table td.label {
+    color: #626976;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+table.modern-info-table td.value {
+    text-align: right;
+    color: #1e293b;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+table.modern-info-table tr.highlight {
+    background: #f4f6fa;
+}
+
+table.modern-info-table tr.highlight td {
+    padding: 16px 12px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+/* Dividers */
+hr.modern-divider {
+    border: none;
+    border-top: 1px solid #e6e7e9;
+    margin: 24px 0;
+    Margin: 24px 0;
+}
+
+hr.modern-divider.thick {
+    border-top: 2px solid #e6e7e9;
+}
+
+hr.modern-divider.primary {
+    border-top-color: #2e963a;
+}
+
+/* Hero Section */
+.modern-hero {
+    background: linear-gradient(135deg, #2e963a 0%, #1f6c29 100%);
+    color: #ffffff;
+    padding: 32px 24px;
+    text-align: center;
+    border-radius: 8px 8px 0 0;
+}
+
+.modern-hero h1 {
+    color: #ffffff;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0;
+    Margin: 0;
+}
+
+.modern-hero p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 16px;
+    margin: 8px 0 0 0;
+    Margin: 8px 0 0 0;
+}
+
+/* Status Badges */
+.status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-badge.success {
+    background: #e7f7ea;
+    color: #10b981;
+}
+
+.status-badge.warning {
+    background: #fef0e6;
+    color: #f59e0b;
+}
+
+.status-badge.danger {
+    background: #fbeaea;
+    color: #ef4444;
+}
+
+.status-badge.info {
+    background: #e8f1fc;
+    color: #2e963a;
+}
+
+.status-badge.muted {
+    background: #f4f6fa;
+    color: #626976;
+}
+
+/* Info Rows for Lists */
+.info-row {
+    padding: 12px 0;
+    border-bottom: 1px solid #e6e7e9;
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+.info-row.highlight {
+    background: #f4f6fa;
+    padding: 16px 12px;
+    border-radius: 6px;
+    margin: 8px 0;
+    Margin: 8px 0;
+}
+
+/* Typography Enhancements */
+.text-muted {
+    color: #626976;
+}
+
+.text-primary {
+    color: #2e963a;
+}
+
+.text-success {
+    color: #10b981;
+}
+
+.text-warning {
+    color: #f59e0b;
+}
+
+.text-danger {
+    color: #ef4444;
+}
+
+.text-small {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.text-large {
+    font-size: 18px;
+    line-height: 1.5;
+}
+
+.font-weight-bold {
+    font-weight: 700;
+}
+
+.font-weight-semibold {
+    font-weight: 600;
+}
+
+.font-weight-medium {
+    font-weight: 500;
+}
+
+/* Spacing Utilities */
+.mb-xs { margin-bottom: 8px; Margin-bottom: 8px; }
+.mb-sm { margin-bottom: 16px; Margin-bottom: 16px; }
+.mb-md { margin-bottom: 24px; Margin-bottom: 24px; }
+.mb-lg { margin-bottom: 32px; Margin-bottom: 32px; }
+.mb-xl { margin-bottom: 48px; Margin-bottom: 48px; }
+
+.mt-xs { margin-top: 8px; Margin-top: 8px; }
+.mt-sm { margin-top: 16px; Margin-top: 16px; }
+.mt-md { margin-top: 24px; Margin-top: 24px; }
+.mt-lg { margin-top: 32px; Margin-top: 32px; }
+.mt-xl { margin-top: 48px; Margin-top: 48px; }
+
+.p-xs { padding: 8px; }
+.p-sm { padding: 16px; }
+.p-md { padding: 24px; }
+.p-lg { padding: 32px; }
+.p-xl { padding: 48px; }
+
+/* Container Enhancements */
+table.container.modern {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
+}
+
+/* Header Enhancement */
+table.header.modern {
+    background: #f4f6fa;
+    border-radius: 8px 8px 0 0;
+}
+
+/* Footer Enhancement */
+table.footer.modern {
+    background: #f4f6fa;
+    border-top: 1px solid #e6e7e9;
+    padding-top: 24px;
+    color: #626976;
+    font-size: 14px;
+}
+
+table.footer.modern a {
+    color: #2e963a;
+    text-decoration: underline;
+}
+
+/* Link Styles */
+a.modern-link {
+    color: #2e963a;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(46, 150, 58, 0.3);
+}
+
+a.modern-link:hover {
+    border-bottom-color: #2e963a;
+}
+
+/* Alert/Callout Boxes */
+.alert-box {
+    padding: 16px;
+    border-radius: 6px;
+    border-left: 4px solid;
+    margin: 16px 0;
+    Margin: 16px 0;
+}
+
+.alert-box.info {
+    background: #e8f1fc;
+    border-left-color: #2e963a;
+    color: #1e293b;
+}
+
+.alert-box.success {
+    background: #e7f7ea;
+    border-left-color: #10b981;
+    color: #1e293b;
+}
+
+.alert-box.warning {
+    background: #fef0e6;
+    border-left-color: #f59e0b;
+    color: #1e293b;
+}
+
+.alert-box.danger {
+    background: #fbeaea;
+    border-left-color: #ef4444;
+    color: #1e293b;
+}
+
+/* Mobile Optimizations */
+@media only screen and (max-width: 596px) {
+    .modern-card {
+        border-radius: 0;
+        padding: 16px;
+    }
+
+    .modern-hero {
+        padding: 24px 16px;
+        border-radius: 0;
+    }
+
+    table.modern-info-table td.label,
+    table.modern-info-table td.value {
+        display: block;
+        text-align: left;
+        padding: 6px 0;
+    }
+
+    table.modern-info-table td.value {
+        font-size: 18px;
+        padding-top: 0;
+    }
+}
+
+/* Graceful Degradation for Outlook 2007-2013 */
+<!--[if mso]>
+<style type="text/css">
+    .modern-card,
+    .modern-card-header,
+    .modern-card-body,
+    .modern-card-footer,
+    table.button.modern table td,
+    .alert-box,
+    .modern-hero {
+        border-radius: 0 !important;
+        box-shadow: none !important;
+    }
+
+    table.container.modern {
+        box-shadow: none !important;
+        border-radius: 0 !important;
+    }
+</style>
+<![endif]-->

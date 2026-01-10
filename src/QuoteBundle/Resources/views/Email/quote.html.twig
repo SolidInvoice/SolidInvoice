@@ -7,26 +7,16 @@
  # with this source code in the file LICENSE.
  #}
 {% extends "@SolidInvoiceCore/Layout/Email/base.html.twig" %}
+{% import "@SolidInvoiceCore/Layout/Email/components.html.twig" as email %}
 
 {% set quotePath = url("_view_quote_external", {"uuid" : quote.uuid}) %}
 
 {%- block title -%}
-    {{ "quote.title"|trans({"%id%" : quote.quoteId}) }}
+    {{ "quote.title"|trans({"%id%" : quote.quoteId}, 'email') }}
 {%- endblock -%}
 
 {%- block header -%}
-    <div style="text-align: center" class="text-center">
-        <p>
-        <div style="font-size: 80%; color: #999999">
-            {% set link %}
-                <a rel="external" target="_blank" href="{{ quotePath }}">{{ quotePath }}</a>
-            {% endset %}
-            {% autoescape false %}
-                {{ "quote.view.online"|trans({"%url%" : link}) }}
-            {% endautoescape %}
-        </div>
-        </p>
-    </div>
+    {{ email.view_online_link(quotePath) }}
 {%- endblock -%}
 
 {%- block head_extra -%}
@@ -48,85 +38,72 @@
 
 
 {%- block content -%}
+    {# Quote intro message #}
     {% apply inky_to_html %}
-        {{ 'quote.info'|trans({'%company%': setting('system/company/company_name'), '%created%': quote.created|date}, 'email') }}
-
-        <table class="spacer">
-            <tbody>
-            <tr>
-                <td height="16px" style="font-size:16px;line-height:16px;">&#xA0;</td>
-            </tr>
-            </tbody>
-        </table>
-
         <row>
             <columns>
-                <strong>Quote #</strong>
+                <p style="color: #1e293b; font-size: 16px; line-height: 1.5; margin: 0 0 24px 0; Margin: 0 0 24px 0;">
+                    {{ 'quote.info'|trans({'%company%': setting('system/company/company_name'), '%created%': quote.created|date}, 'email') }}
+                </p>
             </columns>
-            <columns>
-                {{ quote.quoteId }}
-            </columns>
-        </row>
-
-        <row>
-            <columns>
-                <strong>{{ 'quote.subtotal'|trans }}</strong>
-            </columns>
-            <columns class="thick-line text-right">
-                {{ quote.baseTotal|formatCurrency(quote.client.currency) }}
-            </columns>
-        </row>
-        {% if quote.tax.positive %}
-            <row>
-
-                <columns>
-                    <strong>{{ 'quote.tax'|trans }}</strong>
-                </columns>
-                <columns>
-                    {{ quote.tax|formatCurrency(quote.client.currency) }}
-                </columns>
-            </row>
-        {% endif %}
-
-        {% if quote.discount.type is not empty %}
-            <row>
-                <columns>
-                    <strong>{{ 'quote.discount'|trans }}</strong>
-                </columns>
-                <columns>
-                    -{{ discount(quote)|formatCurrency(quote.client.currency) }}
-                </columns>
-            </row>
-        {% endif %}
-        <row>
-            <columns>
-                <strong>
-                    {{ 'quote.total'|trans }}
-                </strong>
-            </columns>
-            <columns>
-                {{ quote.total|formatCurrency(quote.client.currency) }}
-            </columns>
-        </row>
-
-        <row>
-            {% if quote.terms is not empty %}
-                <columns small="12">
-                    <strong>{{ 'quote.terms'|trans }}</strong>
-                    <p>
-                        {{ quote.terms|nl2br }}
-                    </p>
-                </columns>
-            {% endif %}
         </row>
     {% endapply %}
+
+    {{ email.spacer('sm') }}
+
+    {# Quote details section #}
+    {{ email.info_row('Quote #', quote.quoteId) }}
+    {{ email.spacer('xs') }}
+    {{ email.info_row('quote.created'|trans({}, 'email'), quote.created|date) }}
+
+    {% if quote.due %}
+        {{ email.spacer('xs') }}
+        {{ email.info_row('quote.expires'|trans({}, 'email'), quote.due|date) }}
+    {% endif %}
+
+    {{ email.divider('md') }}
+
+    {# Financial breakdown #}
+    {{ email.info_row('quote.subtotal'|trans({}, 'email'), quote.baseTotal|formatCurrency(quote.client.currency)) }}
+
+    {% if quote.tax.positive %}
+        {{ email.spacer('xs') }}
+        {{ email.info_row('quote.tax'|trans({}, 'email'), quote.tax|formatCurrency(quote.client.currency)) }}
+    {% endif %}
+
+    {% if quote.discount.type is not empty %}
+        {{ email.spacer('xs') }}
+        {{ email.info_row('quote.discount'|trans({}, 'email'), '-' ~ discount(quote)|formatCurrency(quote.client.currency)) }}
+    {% endif %}
+
+    {{ email.spacer('sm') }}
+
+    {# Total - highlighted #}
+    {{ email.info_row('quote.total'|trans({}, 'email'), quote.total|formatCurrency(quote.client.currency), true) }}
+
+    {# Terms section if present #}
+    {% if quote.terms is not empty %}
+        {{ email.divider('md') }}
+
+        {% apply inky_to_html %}
+            <row>
+                <columns small="12">
+                    <p style="font-weight: 600; color: #1e293b; margin: 0 0 8px 0; Margin: 0 0 8px 0;">{{ 'quote.terms'|trans({}, 'email') }}</p>
+                    <div style="color: #626976; font-size: 14px; line-height: 1.6;">
+                        {{ quote.terms|nl2br }}
+                    </div>
+                </columns>
+            </row>
+        {% endapply %}
+    {% endif %}
+
+    {# View Quote button #}
+    {{ email.divider('lg') }}
+    {{ email.button('quote.view'|trans([], 'email'), quotePath, 'primary', 'large') }}
+
+    {{ email.spacer('md') }}
 {%- endblock -%}
 
 {%- block footer -%}
-    {% if setting('system/general/hide_powered_by') is not same as ('1') %}
-        <hr />
-        <div style="font-size: 80%; color: #999999">
-            {{ "powered_by"|trans }} <a href="https://solidinvoice.co" target="_blank">{{ app_name }}</a> - {{ app_version }}
-        </div>
-    {% endif %}
+    {{ email.footer(true, false) }}
 {%- endblock footer -%}
