@@ -245,14 +245,14 @@
                 <center>
                     {% if show_powered_by and setting('system/general/hide_powered_by') is not same as('1') %}
                         <p style="font-size: 14px; color: #626976; margin: 0; Margin: 0;">
-                            {{ "powered_by"|trans }} <a href="https://solidinvoice.co" target="_blank" style="color: #206bc4; text-decoration: none;">{{ app_name }}</a> - {{ app_version }}
+                            {{ "powered_by"|trans({}, 'email') }} <a href="https://solidinvoice.co" target="_blank" style="color: #206bc4; text-decoration: none;">{{ app_name }}</a> - {{ app_version }}
                         </p>
                     {% endif %}
 
                     {% if show_preferences %}
                         <p style="font-size: 14px; color: #626976; margin: 8px 0 0 0; Margin: 8px 0 0 0;">
                             <a href="{{ url('_settings_notifications') }}" target="_blank" style="color: #206bc4; text-decoration: none;">
-                                {{ 'notification.preferences'|trans }}
+                                {{ 'notification.preferences'|trans({}, 'email') }}
                             </a>
                         </p>
                     {% endif %}
@@ -358,7 +358,9 @@
  #}
 {% macro view_online_link(url, text='') %}
     {% if not text %}
-        {% set link_html = '<a rel="external" target="_blank" href="' ~ url ~ '" style="color: #2e963a; text-decoration: none;">' ~ url ~ '</a>' %}
+        {% set url_attr = url|e('html_attr') %}
+        {% set url_text = url|e %}
+        {% set link_html = '<a rel="external" target="_blank" href="' ~ url_attr ~ '" style="color: #2e963a; text-decoration: none;">' ~ url_text ~ '</a>' %}
         {% set text = 'invoice.view.online'|trans({'%url%': link_html}, 'email') %}
     {% endif %}
 

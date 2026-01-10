@@ -32,7 +32,7 @@
 
     {% if quote.client %}
         {{ email.spacer('xs') }}
-        {{ email.info_row('Client', quote.client.name) }}
+        {{ email.info_row('quote.status_change.client'|trans({}, 'email'), quote.client.name) }}
     {% endif %}
 
     {{ email.spacer('sm') }}

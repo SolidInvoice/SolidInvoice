@@ -52,7 +52,7 @@
     {{ email.spacer('sm') }}
 
     {# Quote details section #}
-    {{ email.info_row('Quote #', quote.quoteId) }}
+    {{ email.info_row('quote.number'|trans({}, 'email'), quote.quoteId) }}
     {{ email.spacer('xs') }}
     {{ email.info_row('quote.created'|trans({}, 'email'), quote.created|date) }}
 

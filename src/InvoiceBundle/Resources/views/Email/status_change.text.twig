@@ -14,7 +14,7 @@
 
 {{ 'invoice.status_change.id'|trans({}, 'email') }}: {{ invoice.invoiceId ?? invoice.id }}
 {% if invoice.client -%}
-{{ 'Client' }}: {{ invoice.client.name }}
+{{ 'invoice.status_change.client'|trans({}, 'email') }}: {{ invoice.client.name }}
 {% endif -%}
 {{ 'invoice.status_change.new_status'|trans({}, 'email') }}: {{ invoice.status }}
 

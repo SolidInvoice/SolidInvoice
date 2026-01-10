@@ -11,3 +11,4 @@ client:
             id: ID
             name: 'Client Name'
             website: Website
+            vat_number: 'VAT Number'
