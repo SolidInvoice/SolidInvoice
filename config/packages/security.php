@@ -90,7 +90,7 @@ return static function (SecurityConfig $config): void {
             '/install(?:.*)|' .
             '/verify$|' .
             '/logout$|' .
-            '/invite/accept/[a-zA-Z0-9-]{36}$|' .
+            '/invite/accept/[A-Z0-9]{26}$|' .
             '/payments/create/[a-zA-Z0-9-]{36}$|' .
             '/payment/capture/(?:.*)|' .
             '/payments/done$' .
