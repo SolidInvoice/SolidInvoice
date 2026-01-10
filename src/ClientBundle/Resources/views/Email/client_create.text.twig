@@ -26,7 +26,7 @@
 
 {% for contact in client.contacts %}
 {{ 'client.create.contacts.name'|trans({}, 'email') }}: {{ contact.firstName }} {{ contact.lastName }}
-{{ 'client.contact.details.email'|trans({}, 'email') }}: {{ contact.email }}
+{{ 'client.create.details.email'|trans({}, 'email') }}: {{ contact.email }}
 {% if not loop.last %}
 
 {% endif %}
