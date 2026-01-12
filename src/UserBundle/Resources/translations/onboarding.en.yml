@@ -74,7 +74,7 @@ onboarding:
 
     complete:
         title: "You're all set!"
-        subtitle: 'Your account is ready and you're good to go'
+        subtitle: 'Your account is ready and you''re good to go'
         description: 'Congratulations! Your account is ready and you''re good to go. You can start creating invoices, managing clients, and tracking payments.'
         next_title: 'What happens next?'
         next_steps: |
