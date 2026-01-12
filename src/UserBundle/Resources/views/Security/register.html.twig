@@ -47,24 +47,6 @@
                                 {{ form_errors(form.email) }}
                             </div>
 
-                            {# Company Name Field #}
-                            <div class="mb-3">
-                                {#{{ form_label(form.company) }}#}
-                                <div class="input-group input-group-flat">
-                                        <span class="input-group-text">
-                                            {{ ux_icon('tabler:building', {width: 24, height: 24}) }}
-                                        </span>
-                                    {{ form_widget(form.company, {
-                                        'attr': {
-                                            'class': 'form-control',
-                                            'placeholder': 'security.register.placeholders.company'|trans,
-                                            'autocomplete': 'organization'
-                                        }
-                                    }) }}
-                                </div>
-                                {{ form_errors(form.company) }}
-                            </div>
-
                             {# Password Field with Strength Indicator #}
                             <div class="mb-3">
 

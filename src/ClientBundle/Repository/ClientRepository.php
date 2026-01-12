@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Repository;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -23,11 +22,12 @@ use Exception;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Model\Status;
 use SolidInvoice\CoreBundle\Util\ArrayUtil;
+use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
 
 /**
- * @extends ServiceEntityRepository<Client>
+ * @extends EntityRepository<Client>
  */
-class ClientRepository extends ServiceEntityRepository
+class ClientRepository extends EntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

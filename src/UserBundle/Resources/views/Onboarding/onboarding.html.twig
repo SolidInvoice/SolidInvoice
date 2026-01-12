@@ -1,0 +1,218 @@
+{#
+# This file is part of SolidInvoice package.
+#
+# (c) Pierre du Plessis <open-source@solidworx.co>
+#
+# This source file is subject to the MIT license that is bundled
+# with this source code in the file LICENSE.
+#}
+
+{% extends '@SolidInvoiceCore/Layout/base.html.twig' %}
+
+{% block page_title %}Get Started - {{ app_name }}{% endblock %}
+
+{% block body %}
+    <div class="onboarding-container min-vh-100">
+        {# Progress Bar with Step Names #}
+        <div class="onboarding-progress bg-white border-bottom">
+            <div class="container py-3">
+                <div class="row align-items-center mb-2">
+                    <div class="col">
+                        <div class="d-flex justify-content-between align-items-center">
+                            {% set steps = [
+                                {name: 'company', label: 'Your Business', icon: 'building'},
+                                {name: 'client', label: 'First Client', icon: 'users'},
+                                {name: 'invoice', label: 'First Invoice', icon: 'file-invoice'},
+                                {name: 'complete', label: 'Ready!', icon: 'circle-check'}
+                            ] %}
+                            {% for step in steps %}
+                                <div class="d-flex align-items-center {% if loop.last %}{% else %}flex-fill{% endif %}">
+                                    <div class="step-indicator {% if form.vars.cursor.stepIndex >= loop.index0 %}active{% endif %} {% if currentStep == step.name %}current{% endif %}">
+                                        <div class="step-number">
+                                            {{ ux_icon('tabler:' ~ step.icon, {width: 16, height: 16}) }}
+                                        </div>
+                                        <span class="step-label d-none d-md-inline">{{ step.label }}</span>
+                                    </div>
+                                    {% if not loop.last %}
+                                        <div class="step-connector {% if form.vars.cursor.stepIndex > loop.index0 %}completed{% endif %}"></div>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="progress" style="height: 3px;">
+                    <div class="progress-bar bg-primary" role="progressbar" style="width: {{ progress }}%" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+        </div>
+
+        {# Main Content #}
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-12 col-lg-8 col-xl-6">
+                    {% include '@SolidInvoiceUser/Onboarding/steps/step_' ~ currentStep ~ '.html.twig' %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .onboarding-container {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+
+        .onboarding-progress {
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+        }
+
+        /* Step Indicator */
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .step-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #e9ecef;
+            color: #6c757d;
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+        }
+
+        .step-indicator.active .step-number {
+            background: #e7f3ff;
+            color: #066fd1;
+        }
+
+        .step-indicator.current .step-number {
+            background: #066fd1;
+            color: white;
+            box-shadow: 0 0 0 4px rgba(6, 111, 209, 0.1);
+        }
+
+        .step-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #6c757d;
+            transition: color 0.3s ease;
+        }
+
+        .step-indicator.active .step-label {
+            color: #066fd1;
+        }
+
+        .step-indicator.current .step-label {
+            color: #066fd1;
+            font-weight: 600;
+        }
+
+        .step-connector {
+            height: 2px;
+            background: #e9ecef;
+            flex: 1;
+            margin: 0 1rem;
+            transition: background 0.3s ease;
+        }
+
+        .step-connector.completed {
+            background: #066fd1;
+        }
+
+        /* Card Styling */
+        .onboarding-step-card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.075);
+            padding: 3rem;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .step-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #066fd1 0%, #0447a0 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+        }
+
+        .step-icon svg {
+            width: 32px;
+            height: 32px;
+            color: white;
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .welcome-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, rgba(6, 111, 209, 0.1) 0%, rgba(4, 71, 160, 0.1) 100%);
+            border-radius: 2rem;
+            color: #066fd1;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .step-benefits {
+            background: #f8f9fa;
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            margin-bottom: 2rem;
+            border-left: 3px solid #066fd1;
+        }
+
+        .step-benefits ul {
+            margin: 0;
+            padding-left: 1.25rem;
+            color: #495057;
+        }
+
+        .step-benefits li {
+            margin-bottom: 0.5rem;
+        }
+
+        .step-benefits li:last-child {
+            margin-bottom: 0;
+        }
+
+        .btn-link {
+            text-decoration: none;
+        }
+
+        .btn-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .onboarding-step-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .step-connector {
+                margin: 0 0.5rem;
+            }
+        }
+    </style>
+{% endblock %}

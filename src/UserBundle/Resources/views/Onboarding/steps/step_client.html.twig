@@ -1,0 +1,74 @@
+{#
+# This file is part of SolidInvoice package.
+#
+# (c) Pierre du Plessis <open-source@solidworx.co>
+#
+# This source file is subject to the MIT license that is bundled
+# with this source code in the file LICENSE.
+#}
+
+<div class="onboarding-step-card">
+    <div class="step-icon">
+        {{ ux_icon('tabler:users', {width: 32, height: 32, class: 'text-white'}) }}
+    </div>
+
+    <h2 class="h2 text-center mb-2">Add your first client</h2>
+    <p class="text-muted text-center lead mb-4">
+        Who will you be invoicing? This step is optional, but recommended
+    </p>
+
+    {# Benefits Box #}
+    <div class="step-benefits">
+        <div class="d-flex align-items-start gap-2">
+            {{ ux_icon('tabler:bulb', {width: 20, height: 20, class: 'text-warning mt-1'}) }}
+            <div>
+                <strong class="d-block mb-1">Why add a client now?</strong>
+                <ul class="mb-0">
+                    <li>Create your first invoice in the next step</li>
+                    <li>Keep all client info organized in one place</li>
+                    <li>Track payment history and outstanding invoices</li>
+                    <li>Send invoices directly via email</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    {{ form_start(form) }}
+        <div class="mb-3">
+            {{ form_row(form.client.clientName, {
+                'attr': {
+                    'class': 'form-control form-control-lg',
+                    'placeholder': 'e.g., John Smith or Acme Corp'
+                },
+                'help': 'Can be a person or company name'
+            }) }}
+        </div>
+
+        <div class="mb-4">
+            {{ form_row(form.client.clientEmail, {
+                'attr': {
+                    'class': 'form-control form-control-lg',
+                    'placeholder': 'client@example.com'
+                },
+                'help': 'We\'ll use this to send them invoices'
+            }) }}
+        </div>
+
+        <div class="d-grid gap-2">
+            {{ form_widget(form.navigator.next, {
+                'label': 'Continue',
+                'attr': {'class': 'btn btn-primary btn-lg w-100'}
+            }) }}
+
+            {{ form_widget(form.navigator.skip, {
+                'label': 'I\'ll do this later',
+                'attr': {'class': 'btn btn-link w-100 mt-2 text-muted'}
+            }) }}
+
+            {{ form_widget(form.navigator.back, {
+                'label': 'Back',
+                'attr': {'class': 'btn btn-link w-100 mt-2 text-muted'}
+            }) }}
+        </div>
+    {{ form_end(form) }}
+</div>

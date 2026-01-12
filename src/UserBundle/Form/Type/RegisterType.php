@@ -48,10 +48,6 @@ final class RegisterType extends AbstractType
         }
 
         $builder->add('email', EmailType::class, $emailOptions);
-        $builder->add('company', null, [
-            'required' => true,
-            'label' => 'Company Name',
-        ]);
         $builder->add('plainPassword', PasswordType::class, [
             'required' => true,
             'label' => 'Password',
