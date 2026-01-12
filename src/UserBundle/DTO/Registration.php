@@ -39,9 +39,6 @@ final class Registration
         PasswordStrength(minScore: PasswordStrength::STRENGTH_WEAK)]
     public ?string $plainPassword = null;
 
-    #[NotBlank]
-    public ?string $company = null;
-
     #[IsTrue(message: 'You must accept the terms and conditions to register')]
     public ?bool $acceptTerms = null;
 }

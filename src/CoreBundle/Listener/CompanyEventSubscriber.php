@@ -79,6 +79,17 @@ final class CompanyEventSubscriber implements EventSubscriberInterface
     {
         $routeName = $request->attributes->get('_route');
 
-        return in_array($routeName, ['2fa_login', '_select_company', '_switch_company', '_create_company'], true);
+        return in_array(
+            $routeName,
+            [
+                '2fa_login',
+                '_select_company',
+                '_switch_company',
+                '_create_company',
+                '_onboarding',
+                '_onboarding',
+            ],
+            true
+        );
     }
 }

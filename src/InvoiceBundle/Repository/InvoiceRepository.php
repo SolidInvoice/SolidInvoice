@@ -16,7 +16,6 @@ namespace SolidInvoice\InvoiceBundle\Repository;
 use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -26,12 +25,13 @@ use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\PaymentBundle\Entity\Payment;
+use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 
 /**
- * @extends ServiceEntityRepository<Invoice>
+ * @extends EntityRepository<Invoice>
  */
-class InvoiceRepository extends ServiceEntityRepository
+class InvoiceRepository extends EntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

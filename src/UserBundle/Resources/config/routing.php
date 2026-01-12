@@ -28,6 +28,7 @@ use SolidInvoice\UserBundle\Action\Security\OAuthConnectCheck;
 use SolidInvoice\UserBundle\Action\Security\TwoFactorIndex;
 use SolidInvoice\UserBundle\Action\Security\VerifyEmail;
 use SolidInvoice\UserBundle\Action\Users;
+use SolidInvoice\UserBundle\Onboarding\Action\Onboarding;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 return static function (RoutingConfigurator $routingConfigurator): void {
@@ -54,6 +55,10 @@ return static function (RoutingConfigurator $routingConfigurator): void {
     $routingConfigurator
         ->add('_register', '/register')
         ->controller(Register::class);
+
+    $routingConfigurator
+        ->add('_onboarding', '/onboarding')
+        ->controller(Onboarding::class);
 
     $routingConfigurator->add('_logout', '/logout');
 

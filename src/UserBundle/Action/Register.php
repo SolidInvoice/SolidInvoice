@@ -67,32 +67,25 @@ final class Register extends AbstractController
             assert($data instanceof Registration);
 
             $user = new User();
+            $user->setEmail($invitation instanceof UserInvitation ? $invitation->getEmail() : $data->email);
+            $user->setPassword($data->plainPassword);
 
+            // If invited, add to existing company
             if ($invitation instanceof UserInvitation) {
-                $user->setEmail($invitation->getEmail());
                 $user->addCompany($invitation->getCompany());
-            } else {
-                $user->setEmail($data->email);
-                $company = (new Company())->setName($data->company);
-                $company->currency = 'USD'; // @TODO: Make this configurable, or get the currency from registration
-                $user->addCompany($company);
-                $user->setPassword($data->plainPassword);
+                $this->invitationRepository->delete($invitation);
             }
-
-            if ($invitation instanceof UserInvitation) {
-                $user->setEmail($invitation->getEmail());
-                $user->addCompany($invitation->getCompany());
-            }
+            // For regular users, company will be created during onboarding
 
             $user->setPassword($this->userPasswordHasher->hashPassword($user, $user->getPassword()));
             $user->setEnabled(true);
             $user->eraseCredentials();
             $this->userRepository->save($user);
 
-            if ($invitation instanceof UserInvitation) {
-                $this->invitationRepository->delete($invitation);
-            }
-
+            // Auto-login and redirect
+            // OnboardingLoginListener will handle post-login redirect:
+            // - Invited users: Skip onboarding (they have a company)
+            // - Regular users: Redirect to onboarding
             return $this->security->login($user, 'security.authenticator.form_login.main', 'main');
         }
 

@@ -1,0 +1,68 @@
+{#
+# This file is part of SolidInvoice package.
+#
+# (c) Pierre du Plessis <open-source@solidworx.co>
+#
+# This source file is subject to the MIT license that is bundled
+# with this source code in the file LICENSE.
+#}
+
+<div class="onboarding-step-card">
+    {# Welcome Badge #}
+    <div class="welcome-section">
+        <div class="welcome-badge">
+            {{ ux_icon('tabler:sparkles', {width: 16, height: 16}) }}
+            Welcome to {{ app_name }}!
+        </div>
+        <div class="step-icon">
+            {{ ux_icon('tabler:building', {width: 32, height: 32, class: 'text-white'}) }}
+        </div>
+        <h2 class="h2 mb-2">Let's get you set up</h2>
+        <p class="text-muted lead mb-0">
+            We'll have you sending your first invoice in less than 2 minutes
+        </p>
+    </div>
+
+    {# Benefits Box #}
+    <div class="step-benefits">
+        <div class="d-flex align-items-start gap-2 mb-2">
+            {{ ux_icon('tabler:info-circle', {width: 20, height: 20, class: 'text-primary mt-1'}) }}
+            <div>
+                <strong class="d-block mb-1">What we're setting up:</strong>
+                <ul class="mb-0">
+                    <li><strong>Your business details</strong> - This appears on all your invoices</li>
+                    <li><strong>Your first client</strong> - Optional, but gets you started faster</li>
+                    <li><strong>Your first invoice</strong> - See how easy it is to get paid</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <h3 class="h4 mb-3">First, tell us about your business</h3>
+
+    {{ form_start(form) }}
+        <div class="mb-4">
+            {{ form_row(form.company.companyName, {
+                'attr': {
+                    'class': 'form-control form-control-lg',
+                    'placeholder': 'e.g., Acme Design Studio'
+                },
+                'help': 'This is how your business will appear on invoices and quotes'
+            }) }}
+        </div>
+
+        <div class="mb-4">
+            {{ form_row(form.company.companyCurrency, {
+                'attr': {'class': 'form-control'},
+                'help': 'Don\'t worry, you can change this later in settings'
+            }) }}
+        </div>
+
+        <div class="d-grid gap-2">
+            {{ form_widget(form.navigator.next, {
+                'label': 'Continue',
+                'attr': {'class': 'btn btn-primary btn-lg w-100'}
+            }) }}
+        </div>
+    {{ form_end(form) }}
+</div>

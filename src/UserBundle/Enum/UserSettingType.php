@@ -18,4 +18,8 @@ enum UserSettingType: string
     case Timezone = 'timezone';
     case Location = 'location';
     case OnboardComplete = 'onboard_complete';
+    case OnboardingStep = 'onboarding_step';
+    case OnboardingSkipped = 'onboarding_skipped';
+    case OnboardingStartedAt = 'onboarding_started_at';
+    case OnboardingCompletedAt = 'onboarding_completed_at';
 }
