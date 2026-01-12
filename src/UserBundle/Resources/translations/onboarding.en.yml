@@ -22,7 +22,7 @@ onboarding:
         benefits: |
             Your business details - This appears on all your invoices
             Your first client - Optional, but gets you started faster
-            Your first invoice -  See how easy it is to get paid
+            Your first invoice - See how easy it is to get paid
         fields:
             name:
                 label: 'Company Name'

@@ -24,6 +24,7 @@ use SolidInvoice\CoreBundle\Form\Type\ImageUploadType;
 use SolidInvoice\CoreBundle\Form\TypeExtension\UnsanitizeSingleQuotesTypeExtension;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\MoneyBundle\Form\Extension\MoneyExtension;
+use SolidInvoice\MoneyBundle\Form\Type\CurrencyType;
 use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension;
@@ -117,12 +118,13 @@ abstract class FormTestCase extends KernelTestCase
     /**
      * Get registered form types.
      *
-     * @return array<string, FormTypeInterface>
+     * @return list<FormTypeInterface>
      */
     protected function getTypes(): array
     {
         return [
-            'image_upload' => new ImageUploadType(),
+            new ImageUploadType(),
+            new CurrencyType('en'),
         ];
     }
 
