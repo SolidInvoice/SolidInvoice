@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Tests\Twig\Components;
 
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectManager;
 use SolidInvoice\CoreBundle\Test\LiveComponentTest;
 use SolidInvoice\UserBundle\Twig\Components\TwoFactorSettings;
 use Symfony\UX\LiveComponent\Test\TestLiveComponent;
@@ -22,7 +22,7 @@ final class TwoFactorSettingsTest extends LiveComponentTest
 {
     private TestLiveComponent $component;
 
-    private EntityManagerInterface $em;
+    private ObjectManager $em;
 
     protected function setUp(): void
     {
