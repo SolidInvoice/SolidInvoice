@@ -27,7 +27,7 @@ final class OnboardingData
     public ?string $companyName = null;
 
     #[Assert\NotBlank(groups: ['company'])]
-    #[Assert\Currency]
+    #[Assert\Currency(groups: ['company'])]
     public ?string $companyCurrency = 'USD';
 
     // Step 2: Client (optional)

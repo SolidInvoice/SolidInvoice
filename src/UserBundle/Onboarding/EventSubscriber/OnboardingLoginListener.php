@@ -54,8 +54,6 @@ final class OnboardingLoginListener implements EventSubscriberInterface
             return;
         }
 
-        //dd($this->onboardingManager->isOnboardingComplete($user));
-
         // Check if user was invited (has a company already)
         // Invited users skip onboarding entirely
         if (count($user->getCompanies()) > 0) {

@@ -87,7 +87,6 @@ final class CompanyEventSubscriber implements EventSubscriberInterface
                 '_switch_company',
                 '_create_company',
                 '_onboarding',
-                '_onboarding',
             ],
             true
         );

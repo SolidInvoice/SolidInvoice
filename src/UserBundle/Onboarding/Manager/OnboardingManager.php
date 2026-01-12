@@ -27,7 +27,6 @@ use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\UserBundle\Entity\User;
-use SolidInvoice\UserBundle\Entity\UserSetting;
 use SolidInvoice\UserBundle\Enum\UserSettingType;
 use SolidInvoice\UserBundle\Onboarding\DTO\OnboardingData;
 use SolidInvoice\UserBundle\Repository\UserSettingRepository;
@@ -76,7 +75,7 @@ final class OnboardingManager
      */
     public function setCurrentStep(User $user, string $step): void
     {
-        $this->saveSetting($user, UserSettingType::OnboardingStep, $step);
+        $this->userSettingRepository->saveSetting($user, UserSettingType::OnboardingStep, $step);
         $this->entityManager->flush();
     }
 
@@ -94,7 +93,7 @@ final class OnboardingManager
         $skipped = $setting ? json_decode($setting->getValue(), true, flags: JSON_THROW_ON_ERROR) : [];
         $skipped[] = $step;
 
-        $this->saveSetting($user, UserSettingType::OnboardingSkipped, json_encode($skipped, JSON_THROW_ON_ERROR));
+        $this->userSettingRepository->saveSetting($user, UserSettingType::OnboardingSkipped, json_encode($skipped, JSON_THROW_ON_ERROR));
         $this->entityManager->flush();
     }
 
@@ -125,8 +124,8 @@ final class OnboardingManager
         }
 
         // 4. Mark onboarding complete
-        $this->saveSetting($user, UserSettingType::OnboardComplete, 'true');
-        $this->saveSetting(
+        $this->userSettingRepository->saveSetting($user, UserSettingType::OnboardComplete, 'true');
+        $this->userSettingRepository->saveSetting(
             $user,
             UserSettingType::OnboardingCompletedAt,
             (new DateTimeImmutable())->format('Y-m-d H:i:s')
@@ -142,7 +141,7 @@ final class OnboardingManager
      */
     public function startOnboarding(User $user): void
     {
-        $this->saveSetting(
+        $this->userSettingRepository->saveSetting(
             $user,
             UserSettingType::OnboardingStartedAt,
             (new DateTimeImmutable())->format('Y-m-d H:i:s')
@@ -155,8 +154,8 @@ final class OnboardingManager
      */
     public function dismissOnboarding(User $user): void
     {
-        $this->saveSetting($user, UserSettingType::OnboardComplete, 'dismissed');
-        $this->saveSetting(
+        $this->userSettingRepository->saveSetting($user, UserSettingType::OnboardComplete, 'dismissed');
+        $this->userSettingRepository->saveSetting(
             $user,
             UserSettingType::OnboardingCompletedAt,
             (new DateTimeImmutable())->format('Y-m-d H:i:s')
@@ -225,25 +224,5 @@ final class OnboardingManager
         $this->invoiceRepository->save($invoice);
 
         return $invoice;
-    }
-
-    /**
-     * Helper: Save user setting
-     */
-    private function saveSetting(User $user, UserSettingType $key, string $value): void
-    {
-        $setting = $this->userSettingRepository->findOneBy([
-            'user' => $user,
-            'key' => $key,
-        ]);
-
-        if (! $setting instanceof UserSetting) {
-            $setting = new UserSetting();
-            $setting->setUser($user);
-            $setting->setKey($key);
-        }
-
-        $setting->setValue($value);
-        $this->entityManager->persist($setting);
     }
 }

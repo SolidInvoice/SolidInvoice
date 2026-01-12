@@ -17,7 +17,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CurrencyType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class CompanySetupStep extends AbstractType
 {
@@ -26,7 +25,6 @@ final class CompanySetupStep extends AbstractType
         $builder->add('companyName', TextType::class, [
             'label' => 'Company Name',
             'required' => true,
-            'constraints' => [new NotBlank()],
             'attr' => [
                 'placeholder' => 'Your Company Name',
                 'autofocus' => true,
