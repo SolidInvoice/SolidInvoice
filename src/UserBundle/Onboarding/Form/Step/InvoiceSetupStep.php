@@ -25,21 +25,25 @@ final class InvoiceSetupStep extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('invoiceDescription', TextareaType::class, [
-            'label' => 'Service Description',
+            'label' => 'onboarding.invoice.fields.description.label',
             'required' => false,
             'attr' => [
-                'placeholder' => 'Website Design',
+                'placeholder' => 'onboarding.invoice.fields.description.placeholder',
                 'rows' => 3,
             ],
+            'help' => 'onboarding.invoice.fields.description.help',
+            'translation_domain' => 'onboarding',
         ]);
 
         $builder->add('invoiceAmount', MoneyType::class, [
-            'label' => 'Amount',
+            'label' => 'onboarding.invoice.fields.amount.label',
             'required' => false,
             'currency' => new Currency($options['currency']),
             'attr' => [
-                'placeholder' => '1000.00',
+                'placeholder' => 'onboarding.invoice.fields.amount.placeholder',
             ],
+            'help' => 'onboarding.invoice.fields.amount.help',
+            'translation_domain' => 'onboarding',
         ]);
     }
 

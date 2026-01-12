@@ -74,7 +74,15 @@ final class OnboardingType extends AbstractFlowType
         );
 
         // Add navigation buttons
-        $builder->add('navigator', OnboardingNavigatorType::class);
+        $builder->add(
+            'navigator',
+            OnboardingNavigatorType::class,
+            options: [
+                'next_button_label' => $formData->currentStep === 'invoice'
+                    ? 'onboarding.navigation.create_invoice'
+                    : 'onboarding.navigation.continue',
+            ],
+        );
     }
 
     public function configureOptions(OptionsResolver $resolver): void

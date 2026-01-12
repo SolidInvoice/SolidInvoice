@@ -191,3 +191,8 @@ notifications:
         invoice: 'Invoice Notifications'
         payment: 'Payment Notifications'
         quote: 'Quote Notifications'
+
+onboarding:
+    flash:
+        invoice_created: "🎉 Your first invoice is ready! You can edit it, send it to your client, or download a PDF."
+        onboarding_complete: "Welcome to SolidInvoice! You're all set up and ready to go."

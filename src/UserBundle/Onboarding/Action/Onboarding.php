@@ -68,7 +68,7 @@ final class Onboarding extends AbstractController
                     $form->reset();
 
                     if ($invoice !== null) {
-                        $this->addFlash('success', '🎉 Your first invoice is ready! You can edit it, send it to your client, or download a PDF.');
+                        $this->addFlash('success', 'onboarding.flash.invoice_created');
                         return $this->redirectToRoute('_invoices_view', ['id' => $invoice->getId()]);
                     }
                 }
@@ -84,12 +84,12 @@ final class Onboarding extends AbstractController
 
                 // If an invoice was created, redirect to invoice detail page
                 if ($invoice !== null) {
-                    $this->addFlash('success', '🎉 Your first invoice is ready! You can edit it, send it to your client, or download a PDF.');
+                    $this->addFlash('success', 'onboarding.flash.invoice_created');
                     return $this->redirectToRoute('_invoices_view', ['id' => $invoice->getId()]);
                 }
 
                 // Otherwise, redirect to dashboard
-                $this->addFlash('success', 'Welcome to SolidInvoice! You\'re all set up and ready to go.');
+                $this->addFlash('success', 'onboarding.flash.onboarding_complete');
                 return $this->redirectToRoute('_dashboard');
             } else {
                 $this->onboardingManager->setCurrentStep($user, $form->getCursor()->getCurrentStep());

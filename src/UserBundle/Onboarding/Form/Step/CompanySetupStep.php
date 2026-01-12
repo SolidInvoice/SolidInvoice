@@ -23,18 +23,21 @@ final class CompanySetupStep extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('companyName', TextType::class, [
-            'label' => 'Company Name',
+            'label' => 'onboarding.company.fields.name.label',
             'required' => true,
             'attr' => [
-                'placeholder' => 'Your Company Name',
+                'placeholder' => 'onboarding.company.fields.name.placeholder',
                 'autofocus' => true,
             ],
+            'help' => 'onboarding.company.fields.name.help',
+            'translation_domain' => 'onboarding',
         ]);
 
         $builder->add('companyCurrency', CurrencyType::class, [
-            'label' => 'Currency',
+            'label' => 'onboarding.company.fields.currency.label',
             'required' => true,
-            'help' => 'This will be used for all your invoices',
+            'help' => 'onboarding.company.fields.currency.help',
+            'translation_domain' => 'onboarding',
         ]);
     }
 }
