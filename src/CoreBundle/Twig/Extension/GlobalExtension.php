@@ -112,7 +112,7 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
             new TwigFunction('app_logo', $this->displayAppLogo(...), ['is_safe' => ['html'], 'needs_environment' => true]),
 
             new TwigFunction('company_name', function (): string {
-                if ($this->security->getUser() instanceof UserInterface || $this->companySelector->getCompany() instanceof Ulid) {
+                if ($this->security->getUser() instanceof UserInterface && $this->companySelector->getCompany() instanceof Ulid) {
                     return $this->systemConfig->get('system/company/company_name') ?? SolidInvoiceCoreBundle::APP_NAME;
                 }
 
@@ -133,7 +133,7 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
         $logo = $showDefault ? self::DEFAULT_LOGO : null;
 
         if ($this->installed && ! $showOnlyAppIcon) {
-            $logo = $this->systemConfig->get('system/company/logo', $company);
+            $logo = $this->companySelector->getCompany() ? $this->systemConfig->get('system/company/logo', $company) : self::DEFAULT_LOGO;
 
             if (null === $logo) {
                 $logo = $showDefault ? self::DEFAULT_LOGO : null;
@@ -146,7 +146,7 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
 
         [$type, $logo] = explode('|', $logo);
 
-        return $env->createTemplate('<img src="data:image/{{ type }};base64,{{ logo }}" class="brand-image m-2" width="' . $width . '"/>')->render(['type' => $type, 'logo' => $logo]);
+        return $env->createTemplate('<img src="data:image/{{ type }};base64,{{ logo }}" class="navbar-brand-image m-2" width="' . $width . '"/>')->render(['type' => $type, 'logo' => $logo]);
     }
 
     /**

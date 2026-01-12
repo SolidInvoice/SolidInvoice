@@ -1,0 +1,571 @@
+/**
+ * SolidInvoice - Two-Factor Authentication Styles
+ *
+ * Modern 2FA configuration and login pages with elegant design.
+ * Matches the profile page patterns and Tabler design system.
+ */
+
+// ============================================================================
+// CONFIGURATION PAGE - 2FA SETTINGS SECTIONS
+// ============================================================================
+
+.two-factor-settings {
+    .profile-form-sections {
+        gap: var(--swp-space-5);
+    }
+}
+
+// Status Badges
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--swp-space-2);
+    padding: var(--swp-space-1-5) var(--swp-space-3);
+    border-radius: var(--swp-radius-full);
+    font-size: var(--swp-text-sm);
+    font-weight: var(--swp-font-semibold);
+    line-height: 1;
+
+    &.status-enabled {
+        background: rgba(var(--swp-success-rgb), 0.1);
+        color: var(--swp-success);
+        border: 1px solid rgba(var(--swp-success-rgb), 0.2);
+    }
+
+    &.status-disabled {
+        background: var(--swp-gray-100);
+        color: var(--swp-text-muted);
+        border: 1px solid var(--swp-border);
+    }
+}
+
+// Section Content Layout
+.two-factor-section-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--swp-space-4);
+    padding: var(--swp-space-5);
+
+    @media (max-width: 767.98px) {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: var(--swp-space-4);
+    }
+}
+
+.two-factor-section-info {
+    flex: 1;
+}
+
+.two-factor-section-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-3);
+    flex-shrink: 0;
+
+    @media (max-width: 767.98px) {
+        width: 100%;
+        flex-direction: column;
+
+        .btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+}
+
+// ============================================================================
+// TOTP SETUP MODAL
+// ============================================================================
+
+.totp-setup-container {
+    padding: var(--swp-space-4) 0;
+}
+
+.setup-steps {
+    display: flex;
+    justify-content: center;
+    gap: var(--swp-space-3);
+    margin-bottom: var(--swp-space-6);
+
+    @media (max-width: 575.98px) {
+        flex-direction: column;
+        gap: var(--swp-space-2);
+    }
+}
+
+.setup-steps .step {
+    display: flex;
+    align-items: center;
+    gap: var(--swp-space-2);
+    padding: var(--swp-space-2) var(--swp-space-4);
+    background: var(--swp-gray-100);
+    border-radius: var(--swp-radius-md);
+    font-size: var(--swp-text-sm);
+    font-weight: var(--swp-font-medium);
+    color: var(--swp-text-muted);
+    transition: all var(--swp-transition-base);
+
+    &.active {
+        background: var(--swp-primary-light);
+        color: var(--swp-primary);
+        box-shadow: var(--swp-shadow-sm);
+    }
+
+    .step-number {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        background: currentColor;
+        color: white;
+        border-radius: var(--swp-radius-full);
+        font-size: var(--swp-text-xs);
+        font-weight: var(--swp-font-bold);
+        opacity: 0.8;
+    }
+
+    &.active .step-number {
+        opacity: 1;
+    }
+}
+
+.qr-code-container {
+    padding: var(--swp-space-6);
+    background: var(--swp-gray-50);
+    border-radius: var(--swp-radius-lg);
+    margin-bottom: var(--swp-space-5);
+
+    @media (max-width: 575.98px) {
+        padding: var(--swp-space-4);
+    }
+}
+
+.qr-code-image {
+    max-width: 300px;
+    width: 100%;
+    height: auto;
+    border: 2px solid var(--swp-border);
+    border-radius: var(--swp-radius-md);
+    background: white;
+    padding: var(--swp-space-3);
+    box-shadow: var(--swp-shadow-sm);
+}
+
+.manual-entry-details {
+    text-align: center;
+
+    summary {
+        cursor: pointer;
+        color: var(--swp-primary);
+        font-size: var(--swp-text-sm);
+        font-weight: var(--swp-font-medium);
+        user-select: none;
+        list-style: none;
+        padding: var(--swp-space-2);
+        border-radius: var(--swp-radius-md);
+        transition: background-color var(--swp-transition-base);
+
+        &:hover {
+            background: rgba(var(--swp-primary-rgb), 0.05);
+        }
+
+        &::-webkit-details-marker {
+            display: none;
+        }
+    }
+
+    .manual-entry-content {
+        margin-top: var(--swp-space-3);
+        padding: var(--swp-space-4);
+        background: white;
+        border: 1px solid var(--swp-border);
+        border-radius: var(--swp-radius-md);
+    }
+
+    .manual-entry-code {
+        display: block;
+        padding: var(--swp-space-3);
+        background: var(--swp-gray-50);
+        border: 1px solid var(--swp-border);
+        border-radius: var(--swp-radius-md);
+        font-size: var(--swp-text-lg);
+        font-family: var(--swp-font-mono);
+        letter-spacing: 0.1em;
+        word-break: break-all;
+        color: var(--swp-text-primary);
+    }
+}
+
+// Verification Form
+.verification-form-container {
+    padding: var(--swp-space-4) 0;
+}
+
+.verification-code-input {
+    font-family: var(--swp-font-mono);
+    letter-spacing: 0.5em !important;
+    text-align: center;
+    font-size: 1.5rem !important;
+    padding: var(--swp-space-4) !important;
+
+    &::placeholder {
+        letter-spacing: 0.3em;
+        opacity: 0.5;
+    }
+
+    &:focus {
+        letter-spacing: 0.5em !important;
+    }
+}
+
+// ============================================================================
+// BACKUP CODES MODAL
+// ============================================================================
+
+.backup-codes-modal-content {
+    padding: var(--swp-space-2) 0;
+}
+
+.backup-codes-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--swp-space-3);
+    padding: var(--swp-space-4);
+    background: var(--swp-gray-50);
+    border-radius: var(--swp-radius-lg);
+
+    @media (max-width: 575.98px) {
+        grid-template-columns: 1fr;
+        gap: var(--swp-space-2);
+    }
+}
+
+.backup-code-item {
+    code {
+        display: block;
+        padding: var(--swp-space-3);
+        background: white;
+        border: 1px solid var(--swp-border);
+        border-radius: var(--swp-radius-md);
+        text-align: center;
+        font-size: var(--swp-text-base);
+        font-weight: var(--swp-font-medium);
+        font-family: var(--swp-font-mono);
+        letter-spacing: 0.05em;
+        transition: all var(--swp-transition-base);
+        color: var(--swp-text-primary);
+
+        &:hover {
+            border-color: var(--swp-primary);
+            box-shadow: var(--swp-ring-primary);
+            transform: translateY(-2px);
+        }
+    }
+}
+
+// ============================================================================
+// LOGIN PAGES - 2FA VERIFICATION
+// ============================================================================
+
+.two-factor-login-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--swp-gray-50);
+    padding: var(--swp-space-4);
+}
+
+.two-factor-login-card {
+    .card {
+        border: none;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+    }
+
+    .card-status-top {
+        height: 4px;
+        background: var(--swp-primary);
+    }
+
+    .card-body {
+        padding: var(--swp-space-8) var(--swp-space-6);
+
+        @media (max-width: 575.98px) {
+            padding: var(--swp-space-6) var(--swp-space-4);
+        }
+    }
+}
+
+// Avatar Icon
+.two-factor-avatar {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto var(--swp-space-4);
+    background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.15) 100%);
+    border-radius: var(--swp-radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--swp-primary);
+    box-shadow: 0 4px 12px rgba(var(--swp-primary-rgb), 0.2);
+
+    &.two-factor-avatar-success {
+        background: linear-gradient(135deg, rgba(var(--swp-success-rgb), 0.2) 0%, rgba(var(--swp-success-rgb), 0.1) 100%);
+        color: var(--swp-success);
+        box-shadow: 0 4px 12px rgba(var(--swp-success-rgb), 0.2);
+    }
+}
+
+// Login Heading
+.two-factor-login-title {
+    font-size: 1.5rem;
+    font-weight: var(--swp-font-bold);
+    color: var(--swp-text-primary);
+    margin-bottom: var(--swp-space-2);
+    text-align: center;
+}
+
+.two-factor-login-description {
+    font-size: var(--swp-text-base);
+    color: var(--swp-text-muted);
+    margin-bottom: var(--swp-space-6);
+    text-align: center;
+}
+
+// Verification Code Input (for login pages)
+.two-factor-code-input {
+    font-family: var(--swp-font-mono);
+    letter-spacing: 0.5em;
+    text-align: center;
+    font-size: 1.75rem !important;
+    padding: var(--swp-space-4) var(--swp-space-3) !important;
+    border: 2px solid var(--swp-border);
+    border-radius: var(--swp-radius-lg);
+    transition: all var(--swp-transition-base);
+
+    &::placeholder {
+        letter-spacing: 0.3em;
+        opacity: 0.4;
+    }
+
+    &:focus {
+        border-color: var(--swp-primary);
+        box-shadow: 0 0 0 4px rgba(var(--swp-primary-rgb), 0.1);
+        letter-spacing: 0.5em !important;
+    }
+
+    @media (max-width: 575.98px) {
+        font-size: 1.5rem !important;
+        padding: var(--swp-space-3) !important;
+    }
+}
+
+// Form Hint
+.two-factor-form-hint {
+    text-align: center;
+    font-size: var(--swp-text-sm);
+    color: var(--swp-text-muted);
+    margin-top: var(--swp-space-2);
+
+    a {
+        color: var(--swp-primary);
+        text-decoration: none;
+        font-weight: var(--swp-font-medium);
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+// Trust Device Option
+.trust-device-option {
+    padding: var(--swp-space-3);
+    background: rgba(var(--swp-info-rgb), 0.05);
+    border: 1px solid rgba(var(--swp-info-rgb), 0.2);
+    border-radius: var(--swp-radius-md);
+    margin: var(--swp-space-4) 0;
+
+    .form-check {
+        margin: 0;
+    }
+
+    .form-check-input {
+        margin-top: 0.15em;
+    }
+
+    .form-check-label {
+        font-size: var(--swp-text-sm);
+        color: var(--swp-text-primary);
+        font-weight: var(--swp-font-medium);
+        cursor: pointer;
+    }
+}
+
+// Alternative Methods Section
+.alternative-methods {
+    padding-top: var(--swp-space-4);
+    margin-top: var(--swp-space-4);
+    border-top: 1px solid var(--swp-border);
+    text-align: center;
+
+    .alternative-methods-title {
+        font-size: var(--swp-text-sm);
+        color: var(--swp-text-muted);
+        margin-bottom: var(--swp-space-3);
+    }
+
+    .alternative-methods-list {
+        display: flex;
+        flex-direction: column;
+        gap: var(--swp-space-2);
+    }
+
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+// Security Notice
+.two-factor-security-notice {
+    text-align: center;
+    margin-top: var(--swp-space-4);
+    font-size: var(--swp-text-sm);
+    color: var(--swp-text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--swp-space-2);
+}
+
+// Email Resend Section
+.email-resend-section {
+    text-align: center;
+    margin-top: var(--swp-space-4);
+    padding: var(--swp-space-3);
+    background: rgba(var(--swp-info-rgb), 0.05);
+    border-radius: var(--swp-radius-md);
+    border: 1px solid rgba(var(--swp-info-rgb), 0.2);
+
+    .resend-text {
+        font-size: var(--swp-text-sm);
+        color: var(--swp-text-secondary);
+        margin-bottom: var(--swp-space-2);
+    }
+
+    .resend-link {
+        color: var(--swp-primary);
+        text-decoration: none;
+        font-weight: var(--swp-font-medium);
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    .expiry-warning {
+        font-size: var(--swp-text-xs);
+        color: var(--swp-warning);
+        margin-top: var(--swp-space-2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--swp-space-1);
+    }
+}
+
+// ============================================================================
+// RESPONSIVE DESIGN
+// ============================================================================
+
+@media (max-width: 767.98px) {
+    .totp-setup-container {
+        padding: var(--swp-space-2) 0;
+    }
+
+    .setup-steps {
+        margin-bottom: var(--swp-space-4);
+    }
+
+    .qr-code-container {
+        padding: var(--swp-space-4);
+        margin-bottom: var(--swp-space-4);
+    }
+
+    .qr-code-image {
+        max-width: 250px;
+    }
+
+    .verification-form-container {
+        padding: var(--swp-space-3) 0;
+    }
+
+    .backup-codes-grid {
+        padding: var(--swp-space-3);
+    }
+}
+
+@media (max-width: 575.98px) {
+    .qr-code-image {
+        max-width: 200px;
+    }
+
+    .two-factor-login-card .card-body {
+        padding: var(--swp-space-6) var(--swp-space-4);
+    }
+
+    .two-factor-avatar {
+        width: 64px;
+        height: 64px;
+    }
+
+    .two-factor-login-title {
+        font-size: 1.25rem;
+    }
+
+    .two-factor-login-description {
+        font-size: var(--swp-text-sm);
+    }
+}
+
+// ============================================================================
+// ACCESSIBILITY IMPROVEMENTS
+// ============================================================================
+
+// Focus visible styles
+.status-badge:focus-visible,
+.backup-code-item code:focus-visible,
+.manual-entry-details summary:focus-visible {
+    outline: 2px solid var(--swp-primary);
+    outline-offset: 2px;
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+    .status-badge {
+        border-width: 2px;
+    }
+
+    .qr-code-image {
+        border-width: 3px;
+    }
+
+    .backup-code-item code {
+        border-width: 2px;
+    }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+    .backup-code-item code,
+    .setup-steps .step,
+    .manual-entry-details summary,
+    .two-factor-code-input {
+        transition: none;
+    }
+}

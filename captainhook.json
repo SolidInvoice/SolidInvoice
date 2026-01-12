@@ -15,6 +15,9 @@
             },
             {
                 "action": "bin/ecs check"
+            },
+            {
+                "action": "find ./src -type f -name \"*.yml\" | xargs bin/console lint:yaml"
             }
         ]
     },
