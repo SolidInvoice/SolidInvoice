@@ -24,7 +24,7 @@ final class Registration
 {
     #[
         NotBlank,
-        Email(['mode' => Email::VALIDATION_MODE_STRICT])
+        Email(['mode' => Email::VALIDATION_MODE_STRICT]),
     ]
     public ?string $email = null;
 

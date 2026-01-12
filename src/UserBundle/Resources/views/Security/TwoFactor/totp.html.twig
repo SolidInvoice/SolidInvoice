@@ -1,0 +1,135 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends base_template %}
+
+{% block content %}
+    <div class="two-factor-login-page">
+        <div class="row justify-content-center w-100">
+            <div class="col-lg-5 col-md-7">
+                <div class="two-factor-login-card">
+                    <div class="card">
+                        <div class="card-status-top"></div>
+                        <div class="card-body">
+                            {# Icon #}
+                            <div class="two-factor-avatar">
+                                {{ ux_icon('tabler:shield-lock', {width: 40, height: 40}) }}
+                            </div>
+
+                            {# Title #}
+                            <h2 class="two-factor-login-title">
+                                {{ 'Two-Factor Authentication'|trans }}
+                            </h2>
+                            <p class="two-factor-login-description">
+                                {{ 'Enter the verification code from your authenticator app'|trans }}
+                            </p>
+
+                            {# Error Alert #}
+                            {% if authenticationError %}
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <div class="d-flex align-items-start gap-2">
+                                        {{ ux_icon('tabler:alert-circle', {width: 20, height: 20, class: 'flex-shrink-0 mt-1'}) }}
+                                        <div>
+                                            {{ authenticationError|trans(authenticationErrorData, 'SchebTwoFactorBundle') }}
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ 'Close'|trans }}"></button>
+                                </div>
+                            {% endif %}
+
+                            {# Form #}
+                            <form action="{{ checkPathUrl ?: path(checkPathRoute) }}" method="post">
+                                {# Code Input #}
+                                <div class="mb-4">
+                                    <label for="two_factor_code" class="form-label visually-hidden">
+                                        {{ 'Verification Code'|trans }}
+                                    </label>
+                                    <input
+                                        id="two_factor_code"
+                                        name="{{ authCodeParameterName }}"
+                                        type="text"
+                                        class="form-control two-factor-code-input"
+                                        maxlength="6"
+                                        pattern="[0-9]*"
+                                        inputmode="numeric"
+                                        autocomplete="one-time-code"
+                                        placeholder="000000"
+                                        autofocus
+                                        aria-label="{{ 'Enter 6-digit verification code'|trans }}"
+                                    />
+                                    <div class="two-factor-form-hint">
+                                        {{ 'Lost your authenticator? Use a'|trans }}
+                                        <a href="#" onclick="return false;">{{ 'backup code'|trans }}</a>
+                                        {{ 'instead'|trans }}
+                                    </div>
+                                </div>
+
+                                {# CSRF Token #}
+                                {% if isCsrfProtectionEnabled %}
+                                    <input type="hidden" name="{{ csrfParameterName }}" value="{{ csrf_token(csrfTokenId) }}" />
+                                {% endif %}
+
+                                {# Trust Device #}
+                                {% if displayTrustedOption %}
+                                    <div class="trust-device-option">
+                                        <div class="form-check">
+                                            <input
+                                                id="_trusted"
+                                                type="checkbox"
+                                                name="{{ trustedParameterName }}"
+                                                class="form-check-input"
+                                            />
+                                            <label for="_trusted" class="form-check-label">
+                                                {{ ux_icon('tabler:device-check', {width: 16, height: 16, class: 'me-1'}) }}
+                                                {{ "Trust this device for 30 days"|trans }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                {% endif %}
+
+                                {# Submit Button #}
+                                <button class="btn btn-primary btn-lg w-100 mt-4" type="submit">
+                                    {{ ux_icon('tabler:lock-open', {width: 20, height: 20}) }}
+                                    {{ "Verify & Continue"|trans }}
+                                </button>
+                            </form>
+
+                            {# Alternative Methods #}
+                            {% if availableTwoFactorProviders|length > 1 %}
+                                <div class="alternative-methods">
+                                    <p class="alternative-methods-title">
+                                        {{ 'Try another verification method'|trans }}
+                                    </p>
+                                    <div class="alternative-methods-list">
+                                        {% for provider in availableTwoFactorProviders|filter(v => v != twoFactorProvider) %}
+                                            <a href="{{ path("2fa_login", {"preferProvider": provider}) }}" class="btn btn-outline-secondary">
+                                                {% if provider == 'email' %}
+                                                    {{ ux_icon('tabler:mail', {width: 18, height: 18}) }}
+                                                {% else %}
+                                                    {{ ux_icon('tabler:device-mobile', {width: 18, height: 18}) }}
+                                                {% endif %}
+                                                {{ ('Use ' ~ provider)|trans }}
+                                            </a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    {# Security Notice #}
+                    <div class="two-factor-security-notice">
+                        {{ ux_icon('tabler:info-circle', {width: 16, height: 16}) }}
+                        <span>{{ 'This is an additional security step to protect your account'|trans }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

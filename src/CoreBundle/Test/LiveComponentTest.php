@@ -24,7 +24,6 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\UX\LiveComponent\Test\InteractsWithLiveComponents;
-use function current;
 use function password_hash;
 
 abstract class LiveComponentTest extends KernelTestCase
@@ -77,13 +76,12 @@ abstract class LiveComponentTest extends KernelTestCase
         $userRepository = $registry->getRepository(User::class);
         $companyRepository = $registry->getRepository(Company::class);
 
-        /** @var User[] $users */
-        $users = $userRepository->findAll();
+        $user = $userRepository->findOneBy([]);
 
         /** @var Company[] $companies */
         $companies = $companyRepository->findAll();
 
-        if ([] === $users) {
+        if (! $user) {
             $user = new User();
             $user->setEmail('test@example.com')
                 ->setEnabled(true)
@@ -95,10 +93,9 @@ abstract class LiveComponentTest extends KernelTestCase
 
             $registry->getManager()->persist($user);
             $registry->getManager()->flush();
-            $users = [$user];
         }
 
-        return current($users);
+        return $user;
     }
 
     protected function tearDown(): void

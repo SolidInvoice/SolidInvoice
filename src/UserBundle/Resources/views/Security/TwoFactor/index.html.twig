@@ -11,8 +11,26 @@
 
 {% extends "@SolidInvoiceUser/Layout/profile.html.twig" %}
 
-{% block title %}{{ "profile.show.title"|trans({"%username%" : app.user.userIdentifier}) }}{% endblock title %}
+{% block title %}{{ "Two-Factor Authentication"|trans }}{% endblock title %}
 
 {% block profile_content %}
-    <twig:Platform:Security:TwoFactor />
+    <div class="profile-form-page">
+        <div class="profile-form-container">
+            {# Page Header #}
+            <div class="profile-form-header">
+                <div class="profile-form-header-content">
+                    <div class="profile-form-icon profile-form-icon-security">
+                        {{ ux_icon('tabler:shield-lock', {width: 28, height: 28}) }}
+                    </div>
+                    <div>
+                        <h1 class="profile-form-title">{{ 'Two-Factor Authentication'|trans }}</h1>
+                        <p class="profile-form-subtitle">{{ 'Add an extra layer of security to your account'|trans }}</p>
+                    </div>
+                </div>
+            </div>
+
+            {# New LiveComponent #}
+            <twig:User:TwoFactorSettings />
+        </div>
+    </div>
 {% endblock profile_content %}

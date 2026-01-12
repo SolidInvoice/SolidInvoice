@@ -19,6 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\UserBundle\Repository\UserRepository;
+use SolidWorx\Platform\PlatformBundle\Security\TwoFactor\Traits\UserTwoFactor;
 
 #[ORM\Table(name: User::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -27,6 +28,7 @@ class User extends \SolidWorx\Platform\PlatformBundle\Model\User
     final public const string TABLE_NAME = 'users';
 
     use TimeStampable;
+    use UserTwoFactor;
 
     /**
      * @var Collection<int, ApiToken>

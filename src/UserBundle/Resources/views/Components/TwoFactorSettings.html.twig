@@ -1,0 +1,311 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+<div {{ attributes.defaults({
+    'data-controller': 'two-factor-download two-factor-modal',
+    'class': 'two-factor-settings'
+}) }}>
+    <div class="profile-form-sections">
+
+        {# ============================================ #}
+        {# Section 1: Email Authentication             #}
+        {# ============================================ #}
+        <section class="profile-form-section">
+            <div class="section-header">
+                <div class="section-icon">
+                    {{ ux_icon('tabler:mail', {width: 20, height: 20}) }}
+                </div>
+                <div class="section-header-text">
+                    <h2 class="section-title">{{ 'Email Authentication'|trans }}</h2>
+                    <p class="section-description">{{ 'Receive verification codes via email when logging in'|trans }}</p>
+                </div>
+            </div>
+
+            <div class="section-content">
+                <div class="two-factor-section-content">
+                    <div class="two-factor-section-info">
+                        <div class="mb-2">
+                            <span class="status-badge status-{{ app.user.isEmailAuthEnabled ? 'enabled' : 'disabled' }}">
+                                {{ ux_icon(app.user.isEmailAuthEnabled ? 'tabler:check' : 'tabler:x', {width: 16, height: 16}) }}
+                                {{ app.user.isEmailAuthEnabled ? 'Enabled'|trans : 'Disabled'|trans }}
+                            </span>
+                        </div>
+                        <p class="text-muted mb-0" style="font-size: var(--swp-text-sm);">
+                            {{ 'Codes will be sent to'|trans }}: <strong>{{ app.user.email }}</strong>
+                        </p>
+                    </div>
+                    <div class="two-factor-section-actions">
+                        {% if app.user.isEmailAuthEnabled %}
+                            <button type="button" class="btn btn-danger" {{ live_action('disableEmailAuth:prevent') }}>
+                                {{ ux_icon('tabler:x', {width: 18, height: 18}) }}
+                                {{ 'Disable'|trans }}
+                            </button>
+                        {% else %}
+                            <button type="button" class="btn btn-primary" {{ live_action('enableEmailAuth:prevent') }}>
+                                {{ ux_icon('tabler:check', {width: 18, height: 18}) }}
+                                {{ 'Enable'|trans }}
+                            </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        {# ============================================ #}
+        {# Section 2: TOTP Authenticator App           #}
+        {# ============================================ #}
+        <section class="profile-form-section">
+            <div class="section-header">
+                <div class="section-icon">
+                    {{ ux_icon('tabler:device-mobile', {width: 20, height: 20}) }}
+                </div>
+                <div class="section-header-text">
+                    <h2 class="section-title">{{ 'Authenticator App'|trans }}</h2>
+                    <p class="section-description">{{ 'Use Google Authenticator, Authy, or similar apps for verification'|trans }}</p>
+                </div>
+            </div>
+
+            <div class="section-content">
+                <div class="two-factor-section-content">
+                    <div class="two-factor-section-info">
+                        <div class="mb-2">
+                            <span class="status-badge status-{{ app.user.isTotpAuthenticationEnabled ? 'enabled' : 'disabled' }}">
+                                {{ ux_icon(app.user.isTotpAuthenticationEnabled ? 'tabler:check' : 'tabler:x', {width: 16, height: 16}) }}
+                                {{ app.user.isTotpAuthenticationEnabled ? 'Enabled'|trans : 'Disabled'|trans }}
+                            </span>
+                        </div>
+                        <p class="text-muted mb-0" style="font-size: var(--swp-text-sm);">
+                            {{ app.user.isTotpAuthenticationEnabled ?
+                                'Your authenticator app is configured and ready to use'|trans :
+                                'Set up an authenticator app for enhanced security'|trans
+                            }}
+                        </p>
+                    </div>
+                    <div class="two-factor-section-actions">
+                        {% if app.user.isTotpAuthenticationEnabled %}
+                            <button type="button" class="btn btn-danger" {{ live_action('disableTOTPAuth:prevent') }}>
+                                {{ ux_icon('tabler:x', {width: 18, height: 18}) }}
+                                {{ 'Disable'|trans }}
+                            </button>
+                        {% else %}
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#totp-setup-modal">
+                                {{ ux_icon('tabler:qrcode', {width: 18, height: 18}) }}
+                                {{ 'Set Up'|trans }}
+                            </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        {# ============================================ #}
+        {# Section 3: Recovery Options                 #}
+        {# ============================================ #}
+        {% if app.user.is2FaEnabled and app.user.backupCodes is not empty %}
+            <section class="profile-form-section">
+                <div class="section-header">
+                    <div class="section-icon">
+                        {{ ux_icon('tabler:key', {width: 20, height: 20}) }}
+                    </div>
+                    <div class="section-header-text">
+                        <h2 class="section-title">{{ 'Backup Codes'|trans }}</h2>
+                        <p class="section-description">{{ 'Use these codes when you lose access to your authentication device'|trans }}</p>
+                    </div>
+                </div>
+
+                <div class="section-content">
+                    <div class="two-factor-section-content">
+                        <div class="two-factor-section-info">
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <span class="badge bg-success text-white">
+                                    {{ app.user.backupCodes|length }} {{ 'codes available'|trans }}
+                                </span>
+                            </div>
+                            <p class="text-muted mb-0" style="font-size: var(--swp-text-sm);">
+                                {{ ux_icon('tabler:alert-triangle', {width: 16, height: 16, class: 'text-warning'}) }}
+                                {{ 'Store these safely - each can only be used once'|trans }}
+                            </p>
+                        </div>
+                        <div class="two-factor-section-actions">
+                            <button type="button" class="btn btn-ghost" data-bs-toggle="modal" data-bs-target="#backup-codes-modal">
+                                {{ ux_icon('tabler:eye', {width: 18, height: 18}) }}
+                                {{ 'View Codes'|trans }}
+                            </button>
+                            <button type="button" class="btn btn-outline-primary" {{ live_action('downloadBackupCodes:prevent') }}>
+                                {{ ux_icon('tabler:download', {width: 18, height: 18}) }}
+                                {{ 'Download'|trans }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        {% endif %}
+
+        {# ============================================ #}
+        {# Section 4: Trusted Device                   #}
+        {# ============================================ #}
+        {% if isDeviceTrusted %}
+            <section class="profile-form-section">
+                <div class="section-header">
+                    <div class="section-icon section-icon-security">
+                        {{ ux_icon('tabler:devices-check', {width: 20, height: 20}) }}
+                    </div>
+                    <div class="section-header-text">
+                        <h2 class="section-title">{{ 'Trusted Device'|trans }}</h2>
+                        <p class="section-description">{{ 'This device is trusted and won\'t require 2FA verification'|trans }}</p>
+                    </div>
+                </div>
+
+                <div class="section-content">
+                    <div class="two-factor-section-content">
+                        <div class="two-factor-section-info">
+                            <div class="mb-2">
+                                <span class="badge bg-success text-white">
+                                    {{ ux_icon('tabler:check', {width: 16, height: 16}) }}
+                                    {{ 'Device Trusted'|trans }}
+                                </span>
+                            </div>
+                            <p class="text-muted mb-0" style="font-size: var(--swp-text-sm);">
+                                {{ 'You won\'t be asked for verification codes on this device'|trans }}
+                            </p>
+                        </div>
+                        <div class="two-factor-section-actions">
+                            <button type="button" class="btn btn-danger" {{ live_action('clearTrustedDevice:prevent') }}>
+                                {{ ux_icon('tabler:x', {width: 18, height: 18}) }}
+                                {{ 'Revoke Trust'|trans }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        {% endif %}
+
+    </div>
+
+    {# ============================================ #}
+    {# TOTP Setup Modal                             #}
+    {# ============================================ #}
+    {% if not app.user.isTotpAuthenticationEnabled %}
+        {% set qrImage = this.qrContent %}
+
+        <twig:Ui:Modal id="totp-setup-modal" title="{{ 'Set Up Authenticator App'|trans }}" size="lg" :show="showQrModal">
+            <twig:block name="body">
+                <div class="totp-setup-container">
+                    {# Step indicator #}
+                    <div class="setup-steps">
+                        <div class="step active">
+                            <span class="step-number">1</span>
+                            <span class="step-label">{{ 'Scan QR Code'|trans }}</span>
+                        </div>
+                        <div class="step">
+                            <span class="step-number">2</span>
+                            <span class="step-label">{{ 'Verify Code'|trans }}</span>
+                        </div>
+                    </div>
+
+                    {# QR Code Display #}
+                    <div class="qr-code-container">
+                        <div class="text-center">
+                            <img src="{{ qrImage }}" alt="{{ 'QR Code'|trans }}" class="qr-code-image" />
+                            <p class="text-muted mt-3 mb-0">
+                                {{ 'Scan this QR code with your authenticator app'|trans }}
+                            </p>
+                        </div>
+
+                        {# Manual entry option #}
+                        <details class="manual-entry-details mt-4">
+                            <summary>{{ 'Can\'t scan? Enter manually'|trans }}</summary>
+                            <div class="manual-entry-content">
+                                <p class="text-muted small mb-2">{{ 'Enter this code in your authenticator app:'|trans }}</p>
+                                <code class="manual-entry-code">{{ totpSecret }}</code>
+                            </div>
+                        </details>
+                    </div>
+
+                    {# Verification Form #}
+                    <div class="verification-form-container">
+                        {{ form_start(form, {attr: {class: 'verification-form'}}) }}
+                            <div class="mb-4">
+                                <label for="{{ form.code.vars.id }}" class="form-label">
+                                    {{ 'Enter the 6-digit code from your app'|trans }}
+                                </label>
+                                {{ form_widget(form.code, {
+                                    attr: {
+                                        class: 'form-control form-control-lg text-center verification-code-input',
+                                        placeholder: '000000',
+                                        maxlength: 6,
+                                        pattern: '[0-9]*',
+                                        inputmode: 'numeric',
+                                        autocomplete: 'one-time-code'
+                                    }
+                                }) }}
+                                {{ form_errors(form.code) }}
+                            </div>
+                            {{ form_row(form.secret) }}
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </twig:block>
+
+            <twig:block name="footer">
+                <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">
+                    {{ ux_icon('tabler:x', {width: 18, height: 18}) }}
+                    {{ 'Cancel'|trans }}
+                </button>
+                <button type="button" class="btn btn-primary" {{ live_action('enableTOTPAuth:prevent') }}>
+                    {{ ux_icon('tabler:check', {width: 18, height: 18}) }}
+                    {{ 'Verify & Enable'|trans }}
+                </button>
+            </twig:block>
+        </twig:Ui:Modal>
+    {% endif %}
+
+    {# ============================================ #}
+    {# Backup Codes Modal                           #}
+    {# ============================================ #}
+    <twig:Ui:Modal id="backup-codes-modal" title="{{ 'Backup Codes'|trans }}" :show="showBackupCodes">
+        <twig:block name="body">
+            <div class="backup-codes-modal-content">
+                {# Warning Alert #}
+                <div class="alert alert-warning d-flex align-items-start gap-2 mb-4" role="alert">
+                    {{ ux_icon('tabler:alert-triangle', {width: 20, height: 20, class: 'flex-shrink-0 mt-1'}) }}
+                    <div>
+                        <strong>{{ 'Important:'|trans }}</strong>
+                        {{ 'Save these codes in a secure place. Each code can only be used once.'|trans }}
+                    </div>
+                </div>
+
+                {# Codes Grid #}
+                <div class="backup-codes-grid">
+                    {% for code in app.user.backupCodes %}
+                        <div class="backup-code-item">
+                            <code>{{ code }}</code>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                {# Download Button #}
+                <button type="button" class="btn btn-outline-primary w-100 mt-4" {{ live_action('downloadBackupCodes:prevent') }}>
+                    {{ ux_icon('tabler:download', {width: 18, height: 18}) }}
+                    {{ 'Download as Text File'|trans }}
+                </button>
+            </div>
+        </twig:block>
+
+        <twig:block name="footer">
+            <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">
+                {{ 'Close'|trans }}
+            </button>
+            <button type="button" class="btn btn-warning" {{ live_action('regenerateBackupCodes:prevent') }}>
+                {{ ux_icon('tabler:refresh', {width: 18, height: 18}) }}
+                {{ 'Regenerate Codes'|trans }}
+            </button>
+        </twig:block>
+    </twig:Ui:Modal>
+</div>
