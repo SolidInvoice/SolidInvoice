@@ -42,12 +42,12 @@ class CreditTypeTest extends FormTestCase
     }
 
     /**
-     * @return array<class-string, FormTypeInterface>
+     * @return list<FormTypeInterface>
      */
     protected function getTypes(): array
     {
         return [
-            CreditType::class => new CreditType($this->createMock(TranslatorInterface::class)),
+            new CreditType($this->createMock(TranslatorInterface::class)),
         ];
     }
 }
