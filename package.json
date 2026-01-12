@@ -63,7 +63,7 @@
         "admin-lte": "git+https://github.com/ColorlibHQ/AdminLTE.git#7748b38a6e7afc2415975b9c41adab4e1733d330",
         "bootstrap": "^4.6.2",
         "caniuse-lite": "^1.0.30001756",
-        "intl-messageformat": "^10.5.0",
+        "intl-messageformat": "^11.0.9",
         "jquery": "^3.7.1",
         "popper.js": "^1.16.1",
         "regenerator-runtime": "^0.14.1"
