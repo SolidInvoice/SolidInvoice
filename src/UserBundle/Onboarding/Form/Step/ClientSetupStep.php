@@ -23,19 +23,23 @@ final class ClientSetupStep extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('clientName', TextType::class, [
-            'label' => 'Client Name',
+            'label' => 'onboarding.client.fields.name.label',
             'required' => false,
             'attr' => [
-                'placeholder' => 'John Doe or Acme Corp',
+                'placeholder' => 'onboarding.client.fields.name.placeholder',
             ],
+            'help' => 'onboarding.client.fields.name.help',
+            'translation_domain' => 'onboarding',
         ]);
 
         $builder->add('clientEmail', EmailType::class, [
-            'label' => 'Email Address',
+            'label' => 'onboarding.client.fields.email.label',
             'required' => false,
             'attr' => [
                 'placeholder' => 'client@example.com',
             ],
+            'help' => 'onboarding.client.fields.email.help',
+            'translation_domain' => 'onboarding',
         ]);
     }
 }

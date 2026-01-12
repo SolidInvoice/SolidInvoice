@@ -12,9 +12,9 @@
         {{ ux_icon('tabler:file-invoice', {width: 32, height: 32, class: 'text-white'}) }}
     </div>
 
-    <h2 class="h2 text-center mb-2">Create your first invoice</h2>
+    <h2 class="h2 text-center mb-2">{{ 'onboarding.invoice.title'|trans({}, 'onboarding') }}</h2>
     <p class="text-muted text-center lead mb-4">
-        Experience how easy it is to get paid.
+        {{ 'onboarding.invoice.description'|trans({}, 'onboarding') }}
     </p>
 
     {# Benefits Box #}
@@ -22,16 +22,15 @@
         <div class="d-flex align-items-start gap-2">
             {{ ux_icon('tabler:rocket', {width: 20, height: 20, class: 'text-success mt-1'}) }}
             <div>
-                <strong class="d-block mb-1">Send your first invoice:</strong>
+                <strong class="d-block mb-1">{{ 'onboarding.invoice.aha_title'|trans({}, 'onboarding') }}</strong>
                 <ul class="mb-0">
-                    <li>See exactly what your invoices will look like</li>
-                    <li>Send it immediately or save as draft</li>
-                    <li>Track when it's paid</li>
-                    <li>Get paid faster with online payments</li>
+                    {% for benefit in 'onboarding.invoice.benefits'|trans({}, 'onboarding')|trim|split("\n") %}
+                        <li>{{ benefit }}</li>
+                    {% endfor %}
                 </ul>
                 <p class="text-muted small mb-0 mt-2">
                     {{ ux_icon('tabler:clock', {width: 14, height: 14}) }}
-                    Takes just 30 seconds to create
+                    {{ 'onboarding.invoice.time'|trans({}, 'onboarding') }}
                 </p>
             </div>
         </div>
@@ -41,36 +40,29 @@
         <div class="mb-3">
             {{ form_row(form.invoice.invoiceDescription, {
                 'attr': {
-                    'class': 'form-control',
-                    'placeholder': 'e.g., Website Design Services, Consulting, Monthly Retainer'
-                },
-                'help': 'What service or product are you invoicing for?'
+                    'class': 'form-control'
+                }
             }) }}
         </div>
 
         <div class="mb-4">
             {{ form_row(form.invoice.invoiceAmount, {
                 'attr': {
-                    'class': 'form-control form-control-lg',
-                    'placeholder': '1000.00'
-                },
-                'help': 'Don\'t worry about perfection - you can edit this later'
+                    'class': 'form-control form-control-lg'
+                }
             }) }}
         </div>
 
         <div class="d-grid gap-2">
             {{ form_widget(form.navigator.next, {
-                'label': 'Create & View My Invoice',
                 'attr': {'class': 'btn btn-success btn-lg w-100'}
             }) }}
 
             {{ form_widget(form.navigator.skip, {
-                'label': 'I\'ll do this later',
                 'attr': {'class': 'btn btn-link w-100 mt-2 text-muted'}
             }) }}
 
             {{ form_widget(form.navigator.back, {
-                'label': 'Back',
                 'attr': {'class': 'btn btn-link w-100 mt-2 text-muted'}
             }) }}
         </div>
@@ -79,7 +71,7 @@
     <div class="text-center mt-3">
         <small class="text-muted">
             {{ ux_icon('tabler:shield-check', {width: 14, height: 14}) }}
-            Your invoice will be saved as a draft - nothing is sent automatically
+            {{ 'onboarding.invoice.security'|trans({}, 'onboarding') }}
         </small>
     </div>
 </div>

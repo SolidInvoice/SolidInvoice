@@ -32,7 +32,8 @@ final class OnboardingNavigatorType extends AbstractType
             'back',
             PreviousFlowType::class,
             [
-                'label' => 'Back',
+                'label' => 'onboarding.navigation.back',
+                'translation_domain' => 'onboarding',
                 'attr' => ['class' => 'btn btn-link text-muted'],
                 'include_if' => fn (FormFlowCursor $cursor): bool => $cursor->canMoveBack() && ! $cursor->isLastStep(),
             ]
@@ -42,8 +43,8 @@ final class OnboardingNavigatorType extends AbstractType
             'next',
             NextFlowType::class,
             [
-                'label' => static fn (FormFlowCursor $cursor): string =>
-                    $cursor->getCurrentStep() === 'invoice' ? 'Create & View My Invoice' : 'Continue',
+                'label' => $options['next_button_label'],
+                'translation_domain' => 'onboarding',
                 'include_if' => fn (FormFlowCursor $cursor): bool => $cursor->canMoveNext() && ! $cursor->isLastStep(),
             ]
         );
@@ -53,7 +54,8 @@ final class OnboardingNavigatorType extends AbstractType
             'skip',
             ButtonFlowType::class,
             [
-                'label' => 'I\'ll do this later',
+                'label' => 'onboarding.navigation.skip',
+                'translation_domain' => 'onboarding',
                 'attr' => ['class' => 'btn btn-link text-muted', 'name' => 'skip'],
                 'validation_groups' => false,
                 'handler' => function (mixed $data, ButtonFlow $button, FormFlow $flow): void {
@@ -70,7 +72,8 @@ final class OnboardingNavigatorType extends AbstractType
             'finish',
             FinishFlowType::class,
             [
-                'label' => 'Go to Dashboard',
+                'label' => 'onboarding.navigation.finish',
+                'translation_domain' => 'onboarding',
                 'attr' => ['class' => 'btn btn-primary btn-lg'],
                 'include_if' => fn (FormFlowCursor $cursor): bool => $cursor->isLastStep(),
             ]
@@ -83,6 +86,7 @@ final class OnboardingNavigatorType extends AbstractType
             'label' => false,
             'mapped' => false,
             'priority' => -100,
+            'next_button_label' => 'onboarding.navigation.continue',
         ]);
     }
 }

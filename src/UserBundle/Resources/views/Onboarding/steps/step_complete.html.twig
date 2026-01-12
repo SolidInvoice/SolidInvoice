@@ -15,9 +15,9 @@
         </div>
     </div>
 
-    <h1 class="h1 mb-3">🎉 You're all set!</h1>
+    <h1 class="h1 mb-3">{{ 'onboarding.complete.title'|trans({}, 'onboarding') }}</h1>
     <p class="lead text-muted mb-4">
-        Your account is ready and you're good to go
+        {{ 'onboarding.complete.description'|trans({}, 'onboarding') }}
     </p>
 
     {# Next Steps #}
@@ -25,12 +25,11 @@
         <div class="d-flex align-items-start gap-2">
             {{ ux_icon('tabler:checklist', {width: 20, height: 20, class: 'text-primary mt-1'}) }}
             <div>
-                <strong class="d-block mb-2">What happens next?</strong>
+                <strong class="d-block mb-2">{{ 'onboarding.complete.next_title'|trans({}, 'onboarding') }}</strong>
                 <ul class="mb-0">
-                    <li><strong>Dashboard:</strong> Get an overview of your business at a glance</li>
-                    <li><strong>Create invoices:</strong> Professional invoices in seconds</li>
-                    <li><strong>Track payments:</strong> See who owes you and who's paid</li>
-                    <li><strong>Customize:</strong> Add your logo, payment methods, and more</li>
+                    {% for step in 'onboarding.complete.next_steps'|trans({}, 'onboarding')|trim|split("\n") %}
+                        <li>{{ step }}</li>
+                    {% endfor %}
                 </ul>
             </div>
         </div>
@@ -40,15 +39,13 @@
     <div class="alert alert-info d-flex align-items-start gap-3 mb-4" role="alert">
         {{ ux_icon('tabler:bulb', {width: 20, height: 20, class: 'flex-shrink-0 mt-1'}) }}
         <div class="text-start">
-            <strong>Pro tip:</strong> Add your company logo and customize your invoice template in
-            Settings → Company to look more professional
+            <strong>{{ 'onboarding.complete.pro_tip_title'|trans({}, 'onboarding') }}</strong> {{ 'onboarding.complete.pro_tip_text'|trans({}, 'onboarding') }}
         </div>
     </div>
 
     {{ form_start(form) }}
         <div class="d-grid gap-3">
             {{ form_widget(form.navigator.finish, {
-                'label': 'Go to Dashboard',
                 'attr': {'class': 'btn btn-primary btn-lg'}
             }) }}
         </div>
@@ -57,12 +54,11 @@
     <div class="mt-4 pt-3 border-top">
         <p class="text-muted small mb-2">
             {{ ux_icon('tabler:heart', {width: 16, height: 16, class: 'text-danger'}) }}
-            Thanks for choosing {{ app_name }}
+            {{ 'Thanks for choosing %app_name%'|trans({'%app_name%': app_name}) }}
         </p>
         <p class="text-muted small mb-0">
-            Need help? Check out our
-            <a href="https://docs.solidinvoice.co" target="_blank" rel="noopener" class="text-primary">documentation</a>
-            or <a href="https://github.com/solidinvoice/solidinvoice/discussions" target="_blank" rel="noopener" class="text-primary">community forum</a>
+            {{ 'Need help? Check out our'|trans }}
+            <a href="{{ 'onboarding.complete.docs_link'|trans({}, 'onboarding') }}" target="_blank" rel="noopener" class="text-primary">{{ 'documentation'|trans }}</a>
         </p>
     </div>
 </div>
