@@ -1,0 +1,561 @@
+/**
+ * External Quote View - Elegant Financial Styling
+ *
+ * Professional, refined styling for public-facing quotes
+ * Mirrors the invoice design for consistency
+ *
+ * Design Principles:
+ * - Dark text for all content - highly readable
+ * - Subtle opacity for less important text (labels, terms)
+ * - Generous whitespace for breathing room
+ * - Subtle backgrounds to separate sections
+ * - Clear visual hierarchy with prominent totals
+ * - Professional typography with proper scale
+ */
+
+// ============================================================================
+// PAGE WRAPPER
+// ============================================================================
+
+.external-quote-page {
+    min-height: 100vh;
+    background: var(--tblr-gray-50, #f8fafc);
+}
+
+// ============================================================================
+// ACTION BAR (TOP)
+// ============================================================================
+
+.quote-action-bar {
+    background: var(--tblr-bg-surface, #ffffff);
+    border: 1px solid var(--tblr-border-color-light, #e2e8f0);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+    .card-body {
+        padding: 0.75rem 1.5rem;
+    }
+
+    .btn {
+        font-weight: 500;
+    }
+}
+
+// ============================================================================
+// TYPOGRAPHY & VISUAL HIERARCHY
+// ============================================================================
+
+// Company name in header
+.quote-company-name {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--tblr-body-color, #1e293b);
+    line-height: 1.3;
+}
+
+// Quote number - large and prominent
+.quote-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--tblr-body-color, #1e293b);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+}
+
+.quote-number-label {
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    opacity: 0.6;
+}
+
+// VAT number - subtle opacity
+.quote-vat-number {
+    font-size: 0.9375rem;
+    opacity: 0.75;
+}
+
+// Logo container
+.quote-logo {
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+    }
+}
+
+// ============================================================================
+// METADATA CARD - Quote Date, Total
+// ============================================================================
+
+.quote-metadata-card {
+    border: 1px solid var(--tblr-border-color-light, #e2e8f0);
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.2s ease;
+
+    &:hover {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+}
+
+.quote-metadata-label {
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.375rem;
+    opacity: 0.6;
+}
+
+.quote-metadata-value {
+    font-size: 1rem;
+    color: var(--tblr-body-color, #1e293b);
+}
+
+.quote-metadata-total {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--tblr-primary, #2e963a);
+    line-height: 1.2;
+}
+
+// ============================================================================
+// FROM / TO SECTIONS
+// ============================================================================
+
+.quote-parties-section {
+    margin-bottom: 2rem;
+}
+
+.quote-party-label {
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    opacity: 0.6;
+}
+
+.quote-party-name {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--tblr-body-color, #1e293b);
+    line-height: 1.4;
+}
+
+.quote-party-detail {
+    color: var(--tblr-body-color, #1e293b);  // Dark text, NOT gray!
+    line-height: 1.6;
+    margin-bottom: 0.375rem;
+    font-size: 0.9375rem;
+}
+
+// ============================================================================
+// LINE ITEMS TABLE
+// ============================================================================
+
+.quote-items-table {
+    margin-bottom: 2rem;
+
+    // Table headers
+    thead {
+        th {
+            border-bottom: 2px solid var(--tblr-border-color, #cbd5e1);
+            padding: 0.875rem 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            font-size: 0.75rem;
+            opacity: 0.6;
+        }
+    }
+
+    // Table body
+    tbody {
+        tr {
+            border-bottom: 1px solid var(--tblr-border-color-light, #e2e8f0);
+            transition: background-color 0.15s ease;
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            &:hover {
+                background-color: var(--tblr-gray-50, #f8fafc);
+            }
+        }
+
+        td {
+            padding: 1rem 0.75rem;
+            color: var(--tblr-body-color, #1e293b);
+            vertical-align: top;
+        }
+    }
+
+    // Item description
+    .item-description {
+        font-weight: 500;
+        line-height: 1.5;
+        color: var(--tblr-body-color, #1e293b);
+    }
+
+    // Item amounts - use tabular numbers for alignment
+    .item-amount {
+        font-weight: 600;
+        font-feature-settings: 'tnum';
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+    }
+}
+
+// ============================================================================
+// TOTALS CARD
+// ============================================================================
+
+.quote-totals-card {
+    border: 1px solid var(--tblr-border-color-light, #e2e8f0);
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+    .card-body {
+        padding: 1.5rem;
+    }
+}
+
+.quote-totals-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.625rem 0;
+
+    &:not(:last-child) {
+        margin-bottom: 0.375rem;
+    }
+}
+
+.quote-totals-label {
+    font-size: 0.9375rem;
+    color: var(--tblr-body-color, #1e293b);
+    font-weight: 500;
+}
+
+.quote-totals-value {
+    font-weight: 600;
+    color: var(--tblr-body-color, #1e293b);
+    font-feature-settings: 'tnum';
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+// Final total row - most prominent
+.quote-totals-final {
+    border-top: 2px solid var(--tblr-border-color-dark, #94a3b8);
+    padding-top: 1rem;
+    margin-top: 0.75rem;
+
+    .quote-totals-row {
+        padding: 0.5rem 0 0 0;
+        margin-bottom: 0;
+    }
+
+    .quote-totals-label {
+        font-size: 1.25rem;
+        font-weight: 600;
+    }
+
+    .quote-totals-value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--tblr-primary, #2e963a);
+        line-height: 1;
+    }
+}
+
+// ============================================================================
+// FOOTER
+// ============================================================================
+
+.quote-footer {
+    .card {
+        background: var(--tblr-bg-surface, #ffffff);
+        border: 1px solid var(--tblr-border-color-light, #e2e8f0);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .btn-sm {
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+    }
+}
+
+// ============================================================================
+// CARD REFINEMENTS
+// ============================================================================
+
+// Main quote card
+.card-lg {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--tblr-border-color-light, #e2e8f0);
+
+    .card-body {
+        padding: 2.5rem;
+    }
+}
+
+// Status badges
+.badge {
+    font-weight: 600;
+    letter-spacing: 0.025em;
+}
+
+// Horizontal rules
+hr {
+    border-color: var(--tblr-border-color-light, #e2e8f0);
+    opacity: 1;
+}
+
+// ============================================================================
+// RESPONSIVE DESIGN
+// ============================================================================
+
+@media (max-width: 991px) {
+    .quote-metadata-card {
+        .card-body {
+            padding: 1.25rem;
+        }
+    }
+
+    .quote-totals-card {
+        .card-body {
+            padding: 1.25rem;
+        }
+    }
+
+    .card-lg .card-body {
+        padding: 2rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .quote-number {
+        font-size: 1.75rem;
+    }
+
+    .quote-metadata-total {
+        font-size: 1.5rem;
+    }
+
+    .quote-totals-final .quote-totals-value {
+        font-size: 1.75rem;
+    }
+
+    .quote-parties-section {
+        .col-sm-6:first-child {
+            margin-bottom: 1.5rem;
+        }
+    }
+}
+
+@media (max-width: 576px) {
+    .container-xl {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .card-lg .card-body {
+        padding: 1.5rem;
+    }
+
+    .quote-metadata-card .card-body {
+        padding: 1rem;
+    }
+
+    .quote-totals-card .card-body {
+        padding: 1rem;
+    }
+
+    // Footer - stack on mobile
+    .quote-footer {
+        .btn-sm {
+            width: 100%;
+            margin-bottom: 0.5rem;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    // Stack metadata items on mobile
+    .quote-metadata-card {
+        .col-sm-6 {
+            margin-bottom: 1rem;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    // Make action buttons stack nicely on mobile
+    .quote-action-bar {
+        .d-flex.justify-content-between {
+            flex-direction: column;
+            gap: 0.75rem;
+
+            .d-flex.gap-2 {
+                flex-direction: column;
+                width: 100%;
+                gap: 0.5rem;
+
+                .btn {
+                    width: 100%;
+                    justify-content: center;
+                }
+            }
+        }
+    }
+
+    // Table adjustments
+    .quote-items-table {
+        font-size: 0.875rem;
+
+        thead th {
+            padding: 0.75rem 0.5rem;
+        }
+
+        tbody td {
+            padding: 0.875rem 0.5rem;
+        }
+    }
+}
+
+// ============================================================================
+// PRINT STYLES
+// ============================================================================
+
+@media print {
+    // Force everything to be visible by default
+    * {
+        visibility: visible !important;
+    }
+
+    // Hide non-print elements
+    .no-print,
+    .d-print-none {
+        display: none !important;
+        visibility: hidden !important;
+    }
+
+    // Reset page margins
+    @page {
+        margin: 1cm;
+    }
+
+    html,
+    body {
+        background: white !important;
+        height: auto !important;
+        overflow: visible !important;
+    }
+
+    // Ensure layout wrappers are visible
+    .external-quote-page,
+    .page-wrapper,
+    .page-body {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        height: auto !important;
+        overflow: visible !important;
+        width: 100% !important;
+        background: white !important;
+    }
+
+    // Reset container for print
+    .container-xl {
+        max-width: 100% !important;
+        padding: 0.5cm !important;
+        margin: 0 !important;
+    }
+
+    // Reset row margins
+    .row {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    // Remove shadows and optimize for printing
+    .card,
+    .quote-metadata-card,
+    .quote-totals-card {
+        box-shadow: none !important;
+        border: 1px solid #dee2e6;
+        page-break-inside: avoid;
+        display: block !important;
+        visibility: visible !important;
+    }
+
+    // Make sure card content is visible
+    .card-body {
+        display: block !important;
+        visibility: visible !important;
+    }
+
+    .card-lg .card-body {
+        padding: 1.5rem;
+    }
+
+    // Ensure proper page breaks
+    .card-body {
+        page-break-inside: avoid;
+    }
+
+    table {
+        page-break-inside: auto;
+    }
+
+    tr {
+        page-break-inside: avoid;
+        page-break-after: auto;
+    }
+
+    thead {
+        display: table-header-group;
+    }
+
+    // Force background colors for better printing
+    .bg-light,
+    .quote-metadata-card,
+    .quote-totals-card {
+        background-color: #f8f9fa !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .text-primary,
+    .quote-metadata-total,
+    .quote-totals-final .quote-totals-value {
+        color: #2e963a !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .text-success {
+        color: #10b981 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    // Remove hover effects
+    .quote-items-table tbody tr:hover {
+        background-color: transparent !important;
+    }
+
+    .quote-metadata-card:hover {
+        box-shadow: none !important;
+    }
+
+    // Optimize spacing for print
+    hr {
+        border-color: #cbd5e1 !important;
+        opacity: 1 !important;
+    }
+}

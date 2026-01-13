@@ -30,14 +30,16 @@ return static function (RoutingConfigurator $routingConfigurator): void {
         );
 
     $routingConfigurator
-        ->add('_view_quote_external', '/view/quote/{uuid}')
+        ->add('_view_quote_external', '/view/quote/{uuid}.{_format}')
         ->controller([ViewBilling::class, 'quoteAction'])
-        ->requirements(['uuid' => '[a-zA-Z0-9-]{36}']);
+        ->defaults(['_format' => 'html'])
+        ->requirements(['uuid' => '[a-zA-Z0-9-]{36}', '_format' => 'html|pdf']);
 
     $routingConfigurator
-        ->add('_view_invoice_external', '/view/invoice/{uuid}')
+        ->add('_view_invoice_external', '/view/invoice/{uuid}.{_format}')
         ->controller([ViewBilling::class, 'invoiceAction'])
-        ->requirements(['uuid' => '[a-zA-Z0-9-]{36}']);
+        ->defaults(['_format' => 'html'])
+        ->requirements(['uuid' => '[a-zA-Z0-9-]{36}', '_format' => 'html|pdf']);
 
     $routingConfigurator
         ->add('_select_company', '/select-company')

@@ -83,14 +83,14 @@ return static function (SecurityConfig $config): void {
         ->path('^(?:' .
             '/_components/SystemInstallation|' .
             '/webhook/lemon_squeezy|' .
-            '/view/(quote|invoice)/[a-zA-Z0-9-]{36}$|' .
-            '/(login|register)$|' .
+            '/view/(?:quote|invoice)/[A-Za-z0-9-]{36}(?:\.pdf)?|' .
+            '/(?:login|register)$|' .
             '/forgot-password|' .
             '/oauth/connect|' .
-            '/install(?:.*)|' .
+            '/install|' .
             '/verify$|' .
             '/logout$|' .
-            '/invite/accept/[a-zA-Z0-9-]{36}$|' .
+            '/invite/accept/[a-zA-Z0-9-]{26}$|' .
             '/payments/create/[a-zA-Z0-9-]{36}$|' .
             '/payment/capture/(?:.*)|' .
             '/payments/done$' .

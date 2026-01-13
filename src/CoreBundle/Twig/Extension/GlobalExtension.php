@@ -21,13 +21,11 @@ use SolidInvoice\CoreBundle\Pdf\Generator;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\MoneyBundle\Calculator;
 use SolidInvoice\SettingsBundle\SystemConfig;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Uid\Ulid;
 use Twig\Environment;
 use Twig\Error\LoaderError;
@@ -47,7 +45,6 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
         private readonly Generator $pdfGenerator,
         private readonly SystemConfig $systemConfig,
         private readonly RequestStack $requestStack,
-        private readonly Security $security,
         private readonly CompanySelector $companySelector,
         private readonly ?string $installed
     ) {
@@ -112,7 +109,7 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
             new TwigFunction('app_logo', $this->displayAppLogo(...), ['is_safe' => ['html'], 'needs_environment' => true]),
 
             new TwigFunction('company_name', function (): string {
-                if ($this->security->getUser() instanceof UserInterface && $this->companySelector->getCompany() instanceof Ulid) {
+                if ($this->companySelector->getCompany() instanceof Ulid) {
                     return $this->systemConfig->get('system/company/company_name') ?? SolidInvoiceCoreBundle::APP_NAME;
                 }
 

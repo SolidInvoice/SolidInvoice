@@ -8,20 +8,3 @@
  #}
 
 {% extends "@SolidInvoiceCore/View/template.html.twig" %}
-
-{% block heading %}
-    {% if not invoice.paid and payments_configured(false) > 0 %}
-        <fieldset class="page-heading">
-            <legend>
-                <div class="float-right header-button">
-                    <a href="{{ path('_payments_create', {'uuid' : invoice.uuid}) }}" class="btn btn-primary">
-                        {{ icon('credit-card') }} {{ "invoice.action.pay_now"|trans }}
-                    </a>
-                </div>
-                <h3>{{ block('title') is defined ? block('title') }}</h3>
-            </legend>
-        </fieldset>
-    {% else %}
-        {{ parent() }}
-    {% endif %}
-{% endblock %}

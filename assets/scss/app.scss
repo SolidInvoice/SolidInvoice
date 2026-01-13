@@ -108,6 +108,12 @@ $alert-secondary-text: $orange-dark;
 // Invoice view page styles
 @import './invoice-view';
 
+// External invoice view page styles (public-facing)
+@import './external-invoice-view';
+
+// External quote view page styles (public-facing)
+@import './external-quote-view';
+
 // Quote view page styles
 @import './quote-view';
 
