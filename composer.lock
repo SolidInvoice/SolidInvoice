@@ -8634,79 +8634,17 @@
             "time": "2025-08-05T09:57:14+00:00"
         },
         {
-            "name": "solidworx/form-handler-bundle",
-            "version": "1.3.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/SolidWorx/FormHandlerBundle.git",
-                "reference": "e2ed44e474446303a3d7d35521848d30502e8087"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/SolidWorx/FormHandlerBundle/zipball/e2ed44e474446303a3d7d35521848d30502e8087",
-                "reference": "e2ed44e474446303a3d7d35521848d30502e8087",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.1.0",
-                "symfony/event-dispatcher": "^4.4 || ^5.0 || ^6.0 || ^7.0",
-                "symfony/form": "^4.0 || ^5.0 || ^6.0 || ^7.0",
-                "symfony/framework-bundle": "^4.4 || ^5.0 || ^6.0 || ^7.0",
-                "symfony/http-foundation": "^4.4 || ^5.0 || ^6.0 || ^7.0",
-                "symfony/options-resolver": "^4.4 || ^5.0 || ^6.0 || ^7.0"
-            },
-            "require-dev": {
-                "doctrine/common": "^2.7",
-                "ocramius/proxy-manager": "^2.1",
-                "phpstan/phpstan": "^0.12.8",
-                "symfony/phpunit-bridge": "^5.0"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "SolidWorx\\FormHandler\\": "./src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Pierre du Plessis",
-                    "email": "open-source@solidworx.co.za"
-                }
-            ],
-            "description": "Easy form handling for Symfony forms",
-            "keywords": [
-                "form handling",
-                "symfony",
-                "symfony forms",
-                "symfony-bundle"
-            ],
-            "support": {
-                "issues": "https://github.com/SolidWorx/FormHandlerBundle/issues",
-                "source": "https://github.com/SolidWorx/FormHandlerBundle/tree/1.3.2"
-            },
-            "time": "2025-06-03T09:36:38+00:00"
-        },
-        {
             "name": "solidworx/klarna-invoice",
-            "version": "0.2.0",
+            "version": "0.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SolidWorx/KlarnaInvoice.git",
-                "reference": "a9a8efdda0a99eafd11ade43431e3c14e89a50d1"
+                "reference": "df8d194bcc0012108e4b4de7c13607416fc5282a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SolidWorx/KlarnaInvoice/zipball/a9a8efdda0a99eafd11ade43431e3c14e89a50d1",
-                "reference": "a9a8efdda0a99eafd11ade43431e3c14e89a50d1",
+                "url": "https://api.github.com/repos/SolidWorx/KlarnaInvoice/zipball/df8d194bcc0012108e4b4de7c13607416fc5282a",
+                "reference": "df8d194bcc0012108e4b4de7c13607416fc5282a",
                 "shasum": ""
             },
             "require": {
@@ -8726,9 +8664,9 @@
             "description": "The unofficial repo of Klarna Invoice service with Composer added. We use it with https://github.com/Payum/KlarnaInvoice",
             "homepage": "https://docs.klarna.com/",
             "support": {
-                "source": "https://github.com/SolidWorx/KlarnaInvoice/tree/0.2.0"
+                "source": "https://github.com/SolidWorx/KlarnaInvoice/tree/0.2.1"
             },
-            "time": "2023-12-07T10:55:41+00:00"
+            "time": "2026-01-12T19:47:05+00:00"
         },
         {
             "name": "solidworx/platform",
