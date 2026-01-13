@@ -1,4 +1,6 @@
 invoice:
+    invoice_status:
+        overdue: 'Overdue'
     label: 'Invoice #'
     from: 'From'
     to: 'To'

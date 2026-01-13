@@ -96,7 +96,7 @@
                                         <div class="invoice-metadata-value fw-medium {{ invoice.status == 'overdue' ? 'text-danger' : '' }}">
                                             {{ invoice.due|date('M d, Y') }}
                                             {% if invoice.status == 'overdue' %}
-                                                <span class="badge badge-sm bg-danger ms-1 text-white">Overdue</span>
+                                                <span class="badge badge-sm bg-danger ms-1 text-white">{{ 'invoice.invoice_status.overdue'|trans }}</span>
                                             {% endif %}
                                         </div>
                                     </div>
