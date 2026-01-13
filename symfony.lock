@@ -386,9 +386,6 @@
     "setasign/fpdi": {
         "version": "v2.3.3"
     },
-    "solidworx/form-handler-bundle": {
-        "version": "1.2.0"
-    },
     "solidworx/platform": {
         "version": "dev-main"
     },
