@@ -63,7 +63,7 @@
     {{ email.spacer('sm') }}
 
     {# View/Pay button #}
-    {{ email.button('invoice.overdue.view_and_pay'|trans({}, 'email'), url('_invoices_view', {'id': invoice.id}), 'primary', 'large') }}
+    {{ email.button('invoice.overdue.view_and_pay'|trans({}, 'email'), url("_view_invoice_external", {"uuid" : invoice.uuid}), 'primary', 'large') }}
 
     {{ email.spacer('md') }}
 
