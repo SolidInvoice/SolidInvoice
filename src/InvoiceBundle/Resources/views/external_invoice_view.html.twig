@@ -1,0 +1,294 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% set currency = invoice.client.currency %}
+
+<div class="external-invoice-page">
+    <div class="container-xl pb-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-xl-9">
+                {% if setting('system/general/hide_powered_by') is not same as('1') %}
+                    {# App Branding Header #}
+                    <div class="app-branding-header mb-4 no-print">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center gap-3">
+                                {% if app_logo() is not empty %}
+                                    <div class="app-logo">
+                                        {{ app_logo(40, showDefault: true, showOnlyAppIcon: true) }}
+                                    </div>
+                                {% endif %}
+                                <div>
+                                    <h1 class="app-brand-name mb-0">{{ constant('SolidInvoice\\CoreBundle\\SolidInvoiceCoreBundle::APP_NAME') }}</h1>
+                                    {#<p class="app-brand-tagline mb-0">{{ 'invoice.external.tagline'|trans }}</p>#}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {# Action Bar - Top #}
+                <div class="invoice-action-bar card mb-3 no-print">
+                <div class="card-body py-3">
+                    <div class="d-flex gap-2 justify-content-between align-items-center">
+                        <div class="d-flex gap-2">
+                            <button type="button" onclick="window.print()" class="btn btn-white">
+                                {{ ux_icon('tabler:printer', {width: 18, height: 18}) }}
+                                {{ 'invoice.action.print'|trans }}
+                            </button>
+                            {% if can_print_pdf() %}
+                                <a href="{{ path('_view_invoice_external', {'uuid': invoice.uuid, '_format': 'pdf'}) }}" target="_blank" class="btn btn-white">
+                                    {{ ux_icon('tabler:file-type-pdf', {width: 18, height: 18}) }}
+                                    {{ 'invoice.action.pdf'|trans }}
+                                </a>
+                            {% endif %}
+                        </div>
+                        {% if not invoice.paid and payments_configured(false) > 0 %}
+                            <a href="{{ path('_payments_create', {'uuid': invoice.uuid}) }}" class="btn btn-primary {{ invoice.status == 'overdue' ? 'btn-danger' : '' }}">
+                                {{ ux_icon('tabler:credit-card', {width: 18, height: 18}) }}
+                                {{ 'invoice.action.pay_now'|trans }}
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            {# Main Invoice Card #}
+            <div class="card card-lg">
+                <div class="card-body">
+                    {# Header with Logo and Invoice Info #}
+                    <div class="row">
+                        <div class="col-6">
+                            {% if app_logo() is not empty %}
+                                <div class="invoice-logo mb-3">
+                                    {{ app_logo(80) }}
+                                </div>
+                            {% endif %}
+                            <h2 class="invoice-company-name mb-1">{{ company_name() }}</h2>
+                            {% set vatNumber = setting('system/company/vat_number') %}
+                            {% if vatNumber is not empty %}
+                                <div class="invoice-vat-number">{{ 'tax.vat_number'|trans }}: {{ vatNumber }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-6 text-end">
+                            <div class="invoice-number-label text-uppercase small mb-1">{{ 'invoice.title'|trans({'%id%': ''}) }}</div>
+                            <h1 class="invoice-number mb-3">#{{ invoice.invoiceId }}</h1>
+                            {{ invoice_label(invoice.status) }}
+                        </div>
+                    </div>
+
+                    {# Invoice Metadata Card #}
+                    <div class="invoice-metadata-card card bg-light mb-4">
+                        <div class="card-body py-4">
+                            <div class="row">
+                                <div class="col-sm-4 mb-3 mb-sm-0">
+                                    <div class="invoice-metadata-label text-uppercase small mb-1">{{ 'Invoice Date'|trans }}</div>
+                                    <div class="invoice-metadata-value fw-medium">{{ invoice.invoiceDate|date('M d, Y') }}</div>
+                                </div>
+                                {% if invoice.due is not empty %}
+                                    <div class="col-sm-4 mb-3 mb-sm-0">
+                                        <div class="invoice-metadata-label text-uppercase small mb-1">{{ 'Due Date'|trans }}</div>
+                                        <div class="invoice-metadata-value fw-medium {{ invoice.status == 'overdue' ? 'text-danger' : '' }}">
+                                            {{ invoice.due|date('M d, Y') }}
+                                            {% if invoice.status == 'overdue' %}
+                                                <span class="badge badge-sm bg-danger ms-1 text-white">Overdue</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                <div class="col-sm-4">
+                                    <div class="invoice-metadata-label text-uppercase small mb-1">{{ 'invoice.total'|trans }}</div>
+                                    <div class="invoice-metadata-total text-primary fw-bold">{{ invoice.total|formatCurrency(currency) }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# From / To Section #}
+                    <div class="row invoice-parties-section">
+                        <div class="col-sm-6 mb-3 mb-sm-0">
+                            <div class="invoice-party-label text-uppercase small mb-2">{{ 'invoice.from'|trans }}</div>
+                            <div class="invoice-party-name fw-bold mb-2">{{ company_name() }}</div>
+
+                            {% set email = setting('system/company/contact_details/email') %}
+                            {% if email is not empty %}
+                                <div class="invoice-party-detail">{{ email }}</div>
+                            {% endif %}
+
+                            {% set phoneNumber = setting('system/company/contact_details/phone_number') %}
+                            {% if phoneNumber is not empty %}
+                                <div class="invoice-party-detail">{{ phoneNumber }}</div>
+                            {% endif %}
+
+                            {% set address = setting('system/company/contact_details/address', null, true) %}
+                            {% if address is not null and address|filter(v => v) is not empty %}
+                                <div class="invoice-party-detail">{{ address(address) }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="invoice-party-label text-uppercase small mb-2">{{ 'invoice.to'|trans }}</div>
+                            <div class="invoice-party-name fw-bold mb-2">{{ invoice.client }}</div>
+
+                            {% if invoice.client.vatNumber is not empty %}
+                                <div class="invoice-party-detail">{{ 'tax.vat_number'|trans }}: {{ invoice.client.vatNumber }}</div>
+                            {% endif %}
+
+                            {% for address in invoice.client.addresses %}
+                                <div class="invoice-party-detail">{{ address }}</div>
+                            {% endfor %}
+
+                            {% if invoice.users|length > 0 %}
+                                <div class="mt-2">
+                                    {% for user in invoice.users %}
+                                        <div class="invoice-party-detail">{{ user }}</div>
+                                        <div class="invoice-party-detail small">{{ user.email }}</div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    {# Line Items Table #}
+                    <div class="table-responsive">
+                        <table class="table invoice-items-table">
+                            <thead>
+                                <tr>
+                                    <th class="text-uppercase small">{{ 'invoice.item.heading.description'|trans }}</th>
+                                    <th class="text-uppercase small text-end" style="width: 100px">{{ 'invoice.item.heading.price'|trans }}</th>
+                                    <th class="text-uppercase small text-center" style="width: 80px">{{ 'invoice.item.heading.qty'|trans }}</th>
+                                    {% if invoice.tax.positive %}
+                                        <th class="text-uppercase small text-end" style="width: 80px">{{ 'invoice.item.heading.tax'|trans }}</th>
+                                    {% endif %}
+                                    <th class="text-uppercase small text-end" style="width: 120px">{{ 'invoice.item.heading.total'|trans }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in invoice.lines %}
+                                    <tr>
+                                        <td class="item-description">{{ item.description|nl2br }}</td>
+                                        <td class="text-end item-amount">{{ item.price|formatCurrency(currency) }}</td>
+                                        <td class="text-center">{{ item.qty }}</td>
+                                        {% if invoice.tax.positive %}
+                                            <td class="text-end item-amount">{{ item.tax }}</td>
+                                        {% endif %}
+                                        <td class="text-end fw-bold item-amount">{{ item.total|formatCurrency(currency) }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <hr class="my-4">
+
+                    {# Totals Section #}
+                    <div class="row justify-content-end">
+                        <div class="col-lg-5 col-md-6">
+                            <div class="invoice-totals-card card bg-light">
+                                <div class="card-body">
+                                    <div class="invoice-totals-row">
+                                        <div class="invoice-totals-label">{{ 'invoice.subtotal'|trans }}</div>
+                                        <div class="invoice-totals-value">{{ invoice.baseTotal|formatCurrency(currency) }}</div>
+                                    </div>
+                                    {% if invoice.tax.positive %}
+                                        <div class="invoice-totals-row">
+                                            <div class="invoice-totals-label">{{ 'invoice.tax'|trans }}</div>
+                                            <div class="invoice-totals-value">{{ invoice.tax|formatCurrency(currency) }}</div>
+                                        </div>
+                                    {% endif %}
+                                    {% if invoice.hasDiscount %}
+                                        <div class="invoice-totals-row">
+                                            <div class="invoice-totals-label">{{ 'invoice.discount'|trans }}</div>
+                                            <div class="invoice-totals-value text-success">-{{ discount(invoice)|formatCurrency(currency) }}</div>
+                                        </div>
+                                    {% endif %}
+                                    {% if invoice.payments|length > 0 and not invoice.balance.isZero %}
+                                        {% for payment in invoice.payments|filter((v) => v.status == 'captured') %}
+                                            <div class="invoice-totals-row">
+                                                <div class="invoice-totals-label">
+                                                    {{ 'invoice.payment.label'|trans }}
+                                                    {% if payment.method.name is not empty %}
+                                                        <span class="small opacity-75">({{ payment.method.name }})</span>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="invoice-totals-value text-success">-{{ payment.amount.amount|formatCurrency(currency) }}</div>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                    <div class="invoice-totals-final">
+                                        <div class="invoice-totals-row">
+                                            <div class="invoice-totals-label">
+                                                {% set hasOutstandingBalance = invoice.payments|length > 0 and not invoice.balance.isZero %}
+                                                {{ hasOutstandingBalance ? 'invoice.balance'|trans : 'invoice.total'|trans }}
+                                            </div>
+                                            <div class="invoice-totals-value text-primary">
+                                                {{ (hasOutstandingBalance ? invoice.balance : invoice.total)|formatCurrency(currency) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# Terms & Notes #}
+                    {% if invoice.terms is not empty or invoice.notes is not empty %}
+                        <hr class="my-4">
+                        {% if invoice.terms is not empty %}
+                            <div class="mb-3">
+                                <strong class="d-block mb-2">{{ 'invoice.terms'|trans }}</strong>
+                                <div class="opacity-75">{{ invoice.terms|nl2br }}</div>
+                            </div>
+                        {% endif %}
+                        {% if invoice.notes is not empty %}
+                            <div class="no-print">
+                                <strong class="d-block mb-2">{{ 'invoice.notes'|trans }}</strong>
+                                <div class="opacity-75">{{ invoice.notes|nl2br }}</div>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                </div>
+
+                {% if setting('system/general/hide_powered_by') is not same as('1') %}
+                    {# Footer #}
+                    <div class="invoice-footer mt-5 no-print">
+                        <div class="card">
+                            <div class="card-body py-4">
+                                <div class="row align-items-center">
+                                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                                        <div class="d-flex align-items-center justify-content-center justify-content-md-start gap-2">
+                                            {{ app_logo(24, showDefault: true, showOnlyAppIcon: true) }}
+                                            <span class="text-muted">
+                                                {{ 'invoice.external.footer.powered_by'|trans }} <strong class="text-primary">{{ constant('SolidInvoice\\CoreBundle\\SolidInvoiceCoreBundle::APP_NAME') }}</strong>
+                                            </span>
+                                        </div>
+                                        <div class="mt-2 small text-muted">
+                                            {{ 'invoice.external.footer.description'|trans }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 text-center text-md-end">
+                                        <a href="https://solidinvoice.co" target="_blank" rel="noopener" class="btn btn-primary btn-sm">
+                                            {{ ux_icon('tabler:world', {width: 16, height: 16}) }}
+                                            {{ 'invoice.external.footer.visit_website'|trans }}
+                                        </a>
+                                        <a href="https://github.com/SolidInvoice/SolidInvoice" target="_blank" rel="noopener" class="btn btn-outline-secondary btn-sm ms-2">
+                                            {{ ux_icon('tabler:brand-github', {width: 16, height: 16}) }}
+                                            {{ 'invoice.external.footer.github'|trans }}
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

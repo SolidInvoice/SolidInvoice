@@ -239,5 +239,12 @@ invoice:
             list: 'List Recurring Invoices'
             create: 'Create Recurring Invoice'
             view: 'View Recurring Invoice'
+    external:
+        tagline: 'Professional Invoicing Made Simple'
+        footer:
+            powered_by: 'Powered by'
+            description: 'Open-source invoicing software for freelancers and small businesses'
+            visit_website: 'Visit SolidInvoice.co'
+            github: 'GitHub'
 
 invoice_status_update: 'Invoice Status Update'
