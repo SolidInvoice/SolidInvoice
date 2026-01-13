@@ -22,4 +22,5 @@ enum UserSettingType: string
     case OnboardingSkipped = 'onboarding_skipped';
     case OnboardingStartedAt = 'onboarding_started_at';
     case OnboardingCompletedAt = 'onboarding_completed_at';
+    case OnboardingChecklistDismissed = 'onboarding_checklist_dismissed';
 }

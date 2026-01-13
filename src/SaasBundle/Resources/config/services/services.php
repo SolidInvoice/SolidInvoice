@@ -11,6 +11,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use SolidInvoice\DashboardBundle\Checklist\ChecklistItemInterface;
 use SolidInvoice\SaasBundle\SolidInvoiceSaasBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
@@ -23,6 +24,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autoconfigure()
         ->private()
     ;
+
+    // Tag checklist items BEFORE load()
+    $services
+        ->instanceof(ChecklistItemInterface::class)
+        ->tag('dashboard.checklist_item');
 
     $services
         ->load(SolidInvoiceSaasBundle::NAMESPACE . '\\', dirname(__DIR__, 3))
