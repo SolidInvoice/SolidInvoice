@@ -68,6 +68,50 @@ dashboard:
         quote_declined: 'declined by'
         recurring_generated: 'generated from recurring'
 
+    # Onboarding Checklist
+    checklist:
+        title: 'Get Started with SolidInvoice'
+        banner_title: 'Complete Your Setup'
+        banner_description: 'Unlock the full power of SolidInvoice by completing these essential setup tasks. Each step helps you maximize efficiency and streamline your invoicing workflow.'
+        subtitle: '%completed% of %total% tasks complete'
+        success_title: '🎉 Setup Complete!'
+        success_message: 'You''re ready to invoice like a pro! Your account is fully configured and you''re all set to manage clients, send invoices, and track payments.'
+        complete: 'Complete'
+        completed: 'Completed'
+        remaining: 'Remaining'
+        action_required: 'Action Required'
+        view_progress: 'View onboarding progress'
+        view_tasks: 'View tasks'
+        view_checklist: 'View setup checklist'
+        tasks_remaining: '{1} %count% task remaining to unlock full functionality|]1,Inf[ %count% tasks remaining to unlock full functionality'
+        all_complete_message: 'All setup complete! You''re ready to go.'
+        items_title: 'Setup Tasks'
+        dismiss: 'Dismiss'
+        dismiss_confirm_title: 'Dismiss Setup Checklist?'
+        dismiss_confirm: 'Are you sure you want to dismiss this checklist? You can always access these features from the menu.'
+        dismissed_message: 'Onboarding checklist has been dismissed.'
+        upload_logo:
+            name: 'Upload Company Logo'
+            description: 'Add your logo to invoices and quotes'
+        customize_settings:
+            name: 'Customize Company Settings'
+            description: 'Set up your business details and preferences'
+        create_client:
+            name: 'Create Your First Client'
+            description: 'Add a client to start invoicing'
+        add_tax_rate:
+            name: 'Add a Tax Rate'
+            description: 'Configure tax rates for your invoices'
+        send_invoice:
+            name: 'Send Your First Invoice'
+            description: 'Create and send an invoice to a client'
+        configure_payment_gateway:
+            name: 'Configure Payment Gateway'
+            description: 'Accept online payments from clients'
+        activate_subscription:
+            name: 'Activate Your Subscription'
+            description: 'Unlock full access and continue using SolidInvoice'
+
     # Legacy keys (kept for compatibility)
     create:
         new: 'Create New'

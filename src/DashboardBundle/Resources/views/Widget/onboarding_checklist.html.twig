@@ -1,0 +1,204 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% if show is defined and progress is defined and progress is not null %}
+{# Success State - All Complete #}
+{% if progress.allComplete %}
+<div class="col-12 mb-4">
+    <div class="card card-active">
+        <div class="card-stamp">
+            <div class="card-stamp-icon bg-success">
+                {{ ux_icon('tabler:trophy') }}
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="d-flex align-items-start mb-3">
+                <span class="avatar avatar-lg avatar-rounded me-3 bg-success-lt">
+                    {{ ux_icon('tabler:trophy', {class: 'text-success', width: 32, height: 32}) }}
+                </span>
+                <div class="flex-fill">
+                    <h3 class="card-title mb-1">{{ 'dashboard.checklist.success_title'|trans }}</h3>
+                    <div class="text-secondary">
+                        {{ 'dashboard.checklist.success_message'|trans }}
+                    </div>
+                </div>
+            </div>
+
+            <form method="post" action="{{ path('_dashboard_onboarding_dismiss') }}" class="d-inline">
+                <input type="hidden" name="_token" value="{{ csrf_token('dismiss_checklist') }}">
+                <button type="submit" class="btn btn-link btn-sm p-0 text-secondary">
+                    {{ 'dashboard.checklist.dismiss'|trans }}
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% else %}
+{# In-Progress Onboarding Banner #}
+<div class="col-12 mb-4">
+    <div class="card card-link card-link-pop"
+         role="button"
+         tabindex="0"
+         data-bs-toggle="offcanvas"
+         data-bs-target="#onboardingOffcanvas"
+         aria-controls="onboardingOffcanvas"
+         aria-label="{{ 'dashboard.checklist.view_progress'|trans }}">
+        <div class="card-stamp">
+            <div class="card-stamp-icon bg-primary">
+                {{ ux_icon('tabler:rocket') }}
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="d-flex align-items-start mb-3">
+                <span class="avatar avatar-lg avatar-rounded me-3 bg-primary-lt">
+                    {{ ux_icon('tabler:rocket', {class: 'text-primary', width: 32, height: 32}) }}
+                </span>
+                <div class="flex-fill">
+                    <h3 class="card-title mb-1">{{ 'dashboard.checklist.banner_title'|trans }}</h3>
+                    <div class="text-muted mb-2">
+                        {{ 'dashboard.checklist.tasks_remaining'|trans({'%count%': progress.total - progress.completed}) }}
+                    </div>
+                    <div class="text-muted small">
+                        {{ 'dashboard.checklist.banner_description'|trans }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center gap-3 mb-3">
+                <div class="progress flex-fill">
+                    <div
+                        class="progress-bar bg-primary"
+                        role="progressbar"
+                        style="width: {{ progress.percentage }}%"
+                        aria-valuenow="{{ progress.percentage }}"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                    >
+                        <span class="visually-hidden">{{ progress.percentage }}% Complete</span>
+                    </div>
+                </div>
+                <div class="text-secondary small fw-bold" style="min-width: 3rem; text-align: right;">
+                    {{ progress.percentage }}%
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center text-primary">
+                <span class="me-1">{{ 'dashboard.checklist.view_checklist'|trans }}</span>
+                {{ ux_icon('tabler:arrow-right', {width: 16, height: 16}) }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{# Offcanvas Panel #}
+<div class="offcanvas offcanvas-end" tabindex="-1" id="onboardingOffcanvas" aria-labelledby="onboardingOffcanvasLabel" style="width: 420px;">
+    <div class="offcanvas-header">
+        <div class="d-flex align-items-center">
+            <span class="avatar avatar-rounded me-2" style="background-color: var(--tblr-primary);">
+                {{ ux_icon('tabler:rocket', {width: 24, height: 24, class: 'text-primary'}) }}
+            </span>
+            <div>
+                <h5 class="offcanvas-title mb-0" id="onboardingOffcanvasLabel">{{ 'dashboard.checklist.title'|trans }}</h5>
+                <div class="text-secondary small">{{ 'dashboard.checklist.subtitle'|trans({'%completed%': progress.completed, '%total%': progress.total}) }}</div>
+            </div>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="{{ 'Close'|trans }}"></button>
+    </div>
+
+    <div class="offcanvas-body">
+        {# Progress Summary Card #}
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="row text-center mb-3">
+                    <div class="col">
+                        <div class="h1 mb-1 text-primary">{{ progress.completed }}</div>
+                        <div class="text-primary text-uppercase small">{{ 'dashboard.checklist.completed'|trans }}</div>
+                    </div>
+                    <div class="col">
+                        <div class="h1 mb-1 text-secondary">{{ progress.total - progress.completed }}</div>
+                        <div class="text-secondary text-uppercase small">{{ 'dashboard.checklist.remaining'|trans }}</div>
+                    </div>
+                </div>
+                <div class="progress">
+                    <div
+                        class="progress-bar bg-primary"
+                        role="progressbar"
+                        style="width: {{ progress.percentage }}%"
+                        aria-valuenow="{{ progress.percentage }}"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                    ></div>
+                </div>
+            </div>
+        </div>
+
+        {# Checklist Items #}
+        <h4 class="text-uppercase text-primary small mb-3 fw-bold">{{ 'dashboard.checklist.items_title'|trans }}</h4>
+        <div class="checklist-items-wrapper">
+            {% for item in progress.items %}
+            <a href="{{ path(item.route) }}" class="checklist-item {% if item.completed %}completed text-green disabled cursor-default{% endif %}">
+                <div class="checklist-item-icon">
+                    {% if item.completed %}
+                        {{ ux_icon('tabler:circle-check-filled', {width: 20, height: 20}) }}
+                    {% else %}
+                        {{ ux_icon('tabler:circle', {width: 20, height: 20}) }}
+                    {% endif %}
+                </div>
+                <div class="checklist-item-content">
+                    <div class="checklist-item-header">
+                        <span class="item-icon">{{ ux_icon(item.icon, {width: 16, height: 16}) }}</span>
+                        <span class="item-name">{{ item.name|trans }}</span>
+                    </div>
+                    <p class="checklist-item-description">{{ item.description|trans }}</p>
+                </div>
+                <div class="checklist-item-action">
+                    {{ ux_icon('tabler:arrow-right', {width: 18, height: 18}) }}
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="offcanvas-footer border-top p-3">
+        <form method="post" action="{{ path('_dashboard_onboarding_dismiss') }}" id="dismissChecklistForm">
+            <input type="hidden" name="_token" value="{{ csrf_token('dismiss_checklist') }}">
+            <button
+                type="button"
+                class="btn btn-outline-secondary btn-sm w-100"
+                data-bs-toggle="modal"
+                data-bs-target="#dismissChecklistModal"
+            >
+                {{ ux_icon('tabler:x', {width: 16, height: 16}) }}
+                {{ 'dashboard.checklist.dismiss'|trans }}
+            </button>
+        </form>
+    </div>
+</div>
+
+{# Dismiss Confirmation Modal #}
+<div class="modal modal-blur fade" id="dismissChecklistModal" tabindex="-1" aria-labelledby="dismissChecklistModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="modal-title">{{ 'dashboard.checklist.dismiss_confirm_title'|trans }}</div>
+                <div>{{ 'dashboard.checklist.dismiss_confirm'|trans }}</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                    {{ 'Cancel'|trans }}
+                </button>
+                <button type="button" class="btn btn-danger" onclick="document.getElementById('dismissChecklistForm').submit()">
+                    {{ 'dashboard.checklist.dismiss'|trans }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}

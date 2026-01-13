@@ -1,0 +1,168 @@
+/**
+ * Onboarding Checklist - Enhanced Tabler Components
+ * Uses Tabler structure with custom enhancements for better UX
+ */
+
+/* Card entrance animation */
+.card[data-bs-toggle="offcanvas"],
+.card.border-success {
+    animation: fadeInDown 0.5s ease-out;
+    transition: all 0.3s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+}
+
+/* Success Card Specific Styling */
+.card.border-success {
+    border-width: 2px;
+    background: linear-gradient(135deg, rgba(var(--tblr-success-rgb), 0.03) 0%, rgba(var(--tblr-success-rgb), 0.01) 100%);
+
+    .card-stamp-icon {
+        background: var(--tblr-success);
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        transform: translateY(-10px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Make the card stamp icon more prominent */
+.card-stamp-icon {
+    opacity: 0.15;
+}
+
+/* Checklist Items - Enhanced Styling */
+.checklist-items-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.checklist-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-left: 3px solid var(--tblr-primary);
+    border-radius: 8px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s ease;
+    position: relative;
+
+    &:hover {
+        background: rgba(var(--tblr-primary-rgb), 0.02);
+        border-color: var(--tblr-primary);
+        transform: translateX(4px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+        .checklist-item-action {
+            opacity: 1;
+        }
+    }
+
+    &.completed {
+        background: linear-gradient(90deg, rgba(var(--tblr-success-rgb), 0.08) 0%, rgba(var(--tblr-success-rgb), 0.02) 100%);
+        border-left-color: var(--tblr-success);
+
+        &:hover {
+            background: linear-gradient(90deg, rgba(var(--tblr-success-rgb), 0.12) 0%, rgba(var(--tblr-success-rgb), 0.06) 100%);
+        }
+
+        .item-name {
+            color: var(--tblr-success);
+        }
+    }
+}
+
+.checklist-item-icon {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+
+    svg {
+        color: var(--tblr-success);
+    }
+}
+
+.checklist-item:not(.completed) .checklist-item-icon svg {
+    color: var(--tblr-gray-300);
+}
+
+.checklist-item-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.checklist-item-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.item-icon {
+    display: flex;
+    align-items: center;
+    color: var(--tblr-primary);
+}
+
+.item-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--tblr-body-color);
+}
+
+.checklist-item-description {
+    font-size: 13px;
+    color: var(--tblr-muted);
+    margin: 0;
+    line-height: 1.5;
+}
+
+.checklist-item-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    opacity: 0.3;
+    transition: opacity 0.2s;
+
+    svg {
+        color: var(--tblr-primary);
+    }
+}
+
+/* Progress Summary Card Enhancement */
+.offcanvas-body .card {
+    border: none;
+    background: linear-gradient(135deg, rgba(var(--tblr-primary-rgb), 0.05) 0%, rgba(var(--tblr-primary-rgb), 0.02) 100%);
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .card[data-bs-toggle="offcanvas"],
+    .checklist-item {
+        animation: none !important;
+        transition: none !important;
+    }
+}

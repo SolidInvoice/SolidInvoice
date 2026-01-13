@@ -11,14 +11,18 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use SolidInvoice\DashboardBundle\Checklist\ChecklistItemInterface;
+use SolidInvoice\DashboardBundle\Checklist\ChecklistManager;
 use SolidInvoice\DashboardBundle\SolidInvoiceDashboardBundle;
 use SolidInvoice\DashboardBundle\Widgets\AttentionRequiredWidget;
 use SolidInvoice\DashboardBundle\Widgets\HeroStatsWidget;
 use SolidInvoice\DashboardBundle\Widgets\InvoiceDistributionWidget;
+use SolidInvoice\DashboardBundle\Widgets\OnboardingChecklistWidget;
 use SolidInvoice\DashboardBundle\Widgets\QuickActionsWidget;
 use SolidInvoice\DashboardBundle\Widgets\RecentActivityWidget;
 use SolidInvoice\DashboardBundle\Widgets\RevenueChartWidget;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -30,9 +34,28 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->private()
     ;
 
+    // Auto-tag checklist items (must come before load())
+    $services
+        ->instanceof(ChecklistItemInterface::class)
+        ->tag('dashboard.checklist_item');
+
     $services
         ->load(SolidInvoiceDashboardBundle::NAMESPACE . '\\', dirname(__DIR__, 3))
         ->exclude(dirname(__DIR__, 3) . '/{DependencyInjection,Entity,Resources,Tests}');
+
+    // Configure ChecklistManager with tagged items
+    $services
+        ->set(ChecklistManager::class)
+        ->public()
+        ->arg('$items', tagged_iterator('dashboard.checklist_item'));
+
+    // Top row - Onboarding Checklist (highest priority)
+    $services
+        ->set(OnboardingChecklistWidget::class)
+        ->tag('dashboard.widget', [
+            'priority' => 300,
+            'location' => 'top',
+        ]);
 
     // Top row - Hero Stats
     $services
