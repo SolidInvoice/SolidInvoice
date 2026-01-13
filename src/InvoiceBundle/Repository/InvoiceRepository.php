@@ -16,12 +16,12 @@ namespace SolidInvoice\InvoiceBundle\Repository;
 use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
-use DateTimeImmutable;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Psr\Clock\ClockInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Model\Graph;
@@ -34,8 +34,10 @@ use Symfony\Bridge\Doctrine\Types\UlidType;
  */
 class InvoiceRepository extends EntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
+    public function __construct(
+        ManagerRegistry $registry,
+        private readonly ClockInterface $clock
+    ) {
         parent::__construct($registry, Invoice::class);
     }
 
@@ -456,7 +458,7 @@ class InvoiceRepository extends EntityRepository
             ->andWhere('i.due < :now')
             ->andWhere('i.due IS NOT NULL')
             ->setParameter('status', Graph::STATUS_PENDING)
-            ->setParameter('now', new DateTimeImmutable());
+            ->setParameter('now', $this->clock->now());
 
         return $qb->getQuery()->toIterable();
     }
