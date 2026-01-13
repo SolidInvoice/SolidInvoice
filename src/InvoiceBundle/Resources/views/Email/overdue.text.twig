@@ -29,6 +29,6 @@
 
 {{ 'invoice.overdue.action_required'|trans({}, 'email') }}
 
-{{ 'invoice.overdue.view_and_pay'|trans({}, 'email') }}: {{ url('_invoices_view', {'id': invoice.id}) }}
+{{ 'invoice.overdue.view_and_pay'|trans({}, 'email') }}: {{ url("_view_invoice_external", {"uuid": invoice.uuid}) }}
 
 {{ 'invoice.overdue.contact_info'|trans({}, 'email') }}
