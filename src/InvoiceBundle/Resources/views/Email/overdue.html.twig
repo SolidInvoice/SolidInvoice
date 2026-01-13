@@ -1,0 +1,79 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends "@SolidInvoiceCore/Layout/Email/notification.html.twig" %}
+{% import "@SolidInvoiceCore/Layout/Email/components.html.twig" as email %}
+
+{%- block title -%}
+    {{ 'invoice.overdue.heading'|trans({}, 'email') }}
+{%- endblock -%}
+
+{%- block content -%}
+    {% apply inky_to_html %}
+        <row>
+            <columns>
+                <p style="color: #dc2626; font-size: 18px; font-weight: 600; line-height: 1.5; margin: 0 0 16px 0; Margin: 0 0 16px 0;">
+                    ⚠️ {{ 'invoice.overdue.alert'|trans({}, 'email') }}
+                </p>
+                <p style="color: #1e293b; font-size: 16px; line-height: 1.5; margin: 0 0 24px 0; Margin: 0 0 24px 0;">
+                    {{ 'invoice.overdue.message'|trans({}, 'email') }}
+                </p>
+            </columns>
+        </row>
+    {% endapply %}
+
+    {{ email.spacer('sm') }}
+
+    {# Invoice details #}
+    {{ email.info_row('invoice.overdue.invoice_number'|trans({}, 'email'), invoice.invoiceId ?? invoice.id) }}
+
+    {% if invoice.due %}
+        {{ email.spacer('xs') }}
+        {{ email.info_row('invoice.overdue.due_date'|trans({}, 'email'), invoice.due|date('Y-m-d')) }}
+    {% endif %}
+
+    {% if invoice.total %}
+        {{ email.spacer('xs') }}
+        {{ email.info_row('invoice.overdue.amount_due'|trans({}, 'email'), invoice.total|formatCurrency(invoice.client.currency)) }}
+    {% endif %}
+
+    {% if invoice.balance %}
+        {{ email.spacer('xs') }}
+        {{ email.info_row('invoice.overdue.outstanding_balance'|trans({}, 'email'), invoice.balance|formatCurrency(invoice.client.currency)) }}
+    {% endif %}
+
+    {{ email.divider('md') }}
+
+    {% apply inky_to_html %}
+        <row>
+            <columns>
+                <p style="color: #475569; font-size: 14px; line-height: 1.5; margin: 0 0 16px 0; Margin: 0 0 16px 0;">
+                    {{ 'invoice.overdue.action_required'|trans({}, 'email') }}
+                </p>
+            </columns>
+        </row>
+    {% endapply %}
+
+    {{ email.spacer('sm') }}
+
+    {# View/Pay button #}
+    {{ email.button('invoice.overdue.view_and_pay'|trans({}, 'email'), url('_invoices_view', {'id': invoice.id}), 'primary', 'large') }}
+
+    {{ email.spacer('md') }}
+
+    {% apply inky_to_html %}
+        <row>
+            <columns>
+                <p style="color: #64748b; font-size: 13px; line-height: 1.5; margin: 0; Margin: 0;">
+                    {{ 'invoice.overdue.contact_info'|trans({}, 'email') }}
+                </p>
+            </columns>
+        </row>
+    {% endapply %}
+{%- endblock -%}

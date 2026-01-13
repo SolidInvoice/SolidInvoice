@@ -1,0 +1,34 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{{ 'invoice.overdue.heading'|trans({}, 'email') }}
+{{ '='|repeat(60) }}
+
+⚠️  {{ 'invoice.overdue.alert'|trans({}, 'email') }}
+
+{{ 'invoice.overdue.message'|trans({}, 'email') }}
+
+{{ 'invoice.overdue.invoice_number'|trans({}, 'email') }}: {{ invoice.invoiceId ?? invoice.id }}
+{% if invoice.due -%}
+{{ 'invoice.overdue.due_date'|trans({}, 'email') }}: {{ invoice.due|date('Y-m-d') }}
+{% endif -%}
+{% if invoice.total -%}
+{{ 'invoice.overdue.amount_due'|trans({}, 'email') }}: {{ invoice.total|formatCurrency(invoice.client.currency) }}
+{% endif -%}
+{% if invoice.balance -%}
+{{ 'invoice.overdue.outstanding_balance'|trans({}, 'email') }}: {{ invoice.balance|formatCurrency(invoice.client.currency) }}
+{% endif -%}
+
+{{ '-'|repeat(60) }}
+
+{{ 'invoice.overdue.action_required'|trans({}, 'email') }}
+
+{{ 'invoice.overdue.view_and_pay'|trans({}, 'email') }}: {{ url('_invoices_view', {'id': invoice.id}) }}
+
+{{ 'invoice.overdue.contact_info'|trans({}, 'email') }}

@@ -324,7 +324,7 @@ final class TwoFactorSettingsTest extends LiveComponentTest
         $html = $this->component->render()->toString();
         self::assertStringContainsString('download:file', $html);
 
-        $this->assertMatchesHtmlSnapshot($this->replaceDateTimeStamp($this->replaceQrCodeDataUri($this->replaceChecksum($this->replaceUuid($html)))));
+        $this->assertMatchesHtmlSnapshot($this->replaceBackupCodes($this->replaceDateTimeStamp($this->replaceQrCodeDataUri($this->replaceChecksum($this->replaceUuid($html))))));
     }
 
     public function testShowQrModalRendersSetupModal(): void
