@@ -16,6 +16,7 @@ namespace SolidInvoice\InvoiceBundle\Repository;
 use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -439,5 +440,24 @@ class InvoiceRepository extends EntityRepository
             ->setMaxResults($limit);
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * Get pending invoices that are past their due date.
+     * Uses toIterable() for memory-efficient streaming.
+     *
+     * @return iterable<Invoice>
+     */
+    public function getPendingOverdueInvoices(): iterable
+    {
+        $qb = $this->createQueryBuilder('i');
+
+        $qb->where('i.status = :status')
+            ->andWhere('i.due < :now')
+            ->andWhere('i.due IS NOT NULL')
+            ->setParameter('status', Graph::STATUS_PENDING)
+            ->setParameter('now', new DateTimeImmutable());
+
+        return $qb->getQuery()->toIterable();
     }
 }

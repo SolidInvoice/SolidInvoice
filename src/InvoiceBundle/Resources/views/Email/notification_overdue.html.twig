@@ -1,0 +1,76 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends "@SolidInvoiceCore/Layout/Email/notification.html.twig" %}
+{% import "@SolidInvoiceCore/Layout/Email/components.html.twig" as email %}
+
+{%- block title -%}
+    {{ 'invoice.notification_overdue.heading'|trans({}, 'email') }}
+{%- endblock -%}
+
+{%- block content -%}
+    {% apply inky_to_html %}
+        <row>
+            <columns>
+                <p style="color: #dc2626; font-size: 16px; font-weight: 600; line-height: 1.5; margin: 0 0 16px 0; Margin: 0 0 16px 0;">
+                    ⚠️ {{ 'invoice.notification_overdue.alert'|trans({}, 'email') }}
+                </p>
+                <p style="color: #1e293b; font-size: 16px; line-height: 1.5; margin: 0 0 24px 0; Margin: 0 0 24px 0;">
+                    {{ 'invoice.notification_overdue.message'|trans({}, 'email') }}
+                </p>
+            </columns>
+        </row>
+    {% endapply %}
+
+    {{ email.spacer('sm') }}
+
+    {# Invoice details #}
+    {{ email.info_row('invoice.notification_overdue.invoice_number'|trans({}, 'email'), invoice.invoiceId ?? invoice.id) }}
+
+    {% if client %}
+        {{ email.spacer('xs') }}
+        {{ email.info_row('invoice.notification_overdue.client'|trans({}, 'email'), client.name) }}
+    {% elseif invoice.client %}
+        {{ email.spacer('xs') }}
+        {{ email.info_row('invoice.notification_overdue.client'|trans({}, 'email'), invoice.client.name) }}
+    {% endif %}
+
+    {% if invoice.due %}
+        {{ email.spacer('xs') }}
+        {{ email.info_row('invoice.notification_overdue.due_date'|trans({}, 'email'), invoice.due|date('Y-m-d')) }}
+    {% endif %}
+
+    {% if invoice.balance %}
+        {{ email.spacer('xs') }}
+        {{ email.info_row('invoice.notification_overdue.outstanding_balance'|trans({}, 'email'), invoice.balance|formatCurrency(invoice.client.currency)) }}
+    {% endif %}
+
+    {{ email.spacer('sm') }}
+
+    {# Status display #}
+    {% apply inky_to_html %}
+        <row>
+            <columns>
+                <p style="font-weight: 600; color: #1e293b; margin: 0 0 8px 0; Margin: 0 0 8px 0;">
+                    {{ 'invoice.notification_overdue.status'|trans({}, 'email') }}
+                </p>
+                <div style="margin: 8px 0; Margin: 8px 0;">
+                    {{ invoice_label(invoice.status) }}
+                </div>
+            </columns>
+        </row>
+    {% endapply %}
+
+    {{ email.divider('md') }}
+
+    {# View button #}
+    {{ email.button('invoice.notification_overdue.view_invoice'|trans({}, 'email'), url('_invoices_view', {'id': invoice.id}), 'primary', 'large') }}
+
+    {{ email.spacer('md') }}
+{%- endblock -%}
