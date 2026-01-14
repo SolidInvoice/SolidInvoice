@@ -57,6 +57,7 @@ final class Settings extends AbstractController
     public function __construct(
         private readonly SettingsRepository $settingsRepository,
         private readonly PropertyAccessorInterface $propertyAccessor,
+        private readonly ?\SolidInvoice\SaasBundle\Service\SubscriptionService $subscriptionService = null,
     ) {
     }
 
@@ -92,7 +93,16 @@ final class Settings extends AbstractController
 
     protected function instantiateForm(): FormInterface
     {
-        return $this->createForm(SettingsType::class, $this->getAppSettings(false)[$this->section], ['settings' => $this->getAppSettings(true)[$this->section]]);
+        $isTrialSubscription = $this->subscriptionService?->isTrialSubscription() ?? false;
+
+        return $this->createForm(
+            SettingsType::class,
+            $this->getAppSettings(false)[$this->section],
+            [
+                'settings' => $this->getAppSettings(true)[$this->section],
+                'subscription_in_trial' => $isTrialSubscription,
+            ]
+        );
     }
 
     public function onSectionChange(): void

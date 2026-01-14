@@ -20,7 +20,13 @@ final class ConfigProvider implements ProviderInterface
     public function provide(array $data): array
     {
         return [
-            new Config('system/general/hide_powered_by', '0', 'Hide "Powered by SolidInvoice" text in invoices and quotes.', CheckboxType::class),
+            new Config(
+                'system/general/hide_powered_by',
+                '0',
+                'Hide "Powered by SolidInvoice" text in invoices and quotes.',
+                CheckboxType::class,
+                ['trial_restricted' => true]
+            ),
         ];
     }
 }

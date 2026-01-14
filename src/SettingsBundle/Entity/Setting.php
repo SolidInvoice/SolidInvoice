@@ -52,6 +52,15 @@ class Setting implements Stringable, Serializable
     #[ORM\Column(name: 'field_type', type: Types::STRING)]
     protected ?string $type = null;
 
+    /**
+     * @var array<string, mixed>|null
+     */
+    #[ORM\Column(name: 'form_options', type: Types::JSON, nullable: true)]
+    protected ?array $formOptions = null;
+
+    #[ORM\Column(name: 'default_value', type: Types::TEXT, nullable: true)]
+    protected ?string $defaultValue = null;
+
     public function getId(): ?Ulid
     {
         return $this->id;
@@ -105,6 +114,36 @@ class Setting implements Stringable, Serializable
         return $this;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
+    public function getFormOptions(): array
+    {
+        return $this->formOptions ?? [];
+    }
+
+    /**
+     * @param array<string, mixed>|null $formOptions
+     */
+    public function setFormOptions(?array $formOptions): self
+    {
+        $this->formOptions = $formOptions;
+
+        return $this;
+    }
+
+    public function getDefaultValue(): ?string
+    {
+        return $this->defaultValue;
+    }
+
+    public function setDefaultValue(?string $defaultValue): self
+    {
+        $this->defaultValue = $defaultValue;
+
+        return $this;
+    }
+
     public function __toString(): string
     {
         return (string) $this->value;
@@ -118,11 +157,13 @@ class Setting implements Stringable, Serializable
             $this->value,
             $this->description,
             $this->type,
+            $this->formOptions,
+            $this->defaultValue,
         ];
     }
 
     /**
-     * @param array{0: Ulid|null, 1: string|null, 2: string|null, 3: string|null, 4: string|null} $data
+     * @param array{0: Ulid|null, 1: string|null, 2: string|null, 3: string|null, 4: string|null, 5: array<string, mixed>|null, 6: string|null} $data
      */
     public function __unserialize(array $data): void
     {
@@ -132,6 +173,8 @@ class Setting implements Stringable, Serializable
             $this->value,
             $this->description,
             $this->type,
+            $this->formOptions,
+            $this->defaultValue,
         ] = $data;
     }
 
