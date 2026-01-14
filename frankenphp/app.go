@@ -73,6 +73,7 @@ var domain string
 var httpPort = defaultPort
 var serverIp string
 var disableHttps bool
+var messengerWorkers int
 
 func main() {
 	configDir := mustVal(os.UserConfigDir())
@@ -86,7 +87,7 @@ func main() {
 	defaultServerIp = getOutboundIP().String()
 
 	if os.Getenv(upperAppName+"_CONFIG_DIR") == "" {
-	    must(os.Setenv(upperAppName+"_CONFIG_DIR", filepath.Join(configDir, appName)))
+		must(os.Setenv(upperAppName+"_CONFIG_DIR", filepath.Join(configDir, appName)))
 	}
 
 	must(os.Setenv(upperAppName+"_ENV", "prod"))
@@ -146,6 +147,11 @@ func main() {
 		Use:   "run",
 		Short: "Runs " + appName,
 		RunE: func(cmd *cobra.Command, args []string) error {
+
+			// Validate messenger workers count
+			if messengerWorkers < 0 {
+				return errors.New("messenger-workers must be a positive number (got " + fmt.Sprintf("%d", messengerWorkers) + ")")
+			}
 
 			listenPort := getAvailablePort(httpPort)
 
@@ -211,22 +217,39 @@ func main() {
 				UseProcessFile:  false,
 			}
 
-			messenger := process.Loop(func(ctx context.Context) error {
-				return runConsoleCommand(
-					"messenger:consume",
-					"--all",
-					"--limit",
-					"50",
-					"--time-limit",
-					"3600",
-				)
-			})
-			messenger.Shutdown = func(ctx context.Context) error {
-				return runConsoleCommand("messenger:stop-workers")
+			app.AddProcess(wrapInternalCmd("server", "start"))
+
+			// Spawn multiple messenger worker processes
+			// Each worker runs independently and is automatically restarted by lu if it exits
+			if messengerWorkers > 0 {
+				log.Info(nil, "Starting "+fmt.Sprintf("%d", messengerWorkers)+" messenger worker(s)")
 			}
 
-			app.AddProcess(wrapInternalCmd("server", "start"))
-			app.AddProcess(messenger)
+			for i := 1; i <= messengerWorkers; i++ {
+				workerID := i // Capture loop variable for closure
+				messengerWorker := process.Loop(func(ctx context.Context) error {
+					return runConsoleCommand(
+						"messenger:consume",
+						"async",
+						"--limit",
+						"100",
+						"--time-limit",
+						"3600",
+						"--memory-limit",
+						"128M",
+					)
+				})
+
+				// On shutdown, gracefully stop workers after their current message
+				// This only needs to be set on the first worker since it signals all workers
+				if workerID == 1 {
+					messengerWorker.Shutdown = func(ctx context.Context) error {
+						return runConsoleCommand("messenger:stop-workers")
+					}
+				}
+
+				app.AddProcess(messengerWorker)
+			}
 			app.AddProcess(process.Scheduled(
 				func(role string) process.ContextFunc {
 					return func(ctx context.Context) (context.Context, context.CancelFunc, error) {
@@ -260,6 +283,7 @@ func main() {
 	runCmd.PersistentFlags().StringVar(&httpPort, "port", defaultPort, "The default port to use for the application. When specifying a domain to use, the port will default to 443")
 	runCmd.PersistentFlags().StringVar(&serverIp, "server-ip", defaultServerIp, "If you have multiple IP addresses on your server, specify the IP address to use. By default, the server will bind to all IP addresses")
 	runCmd.PersistentFlags().BoolVar(&disableHttps, "disable-https", false, "Disable HTTPS. The application will only be accessible using http://. This setting is not recommended, unless you are setting up a reverse proxy which will use https")
+	runCmd.PersistentFlags().IntVar(&messengerWorkers, "messenger-workers", 1, "Number of messenger worker processes to spawn. Each worker processes async messages independently. Increase this value on high-traffic servers to improve message processing throughput (e.g., --messenger-workers=5)")
 
 	rootCmd.AddCommand(&cobra.Command{
 		Use:                "version",

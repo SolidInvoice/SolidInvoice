@@ -12,8 +12,30 @@ declare(strict_types=1);
  */
 
 use Symfony\Config\FrameworkConfig;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
 
 return static function (FrameworkConfig $config): void {
-    $config->messenger()
-        ->enabled(true);
+    $messenger = $config->messenger();
+
+    // Failure transport - always uses Doctrine for reliability
+    $messenger->transport('failed')
+        ->dsn('doctrine://default?queue_name=failed');
+
+    // Main async transport - uses env variable with fallback to Doctrine (set in services.php)
+    // This single transport handles all async messages
+    // Scale by running multiple workers: bin/console messenger:consume async --limit=100
+    $messenger->transport('async')
+        ->dsn(env('SOLIDINVOICE_MESSENGER_DSN'))
+        ->retryStrategy()
+        ->maxRetries(3)
+        ->delay(1000) // 1 second initial delay
+        ->multiplier(2) // Exponential backoff
+        ->maxDelay(60000) // Max 60 seconds between retries
+        ->jitter(0.1); // 10% random jitter to prevent thundering herd
+
+    // Configure default bus
+    $messenger->defaultBus('messenger.bus.default');
+
+    // Configure failure transport
+    $messenger->failureTransport('failed');
 };
