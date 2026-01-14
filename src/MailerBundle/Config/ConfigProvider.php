@@ -22,9 +22,21 @@ final class ConfigProvider implements ProviderInterface
     public function provide(array $data): array
     {
         return [
-            new Config('email/from_address', 'no-reply@solidinvoice.co', null, EmailType::class),
+            new Config(
+                'email/from_address',
+                'no-reply@solidinvoice.co',
+                null,
+                EmailType::class,
+                ['trial_restricted' => true]
+            ),
             new Config('email/from_name', $data['company_name'] ?? '', null, TextType::class),
-            new Config('email/sending_options/provider', null, null, MailTransportType::class),
+            new Config(
+                'email/sending_options/provider',
+                null,
+                null,
+                MailTransportType::class,
+                ['trial_restricted' => true]
+            ),
         ];
     }
 }

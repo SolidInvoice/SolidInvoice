@@ -74,6 +74,8 @@ final readonly class DefaultData
                 $settingEntity->setValue($config->value);
                 $settingEntity->setDescription($config->description);
                 $settingEntity->setType($config->formType);
+                $settingEntity->setFormOptions($config->formOptions);
+                $settingEntity->setDefaultValue($config->value);
                 $settingEntity->setCompany($company);
 
                 $this->em->persist($settingEntity);

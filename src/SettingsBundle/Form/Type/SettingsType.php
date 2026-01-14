@@ -27,27 +27,49 @@ class SettingsType extends AbstractType
     {
         foreach ($options['settings'] as $key => $setting) {
             if (is_array($setting)) {
-                $builder->add($key, self::class, ['settings' => $setting]);
+                $builder->add($key, self::class, [
+                    'settings' => $setting,
+                    'subscription_in_trial' => $options['subscription_in_trial'],
+                ]);
 
                 continue;
             }
 
             /** @var Setting $setting */
-            $builder->add(
-                $key,
-                $setting->getType(),
-                [
-                    'help' => $setting->getDescription(),
-                    'required' => false,
-                    'data' => $setting->getValue(),
-                ]
-            );
+            $fieldOptions = [
+                'help' => $setting->getDescription(),
+                'required' => false,
+            ];
+
+            // Force default value during trial for trial-restricted fields
+            $formOptions = $setting->getFormOptions();
+            $isTrialRestricted = $formOptions['trial_restricted'] ?? false;
+
+            if ($isTrialRestricted && $options['subscription_in_trial']) {
+                // Use default value instead of stored value during trial
+                $fieldOptions['data'] = $setting->getDefaultValue();
+            } else {
+                // Use stored value normally
+                $fieldOptions['data'] = $setting->getValue();
+            }
+
+            // Add trial-related options that will be handled by TrialRestrictedExtension
+            $fieldOptions['subscription_in_trial'] = $options['subscription_in_trial'];
+            $fieldOptions['trial_restricted'] = $isTrialRestricted;
+
+            // Merge remaining form options from Config (excluding our trial-specific options)
+            $additionalOptions = array_diff_key($formOptions, ['trial_restricted' => true]);
+            $fieldOptions = array_merge($fieldOptions, $additionalOptions);
+
+            $builder->add($key, $setting->getType(), $fieldOptions);
         }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired('settings');
+        $resolver->setDefaults(['subscription_in_trial' => false]);
+        $resolver->setAllowedTypes('subscription_in_trial', 'bool');
     }
 
     public function getBlockPrefix(): string

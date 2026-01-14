@@ -9,6 +9,55 @@
 
 {% extends '@SolidInvoiceCore/Form/fields.html.twig' %}
 
+{# Trial-Restricted Form Row #}
+{% block checkbox_row %}
+    {% if trial_restricted_active|default(false) and toggle('saas_enabled') %}
+        <div class="mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <label class="form-label">{{ label|trans }}</label>
+                <span class="badge bg-azure-lt">
+                    {{ ux_icon('tabler:alert-circle', {width: 16, height: 16, class: 'me-1'}) }}
+                    {{ 'Subscription Required'|trans }}
+                </span>
+            </div>
+
+            {{ parent() }}
+
+            <div class="form-hint text-muted mt-2">
+                {{ ux_icon('tabler:info-circle', {width: 16, height: 16, class: 'me-1'}) }}
+                {{ 'This feature requires an active subscription. Upgrade your plan now to unlock this feature.'|trans }}
+                <a href="{{ path('billing_index') }}" class="ms-1">{{ 'Upgrade Now'|trans }}</a>
+            </div>
+        </div>
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block form_row %}
+    {% if trial_restricted_active|default(false) and toggle('saas_enabled') %}
+        <div class="mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <label class="form-label">{{ label|trans }}</label>
+                <span class="badge bg-azure-lt">
+                    {{ ux_icon('tabler:alert-circle', {width: 16, height: 16, class: 'me-1'}) }}
+                    {{ 'Subscription Required'|trans }}
+                </span>
+            </div>
+
+            {{ form_widget(form) }}
+
+            <div class="form-hint text-muted mt-2">
+                {{ ux_icon('tabler:info-circle', {width: 16, height: 16, class: 'me-1'}) }}
+                {{ 'This feature requires an active subscription. Upgrade your plan now to unlock this feature.'|trans }}
+                <a href="{{ path('billing_index') }}" class="ms-1">{{ 'Upgrade Now'|trans }}</a>
+            </div>
+        </div>
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
 {# Settings Address Widget - improved layout with Bootstrap grid #}
 {% block settings_address_widget %}
     <div class="card bg-light border-0">
