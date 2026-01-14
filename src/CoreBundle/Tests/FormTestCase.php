@@ -26,6 +26,7 @@ use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\MoneyBundle\Form\Extension\MoneyExtension;
 use SolidInvoice\MoneyBundle\Form\Type\CurrencyType;
 use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
+use SolidInvoice\SettingsBundle\Form\Extension\TrialRestrictedExtension;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -112,6 +113,7 @@ abstract class FormTestCase extends KernelTestCase
                 new ServiceLocator(['default' => fn () => new HtmlSanitizer(new HtmlSanitizerConfig())])
             ),
             new UnsanitizeSingleQuotesTypeExtension(),
+            new TrialRestrictedExtension(),
         ];
     }
 

@@ -45,13 +45,14 @@
                         <svg viewbox="0 0 24 24" fill="currentColor" width="22" height="22" class="text-primary" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0-4 0"></path><path d="M21 12q-3.6 6-9 6t-9-6q3.6-6 9-6t9 6"></path></g></svg>
                         Display Settings
                     </h3>
-                                                                            <div class="form-switch-field">
+                                                                                        <div class="form-switch-field">
             <div class="form-switch-wrapper"><div class="form-check form-switch">
 <input type="checkbox" id="settings_watermark" name="settings[watermark]" class="form-check-input" value="1" checked>
         <label class="form-check-label checkbox-switch" for="settings_watermark">Show Status Watermark</label>
 </div></div>
 <div class="form-text text-muted mb-0" id="settings_watermark_help">Display a visual watermark (e.g., PAID, DRAFT) on the Invoice document.</div>
 </div>
+    
     
                                     </div>
 
@@ -62,12 +63,13 @@
                     </h3>
                     <div class="row g-3">
                                                     <div class="col-12">
-                                <div class="mb-3">    
+                                            <div class="mb-3">    
             <label class="control-label form-label" for="settings_email_subject">Email Subject Line</label><input type="text" id="settings_email_subject" name="settings[email_subject]" placeholder="New Invoice - #{id}" aria-describedby="settings_email_subject_help" class="form-control" value="invoice subject"><div class="form-text text-muted mb-0" id="settings_email_subject_help">Use {id} to include the Invoice number. Example: "New Invoice - #{id}"</div>
 </div>
+    
                             </div>
                                                                             <div class="col-12">
-                                <div class="mb-3">    
+                                            <div class="mb-3">    
             <label class="control-label form-label" for="settings_bcc_address">BCC Email Address</label>    <div class="input-group input-icon-group">
         <span class="input-group-text">
             <svg viewbox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><path d="m3 7l9 6l9-6"></path></g></svg>
@@ -76,6 +78,7 @@
     </div>
 <div class="form-text text-muted mb-0" id="settings_bcc_address_help">Receive a blind carbon copy of every Invoice email sent.</div>
 </div>
+    
                             </div>
                                             </div>
                 </div>
@@ -90,7 +93,7 @@
                         </p>
                         <div class="row g-3">
                                                             <div class="col-12">
-                                    <div class="mb-3">    
+                                                <div class="mb-3">    
             <label class="control-label form-label" for="settings_id_generation_strategy">Numbering Strategy</label><select id="settings_id_generation_strategy" name="settings[id_generation][strategy]" data-controller="symfony--ux-autocomplete--autocomplete" data-symfony--ux-autocomplete--autocomplete-max-results-value="10" data-symfony--ux-autocomplete--autocomplete-loading-more-text-value="Loading more results..." data-symfony--ux-autocomplete--autocomplete-no-results-found-text-value="No results found" data-symfony--ux-autocomplete--autocomplete-no-more-results-text-value="No more results" data-symfony--ux-autocomplete--autocomplete-create-option-text-value="Add %placeholder%..." data-symfony--ux-autocomplete--autocomplete-preload-value="focus" aria-describedby="settings_id_generation_strategy_help" class="form-select"><option value=""></option>
 <option value="auto_increment">Auto Increment</option>
 <option value="random_number" selected>Random Number</option>
@@ -98,16 +101,19 @@
 <option value="ulid">Ulid</option>
 <option value="uuid">Uuid</option></select><div class="form-text text-muted mb-0" id="settings_id_generation_strategy_help">Choose how Invoice IDs are generated.</div>
 </div>
+    
                                 </div>
                                                                                         <div class="col-md-6">
-                                    <div class="mb-3">    
+                                                <div class="mb-3">    
             <label class="control-label form-label" for="settings_id_generation_id_prefix">ID Prefix</label><input type="text" id="settings_id_generation_id_prefix" name="settings[id_generation][id_prefix]" placeholder="INV-" aria-describedby="settings_id_generation_id_prefix_help" class="form-control"><div class="form-text text-muted mb-0" id="settings_id_generation_id_prefix_help">Added before the number. E.g., "INV-" results in INV-001</div>
 </div>
+    
                                 </div>
                                                                                         <div class="col-md-6">
-                                    <div class="mb-3">    
+                                                <div class="mb-3">    
             <label class="control-label form-label" for="settings_id_generation_id_suffix">ID Suffix</label><input type="text" id="settings_id_generation_id_suffix" name="settings[id_generation][id_suffix]" placeholder="-2024" aria-describedby="settings_id_generation_id_suffix_help" class="form-control"><div class="form-text text-muted mb-0" id="settings_id_generation_id_suffix_help">Added after the number. E.g., "-2024" results in 001-2024</div>
 </div>
+    
                                 </div>
                                                     </div>
 
