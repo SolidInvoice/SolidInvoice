@@ -610,7 +610,7 @@
     <input type="hidden" id="settings__token" name="settings[_token]" data-controller="csrf-protection">
 </form>
 
-                <div class="settings-danger-zone mt-4" role="region" aria-labelledby="danger-zone-heading">
+                <div class="settings-danger-zone mt-4" role="region" aria-labelledby="danger-zone-heading" data-controller="delete-company" data-delete-company-company-name-value="SolidInvoice">
             <div class="card border-danger">
                 <div class="card-header bg-danger bg-opacity-10 border-danger">
                     <h5 class="card-title text-danger mb-0 d-flex align-items-center gap-2" id="danger-zone-heading">
@@ -626,7 +626,7 @@
                                 Permanently delete your company and all associated data. This action cannot be undone.
                             </p>
                         </div>
-                        <button type="button" class="btn btn-outline-danger flex-shrink-0 d-flex align-items-center gap-2" aria-label="Delete Company" data-controller="delete-company" data-delete-company-company-name-value="SolidInvoice" data-action="click-&gt;delete-company#showModal">
+                        <button type="button" class="btn btn-outline-danger flex-shrink-0 d-flex align-items-center gap-2" aria-label="Delete Company" data-action="click-&gt;delete-company#showModal">
                             <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16m-10 4v6m4-6v6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"></path></svg>
                             <span>Delete Company</span>
                         </button>
