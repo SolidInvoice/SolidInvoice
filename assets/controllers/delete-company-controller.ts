@@ -15,7 +15,7 @@ export default class extends Controller<HTMLElement> {
 
     connect() {
         if (this.modalTarget) {
-            this.modalInstance = new Modal(this.modalTarget);
+            this.modalInstance = Modal.getOrCreateInstance(this.modalTarget);
         }
     }
 
