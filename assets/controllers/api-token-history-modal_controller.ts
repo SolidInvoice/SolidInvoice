@@ -18,7 +18,7 @@ export default class extends Controller<HTMLElement> {
 
             if (hasContent) {
                 // Create Bootstrap modal instance and show it
-                this.modalInstance = new Modal(this.modalElement);
+                this.modalInstance = Modal.getOrCreateInstance(this.modalElement);
                 this.modalInstance.show();
 
                 // Remove view_history parameter when modal is hidden
