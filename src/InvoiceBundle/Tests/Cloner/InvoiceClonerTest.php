@@ -85,6 +85,7 @@ class InvoiceClonerTest extends TestCase
                     'invoice/id_generation/strategy' => 'random_number',
                     'invoice/id_generation/id_prefix' => '',
                     'invoice/id_generation/id_suffix' => '',
+                    default => '',
                 };
             });
 

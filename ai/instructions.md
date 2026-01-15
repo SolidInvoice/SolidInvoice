@@ -78,8 +78,8 @@ Any changes to templates or frontend code should be made in accordance with the 
 - **Static Analysis:** PHPStan (Level 6)
 - **Coding Standards:** EasyCodingStandard (Symplify)
 - **Code Refactoring:** Rector (PHP 8.4+)
-- **Testing:** PHPUnit 10.4+, Mockery, Symfony Panther
-- **Fixtures:** Foundry
+- **Testing:** PHPUnit 10.4+, Symfony Panther, Foundry
+- **Fixtures:** Foundry (zenstruck/foundry)
 - **CI/CD:** GitHub Actions
 
 ### Distribution
@@ -390,7 +390,7 @@ src/BundleNameBundle/Tests/
 │   └── ...
 ├── Form/          # Form type tests
 ├── Repository/    # Repository tests
-└── ...
+└── ...            # Unit tests (top-level, not in Unit/ subdirectory)
 ```
 
 ### PHPUnit Configuration
@@ -403,23 +403,96 @@ Key settings from `phpunit.xml.dist`:
 - **E2E testing:** Symfony Panther for browser testing
 - **Environment:** Test environment with `.env.test`
 
+### Critical Testing Conventions
+
+**IMPORTANT: All test classes must:**
+1. Be declared as `final` (e.g., `final class InvoiceManagerTest extends TestCase`)
+2. Include a `@covers` annotation indicating which class is under test
+   - Example: `/** @covers \SolidInvoice\InvoiceBundle\Manager\InvoiceManager */`
+   - Not required for functional tests, only unit/integration tests
+
+**Example:**
+```php
+use PHPUnit\Framework\TestCase;
+
+/**
+ * @covers \SolidInvoice\InvoiceBundle\Manager\InvoiceManager
+ */
+final class InvoiceManagerTest extends TestCase
+{
+    // Test methods
+}
+```
+
 ### Test Types
 
 #### 1. Unit Tests
 
 - Test individual classes in isolation
-- Use Mockery for mocking dependencies
+- **Use PHPUnit mocks** for dependencies (not Mockery)
 - Fast execution, no database required
+- **Prefer concrete classes over mocks** when possible
+- Only use mocks when:
+  - Assertions need to be made on method calls
+  - No other option is available
+  - Testing error conditions that are hard to trigger
 
 ```php
-use Mockery as m;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
-class InvoiceManagerTest extends TestCase
+/**
+ * @covers \SolidInvoice\InvoiceBundle\Manager\InvoiceManager
+ */
+final class InvoiceManagerTest extends TestCase
 {
+    private InvoiceRepositoryInterface&MockObject $repository;
+
+    protected function setUp(): void
+    {
+        $this->repository = $this->createMock(InvoiceRepositoryInterface);
+    }
+
     public function testCreateInvoice(): void
     {
-        $repository = m::mock(InvoiceRepository::class);
+        $this->repository
+            ->expects($this->once())
+            ->method('save')
+            ->with($this->isInstanceOf(Invoice));
+
+        $manager = new InvoiceManager($this->repository);
         // Test logic
+    }
+}
+```
+
+**Important: Do NOT mock repository classes** in tests that need database access. Instead:
+- Extend `Symfony\Bundle\FrameworkBundle\Test\KernelTestCase`
+- Add the `SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled` trait
+- Retrieve repository from the container
+
+```php
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
+
+/**
+ * @covers \SolidInvoice\InvoiceBundle\Repository\InvoiceRepository
+ */
+final class InvoiceRepositoryTest extends KernelTestCase
+{
+    use EnsureApplicationInstalled;
+
+    public function testFindOverdueInvoices(): void
+    {
+        $repository = static::getContainer()->get(InvoiceRepository);
+
+        // Use Foundry factories to create test data
+        InvoiceFactory::createOne(['dueDate' => new \DateTime('-5 days'));
+        )->actingAs($this->getUser());
+
+        $invoices = $repository->findOverdueInvoices();
+
+        self::assertCount(1, $invoices);
     }
 }
 ```
@@ -429,6 +502,28 @@ class InvoiceManagerTest extends TestCase
 - Test full request/response cycle
 - Use database for realistic scenarios
 - Located in `Tests/Functional/`
+- **Use zenstruck/browser for testing**
+- Prefer `PantherBrowser()` for actual browser testing when possible
+
+```php
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Zenstruck\Browser\Test\HasBrowser;
+
+final class InvoiceControllerTest extends WebTestCase
+{
+    use HasBrowser;
+
+    public function testCreateInvoice(): void
+    {
+        $this->browser()
+            ->visit('/invoices/create')
+            ->fillField('invoice[client]', '1')
+            ->click('Save')
+            ->assertSuccessful()
+            ->assertSee('Invoice created successfully');
+    }
+}
+```
 
 #### 3. API Tests
 
@@ -436,9 +531,59 @@ class InvoiceManagerTest extends TestCase
 - Extend `ApiTestCase` base class
 - JSON-LD/HAL response validation
 
-### Fixtures
+#### 4. Live Component Tests
 
-**Foundry** - Factory-based fixtures
+- For Symfony UX Live Components
+- Extend `SolidInvoice\CoreBundle\Test\LiveComponentTest`
+- Use **snapshot assertions** to verify component rendering
+- Follow existing examples in the codebase
+
+```php
+use SolidInvoice\CoreBundle\Test\LiveComponentTest;
+use Spatie\Snapshots\MatchesSnapshots;
+
+final class InvoiceFormComponentTest extends LiveComponentTest
+{
+    use MatchesSnapshots;
+
+    public function testRendersInvoiceForm(): void
+    {
+        $component = $this->createLiveComponent(
+            name: InvoiceFormComponent::class,
+            data: [
+                'invoice' => InvoiceFactory::createOne(),
+            ]
+        )->actingAs($this->getUser());
+
+        $this->assertMatchesHtmlSnapshot($component->render());
+    }
+}
+```
+
+### Fixtures and Test Data
+
+**Always use Foundry factories** (zenstruck/foundry) to generate test data:
+
+```php
+use function Zenstruck\Foundry\faker;
+
+// Create single entity
+$invoice = InvoiceFactory::createOne([
+    'total' => Money::USD(10000),
+    'status' => 'draft',
+);
+        )->actingAs($this->getUser());
+
+// Create multiple entities
+InvoiceFactory::createMany(5);
+
+// Use faker for random data
+$client = ClientFactory::createOne([
+    'name' => faker()->company(),
+    'email' => faker()->companyEmail(),
+);
+        )->actingAs($this->getUser());
+```
 
 ### Running Tests
 
@@ -450,14 +595,50 @@ bin/phpunit
 bin/phpunit src/InvoiceBundle/Tests
 
 # Specific test file
-bin/phpunit src/InvoiceBundle/Tests/Unit/Manager/InvoiceManagerTest.php
+bin/phpunit src/InvoiceBundle/Tests/InvoiceManagerTest.php
 
 # With coverage
 bin/phpunit --coverage-html coverage
 
 # Filter by test name
 bin/phpunit --filter testCreateInvoice
+
+# Update snapshots (for Live Component tests)
+bin/phpunit --update-snapshots
 ```
+
+### Testing Best Practices
+
+1. **Prefer real objects over mocks:**
+   - Use actual service instances when possible
+   - Use database with transactions for realistic testing
+   - Only mock external services or when specific assertions are needed on method calls
+
+2. **Do not mock:**
+   - Repository classes - use real repositories with test database
+   - Value objects (Money, Email, etc.)
+   - DTOs and simple data structures
+   - Entities
+
+3. **Test class requirements:**
+   - Always declare test classes as `final`
+   - Always include `@covers` annotation (except functional tests)
+   - One test class per production class
+
+4. **Use factories for all test data:**
+   - Never create entities manually with `new Entity()`
+   - Always use Foundry factories
+   - Factories ensure valid, consistent test data
+
+5. **Functional testing:**
+   - Use zenstruck/browser for all functional tests
+   - Prefer `$this->pantherBrowser()` for JavaScript-heavy features
+   - Test from the user's perspective
+
+6. **Live Components:**
+   - Extend `LiveComponentTest` base class
+   - Use snapshot testing to catch UI regressions
+   - Test both initial render and re-renders after actions
 
 ---
 
@@ -713,7 +894,7 @@ use Symfony\Component\Uid\Ulid;
 #[ORM\Column(name: 'id', type: UlidType::NAME)]
 #[ORM\Id]
 #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-#[ORM\CustomIdGenerator(class: UlidGenerator::class)]
+#[ORM\CustomIdGenerator(class: UlidGenerator)]
 private Ulid $id;
 ```
 
