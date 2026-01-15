@@ -13,18 +13,15 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MoneyBundle\Tests\Formatter;
 
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery as M;
 use Money\Currency;
 use Money\Money;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
 use SolidInvoice\SettingsBundle\SystemConfig;
 
 class MoneyFormatterTest extends TestCase
 {
-    use MockeryPHPUnitIntegration;
-
     /**
      * @dataProvider localeProvider
      */
@@ -194,16 +191,17 @@ class MoneyFormatterTest extends TestCase
     }
 
     /**
-     * @return M\MockInterface&SystemConfig
+     * @return SystemConfig&MockObject
      */
-    private function getSystemConfigMock(string $currency = 'USD'): M\MockInterface
+    private function getSystemConfigMock(string $currency = 'USD'): SystemConfig
     {
-        $systemConfig = M::mock(SystemConfig::class);
+        /** @var SystemConfig&MockObject $systemConfig */
+        $systemConfig = $this->createMock(SystemConfig::class);
 
         $systemConfig
-            ->shouldReceive('getCurrency')
-            ->zeroOrMoreTimes()
-            ->andReturn(new Currency($currency));
+            ->expects($this->any())
+            ->method('getCurrency')
+            ->willReturn(new Currency($currency));
 
         return $systemConfig;
     }

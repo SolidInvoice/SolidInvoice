@@ -15,7 +15,7 @@ namespace SolidInvoice\CoreBundle\Tests\Company;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
-use Mockery as M;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\ContactType;
 use SolidInvoice\CoreBundle\Company\DefaultData;
@@ -29,34 +29,30 @@ use SolidInvoice\SettingsBundle\Entity\Setting;
 
 final class DefaultDataTest extends TestCase
 {
-    use M\Adapter\Phpunit\MockeryPHPUnitIntegration;
-
     public function testDefaultData(): void
     {
-        $registry = M::mock(ManagerRegistry::class);
-        $entityManager = M::mock(EntityManagerInterface::class);
+        /** @var ManagerRegistry&MockObject $registry */
+        $registry = $this->createMock(ManagerRegistry::class);
+        /** @var EntityManagerInterface&MockObject $entityManager */
+        $entityManager = $this->createMock(EntityManagerInterface::class);
 
         $registry
-            ->expects('getManager')
-            ->andReturn($entityManager);
+            ->expects($this->once())
+            ->method('getManager')
+            ->willReturn($entityManager);
 
         $entityManager
-            ->expects('persist')
-            ->with(M::type(Setting::class))
-            ->times(22);
+            ->expects($this->exactly(28))
+            ->method('persist')
+            ->with($this->logicalOr(
+                $this->isInstanceOf(Setting::class),
+                $this->isInstanceOf(ContactType::class),
+                $this->isInstanceOf(PaymentMethod::class)
+            ));
 
         $entityManager
-            ->expects('persist')
-            ->with(M::type(ContactType::class))
-            ->times(3);
-
-        $entityManager->expects('persist')
-            ->with(M::type(PaymentMethod::class))
-            ->times(3);
-
-        $entityManager
-            ->expects('flush')
-            ->once();
+            ->expects($this->once())
+            ->method('flush');
 
         $defaultData = new DefaultData($registry, [
             new SystemConfigProvider(),

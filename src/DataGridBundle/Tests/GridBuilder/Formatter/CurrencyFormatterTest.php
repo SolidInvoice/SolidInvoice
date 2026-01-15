@@ -11,8 +11,8 @@
 
 namespace SolidInvoice\DataGridBundle\Tests\GridBuilder\Formatter;
 
-use Mockery as M;
 use Money\Currency;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\CurrencyColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Formatter\CurrencyFormatter;
@@ -23,15 +23,13 @@ use SolidInvoice\SettingsBundle\SystemConfig;
  */
 final class CurrencyFormatterTest extends TestCase
 {
-    use M\Adapter\Phpunit\MockeryPHPUnitIntegration;
-
     public function testFormat(): void
     {
-        $config = M::mock(SystemConfig::class);
-        $config->expects()
-            ->getCurrency()
-            ->andReturn(new Currency('USD'))
-            ->times(4);
+        /** @var SystemConfig&MockObject $config */
+        $config = $this->createMock(SystemConfig::class);
+        $config->expects($this->exactly(4))
+            ->method('getCurrency')
+            ->willReturn(new Currency('USD'));
 
         $formatter = new CurrencyFormatter($config, 'en_US');
 

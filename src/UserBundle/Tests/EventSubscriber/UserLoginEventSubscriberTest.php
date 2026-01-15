@@ -15,7 +15,7 @@ namespace SolidInvoice\UserBundle\Tests\EventSubscriber;
 
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use Mockery as M;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\EventSubscriber\UserLoginEventSubscriber;
@@ -26,8 +26,6 @@ use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
 /** @covers \SolidInvoice\UserBundle\EventSubscriber\UserLoginEventSubscriber */
 final class UserLoginEventSubscriberTest extends TestCase
 {
-    use M\Adapter\Phpunit\MockeryPHPUnitIntegration;
-
     public function testGetSubscribedEvents(): void
     {
         self::assertSame([
@@ -38,22 +36,26 @@ final class UserLoginEventSubscriberTest extends TestCase
 
     public function testOnLogin(): void
     {
-        $entityManager = M::mock(EntityManagerInterface::class);
-        $userRepository = M::mock(UserRepository::class);
-        $loginEvent = M::mock(LoginSuccessEvent::class);
+        /** @var EntityManagerInterface&MockObject $entityManager */
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        /** @var UserRepository&MockObject $userRepository */
+        $userRepository = $this->createMock(UserRepository::class);
+        /** @var LoginSuccessEvent&MockObject $loginEvent */
+        $loginEvent = $this->createMock(LoginSuccessEvent::class);
         $user = new User();
 
         $loginEvent
-            ->shouldReceive('getUser')
-            ->andReturn($user);
+            ->method('getUser')
+            ->willReturn($user);
 
-        $entityManager->expects('getRepository')
+        $entityManager->expects($this->once())
+            ->method('getRepository')
             ->with(User::class)
-            ->andReturn($userRepository);
+            ->willReturn($userRepository);
 
         $userRepository
-            ->expects('save')
-            ->once()
+            ->expects($this->once())
+            ->method('save')
             ->with($user);
 
         $subscriber = new UserLoginEventSubscriber($entityManager);

@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Tests\Listener\Mailer;
 
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery as M;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Pdf\Generator;
 use SolidInvoice\QuoteBundle\Email\QuoteEmail;
@@ -28,28 +27,28 @@ use Twig\Environment;
 
 class QuotePdfListenerTest extends TestCase
 {
-    use MockeryPHPUnitIntegration;
-
     public function testListener(): void
     {
         $quote = new Quote();
 
-        $mailer = M::mock(MailerInterface::class);
-        $mailer->shouldReceive('send');
+        /** @var MailerInterface&MockObject $mailer */
+        $mailer = $this->createMock(MailerInterface::class);
 
-        $twig = M::mock(Environment::class);
-        $twig->shouldReceive('render')
-            ->once()
+        /** @var Environment&MockObject $twig */
+        $twig = $this->createMock(Environment::class);
+        $twig->expects($this->once())
+            ->method('render')
             ->with('@SolidInvoiceQuote/Pdf/quote.html.twig', ['quote' => $quote])
-            ->andReturn('<p>Quote #1</p>');
+            ->willReturn('<p>Quote #1</p>');
 
-        $pdf = M::mock(Generator::class);
-        $pdf->shouldReceive('canPrintPdf')
-            ->andReturnTrue();
+        /** @var Generator&MockObject $pdf */
+        $pdf = $this->createMock(Generator::class);
+        $pdf->method('canPrintPdf')
+            ->willReturn(true);
 
-        $pdf->shouldReceive('generate')
+        $pdf->method('generate')
             ->with('<p>Quote #1</p>')
-            ->andReturn('PDF: Quote #1');
+            ->willReturn('PDF: Quote #1');
 
         $listener = new QuotePdfListener($pdf, $twig);
 

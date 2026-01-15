@@ -20,7 +20,7 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Filter\SQLFilter;
 use Doctrine\ORM\Query\FilterCollection;
 use Doctrine\Persistence\ManagerRegistry;
-use Mockery as M;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
@@ -44,29 +44,30 @@ use function strtoupper;
  */
 final class CompanyEventSubscriberTest extends TestCase
 {
-    use M\Adapter\Phpunit\MockeryPHPUnitIntegration;
-
     public function testItRedirectsToCompanySelectPageIfACompanyIsNotSetAndUserHasMultipleCompanies(): void
     {
         // Test that it redirects to the company select page if a company is not set and the user has multiple companies
 
-        $router = M::mock(RouterInterface::class);
-        $companySelector = new CompanySelector(M::mock(ManagerRegistry::class));
-        $security = M::mock(Security::class);
+        /** @var RouterInterface&MockObject $router */
+        $router = $this->createMock(RouterInterface::class);
+        $companySelector = new CompanySelector($this->createMock(ManagerRegistry::class));
+        /** @var Security&MockObject $security */
+        $security = $this->createMock(Security::class);
 
         $user = new User();
         $user->addCompany(new Company());
         $user->addCompany(new Company());
 
         $security
-            ->shouldReceive('getUser')
-            ->andReturn($user);
+            ->expects($this->once())
+            ->method('getUser')
+            ->willReturn($user);
 
         $router
-            ->shouldReceive('generate')
+            ->expects($this->once())
+            ->method('generate')
             ->with('_select_company')
-            ->once()
-            ->andReturn('/select-company');
+            ->willReturn('/select-company');
 
         $session = new Session(new MockArraySessionStorage());
         $request = new Request();
@@ -74,7 +75,7 @@ final class CompanyEventSubscriberTest extends TestCase
 
         $listener = new CompanyEventSubscriber($router, $companySelector, $security, date('Y'));
 
-        $event = new RequestEvent(M::mock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
+        $event = new RequestEvent($this->createMock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
         $listener->onKernelRequest($event);
 
         self::assertInstanceOf(RedirectResponse::class, $event->getResponse());
@@ -86,9 +87,12 @@ final class CompanyEventSubscriberTest extends TestCase
     {
         // Test that it redirects to the company select page if a company is not set and the user has multiple companies
 
-        $router = M::mock(RouterInterface::class);
-        $registry = M::mock(ManagerRegistry::class);
-        $security = M::mock(Security::class);
+        /** @var RouterInterface&MockObject $router */
+        $router = $this->createMock(RouterInterface::class);
+        /** @var ManagerRegistry&MockObject $registry */
+        $registry = $this->createMock(ManagerRegistry::class);
+        /** @var Security&MockObject $security */
+        $security = $this->createMock(Security::class);
 
         $companySelector = new CompanySelector($registry);
 
@@ -99,13 +103,14 @@ final class CompanyEventSubscriberTest extends TestCase
         $this->setCompanyId($company, new Ulid());
 
         $security
-            ->shouldReceive('getUser')
-            ->once()
-            ->andReturn($user);
+            ->expects($this->once())
+            ->method('getUser')
+            ->willReturn($user);
 
         $filter = $this->expectSwitchCompanyCalls($registry, $company);
 
-        $router->shouldNotReceive('generate');
+        $router->expects($this->never())
+            ->method('generate');
 
         $session = new Session(new MockArraySessionStorage());
         $request = new Request();
@@ -113,7 +118,7 @@ final class CompanyEventSubscriberTest extends TestCase
 
         $listener = new CompanyEventSubscriber($router, $companySelector, $security, date('Y'));
 
-        $event = new RequestEvent(M::mock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
+        $event = new RequestEvent($this->createMock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
         $listener->onKernelRequest($event);
 
         self::assertNull($event->getResponse());
@@ -128,14 +133,18 @@ final class CompanyEventSubscriberTest extends TestCase
     {
         // Test that it continues the request when a company is not set and the user is on a company select page
 
-        $router = M::mock(RouterInterface::class);
-        $companySelector = new CompanySelector(M::mock(ManagerRegistry::class));
-        $security = M::mock(Security::class);
+        /** @var RouterInterface&MockObject $router */
+        $router = $this->createMock(RouterInterface::class);
+        $companySelector = new CompanySelector($this->createMock(ManagerRegistry::class));
+        /** @var Security&MockObject $security */
+        $security = $this->createMock(Security::class);
 
-        $security->shouldNotReceive('getUser');
+        $security->expects($this->never())
+            ->method('getUser');
 
         $router
-            ->shouldNotReceive('generate');
+            ->expects($this->never())
+            ->method('generate');
 
         $session = new Session(new MockArraySessionStorage());
         $request = new Request();
@@ -144,7 +153,7 @@ final class CompanyEventSubscriberTest extends TestCase
 
         $listener = new CompanyEventSubscriber($router, $companySelector, $security, date('Y'));
 
-        $event = new RequestEvent(M::mock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
+        $event = new RequestEvent($this->createMock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
         $listener->onKernelRequest($event);
 
         self::assertNull($event->getResponse());
@@ -154,17 +163,20 @@ final class CompanyEventSubscriberTest extends TestCase
     {
         // Test that it continues execution when no company is set and no user is logged in
 
-        $router = M::mock(RouterInterface::class);
-        $companySelector = new CompanySelector(M::mock(ManagerRegistry::class));
-        $security = M::mock(Security::class);
+        /** @var RouterInterface&MockObject $router */
+        $router = $this->createMock(RouterInterface::class);
+        $companySelector = new CompanySelector($this->createMock(ManagerRegistry::class));
+        /** @var Security&MockObject $security */
+        $security = $this->createMock(Security::class);
 
         $security
-            ->shouldReceive('getUser')
-            ->once()
-            ->andReturn(null);
+            ->expects($this->once())
+            ->method('getUser')
+            ->willReturn(null);
 
         $router
-            ->shouldNotReceive('generate');
+            ->expects($this->never())
+            ->method('generate');
 
         $session = new Session(new MockArraySessionStorage());
         $request = new Request();
@@ -172,7 +184,7 @@ final class CompanyEventSubscriberTest extends TestCase
 
         $listener = new CompanyEventSubscriber($router, $companySelector, $security, date('Y'));
 
-        $event = new RequestEvent(M::mock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
+        $event = new RequestEvent($this->createMock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
         $listener->onKernelRequest($event);
 
         self::assertNull($event->getResponse());
@@ -180,15 +192,18 @@ final class CompanyEventSubscriberTest extends TestCase
 
     public function testItSetsTheCompanyWhenItIsAvailableInTheSession(): void
     {
-        $router = M::mock(RouterInterface::class);
-        $registry = M::mock(ManagerRegistry::class);
-        $security = M::mock(Security::class);
+        /** @var RouterInterface&MockObject $router */
+        $router = $this->createMock(RouterInterface::class);
+        /** @var ManagerRegistry&MockObject $registry */
+        $registry = $this->createMock(ManagerRegistry::class);
+        /** @var Security&MockObject $security */
+        $security = $this->createMock(Security::class);
 
         $companySelector = new CompanySelector($registry);
 
-        $security->shouldNotReceive('getUser');
+        $security->expects($this->never())->method('getUser');
 
-        $router->shouldNotReceive('generate');
+        $router->expects($this->never())->method('generate');
 
         $company = new Company();
         $this->setCompanyId($company, new Ulid());
@@ -201,7 +216,7 @@ final class CompanyEventSubscriberTest extends TestCase
 
         $listener = new CompanyEventSubscriber($router, $companySelector, $security, date('Y'));
 
-        $event = new RequestEvent(M::mock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
+        $event = new RequestEvent($this->createMock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
         $listener->onKernelRequest($event);
 
         self::assertNull($event->getResponse());
@@ -220,13 +235,16 @@ final class CompanyEventSubscriberTest extends TestCase
     }
 
     /**
-     * @param ManagerRegistry&M\MockInterface $registry
+     * @param ManagerRegistry&MockObject $registry
      */
     private function expectSwitchCompanyCalls($registry, Company $company): SQLFilter
     {
-        $filterCollection = M::mock(FilterCollection::class);
-        $em = M::mock(EntityManagerInterface::class);
-        $connection = M::mock(Connection::class);
+        /** @var FilterCollection&MockObject $filterCollection */
+        $filterCollection = $this->createMock(FilterCollection::class);
+        /** @var EntityManagerInterface&MockObject $em */
+        $em = $this->createMock(EntityManagerInterface::class);
+        /** @var Connection&MockObject $connection */
+        $connection = $this->createMock(Connection::class);
 
         $filter = new class($em) extends SQLFilter {
             public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias): string
@@ -236,41 +254,40 @@ final class CompanyEventSubscriberTest extends TestCase
         };
 
         $registry
-            ->shouldReceive('getManager')
-            ->once()
-            ->andReturn($em);
+            ->expects($this->once())
+            ->method('getManager')
+            ->willReturn($em);
 
         $em
-            ->shouldReceive('getFilters')
-            ->twice()
-            ->andReturn($filterCollection);
+            ->expects($this->exactly(2))
+            ->method('getFilters')
+            ->willReturn($filterCollection);
 
         $em
-            ->shouldReceive('getConnection')
-            ->zeroOrMoreTimes()
-            ->andReturn($connection);
+            ->expects($this->any())
+            ->method('getConnection')
+            ->willReturn($connection);
 
         $filterCollection
-            ->shouldReceive('enable')
-            ->once()
+            ->expects($this->once())
+            ->method('enable')
             ->with('company')
-            ->andReturn($filter);
+            ->willReturn($filter);
 
         $filterCollection
-            ->shouldReceive('setFiltersStateDirty')
-            ->once()
-            ->withNoArgs();
+            ->expects($this->once())
+            ->method('setFiltersStateDirty');
 
         $connection
-            ->shouldReceive('getDatabasePlatform')
-            ->zeroOrMoreTimes()
-            ->andReturn(new SqlitePlatform());
+            ->expects($this->any())
+            ->method('getDatabasePlatform')
+            ->willReturn(new SqlitePlatform());
 
         $connection
-            ->shouldReceive('quote')
-            ->once()
+            ->expects($this->once())
+            ->method('quote')
             ->with(strtoupper(substr($company->getId()->toHex(), 2)), 'string')
-            ->andReturn($company->getId()->toHex());
+            ->willReturn($company->getId()->toHex());
 
         return $filter;
     }

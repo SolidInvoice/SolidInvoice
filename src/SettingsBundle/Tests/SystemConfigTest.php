@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\SettingsBundle\Tests;
 
 use const DATE_ATOM;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Money\Currency;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
@@ -25,7 +24,6 @@ use function date;
 class SystemConfigTest extends TestCase
 {
     use DoctrineTestTrait;
-    use MockeryPHPUnitIntegration;
 
     public function testGet(): void
     {

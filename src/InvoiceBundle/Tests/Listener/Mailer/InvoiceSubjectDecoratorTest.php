@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Listener\Mailer;
 
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery as M;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -25,14 +24,13 @@ use Symfony\Component\Mailer\Event\MessageEvent;
 
 class InvoiceSubjectDecoratorTest extends TestCase
 {
-    use MockeryPHPUnitIntegration;
-
     public function testListener(): void
     {
-        $config = M::mock(SystemConfig::class);
-        $config->shouldReceive('get')
+        /** @var SystemConfig&MockObject $config */
+        $config = $this->createMock(SystemConfig::class);
+        $config->method('get')
             ->with('invoice/email_subject')
-            ->andReturn('New Invoice: #{id}');
+            ->willReturn('New Invoice: #{id}');
 
         $listener = new InvoiceSubjectListener($config);
         $invoice = new Invoice();

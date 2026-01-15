@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Listener;
 
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery as M;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -31,8 +31,6 @@ use Symfony\Component\Workflow\WorkflowInterface;
 /** @covers \SolidInvoice\InvoiceBundle\Listener\InvoiceOverdueListener */
 final class InvoiceOverdueListenerTest extends TestCase
 {
-    use MockeryPHPUnitIntegration;
-
     public function testListenerSendsNotificationAndEmail(): void
     {
         $client = (new Client())->setName('Test Client')->setCurrencyCode('USD');
@@ -44,29 +42,35 @@ final class InvoiceOverdueListenerTest extends TestCase
         $invoice->addUser($contact);
         $invoice->setInvoiceId('INV-001');
 
-        $notificationManager = M::mock(NotificationManager::class);
-        $notificationManager->shouldReceive('sendNotification')
-            ->once();
+        /** @var NotificationManager&MockObject $notificationManager */
+        $notificationManager = $this->createMock(NotificationManager::class);
+        $notificationManager->expects($this->once())
+            ->method('sendNotification');
 
-        $mailer = M::mock(MailerInterface::class);
-        $mailer->shouldReceive('send')
-            ->once()
-            ->with(M::on(function ($email) {
+        /** @var MailerInterface&MockObject $mailer */
+        $mailer = $this->createMock(MailerInterface::class);
+        $mailer->expects($this->once())
+            ->method('send')
+            ->with($this->callback(function ($email) {
                 return $email->getTo()[0]->getAddress() === 'client@example.com';
             }));
 
-        $logger = M::mock(\Psr\Log\LoggerInterface::class);
-        $logger->shouldReceive('info')
-            ->once()
-            ->with('Overdue email sent to client', M::any());
+        /** @var LoggerInterface&MockObject $logger */
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->once())
+            ->method('info')
+            ->with('Overdue email sent to client', $this->anything());
 
         $listener = new InvoiceOverdueListener($mailer, $notificationManager, $logger);
+
+        /** @var WorkflowInterface&MockObject $workflow */
+        $workflow = $this->createMock(WorkflowInterface::class);
 
         $event = new Event(
             $invoice,
             new Marking([Graph::STATUS_OVERDUE => 1]),
             new Transition(Graph::TRANSITION_OVERDUE, Graph::STATUS_PENDING, Graph::STATUS_OVERDUE),
-            M::mock(WorkflowInterface::class)
+            $workflow
         );
 
         $listener->onInvoiceOverdue($event);
@@ -79,25 +83,32 @@ final class InvoiceOverdueListenerTest extends TestCase
         $invoice->setInvoiceId('INV-001');
         // No client set
 
-        $notificationManager = M::mock(NotificationManager::class);
-        $notificationManager->shouldReceive('sendNotification')
-            ->once();
+        /** @var NotificationManager&MockObject $notificationManager */
+        $notificationManager = $this->createMock(NotificationManager::class);
+        $notificationManager->expects($this->once())
+            ->method('sendNotification');
 
-        $mailer = M::mock(MailerInterface::class);
-        $mailer->shouldNotReceive('send');
+        /** @var MailerInterface&MockObject $mailer */
+        $mailer = $this->createMock(MailerInterface::class);
+        $mailer->expects($this->never())
+            ->method('send');
 
-        $logger = M::mock(\Psr\Log\LoggerInterface::class);
-        $logger->shouldReceive('warning')
-            ->once()
-            ->with('Cannot send overdue email: invoice has no client', M::any());
+        /** @var LoggerInterface&MockObject $logger */
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->once())
+            ->method('warning')
+            ->with('Cannot send overdue email: invoice has no client', $this->anything());
 
         $listener = new InvoiceOverdueListener($mailer, $notificationManager, $logger);
+
+        /** @var WorkflowInterface&MockObject $workflow */
+        $workflow = $this->createMock(WorkflowInterface::class);
 
         $event = new Event(
             $invoice,
             new Marking([Graph::STATUS_OVERDUE => 1]),
             new Transition(Graph::TRANSITION_OVERDUE, Graph::STATUS_PENDING, Graph::STATUS_OVERDUE),
-            M::mock(WorkflowInterface::class)
+            $workflow
         );
 
         $listener->onInvoiceOverdue($event);
@@ -113,25 +124,32 @@ final class InvoiceOverdueListenerTest extends TestCase
         $invoice->setInvoiceId('INV-001');
         // No contacts
 
-        $notificationManager = M::mock(NotificationManager::class);
-        $notificationManager->shouldReceive('sendNotification')
-            ->once();
+        /** @var NotificationManager&MockObject $notificationManager */
+        $notificationManager = $this->createMock(NotificationManager::class);
+        $notificationManager->expects($this->once())
+            ->method('sendNotification');
 
-        $mailer = M::mock(MailerInterface::class);
-        $mailer->shouldNotReceive('send');
+        /** @var MailerInterface&MockObject $mailer */
+        $mailer = $this->createMock(MailerInterface::class);
+        $mailer->expects($this->never())
+            ->method('send');
 
-        $logger = M::mock(\Psr\Log\LoggerInterface::class);
-        $logger->shouldReceive('warning')
-            ->once()
-            ->with('Cannot send overdue email: invoice has no contacts', M::any());
+        /** @var LoggerInterface&MockObject $logger */
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->once())
+            ->method('warning')
+            ->with('Cannot send overdue email: invoice has no contacts', $this->anything());
 
         $listener = new InvoiceOverdueListener($mailer, $notificationManager, $logger);
+
+        /** @var WorkflowInterface&MockObject $workflow */
+        $workflow = $this->createMock(WorkflowInterface::class);
 
         $event = new Event(
             $invoice,
             new Marking([Graph::STATUS_OVERDUE => 1]),
             new Transition(Graph::TRANSITION_OVERDUE, Graph::STATUS_PENDING, Graph::STATUS_OVERDUE),
-            M::mock(WorkflowInterface::class)
+            $workflow
         );
 
         $listener->onInvoiceOverdue($event);
@@ -150,29 +168,35 @@ final class InvoiceOverdueListenerTest extends TestCase
         $invoice->addUser($contact2);
         $invoice->setInvoiceId('INV-001');
 
-        $notificationManager = M::mock(NotificationManager::class);
-        $notificationManager->shouldReceive('sendNotification')
-            ->once();
+        /** @var NotificationManager&MockObject $notificationManager */
+        $notificationManager = $this->createMock(NotificationManager::class);
+        $notificationManager->expects($this->once())
+            ->method('sendNotification');
 
-        $mailer = M::mock(MailerInterface::class);
-        $mailer->shouldReceive('send')
-            ->once()
-            ->with(M::on(function ($email) {
+        /** @var MailerInterface&MockObject $mailer */
+        $mailer = $this->createMock(MailerInterface::class);
+        $mailer->expects($this->once())
+            ->method('send')
+            ->with($this->callback(function ($email) {
                 $addresses = array_map(fn ($addr) => $addr->getAddress(), $email->getTo());
                 return in_array('contact1@example.com', $addresses) && in_array('contact2@example.com', $addresses);
             }));
 
-        $logger = M::mock(\Psr\Log\LoggerInterface::class);
-        $logger->shouldReceive('info')
-            ->once();
+        /** @var LoggerInterface&MockObject $logger */
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->once())
+            ->method('info');
 
         $listener = new InvoiceOverdueListener($mailer, $notificationManager, $logger);
+
+        /** @var WorkflowInterface&MockObject $workflow */
+        $workflow = $this->createMock(WorkflowInterface::class);
 
         $event = new Event(
             $invoice,
             new Marking([Graph::STATUS_OVERDUE => 1]),
             new Transition(Graph::TRANSITION_OVERDUE, Graph::STATUS_PENDING, Graph::STATUS_OVERDUE),
-            M::mock(WorkflowInterface::class)
+            $workflow
         );
 
         $listener->onInvoiceOverdue($event);
@@ -189,29 +213,35 @@ final class InvoiceOverdueListenerTest extends TestCase
         $invoice->addUser($contact);
         $invoice->setInvoiceId('INV-001');
 
-        $notificationManager = M::mock(NotificationManager::class);
-        $notificationManager->shouldReceive('sendNotification')
-            ->once()
-            ->andThrow(new \RuntimeException('Notification failed'));
+        /** @var NotificationManager&MockObject $notificationManager */
+        $notificationManager = $this->createMock(NotificationManager::class);
+        $notificationManager->expects($this->once())
+            ->method('sendNotification')
+            ->willThrowException(new \RuntimeException('Notification failed'));
 
-        $mailer = M::mock(MailerInterface::class);
-        $mailer->shouldReceive('send')
-            ->once();
+        /** @var MailerInterface&MockObject $mailer */
+        $mailer = $this->createMock(MailerInterface::class);
+        $mailer->expects($this->once())
+            ->method('send');
 
-        $logger = M::mock(\Psr\Log\LoggerInterface::class);
-        $logger->shouldReceive('error')
-            ->once()
-            ->with('Failed to send overdue notification to users', M::any());
-        $logger->shouldReceive('info')
-            ->once();
+        /** @var LoggerInterface&MockObject $logger */
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->once())
+            ->method('error')
+            ->with('Failed to send overdue notification to users', $this->anything());
+        $logger->expects($this->once())
+            ->method('info');
 
         $listener = new InvoiceOverdueListener($mailer, $notificationManager, $logger);
+
+        /** @var WorkflowInterface&MockObject $workflow */
+        $workflow = $this->createMock(WorkflowInterface::class);
 
         $event = new Event(
             $invoice,
             new Marking([Graph::STATUS_OVERDUE => 1]),
             new Transition(Graph::TRANSITION_OVERDUE, Graph::STATUS_PENDING, Graph::STATUS_OVERDUE),
-            M::mock(WorkflowInterface::class)
+            $workflow
         );
 
         $listener->onInvoiceOverdue($event);

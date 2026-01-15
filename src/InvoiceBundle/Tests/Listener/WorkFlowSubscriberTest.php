@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Listener;
 
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery as M;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
@@ -29,13 +28,13 @@ use Symfony\Component\Workflow\WorkflowInterface;
 class WorkFlowSubscriberTest extends TestCase
 {
     use DoctrineTestTrait;
-    use MockeryPHPUnitIntegration;
 
     public function testInvoicePaid(): void
     {
-        $notification = M::mock(NotificationManager::class);
-        $notification->shouldReceive('sendNotification')
-            ->once();
+        /** @var NotificationManager&MockObject $notification */
+        $notification = $this->createMock(NotificationManager::class);
+        $notification->expects($this->once())
+            ->method('sendNotification');
 
         $subscriber = new WorkFlowSubscriber($this->registry, $notification);
 
@@ -44,16 +43,20 @@ class WorkFlowSubscriberTest extends TestCase
         $invoice->setClient((new Client())->setName('Test')->setCurrencyCode('USD'));
         $invoice->setStatus('pending');
 
-        $subscriber->onWorkflowTransitionApplied(new Event($invoice, new Marking(['pending' => 1]), new Transition('pay', 'pending', 'paid'), M::mock(WorkflowInterface::class)));
+        /** @var WorkflowInterface&MockObject $workflow */
+        $workflow = $this->createMock(WorkflowInterface::class);
+
+        $subscriber->onWorkflowTransitionApplied(new Event($invoice, new Marking(['pending' => 1]), new Transition('pay', 'pending', 'paid'), $workflow));
         self::assertNotNull($invoice->getPaidDate());
         self::assertEquals($invoice, $this->em->getRepository(Invoice::class)->find($invoice->getId()));
     }
 
     public function testInvoiceArchive(): void
     {
-        $notification = M::mock(NotificationManager::class);
-        $notification->shouldReceive('sendNotification')
-            ->once();
+        /** @var NotificationManager&MockObject $notification */
+        $notification = $this->createMock(NotificationManager::class);
+        $notification->expects($this->once())
+            ->method('sendNotification');
 
         $subscriber = new WorkFlowSubscriber($this->registry, $notification);
 
@@ -62,7 +65,10 @@ class WorkFlowSubscriberTest extends TestCase
         $invoice->setClient((new Client())->setName('Test')->setCurrencyCode('USD'));
         $invoice->setStatus('pending');
 
-        $subscriber->onWorkflowTransitionApplied(new Event($invoice, new Marking(['pending' => 1]), new Transition('archive', 'pending', 'archived'), M::mock(WorkflowInterface::class)));
+        /** @var WorkflowInterface&MockObject $workflow */
+        $workflow = $this->createMock(WorkflowInterface::class);
+
+        $subscriber->onWorkflowTransitionApplied(new Event($invoice, new Marking(['pending' => 1]), new Transition('archive', 'pending', 'archived'), $workflow));
 
         self::assertTrue($invoice->isArchived());
         self::assertSame($invoice, $this->em->getRepository(Invoice::class)->find($invoice->getId()));

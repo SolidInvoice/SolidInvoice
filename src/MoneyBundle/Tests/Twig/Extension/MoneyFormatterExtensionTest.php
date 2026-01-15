@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MoneyBundle\Tests\Twig\Extension;
 
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Money\Currency;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
@@ -24,8 +23,6 @@ use Twig\TwigFunction;
 
 class MoneyFormatterExtensionTest extends TestCase
 {
-    use MockeryPHPUnitIntegration;
-
     public function testGetFunctions(): void
     {
         $systemConfig = $this->createMock(SystemConfig::class);

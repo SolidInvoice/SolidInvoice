@@ -15,8 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Tests\Cloner;
 
 use Brick\Math\Exception\MathException;
 use DateTime;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery as M;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Entity\Discount;
@@ -36,8 +35,6 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
 
 class InvoiceClonerTest extends TestCase
 {
-    use MockeryPHPUnitIntegration;
-
     /**
      * @throws MathException
      */
@@ -74,25 +71,22 @@ class InvoiceClonerTest extends TestCase
         $invoice->setClient($client);
         $invoice->addLine($line);
 
-        $invoiceManager = M::mock(InvoiceManager::class);
-        $invoiceManager->shouldReceive('create');
+        /** @var InvoiceManager&MockObject $invoiceManager */
+        $invoiceManager = $this->createMock(InvoiceManager::class);
+        $invoiceManager->method('create');
 
-        $systemConfig = M::mock(SystemConfig::class);
+        /** @var SystemConfig&MockObject $systemConfig */
+        $systemConfig = $this->createMock(SystemConfig::class);
 
-        $systemConfig->shouldReceive('get')
-            ->once()
-            ->with('invoice/id_generation/strategy')
-            ->andReturn('random_number');
-
-        $systemConfig->shouldReceive('get')
-            ->once()
-            ->with('invoice/id_generation/id_prefix')
-            ->andReturn('');
-
-        $systemConfig->shouldReceive('get')
-            ->once()
-            ->with('invoice/id_generation/id_suffix')
-            ->andReturn('');
+        $systemConfig->expects($this->exactly(3))
+            ->method('get')
+            ->willReturnCallback(static function (string $key): string {
+                return match ($key) {
+                    'invoice/id_generation/strategy' => 'random_number',
+                    'invoice/id_generation/id_prefix' => '',
+                    'invoice/id_generation/id_suffix' => '',
+                };
+            });
 
         $invoiceCloner = new InvoiceCloner($invoiceManager, new BillingIdGenerator(new ServiceLocator([
             'random_number' => fn () => new RandomNumberGenerator(),
@@ -166,8 +160,9 @@ class InvoiceClonerTest extends TestCase
         $invoice->getRecurringOptions()->setEndType(ScheduleEndType::AFTER);
         $invoice->getRecurringOptions()->setEndOccurrence(1);
 
-        $invoiceManager = M::mock(InvoiceManager::class);
-        $invoiceManager->shouldReceive('create');
+        /** @var InvoiceManager&MockObject $invoiceManager */
+        $invoiceManager = $this->createMock(InvoiceManager::class);
+        $invoiceManager->method('create');
 
         $invoiceCloner = new InvoiceCloner($invoiceManager, new BillingIdGenerator(new ServiceLocator([]), $this->createMock(SystemConfig::class)));
 

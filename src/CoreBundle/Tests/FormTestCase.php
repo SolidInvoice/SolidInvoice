@@ -16,9 +16,8 @@ namespace SolidInvoice\CoreBundle\Tests;
 use Doctrine\DBAL\Exception;
 use Faker\Factory;
 use Faker\Generator;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery as M;
 use Money\Currency;
+use PHPUnit\Framework\MockObject\MockObject;
 use SolidInvoice\CoreBundle\Form\Extension\FormHelpExtension;
 use SolidInvoice\CoreBundle\Form\Type\ImageUploadType;
 use SolidInvoice\CoreBundle\Form\TypeExtension\UnsanitizeSingleQuotesTypeExtension;
@@ -54,7 +53,6 @@ use Symfony\UX\Autocomplete\Form\BaseEntityAutocompleteType;
 abstract class FormTestCase extends KernelTestCase
 {
     use DoctrineTestTrait;
-    use MockeryPHPUnitIntegration;
 
     protected Generator $faker;
 
@@ -80,7 +78,7 @@ abstract class FormTestCase extends KernelTestCase
             ->addTypeGuessers($this->getTypeGuessers())
             ->getFormFactory();
 
-        $this->dispatcher = M::mock(EventDispatcherInterface::class);
+        $this->dispatcher = $this->createMock(EventDispatcherInterface::class);
         $this->builder = new FormBuilder(null, null, $this->dispatcher, $this->factory);
     }
 
@@ -91,19 +89,19 @@ abstract class FormTestCase extends KernelTestCase
      */
     protected function getTypeExtensions(): array
     {
-        $validator = M::mock(ValidatorInterface::class);
+        /** @var ValidatorInterface&MockObject $validator */
+        $validator = $this->createMock(ValidatorInterface::class);
 
         $validator
-            ->shouldReceive('validate')
-            ->zeroOrMoreTimes()
-            ->andReturn(new ConstraintViolationList());
+            ->method('validate')
+            ->willReturn(new ConstraintViolationList());
 
-        $systemConfig = M::mock(SystemConfig::class);
+        /** @var SystemConfig&MockObject $systemConfig */
+        $systemConfig = $this->createMock(SystemConfig::class);
 
         $systemConfig
-            ->shouldReceive('getCurrency')
-            ->zeroOrMoreTimes()
-            ->andReturn(new Currency('USD'));
+            ->method('getCurrency')
+            ->willReturn(new Currency('USD'));
 
         return [
             new FormHelpExtension(),

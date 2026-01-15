@@ -15,8 +15,8 @@ namespace SolidInvoice\CoreBundle\Tests\Form\Type;
 
 use Brick\Math\BigDecimal;
 use Generator;
-use Mockery as M;
 use Money\Currency;
+use PHPUnit\Framework\MockObject\MockObject;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
@@ -31,12 +31,12 @@ class DiscountTypeTest extends FormTestCase
      */
     protected function getExtensions(): array
     {
-        $systemConfig = M::mock(SystemConfig::class);
+        /** @var SystemConfig&MockObject $systemConfig */
+        $systemConfig = $this->createMock(SystemConfig::class);
 
         $systemConfig
-            ->shouldReceive('getCurrency')
-            ->zeroOrMoreTimes()
-            ->andReturn(new Currency('USD'));
+            ->method('getCurrency')
+            ->willReturn(new Currency('USD'));
 
         return [
             new PreloadedExtension([new DiscountType($systemConfig)], []),

@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Listener\Mailer;
 
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery as M;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
@@ -26,21 +25,20 @@ use Symfony\Component\Mailer\MailerInterface;
 
 class InvoiceMailerListenerTest extends TestCase
 {
-    use MockeryPHPUnitIntegration;
-
     public function testListener(): void
     {
         $invoice = new Invoice();
 
-        $mailer = M::spy(MailerInterface::class);
+        /** @var MailerInterface&MockObject $mailer */
+        $mailer = $this->createMock(MailerInterface::class);
+        $mailer->expects($this->once())
+            ->method('send')
+            ->with($this->isInstanceOf(InvoiceEmail::class));
 
         $listener = new InvoiceMailerListener($mailer);
 
         $invoice->addUser((new Contact())->setEmail('another@example.com')->setFirstName('Another'));
         $listener->onInvoiceAccepted(new InvoiceEvent($invoice));
-
-        $mailer->shouldHaveReceived('send')
-            ->with(M::type(InvoiceEmail::class));
     }
 
     public function testEvents(): void

@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\MailerBundle\Tests\Factory;
 
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery as M;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use SolidInvoice\MailerBundle\Configurator\SesConfigurator;
@@ -25,17 +24,16 @@ use Symfony\Component\Mailer\Transport;
 
 class MailerConfigFactoryTest extends TestCase
 {
-    use MockeryPHPUnitIntegration;
-
     public function testFromStrings(): void
     {
-        $systemConfig = M::mock(SystemConfig::class);
+        /** @var SystemConfig&MockObject $systemConfig */
+        $systemConfig = $this->createMock(SystemConfig::class);
 
         $factory = new MailerConfigFactory(new Transport(Transport::getDefaultFactories()), $systemConfig, [new SesConfigurator()]);
 
-        $systemConfig->shouldReceive('get')
+        $systemConfig->method('get')
             ->with('email/sending_options/provider')
-            ->andReturn('{"provider": "Amazon SES", "config": {"accessKey": "foobar", "accessSecret": "baz"}}');
+            ->willReturn('{"provider": "Amazon SES", "config": {"accessKey": "foobar", "accessSecret": "baz"}}');
 
         self::assertInstanceOf(SesApiAsyncAwsTransport::class, $factory->fromStrings());
     }
@@ -45,13 +43,14 @@ class MailerConfigFactoryTest extends TestCase
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Invalid mailer config');
 
-        $systemConfig = M::mock(SystemConfig::class);
+        /** @var SystemConfig&MockObject $systemConfig */
+        $systemConfig = $this->createMock(SystemConfig::class);
 
         $factory = new MailerConfigFactory(new Transport(Transport::getDefaultFactories()), $systemConfig, []);
 
-        $systemConfig->shouldReceive('get')
+        $systemConfig->method('get')
             ->with('email/sending_options/provider')
-            ->andReturn('{"provider": "Amazon SES", "config": {"accessKey": "foobar", "accessSecret": "baz"}}');
+            ->willReturn('{"provider": "Amazon SES", "config": {"accessKey": "foobar", "accessSecret": "baz"}}');
 
         $factory->fromStrings();
     }

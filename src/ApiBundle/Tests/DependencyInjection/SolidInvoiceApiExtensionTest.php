@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\ApiBundle\Tests\DependencyInjection;
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use SolidInvoice\ApiBundle\ApiTokenManager;
 use SolidInvoice\ApiBundle\DependencyInjection\SolidInvoiceApiExtension;
 use SolidInvoice\ApiBundle\Event\Listener\AuthenticationFailHandler;
@@ -24,8 +23,6 @@ use SolidInvoice\ApiBundle\Security\Provider\ApiTokenUserProvider;
 
 class SolidInvoiceApiExtensionTest extends AbstractExtensionTestCase
 {
-    use MockeryPHPUnitIntegration;
-
     protected function getContainerExtensions(): array
     {
         return [

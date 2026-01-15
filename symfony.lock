@@ -143,9 +143,6 @@
     "goetas-webservices/xsd2php-runtime": {
         "version": "v0.2.12"
     },
-    "hamcrest/hamcrest-php": {
-        "version": "v2.0.1"
-    },
     "jms/metadata": {
         "version": "2.3.0"
     },
@@ -196,9 +193,6 @@
     },
     "matthiasnoback/symfony-dependency-injection-test": {
         "version": "4.1.1"
-    },
-    "mockery/mockery": {
-        "version": "1.4.1"
     },
     "moneyphp/money": {
         "version": "v3.1.3"
@@ -301,9 +295,6 @@
     },
     "phpstan/phpstan-doctrine": {
         "version": "0.12.20"
-    },
-    "phpstan/phpstan-mockery": {
-        "version": "0.12.7"
     },
     "phpstan/phpstan-phpunit": {
         "version": "0.12.16"

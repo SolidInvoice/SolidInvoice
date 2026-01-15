@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Tests\Config;
 
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery as m;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\UserBundle\Config\UserConfig;
 use SolidInvoice\UserBundle\Entity\User;
@@ -28,11 +27,9 @@ use Symfony\Bundle\SecurityBundle\Security;
  */
 final class UserConfigTest extends TestCase
 {
-    use MockeryPHPUnitIntegration;
+    private UserSettingRepositoryInterface&MockObject $repository;
 
-    private m\MockInterface&UserSettingRepositoryInterface $repository;
-
-    private m\MockInterface&Security $security;
+    private Security&MockObject $security;
 
     private User $user;
 
@@ -40,8 +37,8 @@ final class UserConfigTest extends TestCase
     {
         parent::setUp();
 
-        $this->repository = m::mock(UserSettingRepositoryInterface::class);
-        $this->security = m::mock(Security::class);
+        $this->repository = $this->createMock(UserSettingRepositoryInterface::class);
+        $this->security = $this->createMock(Security::class);
         $this->user = new User();
         $this->user->setEmail('test@example.com');
     }
@@ -50,10 +47,11 @@ final class UserConfigTest extends TestCase
     {
         $setting = $this->createSetting(UserSettingType::Timezone, 'Europe/London');
 
-        $this->security->shouldReceive('getUser')->andReturn($this->user);
-        $this->repository->shouldReceive('getSetting')
+        $this->security->expects($this->once())->method('getUser')->willReturn($this->user);
+        $this->repository->expects($this->once())
+            ->method('getSetting')
             ->with($this->user, UserSettingType::Timezone)
-            ->andReturn($setting);
+            ->willReturn($setting);
 
         $config = new UserConfig($this->repository, $this->security);
 
@@ -67,9 +65,10 @@ final class UserConfigTest extends TestCase
 
         $setting = $this->createSetting(UserSettingType::Timezone, 'America/New_York');
 
-        $this->repository->shouldReceive('getSetting')
+        $this->repository->expects($this->once())
+            ->method('getSetting')
             ->with($specificUser, UserSettingType::Timezone)
-            ->andReturn($setting);
+            ->willReturn($setting);
 
         $config = new UserConfig($this->repository, $this->security);
 
@@ -78,10 +77,11 @@ final class UserConfigTest extends TestCase
 
     public function testGetReturnsNullWhenSettingDoesNotExist(): void
     {
-        $this->security->shouldReceive('getUser')->andReturn($this->user);
-        $this->repository->shouldReceive('getSetting')
+        $this->security->expects($this->once())->method('getUser')->willReturn($this->user);
+        $this->repository->expects($this->once())
+            ->method('getSetting')
             ->with($this->user, UserSettingType::Timezone)
-            ->andReturn(null);
+            ->willReturn(null);
 
         $config = new UserConfig($this->repository, $this->security);
 
@@ -90,7 +90,7 @@ final class UserConfigTest extends TestCase
 
     public function testGetReturnsNullWhenNoUserLoggedIn(): void
     {
-        $this->security->shouldReceive('getUser')->andReturn(null);
+        $this->security->expects($this->once())->method('getUser')->willReturn(null);
 
         $config = new UserConfig($this->repository, $this->security);
 
@@ -99,9 +99,9 @@ final class UserConfigTest extends TestCase
 
     public function testSetWithCurrentUser(): void
     {
-        $this->security->shouldReceive('getUser')->andReturn($this->user);
-        $this->repository->shouldReceive('saveSetting')
-            ->once()
+        $this->security->expects($this->once())->method('getUser')->willReturn($this->user);
+        $this->repository->expects($this->once())
+            ->method('saveSetting')
             ->with($this->user, UserSettingType::Timezone, 'UTC');
 
         $config = new UserConfig($this->repository, $this->security);
@@ -113,8 +113,8 @@ final class UserConfigTest extends TestCase
         $specificUser = new User();
         $specificUser->setEmail('other@example.com');
 
-        $this->repository->shouldReceive('saveSetting')
-            ->once()
+        $this->repository->expects($this->once())
+            ->method('saveSetting')
             ->with($specificUser, UserSettingType::Location, 'London');
 
         $config = new UserConfig($this->repository, $this->security);
@@ -123,8 +123,8 @@ final class UserConfigTest extends TestCase
 
     public function testSetDoesNothingWhenNoUserLoggedIn(): void
     {
-        $this->security->shouldReceive('getUser')->andReturn(null);
-        $this->repository->shouldNotReceive('saveSetting');
+        $this->security->expects($this->once())->method('getUser')->willReturn(null);
+        $this->repository->expects($this->never())->method('saveSetting');
 
         $config = new UserConfig($this->repository, $this->security);
         $config->set(UserSettingType::Timezone, 'UTC');
@@ -134,10 +134,11 @@ final class UserConfigTest extends TestCase
     {
         $setting = $this->createSetting(UserSettingType::OnboardComplete, '1');
 
-        $this->security->shouldReceive('getUser')->andReturn($this->user);
-        $this->repository->shouldReceive('getSetting')
+        $this->security->expects($this->once())->method('getUser')->willReturn($this->user);
+        $this->repository->expects($this->once())
+            ->method('getSetting')
             ->with($this->user, UserSettingType::OnboardComplete)
-            ->andReturn($setting);
+            ->willReturn($setting);
 
         $config = new UserConfig($this->repository, $this->security);
 
@@ -146,10 +147,11 @@ final class UserConfigTest extends TestCase
 
     public function testHasReturnsFalseWhenSettingDoesNotExist(): void
     {
-        $this->security->shouldReceive('getUser')->andReturn($this->user);
-        $this->repository->shouldReceive('getSetting')
+        $this->security->expects($this->once())->method('getUser')->willReturn($this->user);
+        $this->repository->expects($this->once())
+            ->method('getSetting')
             ->with($this->user, UserSettingType::OnboardComplete)
-            ->andReturn(null);
+            ->willReturn(null);
 
         $config = new UserConfig($this->repository, $this->security);
 
@@ -158,7 +160,7 @@ final class UserConfigTest extends TestCase
 
     public function testHasReturnsFalseWhenNoUserLoggedIn(): void
     {
-        $this->security->shouldReceive('getUser')->andReturn(null);
+        $this->security->expects($this->once())->method('getUser')->willReturn(null);
 
         $config = new UserConfig($this->repository, $this->security);
 
@@ -167,9 +169,9 @@ final class UserConfigTest extends TestCase
 
     public function testRemoveWithCurrentUser(): void
     {
-        $this->security->shouldReceive('getUser')->andReturn($this->user);
-        $this->repository->shouldReceive('removeSetting')
-            ->once()
+        $this->security->expects($this->once())->method('getUser')->willReturn($this->user);
+        $this->repository->expects($this->once())
+            ->method('removeSetting')
             ->with($this->user, UserSettingType::Timezone);
 
         $config = new UserConfig($this->repository, $this->security);
@@ -181,8 +183,8 @@ final class UserConfigTest extends TestCase
         $specificUser = new User();
         $specificUser->setEmail('other@example.com');
 
-        $this->repository->shouldReceive('removeSetting')
-            ->once()
+        $this->repository->expects($this->once())
+            ->method('removeSetting')
             ->with($specificUser, UserSettingType::Timezone);
 
         $config = new UserConfig($this->repository, $this->security);
@@ -191,8 +193,8 @@ final class UserConfigTest extends TestCase
 
     public function testRemoveDoesNothingWhenNoUserLoggedIn(): void
     {
-        $this->security->shouldReceive('getUser')->andReturn(null);
-        $this->repository->shouldNotReceive('remove');
+        $this->security->expects($this->once())->method('getUser')->willReturn(null);
+        $this->repository->expects($this->never())->method('removeSetting');
 
         $config = new UserConfig($this->repository, $this->security);
         $config->remove(UserSettingType::Timezone);
@@ -205,10 +207,11 @@ final class UserConfigTest extends TestCase
             'location' => 'London',
         ];
 
-        $this->security->shouldReceive('getUser')->andReturn($this->user);
-        $this->repository->shouldReceive('getAllForUser')
+        $this->security->expects($this->once())->method('getUser')->willReturn($this->user);
+        $this->repository->expects($this->once())
+            ->method('getAllForUser')
             ->with($this->user)
-            ->andReturn($expectedSettings);
+            ->willReturn($expectedSettings);
 
         $config = new UserConfig($this->repository, $this->security);
 
@@ -224,9 +227,10 @@ final class UserConfigTest extends TestCase
             'timezone' => 'America/New_York',
         ];
 
-        $this->repository->shouldReceive('getAllForUser')
+        $this->repository->expects($this->once())
+            ->method('getAllForUser')
             ->with($specificUser)
-            ->andReturn($expectedSettings);
+            ->willReturn($expectedSettings);
 
         $config = new UserConfig($this->repository, $this->security);
 
@@ -235,7 +239,7 @@ final class UserConfigTest extends TestCase
 
     public function testGetAllReturnsEmptyArrayWhenNoUserLoggedIn(): void
     {
-        $this->security->shouldReceive('getUser')->andReturn(null);
+        $this->security->expects($this->once())->method('getUser')->willReturn(null);
 
         $config = new UserConfig($this->repository, $this->security);
 

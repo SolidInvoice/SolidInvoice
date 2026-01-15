@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Tests\Service;
 
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery as M;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
@@ -23,12 +22,12 @@ use SolidInvoice\InvoiceBundle\Exception\InvalidTransitionException;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Service\InvoiceStatusTransitionService;
 use Symfony\Component\Workflow\StateMachine;
+use Symfony\Component\Workflow\Transition;
 
 /** @covers \SolidInvoice\InvoiceBundle\Service\InvoiceStatusTransitionService */
 final class InvoiceStatusTransitionServiceTest extends TestCase
 {
     use DoctrineTestTrait;
-    use MockeryPHPUnitIntegration;
 
     public function testApplyTransition(): void
     {
@@ -36,14 +35,15 @@ final class InvoiceStatusTransitionServiceTest extends TestCase
         $invoice->setClient(ClientFactory::createOne()->_real());
         $invoice->setStatus(Graph::STATUS_PENDING);
 
-        $stateMachine = M::mock(StateMachine::class);
-        $stateMachine->shouldReceive('can')
-            ->once()
+        /** @var StateMachine&MockObject $stateMachine */
+        $stateMachine = $this->createMock(StateMachine::class);
+        $stateMachine->expects($this->once())
+            ->method('can')
             ->with($invoice, Graph::TRANSITION_OVERDUE)
-            ->andReturn(true);
+            ->willReturn(true);
 
-        $stateMachine->shouldReceive('apply')
-            ->once()
+        $stateMachine->expects($this->once())
+            ->method('apply')
             ->with($invoice, Graph::TRANSITION_OVERDUE);
 
         $service = new InvoiceStatusTransitionService($stateMachine, $this->registry);
@@ -58,11 +58,12 @@ final class InvoiceStatusTransitionServiceTest extends TestCase
         $invoice = new Invoice();
         $invoice->setStatus(Graph::STATUS_PAID);
 
-        $stateMachine = M::mock(StateMachine::class);
-        $stateMachine->shouldReceive('can')
-            ->once()
+        /** @var StateMachine&MockObject $stateMachine */
+        $stateMachine = $this->createMock(StateMachine::class);
+        $stateMachine->expects($this->once())
+            ->method('can')
             ->with($invoice, Graph::TRANSITION_OVERDUE)
-            ->andReturn(false);
+            ->willReturn(false);
 
         $service = new InvoiceStatusTransitionService($stateMachine, $this->registry);
 
@@ -75,11 +76,12 @@ final class InvoiceStatusTransitionServiceTest extends TestCase
         $invoice = new Invoice();
         $invoice->setStatus(Graph::STATUS_PENDING);
 
-        $stateMachine = M::mock(StateMachine::class);
-        $stateMachine->shouldReceive('can')
-            ->once()
+        /** @var StateMachine&MockObject $stateMachine */
+        $stateMachine = $this->createMock(StateMachine::class);
+        $stateMachine->expects($this->once())
+            ->method('can')
             ->with($invoice, Graph::TRANSITION_OVERDUE)
-            ->andReturn(true);
+            ->willReturn(true);
 
         $service = new InvoiceStatusTransitionService($stateMachine, $this->registry);
 
@@ -91,17 +93,20 @@ final class InvoiceStatusTransitionServiceTest extends TestCase
         $invoice = new Invoice();
         $invoice->setStatus(Graph::STATUS_PENDING);
 
-        $transition1 = M::mock(\Symfony\Component\Workflow\Transition::class);
-        $transition1->shouldReceive('getName')->andReturn(Graph::TRANSITION_OVERDUE);
+        /** @var Transition&MockObject $transition1 */
+        $transition1 = $this->createMock(Transition::class);
+        $transition1->method('getName')->willReturn(Graph::TRANSITION_OVERDUE);
 
-        $transition2 = M::mock(\Symfony\Component\Workflow\Transition::class);
-        $transition2->shouldReceive('getName')->andReturn(Graph::TRANSITION_PAY);
+        /** @var Transition&MockObject $transition2 */
+        $transition2 = $this->createMock(Transition::class);
+        $transition2->method('getName')->willReturn(Graph::TRANSITION_PAY);
 
-        $stateMachine = M::mock(StateMachine::class);
-        $stateMachine->shouldReceive('getEnabledTransitions')
-            ->once()
+        /** @var StateMachine&MockObject $stateMachine */
+        $stateMachine = $this->createMock(StateMachine::class);
+        $stateMachine->expects($this->once())
+            ->method('getEnabledTransitions')
             ->with($invoice)
-            ->andReturn([$transition1, $transition2]);
+            ->willReturn([$transition1, $transition2]);
 
         $service = new InvoiceStatusTransitionService($stateMachine, $this->registry);
         $transitions = $service->getAvailableTransitions($invoice);

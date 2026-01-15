@@ -49,9 +49,6 @@
         <server name="SHELL_VERBOSITY" value="-1" />
         <server name="BROWSER_ALWAYS_START_WEBSERVER" value="1"/>
     </php>
-    <listeners>
-        <listener class="Mockery\Adapter\Phpunit\TestListener"/>
-    </listeners>
     <extensions>
         <extension class="Symfony\Component\Panther\ServerExtension"/>
         <extension class="Zenstruck\Browser\Test\BrowserExtension" />

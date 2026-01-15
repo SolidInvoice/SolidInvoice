@@ -14,8 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\ApiBundle\Tests\Event\Listener;
 
 use ApiPlatform\Symfony\EventListener\EventPriorities;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery as M;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ApiBundle\Event\Listener\InvoiceCreateListener;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -30,8 +29,6 @@ use Symfony\Component\Workflow\WorkflowInterface;
 
 class InvoiceCreateListenerTest extends TestCase
 {
-    use MockeryPHPUnitIntegration;
-
     public function testSubscribedEvents(): void
     {
         self::assertSame([KernelEvents::VIEW], array_keys(InvoiceCreateListener::getSubscribedEvents()));
@@ -42,62 +39,67 @@ class InvoiceCreateListenerTest extends TestCase
     {
         $entity = new Invoice();
 
-        $stateMachine = M::mock(WorkflowInterface::class);
-        $stateMachine->shouldReceive('apply')
-            ->once()
+        /** @var WorkflowInterface&MockObject $stateMachine */
+        $stateMachine = $this->createMock(WorkflowInterface::class);
+        $stateMachine->expects($this->once())
+            ->method('apply')
             ->with($entity, Graph::TRANSITION_NEW);
 
         $listener = new InvoiceCreateListener($stateMachine);
         $request = Request::create('/', Request::METHOD_POST);
-        $listener->setInvoiceStatus(new ViewEvent(M::mock(KernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST, $entity));
+        $listener->setInvoiceStatus(new ViewEvent($this->createMock(KernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST, $entity));
     }
 
     public function testSkipIfNotMainRequest(): void
     {
-        $stateMachine = M::mock(WorkflowInterface::class);
-        $stateMachine->shouldReceive('apply')
-            ->never();
+        /** @var WorkflowInterface&MockObject $stateMachine */
+        $stateMachine = $this->createMock(WorkflowInterface::class);
+        $stateMachine->expects($this->never())
+            ->method('apply');
 
         $listener = new InvoiceCreateListener($stateMachine);
         $request = Request::create('/', Request::METHOD_POST);
-        $listener->setInvoiceStatus(new ViewEvent(M::mock(KernelInterface::class), $request, HttpKernelInterface::SUB_REQUEST, new Invoice()));
+        $listener->setInvoiceStatus(new ViewEvent($this->createMock(KernelInterface::class), $request, HttpKernelInterface::SUB_REQUEST, new Invoice()));
     }
 
     public function testSkipIfInvoiceAlreadyHasAStatus(): void
     {
-        $stateMachine = M::mock(WorkflowInterface::class);
-        $stateMachine->shouldReceive('apply')
-            ->never();
+        /** @var WorkflowInterface&MockObject $stateMachine */
+        $stateMachine = $this->createMock(WorkflowInterface::class);
+        $stateMachine->expects($this->never())
+            ->method('apply');
 
         $listener = new InvoiceCreateListener($stateMachine);
         $request = Request::create('/', Request::METHOD_POST);
         $entity = new Invoice();
         $entity->setStatus(Graph::STATUS_DRAFT);
 
-        $listener->setInvoiceStatus(new ViewEvent(M::mock(KernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST, $entity));
+        $listener->setInvoiceStatus(new ViewEvent($this->createMock(KernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST, $entity));
     }
 
     public function testSkipIfNoInvoiceIsPassed(): void
     {
-        $stateMachine = M::mock(WorkflowInterface::class);
-        $stateMachine->shouldReceive('apply')
-            ->never();
+        /** @var WorkflowInterface&MockObject $stateMachine */
+        $stateMachine = $this->createMock(WorkflowInterface::class);
+        $stateMachine->expects($this->never())
+            ->method('apply');
 
         $listener = new InvoiceCreateListener($stateMachine);
         $request = Request::create('/', Request::METHOD_POST);
 
-        $listener->setInvoiceStatus(new ViewEvent(M::mock(KernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST, new Quote()));
+        $listener->setInvoiceStatus(new ViewEvent($this->createMock(KernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST, new Quote()));
     }
 
     public function testSkipIfNotPostRequest(): void
     {
-        $stateMachine = M::mock(WorkflowInterface::class);
-        $stateMachine->shouldReceive('apply')
-            ->never();
+        /** @var WorkflowInterface&MockObject $stateMachine */
+        $stateMachine = $this->createMock(WorkflowInterface::class);
+        $stateMachine->expects($this->never())
+            ->method('apply');
 
         $listener = new InvoiceCreateListener($stateMachine);
         $request = Request::create('/', Request::METHOD_GET);
 
-        $listener->setInvoiceStatus(new ViewEvent(M::mock(KernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST, new Invoice()));
+        $listener->setInvoiceStatus(new ViewEvent($this->createMock(KernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST, new Invoice()));
     }
 }

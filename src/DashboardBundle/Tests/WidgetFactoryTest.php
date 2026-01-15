@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DashboardBundle\Tests;
 
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery as M;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DashboardBundle\WidgetFactory;
 use SolidInvoice\DashboardBundle\Widgets\WidgetInterface;
@@ -22,17 +20,15 @@ use SplPriorityQueue;
 
 class WidgetFactoryTest extends TestCase
 {
-    use MockeryPHPUnitIntegration;
-
     public function testAdd(): void
     {
         $factory = new WidgetFactory();
 
-        $widget1 = M::mock(WidgetInterface::class);
-        $widget2 = M::mock(WidgetInterface::class);
-        $widget3 = M::mock(WidgetInterface::class);
-        $widget4 = M::mock(WidgetInterface::class);
-        $widget5 = M::mock(WidgetInterface::class);
+        $widget1 = $this->createMock(WidgetInterface::class);
+        $widget2 = $this->createMock(WidgetInterface::class);
+        $widget3 = $this->createMock(WidgetInterface::class);
+        $widget4 = $this->createMock(WidgetInterface::class);
+        $widget5 = $this->createMock(WidgetInterface::class);
 
         $factory->add($widget1, 'top', 100);
         $factory->add($widget2, 'left_column', 200);
@@ -53,7 +49,7 @@ class WidgetFactoryTest extends TestCase
     {
         $factory = new WidgetFactory();
 
-        $widget = M::mock(WidgetInterface::class);
+        $widget = $this->createMock(WidgetInterface::class);
 
         $this->expectException('Exception');
         $this->expectExceptionMessage('Invalid widget location: bottom');
@@ -65,11 +61,11 @@ class WidgetFactoryTest extends TestCase
     {
         $factory = new WidgetFactory();
 
-        $widget1 = M::mock(WidgetInterface::class);
-        $widget2 = M::mock(WidgetInterface::class);
-        $widget3 = M::mock(WidgetInterface::class);
-        $widget4 = M::mock(WidgetInterface::class);
-        $widget5 = M::mock(WidgetInterface::class);
+        $widget1 = $this->createMock(WidgetInterface::class);
+        $widget2 = $this->createMock(WidgetInterface::class);
+        $widget3 = $this->createMock(WidgetInterface::class);
+        $widget4 = $this->createMock(WidgetInterface::class);
+        $widget5 = $this->createMock(WidgetInterface::class);
 
         $factory->add($widget1, 'top', 100);
         $factory->add($widget2, 'left_column', 200);

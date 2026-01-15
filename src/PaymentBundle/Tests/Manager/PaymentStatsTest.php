@@ -18,9 +18,8 @@ use Brick\Math\Exception\MathException;
 use DateMalformedStringException;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\QueryBuilder;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery as M;
 use Money\Currency;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\PaymentBundle\Manager\PaymentStats;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
@@ -28,10 +27,8 @@ use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 /** @covers \SolidInvoice\PaymentBundle\Manager\PaymentStats */
 final class PaymentStatsTest extends TestCase
 {
-    use MockeryPHPUnitIntegration;
-
     /**
-     * @var M\MockInterface&PaymentRepository
+     * @var PaymentRepository&MockObject
      */
     private PaymentRepository $repository;
 
@@ -39,7 +36,7 @@ final class PaymentStatsTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->repository = M::mock(PaymentRepository::class);
+        $this->repository = $this->createMock(PaymentRepository::class);
         $this->stats = new PaymentStats($this->repository);
     }
 
@@ -56,24 +53,29 @@ final class PaymentStatsTest extends TestCase
             ['id' => '2', 'amount' => BigInteger::of(7500)],
         ];
 
-        $this->repository->shouldReceive('getTotalIncome')
-            ->once()
-            ->andReturn($totalIncome);
+        $this->repository->expects($this->once())
+            ->method('getTotalIncome')
+            ->willReturn($totalIncome);
 
-        $this->repository->shouldReceive('getPaymentsThisMonth')
-            ->once()
-            ->andReturn($thisMonthIncome);
+        $this->repository->expects($this->once())
+            ->method('getPaymentsThisMonth')
+            ->willReturn($thisMonthIncome);
 
-        $this->repository->shouldReceive('getRecentPayments')
-            ->once()
+        $this->repository->expects($this->once())
+            ->method('getRecentPayments')
             ->with(5)
-            ->andReturn($recentPayments);
+            ->willReturn($recentPayments);
 
         // Mock query builder for count queries
-        $this->mockQueryBuilderForCount(15); // total_count
-        $this->mockQueryBuilderForCount(8);  // this_month_count
-        $this->mockQueryBuilderForCount(3);  // pending_count
-        $this->mockQueryBuilderForCount(2);  // failed_count
+        $this->repository->expects($this->exactly(4))
+            ->method('createQueryBuilder')
+            ->with('p')
+            ->willReturnOnConsecutiveCalls(
+                $this->mockQueryBuilderForCount(15),  // total_count
+                $this->mockQueryBuilderForCount(8),   // this_month_count
+                $this->mockQueryBuilderForCount(3),   // pending_count
+                $this->mockQueryBuilderForCount(2)    // failed_count
+            );
 
         $result = $this->stats->getStatistics();
 
@@ -126,24 +128,29 @@ final class PaymentStatsTest extends TestCase
             'EUR' => BigInteger::of(18000),
         ];
 
-        $this->repository->shouldReceive('getTotalIncome')
-            ->once()
-            ->andReturn($totalIncome);
+        $this->repository->expects($this->once())
+            ->method('getTotalIncome')
+            ->willReturn($totalIncome);
 
-        $this->repository->shouldReceive('getPaymentsThisMonth')
-            ->once()
-            ->andReturn($thisMonthIncome);
+        $this->repository->expects($this->once())
+            ->method('getPaymentsThisMonth')
+            ->willReturn($thisMonthIncome);
 
-        $this->repository->shouldReceive('getRecentPayments')
-            ->once()
+        $this->repository->expects($this->once())
+            ->method('getRecentPayments')
             ->with(5)
-            ->andReturn([]);
+            ->willReturn([]);
 
         // Mock query builder for count queries
-        $this->mockQueryBuilderForCount(20);
-        $this->mockQueryBuilderForCount(10);
-        $this->mockQueryBuilderForCount(5);
-        $this->mockQueryBuilderForCount(1);
+        $this->repository->expects($this->exactly(4))
+            ->method('createQueryBuilder')
+            ->with('p')
+            ->willReturnOnConsecutiveCalls(
+                $this->mockQueryBuilderForCount(20),
+                $this->mockQueryBuilderForCount(10),
+                $this->mockQueryBuilderForCount(5),
+                $this->mockQueryBuilderForCount(1)
+            );
 
         $result = $this->stats->getStatistics();
 
@@ -172,24 +179,29 @@ final class PaymentStatsTest extends TestCase
      */
     public function testGetStatisticsWithNoPayments(): void
     {
-        $this->repository->shouldReceive('getTotalIncome')
-            ->once()
-            ->andReturn([]);
+        $this->repository->expects($this->once())
+            ->method('getTotalIncome')
+            ->willReturn([]);
 
-        $this->repository->shouldReceive('getPaymentsThisMonth')
-            ->once()
-            ->andReturn([]);
+        $this->repository->expects($this->once())
+            ->method('getPaymentsThisMonth')
+            ->willReturn([]);
 
-        $this->repository->shouldReceive('getRecentPayments')
-            ->once()
+        $this->repository->expects($this->once())
+            ->method('getRecentPayments')
             ->with(5)
-            ->andReturn([]);
+            ->willReturn([]);
 
         // Mock query builder for count queries - all zeros
-        $this->mockQueryBuilderForCount(0);
-        $this->mockQueryBuilderForCount(0);
-        $this->mockQueryBuilderForCount(0);
-        $this->mockQueryBuilderForCount(0);
+        $this->repository->expects($this->exactly(4))
+            ->method('createQueryBuilder')
+            ->with('p')
+            ->willReturnOnConsecutiveCalls(
+                $this->mockQueryBuilderForCount(0),
+                $this->mockQueryBuilderForCount(0),
+                $this->mockQueryBuilderForCount(0),
+                $this->mockQueryBuilderForCount(0)
+            );
 
         $result = $this->stats->getStatistics();
 
@@ -208,24 +220,29 @@ final class PaymentStatsTest extends TestCase
      */
     public function testGetStatisticsWithOnlyPendingAndFailedPayments(): void
     {
-        $this->repository->shouldReceive('getTotalIncome')
-            ->once()
-            ->andReturn([]);
+        $this->repository->expects($this->once())
+            ->method('getTotalIncome')
+            ->willReturn([]);
 
-        $this->repository->shouldReceive('getPaymentsThisMonth')
-            ->once()
-            ->andReturn([]);
+        $this->repository->expects($this->once())
+            ->method('getPaymentsThisMonth')
+            ->willReturn([]);
 
-        $this->repository->shouldReceive('getRecentPayments')
-            ->once()
+        $this->repository->expects($this->once())
+            ->method('getRecentPayments')
             ->with(5)
-            ->andReturn([]);
+            ->willReturn([]);
 
         // No captured payments, but some pending and failed
-        $this->mockQueryBuilderForCount(0);  // total_count (captured only)
-        $this->mockQueryBuilderForCount(0);  // this_month_count (captured only)
-        $this->mockQueryBuilderForCount(10); // pending_count
-        $this->mockQueryBuilderForCount(5);  // failed_count
+        $this->repository->expects($this->exactly(4))
+            ->method('createQueryBuilder')
+            ->with('p')
+            ->willReturnOnConsecutiveCalls(
+                $this->mockQueryBuilderForCount(0),  // total_count (captured only)
+                $this->mockQueryBuilderForCount(0),  // this_month_count (captured only)
+                $this->mockQueryBuilderForCount(10), // pending_count
+                $this->mockQueryBuilderForCount(5)   // failed_count
+            );
 
         $result = $this->stats->getStatistics();
 
@@ -235,40 +252,38 @@ final class PaymentStatsTest extends TestCase
         self::assertEquals(5, $result['failed_count']);
     }
 
-    private function mockQueryBuilderForCount(int $count): void
+    private function mockQueryBuilderForCount(int $count): QueryBuilder
     {
-        $queryBuilder = M::mock(QueryBuilder::class);
-        $query = M::mock(AbstractQuery::class);
+        /** @var QueryBuilder&MockObject $queryBuilder */
+        $queryBuilder = $this->createMock(QueryBuilder::class);
+        /** @var AbstractQuery&MockObject $query */
+        $query = $this->createMock(AbstractQuery::class);
 
-        $queryBuilder->shouldReceive('select')
-            ->once()
+        $queryBuilder->expects($this->once())
+            ->method('select')
             ->with('COUNT(p.id)')
-            ->andReturnSelf();
+            ->willReturnSelf();
 
-        $queryBuilder->shouldReceive('where')
-            ->once()
-            ->andReturnSelf();
+        $queryBuilder->expects($this->once())
+            ->method('where')
+            ->willReturnSelf();
 
-        $queryBuilder->shouldReceive('andWhere')
-            ->zeroOrMoreTimes()
-            ->andReturnSelf();
+        $queryBuilder->expects($this->any())
+            ->method('andWhere')
+            ->willReturnSelf();
 
-        $queryBuilder->shouldReceive('setParameter')
-            ->atLeast()
-            ->once()
-            ->andReturnSelf();
+        $queryBuilder->expects($this->atLeastOnce())
+            ->method('setParameter')
+            ->willReturnSelf();
 
-        $queryBuilder->shouldReceive('getQuery')
-            ->once()
-            ->andReturn($query);
+        $queryBuilder->expects($this->once())
+            ->method('getQuery')
+            ->willReturn($query);
 
-        $query->shouldReceive('getSingleScalarResult')
-            ->once()
-            ->andReturn((string) $count);
+        $query->expects($this->once())
+            ->method('getSingleScalarResult')
+            ->willReturn((string) $count);
 
-        $this->repository->shouldReceive('createQueryBuilder')
-            ->once()
-            ->with('p')
-            ->andReturn($queryBuilder);
+        return $queryBuilder;
     }
 }

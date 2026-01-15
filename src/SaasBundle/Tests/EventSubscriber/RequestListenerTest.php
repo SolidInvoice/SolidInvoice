@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\SaasBundle\Tests\EventSubscriber;
 
 use DateTimeImmutable;
-use Mockery as M;
+use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Clock\ClockInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
@@ -41,7 +41,6 @@ use Twig\Environment;
  */
 final class RequestListenerTest extends KernelTestCase
 {
-    use M\Adapter\Phpunit\MockeryPHPUnitIntegration;
     use EnsureApplicationInstalled;
 
     public function testGetSubscribedEvents(): void
@@ -60,7 +59,7 @@ final class RequestListenerTest extends KernelTestCase
         $request->attributes->set('_route', '_dashboard');
 
         $event = new RequestEvent(
-            M::mock(HttpKernelInterface::class),
+            $this->createMock(HttpKernelInterface::class),
             $request,
             HttpKernelInterface::MAIN_REQUEST
         );
@@ -81,7 +80,7 @@ final class RequestListenerTest extends KernelTestCase
         $request->attributes->set('_route', $route);
 
         $event = new RequestEvent(
-            M::mock(HttpKernelInterface::class),
+            $this->createMock(HttpKernelInterface::class),
             $request,
             HttpKernelInterface::MAIN_REQUEST
         );
@@ -100,7 +99,7 @@ final class RequestListenerTest extends KernelTestCase
         $request->attributes->set('_route', '_dashboard');
 
         $event = new RequestEvent(
-            M::mock(HttpKernelInterface::class),
+            $this->createMock(HttpKernelInterface::class),
             $request,
             HttpKernelInterface::MAIN_REQUEST
         );
@@ -121,7 +120,7 @@ final class RequestListenerTest extends KernelTestCase
         $request->attributes->set('_route', '_dashboard');
 
         $event = new RequestEvent(
-            M::mock(HttpKernelInterface::class),
+            $this->createMock(HttpKernelInterface::class),
             $request,
             HttpKernelInterface::MAIN_REQUEST
         );
@@ -144,7 +143,7 @@ final class RequestListenerTest extends KernelTestCase
         $request->attributes->set('_route', '_dashboard');
 
         $event = new RequestEvent(
-            M::mock(HttpKernelInterface::class),
+            $this->createMock(HttpKernelInterface::class),
             $request,
             HttpKernelInterface::MAIN_REQUEST
         );
@@ -167,7 +166,7 @@ final class RequestListenerTest extends KernelTestCase
         $request->attributes->set('_route', '_dashboard');
 
         $event = new RequestEvent(
-            M::mock(HttpKernelInterface::class),
+            $this->createMock(HttpKernelInterface::class),
             $request,
             HttpKernelInterface::MAIN_REQUEST
         );
@@ -188,7 +187,7 @@ final class RequestListenerTest extends KernelTestCase
         $request->attributes->set('_route', '_dashboard');
 
         $event = new RequestEvent(
-            M::mock(HttpKernelInterface::class),
+            $this->createMock(HttpKernelInterface::class),
             $request,
             HttpKernelInterface::MAIN_REQUEST
         );
@@ -211,7 +210,7 @@ final class RequestListenerTest extends KernelTestCase
         $request->attributes->set('_route', '_dashboard');
 
         $event = new RequestEvent(
-            M::mock(HttpKernelInterface::class),
+            $this->createMock(HttpKernelInterface::class),
             $request,
             HttpKernelInterface::MAIN_REQUEST
         );
@@ -230,7 +229,7 @@ final class RequestListenerTest extends KernelTestCase
         $request->attributes->set('_route', '_dashboard');
 
         $event = new RequestEvent(
-            M::mock(HttpKernelInterface::class),
+            $this->createMock(HttpKernelInterface::class),
             $request,
             HttpKernelInterface::MAIN_REQUEST
         );
@@ -264,38 +263,38 @@ final class RequestListenerTest extends KernelTestCase
         $urlGenerator = self::getContainer()->get(UrlGeneratorInterface::class);
 
         // Mock SubscriptionProviderInterface
-        $subscriptionManager = M::mock(SubscriptionProviderInterface::class);
+        /** @var SubscriptionProviderInterface&MockObject $subscriptionManager */
+        $subscriptionManager = $this->createMock(SubscriptionProviderInterface::class);
         if ($subscription !== null) {
             $subscriptionManager
-                ->shouldReceive('getSubscriptionFor')
-                ->andReturn($subscription);
+                ->method('getSubscriptionFor')
+                ->willReturn($subscription);
         }
 
         // Mock Twig to return simple HTML for testing
-        $twig = M::mock(Environment::class);
-        $twig->shouldReceive('render')
-            ->with(M::pattern('/@SolidInvoiceSaas\/subscription\/pending\.html\.twig/'), M::any())
-            ->andReturn('<html>Pending Page</html>');
-        $twig->shouldReceive('render')
-            ->with(M::pattern('/@SolidInvoiceSaas\/subscription\/paused\.html\.twig/'), M::any())
-            ->andReturn('<html>Paused Page</html>');
-        $twig->shouldReceive('render')
-            ->with(M::pattern('/@SolidInvoiceSaas\/subscription\/cancelled\.html\.twig/'), M::any())
-            ->andReturn('<html>Cancelled Page</html>');
-        $twig->shouldReceive('render')
-            ->with(M::pattern('/@SolidInvoiceSaas\/subscription\/trial_expired\.html\.twig/'), M::any())
-            ->andReturn('<html>Trial Expired Page</html>');
-        $twig->shouldReceive('render')
-            ->with(M::pattern('/@SolidInvoiceSaas\/_alert_banner\.html\.twig/'), M::any())
-            ->andReturn('<div class="alert">Banner</div>');
+        /** @var Environment&MockObject $twig */
+        $twig = $this->createMock(Environment::class);
+        $twig->method('render')
+            ->willReturnCallback(static function (string $template): string {
+                return match (true) {
+                    str_contains($template, 'pending.html.twig') => '<html>Pending Page</html>',
+                    str_contains($template, 'paused.html.twig') => '<html>Paused Page</html>',
+                    str_contains($template, 'cancelled.html.twig') => '<html>Cancelled Page</html>',
+                    str_contains($template, 'trial_expired.html.twig') => '<html>Trial Expired Page</html>',
+                    str_contains($template, '_alert_banner.html.twig') => '<div class="alert">Banner</div>',
+                    default => '',
+                };
+            });
 
         // Mock Security
-        $security = M::mock(Security::class);
-        $security->shouldReceive('getUser')->andReturn($user);
+        /** @var Security&MockObject $security */
+        $security = $this->createMock(Security::class);
+        $security->method('getUser')->willReturn($user);
 
         // Mock Clock to control time in tests
-        $clock = M::mock(ClockInterface::class);
-        $clock->shouldReceive('now')->andReturn($now ?? new DateTimeImmutable());
+        /** @var ClockInterface&MockObject $clock */
+        $clock = $this->createMock(ClockInterface::class);
+        $clock->method('now')->willReturn($now ?? new DateTimeImmutable());
 
         return new RequestListener(
             $companySelector,

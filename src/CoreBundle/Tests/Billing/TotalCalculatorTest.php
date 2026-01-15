@@ -16,7 +16,6 @@ namespace SolidInvoice\CoreBundle\Tests\Billing;
 use Brick\Math\BigDecimal;
 use Brick\Math\Exception\MathException;
 use Doctrine\ORM\Exception\NotSupported;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\CoreBundle\Entity\Discount;
@@ -34,7 +33,6 @@ use Zenstruck\Foundry\Test\Factories;
 class TotalCalculatorTest extends KernelTestCase
 {
     use DoctrineTestTrait;
-    use MockeryPHPUnitIntegration;
     use Factories;
 
     /**

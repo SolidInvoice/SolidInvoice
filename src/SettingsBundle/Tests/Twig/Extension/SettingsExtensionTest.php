@@ -13,22 +13,20 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SettingsBundle\Tests\Twig\Extension;
 
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery as M;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\SettingsBundle\Twig\Extension\SettingsExtension;
 
 class SettingsExtensionTest extends TestCase
 {
-    use MockeryPHPUnitIntegration;
-
     public function testGetSettings(): void
     {
-        $config = M::mock(SystemConfig::class);
-        $config->shouldReceive('get')
+        /** @var SystemConfig&MockObject $config */
+        $config = $this->createMock(SystemConfig::class);
+        $config->method('get')
             ->with('dummy/setting')
-            ->andReturn('1');
+            ->willReturn('1');
 
         $extension = new SettingsExtension($config);
 
@@ -37,10 +35,11 @@ class SettingsExtensionTest extends TestCase
 
     public function testGetSettingsDefaultValue(): void
     {
-        $config = M::mock(SystemConfig::class);
-        $config->shouldReceive('get')
+        /** @var SystemConfig&MockObject $config */
+        $config = $this->createMock(SystemConfig::class);
+        $config->method('get')
             ->with('dummy/setting')
-            ->andReturn(null);
+            ->willReturn(null);
 
         $extension = new SettingsExtension($config);
 

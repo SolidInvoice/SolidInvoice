@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Tests\Listener\Mailer;
 
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery as M;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\QuoteBundle\Email\QuoteEmail;
 use SolidInvoice\QuoteBundle\Entity\Quote;
@@ -25,14 +24,13 @@ use Symfony\Component\Mailer\Event\MessageEvent;
 
 class QuoteSubjectDecoratorTest extends TestCase
 {
-    use MockeryPHPUnitIntegration;
-
     public function testListener(): void
     {
-        $config = M::mock(SystemConfig::class);
-        $config->shouldReceive('get')
+        /** @var SystemConfig&MockObject $config */
+        $config = $this->createMock(SystemConfig::class);
+        $config->method('get')
             ->with('quote/email_subject')
-            ->andReturn('New Quote: #{id}');
+            ->willReturn('New Quote: #{id}');
 
         $listener = new QuoteSubjectListener($config);
         $quote = new Quote();

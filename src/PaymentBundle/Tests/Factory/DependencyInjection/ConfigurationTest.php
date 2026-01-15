@@ -14,14 +14,12 @@ declare(strict_types=1);
 namespace SolidInvoice\PaymentBundle\Tests\Factory\DependencyInjection;
 
 use Matthias\SymfonyConfigTest\PhpUnit\ConfigurationTestCaseTrait;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\PaymentBundle\DependencyInjection\Configuration;
 
 class ConfigurationTest extends TestCase
 {
     use ConfigurationTestCaseTrait;
-    use MockeryPHPUnitIntegration;
 
     protected function getConfiguration()
     {

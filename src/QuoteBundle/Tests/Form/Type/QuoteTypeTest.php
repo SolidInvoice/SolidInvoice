@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Tests\Form\Type;
 
-use Mockery as M;
 use Money\Currency;
+use PHPUnit\Framework\MockObject\MockObject;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
@@ -54,17 +54,16 @@ class QuoteTypeTest extends FormTestCase
      */
     protected function getExtensions(): array
     {
-        $systemConfig = M::mock(SystemConfig::class);
+        /** @var SystemConfig&MockObject $systemConfig */
+        $systemConfig = $this->createMock(SystemConfig::class);
 
         $systemConfig
-            ->shouldReceive('getCurrency')
-            ->zeroOrMoreTimes()
-            ->andReturn(new Currency('USD'));
+            ->method('getCurrency')
+            ->willReturn(new Currency('USD'));
 
         $systemConfig
-            ->shouldReceive('get')
-            ->zeroOrMoreTimes()
-            ->andReturn('random_number');
+            ->method('get')
+            ->willReturn('random_number');
 
         $type = new QuoteType($systemConfig, new BillingIdGenerator(new ServiceLocator(['random_number' => static fn () => new class() {
             public function generate(): string

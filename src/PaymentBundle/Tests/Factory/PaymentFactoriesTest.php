@@ -13,15 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Tests\Factory;
 
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\PaymentBundle\Exception\InvalidGatewayException;
 use SolidInvoice\PaymentBundle\Factory\PaymentFactories;
 
 class PaymentFactoriesTest extends TestCase
 {
-    use MockeryPHPUnitIntegration;
-
     public function testSetGatewayFactories(): void
     {
         $data = [

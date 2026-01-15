@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\NotificationBundle\Tests;
 
-use Hamcrest\Core\IsEqual;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery as M;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Test\Traits\FakerTestTrait;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
@@ -40,17 +38,16 @@ final class NotificationManagerTest extends TestCase
 {
     use EnsureApplicationInstalled;
     use FakerTestTrait;
-    use MockeryPHPUnitIntegration;
 
     private NotificationManager $notificationManager;
 
-    private NotifierInterface | M\MockInterface $notifier;
+    private NotifierInterface & MockObject $notifier;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->notifier = M::mock(NotifierInterface::class);
+        $this->notifier = $this->createMock(NotifierInterface::class);
 
         $this->notificationManager = new NotificationManager(
             $this->notifier,
@@ -100,9 +97,11 @@ final class NotificationManagerTest extends TestCase
         $em->flush();
 
         $this->notifier
-            ->expects('send')
-            ->with($class, IsEqual::equalTo(new Recipient($email, '')))
-            ->once();
+            ->expects($this->once())
+            ->method('send')
+            ->with($class, $this->callback(function (Recipient $recipient) use ($email) {
+                return $recipient->getEmail() === $email;
+            }));
 
         $this->notificationManager->sendNotification($class);
         self::assertSame(['email'], $class->getChannels(new Recipient($email, '')));
@@ -120,8 +119,8 @@ final class NotificationManagerTest extends TestCase
         $email = $this->getFaker()->email();
 
         $this->notifier
-            ->expects('send')
-            ->never();
+            ->expects($this->never())
+            ->method('send');
 
         $this->notificationManager->sendNotification($class);
         self::assertSame([], $class->getChannels(new Recipient($email, '')));
@@ -153,9 +152,11 @@ final class NotificationManagerTest extends TestCase
         $em->flush();
 
         $this->notifier
-            ->expects('send')
-            ->with($class, IsEqual::equalTo(new Recipient($email, '')))
-            ->once();
+            ->expects($this->once())
+            ->method('send')
+            ->with($class, $this->callback(function (Recipient $recipient) use ($email) {
+                return $recipient->getEmail() === $email;
+            }));
 
         $this->notificationManager->sendNotification($class);
         self::assertSame([], $class->getChannels(new Recipient($email, '')));
@@ -194,15 +195,33 @@ final class NotificationManagerTest extends TestCase
         $em->flush();
 
         $this->notifier
-            ->expects('send')
-            ->with($class, IsEqual::equalTo(new Recipient($email, '')))
-            ->once();
+            ->expects($this->once())
+            ->method('send')
+            ->with($class, $this->callback(function (Recipient $recipient) use ($email) {
+                return $recipient->getEmail() === $email;
+            }));
 
-        $configurator = M::mock(ConfiguratorInterface::class);
-        $configurator
-            ->expects('getType')
-            ->once()
-            ->andReturn('chatter');
+        $configurator = new class() implements ConfiguratorInterface {
+            public static function getName(): string
+            {
+                return 'Test Foo';
+            }
+
+            public static function getType(): string
+            {
+                return 'chatter';
+            }
+
+            public function getForm(): string
+            {
+                return '';
+            }
+
+            public function configure(array $config): Dsn
+            {
+                return new Dsn('');
+            }
+        };
 
         $notificationManager = new NotificationManager(
             $this->notifier,
@@ -262,21 +281,37 @@ final class NotificationManagerTest extends TestCase
         $em->persist($userNotification2);
         $em->flush();
 
+        $emails = [$email1, $email2];
+        $callCount = 0;
         $this->notifier
-            ->expects('send')
-            ->with($class, IsEqual::equalTo(new Recipient($email1, '')))
-            ->once();
+            ->expects($this->exactly(2))
+            ->method('send')
+            ->with($class, $this->callback(function (Recipient $recipient) use ($emails, &$callCount) {
+                $email = $emails[$callCount++];
+                return $recipient->getEmail() === $email;
+            }));
 
-        $this->notifier
-            ->expects('send')
-            ->with($class, IsEqual::equalTo(new Recipient($email2, '')))
-            ->once();
+        $configurator = new class() implements ConfiguratorInterface {
+            public static function getName(): string
+            {
+                return 'Test Foo';
+            }
 
-        $configurator = M::mock(ConfiguratorInterface::class);
-        $configurator
-            ->expects('getType')
-            ->twice()
-            ->andReturn('chatter');
+            public static function getType(): string
+            {
+                return 'chatter';
+            }
+
+            public function getForm(): string
+            {
+                return '';
+            }
+
+            public function configure(array $config): Dsn
+            {
+                return new Dsn('');
+            }
+        };
 
         $notificationManager = new NotificationManager(
             $this->notifier,
@@ -331,9 +366,11 @@ final class NotificationManagerTest extends TestCase
         $em->flush();
 
         $this->notifier
-            ->expects('send')
-            ->with($class, IsEqual::equalTo(new Recipient($email, '')))
-            ->once();
+            ->expects($this->once())
+            ->method('send')
+            ->with($class, $this->callback(function (Recipient $recipient) use ($email) {
+                return $recipient->getEmail() === $email;
+            }));
 
         $configurator = new class() implements ConfiguratorInterface {
             public static function getName(): string

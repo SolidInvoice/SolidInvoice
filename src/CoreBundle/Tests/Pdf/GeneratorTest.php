@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Tests\Pdf;
 
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery as M;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -22,15 +21,13 @@ use SolidInvoice\CoreBundle\Pdf\Generator;
 
 class GeneratorTest extends TestCase
 {
-    use MockeryPHPUnitIntegration;
-
     public function testGenerate(): void
     {
-        $logger = M::mock(LoggerInterface::class);
+        /** @var LoggerInterface&MockObject $logger */
+        $logger = $this->createMock(LoggerInterface::class);
 
-        $logger->expects('debug')
-            ->times(5)
-            ->withAnyArgs();
+        $logger->expects($this->exactly(5))
+            ->method('debug');
 
         $generator = new Generator(sys_get_temp_dir(), $logger);
         $output = $generator->generate('<body>Hello World</body>');

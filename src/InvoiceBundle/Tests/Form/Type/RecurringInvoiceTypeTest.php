@@ -15,8 +15,8 @@ namespace SolidInvoice\InvoiceBundle\Tests\Form\Type;
 
 use Brick\Math\BigDecimal;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use Mockery as M;
 use Money\Currency;
+use PHPUnit\Framework\MockObject\MockObject;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
@@ -82,12 +82,12 @@ class RecurringInvoiceTypeTest extends FormTestCase
      */
     protected function getExtensions(): array
     {
-        $systemConfig = M::mock(SystemConfig::class);
+        /** @var SystemConfig&MockObject $systemConfig */
+        $systemConfig = $this->createMock(SystemConfig::class);
 
         $systemConfig
-            ->shouldReceive('getCurrency')
-            ->zeroOrMoreTimes()
-            ->andReturn(new Currency('USD'));
+            ->method('getCurrency')
+            ->willReturn(new Currency('USD'));
 
         $invoiceType = new RecurringInvoiceType($systemConfig, $this->registry);
         $itemType = new ItemType($this->registry);

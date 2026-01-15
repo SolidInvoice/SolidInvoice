@@ -16,9 +16,8 @@ namespace SolidInvoice\InvoiceBundle\Tests\Manager;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery as M;
 use Money\Currency;
+use PHPUnit\Framework\MockObject\MockObject;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Entity\Discount;
@@ -44,21 +43,23 @@ use Symfony\Component\Workflow\Transition;
 
 class InvoiceManagerTest extends KernelTestCase
 {
-    use MockeryPHPUnitIntegration;
-
     private InvoiceManager $manager;
 
     protected function setUp(): void
     {
-        $entityManager = M::mock(EntityManagerInterface::class);
-        $doctrine = M::mock(ManagerRegistry::class, ['getManager' => $entityManager]);
-        $notification = M::mock(NotificationManager::class);
+        /** @var EntityManagerInterface&MockObject $entityManager */
+        $entityManager = $this->createMock(EntityManagerInterface::class);
 
-        $notification->shouldReceive('sendNotification')
-            ->andReturn(null);
+        /** @var ManagerRegistry&MockObject $doctrine */
+        $doctrine = $this->createMock(ManagerRegistry::class);
+        $doctrine->method('getManager')->willReturn($entityManager);
+
+        /** @var NotificationManager&MockObject $notification */
+        $notification = $this->createMock(NotificationManager::class);
+        $notification->method('sendNotification');
 
         $dispatcher = new EventDispatcher();
-        $dispatcher->addSubscriber(new WorkFlowSubscriber($doctrine, M::mock(NotificationManager::class)));
+        $dispatcher->addSubscriber(new WorkFlowSubscriber($doctrine, $this->createMock(NotificationManager::class)));
         $stateMachine = new StateMachine(
             new Definition(
                 ['new', 'draft'],
@@ -84,9 +85,8 @@ class InvoiceManagerTest extends KernelTestCase
             )
         );
 
-        $entityManager
-            ->shouldReceive('persist', 'flush')
-            ->zeroOrMoreTimes();
+        $entityManager->method('persist');
+        $entityManager->method('flush');
     }
 
     public function testCreateFromQuote(): void

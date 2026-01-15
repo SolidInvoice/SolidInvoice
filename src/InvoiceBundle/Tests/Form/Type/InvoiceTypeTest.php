@@ -15,8 +15,8 @@ namespace SolidInvoice\InvoiceBundle\Tests\Form\Type;
 
 use Brick\Math\BigDecimal;
 use DateTimeImmutable;
-use Mockery as M;
 use Money\Currency;
+use PHPUnit\Framework\MockObject\MockObject;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
@@ -86,17 +86,16 @@ class InvoiceTypeTest extends FormTestCase
      */
     protected function getExtensions(): array
     {
-        $systemConfig = M::mock(SystemConfig::class);
+        /** @var SystemConfig&MockObject $systemConfig */
+        $systemConfig = $this->createMock(SystemConfig::class);
 
         $systemConfig
-            ->shouldReceive('getCurrency')
-            ->zeroOrMoreTimes()
-            ->andReturn(new Currency('USD'));
+            ->method('getCurrency')
+            ->willReturn(new Currency('USD'));
 
         $systemConfig
-            ->shouldReceive('get')
-            ->zeroOrMoreTimes()
-            ->andReturn('random_number');
+            ->method('get')
+            ->willReturn('random_number');
 
         $invoiceType = new InvoiceType($systemConfig, new BillingIdGenerator(new ServiceLocator(['random_number' => static fn () => new class() {
             public function generate(): string

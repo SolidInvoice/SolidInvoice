@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Tests\Listener\Mailer;
 
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery as M;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\QuoteBundle\Email\QuoteEmail;
@@ -26,21 +25,20 @@ use Symfony\Component\Mailer\MailerInterface;
 
 class QuoteMailerListenerTest extends TestCase
 {
-    use MockeryPHPUnitIntegration;
-
     public function testListener(): void
     {
         $quote = new Quote();
 
-        $mailer = M::spy(MailerInterface::class);
+        /** @var MailerInterface&MockObject $mailer */
+        $mailer = $this->createMock(MailerInterface::class);
+        $mailer->expects($this->once())
+            ->method('send')
+            ->with($this->isInstanceOf(QuoteEmail::class));
 
         $listener = new QuoteMailerListener($mailer);
 
         $quote->addUser((new Contact())->setEmail('another@example.com')->setFirstName('Another'));
         $listener->onQuoteSend(new QuoteEvent($quote));
-
-        $mailer->shouldHaveReceived('send')
-            ->with(M::type(QuoteEmail::class));
     }
 
     public function testEvents(): void

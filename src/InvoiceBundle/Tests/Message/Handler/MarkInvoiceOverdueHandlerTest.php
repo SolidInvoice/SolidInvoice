@@ -16,8 +16,7 @@ namespace SolidInvoice\InvoiceBundle\Tests\Message\Handler;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery as M;
+use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
@@ -40,7 +39,6 @@ final class MarkInvoiceOverdueHandlerTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
     use Factories;
-    use MockeryPHPUnitIntegration;
 
     public function testHandlerMarksInvoiceOverdue(): void
     {
@@ -51,29 +49,32 @@ final class MarkInvoiceOverdueHandlerTest extends KernelTestCase
             'company' => $company,
         ]);
 
-        $invoiceStateMachine = M::mock(WorkflowInterface::class);
-        $registry = M::mock(ManagerRegistry::class);
+        /** @var WorkflowInterface&MockObject $invoiceStateMachine */
+        $invoiceStateMachine = $this->createMock(WorkflowInterface::class);
+        /** @var ManagerRegistry&MockObject $registry */
+        $registry = $this->createMock(ManagerRegistry::class);
 
-        $invoiceStateMachine->shouldReceive('can')
-            ->with(M::on(fn ($inv) => $inv->getId()->equals($invoice->getId())), Graph::TRANSITION_OVERDUE)
-            ->once()
-            ->andReturn(true);
+        $invoiceStateMachine->expects($this->once())
+            ->method('can')
+            ->with($this->callback(fn ($inv) => $inv->getId()->equals($invoice->getId())), Graph::TRANSITION_OVERDUE)
+            ->willReturn(true);
 
-        $invoiceStateMachine->shouldReceive('apply')
-            ->with(M::on(fn ($inv) => $inv->getId()->equals($invoice->getId())), Graph::TRANSITION_OVERDUE)
-            ->once();
+        $invoiceStateMachine->expects($this->once())
+            ->method('apply')
+            ->with($this->callback(fn ($inv) => $inv->getId()->equals($invoice->getId())), Graph::TRANSITION_OVERDUE);
 
-        $em = M::mock(EntityManagerInterface::class);
+        /** @var EntityManagerInterface&MockObject $em */
+        $em = $this->createMock(EntityManagerInterface::class);
 
-        $registry->shouldReceive('getManager')
-            ->once()
-            ->andReturn($em);
+        $registry->expects($this->once())
+            ->method('getManager')
+            ->willReturn($em);
 
-        $em->shouldReceive('persist')
-            ->with(M::on(fn ($inv) => $inv->getId()->equals($invoice->getId())))
-            ->once();
-        $em->shouldReceive('flush')
-            ->once();
+        $em->expects($this->once())
+            ->method('persist')
+            ->with($this->callback(fn ($inv) => $inv->getId()->equals($invoice->getId())));
+        $em->expects($this->once())
+            ->method('flush');
 
         $transitionService = new InvoiceStatusTransitionService(
             $invoiceStateMachine,
@@ -104,8 +105,8 @@ final class MarkInvoiceOverdueHandlerTest extends KernelTestCase
         ]);
 
         $transitionService = new InvoiceStatusTransitionService(
-            M::mock(WorkflowInterface::class),
-            M::mock(ManagerRegistry::class),
+            $this->createMock(WorkflowInterface::class),
+            $this->createMock(ManagerRegistry::class),
         );
 
         $companySelector = self::getContainer()->get(CompanySelector::class);
@@ -139,14 +140,15 @@ final class MarkInvoiceOverdueHandlerTest extends KernelTestCase
         $nonExistentId = new Ulid();
 
         $transitionService = new InvoiceStatusTransitionService(
-            M::mock(WorkflowInterface::class),
-            M::mock(ManagerRegistry::class),
+            $this->createMock(WorkflowInterface::class),
+            $this->createMock(ManagerRegistry::class),
         );
 
-        $logger = M::mock(LoggerInterface::class);
-        $logger->shouldReceive('warning')
-            ->once()
-            ->with('Invoice not found for overdue processing', M::any());
+        /** @var LoggerInterface&MockObject $logger */
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->once())
+            ->method('warning')
+            ->with('Invoice not found for overdue processing', $this->anything());
 
         $companySelector = self::getContainer()->get(CompanySelector::class);
         $repository = self::getContainer()->get(InvoiceRepository::class);
@@ -171,21 +173,23 @@ final class MarkInvoiceOverdueHandlerTest extends KernelTestCase
             'company' => $company,
         ]);
 
-        $invoiceStateMachine = M::mock(WorkflowInterface::class);
+        /** @var WorkflowInterface&MockObject $invoiceStateMachine */
+        $invoiceStateMachine = $this->createMock(WorkflowInterface::class);
         $transitionService = new InvoiceStatusTransitionService(
             $invoiceStateMachine,
-            M::mock(ManagerRegistry::class),
+            $this->createMock(ManagerRegistry::class),
         );
 
-        $invoiceStateMachine->shouldReceive('can')
-            ->with(M::on(fn ($inv) => $inv->getId()->equals($invoice->getId())), Graph::TRANSITION_OVERDUE)
-            ->once()
-            ->andReturn(false);
+        $invoiceStateMachine->expects($this->once())
+            ->method('can')
+            ->with($this->callback(fn ($inv) => $inv->getId()->equals($invoice->getId())), Graph::TRANSITION_OVERDUE)
+            ->willReturn(false);
 
-        $logger = M::mock(LoggerInterface::class);
-        $logger->shouldReceive('error')
-            ->once()
-            ->with('Invalid transition when marking invoice overdue', M::any());
+        /** @var LoggerInterface&MockObject $logger */
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->once())
+            ->method('error')
+            ->with('Invalid transition when marking invoice overdue', $this->anything());
 
         $companySelector = self::getContainer()->get(CompanySelector::class);
         $repository = self::getContainer()->get(InvoiceRepository::class);

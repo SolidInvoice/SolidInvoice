@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Tests\Listener;
 
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery as M;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Listener\EmailFromListener;
 use SolidInvoice\SettingsBundle\SystemConfig;
@@ -28,23 +27,25 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class EmailFromListenerTest extends TestCase
 {
-    use MockeryPHPUnitIntegration;
-
     public function testWithFromAddressConfigured(): void
     {
-        $systemConfig = M::mock(SystemConfig::class);
+        /** @var SystemConfig&MockObject $systemConfig */
+        $systemConfig = $this->createMock(SystemConfig::class);
 
-        $systemConfig->shouldReceive('get')
-            ->with('email/from_address')
-            ->andReturn('info@example.com');
+        $systemConfig->method('get')
+            ->willReturnCallback(static function (string $key): ?string {
+                return match ($key) {
+                    'email/from_address' => 'info@example.com',
+                    'email/from_name' => 'SolidInvoice',
+                    default => null,
+                };
+            });
 
-        $systemConfig->shouldReceive('get')
-            ->with('email/from_name')
-            ->andReturn('SolidInvoice');
+        /** @var TokenStorageInterface&MockObject $tokenStorage */
+        $tokenStorage = $this->createMock(TokenStorageInterface::class);
 
-        $tokenStorage = M::mock(TokenStorageInterface::class);
-
-        $tokenStorage->shouldNotReceive('getToken');
+        $tokenStorage->expects($this->never())
+            ->method('getToken');
 
         $listener = new EmailFromListener($systemConfig, $tokenStorage);
 
@@ -56,28 +57,29 @@ class EmailFromListenerTest extends TestCase
 
     public function testWithoutFromAddress(): void
     {
-        $systemConfig = M::mock(SystemConfig::class);
+        /** @var SystemConfig&MockObject $systemConfig */
+        $systemConfig = $this->createMock(SystemConfig::class);
 
-        $systemConfig->shouldReceive('get')
+        $systemConfig->method('get')
             ->with('email/from_address')
-            ->andReturn(null);
+            ->willReturn(null);
 
-        $token = M::mock(TokenInterface::class);
+        /** @var TokenInterface&MockObject $token */
+        $token = $this->createMock(TokenInterface::class);
 
         $user = new User();
         $user->setEmail('test@example.com');
 
-        $token->shouldReceive('getUser')
-            ->once()
-            ->withNoArgs()
-            ->andReturn($user);
+        $token->expects($this->once())
+            ->method('getUser')
+            ->willReturn($user);
 
-        $tokenStorage = M::mock(TokenStorageInterface::class);
+        /** @var TokenStorageInterface&MockObject $tokenStorage */
+        $tokenStorage = $this->createMock(TokenStorageInterface::class);
 
-        $tokenStorage->shouldReceive('getToken')
-            ->once()
-            ->withNoArgs()
-            ->andReturn($token);
+        $tokenStorage->expects($this->once())
+            ->method('getToken')
+            ->willReturn($token);
 
         $listener = new EmailFromListener($systemConfig, $tokenStorage);
 

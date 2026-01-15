@@ -17,8 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery as M;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ApiBundle\ApiTokenManager;
 use SolidInvoice\UserBundle\Entity\ApiToken;
@@ -26,11 +25,9 @@ use SolidInvoice\UserBundle\Entity\User;
 
 class ApiTokenManagerTest extends TestCase
 {
-    use MockeryPHPUnitIntegration;
-
     public function testGenerateToken(): void
     {
-        $tm = new ApiTokenManager(M::mock(ManagerRegistry::class));
+        $tm = new ApiTokenManager($this->createMock(ManagerRegistry::class));
 
         $token = $tm->generateToken();
 
@@ -41,22 +38,23 @@ class ApiTokenManagerTest extends TestCase
 
     public function testCreate(): void
     {
-        $registry = M::mock(ManagerRegistry::class);
+        /** @var ManagerRegistry&MockObject $registry */
+        $registry = $this->createMock(ManagerRegistry::class);
 
         $user = new User();
 
-        $manager = M::mock(ObjectManager::class);
+        /** @var ObjectManager&MockObject $manager */
+        $manager = $this->createMock(ObjectManager::class);
 
-        $registry->shouldReceive('getManager')
-            ->withNoArgs()
-            ->andReturn($manager);
+        $registry->expects($this->once())
+            ->method('getManager')
+            ->willReturn($manager);
 
-        $manager->shouldReceive('persist')
-            ->withAnyArgs()
-            ->andReturn();
+        $manager->expects($this->once())
+            ->method('persist');
 
-        $manager->shouldReceive('flush')
-            ->withNoArgs();
+        $manager->expects($this->once())
+            ->method('flush');
 
         $tm = new ApiTokenManager($registry);
 
@@ -69,7 +67,7 @@ class ApiTokenManagerTest extends TestCase
 
     public function testGet(): void
     {
-        $registry = M::mock(ManagerRegistry::class);
+        $registry = $this->createMock(ManagerRegistry::class);
 
         $user = new User();
 
@@ -93,7 +91,8 @@ class ApiTokenManagerTest extends TestCase
 
     public function testGetOrCreate(): void
     {
-        $registry = M::mock(ManagerRegistry::class);
+        /** @var ManagerRegistry&MockObject $registry */
+        $registry = $this->createMock(ManagerRegistry::class);
 
         $user = new User();
 
@@ -107,18 +106,18 @@ class ApiTokenManagerTest extends TestCase
         $apiTokens = new ArrayCollection([$token1, $token2]);
         $user->setApiTokens($apiTokens);
 
-        $manager = M::mock(ObjectManager::class);
+        /** @var ObjectManager&MockObject $manager */
+        $manager = $this->createMock(ObjectManager::class);
 
-        $registry->shouldReceive('getManager')
-            ->withNoArgs()
-            ->andReturn($manager);
+        $registry->expects($this->once())
+            ->method('getManager')
+            ->willReturn($manager);
 
-        $manager->shouldReceive('persist')
-            ->withAnyArgs()
-            ->andReturn();
+        $manager->expects($this->once())
+            ->method('persist');
 
-        $manager->shouldReceive('flush')
-            ->withNoArgs();
+        $manager->expects($this->once())
+            ->method('flush');
 
         $tm = new ApiTokenManager($registry);
 

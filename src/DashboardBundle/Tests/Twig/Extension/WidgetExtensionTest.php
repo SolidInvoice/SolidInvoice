@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DashboardBundle\Tests\Twig\Extension;
 
-use Mockery;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery\MockInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DashboardBundle\Twig\Extension\WidgetExtension;
 use SolidInvoice\DashboardBundle\WidgetFactory;
@@ -27,15 +25,13 @@ use Twig\TwigFunction;
 
 class WidgetExtensionTest extends TestCase
 {
-    use MockeryPHPUnitIntegration;
-
     private WidgetExtension $extension;
 
-    private MockInterface|WidgetFactory $factory;
+    private WidgetFactory&MockObject $factory;
 
     protected function setUp(): void
     {
-        $this->factory = Mockery::mock(WidgetFactory::class);
+        $this->factory = $this->createMock(WidgetFactory::class);
         $this->extension = new WidgetExtension($this->factory);
     }
 
@@ -50,23 +46,26 @@ class WidgetExtensionTest extends TestCase
 
     public function testRenderDashboardWidget(): void
     {
-        $widget = Mockery::mock(
-            WidgetInterface::class,
-            [
-                'getTemplate' => 'test_template.html.twig',
-                'getData' => ['a' => '1', 'b' => '2', 'c' => '3'],
-            ]
-        );
+        /** @var WidgetInterface&MockObject $widget */
+        $widget = $this->createMock(WidgetInterface::class);
+
+        $widget->expects($this->once())
+            ->method('getTemplate')
+            ->willReturn('test_template.html.twig');
+
+        $widget->expects($this->once())
+            ->method('getData')
+            ->willReturn(['a' => '1', 'b' => '2', 'c' => '3']);
 
         $environment = new Environment(new ArrayLoader(['test_template.html.twig' => '{{ a }}{{ b }}{{ c }}']));
 
         $q = new SplPriorityQueue();
         $q->insert($widget, 0);
         $this->factory
-            ->shouldReceive('get')
-            ->once()
+            ->expects($this->once())
+            ->method('get')
             ->with('top')
-            ->andReturn($q);
+            ->willReturn($q);
 
         $content = $this->extension->renderDashboardWidget($environment, 'top');
 

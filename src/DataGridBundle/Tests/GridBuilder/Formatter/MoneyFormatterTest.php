@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DataGridBundle\Tests\GridBuilder\Formatter;
 
-use Mockery as M;
 use Money\Currency;
 use Money\Money;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\MoneyColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Formatter\MoneyFormatter;
@@ -27,18 +27,16 @@ use SolidInvoice\SettingsBundle\SystemConfig;
  */
 final class MoneyFormatterTest extends TestCase
 {
-    use M\Adapter\Phpunit\MockeryPHPUnitIntegration;
-
     private MoneyFormatter $formatter;
 
-    private SystemConfig&M\MockInterface $config;
+    private SystemConfig&MockObject $config;
 
-    private MoneyFormatterInterface&M\MockInterface $moneyFormatter;
+    private MoneyFormatterInterface&MockObject $moneyFormatter;
 
     protected function setUp(): void
     {
-        $this->config = M::mock(SystemConfig::class);
-        $this->moneyFormatter = M::mock(MoneyFormatterInterface::class);
+        $this->config = $this->createMock(SystemConfig::class);
+        $this->moneyFormatter = $this->createMock(MoneyFormatterInterface::class);
 
         $this->formatter = new MoneyFormatter($this->config, $this->moneyFormatter);
     }
@@ -48,10 +46,10 @@ final class MoneyFormatterTest extends TestCase
         $money = new Money(10000, new Currency('USD'));
 
         $this->moneyFormatter
-            ->expects('format')
-            ->once()
+            ->expects($this->once())
+            ->method('format')
             ->with($money)
-            ->andReturn('$100.00');
+            ->willReturn('$100.00');
 
         $column = MoneyColumn::new('amount');
         $result = $this->formatter->format($column, $money);
@@ -64,18 +62,18 @@ final class MoneyFormatterTest extends TestCase
         $currency = new Currency('EUR');
 
         $this->config
-            ->expects('getCurrency')
-            ->once()
-            ->andReturn($currency);
+            ->expects($this->once())
+            ->method('getCurrency')
+            ->willReturn($currency);
 
         $this->moneyFormatter
-            ->expects('format')
-            ->once()
-            ->with(M::on(function (Money $money) use ($currency) {
+            ->expects($this->once())
+            ->method('format')
+            ->with($this->callback(function (Money $money) use ($currency) {
                 return $money->getAmount() === '5000'
                     && $money->getCurrency()->equals($currency);
             }))
-            ->andReturn('€50.00');
+            ->willReturn('€50.00');
 
         $column = MoneyColumn::new('amount');
         $result = $this->formatter->format($column, 5000);
@@ -88,14 +86,14 @@ final class MoneyFormatterTest extends TestCase
         $currency = new Currency('GBP');
 
         $this->config
-            ->expects('getCurrency')
-            ->once()
-            ->andReturn($currency);
+            ->expects($this->once())
+            ->method('getCurrency')
+            ->willReturn($currency);
 
         $this->moneyFormatter
-            ->expects('format')
-            ->once()
-            ->andReturn('£25.50');
+            ->expects($this->once())
+            ->method('format')
+            ->willReturn('£25.50');
 
         $column = MoneyColumn::new('amount');
         $result = $this->formatter->format($column, '2550');
@@ -108,17 +106,17 @@ final class MoneyFormatterTest extends TestCase
         $currency = new Currency('JPY');
 
         $this->config
-            ->expects('getCurrency')
-            ->once()
-            ->andReturn($currency);
+            ->expects($this->once())
+            ->method('getCurrency')
+            ->willReturn($currency);
 
         $this->moneyFormatter
-            ->expects('format')
-            ->once()
-            ->with(M::on(function (Money $money) {
+            ->expects($this->once())
+            ->method('format')
+            ->with($this->callback(function (Money $money) {
                 return $money->getCurrency()->getCode() === 'JPY';
             }))
-            ->andReturn('¥1,000');
+            ->willReturn('¥1,000');
 
         $column = MoneyColumn::new('amount');
         $result = $this->formatter->format($column, 1000);

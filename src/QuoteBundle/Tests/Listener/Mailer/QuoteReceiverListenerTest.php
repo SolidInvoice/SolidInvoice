@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Tests\Listener\Mailer;
 
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery as M;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\QuoteBundle\Email\QuoteEmail;
@@ -27,14 +26,13 @@ use Symfony\Component\Mime\Address;
 
 class QuoteReceiverListenerTest extends TestCase
 {
-    use MockeryPHPUnitIntegration;
-
     public function testWithoutBcc(): void
     {
-        $config = M::mock(SystemConfig::class);
-        $config->shouldReceive('get')
+        /** @var SystemConfig&MockObject $config */
+        $config = $this->createMock(SystemConfig::class);
+        $config->method('get')
             ->with('quote/bcc_address')
-            ->andReturnNull();
+            ->willReturn(null);
 
         $listener = new QuoteReceiverListener($config);
         $quote = new Quote();
@@ -49,10 +47,11 @@ class QuoteReceiverListenerTest extends TestCase
 
     public function testWithBcc(): void
     {
-        $config = M::mock(SystemConfig::class);
-        $config->shouldReceive('get')
+        /** @var SystemConfig&MockObject $config */
+        $config = $this->createMock(SystemConfig::class);
+        $config->method('get')
             ->with('quote/bcc_address')
-            ->andReturn('bcc@example.com');
+            ->willReturn('bcc@example.com');
 
         $listener = new QuoteReceiverListener($config);
         $quote = new Quote();
