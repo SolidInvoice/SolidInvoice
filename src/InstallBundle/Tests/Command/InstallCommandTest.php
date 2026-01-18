@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Tests\Command;
 
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
 use ReflectionMethod;
+use RuntimeException;
 use SolidInvoice\CoreBundle\ConfigWriter;
 use SolidInvoice\InstallBundle\Command\InstallCommand;
 use SolidInvoice\UserBundle\Entity\User;
@@ -29,29 +31,36 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 final class InstallCommandTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    public function testCreateAdminUserSkipsWhenUserExists(): void
+    public function testCreateAdminUserSkipsWhenEnabledUserExists(): void
     {
         $email = 'existing@example.com';
 
+        $existingUser = new User();
+        $existingUser->setEmail($email)->setEnabled(true);
+
         $userRepository = M::mock(UserRepository::class);
-        $userRepository->shouldReceive('loadUserByIdentifier')
+        $userRepository->shouldReceive('findByEmailIgnoringEnabled')
             ->with($email)
             ->once()
-            ->andReturn(new User());
+            ->andReturn($existingUser);
+
+        $entityManager = M::mock(ObjectManager::class);
+        // Should NOT persist since user already exists and is enabled
+        $entityManager->shouldNotReceive('persist');
+        $entityManager->shouldNotReceive('flush');
 
         $registry = M::mock(ManagerRegistry::class);
         $registry->shouldReceive('getRepository')
             ->with(User::class)
             ->andReturn($userRepository);
-
-        // EntityManager should NOT be called since user exists
-        $registry->shouldNotReceive('getManagerForClass');
+        $registry->shouldReceive('getManagerForClass')
+            ->with(User::class)
+            ->andReturn($entityManager);
 
         $input = M::mock(InputInterface::class);
         $input->shouldReceive('getOption')
@@ -78,10 +87,10 @@ final class InstallCommandTest extends TestCase
         $hashedPassword = 'hashed_secret123';
 
         $userRepository = M::mock(UserRepository::class);
-        $userRepository->shouldReceive('loadUserByIdentifier')
+        $userRepository->shouldReceive('findByEmailIgnoringEnabled')
             ->with($email)
             ->once()
-            ->andThrow(new UserNotFoundException());
+            ->andReturn(null);
 
         $entityManager = M::mock(ObjectManager::class);
         $entityManager->shouldReceive('persist')
@@ -120,11 +129,104 @@ final class InstallCommandTest extends TestCase
         $output->shouldReceive('writeln')
             ->with('<info>Creating Admin User</info>')
             ->once();
-        // Should NOT receive "already exists" message
-        $output->shouldNotReceive('writeln')
-            ->with(M::pattern('/already exists/'));
 
         $command = $this->createCommand($registry, $passwordHasher);
+
+        $this->invokeCreateAdminUser($command, $input, $output);
+    }
+
+    public function testCreateAdminUserReEnablesDisabledUser(): void
+    {
+        $email = 'disabled@example.com';
+        $password = 'newpassword123';
+        $hashedPassword = 'hashed_newpassword123';
+
+        $disabledUser = new User();
+        $disabledUser->setEmail($email)->setEnabled(false)->setPassword('old_password');
+
+        $userRepository = M::mock(UserRepository::class);
+        $userRepository->shouldReceive('findByEmailIgnoringEnabled')
+            ->with($email)
+            ->once()
+            ->andReturn($disabledUser);
+
+        $entityManager = M::mock(ObjectManager::class);
+        // Should NOT persist (user already exists), just flush
+        $entityManager->shouldNotReceive('persist');
+        $entityManager->shouldReceive('flush')
+            ->once();
+
+        $registry = M::mock(ManagerRegistry::class);
+        $registry->shouldReceive('getRepository')
+            ->with(User::class)
+            ->andReturn($userRepository);
+        $registry->shouldReceive('getManagerForClass')
+            ->with(User::class)
+            ->andReturn($entityManager);
+
+        $passwordHasher = M::mock(UserPasswordHasherInterface::class);
+        $passwordHasher->shouldReceive('hashPassword')
+            ->once()
+            ->with($disabledUser, $password)
+            ->andReturn($hashedPassword);
+
+        $input = M::mock(InputInterface::class);
+        $input->shouldReceive('getOption')
+            ->with('admin-email')
+            ->andReturn($email);
+        $input->shouldReceive('getOption')
+            ->with('admin-password')
+            ->andReturn($password);
+
+        $output = M::mock(OutputInterface::class);
+        $output->shouldReceive('writeln')
+            ->with('<info>Creating Admin User</info>')
+            ->once();
+        $output->shouldReceive('writeln')
+            ->with(sprintf('<comment>Re-enabling disabled user %s</comment>', $email))
+            ->once();
+
+        $command = $this->createCommand($registry, $passwordHasher);
+
+        $this->invokeCreateAdminUser($command, $input, $output);
+
+        // Verify user was re-enabled and password updated
+        self::assertTrue($disabledUser->isEnabled());
+        self::assertSame($hashedPassword, $disabledUser->getPassword());
+    }
+
+    public function testCreateAdminUserThrowsExceptionForNonUniqueEmail(): void
+    {
+        $email = 'duplicate@example.com';
+
+        $userRepository = M::mock(UserRepository::class);
+        $userRepository->shouldReceive('findByEmailIgnoringEnabled')
+            ->with($email)
+            ->once()
+            ->andThrow(new NonUniqueResultException());
+
+        $registry = M::mock(ManagerRegistry::class);
+        $registry->shouldReceive('getRepository')
+            ->with(User::class)
+            ->andReturn($userRepository);
+
+        $input = M::mock(InputInterface::class);
+        $input->shouldReceive('getOption')
+            ->with('admin-email')
+            ->andReturn($email);
+
+        $output = M::mock(OutputInterface::class);
+        $output->shouldReceive('writeln')
+            ->with('<info>Creating Admin User</info>')
+            ->once();
+
+        $command = $this->createCommand($registry);
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage(sprintf(
+            'Multiple users found with email "%s". This requires manual resolution in the database.',
+            $email
+        ));
 
         $this->invokeCreateAdminUser($command, $input, $output);
     }

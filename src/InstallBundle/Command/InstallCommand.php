@@ -18,6 +18,7 @@ use DateTimeInterface;
 use Defuse\Crypto\Exception\EnvironmentIsBrokenException;
 use Defuse\Crypto\Key;
 use Doctrine\DBAL\DriverManager;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Exception;
@@ -46,7 +47,6 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Intl\Locales;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Contracts\Service\ResetInterface;
 use function array_combine;
 use function array_intersect;
@@ -179,25 +179,45 @@ class InstallCommand extends Command
         $email = $input->getOption('admin-email');
 
         try {
-            $userRepository->loadUserByIdentifier($email);
-            $output->writeln(sprintf('<comment>User %s already exists, skipping creation</comment>', $email));
+            $existingUser = $userRepository->findByEmailIgnoringEnabled($email);
+        } catch (NonUniqueResultException) {
+            throw new RuntimeException(sprintf(
+                'Multiple users found with email "%s". This requires manual resolution in the database.',
+                $email
+            ));
+        }
 
-            return;
-        } catch (UserNotFoundException) {
-            $user = new User();
-            $user->setEmail($input->getOption('admin-email'))
-                ->setPassword($this->userPasswordHasher->hashPassword($user, $input->getOption('admin-password')))
-                ->setEnabled(true);
+        $em = $this->registry->getManagerForClass(User::class);
 
-            $em = $this->registry->getManagerForClass(User::class);
+        if (! $em instanceof ObjectManager) {
+            throw new RuntimeException(sprintf('No object manager found for class "%s".', User::class));
+        }
 
-            if (! $em instanceof ObjectManager) {
-                throw new RuntimeException(sprintf('No object manager found for class "%s".', User::class));
+        if ($existingUser !== null) {
+            if ($existingUser->isEnabled()) {
+                $output->writeln(sprintf('<comment>User %s already exists, skipping creation</comment>', $email));
+
+                return;
             }
 
-            $em->persist($user);
+            // Re-enable disabled user and update password
+            $output->writeln(sprintf('<comment>Re-enabling disabled user %s</comment>', $email));
+            $existingUser->setPassword($this->userPasswordHasher->hashPassword($existingUser, $input->getOption('admin-password')))
+                ->setEnabled(true);
+
             $em->flush();
+
+            return;
         }
+
+        // Create new user
+        $user = new User();
+        $user->setEmail($email)
+            ->setPassword($this->userPasswordHasher->hashPassword($user, $input->getOption('admin-password')))
+            ->setEnabled(true);
+
+        $em->persist($user);
+        $em->flush();
     }
 
     /**
