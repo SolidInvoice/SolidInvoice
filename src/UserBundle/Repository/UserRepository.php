@@ -106,4 +106,30 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
             throw new UserNotFoundException(sprintf('User "%s" does not exist.', $identifier), 0, $e);
         }
     }
+
+    /**
+     * Find a user by email regardless of enabled status.
+     *
+     * Unlike loadUserByIdentifier(), this method:
+     * - Returns users regardless of their enabled status
+     * - Throws NonUniqueResultException if multiple users exist with the same email
+     * - Returns null if no user is found
+     *
+     * @throws NonUniqueResultException
+     */
+    public function findByEmailIgnoringEnabled(string $email): ?User
+    {
+        $q = $this
+            ->createQueryBuilder('u')
+            ->select('u')
+            ->where('u.email = :email')
+            ->setParameter('email', $email)
+            ->getQuery();
+
+        try {
+            return $q->getSingleResult();
+        } catch (NoResultException) {
+            return null;
+        }
+    }
 }

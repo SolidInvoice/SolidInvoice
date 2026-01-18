@@ -190,4 +190,29 @@ final class UserRepositoryTest extends KernelTestCase
         self::assertCount(1, $queryBuilder->getDQLPart('select'));
         self::assertSame($fields, (string) $queryBuilder->getDQLPart('select')[0]);
     }
+
+    public function testFindByEmailIgnoringEnabledFindsEnabledUser(): void
+    {
+        $this->databaseTool->loadFixtures([LoadData::class], true);
+        $user = $this->repository->findByEmailIgnoringEnabled('test2@test.com');
+        self::assertInstanceOf(User::class, $user);
+        self::assertSame('test2@test.com', $user->getEmail());
+        self::assertTrue($user->isEnabled());
+    }
+
+    public function testFindByEmailIgnoringEnabledFindsDisabledUser(): void
+    {
+        $this->databaseTool->loadFixtures([LoadData::class], true);
+        $user = $this->repository->findByEmailIgnoringEnabled('test1@test.com');
+        self::assertInstanceOf(User::class, $user);
+        self::assertSame('test1@test.com', $user->getEmail());
+        self::assertFalse($user->isEnabled());
+    }
+
+    public function testFindByEmailIgnoringEnabledReturnsNullForNonExistentUser(): void
+    {
+        $this->databaseTool->loadFixtures([LoadData::class], true);
+        $user = $this->repository->findByEmailIgnoringEnabled('nonexistent@example.com');
+        self::assertNull($user);
+    }
 }
