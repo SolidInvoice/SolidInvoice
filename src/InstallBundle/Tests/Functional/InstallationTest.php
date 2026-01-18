@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Tests\Functional;
 
+use Doctrine\DBAL\Connection;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Panther\Client;
 use Symfony\Component\Panther\PantherTestCase;
@@ -37,6 +38,13 @@ final class InstallationTest extends PantherTestCase
 
         $fs = new Filesystem();
         $fs->exists($configDir) && $fs->rename($configDir, $configDir . '_test');
+
+        // Clear users table to ensure installation test starts fresh.
+        // Other tests may have created users that persist due to Panther using
+        // a real server process with its own database connection.
+        /** @var Connection $connection */
+        $connection = self::getContainer()->get('doctrine.dbal.default_connection');
+        $connection->executeStatement('DELETE FROM users');
     }
 
     protected function tearDown(): void
