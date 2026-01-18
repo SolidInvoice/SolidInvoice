@@ -180,25 +180,24 @@ class InstallCommand extends Command
 
         try {
             $userRepository->loadUserByIdentifier($email);
-        } catch (UserNotFoundException) {
             $output->writeln(sprintf('<comment>User %s already exists, skipping creation</comment>', $email));
 
             return;
+        } catch (UserNotFoundException) {
+            $user = new User();
+            $user->setEmail($input->getOption('admin-email'))
+                ->setPassword($this->userPasswordHasher->hashPassword($user, $input->getOption('admin-password')))
+                ->setEnabled(true);
+
+            $em = $this->registry->getManagerForClass(User::class);
+
+            if (! $em instanceof ObjectManager) {
+                throw new RuntimeException(sprintf('No object manager found for class "%s".', User::class));
+            }
+
+            $em->persist($user);
+            $em->flush();
         }
-
-        $user = new User();
-        $user->setEmail($input->getOption('admin-email'))
-            ->setPassword($this->userPasswordHasher->hashPassword($user, $input->getOption('admin-password')))
-            ->setEnabled(true);
-
-        $em = $this->registry->getManagerForClass(User::class);
-
-        if (! $em instanceof ObjectManager) {
-            throw new RuntimeException(sprintf('No object manager found for class "%s".', User::class));
-        }
-
-        $em->persist($user);
-        $em->flush();
     }
 
     /**
