@@ -18,6 +18,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Panther\Client;
 use Symfony\Component\Panther\PantherTestCase;
 use Zenstruck\Browser\Test\HasBrowser;
+use function dirname;
 use function microtime;
 use function Zenstruck\Foundry\faker;
 
@@ -32,26 +33,28 @@ final class InstallationTest extends PantherTestCase
     {
         unset($_SERVER['SOLIDINVOICE_LOCALE'], $_ENV['SOLIDINVOICE_LOCALE'], $_SERVER['SOLIDINVOICE_INSTALLED'], $_ENV['SOLIDINVOICE_INSTALLED']);
 
-        parent::setUp();
-
-        $configDir = self::getContainer()->getParameter('env(SOLIDINVOICE_CONFIG_DIR)');
-
+        // Backup the config directory BEFORE parent::setUp() to ensure a clean state
+        // when the kernel boots. This prevents any cached secrets from affecting the test.
         $fs = new Filesystem();
+        $configDir = dirname(__DIR__, 4) . '/config/env';
         $fs->exists($configDir) && $fs->rename($configDir, $configDir . '_test');
 
-        // Clear users table to ensure installation test starts fresh.
-        // Other tests may have created users that persist due to Panther using
+        parent::setUp();
+
+        // Clear users and companies tables to ensure installation test starts fresh.
+        // Other tests may have created data that persists due to Panther using
         // a real server process with its own database connection.
         /** @var Connection $connection */
         $connection = self::getContainer()->get('doctrine.dbal.default_connection');
         $connection->executeStatement('DELETE FROM users');
+        $connection->executeStatement('DELETE FROM companies');
     }
 
     protected function tearDown(): void
     {
         parent::tearDown();
 
-        $configDir = self::getContainer()->getParameter('env(SOLIDINVOICE_CONFIG_DIR)');
+        $configDir = dirname(__DIR__, 4) . '/config/env';
 
         $fs = new Filesystem();
 
@@ -74,6 +77,10 @@ final class InstallationTest extends PantherTestCase
             ->visit('/install')
             ->assertOn('/install')
             ->assertNotSeeElement('.alert-danger') // No error messages on the site
+            ->use(function (Client $client): void {
+                // Wait for the button to be visible and not disabled before clicking
+                $client->waitFor('#continue_step:not(.disabled)');
+            })
             ->click('#continue_step')
             ->assertOn('/install/config')
             // ->fillField('config_step[database_config][driver]', 'sqlite') // Default value, no need to set
