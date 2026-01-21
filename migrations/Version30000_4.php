@@ -13,16 +13,15 @@ declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
-use DateTimeImmutable;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
-use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Uid\Ulid;
 
 final class Version30000_4 extends AbstractMigration
 {
@@ -127,4 +126,3 @@ final class Version30000_4 extends AbstractMigration
         $schema->dropTable('invoice_reminders');
     }
 }
-
