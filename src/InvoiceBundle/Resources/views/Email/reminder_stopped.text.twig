@@ -1,0 +1,39 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+FINAL REMINDER SENT - MANUAL FOLLOW-UP REQUIRED
+
+The final automated payment reminder has been sent for invoice {{ invoice.invoiceId }}, which is now {{ days_overdue }} days overdue. All scheduled reminders are complete. Manual follow-up is recommended to resolve this outstanding payment.
+
+Invoice Details:
+----------------
+Invoice Number: {{ invoice.invoiceId }}
+{%- if invoice.client %}
+Client: {{ invoice.client.name }}
+{%- endif %}
+{%- if invoice.due %}
+Due Date: {{ invoice.due|date('Y-m-d') }}
+{%- endif %}
+{%- if days_overdue %}
+Days Overdue: {{ days_overdue }}
+{%- endif %}
+{%- if invoice.balance %}
+Outstanding Amount: {{ invoice.balance|formatCurrency(invoice.client.currency) }}
+{%- endif %}
+
+Recommended Actions:
+-------------------
+- Contact the client directly via phone or email
+- Review the client's payment history and account status
+- Consider setting up a payment plan if needed
+- Evaluate whether further services should be provided
+
+View Invoice: {{ url("_view_invoice", {"id" : invoice.id}) }}
+
+This is an automated notification. No further reminder emails will be sent to the client for this invoice unless manually triggered.

@@ -64,7 +64,8 @@ bin/rector process            # Apply
 - Always specify parameter and return types
 - Prefer `final` classes
 - Always specify visibility
-- Use class constants, not global
+- **Use PHP 8.1+ backed enums for fixed sets of values (status, type, etc.), NEVER class constants**
+- Use class constants for configuration values, not for enum-like values
 
 ## CI/CD Checks
 

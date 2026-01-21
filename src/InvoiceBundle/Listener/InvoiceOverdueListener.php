@@ -14,25 +14,22 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Listener;
 
 use Psr\Log\LoggerInterface;
-use SolidInvoice\InvoiceBundle\Email\InvoiceOverdueEmail;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Notification\InvoiceOverdueNotification;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
-use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Workflow\Event\Event;
 
 /**
- * Listens to invoice workflow transitions and sends notifications
- * when an invoice becomes overdue.
+ * Listens to invoice workflow transitions and sends notifications to internal users
+ * when an invoice becomes overdue. Client emails are handled by the invoice reminder
+ * system (see SendInvoiceRemindersCommand).
  *
  * @see \SolidInvoice\InvoiceBundle\Tests\Listener\InvoiceOverdueListenerTest
  */
 final readonly class InvoiceOverdueListener implements EventSubscriberInterface
 {
     public function __construct(
-        private MailerInterface $mailer,
         private NotificationManager $notificationManager,
         private LoggerInterface $logger,
     ) {
@@ -54,6 +51,7 @@ final readonly class InvoiceOverdueListener implements EventSubscriberInterface
         }
 
         // Send notification to internal users who subscribed
+        // Note: Client emails are handled by the invoice reminder system (1, 7, 14 days overdue)
         try {
             $this->notificationManager->sendNotification(
                 new InvoiceOverdueNotification([
@@ -64,68 +62,6 @@ final readonly class InvoiceOverdueListener implements EventSubscriberInterface
         } catch (\Throwable $e) {
             $this->logger->error('Failed to send overdue notification to users', [
                 'invoice_id' => $invoice->getInvoiceId(),
-                'exception' => $e->getMessage(),
-            ]);
-        }
-
-        // Send email to client contacts
-        $this->sendClientEmail($invoice);
-    }
-
-    private function sendClientEmail(Invoice $invoice): void
-    {
-        $client = $invoice->getClient();
-
-        if (null === $client) {
-            $this->logger->warning('Cannot send overdue email: invoice has no client', [
-                'invoice_id' => $invoice->getInvoiceId(),
-            ]);
-            return;
-        }
-
-        $contacts = $invoice->getUsers();
-
-        if ($contacts->isEmpty()) {
-            $this->logger->warning('Cannot send overdue email: invoice has no contacts', [
-                'invoice_id' => $invoice->getInvoiceId(),
-                'client' => $client->getName(),
-            ]);
-            return;
-        }
-
-        $email = new InvoiceOverdueEmail($invoice);
-
-        // Send to all invoice contacts
-        $emailAddresses = [];
-        foreach ($contacts as $contact) {
-            if ($contact->getEmail()) {
-                $emailAddresses[] = $contact->getEmail();
-            }
-        }
-
-        if (empty($emailAddresses)) {
-            $this->logger->warning('Cannot send overdue email: no valid email addresses', [
-                'invoice_id' => $invoice->getInvoiceId(),
-                'client' => $client->getName(),
-            ]);
-            return;
-        }
-
-        // Set recipients
-        $email->to(...$emailAddresses);
-
-        try {
-            $this->mailer->send($email);
-
-            $this->logger->info('Overdue email sent to client', [
-                'invoice_id' => $invoice->getInvoiceId(),
-                'client' => $client->getName(),
-                'recipients' => $emailAddresses,
-            ]);
-        } catch (TransportExceptionInterface $e) {
-            $this->logger->error('Failed to send overdue email to client', [
-                'invoice_id' => $invoice->getInvoiceId(),
-                'client' => $client->getName(),
                 'exception' => $e->getMessage(),
             ]);
         }

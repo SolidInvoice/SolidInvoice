@@ -11,7 +11,7 @@
 {% import "@SolidInvoiceCore/Layout/Email/components.html.twig" as email %}
 
 {%- block title -%}
-    {{ 'invoice.overdue.heading'|trans({}, 'email') }}
+    Manual Follow-up Required
 {%- endblock -%}
 
 {%- block content -%}
@@ -19,10 +19,10 @@
         <row>
             <columns>
                 <p style="color: #dc2626; font-size: 18px; font-weight: 600; line-height: 1.5; margin: 0 0 16px 0; Margin: 0 0 16px 0;">
-                    ⚠️ {{ 'invoice.overdue.alert'|trans({}, 'email') }}
+                    🔔 Final Reminder Sent - Manual Follow-up Required
                 </p>
                 <p style="color: #1e293b; font-size: 16px; line-height: 1.5; margin: 0 0 24px 0; Margin: 0 0 24px 0;">
-                    {{ 'invoice.overdue.message'|trans({}, 'email') }}
+                    The final automated payment reminder has been sent for invoice <strong>{{ invoice.invoiceId }}</strong>, which is now {{ days_overdue }} days overdue. All scheduled reminders are complete. Manual follow-up is recommended to resolve this outstanding payment.
                 </p>
             </columns>
         </row>
@@ -31,21 +31,26 @@
     {{ email.spacer('sm') }}
 
     {# Invoice details #}
-    {{ email.info_row('invoice.overdue.invoice_number'|trans({}, 'email'), invoice.invoiceId ?? invoice.id) }}
+    {{ email.info_row('Invoice Number', invoice.invoiceId) }}
+
+    {% if invoice.client %}
+        {{ email.spacer('xs') }}
+        {{ email.info_row('Client', invoice.client.name) }}
+    {% endif %}
 
     {% if invoice.due %}
         {{ email.spacer('xs') }}
-        {{ email.info_row('invoice.overdue.due_date'|trans({}, 'email'), invoice.due|date('Y-m-d')) }}
+        {{ email.info_row('Due Date', invoice.due|date('Y-m-d')) }}
     {% endif %}
 
-    {% if invoice.total %}
+    {% if days_overdue %}
         {{ email.spacer('xs') }}
-        {{ email.info_row('invoice.overdue.amount_due'|trans({}, 'email'), invoice.total|formatCurrency(invoice.client.currency)) }}
+        {{ email.info_row('Days Overdue', days_overdue, true) }}
     {% endif %}
 
     {% if invoice.balance %}
         {{ email.spacer('xs') }}
-        {{ email.info_row('invoice.overdue.outstanding_balance'|trans({}, 'email'), invoice.balance|formatCurrency(invoice.client.currency)) }}
+        {{ email.info_row('Outstanding Amount', invoice.balance|formatCurrency(invoice.client.currency), true) }}
     {% endif %}
 
     {{ email.divider('md') }}
@@ -54,16 +59,22 @@
         <row>
             <columns>
                 <p style="color: #475569; font-size: 14px; line-height: 1.5; margin: 0 0 16px 0; Margin: 0 0 16px 0;">
-                    {{ 'invoice.overdue.action_required'|trans({}, 'email') }}
+                    <strong>Recommended Actions:</strong>
                 </p>
+                <ul style="color: #475569; font-size: 14px; line-height: 1.6; margin: 0 0 16px 0; Margin: 0 0 16px 0;">
+                    <li>Contact the client directly via phone or email</li>
+                    <li>Review the client's payment history and account status</li>
+                    <li>Consider setting up a payment plan if needed</li>
+                    <li>Evaluate whether further services should be provided</li>
+                </ul>
             </columns>
         </row>
     {% endapply %}
 
     {{ email.spacer('sm') }}
 
-    {# View/Pay button #}
-    {{ email.button('invoice.overdue.view_and_pay'|trans({}, 'email'), url("_view_invoice_external", {"uuid" : invoice.uuid}), 'primary', 'large') }}
+    {# View invoice button #}
+    {{ email.button('View Invoice Details', url("_view_invoice", {"id" : invoice.id}), 'primary', 'large') }}
 
     {{ email.spacer('md') }}
 
@@ -71,7 +82,7 @@
         <row>
             <columns>
                 <p style="color: #64748b; font-size: 13px; line-height: 1.5; margin: 0; Margin: 0;">
-                    {{ 'invoice.overdue.contact_info'|trans({}, 'email') }}
+                    This is an automated notification. No further reminder emails will be sent to the client for this invoice unless manually triggered.
                 </p>
             </columns>
         </row>

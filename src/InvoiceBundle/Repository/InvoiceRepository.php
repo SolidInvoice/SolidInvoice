@@ -16,7 +16,9 @@ namespace SolidInvoice\InvoiceBundle\Repository;
 use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
+use DateMalformedStringException;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
@@ -24,6 +26,8 @@ use Doctrine\Persistence\ManagerRegistry;
 use Psr\Clock\ClockInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Entity\InvoiceReminder;
+use SolidInvoice\InvoiceBundle\Entity\ReminderType;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
@@ -459,6 +463,54 @@ class InvoiceRepository extends EntityRepository
             ->andWhere('i.due IS NOT NULL')
             ->setParameter('status', Graph::STATUS_PENDING)
             ->setParameter('now', $this->clock->now());
+
+        return $qb->getQuery()->toIterable();
+    }
+
+    /**
+     * Get pending invoices needing pre-due reminders.
+     *
+     * @return iterable<Invoice>
+     * @throws DateMalformedStringException
+     */
+    public function getInvoicesNeedingPreDueReminders(int $daysBeforeDue): iterable
+    {
+        $targetDate = $this->clock->now()->modify("+{$daysBeforeDue} days");
+
+        $qb = $this->createQueryBuilder('i');
+
+        $qb->leftJoin(InvoiceReminder::class, 'r', 'WITH', 'r.invoice = i.id AND r.reminderType = :reminderType')
+            ->where('i.status = :status')
+            ->andWhere('i.due = :targetDate')
+            ->andWhere('i.due IS NOT NULL')
+            ->andWhere('r.id IS NULL')
+            ->setParameter('status', Graph::STATUS_PENDING)
+            ->setParameter('targetDate', $targetDate, Types::DATE_IMMUTABLE)
+            ->setParameter('reminderType', ReminderType::PreDue);
+
+        return $qb->getQuery()->toIterable();
+    }
+
+    /**
+     * Get overdue invoices needing reminders.
+     *
+     * @return iterable<Invoice>
+     * @throws DateMalformedStringException
+     */
+    public function getInvoicesNeedingOverdueReminders(int $daysOverdue, ReminderType $reminderType): iterable
+    {
+        $targetDate = $this->clock->now()->modify("-{$daysOverdue} days");
+
+        $qb = $this->createQueryBuilder('i');
+
+        $qb->leftJoin(InvoiceReminder::class, 'r', 'WITH', 'r.invoice = i.id AND r.reminderType = :reminderType')
+            ->where('i.status = :status')
+            ->andWhere('i.due = :targetDate')
+            ->andWhere('i.due IS NOT NULL')
+            ->andWhere('r.id IS NULL')
+            ->setParameter('status', Graph::STATUS_PENDING)
+            ->setParameter('targetDate', $targetDate, Types::DATE_IMMUTABLE)
+            ->setParameter('reminderType', $reminderType);
 
         return $qb->getQuery()->toIterable();
     }

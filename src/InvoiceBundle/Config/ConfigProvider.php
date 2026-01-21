@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -16,6 +18,7 @@ use SolidInvoice\SettingsBundle\Config\ProviderInterface;
 use SolidInvoice\SettingsBundle\DTO\Config;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 final class ConfigProvider implements ProviderInterface
@@ -29,6 +32,9 @@ final class ConfigProvider implements ProviderInterface
             new Config('invoice/id_generation/strategy', 'auto_increment', '', BillingIdConfigurationType::class),
             new Config('invoice/id_generation/id_prefix', '', 'Example: INV-', TextType::class),
             new Config('invoice/id_generation/id_suffix', '', 'Example: -INV', TextType::class),
+            new Config('invoice/reminder/enabled', '1', 'Enable automatic invoice payment reminders', CheckboxType::class),
+            new Config('invoice/reminder/pre_due_enabled', '1', 'Send reminder before invoice is due', CheckboxType::class),
+            new Config('invoice/reminder/pre_due_days', '3', 'Days before due date to send pre-due reminder (0 to disable)', IntegerType::class, ['attr' => ['min' => 0, 'max' => 30]]),
         ];
     }
 }
