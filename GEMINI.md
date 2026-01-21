@@ -669,7 +669,8 @@ $mailer->send($email);
 - **Type hints:** Always specify parameter and return types
 - **Final classes:** Prefer `final` classes unless inheritance needed
 - **Visibility:** Always specify (public, private, protected)
-- **Constants:** Use class constants, not global constants
+- **Enums:** Use PHP 8.1+ backed enums for fixed sets of values (status, type, etc.), NEVER class constants
+- **Constants:** Use class constants for configuration values, not for enum-like values
 
 ### Doctrine Best Practices
 
@@ -677,6 +678,52 @@ $mailer->send($email);
 - **Repository methods** should return typed arrays or collections
 - **Query optimization:** Use joins to avoid N+1 queries
 - **Use filters** for soft deletes (ArchivableFilter) and multi-tenancy (CompanyFilter)
+
+### Enum Usage (PHP 8.1+)
+
+**ALWAYS use backed enums for fixed sets of values:**
+
+```php
+// GOOD - Use Enum
+enum InvoiceStatus: string
+{
+    case Draft = 'draft';
+    case Pending = 'pending';
+    case Paid = 'paid';
+    case Cancelled = 'cancelled';
+}
+
+// In entity
+#[ORM\Column(enumType: InvoiceStatus::class)]
+private InvoiceStatus $status;
+
+// Usage
+$invoice->setStatus(InvoiceStatus::Paid);
+if ($invoice->getStatus() === InvoiceStatus::Paid) {
+    // ...
+}
+```
+
+```php
+// BAD - Don't use class constants for enum-like values
+class Invoice
+{
+    public const STATUS_DRAFT = 'draft';      // ❌ Wrong
+    public const STATUS_PENDING = 'pending';  // ❌ Wrong
+    public const STATUS_PAID = 'paid';        // ❌ Wrong
+}
+```
+
+**When to use enums:**
+- Entity status fields (draft, published, archived)
+- Entity type fields (pre_due, overdue_1, overdue_7)
+- Fixed categories or classifications
+- Any field with a predetermined set of values
+
+**When to use constants:**
+- Configuration values (API_VERSION, MAX_UPLOAD_SIZE)
+- Table names (TABLE_NAME)
+- Fixed string values that aren't enum-like
 
 ### Symfony Best Practices
 

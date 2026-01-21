@@ -1,0 +1,53 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{%- if reminder_type == 'pre_due' -%}
+UPCOMING PAYMENT DUE
+
+This is a friendly reminder that invoice {{ invoice.invoiceId }} is due in {{ days_until_due }} {{ days_until_due == 1 ? 'day' : 'days' }}. We wanted to give you advance notice to make payment arrangements convenient.
+{%- elseif reminder_type == 'overdue_1' -%}
+PAYMENT REMINDER
+
+Invoice {{ invoice.invoiceId }} became overdue yesterday. If you've already sent payment, please disregard this reminder. Otherwise, we'd appreciate your prompt attention to settle this invoice.
+{%- elseif reminder_type == 'overdue_7' -%}
+PAYMENT OVERDUE
+
+Invoice {{ invoice.invoiceId }} is now 7 days overdue. Please arrange payment at your earliest convenience. If there are any issues preventing payment, please contact us so we can help resolve them.
+{%- elseif reminder_type == 'overdue_14' -%}
+URGENT: IMMEDIATE ACTION REQUIRED
+
+Invoice {{ invoice.invoiceId }} remains unpaid after 14 days. This is our final automated reminder. Immediate payment is required to avoid service interruption. Please contact us if you need to discuss payment arrangements.
+{%- else -%}
+INVOICE REMINDER
+
+This is a reminder about invoice {{ invoice.invoiceId }}.
+{%- endif -%}
+
+Invoice Details:
+----------------
+Invoice Number: {{ invoice.invoiceId }}
+{%- if invoice.invoiceDate %}
+Invoice Date: {{ invoice.invoiceDate|date('Y-m-d') }}
+{%- endif %}
+{%- if invoice.due %}
+Due Date: {{ invoice.due|date('Y-m-d') }}
+{%- endif %}
+{%- if invoice.balance %}
+Amount Due: {{ invoice.balance|formatCurrency(invoice.client.currency) }}
+{%- endif %}
+
+{%- if reminder_type == 'pre_due' -%}
+Thank you for your business. We appreciate prompt payment.
+{%- else -%}
+We appreciate your immediate attention to this matter.
+{%- endif %}
+
+View Invoice: {{ url("_view_invoice_external", {"uuid" : invoice.uuid}) }}
+
+If you have any questions or concerns about this invoice, please don't hesitate to contact us.

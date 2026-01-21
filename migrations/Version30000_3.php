@@ -72,7 +72,7 @@ final class Version30000_3 extends AbstractMigration
                 'default_value' => 'no-reply@solidinvoice.co',
             ],
             [
-                'key' => 'email/from_address',
+                'setting_key' => 'email/from_address',
             ]
         );
 
@@ -82,7 +82,7 @@ final class Version30000_3 extends AbstractMigration
                 'form_options' => $formOptions,
             ],
             [
-                'key' => 'email/sending_options/provider',
+                'setting_key' => 'email/sending_options/provider',
             ]
         );
     }

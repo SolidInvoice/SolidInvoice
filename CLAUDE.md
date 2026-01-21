@@ -131,6 +131,7 @@ bin/phpunit
 - Always `declare(strict_types=1);`
 - Always type hints (params + returns)
 - Prefer `final` classes
+- Use PHP 8.1+ backed enums for fixed sets of values (status, type, etc.), NEVER class constants
 - File header required (see .claude/skills/code-quality.md)
 
 ### Doctrine
