@@ -17,6 +17,9 @@ use SolidInvoice\SettingsBundle\Entity\Setting;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function array_walk;
+use function is_array;
+use function ksort;
 
 /**
  * @see \SolidInvoice\SettingsBundle\Tests\Form\Type\SettingsTypeTest
@@ -43,6 +46,13 @@ class SettingsType extends AbstractType
 
             // Force default value during trial for trial-restricted fields
             $formOptions = $setting->getFormOptions();
+            ksort($formOptions);
+            array_walk($formOptions, static function (&$value): void {
+                if (is_array($value)) {
+                    ksort($value);
+                }
+            });
+
             $isTrialRestricted = $formOptions['trial_restricted'] ?? false;
 
             if ($isTrialRestricted && $options['subscription_in_trial']) {
