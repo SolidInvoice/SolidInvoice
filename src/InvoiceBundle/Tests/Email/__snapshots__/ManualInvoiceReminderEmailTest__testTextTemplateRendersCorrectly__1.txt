@@ -1,0 +1,13 @@
+
+INVOICE PAYMENT REMINDER
+
+This is a friendly reminder about invoice INV-2024-001. We kindly ask you to review the invoice details below and arrange payment at your earliest convenience.
+
+Invoice Details:
+----------------
+Invoice Number: INV-2024-001Invoice Date: 2024-01-15Due Date: 2024-02-15Amount Due: $250.00
+Thank you for your business. We appreciate your prompt attention to this invoice.
+
+View Invoice & Pay: http://localhost/view/invoice/181aaf4a-0097-11ef-9b64-5a2cf21a5680
+
+If you have any questions or concerns about this invoice, please don't hesitate to contact us.

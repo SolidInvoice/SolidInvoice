@@ -86,6 +86,7 @@ invoice:
         toolbar:
             mark_paid: 'Mark Paid'
             send: Send
+            send_reminder: 'Send Reminder'
             pay_now: 'Pay Now'
             cancel: Cancel
             edit: Edit
@@ -160,6 +161,18 @@ invoice:
     balance: 'Outstanding Balance'
     archive:
         success: 'Invoice has been archived'
+    manual_reminder:
+        success: 'Payment reminder sent successfully'
+        error:
+            no_contacts: 'Cannot send reminder: invoice has no contacts'
+            send_failed: 'Failed to send payment reminder'
+    modal:
+        send_reminder:
+            title: 'Send Payment Reminder'
+            heading: 'Send payment reminder?'
+            message: 'This will send a payment reminder email for invoice %invoice_id% to the contacts listed below.'
+            recipients: 'Email will be sent to:'
+            confirm: 'Send Reminder'
     recurring:
         create:
             title: 'Create Recurring Invoice'
