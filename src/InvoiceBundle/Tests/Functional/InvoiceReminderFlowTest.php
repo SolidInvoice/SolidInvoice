@@ -74,7 +74,6 @@ final class InvoiceReminderFlowTest extends KernelTestCase
         $this->enableReminders();
 
         // Step 1: Pre-due reminder (3 days before)
-        // Step 1: Pre-due reminder (3 days before)
         $this->runCommand();
 
         $reminders = $this->reminderRepository->getReminderHistory($invoice->_real());
