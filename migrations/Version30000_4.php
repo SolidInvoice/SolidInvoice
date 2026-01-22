@@ -43,7 +43,9 @@ final class Version30000_4 extends AbstractMigration
         $table->addColumn('invoice_id', Types::BINARY, ['length' => 16, 'fixed' => true]);
         $table->addColumn('company_id', Types::BINARY, ['length' => 16, 'fixed' => true]);
         $table->addColumn('reminder_type', Types::STRING, ['length' => 20]);
-        $table->addColumn('sent_at', Types::DATETIME_IMMUTABLE);
+        $table->addColumn('sent_at', Types::DATETIME_IMMUTABLE, [ 'notnull' => false]);
+        $table->addColumn('status', 'string', ['length' => 50, 'notnull' => true, 'default' => 'sent']);
+        $table->addColumn('failure_reason', 'text', ['notnull' => false]);
         $table->addColumn('created', Types::DATETIME_IMMUTABLE);
         $table->addColumn('updated', Types::DATETIME_IMMUTABLE);
 
@@ -99,14 +101,23 @@ final class Version30000_4 extends AbstractMigration
             $companyId = $company['id'];
 
             foreach ($settings as $setting) {
-                $this->connection->insert('app_config', [
-                    'id' => (new Ulid())->toBinary(),
-                    'company_id' => $companyId,
-                    'setting_key' => $setting['key'],
-                    'setting_value' => $setting['value'],
-                    'description' => $setting['description'],
-                    'field_type' => $setting['type'],
-                ]);
+                // Check if the setting already exists for this company
+                $exists = $this->connection->fetchOne(
+                    'SELECT 1 FROM app_config WHERE company_id = ? AND setting_key = ?',
+                    [$companyId, $setting['key']]
+                );
+
+                // Only insert if it doesn't exist
+                if ($exists === false) {
+                    $this->connection->insert('app_config', [
+                        'id' => (new Ulid())->toBinary(),
+                        'company_id' => $companyId,
+                        'setting_key' => $setting['key'],
+                        'setting_value' => $setting['value'],
+                        'description' => $setting['description'],
+                        'field_type' => $setting['type'],
+                    ]);
+                }
             }
         }
     }
@@ -116,9 +127,26 @@ final class Version30000_4 extends AbstractMigration
      */
     public function postDown(Schema $schema): void
     {
-        $this->connection->delete('app_config', ['setting_key' => 'invoice/reminder/enabled']);
-        $this->connection->delete('app_config', ['setting_key' => 'invoice/reminder/pre_due_enabled']);
-        $this->connection->delete('app_config', ['setting_key' => 'invoice/reminder/pre_due_days']);
+        // Get all existing companies
+        $companies = $this->connection->fetchAllAssociative('SELECT id FROM companies');
+
+        $settingKeys = [
+            'invoice/reminder/enabled',
+            'invoice/reminder/pre_due_enabled',
+            'invoice/reminder/pre_due_days',
+        ];
+
+        // Delete settings for each company to ensure idempotent down->up cycles
+        foreach ($companies as $company) {
+            $companyId = $company['id'];
+
+            foreach ($settingKeys as $key) {
+                $this->connection->delete('app_config', [
+                    'company_id' => $companyId,
+                    'setting_key' => $key,
+                ]);
+            }
+        }
     }
 
     public function down(Schema $schema): void

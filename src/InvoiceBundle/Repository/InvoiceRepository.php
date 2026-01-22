@@ -482,7 +482,6 @@ class InvoiceRepository extends EntityRepository
         $qb->leftJoin(InvoiceReminder::class, 'r', 'WITH', 'r.invoice = i.id AND r.reminderType = :reminderType')
             ->where('i.status = :status')
             ->andWhere('i.due = :targetDate')
-            ->andWhere('i.due IS NOT NULL')
             ->andWhere('r.id IS NULL')
             ->setParameter('status', Graph::STATUS_PENDING)
             ->setParameter('targetDate', $targetDate, Types::DATE_IMMUTABLE)
@@ -504,11 +503,11 @@ class InvoiceRepository extends EntityRepository
         $qb = $this->createQueryBuilder('i');
 
         $qb->leftJoin(InvoiceReminder::class, 'r', 'WITH', 'r.invoice = i.id AND r.reminderType = :reminderType')
-            ->where('i.status = :status')
+            ->where('i.status  in (:pending, :overdue)')
             ->andWhere('i.due = :targetDate')
-            ->andWhere('i.due IS NOT NULL')
             ->andWhere('r.id IS NULL')
-            ->setParameter('status', Graph::STATUS_PENDING)
+            ->setParameter('pending', Graph::STATUS_PENDING)
+            ->setParameter('overdue', Graph::STATUS_OVERDUE)
             ->setParameter('targetDate', $targetDate, Types::DATE_IMMUTABLE)
             ->setParameter('reminderType', $reminderType);
 

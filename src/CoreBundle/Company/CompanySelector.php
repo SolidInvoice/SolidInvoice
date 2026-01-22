@@ -69,9 +69,11 @@ final class CompanySelector implements ResetInterface
 
         assert($em instanceof EntityManagerInterface);
 
-        $em
-            ->getFilters()
-            ->disable('company');
+        $filters = $em->getFilters();
+
+        if ($filters->isEnabled('company')) {
+            $filters->disable('company');
+        }
 
         $this->companyId = null;
     }

@@ -22,7 +22,7 @@
                     🔔 Final Reminder Sent - Manual Follow-up Required
                 </p>
                 <p style="color: #1e293b; font-size: 16px; line-height: 1.5; margin: 0 0 24px 0; Margin: 0 0 24px 0;">
-                    The final automated payment reminder has been sent for invoice <strong>{{ invoice.invoiceId }}</strong>, which is now {{ days_overdue }} days overdue. All scheduled reminders are complete. Manual follow-up is recommended to resolve this outstanding payment.
+                    The final automated payment reminder has been sent for invoice <strong>{{ invoice.invoiceId }}</strong>{% if days_overdue is defined and days_overdue is not null %}, which is now {{ days_overdue }} days overdue{% endif %}. All scheduled reminders are complete. Manual follow-up is recommended to resolve this outstanding payment.
                 </p>
             </columns>
         </row>

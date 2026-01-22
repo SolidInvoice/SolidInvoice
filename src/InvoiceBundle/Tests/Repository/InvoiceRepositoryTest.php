@@ -192,19 +192,19 @@ final class InvoiceRepositoryTest extends KernelTestCase
         self::assertSame($invoice7Days->getId()->toBase32(), $results[0]->getId()->toBase32());
     }
 
-    public function testGetInvoicesNeedingOverdueRemindersExcludesPaidAndOverdueInvoices(): void
+    public function testGetInvoicesNeedingOverdueRemindersExcludesPaidInvoices(): void
     {
         $dueDate = $this->clock->now()->modify('-1 day');
 
-        // Paid invoice
+        // Paid invoice - should be excluded
         InvoiceFactory::createOne([
             'company' => $this->company,
             'status' => 'paid',
             'due' => $dueDate,
         ]);
 
-        // Overdue invoice (already marked as overdue status)
-        InvoiceFactory::createOne([
+        // Overdue invoice - should be included now
+        $overdueInvoice = InvoiceFactory::createOne([
             'company' => $this->company,
             'status' => 'overdue',
             'due' => $dueDate,
@@ -212,6 +212,7 @@ final class InvoiceRepositoryTest extends KernelTestCase
 
         $results = iterator_to_array($this->repository->getInvoicesNeedingOverdueReminders(1, ReminderType::Overdue1));
 
-        self::assertCount(0, $results);
+        self::assertCount(1, $results);
+        self::assertSame($overdueInvoice->getId()->toBase32(), $results[0]->getId()->toBase32());
     }
 }
