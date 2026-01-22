@@ -43,14 +43,6 @@ final class QuickInvoiceQueryTest extends KernelTestCase
         $repository = self::getContainer()->get(InvoiceRepository::class);
         $results = iterator_to_array($repository->getInvoicesNeedingPreDueReminders(3));
 
-        dump([
-            'invoice_id' => $invoice->getInvoiceId(),
-            'invoice_due' => $invoice->getDue()?->format('Y-m-d H:i:s'),
-            'invoice_status' => $invoice->getStatus(),
-            'results_count' => count($results),
-            'results' => array_map(fn ($i) => $i->getInvoiceId(), $results),
-        ]);
-
         self::assertCount(1, $results, 'Should find the invoice');
     }
 }

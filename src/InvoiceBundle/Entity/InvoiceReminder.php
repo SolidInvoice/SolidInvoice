@@ -46,13 +46,14 @@ class InvoiceReminder
     #[ORM\Column(name: 'reminder_type', enumType: ReminderType::class)]
     private ReminderType $reminderType;
 
-    #[ORM\Column(name: 'sent_at', type: Types::DATETIME_IMMUTABLE)]
-    private DateTimeImmutable $sentAt;
+    #[ORM\Column(name: 'status', enumType: ReminderStatus::class)]
+    private ReminderStatus $status = ReminderStatus::Sent;
 
-    public function __construct()
-    {
-        $this->sentAt = new DateTimeImmutable();
-    }
+    #[ORM\Column(name: 'sent_at', type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    private ?DateTimeImmutable $sentAt = null;
+
+    #[ORM\Column(name: 'failure_reason', type: Types::TEXT, nullable: true)]
+    private ?string $failureReason = null;
 
     public function getId(): ?Ulid
     {
@@ -83,14 +84,38 @@ class InvoiceReminder
         return $this;
     }
 
-    public function getSentAt(): DateTimeImmutable
+    public function getStatus(): ReminderStatus
+    {
+        return $this->status;
+    }
+
+    public function setStatus(ReminderStatus $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getSentAt(): ?DateTimeImmutable
     {
         return $this->sentAt;
     }
 
-    public function setSentAt(DateTimeImmutable $sentAt): self
+    public function setSentAt(?DateTimeImmutable $sentAt): self
     {
         $this->sentAt = $sentAt;
+
+        return $this;
+    }
+
+    public function getFailureReason(): ?string
+    {
+        return $this->failureReason;
+    }
+
+    public function setFailureReason(?string $failureReason): self
+    {
+        $this->failureReason = $failureReason;
 
         return $this;
     }

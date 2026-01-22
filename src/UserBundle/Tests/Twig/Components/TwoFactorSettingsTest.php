@@ -17,6 +17,7 @@ use Doctrine\Persistence\ObjectManager;
 use SolidInvoice\CoreBundle\Test\LiveComponentTest;
 use SolidInvoice\UserBundle\Twig\Components\TwoFactorSettings;
 use Symfony\UX\LiveComponent\Test\TestLiveComponent;
+use function preg_replace;
 
 final class TwoFactorSettingsTest extends LiveComponentTest
 {
@@ -478,7 +479,15 @@ final class TwoFactorSettingsTest extends LiveComponentTest
 
     private function replaceDateTimeStamp(string $replaceQrCodeDataUri): string
     {
-        return preg_replace('/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/', 'YYYY-MM-DD HH:MM:SS', $replaceQrCodeDataUri);
+        return preg_replace(
+            '/\d{4}-\d{2}-\d{2}/',
+            'YYYY-MM-DD',
+            preg_replace(
+                '/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/',
+                'YYYY-MM-DD HH:MM:SS',
+                $replaceQrCodeDataUri
+            )
+        );
     }
 
     private function replaceBackupCodes(string $content): string

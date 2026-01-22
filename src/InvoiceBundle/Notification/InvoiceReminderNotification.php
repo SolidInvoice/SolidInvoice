@@ -36,21 +36,36 @@ class InvoiceReminderNotification extends NotificationMessage
 
     final public const TEXT_TEMPLATE = '@SolidInvoiceInvoice/Email/reminder.text.twig';
 
+    /**
+     * Returns parameters with 'reminder_type' normalized to string value.
+     * Converts BackedEnum instances to their string values for Twig templates and email context.
+     *
+     * @return array<string, mixed>
+     */
+    private function getNormalizedParameters(): array
+    {
+        $parameters = $this->getParameters();
+
+        // Convert reminder_type enum to string value if needed
+        if (isset($parameters['reminder_type']) && $parameters['reminder_type'] instanceof \BackedEnum) {
+            $parameters['reminder_type'] = $parameters['reminder_type']->value;
+        }
+
+        return $parameters;
+    }
+
     public function getTextContent(Environment $twig): string
     {
-        return $twig->render(self::TEXT_TEMPLATE, $this->getParameters());
+        return $twig->render(self::TEXT_TEMPLATE, $this->getNormalizedParameters());
     }
 
     public function getSubject(): string
     {
-        $parameters = $this->getParameters();
+        $parameters = $this->getNormalizedParameters();
         $reminderType = $parameters['reminder_type'] ?? '';
         $invoiceId = $parameters['invoice']?->getInvoiceId() ?? '';
 
-        // Convert enum to string value if needed
-        $typeValue = $reminderType instanceof \BackedEnum ? $reminderType->value : $reminderType;
-
-        return match ($typeValue) {
+        return match ($reminderType) {
             'pre_due' => "Upcoming Payment Due: Invoice {$invoiceId}",
             'overdue_1' => "Payment Reminder: Invoice {$invoiceId}",
             'overdue_7' => "Payment Overdue: Invoice {$invoiceId}",
@@ -66,14 +81,14 @@ class InvoiceReminderNotification extends NotificationMessage
         $email = $message->getMessage();
 
         if ($email instanceof NotificationEmail) {
+            $normalizedParameters = $this->getNormalizedParameters();
+
             $email->textTemplate(self::TEXT_TEMPLATE);
             $email->htmlTemplate(self::HTML_TEMPLATE);
-            $email->context($this->getParameters());
+            $email->context($normalizedParameters);
 
-            $reminderType = $this->getParameters()['reminder_type'] ?? '';
-            // Convert enum to string value if needed
-            $typeValue = $reminderType instanceof \BackedEnum ? $reminderType->value : $reminderType;
-            $importance = in_array($typeValue, ['overdue_14'])
+            $reminderType = $normalizedParameters['reminder_type'] ?? '';
+            $importance = in_array($reminderType, ['overdue_14'])
                 ? NotificationEmail::IMPORTANCE_URGENT
                 : NotificationEmail::IMPORTANCE_MEDIUM;
             $email->importance($importance);

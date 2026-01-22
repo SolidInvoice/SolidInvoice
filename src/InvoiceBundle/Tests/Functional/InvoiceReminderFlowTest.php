@@ -18,6 +18,7 @@ use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Command\SendInvoiceRemindersCommand;
+use SolidInvoice\InvoiceBundle\Entity\ReminderStatus;
 use SolidInvoice\InvoiceBundle\Entity\ReminderType;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceReminderRepository;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
@@ -25,6 +26,7 @@ use SolidInvoice\SettingsBundle\Entity\Setting;
 use SolidInvoice\SettingsBundle\Repository\SettingsRepository;
 use SolidWorx\Platform\PlatformBundle\Console\IO;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -78,6 +80,9 @@ final class InvoiceReminderFlowTest extends KernelTestCase
         $reminders = $this->reminderRepository->getReminderHistory($invoice->_real());
         self::assertCount(1, $reminders);
         self::assertSame(ReminderType::PreDue, $reminders[0]->getReminderType());
+        self::assertSame(ReminderStatus::Sent, $reminders[0]->getStatus());
+        self::assertNotNull($reminders[0]->getSentAt());
+        self::assertNull($reminders[0]->getFailureReason());
 
         // Step 2: Update invoice to 1 day overdue
         $invoice->setDue((new DateTimeImmutable())->modify('-1 day'));
@@ -229,6 +234,37 @@ final class InvoiceReminderFlowTest extends KernelTestCase
         self::assertCount(0, $reminders);
     }
 
+    public function testIdempotencyGuardPreventsReminderDuplication(): void
+    {
+        $client = ClientFactory::createOne(['company' => $this->company, 'currencyCode' => 'USD']);
+        $contact = ContactFactory::createOne(['client' => $client, 'company' => $this->company]);
+
+        // Create invoice due in 3 days
+        $invoice = InvoiceFactory::createOne([
+            'company' => $this->company,
+            'client' => $client,
+            'status' => 'pending',
+            'due' => (new DateTimeImmutable())->modify('+3 days'),
+            'users' => [$contact],
+        ]);
+
+        $this->enableReminders();
+
+        // First run should create one reminder
+        $this->runCommand();
+
+        $reminders = $this->reminderRepository->getReminderHistory($invoice->_real());
+        self::assertCount(1, $reminders);
+        self::assertSame(ReminderType::PreDue, $reminders[0]->getReminderType());
+
+        // Second run with same invoice state should not create duplicate
+        // (idempotency guard should prevent it)
+        $this->runCommand();
+
+        $reminders = $this->reminderRepository->getReminderHistory($invoice->_real());
+        self::assertCount(1, $reminders, 'Idempotency guard should prevent duplicate reminder');
+    }
+
     private function runCommand(): void
     {
         // Get the command directly from the container
@@ -242,7 +278,7 @@ final class InvoiceReminderFlowTest extends KernelTestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute([]);
 
-        self::assertSame(SendInvoiceRemindersCommand::SUCCESS, $commandTester->getStatusCode());
+        self::assertSame(Command::SUCCESS, $commandTester->getStatusCode());
     }
 
     private function enableReminders(): void
