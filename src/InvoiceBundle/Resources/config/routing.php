@@ -83,6 +83,7 @@ return static function (RoutingConfigurator $routingConfigurator): void {
 
     $routingConfigurator
         ->add('_send_manual_reminder', '/action/send-reminder/{id}')
+        ->methods(['POST'])
         ->controller(SendManualReminder::class);
 
     $routingConfigurator
