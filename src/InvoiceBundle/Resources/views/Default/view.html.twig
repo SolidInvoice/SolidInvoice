@@ -500,6 +500,7 @@
             <twig:block name="footer">
                 <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">{{ 'Cancel'|trans }}</button>
                 <form method="post" action="{{ path('_send_manual_reminder', {'id': invoice.id}) }}" style="display: inline;">
+                    <input type="hidden" name="_token" value="{{ csrf_token('send_manual_reminder') }}">
                     <button type="submit" class="btn btn-primary d-flex align-items-center gap-2">
                         {{ ux_icon('tabler:send', {width: 16, height: 16}) }}
                         {{ 'invoice.modal.send_reminder.confirm'|trans }}

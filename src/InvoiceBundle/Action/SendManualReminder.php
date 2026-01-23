@@ -18,25 +18,31 @@ use Psr\Log\LoggerInterface;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\InvoiceBundle\Email\ManualInvoiceReminderEmail;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
-final readonly class SendManualReminder
+final class SendManualReminder extends AbstractController
 {
     public function __construct(
-        private MailerInterface $mailer,
-        private RouterInterface $router,
-        private LoggerInterface $logger
+        private readonly MailerInterface $mailer,
+        private readonly RouterInterface $router,
+        private readonly LoggerInterface $logger
     ) {
     }
 
-    public function __invoke(Invoice $invoice): RedirectResponse
+    public function __invoke(Request $request, Invoice $invoice): RedirectResponse
     {
         // Check if invoice has contacts to send to
         if ($invoice->getUsers()->isEmpty()) {
             return $this->createErrorResponse($invoice, 'invoice.manual_reminder.error.no_contacts');
+        }
+
+        if (! $this->isCsrfTokenValid('send_manual_reminder', $request->request->get('_token'))) {
+            return $this->createErrorResponse($invoice, 'invoice.manual_reminder.error.invalid_csrf');
         }
 
         // Send manual reminder email

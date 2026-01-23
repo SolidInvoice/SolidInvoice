@@ -166,6 +166,7 @@ invoice:
         error:
             no_contacts: 'Cannot send reminder: invoice has no contacts'
             send_failed: 'Failed to send payment reminder'
+            invalid_csrf: 'Invalid CSRF token'
     modal:
         send_reminder:
             title: 'Send Payment Reminder'
