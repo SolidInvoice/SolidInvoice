@@ -150,7 +150,7 @@ func main() {
 
 			// Validate messenger workers count
 			if messengerWorkers < 0 {
-				return errors.New("messenger-workers must be a positive number (got " + fmt.Sprintf("%d", messengerWorkers) + ")")
+				return errors.New("messenger-workers must be a non-negative number (got " + fmt.Sprintf("%d", messengerWorkers) + ")")
 			}
 
 			listenPort := getAvailablePort(httpPort)
@@ -226,30 +226,26 @@ func main() {
 			}
 
 			for i := 1; i <= messengerWorkers; i++ {
-				workerID := i // Capture loop variable for closure
 				messengerWorker := process.Loop(func(ctx context.Context) error {
 					return runConsoleCommand(
 						"messenger:consume",
-						"async",
 						"--limit",
 						"100",
 						"--time-limit",
 						"3600",
 						"--memory-limit",
 						"128M",
+						"--all",
 					)
 				})
 
-				// On shutdown, gracefully stop workers after their current message
-				// This only needs to be set on the first worker since it signals all workers
-				if workerID == 1 {
-					messengerWorker.Shutdown = func(ctx context.Context) error {
-						return runConsoleCommand("messenger:stop-workers")
-					}
-				}
-
 				app.AddProcess(messengerWorker)
 			}
+
+			app.OnShutdown(func(ctx context.Context) error {
+				log.Info(nil, "Application is shutting down...")
+				return runConsoleCommand("messenger:stop-workers")
+			})
 			app.AddProcess(process.Scheduled(
 				func(role string) process.ContextFunc {
 					return func(ctx context.Context) (context.Context, context.CancelFunc, error) {
@@ -268,6 +264,15 @@ func main() {
 			app.OnEvent = func(ctx context.Context, event lu.Event) {
 				if event.Type == lu.AppRunning {
 					time.Sleep(time.Second * 1) // Give enough time for all processes to start and output their logs
+					err := runConsoleCommand("messenger:setup-transports")
+					if err != nil {
+						log.Error(ctx, errors.Join(errors.New("failed to setup messenger transports"), err))
+					}
+					// Clear cache on app start, to avoid issues with generated configs
+					err = runConsoleCommand("cache:clear")
+					if err != nil {
+						log.Error(ctx, errors.Join(errors.New("failed to setup messenger transports"), err))
+					}
 					outputAppInfo()
 				}
 			}
