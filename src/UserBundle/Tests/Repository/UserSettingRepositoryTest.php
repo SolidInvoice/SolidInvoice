@@ -85,7 +85,7 @@ final class UserSettingRepositoryTest extends KernelTestCase
         self::assertNotNull($result);
         self::assertSame('Europe/London', $result->getValue());
         self::assertSame(UserSettingType::Timezone, $result->getKey());
-        self::assertSame($this->user->getId()->toRfc4122(), $result->getUser()->getId()->toRfc4122());
+        self::assertTrue($this->user->getId()->equals($result->getUser()->getId()));
     }
 
     public function testGetSettingReturnsNullWhenNotFound(): void
