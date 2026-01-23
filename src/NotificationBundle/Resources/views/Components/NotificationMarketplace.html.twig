@@ -216,7 +216,7 @@
                                             </div>
                                         </div>
                                         <div class="d-flex gap-2 flex-shrink-0">
-                                            <a href="{{ path('_notification_integration', {selectedIntegration: setting.id.toRfc4122(), type: this.getIntegrationType(setting.transport), activeTab: activeTab}) }}"
+                                            <a href="{{ path('_notification_integration', {selectedIntegration: setting.id.toString(), type: this.getIntegrationType(setting.transport), activeTab: activeTab}) }}"
                                                class="btn btn-outline-secondary btn-sm"
                                                aria-label="{{ 'Edit %name%'|trans({'%name%': setting.name}) }}">
                                                 {{ ux_icon('tabler:edit', {width: 16, height: 16}) }}

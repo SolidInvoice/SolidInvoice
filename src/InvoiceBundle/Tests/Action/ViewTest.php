@@ -32,6 +32,10 @@ use SolidInvoice\QuoteBundle\Entity\Quote;
 use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
+use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Uid\Uuid;
 use Zenstruck\Foundry\Test\Factories;
@@ -398,7 +402,18 @@ final class ViewTest extends KernelTestCase
 
     public function testViewWithClientContacts(): void
     {
+        $csrfTokenManager = $this->createMock(CsrfTokenManagerInterface::class);
+
+        self::getContainer()
+            ->set('security.csrf.token_manager', $csrfTokenManager);
+
+        $csrfTokenManager
+            ->method('getToken')
+            ->with('send_manual_reminder')
+            ->willReturn(new CsrfToken('send_manual_reminder', 'send_manual_reminder'));
+
         $request = Request::createFromGlobals();
+        $request->setSession(new Session(new MockArraySessionStorage()));
         $requestStack = self::getContainer()->get('request_stack');
         $requestStack->push($request);
 

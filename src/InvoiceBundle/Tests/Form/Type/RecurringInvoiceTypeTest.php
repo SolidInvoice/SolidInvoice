@@ -44,7 +44,7 @@ class RecurringInvoiceTypeTest extends FormTestCase
             'client' => [
                 'autocomplete' => (
                     $this->em->getConnection()->getDatabasePlatform() instanceof PostgreSQLPlatform ?
-                    $client->getId()->toRfc4122() :
+                    $client->getId()->toString() :
                     $client->getId()->toString()
                 ),
             ],
