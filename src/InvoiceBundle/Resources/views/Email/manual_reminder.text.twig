@@ -14,15 +14,15 @@ This is a friendly reminder about invoice {{ invoice.invoiceId }}. We kindly ask
 Invoice Details:
 ----------------
 Invoice Number: {{ invoice.invoiceId }}
-{%- if invoice.invoiceDate %}
+{% if invoice.invoiceDate %}
 Invoice Date: {{ invoice.invoiceDate|date('Y-m-d') }}
-{%- endif %}
-{%- if invoice.due %}
+{% endif %}
+{% if invoice.due %}
 Due Date: {{ invoice.due|date('Y-m-d') }}
-{%- endif %}
-{%- if invoice.balance %}
+{% endif %}
+{% if invoice.balance %}
 Amount Due: {{ invoice.balance|formatCurrency(invoice.client.currency) }}
-{%- endif %}
+{% endif %}
 
 Thank you for your business. We appreciate your prompt attention to this invoice.
 
