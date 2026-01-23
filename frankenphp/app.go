@@ -271,7 +271,7 @@ func main() {
 					// Clear cache on app start, to avoid issues with generated configs
 					err = runConsoleCommand("cache:clear")
 					if err != nil {
-						log.Error(ctx, errors.Join(errors.New("failed to setup messenger transports"), err))
+						log.Error(ctx, errors.Join(errors.New("failed to clear cache"), err))
 					}
 					outputAppInfo()
 				}
