@@ -262,18 +262,21 @@ func main() {
 			))
 
 			app.OnEvent = func(ctx context.Context, event lu.Event) {
-				if event.Type == lu.AppRunning {
+				switch event.Type {
+				case lu.AppStartup:
+					// Clear cache on app start, to avoid issues with generated configs
+					err := runConsoleCommand("cache:clear")
+					if err != nil {
+						log.Error(ctx, errors.Join(errors.New("failed to clear cache"), err))
+					}
+				case lu.AppRunning:
 					time.Sleep(time.Second * 1) // Give enough time for all processes to start and output their logs
 					err := runConsoleCommand("messenger:setup-transports")
 					if err != nil {
 						log.Error(ctx, errors.Join(errors.New("failed to setup messenger transports"), err))
 					}
-					// Clear cache on app start, to avoid issues with generated configs
-					err = runConsoleCommand("cache:clear")
-					if err != nil {
-						log.Error(ctx, errors.Join(errors.New("failed to clear cache"), err))
-					}
 					outputAppInfo()
+				default:
 				}
 			}
 
