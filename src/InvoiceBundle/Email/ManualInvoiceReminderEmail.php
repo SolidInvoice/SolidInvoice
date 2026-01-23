@@ -29,7 +29,7 @@ final class ManualInvoiceReminderEmail extends TemplatedEmail
         $this->htmlTemplate('@SolidInvoiceInvoice/Email/manual_reminder.html.twig');
         $this->textTemplate('@SolidInvoiceInvoice/Email/manual_reminder.text.twig');
         $this->context(['invoice' => $this->invoice]);
-        $this->to(...$this->invoice->getUsers()->map(fn (Contact $user) => Address::create(sprintf('%s %s<%s>', $user->getFirstName(), $user->getLastName(), $user->getEmail())))->toArray());
+        $this->to(...$this->invoice->getUsers()->map(fn (Contact $user) => Address::create(sprintf('%s %s <%s>', $user->getFirstName(), $user->getLastName(), $user->getEmail())))->toArray());
     }
 
     public function getInvoice(): Invoice
