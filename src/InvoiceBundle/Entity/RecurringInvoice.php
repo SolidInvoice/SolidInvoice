@@ -276,4 +276,17 @@ class RecurringInvoice extends BaseInvoice
 
         return $this;
     }
+
+    public function hasInvoiceForDay(DateTimeInterface $now): bool
+    {
+        foreach ($this->invoices as $invoice) {
+            $invoiceDate = $invoice->getInvoiceDate();
+
+            if ($invoiceDate->format('Y-m-d') === $now->format('Y-m-d')) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

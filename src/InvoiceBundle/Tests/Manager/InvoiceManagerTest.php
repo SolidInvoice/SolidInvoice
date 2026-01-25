@@ -14,11 +14,13 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Tests\Manager;
 
 use DateTime;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use Money\Currency;
+use Psr\Clock\ClockInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Entity\Discount;
@@ -73,6 +75,10 @@ class InvoiceManagerTest extends KernelTestCase
         $config->method('get')
             ->willReturn('generator');
 
+        $clock = $this->createMock(ClockInterface::class);
+        $clock->method('now')
+            ->willReturn(new DateTimeImmutable('2024-01-15 10:30:00'));
+
         $this->manager = new InvoiceManager(
             $doctrine,
             new EventDispatcher(),
@@ -81,7 +87,8 @@ class InvoiceManagerTest extends KernelTestCase
             new BillingIdGenerator(
                 new ServiceLocator(['generator' => fn () => $this->createMock(IdGeneratorInterface::class)]),
                 $config
-            )
+            ),
+            $clock
         );
 
         $entityManager
@@ -146,7 +153,7 @@ class InvoiceManagerTest extends KernelTestCase
 
         self::assertSame($line->getTax(), $invoiceLine[0]->getTax());
         self::assertSame($line->getDescription(), $invoiceLine[0]->getDescription());
-        self::assertInstanceOf(DateTime::class, $invoiceLine[0]->getCreated());
+        self::assertInstanceOf(DateTimeImmutable::class, $invoiceLine[0]->getCreated());
         self::assertEquals($line->getPrice(), $invoiceLine[0]->getPrice());
         self::assertSame($line->getQty(), $invoiceLine[0]->getQty());
     }
@@ -206,8 +213,8 @@ class InvoiceManagerTest extends KernelTestCase
         self::assertInstanceOf(InvoiceLine::class, $invoiceLine[0]);
 
         self::assertSame($line->getTax(), $invoiceLine[0]->getTax());
-        self::assertSame('Line Description ' . date('j l F Y'), $invoiceLine[0]->getDescription());
-        self::assertInstanceOf(DateTime::class, $invoiceLine[0]->getCreated());
+        self::assertSame('Line Description 15 Monday January 2024', $invoiceLine[0]->getDescription());
+        self::assertInstanceOf(DateTimeImmutable::class, $invoiceLine[0]->getCreated());
         self::assertEquals($line->getPrice(), $invoiceLine[0]->getPrice());
         self::assertSame($line->getQty(), $invoiceLine[0]->getQty());
     }
