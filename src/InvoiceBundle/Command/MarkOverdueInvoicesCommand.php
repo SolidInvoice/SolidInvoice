@@ -30,7 +30,7 @@ use function sprintf;
     name: 'solidinvoice:invoices:mark-overdue',
     description: 'Mark pending invoices as overdue when past due date',
 )]
-#[AsCronTask('7 10,18 * * *', schedule: 'mark_invoices_overdue')] // Twice daily: 10:07am and 6:07pm
+#[AsCronTask('#hourly', schedule: 'mark_invoices_overdue')]
 final class MarkOverdueInvoicesCommand extends Command
 {
     public function __construct(
