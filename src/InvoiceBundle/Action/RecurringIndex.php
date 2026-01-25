@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Action;
 
 use Doctrine\ORM\EntityManagerInterface;
+use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,11 +37,11 @@ final readonly class RecurringIndex
         $isCompleted = $request->query->get('completed', '0') === '1';
 
         // Get recurring invoice counts by status
-        $activeCount = $this->repository->getCountByStatus('active');
+        $activeCount = $this->repository->getCountByStatus(RecurringInvoice::STATUS_ACTIVE);
         $draftCount = $this->repository->getCountByStatus('draft');
         $pausedCount = $this->repository->getCountByStatus('paused');
         $cancelledCount = $this->repository->getCountByStatus('cancelled');
-        $completeCount = $this->repository->getCountByStatus('complete');
+        $completeCount = $this->repository->getCountByStatus(RecurringInvoice::STATUS_COMPLETE);
 
         // Calculate total active recurring invoices (non-archived, non-cancelled, non-complete)
         $totalActiveRecurring = $activeCount + $draftCount + $pausedCount;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -66,7 +68,7 @@ final class SendRecurringInvoicesCommand extends Command
                     $endDate = $this->recurringSchedule->getEndDate($recurringInvoice->getRecurringOptions());
 
                     if ($endDate instanceof CarbonInterface && ($endDate->isToday() || $endDate->isPast())) {
-                        $recurringInvoice->setStatus('complete');
+                        $recurringInvoice->setStatus(RecurringInvoice::STATUS_COMPLETE);
                         $entityManager->persist($recurringInvoice);
                     }
 

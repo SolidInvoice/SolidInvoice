@@ -73,6 +73,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 class RecurringInvoice extends BaseInvoice
 {
     final public const TABLE_NAME = 'recurring_invoices';
+    
+    final public const STATUS_ACTIVE = 'active';
+    final public const STATUS_COMPLETE = 'complete';
+    
     use Archivable;
     use TimeStampable;
 

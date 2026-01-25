@@ -21,7 +21,7 @@ use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\FilterCollection;
 use Psr\Clock\ClockInterface;
-use Psr\Log\NullLogger;
+use Psr\Log\LoggerInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Doctrine\Filter\CompanyFilter;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
@@ -196,7 +196,7 @@ final class CreateInvoiceFromRecurringHandlerTest extends KernelTestCase
     public function testHandlerLogsErrorWhenRecurringInvoiceNotFound(): void
     {
         $recurringInvoiceId = new Ulid();
-        $logger = $this->createMock(NullLogger::class);
+        $logger = $this->createMock(LoggerInterface::class);
 
         $recurringInvoiceRepository = $this->createMock(RecurringInvoiceRepository::class);
         $clock = $this->createMock(ClockInterface::class);

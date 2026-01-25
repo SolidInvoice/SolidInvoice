@@ -16,6 +16,7 @@ namespace SolidInvoice\InvoiceBundle\DataGrid;
 use Doctrine\ORM\EntityManagerInterface;
 use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
 use SolidInvoice\DataGridBundle\GridBuilder\Query;
+use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 
 #[AsDataGrid(name: self::GRID_NAME, title: 'Recurring Invoices')]
 class RecurringInvoiceGrid extends BaseRecurringInvoiceGrid
@@ -26,7 +27,7 @@ class RecurringInvoiceGrid extends BaseRecurringInvoiceGrid
     {
         $queryBuilder = $query->getQueryBuilder();
         $queryBuilder->andWhere(sprintf('%s.status != :completedStatus', $query->getRootAlias()))
-            ->setParameter('completedStatus', 'complete');
+            ->setParameter('completedStatus', RecurringInvoice::STATUS_COMPLETE);
 
         return parent::query($entityManager, $query);
     }

@@ -134,7 +134,7 @@ class RecurringInvoiceRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('ri')
             ->where('ri.status = :status')
             ->innerJoin('ri.recurringOptions', 'ro')
-            ->setParameter('status', 'active')
+            ->setParameter('status', RecurringInvoice::STATUS_ACTIVE)
             ->getQuery()
             ->toIterable();
     }
@@ -159,7 +159,7 @@ class RecurringInvoiceRepository extends ServiceEntityRepository
             ->where('ri.status = :status')
             ->andWhere('ri.dateStart <= :futureDate')
             ->andWhere('(ri.dateEnd IS NULL OR ri.dateEnd >= :now)')
-            ->setParameter('status', 'active')
+            ->setParameter('status', RecurringInvoice::STATUS_ACTIVE)
             ->setParameter('now', $now)
             ->setParameter('futureDate', $futureDate)
             ->orderBy('ri.dateStart', Criteria::ASC)
@@ -201,7 +201,7 @@ class RecurringInvoiceRepository extends ServiceEntityRepository
             ->where('ri.status = :status')
             ->innerJoin('ri.recurringOptions', 'ro')
             ->addSelect('ro')
-            ->setParameter('status', 'active')
+            ->setParameter('status', RecurringInvoice::STATUS_ACTIVE)
             ->getQuery()
             ->getResult();
 
@@ -256,7 +256,7 @@ class RecurringInvoiceRepository extends ServiceEntityRepository
             ->innerJoin('ri.client', 'c')
             ->addSelect('c')
             ->where('ri.status = :status')
-            ->setParameter('status', 'active')
+            ->setParameter('status', RecurringInvoice::STATUS_ACTIVE)
             ->getQuery()
             ->getResult();
 

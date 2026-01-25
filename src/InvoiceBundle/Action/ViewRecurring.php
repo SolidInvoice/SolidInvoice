@@ -32,7 +32,7 @@ final readonly class ViewRecurring
     {
         // Get next 5 upcoming occurrences for active invoices
         $nextOccurrences = [];
-        if ($invoice->getStatus() === 'active') {
+        if ($invoice->getStatus() === RecurringInvoice::STATUS_ACTIVE) {
             $nextOccurrences = iterator_to_array(
                 $this->recurringSchedule->getNextOccurrences($invoice->getRecurringOptions(), 5)
             );
