@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Manager;
 
 use Brick\Math\Exception\MathException;
-use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
+use Psr\Clock\ClockInterface;
 use Psr\Container\ContainerExceptionInterface;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
@@ -49,6 +49,7 @@ class InvoiceManager
         private readonly WorkflowInterface $invoiceStateMachine,
         private readonly NotificationManager $notification,
         private readonly BillingIdGenerator $billingIdGenerator,
+        private readonly ClockInterface $clock,
     ) {
         $this->entityManager = $doctrine->getManager();
     }
@@ -70,7 +71,7 @@ class InvoiceManager
         $invoice = $this->createFromObject($recurringInvoice);
         $invoice->setRecurringInvoice($recurringInvoice);
 
-        $now = CarbonImmutable::now();
+        $now = CarbonImmutable::instance($this->clock->now());
 
         /** @var Line $item */
         foreach ($invoice->getLines() as $item) {
@@ -106,9 +107,10 @@ class InvoiceManager
         /** @var RecurringInvoice|Quote $object */
         $invoice = new Invoice();
 
-        $now = Carbon::now();
+        $now = $this->clock->now();
 
         $invoice->setCreated($now);
+        $invoice->setInvoiceDate($now);
         $invoice->setClient($object->getClient());
         $invoice->setBaseTotal($object->getBaseTotal());
         $invoice->setDiscount($object->getDiscount());

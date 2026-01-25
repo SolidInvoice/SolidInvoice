@@ -22,7 +22,7 @@ use SolidWorx\Platform\PlatformBundle\Console\Command;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Messenger\Exception\ExceptionInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Zenstruck\ScheduleBundle\Attribute\AsScheduledTask;
+use Symfony\Component\Scheduler\Attribute\AsCronTask;
 use function assert;
 use function sprintf;
 
@@ -30,7 +30,7 @@ use function sprintf;
     name: 'solidinvoice:invoices:mark-overdue',
     description: 'Mark pending invoices as overdue when past due date',
 )]
-#[AsScheduledTask('0 9,18 * * *')] // Twice daily: 9am and 6pm
+#[AsCronTask('#hourly', schedule: 'mark_invoices_overdue')] // Twice daily: 10am and 6pm (7 minutes offset)
 final class MarkOverdueInvoicesCommand extends Command
 {
     public function __construct(
