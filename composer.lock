@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "212c34e36835e7c64af3255e9a4e2fbf",
+    "content-hash": "6e8522bacaab08046ef8c13fb7b6ea7c",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -20336,85 +20336,6 @@
                 "source": "https://github.com/willdurand/Negotiation/tree/3.1.0"
             },
             "time": "2022-01-30T20:08:53+00:00"
-        },
-        {
-            "name": "zenstruck/schedule-bundle",
-            "version": "v1.8.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/zenstruck/schedule-bundle.git",
-                "reference": "c82f4d3e96566260796975a90a8d8075fca681c9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/zenstruck/schedule-bundle/zipball/c82f4d3e96566260796975a90a8d8075fca681c9",
-                "reference": "c82f4d3e96566260796975a90a8d8075fca681c9",
-                "shasum": ""
-            },
-            "require": {
-                "dragonmantank/cron-expression": "^2.3|^3.0",
-                "php": ">=8.0",
-                "symfony/console": "^5.4|^6.0|^7.0",
-                "symfony/dependency-injection": "^5.4|^6.0|^7.0",
-                "symfony/event-dispatcher": "^5.4|^6.0|^7.0",
-                "symfony/http-kernel": "^5.4|^6.0|^7.0"
-            },
-            "require-dev": {
-                "lorisleiva/cron-translator": "^0.1.0|^0.3.1|^0.4.0",
-                "matthiasnoback/symfony-dependency-injection-test": "^4.1|^5.0",
-                "phpstan/phpstan": "^1.4",
-                "phpunit/phpunit": "^9.5",
-                "psr/log": "^1.1",
-                "symfony/framework-bundle": "^5.4|^6.0|^7.0",
-                "symfony/http-client": "^5.4|^6.0|^7.0",
-                "symfony/lock": "^5.4|^6.0|^7.0",
-                "symfony/mailer": "^5.4|^6.0|^7.0",
-                "symfony/messenger": "^5.4|^6.0|^7.0",
-                "symfony/notifier": "^5.4|^6.0|^7.0",
-                "symfony/phpunit-bridge": "^6.2|^7.0",
-                "symfony/process": "^5.4|^6.0|^7.0"
-            },
-            "suggest": {
-                "lorisleiva/cron-translator": "Displays human readable cron expression in schedule:list",
-                "symfony/http-client": "Allows usage of ping* extensions",
-                "symfony/lock": "Allows usage of withoutOverlapping and onSingleServer extensions",
-                "symfony/mailer": "Allows usage of email* extensions",
-                "symfony/notifier": "Allows usage of notify* extensions",
-                "symfony/process": "Allows usage of ProcessTask"
-            },
-            "type": "symfony-bundle",
-            "autoload": {
-                "psr-4": {
-                    "Zenstruck\\ScheduleBundle\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Kevin Bond",
-                    "email": "kevinbond@gmail.com"
-                }
-            ],
-            "description": "Schedule Cron jobs (commands/callbacks/bash scripts) within your Symfony application.",
-            "homepage": "https://github.com/zenstruck/schedule-bundle",
-            "keywords": [
-                "cron",
-                "schedule"
-            ],
-            "support": {
-                "issues": "https://github.com/zenstruck/schedule-bundle/issues",
-                "source": "https://github.com/zenstruck/schedule-bundle/tree/v1.8.1"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/kbond",
-                    "type": "github"
-                }
-            ],
-            "time": "2025-04-27T22:34:07+00:00"
         }
     ],
     "packages-dev": [

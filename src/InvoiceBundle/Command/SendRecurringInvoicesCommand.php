@@ -14,25 +14,25 @@ namespace SolidInvoice\InvoiceBundle\Command;
 use Carbon\CarbonInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Psr\Log\LoggerInterface;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Message\CreateInvoiceFromRecurring;
 use SolidInvoice\InvoiceBundle\Recurring\RecurringSchedule;
 use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
+use SolidWorx\Platform\PlatformBundle\Console\Command;
 use Symfony\Component\Console\Attribute\AsCommand;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Messenger\Exception\ExceptionInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Zenstruck\ScheduleBundle\Attribute\AsScheduledTask;
+use Symfony\Component\Scheduler\Attribute\AsCronTask;
+use Throwable;
+use function assert;
+use function Sentry\withMonitor;
 use function sprintf;
 
 #[AsCommand(
     name: 'solidinvoice:recurring:send-invoices',
     description: 'Send recurring invoices',
 )]
-#[AsScheduledTask('#daily')]
+#[AsCronTask('#hourly', schedule: 'send_recurring_invoices')]
 final class SendRecurringInvoicesCommand extends Command
 {
     public function __construct(
@@ -40,39 +40,55 @@ final class SendRecurringInvoicesCommand extends Command
         private readonly RecurringInvoiceRepository $recurringInvoiceRepository,
         private readonly RecurringSchedule $recurringSchedule,
         private readonly MessageBusInterface $bus,
+        private readonly LoggerInterface $logger,
     ) {
         parent::__construct();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function handle(): int
     {
-        $io = new SymfonyStyle($input, $output);
-
         $entityManager = $this->registry->getManagerForClass(RecurringInvoice::class);
         assert($entityManager instanceof EntityManagerInterface);
 
-        $recurringInvoices = $this->recurringInvoiceRepository->getActiveRecurringInvoices();
+        // Disable company filter to query across all companies
+        $filters = $entityManager->getFilters();
+        $companyFilterEnabled = $filters->isEnabled('company');
 
-        foreach ($recurringInvoices as $recurringInvoice) {
-            $endDate = $this->recurringSchedule->getEndDate($recurringInvoice->getRecurringOptions());
-
-            if ($endDate instanceof CarbonInterface && ($endDate->isToday() || $endDate->isPast())) {
-                $recurringInvoice->setStatus('complete');
-                $entityManager->persist($recurringInvoice);
-            }
-
-            $nextRunDate = $this->recurringSchedule->getNextRunDate($recurringInvoice->getRecurringOptions());
-
-            if ($nextRunDate instanceof CarbonInterface && $nextRunDate->isToday()) {
-                try {
-                    $this->bus->dispatch(new CreateInvoiceFromRecurring($recurringInvoice));
-                } catch (ExceptionInterface $e) {
-                    $io->error(sprintf('Error sending recurring invoice (%s): %s', $recurringInvoice->getId(), $e->getMessage()));
-                }
-            }
+        if ($companyFilterEnabled) {
+            $filters->disable('company');
         }
 
-        $entityManager->flush();
+        withMonitor('send-recurring-invoices', function () use ($entityManager): void {
+            $recurringInvoices = $this->recurringInvoiceRepository->getActiveRecurringInvoices();
+
+            foreach ($recurringInvoices as $recurringInvoice) {
+                try {
+                    $endDate = $this->recurringSchedule->getEndDate($recurringInvoice->getRecurringOptions());
+
+                    if ($endDate instanceof CarbonInterface && ($endDate->isToday() || $endDate->isPast())) {
+                        $recurringInvoice->setStatus('complete');
+                        $entityManager->persist($recurringInvoice);
+                    }
+
+                    $nextRunDate = $this->recurringSchedule->getNextRunDate($recurringInvoice->getRecurringOptions());
+
+                    if ($nextRunDate instanceof CarbonInterface && $nextRunDate->isToday() && ! $recurringInvoice->hasInvoiceForDay($nextRunDate)) {
+                        $this->bus->dispatch(new CreateInvoiceFromRecurring($recurringInvoice->getId()));
+                    }
+                } catch (Throwable $e) {
+                    $this->logger->error(
+                        sprintf('Error processing recurring invoice (%s): %s', $recurringInvoice->getId()?->toString(), $e->getMessage()),
+                        ['exception' => $e]
+                    );
+                }
+            }
+
+            $entityManager->flush();
+        });
+
+        if ($companyFilterEnabled) {
+            $filters->enable('company');
+        }
 
         return 0;
     }

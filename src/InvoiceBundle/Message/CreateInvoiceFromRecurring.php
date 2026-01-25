@@ -13,17 +13,17 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Message;
 
-use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use Symfony\Component\Uid\Ulid;
 
 final class CreateInvoiceFromRecurring
 {
     public function __construct(
-        private readonly RecurringInvoice $recurringInvoice
+        private readonly Ulid $recurringInvoiceId
     ) {
     }
 
-    public function getRecurringInvoice(): RecurringInvoice
+    public function getRecurringInvoiceId(): Ulid
     {
-        return $this->recurringInvoice;
+        return $this->recurringInvoiceId;
     }
 }
