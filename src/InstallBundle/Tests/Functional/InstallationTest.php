@@ -18,7 +18,6 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Panther\Client;
 use Symfony\Component\Panther\PantherTestCase;
 use Zenstruck\Browser\Test\HasBrowser;
-use function dirname;
 use function microtime;
 use function Zenstruck\Foundry\faker;
 
@@ -36,7 +35,9 @@ final class InstallationTest extends PantherTestCase
         // Backup the config directory BEFORE parent::setUp() to ensure a clean state
         // when the kernel boots. This prevents any cached secrets from affecting the test.
         $fs = new Filesystem();
-        $configDir = dirname(__DIR__, 4) . '/config/env';
+
+        $configDir = self::getContainer()->getParameter('env(SOLIDINVOICE_CONFIG_DIR)');
+
         $fs->exists($configDir) && $fs->rename($configDir, $configDir . '_test');
 
         parent::setUp();
@@ -52,9 +53,9 @@ final class InstallationTest extends PantherTestCase
 
     protected function tearDown(): void
     {
-        parent::tearDown();
+        $configDir = (string) self::getContainer()->getParameter('env(SOLIDINVOICE_CONFIG_DIR)');
 
-        $configDir = dirname(__DIR__, 4) . '/config/env';
+        parent::tearDown();
 
         $fs = new Filesystem();
 

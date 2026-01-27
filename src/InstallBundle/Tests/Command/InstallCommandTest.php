@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Tests\Command;
 
-use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
 use ReflectionMethod;
-use RuntimeException;
 use SolidInvoice\CoreBundle\ConfigWriter;
 use SolidInvoice\InstallBundle\Command\InstallCommand;
 use SolidInvoice\UserBundle\Entity\User;
@@ -44,8 +42,8 @@ final class InstallCommandTest extends TestCase
         $existingUser->setEmail($email)->setEnabled(true);
 
         $userRepository = M::mock(UserRepository::class);
-        $userRepository->shouldReceive('findByEmailIgnoringEnabled')
-            ->with($email)
+        $userRepository->shouldReceive('findOneBy')
+            ->with(['email' => $email])
             ->once()
             ->andReturn($existingUser);
 
@@ -87,8 +85,8 @@ final class InstallCommandTest extends TestCase
         $hashedPassword = 'hashed_secret123';
 
         $userRepository = M::mock(UserRepository::class);
-        $userRepository->shouldReceive('findByEmailIgnoringEnabled')
-            ->with($email)
+        $userRepository->shouldReceive('findOneBy')
+            ->with(['email' => $email])
             ->once()
             ->andReturn(null);
 
@@ -98,7 +96,8 @@ final class InstallCommandTest extends TestCase
             ->with(M::on(function (User $user) use ($email, $hashedPassword): bool {
                 return $user->getEmail() === $email
                     && $user->getPassword() === $hashedPassword
-                    && $user->isEnabled();
+                    && $user->isEnabled()
+                    && $user->isVerified();
             }));
         $entityManager->shouldReceive('flush')
             ->once();
@@ -145,8 +144,8 @@ final class InstallCommandTest extends TestCase
         $disabledUser->setEmail($email)->setEnabled(false)->setPassword('old_password');
 
         $userRepository = M::mock(UserRepository::class);
-        $userRepository->shouldReceive('findByEmailIgnoringEnabled')
-            ->with($email)
+        $userRepository->shouldReceive('findOneBy')
+            ->with(['email' => $email])
             ->once()
             ->andReturn($disabledUser);
 
@@ -183,7 +182,7 @@ final class InstallCommandTest extends TestCase
             ->with('<info>Creating Admin User</info>')
             ->once();
         $output->shouldReceive('writeln')
-            ->with(sprintf('<comment>Re-enabling disabled user %s</comment>', $email))
+            ->with(sprintf('<comment>Re-enabling disabled user (%s), and resetting password</comment>', $email))
             ->once();
 
         $command = $this->createCommand($registry, $passwordHasher);
@@ -193,42 +192,6 @@ final class InstallCommandTest extends TestCase
         // Verify user was re-enabled and password updated
         self::assertTrue($disabledUser->isEnabled());
         self::assertSame($hashedPassword, $disabledUser->getPassword());
-    }
-
-    public function testCreateAdminUserThrowsExceptionForNonUniqueEmail(): void
-    {
-        $email = 'duplicate@example.com';
-
-        $userRepository = M::mock(UserRepository::class);
-        $userRepository->shouldReceive('findByEmailIgnoringEnabled')
-            ->with($email)
-            ->once()
-            ->andThrow(new NonUniqueResultException());
-
-        $registry = M::mock(ManagerRegistry::class);
-        $registry->shouldReceive('getRepository')
-            ->with(User::class)
-            ->andReturn($userRepository);
-
-        $input = M::mock(InputInterface::class);
-        $input->shouldReceive('getOption')
-            ->with('admin-email')
-            ->andReturn($email);
-
-        $output = M::mock(OutputInterface::class);
-        $output->shouldReceive('writeln')
-            ->with('<info>Creating Admin User</info>')
-            ->once();
-
-        $command = $this->createCommand($registry);
-
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage(sprintf(
-            'Multiple users found with email "%s". This requires manual resolution in the database.',
-            $email
-        ));
-
-        $this->invokeCreateAdminUser($command, $input, $output);
     }
 
     private function createCommand(

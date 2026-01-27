@@ -18,7 +18,6 @@ use DateTimeInterface;
 use Defuse\Crypto\Exception\EnvironmentIsBrokenException;
 use Defuse\Crypto\Key;
 use Doctrine\DBAL\DriverManager;
-use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Exception;
@@ -178,14 +177,7 @@ class InstallCommand extends Command
         $userRepository = $this->registry->getRepository(User::class);
         $email = $input->getOption('admin-email');
 
-        try {
-            $existingUser = $userRepository->findByEmailIgnoringEnabled($email);
-        } catch (NonUniqueResultException) {
-            throw new RuntimeException(sprintf(
-                'Multiple users found with email "%s". This requires manual resolution in the database.',
-                $email
-            ));
-        }
+        $existingUser = $userRepository->findOneBy(['email' => $email]);
 
         $em = $this->registry->getManagerForClass(User::class);
 
@@ -201,7 +193,7 @@ class InstallCommand extends Command
             }
 
             // Re-enable disabled user and update password
-            $output->writeln(sprintf('<comment>Re-enabling disabled user %s</comment>', $email));
+            $output->writeln(sprintf('<comment>Re-enabling disabled user (%s), and resetting password</comment>', $email));
             $existingUser->setPassword($this->userPasswordHasher->hashPassword($existingUser, $input->getOption('admin-password')))
                 ->setEnabled(true);
 
@@ -214,7 +206,8 @@ class InstallCommand extends Command
         $user = new User();
         $user->setEmail($email)
             ->setPassword($this->userPasswordHasher->hashPassword($user, $input->getOption('admin-password')))
-            ->setEnabled(true);
+            ->setEnabled(true)
+            ->setVerified(true);
 
         $em->persist($user);
         $em->flush();
