@@ -91,7 +91,7 @@
         <table class="table">
             <tr>
                 <td>Invoice Date</td>
-                <td>{{ invoice.created|date('d F Y') }}</td>
+                <td>{{ invoice.invoiceDate|date('d F Y') }}</td>
             </tr>
 
             {% if invoice.due %}
