@@ -16,10 +16,6 @@ set -euxo
 # print all arguments passed:
 echo "xcaddy called with arguments: $@"
 
-# Print all custom env vars passed:
-echo "Custom environment variables:"
-env
-
 # Parse xcaddy arguments to find output location
 OUTPUT="dist/static-php-cli/buildroot/bin/frankenphp"
 while [[ $# -gt 0 ]]; do
