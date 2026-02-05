@@ -497,7 +497,7 @@ func setupCommands() {
 	runCmd.PersistentFlags().IntVar(&workerThreads, "worker-threads", 2, "Number of FrankenPHP worker threads when worker mode is enabled (default: 2)")
 	runCmd.PersistentFlags().IntVar(&messengerWorkers, "messenger-workers", 1, "Number of messenger worker processes to spawn. Each worker processes async messages independently. Increase this value on high-traffic servers to improve message processing throughput (e.g., --messenger-workers=5)")
 	runCmd.PersistentFlags().StringVar(&logFormat, "log-format", "console", "Log output format: 'json' for structured JSON logs, or 'console' (default) for human-readable console output")
-	runCmd.PersistentFlags().BoolVar(&skipIntro, "log-format", false, "Skip the introductory application info message")
+	runCmd.PersistentFlags().BoolVar(&skipIntro, "skip-intro", false, "Skip the introductory application info message")
 
 	rootCmd.AddCommand(&cobra.Command{
 		Use:                "version",
