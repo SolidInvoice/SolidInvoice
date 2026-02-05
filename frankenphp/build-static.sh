@@ -1,7 +1,8 @@
 #!/bin/bash
 
 set -o errexit
-set -ex pipefail
+set -o pipefail
+set -ex
 
 if ! type "git" >/dev/null 2>&1; then
 	echo "The \"git\" command must be installed."
