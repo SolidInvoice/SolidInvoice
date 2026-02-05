@@ -78,16 +78,14 @@ var enableWorkerMode bool
 var workerThreads int
 var logFormat string
 
-func init() {
-	setupCommands()
-}
-
 func main() {
 	// Initialize app
 	if err := initializeApp(); err != nil {
 		fmt.Fprintf(os.Stderr, "Fatal error: %v\n", err)
 		os.Exit(1)
 	}
+
+    setupCommands()
 
 	// Run CLI
 	if err := rootCmd.Execute(); err != nil {
@@ -136,13 +134,13 @@ func initializeApp() error {
 	}
 
 	// Only set if not already set
-	if os.Getenv(upperAppName+"_CONFIG_DIR") == "" {
-		for key, value := range envVars {
-			if err := os.Setenv(key, value); err != nil {
-				return fmt.Errorf("cannot set environment: %w", err)
-			}
-		}
-	}
+    for key, value := range envVars {
+        if os.Getenv(key) == "" {
+            if err := os.Setenv(key, value); err != nil {
+                return fmt.Errorf("cannot set environment: %w", err)
+            }
+        }
+    }
 
 	return nil
 }
