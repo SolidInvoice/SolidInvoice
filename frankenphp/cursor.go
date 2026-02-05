@@ -11,7 +11,12 @@ type memStore struct {
 
 func (s *memStore) Get(ctx context.Context, name string) (string, error) {
 	if value, ok := s.cursors.Load(name); ok {
-		return value.(string), nil
+		str, ok := value.(string)
+		if !ok {
+			// Don't crash - just return empty string
+			return "", nil
+		}
+		return str, nil
 	}
 
 	return "", nil

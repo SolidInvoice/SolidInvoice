@@ -60,6 +60,6 @@ class WidgetFactory
      */
     public function get(string $location): SplPriorityQueue
     {
-        return $this->queues[$location] ?? new SplPriorityQueue();
+        return clone ($this->queues[$location] ?? new SplPriorityQueue());
     }
 }

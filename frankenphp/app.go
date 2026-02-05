@@ -8,15 +8,6 @@ import (
 	_ "embed"
 	"errors"
 	"fmt"
-	"github.com/caddyserver/caddy/v2"
-	caddycmd "github.com/caddyserver/caddy/v2/cmd"
-	"github.com/charmbracelet/lipgloss"
-	"github.com/common-nighthawk/go-figure"
-	"github.com/dunglas/frankenphp"
-	"github.com/go-playground/validator/v10"
-	"github.com/luno/jettison/log"
-	"github.com/luno/lu"
-	"github.com/luno/lu/process"
 	"io"
 	"net"
 	"os"
@@ -25,6 +16,18 @@ import (
 	"strings"
 	"syscall"
 	"time"
+
+	"github.com/caddyserver/caddy/v2"
+	caddycmd "github.com/caddyserver/caddy/v2/cmd"
+	"github.com/caddyserver/caddy/v2/notify"
+	"github.com/caddyserver/certmagic"
+	"github.com/charmbracelet/lipgloss"
+	"github.com/common-nighthawk/go-figure"
+	"github.com/dunglas/frankenphp"
+	"github.com/go-playground/validator/v10"
+	"github.com/luno/jettison/log"
+	"github.com/luno/lu"
+	"github.com/luno/lu/process"
 
 	"github.com/spf13/cobra"
 
@@ -56,13 +59,6 @@ type runningProcess struct {
 	stdout *os.File
 }
 
-func init() {
-	if len(embeddedApp) == 0 || len(embeddedAppChecksum) == 0 {
-		panic("App initialization failed")
-		return
-	}
-}
-
 var caddyExtraOptions = `
 tls internal
 `
@@ -73,30 +69,85 @@ var domain string
 var httpPort = defaultPort
 var serverIp string
 var disableHttps bool
+var enableLetsEncrypt bool
+var skipIntro bool
+var sslCertFile string
+var sslKeyFile string
 var messengerWorkers int
+var enableWorkerMode bool
+var workerThreads int
+var logFormat string
+
+func init() {
+	setupCommands()
+}
 
 func main() {
-	configDir := mustVal(os.UserConfigDir())
-	appDir := mustVal(os.UserHomeDir())
-	appPath := mustVal(extractEmbeddedApp(appDir))
-
-	must(os.Chdir(appPath))
-
-	upperAppName := strings.ToUpper(appName)
-
-	defaultServerIp = getOutboundIP().String()
-
-	if os.Getenv(upperAppName+"_CONFIG_DIR") == "" {
-		must(os.Setenv(upperAppName+"_CONFIG_DIR", filepath.Join(configDir, appName)))
+	// Initialize app
+	if err := initializeApp(); err != nil {
+		fmt.Fprintf(os.Stderr, "Fatal error: %v\n", err)
+		os.Exit(1)
 	}
 
-	must(os.Setenv(upperAppName+"_ENV", "prod"))
-	must(os.Setenv(upperAppName+"_DEBUG", "0"))
-	must(os.Setenv("APP_PATH", appPath))
-	must(os.Setenv("SOLIDINVOICE_RUNTIME", "frankenphp"))
+	// Run CLI
+	if err := rootCmd.Execute(); err != nil {
+		errStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("9"))
+		fmt.Println(errStyle.Render(err.Error()))
+		os.Exit(1)
+	}
 
-	// os.Setenv("APP_RUNTIME", "Runtime\\FrankenPhpSymfony\\Runtime")
+	os.Exit(0)
+}
 
+func initializeApp() error {
+	if len(embeddedApp) == 0 || len(embeddedAppChecksum) == 0 {
+		return fmt.Errorf("embedded application missing - binary may be corrupted")
+	}
+
+	configDir, err := os.UserConfigDir()
+	if err != nil {
+		return fmt.Errorf("cannot access config directory: %w", err)
+	}
+
+	appDir, err := os.UserHomeDir()
+	if err != nil {
+		return fmt.Errorf("cannot access home directory: %w", err)
+	}
+
+	appPath, err := extractEmbeddedApp(appDir)
+	if err != nil {
+		return fmt.Errorf("failed to extract application: %w", err)
+	}
+
+	if err := os.Chdir(appPath); err != nil {
+		return fmt.Errorf("cannot access application directory: %w", err)
+	}
+
+	upperAppName := strings.ToUpper(appName)
+	defaultServerIp = getOutboundIP().String()
+
+	// Set environment variables
+	envVars := map[string]string{
+		upperAppName + "_CONFIG_DIR": filepath.Join(configDir, appName),
+		upperAppName + "_ENV":        "prod",
+		upperAppName + "_DEBUG":      "0",
+		"APP_PATH":                   appPath,
+		"SOLIDINVOICE_RUNTIME":       "frankenphp",
+	}
+
+	// Only set if not already set
+	if os.Getenv(upperAppName+"_CONFIG_DIR") == "" {
+		for key, value := range envVars {
+			if err := os.Setenv(key, value); err != nil {
+				return fmt.Errorf("cannot set environment: %w", err)
+			}
+		}
+	}
+
+	return nil
+}
+
+func setupCommands() {
 	serverCmd := &cobra.Command{
 		Use:    "server",
 		Short:  "Manages the application server",
@@ -107,6 +158,7 @@ func main() {
 		Short: "Start the application server",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			caddy.TrapSignals()
+			appPath := os.Getenv("APP_PATH")
 			if _, err := os.Stat(filepath.Join(appPath, "php.ini")); err == nil {
 				iniScanDir := os.Getenv("PHP_INI_SCAN_DIR")
 
@@ -147,6 +199,33 @@ func main() {
 		Use:   "run",
 		Short: "Runs " + appName,
 		RunE: func(cmd *cobra.Command, args []string) error {
+			// Set log format early (before any logging)
+			if logFormat != "" {
+				must(os.Setenv("LOG_FORMAT", logFormat))
+			}
+
+			caddyLogInfo := `
+{
+  "admin": { "disabled": true },
+  "logging": {
+    "logs": {
+      "default": {
+        "level": "INFO",
+        "writer": { "output": "stdout" },
+        "encoder": { "format": "` + logFormat + `" }
+      }
+    }
+  }
+}
+`
+
+			if err := caddy.Load([]byte(caddyLogInfo), true); err != nil {
+				return fmt.Errorf("Failed to configure logging: %v\n", err)
+			}
+
+			// Set up logger to use Caddy's logger (even before Caddy fully loads)
+			// This ensures all logs go through Caddy's logging system
+			log.SetLogger(logger{})
 
 			// Validate messenger workers count
 			if messengerWorkers < 0 {
@@ -159,57 +238,133 @@ func main() {
 				return errors.New("port " + httpPort + " is not available")
 			}
 
-			if len(domain) > 0 {
+			// Validate SSL configuration
+			if enableLetsEncrypt && domain == "" {
+				return fmt.Errorf("--lets-encrypt requires --domain")
+			}
 
-				if disableHttps == true {
+			// Validate custom SSL certificate
+			if sslCertFile != "" || sslKeyFile != "" {
+				if sslCertFile == "" || sslKeyFile == "" {
+					return fmt.Errorf("--ssl-cert and --ssl-key must be used together")
+				}
+				if domain == "" {
+					return fmt.Errorf("--ssl-cert requires --domain")
+				}
+				if enableLetsEncrypt {
+					return fmt.Errorf("--ssl-cert cannot be used with --lets-encrypt")
+				}
+
+				// Validate certificate file exists
+				if _, err := os.Stat(sslCertFile); err != nil {
+					return fmt.Errorf("SSL certificate file not found: %s", sslCertFile)
+				}
+
+				// Validate key file exists
+				if _, err := os.Stat(sslKeyFile); err != nil {
+					return fmt.Errorf("SSL key file not found: %s", sslKeyFile)
+				}
+			}
+
+			// Configure SSL strategy
+			var autoHttps string
+			var tlsDirective string
+			if disableHttps {
+				autoHttps = "off"
+			} else if enableLetsEncrypt {
+				autoHttps = "on" // Enable Let's Encrypt
+			} else if sslCertFile != "" && sslKeyFile != "" {
+				autoHttps = "disable_redirects" // Custom certificate
+				tlsDirective = fmt.Sprintf("tls %s %s", sslCertFile, sslKeyFile)
+			} else {
+				autoHttps = "disable_redirects" // Self-signed
+				tlsDirective = caddyExtraOptions
+			}
+
+			// Build server name
+			var serverName string
+			if domain != "" {
+				if disableHttps {
 					return errors.New("disabling HTTPS is not allowed when specifying a domain")
 				}
 
 				validate := validator.New(validator.WithRequiredStructEnabled())
-
-				errs := validate.Var(domain, "required,hostname")
-
-				if errs != nil {
+				if errs := validate.Var(domain, "required,hostname"); errs != nil {
 					return errs
 				}
 
-				must(os.Setenv("SERVER_NAME", "https://"+domain+":"+httpPort))
-				must(os.Setenv("AUTO_HTTPS", "disable_redirects"))
+				if enableLetsEncrypt {
+					serverName = fmt.Sprintf("https://%s", domain)
+				} else {
+					serverName = fmt.Sprintf("https://%s:%s", domain, httpPort)
+				}
 			} else {
 				protocol := "https"
-				if disableHttps == true {
+				if disableHttps {
 					protocol = "http"
 				}
 
-				var serverName string
-
 				if os.Getenv("SOLIDINVOICE_DOCKER") == "true" {
-					// When running in Docker, we don't care about the hostname,
-					// we just need to bind to the port,
-					// since the IP can be dynamic.
-					serverName = protocol + "://:" + httpPort
+					serverName = fmt.Sprintf("%s://:%s", protocol, httpPort)
 				} else {
-					serverName = protocol + "://" + serverIp + ":" + httpPort + ", " + protocol + "://localhost:" + httpPort
+					serverName = fmt.Sprintf("%s://%s:%s, %s://localhost:%s",
+						protocol, serverIp, httpPort, protocol, httpPort)
 					if serverIp != "127.0.0.1" {
-						serverName += ", " + protocol + "://127.0.0.1:" + httpPort
+						serverName += fmt.Sprintf(", %s://127.0.0.1:%s", protocol, httpPort)
 					}
 				}
+			}
 
-				must(os.Setenv("SERVER_NAME", serverName))
+			must(os.Setenv("SERVER_NAME", serverName))
+			must(os.Setenv("AUTO_HTTPS", autoHttps))
 
-				if disableHttps {
-					must(os.Setenv("AUTO_HTTPS", "off"))
-				} else {
-					must(os.Setenv("CADDY_SERVER_EXTRA_DIRECTIVES", caddyExtraOptions))
-					must(os.Setenv("AUTO_HTTPS", "disable_redirects"))
-				}
+			if tlsDirective != "" {
+				must(os.Setenv("CADDY_SERVER_EXTRA_DIRECTIVES", tlsDirective))
 			}
 
 			if len(serverIp) > 0 && serverIp != defaultServerIp {
 				must(os.Setenv("SERVER_IP", serverIp))
 			}
 
-			log.SetLogger(logger{})
+			// Configure FrankenPHP worker mode
+			// Check environment variable first, then CLI flag
+			workerModeEnabled := os.Getenv("FRANKENPHP_WORKER_MODE") == "1" ||
+				os.Getenv("SOLIDINVOICE_WORKER_MODE") == "1" ||
+				enableWorkerMode
+
+			if workerModeEnabled {
+				log.Info(nil, "Worker mode requested - configuring...")
+
+				// Validate worker threads
+				if workerThreads < 1 {
+					return fmt.Errorf("worker-threads must be at least 1 (got %d)", workerThreads)
+				}
+				if workerThreads > 256 {
+					return fmt.Errorf("worker-threads cannot exceed 256 (got %d)", workerThreads)
+				}
+
+				appPath := os.Getenv("APP_PATH")
+				workerScript := filepath.Join(appPath, "public", "index.php")
+
+				log.Info(nil, fmt.Sprintf("Worker script path: %s", workerScript))
+
+				// Check if worker script exists
+				if _, err := os.Stat(workerScript); err != nil {
+					return fmt.Errorf("worker script not found: %s (error: %v)", workerScript, err)
+				}
+
+				// Set Symfony runtime for FrankenPHP worker mode
+				must(os.Setenv("APP_RUNTIME", "Runtime\\FrankenPhpSymfony\\Runtime"))
+
+				// FrankenPHP worker syntax: worker <script> <num_threads>
+				frankenphpConfig := fmt.Sprintf("worker %s %d", workerScript, workerThreads)
+				must(os.Setenv("FRANKENPHP_CONFIG", frankenphpConfig))
+
+				log.Info(nil, fmt.Sprintf("FrankenPHP worker mode enabled with %d threads", workerThreads))
+				log.Info(nil, fmt.Sprintf("FRANKENPHP_CONFIG: %s", frankenphpConfig))
+			} else {
+				log.Info(nil, "Worker mode disabled (default)")
+			}
 
 			app := lu.App{
 				StartupTimeout:  time.Second * 10,
@@ -217,7 +372,46 @@ func main() {
 				UseProcessFile:  false,
 			}
 
-			app.AddProcess(wrapInternalCmd("server", "start"))
+			//app.AddProcess(wrapInternalCmd("server", "start"))
+			loop := process.Loop(func(ctx context.Context) error {
+				// caddy.TrapSignals()
+				appPath := os.Getenv("APP_PATH")
+				if _, err := os.Stat(filepath.Join(appPath, "php.ini")); err == nil {
+					iniScanDir := os.Getenv("PHP_INI_SCAN_DIR")
+
+					if err := os.Setenv("PHP_INI_SCAN_DIR", iniScanDir+":"+appPath); err != nil {
+						return err
+					}
+				}
+
+				config, _, err := caddycmd.LoadConfig(filepath.Join(appPath, "Caddyfile"), "")
+				if err != nil {
+					return err
+				}
+
+				if err = caddy.Load(config, true); err != nil {
+					return err
+				}
+
+				select {
+				case <-ctx.Done():
+					return ctx.Err()
+				}
+			})
+			loop.Shutdown = func(ctx context.Context) error {
+				if err := notify.Stopping(); err != nil {
+					return err
+				}
+				log.Info(nil, "Shutting down Caddy server...")
+				if err := caddy.Stop(); err != nil {
+					return err
+				}
+
+				certmagic.CleanUpOwnLocks(ctx, caddy.Log())
+
+				return nil
+			}
+			app.AddProcess(loop)
 
 			// Spawn multiple messenger worker processes
 			// Each worker runs independently and is automatically restarted by lu if it exits
@@ -242,10 +436,10 @@ func main() {
 				app.AddProcess(messengerWorker)
 			}
 
-			app.OnShutdown(func(ctx context.Context) error {
+			/*app.OnShutdown(func(ctx context.Context) error {
 				log.Info(nil, "Application is shutting down...")
 				return runConsoleCommand("messenger:stop-workers")
-			})
+			})*/
 			app.AddProcess(process.Scheduled(
 				func(role string) process.ContextFunc {
 					return func(ctx context.Context) (context.Context, context.CancelFunc, error) {
@@ -265,17 +459,22 @@ func main() {
 				switch event.Type {
 				case lu.AppStartup:
 					// Clear cache on app start, to avoid issues with generated configs
-					err := runConsoleCommand("cache:clear")
-					if err != nil {
+					if err := runConsoleCommand("cache:clear"); err != nil {
 						log.Error(ctx, errors.Join(errors.New("failed to clear cache"), err))
 					}
 				case lu.AppRunning:
-					time.Sleep(time.Second * 1) // Give enough time for all processes to start and output their logs
-					err := runConsoleCommand("messenger:setup-transports")
-					if err != nil {
+					// time.Sleep(time.Second * 1) // Give enough time for all processes to start and output their logs
+					if err := runConsoleCommand("messenger:setup-transports"); err != nil {
 						log.Error(ctx, errors.Join(errors.New("failed to setup messenger transports"), err))
 					}
-					outputAppInfo()
+					if !skipIntro {
+						outputAppInfo()
+					}
+				case lu.AppTerminating:
+					log.Info(nil, "Application is shutting down...")
+					if err := runConsoleCommand("messenger:stop-workers"); err != nil {
+						log.Error(ctx, errors.Join(errors.New("failed to stop messenger workers"), err))
+					}
 				default:
 				}
 			}
@@ -291,7 +490,14 @@ func main() {
 	runCmd.PersistentFlags().StringVar(&httpPort, "port", defaultPort, "The default port to use for the application. When specifying a domain to use, the port will default to 443")
 	runCmd.PersistentFlags().StringVar(&serverIp, "server-ip", defaultServerIp, "If you have multiple IP addresses on your server, specify the IP address to use. By default, the server will bind to all IP addresses")
 	runCmd.PersistentFlags().BoolVar(&disableHttps, "disable-https", false, "Disable HTTPS. The application will only be accessible using http://. This setting is not recommended, unless you are setting up a reverse proxy which will use https")
+	runCmd.PersistentFlags().BoolVar(&enableLetsEncrypt, "lets-encrypt", false, "Enable Let's Encrypt for automatic SSL certificates (requires --domain)")
+	runCmd.PersistentFlags().StringVar(&sslCertFile, "ssl-cert", "", "Path to custom SSL certificate file (requires --ssl-key and --domain)")
+	runCmd.PersistentFlags().StringVar(&sslKeyFile, "ssl-key", "", "Path to custom SSL private key file (requires --ssl-cert and --domain)")
+	runCmd.PersistentFlags().BoolVar(&enableWorkerMode, "worker-mode", false, "Enable FrankenPHP worker mode for improved performance (keeps PHP workers alive between requests). Recommended for SaaS/high-traffic deployments. Can also be enabled via FRANKENPHP_WORKER_MODE=1 environment variable")
+	runCmd.PersistentFlags().IntVar(&workerThreads, "worker-threads", 2, "Number of FrankenPHP worker threads when worker mode is enabled (default: 2)")
 	runCmd.PersistentFlags().IntVar(&messengerWorkers, "messenger-workers", 1, "Number of messenger worker processes to spawn. Each worker processes async messages independently. Increase this value on high-traffic servers to improve message processing throughput (e.g., --messenger-workers=5)")
+	runCmd.PersistentFlags().StringVar(&logFormat, "log-format", "console", "Log output format: 'json' for structured JSON logs, or 'console' (default) for human-readable console output")
+	runCmd.PersistentFlags().BoolVar(&skipIntro, "log-format", false, "Skip the introductory application info message")
 
 	rootCmd.AddCommand(&cobra.Command{
 		Use:                "version",
@@ -310,19 +516,10 @@ func main() {
 		Short:              "Run the embedded console commands",
 		DisableFlagParsing: true,
 		Run: func(cmd *cobra.Command, args []string) {
+			appPath := os.Getenv("APP_PATH")
 			frankenphp.ExecuteScriptCLI(appPath+"/bin/console", append([]string{"console"}, args...))
 		},
 	})
-
-	err := rootCmd.Execute()
-
-	if err != nil {
-		errStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("9"))
-		fmt.Println(errStyle.Render(err.Error()))
-		os.Exit(1)
-	}
-
-	os.Exit(0)
 }
 
 func wrapInternalCmd(args ...string) lu.Process {
