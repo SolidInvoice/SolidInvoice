@@ -5,35 +5,59 @@
 
 	auto_https {$AUTO_HTTPS:disable_redirects}
 
+	# Logging
+	log {
+		output stdout
+		format {$LOG_FORMAT:console}
+		level {$LOG_LEVEL:INFO}
+	}
+
 	frankenphp {
 		{$FRANKENPHP_CONFIG}
 	}
 }
 
-{$CADDY_EXTRA_CONFIG}
+{$CADDY_EXTRA_CONFIG} 
 
 {$SERVER_NAME} {
 	bind {$SERVER_IP:0.0.0.0}
 
+	root {$APP_PATH}/public
+
+	# Extra directives (for "tls internal" in dev mode)
+	{$CADDY_SERVER_EXTRA_DIRECTIVES}
+
+	# Health check endpoint
+	@health path /health
+	respond @health "OK" 200
+
+	# Basic security headers (for self-hosted deployments)
+	header {
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "SAMEORIGIN"
+		-Permissions-Policy "browsing-topics=()"
+		-Server
+	}
+
+	# Access logging (JSON format for log ingestion)
+	# Note: For sensitive data filtering (headers, query params), configure your
+	# log aggregation system (e.g., Loki, Elasticsearch) to redact sensitive fields
 	log {
 		{$CADDY_SERVER_LOG_OPTIONS}
-		# Redact the authorization query parameter that can be set by Mercure
-		format filter {
-			request>uri query {
-				replace authorization REDACTED
-			}
-		}
-
-		format json {
-			time_key     datetime
-			level_key    level_name
-			message_key  message
-			name_key     channel
-			level_format upper
+		output stdout
+		format {$LOG_FORMAT:console} {
+			time_format iso8601
+			time_key ts
+			level_key level
+			message_key msg
 		}
 	}
 
-	root {$APP_PATH}/public
+	# Static asset caching
+	@static path /css/* /js/* /static/* /images/* /fonts/* /build/* *.ico *.png *.jpg *.svg *.woff *.woff2
+	header @static Cache-Control "public, max-age=31536000, immutable" defer
+
+	# Compression
 	encode zstd br gzip
 
 	#	mercure {
@@ -53,13 +77,9 @@
 
 	#	vulcain
 
-	{$CADDY_SERVER_EXTRA_DIRECTIVES}
-
-	# Disable Topics tracking if not enabled explicitly: https://github.com/jkarlin/topics
-	header ?Permissions-Policy "browsing-topics=()"
-
 	@phpRoute {
 		not path /.well-known/mercure*
+		not path /health
 		not file {path}
 	}
 	rewrite @phpRoute index.php
@@ -68,6 +88,6 @@
 	php @frontController
 
 	file_server {
-		hide *.php
+		hide .env* .git* .php* composer.* package.json *.lock
 	}
 }

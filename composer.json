@@ -71,6 +71,7 @@
         "php-http/message-factory": "^1.1",
         "ramsey/uuid": "^4.0",
         "ramsey/uuid-doctrine": "^2.0",
+        "runtime/frankenphp-symfony": "^1.0",
         "sentry/sentry-symfony": "^5.0",
         "solidworx/platform": "dev-main",
         "solidworx/toggler": "2.0.0-beta2",
