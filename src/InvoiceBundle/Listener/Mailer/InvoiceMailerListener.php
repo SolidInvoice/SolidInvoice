@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Listener\Mailer;
 
+use Psr\Log\LoggerInterface;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvent;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 
 /**
@@ -25,7 +27,8 @@ use Symfony\Component\Mailer\MailerInterface;
 class InvoiceMailerListener implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly MailerInterface $mailer
+        private readonly MailerInterface $mailer,
+        private readonly LoggerInterface $logger,
     ) {
     }
 
@@ -38,6 +41,13 @@ class InvoiceMailerListener implements EventSubscriberInterface
 
     public function onInvoiceAccepted(InvoiceEvent $event): void
     {
-        $this->mailer->send(new InvoiceEmail($event->getInvoice()));
+        try {
+            $this->mailer->send(new InvoiceEmail($event->getInvoice()));
+        } catch (TransportExceptionInterface $e) {
+            $this->logger->error('Failed to send invoice email: ' . $e->getMessage(), [
+                'exception' => $e,
+                'invoiceId' => $event->getInvoice()->getId(),
+            ]);
+        }
     }
 }
