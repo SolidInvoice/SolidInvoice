@@ -94,7 +94,8 @@ final class Request extends AbstractController
                 'exception' => $e,
             ]);
 
-            // Still redirect to check-email page to not reveal whether a user exists
+            $this->addFlash('error', 'Failed to send email. Please verify the email configuration and try again.');
+
             return $this->redirectToRoute('_user_forgot_password_check_email');
         }
 
