@@ -21,6 +21,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request as SfRequest;
 use Symfony\Component\HttpFoundation\Response;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
@@ -34,6 +36,7 @@ final class Request extends AbstractController
         private readonly ResetPasswordHelperInterface $resetPasswordHelper,
         private readonly EntityManagerInterface $entityManager,
         private readonly MailerInterface $mailer,
+        private readonly LoggerInterface $logger,
     ) {
     }
 
@@ -84,7 +87,16 @@ final class Request extends AbstractController
             return $this->redirectToRoute('_user_forgot_password_check_email');
         }
 
-        $this->mailer->send(new ResetPasswordEmail($user, $resetToken));
+        try {
+            $this->mailer->send(new ResetPasswordEmail($user, $resetToken));
+        } catch (TransportExceptionInterface $e) {
+            $this->logger->error('Failed to send password reset email: ' . $e->getMessage(), [
+                'exception' => $e,
+            ]);
+
+            // Still redirect to check-email page to not reveal whether a user exists
+            return $this->redirectToRoute('_user_forgot_password_check_email');
+        }
 
         // Store the token object in session for retrieval in check-email route.
         $this->setTokenObjectInSession($resetToken);
