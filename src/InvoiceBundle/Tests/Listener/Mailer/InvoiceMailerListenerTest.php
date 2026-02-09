@@ -23,6 +23,10 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvent;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvents;
 use SolidInvoice\InvoiceBundle\Listener\Mailer\InvoiceMailerListener;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Mailer\Exception\TransportException;
 use Symfony\Component\Mailer\MailerInterface;
 
@@ -36,8 +40,9 @@ class InvoiceMailerListenerTest extends TestCase
 
         $mailer = M::spy(MailerInterface::class);
         $logger = M::spy(LoggerInterface::class);
+        $requestStack = new RequestStack();
 
-        $listener = new InvoiceMailerListener($mailer, $logger);
+        $listener = new InvoiceMailerListener($mailer, $logger, $requestStack);
 
         $invoice->addUser((new Contact())->setEmail('another@example.com')->setFirstName('Another'));
         $listener->onInvoiceAccepted(new InvoiceEvent($invoice));
@@ -56,7 +61,17 @@ class InvoiceMailerListenerTest extends TestCase
 
         $logger = M::spy(LoggerInterface::class);
 
-        $listener = new InvoiceMailerListener($mailer, $logger);
+        $flashBag = new FlashBag();
+        $session = $this->createMock(Session::class);
+        $session->method('getFlashBag')->willReturn($flashBag);
+
+        $request = new Request();
+        $request->setSession($session);
+
+        $requestStack = new RequestStack();
+        $requestStack->push($request);
+
+        $listener = new InvoiceMailerListener($mailer, $logger, $requestStack);
 
         $invoice->addUser((new Contact())->setEmail('another@example.com')->setFirstName('Another'));
 
@@ -65,6 +80,8 @@ class InvoiceMailerListenerTest extends TestCase
 
         $logger->shouldHaveReceived('error')
             ->with(M::pattern('/Failed to send invoice email/'), M::type('array'));
+
+        self::assertNotEmpty($flashBag->get('error'));
     }
 
     public function testEvents(): void

@@ -18,6 +18,9 @@ use SolidInvoice\QuoteBundle\Email\QuoteEmail;
 use SolidInvoice\QuoteBundle\Event\QuoteEvent;
 use SolidInvoice\QuoteBundle\Event\QuoteEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Exception\SessionNotFoundException;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 
@@ -29,6 +32,7 @@ class QuoteMailerListener implements EventSubscriberInterface
     public function __construct(
         private readonly MailerInterface $mailer,
         private readonly LoggerInterface $logger,
+        private readonly RequestStack $requestStack,
     ) {
     }
 
@@ -48,6 +52,21 @@ class QuoteMailerListener implements EventSubscriberInterface
                 'exception' => $e,
                 'quoteId' => $event->getQuote()->getId(),
             ]);
+
+            $this->addFlashError('Failed to send quote email. Please verify your email configuration in Settings.');
+        }
+    }
+
+    private function addFlashError(string $message): void
+    {
+        try {
+            $session = $this->requestStack->getSession();
+        } catch (SessionNotFoundException) {
+            return;
+        }
+
+        if ($session instanceof Session) {
+            $session->getFlashBag()->add('error', $message);
         }
     }
 }
