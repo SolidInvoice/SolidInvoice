@@ -1,4 +1,5 @@
 client:
+    name: 'Client Name'
     create:
         success: 'Client Successfully Saved!'
     confirm_delete: 'Are you sure you want to delete this client?'
@@ -157,5 +158,8 @@ client_create: 'Create Client'
 add_info: 'Add Info'
 required: 'Required'
 optional: 'Optional'
-contact: 'Contact'
+contact:
+    firstName: 'First Name'
+    lastName: 'Last Name'
+    email: 'Email'
 address: 'Address'
