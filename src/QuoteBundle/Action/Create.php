@@ -18,9 +18,12 @@ use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
+use SolidInvoice\QuoteBundle\DTO\QuoteFormDTO;
 use SolidInvoice\QuoteBundle\Entity\Line;
 use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\QuoteBundle\Enum\QuoteClientMode;
 use SolidInvoice\QuoteBundle\Form\Type\QuoteType;
+use SolidInvoice\QuoteBundle\Manager\QuoteFormManager;
 use SolidInvoice\QuoteBundle\Model\Graph;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -40,6 +43,7 @@ final class Create extends AbstractController
         private readonly WorkflowInterface $quoteStateMachine,
         private readonly ManagerRegistry $doctrine,
         private readonly TotalCalculator $totalCalculator,
+        private readonly QuoteFormManager $formManager,
     ) {
     }
 
@@ -49,32 +53,35 @@ final class Create extends AbstractController
     public function __invoke(Request $request, ?Client $client = null): Response
     {
         $totalClientsCount = $this->repository->getTotalClients();
-        if (0 === $totalClientsCount) {
-            return $this->render('@SolidInvoiceQuote/Default/empty_clients.html.twig');
-        }
-
-        $quote = new Quote();
-        $quote->setClient($client);
-        $quote->addLine(new Line());
-
         if (1 === $totalClientsCount && ! $client instanceof Client) {
             $client = $this->repository->findOneBy([]);
-            $quote->setClient($client);
         }
 
-        // Auto-select all client contacts
-        if ($client instanceof Client) {
-            foreach ($client->getContacts() as $contact) {
-                $quote->addUser($contact);
-            }
-        }
+        // Create DTO instead of entity
+        $dto = new QuoteFormDTO();
+
+        // Set client mode based on client count
+        $dto->clientMode = $totalClientsCount > 0 ? QuoteClientMode::Existing : QuoteClientMode::NewClient;
+
+        // Set client if provided
+        $dto->client = $client;
+
+        // Add one empty line item by default
+        $dto->lines->add(new Line());
+
+        // Contact auto-selection is handled by the LiveComponent's initializeContacts() hook
 
         $formOptions = $client instanceof Client ? ['currency' => $client->getCurrency()] : [];
-        $form = $this->createForm(QuoteType::class, $quote, $formOptions);
+        $form = $this->createForm(QuoteType::class, $dto, $formOptions);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $action = $request->request->get('save');
+
+            // Convert DTO to Quote entity
+            // If clientMode=New, manager creates unpersisted client
+            // Client will be persisted via cascade when quote is saved
+            $quote = $this->formManager->createQuoteFromDTO($dto);
 
             if (! $quote->getId() instanceof Ulid) {
                 $this->quoteStateMachine->apply($quote, Graph::TRANSITION_NEW);
@@ -102,11 +109,16 @@ final class Create extends AbstractController
         }
 
         if ($form->isSubmitted() && ! $form->isValid()) {
-            $this->totalCalculator->calculateTotals($quote);
+            // Recalculate totals on validation failure
+            $tempQuote = $this->formManager->createQuoteFromDTO($dto);
+            $this->totalCalculator->calculateTotals($tempQuote);
+            $dto->total = (string) $tempQuote->getTotal();
+            $dto->baseTotal = (string) $tempQuote->getBaseTotal();
+            $dto->tax = (string) $tempQuote->getTax();
         }
 
         return $this->render('@SolidInvoiceQuote/Default/create.html.twig', [
-            'quote' => $quote,
+            'dto' => $dto,
             'form' => $form,
         ]);
     }

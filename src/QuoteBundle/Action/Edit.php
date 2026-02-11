@@ -16,8 +16,10 @@ namespace SolidInvoice\QuoteBundle\Action;
 use Brick\Math\Exception\MathException;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
+use SolidInvoice\QuoteBundle\DTO\QuoteFormDTO;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Form\Type\QuoteType;
+use SolidInvoice\QuoteBundle\Manager\QuoteFormManager;
 use SolidInvoice\QuoteBundle\Model\Graph;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -38,11 +40,12 @@ final class Edit
         private readonly WorkflowInterface $quoteStateMachine,
         private readonly ManagerRegistry $doctrine,
         private readonly TotalCalculator $totalCalculator,
+        private readonly QuoteFormManager $formManager,
     ) {
     }
 
     /**
-     * @return array{form: FormView, quote: Quote}|Response
+     * @return array{form: FormView, dto: QuoteFormDTO, quote: Quote}|Response
      * @throws MathException
      */
     #[Template('@SolidInvoiceQuote/Default/edit.html.twig')]
@@ -54,11 +57,17 @@ final class Edit
             $formOptions['currency'] = $client->getCurrency();
         }
 
-        $form = $this->formFactory->create(QuoteType::class, $quote, $formOptions);
+        // Convert Quote entity to DTO for editing
+        $dto = $this->formManager->createDTOFromQuote($quote);
+
+        $form = $this->formFactory->create(QuoteType::class, $dto, $formOptions);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $action = $request->request->get('save');
+
+            // Update Quote from DTO
+            $this->formManager->updateQuoteFromDTO($quote, $dto);
 
             // Send the quote (publish and notify client)
             if ('send' === $action) {
@@ -80,11 +89,17 @@ final class Edit
         }
 
         if ($form->isSubmitted() && ! $form->isValid()) {
-            $this->totalCalculator->calculateTotals($quote);
+            // Recalculate totals on validation failure
+            $tempQuote = $this->formManager->createQuoteFromDTO($dto);
+            $this->totalCalculator->calculateTotals($tempQuote);
+            $dto->total = (string) $tempQuote->getTotal();
+            $dto->baseTotal = (string) $tempQuote->getBaseTotal();
+            $dto->tax = (string) $tempQuote->getTax();
         }
 
         return [
             'form' => $form->createView(),
+            'dto' => $dto,
             'quote' => $quote,
         ];
     }

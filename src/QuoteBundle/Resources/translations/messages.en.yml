@@ -95,6 +95,12 @@ quote:
         choose: 'Choose a client'
         empty: 'You have not created any clients yet.'
         create: 'Please add one now'
+        mode:
+            existing: 'Select existing client'
+            new: 'Create new client'
+        create_new: 'New Client Details'
+        inline:
+            currency_note: 'The system default currency will be used for this client.'
     transition:
         exception:
             accept: 'Quote cannot be accepted'

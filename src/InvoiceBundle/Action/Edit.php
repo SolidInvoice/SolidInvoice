@@ -16,9 +16,11 @@ namespace SolidInvoice\InvoiceBundle\Action;
 use Brick\Math\Exception\MathException;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
+use SolidInvoice\InvoiceBundle\DTO\InvoiceFormDTO;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Form\Type\InvoiceType;
+use SolidInvoice\InvoiceBundle\Manager\InvoiceFormManager;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -41,11 +43,12 @@ final class Edit
         private readonly ManagerRegistry $doctrine,
         private readonly MailerInterface $mailer,
         private readonly TotalCalculator $totalCalculator,
+        private readonly InvoiceFormManager $formManager,
     ) {
     }
 
     /**
-     * @return array{recurring: bool, form: FormView, invoice: Invoice}|Response
+     * @return array{recurring: bool, form: FormView, dto: InvoiceFormDTO, invoice: Invoice}|Response
      * @throws MathException
      */
     #[Template('@SolidInvoiceInvoice/Default/edit.html.twig')]
@@ -68,13 +71,19 @@ final class Edit
             return new RedirectResponse($this->router->generate('_invoices_index'));
         }
 
-        $form = $this->formFactory->create(InvoiceType::class, $invoice, [
+        // Convert Invoice entity to DTO for editing
+        $dto = $this->formManager->createDTOFromInvoice($invoice);
+
+        $form = $this->formFactory->create(InvoiceType::class, $dto, [
             'currency' => $client->getCurrency(),
         ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $action = $request->request->get('save');
+
+            // Update Invoice from DTO
+            $this->formManager->updateInvoiceFromDTO($invoice, $dto);
 
             // Publish the invoice if the action is 'send' or 'publish'
             if ('send' === $action || 'publish' === $action) {
@@ -96,12 +105,18 @@ final class Edit
         }
 
         if ($form->isSubmitted() && ! $form->isValid()) {
-            $this->totalCalculator->calculateTotals($invoice);
+            // Recalculate totals on validation failure
+            $tempInvoice = $this->formManager->createInvoiceFromDTO($dto);
+            $this->totalCalculator->calculateTotals($tempInvoice);
+            $dto->total = (string) $tempInvoice->getTotal();
+            $dto->baseTotal = (string) $tempInvoice->getBaseTotal();
+            $dto->tax = (string) $tempInvoice->getTax();
         }
 
         return [
             'recurring' => false,
             'form' => $form->createView(),
+            'dto' => $dto,
             'invoice' => $invoice,
         ];
     }

@@ -368,7 +368,7 @@ class Quote
         return $this->due;
     }
 
-    public function setDue(DateTimeInterface $due): self
+    public function setDue(?DateTimeInterface $due): self
     {
         $this->due = $due;
         return $this;

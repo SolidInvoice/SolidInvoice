@@ -14,14 +14,18 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Action;
 
 use Brick\Math\Exception\MathException;
+use DateTimeImmutable;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
+use SolidInvoice\InvoiceBundle\DTO\InvoiceFormDTO;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceClientMode;
 use SolidInvoice\InvoiceBundle\Form\Type\InvoiceType;
+use SolidInvoice\InvoiceBundle\Manager\InvoiceFormManager;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -43,6 +47,7 @@ final class Create extends AbstractController
         private readonly ManagerRegistry $doctrine,
         private readonly MailerInterface $mailer,
         private readonly TotalCalculator $totalCalculator,
+        private readonly InvoiceFormManager $formManager,
     ) {
     }
 
@@ -52,30 +57,39 @@ final class Create extends AbstractController
     public function __invoke(Request $request, ?Client $client = null): Response
     {
         $totalClientsCount = $this->clientRepository->getTotalClients();
-        if (0 === $totalClientsCount) {
-            return $this->render('@SolidInvoiceInvoice/Default/empty_clients.html.twig');
-        }
         if (1 === $totalClientsCount && ! $client instanceof Client) {
             $client = $this->clientRepository->findOneBy([]);
         }
 
-        $invoice = new Invoice();
-        $invoice->setClient($client);
-        $invoice->addLine(new Line());
+        // Create DTO instead of entity
+        $dto = new InvoiceFormDTO();
 
-        // Auto-select all client contacts
-        if ($client instanceof Client) {
-            foreach ($client->getContacts() as $contact) {
-                $invoice->addUser($contact);
-            }
-        }
+        // Set client mode based on client count
+        $dto->clientMode = $totalClientsCount > 0 ? InvoiceClientMode::Existing : InvoiceClientMode::NewClient;
+
+        // Set client if provided
+        $dto->client = $client;
+
+        // Set default invoice date to today
+        $dto->invoiceDate = new DateTimeImmutable();
+
+        // Add one empty line item by default
+        $dto->lines->add(new Line());
+
+        // Contact auto-selection is handled by the LiveComponent's initializeContacts() hook
 
         $formOptions = $client instanceof Client ? ['currency' => $client->getCurrency()] : [];
-        $form = $this->createForm(InvoiceType::class, $invoice, $formOptions);
+
+        $form = $this->createForm(InvoiceType::class, $dto, $formOptions);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $action = $request->request->get('save');
+
+            // Convert DTO to Invoice entity
+            // If clientMode=New, manager creates unpersisted client
+            // Client will be persisted via cascade when invoice is saved
+            $invoice = $this->formManager->createInvoiceFromDTO($dto);
 
             if (! $invoice->getId() instanceof Ulid) {
                 $this->invoiceStateMachine->apply($invoice, Graph::TRANSITION_NEW);
@@ -103,11 +117,16 @@ final class Create extends AbstractController
         }
 
         if ($form->isSubmitted() && ! $form->isValid()) {
-            $this->totalCalculator->calculateTotals($invoice);
+            // Recalculate totals on validation failure
+            $tempInvoice = $this->formManager->createInvoiceFromDTO($dto);
+            $this->totalCalculator->calculateTotals($tempInvoice);
+            $dto->total = (string) $tempInvoice->getTotal();
+            $dto->baseTotal = (string) $tempInvoice->getBaseTotal();
+            $dto->tax = (string) $tempInvoice->getTax();
         }
 
         return $this->render('@SolidInvoiceInvoice/Default/create.html.twig', [
-            'invoice' => $invoice,
+            'dto' => $dto,
             'form' => $form,
             'recurring' => false,
         ]);
