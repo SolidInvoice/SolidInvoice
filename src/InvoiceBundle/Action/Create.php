@@ -118,11 +118,15 @@ final class Create extends AbstractController
 
         if ($form->isSubmitted() && ! $form->isValid()) {
             // Recalculate totals on validation failure
-            $tempInvoice = $this->formManager->createInvoiceFromDTO($dto);
-            $this->totalCalculator->calculateTotals($tempInvoice);
-            $dto->total = (string) $tempInvoice->getTotal();
-            $dto->baseTotal = (string) $tempInvoice->getBaseTotal();
-            $dto->tax = (string) $tempInvoice->getTax();
+            try {
+                $tempInvoice = $this->formManager->createInvoiceFromDTO($dto);
+                $this->totalCalculator->calculateTotals($tempInvoice);
+                $dto->total = (string) $tempInvoice->getTotal();
+                $dto->baseTotal = (string) $tempInvoice->getBaseTotal();
+                $dto->tax = (string) $tempInvoice->getTax();
+            } catch (\InvalidArgumentException) {
+                // Client data incomplete — keep DTO totals as-is
+            }
         }
 
         return $this->render('@SolidInvoiceInvoice/Default/create.html.twig', [

@@ -49,7 +49,7 @@ final class CreateQuote extends AbstractController
 
     public QuoteFormDTO $dto;
 
-    #[LiveProp(writable: true)]
+    #[LiveProp(writable: false)]
     public bool $isEdit = false;
 
     #[LiveProp(writable: true)]

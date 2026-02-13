@@ -51,7 +51,7 @@ final class CreateInvoice extends AbstractController
 
     public InvoiceFormDTO $dto;
 
-    #[LiveProp(writable: true)]
+    #[LiveProp(writable: false)]
     public bool $isEdit = false;
 
     #[LiveProp(writable: true)]

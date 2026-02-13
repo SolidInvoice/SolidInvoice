@@ -94,7 +94,7 @@ class QuoteType extends AbstractType
                     TextType::class,
                     [
                         'label' => 'client.name',
-                        'attr' => ['sanitize_html' => true, 'allow_single_quotes' => true],
+                        'allow_single_quotes' => true,
                     ]
                 );
             }
@@ -106,7 +106,7 @@ class QuoteType extends AbstractType
                     TextType::class,
                     [
                         'label' => 'contact.firstName',
-                        'attr' => ['sanitize_html' => true, 'allow_single_quotes' => true],
+                        'allow_single_quotes' => true,
                     ]
                 );
             }
@@ -119,7 +119,7 @@ class QuoteType extends AbstractType
                     [
                         'label' => 'contact.lastName',
                         'required' => false,
-                        'attr' => ['sanitize_html' => true, 'allow_single_quotes' => true],
+                        'allow_single_quotes' => true,
                     ]
                 );
             }
