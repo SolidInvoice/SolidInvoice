@@ -19,6 +19,7 @@ use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Uid\Ulid;
@@ -39,15 +40,15 @@ final class Version30000_4 extends AbstractMigration
     {
         $table = $schema->createTable('invoice_reminders');
 
-        $table->addColumn('id', Types::BINARY, ['length' => 16, 'fixed' => true]);
-        $table->addColumn('invoice_id', Types::BINARY, ['length' => 16, 'fixed' => true]);
-        $table->addColumn('company_id', Types::BINARY, ['length' => 16, 'fixed' => true]);
+        $table->addColumn('id', UlidType::NAME);
+        $table->addColumn('invoice_id', UlidType::NAME);
+        $table->addColumn('company_id', UlidType::NAME);
         $table->addColumn('reminder_type', Types::STRING, ['length' => 20]);
         $table->addColumn('sent_at', Types::DATETIME_IMMUTABLE, [ 'notnull' => false]);
-        $table->addColumn('status', 'string', ['length' => 50, 'notnull' => true, 'default' => 'sent']);
+        $table->addColumn('status', 'string', ['length' => 20, 'notnull' => true]);
         $table->addColumn('failure_reason', 'text', ['notnull' => false]);
-        $table->addColumn('created', Types::DATETIME_IMMUTABLE);
-        $table->addColumn('updated', Types::DATETIME_IMMUTABLE);
+        $table->addColumn('created', Types::DATETIME_MUTABLE);
+        $table->addColumn('updated', Types::DATETIME_MUTABLE);
 
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['company_id', 'invoice_id', 'reminder_type']);
@@ -63,7 +64,6 @@ final class Version30000_4 extends AbstractMigration
             'companies',
             ['company_id'],
             ['id'],
-            ['onDelete' => 'CASCADE'],
         );
     }
 

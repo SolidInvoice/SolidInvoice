@@ -40,12 +40,12 @@ final class Version30000_1 extends AbstractMigration
         $userSettingsTable->addColumn('user_id', UlidType::NAME, ['notnull' => true]);
         $userSettingsTable->addColumn('setting_key', Types::STRING, ['length' => 125, 'notnull' => true]);
         $userSettingsTable->addColumn('setting_value', Types::TEXT, ['notnull' => false]);
-        $userSettingsTable->addColumn('created', Types::DATETIME_MUTABLE, ['notnull' => false]);
-        $userSettingsTable->addColumn('updated', Types::DATETIME_MUTABLE, ['notnull' => false]);
+        $userSettingsTable->addColumn('created', Types::DATETIME_MUTABLE, ['notnull' => true]);
+        $userSettingsTable->addColumn('updated', Types::DATETIME_MUTABLE, ['notnull' => true]);
 
         $userSettingsTable->setPrimaryKey(['id']);
-        $userSettingsTable->addUniqueIndex(['setting_key', 'user_id'], 'unique_user_setting');
-        $userSettingsTable->addForeignKeyConstraint('users', ['user_id'], ['id'], ['onDelete' => 'CASCADE']);
+        $userSettingsTable->addUniqueIndex(['setting_key', 'user_id']);
+        $userSettingsTable->addForeignKeyConstraint('users', ['user_id'], ['id']);
     }
 
     public function down(Schema $schema): void
