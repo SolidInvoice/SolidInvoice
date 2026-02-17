@@ -45,8 +45,8 @@ final class Version30000_4 extends AbstractMigration
         $table->addColumn('company_id', UlidType::NAME);
         $table->addColumn('reminder_type', Types::STRING, ['length' => 20]);
         $table->addColumn('sent_at', Types::DATETIME_IMMUTABLE, [ 'notnull' => false]);
-        $table->addColumn('status', 'string', ['length' => 20, 'notnull' => true]);
-        $table->addColumn('failure_reason', 'text', ['notnull' => false]);
+        $table->addColumn('status', Types::STRING, ['length' => 20, 'notnull' => true]);
+        $table->addColumn('failure_reason', Types::TEXT, ['notnull' => false]);
         $table->addColumn('created', Types::DATETIME_MUTABLE);
         $table->addColumn('updated', Types::DATETIME_MUTABLE);
 
