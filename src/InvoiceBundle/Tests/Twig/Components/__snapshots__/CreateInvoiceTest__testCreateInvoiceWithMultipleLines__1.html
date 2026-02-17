@@ -1,5 +1,5 @@
 <html><body>
-<div class="billing-form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="CreateInvoice" data-live-url-value="/_components/CreateInvoice" data-live-props-value='{"formData":[],"isEdit":false,"previousClientId":null,"formName":"invoice","invoice":{"client":"","discount":{"type":"percentage","value":0},"lines":[{"description":"","price":"100.00","qty":"1"},{"description":"","price":"100.00","qty":"1"}],"invoiceId":"1","terms":"","notes":"","total":0,"baseTotal":0,"tax":0,"invoiceDate":"2021-01-01","due":"","__dynamic_error":"","_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
+<div class="billing-form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="CreateInvoice" data-live-url-value="/_components/CreateInvoice" data-live-props-value='{"isEdit":false,"previousClientId":null,"formName":"invoice","invoice":{"clientMode":"existing","discount":{"type":"","value":0},"lines":[{"description":"","price":"100.00","qty":"1"},{"description":"","price":"100.00","qty":"1"}],"invoiceId":"1","terms":"","notes":"","total":0,"baseTotal":0,"tax":0,"invoiceDate":"2021-01-01","due":"","__dynamic_error":"","client":"","_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
     
     <form name="invoice" method="post" data-model="on(change)|*">
 
@@ -20,13 +20,29 @@
             <div class="billing-details-grid">
                                 <div class="billing-details-left">
                                         <div class="client-selection">
-                        <div>
-                            <div class="mb-3">                        
+                                                <div class="client-mode-toggle mb-3 d-none">
+                            <fieldset class="mb-3">                
+                                        <label class="control-label required form-label required" for="invoice_clientMode">Client mode</label><div id="invoice_clientMode" data-controller="symfony--ux-autocomplete--autocomplete" data-symfony--ux-autocomplete--autocomplete-max-results-value="10" data-symfony--ux-autocomplete--autocomplete-loading-more-text-value="Loading more results..." data-symfony--ux-autocomplete--autocomplete-no-results-found-text-value="No results found" data-symfony--ux-autocomplete--autocomplete-no-more-results-text-value="No more results" data-symfony--ux-autocomplete--autocomplete-create-option-text-value="Add %placeholder%..." data-symfony--ux-autocomplete--autocomplete-preload-value="focus" class="d-flex gap-2">
+<div class="form-check">
+<input type="radio" id="invoice_clientMode_0" name="invoice[clientMode]" data-required="required" data-action="live#$render" class="form-check-input" value="existing" checked>
+        <label class="form-check-label required" for="invoice_clientMode_0">Existing</label>
+</div>
+<div class="form-check">
+<input type="radio" id="invoice_clientMode_1" name="invoice[clientMode]" data-required="required" data-action="live#$render" class="form-check-input" value="new">
+        <label class="form-check-label required" for="invoice_clientMode_1">NewClient</label>
+</div>
+</div>
+</fieldset>
+                        </div>
+
+                        
+                                                                                <div>
+                                                                    <div class="mb-3">                        
                                 <label class="control-label required form-label required" for="invoice_client">Client</label>
             <select id="invoice_client" name="invoice[client]" data-required="required" data-controller="symfony--ux-autocomplete--autocomplete" data-symfony--ux-autocomplete--autocomplete-url-value="/autocomplete/client_autocomplete_type" data-symfony--ux-autocomplete--autocomplete-max-results-value="10" data-symfony--ux-autocomplete--autocomplete-loading-more-text-value="Loading more results..." data-symfony--ux-autocomplete--autocomplete-no-results-found-text-value="No results found" data-symfony--ux-autocomplete--autocomplete-no-more-results-text-value="No more results" data-symfony--ux-autocomplete--autocomplete-create-option-text-value="Add %placeholder%..." data-symfony--ux-autocomplete--autocomplete-preload-value="focus" data-action="live#$render" class="form-select"><option value="" selected>Choose a client</option></select>
     </div>
-                        </div>
-                                            </div>
+                                                            </div>
+                                                                        </div>
 
                                         <div data-controller="billing-id">
                         <span data-billing-id-target="info">
@@ -43,7 +59,7 @@
                                             
                                 <label class="control-label required form-label required" for="invoice_invoiceId">Invoice id</label>
                             <div class="input-group">
-                                <input type="text" id="invoice_invoiceId" name="invoice[invoiceId]" data-required="required" maxlength="255" class="form-control form-control" value="1">
+                                <input type="text" id="invoice_invoiceId" name="invoice[invoiceId]" data-required="required" class="form-control form-control" value="1">
                                 <button class="btn btn-outline-primary" type="button" data-action="billing-id#save" aria-label="Save invoice ID" title="Save">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m5 12l5 5L20 7"></path></svg>
                                 </button>
@@ -67,7 +83,7 @@
                         <label for="invoice_discount_value">Discount</label>
     <div class="mb-3 multiple-form-group input-group">
         <input type="text" id="invoice_discount_value" name="invoice[discount][value]" class="discount-value form-control" value="0">
-        <select id="invoice_discount_type" name="invoice[discount][type]" class="discount-type form-select" data-controller="symfony--ux-autocomplete--autocomplete" data-symfony--ux-autocomplete--autocomplete-max-results-value="10" data-symfony--ux-autocomplete--autocomplete-loading-more-text-value="Loading more results..." data-symfony--ux-autocomplete--autocomplete-no-results-found-text-value="No results found" data-symfony--ux-autocomplete--autocomplete-no-more-results-text-value="No more results" data-symfony--ux-autocomplete--autocomplete-create-option-text-value="Add %placeholder%..." data-symfony--ux-autocomplete--autocomplete-preload-value="focus"><option value="percentage" selected>%</option>
+        <select id="invoice_discount_type" name="invoice[discount][type]" class="discount-type form-select" data-controller="symfony--ux-autocomplete--autocomplete" data-symfony--ux-autocomplete--autocomplete-max-results-value="10" data-symfony--ux-autocomplete--autocomplete-loading-more-text-value="Loading more results..." data-symfony--ux-autocomplete--autocomplete-no-results-found-text-value="No results found" data-symfony--ux-autocomplete--autocomplete-no-more-results-text-value="No more results" data-symfony--ux-autocomplete--autocomplete-create-option-text-value="Add %placeholder%..." data-symfony--ux-autocomplete--autocomplete-preload-value="focus"><option value="percentage">%</option>
 <option value="money">USD</option></select>
     </div>
 
@@ -114,7 +130,7 @@
                                     </div>
                                                                         <div class="column-total">
                                         <span class="mobile-label">Total</span>
-                                        <span class="item-total-value">$100.00</span>
+                                        <span class="item-total-value">$0.00</span>
                                     </div>
                                     <div class="column-actions">
                                                                                     <button type="button" id="invoice_lines_0_delete" name="invoice[lines][0][delete]" data-action="live#action" data-live-action-param="removeCollectionItem" data-live-name-param="invoice[lines]" data-live-index-param="0" class="remove-item-btn btn" title="Remove Item" aria-label="Remove Item"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16m-10 4v6m4-6v6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"></path></svg></button>
@@ -140,7 +156,7 @@
                                     </div>
                                                                         <div class="column-total">
                                         <span class="mobile-label">Total</span>
-                                        <span class="item-total-value">$100.00</span>
+                                        <span class="item-total-value">$0.00</span>
                                     </div>
                                     <div class="column-actions">
                                                                                     <button type="button" id="invoice_lines_1_delete" name="invoice[lines][1][delete]" data-action="live#action" data-live-action-param="removeCollectionItem" data-live-name-param="invoice[lines]" data-live-index-param="1" class="remove-item-btn btn" title="Remove Item" aria-label="Remove Item"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16m-10 4v6m4-6v6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"></path></svg></button>
@@ -166,7 +182,7 @@
                     <div class="billing-totals-body">
                         <div class="totals-row">
                             <span class="totals-label">SubTotal</span>
-                            <span class="totals-value">$200.00</span>
+                            <span class="totals-value">$0.00</span>
                         </div>
 
                         
@@ -177,7 +193,7 @@
 
                         <div class="totals-row totals-row-total">
                             <span class="totals-label">Total</span>
-                            <span class="totals-value">$200.00</span>
+                            <span class="totals-value">$0.00</span>
                         </div>
                     </div>
                 </div>
@@ -197,10 +213,10 @@
             <div class="terms-content">
                 <div class="terms-grid">
                     <div class="mb-3">                
-            <label class="control-label form-label" for="invoice_terms">Terms</label><textarea id="invoice_terms" name="invoice[terms]" class="form-control"></textarea>
+            <label class="control-label form-label" for="invoice_terms">Terms</label><input type="text" id="invoice_terms" name="invoice[terms]" class="form-control">
 </div>
                     <div class="mb-3">                
-            <label class="control-label form-label" for="invoice_notes">Notes</label><textarea id="invoice_notes" name="invoice[notes]" aria-describedby="invoice_notes_help" class="form-control"></textarea><div class="form-text text-muted mb-0" id="invoice_notes_help">Notes will not be visible to the client</div>
+            <label class="control-label form-label" for="invoice_notes">Notes</label><input type="text" id="invoice_notes" name="invoice[notes]" aria-describedby="invoice_notes_help" class="form-control"><div class="form-text text-muted mb-0" id="invoice_notes_help">Notes will not be visible to the client</div>
 </div>
                 </div>
             </div>
@@ -218,7 +234,7 @@
                 </a>
 
                 <div class="btn-group save-button-group">
-                                            <button type="submit" class="btn btn-primary btn-save-primary" name="save" value="draft">
+                                            <button type="button" class="btn btn-primary btn-save-primary" data-action="live#action:prevent" data-live-action-param="saveDraft">
                             <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M6 4h10l4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2"></path><path d="M10 14a2 2 0 1 0 4 0a2 2 0 1 0-4 0m4-10v4H8V4"></path></g></svg>
                             Save as Draft
                         </button>
@@ -227,13 +243,13 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li>
-                                <button type="submit" class="dropdown-item" name="save" value="publish">
+                                <button type="button" class="dropdown-item" data-action="live#action:prevent" data-live-action-param="savePublish">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m5 12l5 5L20 7"></path></svg>
                                     Publish
                                 </button>
                             </li>
                             <li>
-                                <button type="submit" class="dropdown-item" name="save" value="send">
+                                <button type="button" class="dropdown-item" data-action="live#action:prevent" data-live-action-param="saveSend">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14L21 3m0 0l-6.5 18a.55.55 0 0 1-1 0L10 14l-7-3.5a.55.55 0 0 1 0-1z"></path></svg>
                                     Save and Send
                                 </button>

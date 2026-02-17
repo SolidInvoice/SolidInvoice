@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -16,7 +18,7 @@ use DateTimeImmutable;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
 use SolidInvoice\CoreBundle\Test\LiveComponentTest;
-use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\DTO\InvoiceFormDTO;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Twig\Components\CreateInvoice;
 use SolidInvoice\TaxBundle\Entity\Tax;
@@ -29,11 +31,12 @@ final class CreateInvoiceTest extends LiveComponentTest
 
     public function testCreateInvoice(): void
     {
+        $dto = new InvoiceFormDTO();
+        $dto->invoiceDate = new DateTimeImmutable('2021-01-01');
+
         $component = $this->createLiveComponent(
             name: CreateInvoice::class,
-            data: [
-                'invoice' => (new Invoice())->setInvoiceDate(new DateTimeImmutable('2021-01-01')),
-            ]
+            data: ['dto' => $dto]
         )->actingAs($this->getUser());
 
         $this->assertMatchesHtmlSnapshot($this->replaceChecksum($component->render()->toString()));
@@ -44,15 +47,14 @@ final class CreateInvoiceTest extends LiveComponentTest
      */
     public function testCreateInvoiceWithMultipleLines(): void
     {
-        $invoice = (new Invoice())->setInvoiceDate(new DateTimeImmutable('2021-01-01'));
-        $invoice->addLine((new Line())->setPrice(10000)->setQty(1))->updateLines();
-        $invoice->addLine((new Line())->setPrice(10000)->setQty(1))->updateLines();
+        $dto = new InvoiceFormDTO();
+        $dto->invoiceDate = new DateTimeImmutable('2021-01-01');
+        $dto->lines->add((new Line())->setPrice(10000)->setQty(1));
+        $dto->lines->add((new Line())->setPrice(10000)->setQty(1));
 
         $component = $this->createLiveComponent(
             name: CreateInvoice::class,
-            data: [
-                'invoice' => $invoice,
-            ]
+            data: ['dto' => $dto]
         )->actingAs($this->getUser());
 
         $this->assertMatchesHtmlSnapshot($this->replaceChecksum($component->render()->toString()));
@@ -79,14 +81,13 @@ final class CreateInvoiceTest extends LiveComponentTest
 
         $em->flush();
 
-        $invoice = (new Invoice())->setInvoiceDate(new DateTimeImmutable('2021-01-01'));
-        $invoice->addLine((new Line())->setPrice(10000)->setQty(1))->updateLines();
+        $dto = new InvoiceFormDTO();
+        $dto->invoiceDate = new DateTimeImmutable('2021-01-01');
+        $dto->lines->add((new Line())->setPrice(10000)->setQty(1));
 
         $component = $this->createLiveComponent(
             name: CreateInvoice::class,
-            data: [
-                'invoice' => $invoice,
-            ]
+            data: ['dto' => $dto]
         )->actingAs($this->getUser());
 
         $this->assertMatchesHtmlSnapshot($this->replaceChecksum($component->render()->toString()));
@@ -119,17 +120,14 @@ final class CreateInvoiceTest extends LiveComponentTest
             'client' => $client,
         ]);
 
-        // Only set the client - DON'T add users manually
-        // The component's PostMount hook should auto-select all contacts
-        $invoice = (new Invoice())->setInvoiceDate(new DateTimeImmutable('2021-01-01'));
-        $invoice->setClient($client->_real());
-        $invoice->addLine((new Line())->setPrice(10000)->setQty(1))->updateLines();
+        $dto = new InvoiceFormDTO();
+        $dto->invoiceDate = new DateTimeImmutable('2021-01-01');
+        $dto->client = $client->_real();
+        $dto->lines->add((new Line())->setPrice(10000)->setQty(1));
 
         $component = $this->createLiveComponent(
             name: CreateInvoice::class,
-            data: [
-                'invoice' => $invoice,
-            ]
+            data: ['dto' => $dto]
         )->actingAs($this->getUser());
 
         $rendered = $component->render()->toString();
@@ -162,16 +160,13 @@ final class CreateInvoiceTest extends LiveComponentTest
             'client' => $client,
         ]);
 
-        // Only set the client - DON'T add users manually
-        // The component's PostMount hook should auto-select contacts and set previousClientId
-        $invoice = (new Invoice())->setInvoiceDate(new DateTimeImmutable('2021-01-01'));
-        $invoice->setClient($client->_real());
+        $dto = new InvoiceFormDTO();
+        $dto->invoiceDate = new DateTimeImmutable('2021-01-01');
+        $dto->client = $client->_real();
 
         $component = $this->createLiveComponent(
             name: CreateInvoice::class,
-            data: [
-                'invoice' => $invoice,
-            ]
+            data: ['dto' => $dto]
         )->actingAs($this->getUser());
 
         // Render the component

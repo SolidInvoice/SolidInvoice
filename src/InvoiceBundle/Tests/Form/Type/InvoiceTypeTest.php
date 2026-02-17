@@ -22,7 +22,8 @@ use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
-use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\DTO\InvoiceFormDTO;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceClientMode;
 use SolidInvoice\InvoiceBundle\Form\Type\InvoiceType;
 use SolidInvoice\InvoiceBundle\Form\Type\ItemType;
 use SolidInvoice\SettingsBundle\SystemConfig;
@@ -46,7 +47,9 @@ class InvoiceTypeTest extends FormTestCase
         $terms = $this->faker->text;
         $discountValue = $this->faker->numberBetween(0, 100);
         $client = ClientFactory::createOne()->_real();
+
         $formData = [
+            'clientMode' => 'existing',
             'client' => $client->getId()->toString(),
             'discount' => [
                 'value' => $discountValue,
@@ -56,29 +59,29 @@ class InvoiceTypeTest extends FormTestCase
             'invoiceId' => '10',
             'notes' => $notes,
             'terms' => $terms,
-            'total' => 0,
-            'baseTotal' => 0,
-            'invoiceDate' => new DateTimeImmutable(),
-            'tax' => 0,
+            'total' => '0',
+            'baseTotal' => '0',
+            'invoiceDate' => '2021-01-01',
+            'tax' => '0',
+            'users' => [],
         ];
 
-        $object = new Invoice();
-        $object->setClient($client);
-        $object->setInvoiceId('10');
-        $data = clone $object;
-        $data->setUuid($object->getUuid());
-
-        $object->setTerms($terms);
-        $object->setNotes($notes);
+        $dto = new InvoiceFormDTO();
+        $dto->clientMode = InvoiceClientMode::Existing;
+        $dto->client = $client;
+        $dto->invoiceId = '10';
+        $dto->terms = $terms;
+        $dto->notes = $notes;
         $discount = new Discount();
         $discount->setType(Discount::TYPE_PERCENTAGE);
         $discount->setValue(BigDecimal::of($discountValue)->multipliedBy(100));
-        $object->setDiscount($discount);
-        $object->setTotal(BigDecimal::zero());
-        $object->setBaseTotal(BigDecimal::zero());
-        $object->setTax(BigDecimal::zero());
+        $dto->discount = $discount;
+        $dto->total = '0';
+        $dto->baseTotal = '0';
+        $dto->tax = '0';
+        $dto->invoiceDate = new DateTimeImmutable('2021-01-01');
 
-        $this->assertFormData($this->factory->create(InvoiceType::class, $data), $formData, $object);
+        $this->assertFormData($this->factory->create(InvoiceType::class, new InvoiceFormDTO()), $formData, $dto);
     }
 
     /**
