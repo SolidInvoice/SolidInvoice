@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -15,8 +17,8 @@ use Brick\Math\Exception\MathException;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
 use SolidInvoice\CoreBundle\Test\LiveComponentTest;
+use SolidInvoice\QuoteBundle\DTO\QuoteFormDTO;
 use SolidInvoice\QuoteBundle\Entity\Line;
-use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Twig\Components\CreateQuote;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use Symfony\Component\Uid\Ulid;
@@ -28,11 +30,11 @@ final class CreateQuoteTest extends LiveComponentTest
 
     public function testCreateQuote(): void
     {
+        $dto = new QuoteFormDTO();
+
         $component = $this->createLiveComponent(
             name: CreateQuote::class,
-            data: [
-                'quote' => new Quote(),
-            ]
+            data: ['dto' => $dto]
         )->actingAs($this->getUser());
 
         $this->assertMatchesHtmlSnapshot($this->replaceChecksum($component->render()->toString()));
@@ -43,15 +45,13 @@ final class CreateQuoteTest extends LiveComponentTest
      */
     public function testCreateQuoteWithMultipleLines(): void
     {
-        $quote = new Quote();
-        $quote->addLine((new Line())->setPrice(10000)->setQty(1))->updateLines();
-        $quote->addLine((new Line())->setPrice(10000)->setQty(1))->updateLines();
+        $dto = new QuoteFormDTO();
+        $dto->lines->add((new Line())->setPrice(10000)->setQty(1));
+        $dto->lines->add((new Line())->setPrice(10000)->setQty(1));
 
         $component = $this->createLiveComponent(
             name: CreateQuote::class,
-            data: [
-                'quote' => $quote,
-            ]
+            data: ['dto' => $dto]
         )->actingAs($this->getUser());
 
         $this->assertMatchesHtmlSnapshot($this->replaceChecksum($component->render()->toString()));
@@ -78,14 +78,12 @@ final class CreateQuoteTest extends LiveComponentTest
 
         $em->flush();
 
-        $quote = new Quote();
-        $quote->addLine((new Line())->setPrice(10000)->setQty(1))->updateLines();
+        $dto = new QuoteFormDTO();
+        $dto->lines->add((new Line())->setPrice(10000)->setQty(1));
 
         $component = $this->createLiveComponent(
             name: CreateQuote::class,
-            data: [
-                'quote' => $quote,
-            ]
+            data: ['dto' => $dto]
         )->actingAs($this->getUser());
 
         $this->assertMatchesHtmlSnapshot($this->replaceChecksum($component->render()->toString()));
@@ -118,17 +116,13 @@ final class CreateQuoteTest extends LiveComponentTest
             'client' => $client,
         ]);
 
-        // Only set the client - DON'T add users manually
-        // The component's PostMount hook should auto-select all contacts
-        $quote = new Quote();
-        $quote->setClient($client->_real());
-        $quote->addLine((new Line())->setPrice(10000)->setQty(1))->updateLines();
+        $dto = new QuoteFormDTO();
+        $dto->client = $client->_real();
+        $dto->lines->add((new Line())->setPrice(10000)->setQty(1));
 
         $component = $this->createLiveComponent(
             name: CreateQuote::class,
-            data: [
-                'quote' => $quote,
-            ]
+            data: ['dto' => $dto]
         )->actingAs($this->getUser());
 
         $rendered = $component->render()->toString();
@@ -161,16 +155,12 @@ final class CreateQuoteTest extends LiveComponentTest
             'client' => $client,
         ]);
 
-        // Only set the client - DON'T add users manually
-        // The component's PostMount hook should auto-select contacts and set previousClientId
-        $quote = new Quote();
-        $quote->setClient($client->_real());
+        $dto = new QuoteFormDTO();
+        $dto->client = $client->_real();
 
         $component = $this->createLiveComponent(
             name: CreateQuote::class,
-            data: [
-                'quote' => $quote,
-            ]
+            data: ['dto' => $dto]
         )->actingAs($this->getUser());
 
         // Render the component
