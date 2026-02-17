@@ -43,10 +43,10 @@ class InvoiceReminder
     #[ORM\JoinColumn(name: 'invoice_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private ?Invoice $invoice = null;
 
-    #[ORM\Column(name: 'reminder_type', enumType: ReminderType::class)]
+    #[ORM\Column(name: 'reminder_type', length: 20, enumType: ReminderType::class)]
     private ReminderType $reminderType;
 
-    #[ORM\Column(name: 'status', enumType: ReminderStatus::class)]
+    #[ORM\Column(name: 'status', length: 20, nullable: false, enumType: ReminderStatus::class)]
     private ReminderStatus $status = ReminderStatus::Sent;
 
     #[ORM\Column(name: 'sent_at', type: Types::DATETIME_IMMUTABLE, nullable: true)]
