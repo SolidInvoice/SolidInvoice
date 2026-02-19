@@ -26,6 +26,7 @@ use Psr\Clock\ClockInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CronBundle\Enum\ScheduleRecurringType;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
 use SolidInvoice\InvoiceBundle\Recurring\RecurringSchedule;
 
 /**
@@ -134,7 +135,7 @@ class RecurringInvoiceRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('ri')
             ->where('ri.status = :status')
             ->innerJoin('ri.recurringOptions', 'ro')
-            ->setParameter('status', 'active')
+            ->setParameter('status', RecurringInvoiceStatus::Active->value)
             ->getQuery()
             ->toIterable();
     }
@@ -159,7 +160,7 @@ class RecurringInvoiceRepository extends ServiceEntityRepository
             ->where('ri.status = :status')
             ->andWhere('ri.dateStart <= :futureDate')
             ->andWhere('(ri.dateEnd IS NULL OR ri.dateEnd >= :now)')
-            ->setParameter('status', 'active')
+            ->setParameter('status', RecurringInvoiceStatus::Active->value)
             ->setParameter('now', $now)
             ->setParameter('futureDate', $futureDate)
             ->orderBy('ri.dateStart', Criteria::ASC)
@@ -201,7 +202,7 @@ class RecurringInvoiceRepository extends ServiceEntityRepository
             ->where('ri.status = :status')
             ->innerJoin('ri.recurringOptions', 'ro')
             ->addSelect('ro')
-            ->setParameter('status', 'active')
+            ->setParameter('status', RecurringInvoiceStatus::Active->value)
             ->getQuery()
             ->getResult();
 
@@ -256,7 +257,7 @@ class RecurringInvoiceRepository extends ServiceEntityRepository
             ->innerJoin('ri.client', 'c')
             ->addSelect('c')
             ->where('ri.status = :status')
-            ->setParameter('status', 'active')
+            ->setParameter('status', RecurringInvoiceStatus::Active->value)
             ->getQuery()
             ->getResult();
 
