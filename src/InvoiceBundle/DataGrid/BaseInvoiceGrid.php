@@ -66,7 +66,11 @@ abstract class BaseInvoiceGrid extends Grid
             MoneyColumn::new('discount.value')
                 ->label('Discount')
                 ->searchable(false)
-                ->formatValue(fn (float | BigNumber $value, Invoice $invoice) => new Money((string) $value, $invoice->getClient()?->getCurrency())),
+                ->formatValue(function (float | BigNumber $value, Invoice $invoice): Money {
+                    $discountAmount = $invoice->getBaseTotal()->toBigDecimal()->plus($invoice->getTax())->minus($invoice->getTotal());
+
+                    return new Money((string) $discountAmount, $invoice->getClient()?->getCurrency());
+                }),
         ];
     }
 

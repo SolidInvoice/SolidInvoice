@@ -51,7 +51,11 @@ abstract class BaseQuoteGrid extends Grid
             MoneyColumn::new('discount.value')
                 ->label('Discount')
                 ->searchable(false)
-                ->formatValue(fn (float|BigNumber $value, Quote $quote) => new Money((string) $value, $quote->getClient()?->getCurrency())),
+                ->formatValue(function (float|BigNumber $value, Quote $quote): Money {
+                    $discountAmount = $quote->getBaseTotal()->toBigDecimal()->plus($quote->getTax())->minus($quote->getTotal());
+
+                    return new Money((string) $discountAmount, $quote->getClient()?->getCurrency());
+                }),
             DateTimeColumn::new('created')
                 ->format('d F Y')
                 ->filter(new DateRangeFilter('created'))
