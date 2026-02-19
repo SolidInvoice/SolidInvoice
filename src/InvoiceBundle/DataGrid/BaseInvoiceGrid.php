@@ -28,9 +28,15 @@ use SolidInvoice\DataGridBundle\Source\ORMSource;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
+use SolidInvoice\MoneyBundle\Calculator;
 
 abstract class BaseInvoiceGrid extends Grid
 {
+    public function __construct(
+        protected readonly Calculator $calculator,
+    ) {
+    }
+
     public function entityFQCN(): string
     {
         return Invoice::class;
@@ -67,7 +73,7 @@ abstract class BaseInvoiceGrid extends Grid
                 ->label('Discount')
                 ->searchable(false)
                 ->formatValue(function (float | BigNumber $value, Invoice $invoice): Money {
-                    $discountAmount = $invoice->getBaseTotal()->toBigDecimal()->plus($invoice->getTax())->minus($invoice->getTotal());
+                    $discountAmount = $this->calculator->calculateDiscount($invoice);
 
                     return new Money((string) $discountAmount, $invoice->getClient()?->getCurrency());
                 }),
