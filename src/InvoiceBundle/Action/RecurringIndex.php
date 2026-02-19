@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Action;
 
 use Doctrine\ORM\EntityManagerInterface;
+use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,11 +37,11 @@ final readonly class RecurringIndex
         $isCompleted = $request->query->get('completed', '0') === '1';
 
         // Get recurring invoice counts by status
-        $activeCount = $this->repository->getCountByStatus('active');
-        $draftCount = $this->repository->getCountByStatus('draft');
-        $pausedCount = $this->repository->getCountByStatus('paused');
-        $cancelledCount = $this->repository->getCountByStatus('cancelled');
-        $completeCount = $this->repository->getCountByStatus('complete');
+        $activeCount = $this->repository->getCountByStatus(RecurringInvoiceStatus::Active->value);
+        $draftCount = $this->repository->getCountByStatus(RecurringInvoiceStatus::Draft->value);
+        $pausedCount = $this->repository->getCountByStatus(RecurringInvoiceStatus::Paused->value);
+        $cancelledCount = $this->repository->getCountByStatus(RecurringInvoiceStatus::Cancelled->value);
+        $completeCount = $this->repository->getCountByStatus(RecurringInvoiceStatus::Complete->value);
 
         // Calculate total active recurring invoices (non-archived, non-cancelled, non-complete)
         $totalActiveRecurring = $activeCount + $draftCount + $pausedCount;
@@ -78,11 +79,11 @@ final readonly class RecurringIndex
             'totalGeneratedInvoices' => $totalGeneratedInvoices,
             'monthlyRecurringRevenue' => $monthlyRecurringRevenue,
             'status_list_count' => [
-                'active' => $activeCount,
-                'draft' => $draftCount,
-                'paused' => $pausedCount,
-                'cancelled' => $cancelledCount,
-                'complete' => $completeCount,
+                RecurringInvoiceStatus::Active->value => $activeCount,
+                RecurringInvoiceStatus::Draft->value => $draftCount,
+                RecurringInvoiceStatus::Paused->value => $pausedCount,
+                RecurringInvoiceStatus::Cancelled->value => $cancelledCount,
+                RecurringInvoiceStatus::Complete->value => $completeCount,
             ],
         ];
     }

@@ -42,7 +42,7 @@ use function sprintf;
     name: 'solidinvoice:invoices:send-reminders',
     description: 'Send payment reminders for pending and overdue invoices',
 )]
-#[AsCronTask(expression: '#hourly', schedule: 'invoice_reminders')] // Every hour (with 4 minutes offset)
+#[AsCronTask(expression: '#hourly', schedule: 'invoice_reminders')] // Every hour at a hashed minute to spread load
 final class SendInvoiceRemindersCommand extends Command
 {
     /**

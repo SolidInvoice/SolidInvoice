@@ -16,6 +16,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
 use SolidInvoice\InvoiceBundle\Message\CreateInvoiceFromRecurring;
 use SolidInvoice\InvoiceBundle\Recurring\RecurringSchedule;
 use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
@@ -66,7 +67,7 @@ final class SendRecurringInvoicesCommand extends Command
                     $endDate = $this->recurringSchedule->getEndDate($recurringInvoice->getRecurringOptions());
 
                     if ($endDate instanceof CarbonInterface && ($endDate->isToday() || $endDate->isPast())) {
-                        $recurringInvoice->setStatus('complete');
+                        $recurringInvoice->setStatus(RecurringInvoiceStatus::Complete->value);
                         $entityManager->persist($recurringInvoice);
                     }
 

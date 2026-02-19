@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Action;
 
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
 use SolidInvoice\InvoiceBundle\Recurring\RecurringSchedule;
 use Symfony\Bridge\Twig\Attribute\Template;
 
@@ -32,7 +33,7 @@ final readonly class ViewRecurring
     {
         // Get next 5 upcoming occurrences for active invoices
         $nextOccurrences = [];
-        if ($invoice->getStatus() === 'active') {
+        if ($invoice->getStatus() === RecurringInvoiceStatus::Active->value) {
             $nextOccurrences = iterator_to_array(
                 $this->recurringSchedule->getNextOccurrences($invoice->getRecurringOptions(), 5)
             );
