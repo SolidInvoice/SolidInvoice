@@ -189,7 +189,9 @@ cd "${ROOT_DIR}/frankenphp"
 FRANKENPHP_SPC_DIR="${ROOT_DIR}/frankenphp/dist/static-php-cli"
 if [ -d "${FRANKENPHP_SPC_DIR}/source" ]; then
     echo "Cleaning extracted sources from previous build to free disk space..."
-    rm -rf "${FRANKENPHP_SPC_DIR}/source"
+    # Use find -delete (depth-first) instead of rm -rf to reliably remove nested
+    # directories on Alpine/BusyBox where rm -rf can fail with "Directory not empty".
+    find "${FRANKENPHP_SPC_DIR}/source" -mindepth 1 -delete
 fi
 
 cp "${DIST_DIR}"/SolidInvoice-"$SOLIDINVOICE_VERSION".tar.gz ./app.tar.gz
