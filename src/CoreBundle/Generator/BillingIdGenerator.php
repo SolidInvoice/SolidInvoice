@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -46,13 +48,21 @@ final class BillingIdGenerator
         };
 
         $strategy = $strategy ?: $this->config->get($settingSection . '/id_generation/strategy');
+
+        $prefix = $this->config->get($settingSection . '/id_generation/id_prefix') ?? '';
+        $suffix = $this->config->get($settingSection . '/id_generation/id_suffix') ?? '';
+
+        // Pass prefix and suffix to the generator so it can handle them if needed
+        $options['prefix'] = $prefix;
+        $options['suffix'] = $suffix;
+
         $invoiceId = $this->generators->get($strategy ?? 'auto_increment')->generate($entity, $options);
 
         return sprintf(
             '%s%s%s',
-            $this->config->get($settingSection . '/id_generation/id_prefix') ?? '',
+            $prefix,
             $invoiceId,
-            $this->config->get($settingSection . '/id_generation/id_suffix') ?? ''
+            $suffix
         );
     }
 }

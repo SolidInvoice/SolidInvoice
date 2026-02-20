@@ -28,6 +28,7 @@ use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Recurring\RecurringSchedule;
 use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
+use SolidInvoice\MoneyBundle\Calculator;
 
 #[AsDataGrid(name: self::GRID_NAME, title: 'Recurring Invoices')]
 final class RecurringInvoiceGrid extends Grid
@@ -35,9 +36,9 @@ final class RecurringInvoiceGrid extends Grid
     final public const GRID_NAME = 'recurring_invoice_grid';
 
     public function __construct(
-        private readonly RecurringSchedule $schedule
+        private readonly RecurringSchedule $schedule,
+        private readonly Calculator $calculator,
     ) {
-
     }
 
     public function entityFQCN(): string
@@ -73,7 +74,11 @@ final class RecurringInvoiceGrid extends Grid
             MoneyColumn::new('discount.value')
                 ->label('Discount')
                 ->searchable(false)
-                ->formatValue(fn (float|BigNumber $value, RecurringInvoice $invoice) => new Money((string) $value, $invoice->getClient()?->getCurrency())),
+                ->formatValue(function (float|BigNumber $value, RecurringInvoice $invoice): Money {
+                    $discountAmount = $this->calculator->calculateDiscount($invoice);
+
+                    return new Money((string) $discountAmount, $invoice->getClient()?->getCurrency());
+                }),
         ];
     }
 

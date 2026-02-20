@@ -1,0 +1,91 @@
+name: Adhoc Pre-release
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch to release from (e.g. 3.0.x)"
+        required: true
+        type: string
+      version:
+        description: "Pre-release version string (e.g. 3.0.0-alpha1, 3.0.0-rc2)"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  pre-release:
+    name: "Bump version and create pre-release"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@c6295a65d1254861815972266d5933fd6e532bdf
+        with:
+          egress-policy: audit
+          allowed-endpoints: >
+            api.github.com:443
+            archive.ubuntu.com:80
+            auth.docker.io:443
+            bun.sh:443
+            github.com:443
+            objects.githubusercontent.com:443
+            packagist.org:443
+            ppa.launchpadcontent.net:443
+            production.cloudflare.docker.com:443
+            registry-1.docker.io:443
+            registry.yarnpkg.com:443
+            repo.packagist.org:443
+            raw.githubusercontent.com:443
+            security.ubuntu.com:80
+            uploads.github.com:443
+
+      - name: Validate version is a pre-release string
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+        run: |
+          [[ "$INPUT_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+-.+$ ]] || {
+            echo "Error: version must match X.Y.Z-<suffix> (e.g. 3.0.0-alpha1). Plain semver versions are not allowed here."
+            exit 1
+          }
+
+      - name: Checkout
+        uses: "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683"
+        with:
+          ref: ${{ inputs.branch }}
+          fetch-depth: 1
+          token: ${{ secrets.GH_ACCESS_TOKEN }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@cf4cade2721270509d5b1c766ab3549210a39a2a
+        with:
+          php-version: 8.4
+          extensions: intl, gd, mysql, pdo_mysql, soap, zip, :xdebug
+          coverage: none
+
+      - uses: oven-sh/setup-bun@4bc047ad259df6fc24a6c9b0f9a0cb08cf17fbe5 # v2
+
+      - name: Install jq
+        run: sudo apt-get install jq
+
+      - name: Bump version
+        env:
+          GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+          RELEASE: 1
+          INPUT_BRANCH: ${{ inputs.branch }}
+          INPUT_VERSION: ${{ inputs.version }}
+        run: "./scripts/bump_version.sh $INPUT_BRANCH $INPUT_VERSION"
+
+      - name: Create pre-release
+        env:
+          GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+          INPUT_VERSION: ${{ inputs.version }}
+          INPUT_BRANCH: ${{ inputs.branch }}
+        run: |
+          gh release create "$INPUT_VERSION" \
+            --prerelease \
+            --target "$INPUT_BRANCH" \
+            --generate-notes
