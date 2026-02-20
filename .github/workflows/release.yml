@@ -117,8 +117,6 @@ jobs:
       HOMEBREW_NO_AUTO_UPDATE: 1
       SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
       PHP_VERSION: 8.4
-      # Use the pre-built spc binary instead of compiling it from source.
-      SPC_REL_TYPE: binary
     steps:
       - name: Harden the runner (Audit all outbound calls)
         uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
