@@ -2,5 +2,8 @@
 
 changelog:
   exclude:
+    labels:
+      - "merge-up"
     authors:
       - "dependabot[bot]"
+      - "stepsecurity-app[bot]"
