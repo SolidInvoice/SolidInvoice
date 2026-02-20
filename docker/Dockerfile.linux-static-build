@@ -35,6 +35,7 @@ RUN apk update; \
 		flex \
 		g++ \
 		gcc \
+		gettext-libs \
 		git \
 		github-cli \
 		jq \
