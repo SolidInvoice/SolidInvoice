@@ -122,6 +122,7 @@ create_merge_up_pr() {
   echo "==> Opening PR: ${BRANCH} → ${TARGET}..."
   gh pr create \
     --title "Merge ${FROM} to ${TARGET}" \
+    --label "merge-up" \
     --body "$(cat <<EOF
 Merge-up for release **${RELEASE}**: brings ${AHEAD} commit(s) from \`${FROM}\` into \`${TARGET}\`.
 
