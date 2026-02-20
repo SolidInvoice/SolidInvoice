@@ -25,7 +25,6 @@ use SolidInvoice\DataGridBundle\GridBuilder\Column\MoneyColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Filter\ChoiceFilter;
 use SolidInvoice\DataGridBundle\GridBuilder\Filter\DateRangeFilter;
-use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Recurring\RecurringSchedule;
@@ -86,7 +85,7 @@ abstract class BaseRecurringInvoiceGrid extends Grid
             MoneyColumn::new('discount.value')
                 ->label('Discount')
                 ->searchable(false)
-                ->formatValue(function (float | BigNumber $value, Invoice $invoice): Money {
+                ->formatValue(function (float | BigNumber $value, RecurringInvoice $invoice): Money {
                     $discountAmount = $this->calculator->calculateDiscount($invoice);
 
                     return new Money((string) $discountAmount, $invoice->getClient()?->getCurrency());

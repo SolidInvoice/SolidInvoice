@@ -40,13 +40,12 @@ final class InstallationTest extends PantherTestCase
             $_ENV['SOLIDINVOICE_INSTALLED']
         );
 
-        // Backup the config directory BEFORE parent::setUp() to ensure a clean state
-        // when the kernel boots. This prevents any cached secrets from affecting the test.
-        $fs = new Filesystem();
-
         $configDir = self::getContainer()->getParameter('env(SOLIDINVOICE_CONFIG_DIR)');
 
-        $fs->exists($configDir) && $fs->rename($configDir, $configDir . '_test');
+        // Remove the config directory BEFORE parent::setUp() to ensure a clean state
+        // when the kernel boots. This prevents any cached secrets from affecting the test.
+        $fs = new Filesystem();
+        $fs->exists($configDir) && $fs->remove($configDir);
 
         parent::setUp();
 
@@ -54,18 +53,15 @@ final class InstallationTest extends PantherTestCase
         // Other tests may have created data that persists due to Panther using
         // a real server process with its own database connection.
         /** @var Connection $connection */
-        $connection = self::getContainer()->get('doctrine.dbal.default_connection');
+        $connection = self::getContainer()->get('doctrine')->getConnection();
         $connection->executeStatement('DELETE FROM users');
         $connection->executeStatement('DELETE FROM companies');
-        $fs->exists($configDir) && $fs->remove($configDir);
 
         $this->browser = $this->pantherBrowser();
     }
 
     protected function tearDown(): void
     {
-        $configDir = (string) self::getContainer()->getParameter('env(SOLIDINVOICE_CONFIG_DIR)');
-
         parent::tearDown();
 
         if ($this->status()->isFailure() || $this->status()->isError()) {

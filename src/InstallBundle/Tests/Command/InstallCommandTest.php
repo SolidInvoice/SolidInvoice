@@ -189,8 +189,9 @@ final class InstallCommandTest extends TestCase
 
         $this->invokeCreateAdminUser($command, $input, $output);
 
-        // Verify user was re-enabled and password updated
+        // Verify user was re-enabled, verified, and password updated
         self::assertTrue($disabledUser->isEnabled());
+        self::assertTrue($disabledUser->isVerified());
         self::assertSame($hashedPassword, $disabledUser->getPassword());
     }
 

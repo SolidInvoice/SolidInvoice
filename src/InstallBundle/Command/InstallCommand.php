@@ -196,7 +196,8 @@ class InstallCommand extends Command
             // Re-enable disabled user and update password
             $output->writeln(sprintf('<comment>Re-enabling disabled user (%s), and resetting password</comment>', $email));
             $existingUser->setPassword($this->userPasswordHasher->hashPassword($existingUser, $input->getOption('admin-password')))
-                ->setEnabled(true);
+                ->setEnabled(true)
+                ->setVerified(true);
 
             $em->flush();
 
