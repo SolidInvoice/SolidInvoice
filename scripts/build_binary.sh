@@ -181,28 +181,6 @@ fi
 
 cd "${ROOT_DIR}/frankenphp"
 
-# Clean ephemeral spc directories from the Docker Build Cloud cache volume.
-#
-# build-static.sh only runs its own cleanup when $CI is set, but $CI is not
-# inherited by Docker build containers, so downloads/ and source/ accumulate
-# across builds and fill the cache volume (causing curl write failures).
-#
-# - source/    extracted source trees — safe to delete; spc re-extracts from downloads/
-# - downloads/ downloaded tarballs   — safe to delete; spc re-downloads as needed
-#
-# We keep buildroot/ (compiled PHP + extensions) and pkgroot/ (go-xcaddy etc.)
-# as these are the expensive artifacts that make subsequent builds fast.
-#
-# Use find -delete (depth-first) rather than rm -rf: Alpine/BusyBox rm -rf can
-# fail with "Directory not empty" on deeply nested trees like php-src.
-FRANKENPHP_SPC_DIR="${ROOT_DIR}/frankenphp/dist/static-php-cli"
-for _dir in source downloads; do
-    if [ -d "${FRANKENPHP_SPC_DIR}/${_dir}" ]; then
-        echo "Cleaning ${_dir}/ from previous build to free disk space..."
-        find "${FRANKENPHP_SPC_DIR}/${_dir}" -mindepth 1 -delete
-    fi
-done
-unset _dir
 
 cp "${DIST_DIR}"/SolidInvoice-"$SOLIDINVOICE_VERSION".tar.gz ./app.tar.gz
 
