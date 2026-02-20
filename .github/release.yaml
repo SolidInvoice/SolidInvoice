@@ -3,4 +3,4 @@
 changelog:
   exclude:
     authors:
-      - "dependabot"
+      - "dependabot[bot]"
