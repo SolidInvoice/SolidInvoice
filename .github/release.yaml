@@ -4,6 +4,25 @@ changelog:
   exclude:
     labels:
       - "merge-up"
+      - "skip-changelog"
     authors:
       - "dependabot[bot]"
       - "stepsecurity-app[bot]"
+  categories:
+    - title: "⚠️ Breaking Changes"
+      labels:
+        - "breaking-change"
+    - title: "🚀 New Features"
+      labels:
+        - "enhancement"
+        - "feature"
+    - title: "🐛 Bug Fixes"
+      labels:
+        - "bug"
+        - "fix"
+    - title: "🔒 Security"
+      labels:
+        - "security"
+    - title: "🔧 Other Changes"
+      labels:
+        - "*"
