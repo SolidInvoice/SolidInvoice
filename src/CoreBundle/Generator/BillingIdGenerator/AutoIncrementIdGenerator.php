@@ -51,10 +51,26 @@ final class AutoIncrementIdGenerator implements IdGeneratorInterface
         $filters->disable('archivable');
 
         try {
+            $field = 'e.' . $options['field'];
+            $prefix = $options['prefix'] ?? '';
+            $suffix = $options['suffix'] ?? '';
+            $prefixLength = strlen($prefix);
+            $suffixLength = strlen($suffix);
+
+            if ($prefixLength > 0 || $suffixLength > 0) {
+                $field = sprintf(
+                    'SUBSTRING(%s, %d, LENGTH(%s) - %d)',
+                    $field,
+                    $prefixLength + 1,
+                    $field,
+                    $prefixLength + $suffixLength
+                );
+            }
+
             $lastId = $this->registry
                 ->getRepository($entity::class)
                 ->createQueryBuilder('e')
-                ->select('MAX(ABS(TO_NUMBER(e.' . $options['field'] . ')))')
+                ->select(sprintf('MAX(ABS(TO_NUMBER(%s)))', $field))
                 ->getQuery()
                 ->getSingleScalarResult();
         } catch (NonUniqueResultException|NoResultException) {
