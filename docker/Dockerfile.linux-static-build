@@ -76,7 +76,7 @@ ENV SPC_DEFAULT_C_FLAGS='-fPIE -fPIC -O3'
 ENV SPC_LIBC='musl'
 ENV SPC_CMD_VAR_PHP_MAKE_EXTRA_LDFLAGS_PROGRAM='-Wl,-O3 -pie'
 ENV SPC_REL_TYPE='binary'
-ENV SPC_OPT_DOWNLOAD_ARGS='--ignore-cache-sources=php-src --retry 5 --connect-timeout=10'
+ENV SPC_OPT_DOWNLOAD_ARGS='--ignore-cache-sources=php-src --retry 5'
 
 COPY --link ./build/dist ./build/dist
 COPY --link ./scripts ./scripts
