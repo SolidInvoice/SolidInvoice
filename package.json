@@ -1,7 +1,7 @@
 {
     "name": "solidinvoice",
     "description": "SolidInvoice Billing Application",
-    "version": "2.4.0-dev",
+    "version": "3.0.0-alpha1",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/SolidInvoice/SolidInvoice.git"

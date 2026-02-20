@@ -2,7 +2,7 @@
     "description": "General Billing Application",
     "license": "MIT",
     "type": "project",
-    "version": "2.4.0-dev",
+    "version": "3.0.0-alpha1",
     "keywords": [
         "billing",
         "general billing",
