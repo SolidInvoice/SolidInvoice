@@ -22,12 +22,18 @@ use SolidInvoice\DataGridBundle\GridBuilder\Column\MoneyColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Filter\ChoiceFilter;
 use SolidInvoice\DataGridBundle\GridBuilder\Filter\DateRangeFilter;
+use SolidInvoice\MoneyBundle\Calculator;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Model\Graph;
 use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
 
 abstract class BaseQuoteGrid extends Grid
 {
+    public function __construct(
+        protected readonly Calculator $calculator,
+    ) {
+    }
+
     public function entityFQCN(): string
     {
         return Quote::class;
@@ -51,7 +57,11 @@ abstract class BaseQuoteGrid extends Grid
             MoneyColumn::new('discount.value')
                 ->label('Discount')
                 ->searchable(false)
-                ->formatValue(fn (float|BigNumber $value, Quote $quote) => new Money((string) $value, $quote->getClient()?->getCurrency())),
+                ->formatValue(function (float|BigNumber $value, Quote $quote): Money {
+                    $discountAmount = $this->calculator->calculateDiscount($quote);
+
+                    return new Money((string) $discountAmount, $quote->getClient()?->getCurrency());
+                }),
             DateTimeColumn::new('created')
                 ->format('d F Y')
                 ->filter(new DateRangeFilter('created'))

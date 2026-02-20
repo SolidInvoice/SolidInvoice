@@ -109,9 +109,9 @@ jobs:
       matrix:
         include:
           - platform: arm64
-            os: macos-14
+            os: macos-latest
           - platform: x86_64
-            os: macos-13
+            os: macos-15-intel
     runs-on: ${{ matrix.os }}
     env:
       HOMEBREW_NO_AUTO_UPDATE: 1
@@ -222,3 +222,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RELEASE: ${{ needs.prepare.outputs.release }}
           SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
+          LATEST: ${{ !contains(needs.prepare.outputs.ref, '-') }}
