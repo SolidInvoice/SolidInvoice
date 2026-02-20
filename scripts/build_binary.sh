@@ -181,6 +181,17 @@ fi
 
 cd "${ROOT_DIR}/frankenphp"
 
+# Clean up extracted source files from previous failed builds to free disk space.
+# The source/ directory can grow to several GB per architecture and is only cleaned
+# by build-static.sh on successful completion. Failed builds leave it behind,
+# which can fill the Docker Build Cloud cache volume and cause subsequent builds to fail.
+# It is safe to delete because spc always re-extracts sources from the cached downloads/ directory.
+FRANKENPHP_SPC_DIR="${ROOT_DIR}/frankenphp/dist/static-php-cli"
+if [ -d "${FRANKENPHP_SPC_DIR}/source" ]; then
+    echo "Cleaning extracted sources from previous build to free disk space..."
+    rm -rf "${FRANKENPHP_SPC_DIR}/source"
+fi
+
 cp "${DIST_DIR}"/SolidInvoice-"$SOLIDINVOICE_VERSION".tar.gz ./app.tar.gz
 
 # Use the SolidInvoice wrapper script which calls build-static.sh with proper config
