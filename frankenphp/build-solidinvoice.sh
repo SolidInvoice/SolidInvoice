@@ -193,11 +193,11 @@ if [ "$FRESH_BUILD" = true ]; then
 		echo ""
 
 		# Clean any artifacts and rebuild
-		# Note: build-static.sh uses different naming for the output binary
-		arch_output="$(uname -m)"
+		# Note: build-static.sh uses raw uname -m naming for the output binary
+		arch_uname="$(uname -m)"
 		os_output="$(uname -s | tr '[:upper:]' '[:lower:]')"
 		[ "$os_output" = "darwin" ] && os_output="mac"
-		rm -f "${SCRIPT_DIR}/dist/frankenphp-${os_output}-${arch_output}"
+		rm -f "${SCRIPT_DIR}/dist/frankenphp-${os_output}-${arch_uname}"
 
 		# Run again with our custom xcaddy
 		./build-static.sh
@@ -220,12 +220,20 @@ echo "========================================"
 echo "Finalizing Build"
 echo "========================================"
 
-# build-static.sh uses different naming for output binary
-arch_output="$(uname -m)"
+# build-static.sh names its output using raw uname -m (e.g. x86_64, aarch64).
+# We rename to Docker's arch convention (amd64, arm64) so the Dockerfile COPY
+# instruction using ${TARGETOS}-${TARGETARCH} resolves to the correct file.
+arch_uname="$(uname -m)"
 os_output="$(uname -s | tr '[:upper:]' '[:lower:]')"
 [ "$os_output" = "darwin" ] && os_output="mac"
 
-FRANKENPHP_BIN="${SCRIPT_DIR}/dist/frankenphp-${os_output}-${arch_output}"
+case "${arch_uname}" in
+    x86_64)  arch_output="amd64" ;;
+    aarch64) arch_output="arm64" ;;
+    *)       arch_output="${arch_uname}" ;;
+esac
+
+FRANKENPHP_BIN="${SCRIPT_DIR}/dist/frankenphp-${os_output}-${arch_uname}"
 SOLIDINVOICE_BIN="${SCRIPT_DIR}/dist/solidinvoice-${os_output}-${arch_output}"
 
 if [ ! -f "${FRANKENPHP_BIN}" ]; then
