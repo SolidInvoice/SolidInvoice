@@ -58,4 +58,61 @@ final class AutoIncrementIdGeneratorTest extends KernelTestCase
         self::assertSame('102', $generator->generate(new Invoice(), ['field' => 'invoiceId']));
         self::assertSame('1', $generator->generate(new Quote(), ['field' => 'quoteId']));
     }
+
+    public function testItIncrementsTheIdWithPrefix(): void
+    {
+        $client = ClientFactory::new([]);
+
+        InvoiceFactory::createOne(['client' => $client, 'invoiceId' => 'INV-1']);
+
+        $generator = new AutoIncrementIdGenerator(self::getContainer()->get('doctrine'));
+
+        self::assertSame('2', $generator->generate(new Invoice(), ['field' => 'invoiceId', 'prefix' => 'INV-', 'suffix' => '']));
+
+        InvoiceFactory::createOne(['client' => $client, 'invoiceId' => 'INV-2']);
+
+        self::assertSame('3', $generator->generate(new Invoice(), ['field' => 'invoiceId', 'prefix' => 'INV-', 'suffix' => '']));
+
+        InvoiceFactory::createOne(['client' => $client, 'invoiceId' => 'INV-101']);
+
+        self::assertSame('102', $generator->generate(new Invoice(), ['field' => 'invoiceId', 'prefix' => 'INV-', 'suffix' => '']));
+    }
+
+    public function testItIncrementsTheIdWithSuffix(): void
+    {
+        $client = ClientFactory::new([]);
+
+        InvoiceFactory::createOne(['client' => $client, 'invoiceId' => '1-00']);
+
+        $generator = new AutoIncrementIdGenerator(self::getContainer()->get('doctrine'));
+
+        self::assertSame('2', $generator->generate(new Invoice(), ['field' => 'invoiceId', 'prefix' => '', 'suffix' => '-00']));
+
+        InvoiceFactory::createOne(['client' => $client, 'invoiceId' => '2-00']);
+
+        self::assertSame('3', $generator->generate(new Invoice(), ['field' => 'invoiceId', 'prefix' => '', 'suffix' => '-00']));
+
+        InvoiceFactory::createOne(['client' => $client, 'invoiceId' => '101-00']);
+
+        self::assertSame('102', $generator->generate(new Invoice(), ['field' => 'invoiceId', 'prefix' => '', 'suffix' => '-00']));
+    }
+
+    public function testItIncrementsTheIdWithPrefixAndSuffix(): void
+    {
+        $client = ClientFactory::new([]);
+
+        InvoiceFactory::createOne(['client' => $client, 'invoiceId' => 'INV-1-00']);
+
+        $generator = new AutoIncrementIdGenerator(self::getContainer()->get('doctrine'));
+
+        self::assertSame('2', $generator->generate(new Invoice(), ['field' => 'invoiceId', 'prefix' => 'INV-', 'suffix' => '-00']));
+
+        InvoiceFactory::createOne(['client' => $client, 'invoiceId' => 'INV-2-00']);
+
+        self::assertSame('3', $generator->generate(new Invoice(), ['field' => 'invoiceId', 'prefix' => 'INV-', 'suffix' => '-00']));
+
+        InvoiceFactory::createOne(['client' => $client, 'invoiceId' => 'INV-101-00']);
+
+        self::assertSame('102', $generator->generate(new Invoice(), ['field' => 'invoiceId', 'prefix' => 'INV-', 'suffix' => '-00']));
+    }
 }
