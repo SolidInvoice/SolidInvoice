@@ -207,3 +207,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RELEASE: ${{ needs.prepare.outputs.release }}
           SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
+          LATEST: ${{ !contains(needs.prepare.outputs.ref, '-') }}
