@@ -29,11 +29,13 @@ use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Recurring\RecurringSchedule;
 use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
+use SolidInvoice\MoneyBundle\Calculator;
 
 abstract class BaseRecurringInvoiceGrid extends Grid
 {
     public function __construct(
-        protected readonly RecurringSchedule $schedule
+        protected readonly RecurringSchedule $schedule,
+        protected readonly Calculator $calculator,
     ) {
     }
 
@@ -83,12 +85,10 @@ abstract class BaseRecurringInvoiceGrid extends Grid
             MoneyColumn::new('discount.value')
                 ->label('Discount')
                 ->searchable(false)
-                ->formatValue(function (float|BigNumber $value, RecurringInvoice $invoice): Money {
-                    $client = $invoice->getClient();
-                    if ($client === null) {
-                        throw new \InvalidArgumentException(sprintf('RecurringInvoice #%s must have a client with currency', $invoice->getId()));
-                    }
-                    return new Money((string) $value, $client->getCurrency());
+                ->formatValue(function (float | BigNumber $value, RecurringInvoice $invoice): Money {
+                    $discountAmount = $this->calculator->calculateDiscount($invoice);
+
+                    return new Money((string) $discountAmount, $invoice->getClient()?->getCurrency());
                 }),
         ];
     }

@@ -106,7 +106,7 @@
                         {{ 'invoice.date'|trans }}
                     </td>
                     <td class="date-value" style="font-size: 9pt; color: #1e293b; font-weight: 500; text-align: right; padding: 4px 0;">
-                        {{ invoice.created|date('F j, Y') }}
+                        {{ invoice.invoiceDate|date('F j, Y') }}
                     </td>
                 </tr>
                 {% if invoice.due %}

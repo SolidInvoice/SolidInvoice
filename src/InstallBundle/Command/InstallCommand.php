@@ -47,7 +47,6 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Intl\Locales;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Contracts\Service\ResetInterface;
 use function array_combine;
 use function array_intersect;
@@ -179,24 +178,38 @@ class InstallCommand extends Command
         $userRepository = $this->registry->getRepository(User::class);
         $email = $input->getOption('admin-email');
 
-        try {
-            $userRepository->loadUserByIdentifier($email);
-        } catch (UserNotFoundException) {
-            $output->writeln(sprintf('<comment>User %s already exists, skipping creation</comment>', $email));
-
-            return;
-        }
-
-        $user = new User();
-        $user->setEmail($input->getOption('admin-email'))
-            ->setPassword($this->userPasswordHasher->hashPassword($user, $input->getOption('admin-password')))
-            ->setEnabled(true);
+        $existingUser = $userRepository->findOneBy(['email' => $email]);
 
         $em = $this->registry->getManagerForClass(User::class);
 
         if (! $em instanceof ObjectManager) {
             throw new RuntimeException(sprintf('No object manager found for class "%s".', User::class));
         }
+
+        if ($existingUser !== null) {
+            if ($existingUser->isEnabled()) {
+                $output->writeln(sprintf('<comment>User %s already exists, skipping creation</comment>', $email));
+
+                return;
+            }
+
+            // Re-enable disabled user and update password
+            $output->writeln(sprintf('<comment>Re-enabling disabled user (%s), and resetting password</comment>', $email));
+            $existingUser->setPassword($this->userPasswordHasher->hashPassword($existingUser, $input->getOption('admin-password')))
+                ->setEnabled(true)
+                ->setVerified(true);
+
+            $em->flush();
+
+            return;
+        }
+
+        // Create new user
+        $user = new User();
+        $user->setEmail($email)
+            ->setPassword($this->userPasswordHasher->hashPassword($user, $input->getOption('admin-password')))
+            ->setEnabled(true)
+            ->setVerified(true);
 
         $em->persist($user);
         $em->flush();

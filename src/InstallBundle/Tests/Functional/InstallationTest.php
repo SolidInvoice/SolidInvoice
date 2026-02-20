@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InstallBundle\Tests\Functional;
 
+use Doctrine\DBAL\Connection;
 use SolidInvoice\AppRequirements;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Panther\Client;
@@ -39,12 +40,22 @@ final class InstallationTest extends PantherTestCase
             $_ENV['SOLIDINVOICE_INSTALLED']
         );
 
-        parent::setUp();
-
         $configDir = self::getContainer()->getParameter('env(SOLIDINVOICE_CONFIG_DIR)');
 
+        // Remove the config directory BEFORE parent::setUp() to ensure a clean state
+        // when the kernel boots. This prevents any cached secrets from affecting the test.
         $fs = new Filesystem();
         $fs->exists($configDir) && $fs->remove($configDir);
+
+        parent::setUp();
+
+        // Clear users and companies tables to ensure installation test starts fresh.
+        // Other tests may have created data that persists due to Panther using
+        // a real server process with its own database connection.
+        /** @var Connection $connection */
+        $connection = self::getContainer()->get('doctrine')->getConnection();
+        $connection->executeStatement('DELETE FROM users');
+        $connection->executeStatement('DELETE FROM companies');
 
         $this->browser = $this->pantherBrowser();
     }
