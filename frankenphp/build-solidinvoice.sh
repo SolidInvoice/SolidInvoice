@@ -166,7 +166,12 @@ fi
 
 #export SPC_OPT_BUILD_ARGS="--rebuild"
 
-# Run the upstream build script
+# Run the upstream build script.
+# We unset RELEASE so build-static.sh does not attempt to upload to dunglas/frankenphp.
+# The upload to our own repository is handled below after the binary is renamed.
+SAVED_RELEASE="${RELEASE:-}"
+unset RELEASE
+
 if [ "$FRESH_BUILD" = true ]; then
 	echo "Phase 1: Running build to install dependencies..."
 	echo "(This phase will fail or produce a default binary - that's expected)"
@@ -203,6 +208,8 @@ if [ "$FRESH_BUILD" = true ]; then
 else
 	./build-static.sh
 fi
+
+export RELEASE="${SAVED_RELEASE}"
 
 # ============================================================================
 # Finalize and Test
