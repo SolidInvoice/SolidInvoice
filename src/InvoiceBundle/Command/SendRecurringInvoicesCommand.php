@@ -59,36 +59,38 @@ final class SendRecurringInvoicesCommand extends Command
             $filters->disable('company');
         }
 
-        withMonitor('send-recurring-invoices', function () use ($entityManager): void {
-            $recurringInvoices = $this->recurringInvoiceRepository->getActiveRecurringInvoices();
+        try {
+            withMonitor('send-recurring-invoices', function () use ($entityManager): void {
+                $recurringInvoices = $this->recurringInvoiceRepository->getActiveRecurringInvoices();
 
-            foreach ($recurringInvoices as $recurringInvoice) {
-                try {
-                    $endDate = $this->recurringSchedule->getEndDate($recurringInvoice->getRecurringOptions());
+                foreach ($recurringInvoices as $recurringInvoice) {
+                    try {
+                        $endDate = $this->recurringSchedule->getEndDate($recurringInvoice->getRecurringOptions());
 
-                    if ($endDate instanceof CarbonInterface && ($endDate->isToday() || $endDate->isPast())) {
-                        $recurringInvoice->setStatus(RecurringInvoiceStatus::Complete->value);
-                        $entityManager->persist($recurringInvoice);
+                        if ($endDate instanceof CarbonInterface && ($endDate->isToday() || $endDate->isPast())) {
+                            $recurringInvoice->setStatus(RecurringInvoiceStatus::Complete->value);
+                            $entityManager->persist($recurringInvoice);
+                        }
+
+                        $nextRunDate = $this->recurringSchedule->getNextRunDate($recurringInvoice->getRecurringOptions());
+
+                        if ($nextRunDate instanceof CarbonInterface && $nextRunDate->isToday() && ! $recurringInvoice->hasInvoiceForDay($nextRunDate)) {
+                            $this->bus->dispatch(new CreateInvoiceFromRecurring($recurringInvoice->getId()));
+                        }
+                    } catch (Throwable $e) {
+                        $this->logger->error(
+                            sprintf('Error processing recurring invoice (%s): %s', $recurringInvoice->getId()?->toString(), $e->getMessage()),
+                            ['exception' => $e]
+                        );
                     }
-
-                    $nextRunDate = $this->recurringSchedule->getNextRunDate($recurringInvoice->getRecurringOptions());
-
-                    if ($nextRunDate instanceof CarbonInterface && $nextRunDate->isToday() && ! $recurringInvoice->hasInvoiceForDay($nextRunDate)) {
-                        $this->bus->dispatch(new CreateInvoiceFromRecurring($recurringInvoice->getId()));
-                    }
-                } catch (Throwable $e) {
-                    $this->logger->error(
-                        sprintf('Error processing recurring invoice (%s): %s', $recurringInvoice->getId()?->toString(), $e->getMessage()),
-                        ['exception' => $e]
-                    );
                 }
+
+                $entityManager->flush();
+            });
+        } finally {
+            if ($companyFilterEnabled) {
+                $filters->enable('company');
             }
-
-            $entityManager->flush();
-        });
-
-        if ($companyFilterEnabled) {
-            $filters->enable('company');
         }
 
         return 0;
