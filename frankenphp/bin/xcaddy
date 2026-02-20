@@ -11,7 +11,7 @@
 # - Keep all env vars and CGO flags set by static-php-cli
 # - Build with our custom main package instead of xcaddy's generated one
 
-set -euxo
+set -euxo pipefail
 
 # print all arguments passed:
 echo "xcaddy called with arguments: $@"
@@ -38,6 +38,9 @@ while [[ $# -gt 0 ]]; do
 			;;
 	esac
 done
+
+# Detect OS for platform-specific linker flags
+CURRENT_OS="$(uname -s | tr '[:upper:]' '[:lower:]')"
 
 echo "=========================================="
 echo "Building SolidInvoice Custom Binary"
@@ -76,15 +79,24 @@ if ! ls *.go >/dev/null 2>&1; then
 	exit 1
 fi
 
-# Build with the same flags that xcaddy would use, but with our app.go
-#-buildmode=pie \
-#-tags "netgo,osusergo,static_build,nowatcher" \
-#-ldflags="-linkmode=external -w -s -X 'github.com/caddyserver/caddy/v2.CustomVersion=${VERSION}'" \
+# Build with the same flags that xcaddy would use, but with our app.go.
+# Linker flags differ between macOS and Linux (musl static builds).
+DYNSYM="$(pwd)/dist/static-php-cli/buildroot/lib/libphp.a.dynsym"
+
+if [ "${CURRENT_OS}" = "linux" ]; then
+	# Linux musl static build: use -static-pie and GNU ld --dynamic-list
+	EXTLDFLAGS="-static-pie -Wl,-z,stack-size=0x80000 -Wl,--dynamic-list=${DYNSYM}"
+	BUILD_TAGS="static_build,nobadger,nomysql,nopgx,nowatcher"
+else
+	# macOS: use -pie and -exported_symbols_list
+	EXTLDFLAGS="-pie -Wl,-exported_symbols_list,${DYNSYM}"
+	BUILD_TAGS="nobadger,nomysql,nopgx,nowatcher"
+fi
 
 go build \
   -buildmode=pie \
-  -ldflags "-linkmode=external -extldflags '-pie -Wl,-exported_symbols_list,$(pwd)/dist/static-php-cli/buildroot/lib/libphp.a.dynsym ' -X 'github.com/caddyserver/caddy/v2.CustomVersion=${VERSION}'" \
-  -tags=nobadger,nomysql,nopgx,nowatcher \
+  -ldflags "-linkmode=external -extldflags '${EXTLDFLAGS} ' -X 'github.com/caddyserver/caddy/v2.CustomVersion=${VERSION}'" \
+  -tags="${BUILD_TAGS}" \
 	-o "${OUTPUT}" \
 	.
 
