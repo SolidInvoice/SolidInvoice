@@ -99,75 +99,75 @@ jobs:
           name: SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.zip
           path: build/dist/SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.zip
 
-  build-mac:
-    name: Build ${{ matrix.os }}-${{ matrix.platform }} binaries
-    needs: [prepare, build-dist]
-    permissions:
-      contents: write
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - platform: arm64
-            os: macos-latest
-          - platform: x86_64
-            os: macos-15-intel
-    runs-on: ${{ matrix.os }}
-    env:
-      HOMEBREW_NO_AUTO_UPDATE: 1
-      SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
-      PHP_VERSION: 8.4
-    steps:
-      - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
-        with:
-          egress-policy: audit
-
-      - name: Checkout code
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
-
-      - name: Download archive
-        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
-        with:
-          name: SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.tar.gz
-          path: build/dist
-
-      - uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v6.0.0
-        with:
-          go-version-file: frankenphp/go.mod
-          cache-dependency-path: frankenphp/go.sum
-
-      # Cache key is based on the build scripts (which determine PHP version and
-      # extensions) so the cache is invalidated automatically when they change.
-      - name: Restore static-php cache
-        id: restore-static-php
-        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
-        with:
-          path: frankenphp/dist/static-php-cli
-          key: ${{ matrix.os }}-${{ matrix.platform }}-static-php-${{ env.PHP_VERSION }}-${{ hashFiles('frankenphp/build-static.sh', 'frankenphp/build-solidinvoice.sh') }}
-          restore-keys: |
-              ${{ matrix.os }}-${{ matrix.platform }}-static-php-${{ env.PHP_VERSION }}-
-              ${{ matrix.os }}-${{ matrix.platform }}-static-php-
-
-      - name: Build SolidInvoice
-        run: ./scripts/build_binary.sh ${{ needs.prepare.outputs.ref }}
-        env:
-          # GITHUB_TOKEN needs to be defined twice here.
-          # GH_TOKEN is used by the gh cli utility to upload the binary files
-          # GITHUB_TOKEN is used by static-php-cli script to make api calls to Github
-          GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
-          RELEASE: ${{ needs.prepare.outputs.release }}
-          # Use pre-built extension binaries where available to avoid compiling
-          # PHP and all extensions from source (~50 min → a few minutes).
-          SPC_OPT_DOWNLOAD_ARGS: "--ignore-cache-sources=php-src --retry 5 --prefer-pre-built"
-
-      - name: Save static-php cache
-        if: steps.restore-static-php.outputs.cache-hit != 'true'
-        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
-        with:
-          path: frankenphp/dist/static-php-cli
-          key: ${{ matrix.os }}-${{ matrix.platform }}-static-php-${{ env.PHP_VERSION }}-${{ hashFiles('frankenphp/build-static.sh', 'frankenphp/build-solidinvoice.sh') }}
+#  build-mac:
+#    name: Build ${{ matrix.os }}-${{ matrix.platform }} binaries
+#    needs: [prepare, build-dist]
+#    permissions:
+#      contents: write
+#    strategy:
+#      fail-fast: false
+#      matrix:
+#        include:
+#          - platform: arm64
+#            os: macos-latest
+#          - platform: x86_64
+#            os: macos-15-intel
+#    runs-on: ${{ matrix.os }}
+#    env:
+#      HOMEBREW_NO_AUTO_UPDATE: 1
+#      SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
+#      PHP_VERSION: 8.4
+#    steps:
+#      - name: Harden the runner (Audit all outbound calls)
+#        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
+#        with:
+#          egress-policy: audit
+#
+#      - name: Checkout code
+#        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+#
+#      - name: Download archive
+#        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+#        with:
+#          name: SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.tar.gz
+#          path: build/dist
+#
+#      - uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v6.0.0
+#        with:
+#          go-version-file: frankenphp/go.mod
+#          cache-dependency-path: frankenphp/go.sum
+#
+#      # Cache key is based on the build scripts (which determine PHP version and
+#      # extensions) so the cache is invalidated automatically when they change.
+#      - name: Restore static-php cache
+#        id: restore-static-php
+#        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+#        with:
+#          path: frankenphp/dist/static-php-cli
+#          key: ${{ matrix.os }}-${{ matrix.platform }}-static-php-${{ env.PHP_VERSION }}-${{ hashFiles('frankenphp/build-static.sh', 'frankenphp/build-solidinvoice.sh') }}
+#          restore-keys: |
+#              ${{ matrix.os }}-${{ matrix.platform }}-static-php-${{ env.PHP_VERSION }}-
+#              ${{ matrix.os }}-${{ matrix.platform }}-static-php-
+#
+#      - name: Build SolidInvoice
+#        run: ./scripts/build_binary.sh ${{ needs.prepare.outputs.ref }}
+#        env:
+#          # GITHUB_TOKEN needs to be defined twice here.
+#          # GH_TOKEN is used by the gh cli utility to upload the binary files
+#          # GITHUB_TOKEN is used by static-php-cli script to make api calls to Github
+#          GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+#          GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+#          RELEASE: ${{ needs.prepare.outputs.release }}
+#          # Use pre-built extension binaries where available to avoid compiling
+#          # PHP and all extensions from source (~50 min → a few minutes).
+#          SPC_OPT_DOWNLOAD_ARGS: "--ignore-cache-sources=php-src --retry 5 --prefer-pre-built"
+#
+#      - name: Save static-php cache
+#        if: steps.restore-static-php.outputs.cache-hit != 'true'
+#        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+#        with:
+#          path: frankenphp/dist/static-php-cli
+#          key: ${{ matrix.os }}-${{ matrix.platform }}-static-php-${{ env.PHP_VERSION }}-${{ hashFiles('frankenphp/build-static.sh', 'frankenphp/build-solidinvoice.sh') }}
 
   build-linux:
     name: Build binaries
