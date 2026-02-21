@@ -219,7 +219,7 @@ jobs:
           targets: build-static
           source: .
           set: |
-            build-static.platforms=${{ matrix.platform }}
+            build-static.platform=${{ matrix.platform }}
             build-static.tags=
             ${{ needs.prepare.outputs.release == '1' && 'build-static.output=type=image,name=solidinvoice/solidinvoice,push-by-digest=true,name-canonical=true,push=true' || '' }}
             build-static.cache-from=type=gha,scope=build-static-${{ matrix.arch }}
