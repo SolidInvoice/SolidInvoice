@@ -10,6 +10,10 @@ variable "PHP_VERSION" {
     default = "8.4"
 }
 
+variable "GO_VERSION" {
+    default = "1.25"
+}
+
 variable "LATEST" {
     default = false
 }
@@ -28,6 +32,15 @@ variable "RELEASE" {
 
 variable "NO_COMPRESS" {
     default = 1  // Binaries are small enough for now, no need to compress them
+}
+
+variable "CI" {
+    # CI flag coming from the environment or --set; empty by default
+    default = ""
+}
+
+variable "SPC_OPT_BUILD_ARGS" {
+    default = ""
 }
 
 # cleanTag ensures that the tag is a valid Docker tag
@@ -61,8 +74,11 @@ group "default" {
 }
 
 target "build-static" {
+    contexts = {
+        golang-base = "docker-image://golang:${GO_VERSION}-alpine"
+    }
     context = "."
-    dockerfile = "docker/Dockerfile.linux-static-build"
+    dockerfile = "docker/linux-static-build.Dockerfile"
     platforms = [
         "linux/amd64",
         "linux/arm64",
@@ -85,6 +101,8 @@ target "build-static" {
         LATEST = "${LATEST}"
         NIGHTLY = "${NIGHTLY}"
         PREVIEW = "${PREVIEW}"
+        CI = CI
+        SPC_OPT_BUILD_ARGS = SPC_OPT_BUILD_ARGS
     }
     secret = ["id=github-token,env=GITHUB_TOKEN"]
 }

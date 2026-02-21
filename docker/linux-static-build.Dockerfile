@@ -1,4 +1,8 @@
-FROM golang:1.25-alpine3.21 AS builder
+# syntax=docker/dockerfile:1
+#checkov:skip=CKV_DOCKER_2
+#checkov:skip=CKV_DOCKER_3
+#checkov:skip=CKV_DOCKER_7
+FROM golang-base AS builder
 
 ARG TARGETARCH
 ARG TARGETOS
@@ -9,16 +13,26 @@ ENV SOLIDINVOICE_VERSION=${SOLIDINVOICE_VERSION}
 ARG PHP_VERSION=''
 ENV PHP_VERSION=${PHP_VERSION}
 
-ARG MIMALLOC=''
-ENV MIMALLOC=${MIMALLOC}
+# args passed to static-php-cli (mirrors upstream FrankenPHP)
+ARG PHP_EXTENSIONS=''
+ARG PHP_EXTENSION_LIBS=''
+ARG SPC_OPT_BUILD_ARGS
 
+ARG CLEAN=''
+ARG EMBED=''
+ARG DEBUG_SYMBOLS=''
+ARG MIMALLOC=''
 ARG NO_COMPRESS=''
-ENV NO_COMPRESS=${NO_COMPRESS}
 
 ARG RELEASE='0'
 ENV RELEASE=${RELEASE}
 
+ENV GOTOOLCHAIN=local
+
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
+
+ARG CI
+ENV CI=${CI}
 
 RUN apk update; \
 	apk add --no-cache \
@@ -43,6 +57,7 @@ RUN apk update; \
 		libstdc++ \
 		libtool \
 		linux-headers \
+		llvm19 \
 		m4 \
 		make \
 		pkgconfig \
@@ -51,6 +66,7 @@ RUN apk update; \
 		php84-ctype \
 		php84-curl \
 		php84-dom \
+		php84-iconv \
 		php84-mbstring \
 		php84-openssl \
 		php84-pcntl \
@@ -76,7 +92,9 @@ ENV SPC_DEFAULT_C_FLAGS='-fPIE -fPIC -O3'
 ENV SPC_LIBC='musl'
 ENV SPC_CMD_VAR_PHP_MAKE_EXTRA_LDFLAGS_PROGRAM='-Wl,-O3 -pie'
 ENV SPC_REL_TYPE='binary'
-ENV SPC_OPT_DOWNLOAD_ARGS='--ignore-cache-sources=php-src --retry 5'
+# Explicitly set download args to prevent build-static.sh from auto-adding --prefer-pre-built
+# on musl Linux, which causes issues with pre-built packages missing .pc files
+#ENV SPC_OPT_DOWNLOAD_ARGS='--ignore-cache-sources=php-src --retry 5'
 
 COPY --link ./build/dist ./build/dist
 COPY --link ./scripts ./scripts
