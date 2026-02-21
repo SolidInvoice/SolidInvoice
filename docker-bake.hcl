@@ -96,7 +96,7 @@ target "build-static" {
     args = {
         SOLIDINVOICE_VERSION = "${SOLIDINVOICE_VERSION}"
         PHP_VERSION = "${PHP_VERSION}"
-        RELEASE = "${RELEASE}"
+        # RELEASE removed — Linux binary upload now handled by the workflow
         NO_COMPRESS = "${NO_COMPRESS}"
         LATEST = "${LATEST}"
         NIGHTLY = "${NIGHTLY}"
