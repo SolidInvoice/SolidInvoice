@@ -99,88 +99,97 @@ jobs:
           name: SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.zip
           path: build/dist/SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.zip
 
-#  build-mac:
-#    name: Build ${{ matrix.os }}-${{ matrix.platform }} binaries
-#    needs: [prepare, build-dist]
-#    permissions:
-#      contents: write
-#    strategy:
-#      fail-fast: false
-#      matrix:
-#        include:
-#          - platform: arm64
-#            os: macos-latest
-#          - platform: x86_64
-#            os: macos-15-intel
-#    runs-on: ${{ matrix.os }}
-#    env:
-#      HOMEBREW_NO_AUTO_UPDATE: 1
-#      SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
-#      PHP_VERSION: 8.4
-#    steps:
-#      - name: Harden the runner (Audit all outbound calls)
-#        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
-#        with:
-#          egress-policy: audit
-#
-#      - name: Checkout code
-#        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
-#
-#      - name: Download archive
-#        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
-#        with:
-#          name: SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.tar.gz
-#          path: build/dist
-#
-#      - uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v6.0.0
-#        with:
-#          go-version-file: frankenphp/go.mod
-#          cache-dependency-path: frankenphp/go.sum
-#
-#      # Cache key is based on the build scripts (which determine PHP version and
-#      # extensions) so the cache is invalidated automatically when they change.
-#      - name: Restore static-php cache
-#        id: restore-static-php
-#        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
-#        with:
-#          path: frankenphp/dist/static-php-cli
-#          key: ${{ matrix.os }}-${{ matrix.platform }}-static-php-${{ env.PHP_VERSION }}-${{ hashFiles('frankenphp/build-static.sh', 'frankenphp/build-solidinvoice.sh') }}
-#          restore-keys: |
-#              ${{ matrix.os }}-${{ matrix.platform }}-static-php-${{ env.PHP_VERSION }}-
-#              ${{ matrix.os }}-${{ matrix.platform }}-static-php-
-#
-#      - name: Build SolidInvoice
-#        run: ./scripts/build_binary.sh ${{ needs.prepare.outputs.ref }}
-#        env:
-#          # GITHUB_TOKEN needs to be defined twice here.
-#          # GH_TOKEN is used by the gh cli utility to upload the binary files
-#          # GITHUB_TOKEN is used by static-php-cli script to make api calls to Github
-#          GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
-#          GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
-#          RELEASE: ${{ needs.prepare.outputs.release }}
-#          # Use pre-built extension binaries where available to avoid compiling
-#          # PHP and all extensions from source (~50 min → a few minutes).
-#          SPC_OPT_DOWNLOAD_ARGS: "--ignore-cache-sources=php-src --retry 5 --prefer-pre-built"
-#
-#      - name: Save static-php cache
-#        if: steps.restore-static-php.outputs.cache-hit != 'true'
-#        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
-#        with:
-#          path: frankenphp/dist/static-php-cli
-#          key: ${{ matrix.os }}-${{ matrix.platform }}-static-php-${{ env.PHP_VERSION }}-${{ hashFiles('frankenphp/build-static.sh', 'frankenphp/build-solidinvoice.sh') }}
-
-  build-linux:
-    name: Build binaries
+  build-mac:
+    name: Build ${{ matrix.os }}-${{ matrix.platform }} binaries
     needs: [prepare, build-dist]
     permissions:
       contents: write
-    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: arm64
+            os: macos-latest
+          - platform: x86_64
+            os: macos-15-intel
+    runs-on: ${{ matrix.os }}
     env:
       HOMEBREW_NO_AUTO_UPDATE: 1
       SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
       PHP_VERSION: 8.4
     steps:
       - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
+        with:
+          egress-policy: audit
+
+      - name: Checkout code
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+
+      - name: Download archive
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+        with:
+          name: SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.tar.gz
+          path: build/dist
+
+      - uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v6.0.0
+        with:
+          go-version-file: frankenphp/go.mod
+          cache-dependency-path: frankenphp/go.sum
+
+      # Cache key is based on the build scripts (which determine PHP version and
+      # extensions) so the cache is invalidated automatically when they change.
+      - name: Restore static-php cache
+        id: restore-static-php
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: frankenphp/dist/static-php-cli
+          key: ${{ matrix.os }}-${{ matrix.platform }}-static-php-${{ env.PHP_VERSION }}-${{ hashFiles('frankenphp/build-static.sh', 'frankenphp/build-solidinvoice.sh') }}
+          restore-keys: |
+              ${{ matrix.os }}-${{ matrix.platform }}-static-php-${{ env.PHP_VERSION }}-
+              ${{ matrix.os }}-${{ matrix.platform }}-static-php-
+
+      - name: Build SolidInvoice
+        run: ./scripts/build_binary.sh ${{ needs.prepare.outputs.ref }}
+        env:
+          # GITHUB_TOKEN needs to be defined twice here.
+          # GH_TOKEN is used by the gh cli utility to upload the binary files
+          # GITHUB_TOKEN is used by static-php-cli script to make api calls to Github
+          GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+          RELEASE: ${{ needs.prepare.outputs.release }}
+          # Use pre-built extension binaries where available to avoid compiling
+          # PHP and all extensions from source (~50 min → a few minutes).
+          SPC_OPT_DOWNLOAD_ARGS: "--ignore-cache-sources=php-src --retry 5 --prefer-pre-built"
+
+      - name: Save static-php cache
+        if: steps.restore-static-php.outputs.cache-hit != 'true'
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: frankenphp/dist/static-php-cli
+          key: ${{ matrix.os }}-${{ matrix.platform }}-static-php-${{ env.PHP_VERSION }}-${{ hashFiles('frankenphp/build-static.sh', 'frankenphp/build-solidinvoice.sh') }}
+
+  build-linux:
+    name: Build Linux ${{ matrix.arch }} binary
+    needs: [prepare, build-dist]
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            platform: linux/amd64
+            runner: ubuntu-24.04
+          - arch: arm64
+            platform: linux/arm64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
+    env:
+      SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
+      PHP_VERSION: 8.4
+    steps:
+      - name: Harden the runner
         uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
         with:
           egress-policy: audit
@@ -196,14 +205,6 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3.11.1
-        with:
-            #driver: cloud
-            #endpoint: "solidinvoice/solidinvoice-app-cloud"
-            install: true
-            platforms: linux/amd64,linux/arm64
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0
 
       - name: Download archive
         uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
@@ -212,20 +213,109 @@ jobs:
           path: build/dist
 
       - name: Build SolidInvoice
+        id: build
         uses: docker/bake-action@3acf805d94d93a86cce4ca44798a76464a75b88c # v6.9.0
         with:
-            targets: build-static
-            source: .
-            push: ${{ needs.prepare.outputs.release == '1' }}
-            set: |
-                build-static.cache-from=type=gha,scope=php
-                build-static.cache-to=type=gha,scope=php,mode=max,ignore-error=true
+          targets: build-static
+          source: .
+          set: |
+            build-static.platforms=${{ matrix.platform }}
+            build-static.tags=
+            ${{ needs.prepare.outputs.release == '1' && 'build-static.output=type=image,name=solidinvoice/solidinvoice,push-by-digest=true,name-canonical=true,push=true' || '' }}
+            build-static.cache-from=type=gha,scope=build-static-${{ matrix.arch }}
+            build-static.cache-to=type=gha,scope=build-static-${{ matrix.arch }},mode=max,ignore-error=true
         env:
-          # GITHUB_TOKEN needs to be defined twice here.
-          # GH_TOKEN is used by the gh cli utility to upload the binary files
-          # GITHUB_TOKEN is used by static-php-cli script to make api calls to Github
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # GITHUB_TOKEN used by static-php-cli for GitHub API rate limiting inside Docker
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE: ${{ needs.prepare.outputs.release }}
           SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
           LATEST: ${{ !contains(needs.prepare.outputs.ref, '-') }}
+
+      - name: Export digest for manifest merge
+        if: needs.prepare.outputs.release == '1'
+        run: |
+          mkdir -p /tmp/digests
+          digest=$(jq -r '."build-static"."containerimage.digest"' <<< "$METADATA")
+          touch "/tmp/digests/${digest#sha256:}"
+        env:
+          METADATA: ${{ steps.build.outputs.metadata }}
+
+      - name: Upload digest artifact
+        if: needs.prepare.outputs.release == '1'
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        with:
+          name: digest-linux-${{ matrix.arch }}
+          path: /tmp/digests/*
+          if-no-files-found: error
+          retention-days: 1
+
+      - name: Extract binary and upload to GitHub release
+        if: needs.prepare.outputs.release == '1'
+        run: |
+          digest=$(jq -r '."build-static"."containerimage.digest"' <<< "$METADATA")
+          docker create --platform="$PLATFORM" --name si-binary \
+            "solidinvoice/solidinvoice@${digest}"
+          docker cp "si-binary:/usr/local/bin/solidinvoice" "solidinvoice-linux-${ARCH}"
+          docker rm si-binary
+          gh release upload "$VERSION" \
+            "solidinvoice-linux-${ARCH}" \
+            --repo solidinvoice/solidinvoice --clobber
+        env:
+          METADATA: ${{ steps.build.outputs.metadata }}
+          GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+          PLATFORM: ${{ matrix.platform }}
+          ARCH: ${{ matrix.arch }}
+          VERSION: ${{ needs.prepare.outputs.ref }}
+
+  publish-docker:
+    name: Publish multi-platform Docker image
+    needs: [prepare, build-linux]
+    permissions:
+      contents: read
+    if: needs.prepare.outputs.release == '1'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden the runner
+        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
+        with:
+          egress-policy: audit
+
+      - name: Login to DockerHub
+        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
+        with:
+          username: ${{ vars.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PAT }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3.11.1
+
+      - name: Download digests
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+        with:
+          pattern: digest-linux-*
+          path: /tmp/digests
+          merge-multiple: true
+
+      - name: Create and push multi-platform manifest
+        run: |
+          IMAGE="solidinvoice/solidinvoice"
+
+          TAGS="-t ${IMAGE}:${VERSION}"
+
+          # For stable releases (no pre-release suffix like -alpha1, -beta2), also tag
+          # with major, major.minor, major.minor.patch, and latest
+          if [[ "${VERSION}" =~ ^v?([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+            MAJOR="${BASH_REMATCH[1]}"
+            MINOR="${BASH_REMATCH[2]}"
+            PATCH="${BASH_REMATCH[3]}"
+            TAGS="${TAGS} -t ${IMAGE}:${MAJOR}.${MINOR}.${PATCH}"
+            TAGS="${TAGS} -t ${IMAGE}:${MAJOR}.${MINOR}"
+            TAGS="${TAGS} -t ${IMAGE}:${MAJOR}"
+            TAGS="${TAGS} -t ${IMAGE}:latest"
+          fi
+
+          # Combine per-platform digests into a single multi-arch manifest
+          # shellcheck disable=SC2086
+          docker buildx imagetools create ${TAGS} \
+            $(printf "${IMAGE}@sha256:%s " $(ls /tmp/digests/))
+        env:
+          VERSION: ${{ needs.prepare.outputs.ref }}
