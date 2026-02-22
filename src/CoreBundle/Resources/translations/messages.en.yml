@@ -16,6 +16,22 @@ exception:
         text: 'The following error occurred:'
     not_found:
         text: 'Sorry, but the page you were trying to view does not exist.'
+    403:
+        title: 'Access denied'
+        text: "You don't have permission to view this page."
+    404:
+        title: 'Page not found'
+        text: "We couldn't find the page you were looking for."
+    500:
+        title: 'Internal server error'
+        text: 'Something went wrong on our end. Please try again in a moment.'
+    generic:
+        title: 'Oops, something went wrong'
+        text: 'An unexpected error occurred. Please try again.'
+    action:
+        back: 'Go back'
+        dashboard: 'Go to dashboard'
+        sign_in: 'Sign in'
 billing:
     subtotal: SubTotal
     tax: Tax

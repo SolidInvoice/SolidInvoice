@@ -1,0 +1,16 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends 'bundles/TwigBundle/Exception/error_layout.html.twig' %}
+
+{% block error_code %}500{% endblock %}
+
+{% block error_title %}{{ 'exception.500.title'|trans }}{% endblock %}
+
+{% block error_message %}{{ 'exception.500.text'|trans }}{% endblock %}
