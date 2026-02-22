@@ -1,0 +1,54 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends '@SolidInvoiceCore/Layout/base.html.twig' %}
+
+{% block body %}
+    <div class="page page-center">
+        <div class="container container-tight py-4">
+
+            <div class="text-center mb-5">
+                {{ app_logo(showDefault: true) }}
+            </div>
+
+            <div class="text-center">
+                <div class="display-1 fw-bold text-muted mb-3 lh-1" style="font-size: 8rem; opacity: 0.15;">
+                    {% block error_code %}{% endblock %}
+                </div>
+
+                <h1 class="h2 mb-2">{% block error_title %}{% endblock %}</h1>
+
+                <p class="text-muted mb-4">{% block error_message %}{% endblock %}</p>
+
+                <div class="d-flex gap-2 justify-content-center flex-wrap">
+                    <a href="javascript:void(0)" onclick="history.back(); return false;" class="btn btn-ghost">
+                        {{ ux_icon('tabler:arrow-left') }}
+                        {{ 'exception.action.back'|trans }}
+                    </a>
+                    {% if app.user is not null %}
+                        <a href="{{ path('_dashboard') }}" class="btn btn-primary">
+                            {{ 'exception.action.dashboard'|trans }}
+                            {{ ux_icon('tabler:arrow-right') }}
+                        </a>
+                    {% else %}
+                        <a href="{{ path('_login_main') }}" class="btn btn-primary">
+                            {{ 'exception.action.sign_in'|trans }}
+                            {{ ux_icon('tabler:arrow-right') }}
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="text-center text-muted mt-5">
+                <small>{{ 'powered_by'|trans }} <a href="https://solidinvoice.co">{{ app_name }}</a> - {{ app_version }}</small>
+            </div>
+
+        </div>
+    </div>
+{% endblock body %}
