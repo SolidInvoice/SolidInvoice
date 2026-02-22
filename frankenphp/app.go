@@ -419,6 +419,15 @@ func setupCommands() {
 
 			for i := 1; i <= messengerWorkers; i++ {
 				messengerWorker := process.Loop(func(ctx context.Context) error {
+					if !isAppInstalled() {
+						// App not yet installed; wait before retrying so we don't tight-loop
+						select {
+						case <-ctx.Done():
+							return ctx.Err()
+						case <-time.After(30 * time.Second):
+							return nil
+						}
+					}
 					return runConsoleCommand(
 						"messenger:consume",
 						"--limit",
@@ -434,25 +443,6 @@ func setupCommands() {
 				app.AddProcess(messengerWorker)
 			}
 
-			/*app.OnShutdown(func(ctx context.Context) error {
-				log.Info(nil, "Application is shutting down...")
-				return runConsoleCommand("messenger:stop-workers")
-			})*/
-			app.AddProcess(process.Scheduled(
-				func(role string) process.ContextFunc {
-					return func(ctx context.Context) (context.Context, context.CancelFunc, error) {
-						ctx, cancel := context.WithCancel(ctx)
-						return ctx, cancel, nil
-					}
-				},
-				new(memStore),
-				appName+"_scheduled_cron",
-				process.Every(time.Minute),
-				func(ctx context.Context, lastRunTime, runTime time.Time, runID string) error {
-					return runConsoleCommand("schedule:run")
-				},
-			))
-
 			app.OnEvent = func(ctx context.Context, event lu.Event) {
 				switch event.Type {
 				case lu.AppStartup:
@@ -462,8 +452,12 @@ func setupCommands() {
 					}
 				case lu.AppRunning:
 					// time.Sleep(time.Second * 1) // Give enough time for all processes to start and output their logs
-					if err := runConsoleCommand("messenger:setup-transports"); err != nil {
-						log.Error(ctx, errors.Join(errors.New("failed to setup messenger transports"), err))
+					if isAppInstalled() {
+						if err := runConsoleCommand("messenger:setup-transports"); err != nil {
+							log.Error(ctx, errors.Join(errors.New("failed to setup messenger transports"), err))
+						}
+					} else {
+						log.Info(nil, "Application not installed, skipping messenger transport setup")
 					}
 					if !skipIntro {
 						outputAppInfo()
@@ -654,6 +648,10 @@ func runConsoleCommand(args ...string) error {
 	args = append(args, "--no-interaction")
 
 	return runInternalCommand(args...)
+}
+
+func isAppInstalled() bool {
+	return runConsoleCommand("solidinvoice:is-installed") == nil
 }
 
 func must(err error) {
