@@ -428,6 +428,9 @@ func setupCommands() {
 							return nil
 						}
 					}
+					if err := runConsoleCommand("messenger:setup-transports"); err != nil {
+						log.Error(ctx, errors.Join(errors.New("failed to setup messenger transports"), err))
+					}
 					return runConsoleCommand(
 						"messenger:consume",
 						"--limit",
@@ -451,14 +454,6 @@ func setupCommands() {
 						log.Error(ctx, errors.Join(errors.New("failed to clear cache"), err))
 					}
 				case lu.AppRunning:
-					// time.Sleep(time.Second * 1) // Give enough time for all processes to start and output their logs
-					if isAppInstalled() {
-						if err := runConsoleCommand("messenger:setup-transports"); err != nil {
-							log.Error(ctx, errors.Join(errors.New("failed to setup messenger transports"), err))
-						}
-					} else {
-						log.Info(nil, "Application not installed, skipping messenger transport setup")
-					}
 					if !skipIntro {
 						outputAppInfo()
 					}
