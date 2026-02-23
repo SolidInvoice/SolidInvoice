@@ -48,6 +48,31 @@ final class ItemTypeTest extends FormTestCase
     }
 
     /**
+     * @throws MathException
+     */
+    public function testSubmitPreservesSpecialCharacters(): void
+    {
+        $description = 'Item + discount & "special" chars: 100% off';
+        $price = 100;
+        $qty = 1.0;
+
+        $formData = [
+            'description' => $description,
+            'price' => $price,
+            'qty' => $qty,
+        ];
+
+        $currency = new Currency('USD');
+
+        $object = new Line();
+        $object->setDescription($description);
+        $object->setQty($qty);
+        $object->setPrice(BigDecimal::of($price)->multipliedBy(100));
+
+        $this->assertFormData($this->factory->create(ItemType::class, null, ['currency' => $currency]), $formData, $object);
+    }
+
+    /**
      * @return array<FormExtensionInterface>
      */
     protected function getExtensions(): array
