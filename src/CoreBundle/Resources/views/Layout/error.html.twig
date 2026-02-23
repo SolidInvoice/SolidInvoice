@@ -27,10 +27,10 @@
                 <p class="text-muted mb-4">{% block error_message %}{% endblock %}</p>
 
                 <div class="d-flex gap-2 justify-content-center flex-wrap">
-                    <a href="javascript:void(0)" onclick="history.back(); return false;" class="btn btn-ghost">
+                    <button type="button" onclick="history.back()" class="btn btn-ghost">
                         {{ ux_icon('tabler:arrow-left') }}
                         {{ 'exception.action.back'|trans }}
-                    </a>
+                    </button>
                     {% if app.user is not null %}
                         <a href="{{ path('_dashboard') }}" class="btn btn-primary">
                             {{ 'exception.action.dashboard'|trans }}
