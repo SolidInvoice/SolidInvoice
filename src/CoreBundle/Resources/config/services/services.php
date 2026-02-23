@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 use Gedmo\Timestampable\TimestampableListener;
 use Mpociot\VatCalculator\VatCalculator;
+use SolidInvoice\CoreBundle\DummyData\DummyDataLoader;
 use SolidInvoice\CoreBundle\Routing\Loader\AbstractDirectoryLoader;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -24,6 +25,7 @@ use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -68,4 +70,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(GenerateUuidCommand::class);
     $services->set(InspectUlidCommand::class);
     $services->set(InspectUuidCommand::class);
+
+    $services->set(DummyDataLoader::class)
+        ->arg('$loaders', tagged_iterator('solidinvoice.dummy_data_loader', defaultPriorityMethod: 'getPriority'));
 };
