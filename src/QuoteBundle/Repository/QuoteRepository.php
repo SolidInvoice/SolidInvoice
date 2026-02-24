@@ -20,7 +20,7 @@ use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\QuoteBundle\Entity\Quote;
-use SolidInvoice\QuoteBundle\Model\Graph;
+use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 
 /**
  * @extends ServiceEntityRepository<Quote>
@@ -32,7 +32,7 @@ class QuoteRepository extends ServiceEntityRepository
         parent::__construct($registry, Quote::class);
     }
 
-    public function getTotalQuotes(?string $status = null): int
+    public function getTotalQuotes(?QuoteStatus $status = null): int
     {
         $qb = $this->createQueryBuilder('q');
 
@@ -182,7 +182,7 @@ class QuoteRepository extends ServiceEntityRepository
             ->innerJoin('q.client', 'c')
             ->addSelect('c')
             ->where('q.status = :status')
-            ->setParameter('status', Graph::STATUS_PENDING)
+            ->setParameter('status', QuoteStatus::Pending)
             ->orderBy('q.created', Criteria::DESC)
             ->setMaxResults($limit);
 
@@ -202,8 +202,8 @@ class QuoteRepository extends ServiceEntityRepository
             ->innerJoin('q.client', 'c')
             ->addSelect('c')
             ->where('q.status = :acceptedStatus OR q.status = :declinedStatus')
-            ->setParameter('acceptedStatus', Graph::STATUS_ACCEPTED)
-            ->setParameter('declinedStatus', Graph::STATUS_DECLINED)
+            ->setParameter('acceptedStatus', QuoteStatus::Accepted)
+            ->setParameter('declinedStatus', QuoteStatus::Declined)
             ->orderBy('q.updated', Criteria::DESC)
             ->setMaxResults($limit);
 

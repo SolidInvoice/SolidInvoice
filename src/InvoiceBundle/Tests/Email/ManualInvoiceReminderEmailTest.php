@@ -18,6 +18,7 @@ use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Email\ManualInvoiceReminderEmail;
 use SolidInvoice\InvoiceBundle\Entity\Line;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -49,7 +50,7 @@ final class ManualInvoiceReminderEmailTest extends KernelTestCase
         $invoice = InvoiceFactory::createOne([
             'company' => $this->company,
             'client' => $client,
-            'status' => 'pending',
+            'status' => InvoiceStatus::Pending,
         ]);
 
         $invoice->_real()->setInvoiceId('INV-2024-001');
@@ -66,7 +67,7 @@ final class ManualInvoiceReminderEmailTest extends KernelTestCase
         $invoice = InvoiceFactory::createOne([
             'company' => $this->company,
             'client' => $client,
-            'status' => 'pending',
+            'status' => InvoiceStatus::Pending,
         ]);
 
         $email = new ManualInvoiceReminderEmail($invoice->_real());
@@ -82,7 +83,7 @@ final class ManualInvoiceReminderEmailTest extends KernelTestCase
         $invoice = InvoiceFactory::createOne([
             'company' => $this->company,
             'client' => $client,
-            'status' => 'pending',
+            'status' => InvoiceStatus::Pending,
         ]);
 
         $email = new ManualInvoiceReminderEmail($invoice->_real());
@@ -99,7 +100,7 @@ final class ManualInvoiceReminderEmailTest extends KernelTestCase
         $invoice = InvoiceFactory::createOne([
             'company' => $this->company,
             'client' => $client,
-            'status' => 'pending',
+            'status' => InvoiceStatus::Pending,
         ]);
 
         $email = new ManualInvoiceReminderEmail($invoice->_real());
@@ -120,7 +121,7 @@ final class ManualInvoiceReminderEmailTest extends KernelTestCase
             ->create([
                 'company' => $this->company,
                 'client' => $client,
-                'status' => 'pending',
+                'status' => InvoiceStatus::Pending,
                 'total' => 25000,
                 'balance' => 25000,
                 'baseTotal' => 25000,
@@ -163,7 +164,7 @@ final class ManualInvoiceReminderEmailTest extends KernelTestCase
             ->create([
                 'company' => $this->company,
                 'client' => $client,
-                'status' => 'pending',
+                'status' => InvoiceStatus::Pending,
                 'total' => 25000,
                 'balance' => 25000,
                 'baseTotal' => 25000,

@@ -18,9 +18,9 @@ use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\DashboardBundle\Widgets\HeroStatsWidget;
 use SolidInvoice\InvoiceBundle\Entity\Line;
-use SolidInvoice\InvoiceBundle\Model\Graph as InvoiceGraph;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
-use SolidInvoice\PaymentBundle\Model\Status;
+use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\PaymentBundle\Test\Factory\PaymentFactory;
 use SolidInvoice\PaymentBundle\Test\Factory\PaymentMethodFactory;
 
@@ -70,7 +70,7 @@ final class HeroStatsWidgetTest extends WidgetTestCase
         // Create overdue invoices
         InvoiceFactory::createMany(3, [
             'client' => $client,
-            'status' => InvoiceGraph::STATUS_OVERDUE,
+            'status' => InvoiceStatus::Overdue,
             'balance' => BigInteger::of(10000), // $100.00
             'total' => BigInteger::of(10000),
             'baseTotal' => BigInteger::of(10000),
@@ -87,7 +87,7 @@ final class HeroStatsWidgetTest extends WidgetTestCase
         // Create pending invoices
         InvoiceFactory::createMany(2, [
             'client' => $client,
-            'status' => InvoiceGraph::STATUS_PENDING,
+            'status' => InvoiceStatus::Pending,
             'balance' => BigInteger::of(5000), // $50.00
             'total' => BigInteger::of(5000),
             'baseTotal' => BigInteger::of(5000),
@@ -120,7 +120,7 @@ final class HeroStatsWidgetTest extends WidgetTestCase
 
         $invoice = InvoiceFactory::createOne([
             'client' => $client,
-            'status' => InvoiceGraph::STATUS_PAID,
+            'status' => InvoiceStatus::Paid,
             'total' => BigInteger::of(50000),
             'balance' => BigInteger::zero(),
             'baseTotal' => BigInteger::of(50000),
@@ -138,7 +138,7 @@ final class HeroStatsWidgetTest extends WidgetTestCase
             'method' => $paymentMethod,
             'totalAmount' => 50000, // $500.00
             'currencyCode' => 'USD',
-            'status' => Status::STATUS_CAPTURED,
+            'status' => PaymentStatus::Captured,
             'created' => new \DateTime('now'),
         ]);
 
@@ -175,7 +175,7 @@ final class HeroStatsWidgetTest extends WidgetTestCase
         // Create overdue invoices
         InvoiceFactory::createMany(2, [
             'client' => $client,
-            'status' => InvoiceGraph::STATUS_OVERDUE,
+            'status' => InvoiceStatus::Overdue,
             'balance' => BigInteger::of(15000),
             'total' => BigInteger::of(15000),
             'baseTotal' => BigInteger::of(15000),
@@ -186,7 +186,7 @@ final class HeroStatsWidgetTest extends WidgetTestCase
         // Create pending invoices
         InvoiceFactory::createOne([
             'client' => $client,
-            'status' => InvoiceGraph::STATUS_PENDING,
+            'status' => InvoiceStatus::Pending,
             'balance' => BigInteger::of(10000),
             'total' => BigInteger::of(10000),
             'baseTotal' => BigInteger::of(10000),
@@ -196,7 +196,7 @@ final class HeroStatsWidgetTest extends WidgetTestCase
 
         $invoice = InvoiceFactory::createOne([
             'client' => $client,
-            'status' => InvoiceGraph::STATUS_PAID,
+            'status' => InvoiceStatus::Paid,
             'total' => BigInteger::of(25000),
             'balance' => BigInteger::zero(),
             'baseTotal' => BigInteger::of(25000),
@@ -214,7 +214,7 @@ final class HeroStatsWidgetTest extends WidgetTestCase
             'method' => $paymentMethod,
             'totalAmount' => 25000,
             'currencyCode' => 'USD',
-            'status' => Status::STATUS_CAPTURED,
+            'status' => PaymentStatus::Captured,
             'created' => new \DateTime('now'),
         ]);
 

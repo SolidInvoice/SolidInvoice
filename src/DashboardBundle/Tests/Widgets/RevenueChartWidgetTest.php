@@ -18,9 +18,9 @@ use DateTime;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\DashboardBundle\Widgets\RevenueChartWidget;
-use SolidInvoice\InvoiceBundle\Model\Graph as InvoiceGraph;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
-use SolidInvoice\PaymentBundle\Model\Status;
+use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\PaymentBundle\Test\Factory\PaymentFactory;
 use SolidInvoice\PaymentBundle\Test\Factory\PaymentMethodFactory;
 use Symfony\UX\Chartjs\Model\Chart;
@@ -64,7 +64,7 @@ final class RevenueChartWidgetTest extends WidgetTestCase
 
         $invoice = InvoiceFactory::createOne([
             'client' => $client,
-            'status' => InvoiceGraph::STATUS_PAID,
+            'status' => InvoiceStatus::Paid,
             'total' => BigInteger::of(50000),
             'balance' => BigInteger::zero(),
             'baseTotal' => BigInteger::of(50000),
@@ -83,7 +83,7 @@ final class RevenueChartWidgetTest extends WidgetTestCase
             'method' => $paymentMethod,
             'totalAmount' => 50000,
             'currencyCode' => 'USD',
-            'status' => Status::STATUS_CAPTURED,
+            'status' => PaymentStatus::Captured,
             'created' => new DateTime('now'),
         ]);
 
@@ -114,7 +114,7 @@ final class RevenueChartWidgetTest extends WidgetTestCase
 
         $invoice = InvoiceFactory::createOne([
             'client' => $client,
-            'status' => InvoiceGraph::STATUS_PAID,
+            'status' => InvoiceStatus::Paid,
             'total' => BigInteger::of(25000),
             'balance' => BigInteger::zero(),
             'baseTotal' => BigInteger::of(25000),
@@ -132,7 +132,7 @@ final class RevenueChartWidgetTest extends WidgetTestCase
             'method' => $paymentMethod,
             'totalAmount' => 25000,
             'currencyCode' => 'USD',
-            'status' => Status::STATUS_CAPTURED,
+            'status' => PaymentStatus::Captured,
             'created' => new DateTime('now'),
         ]);
 
@@ -175,7 +175,7 @@ final class RevenueChartWidgetTest extends WidgetTestCase
 
         $invoice = InvoiceFactory::createOne([
             'client' => $client,
-            'status' => InvoiceGraph::STATUS_PAID,
+            'status' => InvoiceStatus::Paid,
             'total' => BigInteger::of(100000),
             'balance' => BigInteger::zero(),
             'baseTotal' => BigInteger::of(100000),
@@ -193,7 +193,7 @@ final class RevenueChartWidgetTest extends WidgetTestCase
             'method' => $paymentMethod,
             'totalAmount' => 100000,
             'currencyCode' => 'USD',
-            'status' => Status::STATUS_CAPTURED,
+            'status' => PaymentStatus::Captured,
             'created' => new DateTime('now'),
         ]);
 

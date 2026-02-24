@@ -19,6 +19,7 @@ use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Exception\InvalidTransitionException;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Service\InvoiceStatusTransitionService;
@@ -34,7 +35,7 @@ final class InvoiceStatusTransitionServiceTest extends TestCase
     {
         $invoice = new Invoice();
         $invoice->setClient(ClientFactory::createOne()->_real());
-        $invoice->setStatus(Graph::STATUS_PENDING);
+        $invoice->setStatus(InvoiceStatus::Pending);
 
         $stateMachine = M::mock(StateMachine::class);
         $stateMachine->shouldReceive('can')
@@ -56,7 +57,7 @@ final class InvoiceStatusTransitionServiceTest extends TestCase
     public function testApplyTransitionThrowsExceptionWhenTransitionNotAllowed(): void
     {
         $invoice = new Invoice();
-        $invoice->setStatus(Graph::STATUS_PAID);
+        $invoice->setStatus(InvoiceStatus::Paid);
 
         $stateMachine = M::mock(StateMachine::class);
         $stateMachine->shouldReceive('can')
@@ -73,7 +74,7 @@ final class InvoiceStatusTransitionServiceTest extends TestCase
     public function testCanApplyTransition(): void
     {
         $invoice = new Invoice();
-        $invoice->setStatus(Graph::STATUS_PENDING);
+        $invoice->setStatus(InvoiceStatus::Pending);
 
         $stateMachine = M::mock(StateMachine::class);
         $stateMachine->shouldReceive('can')
@@ -89,7 +90,7 @@ final class InvoiceStatusTransitionServiceTest extends TestCase
     public function testGetAvailableTransitions(): void
     {
         $invoice = new Invoice();
-        $invoice->setStatus(Graph::STATUS_PENDING);
+        $invoice->setStatus(InvoiceStatus::Pending);
 
         $transition1 = M::mock(\Symfony\Component\Workflow\Transition::class);
         $transition1->shouldReceive('getName')->andReturn(Graph::TRANSITION_OVERDUE);

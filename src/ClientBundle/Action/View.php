@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\ClientBundle\Action;
 
 use SolidInvoice\ClientBundle\Entity\Client;
-use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use Symfony\Bridge\Twig\Attribute\Template;
@@ -36,8 +36,8 @@ final class View
         return [
             'client' => $client,
             'payments' => $this->paymentRepository->getPaymentsForClient($client),
-            'total_invoices_pending' => $this->invoiceRepository->getCountByStatus(Graph::STATUS_PENDING, $client),
-            'total_invoices_paid' => $this->invoiceRepository->getCountByStatus(Graph::STATUS_PAID, $client),
+            'total_invoices_pending' => $this->invoiceRepository->getCountByStatus(InvoiceStatus::Pending, $client),
+            'total_invoices_paid' => $this->invoiceRepository->getCountByStatus(InvoiceStatus::Paid, $client),
             'total_income' => $this->paymentRepository->getTotalIncomeForClient($client),
             'total_outstanding' => $this->invoiceRepository->getTotalOutstanding($client),
         ];

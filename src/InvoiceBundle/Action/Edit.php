@@ -19,6 +19,7 @@ use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\InvoiceBundle\DTO\InvoiceFormDTO;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Form\Type\InvoiceType;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceFormManager;
 use SolidInvoice\InvoiceBundle\Model\Graph;
@@ -54,7 +55,7 @@ final class Edit
     #[Template('@SolidInvoiceInvoice/Default/edit.html.twig')]
     public function __invoke(Request $request, Invoice $invoice): array | Response
     {
-        if (Graph::STATUS_PAID === $invoice->getStatus()) {
+        if (InvoiceStatus::Paid === $invoice->getStatus()) {
             $session = $request->getSession();
             assert($session instanceof Session);
             $session->getFlashBag()->add('warning', 'invoice.edit.paid');

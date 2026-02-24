@@ -24,7 +24,7 @@ use SolidInvoice\CoreBundle\Generator\BillingIdGenerator\IdGeneratorInterface;
 use SolidInvoice\QuoteBundle\Cloner\QuoteCloner;
 use SolidInvoice\QuoteBundle\Entity\Line;
 use SolidInvoice\QuoteBundle\Entity\Quote;
-use SolidInvoice\QuoteBundle\Model\Graph;
+use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use Symfony\Component\DependencyInjection\ServiceLocator;
@@ -79,7 +79,7 @@ class QuoteClonerTest extends TestCase
                 ['new', 'draft'],
                 [new Transition('new', 'new', 'draft')]
             ),
-            new MethodMarkingStore(true, 'status'),
+            new MethodMarkingStore(true, 'statusValue'),
             $dispatcher,
             'quote'
         );
@@ -112,7 +112,7 @@ class QuoteClonerTest extends TestCase
         self::assertSame('generatorfoo-bar-bazgenerator', $newQuote->getQuoteId());
         self::assertEquals($quote->getTax(), $newQuote->getTax());
         self::assertSame($client, $newQuote->getClient());
-        self::assertSame(Graph::STATUS_DRAFT, $newQuote->getStatus());
+        self::assertSame(QuoteStatus::Draft, $newQuote->getStatus());
 
         self::assertNotSame($quote->getUuid(), $newQuote->getUuid());
 

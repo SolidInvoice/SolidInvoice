@@ -30,34 +30,4 @@ final class Graph
     public const TRANSITION_REOPEN = 'reopen';
 
     public const TRANSITION_ARCHIVE = 'archive';
-
-    public const STATUS_NEW = 'new';
-
-    public const STATUS_DRAFT = 'draft';
-
-    public const STATUS_PENDING = 'pending';
-
-    public const STATUS_ACCEPTED = 'accepted';
-
-    public const STATUS_CANCELLED = 'cancelled';
-
-    public const STATUS_DECLINED = 'declined';
-
-    public const STATUS_ARCHIVED = 'archived';
-
-    /**
-     * @return array<string, string>
-     */
-    public static function statusArray(): array
-    {
-        return [
-            self::STATUS_NEW => 'New',
-            self::STATUS_DRAFT => 'Draft',
-            self::STATUS_PENDING => 'Pending',
-            self::STATUS_ACCEPTED => 'Accepted',
-            self::STATUS_CANCELLED => 'Cancelled',
-            self::STATUS_DECLINED => 'Declined',
-            self::STATUS_ARCHIVED => 'Archived',
-        ];
-    }
 }

@@ -16,6 +16,7 @@ namespace SolidInvoice\InvoiceBundle\Message\Handler;
 use Psr\Log\LoggerInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Exception\InvalidTransitionException;
 use SolidInvoice\InvoiceBundle\Message\MarkInvoiceOverdue;
 use SolidInvoice\InvoiceBundle\Model\Graph;
@@ -55,10 +56,10 @@ final readonly class MarkInvoiceOverdueHandler
             }
 
             // Idempotency check: only process if still pending
-            if ($invoice->getStatus() !== Graph::STATUS_PENDING) {
+            if ($invoice->getStatus() !== InvoiceStatus::Pending) {
                 $this->logger->info('Invoice no longer pending, skipping overdue processing', [
                     'invoice_id' => $invoice->getId()?->toString(),
-                    'current_status' => $invoice->getStatus(),
+                    'current_status' => $invoice->getStatus()?->value,
                 ]);
                 return;
             }

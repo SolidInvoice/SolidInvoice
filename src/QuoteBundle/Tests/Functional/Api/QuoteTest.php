@@ -20,6 +20,7 @@ use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\QuoteBundle\Entity\Line;
 use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use SolidInvoice\QuoteBundle\Test\Factory\QuoteFactory;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Uid\Uuid;
@@ -115,7 +116,7 @@ final class QuoteTest extends ApiTestCase
         $quote = QuoteFactory::createOne([
             'client' => $client,
             'users' => $contacts,
-            'status' => 'draft',
+            'status' => QuoteStatus::Draft,
             'due' => new DateTimeImmutable('2005-01-20'),
             'discount' => (new Discount())
                 ->setType('percentage')
@@ -175,7 +176,7 @@ final class QuoteTest extends ApiTestCase
         $quote = QuoteFactory::createOne([
             'client' => $client,
             'users' => $contacts,
-            'status' => 'draft',
+            'status' => QuoteStatus::Draft,
             'due' => new DateTimeImmutable('2005-01-20'),
             'discount' => (new Discount())
                 ->setType('percentage')

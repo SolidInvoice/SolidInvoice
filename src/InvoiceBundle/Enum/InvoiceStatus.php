@@ -13,13 +13,14 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Enum;
 
-enum RecurringInvoiceStatus: string
+enum InvoiceStatus: string
 {
     case New = 'new';
-    case Active = 'active';
-    case Complete = 'complete';
     case Draft = 'draft';
-    case Paused = 'paused';
+    case Pending = 'pending';
+    case Paid = 'paid';
+    case Active = 'active';
+    case Overdue = 'overdue';
     case Cancelled = 'cancelled';
     case Archived = 'archived';
 }

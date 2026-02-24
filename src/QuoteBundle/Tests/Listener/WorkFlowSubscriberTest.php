@@ -21,6 +21,7 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use SolidInvoice\QuoteBundle\Listener\WorkFlowSubscriber;
 use SolidInvoice\QuoteBundle\Mailer\QuoteMailer;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -79,7 +80,7 @@ final class WorkFlowSubscriberTest extends KernelTestCase
     {
         $quote = (new Quote())
             ->setClient(ClientFactory::createOne()->_real())
-            ->setStatus('pending');
+            ->setStatus(QuoteStatus::Pending);
 
         $invoiceManager = M::mock(InvoiceManager::class);
         $stateMachine = M::mock(StateMachine::class);

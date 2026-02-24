@@ -11,13 +11,11 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace SolidInvoice\ClientBundle\Model;
+namespace SolidInvoice\ClientBundle\Enum;
 
-class Status
+enum ClientStatus: string
 {
-    final public const STATUS_ACTIVE = 'active';
-
-    final public const STATUS_INACTIVE = 'inactive';
-
-    final public const STATUS_ARCHIVED = 'archived';
+    case Active = 'active';
+    case Inactive = 'inactive';
+    case Archived = 'archived';
 }

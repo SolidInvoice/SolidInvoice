@@ -30,11 +30,6 @@ abstract class BaseInvoice
 {
     use CompanyAware;
 
-    #[ORM\Column(name: 'status', type: Types::STRING, length: 25)]
-    #[Groups(['invoice_api:read', 'recurring_invoice_api:read'])]
-    #[ApiProperty(writable: false)]
-    protected ?string $status = null;
-
     #[ORM\Column(name: 'total_amount', type: BigIntegerType::NAME)]
     #[Groups(['invoice_api:read', 'recurring_invoice_api:read'])]
     #[ApiProperty(
@@ -133,18 +128,6 @@ abstract class BaseInvoice
         $this->baseTotal = BigDecimal::zero();
         $this->tax = BigDecimal::zero();
         $this->total = BigDecimal::zero();
-    }
-
-    public function getStatus(): ?string
-    {
-        return $this->status;
-    }
-
-    public function setStatus(string $status): self
-    {
-        $this->status = $status;
-
-        return $this;
     }
 
     public function getTotal(): BigNumber

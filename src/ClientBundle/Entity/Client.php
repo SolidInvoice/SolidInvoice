@@ -25,13 +25,14 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Money\Currency;
+use SolidInvoice\ClientBundle\Enum\ClientStatus;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
-use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use Stringable;
@@ -99,9 +100,9 @@ class Client implements Stringable
     private ?string $website = null;
 
     #[ApiProperty(writable: false, iris: ['https://schema.org/Text'])]
-    #[ORM\Column(name: 'status', type: Types::STRING, length: 25)]
+    #[ORM\Column(name: 'status', type: Types::STRING, length: 25, enumType: ClientStatus::class)]
     #[Serialize\Groups(['client_api:read'])]
-    private ?string $status = null;
+    private ?ClientStatus $status = null;
 
     #[ORM\Column(name: 'currency', type: Types::STRING, length: 3, nullable: true)]
     #[Serialize\Groups(['client_api:read', 'client_api:write'])]
@@ -244,12 +245,12 @@ class Client implements Stringable
         return $this;
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): ?ClientStatus
     {
         return $this->status;
     }
 
-    public function setStatus(string $status): self
+    public function setStatus(ClientStatus $status): static
     {
         $this->status = $status;
 
@@ -472,7 +473,7 @@ class Client implements Stringable
     public function getOutstandingInvoices(): iterable
     {
         foreach ($this->invoices as $invoice) {
-            if (in_array($invoice->getStatus(), [Graph::STATUS_PENDING, Graph::STATUS_OVERDUE], true) && $invoice->getBalance()->isPositive()) {
+            if (in_array($invoice->getStatus(), [InvoiceStatus::Pending, InvoiceStatus::Overdue], true) && $invoice->getBalance()->isPositive()) {
                 yield $invoice;
             }
         }

@@ -11,15 +11,15 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace SolidInvoice\InvoiceBundle\Enum;
+namespace SolidInvoice\QuoteBundle\Enum;
 
-enum RecurringInvoiceStatus: string
+enum QuoteStatus: string
 {
     case New = 'new';
-    case Active = 'active';
-    case Complete = 'complete';
     case Draft = 'draft';
-    case Paused = 'paused';
+    case Pending = 'pending';
+    case Accepted = 'accepted';
     case Cancelled = 'cancelled';
+    case Declined = 'declined';
     case Archived = 'archived';
 }

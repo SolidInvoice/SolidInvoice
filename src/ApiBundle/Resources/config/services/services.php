@@ -24,6 +24,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->private()
         ->bind('$invoiceStateMachine', service('state_machine.invoice'))
         ->bind('$quoteStateMachine', service('state_machine.quote'))
+        ->bind('$recurringInvoiceStateMachine', service('state_machine.recurring_invoice'))
     ;
 
     $services

@@ -18,6 +18,7 @@ use Psr\Clock\ClockInterface;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\ReminderType;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceReminderFactory;
@@ -54,7 +55,7 @@ final class InvoiceRepositoryTest extends KernelTestCase
 
         $invoice = InvoiceFactory::createOne([
             'company' => $this->company,
-            'status' => 'pending',
+            'status' => InvoiceStatus::Pending,
             'due' => $dueDate,
         ]);
 
@@ -70,7 +71,7 @@ final class InvoiceRepositoryTest extends KernelTestCase
 
         $invoice = InvoiceFactory::createOne([
             'company' => $this->company,
-            'status' => 'pending',
+            'status' => InvoiceStatus::Pending,
             'due' => $dueDate,
         ]);
 
@@ -92,7 +93,7 @@ final class InvoiceRepositoryTest extends KernelTestCase
         // Invoice due in 5 days (outside the 3-day window)
         InvoiceFactory::createOne([
             'company' => $this->company,
-            'status' => 'pending',
+            'status' => InvoiceStatus::Pending,
             'due' => $this->clock->now()->modify('+5 days'),
         ]);
 
@@ -108,14 +109,14 @@ final class InvoiceRepositoryTest extends KernelTestCase
         // Paid invoice
         InvoiceFactory::createOne([
             'company' => $this->company,
-            'status' => 'paid',
+            'status' => InvoiceStatus::Paid,
             'due' => $dueDate,
         ]);
 
         // Draft invoice
         InvoiceFactory::createOne([
             'company' => $this->company,
-            'status' => 'draft',
+            'status' => InvoiceStatus::Draft,
             'due' => $dueDate,
         ]);
 
@@ -130,7 +131,7 @@ final class InvoiceRepositoryTest extends KernelTestCase
 
         $invoice = InvoiceFactory::createOne([
             'company' => $this->company,
-            'status' => 'pending',
+            'status' => InvoiceStatus::Pending,
             'due' => $dueDate,
         ]);
 
@@ -146,7 +147,7 @@ final class InvoiceRepositoryTest extends KernelTestCase
 
         $invoice = InvoiceFactory::createOne([
             'company' => $this->company,
-            'status' => 'pending',
+            'status' => InvoiceStatus::Pending,
             'due' => $dueDate,
         ]);
 
@@ -168,21 +169,21 @@ final class InvoiceRepositoryTest extends KernelTestCase
         // 1 day overdue
         InvoiceFactory::createOne([
             'company' => $this->company,
-            'status' => 'pending',
+            'status' => InvoiceStatus::Pending,
             'due' => $this->clock->now()->modify('-1 day')->setTime(0, 0)->modify('+6 hours'),
         ]);
 
         // 7 days overdue
         $invoice7Days = InvoiceFactory::createOne([
             'company' => $this->company,
-            'status' => 'pending',
+            'status' => InvoiceStatus::Pending,
             'due' => $this->clock->now()->modify('-7 days')->setTime(0, 0)->modify('+6 hours'),
         ]);
 
         // 14 days overdue
         InvoiceFactory::createOne([
             'company' => $this->company,
-            'status' => 'pending',
+            'status' => InvoiceStatus::Pending,
             'due' => $this->clock->now()->modify('-14 days')->setTime(0, 0)->modify('+6 hours'),
         ]);
 
@@ -199,14 +200,14 @@ final class InvoiceRepositoryTest extends KernelTestCase
         // Paid invoice - should be excluded
         InvoiceFactory::createOne([
             'company' => $this->company,
-            'status' => 'paid',
+            'status' => InvoiceStatus::Paid,
             'due' => $dueDate,
         ]);
 
         // Overdue invoice - should be included now
         $overdueInvoice = InvoiceFactory::createOne([
             'company' => $this->company,
-            'status' => 'overdue',
+            'status' => InvoiceStatus::Overdue,
             'due' => $dueDate,
         ]);
 

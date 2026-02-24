@@ -16,8 +16,8 @@ namespace SolidInvoice\QuoteBundle\Action;
 use Generator;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use SolidInvoice\QuoteBundle\Exception\InvalidTransitionException;
-use SolidInvoice\QuoteBundle\Model\Graph;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
@@ -44,9 +44,9 @@ final class Transition
 
         $route = $this->router->generate('_quotes_view', ['id' => $quote->getId()]);
 
-        if ($marking->has(Graph::STATUS_ACCEPTED)) {
+        if ($marking->has(QuoteStatus::Accepted->value)) {
             $route = $this->router->generate('_invoices_view', ['id' => $quote->getInvoice()->getId()]);
-        } elseif ($marking->has(Graph::STATUS_ARCHIVED)) {
+        } elseif ($marking->has(QuoteStatus::Archived->value)) {
             $route = $this->router->generate('_quotes_index');
         }
 

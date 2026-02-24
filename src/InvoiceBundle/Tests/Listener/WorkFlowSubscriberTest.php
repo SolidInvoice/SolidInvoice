@@ -19,6 +19,7 @@ use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Listener\WorkFlowSubscriber;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use Symfony\Component\Workflow\Event\Event;
@@ -42,7 +43,7 @@ class WorkFlowSubscriberTest extends TestCase
         $invoice = new Invoice();
         $invoice->setBalance(1200);
         $invoice->setClient((new Client())->setName('Test')->setCurrencyCode('USD'));
-        $invoice->setStatus('pending');
+        $invoice->setStatus(InvoiceStatus::Pending);
 
         $subscriber->onWorkflowTransitionApplied(new Event($invoice, new Marking(['pending' => 1]), new Transition('pay', 'pending', 'paid'), M::mock(WorkflowInterface::class)));
         self::assertNotNull($invoice->getPaidDate());
@@ -60,7 +61,7 @@ class WorkFlowSubscriberTest extends TestCase
         $invoice = new Invoice();
         $invoice->setBalance(1200);
         $invoice->setClient((new Client())->setName('Test')->setCurrencyCode('USD'));
-        $invoice->setStatus('pending');
+        $invoice->setStatus(InvoiceStatus::Pending);
 
         $subscriber->onWorkflowTransitionApplied(new Event($invoice, new Marking(['pending' => 1]), new Transition('archive', 'pending', 'archived'), M::mock(WorkflowInterface::class)));
 

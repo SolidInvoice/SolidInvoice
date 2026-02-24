@@ -19,6 +19,7 @@ use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use SolidInvoice\PaymentBundle\Entity\Payment;
+use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\PaymentBundle\Test\Factory\PaymentFactory;
 use Zenstruck\Foundry\Test\Factories;
 
@@ -39,7 +40,7 @@ final class PaymentTest extends ApiTestCase
         $invoice = InvoiceFactory::createOne()->_real();
         $payment = PaymentFactory::createOne([
             'invoice' => $invoice,
-            'status' => 'captured',
+            'status' => PaymentStatus::Captured,
         ])->_real();
 
         $data = $this->requestGet($this->getIriFromResource($invoice) . '/payments');
@@ -85,7 +86,7 @@ final class PaymentTest extends ApiTestCase
         $client = ClientFactory::createOne()->_real();
         $payment = PaymentFactory::createOne([
             'client' => $client,
-            'status' => 'captured',
+            'status' => PaymentStatus::Captured,
         ])->_real();
 
         // Create multiple additional payments to ensure we only receive the payments for the specified client
@@ -179,7 +180,7 @@ final class PaymentTest extends ApiTestCase
         $payment = PaymentFactory::createOne([
             'client' => $client,
             'invoice' => $invoice,
-            'status' => 'captured',
+            'status' => PaymentStatus::Captured,
         ])->_real();
 
         $data = $this->requestGet($this->getIriFromResource($payment));

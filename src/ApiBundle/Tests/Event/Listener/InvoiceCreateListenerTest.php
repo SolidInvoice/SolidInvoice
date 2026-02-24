@@ -19,6 +19,7 @@ use Mockery as M;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ApiBundle\Event\Listener\InvoiceCreateListener;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use Symfony\Component\HttpFoundation\Request;
@@ -72,7 +73,7 @@ class InvoiceCreateListenerTest extends TestCase
         $listener = new InvoiceCreateListener($stateMachine);
         $request = Request::create('/', Request::METHOD_POST);
         $entity = new Invoice();
-        $entity->setStatus(Graph::STATUS_DRAFT);
+        $entity->setStatus(InvoiceStatus::Draft);
 
         $listener->setInvoiceStatus(new ViewEvent(M::mock(KernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST, $entity));
     }

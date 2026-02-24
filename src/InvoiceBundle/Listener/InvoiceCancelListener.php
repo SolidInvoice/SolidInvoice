@@ -21,7 +21,7 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvent;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvents;
 use SolidInvoice\PaymentBundle\Entity\Payment;
-use SolidInvoice\PaymentBundle\Model\Status;
+use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use function assert;
@@ -63,7 +63,7 @@ class InvoiceCancelListener implements EventSubscriberInterface
         $totalPaid = $paymentRepository->getTotalPaidForInvoice($invoice);
 
         if ($totalPaid->isPositive()) {
-            $paymentRepository->updatePaymentStatus($invoice->getPayments(), Status::STATUS_CREDIT);
+            $paymentRepository->updatePaymentStatus($invoice->getPayments(), PaymentStatus::Credit);
 
             /** @var CreditRepository $creditRepository */
             $creditRepository = $this->registry->getRepository(Credit::class);

@@ -20,7 +20,7 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
 use SolidInvoice\ClientBundle\Entity\Client;
-use SolidInvoice\ClientBundle\Model\Status;
+use SolidInvoice\ClientBundle\Enum\ClientStatus;
 use SolidInvoice\CoreBundle\Util\ArrayUtil;
 use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
 
@@ -34,7 +34,7 @@ class ClientRepository extends EntityRepository
         parent::__construct($registry, Client::class);
     }
 
-    public function getTotalClients(?string $status = null): int
+    public function getTotalClients(?ClientStatus $status = null): int
     {
         $qb = $this->createQueryBuilder('c');
 
@@ -42,7 +42,7 @@ class ClientRepository extends EntityRepository
 
         if (null !== $status) {
             $qb->where('c.status = :status')
-                ->setParameter('status', $status);
+                ->setParameter('status', $status->value);
         }
 
         $query = $qb->getQuery();
@@ -125,7 +125,7 @@ class ClientRepository extends EntityRepository
 
             $client
                 ->setArchived(true)
-                ->setStatus(Status::STATUS_ARCHIVED);
+                ->setStatus(ClientStatus::Archived);
 
             $em->persist($client);
         }
@@ -151,7 +151,7 @@ class ClientRepository extends EntityRepository
 
             $client
                 ->setArchived(null)
-                ->setStatus(Status::STATUS_ACTIVE);
+                ->setStatus(ClientStatus::Active);
 
             $em->persist($client);
         }

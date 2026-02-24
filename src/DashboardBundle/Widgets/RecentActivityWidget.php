@@ -88,7 +88,7 @@ final readonly class RecentActivityWidget implements WidgetInterface
         // Quote responses (accepted/declined)
         foreach ($recentlyRespondedQuotes as $quote) {
             $activities[] = [
-                'type' => 'quote_' . $quote->getStatus(),
+                'type' => 'quote_' . $quote->getStatus()?->value,
                 'date' => $quote->getUpdated() ?? $quote->getCreated(),
                 'id' => $quote->getId(),
                 'quoteId' => $quote->getQuoteId(),

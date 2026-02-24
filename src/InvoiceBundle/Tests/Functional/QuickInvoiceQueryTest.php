@@ -17,6 +17,7 @@ use DateTimeImmutable;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -35,7 +36,7 @@ final class QuickInvoiceQueryTest extends KernelTestCase
         $invoice = InvoiceFactory::createOne([
             'company' => $this->company,
             'client' => $client,
-            'status' => 'pending',
+            'status' => InvoiceStatus::Pending,
             'due' => (new DateTimeImmutable())->modify('+3 days')->setTime(0, 0)->modify('+6 hours'),
             'users' => [$contact],
         ]);

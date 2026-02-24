@@ -24,7 +24,7 @@ use SolidInvoice\DataGridBundle\GridBuilder\Filter\ChoiceFilter;
 use SolidInvoice\DataGridBundle\GridBuilder\Filter\DateRangeFilter;
 use SolidInvoice\MoneyBundle\Calculator;
 use SolidInvoice\QuoteBundle\Entity\Quote;
-use SolidInvoice\QuoteBundle\Model\Graph;
+use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
 
 abstract class BaseQuoteGrid extends Grid
@@ -52,7 +52,7 @@ abstract class BaseQuoteGrid extends Grid
                 ->formatValue(fn (BigNumber $value, Quote $quote) => new Money((string) $value, $quote->getClient()?->getCurrency())),
             StringColumn::new('status')
                 ->twigFunction('quote_label')
-                ->filter(ChoiceFilter::new('status', Graph::statusArray())->multiple()),
+                ->filter(ChoiceFilter::new('status', array_column(array_map(static fn (QuoteStatus $s) => [$s->value, $s->name], QuoteStatus::cases()), 1, 0))->multiple()),
             MoneyColumn::new('tax')
                 ->formatValue(fn (BigNumber $value, Quote $quote) => new Money((string) $value, $quote->getClient()?->getCurrency())),
             MoneyColumn::new('discount.value')

@@ -18,7 +18,7 @@ use Brick\Math\Exception\MathException;
 use DateMalformedStringException;
 use DateTime;
 use Money\Currency;
-use SolidInvoice\PaymentBundle\Model\Status;
+use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 
 final readonly class PaymentStats
@@ -50,8 +50,8 @@ final readonly class PaymentStats
             'total_count' => $this->getTotalPaymentCount(),
             'this_month' => $this->getThisMonthIncome(),
             'this_month_count' => $this->getThisMonthPaymentCount(),
-            'pending_count' => $this->getPaymentCountByStatus(Status::STATUS_PENDING),
-            'failed_count' => $this->getPaymentCountByStatus(Status::STATUS_FAILED),
+            'pending_count' => $this->getPaymentCountByStatus(PaymentStatus::Pending->value),
+            'failed_count' => $this->getPaymentCountByStatus(PaymentStatus::Failed->value),
             'recent_payments' => $this->paymentRepository->getRecentPayments(5),
         ];
     }
@@ -107,7 +107,7 @@ final readonly class PaymentStats
 
         $qb->select('COUNT(p.id)')
             ->where('p.status = :status')
-            ->setParameter('status', Status::STATUS_CAPTURED);
+            ->setParameter('status', PaymentStatus::Captured->value);
 
         return (int) $qb->getQuery()->getSingleScalarResult();
     }
@@ -128,7 +128,7 @@ final readonly class PaymentStats
             ->where('p.status = :status')
             ->andWhere('p.created >= :start')
             ->andWhere('p.created <= :end')
-            ->setParameter('status', Status::STATUS_CAPTURED)
+            ->setParameter('status', PaymentStatus::Captured->value)
             ->setParameter('start', $startOfMonth)
             ->setParameter('end', $endOfMonth);
 

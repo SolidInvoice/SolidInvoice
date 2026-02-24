@@ -19,7 +19,7 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Persistence\ObjectManager;
 use Money\Currency;
 use SolidInvoice\ClientBundle\Entity\Client;
-use SolidInvoice\ClientBundle\Model\Status;
+use SolidInvoice\ClientBundle\Enum\ClientStatus;
 use SolidInvoice\ClientBundle\Notification\ClientCreateNotification;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\SettingsBundle\SystemConfig;
@@ -47,7 +47,7 @@ final class ClientListener
         }
 
         if (! $entity->getId() && ! $entity->getStatus()) {
-            $entity->setStatus(Status::STATUS_ACTIVE);
+            $entity->setStatus(ClientStatus::Active);
 
             if ($entity->getCurrencyCode() === null) {
                 $entity->setCurrency($this->config->getCurrency());

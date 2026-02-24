@@ -17,7 +17,7 @@ use Brick\Math\BigInteger;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\DashboardBundle\Widgets\InvoiceDistributionWidget;
-use SolidInvoice\InvoiceBundle\Model\Graph as InvoiceGraph;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use Symfony\UX\Chartjs\Model\Chart;
 
@@ -63,7 +63,7 @@ final class InvoiceDistributionWidgetTest extends WidgetTestCase
         // Create invoices in different statuses
         InvoiceFactory::createMany(3, [
             'client' => $client,
-            'status' => InvoiceGraph::STATUS_PAID,
+            'status' => InvoiceStatus::Paid,
             'total' => BigInteger::of(10000),
             'balance' => BigInteger::zero(),
             'baseTotal' => BigInteger::of(10000),
@@ -73,7 +73,7 @@ final class InvoiceDistributionWidgetTest extends WidgetTestCase
 
         InvoiceFactory::createMany(2, [
             'client' => $client,
-            'status' => InvoiceGraph::STATUS_PENDING,
+            'status' => InvoiceStatus::Pending,
             'total' => BigInteger::of(5000),
             'balance' => BigInteger::of(5000),
             'baseTotal' => BigInteger::of(5000),
@@ -83,7 +83,7 @@ final class InvoiceDistributionWidgetTest extends WidgetTestCase
 
         InvoiceFactory::createMany(1, [
             'client' => $client,
-            'status' => InvoiceGraph::STATUS_OVERDUE,
+            'status' => InvoiceStatus::Overdue,
             'total' => BigInteger::of(7500),
             'balance' => BigInteger::of(7500),
             'baseTotal' => BigInteger::of(7500),
@@ -93,7 +93,7 @@ final class InvoiceDistributionWidgetTest extends WidgetTestCase
 
         InvoiceFactory::createMany(4, [
             'client' => $client,
-            'status' => InvoiceGraph::STATUS_DRAFT,
+            'status' => InvoiceStatus::Draft,
             'total' => BigInteger::of(2500),
             'balance' => BigInteger::of(2500),
             'baseTotal' => BigInteger::of(2500),
@@ -117,7 +117,7 @@ final class InvoiceDistributionWidgetTest extends WidgetTestCase
 
         InvoiceFactory::createMany(5, [
             'client' => $client,
-            'status' => InvoiceGraph::STATUS_PAID,
+            'status' => InvoiceStatus::Paid,
             'total' => BigInteger::of(10000),
             'balance' => BigInteger::zero(),
             'baseTotal' => BigInteger::of(10000),
@@ -127,7 +127,7 @@ final class InvoiceDistributionWidgetTest extends WidgetTestCase
 
         InvoiceFactory::createMany(3, [
             'client' => $client,
-            'status' => InvoiceGraph::STATUS_PENDING,
+            'status' => InvoiceStatus::Pending,
             'total' => BigInteger::of(5000),
             'balance' => BigInteger::of(5000),
             'baseTotal' => BigInteger::of(5000),
@@ -171,7 +171,7 @@ final class InvoiceDistributionWidgetTest extends WidgetTestCase
 
         InvoiceFactory::createMany(5, [
             'client' => $client,
-            'status' => InvoiceGraph::STATUS_PAID,
+            'status' => InvoiceStatus::Paid,
             'total' => BigInteger::of(10000),
             'balance' => BigInteger::zero(),
             'baseTotal' => BigInteger::of(10000),
@@ -181,7 +181,7 @@ final class InvoiceDistributionWidgetTest extends WidgetTestCase
 
         InvoiceFactory::createMany(2, [
             'client' => $client,
-            'status' => InvoiceGraph::STATUS_PENDING,
+            'status' => InvoiceStatus::Pending,
             'total' => BigInteger::of(5000),
             'balance' => BigInteger::of(5000),
             'baseTotal' => BigInteger::of(5000),
@@ -191,7 +191,7 @@ final class InvoiceDistributionWidgetTest extends WidgetTestCase
 
         InvoiceFactory::createMany(1, [
             'client' => $client,
-            'status' => InvoiceGraph::STATUS_OVERDUE,
+            'status' => InvoiceStatus::Overdue,
             'total' => BigInteger::of(7500),
             'balance' => BigInteger::of(7500),
             'baseTotal' => BigInteger::of(7500),

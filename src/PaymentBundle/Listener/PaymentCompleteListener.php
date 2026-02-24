@@ -21,9 +21,9 @@ use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\PaymentBundle\Entity\Payment;
+use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\PaymentBundle\Event\PaymentCompleteEvent;
 use SolidInvoice\PaymentBundle\Event\PaymentEvents;
-use SolidInvoice\PaymentBundle\Model\Status;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\RouterInterface;
@@ -54,7 +54,7 @@ class PaymentCompleteListener implements EventSubscriberInterface
     public function onPaymentComplete(PaymentCompleteEvent $event): void
     {
         $payment = $event->getPayment();
-        $status = (string) $payment->getStatus();
+        $status = $payment->getStatus()?->value ?? '';
 
         if ('credit' === $payment->getMethod()?->getGatewayName()) {
             $creditRepository = $this->registry->getRepository(Credit::class);
@@ -67,7 +67,7 @@ class PaymentCompleteListener implements EventSubscriberInterface
         if (($invoice = $event->getPayment()->getInvoice()) instanceof Invoice) {
             $em = $this->registry->getManager();
 
-            if (Status::STATUS_CAPTURED === $status && $em->getRepository(Invoice::class)->isFullyPaid($invoice)) {
+            if (PaymentStatus::Captured->value === $status && $em->getRepository(Invoice::class)->isFullyPaid($invoice)) {
                 $this->invoiceStateMachine->apply($invoice, Graph::TRANSITION_PAY);
             } else {
                 $paymentRepository = $this->registry->getRepository(Payment::class);
@@ -103,15 +103,15 @@ class PaymentCompleteListener implements EventSubscriberInterface
     public static function addFlashMessage(string $status): Generator
     {
         match ($status) {
-            Status::STATUS_CAPTURED => yield FlashResponse::FLASH_SUCCESS => 'payment.flash.status.success',
-            Status::STATUS_CANCELLED => yield FlashResponse::FLASH_DANGER => 'payment.flash.status.cancelled',
-            Status::STATUS_PENDING => yield FlashResponse::FLASH_WARNING => 'payment.flash.status.pending',
-            Status::STATUS_EXPIRED => yield FlashResponse::FLASH_DANGER => 'payment.flash.status.expired',
-            Status::STATUS_FAILED => yield FlashResponse::FLASH_DANGER => 'payment.flash.status.failed',
-            Status::STATUS_NEW => yield FlashResponse::FLASH_WARNING => 'payment.flash.status.new',
-            Status::STATUS_SUSPENDED => yield FlashResponse::FLASH_DANGER => 'payment.flash.status.suspended',
-            Status::STATUS_AUTHORIZED => yield FlashResponse::FLASH_INFO => 'payment.flash.status.authorized',
-            Status::STATUS_REFUNDED => yield FlashResponse::FLASH_WARNING => 'payment.flash.status.refunded',
+            PaymentStatus::Captured->value => yield FlashResponse::FLASH_SUCCESS => 'payment.flash.status.success',
+            PaymentStatus::Cancelled->value => yield FlashResponse::FLASH_DANGER => 'payment.flash.status.cancelled',
+            PaymentStatus::Pending->value => yield FlashResponse::FLASH_WARNING => 'payment.flash.status.pending',
+            PaymentStatus::Expired->value => yield FlashResponse::FLASH_DANGER => 'payment.flash.status.expired',
+            PaymentStatus::Failed->value => yield FlashResponse::FLASH_DANGER => 'payment.flash.status.failed',
+            PaymentStatus::New->value => yield FlashResponse::FLASH_WARNING => 'payment.flash.status.new',
+            PaymentStatus::Suspended->value => yield FlashResponse::FLASH_DANGER => 'payment.flash.status.suspended',
+            PaymentStatus::Authorized->value => yield FlashResponse::FLASH_INFO => 'payment.flash.status.authorized',
+            PaymentStatus::Refunded->value => yield FlashResponse::FLASH_WARNING => 'payment.flash.status.refunded',
             default => yield FlashResponse::FLASH_DANGER => 'payment.flash.status.unknown',
         };
     }

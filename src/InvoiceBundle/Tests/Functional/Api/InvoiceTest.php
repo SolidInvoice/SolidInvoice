@@ -134,7 +134,7 @@ final class InvoiceTest extends ApiTestCase
 
         $data = $this->requestGet($this->getIriFromResource($invoice));
 
-        self::assertSame([
+        self::assertEqualsCanonicalizing([
             '@context' => '/api/contexts/Invoice',
             '@id' => $this->getIriFromResource($invoice),
             '@type' => 'Invoice',
@@ -161,7 +161,7 @@ final class InvoiceTest extends ApiTestCase
                 ],
             ],
             'users' => array_map(fn (Proxy $contact) => $this->getIriFromResource($contact->_real()), $contacts),
-            'status' => $invoice->getStatus(),
+            'status' => $invoice->getStatus()?->value,
             'total' => 100,
             'baseTotal' => 100,
             'tax' => 0,
@@ -214,7 +214,7 @@ final class InvoiceTest extends ApiTestCase
             ]
         );
 
-        self::assertSame([
+        self::assertEqualsCanonicalizing([
             '@context' => '/api/contexts/Invoice',
             '@id' => $this->getIriFromResource($invoice),
             '@type' => 'Invoice',
@@ -241,7 +241,7 @@ final class InvoiceTest extends ApiTestCase
                 ],
             ],
             'users' => array_map(fn (Proxy $contact) => $this->getIriFromResource($contact->_real()), $contacts),
-            'status' => $invoice->getStatus(),
+            'status' => $invoice->getStatus()?->value,
             'total' => 9000,
             'baseTotal' => 10000,
             'tax' => 0,

@@ -17,6 +17,7 @@ use DateTimeImmutable;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use Symfony\Component\Uid\Uuid;
 use Zenstruck\Foundry\FactoryCollection;
@@ -74,7 +75,7 @@ final class InvoiceFactory extends PersistentProxyObjectFactory
             // 'uuid' => Uuid::v7(),
             'due' => DateTimeImmutable::createFromMutable(self::faker()->dateTime()),
             'paidDate' => DateTimeImmutable::createFromMutable(self::faker()->dateTime()),
-            'status' => self::faker()->word(),
+            'status' => self::faker()->randomElement(InvoiceStatus::cases()),
             'terms' => self::faker()->text(),
             'notes' => self::faker()->text(),
             'archived' => null,

@@ -36,6 +36,7 @@ use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use SolidInvoice\CoreBundle\Entity\LineInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\InvoiceBundle\Traits\InvoiceStatusTrait;
 use SolidInvoice\PaymentBundle\Entity\Payment;
@@ -89,6 +90,11 @@ class Invoice extends BaseInvoice implements Stringable
         Archivable::isArchived insteadof InvoiceStatusTrait;
     }
     use TimeStampable;
+
+    #[ORM\Column(name: 'status', type: Types::STRING, length: 25, enumType: InvoiceStatus::class)]
+    #[Groups(['invoice_api:read'])]
+    #[ApiProperty(writable: false)]
+    protected ?InvoiceStatus $status = null;
 
     #[ORM\Column(name: 'id', type: UlidType::NAME)]
     #[ORM\Id]
@@ -198,6 +204,30 @@ class Invoice extends BaseInvoice implements Stringable
     public function getId(): ?Ulid
     {
         return $this->id;
+    }
+
+    public function getStatus(): ?InvoiceStatus
+    {
+        return $this->status;
+    }
+
+    public function setStatus(InvoiceStatus $status): static
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getStatusValue(): ?string
+    {
+        return $this->status?->value;
+    }
+
+    public function setStatusValue(string $status): static
+    {
+        $this->status = InvoiceStatus::from($status);
+
+        return $this;
     }
 
     public function getUuid(): Uuid

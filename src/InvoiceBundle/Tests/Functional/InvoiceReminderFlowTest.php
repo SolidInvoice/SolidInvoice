@@ -20,6 +20,7 @@ use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Command\SendInvoiceRemindersCommand;
 use SolidInvoice\InvoiceBundle\Entity\ReminderStatus;
 use SolidInvoice\InvoiceBundle\Entity\ReminderType;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceReminderRepository;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use SolidInvoice\SettingsBundle\Entity\Setting;
@@ -65,7 +66,7 @@ final class InvoiceReminderFlowTest extends KernelTestCase
         $invoice = InvoiceFactory::createOne([
             'company' => $this->company,
             'client' => $client,
-            'status' => 'pending',
+            'status' => InvoiceStatus::Pending,
             'due' => (new DateTimeImmutable())->modify('+3 days'),
             'users' => [$contact],
         ]);
@@ -132,7 +133,7 @@ final class InvoiceReminderFlowTest extends KernelTestCase
         $invoice = InvoiceFactory::createOne([
             'company' => $this->company,
             'client' => $client,
-            'status' => 'pending',
+            'status' => InvoiceStatus::Pending,
             'due' => (new DateTimeImmutable())->modify('+3 days'),
             'users' => [$contact],
         ]);
@@ -154,7 +155,7 @@ final class InvoiceReminderFlowTest extends KernelTestCase
         $invoice = InvoiceFactory::createOne([
             'company' => $this->company,
             'client' => $client,
-            'status' => 'pending',
+            'status' => InvoiceStatus::Pending,
             'due' => (new DateTimeImmutable())->modify('+3 days'),
             'users' => [$contact],
         ]);
@@ -177,7 +178,7 @@ final class InvoiceReminderFlowTest extends KernelTestCase
         $invoice = InvoiceFactory::createOne([
             'company' => $this->company,
             'client' => $client,
-            'status' => 'pending',
+            'status' => InvoiceStatus::Pending,
             'due' => (new DateTimeImmutable())->modify('+3 days'),
             'users' => [$contact],
         ]);
@@ -200,7 +201,7 @@ final class InvoiceReminderFlowTest extends KernelTestCase
         $invoice = InvoiceFactory::createOne([
             'company' => $this->company,
             'client' => $client,
-            'status' => 'paid',
+            'status' => InvoiceStatus::Paid,
             'due' => (new DateTimeImmutable())->modify('+3 days'),
             'users' => [$contact],
         ]);
@@ -220,7 +221,7 @@ final class InvoiceReminderFlowTest extends KernelTestCase
         $invoice = InvoiceFactory::createOne([
             'company' => $this->company,
             'client' => $client,
-            'status' => 'pending',
+            'status' => InvoiceStatus::Pending,
             'due' => (new DateTimeImmutable())->modify('+3 days'),
             'users' => [], // No contacts
         ]);
@@ -242,7 +243,7 @@ final class InvoiceReminderFlowTest extends KernelTestCase
         $invoice = InvoiceFactory::createOne([
             'company' => $this->company,
             'client' => $client,
-            'status' => 'pending',
+            'status' => InvoiceStatus::Pending,
             'due' => (new DateTimeImmutable())->modify('+3 days'),
             'users' => [$contact],
         ]);

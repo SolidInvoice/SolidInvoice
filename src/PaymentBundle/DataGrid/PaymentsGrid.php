@@ -26,7 +26,7 @@ use SolidInvoice\DataGridBundle\Source\ORMSource;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
-use SolidInvoice\PaymentBundle\Model\Status;
+use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use function array_key_exists;
 
@@ -61,7 +61,7 @@ final class PaymentsGrid extends Grid
                 ),
             StringColumn::new('status')
                 ->twigFunction('payment_label')
-                ->filter(ChoiceFilter::new('status', Status::toArray())->multiple()),
+                ->filter(ChoiceFilter::new('status', array_column(array_map(static fn (PaymentStatus $s) => [$s->value, $s->name], PaymentStatus::cases()), 1, 0))->multiple()),
             DateTimeColumn::new('completed')
                 ->label('Completed Date')
                 ->format('d F Y')

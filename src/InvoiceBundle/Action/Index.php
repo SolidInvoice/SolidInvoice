@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Action;
 
 use Doctrine\ORM\EntityManagerInterface;
-use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use Symfony\Bridge\Twig\Attribute\Template;
@@ -38,11 +38,11 @@ final readonly class Index
         $isArchived = $request->query->get('archived', '0') === '1';
 
         // Get invoice counts by status
-        $pendingCount = $this->invoiceRepository->getCountByStatus(Graph::STATUS_PENDING);
-        $paidCount = $this->invoiceRepository->getCountByStatus(Graph::STATUS_PAID);
-        $cancelledCount = $this->invoiceRepository->getCountByStatus(Graph::STATUS_CANCELLED);
-        $draftCount = $this->invoiceRepository->getCountByStatus(Graph::STATUS_DRAFT);
-        $overdueCount = $this->invoiceRepository->getCountByStatus(Graph::STATUS_OVERDUE);
+        $pendingCount = $this->invoiceRepository->getCountByStatus(InvoiceStatus::Pending);
+        $paidCount = $this->invoiceRepository->getCountByStatus(InvoiceStatus::Paid);
+        $cancelledCount = $this->invoiceRepository->getCountByStatus(InvoiceStatus::Cancelled);
+        $draftCount = $this->invoiceRepository->getCountByStatus(InvoiceStatus::Draft);
+        $overdueCount = $this->invoiceRepository->getCountByStatus(InvoiceStatus::Overdue);
 
         // Calculate total active invoices
         $totalActiveInvoices = $pendingCount + $paidCount + $cancelledCount + $draftCount + $overdueCount;
@@ -66,11 +66,11 @@ final readonly class Index
             'overdueCount' => $overdueCount,
             'draftCount' => $draftCount,
             'status_list_count' => [
-                Graph::STATUS_PENDING => $pendingCount,
-                Graph::STATUS_PAID => $paidCount,
-                Graph::STATUS_CANCELLED => $cancelledCount,
-                Graph::STATUS_DRAFT => $draftCount,
-                Graph::STATUS_OVERDUE => $overdueCount,
+                InvoiceStatus::Pending->value => $pendingCount,
+                InvoiceStatus::Paid->value => $paidCount,
+                InvoiceStatus::Cancelled->value => $cancelledCount,
+                InvoiceStatus::Draft->value => $draftCount,
+                InvoiceStatus::Overdue->value => $overdueCount,
             ],
             'total_income' => $this->paymentRepository->getTotalIncome(),
             'total_outstanding' => $this->invoiceRepository->getTotalOutstandingByCurrency(),

@@ -15,7 +15,7 @@ namespace SolidInvoice\ClientBundle\Action;
 
 use Doctrine\ORM\EntityManagerInterface;
 use SolidInvoice\ClientBundle\Entity\Contact;
-use SolidInvoice\ClientBundle\Model\Status;
+use SolidInvoice\ClientBundle\Enum\ClientStatus;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use Symfony\Bridge\Twig\Attribute\Template;
@@ -39,12 +39,12 @@ final readonly class Index
         $isArchived = $request->query->get('archived', '0') === '1';
 
         // Get client counts
-        $totalActiveClients = $this->clientRepository->getTotalClients(Status::STATUS_ACTIVE);
+        $totalActiveClients = $this->clientRepository->getTotalClients(ClientStatus::Active);
 
         // Get archived clients count (need to temporarily disable the filter)
         $filters = $this->entityManager->getFilters();
         $filters->disable('archivable');
-        $totalArchivedClients = $this->clientRepository->getTotalClients(Status::STATUS_ARCHIVED);
+        $totalArchivedClients = $this->clientRepository->getTotalClients(ClientStatus::Archived);
         $filters->enable('archivable');
 
         // Get total contacts count

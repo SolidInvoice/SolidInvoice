@@ -28,7 +28,7 @@ use SolidInvoice\DataGridBundle\GridBuilder\Filter\ChoiceFilter;
 use SolidInvoice\DataGridBundle\GridBuilder\Filter\DateRangeFilter;
 use SolidInvoice\DataGridBundle\GridBuilder\Query;
 use SolidInvoice\DataGridBundle\Source\ORMSource;
-use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use Symfony\Component\Intl\Currencies;
 use Symfony\Component\Translation\TranslatableMessage;
 
@@ -56,9 +56,9 @@ abstract class BaseClientGrid extends Grid
 
                     foreach ($client->getInvoices() as $invoice) {
                         if (
-                            $invoice->getStatus() === Graph::STATUS_PAID ||
-                            $invoice->getStatus() === Graph::STATUS_PENDING ||
-                            $invoice->getStatus() === Graph::STATUS_OVERDUE
+                            $invoice->getStatus() === InvoiceStatus::Paid ||
+                            $invoice->getStatus() === InvoiceStatus::Pending ||
+                            $invoice->getStatus() === InvoiceStatus::Overdue
                         ) {
                             $total = $total->plus($invoice->getTotal());
                         }

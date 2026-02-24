@@ -21,6 +21,7 @@ use SolidInvoice\DashboardBundle\Checklist\Items\CustomizeSettingsItem;
 use SolidInvoice\DashboardBundle\Checklist\Items\SendInvoiceItem;
 use SolidInvoice\DashboardBundle\Checklist\Items\UploadLogoItem;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use SolidInvoice\PaymentBundle\Test\Factory\PaymentMethodFactory;
 use SolidInvoice\SettingsBundle\SystemConfig;
@@ -202,7 +203,7 @@ final class ChecklistItemsTest extends KernelTestCase
 
     public function testSendInvoiceItemIsNotCompleteWhenOnlyDraftInvoicesExist(): void
     {
-        InvoiceFactory::createOne(['status' => 'draft']);
+        InvoiceFactory::createOne(['status' => InvoiceStatus::Draft]);
 
         $item = self::getContainer()->get(SendInvoiceItem::class);
 
@@ -211,7 +212,7 @@ final class ChecklistItemsTest extends KernelTestCase
 
     public function testSendInvoiceItemIsCompleteWhenNonDraftInvoiceExists(): void
     {
-        InvoiceFactory::createOne(['status' => 'pending']);
+        InvoiceFactory::createOne(['status' => InvoiceStatus::Pending]);
 
         $item = self::getContainer()->get(SendInvoiceItem::class);
 
@@ -220,8 +221,8 @@ final class ChecklistItemsTest extends KernelTestCase
 
     public function testSendInvoiceItemIsCompleteWhenMixedInvoicesExist(): void
     {
-        InvoiceFactory::createOne(['status' => 'draft']);
-        InvoiceFactory::createOne(['status' => 'pending']);
+        InvoiceFactory::createOne(['status' => InvoiceStatus::Draft]);
+        InvoiceFactory::createOne(['status' => InvoiceStatus::Pending]);
 
         $item = self::getContainer()->get(SendInvoiceItem::class);
 

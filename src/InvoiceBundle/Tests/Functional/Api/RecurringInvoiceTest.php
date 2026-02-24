@@ -157,6 +157,14 @@ final class RecurringInvoiceTest extends ApiTestCase
 
         unset($data['recurringOptions']['@id']);
 
+        // Verify discount separately to avoid non-deterministic sort in assertEqualsCanonicalizing
+        // (PHP's sort() behaves non-deterministically when comparing arrays with mixed key types)
+        self::assertSame([
+            'type' => $recurringInvoice->getDiscount()->getType(),
+            'value' => 0,
+        ], $data['discount']);
+        unset($data['discount']);
+
         self::assertEqualsCanonicalizing([
             '@context' => '/api/contexts/RecurringInvoice',
             '@id' => $this->getIriFromResource($recurringInvoice),
@@ -178,14 +186,10 @@ final class RecurringInvoiceTest extends ApiTestCase
                 ],
             ],
             'users' => array_map(fn (Proxy $contact) => $this->getIriFromResource($contact->_real()), $contacts),
-            'status' => $recurringInvoice->getStatus(),
+            'status' => $recurringInvoice->getStatus()?->value,
             'total' => 1,
             'baseTotal' => 1,
             'tax' => 0,
-            'discount' => [
-                'type' => $recurringInvoice->getDiscount()->getType(),
-                'value' => 0,
-            ],
             'recurringOptions' => [
                 '@type' => 'RecurringOptions',
                 'type' => 'weekly',
@@ -238,13 +242,21 @@ final class RecurringInvoiceTest extends ApiTestCase
 
         unset($data['recurringOptions']['@id']);
 
+        // Verify discount and dateStart separately to avoid non-deterministic sort in assertEqualsCanonicalizing
+        // (PHP's sort() behaves non-deterministically when comparing arrays with mixed key types)
+        self::assertSame('2012-01-01T00:00:00+02:00', $data['dateStart']);
+        self::assertSame([
+            'type' => 'percentage',
+            'value' => 10,
+        ], $data['discount']);
+        unset($data['dateStart'], $data['discount']);
+
         self::assertEqualsCanonicalizing([
             '@context' => '/api/contexts/RecurringInvoice',
             '@id' => $this->getIriFromResource($recurringInvoice),
             '@type' => 'RecurringInvoice',
             'id' => $recurringInvoice->getId()->toString(),
             'client' => $this->getIriFromResource($recurringInvoice->getClient()),
-            'dateStart' => '2012-01-01T00:00:00+02:00',
             'dateEnd' => null,
             'lines' => [
                 [
@@ -267,14 +279,10 @@ final class RecurringInvoiceTest extends ApiTestCase
                 'endDate' => null,
                 'endOccurrence' => 1,
             ],
-            'status' => $recurringInvoice->getStatus(),
+            'status' => $recurringInvoice->getStatus()?->value,
             'total' => 90,
             'baseTotal' => 100,
             'tax' => 0,
-            'discount' => [
-                'type' => 'percentage',
-                'value' => 10,
-            ],
             'terms' => $recurringInvoice->getTerms(),
             'notes' => $recurringInvoice->getNotes(),
         ], $data);

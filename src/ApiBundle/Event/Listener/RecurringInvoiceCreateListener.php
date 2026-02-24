@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\ApiBundle\Event\Listener;
 
 use ApiPlatform\Symfony\EventListener\EventPriorities;
-use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,13 +22,10 @@ use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Workflow\WorkflowInterface;
 
-/**
- * @see \SolidInvoice\ApiBundle\Tests\Event\Listener\InvoiceCreateListenerTest
- */
-class InvoiceCreateListener implements EventSubscriberInterface
+class RecurringInvoiceCreateListener implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly WorkflowInterface $invoiceStateMachine
+        private readonly WorkflowInterface $recurringInvoiceStateMachine
     ) {
     }
 
@@ -38,19 +35,19 @@ class InvoiceCreateListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            KernelEvents::VIEW => [['setInvoiceStatus', EventPriorities::PRE_WRITE]],
+            KernelEvents::VIEW => [['setRecurringInvoiceStatus', EventPriorities::PRE_WRITE]],
         ];
     }
 
-    public function setInvoiceStatus(ViewEvent $event): void
+    public function setRecurringInvoiceStatus(ViewEvent $event): void
     {
-        $invoice = $event->getControllerResult();
+        $recurringInvoice = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
 
-        if (! $invoice instanceof Invoice || Request::METHOD_POST !== $method || ! $event->isMainRequest() || $invoice->getStatus()) {
+        if (! $recurringInvoice instanceof RecurringInvoice || Request::METHOD_POST !== $method || ! $event->isMainRequest() || $recurringInvoice->getStatus()) {
             return;
         }
 
-        $this->invoiceStateMachine->apply($invoice, Graph::TRANSITION_NEW);
+        $this->recurringInvoiceStateMachine->apply($recurringInvoice, Graph::TRANSITION_NEW);
     }
 }

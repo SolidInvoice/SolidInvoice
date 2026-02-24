@@ -20,8 +20,8 @@ use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Message\MarkInvoiceOverdue;
-use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -56,7 +56,7 @@ final class OverdueInvoiceFlowTest extends KernelTestCase
         ]);
 
         $invoice = InvoiceFactory::createOne([
-            'status' => Graph::STATUS_PENDING,
+            'status' => InvoiceStatus::Pending,
             'due' => new DateTimeImmutable('yesterday'),
             'invoiceId' => 'INV-TEST-001',
             'company' => $this->company,
@@ -83,7 +83,7 @@ final class OverdueInvoiceFlowTest extends KernelTestCase
         $updatedInvoice = $repository->find($invoice->getId());
 
         self::assertNotNull($updatedInvoice);
-        self::assertEquals(Graph::STATUS_OVERDUE, $updatedInvoice->getStatus());
+        self::assertEquals(InvoiceStatus::Overdue, $updatedInvoice->getStatus());
     }
 
     public function testOverdueFlowWithMultipleCompanies(): void
@@ -107,7 +107,7 @@ final class OverdueInvoiceFlowTest extends KernelTestCase
         ]);
 
         $invoice1 = InvoiceFactory::createOne([
-            'status' => Graph::STATUS_PENDING,
+            'status' => InvoiceStatus::Pending,
             'due' => new DateTimeImmutable('yesterday'),
             'invoiceId' => 'INV-COMPANY1-001',
             'company' => $company1,
@@ -121,7 +121,7 @@ final class OverdueInvoiceFlowTest extends KernelTestCase
         $invoice1->_save();
 
         $invoice2 = InvoiceFactory::createOne([
-            'status' => Graph::STATUS_PENDING,
+            'status' => InvoiceStatus::Pending,
             'due' => new DateTimeImmutable('yesterday'),
             'invoiceId' => 'INV-COMPANY2-001',
             'company' => $company2,
@@ -145,11 +145,11 @@ final class OverdueInvoiceFlowTest extends KernelTestCase
 
         $companySelector->switchCompany($company1->getId());
         $updatedInvoice1 = $repository->find($invoice1->getId());
-        self::assertEquals(Graph::STATUS_OVERDUE, $updatedInvoice1->getStatus());
+        self::assertEquals(InvoiceStatus::Overdue, $updatedInvoice1->getStatus());
 
         $companySelector->switchCompany($company2->getId());
         $updatedInvoice2 = $repository->find($invoice2->getId());
-        self::assertEquals(Graph::STATUS_OVERDUE, $updatedInvoice2->getStatus());
+        self::assertEquals(InvoiceStatus::Overdue, $updatedInvoice2->getStatus());
     }
 
     public function testIdempotency(): void
@@ -163,7 +163,7 @@ final class OverdueInvoiceFlowTest extends KernelTestCase
         ]);
 
         $invoice = InvoiceFactory::createOne([
-            'status' => Graph::STATUS_PENDING,
+            'status' => InvoiceStatus::Pending,
             'due' => new DateTimeImmutable('yesterday'),
             'company' => $this->company
         ]);
@@ -184,48 +184,48 @@ final class OverdueInvoiceFlowTest extends KernelTestCase
         $repository = self::getContainer()->get(InvoiceRepository::class);
         $updatedInvoice = $repository->find($invoice->getId());
 
-        self::assertEquals(Graph::STATUS_OVERDUE, $updatedInvoice->getStatus());
+        self::assertEquals(InvoiceStatus::Overdue, $updatedInvoice->getStatus());
     }
 
     public function testRepositoryGetPendingOverdueInvoices(): void
     {
         // Create various invoices
         $overdueInvoice1 = InvoiceFactory::createOne([
-            'status' => Graph::STATUS_PENDING,
+            'status' => InvoiceStatus::Pending,
             'due' => new DateTimeImmutable('2 days ago'),
             'company' => $this->company,
         ]);
 
         $overdueInvoice2 = InvoiceFactory::createOne([
-            'status' => Graph::STATUS_PENDING,
+            'status' => InvoiceStatus::Pending,
             'due' => new DateTimeImmutable('yesterday'),
             'company' => $this->company,
         ]);
 
         // Not overdue - future due date
         InvoiceFactory::createOne([
-            'status' => Graph::STATUS_PENDING,
+            'status' => InvoiceStatus::Pending,
             'due' => new DateTimeImmutable('tomorrow'),
             'company' => $this->company,
         ]);
 
         // Not overdue - already paid
         InvoiceFactory::createOne([
-            'status' => Graph::STATUS_PAID,
+            'status' => InvoiceStatus::Paid,
             'due' => new DateTimeImmutable('yesterday'),
             'company' => $this->company,
         ]);
 
         // Not overdue - already overdue status
         InvoiceFactory::createOne([
-            'status' => Graph::STATUS_OVERDUE,
+            'status' => InvoiceStatus::Overdue,
             'due' => new DateTimeImmutable('yesterday'),
             'company' => $this->company,
         ]);
 
         // Not overdue - no due date
         InvoiceFactory::createOne([
-            'status' => Graph::STATUS_PENDING,
+            'status' => InvoiceStatus::Pending,
             'due' => null,
             'company' => $this->company,
         ]);
