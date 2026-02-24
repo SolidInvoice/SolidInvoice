@@ -146,7 +146,7 @@
                         </li>
                     </ul>
                 </div>
-            {% elseif quote.status == enum('QuoteStatus::Accepted') and quote.invoice is not null %}
+            {% elseif quote.status == enum('SolidInvoice\\QuoteBundle\\Enum\\QuoteStatus').Accepted and quote.invoice is not null %}
                 {# Accepted: View Invoice button #}
                 <a href="{{ path('_invoices_view', {'id' : quote.invoice.id}) }}" class="btn btn-primary btn-hero">
                     {{ ux_icon('tabler:file-invoice', {width: 18, height: 18}) }}

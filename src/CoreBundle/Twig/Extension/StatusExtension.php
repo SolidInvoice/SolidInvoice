@@ -48,22 +48,6 @@ class StatusExtension extends AbstractExtension
                 fn (Environment $environment, ClientStatus|null $status = null, ?string $tooltip = null) => $this->renderStatusOrAll($environment, $status, ClientStatus::class, $tooltip),
                 ['is_safe' => ['html'], 'needs_environment' => true]
             ),
-            new TwigFunction(
-                'enum',
-                static function (string $enumCase): mixed {
-                    $shortNames = [
-                        'InvoiceStatus' => InvoiceStatus::class,
-                        'RecurringInvoiceStatus' => RecurringInvoiceStatus::class,
-                        'QuoteStatus' => QuoteStatus::class,
-                        'ClientStatus' => ClientStatus::class,
-                        'PaymentStatus' => PaymentStatus::class,
-                    ];
-
-                    [$class, $case] = explode('::', $enumCase, 2);
-
-                    return constant(($shortNames[$class] ?? $class) . '::' . $case);
-                }
-            ),
         ];
     }
 
