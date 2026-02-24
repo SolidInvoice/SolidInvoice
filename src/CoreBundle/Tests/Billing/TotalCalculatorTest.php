@@ -23,10 +23,10 @@ use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
-use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\MoneyBundle\Calculator;
 use SolidInvoice\PaymentBundle\Entity\Payment;
-use SolidInvoice\PaymentBundle\Model\Status;
+use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Zenstruck\Foundry\Test\Factories;
@@ -259,7 +259,7 @@ class TotalCalculatorTest extends KernelTestCase
         $invoice->setTotal(30000);
         $invoice->setBaseTotal(30000);
         $invoice->setBalance(30000);
-        $invoice->setStatus(Graph::STATUS_PENDING);
+        $invoice->setStatus(InvoiceStatus::Pending);
         $item = new Line();
         $item->setQty(2)
             ->setPrice(15000)
@@ -268,7 +268,7 @@ class TotalCalculatorTest extends KernelTestCase
 
         $payment = new Payment();
         $payment->setTotalAmount(1000);
-        $payment->setStatus(Status::STATUS_CAPTURED);
+        $payment->setStatus(PaymentStatus::Captured);
 
         $invoice->addPayment($payment);
         $this->em->persist($invoice);

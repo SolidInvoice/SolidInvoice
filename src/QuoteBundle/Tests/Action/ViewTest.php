@@ -15,7 +15,6 @@ namespace SolidInvoice\QuoteBundle\Tests\Action;
 
 use DateTimeImmutable;
 use Psr\Log\NullLogger;
-use ReflectionClass;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
@@ -23,10 +22,11 @@ use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Pdf\Generator;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\QuoteBundle\Action\View;
 use SolidInvoice\QuoteBundle\Entity\Line;
 use SolidInvoice\QuoteBundle\Entity\Quote;
-use SolidInvoice\QuoteBundle\Model\Graph;
+use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use SolidInvoice\QuoteBundle\Test\Factory\QuoteFactory;
 use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -49,7 +49,7 @@ final class ViewTest extends KernelTestCase
     /**
      * @dataProvider quoteStatusProvider
      */
-    public function testView(string $status): void
+    public function testView(QuoteStatus $status): void
     {
         $request = Request::createFromGlobals();
         $requestStack = self::getContainer()->get('request_stack');
@@ -106,15 +106,13 @@ final class ViewTest extends KernelTestCase
     }
 
     /**
-     * @return iterable<array{0: string}>
+     * @return iterable<array{0: QuoteStatus}>
      */
     public function quoteStatusProvider(): iterable
     {
-        $reflectionClass = new ReflectionClass(Graph::class);
-
-        foreach ($reflectionClass->getConstants() as $constant => $value) {
-            if ($value !== Graph::STATUS_NEW && str_starts_with($constant, 'STATUS_')) {
-                yield "Status {$value}" => [$value];
+        foreach (QuoteStatus::cases() as $status) {
+            if ($status !== QuoteStatus::New) {
+                yield "Status {$status->value}" => [$status];
             }
         }
     }
@@ -149,7 +147,7 @@ final class ViewTest extends KernelTestCase
             ->withoutPersisting()
             ->create([
                 'client' => $client,
-                'status' => Graph::STATUS_PENDING,
+                'status' => QuoteStatus::Pending,
                 'total' => '90.00',
                 'baseTotal' => '100.00',
                 'created' => new DateTimeImmutable('2021-09-01'),
@@ -205,7 +203,7 @@ final class ViewTest extends KernelTestCase
             ->withoutPersisting()
             ->create([
                 'client' => $client,
-                'status' => Graph::STATUS_PENDING,
+                'status' => QuoteStatus::Pending,
                 'total' => '115.00',
                 'baseTotal' => '100.00',
                 'created' => new DateTimeImmutable('2021-09-01'),
@@ -264,14 +262,14 @@ final class ViewTest extends KernelTestCase
             ->setClient($client)
             ->setId($invoiceUuid)
             ->setInvoiceId('INV-2021-0001')
-            ->setStatus('pending');
+            ->setStatus(InvoiceStatus::Pending);
 
         /** @var Quote $quote */
         $quote = QuoteFactory::new()
             ->withoutPersisting()
             ->create([
                 'client' => $client,
-                'status' => Graph::STATUS_ACCEPTED,
+                'status' => QuoteStatus::Accepted,
                 'total' => '100.00',
                 'baseTotal' => '100.00',
                 'created' => new DateTimeImmutable('2021-09-01'),
@@ -333,7 +331,7 @@ final class ViewTest extends KernelTestCase
             ->withoutPersisting()
             ->create([
                 'client' => $client,
-                'status' => Graph::STATUS_PENDING,
+                'status' => QuoteStatus::Pending,
                 'total' => '100.00',
                 'baseTotal' => '100.00',
                 'created' => new DateTimeImmutable('2021-09-01'),

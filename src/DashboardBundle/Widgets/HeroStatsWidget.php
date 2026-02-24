@@ -16,7 +16,7 @@ namespace SolidInvoice\DashboardBundle\Widgets;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
-use SolidInvoice\InvoiceBundle\Model\Graph as InvoiceGraph;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
@@ -42,7 +42,7 @@ final readonly class HeroStatsWidget implements WidgetInterface
 
         return [
             'totalOutstanding' => $invoiceRepository->getTotalOutstandingByCurrency(),
-            'overdueCount' => $invoiceRepository->getCountByStatus(InvoiceGraph::STATUS_OVERDUE),
+            'overdueCount' => $invoiceRepository->getCountByStatus(InvoiceStatus::Overdue),
             'overdueAmount' => $invoiceRepository->getOverdueAmountByCurrency(),
             'paymentsThisMonth' => $paymentRepository->getPaymentsThisMonth(),
             'totalRevenue' => $paymentRepository->getTotalIncome(),

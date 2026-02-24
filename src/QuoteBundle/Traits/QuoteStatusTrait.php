@@ -13,39 +13,39 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Traits;
 
-use SolidInvoice\QuoteBundle\Model\Graph;
+use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 
 trait QuoteStatusTrait
 {
-    abstract public function getStatus();
+    abstract public function getStatus(): ?QuoteStatus;
 
     public function isPending(): bool
     {
-        return Graph::STATUS_PENDING === $this->getStatus();
+        return QuoteStatus::Pending === $this->getStatus();
     }
 
     public function isDraft(): bool
     {
-        return Graph::STATUS_DRAFT === $this->getStatus();
+        return QuoteStatus::Draft === $this->getStatus();
     }
 
     public function isCancelled(): bool
     {
-        return Graph::STATUS_CANCELLED === $this->getStatus();
+        return QuoteStatus::Cancelled === $this->getStatus();
     }
 
     public function isAccepted(): bool
     {
-        return Graph::STATUS_ACCEPTED === $this->getStatus();
+        return QuoteStatus::Accepted === $this->getStatus();
     }
 
     public function isArchived(): bool
     {
-        return Graph::STATUS_ARCHIVED === $this->getStatus();
+        return QuoteStatus::Archived === $this->getStatus();
     }
 
     public function isDeclined(): bool
     {
-        return Graph::STATUS_DECLINED === $this->getStatus();
+        return QuoteStatus::Declined === $this->getStatus();
     }
 }

@@ -68,7 +68,7 @@ final class SendRecurringInvoicesCommand extends Command
                         $endDate = $this->recurringSchedule->getEndDate($recurringInvoice->getRecurringOptions());
 
                         if ($endDate instanceof CarbonInterface && ($endDate->isToday() || $endDate->isPast())) {
-                            $recurringInvoice->setStatus(RecurringInvoiceStatus::Complete->value);
+                            $recurringInvoice->setStatus(RecurringInvoiceStatus::Complete);
                             $entityManager->persist($recurringInvoice);
                         }
 

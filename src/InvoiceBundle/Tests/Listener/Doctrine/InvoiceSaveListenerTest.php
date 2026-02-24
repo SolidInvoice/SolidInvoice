@@ -20,8 +20,8 @@ use Mockery as M;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Listener\Doctrine\InvoiceSaveListener;
-use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 
 class InvoiceSaveListenerTest extends TestCase
@@ -43,7 +43,7 @@ class InvoiceSaveListenerTest extends TestCase
     public function testPrePersistOnlyCallsStateMachineWithNoStatus(): void
     {
         $entity = new Invoice();
-        $entity->setStatus(Graph::STATUS_DRAFT);
+        $entity->setStatus(InvoiceStatus::Draft);
         $calculator = M::mock(TotalCalculator::class);
         $calculator->shouldReceive('calculateTotals')
             ->once()

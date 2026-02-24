@@ -18,9 +18,11 @@ use DateTimeImmutable;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\DashboardBundle\Widgets\AttentionRequiredWidget;
-use SolidInvoice\InvoiceBundle\Model\Graph as InvoiceGraph;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
+use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use SolidInvoice\InvoiceBundle\Test\Factory\RecurringInvoiceFactory;
+use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use SolidInvoice\QuoteBundle\Test\Factory\QuoteFactory;
 
 final class AttentionRequiredWidgetTest extends WidgetTestCase
@@ -68,7 +70,7 @@ final class AttentionRequiredWidgetTest extends WidgetTestCase
 
         InvoiceFactory::createMany(3, [
             'client' => $client,
-            'status' => InvoiceGraph::STATUS_OVERDUE,
+            'status' => InvoiceStatus::Overdue,
             'balance' => BigInteger::of(10000),
             'total' => BigInteger::of(10000),
             'baseTotal' => BigInteger::of(10000),
@@ -93,7 +95,7 @@ final class AttentionRequiredWidgetTest extends WidgetTestCase
 
         InvoiceFactory::createMany(2, [
             'client' => $client,
-            'status' => InvoiceGraph::STATUS_DRAFT,
+            'status' => InvoiceStatus::Draft,
             'total' => BigInteger::of(5000),
             'balance' => BigInteger::of(5000),
             'baseTotal' => BigInteger::of(5000),
@@ -118,7 +120,7 @@ final class AttentionRequiredWidgetTest extends WidgetTestCase
         QuoteFactory::createMany(4, [
             'client' => $client,
             'company' => $this->company,
-            'status' => 'pending',
+            'status' => QuoteStatus::Pending,
             'total' => BigInteger::of(7500),
         ]);
 
@@ -138,7 +140,7 @@ final class AttentionRequiredWidgetTest extends WidgetTestCase
 
         RecurringInvoiceFactory::createMany(2, [
             'client' => $client,
-            'status' => 'active',
+            'status' => RecurringInvoiceStatus::Active,
             'dateStart' => new DateTimeImmutable('+3 days'),
             'total' => BigInteger::of(15000),
         ]);
@@ -160,7 +162,7 @@ final class AttentionRequiredWidgetTest extends WidgetTestCase
         // Create more than the limit (5)
         InvoiceFactory::createMany(10, [
             'client' => $client,
-            'status' => InvoiceGraph::STATUS_OVERDUE,
+            'status' => InvoiceStatus::Overdue,
             'balance' => BigInteger::of(10000),
             'total' => BigInteger::of(10000),
             'baseTotal' => BigInteger::of(10000),
@@ -202,7 +204,7 @@ final class AttentionRequiredWidgetTest extends WidgetTestCase
         // Create overdue invoice
         InvoiceFactory::createOne([
             'client' => $client,
-            'status' => InvoiceGraph::STATUS_OVERDUE,
+            'status' => InvoiceStatus::Overdue,
             'balance' => BigInteger::of(10000),
             'total' => BigInteger::of(10000),
             'baseTotal' => BigInteger::of(10000),
@@ -215,7 +217,7 @@ final class AttentionRequiredWidgetTest extends WidgetTestCase
         // Create draft invoice
         InvoiceFactory::createOne([
             'client' => $client,
-            'status' => InvoiceGraph::STATUS_DRAFT,
+            'status' => InvoiceStatus::Draft,
             'total' => BigInteger::of(5000),
             'balance' => BigInteger::of(5000),
             'baseTotal' => BigInteger::of(5000),
@@ -227,7 +229,7 @@ final class AttentionRequiredWidgetTest extends WidgetTestCase
         QuoteFactory::createOne([
             'client' => $client,
             'company' => $this->company,
-            'status' => 'pending',
+            'status' => QuoteStatus::Pending,
             'total' => BigInteger::of(7500),
             'baseTotal' => BigInteger::of(7500),
             'tax' => BigInteger::zero(),
@@ -239,7 +241,7 @@ final class AttentionRequiredWidgetTest extends WidgetTestCase
         // Create upcoming recurring
         RecurringInvoiceFactory::createOne([
             'client' => $client,
-            'status' => 'active',
+            'status' => RecurringInvoiceStatus::Active,
             'dateStart' => new DateTimeImmutable('2024-01-20'),
             'total' => BigInteger::of(15000),
             'baseTotal' => BigInteger::of(15000),

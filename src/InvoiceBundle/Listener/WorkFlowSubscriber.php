@@ -17,6 +17,7 @@ use Carbon\CarbonImmutable;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Notification\InvoiceStatusNotification;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
@@ -42,7 +43,7 @@ class WorkFlowSubscriber implements EventSubscriberInterface
     {
         return [
             'workflow.invoice.entered' => 'onWorkflowTransitionApplied',
-            'workflow.recurring_invoice.enter' => 'onWorkflowTransitionApplied',
+            'workflow.recurring_invoice.entered' => 'onWorkflowTransitionApplied',
         ];
     }
 
@@ -65,7 +66,7 @@ class WorkFlowSubscriber implements EventSubscriberInterface
         $em->persist($invoice);
         $em->flush();
 
-        if (Graph::STATUS_NEW !== $invoice->getStatus()) {
+        if (InvoiceStatus::New !== $invoice->getStatus()) {
             $this->notification->sendNotification(new InvoiceStatusNotification(['invoice' => $invoice]));
         }
     }

@@ -13,8 +13,11 @@ declare(strict_types=1);
 
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
+use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
 use SolidInvoice\InvoiceBundle\Model\Graph as InvoiceGraph;
 use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use SolidInvoice\QuoteBundle\Model\Graph as QuoteGraph;
 use Symfony\Config\FrameworkConfig;
 
@@ -29,19 +32,19 @@ return static function (FrameworkConfig $config): void {
         ->supports([
             Invoice::class,
         ])
-        ->place(InvoiceGraph::STATUS_NEW)
-        ->place(InvoiceGraph::STATUS_DRAFT)
-        ->place(InvoiceGraph::STATUS_PENDING)
-        ->place(InvoiceGraph::STATUS_ACTIVE)
-        ->place(InvoiceGraph::STATUS_OVERDUE)
-        ->place(InvoiceGraph::STATUS_CANCELLED)
-        ->place(InvoiceGraph::STATUS_ARCHIVED)
-        ->place(InvoiceGraph::STATUS_PAID);
+        ->place(InvoiceStatus::New->value)
+        ->place(InvoiceStatus::Draft->value)
+        ->place(InvoiceStatus::Pending->value)
+        ->place(InvoiceStatus::Active->value)
+        ->place(InvoiceStatus::Overdue->value)
+        ->place(InvoiceStatus::Cancelled->value)
+        ->place(InvoiceStatus::Archived->value)
+        ->place(InvoiceStatus::Paid->value);
 
     $invoiceWorkflow
         ->markingStore()
         ->type('method')
-        ->property('status');
+        ->property('statusValue');
 
     $invoiceWorkflow
         ->auditTrail()
@@ -50,70 +53,70 @@ return static function (FrameworkConfig $config): void {
     $invoiceWorkflow
         ->transition()
         ->name(InvoiceGraph::TRANSITION_NEW)
-        ->from([InvoiceGraph::STATUS_NEW])
-        ->to([InvoiceGraph::STATUS_DRAFT]);
+        ->from([InvoiceStatus::New->value])
+        ->to([InvoiceStatus::Draft->value]);
 
     $invoiceWorkflow
         ->transition()
         ->name(InvoiceGraph::TRANSITION_ACCEPT)
         ->from([
-            InvoiceGraph::STATUS_NEW,
-            InvoiceGraph::STATUS_DRAFT,
+            InvoiceStatus::New->value,
+            InvoiceStatus::Draft->value,
         ])
-        ->to([InvoiceGraph::STATUS_PENDING]);
+        ->to([InvoiceStatus::Pending->value]);
 
     $invoiceWorkflow
         ->transition()
         ->name(InvoiceGraph::TRANSITION_CANCEL)
         ->from([
-            InvoiceGraph::STATUS_DRAFT,
-            InvoiceGraph::STATUS_PENDING,
-            InvoiceGraph::STATUS_OVERDUE,
+            InvoiceStatus::Draft->value,
+            InvoiceStatus::Pending->value,
+            InvoiceStatus::Overdue->value,
         ])
-        ->to([InvoiceGraph::STATUS_CANCELLED]);
+        ->to([InvoiceStatus::Cancelled->value]);
 
     $invoiceWorkflow
         ->transition()
         ->name(InvoiceGraph::TRANSITION_OVERDUE)
-        ->from([InvoiceGraph::STATUS_PENDING])
-        ->to([InvoiceGraph::STATUS_OVERDUE]);
+        ->from([InvoiceStatus::Pending->value])
+        ->to([InvoiceStatus::Overdue->value]);
 
     $invoiceWorkflow
         ->transition()
         ->name(InvoiceGraph::TRANSITION_PAY)
         ->from([
-            InvoiceGraph::STATUS_PENDING,
-            InvoiceGraph::STATUS_OVERDUE,
+            InvoiceStatus::Pending->value,
+            InvoiceStatus::Overdue->value,
         ])
-        ->to([InvoiceGraph::STATUS_PAID]);
+        ->to([InvoiceStatus::Paid->value]);
 
     $invoiceWorkflow
         ->transition()
         ->name(InvoiceGraph::TRANSITION_REOPEN)
-        ->from([InvoiceGraph::STATUS_CANCELLED])
-        ->to([InvoiceGraph::STATUS_DRAFT]);
+        ->from([InvoiceStatus::Cancelled->value])
+        ->to([InvoiceStatus::Draft->value]);
 
     $invoiceWorkflow
         ->transition()
         ->name(InvoiceGraph::TRANSITION_ARCHIVE)
         ->from([
-            InvoiceGraph::STATUS_NEW,
-            InvoiceGraph::STATUS_DRAFT,
-            InvoiceGraph::STATUS_CANCELLED,
-            InvoiceGraph::STATUS_PAID,
+            InvoiceStatus::New->value,
+            InvoiceStatus::Draft->value,
+            InvoiceStatus::Cancelled->value,
+            InvoiceStatus::Paid->value,
         ])
-        ->to([InvoiceGraph::STATUS_ARCHIVED]);
+        ->to([InvoiceStatus::Archived->value]);
 
     $invoiceWorkflow
         ->transition()
         ->name('edit')
         ->from([
-            InvoiceGraph::STATUS_CANCELLED,
-            InvoiceGraph::STATUS_DRAFT,
-            InvoiceGraph::STATUS_PENDING,
-            InvoiceGraph::STATUS_OVERDUE,
+            InvoiceStatus::Cancelled->value,
+            InvoiceStatus::Draft->value,
+            InvoiceStatus::Pending->value,
+            InvoiceStatus::Overdue->value,
         ])
-        ->to([InvoiceGraph::STATUS_DRAFT]);
+        ->to([InvoiceStatus::Draft->value]);
 
     $recurringInvoiceWorkflow = $workflow
         ->workflows('recurring_invoice')
@@ -121,18 +124,18 @@ return static function (FrameworkConfig $config): void {
         ->supports([
             RecurringInvoice::class,
         ])
-        ->place(InvoiceGraph::STATUS_NEW)
-        ->place(InvoiceGraph::STATUS_DRAFT)
-        ->place(InvoiceGraph::STATUS_ACTIVE)
-        ->place('paused')
-        ->place('complete')
-        ->place(InvoiceGraph::STATUS_CANCELLED)
-        ->place(InvoiceGraph::STATUS_ARCHIVED);
+        ->place(RecurringInvoiceStatus::New->value)
+        ->place(RecurringInvoiceStatus::Draft->value)
+        ->place(RecurringInvoiceStatus::Active->value)
+        ->place(RecurringInvoiceStatus::Paused->value)
+        ->place(RecurringInvoiceStatus::Complete->value)
+        ->place(RecurringInvoiceStatus::Cancelled->value)
+        ->place(RecurringInvoiceStatus::Archived->value);
 
     $recurringInvoiceWorkflow
         ->markingStore()
         ->type('method')
-        ->property('status');
+        ->property('statusValue');
 
     $recurringInvoiceWorkflow
         ->auditTrail()
@@ -141,67 +144,67 @@ return static function (FrameworkConfig $config): void {
     $recurringInvoiceWorkflow
         ->transition()
         ->name(InvoiceGraph::TRANSITION_NEW)
-        ->from([InvoiceGraph::STATUS_NEW])
-        ->to([InvoiceGraph::STATUS_DRAFT]);
+        ->from([RecurringInvoiceStatus::New->value])
+        ->to([RecurringInvoiceStatus::Draft->value]);
 
     $recurringInvoiceWorkflow
         ->transition()
         ->name(InvoiceGraph::TRANSITION_ACTIVATE)
         ->from([
-            InvoiceGraph::STATUS_NEW,
-            InvoiceGraph::STATUS_DRAFT,
+            RecurringInvoiceStatus::New->value,
+            RecurringInvoiceStatus::Draft->value,
         ])
-        ->to([InvoiceGraph::STATUS_ACTIVE]);
+        ->to([RecurringInvoiceStatus::Active->value]);
 
     $recurringInvoiceWorkflow
         ->transition()
         ->name(InvoiceGraph::TRANSITION_CANCEL)
         ->from([
-            InvoiceGraph::STATUS_DRAFT,
-            InvoiceGraph::STATUS_ACTIVE,
+            RecurringInvoiceStatus::Draft->value,
+            RecurringInvoiceStatus::Active->value,
         ])
-        ->to([InvoiceGraph::STATUS_CANCELLED]);
+        ->to([RecurringInvoiceStatus::Cancelled->value]);
 
     $recurringInvoiceWorkflow
         ->transition()
         ->name('complete')
-        ->from([InvoiceGraph::STATUS_ACTIVE])
-        ->to(['complete']);
+        ->from([RecurringInvoiceStatus::Active->value])
+        ->to([RecurringInvoiceStatus::Complete->value]);
 
     $recurringInvoiceWorkflow
         ->transition()
         ->name(InvoiceGraph::TRANSITION_ARCHIVE)
         ->from([
-            InvoiceGraph::STATUS_NEW,
-            InvoiceGraph::STATUS_DRAFT,
-            InvoiceGraph::STATUS_CANCELLED,
-            InvoiceGraph::STATUS_ACTIVE,
-            'paused',
+            RecurringInvoiceStatus::New->value,
+            RecurringInvoiceStatus::Draft->value,
+            RecurringInvoiceStatus::Cancelled->value,
+            RecurringInvoiceStatus::Active->value,
+            RecurringInvoiceStatus::Paused->value,
         ])
-        ->to([InvoiceGraph::STATUS_ARCHIVED]);
+        ->to([RecurringInvoiceStatus::Archived->value]);
 
     $recurringInvoiceWorkflow
         ->transition()
         ->name('edit')
         ->from([
-            InvoiceGraph::STATUS_CANCELLED,
-            InvoiceGraph::STATUS_DRAFT,
-            InvoiceGraph::STATUS_ACTIVE,
-            'paused',
+            RecurringInvoiceStatus::Cancelled->value,
+            RecurringInvoiceStatus::Draft->value,
+            RecurringInvoiceStatus::Active->value,
+            RecurringInvoiceStatus::Paused->value,
         ])
-        ->to([InvoiceGraph::STATUS_DRAFT]);
+        ->to([RecurringInvoiceStatus::Draft->value]);
 
     $recurringInvoiceWorkflow
         ->transition()
         ->name('pause')
-        ->from([InvoiceGraph::STATUS_ACTIVE])
-        ->to(['paused']);
+        ->from([RecurringInvoiceStatus::Active->value])
+        ->to([RecurringInvoiceStatus::Paused->value]);
 
     $recurringInvoiceWorkflow
         ->transition()
         ->name('resume')
-        ->from(['paused'])
-        ->to([InvoiceGraph::STATUS_ACTIVE]);
+        ->from([RecurringInvoiceStatus::Paused->value])
+        ->to([RecurringInvoiceStatus::Active->value]);
 
     $quoteWorkflow = $workflow
         ->workflows('quote')
@@ -209,13 +212,13 @@ return static function (FrameworkConfig $config): void {
         ->supports([
             Quote::class,
         ])
-        ->place(QuoteGraph::STATUS_NEW)
-        ->place(QuoteGraph::STATUS_DRAFT)
-        ->place(QuoteGraph::STATUS_PENDING)
-        ->place(QuoteGraph::STATUS_CANCELLED)
-        ->place(QuoteGraph::STATUS_ARCHIVED)
-        ->place(QuoteGraph::STATUS_ACCEPTED)
-        ->place(QuoteGraph::STATUS_DECLINED);
+        ->place(QuoteStatus::New->value)
+        ->place(QuoteStatus::Draft->value)
+        ->place(QuoteStatus::Pending->value)
+        ->place(QuoteStatus::Cancelled->value)
+        ->place(QuoteStatus::Archived->value)
+        ->place(QuoteStatus::Accepted->value)
+        ->place(QuoteStatus::Declined->value);
 
     $quoteWorkflow
         ->auditTrail()
@@ -224,81 +227,81 @@ return static function (FrameworkConfig $config): void {
     $quoteWorkflow
         ->markingStore()
         ->type('method')
-        ->property('status');
+        ->property('statusValue');
 
     $quoteWorkflow
         ->transition()
         ->name(QuoteGraph::TRANSITION_NEW)
         ->from([
-            QuoteGraph::STATUS_NEW,
-            QuoteGraph::STATUS_CANCELLED,
+            QuoteStatus::New->value,
+            QuoteStatus::Cancelled->value,
         ])
-        ->to([QuoteGraph::STATUS_DRAFT]);
+        ->to([QuoteStatus::Draft->value]);
 
     $quoteWorkflow
         ->transition()
         ->name(QuoteGraph::TRANSITION_SEND)
         ->from([
-            QuoteGraph::STATUS_NEW,
-            QuoteGraph::STATUS_DRAFT,
+            QuoteStatus::New->value,
+            QuoteStatus::Draft->value,
         ])
-        ->to([QuoteGraph::STATUS_PENDING]);
+        ->to([QuoteStatus::Pending->value]);
 
     $quoteWorkflow
         ->transition()
         ->name(QuoteGraph::TRANSITION_PUBLISH)
         ->from([
-            QuoteGraph::STATUS_NEW,
-            QuoteGraph::STATUS_DRAFT,
+            QuoteStatus::New->value,
+            QuoteStatus::Draft->value,
         ])
-        ->to([QuoteGraph::STATUS_PENDING]);
+        ->to([QuoteStatus::Pending->value]);
 
     $quoteWorkflow
         ->transition()
         ->name(QuoteGraph::TRANSITION_CANCEL)
         ->from([
-            QuoteGraph::STATUS_DRAFT,
-            QuoteGraph::STATUS_PENDING,
+            QuoteStatus::Draft->value,
+            QuoteStatus::Pending->value,
         ])
-        ->to([QuoteGraph::STATUS_CANCELLED]);
+        ->to([QuoteStatus::Cancelled->value]);
 
     $quoteWorkflow
         ->transition()
         ->name(QuoteGraph::TRANSITION_DECLINE)
         ->from([
-            QuoteGraph::STATUS_NEW,
-            QuoteGraph::STATUS_DRAFT,
-            QuoteGraph::STATUS_PENDING,
+            QuoteStatus::New->value,
+            QuoteStatus::Draft->value,
+            QuoteStatus::Pending->value,
         ])
-        ->to([QuoteGraph::STATUS_DECLINED]);
+        ->to([QuoteStatus::Declined->value]);
 
     $quoteWorkflow
         ->transition()
         ->name(QuoteGraph::TRANSITION_ACCEPT)
         ->from([
-            QuoteGraph::STATUS_PENDING,
+            QuoteStatus::Pending->value,
         ])
-        ->to([QuoteGraph::STATUS_ACCEPTED]);
+        ->to([QuoteStatus::Accepted->value]);
 
     $quoteWorkflow
         ->transition()
         ->name(QuoteGraph::TRANSITION_REOPEN)
         ->from([
-            QuoteGraph::STATUS_DECLINED,
-            QuoteGraph::STATUS_CANCELLED,
+            QuoteStatus::Declined->value,
+            QuoteStatus::Cancelled->value,
         ])
-        ->to([QuoteGraph::STATUS_DRAFT]);
+        ->to([QuoteStatus::Draft->value]);
 
     $quoteWorkflow
         ->transition()
         ->name(QuoteGraph::TRANSITION_ARCHIVE)
         ->from([
-            QuoteGraph::STATUS_NEW,
-            QuoteGraph::STATUS_DRAFT,
-            QuoteGraph::STATUS_CANCELLED,
-            QuoteGraph::STATUS_ACCEPTED,
-            QuoteGraph::STATUS_DECLINED,
-            QuoteGraph::STATUS_PENDING,
+            QuoteStatus::New->value,
+            QuoteStatus::Draft->value,
+            QuoteStatus::Cancelled->value,
+            QuoteStatus::Accepted->value,
+            QuoteStatus::Declined->value,
+            QuoteStatus::Pending->value,
         ])
-        ->to([QuoteGraph::STATUS_ARCHIVED]);
+        ->to([QuoteStatus::Archived->value]);
 };

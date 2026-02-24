@@ -28,10 +28,10 @@ use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
+use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\PaymentBundle\Event\PaymentCompleteEvent;
 use SolidInvoice\PaymentBundle\Event\PaymentEvents;
 use SolidInvoice\PaymentBundle\Form\Type\PaymentType;
-use SolidInvoice\PaymentBundle\Model\Status;
 use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -165,7 +165,7 @@ final class Prepare
 
             $payment = new Payment();
             $payment->setInvoice($invoice);
-            $payment->setStatus(Status::STATUS_NEW);
+            $payment->setStatus(PaymentStatus::New);
             $payment->setMethod($data['payment_method']);
             /** @var BigNumber $value */
             $value = $data['amount'];
@@ -192,7 +192,7 @@ final class Prepare
                 return new RedirectResponse($captureToken->getTargetUrl());
             }
 
-            $payment->setStatus(Status::STATUS_CAPTURED);
+            $payment->setStatus(PaymentStatus::Captured);
             $payment->setCompleted(new DateTime('now'));
             $this->save($payment);
 

@@ -13,44 +13,44 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Traits;
 
-use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 
 trait InvoiceStatusTrait
 {
-    abstract public function getStatus();
+    abstract public function getStatus(): ?InvoiceStatus;
 
     public function isPaid(): bool
     {
-        return Graph::STATUS_PAID === $this->getStatus();
+        return InvoiceStatus::Paid === $this->getStatus();
     }
 
     public function isArchived(): bool
     {
-        return Graph::STATUS_ARCHIVED === $this->getStatus();
+        return InvoiceStatus::Archived === $this->getStatus();
     }
 
     public function isCancelled(): bool
     {
-        return Graph::STATUS_CANCELLED === $this->getStatus();
+        return InvoiceStatus::Cancelled === $this->getStatus();
     }
 
     public function isDraft(): bool
     {
-        return Graph::STATUS_DRAFT === $this->getStatus();
+        return InvoiceStatus::Draft === $this->getStatus();
     }
 
     public function isNew(): bool
     {
-        return Graph::STATUS_NEW === $this->getStatus();
+        return InvoiceStatus::New === $this->getStatus();
     }
 
     public function isOverdue(): bool
     {
-        return Graph::STATUS_OVERDUE === $this->getStatus();
+        return InvoiceStatus::Overdue === $this->getStatus();
     }
 
     public function isPending(): bool
     {
-        return Graph::STATUS_PENDING === $this->getStatus();
+        return InvoiceStatus::Pending === $this->getStatus();
     }
 }

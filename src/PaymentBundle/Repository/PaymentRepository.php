@@ -30,7 +30,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\PaymentBundle\Entity\Payment;
-use SolidInvoice\PaymentBundle\Model\Status;
+use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Uid\Ulid;
 use function array_map;
@@ -59,7 +59,7 @@ class PaymentRepository extends ServiceEntityRepository
         $qb->select('SUM(p.totalAmount) as total', 'p.currencyCode')
             ->where('p.status = :status')
             ->groupBy('p.currencyCode')
-            ->setParameter('status', Status::STATUS_CAPTURED);
+            ->setParameter('status', PaymentStatus::Captured->value);
 
         $query = $qb->getQuery();
 
@@ -133,7 +133,7 @@ class PaymentRepository extends ServiceEntityRepository
             ->where('p.invoice = :invoice')
             ->andWhere('p.status = :status')
             ->setParameter('invoice', $invoice->getId(), UlidType::NAME)
-            ->setParameter('status', Status::STATUS_CAPTURED);
+            ->setParameter('status', PaymentStatus::Captured->value);
 
         $query = $queryBuilder->getQuery();
 
@@ -266,7 +266,7 @@ class PaymentRepository extends ServiceEntityRepository
     /**
      * @param Payment[]|Collection<int, Payment> $payments
      */
-    public function updatePaymentStatus(iterable $payments, string $status): int
+    public function updatePaymentStatus(iterable $payments, PaymentStatus $status): int
     {
         foreach ($payments as $payment) {
             $payment->setStatus($status);
@@ -314,7 +314,7 @@ class PaymentRepository extends ServiceEntityRepository
             ->andWhere('p.client = :client')
             ->groupBy('p.currencyCode')
             ->setParameter('client', $client->getId(), UlidType::NAME)
-            ->setParameter('status', Status::STATUS_CAPTURED);
+            ->setParameter('status', PaymentStatus::Captured->value);
 
         $query = $qb->getQuery();
 
@@ -341,7 +341,7 @@ class PaymentRepository extends ServiceEntityRepository
             ->where('p.created >= :date')
             ->andWhere('p.status = :status')
             ->setParameter('date', new DateTime(sprintf('-%d months', $months)))
-            ->setParameter('status', Status::STATUS_CAPTURED)
+            ->setParameter('status', PaymentStatus::Captured->value)
             ->orderBy('p.created', Criteria::ASC);
 
         /** @var array<string, array<string, BigInteger>> $results */
@@ -385,7 +385,7 @@ class PaymentRepository extends ServiceEntityRepository
             ->andWhere('p.created >= :start')
             ->andWhere('p.created <= :end')
             ->groupBy('p.currencyCode')
-            ->setParameter('status', Status::STATUS_CAPTURED)
+            ->setParameter('status', PaymentStatus::Captured->value)
             ->setParameter('start', $startOfMonth)
             ->setParameter('end', $endOfMonth);
 

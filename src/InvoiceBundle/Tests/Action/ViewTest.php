@@ -15,7 +15,6 @@ namespace SolidInvoice\InvoiceBundle\Tests\Action;
 
 use DateTimeImmutable;
 use Psr\Log\NullLogger;
-use ReflectionClass;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
@@ -24,11 +23,13 @@ use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Action\View;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
-use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
+use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -53,7 +54,7 @@ final class ViewTest extends KernelTestCase
     /**
      * @dataProvider invoiceStatusProvider
      */
-    public function testView(string $status): void
+    public function testView(InvoiceStatus $status): void
     {
         $request = Request::createFromGlobals();
         $requestStack = self::getContainer()->get('request_stack');
@@ -144,7 +145,7 @@ final class ViewTest extends KernelTestCase
             ->withoutPersisting()
             ->create([
                 'client' => $client,
-                'status' => 'paid',
+                'status' => InvoiceStatus::Paid,
                 'total' => 100,
                 'balance' => 100,
                 'baseTotal' => 100,
@@ -169,7 +170,7 @@ final class ViewTest extends KernelTestCase
         $payment = new Payment();
         $payment->setTotalAmount(100);
         $payment->setMethod((new PaymentMethod())->setName('Credit Card'));
-        $payment->setStatus('captured');
+        $payment->setStatus(PaymentStatus::Captured);
         $payment->setCurrencyCode('USD');
         $invoice->addPayment($payment);
 
@@ -188,15 +189,13 @@ final class ViewTest extends KernelTestCase
     }
 
     /**
-     * @return iterable<array{0: string}>
+     * @return iterable<array{0: InvoiceStatus}>
      */
     public function invoiceStatusProvider(): iterable
     {
-        $reflectionClass = new ReflectionClass(Graph::class);
-
-        foreach ($reflectionClass->getConstants() as $constant => $value) {
-            if ($value !== Graph::STATUS_NEW && str_starts_with($constant, 'STATUS_')) {
-                yield "Status {$value}" => [$value];
+        foreach (InvoiceStatus::cases() as $status) {
+            if ($status !== InvoiceStatus::New) {
+                yield "Status {$status->value}" => [$status];
             }
         }
     }
@@ -232,7 +231,7 @@ final class ViewTest extends KernelTestCase
             ->withoutPersisting()
             ->create([
                 'client' => $client,
-                'status' => Graph::STATUS_PENDING,
+                'status' => InvoiceStatus::Pending,
                 'total' => 90,
                 'balance' => 90,
                 'baseTotal' => 100,
@@ -294,7 +293,7 @@ final class ViewTest extends KernelTestCase
             ->withoutPersisting()
             ->create([
                 'client' => $client,
-                'status' => Graph::STATUS_PENDING,
+                'status' => InvoiceStatus::Pending,
                 'total' => 115,
                 'balance' => 115,
                 'baseTotal' => 100,
@@ -355,7 +354,7 @@ final class ViewTest extends KernelTestCase
         $quote = new Quote();
         $quoteUuid = Ulid::fromString('281aaf4a-0097-11ef-9b64-5a2cf21a5680');
         $quote->setId($quoteUuid)
-            ->setStatus('accepted')
+            ->setStatus(QuoteStatus::Accepted)
             ->setClient($client);
         $quote->setQuoteId('QUOT-2021-0001');
 
@@ -364,7 +363,7 @@ final class ViewTest extends KernelTestCase
             ->withoutPersisting()
             ->create([
                 'client' => $client,
-                'status' => Graph::STATUS_PENDING,
+                'status' => InvoiceStatus::Pending,
                 'total' => 100,
                 'balance' => 100,
                 'baseTotal' => 100,
@@ -443,7 +442,7 @@ final class ViewTest extends KernelTestCase
             ->withoutPersisting()
             ->create([
                 'client' => $client,
-                'status' => Graph::STATUS_PENDING,
+                'status' => InvoiceStatus::Pending,
                 'total' => 100,
                 'balance' => 100,
                 'baseTotal' => 100,
@@ -506,7 +505,7 @@ final class ViewTest extends KernelTestCase
             ->withoutPersisting()
             ->create([
                 'client' => $client,
-                'status' => Graph::STATUS_PENDING,
+                'status' => InvoiceStatus::Pending,
                 'total' => 100,
                 'balance' => 50,
                 'baseTotal' => 100,
@@ -531,7 +530,7 @@ final class ViewTest extends KernelTestCase
         $payment = new Payment();
         $payment->setTotalAmount(50);
         $payment->setMethod((new PaymentMethod())->setName('Credit Card'));
-        $payment->setStatus('captured');
+        $payment->setStatus(PaymentStatus::Captured);
         $payment->setCurrencyCode('USD');
         $invoice->addPayment($payment);
 

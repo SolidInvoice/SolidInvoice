@@ -29,6 +29,7 @@ use SolidInvoice\CoreBundle\Exception\UnexpectedTypeException;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
@@ -102,8 +103,8 @@ class Payment extends BasePayment
     #[ORM\ManyToOne(targetEntity: PaymentMethod::class, inversedBy: 'payments')]
     private ?PaymentMethod $method = null;
 
-    #[ORM\Column(name: 'status', type: Types::STRING, length: 25)]
-    private ?string $status = null;
+    #[ORM\Column(name: 'status', type: Types::STRING, length: 25, enumType: PaymentStatus::class)]
+    private ?PaymentStatus $status = null;
 
     #[ORM\Column(name: 'message', type: Types::TEXT, nullable: true)]
     private ?string $message = null;
@@ -147,12 +148,12 @@ class Payment extends BasePayment
         return $this;
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): ?PaymentStatus
     {
         return $this->status;
     }
 
-    public function setStatus(string $status): self
+    public function setStatus(PaymentStatus $status): static
     {
         $this->status = $status;
 

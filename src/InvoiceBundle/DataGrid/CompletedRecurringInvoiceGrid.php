@@ -36,7 +36,7 @@ final class CompletedRecurringInvoiceGrid extends BaseRecurringInvoiceGrid
             ->action(static function (RecurringInvoiceRepository $repository, EntityManagerInterface $em, array $selectedItems): void {
                 $invoices = $repository->findBy(['id' => $selectedItems]);
                 foreach ($invoices as $invoice) {
-                    $invoice->setStatus(RecurringInvoiceStatus::Active->value);
+                    $invoice->setStatus(RecurringInvoiceStatus::Active);
                     $em->persist($invoice);
                 }
                 $em->flush();

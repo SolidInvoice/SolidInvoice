@@ -14,118 +14,118 @@ declare(strict_types=1);
 namespace SolidInvoice\PaymentBundle\PaymentAction\Request;
 
 use Payum\Core\Request\BaseGetStatus;
-use SolidInvoice\PaymentBundle\Model\Status;
+use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 
 class StatusRequest extends BaseGetStatus
 {
     public function markNew(): void
     {
         /** @phpstan-ignore-next-line Payum library compatibility */
-        $this->status = Status::STATUS_NEW;
+        $this->status = PaymentStatus::New->value;
     }
 
     public function isNew()
     {
-        return Status::STATUS_NEW === $this->status;
+        return PaymentStatus::New->value === $this->status;
     }
 
     public function markSuspended(): void
     {
         /** @phpstan-ignore-next-line Payum library compatibility */
-        $this->status = Status::STATUS_SUSPENDED;
+        $this->status = PaymentStatus::Suspended->value;
     }
 
     public function isSuspended()
     {
-        return Status::STATUS_SUSPENDED === $this->status;
+        return PaymentStatus::Suspended->value === $this->status;
     }
 
     public function markExpired(): void
     {
         /** @phpstan-ignore-next-line Payum library compatibility */
-        $this->status = Status::STATUS_EXPIRED;
+        $this->status = PaymentStatus::Expired->value;
     }
 
     public function isExpired()
     {
-        return Status::STATUS_EXPIRED === $this->status;
+        return PaymentStatus::Expired->value === $this->status;
     }
 
     public function markCanceled(): void
     {
         /** @phpstan-ignore-next-line Payum library compatibility */
-        $this->status = Status::STATUS_CANCELLED;
+        $this->status = PaymentStatus::Cancelled->value;
     }
 
     public function isCanceled()
     {
-        return Status::STATUS_CANCELLED === $this->status;
+        return PaymentStatus::Cancelled->value === $this->status;
     }
 
     public function markPending(): void
     {
         /** @phpstan-ignore-next-line Payum library compatibility */
-        $this->status = Status::STATUS_PENDING;
+        $this->status = PaymentStatus::Pending->value;
     }
 
     public function isPending()
     {
-        return Status::STATUS_PENDING === $this->status;
+        return PaymentStatus::Pending->value === $this->status;
     }
 
     public function markFailed(): void
     {
         /** @phpstan-ignore-next-line Payum library compatibility */
-        $this->status = Status::STATUS_FAILED;
+        $this->status = PaymentStatus::Failed->value;
     }
 
     public function isFailed()
     {
-        return Status::STATUS_FAILED === $this->status;
+        return PaymentStatus::Failed->value === $this->status;
     }
 
     public function markUnknown(): void
     {
         /** @phpstan-ignore-next-line Payum library compatibility */
-        $this->status = Status::STATUS_UNKNOWN;
+        $this->status = PaymentStatus::Unknown->value;
     }
 
     public function isUnknown()
     {
-        return Status::STATUS_UNKNOWN === $this->status;
+        return PaymentStatus::Unknown->value === $this->status;
     }
 
     public function markCaptured(): void
     {
         /** @phpstan-ignore-next-line Payum library compatibility */
-        $this->status = Status::STATUS_CAPTURED;
+        $this->status = PaymentStatus::Captured->value;
     }
 
     public function isCaptured()
     {
-        return Status::STATUS_CAPTURED === $this->status;
+        return PaymentStatus::Captured->value === $this->status;
     }
 
     public function isAuthorized()
     {
-        return Status::STATUS_AUTHORIZED === $this->status;
+        return PaymentStatus::Authorized->value === $this->status;
     }
 
     public function markAuthorized(): void
     {
         /** @phpstan-ignore-next-line Payum library compatibility */
-        $this->status = Status::STATUS_AUTHORIZED;
+        $this->status = PaymentStatus::Authorized->value;
     }
 
     public function isRefunded()
     {
-        return Status::STATUS_REFUNDED === $this->status;
+        return PaymentStatus::Refunded->value === $this->status;
     }
 
     public function markRefunded(): void
     {
         /** @phpstan-ignore-next-line Payum library compatibility */
-        $this->status = Status::STATUS_REFUNDED;
+        $this->status = PaymentStatus::Refunded->value;
     }
 
     public function markPayedout(): void

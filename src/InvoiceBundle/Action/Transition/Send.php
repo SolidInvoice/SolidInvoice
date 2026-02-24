@@ -18,6 +18,7 @@ use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,7 +39,7 @@ final class Send
 
     public function __invoke(Request $request, Invoice $invoice): RedirectResponse
     {
-        if (Graph::STATUS_PENDING !== $invoice->getStatus() && $this->invoiceStateMachine->can($invoice, Graph::TRANSITION_ACCEPT)) {
+        if (InvoiceStatus::Pending !== $invoice->getStatus() && $this->invoiceStateMachine->can($invoice, Graph::TRANSITION_ACCEPT)) {
             $this->invoiceStateMachine->apply($invoice, Graph::TRANSITION_ACCEPT);
         }
 

@@ -20,6 +20,7 @@ use PHPUnit\Framework\TestCase;
 use SolidInvoice\ApiBundle\Event\Listener\QuoteCreateListener;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use SolidInvoice\QuoteBundle\Model\Graph;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
@@ -72,7 +73,7 @@ class QuoteCreateListenerTest extends TestCase
         $listener = new QuoteCreateListener($stateMachine);
         $request = Request::create('/', Request::METHOD_POST);
         $entity = new Quote();
-        $entity->setStatus(Graph::STATUS_DRAFT);
+        $entity->setStatus(QuoteStatus::Draft);
 
         $listener->setQuoteStatus(new ViewEvent(M::mock(KernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST, $entity));
     }

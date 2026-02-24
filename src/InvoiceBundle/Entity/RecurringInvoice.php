@@ -30,6 +30,7 @@ use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
+use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
@@ -75,6 +76,11 @@ class RecurringInvoice extends BaseInvoice
     final public const TABLE_NAME = 'recurring_invoices';
     use Archivable;
     use TimeStampable;
+
+    #[ORM\Column(name: 'status', type: Types::STRING, length: 25, enumType: RecurringInvoiceStatus::class)]
+    #[Serialize\Groups(['recurring_invoice_api:read'])]
+    #[ApiProperty(writable: false)]
+    protected ?RecurringInvoiceStatus $status = null;
 
     #[ORM\Column(name: 'id', type: UlidType::NAME)]
     #[ORM\Id]
@@ -148,6 +154,30 @@ class RecurringInvoice extends BaseInvoice
     public function getId(): ?Ulid
     {
         return $this->id;
+    }
+
+    public function getStatus(): ?RecurringInvoiceStatus
+    {
+        return $this->status;
+    }
+
+    public function setStatus(RecurringInvoiceStatus $status): static
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getStatusValue(): ?string
+    {
+        return $this->status?->value;
+    }
+
+    public function setStatusValue(string $status): static
+    {
+        $this->status = RecurringInvoiceStatus::from($status);
+
+        return $this;
     }
 
     public function getClient(): ?Client

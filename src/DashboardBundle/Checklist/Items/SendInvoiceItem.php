@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\DashboardBundle\Checklist\Items;
 
 use SolidInvoice\DashboardBundle\Checklist\ChecklistItemInterface;
-use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 
 final readonly class SendInvoiceItem implements ChecklistItemInterface
@@ -54,7 +54,7 @@ final readonly class SendInvoiceItem implements ChecklistItemInterface
         // Check if there's at least one invoice that has been sent (not draft)
         // Company filter ensures we only count invoices for the current company
         $totalInvoices = $this->invoiceRepository->count([]);
-        $draftInvoices = $this->invoiceRepository->getCountByStatus(Graph::STATUS_DRAFT);
+        $draftInvoices = $this->invoiceRepository->getCountByStatus(InvoiceStatus::Draft);
 
         // At least one invoice exists AND not all invoices are drafts
         return $totalInvoices > 0 && $draftInvoices < $totalInvoices;

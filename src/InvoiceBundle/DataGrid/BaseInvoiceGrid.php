@@ -26,7 +26,7 @@ use SolidInvoice\DataGridBundle\GridBuilder\Filter\DateRangeFilter;
 use SolidInvoice\DataGridBundle\GridBuilder\Query;
 use SolidInvoice\DataGridBundle\Source\ORMSource;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
-use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\MoneyBundle\Calculator;
 
@@ -64,7 +64,7 @@ abstract class BaseInvoiceGrid extends Grid
                 ->filter(new DateRangeFilter('paidDate')),
             StringColumn::new('status')
                 ->twigFunction('invoice_label')
-                ->filter(ChoiceFilter::new('status', Graph::statusArray())->multiple()),
+                ->filter(ChoiceFilter::new('status', array_column(array_map(static fn (InvoiceStatus $s) => [$s->value, $s->name], InvoiceStatus::cases()), 1, 0))->multiple()),
             MoneyColumn::new('total')
                 ->formatValue(fn (BigNumber $value, Invoice $invoice) => new Money((string) $value, $invoice->getClient()?->getCurrency())),
             MoneyColumn::new('tax')

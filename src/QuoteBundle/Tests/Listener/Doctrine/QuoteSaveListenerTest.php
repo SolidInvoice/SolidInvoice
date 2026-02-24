@@ -21,8 +21,8 @@ use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use SolidInvoice\QuoteBundle\Listener\Doctrine\QuoteSaveListener;
-use SolidInvoice\QuoteBundle\Model\Graph;
 
 class QuoteSaveListenerTest extends TestCase
 {
@@ -44,7 +44,7 @@ class QuoteSaveListenerTest extends TestCase
     public function testPrePersistOnlyCallsStateMachineWithNoStatus(): void
     {
         $entity = new Quote();
-        $entity->setStatus(Graph::STATUS_DRAFT);
+        $entity->setStatus(QuoteStatus::Draft);
         $calculator = M::mock(TotalCalculator::class);
         $calculator->shouldReceive('calculateTotals')
             ->once()

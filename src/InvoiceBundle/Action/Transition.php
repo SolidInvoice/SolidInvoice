@@ -17,8 +17,8 @@ use Generator;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Exception\InvalidTransitionException;
-use SolidInvoice\InvoiceBundle\Model\Graph;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
@@ -46,7 +46,7 @@ final class Transition
 
         $route = $this->router->generate('_invoices_view', ['id' => $invoice->getId()]);
 
-        if ($marking->has(Graph::STATUS_ARCHIVED)) {
+        if ($marking->has(InvoiceStatus::Archived->value)) {
             $route = $this->router->generate('_invoices_index');
         }
 

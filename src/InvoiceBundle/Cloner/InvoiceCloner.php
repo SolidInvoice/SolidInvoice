@@ -96,7 +96,9 @@ final class InvoiceCloner
 
         array_map(static fn (Line $item): Invoice|RecurringInvoice => $newInvoice->addLine($item), iterator_to_array($this->addLine($invoice, $now)));
 
-        $this->invoiceManager->create($newInvoice);
+        if ($newInvoice instanceof Invoice) {
+            $this->invoiceManager->create($newInvoice);
+        }
 
         return $newInvoice;
     }

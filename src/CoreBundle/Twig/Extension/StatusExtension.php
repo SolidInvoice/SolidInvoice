@@ -13,11 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Twig\Extension;
 
+use BackedEnum;
 use Exception;
-use SolidInvoice\ClientBundle\Model\Status as ClientStatus;
-use SolidInvoice\InvoiceBundle\Model\Graph as InvoiceGraph;
-use SolidInvoice\PaymentBundle\Model\Status as PaymentStatus;
-use SolidInvoice\QuoteBundle\Model\Graph as QuoteGraph;
+use SolidInvoice\ClientBundle\Enum\ClientStatus;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
+use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
+use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
+use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -28,54 +30,53 @@ class StatusExtension extends AbstractExtension
      * @var array<string, string>
      */
     private array $invoiceLabelMap = [
-        InvoiceGraph::STATUS_NEW => 'grey',
-        InvoiceGraph::STATUS_PENDING => 'yellow',
-        InvoiceGraph::STATUS_DRAFT => 'secondary',
-        InvoiceGraph::STATUS_PAID => 'green',
-        InvoiceGraph::STATUS_ACTIVE => 'green',
-        InvoiceGraph::STATUS_OVERDUE => 'red',
-        InvoiceGraph::STATUS_CANCELLED => 'olive',
-        InvoiceGraph::STATUS_ARCHIVED => 'purple',
-        'paused' => 'black',
-
+        InvoiceStatus::New->value => 'grey',
+        InvoiceStatus::Pending->value => 'yellow',
+        InvoiceStatus::Draft->value => 'secondary',
+        InvoiceStatus::Paid->value => 'green',
+        InvoiceStatus::Active->value => 'green',
+        InvoiceStatus::Overdue->value => 'red',
+        InvoiceStatus::Cancelled->value => 'olive',
+        InvoiceStatus::Archived->value => 'purple',
+        RecurringInvoiceStatus::Paused->value => 'black',
     ];
 
     /**
      * @var array<string, string>
      */
     private array $quoteLabelMap = [
-        QuoteGraph::STATUS_PENDING => 'yellow',
-        QuoteGraph::STATUS_DRAFT => 'secondary',
-        QuoteGraph::STATUS_ACCEPTED => 'green',
-        QuoteGraph::STATUS_DECLINED => 'red',
-        QuoteGraph::STATUS_CANCELLED => 'olive',
-        QuoteGraph::STATUS_ARCHIVED => 'purple',
+        QuoteStatus::Pending->value => 'yellow',
+        QuoteStatus::Draft->value => 'secondary',
+        QuoteStatus::Accepted->value => 'green',
+        QuoteStatus::Declined->value => 'red',
+        QuoteStatus::Cancelled->value => 'olive',
+        QuoteStatus::Archived->value => 'purple',
     ];
 
     /**
      * @var array<string, string>
      */
     private array $paymentLabelMap = [
-        PaymentStatus::STATUS_UNKNOWN => 'primary',
-        PaymentStatus::STATUS_FAILED => 'red',
-        PaymentStatus::STATUS_SUSPENDED => 'black',
-        PaymentStatus::STATUS_EXPIRED => 'purple',
-        PaymentStatus::STATUS_CAPTURED => 'green',
-        PaymentStatus::STATUS_PENDING => 'yellow',
-        PaymentStatus::STATUS_CANCELLED => 'navy',
-        PaymentStatus::STATUS_NEW => 'blue',
-        PaymentStatus::STATUS_AUTHORIZED => 'aqua',
-        PaymentStatus::STATUS_REFUNDED => 'maroon',
-        PaymentStatus::STATUS_CREDIT => 'fuchsia',
+        PaymentStatus::Unknown->value => 'primary',
+        PaymentStatus::Failed->value => 'red',
+        PaymentStatus::Suspended->value => 'black',
+        PaymentStatus::Expired->value => 'purple',
+        PaymentStatus::Captured->value => 'green',
+        PaymentStatus::Pending->value => 'yellow',
+        PaymentStatus::Cancelled->value => 'navy',
+        PaymentStatus::New->value => 'blue',
+        PaymentStatus::Authorized->value => 'aqua',
+        PaymentStatus::Refunded->value => 'maroon',
+        PaymentStatus::Credit->value => 'fuchsia',
     ];
 
     /**
      * @var array<string, string>
      */
     private array $clientLabelMap = [
-        ClientStatus::STATUS_ACTIVE => 'green',
-        ClientStatus::STATUS_INACTIVE => 'aqua',
-        ClientStatus::STATUS_ARCHIVED => 'purple',
+        ClientStatus::Active->value => 'green',
+        ClientStatus::Inactive->value => 'aqua',
+        ClientStatus::Archived->value => 'purple',
     ];
 
     public function getFunctions(): array
@@ -83,22 +84,22 @@ class StatusExtension extends AbstractExtension
         return [
             new TwigFunction(
                 'invoice_label',
-                fn (Environment $environment, ?string $status = null, $tooltip = null) => $this->renderInvoiceStatusLabel($environment, $status, $tooltip),
+                fn (Environment $environment, string|BackedEnum|null $status = null, ?string $tooltip = null) => $this->renderInvoiceStatusLabel($environment, $status instanceof BackedEnum ? $status->value : $status, $tooltip),
                 ['is_safe' => ['html'], 'needs_environment' => true]
             ),
             new TwigFunction(
                 'quote_label',
-                fn (Environment $environment, ?string $status = null, $tooltip = null) => $this->renderQuoteStatusLabel($environment, $status, $tooltip),
+                fn (Environment $environment, string|BackedEnum|null $status = null, ?string $tooltip = null) => $this->renderQuoteStatusLabel($environment, $status instanceof BackedEnum ? $status->value : $status, $tooltip),
                 ['is_safe' => ['html'], 'needs_environment' => true]
             ),
             new TwigFunction(
                 'payment_label',
-                fn (Environment $environment, ?string $status = null, $tooltip = null) => $this->renderPaymentStatusLabel($environment, $status, $tooltip),
+                fn (Environment $environment, string|BackedEnum|null $status = null, ?string $tooltip = null) => $this->renderPaymentStatusLabel($environment, $status instanceof BackedEnum ? $status->value : $status, $tooltip),
                 ['is_safe' => ['html'], 'needs_environment' => true]
             ),
             new TwigFunction(
                 'client_label',
-                fn (Environment $environment, ?string $status = null, $tooltip = null) => $this->renderClientStatusLabel($environment, $status, $tooltip),
+                fn (Environment $environment, string|BackedEnum|null $status = null, ?string $tooltip = null) => $this->renderClientStatusLabel($environment, $status instanceof BackedEnum ? $status->value : $status, $tooltip),
                 ['is_safe' => ['html'], 'needs_environment' => true]
             ),
         ];

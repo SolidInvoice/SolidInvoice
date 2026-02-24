@@ -20,10 +20,10 @@ use Doctrine\Persistence\ObjectManager;
 use Psr\Clock\ClockInterface;
 use Psr\Container\ContainerExceptionInterface;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
-use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvent;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvents;
 use SolidInvoice\InvoiceBundle\Exception\InvalidTransitionException;
@@ -151,10 +151,10 @@ class InvoiceManager
     /**
      * @throws InvalidTransitionException
      */
-    public function create(BaseInvoice $invoice): BaseInvoice
+    public function create(Invoice $invoice): Invoice
     {
         // Set the invoice status as new and save, before we transition to the correct status
-        $invoice->setStatus(Graph::STATUS_NEW);
+        $invoice->setStatus(InvoiceStatus::New);
         $this->entityManager->persist($invoice);
         $this->entityManager->flush();
 
@@ -173,7 +173,7 @@ class InvoiceManager
     /**
      * @throws InvalidTransitionException
      */
-    private function applyTransition(BaseInvoice $invoice): void
+    private function applyTransition(Invoice $invoice): void
     {
         if (! $this->invoiceStateMachine->can($invoice, Graph::TRANSITION_NEW)) {
             throw new InvalidTransitionException(Graph::TRANSITION_NEW);

@@ -28,7 +28,7 @@ use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\InvoiceReminder;
 use SolidInvoice\InvoiceBundle\Entity\ReminderType;
-use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
 use Symfony\Bridge\Doctrine\Types\UlidType;
@@ -58,7 +58,7 @@ class InvoiceRepository extends EntityRepository
             E_USER_DEPRECATED
         );
 
-        return $this->getTotalByStatus(Graph::STATUS_PAID, $client);
+        return $this->getTotalByStatus(InvoiceStatus::Paid, $client);
     }
 
     /**
@@ -66,7 +66,7 @@ class InvoiceRepository extends EntityRepository
      *
      * @throws MathException
      */
-    public function getTotalByStatus(string $status, ?Client $client = null): BigNumber
+    public function getTotalByStatus(InvoiceStatus $status, ?Client $client = null): BigNumber
     {
         $qb = $this->createQueryBuilder('i');
 
@@ -95,7 +95,7 @@ class InvoiceRepository extends EntityRepository
 
         $qb->select('SUM(i.balance)')
             ->where('i.status = :status')
-            ->setParameter('status', Graph::STATUS_PENDING);
+            ->setParameter('status', InvoiceStatus::Pending);
 
         if ($client instanceof Client) {
             $qb->andWhere('i.client = :client')
@@ -114,9 +114,9 @@ class InvoiceRepository extends EntityRepository
     /**
      * Get the total number of invoices for a specific status.
      *
-     * @param string|string[] $status
+     * @param InvoiceStatus|InvoiceStatus[] $status
      */
-    public function getCountByStatus(string | array $status, ?Client $client = null): int
+    public function getCountByStatus(InvoiceStatus | array $status, ?Client $client = null): int
     {
         $qb = $this->createQueryBuilder('i');
 
@@ -236,7 +236,7 @@ class InvoiceRepository extends EntityRepository
             ->where('i.status = :status')
             ->andWhere('i.client = :client')
             ->setParameter('client', $client->getId(), UlidType::NAME)
-            ->setParameter('status', Graph::STATUS_PENDING);
+            ->setParameter('status', InvoiceStatus::Pending);
 
         $query = $qb->getQuery();
 
@@ -308,7 +308,7 @@ class InvoiceRepository extends EntityRepository
             ->innerJoin('i.client', 'c')
             ->addSelect('c')
             ->where('i.status = :status')
-            ->setParameter('status', Graph::STATUS_OVERDUE)
+            ->setParameter('status', InvoiceStatus::Overdue)
             ->orderBy('i.due', Criteria::ASC)
             ->setMaxResults($limit);
 
@@ -328,7 +328,7 @@ class InvoiceRepository extends EntityRepository
             ->innerJoin('i.client', 'c')
             ->addSelect('c')
             ->where('i.status = :status')
-            ->setParameter('status', Graph::STATUS_DRAFT)
+            ->setParameter('status', InvoiceStatus::Draft)
             ->orderBy('i.created', Criteria::DESC)
             ->setMaxResults($limit);
 
@@ -348,8 +348,8 @@ class InvoiceRepository extends EntityRepository
         $qb->select('SUM(i.balance) as total', 'c.currencyCode')
             ->innerJoin('i.client', 'c')
             ->where('i.status = :pendingStatus OR i.status = :overdueStatus')
-            ->setParameter('pendingStatus', Graph::STATUS_PENDING)
-            ->setParameter('overdueStatus', Graph::STATUS_OVERDUE)
+            ->setParameter('pendingStatus', InvoiceStatus::Pending)
+            ->setParameter('overdueStatus', InvoiceStatus::Overdue)
             ->groupBy('c.currencyCode');
 
         $results = [];
@@ -375,7 +375,7 @@ class InvoiceRepository extends EntityRepository
         $qb->select('SUM(i.balance) as total', 'c.currencyCode')
             ->innerJoin('i.client', 'c')
             ->where('i.status = :status')
-            ->setParameter('status', Graph::STATUS_OVERDUE)
+            ->setParameter('status', InvoiceStatus::Overdue)
             ->groupBy('c.currencyCode');
 
         $results = [];
@@ -402,7 +402,8 @@ class InvoiceRepository extends EntityRepository
 
         $results = [];
         foreach ($qb->getQuery()->getArrayResult() as $result) {
-            $results[$result['status']] = (int) $result['count'];
+            $status = $result['status'];
+            $results[$status instanceof InvoiceStatus ? $status->value : $status] = (int) $result['count'];
         }
 
         return $results;
@@ -421,7 +422,7 @@ class InvoiceRepository extends EntityRepository
             ->innerJoin('i.client', 'c')
             ->addSelect('c')
             ->where('i.status = :status')
-            ->setParameter('status', Graph::STATUS_PENDING)
+            ->setParameter('status', InvoiceStatus::Pending)
             ->orderBy('i.updated', Criteria::DESC)
             ->setMaxResults($limit);
 
@@ -461,7 +462,7 @@ class InvoiceRepository extends EntityRepository
         $qb->where('i.status = :status')
             ->andWhere('i.due < :now')
             ->andWhere('i.due IS NOT NULL')
-            ->setParameter('status', Graph::STATUS_PENDING)
+            ->setParameter('status', InvoiceStatus::Pending)
             ->setParameter('now', $this->clock->now());
 
         return $qb->getQuery()->toIterable();
@@ -483,7 +484,7 @@ class InvoiceRepository extends EntityRepository
             ->where('i.status = :status')
             ->andWhere('i.due = :targetDate')
             ->andWhere('r.id IS NULL')
-            ->setParameter('status', Graph::STATUS_PENDING)
+            ->setParameter('status', InvoiceStatus::Pending)
             ->setParameter('targetDate', $targetDate, Types::DATE_IMMUTABLE)
             ->setParameter('reminderType', ReminderType::PreDue);
 
@@ -506,8 +507,8 @@ class InvoiceRepository extends EntityRepository
             ->where('i.status  in (:pending, :overdue)')
             ->andWhere('i.due = :targetDate')
             ->andWhere('r.id IS NULL')
-            ->setParameter('pending', Graph::STATUS_PENDING)
-            ->setParameter('overdue', Graph::STATUS_OVERDUE)
+            ->setParameter('pending', InvoiceStatus::Pending)
+            ->setParameter('overdue', InvoiceStatus::Overdue)
             ->setParameter('targetDate', $targetDate, Types::DATE_IMMUTABLE)
             ->setParameter('reminderType', $reminderType);
 

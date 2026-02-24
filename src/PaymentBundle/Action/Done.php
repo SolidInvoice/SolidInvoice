@@ -18,6 +18,7 @@ use Payum\Core\Model\Token;
 use Payum\Core\Payum;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
 use SolidInvoice\PaymentBundle\Entity\Payment;
+use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\PaymentBundle\Event\PaymentCompleteEvent;
 use SolidInvoice\PaymentBundle\Event\PaymentEvents;
 use SolidInvoice\PaymentBundle\PaymentAction\Request\StatusRequest;
@@ -49,7 +50,7 @@ final class Done
         /** @var Payment $payment */
         $payment = $status->getFirstModel();
 
-        $payment->setStatus((string) $status->getValue());
+        $payment->setStatus(PaymentStatus::from((string) $status->getValue()));
         $payment->setCompleted(new DateTime('now'));
 
         $this->save($payment);

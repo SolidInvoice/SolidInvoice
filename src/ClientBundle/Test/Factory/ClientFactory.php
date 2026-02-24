@@ -12,6 +12,7 @@
 namespace SolidInvoice\ClientBundle\Test\Factory;
 
 use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\ClientBundle\Enum\ClientStatus;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use Zenstruck\Foundry\FactoryCollection;
@@ -66,7 +67,7 @@ final class ClientFactory extends PersistentProxyObjectFactory
         return [
             'name' => self::faker()->company(),
             'website' => 'https://' . self::faker()->domainName(),
-            'status' => self::faker()->word(),
+            'status' => self::faker()->randomElement(ClientStatus::cases()),
             'currencyCode' => self::faker()->currencyCode(),
             'vatNumber' => self::faker()->word(),
             'archived' => null,

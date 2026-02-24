@@ -20,6 +20,7 @@ use SolidInvoice\CronBundle\Enum\ScheduleEndType;
 use SolidInvoice\CronBundle\Enum\ScheduleRecurringType;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringOptions;
+use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
 use Zenstruck\Foundry\FactoryCollection;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
@@ -73,7 +74,7 @@ final class RecurringInvoiceFactory extends PersistentProxyObjectFactory
     {
         return [
             'client' => ClientFactory::new(),
-            'status' => self::faker()->word(),
+            'status' => self::faker()->randomElement(RecurringInvoiceStatus::cases()),
             'terms' => self::faker()->text(),
             'notes' => self::faker()->text(),
             'archived' => null,

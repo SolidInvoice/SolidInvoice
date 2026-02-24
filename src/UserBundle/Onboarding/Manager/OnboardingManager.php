@@ -24,7 +24,7 @@ use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
-use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Enum\UserSettingType;
@@ -208,7 +208,7 @@ final class OnboardingManager
         $invoice->setClient($client);
         $invoice->setCompany($company);
         $invoice->setInvoiceId('1');
-        $invoice->setStatus(Graph::STATUS_DRAFT);
+        $invoice->setStatus(InvoiceStatus::Draft);
 
         // Create a single line item
         $line = new Line();

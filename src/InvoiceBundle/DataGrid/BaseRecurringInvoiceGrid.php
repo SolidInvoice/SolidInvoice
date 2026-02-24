@@ -26,7 +26,7 @@ use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Filter\ChoiceFilter;
 use SolidInvoice\DataGridBundle\GridBuilder\Filter\DateRangeFilter;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
-use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
 use SolidInvoice\InvoiceBundle\Recurring\RecurringSchedule;
 use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
 use SolidInvoice\MoneyBundle\Calculator;
@@ -65,7 +65,7 @@ abstract class BaseRecurringInvoiceGrid extends Grid
                 ->format('d F Y'),
             StringColumn::new('status')
                 ->twigFunction('invoice_label')
-                ->filter(ChoiceFilter::new('status', Graph::statusArray())->multiple()),
+                ->filter(ChoiceFilter::new('status', array_column(array_map(static fn (RecurringInvoiceStatus $s) => [$s->value, $s->name], RecurringInvoiceStatus::cases()), 1, 0))->multiple()),
             MoneyColumn::new('total')
                 ->formatValue(function (float|BigNumber $value, RecurringInvoice $invoice): Money {
                     $client = $invoice->getClient();

@@ -16,6 +16,7 @@ namespace SolidInvoice\InvoiceBundle\Tests\Command;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Command\SendRecurringInvoicesCommand;
+use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
 use SolidInvoice\InvoiceBundle\Test\Factory\RecurringInvoiceFactory;
 use SolidWorx\Platform\PlatformBundle\Console\IO;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -43,18 +44,18 @@ final class SendRecurringInvoicesCommandTest extends KernelTestCase
 
         // Create active recurring invoices
         RecurringInvoiceFactory::createOne([
-            'status' => 'active',
+            'status' => RecurringInvoiceStatus::Active,
             'company' => $company1,
         ]);
 
         RecurringInvoiceFactory::createOne([
-            'status' => 'active',
+            'status' => RecurringInvoiceStatus::Active,
             'company' => $company2,
         ]);
 
         // Create inactive recurring invoice (should not be processed)
         RecurringInvoiceFactory::createOne([
-            'status' => 'complete',
+            'status' => RecurringInvoiceStatus::Complete,
             'company' => $company1,
         ]);
 
@@ -68,7 +69,7 @@ final class SendRecurringInvoicesCommandTest extends KernelTestCase
         $company = CompanyFactory::createOne();
 
         RecurringInvoiceFactory::createOne([
-            'status' => 'complete',
+            'status' => RecurringInvoiceStatus::Complete,
             'company' => $company,
         ]);
 
@@ -84,17 +85,17 @@ final class SendRecurringInvoicesCommandTest extends KernelTestCase
 
         // Create one active recurring invoice per company
         RecurringInvoiceFactory::createOne([
-            'status' => 'active',
+            'status' => RecurringInvoiceStatus::Active,
             'company' => $company1,
         ]);
 
         RecurringInvoiceFactory::createOne([
-            'status' => 'active',
+            'status' => RecurringInvoiceStatus::Active,
             'company' => $company2,
         ]);
 
         RecurringInvoiceFactory::createOne([
-            'status' => 'active',
+            'status' => RecurringInvoiceStatus::Active,
             'company' => $company3,
         ]);
 

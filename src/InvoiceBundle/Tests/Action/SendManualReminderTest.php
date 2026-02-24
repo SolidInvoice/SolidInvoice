@@ -19,6 +19,7 @@ use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Action\SendManualReminder;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -81,7 +82,7 @@ final class SendManualReminderTest extends KernelTestCase
         $invoice = InvoiceFactory::createOne([
             'company' => $this->company,
             'client' => $client,
-            'status' => 'pending',
+            'status' => InvoiceStatus::Pending,
             'users' => [$contact],
         ]);
 
@@ -119,7 +120,7 @@ final class SendManualReminderTest extends KernelTestCase
         $invoice = InvoiceFactory::createOne([
             'company' => $this->company,
             'client' => $client,
-            'status' => 'pending',
+            'status' => InvoiceStatus::Pending,
             'users' => [], // No contacts
         ]);
 
@@ -162,7 +163,7 @@ final class SendManualReminderTest extends KernelTestCase
         $invoice = InvoiceFactory::createOne([
             'company' => $this->company,
             'client' => $client,
-            'status' => 'pending',
+            'status' => InvoiceStatus::Pending,
             'users' => [$contact],
         ]);
 
@@ -201,7 +202,7 @@ final class SendManualReminderTest extends KernelTestCase
         $invoice = InvoiceFactory::createOne([
             'company' => $this->company,
             'client' => $client,
-            'status' => 'pending',
+            'status' => InvoiceStatus::Pending,
             'users' => [$contact],
         ]);
 

@@ -19,6 +19,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Listener\InvoiceOverdueListener;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
@@ -37,7 +38,7 @@ final class InvoiceOverdueListenerTest extends TestCase
         $client = (new Client())->setName('Test Client')->setCurrencyCode('USD');
 
         $invoice = new Invoice();
-        $invoice->setStatus(Graph::STATUS_OVERDUE);
+        $invoice->setStatus(InvoiceStatus::Overdue);
         $invoice->setClient($client);
         $invoice->setInvoiceId('INV-001');
 
@@ -51,8 +52,8 @@ final class InvoiceOverdueListenerTest extends TestCase
 
         $event = new Event(
             $invoice,
-            new Marking([Graph::STATUS_OVERDUE => 1]),
-            new Transition(Graph::TRANSITION_OVERDUE, Graph::STATUS_PENDING, Graph::STATUS_OVERDUE),
+            new Marking([InvoiceStatus::Overdue->value => 1]),
+            new Transition(Graph::TRANSITION_OVERDUE, InvoiceStatus::Pending->value, InvoiceStatus::Overdue->value),
             M::mock(WorkflowInterface::class)
         );
 
@@ -64,7 +65,7 @@ final class InvoiceOverdueListenerTest extends TestCase
         $client = (new Client())->setName('Test Client')->setCurrencyCode('USD');
 
         $invoice = new Invoice();
-        $invoice->setStatus(Graph::STATUS_OVERDUE);
+        $invoice->setStatus(InvoiceStatus::Overdue);
         $invoice->setClient($client);
         $invoice->setInvoiceId('INV-001');
 
@@ -82,8 +83,8 @@ final class InvoiceOverdueListenerTest extends TestCase
 
         $event = new Event(
             $invoice,
-            new Marking([Graph::STATUS_OVERDUE => 1]),
-            new Transition(Graph::TRANSITION_OVERDUE, Graph::STATUS_PENDING, Graph::STATUS_OVERDUE),
+            new Marking([InvoiceStatus::Overdue->value => 1]),
+            new Transition(Graph::TRANSITION_OVERDUE, InvoiceStatus::Pending->value, InvoiceStatus::Overdue->value),
             M::mock(WorkflowInterface::class)
         );
 
@@ -101,8 +102,8 @@ final class InvoiceOverdueListenerTest extends TestCase
 
         $event = new Event(
             new \stdClass(), // Not an Invoice
-            new Marking([Graph::STATUS_OVERDUE => 1]),
-            new Transition(Graph::TRANSITION_OVERDUE, Graph::STATUS_PENDING, Graph::STATUS_OVERDUE),
+            new Marking([InvoiceStatus::Overdue->value => 1]),
+            new Transition(Graph::TRANSITION_OVERDUE, InvoiceStatus::Pending->value, InvoiceStatus::Overdue->value),
             M::mock(WorkflowInterface::class)
         );
 

@@ -39,6 +39,7 @@ use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
 use SolidInvoice\QuoteBundle\Traits\QuoteStatusTrait;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
@@ -107,10 +108,10 @@ class Quote
     #[ApiProperty(writable: false)]
     private ?string $uuid = null;
 
-    #[ORM\Column(name: 'status', type: Types::STRING, length: 25)]
+    #[ORM\Column(name: 'status', type: Types::STRING, length: 25, enumType: QuoteStatus::class)]
     #[Groups(['quote_api:read'])]
     #[ApiProperty(writable: false)]
-    private ?string $status = null;
+    private ?QuoteStatus $status = null;
 
     #[ApiProperty(
         example: '/api/clients/3fa85f64-5717-4562-b3fc-2c963f66afa6',
@@ -299,14 +300,25 @@ class Quote
         return $this;
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): ?QuoteStatus
     {
         return $this->status;
     }
 
-    public function setStatus(string $status): self
+    public function setStatus(QuoteStatus $status): static
     {
         $this->status = $status;
+        return $this;
+    }
+
+    public function getStatusValue(): ?string
+    {
+        return $this->status?->value;
+    }
+
+    public function setStatusValue(string $status): static
+    {
+        $this->status = QuoteStatus::from($status);
         return $this;
     }
 

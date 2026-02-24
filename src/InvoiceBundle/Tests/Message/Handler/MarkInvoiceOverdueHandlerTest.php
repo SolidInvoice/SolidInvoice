@@ -23,6 +23,7 @@ use Psr\Log\NullLogger;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Message\Handler\MarkInvoiceOverdueHandler;
 use SolidInvoice\InvoiceBundle\Message\MarkInvoiceOverdue;
 use SolidInvoice\InvoiceBundle\Model\Graph;
@@ -46,7 +47,7 @@ final class MarkInvoiceOverdueHandlerTest extends KernelTestCase
     {
         $company = CompanyFactory::createOne();
         $invoice = InvoiceFactory::createOne([
-            'status' => Graph::STATUS_PENDING,
+            'status' => InvoiceStatus::Pending,
             'due' => new DateTimeImmutable('yesterday'),
             'company' => $company,
         ]);
@@ -98,7 +99,7 @@ final class MarkInvoiceOverdueHandlerTest extends KernelTestCase
     {
         $company = CompanyFactory::createOne();
         $invoice = InvoiceFactory::createOne([
-            'status' => Graph::STATUS_PAID,
+            'status' => InvoiceStatus::Paid,
             'due' => new DateTimeImmutable('yesterday'),
             'company' => $company,
         ]);
@@ -166,7 +167,7 @@ final class MarkInvoiceOverdueHandlerTest extends KernelTestCase
     {
         $company = CompanyFactory::createOne();
         $invoice = InvoiceFactory::createOne([
-            'status' => Graph::STATUS_PENDING,
+            'status' => InvoiceStatus::Pending,
             'due' => new DateTimeImmutable('yesterday'),
             'company' => $company,
         ]);

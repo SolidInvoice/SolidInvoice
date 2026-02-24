@@ -18,6 +18,7 @@ use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 use Zenstruck\Foundry\Persistence\Proxy;
@@ -72,7 +73,7 @@ final class QuoteFactory extends PersistentProxyObjectFactory
             'client' => ClientFactory::new(),
             'company' => CompanyFactory::random(),
             'due' => DateTimeImmutable::createFromMutable(self::faker()->dateTime()),
-            'status' => self::faker()->word(),
+            'status' => self::faker()->randomElement(QuoteStatus::cases()),
             'terms' => self::faker()->text(),
             'notes' => self::faker()->text(),
             'archived' => null,

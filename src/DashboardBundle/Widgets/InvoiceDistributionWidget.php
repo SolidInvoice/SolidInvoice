@@ -16,7 +16,7 @@ namespace SolidInvoice\DashboardBundle\Widgets;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
-use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
@@ -31,11 +31,11 @@ final readonly class InvoiceDistributionWidget implements WidgetInterface
      * @var array<string, array{color: string, label: string}>
      */
     private const array STATUS_CONFIG = [
-        Graph::STATUS_PAID => ['color' => 'rgb(16, 185, 129)', 'label' => 'Paid'],
-        Graph::STATUS_PENDING => ['color' => 'rgb(59, 130, 246)', 'label' => 'Pending'],
-        Graph::STATUS_OVERDUE => ['color' => 'rgb(239, 68, 68)', 'label' => 'Overdue'],
-        Graph::STATUS_DRAFT => ['color' => 'rgb(148, 163, 184)', 'label' => 'Draft'],
-        Graph::STATUS_CANCELLED => ['color' => 'rgb(100, 116, 139)', 'label' => 'Cancelled'],
+        InvoiceStatus::Paid->value => ['color' => 'rgb(16, 185, 129)', 'label' => 'Paid'],
+        InvoiceStatus::Pending->value => ['color' => 'rgb(59, 130, 246)', 'label' => 'Pending'],
+        InvoiceStatus::Overdue->value => ['color' => 'rgb(239, 68, 68)', 'label' => 'Overdue'],
+        InvoiceStatus::Draft->value => ['color' => 'rgb(148, 163, 184)', 'label' => 'Draft'],
+        InvoiceStatus::Cancelled->value => ['color' => 'rgb(100, 116, 139)', 'label' => 'Cancelled'],
     ];
 
     public function __construct(
@@ -57,10 +57,10 @@ final readonly class InvoiceDistributionWidget implements WidgetInterface
 
         // Filter to only include statuses we want to display
         $relevantStatuses = [
-            Graph::STATUS_PAID,
-            Graph::STATUS_PENDING,
-            Graph::STATUS_OVERDUE,
-            Graph::STATUS_DRAFT,
+            InvoiceStatus::Paid,
+            InvoiceStatus::Pending,
+            InvoiceStatus::Overdue,
+            InvoiceStatus::Draft,
         ];
 
         $labels = [];
@@ -68,9 +68,9 @@ final readonly class InvoiceDistributionWidget implements WidgetInterface
         $colors = [];
 
         foreach ($relevantStatuses as $status) {
-            $count = $statusCounts[$status] ?? 0;
-            if ($count > 0 || $status === Graph::STATUS_PENDING) {
-                $config = self::STATUS_CONFIG[$status];
+            $count = $statusCounts[$status->value] ?? 0;
+            if ($count > 0 || $status === InvoiceStatus::Pending) {
+                $config = self::STATUS_CONFIG[$status->value];
                 $labels[] = $config['label'];
                 $data[] = $count;
                 $colors[] = $config['color'];

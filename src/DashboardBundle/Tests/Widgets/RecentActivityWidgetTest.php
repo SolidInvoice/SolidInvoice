@@ -18,12 +18,14 @@ use DateTime;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\DashboardBundle\Widgets\RecentActivityWidget;
-use SolidInvoice\InvoiceBundle\Model\Graph as InvoiceGraph;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
+use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use SolidInvoice\InvoiceBundle\Test\Factory\RecurringInvoiceFactory;
-use SolidInvoice\PaymentBundle\Model\Status;
+use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\PaymentBundle\Test\Factory\PaymentFactory;
 use SolidInvoice\PaymentBundle\Test\Factory\PaymentMethodFactory;
+use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use SolidInvoice\QuoteBundle\Test\Factory\QuoteFactory;
 
 final class RecentActivityWidgetTest extends WidgetTestCase
@@ -66,7 +68,7 @@ final class RecentActivityWidgetTest extends WidgetTestCase
 
         $invoice = InvoiceFactory::createOne([
             'client' => $client,
-            'status' => InvoiceGraph::STATUS_PAID,
+            'status' => InvoiceStatus::Paid,
             'total' => BigInteger::of(50000),
             'balance' => BigInteger::zero(),
             'baseTotal' => BigInteger::of(50000),
@@ -85,7 +87,7 @@ final class RecentActivityWidgetTest extends WidgetTestCase
             'method' => $paymentMethod,
             'totalAmount' => 50000,
             'currencyCode' => 'USD',
-            'status' => Status::STATUS_CAPTURED,
+            'status' => PaymentStatus::Captured,
             'created' => new DateTime('now'),
         ]);
 
@@ -115,7 +117,7 @@ final class RecentActivityWidgetTest extends WidgetTestCase
 
         InvoiceFactory::createOne([
             'client' => $client,
-            'status' => InvoiceGraph::STATUS_PENDING,
+            'status' => InvoiceStatus::Pending,
             'total' => BigInteger::of(25000),
             'balance' => BigInteger::of(25000),
             'baseTotal' => BigInteger::of(25000),
@@ -151,7 +153,7 @@ final class RecentActivityWidgetTest extends WidgetTestCase
         QuoteFactory::createOne([
             'client' => $client,
             'company' => $this->company,
-            'status' => 'accepted',
+            'status' => QuoteStatus::Accepted,
             'total' => BigInteger::of(15000),
             'baseTotal' => BigInteger::of(15000),
             'tax' => BigInteger::zero(),
@@ -186,7 +188,7 @@ final class RecentActivityWidgetTest extends WidgetTestCase
         QuoteFactory::createOne([
             'client' => $client,
             'company' => $this->company,
-            'status' => 'declined',
+            'status' => QuoteStatus::Declined,
             'total' => BigInteger::of(12000),
             'baseTotal' => BigInteger::of(12000),
             'tax' => BigInteger::zero(),
@@ -218,7 +220,7 @@ final class RecentActivityWidgetTest extends WidgetTestCase
 
         $recurringInvoice = RecurringInvoiceFactory::createOne([
             'client' => $client,
-            'status' => 'active',
+            'status' => RecurringInvoiceStatus::Active,
             'total' => BigInteger::of(30000),
             'baseTotal' => BigInteger::of(30000),
             'tax' => BigInteger::zero(),
@@ -227,7 +229,7 @@ final class RecentActivityWidgetTest extends WidgetTestCase
 
         InvoiceFactory::createOne([
             'client' => $client,
-            'status' => InvoiceGraph::STATUS_PENDING,
+            'status' => InvoiceStatus::Pending,
             'total' => BigInteger::of(30000),
             'balance' => BigInteger::of(30000),
             'baseTotal' => BigInteger::of(30000),
@@ -262,7 +264,7 @@ final class RecentActivityWidgetTest extends WidgetTestCase
         // Create activities at different times
         InvoiceFactory::createOne([
             'client' => $client,
-            'status' => InvoiceGraph::STATUS_PENDING,
+            'status' => InvoiceStatus::Pending,
             'total' => BigInteger::of(10000),
             'balance' => BigInteger::of(10000),
             'baseTotal' => BigInteger::of(10000),
@@ -274,7 +276,7 @@ final class RecentActivityWidgetTest extends WidgetTestCase
 
         InvoiceFactory::createOne([
             'client' => $client,
-            'status' => InvoiceGraph::STATUS_PENDING,
+            'status' => InvoiceStatus::Pending,
             'total' => BigInteger::of(20000),
             'balance' => BigInteger::of(20000),
             'baseTotal' => BigInteger::of(20000),
@@ -302,7 +304,7 @@ final class RecentActivityWidgetTest extends WidgetTestCase
         // Create more than 10 activities
         InvoiceFactory::createMany(15, [
             'client' => $client,
-            'status' => InvoiceGraph::STATUS_PENDING,
+            'status' => InvoiceStatus::Pending,
             'total' => BigInteger::of(10000),
             'balance' => BigInteger::of(10000),
             'baseTotal' => BigInteger::of(10000),
@@ -344,7 +346,7 @@ final class RecentActivityWidgetTest extends WidgetTestCase
         // Payment
         $paidInvoice = InvoiceFactory::createOne([
             'client' => $client,
-            'status' => InvoiceGraph::STATUS_PAID,
+            'status' => InvoiceStatus::Paid,
             'total' => BigInteger::of(50000),
             'balance' => BigInteger::zero(),
             'baseTotal' => BigInteger::of(50000),
@@ -363,14 +365,14 @@ final class RecentActivityWidgetTest extends WidgetTestCase
             'method' => $paymentMethod,
             'totalAmount' => 50000,
             'currencyCode' => 'USD',
-            'status' => Status::STATUS_CAPTURED,
+            'status' => PaymentStatus::Captured,
             'created' => new DateTime('-1 hour'),
         ]);
 
         // Sent invoice
         InvoiceFactory::createOne([
             'client' => $client,
-            'status' => InvoiceGraph::STATUS_PENDING,
+            'status' => InvoiceStatus::Pending,
             'total' => BigInteger::of(25000),
             'balance' => BigInteger::of(25000),
             'baseTotal' => BigInteger::of(25000),
@@ -384,7 +386,7 @@ final class RecentActivityWidgetTest extends WidgetTestCase
         QuoteFactory::createOne([
             'client' => $client,
             'company' => $this->company,
-            'status' => 'accepted',
+            'status' => QuoteStatus::Accepted,
             'total' => BigInteger::of(15000),
             'baseTotal' => BigInteger::of(15000),
             'tax' => BigInteger::zero(),

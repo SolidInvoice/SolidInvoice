@@ -12,6 +12,7 @@
 namespace SolidInvoice\PaymentBundle\Test\Factory;
 
 use SolidInvoice\PaymentBundle\Entity\Payment;
+use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use Zenstruck\Foundry\FactoryCollection;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
@@ -69,7 +70,7 @@ final class PaymentFactory extends PersistentProxyObjectFactory
             'totalAmount' => self::faker()->randomNumber(),
             'currencyCode' => self::faker()->currencyCode(),
             'details' => [],
-            'status' => self::faker()->word(),
+            'status' => self::faker()->randomElement(PaymentStatus::cases()),
             'message' => self::faker()->text(),
             'completed' => self::faker()->dateTime(),
             'created' => self::faker()->dateTime(),

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\QuoteBundle\Action;
 
 use Doctrine\ORM\EntityManagerInterface;
-use SolidInvoice\QuoteBundle\Model\Graph;
+use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,11 +36,11 @@ final readonly class Index
         $isArchived = $request->query->get('archived', '0') === '1';
 
         // Get quote counts by status
-        $pendingCount = $this->repository->getTotalQuotes(Graph::STATUS_PENDING);
-        $acceptedCount = $this->repository->getTotalQuotes(Graph::STATUS_ACCEPTED);
-        $cancelledCount = $this->repository->getTotalQuotes(Graph::STATUS_CANCELLED);
-        $draftCount = $this->repository->getTotalQuotes(Graph::STATUS_DRAFT);
-        $declinedCount = $this->repository->getTotalQuotes(Graph::STATUS_DECLINED);
+        $pendingCount = $this->repository->getTotalQuotes(QuoteStatus::Pending);
+        $acceptedCount = $this->repository->getTotalQuotes(QuoteStatus::Accepted);
+        $cancelledCount = $this->repository->getTotalQuotes(QuoteStatus::Cancelled);
+        $draftCount = $this->repository->getTotalQuotes(QuoteStatus::Draft);
+        $declinedCount = $this->repository->getTotalQuotes(QuoteStatus::Declined);
 
         // Calculate total active quotes
         $totalActiveQuotes = $pendingCount + $acceptedCount + $cancelledCount + $draftCount + $declinedCount;
@@ -63,11 +63,11 @@ final readonly class Index
             'declinedCount' => $declinedCount,
             'draftCount' => $draftCount,
             'status_list_count' => [
-                Graph::STATUS_PENDING => $pendingCount,
-                Graph::STATUS_ACCEPTED => $acceptedCount,
-                Graph::STATUS_CANCELLED => $cancelledCount,
-                Graph::STATUS_DRAFT => $draftCount,
-                Graph::STATUS_DECLINED => $declinedCount,
+                QuoteStatus::Pending->value => $pendingCount,
+                QuoteStatus::Accepted->value => $acceptedCount,
+                QuoteStatus::Cancelled->value => $cancelledCount,
+                QuoteStatus::Draft->value => $draftCount,
+                QuoteStatus::Declined->value => $declinedCount,
             ],
         ];
     }

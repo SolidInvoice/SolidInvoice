@@ -21,7 +21,7 @@ use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Capture;
 use Payum\Offline\Constants;
 use SolidInvoice\PaymentBundle\Entity\Payment;
-use SolidInvoice\PaymentBundle\Model\Status;
+use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 
 class CaptureAction implements ActionInterface, GatewayAwareInterface
 {
@@ -35,7 +35,7 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface
         $payment = $request->getModel();
         $details = ArrayObject::ensureArrayObject($payment->getDetails());
 
-        $details[Constants::FIELD_STATUS] = Status::STATUS_NEW;
+        $details[Constants::FIELD_STATUS] = PaymentStatus::New->value;
         $payment->setDetails($details);
 
         $request->setModel($details);

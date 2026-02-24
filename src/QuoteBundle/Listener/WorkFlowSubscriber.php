@@ -19,6 +19,7 @@ use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\InvoiceBundle\Model\Graph as InvoiceGraph;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use SolidInvoice\QuoteBundle\Exception\InvalidTransitionException;
 use SolidInvoice\QuoteBundle\Mailer\QuoteMailer;
 use SolidInvoice\QuoteBundle\Model\Graph as QuoteGraph;
@@ -83,7 +84,7 @@ final class WorkFlowSubscriber implements EventSubscriberInterface
             $this->quoteMailer->send($quote);
         }
 
-        if (QuoteGraph::STATUS_NEW !== $quote->getStatus()) {
+        if (QuoteStatus::New !== $quote->getStatus()) {
             $this->notification->sendNotification(new QuoteStatusNotification(['quote' => $quote]));
         }
     }

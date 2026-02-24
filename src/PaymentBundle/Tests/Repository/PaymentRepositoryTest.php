@@ -24,7 +24,7 @@ use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use SolidInvoice\PaymentBundle\Entity\Payment;
-use SolidInvoice\PaymentBundle\Model\Status;
+use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\PaymentBundle\Test\Factory\PaymentFactory;
 use SolidInvoice\PaymentBundle\Test\Factory\PaymentMethodFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -46,7 +46,7 @@ final class PaymentRepositoryTest extends KernelTestCase
             'invoice' => $invoice,
             'client' => $client,
             'totalAmount' => 500123,
-            'status' => Status::STATUS_CAPTURED
+            'status' => PaymentStatus::Captured
         ]);
 
         PaymentFactory::assert()
@@ -69,7 +69,7 @@ final class PaymentRepositoryTest extends KernelTestCase
             'invoice' => $invoice,
             'client' => $client,
             'totalAmount' => 500123,
-            'status' => Status::STATUS_AUTHORIZED
+            'status' => PaymentStatus::Authorized
         ]);
 
         PaymentFactory::assert()
@@ -92,7 +92,7 @@ final class PaymentRepositoryTest extends KernelTestCase
             'invoice' => $invoice[0],
             'client' => $client,
             'totalAmount' => 500123,
-            'status' => Status::STATUS_CAPTURED
+            'status' => PaymentStatus::Captured
         ]);
 
         PaymentFactory::assert()
@@ -116,7 +116,7 @@ final class PaymentRepositoryTest extends KernelTestCase
             'client' => $client,
             'currencyCode' => 'USD',
             'totalAmount' => 500123,
-            'status' => Status::STATUS_CAPTURED
+            'status' => PaymentStatus::Captured
         ]);
 
         PaymentFactory::assert()
@@ -140,7 +140,7 @@ final class PaymentRepositoryTest extends KernelTestCase
             'client' => ClientFactory::createOne(['currencyCode' => 'USD']),
             'currencyCode' => 'USD',
             'totalAmount' => 500123,
-            'status' => Status::STATUS_CAPTURED
+            'status' => PaymentStatus::Captured
         ]);
 
         PaymentFactory::assert()
@@ -238,7 +238,7 @@ final class PaymentRepositoryTest extends KernelTestCase
             'client' => $client->_real(),
             'currencyCode' => 'USD',
             'totalAmount' => 500123,
-            'status' => Status::STATUS_CAPTURED,
+            'status' => PaymentStatus::Captured,
             'message' => 'test',
             'created' => $created,
             'completed' => $completed,
@@ -253,7 +253,7 @@ final class PaymentRepositoryTest extends KernelTestCase
                     'currencyCode' => 'USD',
                     'created' => $created,
                     'completed' => $completed,
-                    'status' => Status::STATUS_CAPTURED,
+                    'status' => PaymentStatus::Captured,
                     'invoice' => 'INV-FOO',
                     'method' => 'test-payment',
                     'message' => 'test',
@@ -279,7 +279,7 @@ final class PaymentRepositoryTest extends KernelTestCase
             'client' => $client,
             'currencyCode' => 'USD',
             'totalAmount' => 500123,
-            'status' => Status::STATUS_CAPTURED
+            'status' => PaymentStatus::Captured
         ]);
 
         PaymentFactory::createMany(2, [
@@ -287,7 +287,7 @@ final class PaymentRepositoryTest extends KernelTestCase
             'client' => ClientFactory::createOne(['currencyCode' => 'EUR']),
             'currencyCode' => 'EUR',
             'totalAmount' => 500123,
-            'status' => Status::STATUS_CAPTURED
+            'status' => PaymentStatus::Captured
         ]);
 
         PaymentFactory::assert()
@@ -317,7 +317,7 @@ final class PaymentRepositoryTest extends KernelTestCase
             'client' => $client,
             'currencyCode' => 'USD',
             'totalAmount' => 500123,
-            'status' => Status::STATUS_CAPTURED
+            'status' => PaymentStatus::Captured
         ]);
 
         $client = ClientFactory::createOne(['currencyCode' => 'EUR']);
@@ -327,7 +327,7 @@ final class PaymentRepositoryTest extends KernelTestCase
             'client' => $client,
             'currencyCode' => 'EUR',
             'totalAmount' => 500123,
-            'status' => Status::STATUS_CAPTURED
+            'status' => PaymentStatus::Captured
         ]);
 
         PaymentFactory::assert()
@@ -361,7 +361,7 @@ final class PaymentRepositoryTest extends KernelTestCase
             'client' => $client,
             'currencyCode' => 'USD',
             'totalAmount' => 500123,
-            'status' => Status::STATUS_CAPTURED,
+            'status' => PaymentStatus::Captured,
             'message' => 'test',
             'created' => $created,
             'completed' => $completed,
@@ -376,7 +376,7 @@ final class PaymentRepositoryTest extends KernelTestCase
                     'currencyCode' => 'USD',
                     'created' => $created,
                     'completed' => $completed,
-                    'status' => Status::STATUS_CAPTURED,
+                    'status' => PaymentStatus::Captured,
                     'invoice' => 'INV-FOO',
                     'method' => 'test-payment',
                     'message' => 'test',
@@ -437,19 +437,19 @@ final class PaymentRepositoryTest extends KernelTestCase
     {
         /** @var Payment $payment */
         $payment = PaymentFactory::createOne([
-            'status' => Status::STATUS_PENDING,
+            'status' => PaymentStatus::Pending,
         ])->_real();
 
         $this
             ->em
             ->getRepository(Payment::class)
-            ->updatePaymentStatus(new ArrayCollection([$payment]), Status::STATUS_CAPTURED);
+            ->updatePaymentStatus(new ArrayCollection([$payment]), PaymentStatus::Captured);
 
         $this->em->clear();
 
         $payment = $this->em->getRepository(Payment::class)->find($payment->getId());
 
-        self::assertSame(Status::STATUS_CAPTURED, $payment->getStatus());
+        self::assertSame(PaymentStatus::Captured, $payment->getStatus());
     }
 
     /**
@@ -470,7 +470,7 @@ final class PaymentRepositoryTest extends KernelTestCase
             'client' => $client,
             'currencyCode' => 'USD',
             'totalAmount' => 500123,
-            'status' => Status::STATUS_CAPTURED,
+            'status' => PaymentStatus::Captured,
             'message' => 'test',
             'created' => $created,
             'completed' => $completed,
@@ -485,7 +485,7 @@ final class PaymentRepositoryTest extends KernelTestCase
                     'currencyCode' => 'USD',
                     'created' => $created,
                     'completed' => $completed,
-                    'status' => Status::STATUS_CAPTURED,
+                    'status' => PaymentStatus::Captured,
                     'invoice' => 'INV-FOO',
                     'method' => 'test-payment',
                     'client_id' => $client->getId(),

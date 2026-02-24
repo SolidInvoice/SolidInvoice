@@ -17,6 +17,7 @@ use JsonException;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\QuoteBundle\Email\QuoteEmail;
 use SolidInvoice\QuoteBundle\Entity\Quote;
+use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use SolidInvoice\QuoteBundle\Exception\InvalidTransitionException;
 use SolidInvoice\QuoteBundle\Model\Graph;
 use SolidInvoice\QuoteBundle\Notification\QuoteStatusNotification;
@@ -63,7 +64,7 @@ final class QuoteMailer
      */
     public function send(Quote $quote): Quote
     {
-        if (Graph::STATUS_DRAFT === $quote->getStatus()) {
+        if (QuoteStatus::Draft === $quote->getStatus()) {
             $this->applyTransition($quote);
         } else {
             $this->mailer->send(new QuoteEmail($quote));
