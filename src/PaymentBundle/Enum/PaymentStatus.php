@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Enum;
 
-enum PaymentStatus: string
+use SolidInvoice\CoreBundle\Enum\HasStatusLabel;
+
+enum PaymentStatus: string implements HasStatusLabel
 {
     case Unknown = 'unknown';
     case Failed = 'failed';
@@ -26,4 +28,38 @@ enum PaymentStatus: string
     case Authorized = 'authorized';
     case Refunded = 'refunded';
     case Credit = 'credit';
+
+    public function getLabel(): string
+    {
+        return match ($this) {
+            self::Unknown => 'Unknown',
+            self::Failed => 'Failed',
+            self::Suspended => 'Suspended',
+            self::Expired => 'Expired',
+            self::Pending => 'Pending',
+            self::Cancelled => 'Cancelled',
+            self::New => 'New',
+            self::Captured => 'Captured',
+            self::Authorized => 'Authorized',
+            self::Refunded => 'Refunded',
+            self::Credit => 'Credit',
+        };
+    }
+
+    public function getColor(): string
+    {
+        return match ($this) {
+            self::Unknown => 'primary',
+            self::Failed => 'red',
+            self::Suspended => 'dark',
+            self::Expired => 'purple',
+            self::Pending => 'yellow',
+            self::Cancelled => 'indigo',
+            self::New => 'blue',
+            self::Captured => 'green',
+            self::Authorized => 'cyan',
+            self::Refunded => 'pink',
+            self::Credit => 'pink',
+        };
+    }
 }

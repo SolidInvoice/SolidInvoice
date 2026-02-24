@@ -13,9 +13,29 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Enum;
 
-enum ClientStatus: string
+use SolidInvoice\CoreBundle\Enum\HasStatusLabel;
+
+enum ClientStatus: string implements HasStatusLabel
 {
     case Active = 'active';
     case Inactive = 'inactive';
     case Archived = 'archived';
+
+    public function getLabel(): string
+    {
+        return match ($this) {
+            self::Active => 'Active',
+            self::Inactive => 'Inactive',
+            self::Archived => 'Archived',
+        };
+    }
+
+    public function getColor(): string
+    {
+        return match ($this) {
+            self::Active => 'green',
+            self::Inactive => 'cyan',
+            self::Archived => 'purple',
+        };
+    }
 }

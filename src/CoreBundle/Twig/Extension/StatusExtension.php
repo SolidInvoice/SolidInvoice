@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Twig\Extension;
 
-use BackedEnum;
-use Exception;
 use SolidInvoice\ClientBundle\Enum\ClientStatus;
+use SolidInvoice\CoreBundle\Enum\HasStatusLabel;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
 use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
@@ -26,211 +25,106 @@ use Twig\TwigFunction;
 
 class StatusExtension extends AbstractExtension
 {
-    /**
-     * @var array<string, string>
-     */
-    private array $invoiceLabelMap = [
-        InvoiceStatus::New->value => 'grey',
-        InvoiceStatus::Pending->value => 'yellow',
-        InvoiceStatus::Draft->value => 'secondary',
-        InvoiceStatus::Paid->value => 'green',
-        InvoiceStatus::Active->value => 'green',
-        InvoiceStatus::Overdue->value => 'red',
-        InvoiceStatus::Cancelled->value => 'olive',
-        InvoiceStatus::Archived->value => 'purple',
-        RecurringInvoiceStatus::Paused->value => 'black',
-    ];
-
-    /**
-     * @var array<string, string>
-     */
-    private array $quoteLabelMap = [
-        QuoteStatus::Pending->value => 'yellow',
-        QuoteStatus::Draft->value => 'secondary',
-        QuoteStatus::Accepted->value => 'green',
-        QuoteStatus::Declined->value => 'red',
-        QuoteStatus::Cancelled->value => 'olive',
-        QuoteStatus::Archived->value => 'purple',
-    ];
-
-    /**
-     * @var array<string, string>
-     */
-    private array $paymentLabelMap = [
-        PaymentStatus::Unknown->value => 'primary',
-        PaymentStatus::Failed->value => 'red',
-        PaymentStatus::Suspended->value => 'black',
-        PaymentStatus::Expired->value => 'purple',
-        PaymentStatus::Captured->value => 'green',
-        PaymentStatus::Pending->value => 'yellow',
-        PaymentStatus::Cancelled->value => 'navy',
-        PaymentStatus::New->value => 'blue',
-        PaymentStatus::Authorized->value => 'aqua',
-        PaymentStatus::Refunded->value => 'maroon',
-        PaymentStatus::Credit->value => 'fuchsia',
-    ];
-
-    /**
-     * @var array<string, string>
-     */
-    private array $clientLabelMap = [
-        ClientStatus::Active->value => 'green',
-        ClientStatus::Inactive->value => 'aqua',
-        ClientStatus::Archived->value => 'purple',
-    ];
-
     public function getFunctions(): array
     {
         return [
             new TwigFunction(
                 'invoice_label',
-                fn (Environment $environment, string|BackedEnum|null $status = null, ?string $tooltip = null) => $this->renderInvoiceStatusLabel($environment, $status instanceof BackedEnum ? $status->value : $status, $tooltip),
+                fn (Environment $environment, InvoiceStatus|RecurringInvoiceStatus|null $status = null, ?string $tooltip = null) => $this->renderInvoiceStatusLabel($environment, $status, $tooltip),
                 ['is_safe' => ['html'], 'needs_environment' => true]
             ),
             new TwigFunction(
                 'quote_label',
-                fn (Environment $environment, string|BackedEnum|null $status = null, ?string $tooltip = null) => $this->renderQuoteStatusLabel($environment, $status instanceof BackedEnum ? $status->value : $status, $tooltip),
+                fn (Environment $environment, QuoteStatus|null $status = null, ?string $tooltip = null) => $this->renderStatusOrAll($environment, $status, QuoteStatus::class, $tooltip),
                 ['is_safe' => ['html'], 'needs_environment' => true]
             ),
             new TwigFunction(
                 'payment_label',
-                fn (Environment $environment, string|BackedEnum|null $status = null, ?string $tooltip = null) => $this->renderPaymentStatusLabel($environment, $status instanceof BackedEnum ? $status->value : $status, $tooltip),
+                fn (Environment $environment, PaymentStatus|null $status = null, ?string $tooltip = null) => $this->renderStatusOrAll($environment, $status, PaymentStatus::class, $tooltip),
                 ['is_safe' => ['html'], 'needs_environment' => true]
             ),
             new TwigFunction(
                 'client_label',
-                fn (Environment $environment, string|BackedEnum|null $status = null, ?string $tooltip = null) => $this->renderClientStatusLabel($environment, $status instanceof BackedEnum ? $status->value : $status, $tooltip),
+                fn (Environment $environment, ClientStatus|null $status = null, ?string $tooltip = null) => $this->renderStatusOrAll($environment, $status, ClientStatus::class, $tooltip),
                 ['is_safe' => ['html'], 'needs_environment' => true]
+            ),
+            new TwigFunction(
+                'enum',
+                static function (string $enumCase): mixed {
+                    $shortNames = [
+                        'InvoiceStatus' => InvoiceStatus::class,
+                        'RecurringInvoiceStatus' => RecurringInvoiceStatus::class,
+                        'QuoteStatus' => QuoteStatus::class,
+                        'ClientStatus' => ClientStatus::class,
+                        'PaymentStatus' => PaymentStatus::class,
+                    ];
+
+                    [$class, $case] = explode('::', $enumCase, 2);
+
+                    return constant(($shortNames[$class] ?? $class) . '::' . $case);
+                }
             ),
         ];
     }
 
     /**
-     * @return string|array<string, string>
+     * @template T of (HasStatusLabel&\BackedEnum)
+     * @param class-string<T> $enumClass
      *
-     * @throws Exception
+     * @return string|array<string, string>
      */
-    public function renderInvoiceStatusLabel(Environment $environment, ?string $status = null, ?string $tooltip = null): string|array
+    private function renderStatusOrAll(Environment $environment, ?HasStatusLabel $status, string $enumClass, ?string $tooltip = null): string|array
     {
-        if (null === $status) {
-            return $this->getAllStatusLabels($environment, $this->invoiceLabelMap);
+        if ($status === null) {
+            return $this->getAllStatusLabels($environment, $enumClass);
         }
 
-        if (! isset($this->invoiceLabelMap[$status])) {
-            throw new Exception(sprintf('The invoice status "%s" does not have an associative label', $status));
-        }
-
-        $statusLabel = [
-            'status' => $status,
-            'status_label' => $this->invoiceLabelMap[$status],
-        ];
-
-        return $this->renderStatusLabel($environment, $statusLabel, $tooltip);
+        return $this->renderStatusLabel($environment, $status, $tooltip);
     }
 
     /**
-     * @param array<string, string> $labelMap
+     * @return string|array<string, string>
+     */
+    public function renderInvoiceStatusLabel(Environment $environment, InvoiceStatus|RecurringInvoiceStatus|null $status = null, ?string $tooltip = null): string|array
+    {
+        if ($status === null) {
+            return array_merge(
+                $this->getAllStatusLabels($environment, InvoiceStatus::class),
+                $this->getAllStatusLabels($environment, RecurringInvoiceStatus::class)
+            );
+        }
+
+        return $this->renderStatusLabel($environment, $status, $tooltip);
+    }
+
+    /**
+     * @template T of (HasStatusLabel&\BackedEnum)
+     * @param class-string<T> $enumClass
      *
      * @return array<string, string>
      */
-    private function getAllStatusLabels(Environment $environment, array $labelMap): array
+    private function getAllStatusLabels(Environment $environment, string $enumClass): array
     {
         $response = [];
 
-        foreach ($labelMap as $status => $label) {
-            $response[$status] = $this->renderStatusLabel($environment, ['status' => $status, 'status_label' => $label]);
+        foreach ($enumClass::cases() as $case) {
+            $response[$case->value] = $this->renderStatusLabel($environment, $case);
         }
 
         return $response;
     }
 
-    /**
-     * Return the status converted into a label string.
-     */
-    private function renderStatusLabel(Environment $environment, mixed $object, ?string $tooltip = null): string
+    private function renderStatusLabel(Environment $environment, HasStatusLabel $status, ?string $tooltip = null): string
     {
-        if (is_array($object) && array_key_exists('status_label', $object) && array_key_exists('status', $object)) {
-            $object = [
-                'name' => $object['status'],
-                'label' => $object['status_label'],
-            ];
-        }
-
         return $environment->render(
             '@SolidInvoiceCore/Status/label.html.twig',
             [
-                'entity' => $object,
+                'entity' => [
+                    'name' => $status->getLabel(),
+                    'label' => $status->getColor(),
+                ],
                 'tooltip' => $tooltip,
             ]
         );
-    }
-
-    /**
-     * @return string|array<string, string>
-     *
-     * @throws Exception
-     */
-    public function renderQuoteStatusLabel(Environment $environment, ?string $status = null, ?string $tooltip = null): string|array
-    {
-        if (null === $status) {
-            return $this->getAllStatusLabels($environment, $this->quoteLabelMap);
-        }
-
-        if (! isset($this->quoteLabelMap[$status])) {
-            throw new Exception(sprintf('The quote status "%s" does not have an associative label', $status));
-        }
-
-        $statusLabel = [
-            'status' => $status,
-            'status_label' => $this->quoteLabelMap[$status],
-        ];
-
-        return $this->renderStatusLabel($environment, $statusLabel, $tooltip);
-    }
-
-    /**
-     * @return string|array<string, string>
-     *
-     * @throws Exception
-     */
-    public function renderPaymentStatusLabel(Environment $environment, ?string $status = null, ?string $tooltip = null): string|array
-    {
-        if (null === $status) {
-            return $this->getAllStatusLabels($environment, $this->paymentLabelMap);
-        }
-
-        if (! isset($this->paymentLabelMap[$status])) {
-            throw new Exception(sprintf('The payment status "%s" does not have an associative label', $status));
-        }
-
-        $statusLabel = [
-            'status' => $status,
-            'status_label' => $this->paymentLabelMap[$status],
-        ];
-
-        return $this->renderStatusLabel($environment, $statusLabel, $tooltip);
-    }
-
-    /**
-     * @return string|array<string, string>
-     *
-     * @throws Exception
-     */
-    public function renderClientStatusLabel(Environment $environment, ?string $status = null, ?string $tooltip = null): string|array
-    {
-        if (null === $status) {
-            return $this->getAllStatusLabels($environment, $this->clientLabelMap);
-        }
-
-        if (! isset($this->clientLabelMap[$status])) {
-            throw new Exception(sprintf('The client status "%s" does not have an associative label', $status));
-        }
-
-        $statusLabel = [
-            'status' => $status,
-            'status_label' => $this->clientLabelMap[$status],
-        ];
-
-        return trim($this->renderStatusLabel($environment, $statusLabel, $tooltip));
     }
 }
