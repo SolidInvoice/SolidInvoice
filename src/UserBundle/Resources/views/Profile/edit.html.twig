@@ -15,28 +15,28 @@
 {% block page_title %}{{ ux_icon('tabler:user-edit', {width: 24, height: 24, class: 'me-2'}) }}{{ "profile.edit.title"|trans }}{% endblock page_title %}
 
 {% block profile_content %}
-    <div class="profile-form-page">
+    <div class="form-page">
         {{ form_start(form) }}
 
         {{ form_errors(form) }}
 
-        <div class="profile-form-container">
+        <div class="form-page-container form-page-container--narrow">
             {# Page Header #}
-            <div class="profile-form-header">
-                <div class="profile-form-header-content">
-                    <div class="profile-form-icon">
+            <div class="form-page-header">
+                <div class="form-page-header-content">
+                    <div class="form-page-icon">
                         {{ ux_icon('tabler:user-edit', {width: 28, height: 28}) }}
                     </div>
                     <div>
-                        <h1 class="profile-form-title">{{ 'profile.edit.title'|trans }}</h1>
-                        <p class="profile-form-subtitle">{{ 'Update your personal information and contact details'|trans }}</p>
+                        <h1 class="form-page-title">{{ 'profile.edit.title'|trans }}</h1>
+                        <p class="form-page-subtitle">{{ 'Update your personal information and contact details'|trans }}</p>
                     </div>
                 </div>
             </div>
 
             {# Main Form Content #}
-            <div class="profile-form-sections">
-                <section class="profile-form-section" id="profile-details">
+            <div class="form-page-sections">
+                <section class="form-page-section" id="profile-details">
                     <div class="section-header">
                         <div class="section-icon">
                             {{ ux_icon('tabler:settings', {width: 20, height: 20}) }}
@@ -76,8 +76,8 @@
             {{ form_rest(form) }}
 
             {# Sticky Footer with Actions #}
-            <div class="profile-form-actions">
-                <div class="profile-form-actions-inner">
+            <div class="form-page-actions">
+                <div class="form-page-actions-inner">
                     <a href="{{ path('_profile') }}" class="btn btn-ghost">
                         {{ ux_icon('tabler:arrow-left', {width: 18, height: 18}) }}
                         {{ 'profile.edit.cancel'|trans }}

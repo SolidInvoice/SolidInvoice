@@ -9,7 +9,7 @@
 
 {% set currency = quote.client.currency %}
 
-<div class="external-quote-page">
+<div class="ext-doc-page">
     <div class="container-xl py-4">
         <div class="row justify-content-center">
             <div class="col-lg-10 col-xl-9">
@@ -33,7 +33,7 @@
                 {% endif %}
 
                 {# Action Bar - Top #}
-                <div class="quote-action-bar card mb-3 no-print">
+                <div class="ext-doc-action-bar card mb-3 no-print">
                     <div class="card-body py-3">
                         <div class="d-flex gap-2 justify-content-between align-items-center">
                             <div class="d-flex gap-2">
@@ -59,78 +59,78 @@
                         <div class="row">
                             <div class="col-6">
                                 {% if app_logo() is not empty %}
-                                    <div class="quote-logo mb-3">
+                                    <div class="ext-doc-logo mb-3">
                                         {{ app_logo(80) }}
                                     </div>
                                 {% endif %}
-                                <h2 class="quote-company-name mb-1">{{ company_name() }}</h2>
+                                <h2 class="ext-doc-company-name mb-1">{{ company_name() }}</h2>
                                 {% set vatNumber = setting('system/company/vat_number') %}
                                 {% if vatNumber is not empty %}
-                                    <div class="quote-vat-number">{{ 'tax.vat_number'|trans }}: {{ vatNumber }}</div>
+                                    <div class="ext-doc-vat-number">{{ 'tax.vat_number'|trans }}: {{ vatNumber }}</div>
                                 {% endif %}
                             </div>
                             <div class="col-6 text-end">
-                                <div class="quote-number-label text-uppercase small mb-1">{{ 'quote.title'|trans({'%id%': ''}) }}</div>
-                                <h1 class="quote-number mb-3">#{{ quote.quoteId }}</h1>
+                                <div class="ext-doc-number-label text-uppercase small mb-1">{{ 'quote.title'|trans({'%id%': ''}) }}</div>
+                                <h1 class="ext-doc-number mb-3">#{{ quote.quoteId }}</h1>
                                 {{ quote_label(quote.status) }}
                             </div>
                         </div>
 
                         {# Quote Metadata Card #}
-                        <div class="quote-metadata-card card bg-light mb-4">
+                        <div class="ext-doc-metadata-card card bg-light mb-4">
                             <div class="card-body py-4">
                                 <div class="row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <div class="quote-metadata-label text-uppercase small mb-1">{{ 'Quote Date'|trans }}</div>
-                                        <div class="quote-metadata-value fw-medium">{{ quote.created|date('M d, Y') }}</div>
+                                        <div class="ext-doc-metadata-label text-uppercase small mb-1">{{ 'Quote Date'|trans }}</div>
+                                        <div class="ext-doc-metadata-value fw-medium">{{ quote.created|date('M d, Y') }}</div>
                                     </div>
                                     <div class="col-sm-6">
-                                        <div class="quote-metadata-label text-uppercase small mb-1">{{ 'quote.total'|trans }}</div>
-                                        <div class="quote-metadata-total text-primary fw-bold">{{ quote.total|formatCurrency(currency) }}</div>
+                                        <div class="ext-doc-metadata-label text-uppercase small mb-1">{{ 'quote.total'|trans }}</div>
+                                        <div class="ext-doc-metadata-total text-primary fw-bold">{{ quote.total|formatCurrency(currency) }}</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         {# From / To Section #}
-                        <div class="row quote-parties-section">
+                        <div class="row ext-doc-parties-section">
                             <div class="col-sm-6 mb-3 mb-sm-0">
-                                <div class="quote-party-label text-uppercase small mb-2">{{ 'quote.from'|trans }}</div>
-                                <div class="quote-party-name fw-bold mb-2">{{ company_name() }}</div>
+                                <div class="ext-doc-party-label text-uppercase small mb-2">{{ 'quote.from'|trans }}</div>
+                                <div class="ext-doc-party-name fw-bold mb-2">{{ company_name() }}</div>
 
                                 {% set email = setting('system/company/contact_details/email') %}
                                 {% if email is not empty %}
-                                    <div class="quote-party-detail">{{ email }}</div>
+                                    <div class="ext-doc-party-detail">{{ email }}</div>
                                 {% endif %}
 
                                 {% set phoneNumber = setting('system/company/contact_details/phone_number') %}
                                 {% if phoneNumber is not empty %}
-                                    <div class="quote-party-detail">{{ phoneNumber }}</div>
+                                    <div class="ext-doc-party-detail">{{ phoneNumber }}</div>
                                 {% endif %}
 
                                 {% set address = setting('system/company/contact_details/address', null, true) %}
                                 {% if address is not null and address|filter(v => v) is not empty %}
-                                    <div class="quote-party-detail">{{ address(address) }}</div>
+                                    <div class="ext-doc-party-detail">{{ address(address) }}</div>
                                 {% endif %}
                             </div>
 
                             <div class="col-sm-6">
-                                <div class="quote-party-label text-uppercase small mb-2">{{ 'quote.to'|trans }}</div>
-                                <div class="quote-party-name fw-bold mb-2">{{ quote.client }}</div>
+                                <div class="ext-doc-party-label text-uppercase small mb-2">{{ 'quote.to'|trans }}</div>
+                                <div class="ext-doc-party-name fw-bold mb-2">{{ quote.client }}</div>
 
                                 {% if quote.client.vatNumber is not empty %}
-                                    <div class="quote-party-detail">{{ 'tax.vat_number'|trans }}: {{ quote.client.vatNumber }}</div>
+                                    <div class="ext-doc-party-detail">{{ 'tax.vat_number'|trans }}: {{ quote.client.vatNumber }}</div>
                                 {% endif %}
 
                                 {% for address in quote.client.addresses %}
-                                    <div class="quote-party-detail">{{ address }}</div>
+                                    <div class="ext-doc-party-detail">{{ address }}</div>
                                 {% endfor %}
 
                                 {% if quote.users|length > 0 %}
                                     <div class="mt-2">
                                         {% for user in quote.users %}
-                                            <div class="quote-party-detail">{{ user }}</div>
-                                            <div class="quote-party-detail small">{{ user.email }}</div>
+                                            <div class="ext-doc-party-detail">{{ user }}</div>
+                                            <div class="ext-doc-party-detail small">{{ user.email }}</div>
                                         {% endfor %}
                                     </div>
                                 {% endif %}
@@ -141,7 +141,7 @@
 
                         {# Line Items Table #}
                         <div class="table-responsive">
-                            <table class="table quote-items-table">
+                            <table class="table ext-doc-items-table">
                                 <thead>
                                     <tr>
                                         <th class="text-uppercase small">{{ 'quote.item.heading.description'|trans }}</th>
@@ -174,28 +174,28 @@
                         {# Totals Section #}
                         <div class="row justify-content-end">
                             <div class="col-lg-5 col-md-6">
-                                <div class="quote-totals-card card bg-light">
+                                <div class="ext-doc-totals-card card bg-light">
                                     <div class="card-body">
-                                        <div class="quote-totals-row">
-                                            <div class="quote-totals-label">{{ 'quote.subtotal'|trans }}</div>
-                                            <div class="quote-totals-value">{{ quote.baseTotal|formatCurrency(currency) }}</div>
+                                        <div class="ext-doc-totals-row">
+                                            <div class="ext-doc-totals-label">{{ 'quote.subtotal'|trans }}</div>
+                                            <div class="ext-doc-totals-value">{{ quote.baseTotal|formatCurrency(currency) }}</div>
                                         </div>
                                         {% if quote.tax.positive %}
-                                            <div class="quote-totals-row">
-                                                <div class="quote-totals-label">{{ 'quote.tax'|trans }}</div>
-                                                <div class="quote-totals-value">{{ quote.tax|formatCurrency(currency) }}</div>
+                                            <div class="ext-doc-totals-row">
+                                                <div class="ext-doc-totals-label">{{ 'quote.tax'|trans }}</div>
+                                                <div class="ext-doc-totals-value">{{ quote.tax|formatCurrency(currency) }}</div>
                                             </div>
                                         {% endif %}
                                         {% if quote.discount.type is not empty %}
-                                            <div class="quote-totals-row">
-                                                <div class="quote-totals-label">{{ 'quote.discount'|trans }}</div>
-                                                <div class="quote-totals-value text-success">-{{ discount(quote)|formatCurrency(currency) }}</div>
+                                            <div class="ext-doc-totals-row">
+                                                <div class="ext-doc-totals-label">{{ 'quote.discount'|trans }}</div>
+                                                <div class="ext-doc-totals-value text-success">-{{ discount(quote)|formatCurrency(currency) }}</div>
                                             </div>
                                         {% endif %}
-                                        <div class="quote-totals-final">
-                                            <div class="quote-totals-row">
-                                                <div class="quote-totals-label">{{ 'quote.total'|trans }}</div>
-                                                <div class="quote-totals-value text-primary">{{ quote.total|formatCurrency(currency) }}</div>
+                                        <div class="ext-doc-totals-final">
+                                            <div class="ext-doc-totals-row">
+                                                <div class="ext-doc-totals-label">{{ 'quote.total'|trans }}</div>
+                                                <div class="ext-doc-totals-value text-primary">{{ quote.total|formatCurrency(currency) }}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -216,7 +216,7 @@
 
                 {% if setting('system/general/hide_powered_by') is not same as('1') %}
                     {# Footer #}
-                    <div class="quote-footer mt-5 no-print">
+                    <div class="ext-doc-footer mt-5 no-print">
                         <div class="card">
                             <div class="card-body py-4">
                                 <div class="row align-items-center">

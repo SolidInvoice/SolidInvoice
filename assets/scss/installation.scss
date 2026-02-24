@@ -2,6 +2,11 @@ body {
     background: transparent url('../img/installation_bg.jpg');
 }
 
+// System information label column in requirements page
+.sysinfo-label {
+    width: 160px;
+}
+
 .success-checkmark {
     width: 80px;
     height: 80px;

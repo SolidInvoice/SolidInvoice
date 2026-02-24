@@ -4,34 +4,30 @@
         <aside class="col-md-3">
             <div class="card">
                 <div class="card-body">
-                    <div class="text-center mb-4">
+                    <div class="mb-3">
                         <div class="dropdown">
-                            <a href="#" class="btn btn-outline-success dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
-                                {{ icon('plus-circle') }} Add Payment Method
+                            <a href="#" class="btn btn-outline-success w-100 dropdown-toggle d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                {{ ux_icon('tabler:circle-plus', {width: 16, height: 16}) }}
+                                {{ 'payment.method.add'|trans }}
                             </a>
-                            <div class="dropdown-menu">
+                            <div class="dropdown-menu w-100">
                                 {% for method in availablePaymentMethods %}
-                                        <a class="dropdown-item" href="?method={{ method }}">{{ method|humanize|title }}</a>
+                                    <a class="dropdown-item" href="?method={{ method }}">{{ method|humanize|title }}</a>
                                 {% endfor %}
                             </div>
                         </div>
                     </div>
-                    <ul class="nav nav-pills nav-sidebar flex-column sidebar-menu" role="tablist">
-                        <li class="nav-header nav-item first">
-                            <span> <p>Available Payment Methods</p></span>
-                        </li>
+                    <p class="text-muted small mb-2">{{ 'Available Payment Methods'|trans }}</p>
+                    <ul class="nav flex-column" role="tablist">
                         {% for method in paymentMethods %}
                             <li class="nav-item">
-                                <a href="?method={{ method.gatewayName }}" aria-controls="{{ method.gatewayName }}" data-method="{{ method.gatewayName }}" class="nav-link{{ method.gatewayName is same as(this.method) ? ' active' }}">
+                                <a href="?method={{ method.gatewayName }}" aria-controls="{{ method.gatewayName }}" data-method="{{ method.gatewayName }}" class="nav-link d-flex align-items-center gap-2{{ method.gatewayName is same as(this.method) ? ' active' }}">
                                     {% if method.isEnabled == 'enabled' %}
-                                        {{ icon('check-circle', ['text-success']) }}
+                                        {{ ux_icon('tabler:circle-check', {width: 16, height: 16, class: 'text-success'}) }}
                                     {% else %}
-                                        {{ icon('times-circle') }}
+                                        {{ ux_icon('tabler:circle-x', {width: 16, height: 16, class: 'text-muted'}) }}
                                     {% endif %}
-
-                                    <span class="icon">
-                                        {{ method.name }}
-                                    </span>
+                                    {{ method.name }}
                                 </a>
                             </li>
                         {% endfor %}

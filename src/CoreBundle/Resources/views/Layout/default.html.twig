@@ -59,12 +59,12 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                         <a href="{{ path('_profile') }}" class="dropdown-item">
-                            {{ icon('user') }}&nbsp;
+                            {{ ux_icon('tabler:user', {width: 16, height: 16}) }}&nbsp;
                             {{ 'Profile'|trans }}
                         </a>
                         <div class="dropdown-divider"></div>
                         <a href="{{ path('_api_keys_index') }}" class="dropdown-item">
-                            {{ icon('lock') }}&nbsp;{{ 'API Keys'|trans }}
+                            {{ ux_icon('tabler:lock', {width: 16, height: 16}) }}&nbsp;{{ 'API Keys'|trans }}
                         </a>
                         <twig:Ui:Security:LogoutLink />
                     </div>

@@ -139,12 +139,12 @@
                 <div class="billing-items-body">
                     {# Empty State #}
                     {% if form.lines|length == 0 %}
-                        <div class="billing-items-empty">
-                            <div class="billing-items-empty-icon">
+                        <div class="empty">
+                            <div class="empty-icon">
                                 {{ ux_icon('tabler:file-plus', {width: 32, height: 32}) }}
                             </div>
-                            <h3 class="billing-items-empty-title">{{ 'quote.items.empty.title'|trans }}</h3>
-                            <p class="billing-items-empty-text">{{ 'quote.items.empty.description'|trans }}</p>
+                            <p class="empty-title">{{ 'quote.items.empty.title'|trans }}</p>
+                            <p class="empty-subtitle text-secondary">{{ 'quote.items.empty.description'|trans }}</p>
                         </div>
                     {% else %}
                         {# Responsive Line Items - Table on desktop, stacked on mobile via CSS #}
@@ -257,7 +257,7 @@
                 </span>
                 <span class="terms-summary-text">
                     <span class="terms-summary-title">{{ 'quote.terms_notes.title'|trans }}</span>
-                    <span class="terms-summary-badge">{{ 'optional'|trans }}</span>
+                    <span class="badge bg-secondary-lt">{{ 'optional'|trans }}</span>
                 </span>
             </summary>
             <div class="terms-content">

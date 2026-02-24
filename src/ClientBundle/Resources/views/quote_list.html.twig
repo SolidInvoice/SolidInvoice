@@ -11,16 +11,18 @@
     {% if client.quotes|length > 0 %}
         <twig:DataGrid name="quote_grid" context="{{ {'client_id': client.id} }}" />
     {% else %}
-        <div class="client-empty-state">
-            <div class="client-empty-icon">
-                {{ ux_icon('tabler:file-text', {width: 32, height: 32}) }}
+        <div class="empty">
+            <div class="empty-icon">
+                {{ ux_icon('tabler:file-text', {width: 48, height: 48}) }}
             </div>
-            <p class="client-empty-title">{{ 'client.quotes.empty.title'|trans }}</p>
-            <p class="client-empty-description">{{ 'client.quotes.empty.description'|trans }}</p>
-            <a href="{{ path('_quotes_create', {'client': client.id}) }}" class="btn btn-primary d-flex align-items-center gap-1 mx-auto" style="width: fit-content;">
-                {{ ux_icon('tabler:plus', {width: 16, height: 16}) }}
-                {{ 'client.view.actions.create_quote'|trans }}
-            </a>
+            <p class="empty-title">{{ 'client.quotes.empty.title'|trans }}</p>
+            <p class="empty-subtitle text-secondary">{{ 'client.quotes.empty.description'|trans }}</p>
+            <div class="empty-action">
+                <a href="{{ path('_quotes_create', {'client': client.id}) }}" class="btn btn-primary">
+                    {{ ux_icon('tabler:plus', {width: 16, height: 16}) }}
+                    {{ 'client.view.actions.create_quote'|trans }}
+                </a>
+            </div>
         </div>
     {% endif %}
 </div>

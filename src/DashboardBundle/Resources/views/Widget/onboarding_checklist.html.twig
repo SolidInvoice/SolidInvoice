@@ -83,7 +83,7 @@
                         <span class="visually-hidden">{{ progress.percentage }}% Complete</span>
                     </div>
                 </div>
-                <div class="text-secondary small fw-bold" style="min-width: 3rem; text-align: right;">
+                <div class="text-secondary small fw-bold text-end onboarding-progress-label">
                     {{ progress.percentage }}%
                 </div>
             </div>
@@ -98,11 +98,11 @@
 {% endif %}
 
 {# Offcanvas Panel #}
-<div class="offcanvas offcanvas-end" tabindex="-1" id="onboardingOffcanvas" aria-labelledby="onboardingOffcanvasLabel" style="width: 420px;">
+<div class="offcanvas offcanvas-end onboarding-offcanvas" tabindex="-1" id="onboardingOffcanvas" aria-labelledby="onboardingOffcanvasLabel">
     <div class="offcanvas-header">
         <div class="d-flex align-items-center">
-            <span class="avatar avatar-rounded me-2" style="background-color: var(--tblr-primary);">
-                {{ ux_icon('tabler:rocket', {width: 24, height: 24, class: 'text-primary'}) }}
+            <span class="avatar avatar-rounded me-2 bg-primary">
+                {{ ux_icon('tabler:rocket', {width: 24, height: 24, class: 'text-white'}) }}
             </span>
             <div>
                 <h5 class="offcanvas-title mb-0" id="onboardingOffcanvasLabel">{{ 'dashboard.checklist.title'|trans }}</h5>
@@ -191,7 +191,7 @@
                 <div>{{ 'dashboard.checklist.dismiss_confirm'|trans }}</div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">
                     {{ 'Cancel'|trans }}
                 </button>
                 <button type="button" class="btn btn-danger" onclick="document.getElementById('dismissChecklistForm').submit()">

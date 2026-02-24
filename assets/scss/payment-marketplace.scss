@@ -1,6 +1,6 @@
 /**
  * Payment Marketplace Styles
- * Only custom styles that can't be achieved with Bootstrap/Tabler utilities
+ * Only payment-specific styles. Shared marketplace styles are in components/_marketplace.scss.
  */
 
 @import '~bootstrap/scss/functions';
@@ -51,87 +51,6 @@
             font-size: 0.625rem;
             padding: 0.125rem 0.375rem;
             font-weight: 600;
-        }
-    }
-}
-
-// ============================================================================
-// Marketplace Panel - Left Side
-// ============================================================================
-
-.marketplace-panel {
-    position: sticky;
-    top: var(--swp-space-4);
-    max-height: calc(100vh - var(--swp-space-16));
-    overflow-y: auto;
-    padding: var(--swp-space-6);
-    background: var(--swp-surface);
-    border-radius: var(--swp-radius-lg);
-    border: 1px solid var(--swp-border-light);
-    box-shadow: var(--swp-shadow-sm);
-
-    // Custom scrollbar styling
-    &::-webkit-scrollbar {
-        width: 6px;
-    }
-
-    &::-webkit-scrollbar-track {
-        background: var(--swp-gray-100);
-        border-radius: var(--swp-radius-full);
-    }
-
-    &::-webkit-scrollbar-thumb {
-        background: var(--swp-gray-300);
-        border-radius: var(--swp-radius-full);
-        transition: var(--swp-transition-colors);
-
-        &:hover {
-            background: var(--swp-gray-400);
-        }
-    }
-}
-
-.marketplace-header {
-    h5 {
-        font-size: var(--swp-text-lg);
-        font-weight: 600;
-        color: var(--swp-text-primary);
-        letter-spacing: -0.01em;
-    }
-
-    p {
-        line-height: 1.5;
-    }
-
-    .input-group {
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-        border-radius: var(--swp-radius-md);
-        overflow: hidden;
-
-        .input-group-text {
-            border-right: 0;
-            color: var(--swp-text-muted);
-            background: var(--swp-surface);
-        }
-
-        .form-control {
-            border-left: 0;
-            padding-left: 0;
-            background: var(--swp-surface);
-
-            &:focus {
-                box-shadow: 0 0 0 3px rgba(var(--swp-primary-rgb), 0.1);
-                border-color: var(--swp-primary);
-
-                ~ .input-group-text {
-                    border-color: var(--swp-primary);
-                }
-            }
-
-            &::placeholder {
-                color: var(--swp-text-muted);
-                opacity: 0.6;
-            }
         }
     }
 }
@@ -431,52 +350,6 @@
 }
 
 // ============================================================================
-// Empty States
-// ============================================================================
-
-.empty-state {
-    padding: var(--swp-space-12) var(--swp-space-4);
-
-    svg {
-        opacity: 0.3;
-    }
-
-    p {
-        font-size: var(--swp-text-sm);
-        color: var(--swp-text-muted);
-    }
-}
-
-.empty-state-card {
-    .card {
-        border: 2px dashed var(--swp-border);
-        background: var(--swp-gray-50);
-        transition: var(--swp-transition-all);
-
-        &:hover {
-            border-color: var(--swp-primary);
-            background: var(--swp-primary-lighter);
-        }
-    }
-
-    svg {
-        opacity: 0.3;
-        color: var(--swp-text-muted);
-    }
-
-    h5 {
-        font-size: var(--swp-text-lg);
-        font-weight: 600;
-        color: var(--swp-text-primary);
-    }
-
-    p {
-        font-size: var(--swp-text-sm);
-        color: var(--swp-text-secondary);
-    }
-}
-
-// ============================================================================
 // Configuration Form Styles
 // ============================================================================
 
@@ -521,7 +394,7 @@
     bottom: 0;
     background: rgba(0, 0, 0, 0.5);
     z-index: 1040;
-    animation: fadeIn 0.2s ease;
+    animation: marketplace-fadeIn 0.2s ease;
     backdrop-filter: blur(2px);
 }
 
@@ -536,7 +409,7 @@
     align-items: center;
     justify-content: center;
     padding: var(--swp-space-4);
-    animation: fadeIn 0.2s ease;
+    animation: marketplace-fadeIn 0.2s ease;
     overflow-y: auto;
 }
 
@@ -550,7 +423,7 @@
     max-height: calc(100vh - var(--swp-space-8));
     display: flex;
     flex-direction: column;
-    animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: marketplace-slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .payment-modal-header {
@@ -602,27 +475,6 @@
     }
 }
 
-// Animations
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px) scale(0.98);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
 // Mobile adaptations
 @include media-breakpoint-down(md) {
     .payment-modal {
@@ -648,113 +500,9 @@
     }
 }
 
-// ============================================================================
-// Delete Confirmation Nested Modal
-// ============================================================================
-
-.delete-confirmation-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.6);
-    z-index: 1060;
-    animation: fadeIn 0.15s ease;
-    backdrop-filter: blur(4px);
-}
-
-.delete-confirmation-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1070;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--swp-space-4);
-    animation: fadeIn 0.15s ease;
-}
-
-.delete-confirmation-container {
-    background: var(--swp-surface);
-    border-radius: var(--swp-radius-lg);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    width: 100%;
-    max-width: 480px;
-    animation: scaleIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.delete-confirmation-header {
-    padding: var(--swp-space-6);
-    border-bottom: 1px solid var(--swp-border);
-
-    h4 {
-        font-size: 1.125rem;
-        font-weight: 600;
-        color: var(--swp-text-primary);
-    }
-
-    .delete-icon-wrapper {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 48px;
-        height: 48px;
-        border-radius: var(--swp-radius-md);
-        background: var(--swp-danger-light);
-        flex-shrink: 0;
-    }
-}
-
-.delete-confirmation-body {
-    padding: var(--swp-space-6);
-    color: var(--swp-text-secondary);
-    line-height: 1.6;
-}
-
-.delete-confirmation-footer {
-    padding: var(--swp-space-4) var(--swp-space-6);
-    border-top: 1px solid var(--swp-border);
-    display: flex;
-    justify-content: flex-end;
-    gap: var(--swp-space-3);
-    background: var(--swp-gray-50);
-    border-bottom-left-radius: var(--swp-radius-lg);
-    border-bottom-right-radius: var(--swp-radius-lg);
-}
-
-@keyframes scaleIn {
-    from {
-        opacity: 0;
-        transform: scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
 // Prevent body scroll when modal is open
 body:has(.payment-modal) {
     overflow: hidden;
-}
-
-// ============================================================================
-// Utility Classes
-// ============================================================================
-
-.min-w-0 {
-    min-width: 0;
-}
-
-.badge-sm {
-    font-size: 0.625rem;
-    padding: 0.125rem 0.5rem;
-    font-weight: 500;
-    border-radius: var(--swp-radius-sm);
 }
 
 // ============================================================================

@@ -11,12 +11,12 @@
     'data-controller': 'two-factor-download two-factor-modal',
     'class': 'two-factor-settings'
 }) }}>
-    <div class="profile-form-sections">
+    <div class="form-page-sections">
 
         {# ============================================ #}
         {# Section 1: Email Authentication             #}
         {# ============================================ #}
-        <section class="profile-form-section">
+        <section class="form-page-section">
             <div class="section-header">
                 <div class="section-icon">
                     {{ ux_icon('tabler:mail', {width: 20, height: 20}) }}
@@ -36,7 +36,7 @@
                                 {{ app.user.isEmailAuthEnabled ? 'Enabled'|trans : 'Disabled'|trans }}
                             </span>
                         </div>
-                        <p class="text-muted mb-0" style="font-size: var(--swp-text-sm);">
+                        <p class="text-muted mb-0 small">
                             {{ 'Codes will be sent to'|trans }}: <strong>{{ app.user.email }}</strong>
                         </p>
                     </div>
@@ -60,7 +60,7 @@
         {# ============================================ #}
         {# Section 2: TOTP Authenticator App           #}
         {# ============================================ #}
-        <section class="profile-form-section">
+        <section class="form-page-section">
             <div class="section-header">
                 <div class="section-icon">
                     {{ ux_icon('tabler:device-mobile', {width: 20, height: 20}) }}
@@ -80,7 +80,7 @@
                                 {{ app.user.isTotpAuthenticationEnabled ? 'Enabled'|trans : 'Disabled'|trans }}
                             </span>
                         </div>
-                        <p class="text-muted mb-0" style="font-size: var(--swp-text-sm);">
+                        <p class="text-muted mb-0 small">
                             {{ app.user.isTotpAuthenticationEnabled ?
                                 'Your authenticator app is configured and ready to use'|trans :
                                 'Set up an authenticator app for enhanced security'|trans
@@ -108,7 +108,7 @@
         {# Section 3: Recovery Options                 #}
         {# ============================================ #}
         {% if app.user.is2FaEnabled and app.user.backupCodes is not empty %}
-            <section class="profile-form-section">
+            <section class="form-page-section">
                 <div class="section-header">
                     <div class="section-icon">
                         {{ ux_icon('tabler:key', {width: 20, height: 20}) }}
@@ -123,11 +123,11 @@
                     <div class="two-factor-section-content">
                         <div class="two-factor-section-info">
                             <div class="d-flex align-items-center gap-2 mb-2">
-                                <span class="badge bg-success text-white">
+                                <span class="badge bg-success-lt">
                                     {{ app.user.backupCodes|length }} {{ 'codes available'|trans }}
                                 </span>
                             </div>
-                            <p class="text-muted mb-0" style="font-size: var(--swp-text-sm);">
+                            <p class="text-muted mb-0 small">
                                 {{ ux_icon('tabler:alert-triangle', {width: 16, height: 16, class: 'text-warning'}) }}
                                 {{ 'Store these safely - each can only be used once'|trans }}
                             </p>
@@ -151,7 +151,7 @@
         {# Section 4: Trusted Device                   #}
         {# ============================================ #}
         {% if isDeviceTrusted %}
-            <section class="profile-form-section">
+            <section class="form-page-section">
                 <div class="section-header">
                     <div class="section-icon section-icon-security">
                         {{ ux_icon('tabler:devices-check', {width: 20, height: 20}) }}
@@ -166,12 +166,12 @@
                     <div class="two-factor-section-content">
                         <div class="two-factor-section-info">
                             <div class="mb-2">
-                                <span class="badge bg-success text-white">
+                                <span class="badge bg-success-lt">
                                     {{ ux_icon('tabler:check', {width: 16, height: 16}) }}
                                     {{ 'Device Trusted'|trans }}
                                 </span>
                             </div>
-                            <p class="text-muted mb-0" style="font-size: var(--swp-text-sm);">
+                            <p class="text-muted mb-0 small">
                                 {{ 'You won\'t be asked for verification codes on this device'|trans }}
                             </p>
                         </div>

@@ -158,6 +158,16 @@
     background: linear-gradient(135deg, rgba(var(--tblr-primary-rgb), 0.05) 0%, rgba(var(--tblr-primary-rgb), 0.02) 100%);
 }
 
+/* Onboarding Offcanvas Panel */
+.onboarding-offcanvas {
+    width: 420px;
+}
+
+/* Progress percentage label */
+.onboarding-progress-label {
+    min-width: 3rem;
+}
+
 /* Accessibility */
 @media (prefers-reduced-motion: reduce) {
     .card[data-bs-toggle="offcanvas"],

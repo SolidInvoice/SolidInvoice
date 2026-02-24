@@ -27,7 +27,7 @@
                             </span>
                         </div>
                         <div class="col">
-                            <div class="font-weight-medium">
+                            <div class="fw-medium">
                                 {% if stats.total_income|length > 0 %}
                                     {% for currency, data in stats.total_income %}
                                         {{ data.amount|formatCurrency(data.currency) }}
@@ -56,7 +56,7 @@
                             </span>
                         </div>
                         <div class="col">
-                            <div class="font-weight-medium">
+                            <div class="fw-medium">
                                 {% if stats.this_month|length > 0 %}
                                     {% for currency, data in stats.this_month %}
                                         {{ data.amount|formatCurrency(data.currency) }}
@@ -85,7 +85,7 @@
                             </span>
                         </div>
                         <div class="col">
-                            <div class="font-weight-medium">
+                            <div class="fw-medium">
                                 {{ stats.pending_count }}
                             </div>
                             <div class="text-secondary">
@@ -108,7 +108,7 @@
                             </span>
                         </div>
                         <div class="col">
-                            <div class="font-weight-medium">
+                            <div class="fw-medium">
                                 {{ stats.failed_count }}
                             </div>
                             <div class="text-secondary">

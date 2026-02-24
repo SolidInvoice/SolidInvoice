@@ -15,11 +15,9 @@
 {% endblock title %}
 
 {% block content %}
-    <div class="card">
-        <div class="card-body">
-            <twig:DataGrid name="tax_grid" />
-        </div>
-    </div>
+    <twig:Ui:Card>
+        <twig:DataGrid name="tax_grid" />
+    </twig:Ui:Card>
 {% endblock %}
 
 {% block heading %}

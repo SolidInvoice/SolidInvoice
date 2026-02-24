@@ -7,10 +7,11 @@
  */
 
 // ============================================================================
-// Company Selection Page
+// Shared Styles (both select and create pages)
 // ============================================================================
 
-.company-select-page {
+.company-select-page,
+.company-create-page {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -76,12 +77,12 @@
         font-weight: 600;
     }
 
-    .bg-primary-lt {
-        background-color: rgba(var(--swp-primary-rgb), 0.1) !important;
-    }
-
-    .bg-success-lt {
-        background-color: rgba(var(--swp-success-rgb), 0.1) !important;
+    .avatar-xl {
+        width: 5rem;
+        height: 5rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .avatar-initials {
@@ -89,6 +90,43 @@
         font-size: 1.25rem;
         letter-spacing: -0.02em;
     }
+
+    .form-hint {
+        font-size: 0.875rem;
+        color: var(--swp-text-secondary);
+        display: flex;
+        align-items: center;
+    }
+
+    // Responsive adjustments
+    @media (max-width: 767.98px) {
+        .avatar-lg {
+            width: 3rem;
+            height: 3rem;
+
+            svg {
+                width: 24px;
+                height: 24px;
+            }
+        }
+
+        .avatar-2xl {
+            width: 3rem;
+            height: 3rem;
+            font-size: 1rem;
+        }
+
+        .h2 {
+            font-size: 1.5rem;
+        }
+    }
+}
+
+// ============================================================================
+// Company Selection Page
+// ============================================================================
+
+.company-select-page {
 
     // Main Card Container
     .card.shadow-sm {
@@ -183,29 +221,6 @@
         width: auto !important;
     }
 
-    // Responsive adjustments
-    @media (max-width: 767.98px) {
-        .avatar-lg {
-            width: 3rem;
-            height: 3rem;
-
-            svg {
-                width: 24px;
-                height: 24px;
-            }
-        }
-
-        .avatar-2xl {
-            width: 3rem;
-            height: 3rem;
-            font-size: 1rem;
-        }
-
-        .h2 {
-            font-size: 1.5rem;
-        }
-    }
-
     @media (min-width: 768px) {
         .w-md-auto {
             width: auto !important;
@@ -218,55 +233,6 @@
 // ============================================================================
 
 .company-create-page {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-
-    // Application Header
-    .company-page-header {
-        background: var(--swp-surface);
-        border-bottom: 1px solid var(--swp-border);
-        box-shadow: var(--swp-shadow-xs);
-    }
-
-    .company-page-logo {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        img {
-            height: 48px;
-            width: auto;
-        }
-    }
-
-    .company-page-brand {
-        h1 {
-            font-weight: 700;
-            color: var(--swp-text-primary);
-        }
-    }
-
-    // Page intro section (shared with select page)
-    .company-page-intro {
-        h2 {
-            font-weight: 600;
-            color: var(--swp-text-primary);
-            font-size: 1.75rem;
-        }
-
-        p {
-            font-size: 1.125rem;
-        }
-    }
-
-    .avatar-md {
-        width: 2.5rem;
-        height: 2.5rem;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-    }
 
     .form-smooth {
         .form-control:focus,
@@ -274,25 +240,6 @@
             border-color: var(--swp-primary);
             box-shadow: 0 0 0 0.25rem rgba(var(--swp-primary-rgb), 0.1);
         }
-    }
-
-    .form-hint {
-        font-size: 0.875rem;
-        color: var(--swp-text-secondary);
-        display: flex;
-        align-items: center;
-    }
-
-    .avatar-xl {
-        width: 5rem;
-        height: 5rem;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .bg-primary-lt {
-        background-color: rgba(var(--swp-primary-rgb), 0.1) !important;
     }
 
     .card {

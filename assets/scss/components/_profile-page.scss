@@ -1,9 +1,9 @@
 /**
  * SolidInvoice - Profile Page Styles
  *
- * Modern, elegant user profile section with clean visual hierarchy.
- * Uses design system tokens for consistent styling.
- * Includes: sidebar navigation, profile view, and form pages.
+ * Styles for the user profile view and sidebar navigation.
+ * Form pages (edit, change-password) use shared classes from _form-page.scss.
+ * Includes: sidebar navigation, profile view, security status.
  */
 
 // ============================================================================
@@ -154,41 +154,9 @@
     border-bottom: 1px solid var(--swp-border);
 }
 
-.section-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.1) 100%);
-    border-radius: var(--swp-radius-md);
-    color: var(--swp-primary);
-    flex-shrink: 0;
-}
-
-.section-icon-security {
-    background: linear-gradient(135deg, rgba(var(--swp-success-rgb), 0.15) 0%, rgba(var(--swp-success-rgb), 0.05) 100%);
-    color: var(--swp-success);
-}
-
 .profile-section-title {
     flex: 1;
     padding-top: var(--swp-space-1);
-}
-
-.section-title {
-    font-size: var(--swp-text-lg);
-    font-weight: var(--swp-font-semibold);
-    color: var(--swp-text-primary);
-    margin: 0 0 var(--swp-space-1);
-    line-height: 1.4;
-}
-
-.section-description {
-    font-size: var(--swp-text-sm);
-    color: var(--swp-text-muted);
-    margin: 0;
-    line-height: 1.5;
 }
 
 .profile-section-body {
@@ -318,158 +286,6 @@
 }
 
 // ============================================================================
-// FORM PAGES - PAGE CONTAINER
-// ============================================================================
-
-.profile-form-page {
-    min-height: 100%;
-}
-
-.profile-form-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding-bottom: var(--swp-space-24);
-}
-
-// ============================================================================
-// FORM PAGES - HEADER
-// ============================================================================
-
-.profile-form-header {
-    margin-bottom: var(--swp-space-8);
-    padding: var(--swp-space-6) 0;
-}
-
-.profile-form-header-content {
-    display: flex;
-    align-items: center;
-    gap: var(--swp-space-4);
-}
-
-.profile-form-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 56px;
-    height: 56px;
-    background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.15) 100%);
-    border-radius: var(--swp-radius-lg);
-    color: var(--swp-primary);
-    flex-shrink: 0;
-}
-
-.profile-form-icon-security {
-    background: linear-gradient(135deg, rgba(var(--swp-success-rgb), 0.2) 0%, rgba(var(--swp-success-rgb), 0.1) 100%);
-    color: var(--swp-success);
-}
-
-.profile-form-title {
-    font-size: 1.75rem;
-    font-weight: var(--swp-font-bold);
-    color: var(--swp-text-primary);
-    margin: 0;
-    letter-spacing: -0.025em;
-}
-
-.profile-form-subtitle {
-    font-size: var(--swp-text-base);
-    color: var(--swp-text-muted);
-    margin: var(--swp-space-1) 0 0 0;
-}
-
-// ============================================================================
-// FORM PAGES - SECTIONS
-// ============================================================================
-
-.profile-form-sections {
-    display: flex;
-    flex-direction: column;
-    gap: var(--swp-space-6);
-}
-
-.profile-form-section {
-    background: var(--swp-surface);
-    border: 1px solid var(--swp-border);
-    border-radius: var(--swp-radius-lg);
-    overflow: hidden;
-    transition: box-shadow var(--swp-transition-base),
-                border-color var(--swp-transition-base);
-
-    &:hover {
-        border-color: var(--swp-border-dark);
-    }
-
-    &:focus-within {
-        border-color: var(--swp-primary);
-        box-shadow: var(--swp-ring-primary);
-    }
-}
-
-// Section header (reuse from profile view)
-.profile-form-section .section-header {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--swp-space-3);
-    padding: var(--swp-space-5) var(--swp-space-6) var(--swp-space-4);
-    background: var(--swp-gray-50);
-    border-bottom: 1px solid var(--swp-border);
-}
-
-.profile-form-section .section-content {
-    padding: var(--swp-space-6);
-}
-
-.section-header-text {
-    flex: 1;
-    padding-top: var(--swp-space-1);
-}
-
-// ============================================================================
-// FORM PAGES - FORM GRID
-// ============================================================================
-
-.form-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--swp-space-4);
-}
-
-.form-field {
-    display: flex;
-    flex-direction: column;
-}
-
-.form-field-wide {
-    grid-column: 1 / -1;
-}
-
-// ============================================================================
-// FORM PAGES - STICKY FOOTER
-// ============================================================================
-
-.profile-form-actions {
-    position: sticky;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: var(--swp-surface);
-    border-top: 1px solid var(--swp-border);
-    padding: var(--swp-space-4) 0;
-    margin-top: var(--swp-space-8);
-    z-index: 10;
-    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
-}
-
-.profile-form-actions-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 0 var(--swp-space-4);
-}
-
-// ============================================================================
 // GOOGLE SIGN-IN BUTTON
 // ============================================================================
 
@@ -499,7 +315,7 @@
 }
 
 // ============================================================================
-// PASSWORD REQUIREMENTS (OPTIONAL)
+// PASSWORD REQUIREMENTS
 // ============================================================================
 
 .password-requirements {
@@ -556,61 +372,14 @@
 // RESPONSIVE DESIGN
 // ============================================================================
 
+// Tablet adjustments
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .profile-sidebar {
+        margin-bottom: var(--swp-space-6);
+    }
+}
+
 @media (max-width: 767.98px) {
-    // Form pages
-    .profile-form-page {
-        padding: var(--swp-space-4);
-    }
-
-    .profile-form-header {
-        padding: var(--swp-space-4) 0;
-    }
-
-    .profile-form-header-content {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: var(--swp-space-3);
-    }
-
-    .profile-form-icon {
-        width: 48px;
-        height: 48px;
-    }
-
-    .profile-form-title {
-        font-size: 1.5rem;
-    }
-
-    .profile-form-section .section-header {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: var(--swp-space-4) var(--swp-space-4) var(--swp-space-3);
-    }
-
-    .section-icon {
-        width: 36px;
-        height: 36px;
-    }
-
-    .profile-form-section .section-content {
-        padding: var(--swp-space-4);
-    }
-
-    .form-grid {
-        grid-template-columns: 1fr;
-        gap: var(--swp-space-3);
-    }
-
-    .profile-form-actions-inner {
-        flex-direction: column;
-        gap: var(--swp-space-3);
-
-        .btn {
-            width: 100%;
-            justify-content: center;
-        }
-    }
-
     // Profile section footer buttons
     .profile-section-footer {
         flex-direction: column;
@@ -622,29 +391,13 @@
     }
 }
 
-// Tablet adjustments
-@media (min-width: 768px) and (max-width: 991.98px) {
-    .profile-sidebar {
-        margin-bottom: var(--swp-space-6);
-    }
-}
-
 // ============================================================================
 // PRINT STYLES
 // ============================================================================
 
 @media print {
-    .profile-form-actions,
     .profile-section-footer,
     .profile-sidebar {
         display: none !important;
-    }
-
-    .profile-form-page {
-        padding: 0;
-    }
-
-    .profile-form-container {
-        max-width: none;
     }
 }

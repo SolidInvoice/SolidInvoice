@@ -20,15 +20,17 @@
         </twig:block>
 
         {% if not hasActivities %}
-            <div class="activity-empty">
-                <div class="activity-empty-icon">
+            <div class="empty">
+                <div class="empty-icon">
                     {{ ux_icon('tabler:activity', {width: 40, height: 40}) }}
                 </div>
-                <p class="activity-empty-text">{{ 'dashboard.activity.no_activity'|trans }}</p>
-                <a href="{{ path('_invoices_create') }}" class="btn btn-primary btn-sm">
-                    {{ ux_icon('tabler:plus', {width: 16, height: 16}) }}
-                    {{ 'dashboard.actions.create_invoice'|trans }}
-                </a>
+                <p class="empty-subtitle text-secondary">{{ 'dashboard.activity.no_activity'|trans }}</p>
+                <div class="empty-action">
+                    <a href="{{ path('_invoices_create') }}" class="btn btn-primary btn-sm">
+                        {{ ux_icon('tabler:plus', {width: 16, height: 16}) }}
+                        {{ 'dashboard.actions.create_invoice'|trans }}
+                    </a>
+                </div>
             </div>
         {% else %}
             <div class="activity-timeline">
@@ -56,7 +58,7 @@
                             {# Top row: What happened #}
                             <div class="activity-description">
                                 {% if activity.type == 'payment' %}
-                                    <span class="activity-label activity-label--success">{{ 'dashboard.activity.label.payment'|trans }}</span>
+                                    <span class="badge bg-success-lt">{{ 'dashboard.activity.label.payment'|trans }}</span>
                                     <span class="activity-text">
                                         {{ 'dashboard.activity.payment_for_invoice'|trans }}
                                         <a href="{{ path('_invoices_view', {id: activity.invoiceUlid}) }}" class="activity-doc-link">
@@ -64,7 +66,7 @@
                                         </a>
                                     </span>
                                 {% elseif activity.type == 'invoice_sent' %}
-                                    <span class="activity-label activity-label--primary">{{ 'dashboard.activity.label.invoice'|trans }}</span>
+                                    <span class="badge bg-primary-lt">{{ 'dashboard.activity.label.invoice'|trans }}</span>
                                     <span class="activity-text">
                                         <a href="{{ path('_invoices_view', {id: activity.id}) }}" class="activity-doc-link">
                                             #{{ activity.invoiceId }}
@@ -72,7 +74,7 @@
                                         {{ 'dashboard.activity.sent_to_client'|trans }}
                                     </span>
                                 {% elseif activity.type == 'quote_accepted' %}
-                                    <span class="activity-label activity-label--success">{{ 'dashboard.activity.label.quote'|trans }}</span>
+                                    <span class="badge bg-success-lt">{{ 'dashboard.activity.label.quote'|trans }}</span>
                                     <span class="activity-text">
                                         <a href="{{ path('_quotes_view', {id: activity.id}) }}" class="activity-doc-link">
                                             #{{ activity.quoteId }}
@@ -80,7 +82,7 @@
                                         {{ 'dashboard.activity.was_accepted'|trans }}
                                     </span>
                                 {% elseif activity.type == 'quote_declined' %}
-                                    <span class="activity-label activity-label--danger">{{ 'dashboard.activity.label.quote'|trans }}</span>
+                                    <span class="badge bg-danger-lt">{{ 'dashboard.activity.label.quote'|trans }}</span>
                                     <span class="activity-text">
                                         <a href="{{ path('_quotes_view', {id: activity.id}) }}" class="activity-doc-link">
                                             #{{ activity.quoteId }}
@@ -88,7 +90,7 @@
                                         {{ 'dashboard.activity.was_declined'|trans }}
                                     </span>
                                 {% elseif activity.type == 'recurring_generated' %}
-                                    <span class="activity-label activity-label--info">{{ 'dashboard.activity.label.recurring'|trans }}</span>
+                                    <span class="badge bg-info-lt">{{ 'dashboard.activity.label.recurring'|trans }}</span>
                                     <span class="activity-text">
                                         <a href="{{ path('_invoices_view', {id: activity.id}) }}" class="activity-doc-link">
                                             #{{ activity.invoiceId }}
@@ -96,7 +98,7 @@
                                         {{ 'dashboard.activity.generated_from_recurring'|trans }}
                                     </span>
                                 {% else %}
-                                    <span class="activity-label">{{ 'dashboard.activity.label.invoice'|trans }}</span>
+                                    <span class="badge bg-secondary-lt">{{ 'dashboard.activity.label.invoice'|trans }}</span>
                                     <span class="activity-text">
                                         <a href="{{ path('_invoices_view', {id: activity.id}) }}" class="activity-doc-link">
                                             #{{ activity.invoiceId }}

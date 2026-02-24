@@ -20,16 +20,18 @@
             </div>
         {% else %}
             <div class="col-12">
-                <div class="client-empty-state">
-                    <div class="client-empty-icon">
-                        {{ ux_icon('tabler:user-off', {width: 32, height: 32}) }}
+                <div class="empty">
+                    <div class="empty-icon">
+                        {{ ux_icon('tabler:user-off', {width: 48, height: 48}) }}
                     </div>
-                    <p class="client-empty-title">{{ 'client.contacts.empty.title'|trans }}</p>
-                    <p class="client-empty-description">{{ 'client.contacts.empty.description'|trans }}</p>
-                    <button type="button" class="btn btn-primary d-flex align-items-center gap-1 mx-auto" data-bs-toggle="modal" data-bs-target="#add-contact">
-                        {{ ux_icon('tabler:plus', {width: 16, height: 16}) }}
-                        {{ 'client.view.actions.add_contact'|trans }}
-                    </button>
+                    <p class="empty-title">{{ 'client.contacts.empty.title'|trans }}</p>
+                    <p class="empty-subtitle text-secondary">{{ 'client.contacts.empty.description'|trans }}</p>
+                    <div class="empty-action">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-contact">
+                            {{ ux_icon('tabler:plus', {width: 16, height: 16}) }}
+                            {{ 'client.view.actions.add_contact'|trans }}
+                        </button>
+                    </div>
                 </div>
             </div>
         {% endfor %}
