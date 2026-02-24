@@ -70,7 +70,7 @@
                             </a>
                         </li>
 
-                        {% if invoice.status.value in ['pending', 'overdue'] and invoice.users|length > 0 %}
+                        {% if invoice.status in [enum('InvoiceStatus::Pending'), enum('InvoiceStatus::Overdue')] and invoice.users|length > 0 %}
                             <li><hr class="dropdown-divider"></li>
                             <li>
                                 <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#send-reminder-modal">
@@ -123,11 +123,11 @@
 
             {# Hero Action - Changes based on invoice state #}
             {% if workflow_can(invoice, 'pay') %}
-                <a href="{{ path('_payments_create', {'uuid' : invoice.uuid}) }}" class="btn btn-primary btn-hero {{ invoice.status.value == 'overdue' ? 'btn-hero-urgent' : '' }}">
+                <a href="{{ path('_payments_create', {'uuid' : invoice.uuid}) }}" class="btn btn-primary btn-hero {{ invoice.status == enum('InvoiceStatus::Overdue') ? 'btn-hero-urgent' : '' }}">
                     {{ ux_icon('tabler:credit-card', {width: 18, height: 18}) }}
                     {{ "invoice.view.toolbar.pay_now"|trans }}
                 </a>
-                <a href="{{ path('_send_invoice', {'id' : invoice.id}) }}" class="btn btn-primary btn-hero {{ invoice.status.value == 'overdue' ? 'btn-hero-urgent' : '' }}">
+                <a href="{{ path('_send_invoice', {'id' : invoice.id}) }}" class="btn btn-primary btn-hero {{ invoice.status == enum('InvoiceStatus::Overdue') ? 'btn-hero-urgent' : '' }}">
                     {{ ux_icon('tabler:send', {width: 18, height: 18}) }}
                     {{ "invoice.view.toolbar.send"|trans }}
                 </a>
@@ -284,7 +284,7 @@
 
                         {# Show partial payments in totals #}
                         {% if invoice.payments|length > 0 and not invoice.balance.isZero %}
-                            {% for payment in invoice.payments|filter((v) => v.status.value == 'captured') %}
+                            {% for payment in invoice.payments|filter((v) => v.status == enum('PaymentStatus::Captured')) %}
                                 <div class="totals-row totals-row-payment">
                                     <span class="totals-label">
                                         {{ 'invoice.payment.label'|trans }}: {{ payment.method.name }}
@@ -394,7 +394,7 @@
                             <span class="summary-value">{{ invoice.invoiceDate|date('M d, Y') }}</span>
                         </div>
                         {% if invoice.due is not empty %}
-                            <div class="summary-item {{ invoice.status.value == 'overdue' ? 'summary-item-overdue' : '' }}">
+                            <div class="summary-item {{ invoice.status == enum('InvoiceStatus::Overdue') ? 'summary-item-overdue' : '' }}">
                                 <span class="summary-label">{{ 'Due Date'|trans }}</span>
                                 <span class="summary-value">{{ invoice.due|date('M d, Y') }}</span>
                             </div>
@@ -421,7 +421,7 @@
                     <div class="invoice-sidebar-card-body">
                         <div class="payments-list">
                             {% for payment in payments %}
-                                <div class="payment-card {{ payment.status.value == 'captured' ? 'payment-card-captured' : '' }}">
+                                <div class="payment-card {{ payment.status == enum('PaymentStatus::Captured') ? 'payment-card-captured' : '' }}">
                                     <div class="payment-card-header">
                                         <div class="payment-amount">{{ payment.totalAmount|formatCurrency(currency) }}</div>
                                         <div class="payment-status">{{ payment_label(payment.status) }}</div>
@@ -473,7 +473,7 @@
     {# ═══════════════════════════════════════════════════════════════════════
        SEND REMINDER CONFIRMATION MODAL
     ═══════════════════════════════════════════════════════════════════════ #}
-    {% if invoice.status.value in ['pending', 'overdue'] and invoice.users|length > 0 %}
+    {% if invoice.status in [enum('InvoiceStatus::Pending'), enum('InvoiceStatus::Overdue')] and invoice.users|length > 0 %}
         <twig:Ui:Modal id="send-reminder-modal" title="{{ 'invoice.modal.send_reminder.title'|trans }}" :centered="true">
             <div class="text-center py-3">
                 <div class="mb-3">
