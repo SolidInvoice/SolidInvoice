@@ -71,7 +71,7 @@
                             </a>
                         </li>
 
-                        {% if quote.status.value != 'accepted' %}
+                        {% if quote.status != enum('SolidInvoice\\QuoteBundle\\Enum\\QuoteStatus').Accepted %}
                             <li>
                                 <a class="dropdown-item" href="{{ path('_quotes_edit', {'id' : quote.id}) }}">
                                     {{ ux_icon('tabler:pencil', {width: 16, height: 16}) }}
