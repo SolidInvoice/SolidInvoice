@@ -19,7 +19,7 @@
                     <div class="d-flex gap-2 align-items-center {{ step.index > form.vars.cursor.stepIndex ? 'text-muted' }}">
                                     <span class="align-self-start">
                                         {% if step.is_current_step %}
-                                            <span class="text-secondary" style="color: #f0a015 !important;">
+                                            <span class="text-warning">
                                                 {{ ux_icon('tabler:circle-dot', {width: 32, height: 32}) }}
                                             </span>
                                         {% elseif step.index > form.vars.cursor.stepIndex %}

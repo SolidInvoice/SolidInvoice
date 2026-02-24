@@ -14,10 +14,13 @@
 {% endblock title %}
 
 {% block content %}
-    <div class="widget">
+    <div class="container-xl">
         {{ form_start(form) }}
         {{ form_row(form) }}
-        <button type="submit" class="btn btn-success">{{ icon('save') }} {{ 'save'|trans }}</button>
+        <button type="submit" class="btn btn-primary d-inline-flex align-items-center gap-2">
+            {{ ux_icon('tabler:device-floppy', {width: 20, height: 20}) }}
+            {{ 'save'|trans }}
+        </button>
         {{ form_end(form) }}
     </div>
 

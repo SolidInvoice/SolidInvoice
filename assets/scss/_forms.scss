@@ -479,6 +479,59 @@
 }
 
 // ============================================================================
+// GLOBAL BUTTON ENHANCEMENTS
+// ============================================================================
+
+// Tabler's .btn already sets display: inline-flex and align-items: center,
+// but does not set gap. Add consistent spacing between icon and text.
+.btn {
+    gap: var(--swp-space-2);
+}
+
+// ============================================================================
+// ICON BUTTONS
+// ============================================================================
+
+.btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border-radius: var(--swp-radius-md);
+
+    svg {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+.btn-ghost-danger {
+    color: var(--swp-text-muted);
+    background: transparent;
+    border: none;
+
+    &:hover {
+        color: var(--swp-danger);
+        background: var(--swp-danger-lighter);
+    }
+
+    &:focus {
+        box-shadow: var(--swp-ring-danger);
+    }
+}
+
+// ============================================================================
+// TAB NAVIGATION IN CARD HEADERS
+// ============================================================================
+
+// Reduce font size for tabs in card headers
+.card-header-tabs .nav-link {
+    font-size: 0.875rem;
+}
+
+// ============================================================================
 // RESPONSIVE ADJUSTMENTS
 // ============================================================================
 

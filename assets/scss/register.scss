@@ -39,6 +39,7 @@
 
 // Form container with max-width constraint
 .registration-form-container {
+    max-width: 480px;
     padding: 0 1rem;
 
     @media (min-width: 768px) {

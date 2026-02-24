@@ -10,32 +10,32 @@
 {% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
 {% block content %}
-<div class="tax-form-page">
+<div class="form-page">
     {{ form_start(form) }}
 
     {{ form_errors(form) }}
 
-    <div class="tax-form-container">
+    <div class="form-page-container form-page-container--narrow">
         {# Page Header #}
-        <div class="tax-form-header">
-            <div class="tax-form-header-content">
-                <div class="tax-form-icon">
+        <div class="form-page-header">
+            <div class="form-page-header-content">
+                <div class="form-page-icon">
                     {{ ux_icon('tabler:receipt-tax', {width: 28, height: 28}) }}
                 </div>
                 <div>
                     {% if form.vars.data.name is not empty %}
-                        <h1 class="tax-form-title">{{ 'tax.rates.edit'|trans }}</h1>
+                        <h1 class="form-page-title">{{ 'tax.rates.edit'|trans }}</h1>
                     {% else %}
-                        <h1 class="tax-form-title">{{ 'tax.rates.add'|trans }}</h1>
-                        <p class="tax-form-subtitle">{{ 'tax.rates.form.subtitle'|trans }}</p>
+                        <h1 class="form-page-title">{{ 'tax.rates.add'|trans }}</h1>
+                        <p class="form-page-subtitle">{{ 'tax.rates.form.subtitle'|trans }}</p>
                     {% endif %}
                 </div>
             </div>
         </div>
 
         {# Main Form Content #}
-        <div class="tax-form-sections">
-            <section class="tax-form-section" id="tax-details">
+        <div class="form-page-sections">
+            <section class="form-page-section" id="tax-details">
                 <div class="section-header">
                     <div class="section-icon">
                         {{ ux_icon('tabler:settings', {width: 20, height: 20}) }}
@@ -67,8 +67,8 @@
         {{ form_rest(form) }}
 
         {# Sticky Footer with Actions #}
-        <div class="tax-form-actions">
-            <div class="tax-form-actions-inner">
+        <div class="form-page-actions">
+            <div class="form-page-actions-inner">
                 <a href="{{ path('_tax_rates') }}" class="btn btn-ghost">
                     {{ ux_icon('tabler:arrow-left', {width: 18, height: 18}) }}
                     {{ 'tax.rates.cancel'|trans }}

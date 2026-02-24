@@ -448,24 +448,6 @@
 // ACTIVITY TIMELINE
 // =============================================================================
 
-.activity-empty {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: var(--swp-space-8);
-    text-align: center;
-}
-
-.activity-empty-icon {
-    color: var(--swp-text-light);
-    margin-bottom: var(--swp-space-3);
-}
-
-.activity-empty-text {
-    color: var(--swp-text-secondary);
-    margin-bottom: var(--swp-space-4);
-}
 
 .activity-timeline {
     display: flex;
@@ -544,36 +526,6 @@
     line-height: 1.4;
 }
 
-.activity-label {
-    font-size: 0.6875rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-    padding: 2px 6px;
-    border-radius: var(--swp-radius-sm);
-    background: var(--swp-gray-100);
-    color: var(--swp-text-secondary);
-
-    &--success {
-        background: var(--swp-success-lighter);
-        color: var(--swp-success-hover);
-    }
-
-    &--primary {
-        background: var(--swp-primary-lighter);
-        color: var(--swp-primary-dark);
-    }
-
-    &--danger {
-        background: var(--swp-danger-lighter);
-        color: var(--swp-danger);
-    }
-
-    &--info {
-        background: var(--swp-info-lighter);
-        color: var(--swp-info-hover);
-    }
-}
 
 .activity-text {
     color: var(--swp-text-secondary);
@@ -645,40 +597,6 @@
         opacity: 1;
         background: var(--swp-surface-hover);
     }
-}
-
-// Legacy styles (kept for compatibility)
-.activity-main {
-    display: flex;
-    align-items: center;
-    gap: var(--swp-space-2);
-    flex-wrap: wrap;
-}
-
-.activity-link {
-    font-weight: 600;
-    color: var(--swp-primary);
-    text-decoration: none;
-
-    &:hover {
-        text-decoration: underline;
-    }
-}
-
-.activity-client {
-    font-weight: 500;
-    color: var(--swp-text-primary);
-}
-
-.activity-meta {
-    display: flex;
-    align-items: center;
-    gap: var(--swp-space-3);
-}
-
-.activity-date {
-    font-size: 0.75rem;
-    color: var(--swp-text-muted);
 }
 
 // =============================================================================

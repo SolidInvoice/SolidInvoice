@@ -774,19 +774,6 @@
     color: var(--swp-text-primary);
 }
 
-.terms-summary-badge {
-    display: inline-flex;
-    align-items: center;
-    padding: 2px 8px;
-    font-size: 11px;
-    font-weight: var(--swp-font-medium);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--swp-text-muted);
-    background: var(--swp-gray-200);
-    border-radius: var(--swp-radius-full);
-    margin-left: var(--swp-space-2);
-}
 
 .terms-content {
     padding: var(--swp-space-6);
@@ -826,22 +813,6 @@
     max-width: 1100px;
     margin: 0 auto;
     padding: 0 var(--swp-space-4);
-}
-
-// Primary save button with enhanced styling
-.btn-save-primary {
-    padding: var(--swp-space-3) var(--swp-space-6);
-    font-weight: var(--swp-font-semibold);
-    box-shadow: var(--swp-shadow-primary);
-
-    &:hover {
-        box-shadow: var(--swp-shadow-primary-lg);
-        transform: translateY(-1px);
-    }
-
-    &:active {
-        transform: translateY(0);
-    }
 }
 
 // Split button group for save actions
@@ -1050,47 +1021,6 @@
     }
 }
 
-// ============================================================================
-// EMPTY STATE
-// ============================================================================
-
-.billing-items-empty {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: var(--swp-space-12) var(--swp-space-6);
-    text-align: center;
-    background: var(--swp-gray-50);
-    border: 2px dashed var(--swp-border);
-    border-radius: var(--swp-radius-md);
-    margin-bottom: var(--swp-space-4);
-}
-
-.billing-items-empty-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 64px;
-    height: 64px;
-    background: var(--swp-gray-100);
-    border-radius: var(--swp-radius-full);
-    color: var(--swp-text-muted);
-    margin-bottom: var(--swp-space-4);
-}
-
-.billing-items-empty-title {
-    font-size: var(--swp-text-lg);
-    font-weight: var(--swp-font-semibold);
-    color: var(--swp-text-primary);
-    margin: 0 0 var(--swp-space-2) 0;
-}
-
-.billing-items-empty-text {
-    font-size: var(--swp-text-sm);
-    color: var(--swp-text-muted);
-    margin: 0;
-}
 
 // ============================================================================
 // RECURRING INVOICE STYLES

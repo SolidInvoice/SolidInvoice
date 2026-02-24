@@ -14,7 +14,7 @@
 {% block content %}
     <div class="alert alert-warning">
         <h4>
-            {{ icon('exclamation', ['triangle']) }}
+            {{ ux_icon('tabler:alert-triangle', {width: 20, height: 20, class: 'me-1'}) }}
             {{ "quote.client.empty"|trans }} <a href="{{ url('_clients_add') }}">{{ "quote.client.create"|trans }}</a>
         </h4>
     </div>

@@ -55,12 +55,6 @@
 // STAT CARDS
 // ============================================================================
 
-.client-stat-card {
-    .card-body {
-        padding: var(--swp-space-5);
-    }
-}
-
 .client-stat-label {
     font-size: 0.75rem;
     font-weight: 600;
@@ -286,55 +280,8 @@
 }
 
 // ============================================================================
-// EMPTY STATES
-// ============================================================================
-
-.client-empty-state {
-    text-align: center;
-    padding: var(--swp-space-10) var(--swp-space-4);
-}
-
-.client-empty-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 64px;
-    height: 64px;
-    border-radius: var(--swp-radius-full);
-    background: var(--swp-gray-100);
-    color: var(--swp-text-light);
-    margin-bottom: var(--swp-space-4);
-}
-
-.client-empty-title {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--swp-text-primary);
-    margin-bottom: var(--swp-space-2);
-}
-
-.client-empty-description {
-    font-size: 0.875rem;
-    color: var(--swp-text-muted);
-    margin-bottom: var(--swp-space-4);
-    max-width: 300px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-// ============================================================================
 // ICON BUTTONS
 // ============================================================================
-
-.btn-icon {
-    padding: var(--swp-space-1-5);
-    width: 32px;
-    height: 32px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: var(--swp-radius-md);
-}
 
 .btn-icon-sm {
     width: 28px;
@@ -354,21 +301,6 @@
 
     &:focus {
         box-shadow: var(--swp-ring-primary);
-    }
-}
-
-.btn-ghost-danger {
-    color: var(--swp-danger);
-    background: transparent;
-    border: none;
-
-    &:hover {
-        color: var(--swp-danger-hover);
-        background: var(--swp-danger-lighter);
-    }
-
-    &:focus {
-        box-shadow: var(--swp-ring-danger);
     }
 }
 

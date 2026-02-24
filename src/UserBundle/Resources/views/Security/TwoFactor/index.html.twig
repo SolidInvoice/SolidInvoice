@@ -14,17 +14,17 @@
 {% block title %}{{ ux_icon('tabler:shield-check', {width: 24, height: 24, class: 'me-2'}) }}{{ "Two-Factor Authentication"|trans }}{% endblock title %}
 
 {% block profile_content %}
-    <div class="profile-form-page">
-        <div class="profile-form-container">
+    <div class="form-page">
+        <div class="form-page-container form-page-container--narrow">
             {# Page Header #}
-            <div class="profile-form-header">
-                <div class="profile-form-header-content">
-                    <div class="profile-form-icon profile-form-icon-security">
+            <div class="form-page-header">
+                <div class="form-page-header-content">
+                    <div class="form-page-icon form-page-icon--security">
                         {{ ux_icon('tabler:shield-lock', {width: 28, height: 28}) }}
                     </div>
                     <div>
-                        <h1 class="profile-form-title">{{ 'Two-Factor Authentication'|trans }}</h1>
-                        <p class="profile-form-subtitle">{{ 'Add an extra layer of security to your account'|trans }}</p>
+                        <h1 class="form-page-title">{{ 'Two-Factor Authentication'|trans }}</h1>
+                        <p class="form-page-subtitle">{{ 'Add an extra layer of security to your account'|trans }}</p>
                     </div>
                 </div>
             </div>

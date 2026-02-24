@@ -1,65 +1,10 @@
 /**
  * SolidInvoice - Notifications Page Styles
  *
- * Modern notification preferences page with card-based layout and category grouping.
- * Uses design system tokens for consistent styling.
- * Includes: page header, channel banner, notification groups, cards, empty states.
+ * Notification preferences page with card-based layout and category grouping.
+ * Page container/header/footer use shared form-page-* classes from _form-page.scss.
+ * This file contains only notification-specific styles.
  */
-
-// ============================================================================
-// PAGE CONTAINER
-// ============================================================================
-
-.notifications-page {
-    min-height: 100%;
-}
-
-.notifications-container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding-bottom: var(--swp-space-24);
-}
-
-// ============================================================================
-// PAGE HEADER
-// ============================================================================
-
-.notifications-header {
-    margin-bottom: var(--swp-space-8);
-    padding: var(--swp-space-6) 0;
-}
-
-.notifications-header-content {
-    display: flex;
-    align-items: center;
-    gap: var(--swp-space-4);
-}
-
-.notifications-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 56px;
-    height: 56px;
-    background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.15) 100%);
-    border-radius: var(--swp-radius-lg);
-    color: var(--swp-primary);
-    flex-shrink: 0;
-}
-
-.notifications-title {
-    font-size: 1.75rem;
-    font-weight: var(--swp-font-bold);
-    color: var(--swp-text-primary);
-    margin: 0;
-    letter-spacing: -0.025em;
-}
-
-.notifications-subtitle {
-    font-size: var(--swp-text-base);
-    color: var(--swp-text-muted);
-    margin: var(--swp-space-1) 0 0 0;
-}
 
 // ============================================================================
 // INTEGRATION MANAGEMENT CARD
@@ -253,14 +198,6 @@
 // CHANNEL CHECKBOXES
 // ============================================================================
 
-.notification-channels-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--swp-space-2);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
 
 // Bootstrap form-check integration - compact inline style
 .notification-card-channels {
@@ -317,84 +254,6 @@
     }
 }
 
-// ============================================================================
-// EMPTY STATE
-// ============================================================================
-
-.notifications-empty-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: var(--swp-space-12) var(--swp-space-6);
-    background: var(--swp-surface);
-    border: 1px solid var(--swp-border);
-    border-radius: var(--swp-radius-lg);
-    margin: var(--swp-space-6) 0;
-
-    .empty-state-icon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 80px;
-        height: 80px;
-        margin-bottom: var(--swp-space-4);
-        color: var(--swp-text-muted);
-        opacity: 0.5;
-
-        svg {
-            width: 64px;
-            height: 64px;
-        }
-    }
-
-    h3 {
-        font-size: var(--swp-text-xl);
-        font-weight: var(--swp-font-bold);
-        color: var(--swp-text-primary);
-        margin: 0 0 var(--swp-space-2);
-    }
-
-    p {
-        font-size: var(--swp-text-base);
-        color: var(--swp-text-muted);
-        max-width: 500px;
-        margin: 0 0 var(--swp-space-6);
-        line-height: 1.5;
-    }
-
-    .btn {
-        min-width: 200px;
-    }
-}
-
-// ============================================================================
-// STICKY FOOTER ACTIONS
-// ============================================================================
-
-.notifications-actions {
-    position: sticky;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: var(--swp-surface);
-    border-top: 1px solid var(--swp-border);
-    padding: var(--swp-space-4) 0;
-    margin-top: var(--swp-space-8);
-    z-index: 10;
-    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
-}
-
-.notifications-actions-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 0 var(--swp-space-4);
-    gap: var(--swp-space-3);
-}
 
 // ============================================================================
 // RESPONSIVE DESIGN
@@ -402,30 +261,6 @@
 
 // Mobile (< 768px)
 @media (max-width: 767.98px) {
-    .notifications-page {
-        padding: var(--swp-space-4);
-    }
-
-    .notifications-header {
-        padding: var(--swp-space-4) 0;
-        margin-bottom: var(--swp-space-6);
-    }
-
-    .notifications-header-content {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: var(--swp-space-3);
-    }
-
-    .notifications-icon {
-        width: 48px;
-        height: 48px;
-    }
-
-    .notifications-title {
-        font-size: 1.5rem;
-    }
-
     .integration-management-header {
         flex-direction: column;
         align-items: stretch;
@@ -522,21 +357,6 @@
             width: 100%;
         }
     }
-
-    .notifications-actions {
-        position: fixed;
-        padding: var(--swp-space-3) 0;
-    }
-
-    .notifications-actions-inner {
-        flex-direction: column-reverse;
-        gap: var(--swp-space-2);
-
-        .btn {
-            width: 100%;
-            justify-content: center;
-        }
-    }
 }
 
 // Tablet and Desktop (> 768px) - 2 column layout for categories
@@ -551,19 +371,6 @@
 // ============================================================================
 
 @media print {
-    .notifications-actions,
-    .channels-info-banner {
-        display: none !important;
-    }
-
-    .notifications-page {
-        padding: 0;
-    }
-
-    .notifications-container {
-        max-width: none;
-    }
-
     .notification-card {
         break-inside: avoid;
         page-break-inside: avoid;

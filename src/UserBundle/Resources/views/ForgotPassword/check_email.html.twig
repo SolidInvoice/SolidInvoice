@@ -1,33 +1,41 @@
 {#
- # This file is part of SolidInvoice package.
- #
- # (c) Pierre du Plessis <open-source@solidworx.co>
- #
- # This source file is subject to the MIT license that is bundled
- # with this source code in the file LICENSE.
- #}
-
-{% set body_class = 'login-page' %}
+# This file is part of SolidInvoice package.
+#
+# (c) Pierre du Plessis <open-source@solidworx.co>
+#
+# This source file is subject to the MIT license that is bundled
+# with this source code in the file LICENSE.
+#}
 
 {% extends "@SolidInvoiceCore/Layout/default_no_nav.html.twig" %}
 
-{% block title %}{{ "Reset Password" }}{% endblock title %}
+{% block title %}{{ "forgot_password.check_email.title"|trans }}{% endblock title %}
 
 {% block content %}
-    <section class="container">
-        <div class="card widget">
-            <div class="card-body">
-                <div class="alert alert-info">
-                    {{ 'forgot_password.check_email'|trans() }}
+    <div class="container-tight py-4">
+        <div class="text-center mb-4">
+            <span class="navbar-brand navbar-brand-autodark h1">
+                {{ app_logo(showDefault: true, showOnlyAppIcon: true) }} {{ app_name }}
+            </span>
+        </div>
 
-                    {{ 'This link will expire in %tokenLifetime%'|trans({'%tokenLifetime%': resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle')}) }}
+        <div class="card card-md">
+            <div class="card-body text-center py-4">
+                <div class="mb-4 text-success">
+                    {{ ux_icon('tabler:mail-check', {width: 64, height: 64}) }}
                 </div>
-            </div>
-            <div class="card-footer">
-                <a class="btn btn-success" href="{{ path('_login_main') }}">
-                    {{ icon('lock') }} {{ 'security.login.login'|trans }}
+                <h2 class="h2 mb-3">{{ 'Check your email'|trans }}</h2>
+                <p class="text-muted mb-3">
+                    {{ 'forgot_password.check_email'|trans() }}
+                </p>
+                <p class="text-muted small mb-4">
+                    {{ 'This link will expire in %tokenLifetime%'|trans({'%tokenLifetime%': resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle')}) }}
+                </p>
+                <a class="btn btn-primary w-100" href="{{ path('_login_main') }}">
+                    {{ ux_icon('tabler:arrow-left', {width: 20, height: 20}) }}
+                    {{ 'security.login.login'|trans }}
                 </a>
             </div>
         </div>
-    </section>
+    </div>
 {% endblock %}

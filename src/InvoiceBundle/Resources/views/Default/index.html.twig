@@ -41,7 +41,7 @@
                                 </span>
                             </div>
                             <div class="col">
-                                <div class="font-weight-medium">
+                                <div class="fw-medium">
                                     {{ totalActiveRecurring }}
                                 </div>
                                 <div class="text-secondary">
@@ -63,7 +63,7 @@
                                 </span>
                             </div>
                             <div class="col">
-                                <div class="font-weight-medium">
+                                <div class="fw-medium">
                                     {{ upcomingIn7Days }}
                                 </div>
                                 <div class="text-secondary">
@@ -85,7 +85,7 @@
                                 </span>
                             </div>
                             <div class="col">
-                                <div class="font-weight-medium">
+                                <div class="fw-medium">
                                     {{ 'invoice.stats.status_format'|trans({
                                         '%active%': activeCount,
                                         '%draft%': draftCount,
@@ -111,7 +111,7 @@
                                 </span>
                             </div>
                             <div class="col">
-                                <div class="font-weight-medium">
+                                <div class="fw-medium">
                                     {{ totalGeneratedInvoices }}
                                 </div>
                                 <div class="text-secondary">
@@ -175,7 +175,7 @@
                                 </span>
                             </div>
                             <div class="col">
-                                <div class="font-weight-medium">
+                                <div class="fw-medium">
                                     {{ totalActiveInvoices }}
                                 </div>
                                 <div class="text-secondary">
@@ -197,7 +197,7 @@
                                 </span>
                             </div>
                             <div class="col">
-                                <div class="font-weight-medium">
+                                <div class="fw-medium">
                                     {{ pendingCount }}
                                     {% if overdueCount > 0 %}
                                         <span class="text-danger ms-1">({{ overdueCount }} {{ 'invoice.stats.overdue'|trans }})</span>
@@ -222,7 +222,7 @@
                                 </span>
                             </div>
                             <div class="col">
-                                <div class="font-weight-medium">
+                                <div class="fw-medium">
                                     {% for currency, amount in total_income %}
                                         {{ amount|formatCurrency(currency) }}{% if not loop.last %}<br>{% endif %}
                                     {% else %}
@@ -248,7 +248,7 @@
                                 </span>
                             </div>
                             <div class="col">
-                                <div class="font-weight-medium">
+                                <div class="fw-medium">
                                     {% for currency, amount in total_outstanding %}
                                         {{ amount|formatCurrency(currency) }}{% if not loop.last %}<br>{% endif %}
                                     {% else %}

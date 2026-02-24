@@ -1,25 +1,25 @@
 <html><body>
-<div class="client-form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="ClientForm" data-live-url-value="/_components/ClientForm" data-live-props-value='{"formData":null,"formName":"client","client":{"name":"","website":"","currencyCode":"","vat_number":"","contacts":[{"firstName":"","lastName":"","email":"","additionalContactDetails":[]}],"addresses":[{"street1":"","street2":"","city":"","state":"","zip":"","country":""}],"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
+<div class="form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="ClientForm" data-live-url-value="/_components/ClientForm" data-live-props-value='{"formData":null,"formName":"client","client":{"name":"","website":"","currencyCode":"","vat_number":"","contacts":[{"firstName":"","lastName":"","email":"","additionalContactDetails":[]}],"addresses":[{"street1":"","street2":"","city":"","state":"","zip":"","country":""}],"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
     <form name="client" method="post" data-model="on(change)|*" data-action="live#action:prevent" data-live-action-param="save" class="client-form">
 
     
 
-    <div class="client-form-container">
-                <div class="client-form-header">
-            <div class="client-form-header-content">
-                <div class="client-form-icon">
+    <div class="form-page-container form-page-container--medium">
+                <div class="form-page-header">
+            <div class="form-page-header-content">
+                <div class="form-page-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="28" height="28" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21h18M3 7v1a3 3 0 0 0 6 0V7m0 1a3 3 0 0 0 6 0V7m0 1a3 3 0 0 0 6 0V7H3l2-4h14l2 4M5 21V10.85M19 21V10.85M9 21v-4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v4"></path></svg>
                 </div>
                 <div>
-                                            <h1 class="client-form-title">Add Client</h1>
-                        <p class="client-form-subtitle">Add a new client to start creating invoices and quotes</p>
+                                            <h1 class="form-page-title">Add Client</h1>
+                        <p class="form-page-subtitle">Add a new client to start creating invoices and quotes</p>
                                     </div>
             </div>
         </div>
 
-                <div class="client-form-sections">
+                <div class="form-page-sections">
 
-                        <section class="client-form-section" id="client-info">
+                        <section class="form-page-section" id="client-info">
                 <div class="section-header">
                     <div class="section-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21h18M9 8h1m-1 4h1m-1 4h1m4-8h1m-1 4h1m-1 4h1M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"></path></svg>
@@ -238,7 +238,7 @@
                 </div>
             </section>
 
-                        <section class="client-form-section" id="client-contacts-collection">
+                        <section class="form-page-section" id="client-contacts-collection">
                 <div class="section-header">
                     <div class="section-icon section-icon-required">
                         <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7a4 4 0 1 0 8 0a4 4 0 1 0-8 0M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2m1-17.87a4 4 0 0 1 0 7.75M21 21v-2a4 4 0 0 0-3-3.85"></path></svg>
@@ -325,7 +325,7 @@
                 </div>
             </section>
 
-                        <section class="client-form-section client-form-section-optional" id="client-address-collection">
+                        <section class="form-page-section client-form-section-optional" id="client-address-collection">
                 <div class="section-header">
                     <div class="section-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0-6 0"></path><path d="M17.657 16.657L13.414 20.9a2 2 0 0 1-2.827 0l-4.244-4.243a8 8 0 1 1 11.314 0"></path></g></svg>
@@ -653,13 +653,13 @@
 
         <input type="hidden" id="client__token" name="client[_token]" data-controller="csrf-protection">
 
-                <div class="client-form-actions">
-            <div class="client-form-actions-inner">
+                <div class="form-page-actions">
+            <div class="form-page-actions-inner form-page-actions-inner--medium">
                 <button type="button" class="btn btn-ghost" onclick="history.back()">
                     <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l6 6m-6-6l6-6"></path></svg>
                     Cancel
                 </button>
-                <button type="submit" class="btn btn-primary btn-save-primary">
+                <button type="submit" class="btn btn-primary btn-save">
                     <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M6 4h10l4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2"></path><path d="M10 14a2 2 0 1 0 4 0a2 2 0 1 0-4 0m4-10v4H8V4"></path></g></svg>
                     Save Client
                 </button>

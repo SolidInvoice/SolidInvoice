@@ -8,18 +8,26 @@
  * This file imports only custom extensions, not replacements.
  */
 
+// Shared Form Page - Consolidated form-page layout pattern
+@import 'form-page';
+
+// Document View - Shared layout for Invoice and Quote view pages
+@import 'document-view';
+
+// External Document View - Shared layout for public-facing Invoice and Quote pages
+@import 'external-doc-view';
+
+// Marketplace - Shared styles for Payment and Notification marketplace pages
+@import 'marketplace';
+
 // DataGrid - Modern table/grid component styles
 @import 'datagrid';
-@import 'tabs';
 
 // Client Form - Modern client creation form
 @import 'client-form';
 
 // Billing Form - Shared styles for Invoice and Quote creation forms
 @import 'billing-form';
-
-// Tax Form - Tax rate creation form
-@import 'tax-form';
 
 // Payment Page - Invoice payment form with method selection
 @import 'payment-page';
@@ -29,9 +37,6 @@
 
 // Users Page - Users list with KPI cards and tabs
 @import 'users-page';
-
-// User Invite Form - User invitation form
-@import 'user-invite-form';
 
 // Profile Page - User profile and settings pages
 @import 'profile-page';
@@ -44,3 +49,6 @@
 
 // Subscription Pages - Trial expired, cancelled, pending subscription states
 @import 'subscription-pages';
+
+// Onboarding Checklist - Dashboard checklist widget styles
+@import 'onboarding-checklist';

@@ -29,7 +29,7 @@
                 <span class="nav-link-icon">
                     {{ ux_icon('tabler:list-check', {width: 16, height: 16}) }}
                 </span>
-                <span>{{ 'Configured'|trans }} <span class="badge badge-sm bg-secondary-subtle text-secondary ms-1">{{ configuredIntegrations|length }}</span></span>
+                <span>{{ 'Configured'|trans }} <span class="badge bg-secondary-lt ms-1">{{ configuredIntegrations|length }}</span></span>
             </a>
         </li>
     </ul>
@@ -60,8 +60,7 @@
                                aria-label="{{ 'Search notification integrations'|trans }}">
                         {% if searchQuery %}
                             <button type="button"
-                                    class="btn btn-ghost btn-icon position-absolute end-0 top-50 translate-middle-y"
-                                    style="z-index: 10; right: 8px !important;"
+                                    class="btn btn-ghost btn-icon position-absolute end-0 top-50 translate-middle-y marketplace-search-clear"
                                     data-action="live#action"
                                     data-live-action-param="clearSearch"
                                     aria-label="{{ 'Clear search'|trans }}">
@@ -116,7 +115,7 @@
                                         <div class="integration-card-content">
                                             <h6 class="integration-card-title">{{ integration.displayName }}</h6>
                                             {% if integration.isConfigured %}
-                                                <span class="badge badge-sm badge-configured">
+                                                <span class="badge bg-success-lt">
                                                     {{ ux_icon('tabler:check', {width: 12, height: 12}) }}
                                                 </span>
                                             {% endif %}
@@ -153,7 +152,7 @@
                                         <div class="integration-card-content">
                                             <h6 class="integration-card-title">{{ integration.displayName }}</h6>
                                             {% if integration.isConfigured %}
-                                                <span class="badge badge-sm badge-configured">
+                                                <span class="badge bg-success-lt">
                                                     {{ ux_icon('tabler:check', {width: 12, height: 12}) }}
                                                 </span>
                                             {% endif %}
@@ -173,9 +172,11 @@
                             </div>
                         {% endif %}
                     {% else %}
-                        <div class="empty-state text-center py-5">
-                            {{ ux_icon('tabler:search-off', {width: 48, height: 48, class: 'mb-3 text-muted opacity-50'}) }}
-                            <p class="text-muted mb-0">{{ 'No integrations found matching your search'|trans }}</p>
+                        <div class="empty">
+                            <div class="empty-icon">
+                                {{ ux_icon('tabler:search-off', {width: 48, height: 48}) }}
+                            </div>
+                            <p class="empty-title">{{ 'No integrations found matching your search'|trans }}</p>
                         </div>
                     {% endif %}
                 </div>
@@ -190,7 +191,7 @@
                         {{ ux_icon('tabler:list-check', {width: 20, height: 20, class: 'text-primary'}) }}
                         {{ 'Configured Integrations'|trans }}
                     </h5>
-                    <span class="badge" style="background-color: var(--swp-gray-100); color: var(--swp-text-primary);">{{ configuredIntegrations|length }}</span>
+                    <span class="badge bg-secondary-lt">{{ configuredIntegrations|length }}</span>
                 </div>
 
                 {% if configuredIntegrations|length > 0 %}
@@ -206,10 +207,10 @@
                                             <div class="flex-grow-1 min-w-0">
                                                 <h6 class="mb-2">{{ setting.name }}</h6>
                                                 <div class="d-flex align-items-center gap-2 flex-wrap">
-                                                    <span class="badge badge-sm">
+                                                    <span class="badge bg-secondary-lt">
                                                         {{ this.getIntegrationTypeLabel(setting.transport) }}
                                                     </span>
-                                                    <span class="badge badge-sm bg-primary text-white">
+                                                    <span class="badge bg-primary-lt">
                                                         {{ setting.transport }}
                                                     </span>
                                                 </div>
@@ -228,20 +229,20 @@
                         {% endfor %}
                     </div>
                 {% else %}
-                    <div class="empty-state-card">
-                        <div class="card">
-                            <div class="card-body text-center py-5">
-                                {{ ux_icon('tabler:bell-off', {width: 64, height: 64, class: 'mb-3 text-muted opacity-50'}) }}
-                                <h5 class="mb-2">{{ 'No integrations configured'|trans }}</h5>
-                                <p class="text-muted mb-4">
-                                    {{ 'Configure your first notification integration to start sending SMS or chat notifications.'|trans }}
-                                </p>
-                                <a href="{{ path('_notification_integration', {view: 'marketplace'}) }}"
-                                   class="btn btn-primary d-inline-flex align-items-center gap-2">
-                                    {{ ux_icon('tabler:plus', {width: 18, height: 18}) }}
-                                    {{ 'Browse Integrations'|trans }}
-                                </a>
-                            </div>
+                    <div class="empty">
+                        <div class="empty-icon">
+                            {{ ux_icon('tabler:bell-off', {width: 64, height: 64}) }}
+                        </div>
+                        <p class="empty-title">{{ 'No integrations configured'|trans }}</p>
+                        <p class="empty-subtitle text-secondary">
+                            {{ 'Configure your first notification integration to start sending SMS or chat notifications.'|trans }}
+                        </p>
+                        <div class="empty-action">
+                            <a href="{{ path('_notification_integration', {view: 'marketplace'}) }}"
+                               class="btn btn-primary d-inline-flex align-items-center gap-2">
+                                {{ ux_icon('tabler:plus', {width: 18, height: 18}) }}
+                                {{ 'Browse Integrations'|trans }}
+                            </a>
                         </div>
                     </div>
                 {% endif %}

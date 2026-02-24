@@ -10,7 +10,7 @@
                         </span>
                     </div>
                     <div class="col">
-                        <div class="font-weight-medium">
+                        <div class="fw-medium">
                             {{ stats.activeTokens }}
                         </div>
                         <div class="text-secondary">
@@ -33,7 +33,7 @@
                         </span>
                     </div>
                     <div class="col">
-                        <div class="font-weight-medium">
+                        <div class="fw-medium">
                             {{ stats.apiCallsThisMonth|number_format }}
                         </div>
                         <div class="text-secondary">
@@ -56,7 +56,7 @@
                         </span>
                     </div>
                     <div class="col">
-                        <div class="font-weight-medium">
+                        <div class="fw-medium">
                             {% if stats.lastActivity %}
                                 {{ stats.lastActivity|date('d M Y') }}
                             {% else %}
@@ -83,7 +83,7 @@
                         </span>
                     </div>
                     <div class="col">
-                        <div class="font-weight-medium">
+                        <div class="fw-medium">
                             {{ stats.mostUsedToken|default('-')|u.truncate(18, '...') }}
                         </div>
                         <div class="text-secondary">

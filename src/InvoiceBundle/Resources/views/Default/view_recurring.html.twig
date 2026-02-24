@@ -15,25 +15,25 @@
 
 {% block content %}
 {% set currency = invoice.client.currency %}
-<div class="invoice-view-page">
+<div class="doc-view-page">
     {# ═══════════════════════════════════════════════════════════════════════
        HEADER - Title, Status, Actions
     ═══════════════════════════════════════════════════════════════════════ #}
-    <div class="invoice-view-header no-print">
-        <div class="invoice-view-header-left">
-            <div class="invoice-view-icon">
+    <div class="doc-view-header no-print">
+        <div class="doc-view-header-left">
+            <div class="doc-view-icon">
                 {{ ux_icon('tabler:repeat', {width: 32, height: 32}) }}
             </div>
-            <div class="invoice-view-title-group">
-                <h1 class="invoice-view-title">{{ 'Recurring Invoice'|trans }}</h1>
-                <div class="invoice-view-meta">
+            <div class="doc-view-title-group">
+                <h1 class="doc-view-title">{{ 'Recurring Invoice'|trans }}</h1>
+                <div class="doc-view-meta">
                     {{ invoice_label(invoice.status) }}
-                    <span class="invoice-view-client ms-2">
+                    <span class="doc-view-meta-item ms-2">
                         {{ ux_icon('tabler:building', {width: 14, height: 14}) }}
                         {{ invoice.client }}
                     </span>
                     {% if invoice.recurringOptions %}
-                        <span class="invoice-view-frequency ms-2">
+                        <span class="doc-view-meta-item ms-2">
                             {{ ux_icon('tabler:calendar-repeat', {width: 14, height: 14}) }}
                             {{ recurring_frequency(invoice.recurringOptions) }}
                         </span>
@@ -42,9 +42,9 @@
             </div>
         </div>
 
-        <div class="invoice-view-header-actions">
+        <div class="doc-view-header-actions">
             {# Always available actions #}
-            <div class="invoice-view-utility-actions">
+            <div class="doc-view-utility-actions">
                 <button type="button" onclick="window.print()" class="btn btn-ghost btn-icon" title="{{ 'invoice.action.print'|trans }}">
                     {{ ux_icon('tabler:printer', {width: 20, height: 20}) }}
                 </button>
@@ -132,19 +132,19 @@
     {# ═══════════════════════════════════════════════════════════════════════
        MAIN CONTENT - Invoice Document + Sidebar
     ═══════════════════════════════════════════════════════════════════════ #}
-    <div class="invoice-view-content">
+    <div class="doc-view-content">
         {# Invoice Document Card #}
-        <div class="invoice-view-document">
-            <div class="invoice-document-card">
+        <div class="doc-view-document">
+            <div class="doc-card">
                 {# Document Header - Company & Client Info #}
-                <div class="invoice-document-header">
-                    <div class="invoice-party invoice-party-from">
-                        <div class="invoice-party-label">{{ 'invoice.from'|trans }}</div>
-                        <h3 class="invoice-party-name">{{ company_name() }}</h3>
+                <div class="doc-header-from-to">
+                    <div class="doc-party doc-party-from">
+                        <div class="doc-party-label">{{ 'invoice.from'|trans }}</div>
+                        <h3 class="doc-party-name">{{ company_name() }}</h3>
 
                         {% set vatNumber = setting('system/company/vat_number') %}
                         {% if vatNumber is not empty %}
-                            <div class="invoice-party-detail">
+                            <div class="doc-party-detail">
                                 <span class="detail-label">{{ 'tax.vat_number'|trans }}</span>
                                 <span class="detail-value">{{ vatNumber }}</span>
                             </div>
@@ -152,7 +152,7 @@
 
                         {% set email = setting('system/company/contact_details/email') %}
                         {% if email is not empty %}
-                            <div class="invoice-party-detail">
+                            <div class="doc-party-detail">
                                 {{ ux_icon('tabler:mail', {width: 14, height: 14}) }}
                                 <span class="detail-value">{{ email }}</span>
                             </div>
@@ -160,7 +160,7 @@
 
                         {% set phoneNumber = setting('system/company/contact_details/phone_number') %}
                         {% if phoneNumber is not empty %}
-                            <div class="invoice-party-detail">
+                            <div class="doc-party-detail">
                                 {{ ux_icon('tabler:phone', {width: 14, height: 14}) }}
                                 <span class="detail-value">{{ phoneNumber }}</span>
                             </div>
@@ -168,19 +168,19 @@
 
                         {% set address = setting('system/company/contact_details/address', null, true) %}
                         {% if address is not null and address|filter(v => v) is not empty %}
-                            <div class="invoice-party-detail">
+                            <div class="doc-party-detail">
                                 {{ ux_icon('tabler:map-pin', {width: 14, height: 14}) }}
                                 <span class="detail-value">{{ address(address)|replace({"\n": ", "}) }}</span>
                             </div>
                         {% endif %}
                     </div>
 
-                    <div class="invoice-party invoice-party-to">
-                        <div class="invoice-party-label">{{ 'invoice.to'|trans }}</div>
-                        <h3 class="invoice-party-name">{{ invoice.client }}</h3>
+                    <div class="doc-party doc-party-to">
+                        <div class="doc-party-label">{{ 'invoice.to'|trans }}</div>
+                        <h3 class="doc-party-name">{{ invoice.client }}</h3>
 
                         {% if invoice.client.website is not empty %}
-                            <div class="invoice-party-detail">
+                            <div class="doc-party-detail">
                                 {{ ux_icon('tabler:world', {width: 14, height: 14}) }}
                                 {% set website_url = invoice.client.website starts with 'http://' or invoice.client.website starts with 'https://' ? invoice.client.website : 'https://' ~ invoice.client.website %}
                                 <a href="{{ website_url }}" class="detail-value" rel="external noopener" target="_blank">
@@ -191,14 +191,14 @@
                         {% endif %}
 
                         {% if invoice.client.vatNumber is not empty %}
-                            <div class="invoice-party-detail">
+                            <div class="doc-party-detail">
                                 <span class="detail-label">{{ 'tax.vat_number'|trans }}</span>
                                 <span class="detail-value">{{ invoice.client.vatNumber }}</span>
                             </div>
                         {% endif %}
 
                         {% for address in invoice.client.addresses %}
-                            <div class="invoice-party-detail">
+                            <div class="doc-party-detail">
                                 {{ ux_icon('tabler:map-pin', {width: 14, height: 14}) }}
                                 <span class="detail-value">{{ address|replace({"\n": ", "}) }}</span>
                             </div>
@@ -207,8 +207,8 @@
                 </div>
 
                 {# Line Items Table #}
-                <div class="invoice-document-items">
-                    <table class="invoice-items-table">
+                <div class="doc-items">
+                    <table class="doc-items-table">
                         <thead>
                             <tr>
                                 <th class="column-description">{{ 'invoice.item.heading.description'|trans }}</th>
@@ -237,8 +237,8 @@
                 </div>
 
                 {# Totals Section #}
-                <div class="invoice-document-totals">
-                    <div class="invoice-totals-grid">
+                <div class="doc-totals">
+                    <div class="doc-totals-grid">
                         <div class="totals-row">
                             <span class="totals-label">{{ 'invoice.subtotal'|trans }}</span>
                             <span class="totals-value">{{ invoice.baseTotal|formatCurrency(currency) }}</span>
@@ -267,18 +267,18 @@
 
                 {# Footer - Terms & Notes #}
                 {% if invoice.terms is not empty or invoice.notes is not empty %}
-                    <div class="invoice-document-footer">
+                    <div class="doc-footer">
                         {% if invoice.terms is not empty %}
-                            <div class="invoice-footer-section">
-                                <h4 class="invoice-footer-title">{{ 'invoice.terms'|trans }}</h4>
-                                <p class="invoice-footer-text">{{ invoice.terms|nl2br }}</p>
+                            <div class="doc-footer-section">
+                                <h4 class="doc-footer-title">{{ 'invoice.terms'|trans }}</h4>
+                                <p class="doc-footer-text">{{ invoice.terms|nl2br }}</p>
                             </div>
                         {% endif %}
 
                         {% if invoice.notes is not empty %}
-                            <div class="invoice-footer-section no-print">
-                                <h4 class="invoice-footer-title">{{ 'invoice.notes'|trans }}</h4>
-                                <p class="invoice-footer-text">{{ invoice.notes|nl2br }}</p>
+                            <div class="doc-footer-section no-print">
+                                <h4 class="doc-footer-title">{{ 'invoice.notes'|trans }}</h4>
+                                <p class="doc-footer-text">{{ invoice.notes|nl2br }}</p>
                             </div>
                         {% endif %}
                     </div>
@@ -289,16 +289,16 @@
         {# ═══════════════════════════════════════════════════════════════════════
            SIDEBAR - Client, Schedule, Generated Invoices, Summary
         ═══════════════════════════════════════════════════════════════════════ #}
-        <div class="invoice-view-sidebar no-print">
+        <div class="doc-view-sidebar no-print">
             {# Client Card #}
-            <div class="invoice-sidebar-card">
-                <div class="invoice-sidebar-card-header">
-                    <div class="invoice-sidebar-card-icon">
+            <div class="doc-sidebar-card">
+                <div class="doc-sidebar-card-header">
+                    <div class="doc-sidebar-card-icon">
                         {{ ux_icon('tabler:building', {width: 18, height: 18}) }}
                     </div>
-                    <h3 class="invoice-sidebar-card-title">{{ 'invoice.client.title'|trans }}</h3>
+                    <h3 class="doc-sidebar-card-title">{{ 'invoice.client.title'|trans }}</h3>
                 </div>
-                <div class="invoice-sidebar-card-body">
+                <div class="doc-sidebar-card-body">
                     <div class="client-info">
                         <a href="{{ path('_clients_view', {'id': invoice.client.id}) }}" class="client-name">
                             {{ invoice.client }}
@@ -328,14 +328,14 @@
 
             {# Recurring Schedule Card - Highlighted #}
             {% if invoice.recurringOptions %}
-                <div class="invoice-sidebar-card invoice-sidebar-card-highlight">
-                    <div class="invoice-sidebar-card-header">
-                        <div class="invoice-sidebar-card-icon">
+                <div class="doc-sidebar-card doc-sidebar-card-highlight">
+                    <div class="doc-sidebar-card-header">
+                        <div class="doc-sidebar-card-icon">
                             {{ ux_icon('tabler:repeat', {width: 18, height: 18}) }}
                         </div>
-                        <h3 class="invoice-sidebar-card-title">{{ 'invoice.recurring.schedule.title'|trans }}</h3>
+                        <h3 class="doc-sidebar-card-title">{{ 'invoice.recurring.schedule.title'|trans }}</h3>
                     </div>
-                    <div class="invoice-sidebar-card-body">
+                    <div class="doc-sidebar-card-body">
                         <div class="recurring-schedule-grid">
                             <div class="schedule-item">
                                 <span class="recurring-schedule-label">{{ 'invoice.recurring.frequency'|trans }}:</span>
@@ -361,14 +361,14 @@
 
             {# Upcoming Occurrences Card - Only for Active Invoices #}
             {% if invoice.status == 'active' and nextOccurrences is defined and nextOccurrences|length > 0 %}
-                <div class="invoice-sidebar-card">
-                    <div class="invoice-sidebar-card-header">
-                        <div class="invoice-sidebar-card-icon">
+                <div class="doc-sidebar-card">
+                    <div class="doc-sidebar-card-header">
+                        <div class="doc-sidebar-card-icon">
                             {{ ux_icon('tabler:calendar-event', {width: 18, height: 18}) }}
                         </div>
-                        <h3 class="invoice-sidebar-card-title">{{ 'invoice.recurring.upcoming'|trans }}</h3>
+                        <h3 class="doc-sidebar-card-title">{{ 'invoice.recurring.upcoming'|trans }}</h3>
                     </div>
-                    <div class="invoice-sidebar-card-body">
+                    <div class="doc-sidebar-card-body">
                         <div class="occurrences-list">
                             {% for occurrence in nextOccurrences %}
                                 <div class="occurrence-item">
@@ -383,17 +383,17 @@
 
             {# Generated Invoices Card #}
             {% if generatedInvoices is defined and generatedInvoices|length > 0 %}
-                <div class="invoice-sidebar-card">
-                    <div class="invoice-sidebar-card-header">
-                        <div class="invoice-sidebar-card-icon">
+                <div class="doc-sidebar-card">
+                    <div class="doc-sidebar-card-header">
+                        <div class="doc-sidebar-card-icon">
                             {{ ux_icon('tabler:file-invoice', {width: 18, height: 18}) }}
                         </div>
-                        <h3 class="invoice-sidebar-card-title">
+                        <h3 class="doc-sidebar-card-title">
                             {{ 'invoice.recurring.generated'|trans }}
                             <span class="badge bg-primary-lt ms-2">{{ totalGenerated }}</span>
                         </h3>
                     </div>
-                    <div class="invoice-sidebar-card-body">
+                    <div class="doc-sidebar-card-body">
                         <div class="generated-invoices-list">
                             {% for generatedInvoice in generatedInvoices %}
                                 <div class="generated-invoice-item">
@@ -420,15 +420,15 @@
             {% endif %}
 
             {# Summary Card #}
-            <div class="invoice-sidebar-card">
-                <div class="invoice-sidebar-card-header">
-                    <div class="invoice-sidebar-card-icon">
+            <div class="doc-sidebar-card">
+                <div class="doc-sidebar-card-header">
+                    <div class="doc-sidebar-card-icon">
                         {{ ux_icon('tabler:receipt', {width: 18, height: 18}) }}
                     </div>
-                    <h3 class="invoice-sidebar-card-title">{{ 'invoice.summary'|trans }}</h3>
+                    <h3 class="doc-sidebar-card-title">{{ 'invoice.summary'|trans }}</h3>
                 </div>
-                <div class="invoice-sidebar-card-body">
-                    <div class="invoice-summary-grid">
+                <div class="doc-sidebar-card-body">
+                    <div class="doc-summary-grid">
                         <div class="summary-item">
                             <span class="summary-label">{{ 'invoice.status'|trans }}</span>
                             <span class="summary-value">{{ invoice_label(invoice.status) }}</span>
