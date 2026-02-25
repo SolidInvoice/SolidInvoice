@@ -172,13 +172,13 @@ class RecurringInvoiceRepository extends ServiceEntityRepository
     /**
      * Get the total number of recurring invoices for a specific status.
      */
-    public function getCountByStatus(string $status): int
+    public function getCountByStatus(RecurringInvoiceStatus $status): int
     {
         $qb = $this->createQueryBuilder('ri');
 
         $qb->select('COUNT(ri)')
             ->where('ri.status = :status')
-            ->setParameter('status', $status);
+            ->setParameter('status', $status->value);
 
         $query = $qb->getQuery();
 

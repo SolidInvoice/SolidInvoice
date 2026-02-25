@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\DashboardBundle\Widgets;
 
 use Brick\Math\BigNumber;
+use Brick\Math\RoundingMode;
 use DateMalformedStringException;
 use DateTimeImmutable;
 use Doctrine\Persistence\ManagerRegistry;
@@ -86,7 +87,7 @@ final readonly class RevenueChartWidget implements WidgetInterface
                 $date = $now->modify(sprintf('-%d months', $i));
                 $monthKey = $date->format('Y-m');
                 $data[] = isset($revenueData[$monthKey][$currency])
-                    ? $revenueData[$monthKey][$currency]->dividedBy(BigNumber::of(100))->toFloat() // Convert cents to currency units
+                    ? $revenueData[$monthKey][$currency]->dividedBy(BigNumber::of(100), RoundingMode::HALF_EVEN)->toFloat() // Convert cents to currency units
                     : 0;
             }
 

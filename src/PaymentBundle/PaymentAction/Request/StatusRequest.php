@@ -24,7 +24,7 @@ class StatusRequest extends BaseGetStatus
         $this->status = PaymentStatus::New->value;
     }
 
-    public function isNew()
+    public function isNew(): bool
     {
         return PaymentStatus::New->value === $this->status;
     }
@@ -35,7 +35,7 @@ class StatusRequest extends BaseGetStatus
         $this->status = PaymentStatus::Suspended->value;
     }
 
-    public function isSuspended()
+    public function isSuspended(): bool
     {
         return PaymentStatus::Suspended->value === $this->status;
     }
@@ -46,7 +46,7 @@ class StatusRequest extends BaseGetStatus
         $this->status = PaymentStatus::Expired->value;
     }
 
-    public function isExpired()
+    public function isExpired(): bool
     {
         return PaymentStatus::Expired->value === $this->status;
     }
@@ -57,7 +57,7 @@ class StatusRequest extends BaseGetStatus
         $this->status = PaymentStatus::Cancelled->value;
     }
 
-    public function isCanceled()
+    public function isCanceled(): bool
     {
         return PaymentStatus::Cancelled->value === $this->status;
     }
@@ -68,7 +68,7 @@ class StatusRequest extends BaseGetStatus
         $this->status = PaymentStatus::Pending->value;
     }
 
-    public function isPending()
+    public function isPending(): bool
     {
         return PaymentStatus::Pending->value === $this->status;
     }
@@ -79,7 +79,7 @@ class StatusRequest extends BaseGetStatus
         $this->status = PaymentStatus::Failed->value;
     }
 
-    public function isFailed()
+    public function isFailed(): bool
     {
         return PaymentStatus::Failed->value === $this->status;
     }
@@ -90,7 +90,7 @@ class StatusRequest extends BaseGetStatus
         $this->status = PaymentStatus::Unknown->value;
     }
 
-    public function isUnknown()
+    public function isUnknown(): bool
     {
         return PaymentStatus::Unknown->value === $this->status;
     }
@@ -101,12 +101,12 @@ class StatusRequest extends BaseGetStatus
         $this->status = PaymentStatus::Captured->value;
     }
 
-    public function isCaptured()
+    public function isCaptured(): bool
     {
         return PaymentStatus::Captured->value === $this->status;
     }
 
-    public function isAuthorized()
+    public function isAuthorized(): bool
     {
         return PaymentStatus::Authorized->value === $this->status;
     }
@@ -117,7 +117,7 @@ class StatusRequest extends BaseGetStatus
         $this->status = PaymentStatus::Authorized->value;
     }
 
-    public function isRefunded()
+    public function isRefunded(): bool
     {
         return PaymentStatus::Refunded->value === $this->status;
     }
