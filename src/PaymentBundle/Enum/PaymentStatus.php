@@ -59,7 +59,7 @@ enum PaymentStatus: string implements HasStatusLabel
             self::Captured => 'green',
             self::Authorized => 'cyan',
             self::Refunded => 'pink',
-            self::Credit => 'pink',
+            self::Credit => 'azure',
         };
     }
 }

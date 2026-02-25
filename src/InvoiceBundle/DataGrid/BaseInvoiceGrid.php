@@ -64,7 +64,7 @@ abstract class BaseInvoiceGrid extends Grid
                 ->filter(new DateRangeFilter('paidDate')),
             StringColumn::new('status')
                 ->twigFunction('invoice_label')
-                ->filter(ChoiceFilter::new('status', array_column(array_map(static fn (InvoiceStatus $s) => [$s->value, $s->name], InvoiceStatus::cases()), 1, 0))->multiple()),
+                ->filter(ChoiceFilter::new('status', array_column(array_map(static fn (InvoiceStatus $s) => [$s->value, $s->getLabel()], InvoiceStatus::cases()), 1, 0))->multiple()),
             MoneyColumn::new('total')
                 ->formatValue(fn (BigNumber $value, Invoice $invoice) => new Money((string) $value, $invoice->getClient()?->getCurrency())),
             MoneyColumn::new('tax')

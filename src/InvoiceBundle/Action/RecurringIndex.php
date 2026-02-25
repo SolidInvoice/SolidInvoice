@@ -37,11 +37,11 @@ final readonly class RecurringIndex
         $isCompleted = $request->query->get('completed', '0') === '1';
 
         // Get recurring invoice counts by status
-        $activeCount = $this->repository->getCountByStatus(RecurringInvoiceStatus::Active->value);
-        $draftCount = $this->repository->getCountByStatus(RecurringInvoiceStatus::Draft->value);
-        $pausedCount = $this->repository->getCountByStatus(RecurringInvoiceStatus::Paused->value);
-        $cancelledCount = $this->repository->getCountByStatus(RecurringInvoiceStatus::Cancelled->value);
-        $completeCount = $this->repository->getCountByStatus(RecurringInvoiceStatus::Complete->value);
+        $activeCount = $this->repository->getCountByStatus(RecurringInvoiceStatus::Active);
+        $draftCount = $this->repository->getCountByStatus(RecurringInvoiceStatus::Draft);
+        $pausedCount = $this->repository->getCountByStatus(RecurringInvoiceStatus::Paused);
+        $cancelledCount = $this->repository->getCountByStatus(RecurringInvoiceStatus::Cancelled);
+        $completeCount = $this->repository->getCountByStatus(RecurringInvoiceStatus::Complete);
 
         // Calculate total active recurring invoices (non-archived, non-cancelled, non-complete)
         $totalActiveRecurring = $activeCount + $draftCount + $pausedCount;

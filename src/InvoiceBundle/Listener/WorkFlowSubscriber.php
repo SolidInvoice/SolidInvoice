@@ -18,6 +18,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
+use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Notification\InvoiceStatusNotification;
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
@@ -66,7 +67,12 @@ class WorkFlowSubscriber implements EventSubscriberInterface
         $em->persist($invoice);
         $em->flush();
 
-        if (InvoiceStatus::New !== $invoice->getStatus()) {
+        $isNew = match (true) {
+            $invoice instanceof Invoice => InvoiceStatus::New === $invoice->getStatus(),
+            $invoice instanceof RecurringInvoice => RecurringInvoiceStatus::New === $invoice->getStatus(),
+        };
+
+        if (! $isNew) {
             $this->notification->sendNotification(new InvoiceStatusNotification(['invoice' => $invoice]));
         }
     }

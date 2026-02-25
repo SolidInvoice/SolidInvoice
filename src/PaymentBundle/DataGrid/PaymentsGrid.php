@@ -61,7 +61,7 @@ final class PaymentsGrid extends Grid
                 ),
             StringColumn::new('status')
                 ->twigFunction('payment_label')
-                ->filter(ChoiceFilter::new('status', array_column(array_map(static fn (PaymentStatus $s) => [$s->value, $s->name], PaymentStatus::cases()), 1, 0))->multiple()),
+                ->filter(ChoiceFilter::new('status', array_column(array_map(static fn (PaymentStatus $s) => [$s->value, $s->getLabel()], PaymentStatus::cases()), 1, 0))->multiple()),
             DateTimeColumn::new('completed')
                 ->label('Completed Date')
                 ->format('d F Y')
