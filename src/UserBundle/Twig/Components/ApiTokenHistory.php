@@ -51,6 +51,12 @@ final class ApiTokenHistory extends AbstractController
             throw new InvalidArgumentException('Token ID is empty');
         }
 
-        return $this->apiTokenRepository->find($this->token);
+        $token = $this->apiTokenRepository->find($this->token);
+
+        if (null === $token || $token->getUser() !== $this->getUser()) {
+            throw $this->createAccessDeniedException();
+        }
+
+        return $token;
     }
 }

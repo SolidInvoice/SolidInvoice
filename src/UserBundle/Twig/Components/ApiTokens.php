@@ -48,6 +48,10 @@ final class ApiTokens extends AbstractController
     #[LiveAction]
     public function revoke(#[LiveArg] ApiToken $token): void
     {
+        if ($token->getUser() !== $this->security->getUser()) {
+            throw $this->createAccessDeniedException();
+        }
+
         $this->apiTokenRepository->revoke($token);
         $this->dispatchBrowserEvent('modal:close');
     }
