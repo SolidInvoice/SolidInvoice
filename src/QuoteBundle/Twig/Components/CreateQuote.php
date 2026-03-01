@@ -52,6 +52,9 @@ final class CreateQuote extends AbstractController
     #[LiveProp(writable: false)]
     public bool $isEdit = false;
 
+    #[LiveProp(writable: false, fieldName: 'quoteEntity')]
+    public ?Quote $quote = null;
+
     #[LiveProp(writable: true)]
     public ?string $previousClientId = null;
 
@@ -192,7 +195,24 @@ final class CreateQuote extends AbstractController
         // If clientMode=New, manager creates unpersisted client
         // Client will be persisted via cascade when quote is saved
         if ($this->isEdit) {
-            throw new \RuntimeException('Edit mode is not yet implemented in this component. Use the Edit action class instead.');
+            assert($this->quote instanceof Quote);
+
+            $this->formManager->updateQuoteFromDTO($this->quote, $dto);
+
+            if ('send' === $action) {
+                $this->quoteStateMachine->apply($this->quote, Graph::TRANSITION_SEND);
+            }
+
+            if ('publish' === $action) {
+                $this->quoteStateMachine->apply($this->quote, Graph::TRANSITION_PUBLISH);
+            }
+
+            $this->entityManager->flush();
+
+            $this->addFlash('success', 'quote.action.edit.success');
+
+            $url = $this->router->generate('_quotes_view', ['id' => $this->quote->getId()]);
+            return $this->redirect($url);
         }
 
         $quote = $this->formManager->createQuoteFromDTO($dto);

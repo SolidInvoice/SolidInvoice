@@ -15,7 +15,7 @@
     {% if recurring %}
         <twig:CreateRecurringInvoice :form="form" :invoice="invoice" :isEdit="isEdit" />
     {% else %}
-        <twig:CreateInvoice :form="form" :dto="dto" :isEdit="isEdit" />
+        <twig:CreateInvoice :form="form" :dto="dto" :isEdit="isEdit" :invoice="invoice|default(null)" />
     {% endif %}
 {% endblock content %}
 
