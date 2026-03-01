@@ -5,57 +5,47 @@
         <aside class="col-md-3">
             <div class="card">
                 <div class="card-body">
-                    <div class="text-center mb-4">
+                    <div class="mb-3">
                         <div class="dropdown">
-                            <a href="#" class="btn btn-outline-success dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
-                                <i class="fa fa-plus-circle"></i> Add Payment Method
+                            <a href="#" class="btn btn-outline-success w-100 dropdown-toggle d-flex align-items-center gap-2" data-bs-toggle="dropdown" aria-expanded="false">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0m6 0h6m-3-3v6"></path></svg>
+                                Add Payment Method
                             </a>
-                            <div class="dropdown-menu">
-                                                                        <a class="dropdown-item" href="?method=custom">Custom</a>
-                                                                        <a class="dropdown-item" href="?method=cash">Cash</a>
-                                                                        <a class="dropdown-item" href="?method=bank_transfer">Bank Transfer</a>
-                                                                        <a class="dropdown-item" href="?method=paypal_express_checkout">Paypal Express Checkout</a>
-                                                                        <a class="dropdown-item" href="?method=paypal_pro_checkout">Paypal Pro Checkout</a>
-                                                                        <a class="dropdown-item" href="?method=stripe_checkout">Stripe Checkout</a>
-                                                                        <a class="dropdown-item" href="?method=stripe_js">Stripe Js</a>
-                                                                        <a class="dropdown-item" href="?method=klarna_invoice">Klarna Invoice</a>
-                                                                        <a class="dropdown-item" href="?method=klarna_checkout">Klarna Checkout</a>
-                                                                        <a class="dropdown-item" href="?method=be2bill_offsite">Be2Bill Offsite</a>
-                                                                        <a class="dropdown-item" href="?method=be2bill_direct">Be2Bill Direct</a>
-                                                                        <a class="dropdown-item" href="?method=authorize_net_aim">Authorize Net Aim</a>
-                                                                        <a class="dropdown-item" href="?method=payex">Payex</a>
+                            <div class="dropdown-menu w-100">
+                                                                    <a class="dropdown-item" href="?method=custom">Custom</a>
+                                                                    <a class="dropdown-item" href="?method=cash">Cash</a>
+                                                                    <a class="dropdown-item" href="?method=bank_transfer">Bank Transfer</a>
+                                                                    <a class="dropdown-item" href="?method=paypal_express_checkout">Paypal Express Checkout</a>
+                                                                    <a class="dropdown-item" href="?method=paypal_pro_checkout">Paypal Pro Checkout</a>
+                                                                    <a class="dropdown-item" href="?method=stripe_checkout">Stripe Checkout</a>
+                                                                    <a class="dropdown-item" href="?method=stripe_js">Stripe Js</a>
+                                                                    <a class="dropdown-item" href="?method=klarna_invoice">Klarna Invoice</a>
+                                                                    <a class="dropdown-item" href="?method=klarna_checkout">Klarna Checkout</a>
+                                                                    <a class="dropdown-item" href="?method=be2bill_offsite">Be2Bill Offsite</a>
+                                                                    <a class="dropdown-item" href="?method=be2bill_direct">Be2Bill Direct</a>
+                                                                    <a class="dropdown-item" href="?method=authorize_net_aim">Authorize Net Aim</a>
+                                                                    <a class="dropdown-item" href="?method=payex">Payex</a>
                                                             </div>
                         </div>
                     </div>
-                    <ul class="nav nav-pills nav-sidebar flex-column sidebar-menu" role="tablist">
-                        <li class="nav-header nav-item first">
-                            <span> <p>Available Payment Methods</p></span>
-                        </li>
+                    <p class="text-muted small mb-2">Available Payment Methods</p>
+                    <ul class="nav flex-column" role="tablist">
                                                     <li class="nav-item">
-                                <a href="?method=bank_transfer" aria-controls="bank_transfer" data-method="bank_transfer" class="nav-link">
-                                                                            <i class="fa fa-check-circle text-success"></i>
-                                    
-                                    <span class="icon">
-                                        Bank Transfer
-                                    </span>
+                                <a href="?method=bank_transfer" aria-controls="bank_transfer" data-method="bank_transfer" class="nav-link d-flex align-items-center gap-2">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="16" height="16" class="text-success" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0"></path><path d="m9 12l2 2l4-4"></path></g></svg>
+                                                                        Bank Transfer
                                 </a>
                             </li>
                                                     <li class="nav-item">
-                                <a href="?method=cash" aria-controls="cash" data-method="cash" class="nav-link active">
-                                                                            <i class="fa fa-check-circle text-success"></i>
-                                    
-                                    <span class="icon">
-                                        Cash
-                                    </span>
+                                <a href="?method=cash" aria-controls="cash" data-method="cash" class="nav-link d-flex align-items-center gap-2 active">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="16" height="16" class="text-success" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0"></path><path d="m9 12l2 2l4-4"></path></g></svg>
+                                                                        Cash
                                 </a>
                             </li>
                                                     <li class="nav-item">
-                                <a href="?method=credit" aria-controls="credit" data-method="credit" class="nav-link">
-                                                                            <i class="fa fa-check-circle text-success"></i>
-                                    
-                                    <span class="icon">
-                                        Credit
-                                    </span>
+                                <a href="?method=credit" aria-controls="credit" data-method="credit" class="nav-link d-flex align-items-center gap-2">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="16" height="16" class="text-success" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0"></path><path d="m9 12l2 2l4-4"></path></g></svg>
+                                                                        Credit
                                 </a>
                             </li>
                                             </ul>
@@ -64,7 +54,7 @@
         </aside>
         <section class="col-md-9">
                             
-<div data-controller="live" data-live-name-value="PaymentSettings" data-live-url-value="/_components/PaymentSettings" id="live-1079301195-0" data-live-query-mapping-value='{"method":{"name":"method"}}' data-live-fingerprint-value="REPLACED_FINGERPRINT" data-live-props-value='{"method":"cash","showDeleteConfirmation":false,"formName":"payment_methods","payment_methods":{"name":"Cash","enabled":"1","_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"live-1079301195-0"},"@checksum":"REPLACED_CHECKSUM"}'>
+<div data-controller="live" data-live-name-value="PaymentSettings" data-live-url-value="/_components/PaymentSettings" id="live-1194922066-0" data-live-query-mapping-value='{"method":{"name":"method"}}' data-live-fingerprint-value="REPLACED_FINGERPRINT" data-live-props-value='{"method":"cash","showDeleteConfirmation":false,"formName":"payment_methods","payment_methods":{"name":"Cash","enabled":"1","_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"live-1194922066-0"},"@checksum":"REPLACED_CHECKSUM"}'>
     
 
 
@@ -114,13 +104,13 @@
                 
                     <div class="card-footer">
                             <div class="d-flex justify-content-between align-items-center gap-3">
-                                    <button type="button" class="btn btn-outline-danger d-flex align-items-center gap-2" data-action="live#action" data-live-action-param="showDeleteConfirmation" aria-label="Delete payment method">
+                                    <button type="button" class="btn btn-outline-danger" data-action="live#action" data-live-action-param="showDeleteConfirmation" aria-label="Delete payment method">
                         <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16m-10 4v6m4-6v6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"></path></svg>
-                        <span>Delete</span>
+                        Delete
                     </button>
-                                <button type="submit" class="btn btn-primary d-flex align-items-center gap-2" data-action="live#action" data-live-action-param="save" data-loading="addAttribute(disabled)" aria-label="Save payment method">
+                                <button type="submit" class="btn btn-primary btn-save" data-action="live#action" data-live-action-param="save" data-loading="addAttribute(disabled)" aria-label="Save payment method">
                     <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M6 4h10l4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2"></path><path d="M10 14a2 2 0 1 0 4 0a2 2 0 1 0-4 0m4-10v4H8V4"></path></g></svg>
-                    <span>Save Payment Method</span>
+                    Save Payment Method
                 </button>
             </div>
                     </div>
