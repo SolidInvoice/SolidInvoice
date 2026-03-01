@@ -15,21 +15,22 @@ namespace SolidInvoice\NotificationBundle\Notification;
 
 use Psr\Log\LoggerInterface;
 use ReflectionObject;
+use SolidInvoice\CoreBundle\Traits\FlashErrorTrait;
 use SolidInvoice\NotificationBundle\Attribute\AsNotification;
 use SolidInvoice\NotificationBundle\Configurator\ConfiguratorInterface;
 use SolidInvoice\NotificationBundle\Exception\InvalidNotificationMessageException;
 use SolidInvoice\NotificationBundle\Repository\UserNotificationRepository;
 use Symfony\Component\DependencyInjection\Attribute\TaggedLocator;
 use Symfony\Component\DependencyInjection\ServiceLocator;
-use Symfony\Component\HttpFoundation\Exception\SessionNotFoundException;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Notifier\Exception\TransportExceptionInterface;
 use Symfony\Component\Notifier\NotifierInterface;
 use Symfony\Component\Notifier\Recipient\Recipient;
 
 class NotificationManager
 {
+    use FlashErrorTrait;
+
     /**
      * @param ServiceLocator<ConfiguratorInterface> $transportConfigurations
      */
@@ -91,21 +92,13 @@ class NotificationManager
                     'event' => $event,
                 ]);
 
-                $this->addFlashError('Failed to send notification. Please verify your email configuration in Settings.');
+                $this->addFlashError('notification.send_failed');
             }
         }
     }
 
-    private function addFlashError(string $message): void
+    private function getRequestStack(): RequestStack
     {
-        try {
-            $session = $this->requestStack->getSession();
-        } catch (SessionNotFoundException) {
-            return;
-        }
-
-        if ($session instanceof Session) {
-            $session->getFlashBag()->add('error', $message);
-        }
+        return $this->requestStack;
     }
 }

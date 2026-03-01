@@ -124,3 +124,5 @@ invoice:
             view: 'View Recurring Invoice'
 
 invoice_status_update: 'Invoice Status Update'
+
+invoice.email.send_failed: 'Failed to send invoice email. Please verify your email configuration in Settings.'

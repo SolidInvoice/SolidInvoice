@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Action\ForgotPassword;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use SolidInvoice\UserBundle\Email\ResetPasswordEmail;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Form\Type\ResetPasswordRequestFormType;
@@ -21,7 +22,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request as SfRequest;
 use Symfony\Component\HttpFoundation\Response;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
@@ -94,8 +94,7 @@ final class Request extends AbstractController
                 'exception' => $e,
             ]);
 
-            $this->addFlash('error', 'Failed to send email. Please verify the email configuration and try again.');
-
+            // Do not reveal transport failures to the user to prevent account enumeration
             return $this->redirectToRoute('_user_forgot_password_check_email');
         }
 

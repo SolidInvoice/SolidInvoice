@@ -81,7 +81,7 @@ class InvoiceMailerListenerTest extends TestCase
         $logger->shouldHaveReceived('error')
             ->with(M::pattern('/Failed to send invoice email/'), M::type('array'));
 
-        self::assertNotEmpty($flashBag->get('error'));
+        self::assertSame(['invoice.email.send_failed'], $flashBag->get('error'));
     }
 
     public function testEvents(): void
