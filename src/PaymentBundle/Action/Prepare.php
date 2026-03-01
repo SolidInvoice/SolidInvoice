@@ -18,6 +18,7 @@ use Brick\Math\BigNumber;
 use Brick\Math\RoundingMode;
 use DateTime;
 use Exception;
+use Generator;
 use Payum\Core\Payum;
 use Payum\Core\Registry\RegistryInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
@@ -90,7 +91,20 @@ final class Prepare
         }
 
         if (! $this->invoiceStateMachine->can($invoice, Graph::TRANSITION_PAY)) {
-            throw new Exception('This invoice cannot be paid');
+            $route = $this->router->generate('_invoices_view', ['id' => $invoice->getId()]);
+
+            return new class($route) extends RedirectResponse implements FlashResponse {
+                public function __construct(
+                    string $route
+                ) {
+                    parent::__construct($route);
+                }
+
+                public function getFlash(): Generator
+                {
+                    yield self::FLASH_DANGER => 'payment.create.exception.invoice_cannot_be_paid';
+                }
+            };
         }
 
         $this->companySelector->switchCompany($invoice->getCompany()->getId());
