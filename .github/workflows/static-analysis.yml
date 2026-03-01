@@ -6,7 +6,7 @@ jobs:
   phpstan:
     name: PHPStan
 
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
 
     env:
       SOLIDINVOICE_ENV: test

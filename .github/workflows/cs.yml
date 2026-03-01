@@ -9,7 +9,7 @@ jobs:
   ecs:
     name: Coding Standards (PHP)
 
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
 
     steps:
       - name: Harden Runner
@@ -43,7 +43,7 @@ jobs:
   composer-normalize:
     name: Composer Normalize
 
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
 
     steps:
       - name: Harden Runner
@@ -100,7 +100,7 @@ jobs:
   codespell:
     name: Codespell
 
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
 
     steps:
       - name: Harden Runner
@@ -121,7 +121,7 @@ jobs:
       statuses: write  # for github/super-linter/slim to mark status of each linter run
     name: Lint
 
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
 
     steps:
       - name: Harden Runner
