@@ -23,7 +23,7 @@
 // ============================================================================
 
 .section-icon-required {
-    background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgb(var(--swp-primary-rgb), 0.2) 100%);
+    background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.2) 100%);
 }
 
 
@@ -45,8 +45,8 @@
                 box-shadow var(--swp-transition-fast);
 
     &:focus-within {
-        border-color: rgb(var(--swp-primary-rgb), 0.4);
-        box-shadow: 0 0 0 3px rgb(var(--swp-primary-rgb), 0.08);
+        border-color: rgba(var(--swp-primary-rgb), 0.4);
+        box-shadow: 0 0 0 3px rgba(var(--swp-primary-rgb), 0.08);
     }
 }
 
@@ -184,8 +184,8 @@
                 box-shadow var(--swp-transition-fast);
 
     &:focus-within {
-        border-color: rgb(var(--swp-primary-rgb), 0.4);
-        box-shadow: 0 0 0 3px rgb(var(--swp-primary-rgb), 0.08);
+        border-color: rgba(var(--swp-primary-rgb), 0.4);
+        box-shadow: 0 0 0 3px rgba(var(--swp-primary-rgb), 0.08);
     }
 }
 

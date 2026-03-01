@@ -31,7 +31,7 @@
     justify-content: center;
     width: 40px;
     height: 40px;
-    background: linear-gradient(135deg, rgb(var(--swp-primary-rgb), 0.15) 0%, rgb(var(--swp-primary-rgb), 0.05) 100%);
+    background: linear-gradient(135deg, rgba(var(--swp-primary-rgb), 0.15) 0%, rgba(var(--swp-primary-rgb), 0.05) 100%);
     border-radius: var(--swp-radius-md);
     color: var(--swp-primary);
     flex-shrink: 0;
@@ -164,7 +164,7 @@
     justify-content: center;
     width: 36px;
     height: 36px;
-    background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgb(var(--swp-primary-rgb), 0.08) 100%);
+    background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.08) 100%);
     border-radius: var(--swp-radius-md);
     color: var(--swp-primary);
     flex-shrink: 0;

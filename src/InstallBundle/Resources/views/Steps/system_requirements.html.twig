@@ -160,7 +160,7 @@
                                     </div>
                                 </button>
                             </div>
-                            <div id="mandatory-requirements" class="accordion-collapse collapse {{ computed.appRequirements.failedRequirements|length > 0 ? 'show' : '' }}" data-bs-parent="#accordion-default">
+                            <div id="mandatory-requirements" class="accordion-collapse collapse{{ computed.appRequirements.failedRequirements|length > 0 ? ' show' : '' }}" data-bs-parent="#accordion-default">
                                 <div class="accordion-body text-dark">
                                     {% for requirement in computed.appRequirements.requirements %}
                                         {{ requirementCheck(requirement) }}

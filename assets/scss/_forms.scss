@@ -107,7 +107,7 @@
                 background-color var(--swp-transition-fast);
 
     &:hover {
-        border-color: rgb(var(--swp-primary-rgb), 0.3);
+        border-color: rgba(var(--swp-primary-rgb), 0.3);
         background-color: var(--swp-primary-lighter);
     }
 }
@@ -548,6 +548,12 @@
 // ============================================================================
 // RESPONSIVE ADJUSTMENTS
 // ============================================================================
+
+// Bootstrap 5 does not include a 500-weight utility; add it here as a shared utility.
+
+.fw-medium {
+    font-weight: 500 !important;
+}
 
 @media (width <= 576px) {
 

@@ -502,14 +502,6 @@ hr {
 
 @media print {
 
-    /* stylelint-disable selector-max-universal */
-
-    * {
-        visibility: visible !important;
-    }
-
-    /* stylelint-enable selector-max-universal */
-
     .no-print,
     .d-print-none {
         display: none !important;

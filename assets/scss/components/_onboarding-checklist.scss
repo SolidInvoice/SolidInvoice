@@ -20,7 +20,7 @@
 
 .card.border-success {
     border-width: 2px;
-    background: linear-gradient(135deg, rgb(var(--tblr-success-rgb), 0.03) 0%, rgb(var(--tblr-success-rgb), 0.01) 100%);
+    background: linear-gradient(135deg, rgba(var(--tblr-success-rgb), 0.03) 0%, rgba(var(--tblr-success-rgb), 0.01) 100%);
 
     .card-stamp-icon {
         background: var(--tblr-success);
@@ -69,7 +69,7 @@
     position: relative;
 
     &:hover {
-        background: rgb(var(--tblr-primary-rgb), 0.02);
+        background: rgba(var(--tblr-primary-rgb), 0.02);
         border-color: var(--tblr-primary);
         transform: translateX(4px);
         box-shadow: 0 2px 8px rgb(0 0 0 / 8%);
@@ -80,11 +80,11 @@
     }
 
     &.completed {
-        background: linear-gradient(90deg, rgb(var(--tblr-success-rgb), 0.08) 0%, rgb(var(--tblr-success-rgb), 0.02) 100%);
+        background: linear-gradient(90deg, rgba(var(--tblr-success-rgb), 0.08) 0%, rgba(var(--tblr-success-rgb), 0.02) 100%);
         border-left-color: var(--tblr-success);
 
         &:hover {
-            background: linear-gradient(90deg, rgb(var(--tblr-success-rgb), 0.12) 0%, rgb(var(--tblr-success-rgb), 0.06) 100%);
+            background: linear-gradient(90deg, rgba(var(--tblr-success-rgb), 0.12) 0%, rgba(var(--tblr-success-rgb), 0.06) 100%);
         }
 
         .item-name {
@@ -162,7 +162,7 @@
 
 .offcanvas-body .card {
     border: none;
-    background: linear-gradient(135deg, rgb(var(--tblr-primary-rgb), 0.05) 0%, rgb(var(--tblr-primary-rgb), 0.02) 100%);
+    background: linear-gradient(135deg, rgba(var(--tblr-primary-rgb), 0.05) 0%, rgba(var(--tblr-primary-rgb), 0.02) 100%);
 }
 
 /* Onboarding Offcanvas Panel */
