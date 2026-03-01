@@ -502,9 +502,13 @@ hr {
 
 @media print {
 
+    /* stylelint-disable selector-max-universal */
+
     * {
         visibility: visible !important;
     }
+
+    /* stylelint-enable selector-max-universal */
 
     .no-print,
     .d-print-none {
@@ -518,7 +522,7 @@ hr {
 
     html,
     body {
-        background: white !important;
+        background: #ffffff !important;
         height: auto !important;
         overflow: visible !important;
     }
@@ -532,7 +536,7 @@ hr {
         height: auto !important;
         overflow: visible !important;
         width: 100% !important;
-        background: white !important;
+        background: #ffffff !important;
     }
 
     .container-xl {

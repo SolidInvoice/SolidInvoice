@@ -123,7 +123,7 @@
         width: 24px;
         height: 24px;
         background: currentcolor;
-        color: white;
+        color: #ffffff;
         border-radius: var(--swp-radius-full);
         font-size: var(--swp-text-xs);
         font-weight: var(--swp-font-bold);
@@ -152,7 +152,7 @@
     height: auto;
     border: 2px solid var(--swp-border);
     border-radius: var(--swp-radius-md);
-    background: white;
+    background: #ffffff;
     padding: var(--swp-space-3);
     box-shadow: var(--swp-shadow-sm);
 }
@@ -183,7 +183,7 @@
     .manual-entry-content {
         margin-top: var(--swp-space-3);
         padding: var(--swp-space-4);
-        background: white;
+        background: #ffffff;
         border: 1px solid var(--swp-border);
         border-radius: var(--swp-radius-md);
     }
@@ -252,7 +252,7 @@
     code {
         display: block;
         padding: var(--swp-space-3);
-        background: white;
+        background: #ffffff;
         border: 1px solid var(--swp-border);
         border-radius: var(--swp-radius-md);
         text-align: center;

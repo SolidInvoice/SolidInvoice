@@ -98,7 +98,7 @@
     inset: 0;
     background: rgb(0 0 0 / 60%);
     z-index: 1060;
-    animation: marketplace-fadeIn 0.15s ease;
+    animation: marketplace-fade-in 0.15s ease;
     backdrop-filter: blur(4px);
 }
 
@@ -110,7 +110,7 @@
     align-items: center;
     justify-content: center;
     padding: var(--swp-space-4);
-    animation: marketplace-fadeIn 0.15s ease;
+    animation: marketplace-fade-in 0.15s ease;
 }
 
 .delete-confirmation-container {
@@ -119,7 +119,7 @@
     box-shadow: 0 25px 50px -12px rgb(0 0 0 / 25%);
     width: 100%;
     max-width: 480px;
-    animation: marketplace-scaleIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: marketplace-scale-in 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .delete-confirmation-header {
@@ -165,14 +165,14 @@
 // SHARED ANIMATIONS
 // ============================================================================
 
-@keyframes marketplace-fadeIn {
+@keyframes marketplace-fade-in {
 
     from { opacity: 0; }
 
     to { opacity: 1; }
 }
 
-@keyframes marketplace-slideUp {
+@keyframes marketplace-slide-up {
 
     from {
         opacity: 0;
@@ -185,7 +185,7 @@
     }
 }
 
-@keyframes marketplace-scaleIn {
+@keyframes marketplace-scale-in {
 
     from {
         opacity: 0;

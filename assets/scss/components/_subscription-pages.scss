@@ -28,10 +28,10 @@
     border: none;
     border-radius: var(--swp-radius-xl);
     box-shadow: var(--swp-shadow-xl);
-    animation: fadeIn 0.3s ease-out;
+    animation: subscription-fade-in 0.3s ease-out;
 }
 
-@keyframes fadeIn {
+@keyframes subscription-fade-in {
 
     from {
         opacity: 0;
@@ -223,10 +223,10 @@
 .subscription-cancelled-page .subscription-actions .btn-primary,
 .subscription-pending-page .subscription-actions .btn-primary,
 .subscription-paused-page .subscription-actions .btn-primary {
-    animation: ctaPulse 2s ease-in-out infinite;
+    animation: cta-pulse 2s ease-in-out infinite;
 }
 
-@keyframes ctaPulse {
+@keyframes cta-pulse {
 
     0%, 100% {
         box-shadow: var(--swp-shadow-primary);
@@ -338,7 +338,7 @@
 
         .btn-warning {
             background: var(--swp-warning);
-            color: white;
+            color: #ffffff;
             border: none;
 
             &:hover {
@@ -356,7 +356,7 @@
 
         .btn-danger {
             background: var(--swp-danger);
-            color: white;
+            color: #ffffff;
             border: none;
 
             &:hover {

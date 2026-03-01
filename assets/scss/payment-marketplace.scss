@@ -91,7 +91,7 @@
 
         .gateway-icon {
             background: linear-gradient(135deg, var(--swp-success-light) 0%, var(--swp-success) 100%);
-            color: white;
+            color: #ffffff;
         }
 
         &:hover {
@@ -150,7 +150,7 @@
 
             .gateway-icon {
                 background: linear-gradient(135deg, var(--swp-primary) 0%, var(--swp-primary-dark) 100%);
-                color: white;
+                color: #ffffff;
                 border-color: var(--swp-primary);
             }
         }
@@ -311,13 +311,13 @@
 
         &.bg-success {
             background: linear-gradient(135deg, var(--swp-success) 0%, var(--swp-success-hover) 100%) !important;
-            color: white;
+            color: #ffffff;
             box-shadow: 0 2px 4px rgb(var(--swp-success-rgb), 0.2);
         }
 
         &.bg-secondary {
             background: linear-gradient(135deg, var(--swp-gray-400) 0%, var(--swp-gray-500) 100%) !important;
-            color: white;
+            color: #ffffff;
             box-shadow: 0 2px 4px rgb(0 0 0 / 10%);
         }
     }
@@ -395,7 +395,7 @@
     inset: 0;
     background: rgb(0 0 0 / 50%);
     z-index: 1040;
-    animation: marketplace-fadeIn 0.2s ease;
+    animation: marketplace-fade-in 0.2s ease;
     backdrop-filter: blur(2px);
 }
 
@@ -407,7 +407,7 @@
     align-items: center;
     justify-content: center;
     padding: var(--swp-space-4);
-    animation: marketplace-fadeIn 0.2s ease;
+    animation: marketplace-fade-in 0.2s ease;
     overflow-y: auto;
 }
 
@@ -421,7 +421,7 @@
     max-height: calc(100vh - var(--swp-space-8));
     display: flex;
     flex-direction: column;
-    animation: marketplace-slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: marketplace-slide-up 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .payment-modal-header {
@@ -487,10 +487,10 @@
         max-height: 90vh;
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
-        animation: marketplace-slideUpMobile 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        animation: marketplace-slide-up-mobile 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    @keyframes marketplace-slideUpMobile {
+    @keyframes marketplace-slide-up-mobile {
 
         from {
             transform: translateY(100%);
