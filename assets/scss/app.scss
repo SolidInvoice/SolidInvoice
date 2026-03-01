@@ -22,7 +22,6 @@
 $green-base: #2e963a;
 $green-dark: #1f6c29;
 $green-light: #e8f5e9;
-
 $orange-base: #f0a015;
 $orange-dark: #c8820e;
 $orange-light: #fff8e1;
@@ -44,7 +43,6 @@ $btn-primary-hover-bg: $green-dark;
 $btn-primary-hover-border-color: $green-dark;
 $btn-primary-active-bg: $green-dark;
 $btn-primary-active-border-color: $green-dark;
-
 $btn-secondary-bg: $secondary;
 $btn-secondary-border-color: $secondary;
 $btn-secondary-hover-bg: $orange-dark;
@@ -56,7 +54,6 @@ $btn-secondary-active-border-color: $orange-dark;
 $alert-primary-bg: $green-light;
 $alert-primary-border-color: darken($green-light, 5%);
 $alert-primary-text: $green-dark;
-
 $alert-secondary-bg: $orange-light;
 $alert-secondary-border-color: darken($orange-light, 5%);
 $alert-secondary-text: $orange-dark;
@@ -131,9 +128,10 @@ $alert-secondary-text: $orange-dark;
 // to the appropriate component files in the design system.
 
 // Keep legacy active nav styling for now
-/*.nav-link.active {
+
+/* .nav-link.active {
     background-color: #eef2ff;
     color: #4f46e5;
     border-radius: 8px;
     font-weight: 600;
-}*/
+} */

@@ -128,16 +128,17 @@
 // ============================================================================
 
 .client-tabs-card {
+
     .card-header {
         padding-bottom: 0;
         border-bottom: none;
     }
 
-    /*.nav-tabs {
+    /* .nav-tabs {
         border-bottom: 1px solid var(--swp-border);
         margin: 0 calc(-1 * var(--swp-space-6));
         padding: 0 var(--swp-space-6);
-    }*/
+    } */
 
     .nav-link {
         padding: var(--swp-space-3) var(--swp-space-4);
@@ -155,7 +156,7 @@
 
         &:hover {
             color: var(--swp-primary);
-            border-bottom-color: rgba(46, 150, 58, 0.3);
+            border-bottom-color: rgb(46 150 58 / 30%);
         }
 
         &.active {
@@ -379,7 +380,8 @@
 // RESPONSIVE STYLES
 // ============================================================================
 
-@media (max-width: 991.98px) {
+@media (width <= 991.98px) {
+
     .client-hero {
         padding: var(--swp-space-4);
     }
@@ -393,7 +395,8 @@
     }
 }
 
-@media (max-width: 767.98px) {
+@media (width <= 767.98px) {
+
     .client-hero {
         text-align: center;
     }
@@ -430,6 +433,7 @@
 // ============================================================================
 
 @media print {
+
     .client-hero .dropdown,
     .client-hero .btn,
     .client-section-header .btn,

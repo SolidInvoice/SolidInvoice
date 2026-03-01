@@ -32,10 +32,12 @@
 }
 
 @keyframes fadeIn {
+
     from {
         opacity: 0;
         transform: translateY(10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -47,6 +49,7 @@
 // ============================================================================
 
 // Page header (above subscription container)
+
 .subscription-page-header {
     background: var(--swp-surface);
     border-bottom: 1px solid var(--swp-border);
@@ -154,6 +157,7 @@
 }
 
 // Cancelled page: red icons for locked features
+
 .subscription-cancelled-page .subscription-benefits li svg {
     color: var(--swp-danger);
 }
@@ -196,6 +200,7 @@
     }
 
     .btn-ghost {
+
         svg {
             width: 18px;
             height: 18px;
@@ -213,6 +218,7 @@
 }
 
 // Add subtle pulse animation to CTA on trial/cancelled/pending/paused pages
+
 .subscription-expired-page .subscription-actions .btn-primary,
 .subscription-cancelled-page .subscription-actions .btn-primary,
 .subscription-pending-page .subscription-actions .btn-primary,
@@ -221,9 +227,11 @@
 }
 
 @keyframes ctaPulse {
+
     0%, 100% {
         box-shadow: var(--swp-shadow-primary);
     }
+
     50% {
         box-shadow: var(--swp-shadow-primary-lg);
     }
@@ -234,14 +242,18 @@
 // ============================================================================
 
 // Trial Expired - Orange/Warning theme
+
 .subscription-expired-page {
+
     .subscription-container {
         border-top: 4px solid var(--swp-warning);
     }
 }
 
 // Cancelled - Red/Danger theme
+
 .subscription-cancelled-page {
+
     .subscription-container {
         border-top: 4px solid var(--swp-danger);
     }
@@ -268,14 +280,18 @@
 }
 
 // Pending - Blue/Info theme (activation required)
+
 .subscription-pending-page {
+
     .subscription-container {
         border-top: 4px solid var(--swp-info);
     }
 }
 
 // Paused - Gray/Neutral theme
+
 .subscription-paused-page {
+
     .subscription-container {
         border-top: 4px solid var(--swp-text-secondary);
     }
@@ -314,6 +330,7 @@
     }
 
     // Warning banner (trial)
+
     &.alert-warning {
         background: var(--swp-warning-lighter);
         border-bottom-color: var(--swp-warning-light);
@@ -331,6 +348,7 @@
     }
 
     // Danger banner (cancelled)
+
     &.alert-danger {
         background: var(--swp-danger-lighter);
         border-bottom-color: var(--swp-danger-light);
@@ -352,12 +370,14 @@
 // RESPONSIVE DESIGN
 // ============================================================================
 
-@media (max-width: 767.98px) {
+@media (width <= 767.98px) {
+
     .subscription-page {
         padding: var(--swp-space-6) var(--swp-space-3);
     }
 
     .subscription-page-header {
+
         .d-flex {
             flex-direction: column;
             align-items: flex-start !important;
@@ -400,12 +420,14 @@
     }
 
     .subscription-actions {
+
         .btn {
             width: 100%;
         }
     }
 
     .alert-banner {
+
         .d-flex {
             flex-direction: column;
             align-items: flex-start;
@@ -419,7 +441,8 @@
 }
 
 // Tablet adjustments
-@media (min-width: 768px) and (max-width: 991.98px) {
+@media (width >= 768px) and (width <= 991.98px) {
+
     .subscription-container {
         max-width: 600px;
         padding: var(--swp-space-8);
@@ -431,6 +454,7 @@
 // ============================================================================
 
 @media print {
+
     .subscription-page {
         padding: 0;
     }

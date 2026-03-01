@@ -39,6 +39,7 @@
     margin-bottom: var(--swp-space-2);
 
     // Required indicator
+
     &.required::after {
         content: ' *';
         color: var(--swp-danger);
@@ -50,6 +51,7 @@
 // ============================================================================
 
 .form-field {
+
     .form-label {
         font-weight: var(--swp-font-medium);
         color: var(--swp-body-color);
@@ -105,7 +107,7 @@
                 background-color var(--swp-transition-fast);
 
     &:hover {
-        border-color: rgba(var(--swp-primary-rgb), 0.3);
+        border-color: rgb(var(--swp-primary-rgb), 0.3);
         background-color: var(--swp-primary-lighter);
     }
 }
@@ -148,6 +150,7 @@
 // ============================================================================
 
 .input-icon-group {
+
     .input-group-text {
         background-color: var(--swp-gray-50);
         border-color: var(--swp-border);
@@ -174,6 +177,7 @@
     }
 
     // When icon is on the left
+
     .input-group-text:first-child {
         border-right: none;
 
@@ -188,6 +192,7 @@
 // ============================================================================
 
 .input-validate-group {
+
     .btn-validate {
         display: flex;
         align-items: center;
@@ -223,6 +228,7 @@
     }
 
     .form-group-content {
+
         .mb-3:last-child,
         .mb-4:last-child {
             margin-bottom: 0 !important;
@@ -235,6 +241,7 @@
 // ============================================================================
 
 .address-widget {
+
     .card-body {
         padding: var(--swp-space-4);
     }
@@ -275,7 +282,7 @@
 
     &:focus {
         border-color: var(--swp-success);
-        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+        box-shadow: 0 0 0 3px rgb(16 185 129 / 15%);
     }
 }
 
@@ -334,6 +341,7 @@
 }
 
 // Symfony UX Dropzone styling
+
 .dropzone {
     border: 2px dashed var(--swp-gray-300);
     border-radius: var(--swp-radius-md);
@@ -398,6 +406,7 @@
     border-top: 1px solid var(--swp-border-light);
 
     // When used in a card footer
+
     .card-footer & {
         padding: 0;
         background: transparent;
@@ -405,6 +414,7 @@
     }
 
     // Spread buttons (cancel left, save right)
+
     &.form-actions-spread {
         justify-content: space-between;
     }
@@ -431,6 +441,7 @@
 // ============================================================================
 
 .form-horizontal {
+
     .form-group,
     .mb-3,
     .mb-4 {
@@ -439,7 +450,7 @@
         gap: var(--swp-space-4);
         align-items: start;
 
-        @media (max-width: 768px) {
+        @media (width <= 768px) {
             grid-template-columns: 1fr;
         }
     }
@@ -449,7 +460,7 @@
         margin-bottom: 0;
         text-align: right;
 
-        @media (max-width: 768px) {
+        @media (width <= 768px) {
             text-align: left;
             padding-top: 0;
         }
@@ -461,6 +472,7 @@
 // ============================================================================
 
 .form-compact {
+
     .mb-3,
     .mb-4 {
         margin-bottom: var(--swp-space-3) !important;
@@ -484,6 +496,7 @@
 
 // Tabler's .btn already sets display: inline-flex and align-items: center,
 // but does not set gap. Add consistent spacing between icon and text.
+
 .btn {
     gap: var(--swp-space-2);
 }
@@ -527,6 +540,7 @@
 // ============================================================================
 
 // Reduce font size for tabs in card headers
+
 .card-header-tabs .nav-link {
     font-size: 0.875rem;
 }
@@ -535,12 +549,14 @@
 // RESPONSIVE ADJUSTMENTS
 // ============================================================================
 
-@media (max-width: 576px) {
+@media (width <= 576px) {
+
     .form-switch-field {
         padding: var(--swp-space-3);
     }
 
     .form-switch-wrapper {
+
         .form-check-input {
             width: 2.25rem;
             height: 1.125rem;

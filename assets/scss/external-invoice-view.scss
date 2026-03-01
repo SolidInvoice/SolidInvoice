@@ -6,6 +6,7 @@
  */
 
 // Invoice-specific action button
+
 .btn-invoice-action {
     padding: 0.75rem 1.25rem;
     font-weight: 500;
@@ -14,7 +15,7 @@
 
     &:hover {
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
     }
 
     &:active {
@@ -23,6 +24,7 @@
 }
 
 // Screen reader only text
+
 .sr-only {
     position: absolute;
     width: 1px;
@@ -36,6 +38,7 @@
 }
 
 @media print {
+
     .btn-invoice-action:hover {
         box-shadow: none !important;
         transform: none !important;

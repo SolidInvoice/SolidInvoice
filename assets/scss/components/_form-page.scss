@@ -32,7 +32,9 @@
     padding-bottom: var(--swp-space-24);
 
     &--narrow { max-width: 800px; }
+
     &--medium { max-width: 900px; }
+
     &--wide   { max-width: 1100px; }
 }
 
@@ -57,13 +59,13 @@
     justify-content: center;
     width: 56px;
     height: 56px;
-    background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.15) 100%);
+    background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgb(var(--swp-primary-rgb), 0.15) 100%);
     border-radius: var(--swp-radius-lg);
     color: var(--swp-primary);
     flex-shrink: 0;
 
     &--security {
-        background: linear-gradient(135deg, rgba(var(--swp-success-rgb), 0.2) 0%, rgba(var(--swp-success-rgb), 0.1) 100%);
+        background: linear-gradient(135deg, rgb(var(--swp-success-rgb), 0.2) 0%, rgb(var(--swp-success-rgb), 0.1) 100%);
         color: var(--swp-success);
     }
 }
@@ -133,13 +135,13 @@
     justify-content: center;
     width: 40px;
     height: 40px;
-    background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.1) 100%);
+    background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgb(var(--swp-primary-rgb), 0.1) 100%);
     border-radius: var(--swp-radius-md);
     color: var(--swp-primary);
     flex-shrink: 0;
 
-    &-security {
-        background: linear-gradient(135deg, rgba(var(--swp-success-rgb), 0.15) 0%, rgba(var(--swp-success-rgb), 0.05) 100%);
+    &--security {
+        background: linear-gradient(135deg, rgb(var(--swp-success-rgb), 0.15) 0%, rgb(var(--swp-success-rgb), 0.05) 100%);
         color: var(--swp-success);
     }
 }
@@ -185,7 +187,7 @@
     grid-template-columns: repeat(2, 1fr);
     gap: var(--swp-space-4);
 
-    @media (max-width: 768px) {
+    @media (width <= 768px) {
         grid-template-columns: 1fr;
         gap: var(--swp-space-3);
     }
@@ -214,7 +216,7 @@
     padding: var(--swp-space-4) 0;
     margin-top: var(--swp-space-8);
     z-index: 10;
-    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 -4px 12px rgb(0 0 0 / 5%);
 }
 
 .form-page-actions-inner {
@@ -255,7 +257,8 @@
 // RESPONSIVE DESIGN
 // ============================================================================
 
-@media (max-width: 767.98px) {
+@media (width <= 767.98px) {
+
     .form-page {
         padding: var(--swp-space-4);
     }
@@ -311,6 +314,7 @@
 // ============================================================================
 
 @media print {
+
     .form-page-actions {
         display: none !important;
     }

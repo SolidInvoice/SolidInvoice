@@ -41,7 +41,7 @@
     justify-content: center;
     width: 56px;
     height: 56px;
-    background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.15) 100%);
+    background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgb(var(--swp-primary-rgb), 0.15) 100%);
     border-radius: var(--swp-radius-lg);
     color: var(--swp-primary);
 }
@@ -70,7 +70,7 @@
     gap: var(--swp-space-6);
     align-items: start;
 
-    @media (max-width: 992px) {
+    @media (width <= 992px) {
         grid-template-columns: 1fr;
     }
 }
@@ -83,7 +83,7 @@
     position: sticky;
     top: var(--swp-space-6);
 
-    @media (max-width: 992px) {
+    @media (width <= 992px) {
         position: static;
         order: 2;
     }
@@ -111,7 +111,7 @@
     justify-content: center;
     width: 36px;
     height: 36px;
-    background: linear-gradient(135deg, var(--swp-info-light) 0%, rgba(var(--swp-info-rgb), 0.2) 100%);
+    background: linear-gradient(135deg, var(--swp-info-light) 0%, rgb(var(--swp-info-rgb), 0.2) 100%);
     border-radius: var(--swp-radius-md);
     color: var(--swp-info);
 }
@@ -128,6 +128,7 @@
 }
 
 // Summary Sections
+
 .summary-section {
     padding: var(--swp-space-4) 0;
     border-bottom: 1px solid var(--swp-border-light);
@@ -180,6 +181,7 @@
 }
 
 // Invoice Details Grid
+
 .invoice-details-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -204,6 +206,7 @@
 }
 
 // Line Items Preview
+
 .line-items-preview {
     display: flex;
     flex-direction: column;
@@ -236,6 +239,7 @@
 }
 
 // Summary Totals
+
 .summary-totals {
     margin-top: var(--swp-space-4);
     padding-top: var(--swp-space-4);
@@ -288,7 +292,7 @@
 // ============================================================================
 
 .payment-form-section {
-    @media (max-width: 992px) {
+    @media (width <= 992px) {
         order: 1;
     }
 }
@@ -315,7 +319,7 @@
     justify-content: center;
     width: 36px;
     height: 36px;
-    background: linear-gradient(135deg, var(--swp-success-light) 0%, rgba(var(--swp-success-rgb), 0.2) 100%);
+    background: linear-gradient(135deg, var(--swp-success-light) 0%, rgb(var(--swp-success-rgb), 0.2) 100%);
     border-radius: var(--swp-radius-md);
     color: var(--swp-success);
 }
@@ -346,6 +350,7 @@
 
 .payment-form-body {
     // Style form labels
+
     .form-label {
         display: block;
         font-size: var(--swp-text-sm);
@@ -360,23 +365,27 @@
     }
 
     // Form help text
+
     .form-text {
         display: block;
         margin-top: var(--swp-space-2);
     }
 
     // Fix for money type input groups
+
     .input-group {
         flex-wrap: nowrap;
     }
 
     // Textarea styling
+
     textarea.form-control {
         min-height: 80px;
         resize: vertical;
     }
 
     // Ensure proper spacing between form groups
+
     .mb-4:last-child {
         margin-bottom: 0 !important;
     }
@@ -576,6 +585,7 @@
 }
 
 // Hide capture online section when offline method selected
+
 [data-payment-method-select-target="captureOnline"].d-none {
     display: none !important;
 }
@@ -645,7 +655,7 @@
     justify-content: center;
     width: 32px;
     height: 32px;
-    background: linear-gradient(135deg, var(--swp-warning-light, #fef3c7) 0%, rgba(245, 158, 11, 0.2) 100%);
+    background: linear-gradient(135deg, var(--swp-warning-light, #fef3c7) 0%, rgb(245 158 11 / 20%) 100%);
     border-radius: var(--swp-radius-md);
     color: var(--swp-warning, #f59e0b);
 }
@@ -696,12 +706,12 @@
 
 .payment-card-captured {
     border-left-color: var(--swp-success);
-    background: var(--swp-success-lighter, rgba(16, 185, 129, 0.05));
+    background: var(--swp-success-lighter, rgb(16 185 129 / 5%));
 }
 
 .payment-card-failed {
     border-left-color: var(--swp-danger);
-    background: var(--swp-danger-lighter, rgba(239, 68, 68, 0.05));
+    background: var(--swp-danger-lighter, rgb(239 68 68 / 5%));
 }
 
 .payment-card-header {
@@ -768,7 +778,8 @@
 // RESPONSIVE ADJUSTMENTS
 // ============================================================================
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
+
     .payment-container {
         padding: 0 var(--swp-space-4);
         padding-bottom: var(--swp-space-16);

@@ -38,7 +38,7 @@
 
         &:hover {
             color: var(--swp-primary);
-            border-bottom-color: rgba(var(--swp-primary-rgb), 0.3);
+            border-bottom-color: rgb(var(--swp-primary-rgb), 0.3);
         }
 
         &.active {
@@ -71,23 +71,23 @@
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
     position: relative;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 5%);
 
     &:hover {
         border-color: var(--swp-primary);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 0 0 1px var(--swp-primary);
+        box-shadow: 0 4px 12px rgb(0 0 0 / 8%), 0 0 0 1px var(--swp-primary);
         transform: translateY(-2px);
 
         .gateway-icon {
             background: linear-gradient(135deg, var(--swp-primary-light) 0%, var(--swp-primary) 100%);
             color: var(--swp-primary);
-            box-shadow: 0 4px 8px rgba(var(--swp-primary-rgb), 0.2);
+            box-shadow: 0 4px 8px rgb(var(--swp-primary-rgb), 0.2);
         }
     }
 
     &.is-configured {
-        background: linear-gradient(135deg, rgba(var(--swp-success-rgb), 0.05) 0%, rgba(var(--swp-success-rgb), 0.02) 100%);
-        border-color: rgba(var(--swp-success-rgb), 0.3);
+        background: linear-gradient(135deg, rgb(var(--swp-success-rgb), 0.05) 0%, rgb(var(--swp-success-rgb), 0.02) 100%);
+        border-color: rgb(var(--swp-success-rgb), 0.3);
 
         .gateway-icon {
             background: linear-gradient(135deg, var(--swp-success-light) 0%, var(--swp-success) 100%);
@@ -95,18 +95,19 @@
         }
 
         &:hover {
-            background: linear-gradient(135deg, rgba(var(--swp-success-rgb), 0.08) 0%, rgba(var(--swp-success-rgb), 0.04) 100%);
+            background: linear-gradient(135deg, rgb(var(--swp-success-rgb), 0.08) 0%, rgb(var(--swp-success-rgb), 0.04) 100%);
             border-color: var(--swp-success);
         }
     }
 
     &.is-custom-gateway {
-        background: linear-gradient(135deg, rgba(var(--swp-primary-rgb), 0.04) 0%, rgba(var(--swp-primary-rgb), 0.01) 100%);
-        border: 2px dashed rgba(var(--swp-primary-rgb), 0.3);
+        background: linear-gradient(135deg, rgb(var(--swp-primary-rgb), 0.04) 0%, rgb(var(--swp-primary-rgb), 0.01) 100%);
+        border: 2px dashed rgb(var(--swp-primary-rgb), 0.3);
         position: relative;
         margin-bottom: var(--swp-space-6);
 
         // Add horizontal divider after custom gateway
+
         &::after {
             content: '';
             position: absolute;
@@ -124,10 +125,7 @@
         &::before {
             content: '';
             position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
+            inset: -2px;
             background: linear-gradient(135deg, var(--swp-primary), var(--swp-primary-dark));
             border-radius: var(--swp-radius-lg);
             opacity: 0;
@@ -136,13 +134,13 @@
         }
 
         .gateway-icon {
-            background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.2) 100%);
+            background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgb(var(--swp-primary-rgb), 0.2) 100%);
             color: var(--swp-primary);
-            border: 2px solid rgba(var(--swp-primary-rgb), 0.2);
+            border: 2px solid rgb(var(--swp-primary-rgb), 0.2);
         }
 
         &:hover {
-            background: linear-gradient(135deg, rgba(var(--swp-primary-rgb), 0.08) 0%, rgba(var(--swp-primary-rgb), 0.02) 100%);
+            background: linear-gradient(135deg, rgb(var(--swp-primary-rgb), 0.08) 0%, rgb(var(--swp-primary-rgb), 0.02) 100%);
             border-color: var(--swp-primary);
             border-style: solid;
 
@@ -173,7 +171,7 @@
         color: var(--swp-text-secondary);
         flex-shrink: 0;
         transition: all 0.2s ease;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+        box-shadow: 0 2px 4px rgb(0 0 0 / 4%);
     }
 
     h6 {
@@ -201,7 +199,7 @@
 
         &:hover {
             transform: translateY(-1px);
-            box-shadow: 0 2px 8px rgba(var(--swp-primary-rgb), 0.2);
+            box-shadow: 0 2px 8px rgb(var(--swp-primary-rgb), 0.2);
         }
     }
 
@@ -219,6 +217,7 @@
 // ============================================================================
 
 .active-methods-panel {
+
     h5 {
         font-size: var(--swp-text-lg);
         font-weight: 600;
@@ -234,7 +233,7 @@
         background: linear-gradient(135deg, var(--swp-gray-100) 0%, var(--swp-gray-200) 100%);
         color: var(--swp-text-primary);
         border: 1px solid var(--swp-border-light);
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 1px 2px rgb(0 0 0 / 5%);
     }
 }
 
@@ -247,24 +246,24 @@
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     border: 1px solid var(--swp-border-light);
     border-radius: var(--swp-radius-lg);
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 5%);
     background: var(--swp-surface);
 
     &:hover {
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(var(--swp-primary-rgb), 0.1);
+        box-shadow: 0 4px 12px rgb(0 0 0 / 8%), 0 0 0 1px rgb(var(--swp-primary-rgb), 0.1);
         transform: translateY(-2px);
-        border-color: rgba(var(--swp-primary-rgb), 0.2);
+        border-color: rgb(var(--swp-primary-rgb), 0.2);
 
         .payment-method-icon {
-            background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.15) 100%);
-            box-shadow: 0 4px 8px rgba(var(--swp-primary-rgb), 0.15);
+            background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgb(var(--swp-primary-rgb), 0.15) 100%);
+            box-shadow: 0 4px 8px rgb(var(--swp-primary-rgb), 0.15);
             color: var(--swp-primary);
         }
 
         .btn-outline-secondary {
             border-color: var(--swp-primary);
             color: var(--swp-primary);
-            background: rgba(var(--swp-primary-rgb), 0.04);
+            background: rgb(var(--swp-primary-rgb), 0.04);
         }
     }
 
@@ -291,7 +290,7 @@
         color: var(--swp-text-secondary);
         flex-shrink: 0;
         transition: all 0.2s ease;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+        box-shadow: 0 2px 4px rgb(0 0 0 / 4%);
 
         svg {
             width: 28px;
@@ -311,15 +310,15 @@
         text-transform: uppercase;
 
         &.bg-success {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+            background: linear-gradient(135deg, var(--swp-success) 0%, var(--swp-success-hover) 100%) !important;
             color: white;
-            box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+            box-shadow: 0 2px 4px rgb(var(--swp-success-rgb), 0.2);
         }
 
         &.bg-secondary {
             background: linear-gradient(135deg, var(--swp-gray-400) 0%, var(--swp-gray-500) 100%) !important;
             color: white;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 4px rgb(0 0 0 / 10%);
         }
     }
 
@@ -355,7 +354,9 @@
 
 .payment-marketplace {
     // Fix close button alignment in card header
+
     .card-header {
+
         .d-flex {
             width: 100%;
 
@@ -370,12 +371,15 @@
     }
 
     // Add spacing between form switch fields (the containers with backgrounds)
+
     form {
+
         .form-switch-field + .form-switch-field {
             margin-top: var(--swp-space-4);
         }
 
         // Add spacing between regular form fields
+
         .mb-3 + .mb-3 {
             margin-top: var(--swp-space-3);
         }
@@ -388,11 +392,8 @@
 
 .payment-modal-backdrop {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
+    inset: 0;
+    background: rgb(0 0 0 / 50%);
     z-index: 1040;
     animation: marketplace-fadeIn 0.2s ease;
     backdrop-filter: blur(2px);
@@ -400,10 +401,7 @@
 
 .payment-modal {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     z-index: 1050;
     display: flex;
     align-items: center;
@@ -416,8 +414,8 @@
 .payment-modal-container {
     background: var(--swp-surface);
     border-radius: var(--swp-radius-xl);
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
-                0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 10%),
+                0 10px 10px -5px rgb(0 0 0 / 4%);
     width: 100%;
     max-width: 800px;
     max-height: calc(100vh - var(--swp-space-8));
@@ -453,6 +451,7 @@
     padding: var(--swp-space-6);
 
     // Remove card styling from PaymentSettings when inside modal
+
     > div > .card {
         border: none;
         box-shadow: none;
@@ -477,6 +476,7 @@
 
 // Mobile adaptations
 @include media-breakpoint-down(md) {
+
     .payment-modal {
         padding: 0;
         align-items: flex-end;
@@ -487,13 +487,15 @@
         max-height: 90vh;
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
-        animation: slideUpMobile 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        animation: marketplace-slideUpMobile 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    @keyframes slideUpMobile {
+    @keyframes marketplace-slideUpMobile {
+
         from {
             transform: translateY(100%);
         }
+
         to {
             transform: translateY(0);
         }
@@ -501,6 +503,7 @@
 }
 
 // Prevent body scroll when modal is open
+
 body:has(.payment-modal) {
     overflow: hidden;
 }
@@ -510,6 +513,7 @@ body:has(.payment-modal) {
 // ============================================================================
 
 @include media-breakpoint-down(md) {
+
     .marketplace-panel {
         position: static;
         max-height: none;
@@ -521,6 +525,7 @@ body:has(.payment-modal) {
     }
 
     .active-method-card {
+
         .d-flex {
             flex-direction: column;
             align-items: flex-start !important;
@@ -538,6 +543,7 @@ body:has(.payment-modal) {
     }
 
     // Horizontal scrolling tabs on mobile
+
     .payment-marketplace > .nav-tabs {
         margin-left: calc(var(--swp-space-4) * -1);
         margin-right: calc(var(--swp-space-4) * -1);
@@ -563,7 +569,9 @@ body:has(.payment-modal) {
 // ============================================================================
 
 @media print {
+
     .payment-marketplace {
+
         .nav-tabs,
         .marketplace-panel,
         .btn {

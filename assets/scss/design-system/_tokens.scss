@@ -86,7 +86,7 @@
     --swp-surface: #ffffff;
     --swp-surface-hover: #f8fafc;
     --swp-surface-elevated: #ffffff;
-    --swp-surface-overlay: rgba(15, 23, 42, 0.5);
+    --swp-surface-overlay: rgb(15 23 42 / 50%);
 
     // -------------------------------------------------------------------------
     // Text Colors
@@ -164,25 +164,25 @@
 
 :root {
     // Elevation shadows
-    --swp-shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --swp-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
-    --swp-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-    --swp-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-    --swp-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-    --swp-shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    --swp-shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 5%);
+    --swp-shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 10%), 0 1px 2px -1px rgb(0 0 0 / 10%);
+    --swp-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 10%), 0 2px 4px -2px rgb(0 0 0 / 10%);
+    --swp-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 10%), 0 4px 6px -4px rgb(0 0 0 / 10%);
+    --swp-shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 10%), 0 8px 10px -6px rgb(0 0 0 / 10%);
+    --swp-shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 25%);
 
     // Inner shadow
-    --swp-shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+    --swp-shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 5%);
 
     // Colored shadows for buttons and interactive elements
-    --swp-shadow-primary: 0 4px 14px 0 rgba(46, 150, 58, 0.25);
-    --swp-shadow-primary-lg: 0 8px 20px 0 rgba(46, 150, 58, 0.3);
-    --swp-shadow-danger: 0 4px 14px 0 rgba(239, 68, 68, 0.25);
-    --swp-shadow-danger-lg: 0 8px 20px 0 rgba(239, 68, 68, 0.3);
+    --swp-shadow-primary: 0 4px 14px 0 rgb(46 150 58 / 25%);
+    --swp-shadow-primary-lg: 0 8px 20px 0 rgb(46 150 58 / 30%);
+    --swp-shadow-danger: 0 4px 14px 0 rgb(239 68 68 / 25%);
+    --swp-shadow-danger-lg: 0 8px 20px 0 rgb(239 68 68 / 30%);
 
     // Focus ring shadow
-    --swp-ring-primary: 0 0 0 3px rgba(46, 150, 58, 0.15);
-    --swp-ring-danger: 0 0 0 3px rgba(239, 68, 68, 0.15);
+    --swp-ring-primary: 0 0 0 3px rgb(46 150 58 / 15%);
+    --swp-ring-danger: 0 0 0 3px rgb(239 68 68 / 15%);
     --swp-ring-offset: 0 0 0 2px var(--swp-surface);
 }
 

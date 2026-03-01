@@ -11,14 +11,14 @@
 
 :root {
     // System font stack - Modern, performant, native feel
-    --swp-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-                     'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
+    --swp-font-sans: -apple-system, blinkmacsystemfont, 'Segoe UI', roboto,
+                     'Helvetica Neue', arial, 'Noto Sans', sans-serif,
                      'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
                      'Noto Color Emoji';
 
     // Monospace for code, numbers in tables
-    --swp-font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Monaco,
-                     Consolas, 'Liberation Mono', 'Courier New', monospace;
+    --swp-font-mono: ui-monospace, sfmono-regular, 'SF Mono', menlo, monaco,
+                     consolas, 'Liberation Mono', 'Courier New', monospace;
 
     // Default font family
     --swp-font-family: var(--swp-font-sans);
@@ -88,6 +88,7 @@
 // ============================================================================
 
 // Page title - Large, prominent heading
+
 .text-page-title {
     font-size: var(--swp-text-2xl);
     font-weight: var(--swp-font-semibold);
@@ -97,6 +98,7 @@
 }
 
 // Page subtitle
+
 .text-page-subtitle {
     font-size: var(--swp-text-base);
     font-weight: var(--swp-font-normal);
@@ -105,6 +107,7 @@
 }
 
 // Card title
+
 .text-card-title {
     font-size: var(--swp-text-lg);
     font-weight: var(--swp-font-semibold);
@@ -113,6 +116,7 @@
 }
 
 // Card subtitle
+
 .text-card-subtitle {
     font-size: var(--swp-text-sm);
     font-weight: var(--swp-font-normal);
@@ -121,6 +125,7 @@
 }
 
 // Section title (with icon pattern)
+
 .text-section-title {
     font-size: var(--swp-text-md);
     font-weight: var(--swp-font-semibold);
@@ -141,6 +146,7 @@
 }
 
 // Label text (form labels, table headers)
+
 .text-label {
     font-size: var(--swp-text-sm);
     font-weight: var(--swp-font-medium);
@@ -149,6 +155,7 @@
 }
 
 // Body text
+
 .text-body {
     font-size: var(--swp-text-base);
     font-weight: var(--swp-font-normal);
@@ -157,6 +164,7 @@
 }
 
 // Small/Help text
+
 .text-help {
     font-size: var(--swp-text-sm);
     font-weight: var(--swp-font-normal);
@@ -165,12 +173,14 @@
 }
 
 // Monospace text (for IDs, codes)
+
 .text-mono {
     font-family: var(--swp-font-mono);
     font-size: var(--swp-text-sm);
 }
 
 // Table header text
+
 .text-table-header {
     font-size: var(--swp-text-xs);
     font-weight: var(--swp-font-semibold);
@@ -181,17 +191,20 @@
 }
 
 // Emphasized/Highlight text
+
 .text-emphasis {
     font-weight: var(--swp-font-semibold);
     color: var(--swp-text-primary);
 }
 
 // Muted text
+
 .text-subtle {
     color: var(--swp-text-muted);
 }
 
 // Link styling
+
 .text-link {
     color: var(--swp-link-color);
     text-decoration: none;
@@ -204,6 +217,7 @@
 }
 
 // Truncate text with ellipsis
+
 .text-truncate {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -211,6 +225,7 @@
 }
 
 // Multi-line truncation (requires -webkit)
+
 .text-line-clamp-2 {
     display: -webkit-box;
     -webkit-line-clamp: 2;

@@ -38,7 +38,7 @@
 
         &:hover {
             color: var(--swp-primary);
-            border-bottom-color: rgba(var(--swp-primary-rgb), 0.3);
+            border-bottom-color: rgb(var(--swp-primary-rgb), 0.3);
         }
 
         &.active {
@@ -89,7 +89,7 @@
 
         &:hover:not(.active) {
             color: var(--swp-primary-hover);
-            background: rgba(var(--swp-primary-rgb), 0.05);
+            background: rgb(var(--swp-primary-rgb), 0.05);
         }
 
         &.active {
@@ -145,11 +145,12 @@
 }
 
 // Integration Card - Vertical Layout
+
 .integration-card {
     background: var(--swp-surface);
     border: 1.5px solid var(--swp-border-light);
     border-radius: var(--swp-radius-lg);
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 5%);
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     height: 100%;
     display: flex;
@@ -157,24 +158,24 @@
 
     &:hover {
         border-color: var(--swp-primary);
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 8px 16px rgb(0 0 0 / 10%);
         transform: translateY(-4px);
 
         .integration-card-icon {
-            background: linear-gradient(135deg, var(--swp-primary-light), rgba(var(--swp-primary-rgb), 0.2));
+            background: linear-gradient(135deg, var(--swp-primary-light), rgb(var(--swp-primary-rgb), 0.2));
             color: var(--swp-primary);
             transform: scale(1.05);
         }
 
         .btn {
             transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(var(--swp-primary-rgb), 0.25);
+            box-shadow: 0 4px 8px rgb(var(--swp-primary-rgb), 0.25);
         }
     }
 
     &.is-configured {
-        background: linear-gradient(135deg, rgba(var(--swp-success-rgb), 0.03), rgba(var(--swp-success-rgb), 0.01));
-        border-color: rgba(var(--swp-success-rgb), 0.25);
+        background: linear-gradient(135deg, rgb(var(--swp-success-rgb), 0.03), rgb(var(--swp-success-rgb), 0.01));
+        border-color: rgb(var(--swp-success-rgb), 0.25);
 
         .integration-card-icon {
             background: linear-gradient(135deg, var(--swp-success-light), var(--swp-success));
@@ -182,7 +183,7 @@
         }
 
         &:hover {
-            background: linear-gradient(135deg, rgba(var(--swp-success-rgb), 0.05), rgba(var(--swp-success-rgb), 0.02));
+            background: linear-gradient(135deg, rgb(var(--swp-success-rgb), 0.05), rgb(var(--swp-success-rgb), 0.02));
             border-color: var(--swp-success);
         }
     }
@@ -205,7 +206,7 @@
         justify-content: center;
         margin: 0 auto;
         transition: all 0.25s ease;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+        box-shadow: 0 2px 6px rgb(0 0 0 / 6%);
 
         svg {
             width: 32px;
@@ -266,6 +267,7 @@
 // ============================================================================
 
 .configured-integrations-panel {
+
     h5 {
         font-size: var(--swp-text-lg);
         font-weight: 600;
@@ -281,7 +283,7 @@
         background: linear-gradient(135deg, var(--swp-gray-100) 0%, var(--swp-gray-200) 100%);
         color: var(--swp-text-primary);
         border: 1px solid var(--swp-border-light);
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 1px 2px rgb(0 0 0 / 5%);
     }
 }
 
@@ -294,24 +296,24 @@
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     border: 1px solid var(--swp-border-light);
     border-radius: var(--swp-radius-lg);
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 5%);
     background: var(--swp-surface);
 
     &:hover {
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(var(--swp-primary-rgb), 0.1);
+        box-shadow: 0 4px 12px rgb(0 0 0 / 8%), 0 0 0 1px rgb(var(--swp-primary-rgb), 0.1);
         transform: translateY(-2px);
-        border-color: rgba(var(--swp-primary-rgb), 0.2);
+        border-color: rgb(var(--swp-primary-rgb), 0.2);
 
         .integration-method-icon {
-            background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.15) 100%);
-            box-shadow: 0 4px 8px rgba(var(--swp-primary-rgb), 0.15);
+            background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgb(var(--swp-primary-rgb), 0.15) 100%);
+            box-shadow: 0 4px 8px rgb(var(--swp-primary-rgb), 0.15);
             color: var(--swp-primary);
         }
 
         .btn-outline-secondary {
             border-color: var(--swp-primary);
             color: var(--swp-primary);
-            background: rgba(var(--swp-primary-rgb), 0.04);
+            background: rgb(var(--swp-primary-rgb), 0.04);
         }
     }
 
@@ -338,7 +340,7 @@
         color: var(--swp-text-secondary);
         flex-shrink: 0;
         transition: all 0.2s ease;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+        box-shadow: 0 2px 4px rgb(0 0 0 / 4%);
 
         svg {
             width: 28px;
@@ -390,11 +392,8 @@
 
 .notification-modal-backdrop {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
+    inset: 0;
+    background: rgb(0 0 0 / 50%);
     z-index: 1040;
     animation: marketplace-fadeIn 0.2s ease;
     backdrop-filter: blur(2px);
@@ -402,10 +401,7 @@
 
 .notification-modal {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     z-index: 1050;
     display: flex;
     align-items: center;
@@ -418,8 +414,8 @@
 .notification-modal-container {
     background: var(--swp-surface);
     border-radius: var(--swp-radius-xl);
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
-                0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 10%),
+                0 10px 10px -5px rgb(0 0 0 / 4%);
     width: 100%;
     max-width: 800px;
     max-height: calc(100vh - var(--swp-space-8));
@@ -455,6 +451,7 @@
     padding: var(--swp-space-6);
 
     // Remove card styling from NotificationTransportConfiguration when inside modal
+
     > div > .card {
         border: none;
         box-shadow: none;
@@ -482,6 +479,7 @@
 // ============================================================================
 
 @include media-breakpoint-down(md) {
+
     .marketplace-panel {
         position: static;
         max-height: none;
@@ -489,6 +487,7 @@
     }
 
     .configured-integration-card {
+
         .d-flex {
             flex-direction: column;
             align-items: flex-start !important;
@@ -506,6 +505,7 @@
     }
 
     // Horizontal scrolling tabs on mobile
+
     .notification-marketplace > .nav-tabs {
         margin-left: calc(var(--swp-space-4) * -1);
         margin-right: calc(var(--swp-space-4) * -1);
@@ -539,9 +539,11 @@
     }
 
     @keyframes slideUpMobile {
+
         from {
             transform: translateY(100%);
         }
+
         to {
             transform: translateY(0);
         }
@@ -549,6 +551,7 @@
 }
 
 // Prevent body scroll when modal is open
+
 body:has(.notification-modal) {
     overflow: hidden;
 }
@@ -558,7 +561,9 @@ body:has(.notification-modal) {
 // ============================================================================
 
 @media print {
+
     .notification-marketplace {
+
         .nav-tabs,
         .marketplace-panel,
         .btn {

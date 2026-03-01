@@ -12,6 +12,7 @@
 // ============================================================================
 
 @media only screen {
+
     html {
         background: $email-body-bg;
     }
@@ -67,6 +68,7 @@ a {
 // ============================================================================
 
 table.button {
+
     table td {
         text-align: left;
         color: $email-text-inverse;
@@ -94,6 +96,7 @@ table.button {
     }
 
     // Button variants
+
     &.primary table td {
         background: $email-primary;
         border-color: $email-primary;
@@ -193,6 +196,7 @@ hr {
 // ============================================================================
 
 table.menu {
+
     a {
         color: $email-primary;
     }

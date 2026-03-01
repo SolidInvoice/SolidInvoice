@@ -30,24 +30,29 @@
                         {% endif %}
 
                         <a href="{{ path('_create_company') }}" class="dropdown-item d-flex align-items-center gap-2">
-                            {{ ux_icon('tabler:plus', {width: 16, height: 16}) }}&nbsp;{{ 'Add Company'|trans }}
+                            {{ ux_icon('tabler:plus', {width: 16, height: 16}) }}
+                            {{ 'Add Company'|trans }}
                         </a>
                     </div>
                 </div>
 
                 <div class="nav-item dropdown mx-4">
                     <button class="btn btn-primary d-flex align-items-center gap-2 dropdown-toggle" data-bs-toggle="dropdown" aria-label="Open create menu">
-                        {{ ux_icon('tabler:plus', {width: 16, height: 16}) }}&nbsp;{{ 'menu.button.create'|trans }}
+                        {{ ux_icon('tabler:plus', {width: 16, height: 16}) }}
+                        {{ 'menu.button.create'|trans }}
                     </button>
                     <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                         <a href="{{ path('_clients_add') }}" class="dropdown-item d-flex align-items-center gap-2">
-                            {{ ux_icon('tabler:user-plus', {width: 16, height: 16}) }}&nbsp;{{ 'dashboard.create.client'|trans }}
+                            {{ ux_icon('tabler:user-plus', {width: 16, height: 16}) }}
+                            {{ 'dashboard.create.client'|trans }}
                         </a>
                         <a href="{{ path('_quotes_create') }}" class="dropdown-item d-flex align-items-center gap-2">
-                            {{ ux_icon('tabler:file-text', {width: 16, height: 16}) }}&nbsp;{{ 'dashboard.create.quote'|trans }}
+                            {{ ux_icon('tabler:file-text', {width: 16, height: 16}) }}
+                            {{ 'dashboard.create.quote'|trans }}
                         </a>
                         <a href="{{ path('_invoices_create') }}" class="dropdown-item d-flex align-items-center gap-2">
-                            {{ ux_icon('tabler:file-invoice', {width: 16, height: 16}) }}&nbsp;{{ 'dashboard.create.invoice'|trans }}
+                            {{ ux_icon('tabler:file-invoice', {width: 16, height: 16}) }}
+                            {{ 'dashboard.create.invoice'|trans }}
                         </a>
                     </div>
                 </div>
@@ -63,12 +68,13 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                         <a href="{{ path('_profile') }}" class="dropdown-item d-flex align-items-center gap-2">
-                            {{ ux_icon('tabler:user', {width: 16, height: 16}) }}&nbsp;
+                            {{ ux_icon('tabler:user', {width: 16, height: 16}) }}
                             {{ 'Profile'|trans }}
                         </a>
                         <div class="dropdown-divider"></div>
                         <a href="{{ path('_api_keys_index') }}" class="dropdown-item d-flex align-items-center gap-2">
-                            {{ ux_icon('tabler:lock', {width: 16, height: 16}) }}&nbsp;{{ 'API Keys'|trans }}
+                            {{ ux_icon('tabler:lock', {width: 16, height: 16}) }}
+                            {{ 'API Keys'|trans }}
                         </a>
                         <twig:Ui:Security:LogoutLink />
                     </div>
