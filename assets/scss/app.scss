@@ -5,6 +5,8 @@
  * It imports Bootstrap, the design system, components, and layouts.
  */
 
+@use 'sass:color';
+
 // ============================================================================
 // 1. BOOTSTRAP CORE IMPORTS
 // ============================================================================
@@ -52,10 +54,10 @@ $btn-secondary-active-border-color: $orange-dark;
 
 // Alert Colors
 $alert-primary-bg: $green-light;
-$alert-primary-border-color: darken($green-light, 5%);
+$alert-primary-border-color: color.adjust($green-light, $lightness: -5%);
 $alert-primary-text: $green-dark;
 $alert-secondary-bg: $orange-light;
-$alert-secondary-border-color: darken($orange-light, 5%);
+$alert-secondary-border-color: color.adjust($orange-light, $lightness: -5%);
 $alert-secondary-text: $orange-dark;
 
 // ============================================================================

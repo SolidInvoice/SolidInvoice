@@ -273,7 +273,7 @@
 // ANIMATION FOR NEW ITEMS
 // ============================================================================
 
-@keyframes slideIn {
+@keyframes client-slide-in {
 
     from {
         opacity: 0;
@@ -288,7 +288,7 @@
 
 .contact-card,
 .address-card {
-    animation: slideIn 0.2s ease-out;
+    animation: client-slide-in 0.2s ease-out;
 }
 
 // ============================================================================

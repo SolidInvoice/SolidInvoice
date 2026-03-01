@@ -7,7 +7,7 @@
 
 .card[data-bs-toggle="offcanvas"],
 .card.border-success {
-    animation: fadeInDown 0.5s ease-out;
+    animation: fade-in-down 0.5s ease-out;
     transition: all 0.3s ease;
 
     &:hover {
@@ -27,7 +27,7 @@
     }
 }
 
-@keyframes fadeInDown {
+@keyframes fade-in-down {
 
     from {
         transform: translateY(-10px);
@@ -59,7 +59,7 @@
     align-items: flex-start;
     gap: 12px;
     padding: 16px;
-    background: white;
+    background: #ffffff;
     border: 1px solid rgb(0 0 0 / 6%);
     border-left: 3px solid var(--tblr-primary);
     border-radius: 8px;

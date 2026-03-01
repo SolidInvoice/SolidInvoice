@@ -189,7 +189,7 @@
     border: 1px solid var(--swp-border);
     border-radius: var(--swp-radius-md);
     padding: var(--swp-space-4);
-    animation: slideIn 0.2s ease-out;
+    animation: billing-slide-in 0.2s ease-out;
 }
 
 .selected-client-header {
@@ -921,7 +921,7 @@
     border: 1px solid var(--swp-border);
     border-radius: var(--swp-radius-md);
     padding: var(--swp-space-4);
-    animation: slideIn 0.2s ease-out;
+    animation: billing-slide-in 0.2s ease-out;
 
     &:focus-within {
         border-color: rgb(var(--swp-primary-rgb), 0.4);
@@ -978,7 +978,7 @@
 // ANIMATIONS
 // ============================================================================
 
-@keyframes slideIn {
+@keyframes billing-slide-in {
 
     from {
         opacity: 0;
@@ -1070,7 +1070,7 @@
             height: 40px;
             border-radius: var(--swp-radius-md);
             background: linear-gradient(135deg, var(--swp-primary) 0%, var(--swp-primary-dark) 100%);
-            color: white;
+            color: #ffffff;
             flex-shrink: 0;
         }
 
@@ -1158,7 +1158,7 @@
             input[type='radio']:checked + label {
                 border-color: var(--swp-primary);
                 background: var(--swp-primary);
-                color: white;
+                color: #ffffff;
             }
         }
     }
@@ -1227,7 +1227,7 @@
             input[type='checkbox']:checked + label {
                 border-color: var(--swp-primary);
                 background: var(--swp-primary);
-                color: white !important;
+                color: #ffffff !important;
             }
         }
     }

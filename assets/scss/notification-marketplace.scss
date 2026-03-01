@@ -179,7 +179,7 @@
 
         .integration-card-icon {
             background: linear-gradient(135deg, var(--swp-success-light), var(--swp-success));
-            color: white;
+            color: #ffffff;
         }
 
         &:hover {
@@ -535,10 +535,10 @@
         max-height: 90vh;
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
-        animation: slideUpMobile 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        animation: notification-slide-up-mobile 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    @keyframes slideUpMobile {
+    @keyframes notification-slide-up-mobile {
 
         from {
             transform: translateY(100%);

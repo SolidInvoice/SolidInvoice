@@ -1248,7 +1248,7 @@ tbody tr:hover .datagrid-more-btn,
 
 .datagrid-detail-content {
     padding: var(--swp-space-4) var(--swp-space-6);
-    animation: slideDown 200ms ease;
+    animation: datagrid-slide-down 200ms ease;
 
     // Override nested datagrid card styles when inside detail row
 
@@ -1258,7 +1258,7 @@ tbody tr:hover .datagrid-more-btn,
     }
 }
 
-@keyframes slideDown {
+@keyframes datagrid-slide-down {
 
     from {
         opacity: 0;
