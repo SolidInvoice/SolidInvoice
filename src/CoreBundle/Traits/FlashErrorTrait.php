@@ -19,12 +19,12 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 trait FlashErrorTrait
 {
-    abstract private function getRequestStack(): RequestStack;
+    private readonly RequestStack $requestStack;
 
     private function addFlashError(string $message): void
     {
         try {
-            $session = $this->getRequestStack()->getSession();
+            $session = $this->requestStack->getSession();
         } catch (SessionNotFoundException) {
             return;
         }

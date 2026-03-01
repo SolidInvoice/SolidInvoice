@@ -16,6 +16,7 @@ namespace SolidInvoice\InvoiceBundle\Listener\Mailer;
 use Psr\Log\LoggerInterface;
 use SolidInvoice\CoreBundle\Traits\FlashErrorTrait;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvent;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -46,8 +47,14 @@ class InvoiceMailerListener implements EventSubscriberInterface
 
     public function onInvoiceAccepted(InvoiceEvent $event): void
     {
+        $invoice = $event->getInvoice();
+
+        if (! $invoice instanceof Invoice) {
+            return;
+        }
+
         try {
-            $this->mailer->send(new InvoiceEmail($event->getInvoice()));
+            $this->mailer->send(new InvoiceEmail($invoice));
         } catch (TransportExceptionInterface $e) {
             $this->logger->error('Failed to send invoice email: ' . $e->getMessage(), [
                 'exception' => $e,
@@ -55,10 +62,5 @@ class InvoiceMailerListener implements EventSubscriberInterface
 
             $this->addFlashError('invoice.email.send_failed');
         }
-    }
-
-    private function getRequestStack(): RequestStack
-    {
-        return $this->requestStack;
     }
 }
