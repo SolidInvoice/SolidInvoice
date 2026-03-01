@@ -15,9 +15,14 @@ profile:
         update_profile: 'Update Profile'
     edit:
         title: 'Update Profile'
+        subtitle: 'Update your personal information and contact details'
         success: 'Your profile has been updated'
         cancel: Cancel
         submit: Save
+        section:
+            personal:
+                title: 'Personal Details'
+                description: 'Your name and contact information'
     api:
         title: 'API Tokens'
         create: 'Create Token'
@@ -152,12 +157,20 @@ change_password:
 
 forgot_password:
     request:
+        title: 'Forgot your password?'
+        heading: 'Forgot your password?'
+        description: 'Forgot your password? Enter your email to reset your password.'
+        back_to_login: 'Back to login'
         submit: 'Reset Password'
         username: 'Email address'
-    check_email: |
-        An email has been sent. It contains a link you must click to reset your password.
+    check_email:
+        title: 'Email Sent'
+        heading: 'Check your email'
+        content: |
+            An email has been sent. It contains a link you must click to reset your password.
 
-        If you don't get an email check your spam folder or try again.
+            If you don't get an email check your spam folder or try again.
+        expiry: 'This link will expire in %tokenLifetime%'
 
 notifications:
     title: 'Notification Preferences'

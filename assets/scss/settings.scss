@@ -37,7 +37,7 @@
 
         &:hover {
             color: var(--swp-primary);
-            border-bottom-color: rgb(var(--swp-primary-rgb), 0.3);
+            border-bottom-color: rgba(var(--swp-primary-rgb), 0.3);
         }
 
         &.active {
@@ -113,7 +113,7 @@
         &:hover,
         &.dropzone-dragover {
             border-color: var(--swp-primary);
-            background-color: rgb(var(--swp-primary-rgb), 0.02);
+            background-color: rgba(var(--swp-primary-rgb), 0.02);
         }
     }
 }

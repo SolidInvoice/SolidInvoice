@@ -41,7 +41,7 @@
     justify-content: center;
     width: 56px;
     height: 56px;
-    background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgb(var(--swp-primary-rgb), 0.15) 100%);
+    background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.15) 100%);
     border-radius: var(--swp-radius-lg);
     color: var(--swp-primary);
 }
@@ -73,8 +73,8 @@
     transition: box-shadow var(--swp-transition-base);
 
     &:focus-within {
-        border-color: rgb(var(--swp-primary-rgb), 0.3);
-        box-shadow: 0 0 0 3px rgb(var(--swp-primary-rgb), 0.08);
+        border-color: rgba(var(--swp-primary-rgb), 0.3);
+        box-shadow: 0 0 0 3px rgba(var(--swp-primary-rgb), 0.08);
     }
 }
 
@@ -312,7 +312,7 @@
     justify-content: center;
     width: 36px;
     height: 36px;
-    background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgb(var(--swp-primary-rgb), 0.2) 100%);
+    background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.2) 100%);
     border-radius: var(--swp-radius-md);
     color: var(--swp-primary);
 }
@@ -647,7 +647,7 @@
     justify-content: center;
     width: 36px;
     height: 36px;
-    background: linear-gradient(135deg, var(--swp-success-light) 0%, rgb(var(--swp-success-rgb), 0.2) 100%);
+    background: linear-gradient(135deg, var(--swp-success-light) 0%, rgba(var(--swp-success-rgb), 0.2) 100%);
     border-radius: var(--swp-radius-md);
     color: var(--swp-success);
 }
@@ -924,8 +924,8 @@
     animation: billing-slide-in 0.2s ease-out;
 
     &:focus-within {
-        border-color: rgb(var(--swp-primary-rgb), 0.4);
-        box-shadow: 0 0 0 3px rgb(var(--swp-primary-rgb), 0.08);
+        border-color: rgba(var(--swp-primary-rgb), 0.4);
+        box-shadow: 0 0 0 3px rgba(var(--swp-primary-rgb), 0.08);
     }
 }
 
@@ -1238,8 +1238,8 @@
     align-items: center;
     gap: var(--swp-space-3);
     padding: var(--swp-space-4);
-    background: linear-gradient(135deg, var(--swp-primary-lighter) 0%, rgb(var(--swp-primary-rgb), 0.05) 100%);
-    border: 1px solid rgb(var(--swp-primary-rgb), 0.2);
+    background: linear-gradient(135deg, var(--swp-primary-lighter) 0%, rgba(var(--swp-primary-rgb), 0.05) 100%);
+    border: 1px solid rgba(var(--swp-primary-rgb), 0.2);
     border-radius: var(--swp-radius-md);
 
     .recurring-frequency-icon {
@@ -1376,7 +1376,7 @@
 
 .invoice-sidebar-card-highlight {
     border-left: 3px solid var(--swp-primary);
-    background: linear-gradient(to right, rgb(var(--swp-primary-rgb), 0.03), transparent);
+    background: linear-gradient(to right, rgba(var(--swp-primary-rgb), 0.03), transparent);
 }
 
 // Recurring Schedule Grid (label | value pairs)
@@ -1434,7 +1434,7 @@
 
     &:hover {
         background: var(--swp-surface);
-        border-color: rgb(var(--swp-primary-rgb), 0.3);
+        border-color: rgba(var(--swp-primary-rgb), 0.3);
         transform: translateX(2px);
     }
 }
@@ -1481,7 +1481,7 @@
 
     &:hover {
         background: var(--swp-surface);
-        border-color: rgb(var(--swp-primary-rgb), 0.3);
+        border-color: rgba(var(--swp-primary-rgb), 0.3);
     }
 }
 
@@ -1549,12 +1549,12 @@
     color: var(--swp-primary);
     text-decoration: none;
     background: var(--swp-primary-lighter);
-    border: 1px solid rgb(var(--swp-primary-rgb), 0.2);
+    border: 1px solid rgba(var(--swp-primary-rgb), 0.2);
     border-radius: var(--swp-radius-md);
     transition: all var(--swp-transition-fast);
 
     &:hover {
-        background: rgb(var(--swp-primary-rgb), 0.15);
+        background: rgba(var(--swp-primary-rgb), 0.15);
         border-color: var(--swp-primary);
         transform: translateY(-1px);
     }

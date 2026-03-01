@@ -24,12 +24,12 @@
                 <div class="mb-4 text-success">
                     {{ ux_icon('tabler:mail-check', {width: 64, height: 64}) }}
                 </div>
-                <h2 class="h2 mb-3">{{ 'Check your email'|trans }}</h2>
+                <h2 class="h2 mb-3">{{ 'forgot_password.check_email.heading'|trans }}</h2>
                 <p class="text-muted mb-3">
-                    {{ 'forgot_password.check_email'|trans() }}
+                    {{ 'forgot_password.check_email.content'|trans }}
                 </p>
                 <p class="text-muted small mb-4">
-                    {{ 'This link will expire in %tokenLifetime%'|trans({'%tokenLifetime%': resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle')}) }}
+                    {{ 'forgot_password.check_email.expiry'|trans({'%tokenLifetime%': resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle')}) }}
                 </p>
                 <a class="btn btn-primary w-100" href="{{ path('_login_main') }}">
                     {{ ux_icon('tabler:arrow-left', {width: 20, height: 20}) }}

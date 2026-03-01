@@ -41,7 +41,7 @@
     justify-content: center;
     width: 56px;
     height: 56px;
-    background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgb(var(--swp-primary-rgb), 0.15) 100%);
+    background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.15) 100%);
     border-radius: var(--swp-radius-lg);
     color: var(--swp-primary);
 }
@@ -111,7 +111,7 @@
     justify-content: center;
     width: 36px;
     height: 36px;
-    background: linear-gradient(135deg, var(--swp-info-light) 0%, rgb(var(--swp-info-rgb), 0.2) 100%);
+    background: linear-gradient(135deg, var(--swp-info-light) 0%, rgba(var(--swp-info-rgb), 0.2) 100%);
     border-radius: var(--swp-radius-md);
     color: var(--swp-info);
 }
@@ -319,7 +319,7 @@
     justify-content: center;
     width: 36px;
     height: 36px;
-    background: linear-gradient(135deg, var(--swp-success-light) 0%, rgb(var(--swp-success-rgb), 0.2) 100%);
+    background: linear-gradient(135deg, var(--swp-success-light) 0%, rgba(var(--swp-success-rgb), 0.2) 100%);
     border-radius: var(--swp-radius-md);
     color: var(--swp-success);
 }

@@ -70,7 +70,7 @@
             background: var(--swp-surface);
 
             &:focus {
-                box-shadow: 0 0 0 3px rgb(var(--swp-primary-rgb), 0.1);
+                box-shadow: 0 0 0 3px rgba(var(--swp-primary-rgb), 0.1);
                 border-color: var(--swp-primary);
             }
 

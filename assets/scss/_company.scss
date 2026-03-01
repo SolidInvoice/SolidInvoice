@@ -217,13 +217,13 @@
     // Create Company Card
 
     .card-create-company {
-        background: linear-gradient(135deg, rgb(var(--swp-success-rgb), 0.05) 0%, rgb(var(--swp-success-rgb), 0.02) 100%);
+        background: linear-gradient(135deg, rgba(var(--swp-success-rgb), 0.05) 0%, rgba(var(--swp-success-rgb), 0.02) 100%);
         border: 2px dashed var(--swp-border);
         transition: var(--swp-transition-all);
 
         &:hover {
             border-color: var(--swp-success);
-            background: linear-gradient(135deg, rgb(var(--swp-success-rgb), 0.08) 0%, rgb(var(--swp-success-rgb), 0.04) 100%);
+            background: linear-gradient(135deg, rgba(var(--swp-success-rgb), 0.08) 0%, rgba(var(--swp-success-rgb), 0.04) 100%);
         }
     }
 
@@ -250,7 +250,7 @@
         .form-control:focus,
         .form-select:focus {
             border-color: var(--swp-primary);
-            box-shadow: 0 0 0 0.25rem rgb(var(--swp-primary-rgb), 0.1);
+            box-shadow: 0 0 0 0.25rem rgba(var(--swp-primary-rgb), 0.1);
         }
     }
 
@@ -264,18 +264,18 @@
         border: 1px solid transparent;
 
         &.alert-info {
-            background-color: rgb(var(--swp-info-rgb), 0.08);
-            border-color: rgb(var(--swp-info-rgb), 0.2);
+            background-color: rgba(var(--swp-info-rgb), 0.08);
+            border-color: rgba(var(--swp-info-rgb), 0.2);
         }
 
         &.alert-warning {
-            background-color: rgb(var(--swp-warning-rgb), 0.08);
-            border-color: rgb(var(--swp-warning-rgb), 0.2);
+            background-color: rgba(var(--swp-warning-rgb), 0.08);
+            border-color: rgba(var(--swp-warning-rgb), 0.2);
         }
 
         &.alert-success {
-            background-color: rgb(var(--swp-success-rgb), 0.08);
-            border-color: rgb(var(--swp-success-rgb), 0.2);
+            background-color: rgba(var(--swp-success-rgb), 0.08);
+            border-color: rgba(var(--swp-success-rgb), 0.2);
         }
     }
 

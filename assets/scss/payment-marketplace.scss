@@ -38,7 +38,7 @@
 
         &:hover {
             color: var(--swp-primary);
-            border-bottom-color: rgb(var(--swp-primary-rgb), 0.3);
+            border-bottom-color: rgba(var(--swp-primary-rgb), 0.3);
         }
 
         &.active {
@@ -81,13 +81,13 @@
         .gateway-icon {
             background: linear-gradient(135deg, var(--swp-primary-light) 0%, var(--swp-primary) 100%);
             color: var(--swp-primary);
-            box-shadow: 0 4px 8px rgb(var(--swp-primary-rgb), 0.2);
+            box-shadow: 0 4px 8px rgba(var(--swp-primary-rgb), 0.2);
         }
     }
 
     &.is-configured {
-        background: linear-gradient(135deg, rgb(var(--swp-success-rgb), 0.05) 0%, rgb(var(--swp-success-rgb), 0.02) 100%);
-        border-color: rgb(var(--swp-success-rgb), 0.3);
+        background: linear-gradient(135deg, rgba(var(--swp-success-rgb), 0.05) 0%, rgba(var(--swp-success-rgb), 0.02) 100%);
+        border-color: rgba(var(--swp-success-rgb), 0.3);
 
         .gateway-icon {
             background: linear-gradient(135deg, var(--swp-success-light) 0%, var(--swp-success) 100%);
@@ -95,14 +95,14 @@
         }
 
         &:hover {
-            background: linear-gradient(135deg, rgb(var(--swp-success-rgb), 0.08) 0%, rgb(var(--swp-success-rgb), 0.04) 100%);
+            background: linear-gradient(135deg, rgba(var(--swp-success-rgb), 0.08) 0%, rgba(var(--swp-success-rgb), 0.04) 100%);
             border-color: var(--swp-success);
         }
     }
 
     &.is-custom-gateway {
-        background: linear-gradient(135deg, rgb(var(--swp-primary-rgb), 0.04) 0%, rgb(var(--swp-primary-rgb), 0.01) 100%);
-        border: 2px dashed rgb(var(--swp-primary-rgb), 0.3);
+        background: linear-gradient(135deg, rgba(var(--swp-primary-rgb), 0.04) 0%, rgba(var(--swp-primary-rgb), 0.01) 100%);
+        border: 2px dashed rgba(var(--swp-primary-rgb), 0.3);
         position: relative;
         margin-bottom: var(--swp-space-6);
 
@@ -134,13 +134,13 @@
         }
 
         .gateway-icon {
-            background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgb(var(--swp-primary-rgb), 0.2) 100%);
+            background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.2) 100%);
             color: var(--swp-primary);
-            border: 2px solid rgb(var(--swp-primary-rgb), 0.2);
+            border: 2px solid rgba(var(--swp-primary-rgb), 0.2);
         }
 
         &:hover {
-            background: linear-gradient(135deg, rgb(var(--swp-primary-rgb), 0.08) 0%, rgb(var(--swp-primary-rgb), 0.02) 100%);
+            background: linear-gradient(135deg, rgba(var(--swp-primary-rgb), 0.08) 0%, rgba(var(--swp-primary-rgb), 0.02) 100%);
             border-color: var(--swp-primary);
             border-style: solid;
 
@@ -199,7 +199,7 @@
 
         &:hover {
             transform: translateY(-1px);
-            box-shadow: 0 2px 8px rgb(var(--swp-primary-rgb), 0.2);
+            box-shadow: 0 2px 8px rgba(var(--swp-primary-rgb), 0.2);
         }
     }
 
@@ -250,20 +250,20 @@
     background: var(--swp-surface);
 
     &:hover {
-        box-shadow: 0 4px 12px rgb(0 0 0 / 8%), 0 0 0 1px rgb(var(--swp-primary-rgb), 0.1);
+        box-shadow: 0 4px 12px rgb(0 0 0 / 8%), 0 0 0 1px rgba(var(--swp-primary-rgb), 0.1);
         transform: translateY(-2px);
-        border-color: rgb(var(--swp-primary-rgb), 0.2);
+        border-color: rgba(var(--swp-primary-rgb), 0.2);
 
         .payment-method-icon {
-            background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgb(var(--swp-primary-rgb), 0.15) 100%);
-            box-shadow: 0 4px 8px rgb(var(--swp-primary-rgb), 0.15);
+            background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.15) 100%);
+            box-shadow: 0 4px 8px rgba(var(--swp-primary-rgb), 0.15);
             color: var(--swp-primary);
         }
 
         .btn-outline-secondary {
             border-color: var(--swp-primary);
             color: var(--swp-primary);
-            background: rgb(var(--swp-primary-rgb), 0.04);
+            background: rgba(var(--swp-primary-rgb), 0.04);
         }
     }
 
@@ -312,7 +312,7 @@
         &.bg-success {
             background: linear-gradient(135deg, var(--swp-success) 0%, var(--swp-success-hover) 100%) !important;
             color: #ffffff;
-            box-shadow: 0 2px 4px rgb(var(--swp-success-rgb), 0.2);
+            box-shadow: 0 2px 4px rgba(var(--swp-success-rgb), 0.2);
         }
 
         &.bg-secondary {

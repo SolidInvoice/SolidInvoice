@@ -96,7 +96,7 @@
     width: 64px;
     height: 64px;
     border-radius: var(--swp-radius-full);
-    background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgb(var(--swp-primary-rgb), 0.2) 100%);
+    background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.2) 100%);
     color: var(--swp-primary);
     display: flex;
     align-items: center;
@@ -254,12 +254,12 @@
 }
 
 .security-item-icon-success {
-    background: rgb(var(--swp-success-rgb), 0.1);
+    background: rgba(var(--swp-success-rgb), 0.1);
     color: var(--swp-success);
 }
 
 .security-item-icon-warning {
-    background: rgb(var(--swp-warning-rgb), 0.1);
+    background: rgba(var(--swp-warning-rgb), 0.1);
     color: var(--swp-warning);
 }
 
@@ -319,8 +319,8 @@
 // ============================================================================
 
 .password-requirements {
-    background: rgb(var(--swp-info-rgb), 0.05);
-    border: 1px solid rgb(var(--swp-info-rgb), 0.2);
+    background: rgba(var(--swp-info-rgb), 0.05);
+    border: 1px solid rgba(var(--swp-info-rgb), 0.2);
     border-radius: var(--swp-radius-md);
     padding: var(--swp-space-4);
     margin-bottom: var(--swp-space-6);
@@ -335,7 +335,7 @@
     .section-icon {
         width: 32px;
         height: 32px;
-        background: rgb(var(--swp-info-rgb), 0.15);
+        background: rgba(var(--swp-info-rgb), 0.15);
         color: var(--swp-info);
     }
 

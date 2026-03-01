@@ -179,8 +179,8 @@ final class InstallationTest extends PantherTestCase
             ->assertSee('Memory Limit')
             ->use(function (Client $client): void {
                 // Ensure that the requirements sections are collapsed
-                self::assertSame('accordion-collapse collapse hide', $client->getCrawler()->filter('#mandatory-requirements')->attr('class'));
-                self::assertSame('accordion-collapse collapse hide', $client->getCrawler()->filter('#optional-requirements')->attr('class'));
+                self::assertSame('accordion-collapse collapse', $client->getCrawler()->filter('#mandatory-requirements')->attr('class'));
+                self::assertSame('accordion-collapse collapse', $client->getCrawler()->filter('#optional-requirements')->attr('class'));
             })
             ->assertNotSee('Some requirements were not met')
             ->assertNotSeeElement('.alert-danger');
