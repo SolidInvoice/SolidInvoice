@@ -59,6 +59,7 @@ class NotificationManager
         $event = $attributes[0]->getArguments()['name'] ?? null;
 
         $userNotifications = $this->userNotificationRepository->findBy(['event' => $event]);
+        $hasTransportFailure = false;
 
         foreach ($userNotifications as $userNotification) {
             $channels = [];
@@ -92,13 +93,12 @@ class NotificationManager
                     'event' => $event,
                 ]);
 
-                $this->addFlashError('notification.send_failed');
+                $hasTransportFailure = true;
             }
         }
-    }
 
-    private function getRequestStack(): RequestStack
-    {
-        return $this->requestStack;
+        if ($hasTransportFailure) {
+            $this->addFlashError('notification.send_failed');
+        }
     }
 }

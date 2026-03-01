@@ -56,9 +56,4 @@ class QuoteMailerListener implements EventSubscriberInterface
             $this->addFlashError('quote.email.send_failed');
         }
     }
-
-    private function getRequestStack(): RequestStack
-    {
-        return $this->requestStack;
-    }
 }

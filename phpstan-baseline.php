@@ -224,12 +224,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/InvoiceBundle/Action/RecurringTransition.php',
 ];
 $ignoreErrors[] = [
-	// identifier: argument.type
-	'message' => '#^Parameter \\#1 \\$invoice of class SolidInvoice\\\\InvoiceBundle\\\\Email\\\\InvoiceEmail constructor expects SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\Invoice, SolidInvoice\\\\InvoiceBundle\\\\Entity\\\\BaseInvoice given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/src/InvoiceBundle/Listener/Mailer/InvoiceMailerListener.php',
-];
-$ignoreErrors[] = [
 	// identifier: missingType.iterableValue
 	'message' => '#^Method SolidInvoice\\\\MailerBundle\\\\Configurator\\\\ConfiguratorInterface\\:\\:configure\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#',
 	'count' => 1,
