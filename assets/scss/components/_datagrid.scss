@@ -16,6 +16,7 @@
     display: block;
 
     // Flash messages inside the datagrid
+
     > .alert {
         margin-bottom: var(--swp-space-4);
     }
@@ -51,7 +52,7 @@
     background: var(--swp-surface);
     border-bottom: 1px solid var(--swp-border-light);
 
-    @media (max-width: 768px) {
+    @media (width <= 768px) {
         flex-direction: column;
         align-items: stretch;
     }
@@ -194,6 +195,7 @@
     overflow: hidden;
 
     // Ensure nested dropdowns (like select2) appear above the panel
+
     .dropdown-menu,
     .select2-container--open {
         z-index: 1060 !important;
@@ -243,6 +245,7 @@
     gap: var(--swp-space-2);
 
     // Ensure dropdowns within fields have proper z-index
+
     .form-select,
     select {
         position: relative;
@@ -250,6 +253,7 @@
     }
 
     // Date range fields
+
     .row {
         --bs-gutter-x: 0.5rem;
     }
@@ -268,6 +272,7 @@
 
     // Date range fields - display inline (side by side)
     // The DateRangeFormType creates a container div with start/end date fields
+
     > div:has(> div > input[type="date"]) {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -275,6 +280,7 @@
 
         > div {
             // Each date field container
+
             .form-label {
                 display: block;
                 font-size: var(--swp-text-xs);
@@ -290,6 +296,7 @@
     }
 
     // Expanded choice (checkboxes/radios) - render as standard checkboxes
+
     .form-check {
         display: flex !important;
         align-items: center;
@@ -304,6 +311,7 @@
         }
 
         // Override any switch styles - force regular checkbox appearance
+
         &.form-switch {
             padding-left: var(--swp-space-3);
         }
@@ -330,6 +338,7 @@
             }
 
             // Remove switch/pill appearance
+
             &[type="checkbox"] {
                 border-radius: 3px !important;
                 background-image: none;
@@ -352,6 +361,7 @@
     }
 
     // Space between checkboxes
+
     .form-check + .form-check {
         margin-top: var(--swp-space-1);
     }
@@ -364,8 +374,10 @@
 }
 
 // Form elements within filter panel
+
 .datagrid-filter-panel {
     // Standard form controls
+
     .form-control,
     .form-select {
         font-size: var(--swp-text-sm);
@@ -380,12 +392,15 @@
     }
 
     // Hide nested labels from DateRangeFormType (we show our own)
+
     .datagrid-filter-field > .form-label {
         display: none;
     }
 
     // Date range sub-labels
+
     .datagrid-filter-field .row {
+
         .form-label {
             display: block;
             font-size: var(--swp-text-xs);
@@ -409,6 +424,7 @@
     }
 
     // Multiple choice checkboxes
+
     .form-check {
         display: flex;
         align-items: center;
@@ -437,11 +453,13 @@
     }
 
     // When multiple checkboxes in a list
+
     .form-check + .form-check {
         margin-top: var(--swp-space-1);
     }
 
     // Select dropdown adjustments
+
     select[multiple] {
         min-height: 120px;
         padding: var(--swp-space-1);
@@ -463,6 +481,7 @@
 // ============================================================================
 
 .datagrid-column-picker {
+
     .dropdown-toggle {
         display: inline-flex;
         align-items: center;
@@ -568,6 +587,7 @@
     }
 
     // Column types
+
     .col-checkbox {
         width: 40px;
         text-align: center;
@@ -602,6 +622,7 @@
 }
 
 // Sortable column headers
+
 .datagrid-sort-link {
     display: inline-flex;
     align-items: center;
@@ -685,6 +706,7 @@
 }
 
 // Three-dot menu button
+
 .datagrid-more-btn {
     opacity: 0.6;
     transition: opacity var(--swp-transition-fast),
@@ -700,7 +722,9 @@
 }
 
 // Three-dot dropdown menu container
+
 .datagrid-more-menu {
+
     .dropdown-menu {
         min-width: 160px;
         padding: var(--swp-space-1);
@@ -747,6 +771,7 @@
 }
 
 // Show more button on row hover only (subtle UX)
+
 tbody tr:not(:hover) .datagrid-more-btn {
     opacity: 0;
 }
@@ -895,7 +920,7 @@ tbody tr:hover .datagrid-more-btn,
     font-size: var(--swp-text-sm);
     font-weight: var(--swp-font-medium);
     color: var(--swp-text-inverse);
-    background: rgba(255, 255, 255, 0.1);
+    background: rgb(255 255 255 / 10%);
     border: none;
     border-radius: var(--swp-radius-md);
     cursor: pointer;
@@ -907,14 +932,14 @@ tbody tr:hover .datagrid-more-btn,
     }
 
     &:hover {
-        background: rgba(255, 255, 255, 0.2);
+        background: rgb(255 255 255 / 20%);
     }
 
     &.btn-danger {
         color: var(--swp-danger-light);
 
         &:hover {
-            background: rgba(239, 68, 68, 0.2);
+            background: rgb(239 68 68 / 20%);
         }
     }
 }
@@ -922,7 +947,7 @@ tbody tr:hover .datagrid-more-btn,
 .datagrid-bulk-divider {
     width: 1px;
     height: 24px;
-    background: rgba(255, 255, 255, 0.2);
+    background: rgb(255 255 255 / 20%);
 }
 
 .datagrid-bulk-close {
@@ -947,7 +972,7 @@ tbody tr:hover .datagrid-more-btn,
 
     &:hover {
         color: var(--swp-text-inverse);
-        background: rgba(255, 255, 255, 0.1);
+        background: rgb(255 255 255 / 10%);
     }
 }
 
@@ -964,7 +989,7 @@ tbody tr:hover .datagrid-more-btn,
     border-top: 1px solid var(--swp-border-light);
     background: var(--swp-surface);
 
-    @media (max-width: 768px) {
+    @media (width <= 768px) {
         flex-direction: column;
         gap: var(--swp-space-3);
     }
@@ -1000,6 +1025,7 @@ tbody tr:hover .datagrid-more-btn,
 }
 
 .datagrid-pagination {
+
     .pagination {
         display: flex;
         align-items: center;
@@ -1010,6 +1036,7 @@ tbody tr:hover .datagrid-more-btn,
     }
 
     .page-item {
+
         .page-link {
             display: inline-flex;
             align-items: center;
@@ -1115,7 +1142,7 @@ tbody tr:hover .datagrid-more-btn,
         content: '';
         position: absolute;
         inset: 0;
-        background: rgba(255, 255, 255, 0.7);
+        background: rgb(255 255 255 / 70%);
         z-index: 10;
     }
 }
@@ -1132,7 +1159,8 @@ tbody tr:hover .datagrid-more-btn,
 // RESPONSIVE ADJUSTMENTS
 // ============================================================================
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
+
     .datagrid-header {
         flex-direction: column;
         align-items: stretch;
@@ -1143,6 +1171,7 @@ tbody tr:hover .datagrid-more-btn,
     }
 
     .datagrid-table {
+
         th,
         td {
             padding: var(--swp-space-2) var(--swp-space-3);
@@ -1167,6 +1196,7 @@ tbody tr:hover .datagrid-more-btn,
 
 .datagrid-table {
     // Expand column styling
+
     .col-expand {
         width: 40px;
         text-align: center;
@@ -1201,6 +1231,7 @@ tbody tr:hover .datagrid-more-btn,
 }
 
 // Detail row (hidden by default)
+
 .datagrid-detail-row {
     display: none;
     background: var(--swp-gray-50);
@@ -1220,6 +1251,7 @@ tbody tr:hover .datagrid-more-btn,
     animation: slideDown 200ms ease;
 
     // Override nested datagrid card styles when inside detail row
+
     .card {
         box-shadow: none;
         border: 1px solid var(--swp-border-light);
@@ -1227,10 +1259,12 @@ tbody tr:hover .datagrid-more-btn,
 }
 
 @keyframes slideDown {
+
     from {
         opacity: 0;
         transform: translateY(-10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -1242,6 +1276,7 @@ tbody tr:hover .datagrid-more-btn,
 // ============================================================================
 
 .api-token-history {
+
     h4 {
         font-size: 1rem;
         font-weight: var(--swp-font-weight-semibold);
@@ -1267,6 +1302,7 @@ tbody tr:hover .datagrid-more-btn,
         }
 
         tbody {
+
             tr {
                 transition: background-color var(--swp-transition-fast);
 

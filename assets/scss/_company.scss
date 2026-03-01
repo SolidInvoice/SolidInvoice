@@ -17,6 +17,7 @@
     flex-direction: column;
 
     // Application Header
+
     .company-page-header {
         background: var(--swp-surface);
         border-bottom: 1px solid var(--swp-border);
@@ -35,6 +36,7 @@
     }
 
     .company-page-brand {
+
         h1 {
             font-weight: 700;
             color: var(--swp-text-primary);
@@ -42,7 +44,9 @@
     }
 
     // Page intro section (used by both select and create pages)
+
     .company-page-intro {
+
         h2 {
             font-weight: 600;
             color: var(--swp-text-primary);
@@ -99,7 +103,8 @@
     }
 
     // Responsive adjustments
-    @media (max-width: 767.98px) {
+    @media (width <= 767.98px) {
+
         .avatar-lg {
             width: 3rem;
             height: 3rem;
@@ -116,7 +121,7 @@
             font-size: 1rem;
         }
 
-        .h2 {
+        .h2, h2 {
             font-size: 1.5rem;
         }
     }
@@ -127,8 +132,8 @@
 // ============================================================================
 
 .company-select-page {
-
     // Main Card Container
+
     .card.shadow-sm {
         box-shadow: var(--swp-shadow-lg) !important;
         border: none;
@@ -136,6 +141,7 @@
     }
 
     // Company Cards
+
     .card-company {
         transition: var(--swp-transition-all);
         border: 2px solid var(--swp-border);
@@ -170,6 +176,7 @@
         }
 
         // Avatar with logo image
+
         .avatar img {
             width: 100%;
             height: 100%;
@@ -178,12 +185,14 @@
         }
 
         // Avatar with initials - force solid primary background
+
         .avatar.bg-primary {
             background-color: var(--swp-primary) !important;
             background-image: none !important;
         }
 
         // Avatar initials text - force white color
+
         .avatar-initials,
         .avatar.bg-primary span {
             color: var(--swp-text-inverse) !important;
@@ -206,14 +215,15 @@
     }
 
     // Create Company Card
+
     .card-create-company {
-        background: linear-gradient(135deg, rgba(var(--swp-success-rgb), 0.05) 0%, rgba(var(--swp-success-rgb), 0.02) 100%);
+        background: linear-gradient(135deg, rgb(var(--swp-success-rgb), 0.05) 0%, rgb(var(--swp-success-rgb), 0.02) 100%);
         border: 2px dashed var(--swp-border);
         transition: var(--swp-transition-all);
 
         &:hover {
             border-color: var(--swp-success);
-            background: linear-gradient(135deg, rgba(var(--swp-success-rgb), 0.08) 0%, rgba(var(--swp-success-rgb), 0.04) 100%);
+            background: linear-gradient(135deg, rgb(var(--swp-success-rgb), 0.08) 0%, rgb(var(--swp-success-rgb), 0.04) 100%);
         }
     }
 
@@ -221,7 +231,8 @@
         width: auto !important;
     }
 
-    @media (min-width: 768px) {
+    @media (width >= 768px) {
+
         .w-md-auto {
             width: auto !important;
         }
@@ -235,10 +246,11 @@
 .company-create-page {
 
     .form-smooth {
+
         .form-control:focus,
         .form-select:focus {
             border-color: var(--swp-primary);
-            box-shadow: 0 0 0 0.25rem rgba(var(--swp-primary-rgb), 0.1);
+            box-shadow: 0 0 0 0.25rem rgb(var(--swp-primary-rgb), 0.1);
         }
     }
 
@@ -252,18 +264,18 @@
         border: 1px solid transparent;
 
         &.alert-info {
-            background-color: rgba(var(--swp-info-rgb), 0.08);
-            border-color: rgba(var(--swp-info-rgb), 0.2);
+            background-color: rgb(var(--swp-info-rgb), 0.08);
+            border-color: rgb(var(--swp-info-rgb), 0.2);
         }
 
         &.alert-warning {
-            background-color: rgba(var(--swp-warning-rgb), 0.08);
-            border-color: rgba(var(--swp-warning-rgb), 0.2);
+            background-color: rgb(var(--swp-warning-rgb), 0.08);
+            border-color: rgb(var(--swp-warning-rgb), 0.2);
         }
 
         &.alert-success {
-            background-color: rgba(var(--swp-success-rgb), 0.08);
-            border-color: rgba(var(--swp-success-rgb), 0.2);
+            background-color: rgb(var(--swp-success-rgb), 0.08);
+            border-color: rgb(var(--swp-success-rgb), 0.2);
         }
     }
 

@@ -24,6 +24,7 @@
     border-bottom: 2px solid var(--tblr-border-color-light, #e2e8f0);
 
     .app-logo {
+
         img {
             max-height: 40px;
             width: auto;
@@ -53,7 +54,7 @@
 .ext-doc-action-bar {
     background: var(--tblr-bg-surface, #ffffff);
     border: 1px solid var(--tblr-border-color-light, #e2e8f0);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 3px rgb(0 0 0 / 5%);
 
     .card-body {
         padding: 0.75rem 1.5rem;
@@ -69,6 +70,7 @@
 // ============================================================================
 
 // Company name in header
+
 .ext-doc-company-name {
     font-size: 1.5rem;
     font-weight: 600;
@@ -77,6 +79,7 @@
 }
 
 // Document number - large and prominent
+
 .ext-doc-number {
     font-size: 2rem;
     font-weight: 700;
@@ -92,13 +95,16 @@
 }
 
 // VAT number - subtle opacity
+
 .ext-doc-vat-number {
     font-size: 0.9375rem;
     opacity: 0.75;
 }
 
 // Logo container
+
 .ext-doc-logo {
+
     img {
         max-width: 100%;
         height: auto;
@@ -113,11 +119,11 @@
 .ext-doc-metadata-card {
     border: 1px solid var(--tblr-border-color-light, #e2e8f0);
     border-radius: 0.5rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 3px rgb(0 0 0 / 5%);
     transition: box-shadow 0.2s ease;
 
     &:hover {
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 2px 8px rgb(0 0 0 / 8%);
     }
 
     .card-body {
@@ -180,6 +186,7 @@
     margin-bottom: 2rem;
 
     thead {
+
         th {
             border-bottom: 2px solid var(--tblr-border-color, #cbd5e1);
             padding: 0.875rem 0.75rem;
@@ -191,6 +198,7 @@
     }
 
     tbody {
+
         tr {
             border-bottom: 1px solid var(--tblr-border-color-light, #e2e8f0);
             transition: background-color 0.15s ease;
@@ -232,7 +240,7 @@
 .ext-doc-totals-card {
     border: 1px solid var(--tblr-border-color-light, #e2e8f0);
     border-radius: 0.5rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 3px rgb(0 0 0 / 5%);
 
     .card-body {
         padding: 1.5rem;
@@ -292,10 +300,11 @@
 // ============================================================================
 
 .ext-doc-footer {
+
     .card {
         background: var(--tblr-bg-surface, #ffffff);
         border: 1px solid var(--tblr-border-color-light, #e2e8f0);
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 1px 3px rgb(0 0 0 / 5%);
     }
 
     .btn-sm {
@@ -315,25 +324,28 @@
 // ============================================================================
 
 // Status badges
+
 .badge {
     font-weight: 600;
     letter-spacing: 0.025em;
 }
 
 // Horizontal rules
+
 hr {
     border-color: var(--tblr-border-color-light, #e2e8f0);
     opacity: 1;
 }
 
 // Focus styles for keyboard navigation
+
 .btn:focus-visible {
     outline: 2px solid var(--tblr-primary, #2e963a);
     outline-offset: 2px;
 }
 
 .card-lg {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 8px rgb(0 0 0 / 8%);
     border: 1px solid var(--tblr-border-color-light, #e2e8f0);
 
     .card-body {
@@ -345,7 +357,8 @@ hr {
 // RESPONSIVE DESIGN
 // ============================================================================
 
-@media (max-width: 991px) {
+@media (width <= 991px) {
+
     .ext-doc-metadata-card .card-body,
     .ext-doc-totals-card .card-body {
         padding: 1.25rem;
@@ -356,7 +369,8 @@ hr {
     }
 }
 
-@media (max-width: 767px) {
+@media (width <= 767px) {
+
     .ext-doc-number {
         font-size: 1.75rem;
     }
@@ -370,13 +384,15 @@ hr {
     }
 
     .ext-doc-parties-section {
+
         .col-sm-6:first-child {
             margin-bottom: 1.5rem;
         }
     }
 }
 
-@media (max-width: 576px) {
+@media (width <= 576px) {
+
     .container-xl {
         padding-left: 1rem;
         padding-right: 1rem;
@@ -392,6 +408,7 @@ hr {
     }
 
     // App branding header - stack on mobile
+
     .app-branding-header {
         padding: 1rem 0;
 
@@ -410,7 +427,9 @@ hr {
     }
 
     // Footer - stack on mobile
+
     .ext-doc-footer {
+
         .btn-sm {
             width: 100%;
             margin-bottom: 0.5rem;
@@ -422,7 +441,9 @@ hr {
     }
 
     // Stack metadata items on mobile
+
     .ext-doc-metadata-card {
+
         .col-sm-4,
         .col-sm-6 {
             margin-bottom: 1rem;
@@ -434,7 +455,9 @@ hr {
     }
 
     // Make action buttons stack nicely on mobile
+
     .ext-doc-action-bar {
+
         .d-flex.justify-content-between {
             flex-direction: column;
             gap: 0.75rem;
@@ -459,6 +482,7 @@ hr {
     }
 
     // Table adjustments
+
     .ext-doc-items-table {
         font-size: 0.875rem;
 
@@ -477,6 +501,7 @@ hr {
 // ============================================================================
 
 @media print {
+
     * {
         visibility: visible !important;
     }
@@ -526,7 +551,7 @@ hr {
     .ext-doc-totals-card {
         box-shadow: none !important;
         border: 1px solid #dee2e6;
-        page-break-inside: avoid;
+        break-inside: avoid;
         display: block !important;
         visibility: visible !important;
     }
@@ -534,7 +559,7 @@ hr {
     .card-body {
         display: block !important;
         visibility: visible !important;
-        page-break-inside: avoid;
+        break-inside: avoid;
     }
 
     .card-lg .card-body {
@@ -542,12 +567,12 @@ hr {
     }
 
     table {
-        page-break-inside: auto;
+        break-inside: auto;
     }
 
     tr {
-        page-break-inside: avoid;
-        page-break-after: auto;
+        break-inside: avoid;
+        break-after: auto;
     }
 
     thead {

@@ -3,6 +3,7 @@ body {
 }
 
 // System information label column in requirements page
+
 .sysinfo-label {
     width: 160px;
 }
@@ -82,7 +83,7 @@ body {
     border-radius: 50%;
     position: absolute;
     box-sizing: content-box;
-    border: 4px solid rgba(76, 175, 80, .5);
+    border: 4px solid rgb(76 175 80 / 50%);
 }
 
 .success-checkmark .icon-fix {
@@ -97,41 +98,50 @@ body {
 }
 
 @keyframes rotate-circle {
+
     0% {
         transform: rotate(-45deg);
     }
+
     5% {
         transform: rotate(-45deg);
     }
+
     12% {
         transform: rotate(-405deg);
     }
+
     100% {
         transform: rotate(-405deg);
     }
 }
 
 @keyframes icon-line-tip {
+
     0% {
         width: 0;
         left: 1px;
         top: 19px;
     }
+
     54% {
         width: 0;
         left: 1px;
         top: 19px;
     }
+
     70% {
         width: 50px;
         left: -8px;
         top: 37px;
     }
+
     84% {
         width: 17px;
         left: 21px;
         top: 48px;
     }
+
     100% {
         width: 25px;
         left: 14px;
@@ -140,21 +150,25 @@ body {
 }
 
 @keyframes icon-line-long {
+
     0% {
         width: 0;
         right: 46px;
         top: 54px;
     }
+
     65% {
         width: 0;
         right: 46px;
         top: 54px;
     }
+
     84% {
         width: 55px;
         right: 0;
         top: 35px;
     }
+
     100% {
         width: 47px;
         right: 8px;

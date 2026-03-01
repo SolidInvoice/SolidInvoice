@@ -19,8 +19,8 @@
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production --progress",
-        "lint:js": "eslint src",
-        "lint:css": "stylelint 'src/**/*.{scss,css}'"
+        "lint:js": "eslint assets",
+        "lint:css": "stylelint 'assets/**/*.{scss,css}'"
     },
     "devDependencies": {
         "@babel/preset-env": "^7.26.9",

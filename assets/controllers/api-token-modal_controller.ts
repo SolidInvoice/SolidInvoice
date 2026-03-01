@@ -1,4 +1,4 @@
-import { Controller } from '@hotwired/stimulus';
+import { Context, Controller } from '@hotwired/stimulus';
 import { Modal } from 'bootstrap';
 import { getComponent } from '@symfony/ux-live-component';
 
@@ -11,7 +11,7 @@ export default class extends Controller<HTMLElement> {
     private modalElement: HTMLElement | null = null;
     private boundHandleModalHidden: () => Promise<void>;
 
-    constructor(context: any) {
+    constructor(context: Context) {
         super(context);
         this.boundHandleModalHidden = this.handleModalHidden.bind(this);
     }

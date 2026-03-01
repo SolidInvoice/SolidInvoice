@@ -62,7 +62,7 @@ h4 {
 }
 
 p {
-    margin: 0 0 8px 0;
+    margin: 0 0 8px;
 }
 
 a {
@@ -144,6 +144,7 @@ a {
 }
 
 /* Company Info */
+
 .company-logo {
     margin-bottom: 10px;
 }
@@ -162,6 +163,7 @@ a {
 }
 
 /* Invoice Title */
+
 .invoice-label {
     font-size: 10pt;
     font-weight: 600;
@@ -179,6 +181,7 @@ a {
 }
 
 /* Invoice Dates */
+
 .invoice-dates-table {
     border-collapse: collapse;
     margin-bottom: 16px;
@@ -202,6 +205,7 @@ a {
 }
 
 /* Total Due Box */
+
 .total-due-box {
     background-color: #2e963a;
     color: #ffffff;

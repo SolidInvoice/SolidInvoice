@@ -37,7 +37,7 @@
 
         &:hover {
             color: var(--swp-primary);
-            border-bottom-color: rgba(var(--swp-primary-rgb), 0.3);
+            border-bottom-color: rgb(var(--swp-primary-rgb), 0.3);
         }
 
         &.active {
@@ -50,6 +50,7 @@
 
 // Mobile: horizontal scrolling tabs
 @include media-breakpoint-down(md) {
+
     .settings-page > .nav-tabs {
         margin-left: -1rem;
         margin-right: -1rem;
@@ -74,6 +75,7 @@
 // ============================================================================
 
 .settings-content-card {
+
     &:hover {
         transform: none;
     }
@@ -84,13 +86,14 @@
 // ============================================================================
 
 .logo-upload-card {
+
     .logo-preview-frame {
         width: 80px;
         height: 80px;
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #fff;
+        background: #ffffff;
         border-radius: 0.5rem;
         border: 1px solid #e2e8f0;
         overflow: hidden;
@@ -110,7 +113,7 @@
         &:hover,
         &.dropzone-dragover {
             border-color: var(--swp-primary);
-            background-color: rgba(var(--swp-primary-rgb), 0.02);
+            background-color: rgb(var(--swp-primary-rgb), 0.02);
         }
     }
 }
@@ -132,9 +135,10 @@
 // ============================================================================
 
 #deleteCompanyModal {
+
     .modal-content {
         border-radius: 1rem;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        box-shadow: 0 25px 50px -12px rgb(0 0 0 / 25%);
     }
 
     .font-monospace {
@@ -149,7 +153,9 @@
 // ============================================================================
 
 @media print {
+
     .settings-page {
+
         .nav-tabs,
         .settings-danger-zone,
         .card-footer {

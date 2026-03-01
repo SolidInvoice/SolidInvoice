@@ -41,7 +41,7 @@
     justify-content: center;
     width: 56px;
     height: 56px;
-    background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.15) 100%);
+    background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgb(var(--swp-primary-rgb), 0.15) 100%);
     border-radius: var(--swp-radius-lg);
     color: var(--swp-primary);
 }
@@ -73,8 +73,8 @@
     transition: box-shadow var(--swp-transition-base);
 
     &:focus-within {
-        border-color: rgba(var(--swp-primary-rgb), 0.3);
-        box-shadow: 0 0 0 3px rgba(var(--swp-primary-rgb), 0.08);
+        border-color: rgb(var(--swp-primary-rgb), 0.3);
+        box-shadow: 0 0 0 3px rgb(var(--swp-primary-rgb), 0.08);
     }
 }
 
@@ -83,12 +83,14 @@
     grid-template-columns: 1fr 1fr;
     gap: var(--swp-space-6);
 
-    @media (max-width: 768px) {
+    @media (width <= 768px) {
         grid-template-columns: 1fr;
     }
 
     // Modifier for forms without date fields (e.g., Quotes)
+
     &--no-dates {
+
         .billing-details-right {
             justify-content: flex-start;
             padding-top: var(--swp-space-2);
@@ -109,6 +111,7 @@
 }
 
 // Invoice ID with inline edit
+
 .billing-id-display {
     display: flex;
     align-items: center;
@@ -162,12 +165,13 @@
 }
 
 // Date fields row
+
 .invoice-dates-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--swp-space-4);
 
-    @media (max-width: 576px) {
+    @media (width <= 576px) {
         grid-template-columns: 1fr;
     }
 }
@@ -273,11 +277,11 @@
     gap: var(--swp-space-6);
     align-items: start;
 
-    @media (max-width: 1100px) {
+    @media (width <= 1100px) {
         grid-template-columns: 1fr 280px;
     }
 
-    @media (max-width: 900px) {
+    @media (width <= 900px) {
         grid-template-columns: 1fr;
     }
 }
@@ -308,7 +312,7 @@
     justify-content: center;
     width: 36px;
     height: 36px;
-    background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.2) 100%);
+    background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgb(var(--swp-primary-rgb), 0.2) 100%);
     border-radius: var(--swp-radius-md);
     color: var(--swp-primary);
 }
@@ -325,6 +329,7 @@
 }
 
 // Line items list (responsive grid)
+
 .billing-items-list {
     margin-bottom: var(--swp-space-4);
 }
@@ -353,13 +358,15 @@
         text-align: center;
     }
 
-    @media (max-width: 900px) {
+    @media (width <= 900px) {
         display: none;
     }
 }
 
 // Without tax column - give description even more space
+
 .billing-items-list:not(:has(.column-tax)) {
+
     .billing-items-header-row {
         grid-template-columns: 3fr minmax(120px, 1fr) 70px minmax(100px, 1fr) 48px;
     }
@@ -367,7 +374,7 @@
     .billing-item-row {
         grid-template-columns: 3fr minmax(120px, 1fr) 70px minmax(100px, 1fr) 48px;
 
-        @media (max-width: 900px) {
+        @media (width <= 900px) {
             grid-template-columns: 1fr;
         }
     }
@@ -409,6 +416,7 @@
     .column-price,
     .column-qty,
     .column-tax {
+
         input,
         select {
             width: 100%;
@@ -416,6 +424,7 @@
     }
 
     .column-qty {
+
         input {
             text-align: center;
         }
@@ -444,7 +453,7 @@
     }
 
     // Mobile responsive layout
-    @media (max-width: 900px) {
+    @media (width <= 900px) {
         display: grid;
         grid-template-columns: 1fr 1fr;
         grid-template-areas:
@@ -543,6 +552,7 @@
 }
 
 // Remove item button
+
 .remove-item-btn {
     display: inline-flex;
     align-items: center;
@@ -575,6 +585,7 @@
 }
 
 // Add item button
+
 .add-item-action {
     padding-top: var(--swp-space-4);
     border-top: 1px dashed var(--swp-border);
@@ -609,7 +620,7 @@
     position: sticky;
     top: var(--swp-space-6);
 
-    @media (max-width: 992px) {
+    @media (width <= 992px) {
         position: static;
     }
 }
@@ -636,7 +647,7 @@
     justify-content: center;
     width: 36px;
     height: 36px;
-    background: linear-gradient(135deg, var(--swp-success-light) 0%, rgba(var(--swp-success-rgb), 0.2) 100%);
+    background: linear-gradient(135deg, var(--swp-success-light) 0%, rgb(var(--swp-success-rgb), 0.2) 100%);
     border-radius: var(--swp-radius-md);
     color: var(--swp-success);
 }
@@ -675,6 +686,7 @@
 }
 
 .totals-row-discount {
+
     .totals-value {
         color: var(--swp-danger);
     }
@@ -699,6 +711,7 @@
 }
 
 // Discount field in sidebar
+
 .discount-field {
     margin-top: var(--swp-space-4);
     padding-top: var(--swp-space-4);
@@ -784,7 +797,7 @@
     grid-template-columns: 1fr 1fr;
     gap: var(--swp-space-4);
 
-    @media (max-width: 768px) {
+    @media (width <= 768px) {
         grid-template-columns: 1fr;
     }
 }
@@ -803,7 +816,7 @@
     padding: var(--swp-space-4) 0;
     margin-top: var(--swp-space-8);
     z-index: 10;
-    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 -4px 12px rgb(0 0 0 / 5%);
 }
 
 .billing-form-actions-inner {
@@ -816,6 +829,7 @@
 }
 
 // Split button group for save actions
+
 .save-button-group {
     box-shadow: var(--swp-shadow-primary);
     border-radius: var(--swp-radius-md);
@@ -833,7 +847,7 @@
 
     .dropdown-toggle-split {
         padding: var(--swp-space-3) var(--swp-space-3);
-        border-left: 1px solid rgba(255, 255, 255, 0.2);
+        border-left: 1px solid rgb(255 255 255 / 20%);
 
         &::after {
             vertical-align: middle;
@@ -882,7 +896,8 @@
 // MOBILE LINE ITEM CARDS
 // ============================================================================
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
+
     .billing-items-table {
         display: none;
     }
@@ -894,7 +909,8 @@
     }
 }
 
-@media (min-width: 769px) {
+@media (width >= 769px) {
+
     .billing-items-cards {
         display: none;
     }
@@ -908,8 +924,8 @@
     animation: slideIn 0.2s ease-out;
 
     &:focus-within {
-        border-color: rgba(var(--swp-primary-rgb), 0.4);
-        box-shadow: 0 0 0 3px rgba(var(--swp-primary-rgb), 0.08);
+        border-color: rgb(var(--swp-primary-rgb), 0.4);
+        box-shadow: 0 0 0 3px rgb(var(--swp-primary-rgb), 0.08);
     }
 }
 
@@ -963,10 +979,12 @@
 // ============================================================================
 
 @keyframes slideIn {
+
     from {
         opacity: 0;
         transform: translateY(-10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -977,7 +995,8 @@
 // RESPONSIVE ADJUSTMENTS
 // ============================================================================
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
+
     .billing-form-container {
         padding: 0 var(--swp-space-4);
         padding-bottom: var(--swp-space-20);
@@ -1027,6 +1046,7 @@
 // ============================================================================
 
 // Recurring Schedule Section (on create/edit page)
+
 .recurring-schedule-section {
     margin-block: var(--swp-space-6);
     padding: var(--swp-space-5);
@@ -1080,20 +1100,21 @@
 }
 
 // Recurring Options Wrapper - Style form fields rendered by DynamicFormBuilder
-.recurring-options-wrapper {
 
+.recurring-options-wrapper {
     // Type field (radio buttons) - Make them visual cards
+
     [id$='_type'], [id$='_endType'] {
         display: grid !important;
         grid-template-columns: repeat(4, 1fr);
         gap: var(--swp-space-3);
         margin-block-start: var(--swp-space-2);
 
-        @media (max-width: 768px) {
+        @media (width <= 768px) {
             grid-template-columns: repeat(2, 1fr);
         }
 
-        .form-check-label.required:after {
+        .form-check-label.required::after {
             display: none;
         }
 
@@ -1148,13 +1169,14 @@
     }
 
     // Days field for Weekly/Yearly (checkboxes for days/months) - Make them button toggles
+
     [id$='_days'] {
         display: grid !important;
         grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
         gap: var(--swp-space-2);
         margin-block-start: var(--swp-space-2);
 
-        @media (max-width: 768px) {
+        @media (width <= 768px) {
             grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
         }
 
@@ -1190,6 +1212,7 @@
                 visibility: visible !important;
 
                 // Ensure text content is visible
+
                 &::before,
                 &::after {
                     content: none !important;
@@ -1215,8 +1238,8 @@
     align-items: center;
     gap: var(--swp-space-3);
     padding: var(--swp-space-4);
-    background: linear-gradient(135deg, var(--swp-primary-lighter) 0%, rgba(var(--swp-primary-rgb), 0.05) 100%);
-    border: 1px solid rgba(var(--swp-primary-rgb), 0.2);
+    background: linear-gradient(135deg, var(--swp-primary-lighter) 0%, rgb(var(--swp-primary-rgb), 0.05) 100%);
+    border: 1px solid rgb(var(--swp-primary-rgb), 0.2);
     border-radius: var(--swp-radius-md);
 
     .recurring-frequency-icon {
@@ -1244,6 +1267,7 @@
 }
 
 // Variable Help - Collapsible Info Box
+
 .recurring-variables-help {
     margin-block-start: var(--swp-space-3);
     padding: var(--swp-space-3);
@@ -1349,12 +1373,14 @@
 // ============================================================================
 
 // Highlighted card (e.g., Recurring Schedule card)
+
 .invoice-sidebar-card-highlight {
     border-left: 3px solid var(--swp-primary);
-    background: linear-gradient(to right, rgba(var(--swp-primary-rgb), 0.03), transparent);
+    background: linear-gradient(to right, rgb(var(--swp-primary-rgb), 0.03), transparent);
 }
 
 // Recurring Schedule Grid (label | value pairs)
+
 .recurring-schedule-grid {
     display: flex;
     flex-direction: column;
@@ -1386,6 +1412,7 @@
 }
 
 // Upcoming Occurrences List
+
 .occurrences-list {
     display: flex;
     flex-direction: column;
@@ -1407,7 +1434,7 @@
 
     &:hover {
         background: var(--swp-surface);
-        border-color: rgba(var(--swp-primary-rgb), 0.3);
+        border-color: rgb(var(--swp-primary-rgb), 0.3);
         transform: translateX(2px);
     }
 }
@@ -1431,6 +1458,7 @@
 }
 
 // Generated Invoices List
+
 .generated-invoices-list {
     display: flex;
     flex-direction: column;
@@ -1453,7 +1481,7 @@
 
     &:hover {
         background: var(--swp-surface);
-        border-color: rgba(var(--swp-primary-rgb), 0.3);
+        border-color: rgb(var(--swp-primary-rgb), 0.3);
     }
 }
 
@@ -1521,12 +1549,12 @@
     color: var(--swp-primary);
     text-decoration: none;
     background: var(--swp-primary-lighter);
-    border: 1px solid rgba(var(--swp-primary-rgb), 0.2);
+    border: 1px solid rgb(var(--swp-primary-rgb), 0.2);
     border-radius: var(--swp-radius-md);
     transition: all var(--swp-transition-fast);
 
     &:hover {
-        background: rgba(var(--swp-primary-rgb), 0.15);
+        background: rgb(var(--swp-primary-rgb), 0.15);
         border-color: var(--swp-primary);
         transform: translateY(-1px);
     }

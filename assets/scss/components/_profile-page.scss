@@ -14,7 +14,7 @@
     position: sticky;
     top: var(--swp-space-6);
 
-    @media (max-width: 991.98px) {
+    @media (width <= 991.98px) {
         position: static;
         margin-bottom: var(--swp-space-4);
     }
@@ -63,7 +63,7 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    color: currentColor;
+    color: currentcolor;
 }
 
 .profile-nav-text {
@@ -85,7 +85,7 @@
     margin-bottom: var(--swp-space-6);
     box-shadow: var(--swp-shadow-sm);
 
-    @media (max-width: 767.98px) {
+    @media (width <= 767.98px) {
         flex-direction: column;
         text-align: center;
         padding: var(--swp-space-5);
@@ -96,7 +96,7 @@
     width: 64px;
     height: 64px;
     border-radius: var(--swp-radius-full);
-    background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.2) 100%);
+    background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgb(var(--swp-primary-rgb), 0.2) 100%);
     color: var(--swp-primary);
     display: flex;
     align-items: center;
@@ -181,7 +181,7 @@
     grid-template-columns: repeat(2, 1fr);
     gap: var(--swp-space-5);
 
-    @media (max-width: 767.98px) {
+    @media (width <= 767.98px) {
         grid-template-columns: 1fr;
         gap: var(--swp-space-4);
     }
@@ -254,12 +254,12 @@
 }
 
 .security-item-icon-success {
-    background: rgba(var(--swp-success-rgb), 0.1);
+    background: rgb(var(--swp-success-rgb), 0.1);
     color: var(--swp-success);
 }
 
 .security-item-icon-warning {
-    background: rgba(var(--swp-warning-rgb), 0.1);
+    background: rgb(var(--swp-warning-rgb), 0.1);
     color: var(--swp-warning);
 }
 
@@ -319,8 +319,8 @@
 // ============================================================================
 
 .password-requirements {
-    background: rgba(var(--swp-info-rgb), 0.05);
-    border: 1px solid rgba(var(--swp-info-rgb), 0.2);
+    background: rgb(var(--swp-info-rgb), 0.05);
+    border: 1px solid rgb(var(--swp-info-rgb), 0.2);
     border-radius: var(--swp-radius-md);
     padding: var(--swp-space-4);
     margin-bottom: var(--swp-space-6);
@@ -335,7 +335,7 @@
     .section-icon {
         width: 32px;
         height: 32px;
-        background: rgba(var(--swp-info-rgb), 0.15);
+        background: rgb(var(--swp-info-rgb), 0.15);
         color: var(--swp-info);
     }
 
@@ -373,14 +373,16 @@
 // ============================================================================
 
 // Tablet adjustments
-@media (min-width: 768px) and (max-width: 991.98px) {
+@media (width >= 768px) and (width <= 991.98px) {
+
     .profile-sidebar {
         margin-bottom: var(--swp-space-6);
     }
 }
 
-@media (max-width: 767.98px) {
+@media (width <= 767.98px) {
     // Profile section footer buttons
+
     .profile-section-footer {
         flex-direction: column;
 
@@ -396,6 +398,7 @@
 // ============================================================================
 
 @media print {
+
     .profile-section-footer,
     .profile-sidebar {
         display: none !important;

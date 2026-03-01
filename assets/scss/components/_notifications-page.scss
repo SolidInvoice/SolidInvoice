@@ -31,7 +31,7 @@
     justify-content: center;
     width: 40px;
     height: 40px;
-    background: linear-gradient(135deg, rgba(var(--swp-primary-rgb), 0.15) 0%, rgba(var(--swp-primary-rgb), 0.05) 100%);
+    background: linear-gradient(135deg, rgb(var(--swp-primary-rgb), 0.15) 0%, rgb(var(--swp-primary-rgb), 0.05) 100%);
     border-radius: var(--swp-radius-md);
     color: var(--swp-primary);
     flex-shrink: 0;
@@ -164,7 +164,7 @@
     justify-content: center;
     width: 36px;
     height: 36px;
-    background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgba(var(--swp-primary-rgb), 0.08) 100%);
+    background: linear-gradient(135deg, var(--swp-primary-light) 0%, rgb(var(--swp-primary-rgb), 0.08) 100%);
     border-radius: var(--swp-radius-md);
     color: var(--swp-primary);
     flex-shrink: 0;
@@ -200,7 +200,9 @@
 
 
 // Bootstrap form-check integration - compact inline style
+
 .notification-card-channels {
+
     .form-check {
         margin: 0;
         padding: 0;
@@ -216,6 +218,7 @@
             pointer-events: none;
 
             // Apply focus ring to label when checkbox is focused
+
             &:focus + .form-check-label {
                 border-color: var(--swp-primary);
                 box-shadow: var(--swp-ring-primary);
@@ -260,7 +263,8 @@
 // ============================================================================
 
 // Mobile (< 768px)
-@media (max-width: 767.98px) {
+@media (width <= 767.98px) {
+
     .integration-management-header {
         flex-direction: column;
         align-items: stretch;
@@ -319,6 +323,7 @@
     }
 
     .notification-card-channels {
+
         .notification-channels-list {
             flex-direction: column;
             gap: var(--swp-space-1-5);
@@ -360,7 +365,8 @@
 }
 
 // Tablet and Desktop (> 768px) - 2 column layout for categories
-@media (min-width: 768px) {
+@media (width >= 768px) {
+
     .notification-groups {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -371,9 +377,9 @@
 // ============================================================================
 
 @media print {
+
     .notification-card {
         break-inside: avoid;
-        page-break-inside: avoid;
     }
 }
 
