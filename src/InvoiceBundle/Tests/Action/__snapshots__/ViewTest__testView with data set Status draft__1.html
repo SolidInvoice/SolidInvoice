@@ -1,17 +1,17 @@
 <html><body>
-<div class="invoice-view-page">
-    <div class="invoice-view-header no-print">
-        <div class="invoice-view-header-left">
-            <div class="invoice-view-icon">
+<div class="doc-view-page">
+    <div class="doc-view-header no-print">
+        <div class="doc-view-header-left">
+            <div class="doc-view-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="32" height="32" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14 3v4a1 1 0 0 0 1 1h4"></path><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2M9 7h1m-1 6h6m-2 4h2"></path></g></svg>
             </div>
-            <div class="invoice-view-title-group">
-                <h1 class="invoice-view-title">Invoice #INV-2021-0001</h1>
-                <div class="invoice-view-meta">
+            <div class="doc-view-title-group">
+                <h1 class="doc-view-title">Invoice #INV-2021-0001</h1>
+                <div class="doc-view-meta">
                     
 <span class="badge bg-secondary text-secondary-fg">Draft</span>
 
-                                            <span class="invoice-view-due">
+                                            <span class="doc-view-meta-item">
                             <svg viewbox="0 0 24 24" fill="currentColor" width="14" height="14" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm12-4v4M8 3v4m-4 4h16m-9 4h1m0 0v3"></path></svg>
                             Due Date: Sep 30, 2021
                         </span>
@@ -19,8 +19,8 @@
             </div>
         </div>
 
-        <div class="invoice-view-header-actions">
-                        <div class="invoice-view-utility-actions">
+        <div class="doc-view-header-actions">
+                        <div class="doc-view-utility-actions">
                 <button type="button" onclick="window.print()" class="btn btn-ghost btn-icon" title="Print">
                     <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M17 17h2a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h2m10-8V5a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v4"></path><path d="M7 15a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2z"></path></g></svg>
                 </button>
@@ -89,24 +89,24 @@
                     </div>
     </div>
 
-        <div class="invoice-view-content">
-                <div class="invoice-view-document">
-            <div class="invoice-document-card">
-                                <div class="invoice-document-header">
-                    <div class="invoice-party invoice-party-from">
-                        <div class="invoice-party-label">From</div>
-                        <h3 class="invoice-party-name">SolidInvoice</h3>
+        <div class="doc-view-content">
+                <div class="doc-view-document">
+            <div class="doc-card">
+                                <div class="doc-header-from-to">
+                    <div class="doc-party doc-party-from">
+                        <div class="doc-party-label">From</div>
+                        <h3 class="doc-party-name">SolidInvoice</h3>
 
                                                 
                                                 
                                                 
                                                                     </div>
 
-                    <div class="invoice-party invoice-party-to">
-                        <div class="invoice-party-label">To</div>
-                        <h3 class="invoice-party-name">Johnston PLC</h3>
+                    <div class="doc-party doc-party-to">
+                        <div class="doc-party-label">To</div>
+                        <h3 class="doc-party-name">Johnston PLC</h3>
 
-                                                    <div class="invoice-party-detail">
+                                                    <div class="doc-party-detail">
                                                             <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="14" height="14" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0m.6-3h16.8M3.6 15h16.8"></path><path d="M11.5 3a17 17 0 0 0 0 18m1-18a17 17 0 0 1 0 18"></path></g></svg>
                                 <a href="https://www.example.com" class="detail-value" rel="external noopener" target="_blank">
                                     <span>https://www.example.com</span>
@@ -114,7 +114,7 @@
                                 </a>
                             </div>
                         
-                                                    <div class="invoice-party-detail">
+                                                    <div class="doc-party-detail">
                                 <span class="detail-label">Vat Number:</span>
                                 <span class="detail-value">GB123456789</span>
                             </div>
@@ -122,8 +122,8 @@
                                             </div>
                 </div>
 
-                                <div class="invoice-document-items">
-                    <table class="invoice-items-table">
+                                <div class="doc-items">
+                    <table class="doc-items-table">
                         <thead>
                             <tr>
                                 <th class="column-description">Description</th>
@@ -143,8 +143,8 @@
                     </table>
                 </div>
 
-                                <div class="invoice-document-totals">
-                    <div class="invoice-totals-grid">
+                                <div class="doc-totals">
+                    <div class="doc-totals-grid">
                         <div class="totals-row">
                             <span class="totals-label">Sub-Total</span>
                             <span class="totals-value">$1.00</span>
@@ -164,29 +164,29 @@
                     </div>
                 </div>
 
-                                                    <div class="invoice-document-footer">
-                                                    <div class="invoice-footer-section">
-                                <h4 class="invoice-footer-title">Terms</h4>
-                                <p class="invoice-footer-text">Test Terms</p>
+                                                    <div class="doc-footer">
+                                                    <div class="doc-footer-section">
+                                <h4 class="doc-footer-title">Terms</h4>
+                                <p class="doc-footer-text">Test Terms</p>
                             </div>
                         
-                                                    <div class="invoice-footer-section no-print">
-                                <h4 class="invoice-footer-title">Notes</h4>
-                                <p class="invoice-footer-text">Test Notes</p>
+                                                    <div class="doc-footer-section no-print">
+                                <h4 class="doc-footer-title">Notes</h4>
+                                <p class="doc-footer-text">Test Notes</p>
                             </div>
                                             </div>
                             </div>
         </div>
 
-                <div class="invoice-view-sidebar no-print">
-                        <div class="invoice-sidebar-card">
-                <div class="invoice-sidebar-card-header">
-                    <div class="invoice-sidebar-card-icon">
+                <div class="doc-view-sidebar no-print">
+                        <div class="doc-sidebar-card">
+                <div class="doc-sidebar-card-header">
+                    <div class="doc-sidebar-card-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21h18M9 8h1m-1 4h1m-1 4h1m4-8h1m-1 4h1m-1 4h1M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"></path></svg>
                     </div>
-                    <h3 class="invoice-sidebar-card-title">Client</h3>
+                    <h3 class="doc-sidebar-card-title">Client</h3>
                 </div>
-                <div class="invoice-sidebar-card-body">
+                <div class="doc-sidebar-card-body">
                     <div class="client-info">
                         <a href="/clients/view/01JGXKV8QZ0000000000000001" class="client-name">
                             Johnston PLC
@@ -196,15 +196,15 @@
                 </div>
             </div>
 
-                        <div class="invoice-sidebar-card">
-                <div class="invoice-sidebar-card-header">
-                    <div class="invoice-sidebar-card-icon">
+                        <div class="doc-sidebar-card">
+                <div class="doc-sidebar-card-header">
+                    <div class="doc-sidebar-card-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16l-3-2l-2 2l-2-2l-2 2l-2-2zM9 7h6m-6 4h6m-2 4h2"></path></svg>
                     </div>
-                    <h3 class="invoice-sidebar-card-title">Invoice Summary</h3>
+                    <h3 class="doc-sidebar-card-title">Invoice Summary</h3>
                 </div>
-                <div class="invoice-sidebar-card-body">
-                    <div class="invoice-summary-grid">
+                <div class="doc-sidebar-card-body">
+                    <div class="doc-summary-grid">
                         <div class="summary-item">
                             <span class="summary-label">Status</span>
                             <span class="summary-value">
