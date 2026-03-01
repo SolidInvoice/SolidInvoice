@@ -54,6 +54,9 @@ final class CreateInvoice extends AbstractController
     #[LiveProp(writable: false)]
     public bool $isEdit = false;
 
+    #[LiveProp(writable: false, fieldName: 'invoiceEntity')]
+    public ?Invoice $invoice = null;
+
     #[LiveProp(writable: true)]
     public ?string $previousClientId = null;
 
@@ -195,7 +198,24 @@ final class CreateInvoice extends AbstractController
         // If clientMode=New, manager creates unpersisted client
         // Client will be persisted via cascade when invoice is saved
         if ($this->isEdit) {
-            throw new \RuntimeException('Edit mode is not yet implemented in this component. Use the Edit action class instead.');
+            assert($this->invoice instanceof Invoice);
+
+            $this->formManager->updateInvoiceFromDTO($this->invoice, $dto);
+
+            if ('send' === $action || 'publish' === $action) {
+                $this->invoiceStateMachine->apply($this->invoice, Graph::TRANSITION_ACCEPT);
+            }
+
+            $this->entityManager->flush();
+
+            if ('send' === $action) {
+                $this->mailer->send(new InvoiceEmail($this->invoice));
+            }
+
+            $this->addFlash('success', 'invoice.edit.success');
+
+            $url = $this->router->generate('_invoices_view', ['id' => $this->invoice->getId()]);
+            return $this->redirect($url);
         }
 
         $invoice = $this->formManager->createInvoiceFromDTO($dto);
