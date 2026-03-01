@@ -81,7 +81,7 @@ class QuoteMailerListenerTest extends TestCase
         $logger->shouldHaveReceived('error')
             ->with(M::pattern('/Failed to send quote email/'), M::type('array'));
 
-        self::assertNotEmpty($flashBag->get('error'));
+        self::assertSame(['quote.email.send_failed'], $flashBag->get('error'));
     }
 
     public function testEvents(): void

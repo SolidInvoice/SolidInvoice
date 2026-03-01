@@ -14,13 +14,12 @@ declare(strict_types=1);
 namespace SolidInvoice\QuoteBundle\Listener\Mailer;
 
 use Psr\Log\LoggerInterface;
+use SolidInvoice\CoreBundle\Traits\FlashErrorTrait;
 use SolidInvoice\QuoteBundle\Email\QuoteEmail;
 use SolidInvoice\QuoteBundle\Event\QuoteEvent;
 use SolidInvoice\QuoteBundle\Event\QuoteEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Exception\SessionNotFoundException;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 
@@ -29,6 +28,8 @@ use Symfony\Component\Mailer\MailerInterface;
  */
 class QuoteMailerListener implements EventSubscriberInterface
 {
+    use FlashErrorTrait;
+
     public function __construct(
         private readonly MailerInterface $mailer,
         private readonly LoggerInterface $logger,
@@ -50,23 +51,14 @@ class QuoteMailerListener implements EventSubscriberInterface
         } catch (TransportExceptionInterface $e) {
             $this->logger->error('Failed to send quote email: ' . $e->getMessage(), [
                 'exception' => $e,
-                'quoteId' => $event->getQuote()->getId(),
             ]);
 
-            $this->addFlashError('Failed to send quote email. Please verify your email configuration in Settings.');
+            $this->addFlashError('quote.email.send_failed');
         }
     }
 
-    private function addFlashError(string $message): void
+    private function getRequestStack(): RequestStack
     {
-        try {
-            $session = $this->requestStack->getSession();
-        } catch (SessionNotFoundException) {
-            return;
-        }
-
-        if ($session instanceof Session) {
-            $session->getFlashBag()->add('error', $message);
-        }
+        return $this->requestStack;
     }
 }

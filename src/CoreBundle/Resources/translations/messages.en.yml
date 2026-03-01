@@ -20,6 +20,7 @@ billing:
     tax: Tax
     discount: Discount
     total: Total
+notification.send_failed: 'Failed to send notification. Please verify your email configuration in Settings.'
 powered_by: 'Powered By'
 invalid_file: 'Invalid File'
 create_new: 'Create New'
