@@ -176,13 +176,25 @@ jobs:
             api.github.com:443
             bun.sh:443
             cdn.jsdelivr.net:443
+            dl.cloudsmith.io:443
+            getcomposer.org:443
             github.com:443
             objects.githubusercontent.com:443
+            packagist.org:443
             registry.npmjs.org:443
             registry.yarnpkg.com:443
             release-assets.githubusercontent.com:443
+            repo.packagist.org:443
+            setup-php.com:443
 
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f
+        with:
+          php-version-file: .php-version
+
+      - uses: ramsey/composer-install@3cf229dc2919194e9e36783941438d17239e8520 # v3
 
       - uses: oven-sh/setup-bun@735343b667d3e6f658f44d0eca948eb6282f2b76 # v2
 
@@ -206,13 +218,25 @@ jobs:
             api.github.com:443
             bun.sh:443
             cdn.jsdelivr.net:443
+            dl.cloudsmith.io:443
+            getcomposer.org:443
             github.com:443
             objects.githubusercontent.com:443
+            packagist.org:443
             registry.npmjs.org:443
             registry.yarnpkg.com:443
             release-assets.githubusercontent.com:443
+            repo.packagist.org:443
+            setup-php.com:443
 
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f
+        with:
+          php-version-file: .php-version
+
+      - uses: ramsey/composer-install@3cf229dc2919194e9e36783941438d17239e8520 # v3
 
       - uses: oven-sh/setup-bun@735343b667d3e6f658f44d0eca948eb6282f2b76 # v2
 
