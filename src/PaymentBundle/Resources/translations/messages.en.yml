@@ -13,6 +13,7 @@ payment:
         exception:
             not_enough_credit: 'Not have enough credit available'
             amount_exceeds_balance: 'Amount captured exceeds outstanding balance'
+            invoice_cannot_be_paid: 'This invoice cannot be paid'
     invoice_summary: 'Invoice Summary'
     client: 'Client'
     invoice_details: 'Invoice Details'
