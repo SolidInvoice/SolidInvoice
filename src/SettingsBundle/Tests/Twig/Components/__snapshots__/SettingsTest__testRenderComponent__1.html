@@ -1,6 +1,6 @@
 <html><body>
 <div class="settings-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="Settings" data-live-url-value="/_components/Settings" data-live-query-mapping-value='{"section":{"name":"section"}}' data-live-props-value='{"section":"system","formName":"settings","settings":{"company":{"logo":"","company_name":"SolidInvoice","contact_details":{"address":{"street1":"","street2":"","city":"","state":"","zip":"","country":""},"email":"","phone_number":""},"currency":"USD","vat_number":""},"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
-        <ul class="nav nav-tabs mb-4" role="tablist">
+        <ul class="nav nav-underline mb-4" role="tablist">
                                 <li class="nav-item">
                 <a href="/settings?section=system" class="nav-link active" aria-current="page">
                     <span class="nav-link-icon d-none d-sm-inline-block">
@@ -270,7 +270,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 17a1 1 0 1 0 2 0a1 1 0 1 0-2 0M6 7a1 1 0 1 0 2 0a1 1 0 1 0-2 0m0 11L18 6"></path></svg>
         </span>
         <input type="text" id="settings_company_vat_number" name="settings[company][vat_number]" class="form-control" value="" placeholder="e.g. GB123456789" data-vat-validator-target="input" aria-describedby="settings_company_vat_number_help">
-        <button type="button" class="btn btn-outline-secondary btn-validate d-flex align-items-center gap-1" data-action="click-&gt;vat-validator#validate" data-vat-validator-target="button" title="Validate VAT Number (EU Countries Only)">
+        <button type="button" class="btn btn-outline-secondary btn-validate" data-action="click-&gt;vat-validator#validate" data-vat-validator-target="button" title="Validate VAT Number (EU Countries Only)">
             <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0"></path><path d="m9 12l2 2l4-4"></path></g></svg>
             <span>Validate</span>
         </button>

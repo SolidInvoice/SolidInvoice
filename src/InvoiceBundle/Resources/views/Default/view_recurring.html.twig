@@ -10,7 +10,7 @@
 {% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
 
 {% block page_title %}
-    {{ 'Recurring Invoice'|trans }} - {{ invoice.client }}
+    {{ 'invoice.list.recurring_title'|trans }} - {{ invoice.client }}
 {% endblock page_title %}
 
 {% block content %}
@@ -25,7 +25,7 @@
                 {{ ux_icon('tabler:repeat', {width: 32, height: 32}) }}
             </div>
             <div class="doc-view-title-group">
-                <h1 class="doc-view-title">{{ 'Recurring Invoice'|trans }}</h1>
+                <h1 class="doc-view-title">{{ 'invoice.list.recurring_title'|trans }}</h1>
                 <div class="doc-view-meta">
                     {{ invoice_label(invoice.status) }}
                     <span class="doc-view-meta-item ms-2">
@@ -51,7 +51,7 @@
 
                 {# More Actions Dropdown #}
                 <div class="dropdown">
-                    <button class="btn btn-ghost btn-icon" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="{{ 'More Actions'|trans }}">
+                    <button class="btn btn-ghost btn-icon" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="{{ 'invoice.view.toolbar.more_actions'|trans }}">
                         {{ ux_icon('tabler:dots-vertical', {width: 20, height: 20}) }}
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">

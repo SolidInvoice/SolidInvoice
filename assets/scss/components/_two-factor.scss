@@ -16,31 +16,6 @@
     }
 }
 
-// Status Badges
-
-.status-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--swp-space-2);
-    padding: var(--swp-space-1-5) var(--swp-space-3);
-    border-radius: var(--swp-radius-full);
-    font-size: var(--swp-text-sm);
-    font-weight: var(--swp-font-semibold);
-    line-height: 1;
-
-    &.status-enabled {
-        background: rgba(var(--swp-success-rgb), 0.1);
-        color: var(--swp-success);
-        border: 1px solid rgba(var(--swp-success-rgb), 0.2);
-    }
-
-    &.status-disabled {
-        background: var(--swp-gray-100);
-        color: var(--swp-text-muted);
-        border: 1px solid var(--swp-border);
-    }
-}
-
 // Section Content Layout
 
 .two-factor-section-content {
@@ -555,7 +530,6 @@
 
 // Focus visible styles
 
-.status-badge:focus-visible,
 .backup-code-item code:focus-visible,
 .manual-entry-details summary:focus-visible {
     outline: 2px solid var(--swp-primary);
@@ -564,10 +538,6 @@
 
 // High contrast mode support
 @media (prefers-contrast: high) {
-
-    .status-badge {
-        border-width: 2px;
-    }
 
     .qr-code-image {
         border-width: 3px;

@@ -40,6 +40,13 @@ profile:
             actions:
                 save: Save
                 close: Close
+            token_important: 'Important!'
+            token_copy_warning: 'Copy this token now. For security reasons, it will not be shown again.'
+            token_name: 'Token Name'
+            token_value: 'Token Value'
+            token_copy: 'Copy'
+            token_usage: 'Use this token in the X-API-TOKEN header for API requests.'
+            token_confirmed: 'I have copied the token'
         history:
             title: 'API History'
             actions:
@@ -61,6 +68,10 @@ security:
         password: Password
         remember: 'Keep me logged in'
         forgot_password: 'Forgot Password'
+        or: or
+        login_with_google: 'Login with Google'
+        no_account: "Don't have an account yet?"
+        register_now: 'Register Now'
     register:
         title: Register
         heading: 'Create your free account'
@@ -156,6 +167,9 @@ change_password:
     submit: 'Save'
 
 forgot_password:
+    reset:
+        title: 'Reset Password'
+        heading: 'Reset your password'
     request:
         title: 'Forgot your password?'
         heading: 'Forgot your password?'

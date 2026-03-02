@@ -19,14 +19,14 @@
 
 {% block social_login %}
     {% toggle 'google_oauth_login' %}
-        <div class="hr-text">or</div>
+        <div class="hr-text">{{ 'security.login.or'|trans }}</div>
 
         <div class="card-body">
             <div class="row">
                 <div class="col">
-                    <a href="{{ path('_oauth_connect', {'service': 'google' }) }}" class="btn btn-4 w-100">
-                        {{ ux_icon('tabler:brand-google', {width: 24, height: 24}) -}}&nbsp;
-                        {{- 'Login with Google'|trans }}
+                    <a href="{{ path('_oauth_connect', {'service': 'google' }) }}" class="btn btn-outline-secondary w-100">
+                        {{ ux_icon('tabler:brand-google', {width: 24, height: 24}) }}
+                        {{ 'security.login.login_with_google'|trans }}
                     </a>
                 </div>
             </div>
@@ -44,9 +44,9 @@
     {{ parent() }}
 
     <div class="text-center text-secondary mt-3 bg-white p-2">
-        {{ "Don't have an account yet?"|trans }}
+        {{ 'security.login.no_account'|trans }}
         <a href="{{ path('_register') }}" tabindex="-1">
-            {{ 'Register Now'|trans }}
+            {{ 'security.login.register_now'|trans }}
         </a>
     </div>
 

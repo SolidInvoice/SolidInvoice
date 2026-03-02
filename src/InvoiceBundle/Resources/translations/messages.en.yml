@@ -100,7 +100,11 @@ invoice:
             clone: Clone
             view_quote: 'View Quote'
             archive: Archive
+            more_actions: 'More Actions'
+            toggle_dropdown: 'Toggle Dropdown'
+            publish_and_send: 'Publish and Send'
         payments: Payments
+        related_quote: 'Related Quote'
     clone:
         success: 'Invoice cloned successfully'
     payment:

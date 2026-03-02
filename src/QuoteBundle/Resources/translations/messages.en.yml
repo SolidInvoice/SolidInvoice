@@ -82,7 +82,11 @@ quote:
             clone: Clone
             view_invoice: View Invoice
             archive: Archive
+            more_actions: 'More Actions'
+            toggle_dropdown: 'Toggle Dropdown'
+            publish_and_send: 'Publish and Send'
         online: 'View this quote online at: %url%'
+        related_invoice: 'Related Invoice'
     clone:
         success: 'Quote cloned successfully'
     accepted: 'Quote Accepted and invoice created'

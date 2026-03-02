@@ -162,7 +162,7 @@
                {% for attrname, attrvalue in attr %}{{ attrname }}="{{ attrvalue }}" {% endfor %}
         >
         <button type="button"
-                class="btn btn-outline-secondary btn-validate d-flex align-items-center gap-1"
+                class="btn btn-outline-secondary btn-validate"
                 {{ stimulus_action('vat-validator', 'validate', 'click') }}
                 {{ stimulus_target('vat-validator', 'button') }}
                 title="{{ 'Validate VAT Number (EU Countries Only)'|trans }}"
@@ -295,7 +295,7 @@
 
 {% block form_flow_action_widget %}
     {% if icon is defined %}
-        {% set attr = attr|merge({class: attr.class ~ ' d-flex align-items-center gap-2'}) %}
+        {% set attr = attr|merge({class: attr.class ~ ''}) %}
         {% set label_html = true %}
         {% set label_text = label|default(name|humanize) %}
         {%- set label -%}

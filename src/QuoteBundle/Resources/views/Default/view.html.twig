@@ -50,7 +50,7 @@
 
                 {# More Actions Dropdown #}
                 <div class="dropdown">
-                    <button class="btn btn-ghost btn-icon" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="{{ 'More Actions'|trans }}">
+                    <button class="btn btn-ghost btn-icon" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="{{ 'quote.view.toolbar.more_actions'|trans }}">
                         {{ ux_icon('tabler:dots-vertical', {width: 20, height: 20}) }}
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">
@@ -132,16 +132,16 @@
                 <div class="btn-group">
                     <a href="{{ path('_transition_quote', {'action' : 'publish', 'id' : quote.id}) }}" class="btn btn-primary btn-hero">
                         {{ ux_icon('tabler:check', {width: 18, height: 18}) }}
-                        {{ "Publish"|trans }}
+                        {{ 'quote.save.publish'|trans }}
                     </a>
                     <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-                        <span class="visually-hidden">{{ 'Toggle Dropdown'|trans }}</span>
+                        <span class="visually-hidden">{{ 'quote.view.toolbar.toggle_dropdown'|trans }}</span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li>
                             <a class="dropdown-item" href="{{ path('_send_quote', {'id' : quote.id}) }}">
                                 {{ ux_icon('tabler:send', {width: 16, height: 16}) }}
-                                {{ "Publish and Send"|trans }}
+                                {{ 'quote.view.toolbar.publish_and_send'|trans }}
                             </a>
                         </li>
                     </ul>
@@ -384,7 +384,7 @@
                         <div class="doc-sidebar-card-icon">
                             {{ ux_icon('tabler:file-invoice', {width: 18, height: 18}) }}
                         </div>
-                        <h3 class="doc-sidebar-card-title">{{ 'Related Invoice'|trans }}</h3>
+                        <h3 class="doc-sidebar-card-title">{{ 'quote.view.related_invoice'|trans }}</h3>
                     </div>
                     <div class="doc-sidebar-card-body">
                         <a href="{{ path('_invoices_view', {'id' : quote.invoice.id}) }}" class="related-invoice-link">

@@ -17,41 +17,10 @@
     padding-bottom: 2rem;
 }
 
-// ============================================================================
-// Tabs Navigation - Custom underline style
-// ============================================================================
-
-.settings-page > .nav-tabs {
-    border-bottom-color: #e6e8eb;
-
-    .nav-link {
-        padding: 0.5rem 1rem;
-        font-size: 0.875rem;
-        font-weight: 500;
-        color: #626976;
-        border: none;
-        border-radius: 0;
-        border-bottom: 2px solid transparent;
-        margin-bottom: -1px;
-        background: transparent;
-
-        &:hover {
-            color: var(--swp-primary);
-            border-bottom-color: rgba(var(--swp-primary-rgb), 0.3);
-        }
-
-        &.active {
-            color: var(--swp-primary);
-            border-bottom-color: var(--swp-primary);
-            background: transparent;
-        }
-    }
-}
-
 // Mobile: horizontal scrolling tabs
 @include media-breakpoint-down(md) {
 
-    .settings-page > .nav-tabs {
+    .settings-page > .nav-underline {
         margin-left: -1rem;
         margin-right: -1rem;
         padding-left: 1rem;
@@ -156,7 +125,7 @@
 
     .settings-page {
 
-        .nav-tabs,
+        .nav-underline,
         .settings-danger-zone,
         .card-footer {
             display: none !important;
