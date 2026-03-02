@@ -28,7 +28,7 @@ use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
-use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidInvoice\TaxBundle\Repository\TaxRepository;
 use function array_rand;
@@ -69,12 +69,10 @@ final class InvoiceDummyDataLoader implements DummyDataLoaderInterface
         $taxes = $taxRepository->findAll();
 
         $statuses = [
-            Graph::STATUS_DRAFT,
-            Graph::STATUS_PENDING,
-            Graph::STATUS_PENDING,
-            Graph::STATUS_PAID,
-            Graph::STATUS_PAID,
-            Graph::STATUS_OVERDUE,
+            InvoiceStatus::Draft,
+            InvoiceStatus::Pending,
+            InvoiceStatus::Paid,
+            InvoiceStatus::Overdue,
         ];
 
         foreach ($clients as $client) {
@@ -90,11 +88,11 @@ final class InvoiceDummyDataLoader implements DummyDataLoaderInterface
                 $invoiceDate = new DateTimeImmutable('-' . $daysAgo . ' days');
                 $invoice->setInvoiceDate($invoiceDate);
 
-                if ($status === Graph::STATUS_PENDING || $status === Graph::STATUS_OVERDUE) {
+                if ($status === InvoiceStatus::Pending || $status === InvoiceStatus::Overdue) {
                     $invoice->setDue(new DateTimeImmutable($invoiceDate->format('Y-m-d') . ' +30 days'));
                 }
 
-                if ($status === Graph::STATUS_PAID) {
+                if ($status === InvoiceStatus::Paid) {
                     $paidDaysAgo = random_int(1, $daysAgo);
                     $invoice->setPaidDate(new DateTimeImmutable('-' . $paidDaysAgo . ' days'));
                 }
@@ -128,7 +126,7 @@ final class InvoiceDummyDataLoader implements DummyDataLoaderInterface
                         $tax = $taxes[array_rand($taxes)];
                         $line->setTax($tax);
 
-                        if ($tax->getType() === Tax::TYPE_EXCLUSIVE) {
+                        if ($tax->getType() === Tax::TYPE_EXCLUSIVE && $tax->getRate() > 0.0) {
                             $taxAmount = $lineTotal->multipliedBy($tax->getRate())->dividedBy(100, 0, RoundingMode::HALF_UP);
                             $taxTotal = $taxTotal->plus($taxAmount);
                         }
@@ -143,7 +141,7 @@ final class InvoiceDummyDataLoader implements DummyDataLoaderInterface
                     ->setTax($taxTotal)
                     ->setTotal($total);
 
-                if ($status === Graph::STATUS_PAID) {
+                if ($status === InvoiceStatus::Paid) {
                     $invoice->setBalance(BigInteger::zero());
                 } else {
                     $invoice->setBalance($total);
@@ -157,8 +155,9 @@ final class InvoiceDummyDataLoader implements DummyDataLoaderInterface
                 $invoice->setInvoiceId($this->billingIdGenerator->generate($invoice, ['field' => 'invoiceId']));
 
                 $em->persist($invoice);
-                $em->flush();
             }
+
+            $em->flush();
         }
     }
 }
