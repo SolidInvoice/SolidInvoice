@@ -20,7 +20,7 @@ use Faker\Generator;
 use SolidInvoice\ClientBundle\Entity\Address;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
-use SolidInvoice\ClientBundle\Model\Status;
+use SolidInvoice\ClientBundle\Enum\ClientStatus;
 use SolidInvoice\CoreBundle\DummyData\DummyDataLoaderInterface;
 use SolidInvoice\CoreBundle\Entity\Company;
 use function assert;
@@ -47,13 +47,14 @@ final class ClientDummyDataLoader implements DummyDataLoaderInterface
         $em = $this->registry->getManager();
         assert($em instanceof EntityManagerInterface);
 
-        $currencies = ['USD', 'EUR', 'GBP', 'AUD', 'CAD'];
+        //$currencies = ['USD', 'EUR', 'GBP', 'AUD', 'CAD'];
+        $currencies = ['USD'];
 
         for ($i = 0; $i < 10; ++$i) {
             $client = new Client();
             $client->setName(substr($this->faker->company(), 0, 125))
                 ->setWebsite(substr($this->faker->url(), 0, 125))
-                ->setStatus(Status::STATUS_ACTIVE)
+                ->setStatus(ClientStatus::Active)
                 ->setCurrencyCode($currencies[array_rand($currencies)])
                 ->setCompany($company);
 
@@ -86,7 +87,8 @@ final class ClientDummyDataLoader implements DummyDataLoaderInterface
             }
 
             $em->persist($client);
-            $em->flush();
         }
+
+        $em->flush();
     }
 }

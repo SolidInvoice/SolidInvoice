@@ -27,7 +27,7 @@ use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\QuoteBundle\Entity\Line;
 use SolidInvoice\QuoteBundle\Entity\Quote;
-use SolidInvoice\QuoteBundle\Model\Graph;
+use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use SolidInvoice\TaxBundle\Repository\TaxRepository;
 use function array_rand;
@@ -68,15 +68,11 @@ final class QuoteDummyDataLoader implements DummyDataLoaderInterface
         $taxes = $taxRepository->findAll();
 
         $statuses = [
-            Graph::STATUS_DRAFT,
-            Graph::STATUS_DRAFT,
-            Graph::STATUS_PENDING,
-            Graph::STATUS_PENDING,
-            Graph::STATUS_ACCEPTED,
-            Graph::STATUS_ACCEPTED,
-            Graph::STATUS_ACCEPTED,
-            Graph::STATUS_DECLINED,
-            Graph::STATUS_CANCELLED,
+            QuoteStatus::Draft,
+            QuoteStatus::Pending,
+            QuoteStatus::Accepted,
+            QuoteStatus::Declined,
+            QuoteStatus::Cancelled,
         ];
 
         foreach ($clients as $client) {
@@ -88,7 +84,7 @@ final class QuoteDummyDataLoader implements DummyDataLoaderInterface
                 $status = $statuses[array_rand($statuses)];
                 $quote->setStatus($status);
 
-                if ($status !== Graph::STATUS_DRAFT) {
+                if ($status !== QuoteStatus::Draft) {
                     $daysOut = random_int(30, 120);
                     $quote->setDue(new DateTimeImmutable('+' . $daysOut . ' days'));
                 }
@@ -145,8 +141,8 @@ final class QuoteDummyDataLoader implements DummyDataLoaderInterface
                 $quote->setQuoteId($this->billingIdGenerator->generate($quote, ['field' => 'quoteId']));
 
                 $em->persist($quote);
-                $em->flush();
             }
+            $em->flush();
         }
     }
 }

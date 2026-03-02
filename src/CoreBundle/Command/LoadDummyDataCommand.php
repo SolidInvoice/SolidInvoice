@@ -96,6 +96,12 @@ final class LoadDummyDataCommand extends Command
         $companyIdOption = $this->io->getOption('company-id');
 
         if (null !== $companyIdOption) {
+            if (! Ulid::isValid((string) $companyIdOption)) {
+                $this->io->error('The provided company ID is not a valid ULID.');
+
+                return null;
+            }
+
             return $em->getRepository(Company::class)->find(Ulid::fromString((string) $companyIdOption));
         }
 

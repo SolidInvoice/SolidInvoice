@@ -21,9 +21,10 @@ use Faker\Generator;
 use SolidInvoice\CoreBundle\DummyData\DummyDataLoaderInterface;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
-use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\PaymentBundle\Entity\Payment;
+use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use function assert;
 
 final class PaymentDummyDataLoader implements DummyDataLoaderInterface
@@ -50,7 +51,7 @@ final class PaymentDummyDataLoader implements DummyDataLoaderInterface
         $invoiceRepository = $em->getRepository(Invoice::class);
 
         /** @var Invoice[] $paidInvoices */
-        $paidInvoices = $invoiceRepository->findBy(['status' => Graph::STATUS_PAID]);
+        $paidInvoices = $invoiceRepository->findBy(['status' => InvoiceStatus::Paid]);
 
         foreach ($paidInvoices as $invoice) {
             $client = $invoice->getClient();
@@ -64,11 +65,11 @@ final class PaymentDummyDataLoader implements DummyDataLoaderInterface
             $payment = new Payment();
             $payment->setInvoice($invoice)
                 ->setClient($client)
-                ->setStatus('captured')
+                ->setStatus(PaymentStatus::Captured)
                 ->setReference($this->faker->numerify('REF-######'))
                 ->setCompany($company);
             $payment->setNumber($this->faker->numerify('PAY-######'));
-            $payment->setTotalAmount((int) $invoice->getTotal()->toBigInteger()->toInt());
+            $payment->setTotalAmount($invoice->getTotal()->toBigInteger()->toInt());
             $payment->setCurrencyCode($currencyCode);
 
             $firstContact = $client->getContacts()->first();
