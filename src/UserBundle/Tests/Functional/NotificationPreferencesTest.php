@@ -202,7 +202,7 @@ final class NotificationPreferencesTest extends WebTestCase
         $crawler = $client->request('GET', '/profile/notifications');
 
         // Check that there's a form with a submit button in the notifications actions
-        self::assertSelectorExists('.notifications-actions button[type="submit"]');
-        self::assertSelectorTextContains('.notifications-actions button', 'Save');
+        self::assertSelectorExists('.form-page-actions button[type="submit"]');
+        self::assertSelectorTextContains('.form-page-actions button', 'Save');
     }
 }
