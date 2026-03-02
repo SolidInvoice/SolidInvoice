@@ -37,12 +37,12 @@
                     <div class="card-body py-3">
                         <div class="d-flex gap-2 justify-content-between align-items-center">
                             <div class="d-flex gap-2">
-                                <button type="button" onclick="window.print()" class="btn btn-white">
+                                <button type="button" onclick="window.print()" class="btn btn-outline-secondary">
                                     {{ ux_icon('tabler:printer', {width: 18, height: 18}) }}
                                     {{ 'quote.action.print'|trans }}
                                 </button>
                                 {% if can_print_pdf() %}
-                                    <a href="{{ path('_view_quote_external', {'uuid': quote.uuid, '_format': 'pdf'}) }}" target="_blank" class="btn btn-white">
+                                    <a href="{{ path('_view_quote_external', {'uuid': quote.uuid, '_format': 'pdf'}) }}" target="_blank" class="btn btn-outline-secondary">
                                         {{ ux_icon('tabler:file-type-pdf', {width: 18, height: 18}) }}
                                         {{ 'quote.action.pdf'|trans }}
                                     </a>

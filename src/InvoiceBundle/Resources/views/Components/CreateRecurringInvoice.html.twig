@@ -205,12 +205,12 @@
                 {% endif %}
 
                 {# Start Date #}
-                <div class="form-group">
+                <div class="mb-3">
                     {{ form_row(form.date_start) }}
                 </div>
 
                 {# Recurring Options - Let DynamicFormBuilder handle all fields #}
-                <div class="form-group recurring-options-wrapper">
+                <div class="mb-3 recurring-options-wrapper">
                     {{ form_row(form.recurringOptions) }}
                 </div>
 
@@ -278,7 +278,7 @@
             <div class="billing-form-actions-inner">
                 <a href="{{ path('_invoices_index_recurring') }}" class="btn btn-ghost">
                     {{ ux_icon('tabler:arrow-left', {width: 18, height: 18}) }}
-                    {{ 'Cancel'|trans }}
+                    {{ 'invoice.save.cancel'|trans }}
                 </a>
 
                 <div class="btn-group save-button-group">
@@ -293,7 +293,7 @@
                             {{ 'invoice.save.draft'|trans }}
                         </button>
                         <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-                            <span class="visually-hidden">{{ 'Toggle Dropdown'|trans }}</span>
+                            <span class="visually-hidden">{{ 'invoice.view.toolbar.toggle_dropdown'|trans }}</span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li>

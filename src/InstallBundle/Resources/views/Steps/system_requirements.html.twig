@@ -25,9 +25,9 @@
         </div>
         <div class="flex-shrink-0">
             {% if requirement.fulfilled %}
-                <span class="badge bg-success text-white">{{ 'Passed'|trans }}</span>
+                <span class="badge bg-success-lt">{{ 'Passed'|trans }}</span>
             {% else %}
-                <span class="badge bg-{{ requirement.optional ? 'warning' : 'danger' }} text-white">{{ requirement.optional ? 'Warning'|trans : 'Failed'|trans }}</span>
+                <span class="badge bg-{{ requirement.optional ? 'warning' : 'danger' }}-lt">{{ requirement.optional ? 'Warning'|trans : 'Failed'|trans }}</span>
             {% endif %}
         </div>
     </div>

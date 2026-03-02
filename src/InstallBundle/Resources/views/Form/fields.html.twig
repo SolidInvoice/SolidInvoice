@@ -56,7 +56,7 @@
                         <div class="datagrid-item">
                             <div class="datagrid-title">Driver</div>
                             <div class="datagrid-content">
-                                <span class="badge bg-info text-white">{{ form.vars.data.databaseConfig.driver|upper }}</span>
+                                <span class="badge bg-info-lt">{{ form.vars.data.databaseConfig.driver|upper }}</span>
                             </div>
                         </div>
                         {% if form.vars.data.databaseConfig.driver != 'sqlite' %}
@@ -240,7 +240,7 @@
                             {% endif %}
                         </span>
                         {% if isSqlite %}
-                            <span class="badge bg-primary position-absolute bottom-0 end-0 text-white">Recommended</span>
+                            <span class="badge bg-primary-lt position-absolute bottom-0 end-0">{{ 'Recommended'|trans }}</span>
                         {% endif %}
                     </span>
                 </label>

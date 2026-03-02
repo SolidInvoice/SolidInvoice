@@ -6,7 +6,7 @@
                 <div class="card-body">
                     <div class="mb-3">
                         <div class="dropdown">
-                            <a href="#" class="btn btn-outline-success w-100 dropdown-toggle d-flex align-items-center gap-2" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a href="#" class="btn btn-outline-success w-100 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                 {{ ux_icon('tabler:circle-plus', {width: 16, height: 16}) }}
                                 {{ 'payment.method.add'|trans }}
                             </a>
@@ -21,7 +21,7 @@
                     <ul class="nav flex-column" role="tablist">
                         {% for method in paymentMethods %}
                             <li class="nav-item">
-                                <a href="?method={{ method.gatewayName }}" aria-controls="{{ method.gatewayName }}" data-method="{{ method.gatewayName }}" class="nav-link d-flex align-items-center gap-2{{ method.gatewayName is same as(this.method) ? ' active' }}">
+                                <a href="?method={{ method.gatewayName }}" aria-controls="{{ method.gatewayName }}" data-method="{{ method.gatewayName }}" class="nav-link{{ method.gatewayName is same as(this.method) ? ' active' }}">
                                     {% if method.isEnabled == 'enabled' %}
                                         {{ ux_icon('tabler:circle-check', {width: 16, height: 16, class: 'text-success'}) }}
                                     {% else %}

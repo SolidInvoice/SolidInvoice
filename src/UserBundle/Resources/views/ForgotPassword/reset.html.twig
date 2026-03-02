@@ -9,7 +9,7 @@
 
 {% extends "@SolidInvoiceCore/Layout/default_no_nav.html.twig" %}
 
-{% block title %}{{ "Reset Password" }}{% endblock title %}
+{% block title %}{{ 'forgot_password.reset.title'|trans }}{% endblock title %}
 
 {% block content %}
     <div class="container-tight py-4">
@@ -23,7 +23,7 @@
 
         <div class="card card-md">
             <div class="card-body">
-                <h2 class="h2 text-center mb-4">{{ 'Reset your password'|trans }}</h2>
+                <h2 class="h2 text-center mb-4">{{ 'forgot_password.reset.heading'|trans }}</h2>
 
                 {{ form_start(form) }}
                     {{ form_row(form) }}

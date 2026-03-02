@@ -1,6 +1,6 @@
 <div {{ attributes }}>
     <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#{{ 'api-token-' ~ attributes.all.id }}">
-        {{ ux_icon('tabler:plus', {width: 18, height: 18}) }} {{ 'Create API Token'|trans }}
+        {{ ux_icon('tabler:plus', {width: 18, height: 18}) }} {{ 'profile.api.create'|trans }}
     </a>
 
     {# Single Modal - content changes based on state #}
@@ -26,43 +26,43 @@
                 {% else %}
                     {# Success - Show Token Once #}
                     <twig:Ui:Alert type="warning" icon="tabler:alert-triangle" :dismissible="false">
-                        <strong>{{ 'Important!'|trans }}</strong>
-                        {{ 'Copy this token now. For security reasons, it will not be shown again.'|trans }}
+                        <strong>{{ 'profile.api.form.token_important'|trans }}</strong>
+                        {{ 'profile.api.form.token_copy_warning'|trans }}
                     </twig:Ui:Alert>
 
                     <div class="mb-3">
-                        <label class="form-label"><strong>{{ 'Token Name'|trans }}:</strong></label>
+                        <label class="form-label"><strong>{{ 'profile.api.form.token_name'|trans }}:</strong></label>
                         <div>{{ createdTokenName }}</div>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label"><strong>{{ 'Token Value'|trans }}:</strong></label>
+                        <label class="form-label"><strong>{{ 'profile.api.form.token_value'|trans }}:</strong></label>
                         <div class="input-group" {{ stimulus_controller('clipboard', {'success-content': 'Copied!'}) }}>
                             <input readonly="readonly" value="{{ createdToken }}" class="form-control font-monospace" {{ stimulus_target('clipboard', 'source') }} />
                             <button class="btn btn-primary" type="button" {{ stimulus_target('clipboard', 'button') }} {{ stimulus_action('clipboard', 'copy') }}>
                                 {{ ux_icon('tabler:copy', {width: 18, height: 18}) }}
-                                {{ 'Copy'|trans }}
+                                {{ 'profile.api.form.token_copy'|trans }}
                             </button>
                         </div>
                     </div>
 
                     <div class="text-muted small">
-                        {{ 'Use this token in the X-API-TOKEN header for API requests.'|trans }}
+                        {{ 'profile.api.form.token_usage'|trans }}
                     </div>
                 {% endif %}
             </twig:block>
 
             <twig:block name="footer">
                 {% if not createdToken %}
-                    <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">{{ 'Cancel'|trans }}</button>
-                    <button type="submit" class="btn btn-primary">{{ 'Create Token'|trans }}</button>
+                    <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">{{ 'profile.api.history.actions.close'|trans }}</button>
+                    <button type="submit" class="btn btn-primary">{{ 'profile.api.form.actions.save'|trans }}</button>
                 {% else %}
                     <button
                         type="button"
                         class="btn btn-primary ms-auto"
                         {{ stimulus_action('api-token-modal', 'confirmAndClose') }}
                     >
-                        {{ 'I have copied the token'|trans }}
+                        {{ 'profile.api.form.token_confirmed'|trans }}
                     </button>
                 {% endif %}
                 {{ form_end(form) }}

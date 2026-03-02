@@ -49,7 +49,7 @@
 
                 {# More Actions Dropdown #}
                 <div class="dropdown">
-                    <button class="btn btn-ghost btn-icon" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="{{ 'More Actions'|trans }}">
+                    <button class="btn btn-ghost btn-icon" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="{{ 'invoice.view.toolbar.more_actions'|trans }}">
                         {{ ux_icon('tabler:dots-vertical', {width: 20, height: 20}) }}
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">
@@ -135,16 +135,16 @@
                 <div class="btn-group">
                     <a href="{{ path('_action_invoice', {'action' : 'accept', 'id' : invoice.id}) }}" class="btn btn-primary btn-hero">
                         {{ ux_icon('tabler:check', {width: 18, height: 18}) }}
-                        {{ "Publish"|trans }}
+                        {{ 'invoice.save.publish'|trans }}
                     </a>
                     <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-                        <span class="visually-hidden">{{ 'Toggle Dropdown'|trans }}</span>
+                        <span class="visually-hidden">{{ 'invoice.view.toolbar.toggle_dropdown'|trans }}</span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li>
                             <a class="dropdown-item" href="{{ path('_send_invoice', {'id' : invoice.id}) }}">
                                 {{ ux_icon('tabler:send', {width: 16, height: 16}) }}
-                                {{ "Publish and Send"|trans }}
+                                {{ 'invoice.view.toolbar.publish_and_send'|trans }}
                             </a>
                         </li>
                     </ul>
@@ -390,12 +390,12 @@
                             </div>
                         {% endif %}
                         <div class="summary-item">
-                            <span class="summary-label">{{ 'Invoice Date'|trans }}</span>
+                            <span class="summary-label">{{ 'invoice.date'|trans }}</span>
                             <span class="summary-value">{{ invoice.invoiceDate|date('M d, Y') }}</span>
                         </div>
                         {% if invoice.due is not empty %}
                             <div class="summary-item {{ invoice.status == enum('SolidInvoice\\InvoiceBundle\\Enum\\InvoiceStatus').Overdue ? 'summary-item-overdue' : '' }}">
-                                <span class="summary-label">{{ 'Due Date'|trans }}</span>
+                                <span class="summary-label">{{ 'invoice.due_date'|trans }}</span>
                                 <span class="summary-value">{{ invoice.due|date('M d, Y') }}</span>
                             </div>
                         {% endif %}
@@ -416,7 +416,7 @@
                         <div class="doc-sidebar-card-icon">
                             {{ ux_icon('tabler:credit-card', {width: 18, height: 18}) }}
                         </div>
-                        <h3 class="doc-sidebar-card-title">{{ 'Payments'|trans }}</h3>
+                        <h3 class="doc-sidebar-card-title">{{ 'invoice.view.payments'|trans }}</h3>
                     </div>
                     <div class="doc-sidebar-card-body">
                         <div class="payments-list">
@@ -457,7 +457,7 @@
                         <div class="doc-sidebar-card-icon">
                             {{ ux_icon('tabler:file-text', {width: 18, height: 18}) }}
                         </div>
-                        <h3 class="doc-sidebar-card-title">{{ 'Related Quote'|trans }}</h3>
+                        <h3 class="doc-sidebar-card-title">{{ 'invoice.view.related_quote'|trans }}</h3>
                     </div>
                     <div class="doc-sidebar-card-body">
                         <a href="{{ path('_quotes_view', {'id' : invoice.quote.id}) }}" class="related-quote-link">
@@ -498,7 +498,7 @@
             </div>
 
             <twig:block name="footer">
-                <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">{{ 'Cancel'|trans }}</button>
+                <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">{{ 'invoice.view.toolbar.cancel'|trans }}</button>
                 <form method="post" action="{{ path('_send_manual_reminder', {'id': invoice.id}) }}" class="d-inline">
                     <input type="hidden" name="_token" value="{{ csrf_token('send_manual_reminder') }}">
                     <button type="submit" class="btn btn-primary">

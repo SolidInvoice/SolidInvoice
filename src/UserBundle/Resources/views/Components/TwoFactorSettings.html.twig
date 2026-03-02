@@ -31,7 +31,7 @@
                 <div class="two-factor-section-content">
                     <div class="two-factor-section-info">
                         <div class="mb-2">
-                            <span class="status-badge status-{{ app.user.isEmailAuthEnabled ? 'enabled' : 'disabled' }}">
+                            <span class="badge bg-{{ app.user.isEmailAuthEnabled ? 'success' : 'secondary' }}-lt">
                                 {{ ux_icon(app.user.isEmailAuthEnabled ? 'tabler:check' : 'tabler:x', {width: 16, height: 16}) }}
                                 {{ app.user.isEmailAuthEnabled ? 'Enabled'|trans : 'Disabled'|trans }}
                             </span>
@@ -75,7 +75,7 @@
                 <div class="two-factor-section-content">
                     <div class="two-factor-section-info">
                         <div class="mb-2">
-                            <span class="status-badge status-{{ app.user.isTotpAuthenticationEnabled ? 'enabled' : 'disabled' }}">
+                            <span class="badge bg-{{ app.user.isTotpAuthenticationEnabled ? 'success' : 'secondary' }}-lt">
                                 {{ ux_icon(app.user.isTotpAuthenticationEnabled ? 'tabler:check' : 'tabler:x', {width: 16, height: 16}) }}
                                 {{ app.user.isTotpAuthenticationEnabled ? 'Enabled'|trans : 'Disabled'|trans }}
                             </span>

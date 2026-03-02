@@ -231,7 +231,7 @@
             <form method="post" action="{{ path('_clients_delete', {'id': client.id}) }}" class="d-inline">
                 <input type="hidden" name="_method" value="DELETE">
                 <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ client.id) }}">
-                <button type="submit" class="btn btn-danger d-inline-flex gap-2">
+                <button type="submit" class="btn btn-danger">
                     {{ ux_icon('tabler:trash', {width: 16, height: 16}) }}
                     {{ 'client.view.actions.delete'|trans }}
                 </button>

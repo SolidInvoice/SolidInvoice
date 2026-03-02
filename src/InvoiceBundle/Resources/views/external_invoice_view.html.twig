@@ -37,12 +37,12 @@
                 <div class="card-body py-3">
                     <div class="d-flex gap-2 justify-content-between align-items-center">
                         <div class="d-flex gap-2">
-                            <button type="button" onclick="window.print()" class="btn btn-white">
+                            <button type="button" onclick="window.print()" class="btn btn-outline-secondary">
                                 {{ ux_icon('tabler:printer', {width: 18, height: 18}) }}
                                 {{ 'invoice.action.print'|trans }}
                             </button>
                             {% if can_print_pdf() %}
-                                <a href="{{ path('_view_invoice_external', {'uuid': invoice.uuid, '_format': 'pdf'}) }}" target="_blank" class="btn btn-white">
+                                <a href="{{ path('_view_invoice_external', {'uuid': invoice.uuid, '_format': 'pdf'}) }}" target="_blank" class="btn btn-outline-secondary">
                                     {{ ux_icon('tabler:file-type-pdf', {width: 18, height: 18}) }}
                                     {{ 'invoice.action.pdf'|trans }}
                                 </a>
@@ -87,16 +87,16 @@
                         <div class="card-body py-4">
                             <div class="row">
                                 <div class="col-sm-4 mb-3 mb-sm-0">
-                                    <div class="ext-doc-metadata-label text-uppercase small mb-1">{{ 'Invoice Date'|trans }}</div>
+                                    <div class="ext-doc-metadata-label text-uppercase small mb-1">{{ 'invoice.date'|trans }}</div>
                                     <div class="ext-doc-metadata-value fw-medium">{{ invoice.invoiceDate|date('M d, Y') }}</div>
                                 </div>
                                 {% if invoice.due is not empty %}
                                     <div class="col-sm-4 mb-3 mb-sm-0">
-                                        <div class="ext-doc-metadata-label text-uppercase small mb-1">{{ 'Due Date'|trans }}</div>
+                                        <div class="ext-doc-metadata-label text-uppercase small mb-1">{{ 'invoice.due_date'|trans }}</div>
                                         <div class="ext-doc-metadata-value fw-medium {{ invoice.status == 'overdue' ? 'text-danger' : '' }}">
                                             {{ invoice.due|date('M d, Y') }}
                                             {% if invoice.status == 'overdue' %}
-                                                <span class="badge badge-sm bg-danger ms-1 text-white">{{ 'invoice.invoice_status.overdue'|trans }}</span>
+                                                <span class="badge bg-danger-lt ms-1">{{ 'invoice.invoice_status.overdue'|trans }}</span>
                                             {% endif %}
                                         </div>
                                     </div>

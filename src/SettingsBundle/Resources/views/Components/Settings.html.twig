@@ -19,7 +19,7 @@
 
 <div class="settings-page"{{ attributes }}>
     {# Tabs Navigation #}
-    <ul class="nav nav-tabs mb-4" role="tablist">
+    <ul class="nav nav-underline mb-4" role="tablist">
         {% for settingsSection, setting in appSettings %}
             {% set meta = tabMeta[settingsSection]|default({
                 'title': settingsSection|replace({'_': ' '})|title|trans,

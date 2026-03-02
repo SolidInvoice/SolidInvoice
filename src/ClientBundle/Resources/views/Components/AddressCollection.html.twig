@@ -6,7 +6,7 @@
             {{ 'client.heading.addresses'|trans }}
             <span class="badge bg-secondary-lt">{{ client.addresses|length }}</span>
         </h3>
-        <button type="button" class="btn btn-sm btn-primary d-flex align-items-center gap-1" data-bs-toggle="modal" data-bs-target="#add-address">
+        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#add-address">
             {{ ux_icon('tabler:plus', {width: 16, height: 16}) }}
             {{ 'client.address.add'|trans }}
         </button>
@@ -49,7 +49,7 @@
 
         <twig:block name="footer">
             <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">{{ 'Cancel'|trans }}</button>
-            <button type="submit" class="btn btn-primary d-flex align-items-center gap-1">
+            <button type="submit" class="btn btn-primary">
                 {{ ux_icon('tabler:device-floppy', {width: 16, height: 16}) }}
                 {{ 'Save'|trans }}
             </button>
