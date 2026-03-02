@@ -13,10 +13,15 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Listener\Mailer;
 
+use Psr\Log\LoggerInterface;
+use SolidInvoice\CoreBundle\Traits\FlashErrorTrait;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvent;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 
 /**
@@ -24,8 +29,12 @@ use Symfony\Component\Mailer\MailerInterface;
  */
 class InvoiceMailerListener implements EventSubscriberInterface
 {
+    use FlashErrorTrait;
+
     public function __construct(
-        private readonly MailerInterface $mailer
+        private readonly MailerInterface $mailer,
+        private readonly LoggerInterface $logger,
+        private readonly RequestStack $requestStack,
     ) {
     }
 
@@ -39,7 +48,19 @@ class InvoiceMailerListener implements EventSubscriberInterface
     public function onInvoiceAccepted(InvoiceEvent $event): void
     {
         $invoice = $event->getInvoice();
-        assert($invoice instanceof \SolidInvoice\InvoiceBundle\Entity\Invoice);
-        $this->mailer->send(new InvoiceEmail($invoice));
+
+        if (! $invoice instanceof Invoice) {
+            return;
+        }
+
+        try {
+            $this->mailer->send(new InvoiceEmail($invoice));
+        } catch (TransportExceptionInterface $e) {
+            $this->logger->error('Failed to send invoice email: ' . $e->getMessage(), [
+                'exception' => $e,
+            ]);
+
+            $this->addFlashError('invoice.email.send_failed');
+        }
     }
 }

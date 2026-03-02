@@ -41,8 +41,6 @@ class ItemType extends AbstractType
             'description',
             TextareaType::class,
             [
-                'sanitize_html' => true,
-                'allow_single_quotes' => true,
                 'attr' => [
                     'class' => 'input-medium invoice-item-name',
                 ],

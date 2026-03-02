@@ -51,6 +51,16 @@ final class NotificationIntegrations extends AbstractController
             return null;
         }
 
-        return $this->repository->find($this->setting);
+        $setting = $this->repository->find($this->setting);
+
+        if (null === $setting) {
+            return null;
+        }
+
+        if ($setting->getUser() !== $this->getUser()) {
+            throw $this->createAccessDeniedException();
+        }
+
+        return $setting;
     }
 }

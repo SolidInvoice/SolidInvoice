@@ -36,6 +36,7 @@ return static function (SentryConfig $sentryConfig, MonologConfig $monologConfig
         ->type('fingers_crossed')
         ->actionLevel(Level::Error->value)
         ->handler('sentry_main')
+        ->excludedHttpCode(401)
         ->excludedHttpCode(404)
         ->excludedHttpCode(405)
         ->bufferSize(50);

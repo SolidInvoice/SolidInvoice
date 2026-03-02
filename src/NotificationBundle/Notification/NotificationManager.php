@@ -13,18 +13,24 @@ declare(strict_types=1);
 
 namespace SolidInvoice\NotificationBundle\Notification;
 
+use Psr\Log\LoggerInterface;
 use ReflectionObject;
+use SolidInvoice\CoreBundle\Traits\FlashErrorTrait;
 use SolidInvoice\NotificationBundle\Attribute\AsNotification;
 use SolidInvoice\NotificationBundle\Configurator\ConfiguratorInterface;
 use SolidInvoice\NotificationBundle\Exception\InvalidNotificationMessageException;
 use SolidInvoice\NotificationBundle\Repository\UserNotificationRepository;
 use Symfony\Component\DependencyInjection\Attribute\TaggedLocator;
 use Symfony\Component\DependencyInjection\ServiceLocator;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Notifier\Exception\TransportExceptionInterface;
 use Symfony\Component\Notifier\NotifierInterface;
 use Symfony\Component\Notifier\Recipient\Recipient;
 
 class NotificationManager
 {
+    use FlashErrorTrait;
+
     /**
      * @param ServiceLocator<ConfiguratorInterface> $transportConfigurations
      */
@@ -33,6 +39,8 @@ class NotificationManager
         private readonly UserNotificationRepository $userNotificationRepository,
         #[TaggedLocator(tag: ConfiguratorInterface::DI_TAG, defaultIndexMethod: 'getName')]
         private readonly ServiceLocator $transportConfigurations,
+        private readonly LoggerInterface $logger,
+        private readonly RequestStack $requestStack,
     ) {
     }
 
@@ -51,6 +59,7 @@ class NotificationManager
         $event = $attributes[0]->getArguments()['name'] ?? null;
 
         $userNotifications = $this->userNotificationRepository->findBy(['event' => $event]);
+        $hasTransportFailure = false;
 
         foreach ($userNotifications as $userNotification) {
             $channels = [];
@@ -76,7 +85,20 @@ class NotificationManager
 
             $message->channels($channels);
 
-            $this->notifier->send($message, new Recipient($userNotification->getUser()->getEmail(), (string) $userNotification->getUser()->getMobile()));
+            try {
+                $this->notifier->send($message, new Recipient($userNotification->getUser()->getEmail(), (string) $userNotification->getUser()->getMobile()));
+            } catch (TransportExceptionInterface $e) {
+                $this->logger->error('Failed to send notification: ' . $e->getMessage(), [
+                    'exception' => $e,
+                    'event' => $event,
+                ]);
+
+                $hasTransportFailure = true;
+            }
+        }
+
+        if ($hasTransportFailure) {
+            $this->addFlashError('notification.send_failed');
         }
     }
 }
