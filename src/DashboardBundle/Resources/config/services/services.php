@@ -43,6 +43,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->load(SolidInvoiceDashboardBundle::NAMESPACE . '\\', dirname(__DIR__, 3))
         ->exclude(dirname(__DIR__, 3) . '/{DependencyInjection,Entity,Resources,Tests}');
 
+    $services
+        ->load(SolidInvoiceDashboardBundle::NAMESPACE . '\\Action\\', dirname(__DIR__, 3) . '/Action')
+        ->tag('controller.service_arguments');
+
     // Configure ChecklistManager with tagged items
     $services
         ->set(ChecklistManager::class)
