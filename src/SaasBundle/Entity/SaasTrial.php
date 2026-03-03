@@ -37,6 +37,7 @@ class SaasTrial
     private User $user;
 
     #[ORM\OneToOne(inversedBy: 'trial', targetEntity: Subscription::class)]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private Subscription $subscription;
 
     public function __construct()

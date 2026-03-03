@@ -20,7 +20,7 @@ use Symfony\Component\Serializer\Attribute as Serialize;
 trait CompanyAware
 {
     #[ORM\ManyToOne(targetEntity: Company::class)]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[Serialize\Ignore()]
     protected Company $company;
 
