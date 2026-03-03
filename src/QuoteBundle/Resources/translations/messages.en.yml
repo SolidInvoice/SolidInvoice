@@ -155,3 +155,5 @@ search: Search
 title: 'messages'
 
 quote_status_update: 'Quote Status Update'
+
+quote.email.send_failed: 'Failed to send quote email. Please verify your email configuration in Settings.'

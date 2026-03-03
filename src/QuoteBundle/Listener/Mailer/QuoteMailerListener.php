@@ -13,10 +13,14 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Listener\Mailer;
 
+use Psr\Log\LoggerInterface;
+use SolidInvoice\CoreBundle\Traits\FlashErrorTrait;
 use SolidInvoice\QuoteBundle\Email\QuoteEmail;
 use SolidInvoice\QuoteBundle\Event\QuoteEvent;
 use SolidInvoice\QuoteBundle\Event\QuoteEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 
 /**
@@ -24,8 +28,12 @@ use Symfony\Component\Mailer\MailerInterface;
  */
 class QuoteMailerListener implements EventSubscriberInterface
 {
+    use FlashErrorTrait;
+
     public function __construct(
-        private readonly MailerInterface $mailer
+        private readonly MailerInterface $mailer,
+        private readonly LoggerInterface $logger,
+        private readonly RequestStack $requestStack,
     ) {
     }
 
@@ -38,6 +46,14 @@ class QuoteMailerListener implements EventSubscriberInterface
 
     public function onQuoteSend(QuoteEvent $event): void
     {
-        $this->mailer->send(new QuoteEmail($event->getQuote()));
+        try {
+            $this->mailer->send(new QuoteEmail($event->getQuote()));
+        } catch (TransportExceptionInterface $e) {
+            $this->logger->error('Failed to send quote email: ' . $e->getMessage(), [
+                'exception' => $e,
+            ]);
+
+            $this->addFlashError('quote.email.send_failed');
+        }
     }
 }

@@ -148,6 +148,10 @@ final class NotificationTransportConfiguration extends AbstractController
     #[LiveAction]
     public function save(EntityManagerInterface $entityManager, RequestStack $requestStack): Response
     {
+        if ($this->setting !== null && $this->setting->getUser() !== $this->getUser()) {
+            throw $this->createAccessDeniedException();
+        }
+
         $this->submitForm();
 
         $form = $this->getForm();

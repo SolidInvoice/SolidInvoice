@@ -17,6 +17,7 @@ use Hamcrest\Core\IsEqual;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 use SolidInvoice\CoreBundle\Test\Traits\FakerTestTrait;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\NotificationBundle\Attribute\AsNotification;
@@ -28,6 +29,7 @@ use SolidInvoice\NotificationBundle\Notification\NotificationManager;
 use SolidInvoice\NotificationBundle\Notification\NotificationMessage;
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Component\DependencyInjection\ServiceLocator;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Notifier\NotifierInterface;
 use Symfony\Component\Notifier\Recipient\Recipient;
 use Symfony\Component\Notifier\Transport\Dsn;
@@ -56,6 +58,8 @@ final class NotificationManagerTest extends TestCase
             $this->notifier,
             static::getContainer()->get('doctrine')->getRepository(UserNotification::class),
             new ServiceLocator([]),
+            new NullLogger(),
+            new RequestStack(),
         );
     }
 
@@ -208,6 +212,8 @@ final class NotificationManagerTest extends TestCase
             $this->notifier,
             static::getContainer()->get('doctrine')->getRepository(UserNotification::class),
             new ServiceLocator(['FooBar' => static fn () => $configurator]),
+            new NullLogger(),
+            new RequestStack(),
         );
 
         $notificationManager->sendNotification($class);
@@ -282,6 +288,8 @@ final class NotificationManagerTest extends TestCase
             $this->notifier,
             static::getContainer()->get('doctrine')->getRepository(UserNotification::class),
             new ServiceLocator(['FooBar' => static fn () => $configurator]),
+            new NullLogger(),
+            new RequestStack(),
         );
 
         $notificationManager->sendNotification($class);
@@ -383,6 +391,8 @@ final class NotificationManagerTest extends TestCase
             $this->notifier,
             static::getContainer()->get('doctrine')->getRepository(UserNotification::class),
             new ServiceLocator(['FooBar' => static fn () => $configurator, 'FooBars' => static fn () => $configurator2]),
+            new NullLogger(),
+            new RequestStack(),
         );
 
         $notificationManager->sendNotification($class);
