@@ -63,6 +63,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 class RecurringInvoiceLine extends Line
 {
     #[ORM\ManyToOne(targetEntity: RecurringInvoice::class, inversedBy: 'lines')]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
     private ?RecurringInvoice $recurringInvoice = null;
 
     public function setRecurringInvoice(?RecurringInvoice $invoice): self

@@ -94,10 +94,11 @@ class Payment extends BasePayment
     protected ?Ulid $id = null;
 
     #[ORM\ManyToOne(targetEntity: Invoice::class, inversedBy: 'payments')]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
     private ?Invoice $invoice = null;
 
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'payments')]
-    #[ORM\JoinColumn(name: 'client', fieldName: 'client')]
+    #[ORM\JoinColumn(name: 'client', nullable: true, onDelete: 'SET NULL')]
     private ?Client $client = null;
 
     #[ORM\ManyToOne(targetEntity: PaymentMethod::class, inversedBy: 'payments')]

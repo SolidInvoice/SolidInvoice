@@ -118,6 +118,7 @@ class Address implements Stringable
     private ?string $countryName = null;
 
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'addresses')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     #[Groups(['address_api:read'])]
     #[ApiProperty(writable: false, writableLink: false, example: '/api/clients/3fa85f64-5717-4562-b3fc-2c963f66afa6')]
     private ?Client $client = null;

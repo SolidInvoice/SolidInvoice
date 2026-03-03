@@ -68,7 +68,7 @@ class RecurringOptions
     private ?int $endOccurrence = null;
 
     #[ORM\OneToOne(inversedBy: 'recurringOptions', targetEntity: RecurringInvoice::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private RecurringInvoice $recurringInvoice;
 
     public function __construct()

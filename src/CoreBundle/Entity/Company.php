@@ -25,6 +25,7 @@ use SolidInvoice\ClientBundle\Entity\ContactType;
 use SolidInvoice\ClientBundle\Entity\Credit;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Entity\InvoiceReminder;
 use SolidInvoice\InvoiceBundle\Entity\Line as InvoieLine;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\NotificationBundle\Entity\TransportSetting;
@@ -192,9 +193,16 @@ class Company implements Stringable, SubscribableInterface
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: InvoieLine::class, cascade: ['persist'], orphanRemoval: true)]
     public Collection $invoiceLines;
 
+    /**
+     * @var Collection<int, InvoiceReminder>
+     */
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: InvoiceReminder::class, cascade: ['persist'], orphanRemoval: true)]
+    public Collection $invoiceReminders;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->invoiceReminders = new ArrayCollection();
         $this->id = new Ulid();
     }
 

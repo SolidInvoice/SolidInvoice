@@ -117,7 +117,7 @@ class Invoice extends BaseInvoice implements Stringable
         iris: ['https://schema.org/Organization']
     )]
     #[ORM\ManyToOne(targetEntity: Client::class, cascade: ['persist'], inversedBy: 'invoices')]
-    #[ORM\JoinColumn(name: 'client_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\JoinColumn(name: 'client_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     #[Assert\NotBlank]
     #[Groups(['invoice_api:read', 'invoice_api:write'])]
     private ?Client $client = null;
@@ -159,12 +159,13 @@ class Invoice extends BaseInvoice implements Stringable
     private Collection $payments;
 
     #[ORM\OneToOne(inversedBy: 'invoice', targetEntity: Quote::class)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     #[Groups(['invoice_api:read'])]
     #[ApiProperty(example: '/api/quotes/3fa85f64-5717-4562-b3fc-2c963f66afa6')]
     private ?Quote $quote = null;
 
     #[ORM\ManyToOne(targetEntity: RecurringInvoice::class, inversedBy: 'invoices')]
-    #[ORM\JoinColumn(name: 'recurring_invoice_id', referencedColumnName: 'id', nullable: true)]
+    #[ORM\JoinColumn(name: 'recurring_invoice_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     private ?RecurringInvoice $recurringInvoice = null;
 
     /**

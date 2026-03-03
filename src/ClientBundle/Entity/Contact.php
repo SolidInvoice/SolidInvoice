@@ -174,7 +174,7 @@ class Contact implements Serializable, Stringable
         iris: ['https://schema.org/Organization']
     )]
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'contacts')]
-    #[ORM\JoinColumn(name: 'client_id')]
+    #[ORM\JoinColumn(name: 'client_id', onDelete: 'CASCADE')]
     #[Serialize\Groups(['contact_api:read', 'contact_api:write'])]
     #[Assert\Valid]
     #[Assert\NotBlank]

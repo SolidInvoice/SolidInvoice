@@ -123,6 +123,7 @@ class Line implements LineInterface, Stringable
     protected ?float $qty = 1;
 
     #[ORM\ManyToOne(targetEntity: Invoice::class, inversedBy: 'lines')]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
     #[ApiProperty(
         writable: false,
         writableLink: false,
