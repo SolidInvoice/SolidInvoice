@@ -42,7 +42,6 @@ final class ContactResultFormatter implements ResultFormatterInterface
             id: $hit['id'],
             title: $name !== '' ? $name : ($hit['email'] ?? ''),
             subtitle: $hit['email'] ?? '',
-            icon: 'user',
             url: $url,
         );
     }

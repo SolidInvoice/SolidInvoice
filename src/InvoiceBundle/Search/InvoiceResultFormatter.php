@@ -36,7 +36,6 @@ final class InvoiceResultFormatter implements ResultFormatterInterface
             id: $hit['id'],
             title: $hit['invoiceId'] ?? $hit['id'],
             subtitle: $hit['clientName'] ?? '',
-            icon: 'file-invoice',
             url: $this->router->generate('_invoices_view', ['id' => $hit['id']]),
             status: $hit['status'] ?? null,
             meta: isset($hit['total']) ? number_format((float) $hit['total'] / 100, 2) : null,

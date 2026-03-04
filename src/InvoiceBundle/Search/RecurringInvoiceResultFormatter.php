@@ -36,7 +36,6 @@ final class RecurringInvoiceResultFormatter implements ResultFormatterInterface
             id: $hit['id'],
             title: $hit['clientName'] ?? $hit['id'],
             subtitle: $hit['status'] ?? '',
-            icon: 'refresh',
             url: $this->router->generate('_invoices_view_recurring', ['id' => $hit['id']]),
             status: $hit['status'] ?? null,
             meta: isset($hit['total']) ? number_format((float) $hit['total'] / 100, 2) : null,

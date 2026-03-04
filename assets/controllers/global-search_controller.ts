@@ -14,7 +14,6 @@ interface SearchResult {
     id: string;
     title: string;
     subtitle: string;
-    icon: string;
     url: string;
     status?: string;
     meta?: string;
