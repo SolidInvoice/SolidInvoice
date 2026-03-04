@@ -36,7 +36,6 @@ final class ClientResultFormatter implements ResultFormatterInterface
             id: $hit['id'],
             title: $hit['name'] ?? '',
             subtitle: $hit['website'] ?? '',
-            icon: 'users',
             url: $this->router->generate('_clients_view', ['id' => $hit['id']]),
             status: $hit['status'] ?? null,
         );

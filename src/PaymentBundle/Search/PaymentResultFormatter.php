@@ -50,7 +50,6 @@ final class PaymentResultFormatter implements ResultFormatterInterface
             id: $hit['id'],
             title: $title,
             subtitle: $subtitle,
-            icon: 'credit-card',
             url: $url,
             status: $hit['status'] ?? null,
         );

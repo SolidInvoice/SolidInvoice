@@ -20,7 +20,6 @@ final readonly class SearchResult
         public string $id,
         public string $title,
         public string $subtitle,
-        public string $icon,
         public string $url,
         public ?string $status = null,
         public ?string $meta = null,

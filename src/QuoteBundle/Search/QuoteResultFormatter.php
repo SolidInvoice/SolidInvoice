@@ -36,7 +36,6 @@ final class QuoteResultFormatter implements ResultFormatterInterface
             id: $hit['id'],
             title: $hit['quoteId'] ?? $hit['id'],
             subtitle: $hit['clientName'] ?? '',
-            icon: 'file-text',
             url: $this->router->generate('_quotes_view', ['id' => $hit['id']]),
             status: $hit['status'] ?? null,
             meta: isset($hit['total']) ? number_format((float) $hit['total'] / 100, 2) : null,
