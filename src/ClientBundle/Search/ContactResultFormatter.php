@@ -33,13 +33,17 @@ final class ContactResultFormatter implements ResultFormatterInterface
     {
         $name = trim(($hit['firstName'] ?? '') . ' ' . ($hit['lastName'] ?? ''));
 
+        $url = isset($hit['clientId'])
+            ? $this->router->generate('_clients_view', ['id' => $hit['clientId']])
+            : $this->router->generate('_clients_index');
+
         return new SearchResult(
             type: 'contact',
             id: $hit['id'],
             title: $name !== '' ? $name : ($hit['email'] ?? ''),
             subtitle: $hit['email'] ?? '',
             icon: 'user',
-            url: $this->router->generate('_clients_view', ['id' => $hit['clientId']]),
+            url: $url,
         );
     }
 }

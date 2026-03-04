@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Action;
 
 use SolidInvoice\CoreBundle\Search\MultiSearchService;
+use SolidInvoice\CoreBundle\Search\SearchResult;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -39,16 +40,7 @@ final class Search
         $serialized = [];
         foreach ($results as $indexName => $typeResults) {
             $serialized[$indexName] = array_map(
-                static fn ($r) => [
-                    'id' => $r->id,
-                    'type' => $r->type,
-                    'title' => $r->title,
-                    'subtitle' => $r->subtitle,
-                    'icon' => $r->icon,
-                    'url' => $r->url,
-                    'status' => $r->status,
-                    'meta' => $r->meta,
-                ],
+                static fn (SearchResult $r) => (array) $r,
                 $typeResults,
             );
         }

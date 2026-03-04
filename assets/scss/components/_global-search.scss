@@ -197,21 +197,8 @@
     flex-shrink: 0;
     width: 34px;
     height: 34px;
-    border-radius: 8px;
-    background-color: currentColor;
-    opacity: 0.1;
-    position: relative;
-
-    // Reset: render the icon itself at full opacity via a wrapper trick below
-}
-
-// The icon container uses a two-layer approach:
-// outer element sets the background tint, inner SVG is shown via currentColor
-.search-result-icon {
-    background: transparent;
-    opacity: 1;
     padding: 6px;
-    border-radius: 7px;
+    border-radius: 8px;
 
     svg {
         display: block;

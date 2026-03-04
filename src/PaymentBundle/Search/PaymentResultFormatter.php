@@ -32,9 +32,12 @@ final class PaymentResultFormatter implements ResultFormatterInterface
     public function format(array $hit): SearchResult
     {
         $title = $hit['reference'] ?? $hit['invoiceRef'] ?? $hit['id'];
-        $subtitle = $hit['clientName'] ?? '';
+
         if (isset($hit['invoiceRef']) && $hit['invoiceRef'] !== '') {
-            $subtitle = sprintf('%s — %s', $hit['clientName'] ?? '', $hit['invoiceRef']);
+            $parts = array_filter([$hit['clientName'] ?? null, $hit['invoiceRef']]);
+            $subtitle = implode(' — ', $parts);
+        } else {
+            $subtitle = $hit['clientName'] ?? '';
         }
 
         $invoiceId = $hit['invoiceId'] ?? null;

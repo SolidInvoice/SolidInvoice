@@ -37,8 +37,8 @@ trait CompanyAware
     }
 
     #[Groups(['searchable'])]
-    public function getCompanyId(): string
+    public function getCompanyId(): ?string
     {
-        return $this->company->getId()->toBase58();
+        return isset($this->company) ? $this->company->getId()->toBase58() : null;
     }
 }
