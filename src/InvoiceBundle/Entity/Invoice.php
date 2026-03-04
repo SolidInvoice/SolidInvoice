@@ -435,6 +435,12 @@ class Invoice extends BaseInvoice implements Stringable
         return $this->client?->getName();
     }
 
+    #[Groups(['searchable'])]
+    public function getCurrencyCode(): ?string
+    {
+        return $this->client?->getCurrencyCode();
+    }
+
     /**
      * @return list<string>
      */
