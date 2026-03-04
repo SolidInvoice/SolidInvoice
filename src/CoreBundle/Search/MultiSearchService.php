@@ -15,10 +15,17 @@ namespace SolidInvoice\CoreBundle\Search;
 
 use Meilisearch\Client;
 use Meilisearch\Contracts\SearchQuery;
+use Meilisearch\Exceptions\ApiException;
+use Meilisearch\Exceptions\CommunicationException;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 
 final class MultiSearchService
 {
+    /**
+     * @var array<string, ResultFormatterInterface>|null
+     */
+    private ?array $formatterMap = null;
+
     /**
      * @param iterable<ResultFormatterInterface> $formatters
      */
@@ -55,19 +62,24 @@ final class MultiSearchService
                 ->setLimit($hitsPerIndex);
         }
 
-        $multiSearchResult = $this->client->multiSearch($queries);
+        try {
+            $multiSearchResult = $this->client->multiSearch($queries);
+        } catch (CommunicationException | ApiException) {
+            return [];
+        }
 
         $grouped = [];
         foreach ($multiSearchResult['results'] as $result) {
             $logicalIndex = substr($result['indexUid'], strlen($this->indexPrefix));
             $formatter = $formatterMap[$logicalIndex] ?? null;
+            $hits = $result['hits'] ?? [];
 
-            if ($formatter === null || $result['hits'] === []) {
+            if ($formatter === null || $hits === []) {
                 continue;
             }
 
             $results = [];
-            foreach ($result['hits'] as $hit) {
+            foreach ($hits as $hit) {
                 $results[] = $formatter->format($hit);
             }
 
@@ -82,11 +94,15 @@ final class MultiSearchService
      */
     private function buildFormatterMap(): array
     {
+        if ($this->formatterMap !== null) {
+            return $this->formatterMap;
+        }
+
         $map = [];
         foreach ($this->formatters as $formatter) {
             $map[$formatter->getIndexName()] = $formatter;
         }
 
-        return $map;
+        return $this->formatterMap = $map;
     }
 }

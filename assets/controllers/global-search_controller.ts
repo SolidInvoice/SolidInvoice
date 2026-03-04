@@ -108,6 +108,7 @@ export default class GlobalSearchController extends Controller<HTMLElement> {
         if (this.debounceTimer) clearTimeout(this.debounceTimer);
 
         if (query.length < 2) {
+            if (this.abortController) this.abortController.abort();
             this.hideDropdown();
             return;
         }
