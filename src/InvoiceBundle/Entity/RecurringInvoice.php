@@ -313,6 +313,12 @@ class RecurringInvoice extends BaseInvoice
         return $this->client?->getName();
     }
 
+    #[Serialize\Groups(['searchable'])]
+    public function getCurrencyCode(): ?string
+    {
+        return $this->client?->getCurrencyCode();
+    }
+
     /**
      * @return list<string>
      */

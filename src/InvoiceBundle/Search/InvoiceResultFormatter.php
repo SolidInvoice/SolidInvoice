@@ -13,14 +13,22 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Search;
 
+use Brick\Math\BigDecimal;
+use Brick\Math\RoundingMode;
+use Money\Currency;
+use Money\Money;
 use SolidInvoice\CoreBundle\Search\ResultFormatterInterface;
 use SolidInvoice\CoreBundle\Search\SearchResult;
+use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\Routing\RouterInterface;
 
 final class InvoiceResultFormatter implements ResultFormatterInterface
 {
     public function __construct(
         private readonly RouterInterface $router,
+        private readonly MoneyFormatterInterface $moneyFormatter,
+        private readonly SystemConfig $systemConfig,
     ) {
     }
 
@@ -38,7 +46,12 @@ final class InvoiceResultFormatter implements ResultFormatterInterface
             subtitle: $hit['clientName'] ?? '',
             url: $this->router->generate('_invoices_view', ['id' => $hit['id']]),
             status: $hit['status'] ?? null,
-            meta: isset($hit['total']) ? number_format((float) $hit['total'] / 100, 2) : null,
+            meta: isset($hit['total'])
+                ? $this->moneyFormatter->format(new Money(
+                    BigDecimal::of((string) $hit['total'])->multipliedBy(100)->toScale(0, RoundingMode::HALF_EVEN)->toInt(),
+                    new Currency($hit['currencyCode'] ?? $this->systemConfig->getCurrency()->getCode()),
+                ))
+                : null,
         );
     }
 }
