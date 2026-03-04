@@ -78,7 +78,7 @@ class RecurringInvoice extends BaseInvoice
     use TimeStampable;
 
     #[ORM\Column(name: 'status', type: Types::STRING, length: 25, enumType: RecurringInvoiceStatus::class)]
-    #[Serialize\Groups(['recurring_invoice_api:read'])]
+    #[Serialize\Groups(['recurring_invoice_api:read', 'searchable'])]
     #[ApiProperty(writable: false)]
     protected ?RecurringInvoiceStatus $status = null;
 
@@ -86,7 +86,7 @@ class RecurringInvoice extends BaseInvoice
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UlidGenerator::class)]
-    #[Serialize\Groups(['recurring_invoice_api:read'])]
+    #[Serialize\Groups(['recurring_invoice_api:read', 'searchable'])]
     private ?Ulid $id = null;
 
     #[ApiProperty(
@@ -305,6 +305,26 @@ class RecurringInvoice extends BaseInvoice
         $invoice->setRecurringInvoice(null);
 
         return $this;
+    }
+
+    #[Serialize\Groups(['searchable'])]
+    public function getClientName(): ?string
+    {
+        return $this->client?->getName();
+    }
+
+    /**
+     * @return list<string>
+     */
+    #[Serialize\Groups(['searchable'])]
+    public function getLineDescriptions(): array
+    {
+        return array_values(
+            $this->lines
+                ->map(static fn (RecurringInvoiceLine $line) => $line->getDescription())
+                ->filter(static fn (?string $d) => $d !== null && $d !== '')
+                ->toArray()
+        );
     }
 
     public function hasInvoiceForDay(DateTimeInterface $now): bool

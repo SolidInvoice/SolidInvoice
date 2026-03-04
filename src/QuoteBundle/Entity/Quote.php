@@ -96,11 +96,11 @@ class Quote
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UlidGenerator::class)]
-    #[Groups(['quote_api:read'])]
+    #[Groups(['quote_api:read', 'searchable'])]
     private ?Ulid $id = null;
 
     #[ORM\Column(name: 'quote_id', type: Types::STRING, length: 255)]
-    #[Groups(['quote_api:read', 'quote_api:write'])]
+    #[Groups(['quote_api:read', 'quote_api:write', 'searchable'])]
     private string $quoteId = '';
 
     #[ORM\Column(name: 'uuid', type: Types::STRING, length: 36)]
@@ -109,7 +109,7 @@ class Quote
     private ?string $uuid = null;
 
     #[ORM\Column(name: 'status', type: Types::STRING, length: 25, enumType: QuoteStatus::class)]
-    #[Groups(['quote_api:read'])]
+    #[Groups(['quote_api:read', 'searchable'])]
     #[ApiProperty(writable: false)]
     private ?QuoteStatus $status = null;
 
@@ -123,7 +123,7 @@ class Quote
     private ?Client $client = null;
 
     #[ORM\Column(name: 'total_amount', type: BigIntegerType::NAME)]
-    #[Groups(['quote_api:read'])]
+    #[Groups(['quote_api:read', 'searchable'])]
     #[ApiProperty(
         writable: false,
         openapiContext: [
@@ -452,6 +452,26 @@ class Quote
         foreach ($this->lines as $line) {
             $line->setQuote($this);
         }
+    }
+
+    #[Groups(['searchable'])]
+    public function getClientName(): ?string
+    {
+        return $this->client?->getName();
+    }
+
+    /**
+     * @return list<string>
+     */
+    #[Groups(['searchable'])]
+    public function getLineDescriptions(): array
+    {
+        return array_values(
+            $this->lines
+                ->map(static fn (Line $line) => $line->getDescription())
+                ->filter(static fn (?string $d) => $d !== null && $d !== '')
+                ->toArray()
+        );
     }
 
     public function setInvoice(Invoice $invoice): self

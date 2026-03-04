@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 use SolidInvoice\CoreBundle\Action\CreateCompany;
 use SolidInvoice\CoreBundle\Action\DeleteCompany;
+use SolidInvoice\CoreBundle\Action\Search;
 use SolidInvoice\CoreBundle\Action\SelectCompany;
 use SolidInvoice\CoreBundle\Action\ViewBilling;
 use Symfony\Bundle\FrameworkBundle\Controller\RedirectController;
@@ -58,4 +59,9 @@ return static function (RoutingConfigurator $routingConfigurator): void {
         ->controller(DeleteCompany::class)
         ->methods(['POST'])
     ;
+
+    $routingConfigurator
+        ->add('_search', '/search')
+        ->controller(Search::class)
+        ->methods(['GET']);
 };

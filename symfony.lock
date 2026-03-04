@@ -197,6 +197,18 @@
     "matthiasnoback/symfony-dependency-injection-test": {
         "version": "4.1.1"
     },
+    "meilisearch/search-bundle": {
+        "version": "0.16",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "0.10",
+            "ref": "f0730f97441a5391832fb176305f69abe86b70a3"
+        },
+        "files": [
+            "config/packages/meilisearch.yaml"
+        ]
+    },
     "mockery/mockery": {
         "version": "1.4.1"
     },

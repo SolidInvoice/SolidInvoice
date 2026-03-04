@@ -31,7 +31,7 @@ abstract class BaseInvoice
     use CompanyAware;
 
     #[ORM\Column(name: 'total_amount', type: BigIntegerType::NAME)]
-    #[Groups(['invoice_api:read', 'recurring_invoice_api:read'])]
+    #[Groups(['invoice_api:read', 'recurring_invoice_api:read', 'searchable'])]
     #[ApiProperty(
         writable: false,
         openapiContext: [

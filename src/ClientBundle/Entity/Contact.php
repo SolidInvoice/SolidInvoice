@@ -151,20 +151,20 @@ class Contact implements Serializable, Stringable
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UlidGenerator::class)]
-    #[Serialize\Groups(['contact_api:read'])]
+    #[Serialize\Groups(['contact_api:read', 'searchable'])]
     private ?Ulid $id = null;
 
     #[ApiProperty(iris: ['https://schema.org/givenName'])]
     #[ORM\Column(name: 'firstName', type: Types::STRING, length: 125)]
     #[Assert\NotBlank(groups: ['Default', 'form'])]
     #[Assert\Length(max: 125, groups: ['Default', 'form'])]
-    #[Serialize\Groups(['contact_api:read', 'contact_api:write'])]
+    #[Serialize\Groups(['contact_api:read', 'contact_api:write', 'searchable'])]
     private ?string $firstName = null;
 
     #[ApiProperty(iris: ['https://schema.org/familyName'])]
     #[ORM\Column(name: 'lastName', type: Types::STRING, length: 125, nullable: true)]
     #[Assert\Length(max: 125, groups: ['Default', 'form'])]
-    #[Serialize\Groups(['contact_api:read', 'contact_api:write'])]
+    #[Serialize\Groups(['contact_api:read', 'contact_api:write', 'searchable'])]
     private ?string $lastName = null;
 
     #[ApiProperty(
@@ -184,7 +184,7 @@ class Contact implements Serializable, Stringable
     #[ORM\Column(name: 'email', type: Types::STRING, length: 255)]
     #[Assert\NotBlank(groups: ['Default', 'form'])]
     #[Assert\Email(mode: Assert\Email::VALIDATION_MODE_STRICT, groups: ['Default', 'form'])]
-    #[Serialize\Groups(['contact_api:read', 'contact_api:write'])]
+    #[Serialize\Groups(['contact_api:read', 'contact_api:write', 'searchable'])]
     private ?string $email = null;
 
     /**
@@ -357,6 +357,12 @@ class Contact implements Serializable, Stringable
         $this->email = $data['email'];
         $this->created = $data['created'];
         $this->updated = $data['updated'];
+    }
+
+    #[Serialize\Groups(['searchable'])]
+    public function getClientId(): ?string
+    {
+        return $this->client?->getId()?->toBase58();
     }
 
     public function getEmail(): ?string

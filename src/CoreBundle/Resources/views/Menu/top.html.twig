@@ -80,7 +80,38 @@
                     </div>
                 </div>
             </div>
-            <div>
+            <div class="flex-grow-1 d-flex justify-content-center align-items-center px-3">
+                {% toggle 'meilisearch_search' %}
+                    <div class="global-search w-100"
+                         data-controller="global-search"
+                         data-global-search-url-value="{{ path('_search') }}">
+                        <div class="global-search-input-wrapper">
+                            <span class="global-search-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                            </span>
+                            <input
+                                type="search"
+                                class="global-search-input"
+                                placeholder="{{ 'Search...'|trans }}"
+                                autocomplete="off"
+                                data-global-search-target="input"
+                                data-action="input->global-search#onInput keydown->global-search#onKeydown"
+                            >
+                            <span class="global-search-shortcut d-none d-xl-flex">
+                                <kbd>Ctrl</kbd><kbd>K</kbd>
+                            </span>
+                        </div>
+                        <div class="search-dropdown" data-global-search-target="dropdown">
+                            <div class="search-spinner d-none" data-global-search-target="spinner">
+                                <div class="spinner-border spinner-border-sm text-secondary" role="status">
+                                    <span class="visually-hidden">{{ 'Searching...'|trans }}</span>
+                                </div>
+                                <span>{{ 'Searching...'|trans }}</span>
+                            </div>
+                            <div class="search-results" data-global-search-target="results"></div>
+                        </div>
+                    </div>
+                {% endtoggle %}
             </div>
         </div>
 
