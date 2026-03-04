@@ -15,6 +15,7 @@ use Gedmo\Timestampable\TimestampableListener;
 use Mpociot\VatCalculator\VatCalculator;
 use SolidInvoice\CoreBundle\DummyData\DummyDataLoader;
 use SolidInvoice\CoreBundle\Routing\Loader\AbstractDirectoryLoader;
+use SolidInvoice\CoreBundle\Search\MultiSearchService;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\Uid\Command\GenerateUlidCommand;
@@ -73,4 +74,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services->set(DummyDataLoader::class)
         ->arg('$loaders', tagged_iterator('solidinvoice.dummy_data_loader', defaultPriorityMethod: 'getPriority'));
+
+    $services->set(MultiSearchService::class)
+        ->arg('$formatters', tagged_iterator('solidinvoice.search.result_formatter'))
+        ->arg('$indexPrefix', env('SOLIDINVOICE_MEILISEARCH_PREFIX'));
 };

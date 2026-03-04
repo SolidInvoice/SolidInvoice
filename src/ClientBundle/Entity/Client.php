@@ -82,26 +82,26 @@ class Client implements Stringable
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UlidGenerator::class)]
-    #[Serialize\Groups(['client_api:read'])]
+    #[Serialize\Groups(['client_api:read', 'searchable'])]
     private ?Ulid $id = null;
 
     #[ApiProperty(iris: ['https://schema.org/name'])]
     #[ORM\Column(name: 'name', type: Types::STRING, length: 125)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 125)]
-    #[Serialize\Groups(['client_api:read', 'client_api:write'])]
+    #[Serialize\Groups(['client_api:read', 'client_api:write', 'searchable'])]
     private ?string $name = null;
 
     #[ApiProperty(iris: ['https://schema.org/URL'])]
     #[ORM\Column(name: 'website', type: Types::STRING, length: 125, nullable: true)]
     #[Assert\Url]
     #[Assert\Length(max: 125)]
-    #[Serialize\Groups(['client_api:read', 'client_api:write'])]
+    #[Serialize\Groups(['client_api:read', 'client_api:write', 'searchable'])]
     private ?string $website = null;
 
     #[ApiProperty(writable: false, iris: ['https://schema.org/Text'])]
     #[ORM\Column(name: 'status', type: Types::STRING, length: 25, enumType: ClientStatus::class)]
-    #[Serialize\Groups(['client_api:read'])]
+    #[Serialize\Groups(['client_api:read', 'searchable'])]
     private ?ClientStatus $status = null;
 
     #[ORM\Column(name: 'currency', type: Types::STRING, length: 3, nullable: true)]
@@ -132,7 +132,7 @@ class Client implements Stringable
     private Currency $currency;
 
     #[ORM\Column(name: 'vat_number', type: Types::STRING, nullable: true)]
-    #[Serialize\Groups(['client_api:read', 'client_api:write'])]
+    #[Serialize\Groups(['client_api:read', 'client_api:write', 'searchable'])]
     private ?string $vatNumber = null;
 
     /**

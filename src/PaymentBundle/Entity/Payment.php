@@ -33,6 +33,7 @@ use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -91,6 +92,7 @@ class Payment extends BasePayment
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UlidGenerator::class)]
+    #[Groups(['searchable'])]
     protected ?Ulid $id = null;
 
     #[ORM\ManyToOne(targetEntity: Invoice::class, inversedBy: 'payments')]
@@ -105,6 +107,7 @@ class Payment extends BasePayment
     private ?PaymentMethod $method = null;
 
     #[ORM\Column(name: 'status', type: Types::STRING, length: 25, enumType: PaymentStatus::class)]
+    #[Groups(['searchable'])]
     private ?PaymentStatus $status = null;
 
     #[ORM\Column(name: 'message', type: Types::TEXT, nullable: true)]
@@ -115,9 +118,11 @@ class Payment extends BasePayment
     private ?DateTimeInterface $completed = null;
 
     #[ORM\Column(name: 'reference', type: Types::STRING, length: 255, nullable: true)]
+    #[Groups(['searchable'])]
     private ?string $reference = null;
 
     #[ORM\Column(name: 'notes', type: Types::TEXT, nullable: true)]
+    #[Groups(['searchable'])]
     private ?string $notes = null;
 
     public function getId(): ?Ulid
@@ -281,5 +286,23 @@ class Payment extends BasePayment
         $this->notes = $notes;
 
         return $this;
+    }
+
+    #[Groups(['searchable'])]
+    public function getClientName(): ?string
+    {
+        return $this->client?->getName();
+    }
+
+    #[Groups(['searchable'])]
+    public function getInvoiceId(): ?string
+    {
+        return $this->invoice?->getId()?->toBase58();
+    }
+
+    #[Groups(['searchable'])]
+    public function getInvoiceRef(): ?string
+    {
+        return $this->invoice?->getInvoiceId();
     }
 }

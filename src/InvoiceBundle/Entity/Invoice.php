@@ -92,7 +92,7 @@ class Invoice extends BaseInvoice implements Stringable
     use TimeStampable;
 
     #[ORM\Column(name: 'status', type: Types::STRING, length: 25, enumType: InvoiceStatus::class)]
-    #[Groups(['invoice_api:read'])]
+    #[Groups(['invoice_api:read', 'searchable'])]
     #[ApiProperty(writable: false)]
     protected ?InvoiceStatus $status = null;
 
@@ -100,11 +100,11 @@ class Invoice extends BaseInvoice implements Stringable
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UlidGenerator::class)]
-    #[Groups(['invoice_api:read'])]
+    #[Groups(['invoice_api:read', 'searchable'])]
     private ?Ulid $id = null;
 
     #[ORM\Column(name: 'invoice_id', type: Types::STRING, length: 255)]
-    #[Groups(['invoice_api:read', 'invoice_api:write'])]
+    #[Groups(['invoice_api:read', 'invoice_api:write', 'searchable'])]
     private string $invoiceId = '';
 
     #[ORM\Column(name: 'uuid', type: Types::STRING, length: 36)]
@@ -427,6 +427,26 @@ class Invoice extends BaseInvoice implements Stringable
         $this->invoiceDate = $invoiceDate;
 
         return $this;
+    }
+
+    #[Groups(['searchable'])]
+    public function getClientName(): ?string
+    {
+        return $this->client?->getName();
+    }
+
+    /**
+     * @return list<string>
+     */
+    #[Groups(['searchable'])]
+    public function getLineDescriptions(): array
+    {
+        return array_values(
+            $this->lines
+                ->map(static fn (Line $line) => $line->getDescription())
+                ->filter(static fn (?string $d) => $d !== null && $d !== '')
+                ->toArray()
+        );
     }
 
     public function __toString(): string

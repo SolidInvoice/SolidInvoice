@@ -38,6 +38,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters->set('env(SOLIDINVOICE_MESSENGER_DSN)', 'doctrine://default?queue_name=async');
     $parameters->set('env(SOLIDINVOICE_PLATFORM)', null);
 
+    $parameters->set('env(SOLIDINVOICE_MEILISEARCH_URL)', null);
+    $parameters->set('env(SOLIDINVOICE_MEILISEARCH_API_KEY)', null);
+    $parameters->set('env(SOLIDINVOICE_MEILISEARCH_PREFIX)', 'solidinvoice_%env(SOLIDINVOICE_ENV)%_');
+
     if ($containerConfigurator->env() === 'test') {
         $parameters->set('env(SOLIDINVOICE_CONFIG_DIR)', param('kernel.project_dir') . '/var/cache/test/config');
     } else {

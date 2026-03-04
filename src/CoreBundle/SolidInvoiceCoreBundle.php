@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle;
 
 use SolidInvoice\CoreBundle\DependencyInjection\Compiler\DbalLoggerPass;
+use SolidInvoice\CoreBundle\Search\ResultFormatterInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -30,5 +31,8 @@ final class SolidInvoiceCoreBundle extends Bundle
         parent::build($container);
 
         $container->addCompilerPass(new DbalLoggerPass());
+
+        $container->registerForAutoconfiguration(ResultFormatterInterface::class)
+            ->addTag('solidinvoice.search.result_formatter');
     }
 }

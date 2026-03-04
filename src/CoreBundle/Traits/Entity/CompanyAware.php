@@ -16,6 +16,7 @@ namespace SolidInvoice\CoreBundle\Traits\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\CoreBundle\Entity\Company;
 use Symfony\Component\Serializer\Attribute as Serialize;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 trait CompanyAware
 {
@@ -33,5 +34,11 @@ trait CompanyAware
     {
         $this->company = $company;
         return $this;
+    }
+
+    #[Groups(['searchable'])]
+    public function getCompanyId(): string
+    {
+        return $this->company->getId()->toBase58();
     }
 }

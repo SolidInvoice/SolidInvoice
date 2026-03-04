@@ -1,0 +1,297 @@
+/**
+ * Global Search - Top navigation search bar with live results dropdown
+ */
+
+.global-search {
+    position: relative;
+    max-width: 600px;
+
+    &-input-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    &-icon {
+        position: absolute;
+        left: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #9aa0ac;
+        pointer-events: none;
+        display: flex;
+        align-items: center;
+        line-height: 1;
+        z-index: 1;
+    }
+
+    &-input {
+        box-sizing: border-box;
+        width: 100%;
+        // 0.75rem icon-left + 1rem icon-width + 0.5rem gap = 2.25rem
+        padding: 0 5rem 0 2.5rem;
+        height: 38px;
+        line-height: 38px;
+        background-color: #fff;
+        border: 1px solid #d0d3d8;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        color: #354052;
+        appearance: none;
+        -webkit-appearance: none;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+        // Remove browser default search cancel button
+        &::-webkit-search-cancel-button,
+        &::-webkit-search-decoration {
+            -webkit-appearance: none;
+        }
+
+        &:focus {
+            border-color: #2e963a;
+            box-shadow: 0 0 0 3px rgba(46, 150, 58, 0.12);
+            background-color: #fff;
+            outline: none;
+        }
+
+        &::placeholder {
+            color: #9aa0ac;
+        }
+    }
+
+    &-shortcut {
+        position: absolute;
+        right: 0.625rem;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        gap: 3px;
+        pointer-events: none;
+
+        kbd {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.1rem 0.35rem;
+            font-size: 0.7rem;
+            font-family: var(--tblr-font-monospace);
+            color: #9aa0ac;
+            background-color: #f5f7fb;
+            border: 1px solid #e6e7e9;
+            border-radius: 3px;
+            line-height: 1.4;
+        }
+    }
+}
+
+.search-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    min-width: 520px;
+    // Extend symmetrically beyond the input for a wider panel
+    margin-left: -60px;
+    margin-right: -60px;
+    background-color: #fff;
+    border: 1px solid #e6e7e9;
+    border-radius: 8px;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.18), 0 2px 8px rgba(0, 0, 0, 0.08);
+    // Use isolation to avoid stacking context issues from the navbar
+    isolation: isolate;
+    z-index: 9999;
+
+    &.is-open {
+        display: block;
+        animation: searchDropdownIn 0.12s ease-out;
+    }
+}
+
+@keyframes searchDropdownIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px) scale(0.99);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.search-spinner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1.25rem;
+    color: #9aa0ac;
+    font-size: 0.875rem;
+}
+
+.search-results {
+    max-height: 440px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background-color: #fff;
+    border-radius: 8px;
+
+    &::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #e0e3e8;
+        border-radius: 2px;
+    }
+}
+
+.search-group {
+    & + & {
+        border-top: 1px solid #f0f2f5;
+    }
+
+    &:last-child {
+        padding-bottom: 0.25rem;
+    }
+
+    &-label {
+        padding: 0.625rem 0.875rem 0.25rem;
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        color: #9aa0ac;
+    }
+}
+
+.search-result-item {
+    &.is-active .search-result-link {
+        background-color: #f5f7fb;
+    }
+
+    &:hover .search-result-link {
+        background-color: #f5f7fb;
+        text-decoration: none;
+    }
+}
+
+.search-result-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.875rem;
+    color: #354052;
+    text-decoration: none;
+    transition: background-color 0.08s ease;
+}
+
+.search-result-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    background-color: currentColor;
+    opacity: 0.1;
+    position: relative;
+
+    // Reset: render the icon itself at full opacity via a wrapper trick below
+}
+
+// The icon container uses a two-layer approach:
+// outer element sets the background tint, inner SVG is shown via currentColor
+.search-result-icon {
+    background: transparent;
+    opacity: 1;
+    padding: 6px;
+    border-radius: 7px;
+
+    svg {
+        display: block;
+    }
+}
+
+.search-result-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+}
+
+.search-result-title {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #354052;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.search-result-subtitle {
+    font-size: 0.775rem;
+    color: #9aa0ac;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 1px;
+}
+
+.search-result-aside {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.2rem;
+    flex-shrink: 0;
+    margin-left: auto;
+    padding-left: 0.5rem;
+}
+
+.search-result-badge {
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding: 0.15rem 0.45rem;
+}
+
+.search-result-meta {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #354052;
+    white-space: nowrap;
+}
+
+.search-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem 1rem;
+    color: #9aa0ac;
+    background-color: #fff;
+
+    &-icon {
+        margin-bottom: 0.625rem;
+        opacity: 0.4;
+        display: flex;
+    }
+
+    &-text {
+        margin: 0;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+}
+
+.search-error {
+    padding: 1.25rem;
+    font-size: 0.875rem;
+    color: var(--tblr-danger, #d63939);
+    text-align: center;
+    background-color: #fff;
+}
