@@ -19,6 +19,42 @@ interface SearchResult {
     meta?: string;
 }
 
+interface Qualifier {
+    label: string;
+    values?: string[];
+    hint: string;
+}
+
+const QUALIFIERS: Record<string, Qualifier> = {
+    'in': {
+        label: 'Scope',
+        values: ['invoices', 'recurring_invoices', 'quotes', 'payments', 'clients', 'contacts'],
+        hint: 'in:invoices',
+    },
+    'status': {
+        label: 'Status',
+        values: ['draft', 'pending', 'paid', 'overdue', 'cancelled', 'active', 'paused', 'captured', 'authorized', 'refunded', 'failed'],
+        hint: 'status:paid',
+    },
+    'amount': {
+        label: 'Amount',
+        hint: 'amount:>100 or amount:100..500',
+    },
+    'client': {
+        label: 'Client',
+        hint: 'client:"Acme Corp"',
+    },
+    'created': {
+        label: 'Created',
+        hint: 'created:>2024-01-01',
+    },
+    'sort': {
+        label: 'Sort',
+        values: ['amount', 'amount_desc', 'date', 'date_desc'],
+        hint: 'sort:amount_desc',
+    },
+};
+
 const LABELS: Record<string, string> = {
     clients: 'Clients',
     contacts: 'Contacts',
@@ -67,19 +103,28 @@ const ICON_COLORS: Record<string, string> = {
 
 /* stimulusFetch: 'lazy' */
 export default class GlobalSearchController extends Controller<HTMLElement> {
-    static values = { url: String };
-    static targets = ['input', 'dropdown', 'results', 'spinner'];
+    static values = { url: String, suggestionsUrl: String };
+    static targets = ['input', 'dropdown', 'results', 'spinner', 'chips', 'suggestions'];
 
     declare urlValue: string;
+    declare suggestionsUrlValue: string;
     declare inputTarget: HTMLInputElement;
     declare dropdownTarget: HTMLElement;
     declare resultsTarget: HTMLElement;
     declare spinnerTarget: HTMLElement;
+    declare chipsTarget: HTMLElement;
+    declare suggestionsTarget: HTMLElement;
+    declare hasChipsTarget: boolean;
+    declare hasSuggestionsTarget: boolean;
 
     private debounceTimer: ReturnType<typeof setTimeout> | null = null;
+    private suggestionsDebounceTimer: ReturnType<typeof setTimeout> | null = null;
     private abortController: AbortController | null = null;
+    private suggestionsAbortController: AbortController | null = null;
     private selectedIndex = -1;
     private resultItems: HTMLElement[] = [];
+    private chips: string[] = [];
+    private suggestionsVisible = false;
     private readonly handleOutsideClick: (event: MouseEvent) => void;
     private readonly handleGlobalKeydown: (event: KeyboardEvent) => void;
 
@@ -98,11 +143,16 @@ export default class GlobalSearchController extends Controller<HTMLElement> {
         document.removeEventListener('click', this.handleOutsideClick);
         document.removeEventListener('keydown', this.handleGlobalKeydown);
         if (this.debounceTimer) clearTimeout(this.debounceTimer);
+        if (this.suggestionsDebounceTimer) clearTimeout(this.suggestionsDebounceTimer);
         if (this.abortController) this.abortController.abort();
+        if (this.suggestionsAbortController) this.suggestionsAbortController.abort();
     }
 
     onInput(): void {
-        const query = this.inputTarget.value.trim();
+        this.checkForSuggestions();
+        this.checkForChipCreation();
+
+        const query = this.buildQuery();
 
         if (this.debounceTimer) clearTimeout(this.debounceTimer);
 
@@ -118,24 +168,335 @@ export default class GlobalSearchController extends Controller<HTMLElement> {
     onKeydown(event: KeyboardEvent): void {
         switch (event.key) {
             case 'Escape':
-                this.hideDropdown();
-                this.inputTarget.blur();
+                if (this.suggestionsVisible) {
+                    this.hideSuggestions();
+                } else {
+                    this.hideDropdown();
+                    this.inputTarget.blur();
+                }
                 break;
             case 'ArrowDown':
                 event.preventDefault();
-                this.moveSelection(1);
+                if (this.suggestionsVisible) {
+                    this.moveSuggestionSelection(1);
+                } else {
+                    this.moveSelection(1);
+                }
                 break;
             case 'ArrowUp':
                 event.preventDefault();
-                this.moveSelection(-1);
+                if (this.suggestionsVisible) {
+                    this.moveSuggestionSelection(-1);
+                } else {
+                    this.moveSelection(-1);
+                }
                 break;
             case 'Enter':
                 event.preventDefault();
-                if (this.selectedIndex >= 0 && this.resultItems[this.selectedIndex]) {
+                if (this.suggestionsVisible) {
+                    const activeItem = this.suggestionsTarget.querySelector<HTMLElement>('.search-suggestions-item.is-active');
+                    if (activeItem) {
+                        const value = activeItem.dataset['value'] ?? '';
+                        const qualifier = activeItem.dataset['qualifier'];
+                        if (qualifier !== undefined) {
+                            this.selectDynamicSuggestion(qualifier, value);
+                        } else {
+                            this.selectSuggestion(value);
+                        }
+                    }
+                } else if (this.selectedIndex >= 0 && this.resultItems[this.selectedIndex]) {
                     const link = this.resultItems[this.selectedIndex].querySelector('a') as HTMLAnchorElement | null;
                     if (link) window.location.href = link.href;
                 }
                 break;
+            case 'Backspace':
+                if (this.inputTarget.value === '' && this.chips.length > 0) {
+                    this.removeChip(this.chips.length - 1);
+                }
+                break;
+        }
+    }
+
+    private buildQuery(): string {
+        const chipPart = this.chips.join(' ');
+        const inputPart = this.inputTarget.value.trim();
+        return chipPart ? `${chipPart} ${inputPart}`.trim() : inputPart;
+    }
+
+    private checkForSuggestions(): void {
+        const value = this.inputTarget.value;
+        const lastWord = value.split(/\s+/).pop() ?? '';
+
+        // Match qualifier: with optional partial value (e.g. "status:", "status:p", "status:pa")
+        const match = /^(\w+):(.*)$/.exec(lastWord);
+        if (match) {
+            const qualifierName = match[1] ?? '';
+            const partial = match[2] ?? '';
+            const qualifier = QUALIFIERS[qualifierName];
+
+            if (qualifier && qualifier.values && qualifier.values.length > 0) {
+                this.showSuggestions(qualifierName, partial);
+                return;
+            }
+
+            // Handle dynamic suggestions (e.g. client:partial)
+            if (qualifierName === 'client' && this.suggestionsUrlValue) {
+                if (this.suggestionsDebounceTimer) clearTimeout(this.suggestionsDebounceTimer);
+                this.suggestionsDebounceTimer = setTimeout(
+                    () => void this.fetchDynamicSuggestions(qualifierName, partial),
+                    200,
+                );
+                return;
+            }
+        }
+
+        this.hideSuggestions();
+    }
+
+    private showSuggestions(qualifierName: string, partial: string = ''): void {
+        if (!this.hasSuggestionsTarget) return;
+
+        const qualifier = QUALIFIERS[qualifierName];
+        if (!qualifier || !qualifier.values) return;
+
+        const filtered = partial === ''
+            ? qualifier.values
+            : qualifier.values.filter(v => v.toLowerCase().startsWith(partial.toLowerCase()));
+
+        if (filtered.length === 0) {
+            this.hideSuggestions();
+            return;
+        }
+
+        const container = this.suggestionsTarget;
+        container.textContent = '';
+        container.classList.add('is-open');
+
+        const header = document.createElement('div');
+        header.className = 'search-suggestions-header';
+        header.textContent = qualifier.label;
+        container.appendChild(header);
+
+        for (const value of filtered) {
+            const item = document.createElement('div');
+            item.className = 'search-suggestions-item';
+            item.dataset['value'] = value;
+
+            const valueText = document.createTextNode(value + ' ');
+            item.appendChild(valueText);
+
+            const code = document.createElement('code');
+            code.textContent = `${qualifierName}:${value}`;
+            item.appendChild(code);
+
+            item.addEventListener('click', () => {
+                this.selectSuggestion(value);
+            });
+
+            container.appendChild(item);
+        }
+
+        this.suggestionsVisible = true;
+    }
+
+    private hideSuggestions(): void {
+        if (!this.hasSuggestionsTarget) return;
+        this.suggestionsTarget.textContent = '';
+        this.suggestionsTarget.classList.remove('is-open');
+        this.suggestionsVisible = false;
+    }
+
+    private async fetchDynamicSuggestions(qualifierName: string, partial: string): Promise<void> {
+        if (!this.hasSuggestionsTarget) return;
+
+        if (this.suggestionsAbortController) this.suggestionsAbortController.abort();
+        this.suggestionsAbortController = new AbortController();
+
+        try {
+            const url = new URL(this.suggestionsUrlValue, window.location.origin);
+            url.searchParams.set('qualifier', qualifierName);
+            url.searchParams.set('q', partial);
+
+            const response = await fetch(url.toString(), {
+                signal: this.suggestionsAbortController.signal,
+                headers: { Accept: 'application/json' },
+            });
+
+            if (!response.ok) return;
+
+            const names = await response.json() as string[];
+            if (names.length > 0) {
+                this.showDynamicSuggestions(qualifierName, names);
+            } else {
+                this.hideSuggestions();
+            }
+        } catch (err) {
+            if ((err as Error).name !== 'AbortError') {
+                this.hideSuggestions();
+            }
+        }
+    }
+
+    private showDynamicSuggestions(qualifierName: string, names: string[]): void {
+        if (!this.hasSuggestionsTarget) return;
+
+        const qualifier = QUALIFIERS[qualifierName];
+        const label = qualifier?.label ?? qualifierName;
+
+        const container = this.suggestionsTarget;
+        container.textContent = '';
+        container.classList.add('is-open');
+
+        const header = document.createElement('div');
+        header.className = 'search-suggestions-header';
+        header.textContent = label;
+        container.appendChild(header);
+
+        for (const name of names) {
+            const item = document.createElement('div');
+            item.className = 'search-suggestions-item';
+            item.dataset['value'] = name;
+            item.dataset['qualifier'] = qualifierName;
+
+            const valueText = document.createTextNode(name + ' ');
+            item.appendChild(valueText);
+
+            const code = document.createElement('code');
+            code.textContent = `${qualifierName}:"${name}"`;
+            item.appendChild(code);
+
+            item.addEventListener('click', () => {
+                this.selectDynamicSuggestion(qualifierName, name);
+            });
+
+            container.appendChild(item);
+        }
+
+        this.suggestionsVisible = true;
+    }
+
+    private selectDynamicSuggestion(qualifierName: string, value: string): void {
+        const inputValue = this.inputTarget.value;
+        const words = inputValue.split(/\s+/);
+        words.pop(); // remove the partial "client:xxx" word
+
+        const token = `${qualifierName}:"${value}"`;
+        words.push('');
+        this.inputTarget.value = words.join(' ').trimStart();
+        this.addChip(token);
+        this.hideSuggestions();
+    }
+
+    private moveSuggestionSelection(direction: number): void {
+        if (!this.hasSuggestionsTarget) return;
+        const items = Array.from(this.suggestionsTarget.querySelectorAll<HTMLElement>('.search-suggestions-item'));
+        if (items.length === 0) return;
+
+        const currentIndex = items.findIndex(item => item.classList.contains('is-active'));
+        items[currentIndex]?.classList.remove('is-active');
+
+        const nextIndex = currentIndex < 0
+            ? (direction > 0 ? 0 : items.length - 1)
+            : Math.max(0, Math.min(items.length - 1, currentIndex + direction));
+
+        items[nextIndex]?.classList.add('is-active');
+        items[nextIndex]?.scrollIntoView({ block: 'nearest' });
+    }
+
+    private selectSuggestion(value: string): void {
+        const inputValue = this.inputTarget.value;
+        const words = inputValue.split(/\s+/);
+        const lastWord = words.pop() ?? '';
+
+        if (lastWord.endsWith(':')) {
+            const qualifierName = lastWord.slice(0, -1);
+            const token = `${qualifierName}:${value}`;
+            words.push('');
+            this.inputTarget.value = words.join(' ').trimStart();
+            this.addChip(token);
+        }
+
+        this.hideSuggestions();
+    }
+
+    private checkForChipCreation(): void {
+        const value = this.inputTarget.value;
+
+        // Only trigger on space as the last character
+        if (!value.endsWith(' ')) return;
+
+        const tokenRegex = /^(\w+):("[^"]*"|\S+)$/;
+        const words = value.trimEnd().split(/\s+/);
+        const lastToken = words[words.length - 1] ?? '';
+
+        const match = tokenRegex.exec(lastToken);
+        if (match) {
+            const qualifierName = match[1];
+            if (qualifierName && QUALIFIERS[qualifierName] !== undefined) {
+                // Remove the token from the input
+                words.pop();
+                this.inputTarget.value = words.length > 0 ? words.join(' ') + ' ' : '';
+                this.addChip(lastToken);
+            }
+        }
+    }
+
+    private addChip(token: string): void {
+        this.chips.push(token);
+        this.renderChips();
+
+        const query = this.buildQuery();
+        if (query.length >= 2) {
+            if (this.debounceTimer) clearTimeout(this.debounceTimer);
+            this.debounceTimer = setTimeout(() => void this.search(query), 300);
+        }
+    }
+
+    private removeChip(index: number): void {
+        this.chips.splice(index, 1);
+        this.renderChips();
+
+        const query = this.buildQuery();
+        if (query.length >= 2) {
+            if (this.debounceTimer) clearTimeout(this.debounceTimer);
+            this.debounceTimer = setTimeout(() => void this.search(query), 300);
+        } else {
+            this.hideDropdown();
+        }
+    }
+
+    private renderChips(): void {
+        if (!this.hasChipsTarget) return;
+
+        const container = this.chipsTarget;
+        container.textContent = '';
+
+        for (let i = 0; i < this.chips.length; i++) {
+            const chip = this.chips[i];
+            if (chip === undefined) continue;
+
+            const chipEl = document.createElement('span');
+            chipEl.className = 'search-chip';
+
+            const label = document.createElement('span');
+            label.className = 'search-chip-label';
+            label.textContent = chip.replace(':', ': ');
+            chipEl.appendChild(label);
+
+            const removeBtn = document.createElement('button');
+            removeBtn.type = 'button';
+            removeBtn.className = 'search-chip-remove';
+            removeBtn.setAttribute('aria-label', 'Remove');
+            removeBtn.dataset['qualifier'] = chip;
+            removeBtn.textContent = '×';
+
+            const chipIndex = i;
+            removeBtn.addEventListener('click', () => {
+                this.removeChip(chipIndex);
+            });
+
+            chipEl.appendChild(removeBtn);
+            container.appendChild(chipEl);
         }
     }
 
@@ -331,6 +692,7 @@ export default class GlobalSearchController extends Controller<HTMLElement> {
     private _handleOutsideClick(event: MouseEvent): void {
         if (!this.element.contains(event.target as Node)) {
             this.hideDropdown();
+            this.hideSuggestions();
         }
     }
 
