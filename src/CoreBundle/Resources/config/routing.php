@@ -14,6 +14,7 @@ declare(strict_types=1);
 use SolidInvoice\CoreBundle\Action\CreateCompany;
 use SolidInvoice\CoreBundle\Action\DeleteCompany;
 use SolidInvoice\CoreBundle\Action\Search;
+use SolidInvoice\CoreBundle\Action\SearchSuggestions;
 use SolidInvoice\CoreBundle\Action\SelectCompany;
 use SolidInvoice\CoreBundle\Action\ViewBilling;
 use Symfony\Bundle\FrameworkBundle\Controller\RedirectController;
@@ -63,5 +64,10 @@ return static function (RoutingConfigurator $routingConfigurator): void {
     $routingConfigurator
         ->add('_search', '/search')
         ->controller(Search::class)
+        ->methods(['GET']);
+
+    $routingConfigurator
+        ->add('_search_suggestions', '/search/suggestions')
+        ->controller(SearchSuggestions::class)
         ->methods(['GET']);
 };

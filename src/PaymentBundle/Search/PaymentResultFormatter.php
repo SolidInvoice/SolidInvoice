@@ -13,15 +13,32 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Search;
 
-use SolidInvoice\CoreBundle\Search\ResultFormatterInterface;
+use Brick\Math\BigDecimal;
+use Brick\Math\RoundingMode;
+use Money\Currency;
+use Money\Money;
+use SolidInvoice\CoreBundle\Search\QualifiedResultFormatterInterface;
 use SolidInvoice\CoreBundle\Search\SearchResult;
+use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\Routing\RouterInterface;
 
-final class PaymentResultFormatter implements ResultFormatterInterface
+final class PaymentResultFormatter implements QualifiedResultFormatterInterface
 {
     public function __construct(
         private readonly RouterInterface $router,
+        private readonly MoneyFormatterInterface $moneyFormatter,
+        private readonly SystemConfig $systemConfig,
     ) {
+    }
+
+    public function getSupportedQualifiers(): array
+    {
+        return [
+            'status' => 'status',
+            'client' => 'clientName',
+            'amount' => 'total',
+        ];
     }
 
     public function getIndexName(): string
@@ -52,6 +69,12 @@ final class PaymentResultFormatter implements ResultFormatterInterface
             subtitle: $subtitle,
             url: $url,
             status: $hit['status'] ?? null,
+            meta: isset($hit['total'])
+                ? $this->moneyFormatter->format(new Money(
+                    BigDecimal::of((string) $hit['total'])->multipliedBy(100)->toScale(0, RoundingMode::HALF_EVEN)->toInt(),
+                    new Currency($hit['currencyCode'] ?? $this->systemConfig->getCurrency()->getCode()),
+                ))
+                : null,
         );
     }
 }

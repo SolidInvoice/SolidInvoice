@@ -13,15 +13,33 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Search;
 
-use SolidInvoice\CoreBundle\Search\ResultFormatterInterface;
+use Brick\Math\BigDecimal;
+use Brick\Math\RoundingMode;
+use Money\Currency;
+use Money\Money;
+use SolidInvoice\CoreBundle\Search\QualifiedResultFormatterInterface;
 use SolidInvoice\CoreBundle\Search\SearchResult;
+use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\Routing\RouterInterface;
 
-final class QuoteResultFormatter implements ResultFormatterInterface
+final class QuoteResultFormatter implements QualifiedResultFormatterInterface
 {
     public function __construct(
         private readonly RouterInterface $router,
+        private readonly MoneyFormatterInterface $moneyFormatter,
+        private readonly SystemConfig $systemConfig,
     ) {
+    }
+
+    public function getSupportedQualifiers(): array
+    {
+        return [
+            'status' => 'status',
+            'amount' => 'total',
+            'client' => 'clientName',
+            'created' => 'created',
+        ];
     }
 
     public function getIndexName(): string
@@ -38,7 +56,12 @@ final class QuoteResultFormatter implements ResultFormatterInterface
             subtitle: $hit['clientName'] ?? '',
             url: $this->router->generate('_quotes_view', ['id' => $hit['id']]),
             status: $hit['status'] ?? null,
-            meta: isset($hit['total']) ? number_format((float) $hit['total'] / 100, 2) : null,
+            meta: isset($hit['total'])
+                ? $this->moneyFormatter->format(new Money(
+                    BigDecimal::of((string) $hit['total'])->multipliedBy(100)->toScale(0, RoundingMode::HALF_EVEN)->toInt(),
+                    new Currency($hit['currencyCode'] ?? $this->systemConfig->getCurrency()->getCode()),
+                ))
+                : null,
         );
     }
 }

@@ -17,19 +17,29 @@ use Brick\Math\BigDecimal;
 use Brick\Math\RoundingMode;
 use Money\Currency;
 use Money\Money;
-use SolidInvoice\CoreBundle\Search\ResultFormatterInterface;
+use SolidInvoice\CoreBundle\Search\QualifiedResultFormatterInterface;
 use SolidInvoice\CoreBundle\Search\SearchResult;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\Routing\RouterInterface;
 
-final class InvoiceResultFormatter implements ResultFormatterInterface
+final class InvoiceResultFormatter implements QualifiedResultFormatterInterface
 {
     public function __construct(
         private readonly RouterInterface $router,
         private readonly MoneyFormatterInterface $moneyFormatter,
         private readonly SystemConfig $systemConfig,
     ) {
+    }
+
+    public function getSupportedQualifiers(): array
+    {
+        return [
+            'status' => 'status',
+            'amount' => 'total',
+            'client' => 'clientName',
+            'created' => 'created',
+        ];
     }
 
     public function getIndexName(): string

@@ -13,15 +13,20 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Search;
 
-use SolidInvoice\CoreBundle\Search\ResultFormatterInterface;
+use SolidInvoice\CoreBundle\Search\QualifiedResultFormatterInterface;
 use SolidInvoice\CoreBundle\Search\SearchResult;
 use Symfony\Component\Routing\RouterInterface;
 
-final class ContactResultFormatter implements ResultFormatterInterface
+final class ContactResultFormatter implements QualifiedResultFormatterInterface
 {
     public function __construct(
         private readonly RouterInterface $router,
     ) {
+    }
+
+    public function getSupportedQualifiers(): array
+    {
+        return [];
     }
 
     public function getIndexName(): string

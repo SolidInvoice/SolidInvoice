@@ -319,6 +319,13 @@ class RecurringInvoice extends BaseInvoice
         return $this->client?->getCurrencyCode();
     }
 
+    #[Serialize\Groups(['searchable'])]
+    #[Serialize\SerializedName('created')]
+    public function getCreatedTimestamp(): ?int
+    {
+        return isset($this->created) ? $this->created->getTimestamp() : null;
+    }
+
     /**
      * @return list<string>
      */

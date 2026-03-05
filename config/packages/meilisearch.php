@@ -30,40 +30,57 @@ return static function (MeilisearchConfig $config): void {
         ->class(Client::class)
         ->enableSerializerGroups(true)
         ->serializerGroups(['searchable'])
-        ->settings(['filterableAttributes' => ['companyId']]);
+        ->settings([
+            'filterableAttributes' => ['companyId', 'status'],
+            'sortableAttributes' => ['name'],
+        ]);
 
     $config->indices()
         ->name('contacts')
         ->class(Contact::class)
         ->enableSerializerGroups(true)
         ->serializerGroups(['searchable'])
-        ->settings(['filterableAttributes' => ['companyId']]);
+        ->settings([
+            'filterableAttributes' => ['companyId', 'clientId'],
+        ]);
 
     $config->indices()
         ->name('invoices')
         ->class(Invoice::class)
         ->enableSerializerGroups(true)
         ->serializerGroups(['searchable'])
-        ->settings(['filterableAttributes' => ['companyId']]);
+        ->settings([
+            'filterableAttributes' => ['companyId', 'status', 'total', 'clientName', 'created'],
+            'sortableAttributes' => ['total', 'created'],
+        ]);
 
     $config->indices()
         ->name('recurring_invoices')
         ->class(RecurringInvoice::class)
         ->enableSerializerGroups(true)
         ->serializerGroups(['searchable'])
-        ->settings(['filterableAttributes' => ['companyId']]);
+        ->settings([
+            'filterableAttributes' => ['companyId', 'status', 'total', 'clientName'],
+            'sortableAttributes' => ['total', 'created'],
+        ]);
 
     $config->indices()
         ->name('quotes')
         ->class(Quote::class)
         ->enableSerializerGroups(true)
         ->serializerGroups(['searchable'])
-        ->settings(['filterableAttributes' => ['companyId']]);
+        ->settings([
+            'filterableAttributes' => ['companyId', 'status', 'total', 'clientName', 'created'],
+            'sortableAttributes' => ['total', 'created'],
+        ]);
 
     $config->indices()
         ->name('payments')
         ->class(Payment::class)
         ->enableSerializerGroups(true)
         ->serializerGroups(['searchable'])
-        ->settings(['filterableAttributes' => ['companyId']]);
+        ->settings([
+            'filterableAttributes' => ['companyId', 'status', 'clientName', 'total'],
+            'sortableAttributes' => ['total'],
+        ]);
 };

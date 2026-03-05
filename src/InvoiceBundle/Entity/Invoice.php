@@ -29,6 +29,7 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
@@ -45,6 +46,7 @@ use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Uid\Uuid;
@@ -400,7 +402,11 @@ class Invoice extends BaseInvoice implements Stringable
 
     public function getInvoiceId(): string
     {
-        return $this->invoiceId;
+        try {
+            return $this->invoiceId;
+        } catch (EntityNotFoundException) {
+            return '';
+        }
     }
 
     public function setInvoiceId(string $invoiceId): self
@@ -439,6 +445,13 @@ class Invoice extends BaseInvoice implements Stringable
     public function getCurrencyCode(): ?string
     {
         return $this->client?->getCurrencyCode();
+    }
+
+    #[Groups(['searchable'])]
+    #[SerializedName('created')]
+    public function getCreatedTimestamp(): ?int
+    {
+        return isset($this->created) ? $this->created->getTimestamp() : null;
     }
 
     /**
