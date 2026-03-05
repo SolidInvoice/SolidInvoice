@@ -18,6 +18,14 @@ use Meilisearch\Contracts\SearchQuery;
 use Meilisearch\Exceptions\ApiException;
 use Meilisearch\Exceptions\CommunicationException;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
+use function array_filter;
+use function array_keys;
+use function array_map;
+use function array_merge;
+use function in_array;
+use function sprintf;
+use function strlen;
+use function substr;
 
 final class MultiSearchService
 {
@@ -38,11 +46,9 @@ final class MultiSearchService
     }
 
     /**
-     * Search across all registered indices simultaneously, filtered to the current company.
-     *
-     * @return array<string, list<SearchResult>> keyed by index name
+     * @return array<string, list<SearchResult>> keyed by logical index name
      */
-    public function search(string $query, int $hitsPerIndex = 5): array
+    public function search(ParsedQuery $parsedQuery): array
     {
         $companyId = $this->companySelector->getCompany();
 
@@ -53,13 +59,38 @@ final class MultiSearchService
         $formatterMap = $this->buildFormatterMap();
         $companyFilter = sprintf('companyId = "%s"', $companyId->toBase58());
 
+        // Restrict to requested indices, or default to all
+        $indicesToQuery = $parsedQuery->indices !== []
+            ? array_filter(
+                array_keys($formatterMap),
+                static fn (string $k) => in_array($k, $parsedQuery->indices, true),
+            )
+            : array_keys($formatterMap);
+
         $queries = [];
-        foreach (array_keys($formatterMap) as $indexName) {
-            $queries[] = (new SearchQuery())
+        foreach ($indicesToQuery as $indexName) {
+            $indexSpecificFilters = $parsedQuery->indexFilters[$indexName] ?? [];
+            $allFilters = array_merge([$companyFilter], $indexSpecificFilters);
+
+            if ($allFilters === [$companyFilter] && $parsedQuery->fulltext === '') {
+                continue;
+            }
+
+            $q = (new SearchQuery())
                 ->setIndexUid($this->indexPrefix . $indexName)
-                ->setQuery($query)
-                ->setFilter([$companyFilter])
-                ->setLimit($hitsPerIndex);
+                ->setQuery($parsedQuery->fulltext)
+                ->setFilter($allFilters)
+                ->setLimit($parsedQuery->hitsPerIndex);
+
+            if ($parsedQuery->sort !== []) {
+                $q->setSort($parsedQuery->sort);
+            }
+
+            $queries[] = $q;
+        }
+
+        if ($queries === []) {
+            return [];
         }
 
         try {
@@ -78,12 +109,10 @@ final class MultiSearchService
                 continue;
             }
 
-            $results = [];
-            foreach ($hits as $hit) {
-                $results[] = $formatter->format($hit);
-            }
-
-            $grouped[$logicalIndex] = $results;
+            $grouped[$logicalIndex] = array_map(
+                static fn (array $hit) => $formatter->format($hit),
+                $hits,
+            );
         }
 
         return $grouped;
