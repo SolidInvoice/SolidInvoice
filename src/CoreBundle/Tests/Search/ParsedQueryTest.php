@@ -24,7 +24,7 @@ final class ParsedQueryTest extends TestCase
 
         self::assertSame('acme', $q->fulltext);
         self::assertSame([], $q->indices);
-        self::assertSame([], $q->filters);
+        self::assertSame([], $q->indexFilters);
         self::assertSame([], $q->sort);
         self::assertSame(5, $q->hitsPerIndex);
     }
@@ -34,13 +34,13 @@ final class ParsedQueryTest extends TestCase
         $q = new ParsedQuery(
             fulltext: 'acme',
             indices: ['invoices', 'quotes'],
-            filters: ['status = "paid"'],
+            indexFilters: ['invoices' => ['status = "paid"'], 'quotes' => ['status = "paid"']],
             sort: ['total:asc'],
             hitsPerIndex: 10,
         );
 
         self::assertSame(['invoices', 'quotes'], $q->indices);
-        self::assertSame(['status = "paid"'], $q->filters);
+        self::assertSame(['invoices' => ['status = "paid"'], 'quotes' => ['status = "paid"']], $q->indexFilters);
         self::assertSame(['total:asc'], $q->sort);
         self::assertSame(10, $q->hitsPerIndex);
     }

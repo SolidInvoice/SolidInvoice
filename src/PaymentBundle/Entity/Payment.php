@@ -34,6 +34,7 @@ use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -304,5 +305,19 @@ class Payment extends BasePayment
     public function getInvoiceRef(): ?string
     {
         return $this->invoice?->getInvoiceId();
+    }
+
+    #[Groups(['searchable'])]
+    #[SerializedName('total')]
+    public function getSearchableTotal(): float
+    {
+        return (int) $this->getTotalAmount() / 100;
+    }
+
+    #[Groups(['searchable'])]
+    #[SerializedName('currencyCode')]
+    public function getSearchableCurrencyCode(): ?string
+    {
+        return $this->getCurrencyCode() ?: null;
     }
 }

@@ -45,6 +45,7 @@ use SolidInvoice\QuoteBundle\Traits\QuoteStatusTrait;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Uid\Uuid;
@@ -458,6 +459,19 @@ class Quote
     public function getClientName(): ?string
     {
         return $this->client?->getName();
+    }
+
+    #[Groups(['searchable'])]
+    public function getCurrencyCode(): ?string
+    {
+        return $this->client?->getCurrencyCode();
+    }
+
+    #[Groups(['searchable'])]
+    #[SerializedName('created')]
+    public function getCreatedTimestamp(): ?int
+    {
+        return isset($this->created) ? $this->created->getTimestamp() : null;
     }
 
     /**

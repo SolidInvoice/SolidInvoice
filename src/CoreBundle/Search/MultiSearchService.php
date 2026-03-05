@@ -72,7 +72,7 @@ final class MultiSearchService
             $indexSpecificFilters = $parsedQuery->indexFilters[$indexName] ?? [];
             $allFilters = array_merge([$companyFilter], $indexSpecificFilters);
 
-            if ($allFilters === [$companyFilter] && $parsedQuery->fulltext === '') {
+            if ($allFilters === [$companyFilter] && $parsedQuery->fulltext === '' && $indicesToQuery === array_keys($formatterMap)) {
                 continue;
             }
 
