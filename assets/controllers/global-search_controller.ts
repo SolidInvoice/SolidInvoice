@@ -408,8 +408,10 @@ export default class GlobalSearchController extends Controller<HTMLElement> {
         const words = inputValue.split(/\s+/);
         const lastWord = words.pop() ?? '';
 
-        if (lastWord.endsWith(':')) {
-            const qualifierName = lastWord.slice(0, -1);
+        // Match either "qualifier:" or "qualifier:partial"
+        const match = /^(\w+):/.exec(lastWord);
+        if (match) {
+            const qualifierName = match[1];
             const token = `${qualifierName}:${value}`;
             words.push('');
             this.inputTarget.value = words.join(' ').trimStart();
