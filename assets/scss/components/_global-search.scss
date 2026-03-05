@@ -29,7 +29,8 @@
         box-sizing: border-box;
         width: 100%;
         // 0.75rem icon-left + 1rem icon-width + 0.5rem gap = 2.25rem
-        padding: 0 5rem 0 2.5rem;
+        // Right: help-btn 20px + gap 6px + shortcut ~65px + margin 10px = ~101px ≈ 6.5rem
+        padding: 0 6.5rem 0 2.5rem;
         height: 38px;
         line-height: 38px;
         background-color: #fff;
@@ -59,11 +60,17 @@
         }
     }
 
-    &-shortcut {
+    &-actions {
         position: absolute;
         right: 0.625rem;
         top: 50%;
         transform: translateY(-50%);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    &-shortcut {
         display: flex;
         gap: 3px;
         pointer-events: none;
@@ -81,6 +88,69 @@
             border-radius: 3px;
             line-height: 1.4;
         }
+    }
+}
+
+.search-help-trigger {
+    background: none;
+    border: 1px solid #e0e3e8;
+    padding: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #adb5bd;
+    transition: color 0.15s ease, border-color 0.15s ease;
+    flex-shrink: 0;
+    line-height: 1;
+
+    &:hover {
+        color: #495057;
+        border-color: #9aa0ac;
+    }
+}
+
+.search-help-section-title {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: #9aa0ac;
+    margin-bottom: 0.75rem;
+}
+
+.search-help-op {
+    font-size: 0.8rem;
+    font-family: var(--tblr-font-monospace);
+    background: #f5f7fb;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    color: #354052;
+}
+
+.search-help-example {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 8px 12px;
+    background: #f8fafc;
+    border-radius: 6px;
+    border-left: 3px solid #2e963a;
+
+    code {
+        font-size: 0.8rem;
+        color: #1a56db;
+        background: none;
+        padding: 0;
+        word-break: break-all;
+    }
+
+    span {
+        font-size: 0.775rem;
+        color: #9aa0ac;
     }
 }
 
