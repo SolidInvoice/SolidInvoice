@@ -29,7 +29,6 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
@@ -402,11 +401,7 @@ class Invoice extends BaseInvoice implements Stringable
 
     public function getInvoiceId(): string
     {
-        try {
-            return $this->invoiceId;
-        } catch (EntityNotFoundException) {
-            return '';
-        }
+        return $this->invoiceId;
     }
 
     public function setInvoiceId(string $invoiceId): self

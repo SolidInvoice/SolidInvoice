@@ -23,7 +23,6 @@ use ApiPlatform\Metadata\Post;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\Mapping as ORM;
 use Money\Currency;
 use SolidInvoice\ClientBundle\Enum\ClientStatus;
@@ -236,11 +235,7 @@ class Client implements Stringable
 
     public function getName(): ?string
     {
-        try {
-            return $this->name;
-        } catch (EntityNotFoundException) {
-            return null;
-        }
+        return $this->name;
     }
 
     public function setName(?string $name): self
@@ -429,11 +424,7 @@ class Client implements Stringable
 
     public function getCurrencyCode(): ?string
     {
-        try {
-            return $this->currencyCode;
-        } catch (EntityNotFoundException) {
-            return null;
-        }
+        return $this->currencyCode;
     }
 
     public function setCurrencyCode(?string $currencyCode): self
