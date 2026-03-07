@@ -458,13 +458,21 @@ class Quote
     #[Groups(['searchable'])]
     public function getClientName(): ?string
     {
-        return $this->client?->getName();
+        try {
+            return $this->client?->getName();
+        } catch (EntityNotFoundException) {
+            return null;
+        }
     }
 
     #[Groups(['searchable'])]
     public function getCurrencyCode(): ?string
     {
-        return $this->client?->getCurrencyCode();
+        try {
+            return $this->client?->getCurrencyCode();
+        } catch (EntityNotFoundException) {
+            return null;
+        }
     }
 
     #[Groups(['searchable'])]

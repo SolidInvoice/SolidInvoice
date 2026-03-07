@@ -380,7 +380,8 @@ export default class GlobalSearchController extends Controller<HTMLElement> {
         const words = inputValue.split(/\s+/);
         words.pop(); // remove the partial "client:xxx" word
 
-        const token = `${qualifierName}:"${value}"`;
+        const escapedValue = value.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+        const token = `${qualifierName}:"${escapedValue}"`;
         words.push('');
         this.inputTarget.value = words.join(' ').trimStart();
         this.addChip(token);
@@ -700,6 +701,14 @@ export default class GlobalSearchController extends Controller<HTMLElement> {
 
     private _handleGlobalKeydown(event: KeyboardEvent): void {
         if ((event.ctrlKey || event.metaKey) && event.key === 'k') {
+            const target = event.target as HTMLElement;
+            if (
+                target instanceof HTMLInputElement ||
+                target instanceof HTMLTextAreaElement ||
+                target.isContentEditable
+            ) {
+                return;
+            }
             event.preventDefault();
             this.inputTarget.focus();
             this.inputTarget.select();
