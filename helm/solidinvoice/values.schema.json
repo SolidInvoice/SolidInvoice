@@ -93,8 +93,12 @@
         "existingSecretPasswordKey": {
           "type": "string"
         },
-        "skipUser": {
-          "type": "boolean"
+        "backoffLimit": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "resources": {
+          "type": "object"
         }
       },
       "additionalProperties": false
