@@ -127,7 +127,7 @@ Nothing is emitted when oauth.google.enabled=false.
 {{- end }}
 
 {{/*
-Common environment variable block used by all pods (app, worker, jobs, cronjob).
+Common environment variable block used by all pods (app, worker, jobs).
 Combines envFrom (ConfigMap + chart Secret) with dynamic per-feature env vars.
 Only emits the env: key when at least one env var is present.
 */}}
@@ -225,25 +225,3 @@ Only emitted when postgresql.enabled=true.
 {{- end }}
 {{- end }}
 
-{{/*
-Init container that polls solidinvoice:is-installed before starting the worker.
-Prevents worker crash-loop while the web wizard is being completed.
-*/}}
-{{- define "solidinvoice.waitForInstallInitContainer" -}}
-- name: wait-for-install
-  image: {{ include "solidinvoice.imageName" . }}
-  command:
-    - sh
-    - -c
-    - |
-      until /usr/local/bin/solidinvoice console solidinvoice:is-installed --no-ansi --no-interaction 2>/dev/null; do
-        echo "SolidInvoice not yet installed. Waiting..."
-        sleep 10
-      done
-      echo "SolidInvoice is installed. Starting worker."
-  {{- include "solidinvoice.commonEnv" . | nindent 2 }}
-  volumeMounts:
-    {{- include "solidinvoice.configVolumeMount" . | nindent 4 }}
-  securityContext:
-    {{- toYaml .Values.containerSecurityContext | nindent 4 }}
-{{- end }}

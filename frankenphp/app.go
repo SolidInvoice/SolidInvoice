@@ -77,6 +77,7 @@ var messengerWorkers int
 var enableWorkerMode bool
 var workerThreads int
 var logFormat string
+var workerCount int
 
 func main() {
 	// Initialize app
@@ -227,7 +228,7 @@ func setupCommands() {
 
 			// Validate messenger workers count
 			if messengerWorkers < 0 {
-				return errors.New("messenger-workers must be a non-negative number (got " + fmt.Sprintf("%d", messengerWorkers) + ")")
+				return errors.New("messenger-workers must be 0 or greater (got " + fmt.Sprintf("%d", messengerWorkers) + ")")
 			}
 
 			listenPort := getAvailablePort(httpPort)
@@ -482,9 +483,78 @@ func setupCommands() {
 	runCmd.PersistentFlags().StringVar(&sslKeyFile, "ssl-key", "", "Path to custom SSL private key file (requires --ssl-cert and --domain)")
 	runCmd.PersistentFlags().BoolVar(&enableWorkerMode, "worker-mode", false, "Enable FrankenPHP worker mode for improved performance (keeps PHP workers alive between requests). Recommended for SaaS/high-traffic deployments. Can also be enabled via FRANKENPHP_WORKER_MODE=1 environment variable")
 	runCmd.PersistentFlags().IntVar(&workerThreads, "worker-threads", 2, "Number of FrankenPHP worker threads when worker mode is enabled (default: 2)")
-	runCmd.PersistentFlags().IntVar(&messengerWorkers, "messenger-workers", 1, "Number of messenger worker processes to spawn. Each worker processes async messages independently. Increase this value on high-traffic servers to improve message processing throughput (e.g., --messenger-workers=5)")
+	runCmd.PersistentFlags().IntVar(&messengerWorkers, "messenger-workers", 1, "Number of messenger worker processes to spawn. Each worker processes async messages independently. Set to 0 to disable built-in workers entirely (recommended for Kubernetes, where a dedicated worker pod runs 'solidinvoice worker'). Increase above 1 for high-traffic standalone deployments (e.g., --messenger-workers=5)")
 	runCmd.PersistentFlags().StringVar(&logFormat, "log-format", "console", "Log output format: 'json' for structured JSON logs, or 'console' (default) for human-readable console output")
 	runCmd.PersistentFlags().BoolVar(&skipIntro, "skip-intro", false, "Skip the introductory application info message")
+
+	workerCmd := &cobra.Command{
+		Use:   "worker",
+		Short: "Run messenger worker processes",
+		Long:  "Starts one or more Symfony Messenger consumer processes managed by a supervisor loop with automatic restart and graceful shutdown. Intended for use in dedicated worker containers (e.g. a Kubernetes worker Deployment). Install detection is built in — workers wait automatically until the application is installed.",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			if logFormat != "" {
+				must(os.Setenv("LOG_FORMAT", logFormat))
+			}
+
+			if workerCount < 1 {
+				return fmt.Errorf("workers must be at least 1 (got %d)", workerCount)
+			}
+
+			app := lu.App{
+				StartupTimeout:  time.Second * 10,
+				ShutdownTimeout: time.Second * 30,
+				UseProcessFile:  false,
+			}
+
+			log.Info(nil, fmt.Sprintf("Starting %d messenger worker(s)", workerCount))
+
+			for i := 1; i <= workerCount; i++ {
+				worker := process.Loop(func(ctx context.Context) error {
+					if !isAppInstalled() {
+						select {
+						case <-ctx.Done():
+							return ctx.Err()
+						case <-time.After(30 * time.Second):
+							return nil
+						}
+					}
+					if err := runConsoleCommand("messenger:setup-transports"); err != nil {
+						log.Error(ctx, errors.Join(errors.New("failed to setup messenger transports"), err))
+					}
+					return runConsoleCommand(
+						"messenger:consume",
+						"--limit",
+						"100",
+						"--time-limit",
+						"3600",
+						"--memory-limit",
+						"128M",
+						"--all",
+					)
+				})
+				app.AddProcess(worker)
+			}
+
+			app.OnEvent = func(ctx context.Context, event lu.Event) {
+				switch event.Type {
+				case lu.AppTerminating:
+					log.Info(nil, "Worker is shutting down gracefully...")
+					if err := runConsoleCommand("messenger:stop-workers"); err != nil {
+						log.Error(ctx, errors.Join(errors.New("failed to stop messenger workers"), err))
+					}
+				}
+			}
+
+			app.Run()
+
+			return nil
+		},
+	}
+
+	rootCmd.AddCommand(workerCmd)
+
+	workerCmd.PersistentFlags().IntVar(&workerCount, "workers", 1, "Number of messenger worker processes to spawn (default: 1). Each worker independently consumes async messages and is automatically restarted on failure.")
+	workerCmd.PersistentFlags().StringVar(&logFormat, "log-format", "console", "Log output format: 'json' for structured JSON logs, or 'console' (default) for human-readable output")
 
 	rootCmd.AddCommand(&cobra.Command{
 		Use:                "version",

@@ -87,11 +87,16 @@ messenger:
   dsn: ""
 
 ## @section Worker (Messenger consumer) configuration
+## Runs 'solidinvoice worker' — a dedicated process supervisor for Symfony Messenger consumers.
+## The main app Deployment runs with --messenger-workers=0 so workers are fully isolated here.
 worker:
   ## @param worker.enabled Enable the Messenger consumer worker Deployment
   enabled: true
-  ## @param worker.replicaCount Number of worker replicas
+  ## @param worker.replicaCount Number of worker pod replicas
   replicaCount: 1
+  ## @param worker.count Number of worker goroutines per pod (--workers flag)
+  ## Total workers = replicaCount * count. Scale replicaCount for Kubernetes-native HPA.
+  count: 1
   resources:
     requests:
       cpu: 100m
@@ -105,24 +110,6 @@ worker:
     minReplicas: 1
     maxReplicas: 10
     targetCPUUtilizationPercentage: 80
-
-## @section Scheduler (cron) configuration
-scheduler:
-  ## @param scheduler.enabled Enable the cron:run CronJob
-  enabled: true
-  ## @param scheduler.schedule Cron schedule expression
-  schedule: "* * * * *"
-  ## @param scheduler.timeZone Timezone for the CronJob
-  timeZone: "UTC"
-  ## @param scheduler.concurrencyPolicy CronJob concurrency policy
-  concurrencyPolicy: Forbid
-  resources:
-    requests:
-      cpu: 50m
-      memory: 64Mi
-    limits:
-      cpu: 200m
-      memory: 128Mi
 
 ## @section Persistence configuration
 ## /etc/solidinvoice MUST be persisted — it holds Symfony's encrypted secrets vault.

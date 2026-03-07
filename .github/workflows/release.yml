@@ -319,3 +319,88 @@ jobs:
             $(printf "${IMAGE}@sha256:%s " $(ls /tmp/digests/))
         env:
           VERSION: ${{ needs.prepare.outputs.ref }}
+
+  publish-helm:
+    name: Publish Helm Chart
+    needs: [prepare, publish-docker]
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden the runner
+        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
+        with:
+          egress-policy: audit
+
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GH_ACCESS_TOKEN }}
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+
+      - name: Add subchart repositories
+        run: |
+          helm repo add bitnami https://charts.bitnami.com/bitnami
+          helm repo add meilisearch https://meilisearch.github.io/meilisearch-kubernetes
+          helm repo update
+
+      - name: Set chart version
+        env:
+          VERSION: ${{ needs.prepare.outputs.ref }}
+        run: |
+          # Strip leading 'v' — Helm versions must not have a 'v' prefix
+          CHART_VERSION="${VERSION#v}"
+          echo "CHART_VERSION=${CHART_VERSION}" >> "$GITHUB_ENV"
+          sed -i "s/^version: .*/version: ${CHART_VERSION}/" helm/solidinvoice/Chart.yaml
+          sed -i "s/^appVersion: .*/appVersion: \"${CHART_VERSION}\"/" helm/solidinvoice/Chart.yaml
+
+      - name: Update Helm dependencies
+        run: helm dep update helm/solidinvoice
+
+      - name: Package chart
+        run: helm package helm/solidinvoice --destination /tmp/helm-packages
+
+      - name: Upload chart to GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+          VERSION: ${{ needs.prepare.outputs.ref }}
+        run: |
+          gh release upload "$VERSION" /tmp/helm-packages/*.tgz \
+            --repo solidinvoice/solidinvoice --clobber
+
+      - name: Publish to Helm repository (gh-pages)
+        env:
+          GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${REPOSITORY}.git"
+
+          # Switch to gh-pages branch, creating an orphan if it doesn't exist yet
+          if git ls-remote --heads origin gh-pages | grep -q gh-pages; then
+            git checkout gh-pages
+          else
+            git checkout --orphan gh-pages
+            git rm -rf . --quiet
+          fi
+
+          # Copy packaged chart into the gh-pages root
+          cp /tmp/helm-packages/*.tgz .
+
+          # Regenerate index.yaml, merging with any existing entries
+          if [ -f index.yaml ]; then
+            helm repo index . \
+              --url "https://solidinvoice.github.io/SolidInvoice" \
+              --merge index.yaml
+          else
+            helm repo index . \
+              --url "https://solidinvoice.github.io/SolidInvoice"
+          fi
+
+          git add index.yaml *.tgz
+          git commit -m "chore: release Helm chart ${CHART_VERSION}"
+          git push origin gh-pages

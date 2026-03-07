@@ -152,6 +152,11 @@
           "type": "integer",
           "minimum": 1
         },
+        "count": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Number of worker goroutines per pod (--workers flag)"
+        },
         "resources": {
           "type": "object"
         },
@@ -175,27 +180,6 @@
               "maximum": 100
             }
           }
-        }
-      }
-    },
-    "scheduler": {
-      "type": "object",
-      "properties": {
-        "enabled": {
-          "type": "boolean"
-        },
-        "schedule": {
-          "type": "string"
-        },
-        "timeZone": {
-          "type": "string"
-        },
-        "concurrencyPolicy": {
-          "type": "string",
-          "enum": ["Allow", "Forbid", "Replace"]
-        },
-        "resources": {
-          "type": "object"
         }
       }
     },

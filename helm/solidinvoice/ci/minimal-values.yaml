@@ -6,6 +6,3 @@ externalDatabase:
 
 worker:
   enabled: false
-
-scheduler:
-  enabled: false
