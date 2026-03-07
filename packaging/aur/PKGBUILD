@@ -1,0 +1,48 @@
+# Maintainer: SolidInvoice <open-source@solidworx.co>
+# AUR package for SolidInvoice (pre-built binary)
+#
+# This PKGBUILD downloads the pre-built binary from GitHub Releases.
+# For the automated AUR publishing workflow, version and checksums
+# are updated by the publish-packages GitHub Actions workflow.
+
+pkgname=solidinvoice-bin
+pkgver=${SOLIDINVOICE_VERSION:-0.0.0}
+pkgrel=1
+pkgdesc="Simple and elegant invoicing solution"
+arch=('x86_64' 'aarch64')
+url="https://solidinvoice.co"
+license=('MIT')
+depends=()
+provides=('solidinvoice')
+conflicts=('solidinvoice')
+backup=('etc/solidinvoice/solidinvoice.env')
+install=solidinvoice.install
+
+source_x86_64=("solidinvoice-${pkgver}-x86_64::https://github.com/SolidInvoice/SolidInvoice/releases/download/${pkgver}/solidinvoice-linux-amd64")
+source_aarch64=("solidinvoice-${pkgver}-aarch64::https://github.com/SolidInvoice/SolidInvoice/releases/download/${pkgver}/solidinvoice-linux-arm64")
+source=("solidinvoice.service::https://raw.githubusercontent.com/SolidInvoice/SolidInvoice/${pkgver}/packaging/systemd/solidinvoice.service"
+        "solidinvoice.env::https://raw.githubusercontent.com/SolidInvoice/SolidInvoice/${pkgver}/packaging/systemd/solidinvoice.env")
+
+# Checksums are updated automatically by CI
+sha256sums=('SKIP'
+            'SKIP')
+sha256sums_x86_64=('SKIP')
+sha256sums_aarch64=('SKIP')
+
+package() {
+    # Install binary
+    if [ "$CARCH" = "x86_64" ]; then
+        install -Dm755 "solidinvoice-${pkgver}-x86_64" "${pkgdir}/usr/bin/solidinvoice"
+    elif [ "$CARCH" = "aarch64" ]; then
+        install -Dm755 "solidinvoice-${pkgver}-aarch64" "${pkgdir}/usr/bin/solidinvoice"
+    fi
+
+    # Install systemd service
+    install -Dm644 solidinvoice.service "${pkgdir}/usr/lib/systemd/system/solidinvoice.service"
+
+    # Install default config
+    install -Dm640 solidinvoice.env "${pkgdir}/etc/solidinvoice/solidinvoice.env"
+
+    # Create data directory
+    install -dm750 "${pkgdir}/var/lib/solidinvoice"
+}

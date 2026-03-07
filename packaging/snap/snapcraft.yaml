@@ -1,0 +1,60 @@
+name: solidinvoice
+title: SolidInvoice
+version: ${SOLIDINVOICE_VERSION}
+summary: Simple and elegant invoicing solution
+description: |
+  SolidInvoice is an open-source invoicing application for small businesses
+  and freelancers. Features include client management, quotes, invoices
+  (including recurring), payments, tax and discount management, a REST API,
+  and notifications.
+
+  SolidInvoice ships as a self-contained binary with an embedded web server.
+  No PHP, Apache, or Nginx installation required.
+
+  After installation, start the application with:
+    sudo snap start solidinvoice
+
+  Then open your browser to http://localhost:8765 to complete setup.
+
+  Configuration can be set via snap configuration:
+    sudo snap set solidinvoice port=8080
+
+license: MIT
+base: core24
+confinement: strict
+grade: stable
+
+architectures:
+  - build-on: [amd64]
+    build-for: [amd64]
+  - build-on: [arm64]
+    build-for: [arm64]
+
+apps:
+  solidinvoice:
+    command: bin/solidinvoice run --disable-https --skip-intro --log-format json
+    daemon: simple
+    restart-condition: on-failure
+    restart-delay: 5s
+    plugs:
+      - network
+      - network-bind
+    environment:
+      SOLIDINVOICE_CONFIG_DIR: $SNAP_COMMON/config
+      HOME: $SNAP_COMMON
+
+  cli:
+    command: bin/solidinvoice
+    plugs:
+      - network
+      - network-bind
+
+parts:
+  solidinvoice:
+    plugin: dump
+    source: ../frankenphp/dist/
+    source-type: local
+    organize:
+      solidinvoice-linux-*: bin/solidinvoice
+    stage:
+      - bin/solidinvoice

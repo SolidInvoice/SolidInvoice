@@ -1,0 +1,353 @@
+name: "Publish Packages"
+
+on:
+  workflow_run:
+    workflows: ["Release"]
+    types: [completed]
+    branches-ignore:
+      - "3.0.x"  # Exclude preview/nightly builds
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "SolidInvoice version (e.g. 3.0.0)"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+env:
+  NFPM_VERSION: "2.41.1"
+
+jobs:
+  # ============================================================================
+  # Determine version and validate release
+  # ============================================================================
+  prepare:
+    name: Prepare
+    runs-on: ubuntu-latest
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      github.event.workflow_run.conclusion == 'success'
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      prerelease: ${{ steps.version.outputs.prerelease }}
+    steps:
+      - name: Harden the runner
+        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
+        with:
+          egress-policy: audit
+
+      - name: Determine version
+        id: version
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            VERSION="${{ inputs.version }}"
+          else
+            # Get version from the release workflow that triggered us
+            VERSION=$(gh release view --repo "${{ github.repository }}" --json tagName --jq '.tagName' 2>/dev/null || echo "")
+            if [[ -z "$VERSION" ]]; then
+              echo "::error::Could not determine version from latest release"
+              exit 1
+            fi
+          fi
+
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+
+          # Check if this is a pre-release
+          if [[ "$VERSION" =~ -[a-zA-Z] ]]; then
+            echo "prerelease=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "prerelease=false" >> "$GITHUB_OUTPUT"
+          fi
+
+          echo "Version: ${VERSION}"
+          echo "Pre-release: $(echo "$VERSION" | grep -q '-' && echo 'true' || echo 'false')"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # ============================================================================
+  # Build native packages using nFPM
+  # ============================================================================
+  build-packages:
+    name: Build ${{ matrix.format }} (${{ matrix.arch }})
+    needs: [prepare]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [amd64, arm64]
+        format: [deb, rpm, apk, archlinux]
+    steps:
+      - name: Harden the runner
+        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
+        with:
+          egress-policy: audit
+
+      - name: Checkout code
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+
+      - name: Download binary from release
+        run: |
+          mkdir -p frankenphp/dist
+          gh release download "${{ needs.prepare.outputs.version }}" \
+            --repo "${{ github.repository }}" \
+            --pattern "solidinvoice-linux-${{ matrix.arch }}" \
+            --dir frankenphp/dist/
+          chmod +x "frankenphp/dist/solidinvoice-linux-${{ matrix.arch }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install nFPM
+        run: |
+          curl -sfL "https://github.com/goreleaser/nfpm/releases/download/v${NFPM_VERSION}/nfpm_${NFPM_VERSION}_Linux_x86_64.tar.gz" \
+            | tar -xz -C /usr/local/bin nfpm
+          nfpm --version
+
+      - name: Build package
+        working-directory: packaging
+        run: |
+          mkdir -p ../dist
+          nfpm package \
+            -p "${{ matrix.format }}" \
+            -f nfpm.yaml \
+            -t ../dist/
+        env:
+          NFPM_ARCH: ${{ matrix.arch }}
+          SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.version }}
+
+      - name: Upload package artifact
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        with:
+          name: package-${{ matrix.format }}-${{ matrix.arch }}
+          path: dist/*
+          if-no-files-found: error
+          retention-days: 5
+
+  # ============================================================================
+  # Upload packages to GitHub Release
+  # ============================================================================
+  upload-release:
+    name: Upload to GitHub Release
+    needs: [prepare, build-packages]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Harden the runner
+        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
+        with:
+          egress-policy: audit
+
+      - name: Download all package artifacts
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+        with:
+          pattern: package-*
+          path: dist/
+          merge-multiple: true
+
+      - name: Upload packages to release
+        run: |
+          for pkg in dist/*; do
+            echo "Uploading: $(basename "$pkg")"
+            gh release upload "${{ needs.prepare.outputs.version }}" \
+              "$pkg" \
+              --repo "${{ github.repository }}" \
+              --clobber
+          done
+        env:
+          GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+
+  # ============================================================================
+  # Publish to Cloudsmith (APT, YUM/DNF, Alpine)
+  # ============================================================================
+  publish-cloudsmith:
+    name: Publish to Cloudsmith
+    needs: [prepare, build-packages]
+    runs-on: ubuntu-latest
+    if: vars.CLOUDSMITH_ENABLED == 'true'
+    steps:
+      - name: Harden the runner
+        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
+        with:
+          egress-policy: audit
+
+      - name: Install Cloudsmith CLI
+        run: pip install cloudsmith-cli
+
+      - name: Download all package artifacts
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+        with:
+          pattern: package-*
+          path: dist/
+          merge-multiple: true
+
+      - name: Publish .deb packages
+        run: |
+          for deb in dist/*.deb; do
+            [ -f "$deb" ] || continue
+            echo "Publishing: $(basename "$deb")"
+            cloudsmith push deb \
+              solidinvoice/solidinvoice/any-distro/any-version \
+              "$deb" \
+              --republish
+          done
+        env:
+          CLOUDSMITH_API_KEY: ${{ secrets.CLOUDSMITH_API_KEY }}
+
+      - name: Publish .rpm packages
+        run: |
+          for rpm in dist/*.rpm; do
+            [ -f "$rpm" ] || continue
+            echo "Publishing: $(basename "$rpm")"
+            cloudsmith push rpm \
+              solidinvoice/solidinvoice/any-distro/any-version \
+              "$rpm" \
+              --republish
+          done
+        env:
+          CLOUDSMITH_API_KEY: ${{ secrets.CLOUDSMITH_API_KEY }}
+
+      - name: Publish .apk packages
+        run: |
+          for apk in dist/*.apk; do
+            [ -f "$apk" ] || continue
+            echo "Publishing: $(basename "$apk")"
+            cloudsmith push alpine \
+              solidinvoice/solidinvoice/alpine/any-version \
+              "$apk" \
+              --republish
+          done
+        env:
+          CLOUDSMITH_API_KEY: ${{ secrets.CLOUDSMITH_API_KEY }}
+
+  # ============================================================================
+  # Publish to Snap Store
+  # ============================================================================
+  publish-snap:
+    name: Publish to Snap Store
+    needs: [prepare]
+    runs-on: ubuntu-latest
+    if: vars.SNAP_ENABLED == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [amd64, arm64]
+    steps:
+      - name: Harden the runner
+        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
+        with:
+          egress-policy: audit
+
+      - name: Checkout code
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+
+      - name: Download binary from release
+        run: |
+          mkdir -p frankenphp/dist
+          gh release download "${{ needs.prepare.outputs.version }}" \
+            --repo "${{ github.repository }}" \
+            --pattern "solidinvoice-linux-${{ matrix.arch }}" \
+            --dir frankenphp/dist/
+          chmod +x "frankenphp/dist/solidinvoice-linux-${{ matrix.arch }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build snap
+        uses: snapcore/action-build@3bdaa03e1ba6bf59a65f84a751d943d549a54e79 # v1.3.0
+        id: snapcraft
+        with:
+          path: packaging/snap
+          snapcraft-channel: latest/stable
+
+      - name: Publish to Snap Store
+        uses: snapcore/action-publish@214b86e5ca036ead1668c79571f2b14313e3cb10 # v1.2.0
+        env:
+          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAP_TOKEN }}
+        with:
+          snap: ${{ steps.snapcraft.outputs.snap }}
+          release: ${{ needs.prepare.outputs.prerelease == 'true' && 'edge' || 'stable' }}
+
+  # ============================================================================
+  # Update AUR package
+  # ============================================================================
+  publish-aur:
+    name: Publish to AUR
+    needs: [prepare]
+    runs-on: ubuntu-latest
+    if: |
+      vars.AUR_ENABLED == 'true' &&
+      needs.prepare.outputs.prerelease == 'false'
+    steps:
+      - name: Harden the runner
+        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
+        with:
+          egress-policy: audit
+
+      - name: Checkout code
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+
+      - name: Download binaries and compute checksums
+        id: checksums
+        run: |
+          VERSION="${{ needs.prepare.outputs.version }}"
+          REPO="${{ github.repository }}"
+
+          # Download binaries for checksum calculation
+          for arch in amd64 arm64; do
+            gh release download "${VERSION}" \
+              --repo "${REPO}" \
+              --pattern "solidinvoice-linux-${arch}" \
+              --dir /tmp/binaries/
+          done
+
+          # Compute SHA256 checksums
+          AMD64_SHA=$(sha256sum /tmp/binaries/solidinvoice-linux-amd64 | cut -d' ' -f1)
+          ARM64_SHA=$(sha256sum /tmp/binaries/solidinvoice-linux-arm64 | cut -d' ' -f1)
+
+          # Compute checksums for service and env files
+          SERVICE_SHA=$(sha256sum packaging/systemd/solidinvoice.service | cut -d' ' -f1)
+          ENV_SHA=$(sha256sum packaging/systemd/solidinvoice.env | cut -d' ' -f1)
+
+          echo "amd64_sha=${AMD64_SHA}" >> "$GITHUB_OUTPUT"
+          echo "arm64_sha=${ARM64_SHA}" >> "$GITHUB_OUTPUT"
+          echo "service_sha=${SERVICE_SHA}" >> "$GITHUB_OUTPUT"
+          echo "env_sha=${ENV_SHA}" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish to AUR
+        uses: KSXGitHub/github-actions-deploy-aur@a97c11653f4b8e39915a7e7067fb858e2d0ef1e2 # v4.1.1
+        with:
+          pkgname: solidinvoice-bin
+          pkgbuild: packaging/aur/PKGBUILD
+          commit_username: "SolidInvoice Bot"
+          commit_email: "bot@solidinvoice.co"
+          ssh_private_key: ${{ secrets.AUR_SSH_KEY }}
+          commit_message: "Update to ${{ needs.prepare.outputs.version }}"
+          force_push: true
+          updpkgsums: true
+
+  # ============================================================================
+  # Notify Homebrew tap to update formula
+  # ============================================================================
+  update-homebrew:
+    name: Update Homebrew tap
+    needs: [prepare]
+    runs-on: ubuntu-latest
+    if: |
+      vars.HOMEBREW_TAP_ENABLED == 'true' &&
+      needs.prepare.outputs.prerelease == 'false'
+    steps:
+      - name: Harden the runner
+        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
+        with:
+          egress-policy: audit
+
+      - name: Dispatch Homebrew tap update
+        run: |
+          gh api repos/${{ vars.HOMEBREW_TAP_REPO }}/dispatches \
+            -f event_type=update-formula \
+            -f "client_payload[version]=${{ needs.prepare.outputs.version }}"
+        env:
+          GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}

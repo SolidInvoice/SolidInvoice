@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  PLACEHOLDER: This package requires Windows binary support.
+  See https://github.com/SolidInvoice/SolidInvoice/issues for tracking.
+-->
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>solidinvoice</id>
+    <version>${SOLIDINVOICE_VERSION}</version>
+    <title>SolidInvoice</title>
+    <authors>Pierre du Plessis</authors>
+    <owners>SolidWorx</owners>
+    <projectUrl>https://solidinvoice.co</projectUrl>
+    <projectSourceUrl>https://github.com/SolidInvoice/SolidInvoice</projectSourceUrl>
+    <bugTrackerUrl>https://github.com/SolidInvoice/SolidInvoice/issues</bugTrackerUrl>
+    <licenseUrl>https://github.com/SolidInvoice/SolidInvoice/blob/3.0.x/LICENSE</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <tags>invoice invoicing billing freelancer business</tags>
+    <summary>Simple and elegant invoicing solution</summary>
+    <description>SolidInvoice is an open-source invoicing application for small businesses and freelancers. Features include client management, quotes, invoices (including recurring), payments, tax and discount management, a REST API, and notifications.</description>
+  </metadata>
+  <files>
+    <file src="tools/**" target="tools" />
+  </files>
+</package>

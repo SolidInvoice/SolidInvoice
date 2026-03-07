@@ -1,0 +1,50 @@
+[Unit]
+Description=SolidInvoice - Simple and elegant invoicing solution
+Documentation=https://docs.solidinvoice.co
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=exec
+User=solidinvoice
+Group=solidinvoice
+
+ExecStart=/usr/bin/solidinvoice run --disable-https --skip-intro --log-format json
+ExecReload=/bin/kill -USR1 $MAINPID
+
+EnvironmentFile=-/etc/solidinvoice/solidinvoice.env
+
+WorkingDirectory=/var/lib/solidinvoice
+
+Restart=on-failure
+RestartSec=5
+TimeoutStartSec=30
+TimeoutStopSec=30
+
+# Security hardening
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+RestrictNamespaces=true
+LockPersonality=true
+RemoveIPC=true
+
+ReadWritePaths=/etc/solidinvoice /var/lib/solidinvoice
+
+# Allow binding to privileged ports if needed
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=solidinvoice
+
+[Install]
+WantedBy=multi-user.target
