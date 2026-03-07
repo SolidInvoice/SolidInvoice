@@ -2,18 +2,28 @@
 set -e
 
 # Create solidinvoice system user and group if they don't exist
+# Supports both glibc-based distros (groupadd/useradd) and Alpine/BusyBox (addgroup/adduser)
 if ! getent group solidinvoice >/dev/null 2>&1; then
-    groupadd --system solidinvoice
+    if command -v groupadd >/dev/null 2>&1; then
+        groupadd --system solidinvoice
+    else
+        addgroup -S solidinvoice
+    fi
 fi
 
 if ! getent passwd solidinvoice >/dev/null 2>&1; then
-    useradd --system \
-        --gid solidinvoice \
-        --home-dir /var/lib/solidinvoice \
-        --no-create-home \
-        --shell /usr/sbin/nologin \
-        --comment "SolidInvoice service account" \
-        solidinvoice
+    if command -v useradd >/dev/null 2>&1; then
+        useradd --system \
+            --gid solidinvoice \
+            --home-dir /var/lib/solidinvoice \
+            --no-create-home \
+            --shell /usr/sbin/nologin \
+            --comment "SolidInvoice service account" \
+            solidinvoice
+    else
+        adduser -S -G solidinvoice -h /var/lib/solidinvoice \
+            -s /usr/sbin/nologin -D solidinvoice
+    fi
 fi
 
 # Ensure directories exist with correct ownership

@@ -74,13 +74,14 @@ scripts:
 overrides:
   deb:
     recommends:
-      - mysql-server
+      - mysql-server | mariadb-server
     suggests:
       - postgresql
       - nginx
   rpm:
     recommends:
       - mysql-server
+      - mariadb-server
     suggests:
       - postgresql-server
       - nginx

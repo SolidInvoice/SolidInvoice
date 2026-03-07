@@ -17,4 +17,4 @@ Get-ChocolateyWebFile @packageArgs
 $toolsDir = Get-ToolsLocation
 Install-ChocolateyPath -PathToInstall $toolsDir -PathType 'Machine'
 
-Write-Host "SolidInvoice installed. Run 'solidinvoice run' to start."
+Write-Output "SolidInvoice installed. Run 'solidinvoice run' to start."
