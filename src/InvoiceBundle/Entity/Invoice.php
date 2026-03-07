@@ -29,6 +29,7 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
@@ -433,13 +434,21 @@ class Invoice extends BaseInvoice implements Stringable
     #[Groups(['searchable'])]
     public function getClientName(): ?string
     {
-        return $this->client?->getName();
+        try {
+            return $this->client?->getName();
+        } catch (EntityNotFoundException) {
+            return null;
+        }
     }
 
     #[Groups(['searchable'])]
     public function getCurrencyCode(): ?string
     {
-        return $this->client?->getCurrencyCode();
+        try {
+            return $this->client?->getCurrencyCode();
+        } catch (EntityNotFoundException) {
+            return null;
+        }
     }
 
     #[Groups(['searchable'])]

@@ -20,6 +20,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\Mapping as ORM;
 use Money\Currency;
 use Money\Money;
@@ -292,19 +293,31 @@ class Payment extends BasePayment
     #[Groups(['searchable'])]
     public function getClientName(): ?string
     {
-        return $this->client?->getName();
+        try {
+            return $this->client?->getName();
+        } catch (EntityNotFoundException) {
+            return null;
+        }
     }
 
     #[Groups(['searchable'])]
     public function getInvoiceId(): ?string
     {
-        return $this->invoice?->getId()?->toBase58();
+        try {
+            return $this->invoice?->getId()?->toBase58();
+        } catch (EntityNotFoundException) {
+            return null;
+        }
     }
 
     #[Groups(['searchable'])]
     public function getInvoiceRef(): ?string
     {
-        return $this->invoice?->getInvoiceId();
+        try {
+            return $this->invoice?->getInvoiceId();
+        } catch (EntityNotFoundException) {
+            return null;
+        }
     }
 
     #[Groups(['searchable'])]
