@@ -13,7 +13,7 @@ data:
   SOLIDINVOICE_ALLOW_REGISTRATION: {{ .Values.app.allowRegistration | toString | quote }}
   SOLIDINVOICE_MAILER_SENDER: {{ .Values.mailer.sender | quote }}
   {{- if .Values.sentry.enabled }}
-  SOLIDINVOICE_SENTRY_RELEASE: {{ .Chart.AppVersion | quote }}
+  SOLIDINVOICE_SENTRY_RELEASE: {{ default .Chart.AppVersion .Values.image.tag | quote }}
   SOLIDINVOICE_SENTRY_SEND_DEFAULT_PII: "false"
   {{- end }}
   {{- if .Values.app.workerMode }}

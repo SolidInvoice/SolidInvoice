@@ -47,8 +47,6 @@ install:
   existingSecretEmailKey: "ADMIN_EMAIL"
   ## @param install.existingSecretPasswordKey Key in existingSecret for admin password
   existingSecretPasswordKey: "ADMIN_PASSWORD"
-  ## @param install.skipUser Skip creating the admin user (useful if user already exists)
-  skipUser: false
   ## @param install.backoffLimit Number of retries before the install Job is marked as failed
   backoffLimit: 1
   resources:

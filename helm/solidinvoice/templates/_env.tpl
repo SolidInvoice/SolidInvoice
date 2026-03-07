@@ -20,7 +20,7 @@ Priority order (for what ends up in the chart Secret vs an explicit env entry):
   valueFrom:
     secretKeyRef:
       name: {{ .Values.externalDatabase.existingSecret }}
-      key: {{ .Values.externalDatabase.existingSecretKey }}
+      key: {{ required "externalDatabase.existingSecretKey must not be empty when externalDatabase.existingSecret is set" .Values.externalDatabase.existingSecretKey }}
 {{- end }}
 {{- end }}
 
@@ -72,7 +72,7 @@ loaded automatically via envFrom secretRef — no explicit env entry needed.
   valueFrom:
     secretKeyRef:
       name: {{ .Values.mailer.existingSecret }}
-      key: {{ .Values.mailer.existingSecretKey }}
+      key: {{ required "mailer.existingSecretKey must not be empty when mailer.existingSecret is set" .Values.mailer.existingSecretKey }}
 {{- end }}
 {{- end }}
 
@@ -94,7 +94,7 @@ Nothing is emitted when sentry.enabled=false.
   valueFrom:
     secretKeyRef:
       name: {{ .Values.sentry.existingSecret }}
-      key: {{ .Values.sentry.existingSecretKey }}
+      key: {{ required "sentry.existingSecretKey must not be empty when sentry.existingSecret is set" .Values.sentry.existingSecretKey }}
 {{- end }}
 {{- end }}
 {{- end }}
@@ -174,7 +174,7 @@ Init container that waits for MySQL to be ready before starting the app.
 Only emitted when mysql.enabled=true.
 */}}
 {{- define "solidinvoice.mysqlInitContainer" -}}
-{{- if .Values.mysql.enabled }}
+{{- if and .Values.mysql.enabled (not .Values.externalDatabase.url) (not .Values.externalDatabase.existingSecret) }}
 - name: wait-for-mysql
   image: busybox:1.36
   command:
@@ -202,7 +202,7 @@ Init container that waits for PostgreSQL to be ready before starting the app.
 Only emitted when postgresql.enabled=true.
 */}}
 {{- define "solidinvoice.postgresqlInitContainer" -}}
-{{- if .Values.postgresql.enabled }}
+{{- if and .Values.postgresql.enabled (not .Values.externalDatabase.url) (not .Values.externalDatabase.existingSecret) (not .Values.mysql.enabled) }}
 - name: wait-for-postgresql
   image: busybox:1.36
   command:

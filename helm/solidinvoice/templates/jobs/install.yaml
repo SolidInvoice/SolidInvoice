@@ -1,4 +1,7 @@
 {{- if .Values.install.enabled }}
+{{- if and (not .Values.mysql.enabled) (not .Values.postgresql.enabled) }}
+{{- fail "install.enabled=true requires either mysql.enabled=true or postgresql.enabled=true. For external databases, use the web wizard (install.enabled=false) for initial setup." }}
+{{- end }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -66,12 +69,6 @@ spec:
                 --database-name={{ .Values.postgresql.auth.database }} \
                 --database-user={{ .Values.postgresql.auth.username }} \
                 --database-password="${POSTGRESQL_PASSWORD}" \
-                {{- else }}
-                --database-driver=pdo_mysql \
-                --database-host="${DB_HOST:-localhost}" \
-                --database-name="${DB_NAME:-solidinvoice}" \
-                --database-user="${DB_USER:-solidinvoice}" \
-                --database-password="${DB_PASSWORD}" \
                 {{- end }}
                 --locale={{ .Values.app.locale }} \
                 --admin-email="${ADMIN_EMAIL}" \
@@ -108,12 +105,12 @@ spec:
             - name: ADMIN_EMAIL
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "solidinvoice.fullname" . }}
+                  name: {{ include "solidinvoice.fullname" . }}-install
                   key: ADMIN_EMAIL
             - name: ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "solidinvoice.fullname" . }}
+                  name: {{ include "solidinvoice.fullname" . }}-install
                   key: ADMIN_PASSWORD
             {{- end }}
           envFrom:
