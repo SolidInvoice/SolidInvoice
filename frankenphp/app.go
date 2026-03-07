@@ -496,6 +496,26 @@ func setupCommands() {
 				must(os.Setenv("LOG_FORMAT", logFormat))
 			}
 
+			caddyLogInfo := `
+{
+  "admin": { "disabled": true },
+  "logging": {
+    "logs": {
+      "default": {
+        "level": "INFO",
+        "writer": { "output": "stdout" },
+        "encoder": { "format": "` + logFormat + `" }
+      }
+    }
+  }
+}
+`
+			if err := caddy.Load([]byte(caddyLogInfo), true); err != nil {
+				return fmt.Errorf("failed to configure logging: %v", err)
+			}
+
+			log.SetLogger(logger{})
+
 			if workerCount < 1 {
 				return fmt.Errorf("workers must be at least 1 (got %d)", workerCount)
 			}
