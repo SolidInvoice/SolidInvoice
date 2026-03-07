@@ -10,7 +10,6 @@ User=solidinvoice
 Group=solidinvoice
 
 ExecStart=/usr/bin/solidinvoice run --disable-https --skip-intro --log-format json
-ExecReload=/bin/kill -USR1 $MAINPID
 
 EnvironmentFile=-/etc/solidinvoice/solidinvoice.env
 

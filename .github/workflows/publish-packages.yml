@@ -54,15 +54,15 @@ jobs:
 
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
 
-          # Check if this is a pre-release
+          # Check if this is a pre-release (versions with a hyphen followed by
+          # a letter, e.g. 3.0.0-alpha1, 3.0.0-rc1)
           if [[ "$VERSION" =~ -[a-zA-Z] ]]; then
             echo "prerelease=true" >> "$GITHUB_OUTPUT"
+            echo "Version: ${VERSION} (pre-release)"
           else
             echo "prerelease=false" >> "$GITHUB_OUTPUT"
+            echo "Version: ${VERSION}"
           fi
-
-          echo "Version: ${VERSION}"
-          echo "Pre-release: $(echo "$VERSION" | grep -q '-' && echo 'true' || echo 'false')"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -286,35 +286,6 @@ jobs:
 
       - name: Checkout code
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
-
-      - name: Download binaries and compute checksums
-        id: checksums
-        run: |
-          VERSION="${{ needs.prepare.outputs.version }}"
-          REPO="${{ github.repository }}"
-
-          # Download binaries for checksum calculation
-          for arch in amd64 arm64; do
-            gh release download "${VERSION}" \
-              --repo "${REPO}" \
-              --pattern "solidinvoice-linux-${arch}" \
-              --dir /tmp/binaries/
-          done
-
-          # Compute SHA256 checksums
-          AMD64_SHA=$(sha256sum /tmp/binaries/solidinvoice-linux-amd64 | cut -d' ' -f1)
-          ARM64_SHA=$(sha256sum /tmp/binaries/solidinvoice-linux-arm64 | cut -d' ' -f1)
-
-          # Compute checksums for service and env files
-          SERVICE_SHA=$(sha256sum packaging/systemd/solidinvoice.service | cut -d' ' -f1)
-          ENV_SHA=$(sha256sum packaging/systemd/solidinvoice.env | cut -d' ' -f1)
-
-          echo "amd64_sha=${AMD64_SHA}" >> "$GITHUB_OUTPUT"
-          echo "arm64_sha=${ARM64_SHA}" >> "$GITHUB_OUTPUT"
-          echo "service_sha=${SERVICE_SHA}" >> "$GITHUB_OUTPUT"
-          echo "env_sha=${ENV_SHA}" >> "$GITHUB_OUTPUT"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish to AUR
         uses: KSXGitHub/github-actions-deploy-aur@a97c11653f4b8e39915a7e7067fb858e2d0ef1e2 # v4.1.1

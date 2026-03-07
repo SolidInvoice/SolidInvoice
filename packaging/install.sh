@@ -58,7 +58,7 @@ detect_os() {
     case "$OS" in
         linux)   OS="linux" ;;
         darwin)  OS="mac" ;;
-        freebsd) OS="freebsd" ;;
+        freebsd) error "FreeBSD is not currently supported. See https://github.com/SolidInvoice/SolidInvoice/issues for tracking." ;;
         *)       error "Unsupported operating system: $OS" ;;
     esac
 }
@@ -194,6 +194,7 @@ install_systemd_service() {
     ENV_URL="https://raw.githubusercontent.com/${GITHUB_REPO}/${VERSION}/packaging/systemd/solidinvoice.env"
 
     tmpdir_svc=$(mktemp -d)
+    trap 'rm -rf "$tmpdir_svc"' EXIT
 
     download "$SERVICE_URL" "${tmpdir_svc}/solidinvoice.service"
     download "$ENV_URL" "${tmpdir_svc}/solidinvoice.env"
@@ -208,16 +209,26 @@ install_systemd_service() {
     fi
 
     rm -rf "$tmpdir_svc"
+    trap - EXIT
 
-    # Create service user
+    # Create service user (compatible with both glibc and BusyBox/Alpine)
     if ! getent group solidinvoice >/dev/null 2>&1; then
-        $SUDO groupadd --system solidinvoice
+        if command -v groupadd >/dev/null 2>&1; then
+            $SUDO groupadd --system solidinvoice
+        else
+            $SUDO addgroup -S solidinvoice
+        fi
     fi
     if ! getent passwd solidinvoice >/dev/null 2>&1; then
-        $SUDO useradd --system --gid solidinvoice \
-            --home-dir /var/lib/solidinvoice --no-create-home \
-            --shell /usr/sbin/nologin \
-            --comment "SolidInvoice service account" solidinvoice
+        if command -v useradd >/dev/null 2>&1; then
+            $SUDO useradd --system --gid solidinvoice \
+                --home-dir /var/lib/solidinvoice --no-create-home \
+                --shell /usr/sbin/nologin \
+                --comment "SolidInvoice service account" solidinvoice
+        else
+            $SUDO adduser -S -G solidinvoice -h /var/lib/solidinvoice \
+                -s /usr/sbin/nologin -D solidinvoice
+        fi
     fi
 
     $SUDO mkdir -p /var/lib/solidinvoice

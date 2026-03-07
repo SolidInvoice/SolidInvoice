@@ -6,11 +6,11 @@
     "license": "MIT",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/SolidInvoice/SolidInvoice/releases/download/${SOLIDINVOICE_VERSION}/solidinvoice-windows-amd64.exe",
+            "url": "https://github.com/SolidInvoice/SolidInvoice/releases/download/${SOLIDINVOICE_VERSION}/solidinvoice-windows-amd64.exe#/solidinvoice.exe",
             "hash": ""
         },
         "arm64": {
-            "url": "https://github.com/SolidInvoice/SolidInvoice/releases/download/${SOLIDINVOICE_VERSION}/solidinvoice-windows-arm64.exe",
+            "url": "https://github.com/SolidInvoice/SolidInvoice/releases/download/${SOLIDINVOICE_VERSION}/solidinvoice-windows-arm64.exe#/solidinvoice.exe",
             "hash": ""
         }
     },
@@ -21,10 +21,10 @@
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/SolidInvoice/SolidInvoice/releases/download/$version/solidinvoice-windows-amd64.exe"
+                "url": "https://github.com/SolidInvoice/SolidInvoice/releases/download/$version/solidinvoice-windows-amd64.exe#/solidinvoice.exe"
             },
             "arm64": {
-                "url": "https://github.com/SolidInvoice/SolidInvoice/releases/download/$version/solidinvoice-windows-arm64.exe"
+                "url": "https://github.com/SolidInvoice/SolidInvoice/releases/download/$version/solidinvoice-windows-arm64.exe#/solidinvoice.exe"
             }
         }
     }
