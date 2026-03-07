@@ -1,0 +1,31 @@
+{
+    "_comment": "PLACEHOLDER: This manifest requires Windows binary support. See https://github.com/SolidInvoice/SolidInvoice/issues for tracking.",
+    "version": "${SOLIDINVOICE_VERSION}",
+    "description": "Simple and elegant invoicing solution",
+    "homepage": "https://solidinvoice.co",
+    "license": "MIT",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/SolidInvoice/SolidInvoice/releases/download/${SOLIDINVOICE_VERSION}/solidinvoice-windows-amd64.exe",
+            "hash": ""
+        },
+        "arm64": {
+            "url": "https://github.com/SolidInvoice/SolidInvoice/releases/download/${SOLIDINVOICE_VERSION}/solidinvoice-windows-arm64.exe",
+            "hash": ""
+        }
+    },
+    "bin": "solidinvoice.exe",
+    "checkver": {
+        "github": "https://github.com/SolidInvoice/SolidInvoice"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/SolidInvoice/SolidInvoice/releases/download/$version/solidinvoice-windows-amd64.exe"
+            },
+            "arm64": {
+                "url": "https://github.com/SolidInvoice/SolidInvoice/releases/download/$version/solidinvoice-windows-arm64.exe"
+            }
+        }
+    }
+}

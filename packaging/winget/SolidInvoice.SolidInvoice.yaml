@@ -1,0 +1,35 @@
+# PLACEHOLDER: This manifest requires Windows binary support.
+# See https://github.com/SolidInvoice/SolidInvoice/issues for tracking.
+#
+# When Windows binaries are available, submit this manifest as a PR to:
+# https://github.com/microsoft/winget-pkgs
+#
+# Filename convention: manifests/s/SolidInvoice/SolidInvoice/<version>/SolidInvoice.SolidInvoice.yaml
+
+PackageIdentifier: SolidInvoice.SolidInvoice
+PackageVersion: "${SOLIDINVOICE_VERSION}"
+PackageName: SolidInvoice
+Publisher: SolidWorx
+PublisherUrl: https://solidinvoice.co
+License: MIT
+LicenseUrl: https://github.com/SolidInvoice/SolidInvoice/blob/3.0.x/LICENSE
+ShortDescription: Simple and elegant invoicing solution
+Description: SolidInvoice is an open-source invoicing application for small businesses and freelancers.
+Tags:
+  - invoice
+  - invoicing
+  - billing
+  - freelancer
+  - business
+PackageUrl: https://github.com/SolidInvoice/SolidInvoice
+Installers:
+  - Architecture: x64
+    InstallerType: portable
+    InstallerUrl: https://github.com/SolidInvoice/SolidInvoice/releases/download/${SOLIDINVOICE_VERSION}/solidinvoice-windows-amd64.exe
+    InstallerSha256: ""
+  - Architecture: arm64
+    InstallerType: portable
+    InstallerUrl: https://github.com/SolidInvoice/SolidInvoice/releases/download/${SOLIDINVOICE_VERSION}/solidinvoice-windows-arm64.exe
+    InstallerSha256: ""
+ManifestType: singleton
+ManifestVersion: 1.6.0

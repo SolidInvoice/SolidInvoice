@@ -1,0 +1,50 @@
+post_install() {
+    # Create system user and group
+    if ! getent group solidinvoice >/dev/null 2>&1; then
+        groupadd --system solidinvoice
+    fi
+
+    if ! getent passwd solidinvoice >/dev/null 2>&1; then
+        useradd --system --gid solidinvoice \
+            --home-dir /var/lib/solidinvoice --no-create-home \
+            --shell /usr/sbin/nologin \
+            --comment "SolidInvoice service account" solidinvoice
+    fi
+
+    # Fix ownership
+    chown solidinvoice:solidinvoice /var/lib/solidinvoice
+    chown root:solidinvoice /etc/solidinvoice
+    chown root:solidinvoice /etc/solidinvoice/solidinvoice.env
+
+    systemctl daemon-reload
+
+    echo ""
+    echo "SolidInvoice has been installed."
+    echo ""
+    echo "  Start:   sudo systemctl start solidinvoice"
+    echo "  Enable:  sudo systemctl enable solidinvoice"
+    echo "  Config:  /etc/solidinvoice/solidinvoice.env"
+    echo ""
+}
+
+post_upgrade() {
+    systemctl daemon-reload
+
+    if systemctl is-active --quiet solidinvoice; then
+        echo "Restarting SolidInvoice..."
+        systemctl restart solidinvoice
+    fi
+}
+
+pre_remove() {
+    if systemctl is-active --quiet solidinvoice; then
+        systemctl stop solidinvoice
+    fi
+    if systemctl is-enabled --quiet solidinvoice; then
+        systemctl disable solidinvoice
+    fi
+}
+
+post_remove() {
+    systemctl daemon-reload
+}

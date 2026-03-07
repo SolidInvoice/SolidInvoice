@@ -1,0 +1,86 @@
+# nFPM configuration for SolidInvoice
+# https://nfpm.goreleaser.com/configuration/
+#
+# Build packages with:
+#   nfpm package -p deb -f packaging/nfpm.yaml -t dist/
+#   nfpm package -p rpm -f packaging/nfpm.yaml -t dist/
+#   nfpm package -p apk -f packaging/nfpm.yaml -t dist/
+#   nfpm package -p archlinux -f packaging/nfpm.yaml -t dist/
+#
+# Override architecture with:
+#   nfpm package -p deb -f packaging/nfpm.yaml --target dist/ --arch arm64
+
+name: solidinvoice
+arch: ${NFPM_ARCH:-amd64}
+version: ${SOLIDINVOICE_VERSION}
+release: 1
+epoch: 0
+section: web
+priority: optional
+
+maintainer: Pierre du Plessis <open-source@solidworx.co>
+vendor: SolidWorx
+homepage: https://solidinvoice.co
+license: MIT
+description: |
+  Simple and elegant invoicing solution.
+  SolidInvoice is an open-source invoicing application for small businesses
+  and freelancers. Features include client management, quotes, invoices
+  (including recurring), payments, tax and discount management, a REST API,
+  and notifications.
+
+contents:
+  # Binary
+  - src: ../frankenphp/dist/solidinvoice-linux-${NFPM_ARCH:-amd64}
+    dst: /usr/bin/solidinvoice
+    file_info:
+      mode: 0755
+
+  # systemd service
+  - src: systemd/solidinvoice.service
+    dst: /usr/lib/systemd/system/solidinvoice.service
+    file_info:
+      mode: 0644
+
+  # Default environment file
+  - src: systemd/solidinvoice.env
+    dst: /etc/solidinvoice/solidinvoice.env
+    type: config|noreplace
+    file_info:
+      mode: 0640
+      owner: root
+      group: solidinvoice
+
+  # Create required directories
+  - dst: /var/lib/solidinvoice
+    type: dir
+    file_info:
+      mode: 0750
+      owner: solidinvoice
+      group: solidinvoice
+
+  - dst: /etc/solidinvoice
+    type: dir
+    file_info:
+      mode: 0750
+      owner: root
+      group: solidinvoice
+
+scripts:
+  postinstall: scripts/postinstall.sh
+  preremove: scripts/preremove.sh
+  postremove: scripts/postremove.sh
+
+overrides:
+  deb:
+    recommends:
+      - mysql-server
+    suggests:
+      - postgresql
+      - nginx
+  rpm:
+    recommends:
+      - mysql-server
+    suggests:
+      - postgresql-server
+      - nginx
