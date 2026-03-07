@@ -1,0 +1,298 @@
+# Default values for solidinvoice.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+## @section Image configuration
+image:
+  repository: solidinvoice/solidinvoice
+  ## @param image.tag Overrides the image tag. Defaults to the chart appVersion.
+  tag: ""
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+## @param replicaCount Number of replicas for the main app
+replicaCount: 1
+
+## @section Application configuration
+app:
+  ## @param app.secret SOLIDINVOICE_APP_SECRET. Auto-generated if empty (not recommended for production).
+  secret: ""
+  ## @param app.locale Application locale
+  locale: "en"
+  ## @param app.allowRegistration Allow public user registration
+  allowRegistration: false
+  ## @param app.workerMode Enable FrankenPHP persistent worker mode
+  workerMode: false
+  ## @param app.extraEnv Extra environment variables to add to the app container
+  extraEnv: []
+  ## @param app.extraEnvFrom Extra envFrom references (ConfigMap/Secret) for the app container
+  extraEnvFrom: []
+
+## @section Installation configuration (opt-in CLI install Job)
+## When install.enabled=false (default), the web wizard handles first-run setup.
+## Set install.enabled=true for GitOps/automated deployments.
+install:
+  ## @param install.enabled Enable the CLI install Job (pre-install hook)
+  enabled: false
+  ## @param install.adminEmail Admin user email (required when enabled=true)
+  adminEmail: ""
+  ## @param install.adminPassword Admin user password (required when enabled=true)
+  adminPassword: ""
+  ## @param install.existingSecret Name of existing Secret with admin credentials
+  existingSecret: ""
+  ## @param install.existingSecretEmailKey Key in existingSecret for admin email
+  existingSecretEmailKey: "ADMIN_EMAIL"
+  ## @param install.existingSecretPasswordKey Key in existingSecret for admin password
+  existingSecretPasswordKey: "ADMIN_PASSWORD"
+  ## @param install.skipUser Skip creating the admin user (useful if user already exists)
+  skipUser: false
+  ## @param install.backoffLimit Number of retries before the install Job is marked as failed
+  backoffLimit: 1
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+
+## @section External database configuration
+## Provide DATABASE_URL directly or via a Secret.
+## If neither mysql.enabled nor postgresql.enabled, set externalDatabase.url or the app uses SQLite.
+externalDatabase:
+  ## @param externalDatabase.url Full DATABASE_URL connection string (highest priority)
+  url: ""
+  ## @param externalDatabase.existingSecret Name of existing Secret containing DATABASE_URL
+  existingSecret: ""
+  ## @param externalDatabase.existingSecretKey Key in existingSecret for the DATABASE_URL
+  existingSecretKey: "DATABASE_URL"
+
+## @section Mailer configuration
+mailer:
+  ## @param mailer.dsn Mailer DSN (e.g., smtp://user:pass@host:465?encryption=ssl)
+  dsn: "null://null"
+  ## @param mailer.sender Sender address used in outgoing emails
+  sender: "SolidInvoice <no-reply@example.com>"
+  ## @param mailer.existingSecret Name of existing Secret containing MAILER_DSN
+  existingSecret: ""
+  ## @param mailer.existingSecretKey Key in existingSecret for the MAILER_DSN
+  existingSecretKey: "MAILER_DSN"
+
+## @section Messenger configuration
+messenger:
+  ## @param messenger.dsn Messenger transport DSN. Auto-set from Redis subchart when redis.enabled=true.
+  dsn: ""
+
+## @section Worker (Messenger consumer) configuration
+worker:
+  ## @param worker.enabled Enable the Messenger consumer worker Deployment
+  enabled: true
+  ## @param worker.replicaCount Number of worker replicas
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+  autoscaling:
+    ## @param worker.autoscaling.enabled Enable HPA for the worker Deployment
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 10
+    targetCPUUtilizationPercentage: 80
+
+## @section Scheduler (cron) configuration
+scheduler:
+  ## @param scheduler.enabled Enable the cron:run CronJob
+  enabled: true
+  ## @param scheduler.schedule Cron schedule expression
+  schedule: "* * * * *"
+  ## @param scheduler.timeZone Timezone for the CronJob
+  timeZone: "UTC"
+  ## @param scheduler.concurrencyPolicy CronJob concurrency policy
+  concurrencyPolicy: Forbid
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
+
+## @section Persistence configuration
+## /etc/solidinvoice MUST be persisted — it holds Symfony's encrypted secrets vault.
+persistence:
+  ## @param persistence.enabled Enable persistent storage for /etc/solidinvoice
+  enabled: true
+  ## @param persistence.storageClass StorageClass for the PVC (empty = cluster default)
+  storageClass: ""
+  ## @param persistence.accessModes PVC access modes
+  ## WARNING: ReadWriteOnce allows mounting from a single node only.
+  ## If replicaCount > 1, use ReadWriteMany or an external shared storage solution.
+  accessModes:
+    - ReadWriteOnce
+  ## @param persistence.size Size of the PVC
+  size: 1Gi
+  ## @param persistence.existingClaim Use an existing PVC instead of creating one
+  existingClaim: ""
+  annotations:
+    ## Keep PVC on helm uninstall to prevent data loss
+    helm.sh/resource-policy: keep
+
+## @section Ingress configuration
+ingress:
+  ## @param ingress.enabled Enable Ingress
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: solidinvoice.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+## @section Service configuration
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8765
+
+## @section MySQL subchart configuration
+## @param mysql.enabled Enable the Bitnami MySQL subchart
+mysql:
+  enabled: false
+  auth:
+    database: solidinvoice
+    username: solidinvoice
+    ## @param mysql.auth.password MySQL password (auto-generated if empty)
+    password: ""
+    rootPassword: ""
+
+## @section PostgreSQL subchart configuration
+## @param postgresql.enabled Enable the Bitnami PostgreSQL subchart
+postgresql:
+  enabled: false
+  auth:
+    database: solidinvoice
+    username: solidinvoice
+    ## @param postgresql.auth.password PostgreSQL password (auto-generated if empty)
+    password: ""
+
+## @section Redis subchart configuration
+## When enabled, messenger.dsn is auto-configured to use Redis.
+## @param redis.enabled Enable the Bitnami Redis subchart
+redis:
+  enabled: false
+  auth:
+    enabled: true
+    password: ""
+  replica:
+    replicaCount: 0
+
+## @section Meilisearch subchart configuration
+## @param meilisearch.enabled Enable the Meilisearch subchart (future feature)
+meilisearch:
+  enabled: false
+  auth:
+    masterKey: ""
+  persistence:
+    enabled: true
+    size: 5Gi
+
+## @section Sentry configuration
+sentry:
+  ## @param sentry.enabled Enable Sentry error tracking
+  enabled: false
+  dsn: ""
+  existingSecret: ""
+  existingSecretKey: "SENTRY_DSN"
+
+## @section OAuth configuration
+oauth:
+  google:
+    ## @param oauth.google.enabled Enable Google OAuth
+    enabled: false
+    clientId: ""
+    clientSecret: ""
+    existingSecret: ""
+
+## @section Resource configuration
+resources:
+  requests:
+    cpu: 200m
+    memory: 256Mi
+  limits:
+    cpu: 1000m
+    memory: 512Mi
+
+## @section Autoscaling configuration
+autoscaling:
+  ## @param autoscaling.enabled Enable HPA for the main app
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+
+## @section Pod Disruption Budget
+podDisruptionBudget:
+  ## @param podDisruptionBudget.enabled Enable PodDisruptionBudget
+  enabled: false
+  minAvailable: 1
+
+## @section Network Policy
+networkPolicy:
+  ## @param networkPolicy.enabled Enable NetworkPolicy
+  enabled: false
+
+## @section Security contexts
+podSecurityContext:
+  fsGroup: 1000
+  runAsNonRoot: true
+  runAsUser: 1000
+
+containerSecurityContext:
+  allowPrivilegeEscalation: false
+  ## readOnlyRootFilesystem is false because the app writes cache/logs
+  readOnlyRootFilesystem: false
+  capabilities:
+    drop:
+      - ALL
+
+## @section Migration job configuration
+migrations:
+  backoffLimit: 3
+  activeDeadlineSeconds: 300
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+
+## @section Service account configuration
+serviceAccount:
+  ## @param serviceAccount.create Create a service account
+  create: true
+  name: ""
+  annotations: {}
+  automountServiceAccountToken: false
+
+## @section Pod scheduling
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+## @section Pod metadata
+podAnnotations: {}
+podLabels: {}
+
+## @section Extra Kubernetes objects
+## Render arbitrary additional manifests
+extraObjects: []

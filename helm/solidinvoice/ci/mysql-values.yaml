@@ -1,0 +1,15 @@
+# CI test values: MySQL subchart enabled
+
+mysql:
+  enabled: true
+  auth:
+    database: solidinvoice
+    username: solidinvoice
+    password: "testpassword"
+    rootPassword: "rootpassword"
+
+worker:
+  enabled: true
+
+scheduler:
+  enabled: true

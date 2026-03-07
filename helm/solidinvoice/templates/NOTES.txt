@@ -1,0 +1,47 @@
+SolidInvoice has been deployed successfully!
+
+{{- if .Values.ingress.enabled }}
+{{- range .Values.ingress.hosts }}
+  Application URL: http{{ if $.Values.ingress.tls }}s{{ end }}://{{ .host }}
+{{- end }}
+{{- else }}
+  To access SolidInvoice, run:
+  kubectl port-forward svc/{{ include "solidinvoice.fullname" . }} 8080:{{ .Values.service.port }} -n {{ .Release.Namespace }}
+  Then open: http://localhost:8080
+{{- end }}
+
+{{- if not .Values.install.enabled }}
+
+==> First-time setup:
+  Visit the application URL to complete setup via the web wizard.
+  The wizard will guide you through database configuration and admin account creation.
+{{- end }}
+
+{{- if not .Values.app.secret }}
+
+==> IMPORTANT - App Secret:
+  No app.secret was provided. An app secret has been auto-generated and stored in the Secret:
+    kubectl get secret {{ include "solidinvoice.fullname" . }} -n {{ .Release.Namespace }} -o jsonpath='{.data.SOLIDINVOICE_APP_SECRET}' | base64 -d
+
+  Save this value! If lost and the Secret is deleted, encrypted config data will be unrecoverable.
+  Set it explicitly in future upgrades: --set app.secret=<saved-value>
+{{- end }}
+
+{{- if and (not .Values.mysql.enabled) (not .Values.postgresql.enabled) (not .Values.externalDatabase.url) (not .Values.externalDatabase.existingSecret) }}
+
+==> WARNING - No database configured:
+  Neither a database subchart nor an external database is configured.
+  SolidInvoice will use SQLite (stored in /etc/solidinvoice), which is NOT recommended for production.
+  Configure a database:
+    --set mysql.enabled=true --set mysql.auth.password=<password>
+    or
+    --set externalDatabase.url=mysql://user:pass@host:3306/db
+{{- end }}
+
+{{- if and (gt (int .Values.replicaCount) 1) (has "ReadWriteOnce" .Values.persistence.accessModes) }}
+
+==> WARNING - PVC access mode conflict:
+  replicaCount={{ .Values.replicaCount }} with accessModes=ReadWriteOnce means only ONE node can mount the
+  /etc/solidinvoice PVC at a time. Other replicas will fail to start.
+  Use ReadWriteMany (requires an NFS/CephFS StorageClass) or set replicaCount=1.
+{{- end }}

@@ -1,0 +1,135 @@
+{{- if .Values.install.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "solidinvoice.fullname" . }}-install
+  labels:
+    {{- include "solidinvoice.labels" . | nindent 4 }}
+  annotations:
+    helm.sh/hook: pre-install
+    helm.sh/hook-weight: "0"
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+spec:
+  backoffLimit: {{ .Values.install.backoffLimit }}
+  template:
+    metadata:
+      labels:
+        {{- include "solidinvoice.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: install
+    spec:
+      restartPolicy: OnFailure
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "solidinvoice.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- $mysqlInit := trim (include "solidinvoice.mysqlInitContainer" .) }}
+      {{- $postgresqlInit := trim (include "solidinvoice.postgresqlInitContainer" .) }}
+      {{- if or $mysqlInit $postgresqlInit }}
+      initContainers:
+        {{- if $mysqlInit }}
+        {{- $mysqlInit | nindent 8 }}
+        {{- end }}
+        {{- if $postgresqlInit }}
+        {{- $postgresqlInit | nindent 8 }}
+        {{- end }}
+      {{- end }}
+      containers:
+        - name: install
+          image: {{ include "solidinvoice.imageName" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - /bin/sh
+            - -c
+            - |
+              # Idempotent: exit cleanly if already installed
+              if /usr/local/bin/solidinvoice console solidinvoice:is-installed --no-ansi --no-interaction 2>/dev/null; then
+                echo "SolidInvoice is already installed. Skipping."
+                exit 0
+              fi
+
+              # Run the CLI installer
+              /usr/local/bin/solidinvoice console app:install \
+                {{- if .Values.mysql.enabled }}
+                --database-driver=pdo_mysql \
+                --database-host={{ include "solidinvoice.mysql.host" . }} \
+                --database-port=3306 \
+                --database-name={{ .Values.mysql.auth.database }} \
+                --database-user={{ .Values.mysql.auth.username }} \
+                --database-password="${MYSQL_PASSWORD}" \
+                {{- else if .Values.postgresql.enabled }}
+                --database-driver=pdo_pgsql \
+                --database-host={{ include "solidinvoice.postgresql.host" . }} \
+                --database-port=5432 \
+                --database-name={{ .Values.postgresql.auth.database }} \
+                --database-user={{ .Values.postgresql.auth.username }} \
+                --database-password="${POSTGRESQL_PASSWORD}" \
+                {{- else }}
+                --database-driver=pdo_mysql \
+                --database-host="${DB_HOST:-localhost}" \
+                --database-name="${DB_NAME:-solidinvoice}" \
+                --database-user="${DB_USER:-solidinvoice}" \
+                --database-password="${DB_PASSWORD}" \
+                {{- end }}
+                --locale={{ .Values.app.locale }} \
+                --admin-email="${ADMIN_EMAIL}" \
+                --admin-password="${ADMIN_PASSWORD}" \
+                --no-interaction \
+                --no-ansi
+          env:
+            {{- if .Values.mysql.enabled }}
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "solidinvoice.mysql.secretName" . }}
+                  key: mysql-password
+            {{- end }}
+            {{- if .Values.postgresql.enabled }}
+            - name: POSTGRESQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "solidinvoice.postgresql.secretName" . }}
+                  key: password
+            {{- end }}
+            {{- if .Values.install.existingSecret }}
+            - name: ADMIN_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.install.existingSecret }}
+                  key: {{ .Values.install.existingSecretEmailKey }}
+            - name: ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.install.existingSecret }}
+                  key: {{ .Values.install.existingSecretPasswordKey }}
+            {{- else }}
+            - name: ADMIN_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "solidinvoice.fullname" . }}
+                  key: ADMIN_EMAIL
+            - name: ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "solidinvoice.fullname" . }}
+                  key: ADMIN_PASSWORD
+            {{- end }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "solidinvoice.fullname" . }}
+            - secretRef:
+                name: {{ include "solidinvoice.fullname" . }}
+            {{- with .Values.app.extraEnvFrom }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          volumeMounts:
+            {{- include "solidinvoice.configVolumeMount" . | nindent 12 }}
+          resources:
+            {{- toYaml .Values.install.resources | nindent 12 }}
+          securityContext:
+            {{- toYaml .Values.containerSecurityContext | nindent 12 }}
+      volumes:
+        {{- include "solidinvoice.configVolume" . | nindent 8 }}
+{{- end }}
