@@ -27,30 +27,25 @@ spec:
       serviceAccountName: {{ include "solidinvoice.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- $mysqlInit := trim (include "solidinvoice.mysqlInitContainer" .) }}
+      {{- $postgresqlInit := trim (include "solidinvoice.postgresqlInitContainer" .) }}
+      {{- if or $mysqlInit $postgresqlInit }}
       initContainers:
-        {{- $mysqlInit := include "solidinvoice.mysqlInitContainer" . | trim }}
-        {{- $postgresqlInit := include "solidinvoice.postgresqlInitContainer" . | trim }}
         {{- if $mysqlInit }}
         {{- $mysqlInit | nindent 8 }}
         {{- end }}
         {{- if $postgresqlInit }}
         {{- $postgresqlInit | nindent 8 }}
         {{- end }}
-        {{- include "solidinvoice.waitForInstallInitContainer" . | nindent 8 }}
+      {{- end }}
       containers:
         - name: worker
           image: {{ include "solidinvoice.imageName" . }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
             - /usr/local/bin/solidinvoice
-            - console
-            - messenger:consume
-            - async
-            - --limit=100
-            - --time-limit=3600
-            - --memory-limit=128M
-            - --no-ansi
-            - --no-interaction
+            - worker
+            - --workers={{ .Values.worker.count }}
           {{- include "solidinvoice.commonEnv" . | nindent 10 }}
           volumeMounts:
             {{- include "solidinvoice.configVolumeMount" . | nindent 12 }}
@@ -64,7 +59,7 @@ spec:
                 - /bin/sh
                 - -c
                 - "ps aux | grep '[m]essenger:consume' | grep -v grep"
-            initialDelaySeconds: 30
+            initialDelaySeconds: 60
             periodSeconds: 60
             failureThreshold: 3
       volumes:

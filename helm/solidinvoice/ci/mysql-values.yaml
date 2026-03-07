@@ -10,6 +10,3 @@ mysql:
 
 worker:
   enabled: true
-
-scheduler:
-  enabled: true
