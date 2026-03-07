@@ -1,0 +1,11 @@
+# CI test values: external database only, no subchart, no ingress
+# Tests the minimal configuration using externalDatabase.url
+
+externalDatabase:
+  url: "mysql://solidinvoice:password@mysql-host:3306/solidinvoice?serverVersion=8.0&charset=utf8mb4"
+
+worker:
+  enabled: false
+
+scheduler:
+  enabled: false

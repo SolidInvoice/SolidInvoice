@@ -1,0 +1,535 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "SolidInvoice Helm Chart Values",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "replicaCount": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Number of replicas for the main app"
+    },
+    "image": {
+      "type": "object",
+      "properties": {
+        "repository": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Container image repository"
+        },
+        "tag": {
+          "type": "string",
+          "description": "Container image tag (defaults to chart appVersion)"
+        },
+        "pullPolicy": {
+          "type": "string",
+          "enum": ["IfNotPresent", "Always", "Never"],
+          "description": "Image pull policy"
+        }
+      },
+      "additionalProperties": false
+    },
+    "imagePullSecrets": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "nameOverride": {
+      "type": "string"
+    },
+    "fullnameOverride": {
+      "type": "string"
+    },
+    "app": {
+      "type": "object",
+      "properties": {
+        "secret": {
+          "type": "string",
+          "description": "Application secret key"
+        },
+        "locale": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Application locale"
+        },
+        "allowRegistration": {
+          "type": "boolean",
+          "description": "Allow public user registration"
+        },
+        "workerMode": {
+          "type": "boolean",
+          "description": "Enable FrankenPHP persistent worker mode"
+        },
+        "extraEnv": {
+          "type": "array",
+          "description": "Extra environment variables"
+        },
+        "extraEnvFrom": {
+          "type": "array",
+          "description": "Extra envFrom references"
+        }
+      },
+      "additionalProperties": false
+    },
+    "install": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "adminEmail": {
+          "type": "string"
+        },
+        "adminPassword": {
+          "type": "string"
+        },
+        "existingSecret": {
+          "type": "string"
+        },
+        "existingSecretEmailKey": {
+          "type": "string"
+        },
+        "existingSecretPasswordKey": {
+          "type": "string"
+        },
+        "skipUser": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "externalDatabase": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "Full DATABASE_URL connection string"
+        },
+        "existingSecret": {
+          "type": "string"
+        },
+        "existingSecretKey": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "mailer": {
+      "type": "object",
+      "properties": {
+        "dsn": {
+          "type": "string"
+        },
+        "sender": {
+          "type": "string"
+        },
+        "existingSecret": {
+          "type": "string"
+        },
+        "existingSecretKey": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "messenger": {
+      "type": "object",
+      "properties": {
+        "dsn": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "worker": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "replicaCount": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "resources": {
+          "type": "object"
+        },
+        "autoscaling": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "minReplicas": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "maxReplicas": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "targetCPUUtilizationPercentage": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          }
+        }
+      }
+    },
+    "scheduler": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "schedule": {
+          "type": "string"
+        },
+        "timeZone": {
+          "type": "string"
+        },
+        "concurrencyPolicy": {
+          "type": "string",
+          "enum": ["Allow", "Forbid", "Replace"]
+        },
+        "resources": {
+          "type": "object"
+        }
+      }
+    },
+    "persistence": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "storageClass": {
+          "type": "string"
+        },
+        "accessModes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["ReadWriteOnce", "ReadWriteMany", "ReadOnlyMany", "ReadWriteOncePod"]
+          }
+        },
+        "size": {
+          "type": "string",
+          "pattern": "^[0-9]+(\\.[0-9]+)?(Ki|Mi|Gi|Ti|Pi|Ei|k|M|G|T|P|E)?$",
+          "description": "Kubernetes size format (e.g. 1Gi, 500Mi)"
+        },
+        "existingClaim": {
+          "type": "string"
+        },
+        "annotations": {
+          "type": "object"
+        }
+      }
+    },
+    "ingress": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "className": {
+          "type": "string"
+        },
+        "annotations": {
+          "type": "object"
+        },
+        "hosts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "host": {
+                "type": "string"
+              },
+              "paths": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "path": {
+                      "type": "string"
+                    },
+                    "pathType": {
+                      "type": "string",
+                      "enum": ["Prefix", "Exact", "ImplementationSpecific"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tls": {
+          "type": "array"
+        }
+      }
+    },
+    "service": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["ClusterIP", "NodePort", "LoadBalancer"],
+          "description": "Kubernetes service type"
+        },
+        "port": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535
+        },
+        "targetPort": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535
+        }
+      },
+      "additionalProperties": false
+    },
+    "mysql": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Enable the Bitnami MySQL subchart"
+        },
+        "auth": {
+          "type": "object"
+        }
+      }
+    },
+    "postgresql": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Enable the Bitnami PostgreSQL subchart"
+        },
+        "auth": {
+          "type": "object"
+        }
+      }
+    },
+    "redis": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Enable the Bitnami Redis subchart"
+        },
+        "auth": {
+          "type": "object"
+        },
+        "replica": {
+          "type": "object"
+        }
+      }
+    },
+    "meilisearch": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Enable the Meilisearch subchart"
+        },
+        "auth": {
+          "type": "object"
+        },
+        "persistence": {
+          "type": "object"
+        }
+      }
+    },
+    "sentry": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "dsn": {
+          "type": "string"
+        },
+        "existingSecret": {
+          "type": "string"
+        },
+        "existingSecretKey": {
+          "type": "string"
+        }
+      }
+    },
+    "oauth": {
+      "type": "object",
+      "properties": {
+        "google": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "clientId": {
+              "type": "string"
+            },
+            "clientSecret": {
+              "type": "string"
+            },
+            "existingSecret": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "resources": {
+      "type": "object",
+      "properties": {
+        "requests": {
+          "type": "object"
+        },
+        "limits": {
+          "type": "object"
+        }
+      }
+    },
+    "autoscaling": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "minReplicas": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "maxReplicas": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "targetCPUUtilizationPercentage": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        }
+      }
+    },
+    "podDisruptionBudget": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "minAvailable": {
+          "oneOf": [
+            {"type": "integer", "minimum": 0},
+            {"type": "string"}
+          ]
+        }
+      }
+    },
+    "networkPolicy": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        }
+      }
+    },
+    "podSecurityContext": {
+      "type": "object"
+    },
+    "containerSecurityContext": {
+      "type": "object"
+    },
+    "migrations": {
+      "type": "object",
+      "properties": {
+        "backoffLimit": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "activeDeadlineSeconds": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "resources": {
+          "type": "object"
+        }
+      }
+    },
+    "serviceAccount": {
+      "type": "object",
+      "properties": {
+        "create": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
+        },
+        "annotations": {
+          "type": "object"
+        },
+        "automountServiceAccountToken": {
+          "type": "boolean"
+        }
+      }
+    },
+    "nodeSelector": {
+      "type": "object"
+    },
+    "tolerations": {
+      "type": "array"
+    },
+    "affinity": {
+      "type": "object"
+    },
+    "podAnnotations": {
+      "type": "object"
+    },
+    "podLabels": {
+      "type": "object"
+    },
+    "extraObjects": {
+      "type": "array",
+      "description": "Render arbitrary additional manifests"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "install": {
+            "properties": {
+              "enabled": { "const": true }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "install": {
+            "oneOf": [
+              {
+                "properties": {
+                  "existingSecret": { "type": "string", "minLength": 1 }
+                },
+                "required": ["existingSecret"]
+              },
+              {
+                "properties": {
+                  "adminEmail": { "type": "string", "minLength": 1 },
+                  "adminPassword": { "type": "string", "minLength": 1 }
+                },
+                "required": ["adminEmail", "adminPassword"]
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

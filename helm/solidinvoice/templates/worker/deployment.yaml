@@ -1,0 +1,84 @@
+{{- if .Values.worker.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "solidinvoice.fullname" . }}-worker
+  labels:
+    {{- include "solidinvoice.worker.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.worker.autoscaling.enabled }}
+  replicas: {{ .Values.worker.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "solidinvoice.worker.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "solidinvoice.worker.selectorLabels" . | nindent 8 }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "solidinvoice.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        {{- $mysqlInit := include "solidinvoice.mysqlInitContainer" . | trim }}
+        {{- $postgresqlInit := include "solidinvoice.postgresqlInitContainer" . | trim }}
+        {{- if $mysqlInit }}
+        {{- $mysqlInit | nindent 8 }}
+        {{- end }}
+        {{- if $postgresqlInit }}
+        {{- $postgresqlInit | nindent 8 }}
+        {{- end }}
+        {{- include "solidinvoice.waitForInstallInitContainer" . | nindent 8 }}
+      containers:
+        - name: worker
+          image: {{ include "solidinvoice.imageName" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - /usr/local/bin/solidinvoice
+            - console
+            - messenger:consume
+            - async
+            - --limit=100
+            - --time-limit=3600
+            - --memory-limit=128M
+            - --no-ansi
+            - --no-interaction
+          {{- include "solidinvoice.commonEnv" . | nindent 10 }}
+          volumeMounts:
+            {{- include "solidinvoice.configVolumeMount" . | nindent 12 }}
+          resources:
+            {{- toYaml .Values.worker.resources | nindent 12 }}
+          securityContext:
+            {{- toYaml .Values.containerSecurityContext | nindent 12 }}
+          livenessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - "ps aux | grep '[m]essenger:consume' | grep -v grep"
+            initialDelaySeconds: 30
+            periodSeconds: 60
+            failureThreshold: 3
+      volumes:
+        {{- include "solidinvoice.configVolume" . | nindent 8 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}
