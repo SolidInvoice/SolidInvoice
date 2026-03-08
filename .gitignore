@@ -38,6 +38,7 @@ package-lock.json
 /frankenphp/app.tar
 /frankenphp/app.tar.gz
 /frankenphp/app_checksum.txt
+/helm/solidinvoice/charts
 
 ###> symfony/framework-bundle ###
 /.env.local
