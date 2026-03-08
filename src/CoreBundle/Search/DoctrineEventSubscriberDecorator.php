@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Search;
 
 use Doctrine\Persistence\Event\LifecycleEventArgs;
+use Doctrine\Persistence\ObjectManager;
 use Meilisearch\Bundle\EventListener\DoctrineEventSubscriber;
 use SolidWorx\Toggler\ToggleInterface;
 
@@ -25,6 +26,9 @@ final class DoctrineEventSubscriberDecorator
     ) {
     }
 
+    /**
+     * @param LifecycleEventArgs<ObjectManager> $args
+     */
     public function postUpdate(LifecycleEventArgs $args): void
     {
         if ($this->toggle->isActive('meilisearch_search')) {
@@ -32,6 +36,9 @@ final class DoctrineEventSubscriberDecorator
         }
     }
 
+    /**
+     * @param LifecycleEventArgs<ObjectManager> $args
+     */
     public function postPersist(LifecycleEventArgs $args): void
     {
         if ($this->toggle->isActive('meilisearch_search')) {
@@ -39,6 +46,9 @@ final class DoctrineEventSubscriberDecorator
         }
     }
 
+    /**
+     * @param LifecycleEventArgs<ObjectManager> $args
+     */
     public function preRemove(LifecycleEventArgs $args): void
     {
         if ($this->toggle->isActive('meilisearch_search')) {
