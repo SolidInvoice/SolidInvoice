@@ -3,7 +3,7 @@ name: Helm Chart CI
 on:
   push:
     branches:
-      - 3.0.x
+      - $default-branch
     paths:
       - 'helm/**'
       - '.github/workflows/helm.yml'
