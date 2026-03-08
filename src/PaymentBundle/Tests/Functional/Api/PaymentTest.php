@@ -49,12 +49,13 @@ final class PaymentTest extends ApiTestCase
             '@context' => $this->getContextForResource($payment),
             '@id' => $this->getIriFromResource($invoice) . '/payments',
             '@type' => 'Collection',
-            'hydra:totalItems' => 1,
-            'hydra:member' => [
+            'totalItems' => 1,
+            'member' => [
                 [
                     '@id' => $this->getIriFromResource($payment),
                     '@type' => 'Payment',
                     'id' => $payment->getId()->toString(),
+                    'companyId' => $this->company->getId()->toBase58(),
                     'invoice' => $this->getIriFromResource($invoice),
                     'client' => null,
                     'method' => null,
@@ -76,6 +77,10 @@ final class PaymentTest extends ApiTestCase
                         'amount' => $payment->getAmount()->getAmount(),
                         'currency' => $payment->getAmount()->getCurrency()->getCode(),
                     ],
+                    'clientName' => null,
+                    'invoiceId' => $invoice->getId()->toBase58(),
+                    'invoiceRef' => '',
+                    'total' => $payment->getAmount()->getAmount() / 100,
                 ],
             ],
         ], $data);
@@ -98,12 +103,13 @@ final class PaymentTest extends ApiTestCase
             '@context' => $this->getContextForResource($payment),
             '@id' => $this->getIriFromResource($client) . '/payments',
             '@type' => 'Collection',
-            'hydra:totalItems' => 1,
-            'hydra:member' => [
+            'totalItems' => 1,
+            'member' => [
                 [
                     '@id' => $this->getIriFromResource($payment),
                     '@type' => 'Payment',
                     'id' => $payment->getId()->toString(),
+                    'companyId' => $this->company->getId()->toBase58(),
                     'invoice' => null,
                     'client' => $this->getIriFromResource($client),
                     'method' => null,
@@ -125,6 +131,10 @@ final class PaymentTest extends ApiTestCase
                         'amount' => $payment->getAmount()->getAmount(),
                         'currency' => $payment->getAmount()->getCurrency()->getCode(),
                     ],
+                    'clientName' => $client->getName(),
+                    'invoiceId' => null,
+                    'invoiceRef' => null,
+                    'total' => $payment->getAmount()->getAmount() / 100,
                 ],
             ],
         ], $data);
@@ -190,6 +200,7 @@ final class PaymentTest extends ApiTestCase
             '@id' => $this->getIriFromResource($payment),
             '@type' => 'Payment',
             'id' => $payment->getId()->toString(),
+            'companyId' => $this->company->getId()->toBase58(),
             'invoice' => $this->getIriFromResource($invoice),
             'client' => $this->getIriFromResource($client),
             'method' => null,
@@ -211,6 +222,10 @@ final class PaymentTest extends ApiTestCase
                 'amount' => $payment->getAmount()->getAmount(),
                 'currency' => $payment->getAmount()->getCurrency()->getCode(),
             ],
+            'clientName' => $client->getName(),
+            'invoiceId' => $invoice->getId()->toBase58(),
+            'invoiceRef' => '',
+            'total' => $payment->getAmount()->getAmount() / 100,
         ], $data);
     }
 

@@ -59,6 +59,7 @@ final class AddressTest extends ApiTestCase
         self::assertEqualsCanonicalizing([
             '@context' => $this->getContextForResource($this->getResourceClass()),
             '@type' => 'Address',
+            'companyId' => $this->company->getId()->toBase58(),
             'street1' => 'foo',
             'street2' => 'foo',
             'city' => 'foo',
