@@ -12,10 +12,12 @@ declare(strict_types=1);
  */
 
 use SolidInvoice\AppRequirements;
+use SolidInvoice\CoreBundle\Search\DoctrineEventSubscriberDecorator;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\UX\StimulusBundle\Helper\StimulusHelper;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters = $containerConfigurator->parameters();
@@ -58,4 +60,14 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->alias(StimulusHelper::class, 'stimulus.helper');
     $services->set(AppRequirements::class)
         ->autowire(true);
+
+    $services->set(DoctrineEventSubscriberDecorator::class)
+        ->args([
+            service('.inner'),
+            service('SolidWorx\Toggler\ToggleInterface'),
+        ])
+        ->decorate('meilisearch.search_indexer_subscriber')
+        ->tag('doctrine.event_listener', ['event' => 'postPersist'])
+        ->tag('doctrine.event_listener', ['event' => 'postUpdate'])
+        ->tag('doctrine.event_listener', ['event' => 'preRemove']);
 };
