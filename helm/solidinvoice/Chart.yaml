@@ -2,6 +2,7 @@ apiVersion: v2
 name: solidinvoice
 description: Simple and elegant open-source invoicing application
 type: application
+icon: https://solidinvoice.co/logo.png
 version: 1.0.0
 appVersion: "3.0.0"
 
