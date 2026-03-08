@@ -5,7 +5,7 @@ on:
     push:
         branches:
             - 2.3.x
-            - $default-branch
+            - 3.0.x
 
 permissions:
     contents: read

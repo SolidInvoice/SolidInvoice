@@ -7,7 +7,7 @@ concurrency:
 on:
   push:
     branches:
-      - $default-branch
+      - 3.0.x
 
 env:
   SOLIDINVOICE_ENV: prod
