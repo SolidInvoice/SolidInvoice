@@ -105,7 +105,7 @@ class Client implements Stringable
     private ?ClientStatus $status = null;
 
     #[ORM\Column(name: 'currency', type: Types::STRING, length: 3, nullable: true)]
-    #[Serialize\Groups(['client_api:read', 'client_api:write'])]
+    #[Serialize\Groups(['client_api:read', 'client_api:write', 'searchable'])]
     #[ApiProperty(
         openapiContext: [
             'type' => [

@@ -37,7 +37,7 @@ final class RecurringInvoiceResultFormatter implements QualifiedResultFormatterI
         return [
             'status' => 'status',
             'amount' => 'total',
-            'client' => 'clientName',
+            'client' => 'client.name',
         ];
     }
 
@@ -51,14 +51,14 @@ final class RecurringInvoiceResultFormatter implements QualifiedResultFormatterI
         return new SearchResult(
             type: 'recurring_invoice',
             id: $hit['id'],
-            title: $hit['clientName'] ?? $hit['id'],
+            title: $hit['client']['name'] ?? $hit['id'],
             subtitle: $hit['status'] ?? '',
             url: $this->router->generate('_invoices_view_recurring', ['id' => $hit['id']]),
             status: $hit['status'] ?? null,
             meta: isset($hit['total'])
                 ? $this->moneyFormatter->format(new Money(
                     BigDecimal::of((string) $hit['total'])->multipliedBy(100)->toScale(0, RoundingMode::HALF_EVEN)->toInt(),
-                    new Currency($hit['currencyCode'] ?? $this->systemConfig->getCurrency()->getCode()),
+                    new Currency($hit['client']['currencyCode'] ?? $this->systemConfig->getCurrency()->getCode()),
                 ))
                 : null,
         );

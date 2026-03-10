@@ -50,7 +50,7 @@ return static function (MeilisearchConfig $config): void {
         ->enableSerializerGroups(true)
         ->serializerGroups(['searchable'])
         ->settings([
-            'filterableAttributes' => ['companyId', 'status', 'total', 'clientName', 'created'],
+            'filterableAttributes' => ['companyId', 'status', 'total', 'client.name', 'created'],
             'sortableAttributes' => ['total', 'created'],
         ]);
 
@@ -60,7 +60,7 @@ return static function (MeilisearchConfig $config): void {
         ->enableSerializerGroups(true)
         ->serializerGroups(['searchable'])
         ->settings([
-            'filterableAttributes' => ['companyId', 'status', 'total', 'clientName'],
+            'filterableAttributes' => ['companyId', 'status', 'total', 'client.name'],
             'sortableAttributes' => ['total', 'created'],
         ]);
 
@@ -70,7 +70,7 @@ return static function (MeilisearchConfig $config): void {
         ->enableSerializerGroups(true)
         ->serializerGroups(['searchable'])
         ->settings([
-            'filterableAttributes' => ['companyId', 'status', 'total', 'clientName', 'created'],
+            'filterableAttributes' => ['companyId', 'status', 'total', 'client.name', 'created'],
             'sortableAttributes' => ['total', 'created'],
         ]);
 
@@ -80,7 +80,7 @@ return static function (MeilisearchConfig $config): void {
         ->enableSerializerGroups(true)
         ->serializerGroups(['searchable'])
         ->settings([
-            'filterableAttributes' => ['companyId', 'status', 'clientName', 'total'],
+            'filterableAttributes' => ['companyId', 'status', 'client.name', 'total'],
             'sortableAttributes' => ['total'],
         ]);
 };

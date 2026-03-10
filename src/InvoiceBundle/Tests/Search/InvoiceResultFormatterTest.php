@@ -62,7 +62,7 @@ final class InvoiceResultFormatterTest extends TestCase
         self::assertSame([
             'status' => 'status',
             'amount' => 'total',
-            'client' => 'clientName',
+            'client' => 'client.name',
             'created' => 'created',
         ], $this->formatter->getSupportedQualifiers());
     }
@@ -79,10 +79,9 @@ final class InvoiceResultFormatterTest extends TestCase
         $hit = [
             'id' => 'inv-1',
             'invoiceId' => 'INV-001',
-            'clientName' => 'Acme Corp',
+            'client' => ['name' => 'Acme Corp', 'currencyCode' => 'USD'],
             'status' => 'paid',
             'total' => '1500.00',
-            'currencyCode' => 'USD',
         ];
 
         $result = $this->formatter->format($hit);
@@ -101,7 +100,7 @@ final class InvoiceResultFormatterTest extends TestCase
         $this->router->method('generate')->willReturn('/invoices/inv-1');
         $this->moneyFormatter->method('format')->willReturn('$0.00');
 
-        $hit = ['id' => 'inv-1', 'total' => '0.00', 'currencyCode' => 'USD'];
+        $hit = ['id' => 'inv-1', 'total' => '0.00', 'client' => ['currencyCode' => 'USD']];
 
         $result = $this->formatter->format($hit);
 
@@ -146,7 +145,7 @@ final class InvoiceResultFormatterTest extends TestCase
             ->with(new Money(1550, new Currency('EUR')))
             ->willReturn('€15.50');
 
-        $hit = ['id' => 'inv-1', 'total' => '15.50', 'currencyCode' => 'EUR'];
+        $hit = ['id' => 'inv-1', 'total' => '15.50', 'client' => ['currencyCode' => 'EUR']];
 
         $result = $this->formatter->format($hit);
 

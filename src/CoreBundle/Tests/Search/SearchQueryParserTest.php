@@ -40,7 +40,7 @@ final class SearchQueryParserTest extends TestCase
 
             public function getSupportedQualifiers(): array
             {
-                return ['status' => 'status', 'amount' => 'total', 'client' => 'clientName', 'created' => 'created'];
+                return ['status' => 'status', 'amount' => 'total', 'client' => 'client.name', 'created' => 'created'];
             }
         };
 
@@ -58,7 +58,7 @@ final class SearchQueryParserTest extends TestCase
 
             public function getSupportedQualifiers(): array
             {
-                return ['status' => 'status', 'client' => 'clientName'];
+                return ['status' => 'status', 'client' => 'client.name'];
             }
         };
 
@@ -176,14 +176,14 @@ final class SearchQueryParserTest extends TestCase
     {
         $result = $this->parser->parse('client:acme');
 
-        self::assertSame(['clientName = "acme"'], $result->indexFilters['invoices'] ?? []);
+        self::assertSame(['client.name = "acme"'], $result->indexFilters['invoices'] ?? []);
     }
 
     public function testClientNameWithQuotesFilter(): void
     {
         $result = $this->parser->parse('client:"Acme Corp"');
 
-        self::assertSame(['clientName = "Acme Corp"'], $result->indexFilters['invoices'] ?? []);
+        self::assertSame(['client.name = "Acme Corp"'], $result->indexFilters['invoices'] ?? []);
     }
 
     public function testCreatedAfterFilter(): void

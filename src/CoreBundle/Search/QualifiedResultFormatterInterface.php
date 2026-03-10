@@ -18,7 +18,7 @@ interface QualifiedResultFormatterInterface extends ResultFormatterInterface
     /**
      * Map of qualifier names (as typed by the user) to Meilisearch attribute names.
      *
-     * Example: ['status' => 'status', 'amount' => 'total', 'client' => 'clientName']
+     * Example: ['status' => 'status', 'amount' => 'total', 'client' => 'client.name']
      *
      * @return array<string, string>
      */

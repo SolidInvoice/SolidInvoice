@@ -62,7 +62,7 @@ final class QuoteResultFormatterTest extends TestCase
         self::assertSame([
             'status' => 'status',
             'amount' => 'total',
-            'client' => 'clientName',
+            'client' => 'client.name',
             'created' => 'created',
         ], $this->formatter->getSupportedQualifiers());
     }
@@ -79,10 +79,9 @@ final class QuoteResultFormatterTest extends TestCase
         $hit = [
             'id' => 'q-1',
             'quoteId' => 'Q-001',
-            'clientName' => 'Beta Corp',
+            'client' => ['name' => 'Beta Corp', 'currencyCode' => 'USD'],
             'status' => 'draft',
             'total' => '750.00',
-            'currencyCode' => 'USD',
         ];
 
         $result = $this->formatter->format($hit);
@@ -100,7 +99,7 @@ final class QuoteResultFormatterTest extends TestCase
     {
         $this->router->method('generate')->willReturn('/quotes/q-1');
 
-        $result = $this->formatter->format(['id' => 'q-1', 'clientName' => 'Acme']);
+        $result = $this->formatter->format(['id' => 'q-1', 'client' => ['name' => 'Acme']]);
 
         self::assertSame('q-1', $result->title);
     }
@@ -142,7 +141,7 @@ final class QuoteResultFormatterTest extends TestCase
             ->with(new Money(75000, new Currency('USD')))
             ->willReturn('$750.00');
 
-        $hit = ['id' => 'q-1', 'total' => '750.00', 'currencyCode' => 'USD'];
+        $hit = ['id' => 'q-1', 'total' => '750.00', 'client' => ['currencyCode' => 'USD']];
 
         $result = $this->formatter->format($hit);
 
