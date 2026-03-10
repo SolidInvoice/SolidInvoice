@@ -29,7 +29,6 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
@@ -121,7 +120,7 @@ class Invoice extends BaseInvoice implements Stringable
     #[ORM\ManyToOne(targetEntity: Client::class, cascade: ['persist'], inversedBy: 'invoices')]
     #[ORM\JoinColumn(name: 'client_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     #[Assert\NotBlank]
-    #[Groups(['invoice_api:read', 'invoice_api:write'])]
+    #[Groups(['invoice_api:read', 'invoice_api:write', 'searchable'])]
     private ?Client $client = null;
 
     #[ORM\Column(name: 'balance_amount', type: BigIntegerType::NAME)]
@@ -429,26 +428,6 @@ class Invoice extends BaseInvoice implements Stringable
         $this->invoiceDate = $invoiceDate;
 
         return $this;
-    }
-
-    #[Groups(['searchable'])]
-    public function getClientName(): ?string
-    {
-        try {
-            return $this->client?->getName();
-        } catch (EntityNotFoundException) {
-            return null;
-        }
-    }
-
-    #[Groups(['searchable'])]
-    public function getCurrencyCode(): ?string
-    {
-        try {
-            return $this->client?->getCurrencyCode();
-        } catch (EntityNotFoundException) {
-            return null;
-        }
     }
 
     #[Groups(['searchable'])]

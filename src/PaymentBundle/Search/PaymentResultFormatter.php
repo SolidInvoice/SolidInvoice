@@ -36,7 +36,7 @@ final class PaymentResultFormatter implements QualifiedResultFormatterInterface
     {
         return [
             'status' => 'status',
-            'client' => 'clientName',
+            'client' => 'client.name',
             'amount' => 'total',
         ];
     }
@@ -49,17 +49,18 @@ final class PaymentResultFormatter implements QualifiedResultFormatterInterface
     public function format(array $hit): SearchResult
     {
         $reference = isset($hit['reference']) && $hit['reference'] !== '' ? $hit['reference'] : null;
-        $invoiceRef = isset($hit['invoiceRef']) && $hit['invoiceRef'] !== '' ? $hit['invoiceRef'] : null;
+        $invoiceRef = $hit['invoice']['invoiceId'] ?? null;
         $title = $reference ?? $invoiceRef ?? $hit['id'];
 
+        $clientName = $hit['client']['name'] ?? null;
         if ($invoiceRef !== null) {
-            $parts = array_filter([$hit['clientName'] ?? null, $invoiceRef]);
+            $parts = array_filter([$clientName, $invoiceRef]);
             $subtitle = implode(' — ', $parts);
         } else {
-            $subtitle = $hit['clientName'] ?? '';
+            $subtitle = $clientName ?? '';
         }
 
-        $invoiceId = isset($hit['invoiceId']) && $hit['invoiceId'] !== '' ? $hit['invoiceId'] : null;
+        $invoiceId = $hit['invoice']['id'] ?? null;
         $url = $invoiceId !== null
             ? $this->router->generate('_invoices_view', ['id' => $invoiceId])
             : $this->router->generate('_payments_index');

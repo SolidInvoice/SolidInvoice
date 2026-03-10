@@ -61,7 +61,7 @@ final class PaymentResultFormatterTest extends TestCase
     {
         self::assertSame([
             'status' => 'status',
-            'client' => 'clientName',
+            'client' => 'client.name',
             'amount' => 'total',
         ], $this->formatter->getSupportedQualifiers());
     }
@@ -73,9 +73,8 @@ final class PaymentResultFormatterTest extends TestCase
         $hit = [
             'id' => 'pay-1',
             'reference' => 'TXN-12345',
-            'invoiceRef' => 'INV-001',
-            'clientName' => 'Acme Corp',
-            'invoiceId' => 'inv-1',
+            'invoice' => ['invoiceId' => 'INV-001', 'id' => 'inv-1'],
+            'client' => ['name' => 'Acme Corp'],
             'status' => 'captured',
         ];
 
@@ -92,9 +91,8 @@ final class PaymentResultFormatterTest extends TestCase
 
         $hit = [
             'id' => 'pay-1',
-            'invoiceRef' => 'INV-001',
-            'clientName' => 'Acme Corp',
-            'invoiceId' => 'inv-1',
+            'invoice' => ['invoiceId' => 'INV-001', 'id' => 'inv-1'],
+            'client' => ['name' => 'Acme Corp'],
             'status' => 'captured',
         ];
 
@@ -118,9 +116,8 @@ final class PaymentResultFormatterTest extends TestCase
 
         $hit = [
             'id' => 'pay-1',
-            'invoiceRef' => 'INV-001',
-            'clientName' => 'Acme Corp',
-            'invoiceId' => 'inv-1',
+            'invoice' => ['invoiceId' => 'INV-001', 'id' => 'inv-1'],
+            'client' => ['name' => 'Acme Corp'],
         ];
 
         $result = $this->formatter->format($hit);
@@ -128,14 +125,13 @@ final class PaymentResultFormatterTest extends TestCase
         self::assertSame('Acme Corp — INV-001', $result->subtitle);
     }
 
-    public function testFormatSubtitleShowsOnlyClientWhenInvoiceRefIsEmpty(): void
+    public function testFormatSubtitleShowsOnlyClientWhenNoInvoice(): void
     {
         $this->router->method('generate')->willReturn('/payments');
 
         $hit = [
             'id' => 'pay-1',
-            'invoiceRef' => '',
-            'clientName' => 'Acme Corp',
+            'client' => ['name' => 'Acme Corp'],
         ];
 
         $result = $this->formatter->format($hit);
@@ -147,7 +143,7 @@ final class PaymentResultFormatterTest extends TestCase
     {
         $this->router->method('generate')->willReturn('/payments');
 
-        $hit = ['id' => 'pay-1', 'clientName' => 'Acme Corp'];
+        $hit = ['id' => 'pay-1', 'client' => ['name' => 'Acme Corp']];
 
         $result = $this->formatter->format($hit);
 
@@ -171,7 +167,7 @@ final class PaymentResultFormatterTest extends TestCase
             ->with('_invoices_view', ['id' => 'inv-99'])
             ->willReturn('/invoices/inv-99');
 
-        $this->formatter->format(['id' => 'pay-1', 'invoiceId' => 'inv-99']);
+        $this->formatter->format(['id' => 'pay-1', 'invoice' => ['id' => 'inv-99']]);
     }
 
     public function testFormatLinksToPaymentsIndexWhenNoInvoiceId(): void

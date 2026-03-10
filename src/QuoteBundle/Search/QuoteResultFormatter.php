@@ -37,7 +37,7 @@ final class QuoteResultFormatter implements QualifiedResultFormatterInterface
         return [
             'status' => 'status',
             'amount' => 'total',
-            'client' => 'clientName',
+            'client' => 'client.name',
             'created' => 'created',
         ];
     }
@@ -53,13 +53,13 @@ final class QuoteResultFormatter implements QualifiedResultFormatterInterface
             type: 'quote',
             id: $hit['id'],
             title: $hit['quoteId'] ?? $hit['id'],
-            subtitle: $hit['clientName'] ?? '',
+            subtitle: $hit['client']['name'] ?? '',
             url: $this->router->generate('_quotes_view', ['id' => $hit['id']]),
             status: $hit['status'] ?? null,
             meta: isset($hit['total'])
                 ? $this->moneyFormatter->format(new Money(
                     BigDecimal::of((string) $hit['total'])->multipliedBy(100)->toScale(0, RoundingMode::HALF_EVEN)->toInt(),
-                    new Currency($hit['currencyCode'] ?? $this->systemConfig->getCurrency()->getCode()),
+                    new Currency($hit['client']['currencyCode'] ?? $this->systemConfig->getCurrency()->getCode()),
                 ))
                 : null,
         );

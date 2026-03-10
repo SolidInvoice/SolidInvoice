@@ -120,7 +120,7 @@ class Quote
     )]
     #[ORM\ManyToOne(targetEntity: Client::class, cascade: ['persist'], inversedBy: 'quotes')]
     #[Assert\NotBlank]
-    #[Groups(['quote_api:read', 'quote_api:write'])]
+    #[Groups(['quote_api:read', 'quote_api:write', 'searchable'])]
     private ?Client $client = null;
 
     #[ORM\Column(name: 'total_amount', type: BigIntegerType::NAME)]
@@ -452,26 +452,6 @@ class Quote
     {
         foreach ($this->lines as $line) {
             $line->setQuote($this);
-        }
-    }
-
-    #[Groups(['searchable'])]
-    public function getClientName(): ?string
-    {
-        try {
-            return $this->client?->getName();
-        } catch (EntityNotFoundException) {
-            return null;
-        }
-    }
-
-    #[Groups(['searchable'])]
-    public function getCurrencyCode(): ?string
-    {
-        try {
-            return $this->client?->getCurrencyCode();
-        } catch (EntityNotFoundException) {
-            return null;
         }
     }
 

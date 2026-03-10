@@ -25,7 +25,6 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
@@ -96,7 +95,7 @@ class RecurringInvoice extends BaseInvoice
     )]
     #[ORM\ManyToOne(targetEntity: Client::class, cascade: ['persist'], inversedBy: 'recurringInvoices')]
     #[Assert\NotBlank]
-    #[Serialize\Groups(['recurring_invoice_api:read', 'recurring_invoice_api:write'])]
+    #[Serialize\Groups(['recurring_invoice_api:read', 'recurring_invoice_api:write', 'searchable'])]
     private ?Client $client = null;
 
     #[ORM\Column(name: 'date_start', type: Types::DATE_IMMUTABLE)]
@@ -306,26 +305,6 @@ class RecurringInvoice extends BaseInvoice
         $invoice->setRecurringInvoice(null);
 
         return $this;
-    }
-
-    #[Serialize\Groups(['searchable'])]
-    public function getClientName(): ?string
-    {
-        try {
-            return $this->client?->getName();
-        } catch (EntityNotFoundException) {
-            return null;
-        }
-    }
-
-    #[Serialize\Groups(['searchable'])]
-    public function getCurrencyCode(): ?string
-    {
-        try {
-            return $this->client?->getCurrencyCode();
-        } catch (EntityNotFoundException) {
-            return null;
-        }
     }
 
     #[Serialize\Groups(['searchable'])]

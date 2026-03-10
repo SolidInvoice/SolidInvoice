@@ -20,7 +20,6 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\Mapping as ORM;
 use Money\Currency;
 use Money\Money;
@@ -99,10 +98,12 @@ class Payment extends BasePayment
 
     #[ORM\ManyToOne(targetEntity: Invoice::class, inversedBy: 'payments')]
     #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
+    #[Groups(['searchable'])]
     private ?Invoice $invoice = null;
 
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'payments')]
     #[ORM\JoinColumn(name: 'client', nullable: true, onDelete: 'SET NULL')]
+    #[Groups(['searchable'])]
     private ?Client $client = null;
 
     #[ORM\ManyToOne(targetEntity: PaymentMethod::class, inversedBy: 'payments')]
@@ -288,36 +289,6 @@ class Payment extends BasePayment
         $this->notes = $notes;
 
         return $this;
-    }
-
-    #[Groups(['searchable'])]
-    public function getClientName(): ?string
-    {
-        try {
-            return $this->client?->getName();
-        } catch (EntityNotFoundException) {
-            return null;
-        }
-    }
-
-    #[Groups(['searchable'])]
-    public function getInvoiceId(): ?string
-    {
-        try {
-            return $this->invoice?->getId()?->toBase58();
-        } catch (EntityNotFoundException) {
-            return null;
-        }
-    }
-
-    #[Groups(['searchable'])]
-    public function getInvoiceRef(): ?string
-    {
-        try {
-            return $this->invoice?->getInvoiceId();
-        } catch (EntityNotFoundException) {
-            return null;
-        }
     }
 
     #[Groups(['searchable'])]

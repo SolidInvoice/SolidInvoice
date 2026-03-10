@@ -62,7 +62,7 @@ final class RecurringInvoiceResultFormatterTest extends TestCase
         self::assertSame([
             'status' => 'status',
             'amount' => 'total',
-            'client' => 'clientName',
+            'client' => 'client.name',
         ], $this->formatter->getSupportedQualifiers());
     }
 
@@ -82,10 +82,9 @@ final class RecurringInvoiceResultFormatterTest extends TestCase
 
         $hit = [
             'id' => 'rec-1',
-            'clientName' => 'Acme Corp',
+            'client' => ['name' => 'Acme Corp', 'currencyCode' => 'USD'],
             'status' => 'active',
             'total' => '200.00',
-            'currencyCode' => 'USD',
         ];
 
         $result = $this->formatter->format($hit);
@@ -145,7 +144,7 @@ final class RecurringInvoiceResultFormatterTest extends TestCase
             ->with(new Money(50000, new Currency('EUR')))
             ->willReturn('€500.00');
 
-        $hit = ['id' => 'rec-1', 'total' => '500.00', 'currencyCode' => 'EUR'];
+        $hit = ['id' => 'rec-1', 'total' => '500.00', 'client' => ['currencyCode' => 'EUR']];
 
         $result = $this->formatter->format($hit);
 
