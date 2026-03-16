@@ -61,17 +61,32 @@
     </div>
 
     {# Time Entry List Card #}
-    <twig:Ui:Card>
-        <twig:block name="header">
-            <div class="d-flex justify-content-between align-items-center w-100">
-                <span class="fw-medium">Time Entries (Pending)</span>
-                <a href="{{ path('_time_tracking_entry_create') }}" class="btn btn-sm btn-primary">
-                    {{ ux_icon('tabler:plus', {width: 16, height: 16}) }}
-                    Log Time
-                </a>
+    <div class="card">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs">
+                <li class="nav-item">
+                    <a href="#tab-pending" class="nav-link active" data-bs-toggle="tab">
+                        {{ ux_icon('tabler:clock', {width: 16, height: 16, class: 'me-1'}) }}
+                        Pending
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#tab-invoiced" class="nav-link" data-bs-toggle="tab">
+                        {{ ux_icon('tabler:file-invoice', {width: 16, height: 16, class: 'me-1'}) }}
+                        Invoiced
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body">
+            <div class="tab-content">
+                <div class="tab-pane active show" id="tab-pending">
+                    <twig:DataGrid name="time_entry_grid" />
+                </div>
+                <div class="tab-pane" id="tab-invoiced">
+                    <twig:DataGrid name="time_entry_grid" :context="{'status': 'invoiced'}" />
+                </div>
             </div>
-        </twig:block>
-
-        <twig:DataGrid name="time_entry_grid" />
-    </twig:Ui:Card>
+        </div>
+    </div>
 {% endblock content %}

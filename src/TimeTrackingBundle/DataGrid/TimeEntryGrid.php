@@ -138,12 +138,10 @@ final class TimeEntryGrid extends Grid
                 ->setParameter('client_id', $this->context['client_id'], UlidType::NAME);
         }
 
-        // Default filter: only pending (not invoiced)
-        if (! isset($this->context['show_all'])) {
-            $query->getQueryBuilder()
-                ->andWhere(ORMSource::ALIAS . '.status = :status')
-                ->setParameter('status', TimeEntryStatus::Pending->value);
-        }
+        $status = $this->context['status'] ?? TimeEntryStatus::Pending->value;
+        $query->getQueryBuilder()
+            ->andWhere(ORMSource::ALIAS . '.status = :status')
+            ->setParameter('status', $status);
 
         return $query;
     }
