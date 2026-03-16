@@ -28,6 +28,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use SolidInvoice\CoreBundle\Entity\LineInterface;
+use SolidInvoice\CoreBundle\Enum\LineItemType;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceLineType;
@@ -149,6 +150,10 @@ class Line implements LineInterface, Stringable
     )]
     protected BigNumber $total;
 
+    #[ORM\Column(name: 'line_item_type', type: Types::STRING, length: 50, enumType: LineItemType::class)]
+    #[Groups(['invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write'])]
+    protected LineItemType $lineItemType = LineItemType::Standard;
+
     public function __construct()
     {
         $this->total = BigDecimal::zero();
@@ -245,6 +250,18 @@ class Line implements LineInterface, Stringable
     public function updateTotal(): static
     {
         $this->total = $this->getPrice()->toBigDecimal()->multipliedBy($this->qty);
+
+        return $this;
+    }
+
+    public function getLineItemType(): LineItemType
+    {
+        return $this->lineItemType;
+    }
+
+    public function setLineItemType(LineItemType $type): static
+    {
+        $this->lineItemType = $type;
 
         return $this;
     }

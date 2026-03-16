@@ -26,5 +26,6 @@ return static function (TwigComponentConfig $config): void {
         ->defaults('SolidInvoice\SettingsBundle\Twig\Components\\', '@SolidInvoiceSettings/Components')
         ->defaults('SolidInvoice\PaymentBundle\Twig\Components\\', '@SolidInvoicePayment/Components')
         ->defaults('SolidInvoice\UserBundle\Twig\Components\\', '@SolidInvoiceUser/Components')
+        ->defaults('SolidInvoice\TimeTrackingBundle\Twig\Components\\', '@SolidInvoiceTimeTracking/Components')
     ;
 };

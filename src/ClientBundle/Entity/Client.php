@@ -20,6 +20,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use Brick\Math\BigNumber;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -27,6 +28,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Money\Currency;
 use SolidInvoice\ClientBundle\Enum\ClientStatus;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
+use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
@@ -134,6 +136,9 @@ class Client implements Stringable
     #[ORM\Column(name: 'vat_number', type: Types::STRING, nullable: true)]
     #[Serialize\Groups(['client_api:read', 'client_api:write'])]
     private ?string $vatNumber = null;
+
+    #[ORM\Column(name: 'hourly_rate', type: BigIntegerType::NAME, nullable: true)]
+    private ?BigNumber $hourlyRate = null;
 
     /**
      * @var Collection<int, Contact>
@@ -458,6 +463,18 @@ class Client implements Stringable
     public function setVatNumber(?string $vatNumber): self
     {
         $this->vatNumber = $vatNumber;
+
+        return $this;
+    }
+
+    public function getHourlyRate(): ?BigNumber
+    {
+        return $this->hourlyRate;
+    }
+
+    public function setHourlyRate(?BigNumber $hourlyRate): self
+    {
+        $this->hourlyRate = $hourlyRate;
 
         return $this;
     }

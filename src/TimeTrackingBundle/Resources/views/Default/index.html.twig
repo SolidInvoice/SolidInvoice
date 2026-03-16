@@ -1,0 +1,87 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
+
+{% block title %}
+    {{ ux_icon('tabler:clock-hour-3', {width: 24, height: 24, class: 'me-2'}) }}Time Tracking
+{% endblock title %}
+
+{% block heading %}
+    <a class="btn btn-primary" href="{{ path('_time_tracking_entry_create') }}">
+        {{ ux_icon('tabler:clock-plus', {width: 18, height: 18}) }}
+        Log Time
+    </a>
+{% endblock %}
+
+{% block content %}
+    {# Stats Row #}
+    <div class="row row-deck row-cards mb-4">
+        <div class="col-sm-6 col-lg-3">
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="bg-warning text-white avatar">
+                                {{ ux_icon('tabler:clock', {width: 24, height: 24}) }}
+                            </span>
+                        </div>
+                        <div class="col">
+                            <div class="fw-medium">{{ pendingCount }}</div>
+                            <div class="text-secondary">Pending Entries</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="bg-success text-white avatar">
+                                {{ ux_icon('tabler:file-invoice', {width: 24, height: 24}) }}
+                            </span>
+                        </div>
+                        <div class="col">
+                            <div class="fw-medium">{{ invoicedCount }}</div>
+                            <div class="text-secondary">Invoiced Entries</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# Time Entry List Card #}
+    <twig:Ui:Card>
+        <twig:block name="header">
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <span class="fw-medium">Time Entries (Pending)</span>
+                <a href="{{ path('_time_tracking_entry_create') }}" class="btn btn-sm btn-primary">
+                    {{ ux_icon('tabler:plus', {width: 16, height: 16}) }}
+                    Log Time
+                </a>
+            </div>
+        </twig:block>
+
+        <form method="post" action="{{ path('_time_tracking_generate_invoice') }}" id="time-entry-form">
+            <input type="hidden" name="_token" value="{{ csrf_token('generate_invoice') }}">
+            <twig:DataGrid name="time_entry_grid" />
+
+            <div class="card-footer d-flex justify-content-end gap-2">
+                <button type="submit" class="btn btn-primary">
+                    {{ ux_icon('tabler:file-invoice', {width: 16, height: 16}) }}
+                    Generate Invoice from Selected
+                </button>
+            </div>
+        </form>
+    </twig:Ui:Card>
+{% endblock content %}

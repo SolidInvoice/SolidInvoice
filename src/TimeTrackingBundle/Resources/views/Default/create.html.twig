@@ -1,0 +1,58 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
+
+{% block title %}
+    {{ ux_icon('tabler:clock-plus', {width: 24, height: 24, class: 'me-2'}) }}Log Time
+{% endblock title %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-8 col-xl-6">
+            <twig:Ui:Card>
+                <twig:block name="header">
+                    <span class="fw-medium">
+                        {{ ux_icon('tabler:clock-plus', {width: 18, height: 18, class: 'me-2'}) }}
+                        Log Time Entry
+                    </span>
+                </twig:block>
+
+                {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+                    <div class="card-body">
+                        <div class="mb-3">
+                            {{ form_row(form.client) }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_row(form.date) }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_row(form.duration) }}
+                            <div class="form-text text-muted">Format: HH:MM (e.g. 1:30 for 1 hour 30 minutes)</div>
+                        </div>
+                        <div class="mb-3">
+                            {{ form_row(form.description) }}
+                        </div>
+                    </div>
+
+                    <div class="card-footer d-flex justify-content-between">
+                        <a href="{{ path('_time_tracking_index') }}" class="btn btn-ghost">
+                            {{ ux_icon('tabler:arrow-left', {width: 16, height: 16}) }}
+                            Cancel
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            {{ ux_icon('tabler:device-floppy', {width: 16, height: 16}) }}
+                            Save Entry
+                        </button>
+                    </div>
+                {{ form_end(form) }}
+            </twig:Ui:Card>
+        </div>
+    </div>
+{% endblock content %}

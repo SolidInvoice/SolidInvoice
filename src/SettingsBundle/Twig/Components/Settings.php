@@ -49,6 +49,7 @@ final class Settings extends AbstractController
         'payment' => 'credit-card',
         'tax' => 'balance-scale',
         'system' => 'cog',
+        'time_tracking' => 'clock-hour-3',
     ];
 
     #[LiveProp(writable: true, onUpdated: 'onSectionChange', url: true)]

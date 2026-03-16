@@ -37,6 +37,7 @@ $bundles = [
     SolidInvoice\SettingsBundle\SolidInvoiceSettingsBundle::class => ['all' => true],
     SolidInvoice\TaxBundle\SolidInvoiceTaxBundle::class => ['all' => true],
     SolidInvoice\UserBundle\SolidInvoiceUserBundle::class => ['all' => true],
+    SolidInvoice\TimeTrackingBundle\SolidInvoiceTimeTrackingBundle::class => ['all' => true],
     Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle::class => ['dev' => true, 'test' => true],
     Liip\TestFixturesBundle\LiipTestFixturesBundle::class => ['dev' => true, 'test' => true],
     Symfony\Bundle\DebugBundle\DebugBundle::class => ['dev' => true],

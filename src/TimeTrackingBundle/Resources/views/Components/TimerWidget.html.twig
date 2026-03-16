@@ -1,0 +1,127 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+<div {{ attributes.defaults({'class': 'nav-item d-none d-lg-flex me-3'}) }}>
+
+    {% if timer is not null %}
+        <div class="d-flex align-items-center gap-2"
+             {{ stimulus_controller('timer', {
+                 elapsed: this.elapsedSeconds,
+                 running: this.isRunning()
+             }) }}>
+
+            {# Pulsing status dot #}
+            <span class="spinner-grow spinner-grow-sm {{ this.isRunning() ? 'text-success' : 'text-warning' }}"
+                  role="status" aria-hidden="true" style="width: 8px; height: 8px; flex-shrink: 0;"></span>
+
+            {# Elapsed time display — updated by Stimulus timer controller #}
+            <span class="fw-medium font-monospace"
+                  {{ stimulus_target('timer', 'display') }}>
+                {{ '%02d:%02d:%02d'|format(
+                    (this.elapsedSeconds / 3600)|round(0, 'floor'),
+                    ((this.elapsedSeconds % 3600) / 60)|round(0, 'floor'),
+                    this.elapsedSeconds % 60
+                ) }}
+            </span>
+
+            {# Details dropdown #}
+            <div class="dropdown">
+                <button type="button"
+                        class="btn btn-sm btn-ghost-secondary d-flex align-items-center gap-1 px-1 py-0"
+                        data-bs-toggle="dropdown"
+                        data-bs-auto-close="outside"
+                        aria-expanded="false"
+                        title="Timer details">
+                    {% if timer.client is not null %}
+                        <span class="text-muted small text-truncate" style="max-width: 80px;">
+                            {{ timer.client.name }}
+                        </span>
+                    {% endif %}
+                    {{ ux_icon('tabler:notes', {
+                        width: 13, height: 13,
+                        class: (timer.description is not null and timer.description is not empty) ? 'text-primary' : 'text-muted'
+                    }) }}
+                    {{ ux_icon('tabler:chevron-down', {width: 12, height: 12, class: 'text-muted'}) }}
+                </button>
+
+                <div class="dropdown-menu dropdown-menu-end shadow" style="min-width: 260px; padding: 1rem;">
+                    <p class="text-muted small fw-medium mb-2 mt-0">Timer Details</p>
+
+                    <div class="mb-3">
+                        <label class="form-label small mb-1">What are you working on?</label>
+                        <textarea class="form-control form-control-sm"
+                                  rows="2"
+                                  placeholder="Description (optional)"
+                                  maxlength="500"
+                                  data-model="norender|description">{{ description ?? '' }}</textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small mb-1">Client</label>
+                        <select class="form-select form-select-sm" data-model="norender|clientId">
+                            <option value="">— No client —</option>
+                            {% for client in this.clients %}
+                                <option value="{{ client.id }}"
+                                        {% if clientId == client.id %}selected{% endif %}>
+                                    {{ client.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <button type="button"
+                            class="btn btn-sm btn-primary w-100"
+                            data-action="timer#closeDropdown live#action"
+                            data-live-action-param="updateDetails">
+                        {{ ux_icon('tabler:device-floppy', {width: 14, height: 14}) }}
+                        Save Details
+                    </button>
+                </div>
+            </div>
+
+            {# Pause / Resume #}
+            {% if this.isRunning() %}
+                <button type="button"
+                        class="btn btn-sm btn-outline-warning"
+                        data-action="live#action"
+                        data-live-action-param="pause"
+                        title="Pause timer">
+                    {{ ux_icon('tabler:player-pause', {width: 14, height: 14}) }}
+                </button>
+            {% else %}
+                <button type="button"
+                        class="btn btn-sm btn-outline-success"
+                        data-action="live#action"
+                        data-live-action-param="resume"
+                        title="Resume timer">
+                    {{ ux_icon('tabler:player-play', {width: 14, height: 14}) }}
+                </button>
+            {% endif %}
+
+            {# Stop #}
+            <button type="button"
+                    class="btn btn-sm btn-outline-danger"
+                    data-action="live#action"
+                    data-live-action-param="stop"
+                    title="Stop and save entry">
+                {{ ux_icon('tabler:player-stop', {width: 14, height: 14}) }}
+            </button>
+        </div>
+
+    {% else %}
+        <button type="button"
+                class="btn btn-sm btn-ghost-secondary d-flex align-items-center gap-1"
+                data-action="live#action"
+                data-live-action-param="start"
+                title="Start a new timer">
+            {{ ux_icon('tabler:clock-play', {width: 16, height: 16}) }}
+            <span>Start Timer</span>
+        </button>
+    {% endif %}
+</div>

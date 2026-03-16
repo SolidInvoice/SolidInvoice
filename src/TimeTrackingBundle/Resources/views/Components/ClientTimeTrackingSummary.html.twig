@@ -1,0 +1,28 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% set pendingCount = this.pendingCount %}
+{% set totalDuration = this.totalPendingDuration %}
+
+{% if pendingCount > 0 %}
+    <div class="d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center gap-2">
+            <span class="bg-info text-white avatar avatar-sm">
+                {{ ux_icon('tabler:clock-hour-3', {width: 16, height: 16}) }}
+            </span>
+            <div>
+                <div class="fw-medium">{{ this.formatDuration(totalDuration) }} uninvoiced</div>
+                <div class="text-muted small">{{ pendingCount }} time {{ pendingCount == 1 ? 'entry' : 'entries' }}</div>
+            </div>
+        </div>
+        <a href="{{ path('_time_tracking_index') }}" class="btn btn-sm btn-outline-info">
+            View Time Entries
+        </a>
+    </div>
+{% endif %}

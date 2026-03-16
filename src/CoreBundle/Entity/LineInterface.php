@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Entity;
 
 use Brick\Math\BigNumber;
+use SolidInvoice\CoreBundle\Enum\LineItemType;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use Symfony\Component\Uid\Ulid;
 
@@ -40,4 +41,8 @@ interface LineInterface
     public function getTax(): ?Tax;
 
     public function setTax(?Tax $tax): self;
+
+    public function getLineItemType(): LineItemType;
+
+    public function setLineItemType(LineItemType $type): self;
 }

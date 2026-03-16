@@ -32,4 +32,8 @@ class Icon
     final public const RECURRING_INVOICE = 'rotate-2';
 
     final public const RECURRING_INVOICE_ADD = 'text-plus';
+
+    final public const TIME_TRACKING = 'clock-hour-3';
+
+    final public const TIME_ENTRY_ADD = 'clock-plus';
 }

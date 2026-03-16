@@ -28,5 +28,6 @@ enum MenuPriority: int
     case PRIORITY_RECURRING_INVOICE = 70;
     case PRIORITY_QUOTE = 60;
     case PRIORITY_PAYMENT = 50;
+    case PRIORITY_TIME_TRACKING = 40;
     case PRIORITY_SYSTEM = 10;
 }

@@ -18,6 +18,7 @@ use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\MoneyBundle\Form\Type\CurrencyType;
 use SolidInvoice\TaxBundle\Form\Type\TaxNumberType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -43,6 +44,16 @@ class ClientType extends AbstractType
         );
 
         $builder->add('vat_number', TaxNumberType::class, ['required' => false]);
+
+        $builder->add(
+            'hourlyRate',
+            IntegerType::class,
+            [
+                'required' => false,
+                'label' => 'Hourly Rate (in cents)',
+                'attr' => ['min' => 0],
+            ]
+        );
 
         $builder->add(
             'contacts',
