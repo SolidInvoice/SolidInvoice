@@ -13,10 +13,18 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use SolidInvoice\ApiBundle\State\Processor\ApiTokenCreateProcessor;
+use SolidInvoice\ApiBundle\State\Provider\ApiTokenCollectionProvider;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\UserBundle\Repository\ApiTokenRepository;
@@ -24,12 +32,30 @@ use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(ApiToken::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: ApiTokenRepository::class)]
 #[UniqueEntity(['name', 'user'])]
+#[ApiResource(
+    uriTemplate: '/profile/api-tokens',
+    operations: [
+        new GetCollection(provider: ApiTokenCollectionProvider::class),
+        new Post(processor: ApiTokenCreateProcessor::class),
+    ],
+    normalizationContext: ['groups' => ['api_token:read']],
+    denormalizationContext: ['groups' => ['api_token:write']],
+)]
+#[ApiResource(
+    uriTemplate: '/profile/api-tokens/{id}',
+    operations: [
+        new Get(),
+        new Delete(),
+    ],
+    normalizationContext: ['groups' => ['api_token:read']],
+)]
 class ApiToken
 {
     final public const TABLE_NAME = 'api_tokens';
@@ -41,16 +67,21 @@ class ApiToken
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UlidGenerator::class)]
+    #[Groups(['api_token:read'])]
     private ?Ulid $id = null;
 
     #[ORM\Column(type: Types::STRING, length: 125)]
     #[Assert\NotBlank]
+    #[Groups(['api_token:read', 'api_token:write'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::STRING, length: 125)]
+    #[ApiProperty(writable: false, openapiContext: ['description' => 'The API token value. Only visible on creation.'])]
+    #[Groups(['api_token:read'])]
     private ?string $token = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['api_token:read', 'api_token:write'])]
     private ?string $description = null;
 
     /**
