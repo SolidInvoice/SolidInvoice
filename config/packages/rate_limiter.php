@@ -14,7 +14,7 @@ declare(strict_types=1);
 use Symfony\Config\FrameworkConfig;
 
 return static function (FrameworkConfig $config): void {
-    $config->rateLimiter('api_global')
+    $config->rateLimiter()->limiter('api_global')
         ->policy('sliding_window')
         ->limit(300)
         ->interval('1 minute');
