@@ -15,7 +15,7 @@ namespace SolidInvoice\TimeTrackingBundle\Config;
 
 use SolidInvoice\SettingsBundle\Config\ProviderInterface;
 use SolidInvoice\SettingsBundle\DTO\Config;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 
 final class ConfigProvider implements ProviderInterface
 {
@@ -25,9 +25,9 @@ final class ConfigProvider implements ProviderInterface
             new Config(
                 'time_tracking/hourly_rate',
                 '0',
-                'Default hourly rate in cents (e.g. 5000 = $50.00)',
-                IntegerType::class,
-                ['attr' => ['min' => 0]],
+                'Default hourly rate for time entries',
+                MoneyType::class,
+                ['required' => false],
             ),
         ];
     }

@@ -13,13 +13,18 @@ declare(strict_types=1);
 
 namespace SolidInvoice\TimeTrackingBundle\DataGrid;
 
+use Brick\Math\BigDecimal;
+use Brick\Math\BigNumber;
+use Brick\Math\RoundingMode;
 use Doctrine\ORM\EntityManagerInterface;
+use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
 use SolidInvoice\DataGridBundle\Grid;
 use SolidInvoice\DataGridBundle\GridBuilder\Action\EditAction;
 use SolidInvoice\DataGridBundle\GridBuilder\Batch\BatchAction;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\DateTimeColumn;
+use SolidInvoice\DataGridBundle\GridBuilder\Column\MoneyColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StatusColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Filter\ChoiceFilter;
@@ -27,6 +32,7 @@ use SolidInvoice\DataGridBundle\GridBuilder\Filter\DateRangeFilter;
 use SolidInvoice\DataGridBundle\GridBuilder\Filter\EntityFilter;
 use SolidInvoice\DataGridBundle\GridBuilder\Query;
 use SolidInvoice\DataGridBundle\Source\ORMSource;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\TimeTrackingBundle\Entity\TimeEntry;
 use SolidInvoice\TimeTrackingBundle\Enum\TimeEntryStatus;
 use SolidInvoice\TimeTrackingBundle\Manager\TimeEntryManager;
@@ -42,6 +48,7 @@ final class TimeEntryGrid extends Grid
     public function __construct(
         private readonly TimeEntryManager $timeEntryManager,
         private readonly RouterInterface $router,
+        private readonly SystemConfig $systemConfig,
     ) {
     }
 
@@ -76,6 +83,19 @@ final class TimeEntryGrid extends Grid
                     $minutes = (int) floor(($seconds % 3600) / 60);
 
                     return sprintf('%dh %02dm', $hours, $minutes);
+                }),
+            MoneyColumn::new('hourlyRate')
+                ->label('Total')
+                ->sortable(false)
+                ->searchable(false)
+                ->formatValue(function (BigNumber $rate, TimeEntry $entry): Money {
+                    $hours = BigDecimal::of($entry->getDuration())->dividedBy(3600, 6, RoundingMode::HALF_UP);
+                    $totalCents = BigDecimal::of($rate)->multipliedBy($hours)->toScale(0, RoundingMode::HALF_UP);
+                    $currency = $entry->getClient()?->getCurrencyCode() !== null
+                        ? $entry->getClient()->getCurrency()
+                        : $this->systemConfig->getCurrency();
+
+                    return new Money((string) $totalCents, $currency);
                 }),
             StatusColumn::new('status')
                 ->statusMap(['pending' => 'warning', 'invoiced' => 'success'])

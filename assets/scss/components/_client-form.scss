@@ -6,6 +6,41 @@
  */
 
 // ============================================================================
+// TWO-COLUMN LAYOUT
+// ============================================================================
+
+.client-form-layout {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: var(--swp-space-6);
+    align-items: start;
+
+    @media (width <= 992px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.client-form-main {
+    display: flex;
+    flex-direction: column;
+    gap: var(--swp-space-6);
+    min-width: 0;
+}
+
+.client-form-aside {
+    display: flex;
+    flex-direction: column;
+    gap: var(--swp-space-4);
+    min-width: 0;
+    position: sticky;
+    top: calc(var(--swp-navbar-height, 64px) + var(--swp-space-4));
+
+    @media (width <= 992px) {
+        position: static;
+    }
+}
+
+// ============================================================================
 // OPTIONAL SECTION VARIANT
 // ============================================================================
 

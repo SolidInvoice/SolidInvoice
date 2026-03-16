@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 use SolidInvoice\TimeTrackingBundle\SolidInvoiceTimeTrackingBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
@@ -23,7 +22,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autoconfigure()
         ->autowire()
         ->private()
-        ->bind('$invoiceStateMachine', service('state_machine.invoice'))
     ;
 
     $services

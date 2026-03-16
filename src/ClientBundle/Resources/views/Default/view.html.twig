@@ -41,6 +41,12 @@
                             <span>{{ client.currencyCode }}</span>
                         </span>
                     {% endif %}
+                    {% if client.hourlyRate is not null and not client.hourlyRate.isZero() %}
+                        <span class="client-hero-meta-item">
+                            {{ ux_icon('tabler:clock-dollar', {width: 16, height: 16}) }}
+                            <span>{{ client.hourlyRate|formatCurrency(client.currencyCode ?? null) }}/hr</span>
+                        </span>
+                    {% endif %}
                     {% if client.vatNumber is not empty %}
                         <span class="client-hero-meta-item">
                             {{ ux_icon('tabler:receipt-tax', {width: 16, height: 16}) }}

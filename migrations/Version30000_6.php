@@ -19,12 +19,14 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
 use Symfony\Bridge\Doctrine\Types\UlidType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Uid\Ulid;
 
 final class Version30000_6 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Add time tracking tables and line item type columns for invoice/quote lines';
+        return 'Add time tracking tables, line item type columns for invoice/quote lines, and time_tracking/hourly_rate setting';
     }
 
     public function isTransactional(): bool
@@ -95,6 +97,29 @@ final class Version30000_6 extends AbstractMigration
         $entriesTable->addForeignKeyConstraint('time_tracking_timers', ['timer_id'], ['id'], ['onDelete' => 'SET NULL']);
     }
 
+    public function postUp(Schema $schema): void
+    {
+        $companies = $this->connection
+            ->createQueryBuilder()
+            ->select('id')
+            ->from('companies')
+            ->executeQuery();
+
+        foreach ($companies->iterateAssociative() as $company) {
+            $this->connection->insert(
+                'app_config',
+                [
+                    'id' => (new Ulid())->toBinary(),
+                    'company_id' => $company['id'],
+                    'setting_key' => 'time_tracking/hourly_rate',
+                    'setting_value' => '0',
+                    'description' => 'Default hourly rate for time entries',
+                    'field_type' => MoneyType::class,
+                ]
+            );
+        }
+    }
+
     public function down(Schema $schema): void
     {
         // Drop new tables (entries first due to FK dependency on timers)
@@ -112,5 +137,15 @@ final class Version30000_6 extends AbstractMigration
         // Remove line_item_type from invoice_lines
         $invoiceLinesTable = $schema->getTable('invoice_lines');
         $invoiceLinesTable->dropColumn('line_item_type');
+    }
+
+    public function postDown(Schema $schema): void
+    {
+        $this->connection
+            ->createQueryBuilder()
+            ->delete('app_config')
+            ->where('setting_key = :key')
+            ->setParameter('key', 'time_tracking/hourly_rate')
+            ->executeStatement();
     }
 }

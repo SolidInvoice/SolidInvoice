@@ -18,7 +18,7 @@
 
     {{ form_errors(form) }}
 
-    <div class="form-page-container form-page-container--medium">
+    <div class="form-page-container form-page-container--wide">
         {# Page Header #}
         <div class="form-page-header">
             <div class="form-page-header-content">
@@ -36,138 +36,178 @@
             </div>
         </div>
 
-        {# Main Form Content - Single Column Flow #}
-        <div class="form-page-sections">
+        {# Main Form Content - Two-Column Layout #}
+        <div class="client-form-layout">
 
-            {# Section 1: Business Details #}
-            <section class="form-page-section" id="client-info">
-                <div class="section-header">
-                    <div class="section-icon">
-                        {{ ux_icon('tabler:building', {width: 20, height: 20}) }}
-                    </div>
-                    <div class="section-header-text">
-                        <h2 class="section-title">{{ 'client.info'|trans }}</h2>
-                        <p class="section-description">{{ 'client.form.info_description'|trans }}</p>
-                    </div>
-                </div>
+            {# Main column: required sections #}
+            <div class="client-form-main">
 
-                <div class="section-content">
-                    <div class="form-grid">
-                        <div class="form-field form-field-wide">
-                            {{ form_row(form.name, {
+                {# Section: Business Details #}
+                <section class="form-page-section" id="client-info">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            {{ ux_icon('tabler:building', {width: 20, height: 20}) }}
+                        </div>
+                        <div class="section-header-text">
+                            <h2 class="section-title">{{ 'client.info'|trans }}</h2>
+                            <p class="section-description">{{ 'client.form.info_description'|trans }}</p>
+                        </div>
+                    </div>
+
+                    <div class="section-content">
+                        <div class="form-grid">
+                            <div class="form-field form-field-wide">
+                                {{ form_row(form.name, {
+                                    attr: {
+                                        placeholder: 'Acme Corporation'|trans
+                                    }
+                                }) }}
+                            </div>
+
+                            <div class="form-field">
+                                {{ form_row(form.website, {
+                                    attr: {
+                                        placeholder: 'https://example.com'
+                                    }
+                                }) }}
+                            </div>
+
+                            <div class="form-field form-field-wide">
+                                {{ form_row(form.vat_number, {
+                                    attr: {
+                                        placeholder: 'VAT123456789'
+                                    }
+                                }) }}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {# Section: Contacts #}
+                <section class="form-page-section" id="client-contacts-collection">
+                    <div class="section-header">
+                        <div class="section-icon section-icon-required">
+                            {{ ux_icon('tabler:users', {width: 20, height: 20}) }}
+                        </div>
+                        <div class="section-header-text">
+                            <h2 class="section-title">
+                                {{ 'client.contact.info'|trans }}
+                                <span class="badge bg-primary-lt ms-1">{{ 'required'|trans }}</span>
+                            </h2>
+                            <p class="section-description">{{ 'client.form.contact_description'|trans }}</p>
+                        </div>
+                    </div>
+
+                    <div class="section-content">
+                        <div class="contacts-list">
+                            {% for contact in form.contacts %}
+                                {{ form_row(contact) }}
+                            {% else %}
+                                <div class="empty-contacts-hint">
+                                    <p class="text-muted mb-0">{{ 'client.contact.empty_hint'|trans }}</p>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        {{ form_errors(form.contacts) }}
+
+                        <div class="add-item-action">
+                            {{ form_widget(form.contacts.vars.button_add, {
+                                label: 'client.contact.add'|trans,
                                 attr: {
-                                    placeholder: 'Acme Corporation'|trans
+                                    class: 'btn btn-outline-primary add-item-btn'
                                 }
                             }) }}
                         </div>
+                    </div>
+                </section>
 
-                        <div class="form-field">
-                            {{ form_row(form.website, {
-                                attr: {
-                                    placeholder: 'https://example.com'
-                                }
-                            }) }}
+            </div>{# /.client-form-main #}
+
+            {# Sidebar: optional settings #}
+            <aside class="client-form-aside">
+
+                {# Section: Billing & Rates #}
+                <section class="form-page-section client-form-section-optional" id="client-billing">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            {{ ux_icon('tabler:wallet', {width: 20, height: 20}) }}
                         </div>
+                        <div class="section-header-text">
+                            <h2 class="section-title">
+                                Billing &amp; Rates
+                                <span class="badge bg-secondary-lt ms-1">{{ 'optional'|trans }}</span>
+                            </h2>
+                            <p class="section-description">Currency and time tracking rate for this client.</p>
+                        </div>
+                    </div>
 
-                        <div class="form-field">
+                    <div class="section-content">
+                        <div class="mb-3">
                             {{ form_row(form.currencyCode) }}
                         </div>
 
-                        <div class="form-field form-field-wide">
-                            {{ form_row(form.vat_number, {
+                        {{ form_row(form.hourlyRate) }}
+
+                        <div class="d-flex align-items-start gap-2 mt-3 p-3 bg-info-lt rounded text-secondary small">
+                            {{ ux_icon('tabler:info-circle', {width: 14, height: 14, class: 'flex-shrink-0 mt-1'}) }}
+                            <span>
+                                If left blank, the global rate from
+                                <strong>Settings &rarr; Time Tracking</strong>
+                                is used. Client rate always takes precedence.
+                            </span>
+                        </div>
+                    </div>
+                </section>
+
+                {# Section: Addresses #}
+                <section class="form-page-section client-form-section-optional" id="client-address-collection">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            {{ ux_icon('tabler:map-pin', {width: 20, height: 20}) }}
+                        </div>
+                        <div class="section-header-text">
+                            <h2 class="section-title">
+                                {{ 'client.address.info'|trans }}
+                                <span class="badge bg-secondary-lt ms-1">{{ 'optional'|trans }}</span>
+                            </h2>
+                            <p class="section-description">{{ 'client.form.address_description'|trans }}</p>
+                        </div>
+                    </div>
+
+                    <div class="section-content">
+                        <div class="addresses-list">
+                            {% for address in form.addresses %}
+                                {{ form_row(address) }}
+                            {% else %}
+                                <div class="empty-addresses-hint">
+                                    <p class="text-muted mb-0">{{ 'client.address.empty_hint'|trans }}</p>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        {{ form_errors(form.addresses) }}
+
+                        <div class="add-item-action">
+                            {{ form_widget(form.addresses.vars.button_add, {
+                                label: 'client.address.add'|trans,
                                 attr: {
-                                    placeholder: 'VAT123456789'
+                                    class: 'btn btn-outline-primary add-item-btn'
                                 }
                             }) }}
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
 
-            {# Section 2: Contacts #}
-            <section class="form-page-section" id="client-contacts-collection">
-                <div class="section-header">
-                    <div class="section-icon section-icon-required">
-                        {{ ux_icon('tabler:users', {width: 20, height: 20}) }}
-                    </div>
-                    <div class="section-header-text">
-                        <h2 class="section-title">
-                            {{ 'client.contact.info'|trans }}
-                            <span class="badge bg-primary-lt ms-1">{{ 'required'|trans }}</span>
-                        </h2>
-                        <p class="section-description">{{ 'client.form.contact_description'|trans }}</p>
-                    </div>
-                </div>
+            </aside>{# /.client-form-aside #}
 
-                <div class="section-content">
-                    <div class="contacts-list">
-                        {% for contact in form.contacts %}
-                            {{ form_row(contact) }}
-                        {% else %}
-                            <div class="empty-contacts-hint">
-                                <p class="text-muted mb-0">{{ 'client.contact.empty_hint'|trans }}</p>
-                            </div>
-                        {% endfor %}
-                    </div>
-
-                    {{ form_errors(form.contacts) }}
-
-                    <div class="add-item-action">
-                        {{ form_widget(form.contacts.vars.button_add, {
-                            label: 'client.contact.add'|trans,
-                            attr: {
-                                class: 'btn btn-outline-primary add-item-btn'
-                            }
-                        }) }}
-                    </div>
-                </div>
-            </section>
-
-            {# Section 3: Addresses (Optional) #}
-            <section class="form-page-section client-form-section-optional" id="client-address-collection">
-                <div class="section-header">
-                    <div class="section-icon">
-                        {{ ux_icon('tabler:map-pin', {width: 20, height: 20}) }}
-                    </div>
-                    <div class="section-header-text">
-                        <h2 class="section-title">
-                            {{ 'client.address.info'|trans }}
-                            <span class="badge bg-secondary-lt ms-1">{{ 'optional'|trans }}</span>
-                        </h2>
-                        <p class="section-description">{{ 'client.form.address_description'|trans }}</p>
-                    </div>
-                </div>
-
-                <div class="section-content">
-                    <div class="addresses-list">
-                        {% for address in form.addresses %}
-                            {{ form_row(address) }}
-                        {% else %}
-                            <div class="empty-addresses-hint">
-                                <p class="text-muted mb-0">{{ 'client.address.empty_hint'|trans }}</p>
-                            </div>
-                        {% endfor %}
-                    </div>
-
-                    {{ form_errors(form.addresses) }}
-
-                    <div class="add-item-action">
-                        {{ form_widget(form.addresses.vars.button_add, {
-                            label: 'client.address.add'|trans,
-                            attr: {
-                                class: 'btn btn-outline-primary add-item-btn'
-                            }
-                        }) }}
-                    </div>
-                </div>
-            </section>
-        </div>
+        </div>{# /.client-form-layout #}
 
         {{ form_rest(form) }}
 
         {# Sticky Footer with Actions #}
         <div class="form-page-actions">
-            <div class="form-page-actions-inner form-page-actions-inner--medium">
+            <div class="form-page-actions-inner form-page-actions-inner--wide">
                 <button type="button" class="btn btn-ghost" onclick="history.back()">
                     {{ ux_icon('tabler:arrow-left', {width: 18, height: 18}) }}
                     {{ 'client.cancel'|trans }}

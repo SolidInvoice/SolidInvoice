@@ -19,26 +19,25 @@ use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use SolidInvoice\ClientBundle\Entity\Client;
-use SolidInvoice\CoreBundle\Billing\TotalCalculator;
 use SolidInvoice\CoreBundle\Enum\LineItemType;
+use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
-use SolidInvoice\InvoiceBundle\Model\Graph;
+use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\TimeTrackingBundle\Entity\TimeEntry;
 use SolidInvoice\TimeTrackingBundle\Entity\Timer;
 use SolidInvoice\TimeTrackingBundle\Enum\TimeEntryStatus;
 use SolidInvoice\TimeTrackingBundle\Repository\TimeEntryRepository;
 use SolidInvoice\UserBundle\Entity\User;
-use Symfony\Component\Workflow\WorkflowInterface;
 
 final class TimeEntryManager
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly TimeEntryRepository $timeEntryRepository,
-        private readonly TotalCalculator $totalCalculator,
-        private readonly WorkflowInterface $invoiceStateMachine,
+        private readonly InvoiceManager $invoiceManager,
+        private readonly BillingIdGenerator $billingIdGenerator,
         private readonly SystemConfig $systemConfig,
     ) {
     }
@@ -47,11 +46,13 @@ final class TimeEntryManager
      * Resolve the effective hourly rate for a client.
      * Uses client's rate if set, otherwise falls back to global settings rate.
      */
-    public function resolveRate(Client $client): BigNumber
+    public function resolveRate(?Client $client): BigNumber
     {
-        $clientRate = $client->getHourlyRate();
-        if ($clientRate !== null && ! $clientRate->isZero()) {
-            return $clientRate;
+        if ($client !== null) {
+            $clientRate = $client->getHourlyRate();
+            if ($clientRate !== null && ! $clientRate->isZero()) {
+                return $clientRate;
+            }
         }
 
         $globalRate = $this->systemConfig->get('time_tracking/hourly_rate');
@@ -75,10 +76,8 @@ final class TimeEntryManager
         $timeEntry->setUser($timer->getUser());
         $timeEntry->setStatus(TimeEntryStatus::Pending);
 
-        if ($timer->getClient() !== null) {
-            $timeEntry->setClient($timer->getClient());
-            $timeEntry->setHourlyRate($this->resolveRate($timer->getClient()));
-        }
+        $timeEntry->setClient($timer->getClient());
+        $timeEntry->setHourlyRate($this->resolveRate($timer->getClient()));
 
         $this->entityManager->persist($timeEntry);
 
@@ -149,10 +148,11 @@ final class TimeEntryManager
             throw new InvalidArgumentException('A client must be assigned to the selected time entries before generating an invoice.');
         }
 
-        // Create the invoice
+        // Build the invoice
         $invoice = new Invoice();
         $invoice->setClient($client);
         $invoice->setInvoiceDate(new DateTimeImmutable());
+        $invoice->setInvoiceId($this->billingIdGenerator->generate($invoice, ['field' => 'invoiceId']));
 
         // Create one line per time entry
         foreach ($entries as $entry) {
@@ -165,10 +165,8 @@ final class TimeEntryManager
             $invoice->addLine($line);
         }
 
-        $this->totalCalculator->calculateTotals($invoice);
-        $this->invoiceStateMachine->apply($invoice, Graph::TRANSITION_NEW);
-
-        $this->entityManager->persist($invoice);
+        // Use InvoiceManager::create() so that all events fire and state transitions are applied correctly
+        $this->invoiceManager->create($invoice);
 
         // Mark entries as invoiced
         foreach ($entries as $entry) {

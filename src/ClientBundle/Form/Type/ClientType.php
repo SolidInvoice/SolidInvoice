@@ -16,9 +16,10 @@ namespace SolidInvoice\ClientBundle\Form\Type;
 use SolidInvoice\ClientBundle\Entity\Address;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\MoneyBundle\Form\Type\CurrencyType;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\TaxBundle\Form\Type\TaxNumberType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -29,6 +30,11 @@ use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
  */
 class ClientType extends AbstractType
 {
+    public function __construct(
+        private readonly SystemConfig $systemConfig
+    ) {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('name', null, ['sanitize_html' => true, 'allow_single_quotes' => true]);
@@ -45,12 +51,19 @@ class ClientType extends AbstractType
 
         $builder->add('vat_number', TaxNumberType::class, ['required' => false]);
 
+        /** @var Client|null $client */
+        $client = $options['data'] ?? null;
+        $clientCurrency = $client?->getCurrencyCode() !== null
+            ? $client->getCurrency()
+            : $this->systemConfig->getCurrency();
+
         $builder->add(
             'hourlyRate',
-            IntegerType::class,
+            MoneyType::class,
             [
                 'required' => false,
-                'label' => 'Hourly Rate (in cents)',
+                'label' => 'Hourly Rate',
+                'currency' => $clientCurrency,
                 'attr' => ['min' => 0],
             ]
         );

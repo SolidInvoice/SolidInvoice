@@ -310,7 +310,7 @@ class DataGrid extends AbstractController
         string $actionName,
         #[LiveArg('entityId')]
         string $entityId
-    ): void {
+    ): RedirectResponse|null {
         $grid = $this->getGrid();
 
         foreach ($grid->batchActions() as $action) {
@@ -322,18 +322,29 @@ class DataGrid extends AbstractController
 
             if (null === $actionFn) {
                 $this->addFlash('warning', 'Action not implemented.');
-                return;
+                return null;
             }
 
-            $actionFn($this->registry->getRepository($grid->entityFQCN()), [$entityId]);
+            try {
+                $result = $actionFn($this->registry->getRepository($grid->entityFQCN()), [$entityId]);
+            } catch (\Throwable $e) {
+                $this->addFlash('error', $e->getMessage());
+                return null;
+            }
 
             $this->addFlash('success', 'Success');
             $this->dispatchBrowserEvent('modal:close');
 
-            return;
+            if (is_string($result)) {
+                return new RedirectResponse($result);
+            }
+
+            return null;
         }
 
         $this->addFlash('warning', 'Action not found.');
+
+        return null;
     }
 
     /**

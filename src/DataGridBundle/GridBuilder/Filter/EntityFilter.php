@@ -19,6 +19,7 @@ use SolidInvoice\DataGridBundle\Filter\ColumnFilterInterface;
 use SolidInvoice\DataGridBundle\Source\ORMSource;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bridge\Doctrine\Types\UlidType;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Uid\Ulid;
 use function array_filter;
@@ -29,6 +30,7 @@ use function md5;
 use function sprintf;
 use function substr;
 
+#[Autoconfigure(constructor: 'new')]
 final class EntityFilter implements ColumnFilterInterface
 {
     private bool $multiple = false;
