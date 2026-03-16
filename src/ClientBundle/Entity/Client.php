@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
@@ -45,6 +48,8 @@ use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
 use function in_array;
 
+#[ApiFilter(SearchFilter::class, properties: ['name' => 'partial', 'status' => 'exact'])]
+#[ApiFilter(OrderFilter::class, properties: ['name'])]
 #[ApiResource(
     types: ['https://schema.org/Corporation'],
     operations: [

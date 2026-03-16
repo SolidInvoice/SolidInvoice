@@ -13,6 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
@@ -30,6 +34,10 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\Mapping as ORM;
+use SolidInvoice\ApiBundle\State\Processor\QuoteToInvoiceProcessor;
+use SolidInvoice\ApiBundle\State\Processor\QuoteTransitionProcessor;
+use SolidInvoice\ApiBundle\State\Provider\QuoteItemProvider;
+use SolidInvoice\ApiBundle\State\Provider\QuoteTransitionProvider;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
@@ -53,6 +61,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: Quote::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: QuoteRepository::class)]
 #[ORM\HasLifecycleCallbacks]
+#[ApiFilter(SearchFilter::class, properties: ['status' => 'exact', 'client' => 'exact'])]
+#[ApiFilter(DateFilter::class, properties: ['due'])]
+#[ApiFilter(OrderFilter::class, properties: ['due', 'status'])]
 #[ApiResource(
     operations: [new GetCollection(), new Get(), new Post(), new Patch(), new Delete()],
     normalizationContext: [
@@ -81,6 +92,43 @@ use Symfony\Component\Validator\Constraints as Assert;
         'groups' => ['quote_api:write'],
         AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
     ]
+)]
+#[ApiResource(
+    uriTemplate: '/quotes/{id}/transitions/{transition}',
+    operations: [
+        new Post(
+            name: 'quote_transition',
+            provider: QuoteTransitionProvider::class,
+            processor: QuoteTransitionProcessor::class,
+            input: false,
+            output: Quote::class,
+        ),
+    ],
+    uriVariables: [
+        'id' => new Link(fromClass: Quote::class),
+        'transition' => new Link(),
+    ],
+    normalizationContext: [
+        'groups' => ['quote_api:read'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ],
+)]
+#[ApiResource(
+    uriTemplate: '/quotes/{id}/invoice',
+    operations: [
+        new Post(
+            name: 'quote_to_invoice',
+            provider: QuoteItemProvider::class,
+            processor: QuoteToInvoiceProcessor::class,
+            input: false,
+            output: Invoice::class,
+        ),
+    ],
+    uriVariables: ['id' => new Link(fromClass: Quote::class)],
+    normalizationContext: [
+        'groups' => ['invoice_api:read'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ],
 )]
 class Quote
 {

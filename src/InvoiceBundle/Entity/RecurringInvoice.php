@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
@@ -26,6 +28,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use SolidInvoice\ApiBundle\State\Processor\GenerateInvoiceFromRecurringProcessor;
+use SolidInvoice\ApiBundle\State\Processor\RecurringInvoiceTransitionProcessor;
+use SolidInvoice\ApiBundle\State\Provider\RecurringInvoiceItemProvider;
+use SolidInvoice\ApiBundle\State\Provider\RecurringInvoiceTransitionProvider;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
@@ -42,6 +48,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: RecurringInvoice::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: RecurringInvoiceRepository::class)]
 #[ORM\HasLifecycleCallbacks]
+#[ApiFilter(SearchFilter::class, properties: ['status' => 'exact', 'client' => 'exact'])]
 #[ApiResource(
     operations: [new GetCollection(), new Get(), new Post(), new Patch(), new Delete()],
     normalizationContext: [
@@ -70,6 +77,43 @@ use Symfony\Component\Validator\Constraints as Assert;
         'groups' => ['recurring_invoice_api:write'],
         AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
     ]
+)]
+#[ApiResource(
+    uriTemplate: '/recurring-invoices/{id}/transitions/{transition}',
+    operations: [
+        new Post(
+            name: 'recurring_invoice_transition',
+            provider: RecurringInvoiceTransitionProvider::class,
+            processor: RecurringInvoiceTransitionProcessor::class,
+            input: false,
+            output: RecurringInvoice::class,
+        ),
+    ],
+    uriVariables: [
+        'id' => new Link(fromClass: RecurringInvoice::class),
+        'transition' => new Link(),
+    ],
+    normalizationContext: [
+        'groups' => ['recurring_invoice_api:read'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ],
+)]
+#[ApiResource(
+    uriTemplate: '/recurring-invoices/{id}/generate',
+    operations: [
+        new Post(
+            name: 'recurring_invoice_generate',
+            provider: RecurringInvoiceItemProvider::class,
+            processor: GenerateInvoiceFromRecurringProcessor::class,
+            input: false,
+            output: Invoice::class,
+        ),
+    ],
+    uriVariables: ['id' => new Link(fromClass: RecurringInvoice::class)],
+    normalizationContext: [
+        'groups' => ['invoice_api:read'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ],
 )]
 class RecurringInvoice extends BaseInvoice
 {

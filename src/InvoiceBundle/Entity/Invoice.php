@@ -13,6 +13,11 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Doctrine\Orm\Filter\NumericFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
@@ -30,6 +35,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use SolidInvoice\ApiBundle\State\Processor\InvoiceTransitionProcessor;
+use SolidInvoice\ApiBundle\State\Provider\InvoiceTransitionProvider;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
@@ -53,6 +60,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: Invoice::TABLE_NAME)]
 #[ORM\Index(columns: ['quote_id'])]
 #[ORM\Entity(repositoryClass: InvoiceRepository::class)]
+#[ApiFilter(SearchFilter::class, properties: ['status' => 'exact', 'client' => 'exact'])]
+#[ApiFilter(DateFilter::class, properties: ['invoiceDate', 'due', 'paidDate'])]
+#[ApiFilter(OrderFilter::class, properties: ['invoiceDate', 'due', 'status'])]
+#[ApiFilter(NumericFilter::class, properties: ['balance'])]
 #[ApiResource(
     operations: [new GetCollection(), new Get(), new Post(), new Patch(), new Delete()],
     normalizationContext: [
@@ -81,6 +92,26 @@ use Symfony\Component\Validator\Constraints as Assert;
         'groups' => ['invoice_api:write'],
         AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
     ]
+)]
+#[ApiResource(
+    uriTemplate: '/invoices/{id}/transitions/{transition}',
+    operations: [
+        new Post(
+            name: 'invoice_transition',
+            provider: InvoiceTransitionProvider::class,
+            processor: InvoiceTransitionProcessor::class,
+            input: false,
+            output: Invoice::class,
+        ),
+    ],
+    uriVariables: [
+        'id' => new Link(fromClass: Invoice::class),
+        'transition' => new Link(),
+    ],
+    normalizationContext: [
+        'groups' => ['invoice_api:read'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ],
 )]
 class Invoice extends BaseInvoice implements Stringable
 {
