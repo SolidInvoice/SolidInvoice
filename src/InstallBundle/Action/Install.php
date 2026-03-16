@@ -109,7 +109,7 @@ final class Install extends AbstractController
         $action = u($request->query->get('action'))->replace('_', ' ')->title()->toString();
 
         if (! $this->steps->has($action)) {
-            throw new BadRequestException('Invalid action');
+            throw new BadRequestException('Invalid action: ' . $action);
         }
 
         $step = $this->steps->get($action);
