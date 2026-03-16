@@ -72,7 +72,13 @@ return static function (ApiPlatformConfig $config): void {
 
     $config->swagger()
         ->versions([3])
-        ->swaggerUiExtraConfiguration(['filter' => true])
+        ->swaggerUiExtraConfiguration([
+            'filter' => true,
+            'docExpansion' => 'none',
+            'defaultModelsExpandDepth' => 0,
+            'persistAuthorization' => true,
+            'tagsSorter' => 'alpha',
+        ])
         ->apiKeys('bearer')
         ->name('X-API-TOKEN')
         ->type('header');
@@ -83,6 +89,10 @@ return static function (ApiPlatformConfig $config): void {
         ->cacheHeaders([['Content-Type', 'Authorization', 'Origin']]);
 
     $config->useSymfonyListeners(true);
+
+    $config->graphql()
+        ->enabled(true)
+        ->graphiql()->enabled(true);
 
     $array = $config->toArray();
 
