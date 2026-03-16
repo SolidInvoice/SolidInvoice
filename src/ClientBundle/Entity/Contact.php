@@ -27,6 +27,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Serializable;
+use SolidInvoice\ClientBundle\Api\Processor\ContactPersistProcessor;
 use SolidInvoice\ClientBundle\Repository\ContactRepository;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
@@ -100,7 +101,7 @@ use function strtolower;
 )]*/
 #[ApiResource(
     uriTemplate: '/clients/{clientId}/contacts',
-    operations: [ new GetCollection(), new Post() ],
+    operations: [ new GetCollection(), new Post(processor: ContactPersistProcessor::class) ],
     uriVariables: [
         'clientId' => new Link(
             fromProperty: 'contacts',
