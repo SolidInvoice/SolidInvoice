@@ -1,0 +1,5 @@
+time_tracking:
+    menu:
+        main: 'Time Tracking'
+        list: 'Time Entries'
+        log: 'Log Time'
