@@ -46,7 +46,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: ['groups' => ['webhook_api:read']],
     denormalizationContext: ['groups' => ['webhook_api:write']],
 )]
-final class Webhook
+class Webhook
 {
     use CompanyAware;
     use TimeStampable;
