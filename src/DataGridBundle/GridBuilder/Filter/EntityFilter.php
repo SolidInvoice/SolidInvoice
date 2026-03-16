@@ -14,11 +14,13 @@ namespace SolidInvoice\DataGridBundle\GridBuilder\Filter;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\QueryBuilder;
-use Ramsey\Uuid\Uuid;
+use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\DataGridBundle\Filter\ColumnFilterInterface;
 use SolidInvoice\DataGridBundle\Source\ORMSource;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bridge\Doctrine\Types\UlidType;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\Uid\Ulid;
 use function array_filter;
 use function array_map;
 use function array_values;
@@ -61,7 +63,10 @@ final class EntityFilter implements ColumnFilterInterface
             'placeholder' => 'Choose a value',
             'multiple' => $this->multiple,
             'choice_name' => $this->field,
-            'choice_value' => function (object | string $entity) {
+            'choice_value' => function (object | string | null $entity): ?string {
+                if ($entity === null) {
+                    return null;
+                }
                 if (is_string($entity)) {
                     return $entity;
                 }
@@ -69,6 +74,29 @@ final class EntityFilter implements ColumnFilterInterface
             },
             'class' => $this->class,
         ];
+    }
+
+    public function getDisplayValue(mixed $value, ManagerRegistry $registry): string
+    {
+        if (! is_string($value) || $value === '') {
+            return '';
+        }
+
+        try {
+            $entity = $registry->getRepository($this->class)->find(Ulid::fromString($value));
+        } catch (\Throwable) {
+            return $value;
+        }
+
+        if ($entity === null) {
+            return $value;
+        }
+
+        try {
+            return (string) PropertyAccess::createPropertyAccessor()->getValue($entity, $this->field);
+        } catch (\Throwable) {
+            return (string) $entity;
+        }
     }
 
     public function filter(QueryBuilder $queryBuilder, mixed $value): void
@@ -95,9 +123,9 @@ final class EntityFilter implements ColumnFilterInterface
             assert(is_string($value));
 
             if ('' !== $value) {
-                $queryBuilder->join($this->class, $hash)
+                $queryBuilder->join(ORMSource::ALIAS . '.' . $this->alias, $hash)
                     ->andWhere(sprintf('%1$s.id = :%1$s', $hash))
-                    ->setParameter($hash, Uuid::fromString($value), UlidType::NAME);
+                    ->setParameter($hash, Ulid::fromString($value), UlidType::NAME);
             }
         }
     }

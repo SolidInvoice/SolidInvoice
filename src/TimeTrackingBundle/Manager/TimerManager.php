@@ -92,9 +92,8 @@ final class TimerManager
     }
 
     /**
-     * Stop a timer.
-     * If the timer has a client, a TimeEntry is automatically created from it.
-     * Returns the created TimeEntry, or null if no client was set.
+     * Stop a timer and automatically create a TimeEntry from it.
+     * Returns the created TimeEntry.
      */
     public function stop(Timer $timer): ?TimeEntry
     {
@@ -112,11 +111,7 @@ final class TimerManager
 
         $timer->setStatus(TimerStatus::Stopped);
 
-        $timeEntry = null;
-        if ($timer->getClient() !== null) {
-            // Auto-create TimeEntry only if client is set
-            $timeEntry = $this->timeEntryManager->createFromTimer($timer);
-        }
+        $timeEntry = $this->timeEntryManager->createFromTimer($timer);
 
         $this->entityManager->flush();
 

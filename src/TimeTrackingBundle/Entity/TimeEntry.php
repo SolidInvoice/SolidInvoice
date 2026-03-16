@@ -48,8 +48,7 @@ class TimeEntry
     private ?string $description = null;
 
     #[ORM\ManyToOne(targetEntity: Client::class)]
-    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    #[Assert\NotNull]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?Client $client = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
@@ -112,7 +111,7 @@ class TimeEntry
         return $this->client;
     }
 
-    public function setClient(Client $client): self
+    public function setClient(?Client $client): self
     {
         $this->client = $client;
 

@@ -28,20 +28,21 @@
                 {% if gridFilters is not empty %}
                     <div class="datagrid-active-filters">
                         {% for key, value in gridFilters %}
-                            {% set displayValue = value %}
-                            {% if value is iterable %}
+                            {% set resolvedValue = filterDisplayValues[key] ?? value %}
+                            {% set displayValue = resolvedValue %}
+                            {% if resolvedValue is iterable %}
                                 {# Handle date range filters #}
-                                {% if value.start is defined or value.end is defined %}
+                                {% if resolvedValue.start is defined or resolvedValue.end is defined %}
                                     {% set parts = [] %}
-                                    {% if value.start is defined and value.start %}
-                                        {% set parts = parts|merge(['From: ' ~ value.start]) %}
+                                    {% if resolvedValue.start is defined and resolvedValue.start %}
+                                        {% set parts = parts|merge(['From: ' ~ resolvedValue.start]) %}
                                     {% endif %}
-                                    {% if value.end is defined and value.end %}
-                                        {% set parts = parts|merge(['To: ' ~ value.end]) %}
+                                    {% if resolvedValue.end is defined and resolvedValue.end %}
+                                        {% set parts = parts|merge(['To: ' ~ resolvedValue.end]) %}
                                     {% endif %}
                                     {% set displayValue = parts|join(' ') %}
                                 {% else %}
-                                    {% set displayValue = value|join(', ') %}
+                                    {% set displayValue = resolvedValue|join(', ') %}
                                 {% endif %}
                             {% endif %}
 

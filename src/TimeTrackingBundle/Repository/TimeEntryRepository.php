@@ -13,12 +13,17 @@ declare(strict_types=1);
 
 namespace SolidInvoice\TimeTrackingBundle\Repository;
 
+use Doctrine\DBAL\ArrayParameterType;
+use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\TimeTrackingBundle\Entity\TimeEntry;
 use SolidInvoice\TimeTrackingBundle\Enum\TimeEntryStatus;
 use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
+use Symfony\Bridge\Doctrine\Types\UlidType;
+use Symfony\Component\Uid\Ulid;
+use function array_map;
 
 /**
  * @extends EntityRepository<TimeEntry>
@@ -90,10 +95,39 @@ class TimeEntryRepository extends EntityRepository
             return [];
         }
 
+        $em = $this->getEntityManager();
+        $platform = $em->getConnection()->getDatabasePlatform();
+        $ulidType = Type::getType(UlidType::NAME);
+
+        $dbIds = array_map(
+            static fn (string $id): string => $ulidType->convertToDatabaseValue(Ulid::fromString($id), $platform),
+            $ids,
+        );
+
         return $this->createQueryBuilder('te')
             ->where('te.id IN (:ids)')
-            ->setParameter('ids', $ids)
+            ->setParameter('ids', $dbIds, ArrayParameterType::STRING)
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * Delete time entries by their IDs.
+     *
+     * @param string[] $ids
+     */
+    public function deleteByIds(array $ids): void
+    {
+        if ($ids === []) {
+            return;
+        }
+
+        $em = $this->getEntityManager();
+
+        foreach ($this->findByIds($ids) as $entry) {
+            $em->remove($entry);
+        }
+
+        $em->flush();
     }
 }

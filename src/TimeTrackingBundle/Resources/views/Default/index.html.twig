@@ -72,16 +72,6 @@
             </div>
         </twig:block>
 
-        <form method="post" action="{{ path('_time_tracking_generate_invoice') }}" id="time-entry-form">
-            <input type="hidden" name="_token" value="{{ csrf_token('generate_invoice') }}">
-            <twig:DataGrid name="time_entry_grid" />
-
-            <div class="card-footer d-flex justify-content-end gap-2">
-                <button type="submit" class="btn btn-primary">
-                    {{ ux_icon('tabler:file-invoice', {width: 16, height: 16}) }}
-                    Generate Invoice from Selected
-                </button>
-            </div>
-        </form>
+        <twig:DataGrid name="time_entry_grid" />
     </twig:Ui:Card>
 {% endblock content %}

@@ -35,6 +35,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\TaggedLocator;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveArg;
@@ -251,12 +252,12 @@ class DataGrid extends AbstractController
      * @throws InvalidGridException
      */
     #[LiveAction]
-    public function executeBatchAction(#[LiveArg('actionName')] string $actionName): void
+    public function executeBatchAction(#[LiveArg('actionName')] string $actionName): RedirectResponse|null
     {
         try {
             if ($this->selectedItems === []) {
                 $this->addFlash('warning', 'Please select at least one item.');
-                return;
+                return null;
             }
 
             $grid = $this->getGrid();
@@ -270,20 +271,31 @@ class DataGrid extends AbstractController
 
                 if (null === $actionFn) {
                     $this->addFlash('warning', 'Action not implemented.');
-                    return;
+                    return null;
                 }
 
-                $actionFn($this->registry->getRepository($grid->entityFQCN()), $this->selectedItems);
+                try {
+                    $result = $actionFn($this->registry->getRepository($grid->entityFQCN()), $this->selectedItems);
+                } catch (\Throwable $e) {
+                    $this->addFlash('error', $e->getMessage());
+                    return null;
+                }
 
                 $this->addFlash('success', 'Success');
 
-                return;
+                if (is_string($result)) {
+                    return new RedirectResponse($result);
+                }
+
+                return null;
             }
         } finally {
             $this->selectedItems = [];
             $this->selectedAll = false;
             $this->dispatchBrowserEvent('modal:close');
         }
+
+        return null;
     }
 
     /**
@@ -457,6 +469,29 @@ class DataGrid extends AbstractController
                 $filter->filter($builder, $filterValue);
             }
         }
+    }
+
+    /**
+     * Returns human-readable display values for all active filters, keyed by filter field.
+     *
+     * @return array<string, string>
+     */
+    #[ExposeInTemplate]
+    public function filterDisplayValues(): array
+    {
+        if ($this->gridFilters === []) {
+            return [];
+        }
+
+        $filters = iterator_to_array($this->getGrid()->filters());
+        $display = [];
+
+        foreach ($this->gridFilters as $key => $value) {
+            $filter = $filters[$key] ?? null;
+            $display[$key] = $filter !== null ? $filter->getDisplayValue($value, $this->registry) : (string) $value;
+        }
+
+        return $display;
     }
 
     public function title(): ?string

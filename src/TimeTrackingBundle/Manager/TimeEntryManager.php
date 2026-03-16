@@ -145,6 +145,10 @@ final class TimeEntryManager
             }
         }
 
+        if ($client === null) {
+            throw new InvalidArgumentException('A client must be assigned to the selected time entries before generating an invoice.');
+        }
+
         // Create the invoice
         $invoice = new Invoice();
         $invoice->setClient($client);
@@ -162,8 +166,7 @@ final class TimeEntryManager
         }
 
         $this->totalCalculator->calculateTotals($invoice);
-        // Transition directly New → Pending (accept allows from New per workflow config)
-        $this->invoiceStateMachine->apply($invoice, Graph::TRANSITION_ACCEPT);
+        $this->invoiceStateMachine->apply($invoice, Graph::TRANSITION_NEW);
 
         $this->entityManager->persist($invoice);
 

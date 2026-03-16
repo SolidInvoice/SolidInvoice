@@ -11,6 +11,7 @@
 
 namespace SolidInvoice\DataGridBundle\Filter;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Form\FormTypeInterface;
 
 interface ColumnFilterInterface extends FilterInterface
@@ -24,4 +25,9 @@ interface ColumnFilterInterface extends FilterInterface
      * @return array<string, mixed>
      */
     public function formOptions(): array;
+
+    /**
+     * Return a human-readable label for a stored filter value (used in active-filter chips).
+     */
+    public function getDisplayValue(mixed $value, ManagerRegistry $registry): string;
 }

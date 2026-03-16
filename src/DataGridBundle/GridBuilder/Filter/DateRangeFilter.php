@@ -13,6 +13,7 @@ namespace SolidInvoice\DataGridBundle\GridBuilder\Filter;
 
 use Carbon\Carbon;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\DataGridBundle\Filter\ColumnFilterInterface;
 use SolidInvoice\DataGridBundle\Form\Type\DateRangeFormType;
 use SolidInvoice\DataGridBundle\Source\ORMSource;
@@ -37,6 +38,11 @@ final class DateRangeFilter implements ColumnFilterInterface
     public function formOptions(): array
     {
         return ['field_name' => u($this->field)->snake()->replace('_', ' ')->title()->toString()];
+    }
+
+    public function getDisplayValue(mixed $value, ManagerRegistry $registry): string
+    {
+        return (string) $value;
     }
 
     public function filter(QueryBuilder $queryBuilder, mixed $value): void

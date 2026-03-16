@@ -67,12 +67,12 @@ final class Version30000_6 extends AbstractMigration
         $timersTable->addForeignKeyConstraint('users', ['user_id'], ['id'], ['onDelete' => 'CASCADE']);
         $timersTable->addForeignKeyConstraint('clients', ['client_id'], ['id'], ['onDelete' => 'SET NULL']);
 
-        // Create time_entries table
+        // Create time_entries table (client_id nullable — entries may be created without a client)
         $entriesTable = $schema->createTable('time_entries');
         $entriesTable->addColumn('id', UlidType::NAME);
         $entriesTable->addColumn('company_id', UlidType::NAME, ['notnull' => true]);
         $entriesTable->addColumn('user_id', UlidType::NAME, ['notnull' => true]);
-        $entriesTable->addColumn('client_id', UlidType::NAME, ['notnull' => true]);
+        $entriesTable->addColumn('client_id', UlidType::NAME, ['notnull' => false]);
         $entriesTable->addColumn('invoice_id', UlidType::NAME, ['notnull' => false]);
         $entriesTable->addColumn('timer_id', UlidType::NAME, ['notnull' => false]);
         $entriesTable->addColumn('description', Types::TEXT, ['notnull' => false]);
@@ -90,7 +90,7 @@ final class Version30000_6 extends AbstractMigration
         $entriesTable->addIndex(['timer_id']);
         $entriesTable->addForeignKeyConstraint('companies', ['company_id'], ['id'], ['onDelete' => 'CASCADE']);
         $entriesTable->addForeignKeyConstraint('users', ['user_id'], ['id'], ['onDelete' => 'CASCADE']);
-        $entriesTable->addForeignKeyConstraint('clients', ['client_id'], ['id'], ['onDelete' => 'CASCADE']);
+        $entriesTable->addForeignKeyConstraint('clients', ['client_id'], ['id'], ['onDelete' => 'SET NULL']);
         $entriesTable->addForeignKeyConstraint('invoices', ['invoice_id'], ['id'], ['onDelete' => 'SET NULL']);
         $entriesTable->addForeignKeyConstraint('time_tracking_timers', ['timer_id'], ['id'], ['onDelete' => 'SET NULL']);
     }

@@ -12,6 +12,7 @@
 namespace SolidInvoice\DataGridBundle\GridBuilder\Filter;
 
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\DataGridBundle\Filter\ColumnFilterInterface;
 use SolidInvoice\DataGridBundle\Source\ORMSource;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -76,6 +77,15 @@ final class ChoiceFilter implements ColumnFilterInterface
         }
 
         return $options;
+    }
+
+    public function getDisplayValue(mixed $value, ManagerRegistry $registry): string
+    {
+        if (is_array($value)) {
+            return implode(', ', array_map(fn (mixed $v): string => $this->choices[(string) $v] ?? (string) $v, $value));
+        }
+
+        return $this->choices[(string) $value] ?? (string) $value;
     }
 
     public function filter(QueryBuilder $queryBuilder, mixed $value): void

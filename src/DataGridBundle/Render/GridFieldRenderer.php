@@ -15,7 +15,7 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
 use SolidInvoice\DataGridBundle\GridBuilder\Formatter\ColumnFormatter;
-use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
+use Symfony\Component\PropertyAccess\Exception\ExceptionInterface as PropertyAccessException;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatableInterface;
@@ -45,7 +45,7 @@ class GridFieldRenderer
     {
         try {
             $value = $this->propertyAccessor->getValue($entity, $column->getField());
-        } catch (NoSuchPropertyException) {
+        } catch (PropertyAccessException) {
             $value = $entity;
         }
 
@@ -75,10 +75,16 @@ class GridFieldRenderer
 
             foreach ($column->getLinkParameters() as $key => $field) {
                 try {
-                    $parameters[$key] = $this->propertyAccessor->getValue($entity, $field);
-                } catch (NoSuchPropertyException) {
-                    $parameters[$key] = $field;
+                    $paramValue = $this->propertyAccessor->getValue($entity, $field);
+                } catch (PropertyAccessException) {
+                    return $value;
                 }
+
+                if ($paramValue === null) {
+                    return $value;
+                }
+
+                $parameters[$key] = $paramValue;
             }
 
             $url = $this->router->generate($route, $parameters);
