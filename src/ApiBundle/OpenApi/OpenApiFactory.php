@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -13,6 +15,7 @@ namespace SolidInvoice\ApiBundle\OpenApi;
 
 use ApiPlatform\OpenApi\Factory\OpenApiFactoryInterface;
 use ApiPlatform\OpenApi\Model\Server;
+use ApiPlatform\OpenApi\Model\Tag;
 use ApiPlatform\OpenApi\OpenApi;
 use Symfony\Component\DependencyInjection\Attribute\AsDecorator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -37,10 +40,21 @@ final class OpenApiFactory implements OpenApiFactoryInterface
      */
     public function __invoke(array $context = []): OpenApi
     {
-        // to define base path URL
-        return $this->decorated->__invoke($context)
+        $openApi = $this->decorated->__invoke($context);
+
+        $tags = [
+            new Tag('Invoices', 'Manage invoices and their lifecycle transitions'),
+            new Tag('Quotes', 'Manage quotes and convert them to invoices'),
+            new Tag('Clients', 'Manage clients, their contacts, and credit'),
+            new Tag('Payments', 'Track and record payments against invoices'),
+            new Tag('Tax', 'Manage tax rates applied to invoice lines'),
+            new Tag('Recurring Invoices', 'Manage recurring invoice templates and generate invoices from them'),
+        ];
+
+        return $openApi
             ->withServers([
                 new Server($this->urlGenerator->generate('_home', [], UrlGeneratorInterface::ABSOLUTE_URL)),
-            ]);
+            ])
+            ->withTags($tags);
     }
 }

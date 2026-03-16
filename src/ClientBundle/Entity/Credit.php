@@ -13,6 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Patch;
 use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
@@ -24,10 +28,30 @@ use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
+use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Uid\Ulid;
 
 #[ORM\Table(name: Credit::TABLE_NAME, uniqueConstraints: [new ORM\UniqueConstraint(columns: ['client_id'])])]
 #[ORM\Entity(repositoryClass: CreditRepository::class)]
+#[ApiResource(
+    uriTemplate: '/clients/{clientId}/credit',
+    operations: [new Get(), new Patch()],
+    uriVariables: [
+        'clientId' => new Link(
+            fromProperty: 'credit',
+            fromClass: Client::class,
+        ),
+    ],
+    normalizationContext: [
+        'groups' => ['credit_api:read'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ],
+    denormalizationContext: [
+        'groups' => ['credit_api:write'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ],
+)]
 class Credit implements Stringable
 {
     final public const TABLE_NAME = 'client_credit';
@@ -39,9 +63,11 @@ class Credit implements Stringable
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UlidGenerator::class)]
+    #[Groups(['credit_api:read'])]
     private ?Ulid $id = null;
 
     #[ORM\Column(name: 'value_amount', type: BigIntegerType::NAME)]
+    #[Groups(['credit_api:read', 'credit_api:write'])]
     private BigNumber $value;
 
     #[ORM\OneToOne(inversedBy: 'credit', targetEntity: Client::class)]

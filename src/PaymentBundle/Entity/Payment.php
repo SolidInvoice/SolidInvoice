@@ -13,17 +13,23 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Post;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Money\Currency;
 use Money\Money;
 use Payum\Core\Model\Payment as BasePayment;
+use SolidInvoice\ApiBundle\DTO\RecordPaymentInput;
+use SolidInvoice\ApiBundle\State\Processor\RecordPaymentProcessor;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Exception\UnexpectedTypeException;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
@@ -42,6 +48,8 @@ use Traversable;
 
 #[ORM\Table(name: Payment::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: PaymentRepository::class)]
+#[ApiFilter(SearchFilter::class, properties: ['status' => 'exact', 'invoice' => 'exact', 'client' => 'exact'])]
+#[ApiFilter(DateFilter::class, properties: ['completed'])]
 #[ApiResource(
     operations: [
         new GetCollection(
@@ -52,6 +60,17 @@ use Traversable;
                     fromClass: Invoice::class,
                 ),
             ],
+        ),
+        new Post(
+            uriTemplate: '/invoices/{invoiceId}/payments',
+            uriVariables: [
+                'invoiceId' => new Link(
+                    fromProperty: 'payments',
+                    fromClass: Invoice::class,
+                ),
+            ],
+            input: RecordPaymentInput::class,
+            processor: RecordPaymentProcessor::class,
         ),
         new GetCollection(
             uriTemplate: '/clients/{clientId}/payments',
