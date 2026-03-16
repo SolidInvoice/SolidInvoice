@@ -173,6 +173,27 @@ curl -H "Accept: application/hal+json" https://example.com/api/invoices
 The API supports the following Swagger versions:
 
 * {$versions}
+
+### Rate Limiting
+
+The API enforces a rate limit of **300 requests per minute** per API token (or IP address for unauthenticated requests).
+When the rate limit is exceeded, the API returns a `429 Too Many Requests` response with a `Retry-After` header indicating when to retry.
+
+### Versioning Policy
+
+SolidInvoice does not use URL-based versioning (e.g., `/api/v1`). Breaking changes follow a **6-month sunset cycle**.
+Deprecated operations return a `Sunset` header indicating when they will be removed.
+
+### Integration Guides
+
+SolidInvoice's API is compatible with popular automation platforms:
+
+- **Make.com** (formerly Integromat): Use the HTTP module with `X-API-TOKEN` header authentication.
+- **n8n**: Use the HTTP Request node with Header Auth. Set header name `X-API-TOKEN` and your token as the value.
+- **Zapier**: Use the Webhooks by Zapier action with custom headers.
+
+All monetary amounts are represented as **integers in the smallest currency unit** (e.g., cents for USD/EUR).
+For example, `1000` represents `$10.00`.
 DESC
     );
 };
