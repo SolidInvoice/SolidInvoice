@@ -26,6 +26,7 @@
         "ext-soap": "*",
         "ext-xsl": "*",
         "api-platform/core": "^4.0",
+        "webonyx/graphql-php": "^15.0",
         "async-aws/ses": "^1.3",
         "babdev/pagerfanta-bundle": "^4.4",
         "brick/math": "^0.14.0",
