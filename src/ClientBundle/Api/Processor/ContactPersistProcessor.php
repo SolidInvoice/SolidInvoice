@@ -19,6 +19,7 @@ use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /** @implements ProcessorInterface<Contact, Contact> */
 final class ContactPersistProcessor implements ProcessorInterface
@@ -37,9 +38,10 @@ final class ContactPersistProcessor implements ProcessorInterface
     {
         if ($data instanceof Contact && isset($uriVariables['clientId'])) {
             $client = $this->clientRepository->find($uriVariables['clientId']);
-            if ($client instanceof Client) {
-                $data->setClient($client);
+            if (! $client instanceof Client) {
+                throw new NotFoundHttpException(sprintf('Client "%s" not found.', $uriVariables['clientId']));
             }
+            $data->setClient($client);
         }
 
         return $this->decorated->process($data, $operation, $uriVariables, $context);

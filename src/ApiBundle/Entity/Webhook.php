@@ -64,11 +64,21 @@ class Webhook
     #[Groups(['webhook_api:read', 'webhook_api:write'])]
     private string $url = '';
 
+    public const SUPPORTED_EVENTS = [
+        'invoice.created',
+        'invoice.paid',
+        'invoice.sent',
+        'quote.accepted',
+        'quote.created',
+        'quote.sent',
+    ];
+
     /**
      * @var list<string>
      */
     #[ORM\Column(type: Types::JSON)]
     #[Assert\NotBlank]
+    #[Assert\All([new Assert\Choice(choices: self::SUPPORTED_EVENTS)])]
     #[Groups(['webhook_api:read', 'webhook_api:write'])]
     private array $events = [];
 

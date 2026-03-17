@@ -16,6 +16,9 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
+    $containerConfigurator->parameters()
+        ->set('solidinvoice.webhook_timeout', 10);
+
     $services = $containerConfigurator->services();
 
     $services->defaults()
