@@ -51,6 +51,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
     normalizationContext: ['groups' => ['api_token:read']],
     denormalizationContext: ['groups' => ['api_token:write']],
+    graphQlOperations: [],
 )]
 #[ApiResource(
     uriTemplate: '/profile/api-tokens/{id}',
@@ -59,6 +60,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Delete(provider: ApiTokenItemProvider::class),
     ],
     normalizationContext: ['groups' => ['api_token:read']],
+    graphQlOperations: [],
 )]
 class ApiToken
 {
