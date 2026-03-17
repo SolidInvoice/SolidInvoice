@@ -354,7 +354,7 @@ class InvoiceRepository extends EntityRepository
 
         $results = [];
         foreach ($qb->getQuery()->getArrayResult() as $result) {
-            if (null !== $result['currencyCode'] && null !== $result['total']) {
+            if (null !== $result['currencyCode'] && '' !== $result['currencyCode'] && null !== $result['total']) {
                 $results[$result['currencyCode']] = BigInteger::of($result['total']);
             }
         }
@@ -380,7 +380,7 @@ class InvoiceRepository extends EntityRepository
 
         $results = [];
         foreach ($qb->getQuery()->getArrayResult() as $result) {
-            if (null !== $result['currencyCode'] && null !== $result['total']) {
+            if (null !== $result['currencyCode'] && '' !== $result['currencyCode'] && null !== $result['total']) {
                 $results[$result['currencyCode']] = BigInteger::of($result['total']);
             }
         }
