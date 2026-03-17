@@ -47,13 +47,13 @@ final class ClientTest extends ApiTestCase
         $data = [
             'name' => 'Dummy User',
             'contacts' => [],
-            'credit' => '125.50',
         ];
 
         $result = $this->requestPost('/api/clients', $data);
 
         self::assertArrayHasKey('id', $result);
         self::assertTrue(Ulid::isValid($result['id']));
+        $clientId = $result['id'];
         unset($result['id'], $result['@id']);
 
         self::assertEqualsCanonicalizing([
@@ -70,7 +70,7 @@ final class ClientTest extends ApiTestCase
             'recurringInvoices' => [],
             'payments' => [],
             'addresses' => [],
-            'credit' => 125.5,
+            'credit' => '/api/clients/' . $clientId . '/credit',
         ], $result);
     }
 
@@ -113,7 +113,7 @@ final class ClientTest extends ApiTestCase
             'name' => $client->getName(),
             'website' => $client->getWebsite(),
             'status' => $client->getStatus()?->value,
-            'currency' => $client->getCurrencyCode(),
+            'currencyCode' => $client->getCurrencyCode(),
             'vatNumber' => $client->getVatNumber(),
             'contacts' => array_map($this->getIriFromResource(...), array_map(static fn (Proxy $proxy) => $proxy->_real(), $contacts)),
             'quotes' => [],
@@ -123,7 +123,7 @@ final class ClientTest extends ApiTestCase
             'addresses' => [
                 $this->getIriFromResource($address),
             ],
-            'credit' => 0,
+            'credit' => $this->getIriFromResource($client) . '/credit',
         ], $data);
     }
 
@@ -161,7 +161,7 @@ final class ClientTest extends ApiTestCase
             'name' => 'New Test',
             'website' => $client->getWebsite(),
             'status' => $client->getStatus()?->value,
-            'currency' => $client->getCurrencyCode(),
+            'currencyCode' => $client->getCurrencyCode(),
             'vatNumber' => $client->getVatNumber(),
             'contacts' => $contactInfo,
             'quotes' => [],
@@ -169,7 +169,7 @@ final class ClientTest extends ApiTestCase
             'recurringInvoices' => [],
             'payments' => [],
             'addresses' => [],
-            'credit' => 0,
+            'credit' => $this->getIriFromResource($client) . '/credit',
         ], $data);
     }
 }

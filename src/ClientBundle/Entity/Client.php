@@ -202,16 +202,12 @@ class Client implements Stringable
     private Collection $addresses;
 
     #[ApiProperty(
-        openapiContext: [
-            'type' => 'number',
-        ],
-        jsonSchemaContext: [
-            'type' => 'number',
-        ],
-        iris: ['https://schema.org/MonetaryAmount']
+        writable: false,
+        iris: ['https://schema.org/MonetaryAmount'],
+        example: '/api/clients/3fa85f64-5717-4562-b3fc-2c963f66afa6/credit',
     )]
     #[ORM\OneToOne(mappedBy: 'client', targetEntity: Credit::class, cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
-    #[Serialize\Groups(['client_api:read', 'client_api:write'])]
+    #[Serialize\Groups(['client_api:read'])]
     private ?Credit $credit = null;
 
     public function __construct()
