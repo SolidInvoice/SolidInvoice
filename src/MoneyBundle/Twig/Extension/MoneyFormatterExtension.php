@@ -48,6 +48,8 @@ class MoneyFormatterExtension extends AbstractExtension
             new TwigFilter('formatCurrency', function (BigNumber|int|float|string $value, Currency|string|null $currency = null): string {
                 if (is_string($currency) && $currency !== '') {
                     $currency = new Currency($currency);
+                } elseif (is_string($currency) && $currency === '') {
+                    $currency = null;
                 }
 
                 $value = BigNumber::of($value)->toBigDecimal();

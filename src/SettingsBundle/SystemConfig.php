@@ -93,7 +93,7 @@ class SystemConfig
     {
         $currency = $this->get(self::CURRENCY_CONFIG_PATH);
 
-        if (null === $currency) {
+        if (null === $currency || '' === $currency) {
             throw new RuntimeException('No currency set');
         }
 
