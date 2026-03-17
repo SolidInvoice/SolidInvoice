@@ -25,6 +25,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\ApiBundle\State\Processor\ApiTokenCreateProcessor;
 use SolidInvoice\ApiBundle\State\Provider\ApiTokenCollectionProvider;
+use SolidInvoice\ApiBundle\State\Provider\ApiTokenItemProvider;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\UserBundle\Repository\ApiTokenRepository;
@@ -54,8 +55,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     uriTemplate: '/profile/api-tokens/{id}',
     operations: [
-        new Get(),
-        new Delete(),
+        new Get(provider: ApiTokenItemProvider::class),
+        new Delete(provider: ApiTokenItemProvider::class),
     ],
     normalizationContext: ['groups' => ['api_token:read']],
 )]

@@ -15,6 +15,7 @@ namespace SolidInvoice\ApiBundle\Message\Handler;
 
 use SolidInvoice\ApiBundle\Message\WebhookDelivery;
 use SolidInvoice\ApiBundle\Repository\WebhookRepository;
+use SolidInvoice\ApiBundle\Webhook\WebhookUrlPolicy;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -25,6 +26,7 @@ final class WebhookDeliveryHandler
     public function __construct(
         private readonly WebhookRepository $webhookRepository,
         private readonly HttpClientInterface $httpClient,
+        private readonly WebhookUrlPolicy $webhookUrlPolicy,
         #[Autowire(param: 'solidinvoice.webhook_timeout')]
         private readonly int $webhookTimeout,
     ) {
@@ -35,6 +37,10 @@ final class WebhookDeliveryHandler
         $webhook = $this->webhookRepository->find($message->webhookId);
 
         if ($webhook === null || ! $webhook->isActive()) {
+            return;
+        }
+
+        if (! $this->webhookUrlPolicy->isAllowed($webhook->getUrl())) {
             return;
         }
 
