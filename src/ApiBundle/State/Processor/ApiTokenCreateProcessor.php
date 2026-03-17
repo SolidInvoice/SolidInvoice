@@ -15,6 +15,7 @@ namespace SolidInvoice\ApiBundle\State\Processor;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\ApiBundle\ApiTokenManager;
 use SolidInvoice\UserBundle\Entity\ApiToken;
 use SolidInvoice\UserBundle\Entity\User;
@@ -27,6 +28,7 @@ final class ApiTokenCreateProcessor implements ProcessorInterface
     public function __construct(
         private readonly ApiTokenManager $apiTokenManager,
         private readonly Security $security,
+        private readonly ManagerRegistry $registry,
     ) {
     }
 
@@ -42,6 +44,7 @@ final class ApiTokenCreateProcessor implements ProcessorInterface
 
         $token = $this->apiTokenManager->create($user, $data->getName() ?? '');
         $token->setDescription($data->getDescription());
+        $this->registry->getManager()->flush();
 
         return $token;
     }

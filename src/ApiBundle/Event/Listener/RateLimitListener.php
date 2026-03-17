@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Event\Listener;
 
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,26 +21,33 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
 
-#[AsEventListener(event: KernelEvents::REQUEST, priority: 20)]
+#[AsEventListener(event: KernelEvents::REQUEST, priority: -10)]
 final class RateLimitListener
 {
     public function __construct(
         #[Autowire(service: 'limiter.api_global')]
         private readonly RateLimiterFactory $limiter,
+        private readonly Security $security,
     ) {
     }
 
     public function __invoke(RequestEvent $event): void
     {
+        if (! $event->isMainRequest()) {
+            return;
+        }
+
         $request = $event->getRequest();
 
         if (! str_starts_with($request->getPathInfo(), '/api/')) {
             return;
         }
 
-        $apiToken = $request->headers->get('X-API-TOKEN', $request->getClientIp() ?? 'anonymous');
+        $rateLimitKey = $this->security->getUser()?->getUserIdentifier()
+            ?? $request->getClientIp()
+            ?? 'anonymous';
 
-        $limiter = $this->limiter->create($apiToken);
+        $limiter = $this->limiter->create($rateLimitKey);
         $limit = $limiter->consume();
 
         if ($limit->isAccepted()) {

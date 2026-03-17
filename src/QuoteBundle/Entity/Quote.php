@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\QuoteBundle\Entity;
 
 use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Doctrine\Orm\Filter\NumericFilter;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
@@ -64,6 +65,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\HasLifecycleCallbacks]
 #[ApiFilter(SearchFilter::class, properties: ['status' => 'exact', 'client' => 'exact'])]
 #[ApiFilter(DateFilter::class, properties: ['due'])]
+#[ApiFilter(NumericFilter::class, properties: ['total', 'baseTotal', 'tax'])]
 #[ApiFilter(OrderFilter::class, properties: ['due', 'status'])]
 #[ApiResource(
     operations: [new GetCollection(), new Get(), new Post(), new Patch(), new Delete()],

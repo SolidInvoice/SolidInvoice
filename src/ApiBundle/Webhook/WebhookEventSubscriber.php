@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Webhook;
 
+use Psr\Log\LoggerInterface;
 use SolidInvoice\ApiBundle\Message\WebhookDelivery;
 use SolidInvoice\ApiBundle\Repository\WebhookRepository;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvent;
@@ -22,6 +23,7 @@ use SolidInvoice\QuoteBundle\Event\QuoteEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Workflow\Event\Event as WorkflowEvent;
+use Throwable;
 
 final class WebhookEventSubscriber implements EventSubscriberInterface
 {
@@ -29,6 +31,7 @@ final class WebhookEventSubscriber implements EventSubscriberInterface
         private readonly WebhookRepository $webhookRepository,
         private readonly MessageBusInterface $messageBus,
         private readonly WebhookPayloadBuilder $payloadBuilder,
+        private readonly LoggerInterface $logger,
     ) {
     }
 
@@ -76,16 +79,24 @@ final class WebhookEventSubscriber implements EventSubscriberInterface
 
     private function dispatchWebhooks(string $event, object $entity): void
     {
-        $webhooks = $this->webhookRepository->findActiveByEvent($event);
+        try {
+            $webhooks = $this->webhookRepository->findActiveByEvent($event);
 
-        foreach ($webhooks as $webhook) {
-            $payload = $this->payloadBuilder->build($entity, $event);
+            foreach ($webhooks as $webhook) {
+                $payload = $this->payloadBuilder->build($entity, $event);
 
-            $this->messageBus->dispatch(new WebhookDelivery(
-                $webhook->getId(),
-                $event,
-                $payload,
-            ));
+                $this->messageBus->dispatch(new WebhookDelivery(
+                    $webhook->getId(),
+                    $event,
+                    $payload,
+                ));
+            }
+        } catch (Throwable $e) {
+            $this->logger->error('Failed to dispatch webhook for event "{event}": {message}', [
+                'event' => $event,
+                'message' => $e->getMessage(),
+                'exception' => $e,
+            ]);
         }
     }
 }

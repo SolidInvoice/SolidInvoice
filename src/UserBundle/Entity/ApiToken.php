@@ -43,7 +43,10 @@ use Symfony\Component\Validator\Constraints as Assert;
     uriTemplate: '/profile/api-tokens',
     operations: [
         new GetCollection(provider: ApiTokenCollectionProvider::class),
-        new Post(processor: ApiTokenCreateProcessor::class),
+        new Post(
+            processor: ApiTokenCreateProcessor::class,
+            normalizationContext: ['groups' => ['api_token:read', 'api_token:create_read']],
+        ),
     ],
     normalizationContext: ['groups' => ['api_token:read']],
     denormalizationContext: ['groups' => ['api_token:write']],
@@ -77,7 +80,7 @@ class ApiToken
 
     #[ORM\Column(type: Types::STRING, length: 125)]
     #[ApiProperty(writable: false, openapiContext: ['description' => 'The API token value. Only visible on creation.'])]
-    #[Groups(['api_token:read'])]
+    #[Groups(['api_token:create_read'])]
     private ?string $token = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]

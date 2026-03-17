@@ -72,12 +72,12 @@ final class RecordPaymentProcessor implements ProcessorInterface
 
         $em = $this->registry->getManager();
         $em->persist($payment);
-        $em->flush();
 
         if ($this->invoiceStateMachine->can($invoice, Graph::TRANSITION_PAY)) {
             $this->invoiceStateMachine->apply($invoice, Graph::TRANSITION_PAY);
-            $em->flush();
         }
+
+        $em->flush();
 
         return $payment;
     }
