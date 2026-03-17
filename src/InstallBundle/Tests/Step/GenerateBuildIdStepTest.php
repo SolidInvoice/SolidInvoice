@@ -49,7 +49,7 @@ final class GenerateBuildIdStepTest extends TestCase
 
     public function testGetLabel(): void
     {
-        self::assertSame('Generating build ID', GenerateBuildIdStep::getLabel());
+        self::assertSame('Generating build id', GenerateBuildIdStep::getLabel());
     }
 
     public function testExecuteGeneratesAndSealsBuildId(): void
