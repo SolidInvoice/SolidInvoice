@@ -15,9 +15,11 @@ namespace SolidInvoice\ApiBundle\Webhook;
 
 use DateTimeImmutable;
 use DateTimeInterface;
+use LogicException;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use Symfony\Component\Serializer\SerializerInterface;
+use function sprintf;
 
 final class WebhookPayloadBuilder
 {
@@ -31,7 +33,7 @@ final class WebhookPayloadBuilder
         $groups = match (true) {
             $entity instanceof Invoice => ['invoice_api:read'],
             $entity instanceof Quote => ['quote_api:read'],
-            default => [],
+            default => throw new LogicException(sprintf('Unsupported webhook entity type: %s', $entity::class)),
         };
 
         return $this->serializer->serialize(
@@ -41,7 +43,7 @@ final class WebhookPayloadBuilder
                 'timestamp' => (new DateTimeImmutable())->format(DateTimeInterface::ATOM),
             ],
             'json',
-            $groups !== [] ? ['groups' => $groups] : []
+            ['groups' => $groups]
         );
     }
 }
