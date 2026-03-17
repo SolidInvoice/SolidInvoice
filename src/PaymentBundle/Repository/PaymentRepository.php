@@ -66,7 +66,7 @@ class PaymentRepository extends ServiceEntityRepository
         $results = [];
 
         foreach ($query->getArrayResult() as $result) {
-            if (null !== $result['currencyCode'] && null !== $result['total']) {
+            if (null !== $result['currencyCode'] && '' !== $result['currencyCode'] && null !== $result['total']) {
                 $results[$result['currencyCode']] = BigInteger::of($result['total']);
             }
         }
@@ -393,7 +393,7 @@ class PaymentRepository extends ServiceEntityRepository
 
         $results = [];
         foreach ($qb->getQuery()->getArrayResult() as $result) {
-            if (null !== $result['currencyCode'] && null !== $result['total']) {
+            if (null !== $result['currencyCode'] && '' !== $result['currencyCode'] && null !== $result['total']) {
                 $results[$result['currencyCode']] = BigInteger::of($result['total']);
             }
         }
