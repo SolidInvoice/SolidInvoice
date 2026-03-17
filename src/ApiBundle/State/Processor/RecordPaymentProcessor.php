@@ -26,6 +26,7 @@ use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Workflow\WorkflowInterface;
 
 /** @implements ProcessorInterface<RecordPaymentInput, Payment> */
@@ -55,6 +56,20 @@ final class RecordPaymentProcessor implements ProcessorInterface
             throw new ServiceUnavailableHttpException(null, 'Offline payment method is not configured.');
         }
 
+        $client = $invoice->getClient();
+        $invoiceCurrency = $client?->getCurrencyCode();
+        if ($invoiceCurrency !== null && $data->currency !== $invoiceCurrency) {
+            throw new UnprocessableEntityHttpException(
+                sprintf('Payment currency "%s" does not match invoice currency "%s".', $data->currency, $invoiceCurrency)
+            );
+        }
+
+        if (! $this->invoiceStateMachine->can($invoice, Graph::TRANSITION_PAY)) {
+            throw new UnprocessableEntityHttpException(
+                sprintf('Pay transition cannot be applied to invoice in status "%s".', $invoice->getStatus()?->value ?? 'unknown')
+            );
+        }
+
         $payment = new Payment();
         $payment->setTotalAmount($data->amount);
         $payment->setCurrencyCode($data->currency);
@@ -62,7 +77,6 @@ final class RecordPaymentProcessor implements ProcessorInterface
         $payment->setNotes($data->notes);
         $payment->setMethod($offlineMethod);
         $payment->setInvoice($invoice);
-        $client = $invoice->getClient();
         if ($client !== null) {
             $payment->setClient($client);
         }
@@ -73,9 +87,7 @@ final class RecordPaymentProcessor implements ProcessorInterface
         $em = $this->registry->getManager();
         $em->persist($payment);
 
-        if ($this->invoiceStateMachine->can($invoice, Graph::TRANSITION_PAY)) {
-            $this->invoiceStateMachine->apply($invoice, Graph::TRANSITION_PAY);
-        }
+        $this->invoiceStateMachine->apply($invoice, Graph::TRANSITION_PAY);
 
         $em->flush();
 
