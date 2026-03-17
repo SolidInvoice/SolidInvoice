@@ -38,7 +38,7 @@ final class Version30000_6 extends AbstractMigration
 
         $table->addColumn('id', UlidType::NAME);
         $table->addColumn('company_id', UlidType::NAME, ['notnull' => true]);
-        $table->addColumn('url', Types::TEXT, ['notnull' => true]);
+        $table->addColumn('url', Types::STRING, ['length' => 2048, 'notnull' => true]);
         $table->addColumn('events', Types::JSON, ['notnull' => true]);
         $table->addColumn('secret', Types::STRING, ['length' => 64, 'notnull' => true]);
         $table->addColumn('active', Types::BOOLEAN, ['notnull' => true, 'default' => true]);
