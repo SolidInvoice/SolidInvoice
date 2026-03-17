@@ -13,13 +13,31 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Webhook;
 
+use SolidWorx\Toggler\ToggleInterface;
 use Symfony\Component\HttpFoundation\IpUtils;
 use function filter_var;
 use function in_array;
 use function parse_url;
+use function strtolower;
 
 final class WebhookUrlPolicy
 {
+    /**
+     * Cloud metadata endpoints that must always be blocked in hosted (SaaS) mode
+     * to prevent SSRF attacks against instance metadata services.
+     */
+    private const array BLOCKED_METADATA_HOSTS = [
+        'metadata.google.internal',    // GCP instance metadata
+        '169.254.169.254',             // AWS / GCP / Azure shared metadata IP
+        'metadata.azure.internal',     // Azure instance metadata
+        'fd00:ec2::254',               // AWS IPv6 metadata
+    ];
+
+    public function __construct(
+        private readonly ToggleInterface $toggler,
+    ) {
+    }
+
     public function isAllowed(string $url): bool
     {
         $parsed = parse_url($url);
@@ -38,13 +56,25 @@ final class WebhookUrlPolicy
             return false;
         }
 
+        // In SaaS/hosted mode, block private IPs and cloud metadata endpoints
+        // to prevent SSRF against internal infrastructure.
+        // Self-hosted users may legitimately target their own internal services.
+        if ($this->toggler->isActive('saas_enabled')) {
+            if (in_array(strtolower($host), self::BLOCKED_METADATA_HOSTS, true)) {
+                return false;
+            }
+
+            if (filter_var($host, FILTER_VALIDATE_IP) !== false && IpUtils::isPrivateIp($host)) {
+                return false;
+            }
+        }
+
         return true;
     }
 
     /**
-     * Returns true when the target host resolves to a private/reserved IP range.
-     * SolidInvoice is self-hosted, so private-network targets are permitted by
-     * default — callers can use this to log or warn without hard-blocking.
+     * Returns true when the target host is a private/reserved IP range.
+     * Useful for logging purposes in self-hosted mode.
      */
     public function isPrivateHost(string $url): bool
     {
