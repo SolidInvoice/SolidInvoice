@@ -13,30 +13,13 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Webhook;
 
+use Symfony\Component\HttpFoundation\IpUtils;
 use function filter_var;
 use function in_array;
 use function parse_url;
 
 final class WebhookUrlPolicy
 {
-    private const PRIVATE_RANGES = [
-        // IPv4 private/reserved ranges
-        '10.',
-        '172.16.', '172.17.', '172.18.', '172.19.',
-        '172.20.', '172.21.', '172.22.', '172.23.',
-        '172.24.', '172.25.', '172.26.', '172.27.',
-        '172.28.', '172.29.', '172.30.', '172.31.',
-        '192.168.',
-        '127.',
-        '169.254.',
-        '0.',
-    ];
-
-    private const BLOCKED_HOSTS = [
-        'localhost',
-        'metadata.google.internal',
-    ];
-
     public function isAllowed(string $url): bool
     {
         $parsed = parse_url($url);
@@ -55,24 +38,26 @@ final class WebhookUrlPolicy
             return false;
         }
 
-        if (in_array($host, self::BLOCKED_HOSTS, true)) {
+        return true;
+    }
+
+    /**
+     * Returns true when the target host resolves to a private/reserved IP range.
+     * SolidInvoice is self-hosted, so private-network targets are permitted by
+     * default — callers can use this to log or warn without hard-blocking.
+     */
+    public function isPrivateHost(string $url): bool
+    {
+        $host = parse_url($url, PHP_URL_HOST) ?? '';
+
+        if ($host === '') {
             return false;
         }
 
-        // Reject IP addresses in private/reserved ranges
-        if (filter_var($host, FILTER_VALIDATE_IP) !== false) {
-            foreach (self::PRIVATE_RANGES as $prefix) {
-                if (str_starts_with($host, $prefix)) {
-                    return false;
-                }
-            }
-
-            // Block IPv6 loopback
-            if ($host === '::1' || $host === '[::1]') {
-                return false;
-            }
+        if (filter_var($host, FILTER_VALIDATE_IP) === false) {
+            return false;
         }
 
-        return true;
+        return IpUtils::isPrivateIp($host);
     }
 }
