@@ -44,6 +44,7 @@ final class PaymentTest extends ApiTestCase
         ])->_real();
 
         $data = $this->requestGet($this->getIriFromResource($invoice) . '/payments');
+        unset($data['hydra:search']);
 
         self::assertEqualsCanonicalizing([
             '@context' => $this->getContextForResource($payment),
@@ -95,6 +96,7 @@ final class PaymentTest extends ApiTestCase
         PaymentFactory::createMany(5, ['client' => ClientFactory::new()]);
 
         $data = $this->requestGet($this->getIriFromResource($client) . '/payments');
+        unset($data['hydra:search']);
 
         self::assertEqualsCanonicalizing([
             '@context' => $this->getContextForResource($payment),
@@ -144,6 +146,7 @@ final class PaymentTest extends ApiTestCase
         PaymentFactory::createOne(['client' => $client]);
 
         $data = $this->requestGet($this->getIriFromResource($client) . '/payments');
+        unset($data['hydra:search']);
 
         self::assertEqualsCanonicalizing([
             '@context' => $this->getContextForResource(Payment::class),
@@ -167,6 +170,7 @@ final class PaymentTest extends ApiTestCase
         PaymentFactory::createOne(['client' => $client]);
 
         $data = $this->requestGet($this->getIriFromResource($client) . '/payments');
+        unset($data['hydra:search']);
 
         self::assertEqualsCanonicalizing([
             '@context' => $this->getContextForResource(Payment::class),

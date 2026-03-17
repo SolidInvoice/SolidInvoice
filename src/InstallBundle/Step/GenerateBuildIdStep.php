@@ -40,6 +40,6 @@ final class GenerateBuildIdStep implements InstallationStepInterface
 
     public static function getLabel(): string
     {
-        return 'Generating build id';
+        return 'Generating build ID';
     }
 }
