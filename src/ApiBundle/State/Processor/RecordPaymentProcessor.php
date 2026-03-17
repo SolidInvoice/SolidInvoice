@@ -24,6 +24,7 @@ use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
@@ -42,12 +43,16 @@ final class RecordPaymentProcessor implements ProcessorInterface
 
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): Payment
     {
-        assert($data instanceof RecordPaymentInput);
+        if (! $data instanceof RecordPaymentInput) {
+            throw new BadRequestHttpException('Invalid record-payment payload.');
+        }
 
-        $invoice = $this->invoiceRepository->find($uriVariables['invoiceId']);
+        $invoiceId = $uriVariables['invoiceId'] ?? null;
+
+        $invoice = $this->invoiceRepository->find($invoiceId);
 
         if ($invoice === null) {
-            throw new NotFoundHttpException(sprintf('Invoice "%s" not found.', $uriVariables['invoiceId']));
+            throw new NotFoundHttpException(sprintf('Invoice "%s" not found.', $invoiceId));
         }
 
         $offlineMethod = $this->paymentMethodRepository->findOneBy(['factoryName' => 'offline']);
