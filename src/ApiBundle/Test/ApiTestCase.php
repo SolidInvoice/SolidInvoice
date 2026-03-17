@@ -81,6 +81,7 @@ abstract class ApiTestCase extends ApiPlatformTestCase
 
         $this->company = new Company();
         $this->company->setName('SolidInvoice');
+        $this->company->currency = 'USD';
         $registry->getManager()->persist($this->company);
         $registry->getManager()->flush();
 
