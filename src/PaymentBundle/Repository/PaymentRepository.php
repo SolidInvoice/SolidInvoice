@@ -66,7 +66,9 @@ class PaymentRepository extends ServiceEntityRepository
         $results = [];
 
         foreach ($query->getArrayResult() as $result) {
-            $results[$result['currencyCode']] = BigInteger::of($result['total']);
+            if (null !== $result['currencyCode'] && null !== $result['total']) {
+                $results[$result['currencyCode']] = BigInteger::of($result['total']);
+            }
         }
 
         return $results;

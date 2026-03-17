@@ -66,6 +66,7 @@ final class CompanyFactory extends PersistentProxyObjectFactory
     {
         return [
             'name' => self::faker()->company(),
+            'currency' => 'USD',
         ];
     }
 
