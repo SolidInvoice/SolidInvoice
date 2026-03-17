@@ -15,9 +15,11 @@ namespace SolidInvoice\ApiBundle\State\Processor;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
+use DateTimeImmutable;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 /** @implements ProcessorInterface<RecurringInvoice, Invoice> */
 final class GenerateInvoiceFromRecurringProcessor implements ProcessorInterface
@@ -30,6 +32,10 @@ final class GenerateInvoiceFromRecurringProcessor implements ProcessorInterface
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): Invoice
     {
         assert($data instanceof RecurringInvoice);
+
+        if ($data->hasInvoiceForDay(new DateTimeImmutable())) {
+            throw new UnprocessableEntityHttpException('An invoice has already been generated for this recurring invoice today.');
+        }
 
         $invoice = $this->invoiceManager->createFromRecurring($data);
 

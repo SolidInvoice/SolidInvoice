@@ -15,6 +15,8 @@ namespace SolidInvoice\ApiBundle\Webhook;
 
 use DateTimeImmutable;
 use DateTimeInterface;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\QuoteBundle\Entity\Quote;
 use Symfony\Component\Serializer\SerializerInterface;
 
 final class WebhookPayloadBuilder
@@ -26,13 +28,20 @@ final class WebhookPayloadBuilder
 
     public function build(object $entity, string $event): string
     {
+        $groups = match (true) {
+            $entity instanceof Invoice => ['invoice_api:read'],
+            $entity instanceof Quote => ['quote_api:read'],
+            default => [],
+        };
+
         return $this->serializer->serialize(
             [
                 'event' => $event,
                 'data' => $entity,
                 'timestamp' => (new DateTimeImmutable())->format(DateTimeInterface::ATOM),
             ],
-            'json'
+            'json',
+            $groups !== [] ? ['groups' => $groups] : []
         );
     }
 }
