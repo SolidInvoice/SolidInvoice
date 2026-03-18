@@ -17,6 +17,8 @@ use JsonException;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\ClientBundle\Entity\Address;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
+use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
@@ -35,6 +37,39 @@ final class AddressTest extends ApiTestCase
     protected function getResourceClass(): string
     {
         return Address::class;
+    }
+
+    public function testGetCollection(): void
+    {
+        $address1 = new Address();
+        $address2 = new Address();
+        $client = ClientFactory::createOne([
+            'addresses' => [$address1, $address2],
+        ])->_real();
+
+        $data = $this->requestGetCollection($this->getIriFromResource($client) . '/addresses');
+
+        self::assertArraySubset([
+            '@context' => $this->getContextForResource($this->getResourceClass()),
+            '@type' => 'Collection',
+        ], $data);
+    }
+
+    public function testCannotAccessAddressFromDifferentCompany(): void
+    {
+        $otherCompany = CompanyFactory::new()->create();
+        self::getContainer()->get(CompanySelector::class)->switchCompany($otherCompany->getId());
+        $foreignAddress = new Address();
+        $foreignClient = ClientFactory::createOne([
+            'company' => $otherCompany,
+            'addresses' => [$foreignAddress],
+        ])->_real();
+        self::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
+
+        $response = self::$client->request('GET', $this->getIriFromResource($foreignAddress), [
+            'headers' => ['accept' => 'application/ld+json'],
+        ]);
+        static::assertResponseStatusCodeSame(404);
     }
 
     public function testCreate(): void

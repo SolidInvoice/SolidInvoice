@@ -17,7 +17,9 @@ use DateTimeImmutable;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
+use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Discount;
+use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\QuoteBundle\Entity\Line;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
@@ -38,6 +40,57 @@ final class QuoteTest extends ApiTestCase
     protected function getResourceClass(): string
     {
         return Quote::class;
+    }
+
+    public function testGetCollection(): void
+    {
+        $client = ClientFactory::createOne()->_real();
+        $contacts = ContactFactory::createMany(1, ['client' => $client]);
+        QuoteFactory::createMany(3, [
+            'client' => $client,
+            'users' => $contacts,
+            'discount' => (new Discount())->setType('percentage')->setValue(0),
+        ]);
+
+        $data = $this->requestGetCollection('/api/quotes');
+
+        self::assertArraySubset([
+            '@context' => $this->getContextForResource(Quote::class),
+            '@id' => '/api/quotes',
+            '@type' => 'Collection',
+        ], $data);
+    }
+
+    public function testGetQuotesForClient(): void
+    {
+        $client = ClientFactory::createOne()->_real();
+        $contacts = ContactFactory::createMany(1, ['client' => $client]);
+        QuoteFactory::createMany(2, [
+            'client' => $client,
+            'users' => $contacts,
+            'discount' => (new Discount())->setType('percentage')->setValue(0),
+        ]);
+
+        $data = $this->requestGetCollection($this->getIriFromResource($client) . '/quotes');
+
+        self::assertArraySubset([
+            '@context' => $this->getContextForResource(Quote::class),
+            '@type' => 'Collection',
+        ], $data);
+    }
+
+    public function testCannotAccessQuoteFromDifferentCompany(): void
+    {
+        $otherCompany = CompanyFactory::new()->create();
+        self::getContainer()->get(CompanySelector::class)->switchCompany($otherCompany->getId());
+        $foreignClient = ClientFactory::createOne(['company' => $otherCompany]);
+        $foreignQuote = QuoteFactory::createOne(['client' => $foreignClient])->_real();
+        self::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
+
+        $response = self::$client->request('GET', $this->getIriFromResource($foreignQuote), [
+            'headers' => ['accept' => 'application/ld+json'],
+        ]);
+        static::assertResponseStatusCodeSame(404);
     }
 
     public function testCreate(): void
