@@ -66,7 +66,7 @@ final class UserFactory extends PersistentProxyObjectFactory
     {
         parent::__construct();
 
-        $this->passwordHasher = new NativePasswordHasher();
+        $this->passwordHasher = new NativePasswordHasher(3, 10 * 1024, 4);
     }
 
     /**
