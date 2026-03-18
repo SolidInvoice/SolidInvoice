@@ -95,16 +95,12 @@ class Tax implements Stringable
     #[Groups(['tax_api:read', 'tax_api:write'])]
     #[ApiProperty(
         openapiContext: [
-            'type' => [
-                'type' => 'string',
-                'enum' => ['inclusive', 'exclusive'],
-            ],
+            'type' => 'string',
+            'enum' => [self::TYPE_INCLUSIVE, self::TYPE_EXCLUSIVE, self::TYPE_FLAT_RATE],
         ],
         jsonSchemaContext: [
-            'type' => [
-                'type' => 'string',
-                'enum' => ['inclusive', 'exclusive'],
-            ],
+            'type' => 'string',
+            'enum' => [self::TYPE_INCLUSIVE, self::TYPE_EXCLUSIVE, self::TYPE_FLAT_RATE],
         ]
     )]
     private ?string $type = null;
