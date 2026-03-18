@@ -16,7 +16,6 @@ namespace SolidInvoice\UserBundle\Tests\Functional\Api;
 use SolidInvoice\ApiBundle\ApiTokenManager;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\UserBundle\Entity\ApiToken;
-use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Uid\Ulid;
@@ -29,20 +28,9 @@ final class ApiTokenTest extends ApiTestCase
 {
     use Factories;
 
-    private User $firstUser;
-
     protected function getResourceClass(): string
     {
         return ApiToken::class;
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        // Retrieve the user created by the parent setUp via UserFactory
-        // The parent setUp creates one user; we need to track it for cross-user tests
-        $this->firstUser = UserFactory::first()->_real();
     }
 
     public function testCreate(): void
@@ -64,26 +52,22 @@ final class ApiTokenTest extends ApiTestCase
 
     public function testGet(): void
     {
-        /** @var ApiTokenManager $apiTokenManager */
-        $apiTokenManager = self::getContainer()->get(ApiTokenManager::class);
-        $token = $apiTokenManager->create($this->firstUser, 'My Get Token');
+        $created = $this->requestPost('/api/profile/api-tokens', ['name' => 'My Get Token']);
+        $uri = '/api/profile/api-tokens/' . $created['id'];
 
-        $uri = '/api/profile/api-tokens/' . $token->getId()->toString();
         $result = $this->requestGet($uri);
 
         self::assertArrayHasKey('id', $result);
-        self::assertSame($token->getId()->toString(), $result['id']);
+        self::assertSame($created['id'], $result['id']);
         self::assertSame('My Get Token', $result['name']);
         self::assertArrayNotHasKey('token', $result);
     }
 
     public function testTokenValueNotReturnedOnGet(): void
     {
-        /** @var ApiTokenManager $apiTokenManager */
-        $apiTokenManager = self::getContainer()->get(ApiTokenManager::class);
-        $token = $apiTokenManager->create($this->firstUser, 'Token No Reveal');
+        $created = $this->requestPost('/api/profile/api-tokens', ['name' => 'Token No Reveal']);
+        $uri = '/api/profile/api-tokens/' . $created['id'];
 
-        $uri = '/api/profile/api-tokens/' . $token->getId()->toString();
         $result = $this->requestGet($uri);
 
         self::assertArrayNotHasKey('token', $result, 'The token value must not be returned on GET requests.');
@@ -91,20 +75,16 @@ final class ApiTokenTest extends ApiTestCase
 
     public function testDelete(): void
     {
-        /** @var ApiTokenManager $apiTokenManager */
-        $apiTokenManager = self::getContainer()->get(ApiTokenManager::class);
-        $token = $apiTokenManager->create($this->firstUser, 'Token To Delete');
+        $created = $this->requestPost('/api/profile/api-tokens', ['name' => 'Token To Delete']);
+        $uri = '/api/profile/api-tokens/' . $created['id'];
 
-        $uri = '/api/profile/api-tokens/' . $token->getId()->toString();
         $this->requestDelete($uri);
     }
 
     public function testGetCollection(): void
     {
-        /** @var ApiTokenManager $apiTokenManager */
-        $apiTokenManager = self::getContainer()->get(ApiTokenManager::class);
-        $apiTokenManager->create($this->firstUser, 'Collection Token 1');
-        $apiTokenManager->create($this->firstUser, 'Collection Token 2');
+        $this->requestPost('/api/profile/api-tokens', ['name' => 'Collection Token 1']);
+        $this->requestPost('/api/profile/api-tokens', ['name' => 'Collection Token 2']);
 
         $data = $this->requestGetCollection('/api/profile/api-tokens');
 
@@ -122,7 +102,7 @@ final class ApiTokenTest extends ApiTestCase
         $apiTokenManager = self::getContainer()->get(ApiTokenManager::class);
         $secondUserToken = $apiTokenManager->create($secondUser, 'Second User Token');
 
-        $response = self::$client->request('GET', '/api/profile/api-tokens/' . $secondUserToken->getId()->toString(), [
+        self::$client->request('GET', '/api/profile/api-tokens/' . $secondUserToken->getId()->toString(), [
             'headers' => [
                 'content-type' => 'application/ld+json',
                 'accept' => 'application/ld+json',
