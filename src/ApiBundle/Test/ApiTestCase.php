@@ -262,6 +262,75 @@ abstract class ApiTestCase extends ApiPlatformTestCase
     }
 
     /**
+     * @param array<string, string> $headers
+     *
+     * @return array<mixed>
+     * @throws ClientExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     */
+    protected function requestGetCollection(string $uri, array $headers = []): array
+    {
+        $headers = [
+            'content-type' => 'application/ld+json',
+            'accept' => 'application/ld+json',
+            ...$headers
+        ];
+
+        $response = self::$client->request(
+            method: Request::METHOD_GET,
+            url: $uri,
+            options: [
+                'headers' => $headers,
+            ]
+        );
+
+        static::assertResponseStatusCodeSame(Response::HTTP_OK);
+        static::assertResponseFormatSame('jsonld');
+        static::assertMatchesResourceCollectionJsonSchema($this->getResourceClass());
+
+        return $response->toArray(false);
+    }
+
+    /**
+     * @param array<string, mixed> $data
+     * @param class-string $outputResourceClass
+     * @param array<string, string> $headers
+     *
+     * @return array<string, mixed>
+     * @throws ClientExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     */
+    protected function requestPostExpecting(string $uri, array $data, string $outputResourceClass, array $headers = []): array
+    {
+        $headers = [
+            'content-type' => 'application/ld+json',
+            'accept' => 'application/ld+json',
+            ...$headers
+        ];
+
+        $response = self::$client->request(
+            method: Request::METHOD_POST,
+            url: $uri,
+            options: [
+                'json' => $data,
+                'headers' => $headers,
+            ]
+        );
+
+        static::assertResponseStatusCodeSame(Response::HTTP_CREATED);
+        static::assertResponseFormatSame('jsonld');
+        static::assertMatchesResourceItemJsonSchema($outputResourceClass);
+
+        return $response->toArray(false);
+    }
+
+    /**
      * @param array<string,string> $headers
      * @throws ClientExceptionInterface
      * @throws RedirectionExceptionInterface
