@@ -70,6 +70,9 @@ invoice:
             qty: Qty
             total: Total
             tax: Tax
+            type: Type
+            duration: Duration
+            rate_per_hour: Rate/Hour
     totals:
         title: 'Summary'
     terms_notes:

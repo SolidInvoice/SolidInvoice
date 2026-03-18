@@ -15,14 +15,19 @@ namespace SolidInvoice\InvoiceBundle\Form\Type;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Money\Currency;
+use SolidInvoice\CoreBundle\Enum\LineItemType;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\TaxBundle\Entity\Tax;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -69,6 +74,33 @@ class ItemType extends AbstractType
             ]
         );
 
+        $builder->add('lineItemType', EnumType::class, [
+            'class' => LineItemType::class,
+            'expanded' => true,
+            'label' => false,
+            'attr' => ['class' => 'line-type-toggle'],
+        ]);
+
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
+            $line = $event->getData();
+            if ($line instanceof Line && $line->getLineItemType() === LineItemType::TimeTracking) {
+                $this->addDurationQtyField($event->getForm());
+            }
+        });
+
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event): void {
+            $data = $event->getData();
+            // Default to Standard if not submitted (e.g. new item with no radio selected)
+            if (! isset($data['lineItemType'])) {
+                $data['lineItemType'] = LineItemType::Standard->value;
+                $event->setData($data);
+            }
+
+            if ($data['lineItemType'] === LineItemType::TimeTracking->value) {
+                $this->addDurationQtyField($event->getForm());
+            }
+        });
+
         if ($this->registry->getManager()->getRepository(Tax::class)->taxRatesConfigured()) {
             $builder->add(
                 'tax',
@@ -83,6 +115,17 @@ class ItemType extends AbstractType
                 ]
             );
         }
+    }
+
+    private function addDurationQtyField(FormInterface $form): void
+    {
+        $form->remove('qty');
+        $form->add('qty', DurationQtyType::class, [
+            'label' => 'Duration',
+            'attr' => [
+                'class' => 'input-mini',
+            ],
+        ]);
     }
 
     public function getBlockPrefix(): string

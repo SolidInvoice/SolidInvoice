@@ -159,7 +159,7 @@ final class TimeEntryManager
             $line = new Line();
             $line->setDescription($entry->getDescription() ?? sprintf('Time entry - %s', $entry->getDate()->format('Y-m-d')));
             $line->setPrice($entry->getHourlyRate());
-            $line->setQty($entry->getDuration() / 3600.0);
+            $line->setQty($entry->getDuration());
             $line->setLineItemType(LineItemType::TimeTracking);
 
             $invoice->addLine($line);

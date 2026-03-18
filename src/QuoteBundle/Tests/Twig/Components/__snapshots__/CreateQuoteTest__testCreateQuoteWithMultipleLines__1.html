@@ -1,5 +1,5 @@
 <html><body>
-<div class="billing-form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="CreateQuote" data-live-url-value="/_components/CreateQuote" data-live-props-value='{"isEdit":false,"quoteEntity":null,"previousClientId":null,"formName":"quote","quote":{"clientMode":"existing","discount":{"type":"","value":0},"lines":[{"description":"","price":"100.00","qty":"1"},{"description":"","price":"100.00","qty":"1"}],"quoteId":"1","terms":"","notes":"","total":0,"baseTotal":0,"tax":0,"__dynamic_error":"","client":"","_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
+<div class="billing-form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="CreateQuote" data-live-url-value="/_components/CreateQuote" data-live-props-value='{"isEdit":false,"quoteEntity":null,"previousClientId":null,"formName":"quote","quote":{"clientMode":"existing","discount":{"type":"percentage","value":0},"lines":[{"description":"","price":"100.00","qty":"1"},{"description":"","price":"100.00","qty":"1"}],"quoteId":"1","terms":"","notes":"","total":0,"baseTotal":0,"tax":0,"__dynamic_error":"","client":"","_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
     
     <form name="quote" method="post" data-model="on(change)|*">
 
@@ -75,7 +75,7 @@
                         <label for="quote_discount_value">Discount</label>
     <div class="mb-3 multiple-form-group input-group">
         <input type="text" id="quote_discount_value" name="quote[discount][value]" class="discount-value form-control" value="0">
-        <select id="quote_discount_type" name="quote[discount][type]" class="discount-type form-select" data-controller="symfony--ux-autocomplete--autocomplete" data-symfony--ux-autocomplete--autocomplete-max-results-value="10" data-symfony--ux-autocomplete--autocomplete-loading-more-text-value="Loading more results..." data-symfony--ux-autocomplete--autocomplete-no-results-found-text-value="No results found" data-symfony--ux-autocomplete--autocomplete-no-more-results-text-value="No more results" data-symfony--ux-autocomplete--autocomplete-create-option-text-value="Add %placeholder%..." data-symfony--ux-autocomplete--autocomplete-preload-value="focus"><option value="percentage">%</option>
+        <select id="quote_discount_type" name="quote[discount][type]" class="discount-type form-select" data-controller="symfony--ux-autocomplete--autocomplete" data-symfony--ux-autocomplete--autocomplete-max-results-value="10" data-symfony--ux-autocomplete--autocomplete-loading-more-text-value="Loading more results..." data-symfony--ux-autocomplete--autocomplete-no-results-found-text-value="No results found" data-symfony--ux-autocomplete--autocomplete-no-more-results-text-value="No more results" data-symfony--ux-autocomplete--autocomplete-create-option-text-value="Add %placeholder%..." data-symfony--ux-autocomplete--autocomplete-preload-value="focus"><option value="percentage" selected>%</option>
 <option value="money">USD</option></select>
     </div>
 
@@ -122,7 +122,7 @@
                                     </div>
                                                                         <div class="column-total">
                                         <span class="mobile-label">Total</span>
-                                        <span class="item-total-value">$0.00</span>
+                                        <span class="item-total-value">$100.00</span>
                                     </div>
                                     <div class="column-actions">
                                                                                     <button type="button" id="quote_lines_0_delete" name="quote[lines][0][delete]" data-action="live#action" data-live-action-param="removeCollectionItem" data-live-name-param="quote[lines]" data-live-index-param="0" class="remove-item-btn btn" title="Remove Item" aria-label="Remove Item"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16m-10 4v6m4-6v6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"></path></svg></button>
@@ -148,7 +148,7 @@
                                     </div>
                                                                         <div class="column-total">
                                         <span class="mobile-label">Total</span>
-                                        <span class="item-total-value">$0.00</span>
+                                        <span class="item-total-value">$100.00</span>
                                     </div>
                                     <div class="column-actions">
                                                                                     <button type="button" id="quote_lines_1_delete" name="quote[lines][1][delete]" data-action="live#action" data-live-action-param="removeCollectionItem" data-live-name-param="quote[lines]" data-live-index-param="1" class="remove-item-btn btn" title="Remove Item" aria-label="Remove Item"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16m-10 4v6m4-6v6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"></path></svg></button>
@@ -174,7 +174,7 @@
                     <div class="billing-totals-body">
                         <div class="totals-row">
                             <span class="totals-label">SubTotal</span>
-                            <span class="totals-value">$0.00</span>
+                            <span class="totals-value">$200.00</span>
                         </div>
 
                         
@@ -185,7 +185,7 @@
 
                         <div class="totals-row totals-row-total">
                             <span class="totals-label">Total</span>
-                            <span class="totals-value">$0.00</span>
+                            <span class="totals-value">$200.00</span>
                         </div>
                     </div>
                 </div>

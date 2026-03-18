@@ -86,7 +86,7 @@ class NotificationManager
             $message->channels($channels);
 
             try {
-                // $this->notifier->send($message, new Recipient($userNotification->getUser()->getEmail(), (string) $userNotification->getUser()->getMobile()));
+                $this->notifier->send($message, new Recipient($userNotification->getUser()->getEmail(), (string) $userNotification->getUser()->getMobile()));
             } catch (TransportExceptionInterface $e) {
                 $this->logger->error('Failed to send notification: ' . $e->getMessage(), [
                     'exception' => $e,

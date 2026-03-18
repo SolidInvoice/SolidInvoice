@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Form\Transformer;
 
+use Brick\Math\BigDecimal;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\MathException;
@@ -49,6 +50,10 @@ class DiscountTransformer implements DataTransformerInterface
      */
     public function reverseTransform(mixed $value): BigNumber
     {
+        if ('' === $value || null === $value) {
+            return BigDecimal::zero();
+        }
+
         return BigNumber::of($value)
             ->toBigDecimal()
             ->multipliedBy(100)

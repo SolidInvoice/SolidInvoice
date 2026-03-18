@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Billing;
 
 use Brick\Math\BigDecimal;
-use Brick\Math\BigInteger;
-use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
 use Brick\Math\RoundingMode;
+use SolidInvoice\CoreBundle\Entity\Discount;
+use SolidInvoice\CoreBundle\Entity\LineInterface;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\MoneyBundle\Calculator;
@@ -37,77 +37,69 @@ class TotalCalculator
     }
 
     /**
+     * @param iterable<LineInterface> $lines
      * @throws MathException
      */
-    public function calculateTotals(BaseInvoice|Quote $entity): void
+    public function calculateFromLines(iterable $lines, Discount $discount): TotalsResult
     {
-        $this->updateTotal($entity);
-
-        if ($entity instanceof Invoice) {
-            $totalPaid = $this->paymentRepository->getTotalPaidForInvoice($entity);
-            $total = $entity->getTotal();
-            assert($total instanceof BigDecimal || $total instanceof BigInteger);
-
-            $entity->setBalance($total->minus($totalPaid));
-        }
-    }
-
-    /**
-     * @throws MathException
-     */
-    private function updateTotal(BaseInvoice|Quote $entity): void
-    {
-
         $total = BigDecimal::zero();
         $subTotal = BigDecimal::zero();
         $tax = BigDecimal::zero();
 
-        foreach ($entity->getLines() as $line) {
+        foreach ($lines as $line) {
             $line->updateTotal();
 
             $rowTotal = $line->getTotal();
-
-            $total = $total->plus($line->getTotal());
-            $subTotal = $subTotal->plus($line->getTotal());
+            $total = $total->plus($rowTotal);
+            $subTotal = $subTotal->plus($rowTotal);
 
             if (($rowTax = $line->getTax()) instanceof Tax) {
-                switch ($rowTax->getType()) {
-                    case Tax::TYPE_INCLUSIVE:
-                        $taxAmount = $rowTotal->toBigDecimal()->dividedBy(($rowTax->getRate() / 100) + 1, 2, RoundingMode::HALF_EVEN)->minus($rowTotal)->negated();
-                        $subTotal = $subTotal->minus($taxAmount);
-                        break;
-                    case Tax::TYPE_EXCLUSIVE:
-                        $taxAmount = $rowTotal->toBigDecimal()->multipliedBy($rowTax->getRate() / 100)->toScale(0, RoundingMode::HALF_EVEN);
-                        $total = $total->plus($taxAmount);
-                        break;
-                    case Tax::TYPE_FLAT_RATE:
-                        $taxAmount = BigDecimal::of($rowTax->getRate())->multipliedBy(100)->toScale(0, RoundingMode::HALF_EVEN);
-                        $total = $total->plus($taxAmount);
-                        break;
-                    default:
-                        $taxAmount = BigDecimal::zero();
-                        break;
+                $taxAmount = match ($rowTax->getType()) {
+                    Tax::TYPE_INCLUSIVE => $rowTotal->toBigDecimal()
+                        ->dividedBy(($rowTax->getRate() / 100) + 1, 2, RoundingMode::HALF_EVEN)
+                        ->minus($rowTotal)
+                        ->negated(),
+                    Tax::TYPE_EXCLUSIVE => $rowTotal->toBigDecimal()
+                        ->multipliedBy($rowTax->getRate() / 100)
+                        ->toScale(0, RoundingMode::HALF_EVEN),
+                    Tax::TYPE_FLAT_RATE => BigDecimal::of($rowTax->getRate())
+                        ->multipliedBy(100)
+                        ->toScale(0, RoundingMode::HALF_EVEN),
+                    default => BigDecimal::zero(),
+                };
+
+                if ($rowTax->getType() === Tax::TYPE_INCLUSIVE) {
+                    $subTotal = $subTotal->minus($taxAmount);
+                } else {
+                    $total = $total->plus($taxAmount);
                 }
 
                 $tax = $tax->plus($taxAmount);
             }
         }
 
-        $entity->setBaseTotal($subTotal);
-
-        if ($entity->getDiscount()->getValue()) {
-            $total = $this->setDiscount($entity, $total);
+        if ($discount->getValue()) {
+            $discountAmount = $this->calculator->calculateDiscountFromValues($subTotal, $tax, $discount);
+            $total = $total->minus($discountAmount);
         }
 
-        $entity->setTotal($total);
-        $entity->setTax($tax);
+        return new TotalsResult($total, $subTotal, $tax);
     }
 
     /**
      * @throws MathException
      */
-    private function setDiscount(BaseInvoice|Quote $entity, BigDecimal|BigInteger $total): BigNumber
+    public function calculateTotals(BaseInvoice|Quote $entity): void
     {
-        return $total->minus($this->calculator->calculateDiscount($entity));
+        $result = $this->calculateFromLines($entity->getLines(), $entity->getDiscount());
+
+        $entity->setBaseTotal($result->baseTotal);
+        $entity->setTotal($result->total);
+        $entity->setTax($result->tax);
+
+        if ($entity instanceof Invoice) {
+            $totalPaid = $this->paymentRepository->getTotalPaidForInvoice($entity);
+            $entity->setBalance($result->total->minus($totalPaid));
+        }
     }
 }

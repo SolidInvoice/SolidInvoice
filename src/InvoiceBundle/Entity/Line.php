@@ -24,6 +24,7 @@ use ApiPlatform\Metadata\Post;
 use Brick\Math\BigDecimal;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
+use Brick\Math\RoundingMode;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
@@ -247,9 +248,19 @@ class Line implements LineInterface, Stringable
      * @throws MathException
      */
     #[ORM\PrePersist]
+    #[ORM\PreUpdate]
     public function updateTotal(): static
     {
-        $this->total = $this->getPrice()->toBigDecimal()->multipliedBy($this->qty);
+        if ($this->lineItemType === LineItemType::TimeTracking) {
+            // qty stored in seconds; price is the hourly rate in cents
+            $hours = BigDecimal::of((string) $this->qty)
+                ->dividedBy('3600', 10, RoundingMode::HALF_UP);
+            $this->total = $this->getPrice()->toBigDecimal()
+                ->multipliedBy($hours)
+                ->toScale(0, RoundingMode::HALF_UP);
+        } else {
+            $this->total = $this->getPrice()->toBigDecimal()->multipliedBy($this->qty);
+        }
 
         return $this;
     }

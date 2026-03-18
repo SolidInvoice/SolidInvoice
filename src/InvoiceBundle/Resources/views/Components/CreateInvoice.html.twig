@@ -165,6 +165,7 @@
                             </div>
 
                             {% for index, item in form.lines %}
+                                {% set isTimeTracking = item.vars.value.lineItemType.value == 'time_tracking' %}
                                 <div class="billing-item-row">
                                     <div class="column-description">
                                         <span class="mobile-label">{{ 'invoice.item.heading.description'|trans }}</span>
@@ -172,14 +173,47 @@
                                         {{ form_errors(item.description) }}
                                     </div>
                                     <div class="column-price">
-                                        <span class="mobile-label">{{ 'invoice.item.heading.price'|trans }}</span>
+                                        <span class="mobile-label">
+                                            {% if isTimeTracking %}
+                                                {{ 'invoice.item.heading.rate_per_hour'|trans }}
+                                            {% else %}
+                                                {{ 'invoice.item.heading.price'|trans }}
+                                            {% endif %}
+                                        </span>
                                         {{ form_widget(item.price) }}
                                         {{ form_errors(item.price) }}
                                     </div>
                                     <div class="column-qty">
-                                        <span class="mobile-label">{{ 'invoice.item.heading.qty'|trans }}</span>
-                                        {{ form_widget(item.qty) }}
-                                        {{ form_errors(item.qty) }}
+                                        <span class="mobile-label">
+                                            {% if isTimeTracking %}
+                                                {{ 'invoice.item.heading.duration'|trans }}
+                                            {% else %}
+                                                {{ 'invoice.item.heading.qty'|trans }}
+                                            {% endif %}
+                                        </span>
+                                        <div class="qty-cell">
+                                            <div class="qty-input-wrapper">
+                                                {{ form_widget(item.qty) }}
+                                                {{ form_errors(item.qty) }}
+                                            </div>
+                                            <div class="line-type-icons" data-controller="tooltip">
+                                                {% for choice in item.lineItemType %}
+                                                    <label
+                                                        class="line-type-icon-btn{% if item.lineItemType.vars.value == choice.vars.value %} active{% endif %}"
+                                                        data-bs-toggle="tooltip"
+                                                        data-bs-placement="left"
+                                                        title="{{ choice.vars.label }}"
+                                                    >
+                                                        {{ form_widget(choice, {attr: {'data-action': 'change->live#$render'}}) }}
+                                                        {% if choice.vars.value == 'time_tracking' %}
+                                                            {{ ux_icon('tabler:clock', {width: 13, height: 13}) }}
+                                                        {% else %}
+                                                            {{ ux_icon('tabler:hash', {width: 13, height: 13}) }}
+                                                        {% endif %}
+                                                    </label>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
                                     </div>
                                     {% if hasTax %}
                                         <div class="column-tax">

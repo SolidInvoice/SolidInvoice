@@ -1,5 +1,5 @@
 <html><body>
-<div class="billing-form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="CreateQuote" data-live-url-value="/_components/CreateQuote" data-live-props-value='{"isEdit":false,"quoteEntity":null,"previousClientId":null,"formName":"quote","quote":{"clientMode":"existing","discount":{"type":"","value":0},"lines":[{"description":"","price":"100.00","qty":"1","tax":""}],"quoteId":"1","terms":"","notes":"","total":0,"baseTotal":0,"tax":0,"__dynamic_error":"","client":"","_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
+<div class="billing-form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="CreateQuote" data-live-url-value="/_components/CreateQuote" data-live-props-value='{"isEdit":false,"quoteEntity":null,"previousClientId":null,"formName":"quote","quote":{"clientMode":"existing","discount":{"type":"percentage","value":0},"lines":[{"description":"","price":"100.00","qty":"1","tax":""}],"quoteId":"1","terms":"","notes":"","total":0,"baseTotal":0,"tax":0,"__dynamic_error":"","client":"","_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
     
     <form name="quote" method="post" data-model="on(change)|*">
 
@@ -75,7 +75,7 @@
                         <label for="quote_discount_value">Discount</label>
     <div class="mb-3 multiple-form-group input-group">
         <input type="text" id="quote_discount_value" name="quote[discount][value]" class="discount-value form-control" value="0">
-        <select id="quote_discount_type" name="quote[discount][type]" class="discount-type form-select" data-controller="symfony--ux-autocomplete--autocomplete" data-symfony--ux-autocomplete--autocomplete-max-results-value="10" data-symfony--ux-autocomplete--autocomplete-loading-more-text-value="Loading more results..." data-symfony--ux-autocomplete--autocomplete-no-results-found-text-value="No results found" data-symfony--ux-autocomplete--autocomplete-no-more-results-text-value="No more results" data-symfony--ux-autocomplete--autocomplete-create-option-text-value="Add %placeholder%..." data-symfony--ux-autocomplete--autocomplete-preload-value="focus"><option value="percentage">%</option>
+        <select id="quote_discount_type" name="quote[discount][type]" class="discount-type form-select" data-controller="symfony--ux-autocomplete--autocomplete" data-symfony--ux-autocomplete--autocomplete-max-results-value="10" data-symfony--ux-autocomplete--autocomplete-loading-more-text-value="Loading more results..." data-symfony--ux-autocomplete--autocomplete-no-results-found-text-value="No results found" data-symfony--ux-autocomplete--autocomplete-no-more-results-text-value="No more results" data-symfony--ux-autocomplete--autocomplete-create-option-text-value="Add %placeholder%..." data-symfony--ux-autocomplete--autocomplete-preload-value="focus"><option value="percentage" selected>%</option>
 <option value="money">USD</option></select>
     </div>
 
@@ -129,7 +129,7 @@
                                         </div>
                                                                         <div class="column-total">
                                         <span class="mobile-label">Total</span>
-                                        <span class="item-total-value">$0.00</span>
+                                        <span class="item-total-value">$100.00</span>
                                     </div>
                                     <div class="column-actions">
                                                                             </div>
@@ -154,7 +154,7 @@
                     <div class="billing-totals-body">
                         <div class="totals-row">
                             <span class="totals-label">SubTotal</span>
-                            <span class="totals-value">$0.00</span>
+                            <span class="totals-value">$100.00</span>
                         </div>
 
                                                     <div class="totals-row">
@@ -169,7 +169,7 @@
 
                         <div class="totals-row totals-row-total">
                             <span class="totals-label">Total</span>
-                            <span class="totals-value">$0.00</span>
+                            <span class="totals-value">$100.00</span>
                         </div>
                     </div>
                 </div>

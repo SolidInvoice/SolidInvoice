@@ -336,7 +336,7 @@
 
 .billing-items-header-row {
     display: grid;
-    grid-template-columns: 2fr minmax(120px, 1fr) 70px minmax(100px, 1fr) minmax(100px, 1fr) 48px;
+    grid-template-columns: 2fr minmax(120px, 1fr) 130px minmax(100px, auto) minmax(100px, auto) 48px;
     gap: var(--swp-space-4);
     padding: var(--swp-space-3);
     border-bottom: 1px solid var(--swp-border);
@@ -368,11 +368,11 @@
 .billing-items-list:not(:has(.column-tax)) {
 
     .billing-items-header-row {
-        grid-template-columns: 3fr minmax(120px, 1fr) 70px minmax(100px, 1fr) 48px;
+        grid-template-columns: 3fr minmax(120px, 1fr) 130px minmax(100px, auto) 48px;
     }
 
     .billing-item-row {
-        grid-template-columns: 3fr minmax(120px, 1fr) 70px minmax(100px, 1fr) 48px;
+        grid-template-columns: 3fr minmax(120px, 1fr) 130px minmax(100px, auto) 48px;
 
         @media (width <= 900px) {
             grid-template-columns: 1fr;
@@ -382,7 +382,7 @@
 
 .billing-item-row {
     display: grid;
-    grid-template-columns: 2fr minmax(120px, 1fr) 70px minmax(100px, 1fr) minmax(100px, 1fr) 48px;
+    grid-template-columns: 2fr minmax(120px, 1fr) 130px minmax(100px, auto) minmax(100px, auto) 48px;
     gap: var(--swp-space-4);
     padding: var(--swp-space-3);
     border-bottom: 1px solid var(--swp-border-light);
@@ -581,6 +581,75 @@
     &:focus {
         outline: 2px solid var(--swp-primary);
         outline-offset: 2px;
+    }
+}
+
+// Line item type icon toggle (compact, stacked next to qty)
+
+.qty-cell {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--swp-space-2);
+}
+
+.qty-input-wrapper {
+    flex: 1;
+    min-width: 0;
+
+    input {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+.line-type-icons {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    flex-shrink: 0;
+}
+
+.line-type-icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: var(--swp-radius-sm);
+    border: 1px solid var(--swp-border);
+    background: var(--swp-surface);
+    color: var(--swp-text-muted);
+    cursor: pointer;
+    transition: all var(--swp-transition-fast);
+    flex-shrink: 0;
+
+    // Hide the Symfony-generated form-check wrapper and its label;
+    // keep only the SVG icon visible
+    .form-check {
+        display: contents;
+    }
+
+    input[type='radio'],
+    .form-check-label {
+        display: none;
+    }
+
+    svg {
+        display: block;
+        flex-shrink: 0;
+    }
+
+    &.active,
+    &:has(input:checked) {
+        background: var(--swp-primary);
+        border-color: var(--swp-primary);
+        color: #ffffff;
+    }
+
+    &:not(.active):hover {
+        background: var(--swp-primary-lighter);
+        border-color: var(--swp-primary);
+        color: var(--swp-primary);
     }
 }
 

@@ -84,6 +84,7 @@ final class QuoteFormDTO
     public function __construct()
     {
         $this->clientMode = QuoteClientMode::Existing;
+        $this->discount = new Discount();
         $this->lines = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->total = '0';

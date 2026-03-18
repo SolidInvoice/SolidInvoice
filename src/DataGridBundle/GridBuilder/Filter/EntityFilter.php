@@ -36,6 +36,9 @@ final class EntityFilter implements ColumnFilterInterface
     private bool $multiple = false;
 
     private function __construct(
+        /**
+         * @var class-string
+         */
         private readonly string $class,
         private readonly string $alias,
         private readonly string $field,

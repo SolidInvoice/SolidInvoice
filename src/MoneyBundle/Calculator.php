@@ -31,9 +31,19 @@ final class Calculator
      */
     public function calculateDiscount(Quote|BaseInvoice $entity): BigNumber
     {
-        $discount = $entity->getDiscount();
+        return $this->calculateDiscountFromValues(
+            $entity->getBaseTotal(),
+            $entity->getTax(),
+            $entity->getDiscount()
+        );
+    }
 
-        $invoiceTotal = $entity->getBaseTotal()->toBigDecimal()->plus($entity->getTax());
+    /**
+     * @throws MathException
+     */
+    public function calculateDiscountFromValues(BigNumber $baseTotal, BigNumber $tax, Discount $discount): BigNumber
+    {
+        $invoiceTotal = $baseTotal->toBigDecimal()->plus($tax);
 
         if (Discount::TYPE_PERCENTAGE === $discount->getType()) {
             return BigDecimal::of($this->calculatePercentage($invoiceTotal, $discount->getValue()));

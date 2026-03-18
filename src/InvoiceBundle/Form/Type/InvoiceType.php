@@ -167,9 +167,9 @@ class InvoiceType extends AbstractType
 
         $builder->add('terms');
         $builder->add('notes', null, ['help' => 'Notes will not be visible to the client']);
-        $builder->add('total', HiddenMoneyType::class, ['currency' => $options['currency']]);
-        $builder->add('baseTotal', HiddenMoneyType::class, ['currency' => $options['currency']]);
-        $builder->add('tax', HiddenMoneyType::class, ['currency' => $options['currency']]);
+        $builder->add('total', HiddenMoneyType::class, ['currency' => $options['currency'], 'mapped' => false]);
+        $builder->add('baseTotal', HiddenMoneyType::class, ['currency' => $options['currency'], 'mapped' => false]);
+        $builder->add('tax', HiddenMoneyType::class, ['currency' => $options['currency'], 'mapped' => false]);
         $builder->add('invoiceDate', DateType::class, ['widget' => 'single_text', 'input' => 'datetime_immutable']);
         $builder->add('due', DateType::class, ['widget' => 'single_text', 'label' => 'Due Date', 'required' => false, 'input' => 'datetime_immutable']);
 

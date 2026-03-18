@@ -13,19 +13,19 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Twig\Components;
 
+use Brick\Math\BigDecimal;
 use Brick\Math\Exception\MathException;
 use Doctrine\ORM\EntityManagerInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
+use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\InvoiceBundle\DTO\InvoiceFormDTO;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
-use SolidInvoice\InvoiceBundle\Enum\InvoiceClientMode;
 use SolidInvoice\InvoiceBundle\Form\Type\InvoiceType;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceFormManager;
 use SolidInvoice\InvoiceBundle\Model\Graph;
-use SolidInvoice\MoneyBundle\Calculator;
 use SolidInvoice\TaxBundle\Repository\TaxRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -69,7 +69,6 @@ final class CreateInvoice extends AbstractController
         private readonly MailerInterface $mailer,
         private readonly RouterInterface $router,
         private readonly InvoiceFormManager $formManager,
-        private readonly Calculator $calculator,
     ) {
         $this->dto = new InvoiceFormDTO();
     }
@@ -115,7 +114,6 @@ final class CreateInvoice extends AbstractController
     #[PreReRender(priority: -10)]
     public function calculateTotals(): void
     {
-        // Skip calculation if data is incomplete
         if (! $this->canCalculateTotals()) {
             $this->dto->total = '0';
             $this->dto->baseTotal = '0';
@@ -123,14 +121,10 @@ final class CreateInvoice extends AbstractController
             return;
         }
 
-        // Create temporary invoice from DTO to calculate totals
-        $tempInvoice = $this->formManager->createInvoiceFromDTO($this->dto);
-        $this->totalCalculator->calculateTotals($tempInvoice);
-
-        // Copy calculated totals back to DTO (convert BigNumber to string)
-        $this->dto->total = (string) $tempInvoice->getTotal();
-        $this->dto->baseTotal = (string) $tempInvoice->getBaseTotal();
-        $this->dto->tax = (string) $tempInvoice->getTax();
+        $result = $this->totalCalculator->calculateFromLines($this->dto->lines, $this->dto->discount ?? new Discount());
+        $this->dto->total = (string) $result->total;
+        $this->dto->baseTotal = (string) $result->baseTotal;
+        $this->dto->tax = (string) $result->tax;
     }
 
     protected function instantiateForm(): FormInterface
@@ -201,6 +195,7 @@ final class CreateInvoice extends AbstractController
             assert($this->invoice instanceof Invoice);
 
             $this->formManager->updateInvoiceFromDTO($this->invoice, $dto);
+            $this->totalCalculator->calculateTotals($this->invoice);
 
             if ('send' === $action || 'publish' === $action) {
                 $this->invoiceStateMachine->apply($this->invoice, Graph::TRANSITION_ACCEPT);
@@ -219,6 +214,7 @@ final class CreateInvoice extends AbstractController
         }
 
         $invoice = $this->formManager->createInvoiceFromDTO($dto);
+        $this->totalCalculator->calculateTotals($invoice);
 
         // Apply state transitions
         if (! $invoice->getId() instanceof Ulid) {
@@ -266,47 +262,27 @@ final class CreateInvoice extends AbstractController
     }
 
     /**
-     * Calculate discount amount from DTO for template display
+     * Calculate discount amount from DTO for template display.
+     * Uses baseTotal + tax - total since calculateTotals() already applies the discount.
      */
     #[ExposeInTemplate]
     public function getDiscountAmount(): string
     {
-        if ($this->dto->discount === null) {
-            return '0';
-        }
-
-        // Skip calculation if we can't create an invoice (incomplete data)
         if (! $this->canCalculateTotals()) {
             return '0';
         }
 
-        // Create temporary invoice to leverage Calculator
-        try {
-            $tempInvoice = $this->formManager->createInvoiceFromDTO($this->dto);
-            return (string) $this->calculator->calculateDiscount($tempInvoice);
-        } catch (\InvalidArgumentException) {
-            // Client data incomplete during mode switching
-            return '0';
-        }
+        $baseTotal = BigDecimal::of($this->dto->baseTotal ?? '0');
+        $tax = BigDecimal::of($this->dto->tax ?? '0');
+        $total = BigDecimal::of($this->dto->total ?? '0');
+        $discount = $baseTotal->plus($tax)->minus($total);
+
+        return $discount->isPositive() ? (string) $discount : '0';
     }
 
-    /**
-     * Check if we have enough data to calculate totals
-     */
     private function canCalculateTotals(): bool
     {
-        // Need at least one line item
-        if ($this->dto->lines->isEmpty()) {
-            return false;
-        }
-
-        // Check client data based on mode
-        if ($this->dto->clientMode === InvoiceClientMode::Existing) {
-            return $this->dto->client instanceof Client;
-        }
-
-        // NewClient mode - need inline data
-        return $this->dto->hasInlineClientData();
+        return ! $this->dto->lines->isEmpty();
     }
 
     /**

@@ -1,5 +1,5 @@
 <html><body>
-<div class="billing-form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="CreateInvoice" data-live-url-value="/_components/CreateInvoice" data-live-props-value='{"isEdit":false,"invoiceEntity":null,"previousClientId":null,"formName":"invoice","invoice":{"clientMode":"existing","discount":{"type":"","value":0},"lines":[{"description":"","price":"100.00","qty":"1","tax":""}],"invoiceId":"1","terms":"","notes":"","total":0,"baseTotal":0,"tax":0,"invoiceDate":"2021-01-01","due":"","__dynamic_error":"","client":"","_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
+<div class="billing-form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="CreateInvoice" data-live-url-value="/_components/CreateInvoice" data-live-props-value='{"isEdit":false,"invoiceEntity":null,"previousClientId":null,"formName":"invoice","invoice":{"clientMode":"existing","discount":{"type":"percentage","value":0},"lines":[{"description":"","price":"100.00","qty":"1","lineItemType":"standard","tax":""}],"invoiceId":"1","terms":"","notes":"","total":0,"baseTotal":0,"tax":0,"invoiceDate":"2021-01-01","due":"","__dynamic_error":"","client":"","_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
     
     <form name="invoice" method="post" data-model="on(change)|*">
 
@@ -83,7 +83,7 @@
                         <label for="invoice_discount_value">Discount</label>
     <div class="mb-3 multiple-form-group input-group">
         <input type="text" id="invoice_discount_value" name="invoice[discount][value]" class="discount-value form-control" value="0">
-        <select id="invoice_discount_type" name="invoice[discount][type]" class="discount-type form-select" data-controller="symfony--ux-autocomplete--autocomplete" data-symfony--ux-autocomplete--autocomplete-max-results-value="10" data-symfony--ux-autocomplete--autocomplete-loading-more-text-value="Loading more results..." data-symfony--ux-autocomplete--autocomplete-no-results-found-text-value="No results found" data-symfony--ux-autocomplete--autocomplete-no-more-results-text-value="No more results" data-symfony--ux-autocomplete--autocomplete-create-option-text-value="Add %placeholder%..." data-symfony--ux-autocomplete--autocomplete-preload-value="focus"><option value="percentage">%</option>
+        <select id="invoice_discount_type" name="invoice[discount][type]" class="discount-type form-select" data-controller="symfony--ux-autocomplete--autocomplete" data-symfony--ux-autocomplete--autocomplete-max-results-value="10" data-symfony--ux-autocomplete--autocomplete-loading-more-text-value="Loading more results..." data-symfony--ux-autocomplete--autocomplete-no-results-found-text-value="No results found" data-symfony--ux-autocomplete--autocomplete-no-more-results-text-value="No more results" data-symfony--ux-autocomplete--autocomplete-create-option-text-value="Add %placeholder%..." data-symfony--ux-autocomplete--autocomplete-preload-value="focus"><option value="percentage" selected>%</option>
 <option value="money">USD</option></select>
     </div>
 
@@ -104,6 +104,7 @@
                                                                                         <div class="billing-items-list">
                             <div class="billing-items-header-row">
                                 <div class="column-description">Description</div>
+                                <div class="column-type">Type</div>
                                 <div class="column-price">Price</div>
                                 <div class="column-qty">Qty</div>
                                                                     <div class="column-tax">Tax</div>
@@ -111,21 +112,45 @@
                                 <div class="column-actions"></div>
                             </div>
 
-                                                            <div class="billing-item-row">
+                                                                                            <div class="billing-item-row">
                                     <div class="column-description">
                                         <span class="mobile-label">Description</span>
                                         <textarea id="invoice_lines_0_description" name="invoice[lines][0][description]" class="input-medium invoice-item-name form-control" placeholder="Describe the service or product..." rows="2"></textarea>
                                         
                                     </div>
+                                    <div class="column-type">
+                                        <span class="mobile-label">Type</span>
+                                        <div class="line-type-toggle-group" data-action="change-&gt;live#$render">
+                                                                                            <label class="line-type-btn active">
+                                                    <div class="form-check">
+<input type="radio" id="invoice_lines_0_lineItemType_0" name="invoice[lines][0][lineItemType]" class="form-check-input" value="standard" checked>
+        <label class="form-check-label" for="invoice_lines_0_lineItemType_0">Standard</label>
+</div>
+                                                    Standard
+                                                </label>
+                                                                                            <label class="line-type-btn">
+                                                    <div class="form-check">
+<input type="radio" id="invoice_lines_0_lineItemType_1" name="invoice[lines][0][lineItemType]" class="form-check-input" value="time_tracking">
+        <label class="form-check-label" for="invoice_lines_0_lineItemType_1">TimeTracking</label>
+</div>
+                                                    TimeTracking
+                                                </label>
+                                                                                    </div>
+                                        
+                                    </div>
                                     <div class="column-price">
-                                        <span class="mobile-label">Price</span>
+                                        <span class="mobile-label">
+                                                                                            Price
+                                                                                    </span>
                                         <div class="input-group flex-nowrap">
 <span class="input-group-text">$ </span><input type="text" id="invoice_lines_0_price" name="invoice[lines][0][price]" class="input-small invoice-item-price form-control" inputmode="decimal" value="100.00">
 </div>
                                         
                                     </div>
                                     <div class="column-qty">
-                                        <span class="mobile-label">Qty</span>
+                                        <span class="mobile-label">
+                                                                                            Qty
+                                                                                    </span>
                                         <input type="text" id="invoice_lines_0_qty" name="invoice[lines][0][qty]" class="input-mini invoice-item-qty form-control" inputmode="decimal" value="1">
                                         
                                     </div>
@@ -137,7 +162,7 @@
                                         </div>
                                                                         <div class="column-total">
                                         <span class="mobile-label">Total</span>
-                                        <span class="item-total-value">$0.00</span>
+                                        <span class="item-total-value">$100.00</span>
                                     </div>
                                     <div class="column-actions">
                                                                             </div>
@@ -162,7 +187,7 @@
                     <div class="billing-totals-body">
                         <div class="totals-row">
                             <span class="totals-label">SubTotal</span>
-                            <span class="totals-value">$0.00</span>
+                            <span class="totals-value">$100.00</span>
                         </div>
 
                                                     <div class="totals-row">
@@ -177,7 +202,7 @@
 
                         <div class="totals-row totals-row-total">
                             <span class="totals-label">Total</span>
-                            <span class="totals-value">$0.00</span>
+                            <span class="totals-value">$100.00</span>
                         </div>
                     </div>
                 </div>

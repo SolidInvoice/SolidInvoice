@@ -88,6 +88,7 @@ final class InvoiceFormDTO
     public function __construct()
     {
         $this->clientMode = InvoiceClientMode::Existing;
+        $this->discount = new Discount();
         $this->lines = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->total = '0';

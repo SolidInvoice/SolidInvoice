@@ -136,7 +136,11 @@
                                         {{ item.price|formatCurrency(invoice.client.currency) }}
                                     </td>
                                     <td class="column-qty">
-                                        {{ item.qty }}
+                                        {% if item.lineItemType.value == 'time_tracking' %}
+                                            {{ item.qty|format_duration }}
+                                        {% else %}
+                                            {{ item.qty }}
+                                        {% endif %}
                                     </td>
                                     {% if invoice.tax.positive %}
                                         <td class="column-tax">

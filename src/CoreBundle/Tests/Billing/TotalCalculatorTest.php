@@ -218,8 +218,8 @@ class TotalCalculatorTest extends KernelTestCase
 
         $updater->calculateTotals($invoice);
 
-        self::assertEquals(BigDecimal::of(26250), $invoice->getTotal());
-        self::assertEquals(BigDecimal::of(26250), $invoice->getBalance());
+        self::assertEquals(BigDecimal::of(25500), $invoice->getTotal());
+        self::assertEquals(BigDecimal::of(25500), $invoice->getBalance());
         self::assertEquals(BigDecimal::of('25000.00'), $invoice->getBaseTotal());
         self::assertEquals(BigDecimal::of('5000.00'), $invoice->getTax());
     }

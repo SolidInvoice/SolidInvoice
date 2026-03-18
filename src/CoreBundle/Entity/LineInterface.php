@@ -45,4 +45,6 @@ interface LineInterface
     public function getLineItemType(): LineItemType;
 
     public function setLineItemType(LineItemType $type): self;
+
+    public function updateTotal(): static;
 }

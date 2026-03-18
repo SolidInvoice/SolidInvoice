@@ -49,7 +49,9 @@ final class InvoiceFormManager
         $invoice->setInvoiceId($dto->invoiceId);
         $invoice->setInvoiceDate($dto->invoiceDate ?? new DateTimeImmutable());
         $invoice->setDue($dto->due);
-        $invoice->setDiscount($dto->discount);
+        if ($dto->discount !== null) {
+            $invoice->setDiscount($dto->discount);
+        }
         $invoice->setTerms($dto->terms);
         $invoice->setNotes($dto->notes);
         $invoice->setTotal($dto->total);
@@ -86,7 +88,9 @@ final class InvoiceFormManager
         $invoice->setInvoiceId($dto->invoiceId);
         $invoice->setInvoiceDate($dto->invoiceDate ?? new DateTimeImmutable());
         $invoice->setDue($dto->due);
-        $invoice->setDiscount($dto->discount);
+        if ($dto->discount !== null) {
+            $invoice->setDiscount($dto->discount);
+        }
         $invoice->setTerms($dto->terms);
         $invoice->setNotes($dto->notes);
         $invoice->setTotal($dto->total);

@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace SolidInvoice\QuoteBundle\Twig\Components;
 
+use Brick\Math\BigDecimal;
 use Brick\Math\Exception\MathException;
 use Doctrine\ORM\EntityManagerInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
-use SolidInvoice\MoneyBundle\Calculator;
+use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\QuoteBundle\DTO\QuoteFormDTO;
 use SolidInvoice\QuoteBundle\Entity\Quote;
-use SolidInvoice\QuoteBundle\Enum\QuoteClientMode;
 use SolidInvoice\QuoteBundle\Form\Type\QuoteType;
 use SolidInvoice\QuoteBundle\Manager\QuoteFormManager;
 use SolidInvoice\QuoteBundle\Model\Graph;
@@ -66,7 +66,6 @@ final class CreateQuote extends AbstractController
         private readonly WorkflowInterface $quoteStateMachine,
         private readonly RouterInterface $router,
         private readonly QuoteFormManager $formManager,
-        private readonly Calculator $calculator,
     ) {
         $this->dto = new QuoteFormDTO();
     }
@@ -112,7 +111,6 @@ final class CreateQuote extends AbstractController
     #[PreReRender(priority: -10)]
     public function calculateTotals(): void
     {
-        // Skip calculation if data is incomplete
         if (! $this->canCalculateTotals()) {
             $this->dto->total = '0';
             $this->dto->baseTotal = '0';
@@ -120,14 +118,10 @@ final class CreateQuote extends AbstractController
             return;
         }
 
-        // Create temporary quote from DTO to calculate totals
-        $tempQuote = $this->formManager->createQuoteFromDTO($this->dto);
-        $this->totalCalculator->calculateTotals($tempQuote);
-
-        // Copy calculated totals back to DTO (convert BigNumber to string)
-        $this->dto->total = (string) $tempQuote->getTotal();
-        $this->dto->baseTotal = (string) $tempQuote->getBaseTotal();
-        $this->dto->tax = (string) $tempQuote->getTax();
+        $result = $this->totalCalculator->calculateFromLines($this->dto->lines, $this->dto->discount ?? new Discount());
+        $this->dto->total = (string) $result->total;
+        $this->dto->baseTotal = (string) $result->baseTotal;
+        $this->dto->tax = (string) $result->tax;
     }
 
     protected function instantiateForm(): FormInterface
@@ -198,6 +192,7 @@ final class CreateQuote extends AbstractController
             assert($this->quote instanceof Quote);
 
             $this->formManager->updateQuoteFromDTO($this->quote, $dto);
+            $this->totalCalculator->calculateTotals($this->quote);
 
             if ('send' === $action) {
                 $this->quoteStateMachine->apply($this->quote, Graph::TRANSITION_SEND);
@@ -216,6 +211,7 @@ final class CreateQuote extends AbstractController
         }
 
         $quote = $this->formManager->createQuoteFromDTO($dto);
+        $this->totalCalculator->calculateTotals($quote);
 
         // Apply state transitions
         if (! $quote->getId() instanceof Ulid) {
@@ -268,42 +264,21 @@ final class CreateQuote extends AbstractController
     #[ExposeInTemplate]
     public function getDiscountAmount(): string
     {
-        if ($this->dto->discount === null) {
-            return '0';
-        }
-
-        // Skip calculation if we can't create a quote (incomplete data)
         if (! $this->canCalculateTotals()) {
             return '0';
         }
 
-        // Create temporary quote to leverage Calculator
-        try {
-            $tempQuote = $this->formManager->createQuoteFromDTO($this->dto);
-            return (string) $this->calculator->calculateDiscount($tempQuote);
-        } catch (\InvalidArgumentException) {
-            // Client data incomplete during mode switching
-            return '0';
-        }
+        $baseTotal = BigDecimal::of($this->dto->baseTotal ?? '0');
+        $tax = BigDecimal::of($this->dto->tax ?? '0');
+        $total = BigDecimal::of($this->dto->total ?? '0');
+        $discount = $baseTotal->plus($tax)->minus($total);
+
+        return $discount->isPositive() ? (string) $discount : '0';
     }
 
-    /**
-     * Check if we have enough data to calculate totals
-     */
     private function canCalculateTotals(): bool
     {
-        // Need at least one line item
-        if ($this->dto->lines->isEmpty()) {
-            return false;
-        }
-
-        // Check client data based on mode
-        if ($this->dto->clientMode === QuoteClientMode::Existing) {
-            return $this->dto->client instanceof Client;
-        }
-
-        // NewClient mode - need inline data
-        return $this->dto->hasInlineClientData();
+        return ! $this->dto->lines->isEmpty();
     }
 
     /**

@@ -78,9 +78,9 @@ class RecurringInvoiceType extends AbstractType
 
         $builder->add('terms');
         $builder->add('notes', null, ['help' => 'Notes will not be visible to the client']);
-        $builder->add('total', HiddenMoneyType::class, ['currency' => $options['currency']]);
-        $builder->add('baseTotal', HiddenMoneyType::class, ['currency' => $options['currency']]);
-        $builder->add('tax', HiddenMoneyType::class, ['currency' => $options['currency']]);
+        $builder->add('total', HiddenMoneyType::class, ['currency' => $options['currency'], 'mapped' => false]);
+        $builder->add('baseTotal', HiddenMoneyType::class, ['currency' => $options['currency'], 'mapped' => false]);
+        $builder->add('tax', HiddenMoneyType::class, ['currency' => $options['currency'], 'mapped' => false]);
 
         $builder->addDependent('users', 'client', function (DependentField $field, ?Client $client): void {
             if (! $client instanceof Client) {

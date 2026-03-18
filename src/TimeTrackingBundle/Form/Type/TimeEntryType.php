@@ -20,7 +20,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -39,13 +39,11 @@ final class TimeEntryType extends AbstractType
                 'widget' => 'single_text',
                 'required' => true,
             ])
-            ->add('duration', TextType::class, [
-                'label' => 'Duration (HH:MM)',
+            ->add('duration', TimeType::class, [
+                'label' => 'Duration',
                 'required' => true,
-                'attr' => [
-                    'placeholder' => '00:00',
-                    'pattern' => '\d+:[0-5]\d',
-                ],
+                'widget' => 'single_text',
+                'input' => 'string',
             ])
             ->add('description', TextareaType::class, [
                 'required' => false,
