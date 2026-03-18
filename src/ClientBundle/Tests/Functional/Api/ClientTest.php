@@ -19,6 +19,8 @@ use SolidInvoice\ClientBundle\Entity\Address;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
+use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
@@ -47,6 +49,7 @@ final class ClientTest extends ApiTestCase
         $data = [
             'name' => 'Dummy User',
             'contacts' => [],
+            'credit' => '125.50',
         ];
 
         $result = $this->requestPost('/api/clients', $data);
@@ -69,8 +72,34 @@ final class ClientTest extends ApiTestCase
             'recurringInvoices' => [],
             'payments' => [],
             'addresses' => [],
-            'credit' => 0,
+            'credit' => 125.5,
         ], $result);
+    }
+
+    public function testGetCollection(): void
+    {
+        ClientFactory::createMany(3);
+
+        $data = $this->requestGetCollection('/api/clients');
+
+        self::assertArraySubset([
+            '@context' => $this->getContextForResource(Client::class),
+            '@id' => '/api/clients',
+            '@type' => 'Collection',
+        ], $data);
+    }
+
+    public function testCannotAccessClientFromDifferentCompany(): void
+    {
+        $otherCompany = CompanyFactory::new()->create();
+        self::getContainer()->get(CompanySelector::class)->switchCompany($otherCompany->getId());
+        $foreignClient = ClientFactory::createOne(['company' => $otherCompany])->_real();
+        self::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
+
+        $response = self::$client->request('GET', $this->getIriFromResource($foreignClient), [
+            'headers' => ['accept' => 'application/ld+json'],
+        ]);
+        static::assertResponseStatusCodeSame(404);
     }
 
     /**

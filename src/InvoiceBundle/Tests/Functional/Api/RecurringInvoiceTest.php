@@ -17,7 +17,9 @@ use DateTimeInterface;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
+use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Discount;
+use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\CronBundle\Enum\ScheduleEndType;
 use SolidInvoice\CronBundle\Enum\ScheduleRecurringType;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
@@ -39,6 +41,39 @@ final class RecurringInvoiceTest extends ApiTestCase
     protected function getResourceClass(): string
     {
         return RecurringInvoice::class;
+    }
+
+    public function testGetCollection(): void
+    {
+        $client = ClientFactory::createOne()->_real();
+        $contacts = ContactFactory::createMany(1, ['client' => $client]);
+        RecurringInvoiceFactory::createMany(3, [
+            'client' => $client,
+            'users' => $contacts,
+            'discount' => (new Discount())->setType('percentage')->setValue(0),
+        ]);
+
+        $data = $this->requestGetCollection('/api/recurring-invoices');
+
+        self::assertArraySubset([
+            '@context' => $this->getContextForResource(RecurringInvoice::class),
+            '@id' => '/api/recurring-invoices',
+            '@type' => 'Collection',
+        ], $data);
+    }
+
+    public function testCannotAccessRecurringInvoiceFromDifferentCompany(): void
+    {
+        $otherCompany = CompanyFactory::new()->create();
+        self::getContainer()->get(CompanySelector::class)->switchCompany($otherCompany->getId());
+        $foreignClient = ClientFactory::createOne(['company' => $otherCompany]);
+        $foreignRecurringInvoice = RecurringInvoiceFactory::createOne(['client' => $foreignClient])->_real();
+        self::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
+
+        $response = self::$client->request('GET', $this->getIriFromResource($foreignRecurringInvoice), [
+            'headers' => ['accept' => 'application/ld+json'],
+        ]);
+        static::assertResponseStatusCodeSame(404);
     }
 
     public function testCreate(): void
