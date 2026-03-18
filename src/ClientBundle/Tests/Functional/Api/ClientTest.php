@@ -53,7 +53,6 @@ final class ClientTest extends ApiTestCase
 
         self::assertArrayHasKey('id', $result);
         self::assertTrue(Ulid::isValid($result['id']));
-        $clientId = $result['id'];
         unset($result['id'], $result['@id']);
 
         self::assertEqualsCanonicalizing([
@@ -70,7 +69,7 @@ final class ClientTest extends ApiTestCase
             'recurringInvoices' => [],
             'payments' => [],
             'addresses' => [],
-            'credit' => '/api/clients/' . $clientId . '/credit',
+            'credit' => 0,
         ], $result);
     }
 
@@ -123,7 +122,7 @@ final class ClientTest extends ApiTestCase
             'addresses' => [
                 $this->getIriFromResource($address),
             ],
-            'credit' => $this->getIriFromResource($client) . '/credit',
+            'credit' => 0,
         ], $data);
     }
 
@@ -169,7 +168,7 @@ final class ClientTest extends ApiTestCase
             'recurringInvoices' => [],
             'payments' => [],
             'addresses' => [],
-            'credit' => $this->getIriFromResource($client) . '/credit',
+            'credit' => 0,
         ], $data);
     }
 }
