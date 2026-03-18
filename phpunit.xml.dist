@@ -2,27 +2,19 @@
 <!-- http://www.phpunit.de/manual/current/en/appendixes.configuration.html -->
 <phpunit
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.6/phpunit.xsd"
+        xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
         backupGlobals="false"
-        backupStaticAttributes="false"
         colors="true"
-        verbose="true"
         executionOrder="random"
         failOnWarning="true"
         failOnRisky="true"
-        beStrictAboutTestsThatDoNotTestAnything="true"
         beStrictAboutOutputDuringTests="true"
-        beStrictAboutTodoAnnotatedTests="true"
         beStrictAboutChangesToGlobalState="true"
-        convertErrorsToExceptions="true"
-        convertNoticesToExceptions="true"
-        convertWarningsToExceptions="true"
-        convertDeprecationsToExceptions="false"
         processIsolation="false"
         stopOnFailure="false"
         bootstrap="tests/bootstrap.php"
 >
-    <coverage>
+    <source>
         <include>
             <directory>src</directory>
         </include>
@@ -30,10 +22,14 @@
             <directory>src/*Bundle/Resources</directory>
             <directory>src/*Bundle/Tests</directory>
         </exclude>
-    </coverage>
+    </source>
     <testsuites>
-        <testsuite name="SolidInvoice Test Suite">
+        <testsuite name="unit">
             <directory>src/*Bundle/Tests</directory>
+            <exclude>src/InstallBundle/Tests/Functional</exclude>
+        </testsuite>
+        <testsuite name="functional">
+            <directory>src/InstallBundle/Tests/Functional</directory>
         </testsuite>
     </testsuites>
     <php>
@@ -49,11 +45,9 @@
         <server name="SHELL_VERBOSITY" value="-1" />
         <server name="BROWSER_ALWAYS_START_WEBSERVER" value="1"/>
     </php>
-    <listeners>
-        <listener class="Mockery\Adapter\Phpunit\TestListener"/>
-    </listeners>
     <extensions>
-        <extension class="Symfony\Component\Panther\ServerExtension"/>
-        <extension class="Zenstruck\Browser\Test\BrowserExtension" />
+        <bootstrap class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension" />
+        <bootstrap class="Symfony\Component\Panther\ServerExtension"/>
+        <bootstrap class="Zenstruck\Browser\Test\BrowserExtension" />
     </extensions>
 </phpunit>

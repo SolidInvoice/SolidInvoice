@@ -30,10 +30,6 @@ jobs:
     env:
       SOLIDINVOICE_ENV: test
       SOLIDINVOICE_DEBUG: 0
-      PANTHER_NO_HEADLESS: 0
-      PANTHER_APP_ENV: test
-      PANTHER_NO_SANDBOX: 1
-      PANTHER_CHROME_ARGUMENTS: --disable-dev-shm-usage
       COVERAGE: 0
 
     steps:
@@ -42,48 +38,18 @@ jobs:
         with:
           egress-policy: block
           allowed-endpoints: >
-            accounts.google.com:443
-            android.clients.google.com:443
-            api.cloudinary.com:443
             api.codecov.io:443
             api.github.com:443
-            api.ipify.org:443
-            api.iconify.design:443
-            bun.sh:443
-            cdn.jsdelivr.net:443
-            chromedriver.storage.googleapis.com:443
             cli.codecov.io:443
-            clients2.google.com:443
-            clients2.google.com:80
             codecov.io:443
-            content-autofill.googleapis.com:443
-            content-autofill.googleapis.com:80
-            coveralls.io:443
-            dl.cloudsmith.io:443
-            dl.google.com:443
-            edgedl.me.gvt1.com:443
             github.com:443
             getcomposer.org:443
-            googlechromelabs.github.io:443
-            hosted-compute-watchdog-prod-iad-01.githubapp.com:443
             ingest.codecov.io:443
-            keybase.io:443
-            o26192.ingest.us.sentry.io:443
             objects.githubusercontent.com:443
-            optimizationguide-pa.googleapis.com:443
-            optimizationguide-pa.googleapis.com:80
             packagist.org:443
-            passwordsleakcheck-pa.googleapis.com:443
-            redirector.gvt1.com:443
-            registry.npmjs.org:443
-            registry.yarnpkg.com:443
-            release-assets.githubusercontent.com:443
             repo.packagist.org:443
             setup-php.com:443
-            storage.googleapis.com:443
-            update.googleapis.com:80
             uploader.codecov.io:443
-            www.google.com:443
 
       - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
@@ -103,28 +69,19 @@ jobs:
           extensions: intl, gd, mysql, pdo_mysql, soap, zip, :xdebug
           coverage: ${{ steps.coverage_driver.outputs.value }}
 
-      - uses: oven-sh/setup-bun@735343b667d3e6f658f44d0eca948eb6282f2b76 # v2
-
       - uses: ramsey/composer-install@3cf229dc2919194e9e36783941438d17239e8520 # v3
-
-      - name: Detect browser drivers
-        run: bin/bdi detect drivers
-
-      - run: bun install
-
-      - run: bun run build
 
       - name: Enable code coverage
         if: matrix.coverage
         run: echo "COVERAGE=1" >> $GITHUB_ENV
 
-      - name: Run test suite
+      - name: Run unit test suite
         run: |
           mkdir -p build/logs var/log && chmod 777 var/log
           if [ "$COVERAGE" = '1' ]; then
-            bin/phpunit --coverage-clover build/logs/clover.xml
+            bin/phpunit --testsuite unit --coverage-clover build/logs/clover.xml
           else
-            bin/phpunit
+            bin/phpunit --testsuite unit
           fi
 
       - name: Upload coverage results to Codecov
@@ -137,12 +94,95 @@ jobs:
           fail_ci_if_error: true
           verbose: true
 
+  functional:
+    name: Functional Tests
+
+    runs-on: ubuntu-latest
+
+    env:
+      SOLIDINVOICE_ENV: test
+      SOLIDINVOICE_DEBUG: 0
+      PANTHER_NO_HEADLESS: 0
+      PANTHER_APP_ENV: test
+      PANTHER_NO_SANDBOX: 1
+      PANTHER_CHROME_ARGUMENTS: --disable-dev-shm-usage
+
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2
+        with:
+          egress-policy: block
+          allowed-endpoints: >
+            accounts.google.com:443
+            android.clients.google.com:443
+            api.cloudinary.com:443
+            api.github.com:443
+            api.ipify.org:443
+            api.iconify.design:443
+            bun.sh:443
+            cdn.jsdelivr.net:443
+            chromedriver.storage.googleapis.com:443
+            clients2.google.com:443
+            clients2.google.com:80
+            content-autofill.googleapis.com:443
+            content-autofill.googleapis.com:80
+            dl.cloudsmith.io:443
+            dl.google.com:443
+            edgedl.me.gvt1.com:443
+            github.com:443
+            getcomposer.org:443
+            googlechromelabs.github.io:443
+            hosted-compute-watchdog-prod-iad-01.githubapp.com:443
+            keybase.io:443
+            o26192.ingest.us.sentry.io:443
+            objects.githubusercontent.com:443
+            optimizationguide-pa.googleapis.com:443
+            optimizationguide-pa.googleapis.com:80
+            packagist.org:443
+            passwordsleakcheck-pa.googleapis.com:443
+            redirector.gvt1.com:443
+            registry.npmjs.org:443
+            registry.yarnpkg.com:443
+            release-assets.githubusercontent.com:443
+            repo.packagist.org:443
+            setup-php.com:443
+            storage.googleapis.com:443
+            update.googleapis.com:80
+            www.google.com:443
+
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f
+        with:
+          php-version: '8.4'
+          ini-values: date.timezone=Africa/Johannesburg, memory_limit=-1
+          extensions: intl, gd, mysql, pdo_mysql, soap, zip, :xdebug
+          coverage: none
+
+      - uses: oven-sh/setup-bun@735343b667d3e6f658f44d0eca948eb6282f2b76 # v2
+
+      - uses: ramsey/composer-install@3cf229dc2919194e9e36783941438d17239e8520 # v3
+
+      - name: Detect browser drivers
+        run: bin/bdi detect drivers
+
+      - run: bun install
+
+      - run: bun run build
+
+      - name: Run functional test suite
+        run: |
+          mkdir -p build/logs var/log && chmod 777 var/log
+          bin/phpunit --testsuite functional
+
       - name: Add comment to PR with failure screenshots
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea
         if: ${{ failure() }}
         env:
-            CLOUDINARY_URL: cloudinary://${{ secrets.CLOUDINARY_API_KEY }}:${{ secrets.CLOUDINARY_API_SECRET }}@${{ secrets.CLOUDINARY_CLOUD_NAME }}
-            JOB_NAME: Unit ( PHP ${{ matrix.php }} )
+            CLOUDINARY_URL: "cloudinary://${{ secrets.CLOUDINARY_API_KEY }}:${{ secrets.CLOUDINARY_API_SECRET }}@${{ secrets.CLOUDINARY_CLOUD_NAME }}"
+            JOB_NAME: Functional Tests
         with:
           script: |
             const script = require('./scripts/e2e-failure.js')
