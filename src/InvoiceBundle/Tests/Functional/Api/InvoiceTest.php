@@ -17,7 +17,9 @@ use DateTimeImmutable;
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
+use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Discount;
+use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
@@ -38,6 +40,57 @@ final class InvoiceTest extends ApiTestCase
     protected function getResourceClass(): string
     {
         return Invoice::class;
+    }
+
+    public function testGetCollection(): void
+    {
+        $client = ClientFactory::createOne()->_real();
+        $contacts = ContactFactory::createMany(1, ['client' => $client]);
+        InvoiceFactory::createMany(3, [
+            'client' => $client,
+            'users' => $contacts,
+            'discount' => (new Discount())->setType('percentage')->setValue(0),
+        ]);
+
+        $data = $this->requestGetCollection('/api/invoices');
+
+        self::assertArraySubset([
+            '@context' => $this->getContextForResource(Invoice::class),
+            '@id' => '/api/invoices',
+            '@type' => 'Collection',
+        ], $data);
+    }
+
+    public function testGetInvoicesForClient(): void
+    {
+        $client = ClientFactory::createOne()->_real();
+        $contacts = ContactFactory::createMany(1, ['client' => $client]);
+        InvoiceFactory::createMany(2, [
+            'client' => $client,
+            'users' => $contacts,
+            'discount' => (new Discount())->setType('percentage')->setValue(0),
+        ]);
+
+        $data = $this->requestGetCollection($this->getIriFromResource($client) . '/invoices');
+
+        self::assertArraySubset([
+            '@context' => $this->getContextForResource(Invoice::class),
+            '@type' => 'Collection',
+        ], $data);
+    }
+
+    public function testCannotAccessInvoiceFromDifferentCompany(): void
+    {
+        $otherCompany = CompanyFactory::new()->create();
+        self::getContainer()->get(CompanySelector::class)->switchCompany($otherCompany->getId());
+        $foreignClient = ClientFactory::createOne(['company' => $otherCompany]);
+        $foreignInvoice = InvoiceFactory::createOne(['client' => $foreignClient])->_real();
+        self::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
+
+        $response = self::$client->request('GET', $this->getIriFromResource($foreignInvoice), [
+            'headers' => ['accept' => 'application/ld+json'],
+        ]);
+        static::assertResponseStatusCodeSame(404);
     }
 
     public function testCreate(): void
