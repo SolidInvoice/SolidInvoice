@@ -20,7 +20,7 @@ jobs:
 
     strategy:
       matrix:
-        php: [ '8.4' ]
+        php: [ '8.4', '8.5' ]
         coverage: [ false ]
         include:
           - php: '8.4'
