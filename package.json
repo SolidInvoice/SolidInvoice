@@ -65,7 +65,7 @@
         "@symfony/stimulus-bridge": "^4.0.1",
         "@tabler/core": "^1.4.0",
         "caniuse-lite": "^1.0.30001756",
-        "intl-messageformat": "^10.5.0",
+        "intl-messageformat": "^11.2.0",
         "jquery": "^3.7.1",
         "@popperjs/core": "^2.11.8",
         "regenerator-runtime": "^0.14.1"
