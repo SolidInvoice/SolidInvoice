@@ -89,7 +89,7 @@
         "symfony/console": "^7.1",
         "symfony/contracts": "*",
         "symfony/dependency-injection": "^7.1",
-        "symfony/discord-notifier": "^7.1",
+        "symfony/discord-notifier": "^8.0",
         "symfony/doctrine-bridge": "^7.1",
         "symfony/doctrine-messenger": "^7.1",
         "symfony/dotenv": "^7.1",
