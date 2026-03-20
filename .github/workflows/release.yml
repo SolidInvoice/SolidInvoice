@@ -132,7 +132,7 @@ jobs:
           name: SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.tar.gz
           path: build/dist
 
-      - uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v6.0.0
+      - uses: actions/setup-go@4b73464bb391d4059bd26b0524d20df3927bd417 # v6.3.0
         with:
           go-version-file: frankenphp/go.mod
           cache-dependency-path: frankenphp/go.sum
