@@ -96,7 +96,7 @@ jobs:
           if_false: none
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f
+        uses: shivammathur/setup-php@accd6127cb78bee3e8082180cb391013d204ef9f
         with:
           php-version: ${{ matrix.php }}
           ini-values: date.timezone=Africa/Johannesburg, memory_limit=-1
