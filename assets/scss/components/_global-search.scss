@@ -28,30 +28,31 @@
     &-input {
         box-sizing: border-box;
         width: 100%;
+
         // 0.75rem icon-left + 1rem icon-width + 0.5rem gap = 2.25rem
         // Right: help-btn 20px + gap 6px + shortcut ~65px + margin 10px = ~101px ≈ 6.5rem
         padding: 0 6.5rem 0 2.5rem;
         height: 38px;
         line-height: 38px;
-        background-color: #fff;
+        background-color: #ffffff;
         border: 1px solid #d0d3d8;
         border-radius: 6px;
         font-size: 0.875rem;
         color: #354052;
         appearance: none;
-        -webkit-appearance: none;
         transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 
         // Remove browser default search cancel button
+
         &::-webkit-search-cancel-button,
         &::-webkit-search-decoration {
-            -webkit-appearance: none;
+            appearance: none;
         }
 
         &:focus {
             border-color: #2e963a;
-            box-shadow: 0 0 0 3px rgba(46, 150, 58, 0.12);
-            background-color: #fff;
+            box-shadow: 0 0 0 3px rgb(46 150 58 / 12%);
+            background-color: #ffffff;
             outline: none;
         }
 
@@ -161,28 +162,32 @@
     left: 0;
     right: 0;
     min-width: 520px;
+
     // Extend symmetrically beyond the input for a wider panel
     margin-left: -60px;
     margin-right: -60px;
-    background-color: #fff;
+    background-color: #ffffff;
     border: 1px solid #e6e7e9;
     border-radius: 8px;
-    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.18), 0 2px 8px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 40px rgb(0 0 0 / 18%), 0 2px 8px rgb(0 0 0 / 8%);
+
     // Use isolation to avoid stacking context issues from the navbar
     isolation: isolate;
     z-index: 9999;
 
     &.is-open {
         display: block;
-        animation: searchDropdownIn 0.12s ease-out;
+        animation: search-dropdown-in 0.12s ease-out;
     }
 }
 
-@keyframes searchDropdownIn {
+@keyframes search-dropdown-in {
+
     from {
         opacity: 0;
         transform: translateY(-4px) scale(0.99);
     }
+
     to {
         opacity: 1;
         transform: translateY(0) scale(1);
@@ -203,7 +208,7 @@
     max-height: 440px;
     overflow-y: auto;
     overscroll-behavior: contain;
-    background-color: #fff;
+    background-color: #ffffff;
     border-radius: 8px;
 
     &::-webkit-scrollbar {
@@ -221,6 +226,7 @@
 }
 
 .search-group {
+
     & + & {
         border-top: 1px solid #f0f2f5;
     }
@@ -240,6 +246,7 @@
 }
 
 .search-result-item {
+
     &.is-active .search-result-link {
         background-color: #f5f7fb;
     }
@@ -330,7 +337,7 @@
     justify-content: center;
     padding: 2.5rem 1rem;
     color: #9aa0ac;
-    background-color: #fff;
+    background-color: #ffffff;
 
     &-icon {
         margin-bottom: 0.625rem;
@@ -350,7 +357,7 @@
     font-size: 0.875rem;
     color: var(--tblr-danger, #d63939);
     text-align: center;
-    background-color: #fff;
+    background-color: #ffffff;
 }
 
 .search-chip {
@@ -400,10 +407,10 @@
     top: calc(100% + 4px);
     left: 0;
     min-width: 220px;
-    background: #fff;
+    background: #ffffff;
     border: 1px solid #e6e7e9;
     border-radius: 6px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 4px 16px rgb(0 0 0 / 12%);
     z-index: 10000;
     padding: 0.25rem 0;
     display: none;
