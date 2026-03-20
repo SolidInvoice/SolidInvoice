@@ -43,7 +43,7 @@
         "dragonmantank/cron-expression": "^3.6",
         "egulias/email-validator": "^4.0",
         "fakerphp/faker": "^1.24",
-        "illuminate/support": "^12.0",
+        "illuminate/support": "^13.1",
         "knplabs/knp-menu-bundle": "^3.2",
         "knpuniversity/oauth2-client-bundle": "^2.18",
         "league/commonmark": "^2.4",
