@@ -14,6 +14,10 @@ on:
         description: "SolidInvoice version"
         required: false
         type: string
+      branch:
+        description: "Branch to build from (defaults to version/tag if not specified)"
+        required: false
+        type: string
       release:
         description: "Push builds to release"
         required: false
@@ -32,6 +36,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       ref: ${{ steps.check.outputs.ref }}
+      branch: ${{ steps.check.outputs.branch }}
       release: ${{ steps.check.outputs.release }}
     steps:
       - name: Harden the runner (Audit all outbound calls)
@@ -41,21 +46,33 @@ jobs:
 
       - name: Get version
         id: check
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INPUT_VERSION: ${{ inputs.version }}
+          INPUT_BRANCH: ${{ inputs.branch }}
+          EVENT_NAME: ${{ github.event_name }}
+          REF_TYPE: ${{ github.ref_type }}
+          REF_NAME: ${{ github.ref_name }}
+          RELEASE_INPUT: ${{ github.event.inputs.release }}
         run: |
-          ref="${{ (github.ref_type == 'tag' && github.ref_name) || (github.event_name == 'workflow_dispatch' && inputs.version) || '' }}"
-          if [[ -z "${ref}" ]]; then
+          if [[ "${REF_TYPE}" == "tag" ]]; then
+            ref="${REF_NAME}"
+          elif [[ "${EVENT_NAME}" == "workflow_dispatch" && -n "${INPUT_VERSION}" ]]; then
+            ref="${INPUT_VERSION}"
+          else
             ref="$(gh release view --repo solidinvoice/solidinvoice --json tagName --jq '.tagName')"
           fi
           echo "ref=${ref}" >> "${GITHUB_OUTPUT}"
 
-          if [[ "${{ github.event_name }}" == "push" && "${{ startsWith(github.ref, 'refs/tags/') }}" == "true" ]]; then
+          # Use explicitly provided branch, or fall back to ref (tag)
+          branch="${INPUT_BRANCH:-${ref}}"
+          echo "branch=${branch}" >> "${GITHUB_OUTPUT}"
+
+          if [[ "${EVENT_NAME}" == "push" && "${REF_TYPE}" == "tag" ]]; then
             echo "release=1" >> "${GITHUB_OUTPUT}"
           else
-            release_flag="${{ github.event.inputs.release == 'true' && '1' || '0' }}"
-            echo "release=${release_flag}" >> "${GITHUB_OUTPUT}"
+            echo "release=$([[ "${RELEASE_INPUT}" == "true" ]] && echo 1 || echo 0)" >> "${GITHUB_OUTPUT}"
           fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   build-dist:
     permissions:
@@ -82,10 +99,12 @@ jobs:
       - uses: oven-sh/setup-bun@735343b667d3e6f658f44d0eca948eb6282f2b76 # v2
 
       - name: Build Release Artifact
-        run: "./scripts/build_dist.sh ${{ needs.prepare.outputs.ref }} ${{ needs.prepare.outputs.ref }}"
         env:
           RELEASE: ${{ needs.prepare.outputs.release }}
           GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+          BUILD_BRANCH: ${{ needs.prepare.outputs.branch }}
+          BUILD_VERSION: ${{ needs.prepare.outputs.ref }}
+        run: "./scripts/build_dist.sh ${BUILD_BRANCH} ${BUILD_VERSION}"
 
       - name: Upload TAR archive
         uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
