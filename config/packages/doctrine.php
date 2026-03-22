@@ -30,6 +30,7 @@ return static function (DoctrineConfig $config): void {
     $dbalConfig
         ->connection('default')
         ->url(env('SOLIDINVOICE_DATABASE_URL')->resolve())
+        ->serverVersion('3')
         ->charset('UTF8')
         ->useSavepoints(true)
     ;
