@@ -173,6 +173,20 @@ jobs:
         with:
           egress-policy: audit
 
+      - name: Set Cloudsmith repository
+        run: |
+          if [ "$PRERELEASE" = "true" ]; then
+            echo "CLOUDSMITH_REPO_DEB=solidinvoice/solidinvoice-preview/any-distro/any-version" >> "$GITHUB_ENV"
+            echo "CLOUDSMITH_REPO_RPM=solidinvoice/solidinvoice-preview/any-distro/any-version" >> "$GITHUB_ENV"
+            echo "CLOUDSMITH_REPO_APK=solidinvoice/solidinvoice-preview/alpine/any-version" >> "$GITHUB_ENV"
+          else
+            echo "CLOUDSMITH_REPO_DEB=solidinvoice/solidinvoice/any-distro/any-version" >> "$GITHUB_ENV"
+            echo "CLOUDSMITH_REPO_RPM=solidinvoice/solidinvoice/any-distro/any-version" >> "$GITHUB_ENV"
+            echo "CLOUDSMITH_REPO_APK=solidinvoice/solidinvoice/alpine/any-version" >> "$GITHUB_ENV"
+          fi
+        env:
+          PRERELEASE: ${{ needs.prepare.outputs.prerelease }}
+
       - name: Install Cloudsmith CLI
         run: pip install cloudsmith-cli
 
@@ -189,7 +203,7 @@ jobs:
             [ -f "$deb" ] || continue
             echo "Publishing: $(basename "$deb")"
             cloudsmith push deb \
-              solidinvoice/solidinvoice/any-distro/any-version \
+              "$CLOUDSMITH_REPO_DEB" \
               "$deb" \
               --republish
           done
@@ -202,7 +216,7 @@ jobs:
             [ -f "$rpm" ] || continue
             echo "Publishing: $(basename "$rpm")"
             cloudsmith push rpm \
-              solidinvoice/solidinvoice/any-distro/any-version \
+              "$CLOUDSMITH_REPO_RPM" \
               "$rpm" \
               --republish
           done
@@ -215,7 +229,7 @@ jobs:
             [ -f "$apk" ] || continue
             echo "Publishing: $(basename "$apk")"
             cloudsmith push alpine \
-              solidinvoice/solidinvoice/alpine/any-version \
+              "$CLOUDSMITH_REPO_APK" \
               "$apk" \
               --republish
           done
