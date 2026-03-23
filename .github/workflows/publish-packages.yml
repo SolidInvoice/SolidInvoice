@@ -90,13 +90,16 @@ jobs:
       - name: Download binary from release
         run: |
           mkdir -p frankenphp/dist
-          gh release download "${{ needs.prepare.outputs.version }}" \
-            --repo "${{ github.repository }}" \
-            --pattern "solidinvoice-linux-${{ matrix.arch }}" \
+          gh release download "$SOLIDINVOICE_VERSION" \
+            --repo "$GITHUB_REPOSITORY" \
+            --pattern "solidinvoice-linux-$NFPM_ARCH" \
             --dir frankenphp/dist/
-          chmod +x "frankenphp/dist/solidinvoice-linux-${{ matrix.arch }}"
+          mv "frankenphp/dist/solidinvoice-linux-$NFPM_ARCH" "frankenphp/dist/solidinvoice-linux"
+          chmod +x "frankenphp/dist/solidinvoice-linux"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.version }}
+          NFPM_ARCH: ${{ matrix.arch }}
 
       - name: Install nFPM
         run: |

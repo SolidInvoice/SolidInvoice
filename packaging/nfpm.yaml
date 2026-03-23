@@ -31,7 +31,7 @@ description: |
 
 contents:
   # Binary
-  - src: ../frankenphp/dist/solidinvoice-linux-${NFPM_ARCH}
+  - src: ../frankenphp/dist/solidinvoice-linux
     dst: /usr/bin/solidinvoice
     file_info:
       mode: 0755
