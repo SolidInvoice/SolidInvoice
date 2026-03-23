@@ -4,8 +4,6 @@ on:
   workflow_run:
     workflows: ["Release"]
     types: [completed]
-    branches-ignore:
-      - "3.0.x"  # Exclude preview/nightly builds
   workflow_dispatch:
     inputs:
       version:
