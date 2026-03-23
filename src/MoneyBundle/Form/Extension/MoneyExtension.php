@@ -19,6 +19,7 @@ use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MoneyExtension extends AbstractTypeExtension
@@ -35,7 +36,7 @@ class MoneyExtension extends AbstractTypeExtension
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefault('currency', $this->config->getCurrency());
+        $resolver->setDefault('currency', fn (Options $options): Currency => $this->config->getCurrency());
         $resolver->setAllowedTypes('currency', [Currency::class]);
     }
 
