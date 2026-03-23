@@ -11,7 +11,7 @@
 #   nfpm package -p deb -f packaging/nfpm.yaml --target dist/ --arch arm64
 
 name: solidinvoice
-arch: ${NFPM_ARCH:-amd64}
+arch: ${NFPM_ARCH}
 version: ${SOLIDINVOICE_VERSION}
 release: 1
 epoch: 0
@@ -31,7 +31,7 @@ description: |
 
 contents:
   # Binary
-  - src: ../frankenphp/dist/solidinvoice-linux-${NFPM_ARCH:-amd64}
+  - src: ../frankenphp/dist/solidinvoice-linux-${NFPM_ARCH}
     dst: /usr/bin/solidinvoice
     file_info:
       mode: 0755
