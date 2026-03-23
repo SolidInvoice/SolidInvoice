@@ -12,20 +12,27 @@ declare(strict_types=1);
  */
 
 use Monolog\Level;
+use Sentry\SentryBundle\Monolog\LogsHandler;
 use Sentry\State\HubInterface;
+use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\ErrorHandler\Error\FatalError;
 use Symfony\Config\MonologConfig;
 use Symfony\Config\SentryConfig;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
 
-return static function (SentryConfig $sentryConfig, MonologConfig $monologConfig): void {
+return static function (ContainerConfigurator $container, SentryConfig $sentryConfig, MonologConfig $monologConfig): void {
     $sentryConfig->dsn(env('SOLIDINVOICE_SENTRY_DSN'))
         ->registerErrorListener(false)
         ->registerErrorHandler(false)
         ->options()
         ->sendDefaultPii(env('SOLIDINVOICE_SENTRY_SEND_DEFAULT_PII')->bool())
         ->ignoreExceptions([FatalError::class])
-        ->release(env('SOLIDINVOICE_SENTRY_RELEASE')->default('application_version'));
+        ->release(env('SOLIDINVOICE_SENTRY_RELEASE')->default('application_version'))
+        ->enableLogs(true);
+
+    $container->services()
+        ->set(LogsHandler::class)
+        ->args([Level::Info]);
 
     $monologConfig->handler('sentry_main')
         ->type('sentry')
@@ -40,4 +47,8 @@ return static function (SentryConfig $sentryConfig, MonologConfig $monologConfig
         ->excludedHttpCode(404)
         ->excludedHttpCode(405)
         ->bufferSize(50);
+
+    $monologConfig->handler('sentry_logs')
+        ->type('service')
+        ->id(LogsHandler::class);
 };
