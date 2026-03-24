@@ -26,6 +26,7 @@ use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use SolidInvoice\ApiBundle\State\Processor\InvoiceLinePersistProcessor;
 use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
 use SolidInvoice\CoreBundle\Entity\LineInterface;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
@@ -51,7 +52,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     uriTemplate: '/invoices/{invoiceId}/lines',
     shortName: 'InvoiceLine',
-    operations: [new GetCollection(), new Post()],
+    operations: [new GetCollection(), new Post(processor: InvoiceLinePersistProcessor::class)],
     uriVariables: [
         'invoiceId' => new Link(
             fromProperty: 'lines',

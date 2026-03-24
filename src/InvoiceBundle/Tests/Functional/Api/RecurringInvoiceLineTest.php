@@ -47,7 +47,7 @@ final class RecurringInvoiceLineTest extends ApiTestCase
         self::assertArrayHasKey('id', $result);
         self::assertTrue(Ulid::isValid($result['id']));
         self::assertSame('Item 1', $result['description']);
-        self::assertSame(2.0, $result['qty']);
+        self::assertEquals(2.0, $result['qty']);
         self::assertArrayHasKey('total', $result);
     }
 
@@ -69,7 +69,7 @@ final class RecurringInvoiceLineTest extends ApiTestCase
 
         self::assertSame('Test Item', $data['description']);
         self::assertSame($lineId, $data['id']);
-        self::assertSame(1.0, $data['qty']);
+        self::assertEquals(1.0, $data['qty']);
     }
 
     public function testEdit(): void

@@ -29,7 +29,7 @@ final class RecurringInvoiceItemProvider implements ProviderInterface
 
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): RecurringInvoice
     {
-        $recurringInvoice = $this->repository->find($uriVariables['id']);
+        $recurringInvoice = $this->repository->findOneBy(['id' => $uriVariables['id']]);
 
         if (! $recurringInvoice instanceof RecurringInvoice) {
             throw new NotFoundHttpException(sprintf('Recurring invoice "%s" not found.', $uriVariables['id']));

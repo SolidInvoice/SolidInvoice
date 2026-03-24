@@ -49,7 +49,7 @@ final class RecordPaymentProcessor implements ProcessorInterface
 
         $invoiceId = $uriVariables['invoiceId'] ?? null;
 
-        $invoice = $this->invoiceRepository->find($invoiceId);
+        $invoice = $this->invoiceRepository->findOneBy(['id' => $invoiceId]);
 
         if ($invoice === null) {
             throw new NotFoundHttpException(sprintf('Invoice "%s" not found.', $invoiceId));
