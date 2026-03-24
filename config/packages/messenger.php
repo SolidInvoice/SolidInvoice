@@ -11,6 +11,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use SolidInvoice\CronBundle\Messenger\SentrySchedulerMiddleware;
 use Symfony\Config\FrameworkConfig;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
 
@@ -35,6 +36,10 @@ return static function (FrameworkConfig $config): void {
 
     // Configure default bus
     $messenger->defaultBus('messenger.bus.default');
+
+    $messenger->bus('messenger.bus.default')
+        ->middleware()
+        ->id(SentrySchedulerMiddleware::class);
 
     // Configure failure transport
     $messenger->failureTransport('failed');
