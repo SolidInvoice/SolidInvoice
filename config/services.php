@@ -59,7 +59,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services
         ->set(Monolog\Processor\PsrLogMessageProcessor::class)
-        ->tag('monolog.processor', ['handler' => 'sentry']);
+        ->tag('monolog.processor', ['handler' => 'sentry'])
+        ->tag('monolog.processor', ['handler' => 'sentry_logs']);
 
     $services->alias(StimulusHelper::class, 'stimulus.helper');
     $services->set(AppRequirements::class)
