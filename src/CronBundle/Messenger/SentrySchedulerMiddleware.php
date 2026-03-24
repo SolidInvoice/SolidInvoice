@@ -24,6 +24,7 @@ use Symfony\Component\Console\Messenger\RunCommandMessage;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
+use Symfony\Component\Messenger\Stamp\ReceivedStamp;
 use Symfony\Component\Scheduler\Messenger\ScheduledStamp;
 use Symfony\Component\Scheduler\Trigger\CronExpressionTrigger;
 use Throwable;
@@ -37,7 +38,7 @@ final class SentrySchedulerMiddleware implements MiddlewareInterface
     {
         $scheduledStamp = $envelope->last(ScheduledStamp::class);
 
-        if ($scheduledStamp === null || SentrySdk::getCurrentHub()->getClient() === null) {
+        if ($scheduledStamp === null || $envelope->last(ReceivedStamp::class) === null || SentrySdk::getCurrentHub()->getClient() === null) {
             return $stack->next()->handle($envelope, $stack);
         }
 
@@ -67,6 +68,8 @@ final class SentrySchedulerMiddleware implements MiddlewareInterface
             monitorConfig: $monitorConfig,
         );
 
+        $startTime = microtime(true);
+
         try {
             $result = $stack->next()->handle($envelope, $stack);
 
@@ -75,6 +78,7 @@ final class SentrySchedulerMiddleware implements MiddlewareInterface
             captureCheckIn(
                 slug: $slug,
                 status: CheckInStatus::ok(),
+                duration: microtime(true) - $startTime,
                 checkInId: $checkInId,
             );
 
@@ -85,6 +89,7 @@ final class SentrySchedulerMiddleware implements MiddlewareInterface
             captureCheckIn(
                 slug: $slug,
                 status: CheckInStatus::error(),
+                duration: microtime(true) - $startTime,
                 checkInId: $checkInId,
             );
 
@@ -103,9 +108,10 @@ final class SentrySchedulerMiddleware implements MiddlewareInterface
             return str_replace(':', '-', $parts[0]);
         }
 
-        $class = (new \ReflectionClass($message))->getShortName();
+        $shortName = strrchr($message::class, '\\');
+        $class = $shortName !== false ? substr($shortName, 1) : $message::class;
 
-        return strtolower((string) preg_replace('/[A-Z]/', '-$0', lcfirst($class)));
+        return strtolower(preg_replace('/[A-Z]/', '-$0', lcfirst($class)) ?? $class);
     }
 
     private function buildMonitorConfig(ScheduledStamp $stamp): ?MonitorConfig
