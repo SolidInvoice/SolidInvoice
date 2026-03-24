@@ -15,6 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Tests\Functional\Api;
 
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
+use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -37,7 +38,12 @@ final class InvoiceTransitionTest extends ApiTestCase
 
     public function testAcceptInvoice(): void
     {
-        $invoice = InvoiceFactory::createOne(['status' => InvoiceStatus::Draft])->_real();
+        $client = ClientFactory::createOne()->_real();
+        $contacts = ContactFactory::createMany(1, ['client' => $client]);
+        $invoice = InvoiceFactory::createOne([
+            'status' => InvoiceStatus::Draft,
+            'users' => $contacts,
+        ])->_real();
 
         $result = $this->requestPost(
             sprintf('/api/invoices/%s/transitions/accept', $invoice->getId()),
@@ -49,7 +55,12 @@ final class InvoiceTransitionTest extends ApiTestCase
 
     public function testCancelInvoice(): void
     {
-        $invoice = InvoiceFactory::createOne(['status' => InvoiceStatus::Draft])->_real();
+        $client = ClientFactory::createOne()->_real();
+        $contacts = ContactFactory::createMany(1, ['client' => $client]);
+        $invoice = InvoiceFactory::createOne([
+            'status' => InvoiceStatus::Draft,
+            'users' => $contacts,
+        ])->_real();
 
         $result = $this->requestPost(
             sprintf('/api/invoices/%s/transitions/cancel', $invoice->getId()),

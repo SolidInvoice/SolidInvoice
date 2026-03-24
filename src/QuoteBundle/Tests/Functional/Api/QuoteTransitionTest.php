@@ -84,7 +84,12 @@ final class QuoteTransitionTest extends ApiTestCase
 
     public function testDeclineQuote(): void
     {
-        $quote = QuoteFactory::createOne(['status' => QuoteStatus::Draft])->_real();
+        $client = ClientFactory::createOne()->_real();
+        $contacts = ContactFactory::createMany(1, ['client' => $client]);
+        $quote = QuoteFactory::createOne([
+            'status' => QuoteStatus::Draft,
+            'users' => $contacts,
+        ])->_real();
 
         $result = $this->requestPost(
             sprintf('/api/quotes/%s/transitions/decline', $quote->getId()),
@@ -111,7 +116,12 @@ final class QuoteTransitionTest extends ApiTestCase
 
     public function testConvertQuoteToInvoice(): void
     {
-        $quote = QuoteFactory::createOne(['status' => QuoteStatus::Draft])->_real();
+        $client = ClientFactory::createOne()->_real();
+        $contacts = ContactFactory::createMany(1, ['client' => $client]);
+        $quote = QuoteFactory::createOne([
+            'status' => QuoteStatus::Draft,
+            'users' => $contacts,
+        ])->_real();
 
         $result = $this->requestPostExpecting(
             sprintf('/api/quotes/%s/invoice', $quote->getId()),
@@ -125,7 +135,12 @@ final class QuoteTransitionTest extends ApiTestCase
 
     public function testCannotConvertTwice(): void
     {
-        $quote = QuoteFactory::createOne(['status' => QuoteStatus::Draft])->_real();
+        $client = ClientFactory::createOne()->_real();
+        $contacts = ContactFactory::createMany(1, ['client' => $client]);
+        $quote = QuoteFactory::createOne([
+            'status' => QuoteStatus::Draft,
+            'users' => $contacts,
+        ])->_real();
 
         $quoteId = $quote->getId();
 
