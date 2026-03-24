@@ -27,11 +27,14 @@ use Sentry\State\Scope;
 use SolidInvoice\CronBundle\Messenger\SentrySchedulerMiddleware;
 use Symfony\Component\Console\Messenger\RunCommandMessage;
 use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
 use Symfony\Component\Messenger\Stamp\ReceivedStamp;
 use Symfony\Component\Scheduler\Generator\MessageContext;
 use Symfony\Component\Scheduler\Messenger\ScheduledStamp;
 use Symfony\Component\Scheduler\Trigger\CronExpressionTrigger;
+use Symfony\Component\Scheduler\Trigger\PeriodicalTrigger;
+use Symfony\Component\Scheduler\Trigger\TriggerInterface;
 
 /** @covers \SolidInvoice\CronBundle\Messenger\SentrySchedulerMiddleware */
 final class SentrySchedulerMiddlewareTest extends TestCase
@@ -119,9 +122,11 @@ final class SentrySchedulerMiddlewareTest extends TestCase
         $envelope = $this->makeScheduledEnvelope('solidinvoice:invoices:mark-overdue');
         $exception = new \RuntimeException('job failed');
 
+        $middleware = $this->createMock(MiddlewareInterface::class);
+        $middleware->method('handle')->willThrowException($exception);
+
         $next = $this->createMock(StackInterface::class);
-        $next->method('next')->willReturnSelf();
-        $next->method('handle')->willThrowException($exception);
+        $next->method('next')->willReturn($middleware);
 
         $thrownException = null;
 
@@ -185,13 +190,14 @@ final class SentrySchedulerMiddlewareTest extends TestCase
         $checkInEvents = $this->getCheckInEvents();
         self::assertCount(2, $checkInEvents);
 
-        // The middleware passes the EventId from the inProgress call as the checkInId
-        // of the completion call so Sentry can correlate the two events.
-        $inProgressEventId = (string) $checkInEvents[0]->getId();
+        // captureCheckIn() returns the CheckIn's own correlation ID (not the Event ID).
+        // The middleware passes that ID as checkInId to the completion call so Sentry
+        // can correlate the two check-ins. Both events must therefore share the same CheckIn ID.
+        $inProgressCheckInId = $checkInEvents[0]->getCheckIn()?->getId();
         $completionCheckInId = $checkInEvents[1]->getCheckIn()?->getId();
 
-        self::assertNotEmpty($inProgressEventId);
-        self::assertSame($inProgressEventId, $completionCheckInId);
+        self::assertNotEmpty($inProgressCheckInId);
+        self::assertSame($inProgressCheckInId, $completionCheckInId);
     }
 
     public function testDurationIsReportedOnCompletion(): void
@@ -206,21 +212,35 @@ final class SentrySchedulerMiddlewareTest extends TestCase
         self::assertGreaterThanOrEqual(0.0, $checkInEvents[1]->getCheckIn()?->getDuration(), 'completion check-in must report elapsed seconds');
     }
 
+    public function testNoCheckInForNonCronTrigger(): void
+    {
+        // PeriodicalTrigger has no cron expression, so no MonitorConfig can be built.
+        // The middleware must skip the check-in entirely to avoid orphaned unmanaged
+        // check-ins in Sentry — but it should still complete without errors.
+        $envelope = $this->makeScheduledEnvelope('app:test', trigger: new PeriodicalTrigger(60));
+        $stack = $this->makeStack($envelope);
+
+        $result = $this->middleware->handle($envelope, $stack);
+
+        self::assertSame($envelope, $result);
+        self::assertEmpty($this->getCheckInEvents(), 'No check-in events should be emitted for non-cron triggers');
+    }
+
     // -------------------------------------------------------------------------
     // Helpers
     // -------------------------------------------------------------------------
 
-    private function makeScheduledEnvelope(string $commandInput, bool $withReceived = true): Envelope
+    private function makeScheduledEnvelope(string $commandInput, bool $withReceived = true, ?TriggerInterface $trigger = null): Envelope
     {
-        return $this->makeScheduledEnvelopeForMessage(new RunCommandMessage($commandInput), $withReceived);
+        return $this->makeScheduledEnvelopeForMessage(new RunCommandMessage($commandInput), $withReceived, $trigger);
     }
 
-    private function makeScheduledEnvelopeForMessage(object $message, bool $withReceived = true): Envelope
+    private function makeScheduledEnvelopeForMessage(object $message, bool $withReceived = true, ?TriggerInterface $trigger = null): Envelope
     {
         $context = new MessageContext(
             name: 'test_schedule',
             id: 'test-id-' . uniqid(),
-            trigger: CronExpressionTrigger::fromSpec('0 * * * *'),
+            trigger: $trigger ?? CronExpressionTrigger::fromSpec('0 * * * *'),
             triggeredAt: new \DateTimeImmutable(),
         );
 
@@ -235,11 +255,13 @@ final class SentrySchedulerMiddlewareTest extends TestCase
 
     private function makeStack(Envelope $envelope): StackInterface
     {
-        $next = $this->createMock(StackInterface::class);
-        $next->method('next')->willReturnSelf();
-        $next->method('handle')->willReturn($envelope);
+        $middleware = $this->createMock(MiddlewareInterface::class);
+        $middleware->method('handle')->willReturn($envelope);
 
-        return $next;
+        $stack = $this->createMock(StackInterface::class);
+        $stack->method('next')->willReturn($middleware);
+
+        return $stack;
     }
 
     /**
