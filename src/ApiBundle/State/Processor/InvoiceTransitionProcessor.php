@@ -17,6 +17,7 @@ use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Workflow\WorkflowInterface;
 
@@ -26,6 +27,7 @@ final class InvoiceTransitionProcessor implements ProcessorInterface
     public function __construct(
         private readonly WorkflowInterface $invoiceStateMachine,
         private readonly ManagerRegistry $registry,
+        private readonly RequestStack $requestStack,
     ) {
     }
 
@@ -33,7 +35,7 @@ final class InvoiceTransitionProcessor implements ProcessorInterface
     {
         assert($data instanceof Invoice);
 
-        $transition = (string) $uriVariables['transition'];
+        $transition = (string) $this->requestStack->getCurrentRequest()?->attributes->get('transition');
 
         if (! $this->invoiceStateMachine->can($data, $transition)) {
             throw new UnprocessableEntityHttpException(

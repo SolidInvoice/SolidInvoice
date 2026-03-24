@@ -109,7 +109,6 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
     uriVariables: [
         'id' => new Link(fromClass: Quote::class),
-        'transition' => new Link(),
     ],
     normalizationContext: [
         'groups' => ['quote_api:read'],

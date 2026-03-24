@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace SolidInvoice\QuoteBundle\Tests\Functional\Api;
 
 use SolidInvoice\ApiBundle\Test\ApiTestCase;
+use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
+use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -36,9 +38,20 @@ final class QuoteTransitionTest extends ApiTestCase
         return Quote::class;
     }
 
+    private function createQuoteWithContact(): Quote
+    {
+        $client = ClientFactory::createOne()->_real();
+        $contact = ContactFactory::createOne(['client' => $client])->_real();
+        $quote = QuoteFactory::createOne(['status' => QuoteStatus::Draft, 'client' => $client])->_real();
+        $quote->addUser($contact);
+        self::getContainer()->get('doctrine')->getManager()->flush();
+
+        return $quote;
+    }
+
     public function testSendQuote(): void
     {
-        $quote = QuoteFactory::createOne(['status' => QuoteStatus::Draft])->_real();
+        $quote = $this->createQuoteWithContact();
 
         $result = $this->requestPost(
             sprintf('/api/quotes/%s/transitions/send', $quote->getId()),
@@ -50,7 +63,7 @@ final class QuoteTransitionTest extends ApiTestCase
 
     public function testAcceptQuote(): void
     {
-        $quote = QuoteFactory::createOne(['status' => QuoteStatus::Draft])->_real();
+        $quote = $this->createQuoteWithContact();
 
         $quoteId = $quote->getId();
 
