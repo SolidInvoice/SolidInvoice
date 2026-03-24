@@ -54,7 +54,7 @@ final class SentrySchedulerMiddlewareTest extends TestCase
         $client = $this->createMock(ClientInterface::class);
         $client->method('getOptions')->willReturn(new Options());
         $client->method('captureEvent')->willReturnCallback(
-            function (Event $event, ?EventHint $hint, ?Scope $scope): ?EventId {
+            function (Event $event, ?EventHint $hint, ?Scope $scope): EventId {
                 $this->capturedEvents[] = $event;
 
                 return $event->getId();
