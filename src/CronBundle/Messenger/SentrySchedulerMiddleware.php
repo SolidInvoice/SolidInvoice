@@ -16,7 +16,6 @@ namespace SolidInvoice\CronBundle\Messenger;
 use Sentry\CheckInStatus;
 use Sentry\MonitorConfig;
 use Sentry\MonitorSchedule;
-use Sentry\MonitorScheduleUnit;
 use Sentry\SentrySdk;
 use Sentry\Tracing\SpanStatus;
 use Sentry\Tracing\TransactionContext;
@@ -109,7 +108,7 @@ final class SentrySchedulerMiddleware implements MiddlewareInterface
         return strtolower((string) preg_replace('/[A-Z]/', '-$0', lcfirst($class)));
     }
 
-    private function buildMonitorConfig(ScheduledStamp $stamp): MonitorConfig
+    private function buildMonitorConfig(ScheduledStamp $stamp): ?MonitorConfig
     {
         $trigger = $stamp->messageContext->trigger;
 
@@ -117,6 +116,6 @@ final class SentrySchedulerMiddleware implements MiddlewareInterface
             return new MonitorConfig(MonitorSchedule::crontab((string) $trigger));
         }
 
-        return new MonitorConfig(MonitorSchedule::interval(60, MonitorScheduleUnit::minute()));
+        return null;
     }
 }
