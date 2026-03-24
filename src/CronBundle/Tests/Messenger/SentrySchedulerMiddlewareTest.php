@@ -117,6 +117,43 @@ final class SentrySchedulerMiddlewareTest extends TestCase
         self::assertSame(CheckInStatus::ok(), $checkInEvents[1]->getCheckIn()?->getStatus());
     }
 
+    public function testCapturesExceptionInSentryIssuesOnFailure(): void
+    {
+        // The global error handler is not guaranteed to run in scheduler/queue contexts,
+        // so the middleware must explicitly call captureException() to ensure the error
+        // appears in Sentry Issues and is not only visible via the cron monitor status.
+        $exception = new \RuntimeException('job failed');
+
+        // Use a fresh hub so we can assert captureException() is called exactly once.
+        $client = $this->createMock(ClientInterface::class);
+        $client->method('getOptions')->willReturn(new Options());
+        $client->method('captureEvent')->willReturnCallback(
+            function (Event $event, ?EventHint $hint, ?Scope $scope): EventId {
+                $this->capturedEvents[] = $event;
+
+                return $event->getId();
+            }
+        );
+        $client->expects(self::once())
+            ->method('captureException')
+            ->with($exception, self::anything(), self::anything())
+            ->willReturn(EventId::generate());
+        SentrySdk::setCurrentHub(new Hub($client));
+
+        $envelope = $this->makeScheduledEnvelope('app:test');
+
+        $middleware = $this->createMock(MiddlewareInterface::class);
+        $middleware->method('handle')->willThrowException($exception);
+
+        $next = $this->createMock(StackInterface::class);
+        $next->method('next')->willReturn($middleware);
+
+        try {
+            $this->middleware->handle($envelope, $next);
+        } catch (\RuntimeException) {
+        }
+    }
+
     public function testCapturesErrorCheckInAndRethrowsOnException(): void
     {
         $envelope = $this->makeScheduledEnvelope('solidinvoice:invoices:mark-overdue');
@@ -169,15 +206,29 @@ final class SentrySchedulerMiddlewareTest extends TestCase
 
     public function testSlugFromArbitraryMessageClass(): void
     {
-        // Non-RunCommandMessage uses the short class name in kebab-case.
-        $message = new class() {};
+        // Named class: short name converted to kebab-case.
+        $message = new SchedulerMessageFixture();
         $envelope = $this->makeScheduledEnvelopeForMessage($message);
         $stack = $this->makeStack($envelope);
 
         $this->middleware->handle($envelope, $stack);
 
         $checkInEvents = $this->getCheckInEvents();
-        self::assertNotEmpty($checkInEvents[0]->getCheckIn()?->getMonitorSlug());
+        self::assertSame('scheduler-message-fixture', $checkInEvents[0]->getCheckIn()?->getMonitorSlug());
+    }
+
+    public function testSlugFromAnonymousClassIsValidFormat(): void
+    {
+        // Anonymous class names contain @, /, . and other characters that are
+        // invalid in Sentry monitor slugs. The result must still match ^[a-z0-9_-]+$.
+        $message = new class() {};
+        $envelope = $this->makeScheduledEnvelopeForMessage($message);
+        $stack = $this->makeStack($envelope);
+
+        $this->middleware->handle($envelope, $stack);
+
+        $slug = $this->getCheckInEvents()[0]->getCheckIn()?->getMonitorSlug() ?? '';
+        self::assertMatchesRegularExpression('/^[a-z0-9_-]+$/', $slug);
     }
 
     public function testCheckInIdIsReusedBetweenInProgressAndCompletion(): void
@@ -276,4 +327,12 @@ final class SentrySchedulerMiddlewareTest extends TestCase
             )
         );
     }
+}
+
+/**
+ * Named fixture used by testSlugFromArbitraryMessageClass to produce a
+ * predictable slug ("scheduler-message-fixture") without ReflectionClass.
+ */
+final class SchedulerMessageFixture
+{
 }

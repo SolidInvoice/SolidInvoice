@@ -29,6 +29,7 @@ use Symfony\Component\Scheduler\Messenger\ScheduledStamp;
 use Symfony\Component\Scheduler\Trigger\CronExpressionTrigger;
 use Throwable;
 use function Sentry\captureCheckIn;
+use function Sentry\captureException;
 use function Sentry\startTransaction;
 use function str_replace;
 
@@ -91,6 +92,11 @@ final class SentrySchedulerMiddleware implements MiddlewareInterface
         } catch (Throwable $e) {
             $transaction->setStatus(SpanStatus::internalError());
 
+            // Explicitly capture the exception so it appears in Sentry Issues.
+            // The global error handler is not guaranteed to run in queue/scheduler
+            // contexts, so without this the cron monitor turns red but no Issue is filed.
+            captureException($e);
+
             if ($monitorConfig !== null) {
                 captureCheckIn(
                     slug: $slug,
@@ -111,14 +117,16 @@ final class SentrySchedulerMiddleware implements MiddlewareInterface
     {
         if ($message instanceof RunCommandMessage) {
             $parts = explode(' ', $message->input, 2);
-
-            return str_replace(':', '-', $parts[0]);
+            $slug = str_replace(':', '-', $parts[0]);
+        } else {
+            $shortName = strrchr($message::class, '\\');
+            $class = $shortName !== false ? substr($shortName, 1) : $message::class;
+            $slug = strtolower(preg_replace('/[A-Z]/', '-$0', lcfirst($class)) ?? $class);
         }
 
-        $shortName = strrchr($message::class, '\\');
-        $class = $shortName !== false ? substr($shortName, 1) : $message::class;
-
-        return strtolower(preg_replace('/[A-Z]/', '-$0', lcfirst($class)) ?? $class);
+        // Sentry monitor slugs must match ^[a-z0-9_-]+$. Replace any remaining
+        // disallowed characters (e.g. / @ . from anonymous class names) with hyphens.
+        return (string) preg_replace('/[^a-z0-9_-]+/', '-', strtolower($slug));
     }
 
     private function buildMonitorConfig(ScheduledStamp $stamp): ?MonitorConfig

@@ -48,9 +48,11 @@ return static function (ContainerConfigurator $container, SentryConfig $sentryCo
         // Ignore noisy internal/infrastructure transactions that add volume without insight.
         ->ignoreTransactions(['GET /_fragment']);
 
-    // Symfony-specific tracing integrations. These register lightweight middleware/decorators
-    // that only collect span data when traces_sample_rate > 0. All enabled by default so that
-    // enabling tracing via the env var gives full visibility immediately.
+    // Symfony-specific tracing integrations. These register lightweight service decorators
+    // unconditionally — even when traces_sample_rate=0. The overhead is a single null-check
+    // per operation (no active span → immediate return), which is negligible in practice.
+    // All integrations are pre-wired so that tracing can be enabled purely via the env var
+    // without a redeploy or config change.
     $sentryConfig->tracing()
         ->enabled(true)
         ->dbal()        // Traces every Doctrine SQL query as a child span
