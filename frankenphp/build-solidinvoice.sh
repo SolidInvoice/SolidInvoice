@@ -100,6 +100,9 @@ fi
 
 if [ -z "${PHP_EXTENSIONS:-}" ]; then
     export PHP_EXTENSIONS=$(cat ./build-static.sh | grep 'defaultExtensions="' | head -n 1 | sed 's/.*defaultExtensions="//' | sed 's/".*//' | tr ',' '\n' | grep -v -E 'ssh2|gmp|pdo_sqlsrv|memcache|memcached' | tr '\n' ',' | sed 's/,$//')
+    # excimer is required for Sentry profiling (profiles_sample_rate > 0).
+    # It is not in the upstream default set so we add it here.
+    export PHP_EXTENSIONS="${PHP_EXTENSIONS},excimer"
 fi
 
 if [ -z "${PHP_EXTENSION_LIBS:-}" ]; then

@@ -18,6 +18,9 @@ use Sentry\MonitorConfig;
 use Sentry\MonitorSchedule;
 use Sentry\MonitorScheduleUnit;
 use Sentry\SentrySdk;
+use Sentry\Tracing\SpanStatus;
+use Sentry\Tracing\TransactionContext;
+use Sentry\Tracing\TransactionSource;
 use Symfony\Component\Console\Messenger\RunCommandMessage;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
@@ -26,6 +29,7 @@ use Symfony\Component\Scheduler\Messenger\ScheduledStamp;
 use Symfony\Component\Scheduler\Trigger\CronExpressionTrigger;
 use Throwable;
 use function Sentry\captureCheckIn;
+use function Sentry\startTransaction;
 use function str_replace;
 
 final class SentrySchedulerMiddleware implements MiddlewareInterface
@@ -38,8 +42,25 @@ final class SentrySchedulerMiddleware implements MiddlewareInterface
             return $stack->next()->handle($envelope, $stack);
         }
 
+        $hub = SentrySdk::getCurrentHub();
         $slug = $this->getSlug($envelope->getMessage());
         $monitorConfig = $this->buildMonitorConfig($scheduledStamp);
+
+        // Start a performance transaction so Doctrine/Cache/HttpClient integrations
+        // can attach child spans and the job appears in Sentry Performance.
+        // startTransaction() respects traces_sample_rate: if it is 0 the transaction
+        // is created but never sent, so there is no meaningful overhead.
+        $transactionContext = new TransactionContext();
+        $transactionContext->setName($slug);
+        $transactionContext->setOp('queue.process');
+        $transactionContext->setSource(TransactionSource::task());
+
+        $transaction = startTransaction($transactionContext);
+
+        // Make this transaction the active span so all integrations (DBAL, Cache, HTTP
+        // client) automatically attach their child spans to it.
+        $previousSpan = $hub->getSpan();
+        $hub->setSpan($transaction);
 
         $checkInId = captureCheckIn(
             slug: $slug,
@@ -50,6 +71,8 @@ final class SentrySchedulerMiddleware implements MiddlewareInterface
         try {
             $result = $stack->next()->handle($envelope, $stack);
 
+            $transaction->setStatus(SpanStatus::ok());
+
             captureCheckIn(
                 slug: $slug,
                 status: CheckInStatus::ok(),
@@ -58,6 +81,8 @@ final class SentrySchedulerMiddleware implements MiddlewareInterface
 
             return $result;
         } catch (Throwable $e) {
+            $transaction->setStatus(SpanStatus::internalError());
+
             captureCheckIn(
                 slug: $slug,
                 status: CheckInStatus::error(),
@@ -65,6 +90,9 @@ final class SentrySchedulerMiddleware implements MiddlewareInterface
             );
 
             throw $e;
+        } finally {
+            $transaction->finish();
+            $hub->setSpan($previousSpan);
         }
     }
 
