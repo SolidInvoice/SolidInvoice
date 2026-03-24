@@ -189,7 +189,7 @@ final class SentrySchedulerMiddlewareTest extends TestCase
         $this->middleware->handle($envelope, $stack);
 
         $checkInEvents = $this->getCheckInEvents();
-        self::assertSame('solidinvoice-invoices-mark-overdue', $checkInEvents[0]->getCheckIn()?->getMonitorSlug());
+        self::assertSame('test_schedule-solidinvoice-invoices-mark-overdue', $checkInEvents[0]->getCheckIn()?->getMonitorSlug());
     }
 
     public function testSlugFromRunCommandMessageStripsArguments(): void
@@ -201,7 +201,7 @@ final class SentrySchedulerMiddlewareTest extends TestCase
         $this->middleware->handle($envelope, $stack);
 
         $checkInEvents = $this->getCheckInEvents();
-        self::assertSame('app-test', $checkInEvents[0]->getCheckIn()?->getMonitorSlug());
+        self::assertSame('test_schedule-app-test', $checkInEvents[0]->getCheckIn()?->getMonitorSlug());
     }
 
     public function testSlugFromArbitraryMessageClass(): void
@@ -214,7 +214,7 @@ final class SentrySchedulerMiddlewareTest extends TestCase
         $this->middleware->handle($envelope, $stack);
 
         $checkInEvents = $this->getCheckInEvents();
-        self::assertSame('scheduler-message-fixture', $checkInEvents[0]->getCheckIn()?->getMonitorSlug());
+        self::assertSame('test_schedule-scheduler-message-fixture', $checkInEvents[0]->getCheckIn()?->getMonitorSlug());
     }
 
     public function testSlugFromAnonymousClassIsValidFormat(): void
