@@ -90,5 +90,6 @@ return static function (ContainerConfigurator $container, SentryConfig $sentryCo
 
     $monologConfig->handler('sentry_logs')
         ->type('service')
-        ->id(LogsHandler::class);
+        ->id(LogsHandler::class)
+        ->channels()->elements(['!doctrine', '!request', '!security', '!event', '!console']);
 };

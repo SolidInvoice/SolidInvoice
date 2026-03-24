@@ -62,11 +62,14 @@ final class SentrySchedulerMiddleware implements MiddlewareInterface
         $previousSpan = $hub->getSpan();
         $hub->setSpan($transaction);
 
-        $checkInId = captureCheckIn(
+        // Only emit check-ins when we have a monitor config (i.e. a known schedule).
+        // Without one, Sentry would create orphaned unmanaged check-ins with no
+        // associated schedule — useless noise. Tracing still runs in all cases.
+        $checkInId = $monitorConfig !== null ? captureCheckIn(
             slug: $slug,
             status: CheckInStatus::inProgress(),
             monitorConfig: $monitorConfig,
-        );
+        ) : null;
 
         $startTime = microtime(true);
 
@@ -75,23 +78,27 @@ final class SentrySchedulerMiddleware implements MiddlewareInterface
 
             $transaction->setStatus(SpanStatus::ok());
 
-            captureCheckIn(
-                slug: $slug,
-                status: CheckInStatus::ok(),
-                duration: microtime(true) - $startTime,
-                checkInId: $checkInId,
-            );
+            if ($monitorConfig !== null) {
+                captureCheckIn(
+                    slug: $slug,
+                    status: CheckInStatus::ok(),
+                    duration: microtime(true) - $startTime,
+                    checkInId: $checkInId,
+                );
+            }
 
             return $result;
         } catch (Throwable $e) {
             $transaction->setStatus(SpanStatus::internalError());
 
-            captureCheckIn(
-                slug: $slug,
-                status: CheckInStatus::error(),
-                duration: microtime(true) - $startTime,
-                checkInId: $checkInId,
-            );
+            if ($monitorConfig !== null) {
+                captureCheckIn(
+                    slug: $slug,
+                    status: CheckInStatus::error(),
+                    duration: microtime(true) - $startTime,
+                    checkInId: $checkInId,
+                );
+            }
 
             throw $e;
         } finally {
