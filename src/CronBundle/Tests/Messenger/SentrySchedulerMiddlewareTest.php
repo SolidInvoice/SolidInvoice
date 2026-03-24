@@ -214,7 +214,7 @@ final class SentrySchedulerMiddlewareTest extends TestCase
         $this->middleware->handle($envelope, $stack);
 
         $checkInEvents = $this->getCheckInEvents();
-        self::assertSame('test_schedule-scheduler-message-fixture', $checkInEvents[0]->getCheckIn()?->getMonitorSlug());
+        self::assertSame('test_schedule-schedulermessagefixture', $checkInEvents[0]->getCheckIn()?->getMonitorSlug());
     }
 
     public function testSlugFromAnonymousClassIsValidFormat(): void
@@ -263,6 +263,50 @@ final class SentrySchedulerMiddlewareTest extends TestCase
         self::assertGreaterThanOrEqual(0.0, $checkInEvents[1]->getCheckIn()?->getDuration(), 'completion check-in must report elapsed seconds');
     }
 
+    public function testSlugWithinLimitIsNotTruncated(): void
+    {
+        // schedule(13) + '-' + command(8) = 22 chars — well within the 50-char limit.
+        $envelope = $this->makeScheduledEnvelope('app:test', scheduleName: 'test_schedule');
+        $stack = $this->makeStack($envelope);
+
+        $this->middleware->handle($envelope, $stack);
+
+        $slug = $this->getCheckInEvents()[0]->getCheckIn()?->getMonitorSlug() ?? '';
+        self::assertSame('test_schedule-app-test', $slug);
+    }
+
+    public function testSlugIsTruncatedToFiftyCharacters(): void
+    {
+        // schedule(40) + '-' + message(16) = 57 chars — exceeds the 50-char limit.
+        $envelope = $this->makeScheduledEnvelope(
+            'app:test:command',
+            scheduleName: str_repeat('a', 40),
+        );
+        $stack = $this->makeStack($envelope);
+
+        $this->middleware->handle($envelope, $stack);
+
+        $slug = $this->getCheckInEvents()[0]->getCheckIn()?->getMonitorSlug() ?? '';
+        self::assertLessThanOrEqual(50, strlen($slug), 'Slug must not exceed 50 characters');
+        self::assertMatchesRegularExpression('/^[a-z0-9_-]+$/', $slug, 'Slug must only contain valid characters');
+    }
+
+    public function testSlugIsCappedAtFiftyCharactersExactly(): void
+    {
+        // Combined raw slug is longer than 50 chars; must be hard-capped at exactly 50.
+        $envelope = $this->makeScheduledEnvelope(
+            str_repeat('b', 15) . ':' . str_repeat('c', 15),
+            scheduleName: str_repeat('a', 30),
+        );
+        $stack = $this->makeStack($envelope);
+
+        $this->middleware->handle($envelope, $stack);
+
+        $slug = $this->getCheckInEvents()[0]->getCheckIn()?->getMonitorSlug() ?? '';
+        self::assertSame(50, strlen($slug));
+        self::assertMatchesRegularExpression('/^[a-z0-9_-]+$/', $slug);
+    }
+
     public function testNoCheckInForNonCronTrigger(): void
     {
         // PeriodicalTrigger has no cron expression, so no MonitorConfig can be built.
@@ -281,15 +325,15 @@ final class SentrySchedulerMiddlewareTest extends TestCase
     // Helpers
     // -------------------------------------------------------------------------
 
-    private function makeScheduledEnvelope(string $commandInput, bool $withReceived = true, ?TriggerInterface $trigger = null): Envelope
+    private function makeScheduledEnvelope(string $commandInput, bool $withReceived = true, ?TriggerInterface $trigger = null, string $scheduleName = 'test_schedule'): Envelope
     {
-        return $this->makeScheduledEnvelopeForMessage(new RunCommandMessage($commandInput), $withReceived, $trigger);
+        return $this->makeScheduledEnvelopeForMessage(new RunCommandMessage($commandInput), $withReceived, $trigger, $scheduleName);
     }
 
-    private function makeScheduledEnvelopeForMessage(object $message, bool $withReceived = true, ?TriggerInterface $trigger = null): Envelope
+    private function makeScheduledEnvelopeForMessage(object $message, bool $withReceived = true, ?TriggerInterface $trigger = null, string $scheduleName = 'test_schedule'): Envelope
     {
         $context = new MessageContext(
-            name: 'test_schedule',
+            name: $scheduleName,
             id: 'test-id-' . uniqid(),
             trigger: $trigger ?? CronExpressionTrigger::fromSpec('0 * * * *'),
             triggeredAt: new \DateTimeImmutable(),

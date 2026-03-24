@@ -32,7 +32,6 @@ use function Sentry\captureCheckIn;
 use function Sentry\captureException;
 use function Sentry\startTransaction;
 use function Sentry\withScope;
-use function str_replace;
 
 final class SentrySchedulerMiddleware implements MiddlewareInterface
 {
@@ -118,23 +117,16 @@ final class SentrySchedulerMiddleware implements MiddlewareInterface
     private function getSlug(object $message, ScheduledStamp $stamp): string
     {
         if ($message instanceof RunCommandMessage) {
-            $parts = explode(' ', $message->input, 2);
-            $messageSlug = str_replace(':', '-', $parts[0]);
+            $name = explode(' ', $message->input, 2)[0];
         } else {
             $shortName = strrchr($message::class, '\\');
-            $class = $shortName !== false ? substr($shortName, 1) : $message::class;
-            $messageSlug = strtolower(preg_replace('/[A-Z]/', '-$0', lcfirst($class)) ?? $class);
+            $name = $shortName !== false ? substr($shortName, 1) : $message::class;
         }
 
-        // Sentry monitor slugs must match ^[a-z0-9_-]+$. Replace any remaining
-        // disallowed characters (e.g. / @ . from anonymous class names) with hyphens.
-        $messageSlug = (string) preg_replace('/[^a-z0-9_-]+/', '-', strtolower($messageSlug));
+        // Combine schedule name and message name, normalise to [a-z0-9_-], cap at 50 chars.
+        $slug = (string) preg_replace('/[^a-z0-9_-]+/', '-', strtolower($stamp->messageContext->name . '-' . $name));
 
-        // Prefix with the schedule name so that two distinct schedules running the same
-        // command each get their own Sentry monitor rather than sharing one.
-        $scheduleName = (string) preg_replace('/[^a-z0-9_-]+/', '-', strtolower($stamp->messageContext->name));
-
-        return $scheduleName !== '' ? "{$scheduleName}-{$messageSlug}" : $messageSlug;
+        return substr($slug, 0, 50);
     }
 
     private function buildMonitorConfig(ScheduledStamp $stamp): ?MonitorConfig
