@@ -28,7 +28,47 @@ return static function (ContainerConfigurator $container, SentryConfig $sentryCo
         ->sendDefaultPii(env('SOLIDINVOICE_SENTRY_SEND_DEFAULT_PII')->bool())
         ->ignoreExceptions([FatalError::class])
         ->release(env('SOLIDINVOICE_SENTRY_RELEASE')->default('application_version'))
-        ->enableLogs(true);
+        ->enableLogs(true)
+        // Tracing: set SOLIDINVOICE_SENTRY_TRACES_SAMPLE_RATE to a value between 0.0 and 1.0 to enable.
+        // 0.0 = no transactions captured, 1.0 = 100% captured. Start low in production (e.g. 0.1).
+        // Recommended: 0.1 for medium traffic, 0.01 for high traffic.
+        ->tracesSampleRate(env('SOLIDINVOICE_SENTRY_TRACES_SAMPLE_RATE')->float())
+        // Profiling: requires the excimer PHP extension (see build-static.sh).
+        // profiles_sample_rate is relative to traces_sample_rate: if traces=0.1 and profiles=1.0,
+        // 10% of requests are traced and 100% of those traces are profiled.
+        // Only set > 0 when excimer is installed; otherwise leave at 0.
+        ->profilesSampleRate(env('SOLIDINVOICE_SENTRY_PROFILES_SAMPLE_RATE')->float())
+        // HTTP timeouts in seconds. Lower values (e.g. 1-2s) are safe when using a local Relay proxy,
+        // which responds near-instantly and forwards asynchronously to sentry.io.
+        // When sending directly to sentry.io, consider 5-10s to tolerate occasional latency.
+        // To use Relay: change SOLIDINVOICE_SENTRY_DSN to point to your Relay instance,
+        // e.g. http://<key>@localhost:3000/<project-id>, and keep timeouts at 2s.
+        ->httpTimeout(env('SOLIDINVOICE_SENTRY_HTTP_TIMEOUT')->float())
+        ->httpConnectTimeout(env('SOLIDINVOICE_SENTRY_HTTP_CONNECT_TIMEOUT')->float())
+        // Ignore noisy internal/infrastructure transactions that add volume without insight.
+        ->ignoreTransactions(['GET /_fragment']);
+
+    // Symfony-specific tracing integrations. These register lightweight middleware/decorators
+    // that only collect span data when traces_sample_rate > 0. All enabled by default so that
+    // enabling tracing via the env var gives full visibility immediately.
+    $sentryConfig->tracing()
+        ->enabled(true)
+        ->dbal()        // Traces every Doctrine SQL query as a child span
+        ->enabled(true);
+    $sentryConfig->tracing()
+        ->twig()        // Traces Twig template renders
+        ->enabled(true);
+    $sentryConfig->tracing()
+        ->cache()       // Traces Symfony Cache hits and misses
+        ->enabled(true);
+    $sentryConfig->tracing()
+        ->httpClient()  // Traces outgoing Symfony HttpClient requests
+        ->enabled(true);
+    $sentryConfig->tracing()
+        ->console()
+            // Long-running workers must be excluded: they would create a single trace that
+            // spans the entire worker lifetime rather than per-message traces.
+        ->excludedCommands(['messenger:consume', 'schedule:run', 'cron:run']);
 
     $container->services()
         ->set(LogsHandler::class)
