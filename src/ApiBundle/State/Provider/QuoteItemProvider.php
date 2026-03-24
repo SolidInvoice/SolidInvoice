@@ -29,7 +29,7 @@ final class QuoteItemProvider implements ProviderInterface
 
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): Quote
     {
-        $quote = $this->repository->find($uriVariables['id']);
+        $quote = $this->repository->findOneBy(['id' => $uriVariables['id']]);
 
         if (! $quote instanceof Quote) {
             throw new NotFoundHttpException(sprintf('Quote "%s" not found.', $uriVariables['id']));

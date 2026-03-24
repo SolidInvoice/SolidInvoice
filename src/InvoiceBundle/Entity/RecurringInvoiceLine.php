@@ -21,13 +21,14 @@ use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use Doctrine\ORM\Mapping as ORM;
-use SolidInvoice\InvoiceBundle\Repository\LineRepository;
+use SolidInvoice\ApiBundle\State\Processor\RecurringInvoiceLinePersistProcessor;
+use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceLineRepository;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 
-#[ORM\Entity(repositoryClass: LineRepository::class)]
+#[ORM\Entity(repositoryClass: RecurringInvoiceLineRepository::class)]
 #[ApiResource(
     uriTemplate: '/recurring-invoices/{invoiceId}/lines',
-    operations: [new GetCollection(), new Post()],
+    operations: [new GetCollection(), new Post(processor: RecurringInvoiceLinePersistProcessor::class)],
     uriVariables: [
         'invoiceId' => new Link(
             fromProperty: 'lines',
@@ -50,7 +51,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
             fromClass: RecurringInvoice::class,
         ),
         'id' => new Link(
-            fromClass: Line::class,
+            fromClass: RecurringInvoiceLine::class,
         ),
     ],
     normalizationContext: [

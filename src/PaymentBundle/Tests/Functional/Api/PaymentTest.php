@@ -44,7 +44,7 @@ final class PaymentTest extends ApiTestCase
         ])->_real();
 
         $data = $this->requestGet($this->getIriFromResource($invoice) . '/payments');
-        unset($data['hydra:search']);
+        unset($data['search'], $data['view']);
 
         self::assertEqualsCanonicalizing([
             '@context' => $this->getContextForResource($payment),
@@ -96,7 +96,7 @@ final class PaymentTest extends ApiTestCase
         PaymentFactory::createMany(5, ['client' => ClientFactory::new()]);
 
         $data = $this->requestGet($this->getIriFromResource($client) . '/payments');
-        unset($data['hydra:search']);
+        unset($data['search'], $data['view']);
 
         self::assertEqualsCanonicalizing([
             '@context' => $this->getContextForResource($payment),
@@ -146,14 +146,14 @@ final class PaymentTest extends ApiTestCase
         PaymentFactory::createOne(['client' => $client]);
 
         $data = $this->requestGet($this->getIriFromResource($client) . '/payments');
-        unset($data['hydra:search']);
+        unset($data['search'], $data['view']);
 
         self::assertEqualsCanonicalizing([
             '@context' => $this->getContextForResource(Payment::class),
             '@id' => $this->getIriFromResource($client) . '/payments',
             '@type' => 'Collection',
-            'hydra:totalItems' => 0,
-            'hydra:member' => [],
+            'totalItems' => 0,
+            'member' => [],
         ], $data);
     }
 
@@ -170,14 +170,14 @@ final class PaymentTest extends ApiTestCase
         PaymentFactory::createOne(['client' => $client]);
 
         $data = $this->requestGet($this->getIriFromResource($client) . '/payments');
-        unset($data['hydra:search']);
+        unset($data['search'], $data['view']);
 
         self::assertEqualsCanonicalizing([
             '@context' => $this->getContextForResource(Payment::class),
             '@id' => $this->getIriFromResource($client) . '/payments',
             '@type' => 'Collection',
-            'hydra:totalItems' => 0,
-            'hydra:member' => [],
+            'totalItems' => 0,
+            'member' => [],
         ], $data);
     }
 

@@ -86,7 +86,7 @@ final class InvoiceFactory extends PersistentProxyObjectFactory
             'baseTotal' => BigInteger::of(self::faker()->randomNumber()),
             'tax' => BigInteger::of(self::faker()->randomNumber()),
             'discount' => (new Discount())
-                ->setType(self::faker()->text())
+                ->setType(self::faker()->randomElement([Discount::TYPE_PERCENTAGE, Discount::TYPE_MONEY]))
                 ->setValueMoney(BigInteger::of(self::faker()->randomNumber()))
                 ->setValuePercentage(self::faker()->randomFloat()),
         ];

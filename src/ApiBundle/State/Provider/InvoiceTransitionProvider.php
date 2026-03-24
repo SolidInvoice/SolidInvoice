@@ -29,7 +29,7 @@ final class InvoiceTransitionProvider implements ProviderInterface
 
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): Invoice
     {
-        $invoice = $this->repository->find($uriVariables['id']);
+        $invoice = $this->repository->findOneBy(['id' => $uriVariables['id']]);
 
         if (! $invoice instanceof Invoice) {
             throw new NotFoundHttpException(sprintf('Invoice "%s" not found.', $uriVariables['id']));

@@ -91,7 +91,6 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
     uriVariables: [
         'id' => new Link(fromClass: RecurringInvoice::class),
-        'transition' => new Link(),
     ],
     normalizationContext: [
         'groups' => ['recurring_invoice_api:read'],

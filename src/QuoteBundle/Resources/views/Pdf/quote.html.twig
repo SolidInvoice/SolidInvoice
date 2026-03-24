@@ -30,7 +30,7 @@
    STATUS WATERMARK
 ============================================================================ #}
 {% if setting('quote/watermark') %}
-    <watermarktext content="{{ quote.status|upper }}" alpha="0.08"/>
+    <watermarktext content="{{ quote.status.value|upper }}" alpha="0.08"/>
 {% endif %}
 
 {# ============================================================================
