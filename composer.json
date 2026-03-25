@@ -48,7 +48,7 @@
         "knpuniversity/oauth2-client-bundle": "^2.18",
         "league/commonmark": "^2.4",
         "league/oauth2-google": "^4.0",
-        "lorisleiva/cron-translator": "^0.4.5",
+        "lorisleiva/cron-translator": "^0.5.0",
         "meilisearch/search-bundle": "^0.16.1",
         "moneyphp/money": "^4.5",
         "mpdf/mpdf": "^8.0",

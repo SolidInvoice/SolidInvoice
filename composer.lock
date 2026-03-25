@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "77d30c0f001db341e27da68a82608eb3",
+    "content-hash": "3f41decbf173ae293238fa9ee89b0e09",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -4924,16 +4924,16 @@
         },
         {
             "name": "lorisleiva/cron-translator",
-            "version": "v0.4.6",
+            "version": "v0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lorisleiva/cron-translator.git",
-                "reference": "082e3cd493de13bd5816bfdda484d07bb2326768"
+                "reference": "e03521bcb5a117a2a8d1792c86614be6612100c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lorisleiva/cron-translator/zipball/082e3cd493de13bd5816bfdda484d07bb2326768",
-                "reference": "082e3cd493de13bd5816bfdda484d07bb2326768",
+                "url": "https://api.github.com/repos/lorisleiva/cron-translator/zipball/e03521bcb5a117a2a8d1792c86614be6612100c8",
+                "reference": "e03521bcb5a117a2a8d1792c86614be6612100c8",
                 "shasum": ""
             },
             "require": {
@@ -4968,7 +4968,7 @@
             ],
             "support": {
                 "issues": "https://github.com/lorisleiva/cron-translator/issues",
-                "source": "https://github.com/lorisleiva/cron-translator/tree/v0.4.6"
+                "source": "https://github.com/lorisleiva/cron-translator/tree/v0.5.0"
             },
             "funding": [
                 {
@@ -4976,7 +4976,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-06-23T10:51:20+00:00"
+            "time": "2026-02-06T08:35:37+00:00"
         },
         {
             "name": "masterminds/html5",
