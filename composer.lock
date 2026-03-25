@@ -20240,16 +20240,16 @@
         },
         {
             "name": "twig/inky-extra",
-            "version": "v3.22.0",
+            "version": "v3.24.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/inky-extra.git",
-                "reference": "631f42c7123240d9c2497903679ec54bb25f2f52"
+                "reference": "6bdca65a38167f7bd0ad7ea04819098d465a5cc4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/inky-extra/zipball/631f42c7123240d9c2497903679ec54bb25f2f52",
-                "reference": "631f42c7123240d9c2497903679ec54bb25f2f52",
+                "url": "https://api.github.com/repos/twigphp/inky-extra/zipball/6bdca65a38167f7bd0ad7ea04819098d465a5cc4",
+                "reference": "6bdca65a38167f7bd0ad7ea04819098d465a5cc4",
                 "shasum": ""
             },
             "require": {
@@ -20294,7 +20294,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/twigphp/inky-extra/tree/v3.22.0"
+                "source": "https://github.com/twigphp/inky-extra/tree/v3.24.0"
             },
             "funding": [
                 {
@@ -20306,7 +20306,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-07-29T08:07:07+00:00"
+            "time": "2025-12-02T14:45:16+00:00"
         },
         {
             "name": "twig/markdown-extra",
