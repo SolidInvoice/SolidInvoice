@@ -73,7 +73,7 @@ jobs:
     needs: [prepare, build-dist]
     permissions:
       contents: read
-    runs-on: ubuntu-24.04
+    runs-on: self-hosted
     env:
       HOMEBREW_NO_AUTO_UPDATE: 1
       SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
@@ -117,8 +117,8 @@ jobs:
             source: .
             push: true
             set: |
-                build-static.cache-from=type=gha,scope=php
-                build-static.cache-to=type=gha,scope=php,mode=max,ignore-error=true
+                build-static.cache-from=type=local,src=${{ github.workspace }}/.docker-cache
+                build-static.cache-to=type=local,dest=${{ github.workspace }}/.docker-cache-new,mode=max,ignore-error=true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -126,3 +126,8 @@ jobs:
           LATEST: 0
           NIGHTLY: 1
           SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
+
+      - name: Move cache
+        run: |
+            rm -rf ${{ github.workspace }}/.docker-cache
+            mv ${{ github.workspace }}/.docker-cache-new ${{ github.workspace }}/.docker-cache 
