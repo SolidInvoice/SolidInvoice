@@ -19617,28 +19617,28 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v7.3.5",
+            "version": "v7.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "90208e2fc6f68f613eae7ca25a2458a931b1bacc"
+                "reference": "58751048de17bae71c5aa0d13cb19d79bca26391"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/90208e2fc6f68f613eae7ca25a2458a931b1bacc",
-                "reference": "90208e2fc6f68f613eae7ca25a2458a931b1bacc",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/58751048de17bae71c5aa0d13cb19d79bca26391",
+                "reference": "58751048de17bae71c5aa0d13cb19d79bca26391",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.2",
-                "symfony/deprecation-contracts": "^2.5|^3.0",
+                "symfony/deprecation-contracts": "^2.5|^3",
                 "symfony/polyfill-ctype": "^1.8"
             },
             "conflict": {
                 "symfony/console": "<6.4"
             },
             "require-dev": {
-                "symfony/console": "^6.4|^7.0"
+                "symfony/console": "^6.4|^7.0|^8.0"
             },
             "bin": [
                 "Resources/bin/yaml-lint"
@@ -19669,7 +19669,7 @@
             "description": "Loads and dumps YAML files",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/yaml/tree/v7.3.5"
+                "source": "https://github.com/symfony/yaml/tree/v7.4.6"
             },
             "funding": [
                 {
@@ -19689,7 +19689,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-09-27T09:00:46+00:00"
+            "time": "2026-02-09T09:33:46+00:00"
         },
         {
             "name": "symfony/yunpian-notifier",
@@ -21659,26 +21659,26 @@
         },
         {
             "name": "liip/test-fixtures-bundle",
-            "version": "3.6.0",
+            "version": "3.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipTestFixturesBundle.git",
-                "reference": "29942037076433f0189f33ccd7d53198dd818fe7"
+                "reference": "c05c8ffbf57a45a1c9652d8f2aa1f5d9393f4dda"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipTestFixturesBundle/zipball/29942037076433f0189f33ccd7d53198dd818fe7",
-                "reference": "29942037076433f0189f33ccd7d53198dd818fe7",
+                "url": "https://api.github.com/repos/liip/LiipTestFixturesBundle/zipball/c05c8ffbf57a45a1c9652d8f2aa1f5d9393f4dda",
+                "reference": "c05c8ffbf57a45a1c9652d8f2aa1f5d9393f4dda",
                 "shasum": ""
             },
             "require": {
                 "doctrine/persistence": "^1.3.3 || ^2.0 || ^3.0 || ^4.0",
                 "php": "^8.1",
                 "symfony/deprecation-contracts": "^2.1 || ^3.0",
-                "symfony/event-dispatcher": "^5.4 || ^6.3 || ^7.0",
+                "symfony/event-dispatcher": "^5.4 || ^6.3 || ^7.0 || ^8.0",
                 "symfony/event-dispatcher-contracts": "^1 || ^2 || ^3",
-                "symfony/framework-bundle": "^5.4 || ^6.3 || ^7.0",
-                "symfony/yaml": "^5.4 || ^6.3 || ^7.0"
+                "symfony/framework-bundle": "^5.4 || ^6.3 || ^7.0 || ^8.0",
+                "symfony/yaml": "^5.4 || ^6.3 || ^7.0 || ^8.0"
             },
             "conflict": {
                 "doctrine/annotations": "<1.13.1 || >=3.0",
@@ -21688,15 +21688,15 @@
             },
             "require-dev": {
                 "doctrine/data-fixtures": "^1.7 || ^2.0.1",
-                "doctrine/doctrine-bundle": "^2.11",
+                "doctrine/doctrine-bundle": "^2.11 || ^3.1.0",
                 "doctrine/doctrine-fixtures-bundle": "^3.5.1 || ^4.0",
                 "doctrine/mongodb-odm": "^2.5",
                 "doctrine/mongodb-odm-bundle": "^4.4 || ^5.0",
                 "doctrine/orm": "^2.14 || ^3.1.0",
                 "monolog/monolog": "^1.25.1 || ^2.0 || ^3.0",
                 "phpunit/phpunit": "^10.5.11 || ^11.0.4 || ^12.0.0",
-                "symfony/doctrine-bridge": "^5.4 || ^6.3 || ^7.0",
-                "symfony/monolog-bridge": "^5.4 || ^6.3 || ^7.0",
+                "symfony/doctrine-bridge": "^5.4 || ^6.3 || ^7.0 || ^8.0",
+                "symfony/monolog-bridge": "^5.4 || ^6.3 || ^7.0 || ^8.0",
                 "symfony/monolog-bundle": "^3.2",
                 "theofidry/alice-data-fixtures": "^1.5.2"
             },
@@ -21740,9 +21740,9 @@
             ],
             "support": {
                 "issues": "https://github.com/liip/LiipTestFixturesBundle/issues",
-                "source": "https://github.com/liip/LiipTestFixturesBundle/tree/3.6.0"
+                "source": "https://github.com/liip/LiipTestFixturesBundle/tree/3.8.1"
             },
-            "time": "2025-10-06T18:40:34+00:00"
+            "time": "2026-02-20T19:35:17+00:00"
         },
         {
             "name": "localheinz/diff",
