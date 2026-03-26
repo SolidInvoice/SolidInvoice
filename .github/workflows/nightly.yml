@@ -32,10 +32,6 @@ jobs:
         run: |
           echo "ref=nightly" >> "${GITHUB_OUTPUT}"
           
-      - name: Define Cache Directory Path
-        run: |
-          echo "cache_dir=$HOME/.docker-cache" >> "${GITHUB_OUTPUT}"
-
   build-dist:
     permissions:
       contents: read
@@ -81,13 +77,15 @@ jobs:
     env:
       HOMEBREW_NO_AUTO_UPDATE: 1
       SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
-      DOCKER_CACHE_DIR: ${{ needs.prepare.outputs.cache_dir }}
       PHP_VERSION: 8.3
     steps:
       - name: Harden the runner (Audit all outbound calls)
         uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
         with:
           egress-policy: audit
+
+      - name: Set cache directory
+        run: echo "DOCKER_CACHE_DIR=$HOME/.docker-cache" >> "$GITHUB_ENV"
 
       - name: Checkout code
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
@@ -122,8 +120,8 @@ jobs:
             source: .
             push: true
             set: |
-                build-static.cache-from=type=local,src=${{ needs.prepare.outputs.cache_dir }}
-                build-static.cache-to=type=local,dest=${{ needs.prepare.outputs.cache_dir }}-new,mode=max,ignore-error=true
+                build-static.cache-from=type=local,src=${{ env.DOCKER_CACHE_DIR }}
+                build-static.cache-to=type=local,dest=${{ env.DOCKER_CACHE_DIR }}-new,mode=max,ignore-error=true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -134,5 +132,5 @@ jobs:
 
       - name: Move cache
         run: |
-            rm -rf ${{ needs.prepare.outputs.cache_dir }}
-            mv ${{ needs.prepare.outputs.cache_dir }}-new ${{ needs.prepare.outputs.cache_dir }} 
+            rm -rf "$DOCKER_CACHE_DIR"
+            mv "${DOCKER_CACHE_DIR}-new" "$DOCKER_CACHE_DIR"
