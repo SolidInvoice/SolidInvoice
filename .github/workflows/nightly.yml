@@ -31,6 +31,10 @@ jobs:
         id: check
         run: |
           echo "ref=nightly" >> "${GITHUB_OUTPUT}"
+          
+      - name: Define Cache Directory Path
+        run: |
+          echo "cache_dir=$HOME/.docker-cache" >> "${GITHUB_OUTPUT}"
 
   build-dist:
     permissions:
@@ -77,6 +81,7 @@ jobs:
     env:
       HOMEBREW_NO_AUTO_UPDATE: 1
       SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
+      DOCKER_CACHE_DIR: ${{ needs.prepare.outputs.cache_dir }}
       PHP_VERSION: 8.3
     steps:
       - name: Harden the runner (Audit all outbound calls)
@@ -117,8 +122,8 @@ jobs:
             source: .
             push: true
             set: |
-                build-static.cache-from=type=local,src=${{ github.workspace }}/.docker-cache
-                build-static.cache-to=type=local,dest=${{ github.workspace }}/.docker-cache-new,mode=max,ignore-error=true
+                build-static.cache-from=type=local,src=${{ needs.prepare.outputs.cache_dir }}
+                build-static.cache-to=type=local,dest=${{ needs.prepare.outputs.cache_dir }}-new,mode=max,ignore-error=true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -129,5 +134,5 @@ jobs:
 
       - name: Move cache
         run: |
-            rm -rf ${{ github.workspace }}/.docker-cache
-            mv ${{ github.workspace }}/.docker-cache-new ${{ github.workspace }}/.docker-cache 
+            rm -rf ${{ needs.prepare.outputs.cache_dir }}
+            mv ${{ needs.prepare.outputs.cache_dir }}-new ${{ needs.prepare.outputs.cache_dir }} 
