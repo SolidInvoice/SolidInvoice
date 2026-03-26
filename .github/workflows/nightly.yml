@@ -99,10 +99,10 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3.11.1
         with:
-            #driver: cloud
-            #endpoint: "solidinvoice/solidinvoice-app-cloud"
             install: true
             platforms: linux/amd64,linux/arm64
+            cleanup: false
+            name: persistent-builder
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0

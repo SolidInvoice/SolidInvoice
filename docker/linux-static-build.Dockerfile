@@ -111,7 +111,9 @@ RUN \
     --mount=type=secret,id=github-token \
     --mount=type=cache,id=php-buildroot-${TARGETARCH},target=/go/src/app/frankenphp/dist/static-php-cli/buildroot \
     --mount=type=cache,id=php-pkgroot-${TARGETARCH},target=/go/src/app/frankenphp/dist/static-php-cli/pkgroot \
-    GITHUB_TOKEN=$(cat /run/secrets/github-token) ./scripts/build_binary.sh $SOLIDINVOICE_VERSION
+    --mount=type=cache,id=php-downloads-${TARGETARCH},target=/go/src/app/frankenphp/dist/static-php-cli/downloads \
+    --mount=type=cache,id=php-source-${TARGETARCH},target=/go/src/app/frankenphp/dist/static-php-cli/source \
+    CI="" GITHUB_TOKEN=$(cat /run/secrets/github-token) ./scripts/build_binary.sh $SOLIDINVOICE_VERSION
 
 FROM alpine
 
