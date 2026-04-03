@@ -19,10 +19,10 @@ use Money\Money;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Form\Type\CompanyType;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
-use SolidInvoice\SaasBundle\Repository\TrialRepository;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidWorx\Platform\SaasBundle\Entity\Plan;
 use SolidWorx\Platform\SaasBundle\Repository\PlanRepository;
+use SolidWorx\Platform\SaasBundle\Trial\TrialManagerInterface;
 use SolidWorx\Toggler\ToggleInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -39,7 +39,7 @@ final class CreateCompany extends AbstractController
         private readonly CompanyRepository $companyRepository,
         private readonly RouterInterface $router,
         private readonly ToggleInterface $toggler,
-        private readonly ?TrialRepository $trialRepository = null,
+        private readonly ?TrialManagerInterface $trialManager = null,
         private readonly ?PlanRepository $planRepository = null,
     ) {
     }
@@ -68,9 +68,10 @@ final class CreateCompany extends AbstractController
 
         $planPrice = null;
         $userHasTrial = false;
+        $trialDays = null;
 
         if ($this->toggler->isActive('saas_enabled')) {
-            $userHasTrial = $this->trialRepository?->userHasTrial($user);
+            $userHasTrial = $this->trialManager?->userHasTrial($user);
             $plan = $this->planRepository?->findOneBy([]);
             if ($plan instanceof Plan) {
                 $formatter = new IntlMoneyFormatter(
@@ -78,6 +79,13 @@ final class CreateCompany extends AbstractController
                     new ISOCurrencies()
                 );
                 $planPrice = $formatter->format(Money::USD($plan->getPrice()));
+
+                $trialDuration = $plan->getTrialDuration();
+                if ($trialDuration !== null) {
+                    // Create a reference date and add the interval to compute the total days
+                    $reference = new \DateTimeImmutable();
+                    $trialDays = $reference->diff($reference->add($trialDuration))->days;
+                }
             }
         }
 
@@ -88,6 +96,7 @@ final class CreateCompany extends AbstractController
                 'allowCancel' => ! $user->getCompanies()->isEmpty(),
                 'planPrice' => $planPrice,
                 'userHasTrial' => $userHasTrial,
+                'trialDays' => $trialDays,
             ]
         );
     }
