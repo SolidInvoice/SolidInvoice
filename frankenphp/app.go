@@ -78,6 +78,8 @@ var enableWorkerMode bool
 var workerThreads int
 var logFormat string
 var workerCount int
+var enableMetrics bool
+var metricsPort int
 
 func main() {
 	// Initialize app
@@ -365,6 +367,32 @@ func setupCommands() {
 				log.Info(nil, "Worker mode disabled (default)")
 			}
 
+			// Metrics configuration
+			if enableMetrics {
+				metricsListenPort := fmt.Sprintf("%d", metricsPort)
+				if !portAvailable(metricsListenPort) {
+					return fmt.Errorf("metrics port %d is not available", metricsPort)
+				}
+
+				// Enable Caddy metrics collection via global options
+				globalOpts := os.Getenv("CADDY_GLOBAL_OPTIONS")
+				if globalOpts != "" {
+					globalOpts += "\n"
+				}
+				globalOpts += "metrics"
+				must(os.Setenv("CADDY_GLOBAL_OPTIONS", globalOpts))
+
+				// Add dedicated metrics server block
+				extraConfig := os.Getenv("CADDY_EXTRA_CONFIG")
+				if extraConfig != "" {
+					extraConfig += "\n"
+				}
+				extraConfig += fmt.Sprintf(":%d {\n\tmetrics /metrics\n}", metricsPort)
+				must(os.Setenv("CADDY_EXTRA_CONFIG", extraConfig))
+
+				log.Info(nil, fmt.Sprintf("Metrics enabled on port %d at /metrics", metricsPort))
+			}
+
 			app := lu.App{
 				StartupTimeout:  time.Second * 10,
 				ShutdownTimeout: time.Second * 10,
@@ -486,6 +514,8 @@ func setupCommands() {
 	runCmd.PersistentFlags().IntVar(&messengerWorkers, "messenger-workers", 1, "Number of messenger worker processes to spawn. Each worker processes async messages independently. Set to 0 to disable built-in workers entirely (recommended for Kubernetes, where a dedicated worker pod runs 'solidinvoice worker'). Increase above 1 for high-traffic standalone deployments (e.g., --messenger-workers=5)")
 	runCmd.PersistentFlags().StringVar(&logFormat, "log-format", "console", "Log output format: 'json' for structured JSON logs, or 'console' (default) for human-readable console output")
 	runCmd.PersistentFlags().BoolVar(&skipIntro, "skip-intro", false, "Skip the introductory application info message")
+	runCmd.PersistentFlags().BoolVar(&enableMetrics, "enable-metrics", false, "Enable Prometheus metrics endpoint on a dedicated port. Exposes Caddy HTTP metrics and FrankenPHP worker/thread metrics for scraping")
+	runCmd.PersistentFlags().IntVar(&metricsPort, "metrics-port", 9090, "Port for the Prometheus metrics endpoint (only used when --enable-metrics is set)")
 
 	workerCmd := &cobra.Command{
 		Use:   "worker",
@@ -798,6 +828,14 @@ func outputAppInfo() {
 		domainNote += "\n\n" + warningStyle.Render("Warning: ") + descStyle.Render("HTTPS is disabled.")
 	}
 
+	var metricsNote string
+	if enableMetrics {
+		metricsNote = "\n\n" +
+			noteStyle.Render("Metrics: ") +
+			descStyle.Render("Prometheus metrics available at ") +
+			linkStyle.Render(fmt.Sprintf("http://localhost:%d/metrics", metricsPort))
+	}
+
 	fmt.Println(borderStyle.Render(
 		descStyle.Render("Welcome to") +
 			"\n" +
@@ -807,7 +845,8 @@ func outputAppInfo() {
 			"\n\n" +
 			"Your application is running and available at the following URLs:\n" +
 			descStyle.Italic(false).PaddingLeft(2).Render(linkStyle.Render(urls)) +
-			domainNote,
+			domainNote +
+			metricsNote,
 	),
 	)
 }
