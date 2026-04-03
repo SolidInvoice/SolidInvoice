@@ -13,6 +13,8 @@ saas:
     doctrine:
         subscriptions:
             entity: SolidInvoice\CoreBundle\Entity\Company
+        trial:
+            user_entity: SolidInvoice\UserBundle\Entity\User
     payment:
         return_route: saas_payment_success
     integration:

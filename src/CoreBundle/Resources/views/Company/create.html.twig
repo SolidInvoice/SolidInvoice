@@ -104,7 +104,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    {% else %}
+                                    {% elseif trialDays is defined and trialDays %}
                                         <div class="alert alert-info d-flex align-items-start" role="alert">
                                             <div class="me-3">
                                                 {{ ux_icon('tabler:gift', {width: 24, height: 24}) }}
@@ -112,7 +112,7 @@
                                             <div class="flex-fill">
                                                 <div class="alert-title fw-semibold">{{ 'Start Your Free Trial'|trans }}</div>
                                                 <div class="text-secondary mb-2">
-                                                    {{ 'Get full access for 30 days, completely free. No credit card required.'|trans }}
+                                                    {% trans with {'%days%': trialDays} %}Get full access for %days% days, completely free. No credit card required.{% endtrans %}
                                                 </div>
                                                 {% if planPrice is defined and planPrice %}
                                                     <div class="d-flex align-items-center gap-2 mt-2">
@@ -120,6 +120,22 @@
                                                         <span class="text-muted small">{{ 'Cancel anytime'|trans }}</span>
                                                     </div>
                                                 {% endif %}
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <div class="alert alert-warning d-flex align-items-start" role="alert">
+                                            <div class="me-3">
+                                                {{ ux_icon('tabler:credit-card', {width: 24, height: 24}) }}
+                                            </div>
+                                            <div class="flex-fill">
+                                                <div class="alert-title fw-semibold">{{ 'Payment Required'|trans }}</div>
+                                                <div class="text-secondary">
+                                                    {% if planPrice is defined and planPrice %}
+                                                        {{ 'Creating this company will start a subscription at'|trans }} <strong>{{ planPrice }}</strong> {{ 'and require payment.'|trans }}
+                                                    {% else %}
+                                                        {{ 'Creating this company will require payment.'|trans }}
+                                                    {% endif %}
+                                                </div>
                                             </div>
                                         </div>
                                     {% endif %}
