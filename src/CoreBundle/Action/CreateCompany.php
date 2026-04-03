@@ -68,6 +68,7 @@ final class CreateCompany extends AbstractController
 
         $planPrice = null;
         $userHasTrial = false;
+        $planHasTrial = false;
         $trialDays = null;
 
         if ($this->toggler->isActive('saas_enabled')) {
@@ -82,6 +83,7 @@ final class CreateCompany extends AbstractController
 
                 $trialDuration = $plan->getTrialDuration();
                 if ($trialDuration !== null) {
+                    $planHasTrial = true;
                     // Create a reference date and add the interval to compute the total days
                     $reference = new \DateTimeImmutable();
                     $trialDays = $reference->diff($reference->add($trialDuration))->days;
@@ -96,6 +98,7 @@ final class CreateCompany extends AbstractController
                 'allowCancel' => ! $user->getCompanies()->isEmpty(),
                 'planPrice' => $planPrice,
                 'userHasTrial' => $userHasTrial,
+                'planHasTrial' => $planHasTrial,
                 'trialDays' => $trialDays,
             ]
         );

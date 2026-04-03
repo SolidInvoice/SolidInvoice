@@ -104,7 +104,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    {% elseif trialDays is defined and trialDays %}
+                                    {% elseif planHasTrial %}
                                         <div class="alert alert-info d-flex align-items-start" role="alert">
                                             <div class="me-3">
                                                 {{ ux_icon('tabler:gift', {width: 24, height: 24}) }}
