@@ -238,12 +238,6 @@
             "SolidInvoice\\": "src/"
         }
     },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "/Users/pierre/projects/SolidWorx/platform"
-        }
-    ],
     "config": {
         "allow-plugins": {
             "captainhook/captainhook-phar": true,
