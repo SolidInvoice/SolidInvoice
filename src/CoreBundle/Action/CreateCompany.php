@@ -72,7 +72,7 @@ final class CreateCompany extends AbstractController
         $trialDays = null;
 
         if ($this->toggler->isActive('saas_enabled')) {
-            $userHasTrial = $this->trialManager?->userHasTrial($user);
+            $userHasTrial = $this->trialManager?->userHasTrial($user) ?? false;
             $plan = $this->planRepository?->findOneBy([]);
             if ($plan instanceof Plan) {
                 $formatter = new IntlMoneyFormatter(

@@ -50,9 +50,9 @@ class User extends \SolidWorx\Platform\PlatformBundle\Model\User implements Tria
 
     public function __construct()
     {
+        parent::__construct();
         $this->apiTokens = new ArrayCollection();
         $this->companies = new ArrayCollection();
-        parent::__construct();
     }
 
     /**
