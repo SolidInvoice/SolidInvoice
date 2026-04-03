@@ -63,25 +63,28 @@ final class CompanyEventSubscriber
             $user = $this->security->getUser();
             assert($user instanceof User);
 
-            if ($this->trialManager->userHasTrial($user)) {
-                // User already had a free trial, so we just activate the subscription
-                $checkoutUrl = $this->paymentIntegration->checkout($this->subscription, Options::new()->withEmail($user->getEmail())->withSkipTrial(true));
-                $event->setResponse(new RedirectResponse($checkoutUrl));
-            } else {
-                $plan = $this->subscription->getPlan();
+            $plan = $this->subscription->getPlan();
 
-                if ($plan->getTrialDuration() !== null) {
-                    // Plan has a trial configured, start the trial
-                    $this->subscriptionManager->startTrial($this->subscription);
-                    $this->trialManager->createTrial($user, $this->subscription);
-                } else {
-                    // Plan has no trial, redirect to checkout for immediate payment
-                    $checkoutUrl = $this->paymentIntegration->checkout($this->subscription, Options::new()->withEmail($user->getEmail())->withSkipTrial(true));
-                    $event->setResponse(new RedirectResponse($checkoutUrl));
-                }
+            if (! $this->trialManager->userHasTrial($user) && $plan->getTrialDuration() !== null) {
+                // User is new and plan has a trial configured, start the trial
+                $this->subscriptionManager->startTrial($this->subscription);
+                $this->trialManager->createTrial($user, $this->subscription);
+            } else {
+                // User already had a trial or plan has no trial, redirect to checkout
+                $event->setResponse($this->createCheckoutRedirect($this->subscription, $user));
             }
 
             $this->subscription = null;
         }
+    }
+
+    private function createCheckoutRedirect(Subscription $subscription, User $user): RedirectResponse
+    {
+        $checkoutUrl = $this->paymentIntegration->checkout(
+            $subscription,
+            Options::new()->withEmail($user->getEmail())->withSkipTrial(true),
+        );
+
+        return new RedirectResponse($checkoutUrl);
     }
 }
