@@ -95,7 +95,14 @@
                                             <div class="flex-fill">
                                                 <div class="alert-title fw-semibold">{{ 'Start Your Free Trial'|trans }}</div>
                                                 <div class="text-secondary mb-2">
-                                                    {% trans with {'%days%': trialDays} %}Get full access for %days% days, completely free. No credit card required.{% endtrans %}
+                                                    {% apply spaceless %}
+                                                        {% set trial_label %}
+                                                            {% if trialDuration.y > 0 %}{{ '%count% year'|trans({'%count%': trialDuration.y}) }} {% endif %}
+                                                            {% if trialDuration.m > 0 %}{{ '%count% month'|trans({'%count%': trialDuration.m}) }} {% endif %}
+                                                            {% if trialDuration.d > 0 %}{{ '%count% day'|trans({'%count%': trialDuration.d}) }}{% endif %}
+                                                        {% endset %}
+                                                    {% endapply %}
+                                                    {% trans with {'%duration%': trial_label|trim} %}Get full access for %duration%, completely free. No credit card required.{% endtrans %}
                                                 </div>
                                                 {% if planPrice %}
                                                     <div class="d-flex align-items-center gap-2 mt-2">
