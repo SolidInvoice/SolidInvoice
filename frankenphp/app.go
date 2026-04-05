@@ -370,17 +370,22 @@ func setupCommands() {
 			// Metrics configuration
 			if enableMetrics {
 				metricsListenPort := fmt.Sprintf("%d", metricsPort)
+				if metricsListenPort == httpPort {
+					return fmt.Errorf("metrics port %d cannot be the same as the HTTP port", metricsPort)
+				}
 				if !portAvailable(metricsListenPort) {
 					return fmt.Errorf("metrics port %d is not available", metricsPort)
 				}
 
 				// Enable Caddy metrics collection via global options
 				globalOpts := os.Getenv("CADDY_GLOBAL_OPTIONS")
-				if globalOpts != "" {
-					globalOpts += "\n"
+				if !strings.Contains(globalOpts, "metrics") {
+					if globalOpts != "" {
+						globalOpts += "\n"
+					}
+					globalOpts += "metrics"
+					must(os.Setenv("CADDY_GLOBAL_OPTIONS", globalOpts))
 				}
-				globalOpts += "metrics"
-				must(os.Setenv("CADDY_GLOBAL_OPTIONS", globalOpts))
 
 				// Add dedicated metrics server block
 				extraConfig := os.Getenv("CADDY_EXTRA_CONFIG")
