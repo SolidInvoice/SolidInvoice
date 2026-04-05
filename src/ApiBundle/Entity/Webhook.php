@@ -51,6 +51,15 @@ class Webhook
     use CompanyAware;
     use TimeStampable;
 
+    public const SUPPORTED_EVENTS = [
+        'invoice.created',
+        'invoice.paid',
+        'invoice.sent',
+        'quote.accepted',
+        'quote.created',
+        'quote.sent',
+    ];
+
     #[ORM\Column(type: UlidType::NAME)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
@@ -63,15 +72,6 @@ class Webhook
     #[Assert\Url]
     #[Groups(['webhook_api:read', 'webhook_api:write'])]
     private string $url = '';
-
-    public const SUPPORTED_EVENTS = [
-        'invoice.created',
-        'invoice.paid',
-        'invoice.sent',
-        'quote.accepted',
-        'quote.created',
-        'quote.sent',
-    ];
 
     /**
      * @var list<string>

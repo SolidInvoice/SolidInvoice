@@ -32,17 +32,12 @@ final class WebhookRepository extends EntityRepository
      */
     public function findActiveByEvent(string $event): array
     {
-        $webhooks = $this->createQueryBuilder('w')
+        return $this->createQueryBuilder('w')
             ->where('w.active = :active')
+            ->andWhere('JSON_CONTAINS(w.events, :event) = 1')
             ->setParameter('active', true)
+            ->setParameter('event', json_encode($event))
             ->getQuery()
             ->getResult();
-
-        return array_values(
-            array_filter(
-                $webhooks,
-                static fn (Webhook $webhook) => in_array($event, $webhook->getEvents(), true)
-            )
-        );
     }
 }
