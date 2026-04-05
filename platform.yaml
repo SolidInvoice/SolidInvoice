@@ -10,22 +10,22 @@ platform:
     models:
         user: SolidInvoice\UserBundle\Entity\User
 
-    saas:
-        doctrine:
-            subscriptions:
-                entity: SolidInvoice\CoreBundle\Entity\Company
+saas:
+    doctrine:
+        subscriptions:
+            entity: SolidInvoice\CoreBundle\Entity\Company
 
-        payment:
-            return_route: saas_payment_success
+    payment:
+        return_route: saas_payment_success
 
-        integration:
-            lemon_squeezy:
-                enabled: true
-                api_key: '%env(SOLIDINVOICE_LEMON_SQUEEZY_API_KEY)%'
-                webhook_secret: '%env(SOLIDINVOICE_LEMON_SQUEEZY_WEBHOOK_SECRET)%'
-                store_id: '%env(SOLIDINVOICE_LEMON_SQUEEZY_STORE_ID)%'
+    integration:
+        lemon_squeezy:
+            enabled: true
+            api_key: '%env(SOLIDINVOICE_LEMON_SQUEEZY_API_KEY)%'
+            webhook_secret: '%env(SOLIDINVOICE_LEMON_SQUEEZY_WEBHOOK_SECRET)%'
+            store_id: '%env(SOLIDINVOICE_LEMON_SQUEEZY_STORE_ID)%'
 
-    ui:
-        templates:
-            base: '@SolidInvoiceCore/Layout/base.html.twig'
-            login: '@SolidInvoiceUser/Security/login.html.twig'
+ui:
+    templates:
+        base: '@SolidInvoiceCore/Layout/base.html.twig'
+        login: '@SolidInvoiceUser/Security/login.html.twig'
