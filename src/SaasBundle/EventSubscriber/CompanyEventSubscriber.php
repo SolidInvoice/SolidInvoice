@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\EventSubscriber;
 
+use Doctrine\ORM\EntityManagerInterface;
 use SolidInvoice\CoreBundle\Event\CompanyCreatedEvent;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidWorx\Platform\SaasBundle\Entity\Plan;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
+use SolidWorx\Platform\SaasBundle\Exception\TrialAlreadyExistsException;
 use SolidWorx\Platform\SaasBundle\Integration\Options;
 use SolidWorx\Platform\SaasBundle\Integration\PaymentIntegrationInterface;
 use SolidWorx\Platform\SaasBundle\Repository\PlanRepository;
@@ -41,6 +43,7 @@ final class CompanyEventSubscriber
         private readonly PaymentIntegrationInterface $paymentIntegration,
         private readonly Security $security,
         private readonly TrialManagerInterface $trialManager,
+        private readonly EntityManagerInterface $entityManager,
     ) {
     }
 
@@ -66,9 +69,16 @@ final class CompanyEventSubscriber
             $plan = $this->subscription->getPlan();
 
             if (! $this->trialManager->userHasTrial($user) && $plan->getTrialDuration() !== null) {
-                // User is new and plan has a trial configured, start the trial
-                $this->subscriptionManager->startTrial($this->subscription);
-                $this->trialManager->createTrial($user, $this->subscription);
+                try {
+                    // User is new and plan has a trial configured, start the trial atomically
+                    $this->entityManager->wrapInTransaction(function () use ($user): void {
+                        $this->subscriptionManager->startTrial($this->subscription);
+                        $this->trialManager->createTrial($user, $this->subscription);
+                    });
+                } catch (TrialAlreadyExistsException) {
+                    // Race condition: another request already created a trial for this user
+                    $event->setResponse($this->createCheckoutRedirect($this->subscription, $user));
+                }
             } else {
                 // User already had a trial or plan has no trial, redirect to checkout
                 $event->setResponse($this->createCheckoutRedirect($this->subscription, $user));
