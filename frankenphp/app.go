@@ -369,6 +369,9 @@ func setupCommands() {
 
 			// Metrics configuration
 			if enableMetrics {
+				if metricsPort < 1 || metricsPort > 65535 {
+					return fmt.Errorf("metrics port must be between 1 and 65535 (got %d)", metricsPort)
+				}
 				metricsListenPort := fmt.Sprintf("%d", metricsPort)
 				if metricsListenPort == httpPort {
 					return fmt.Errorf("metrics port %d cannot be the same as the HTTP port", metricsPort)
