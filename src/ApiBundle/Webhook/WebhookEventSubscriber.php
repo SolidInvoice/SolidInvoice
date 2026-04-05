@@ -38,10 +38,10 @@ final class WebhookEventSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            'workflow.invoice.entered.paid' => 'onInvoicePaid',
-            'workflow.invoice.entered.pending' => 'onInvoiceSent',
-            'workflow.quote.entered.accepted' => 'onQuoteAccepted',
-            'workflow.quote.entered.pending' => 'onQuoteSent',
+            'workflow.invoice.transition.pay' => 'onInvoicePaid',
+            'workflow.invoice.transition.accept' => 'onInvoiceSent',
+            'workflow.quote.transition.accept' => 'onQuoteAccepted',
+            'workflow.quote.transition.send' => 'onQuoteSent',
             InvoiceEvents::INVOICE_POST_CREATE => 'onInvoiceCreated',
             QuoteEvents::QUOTE_POST_CREATE => 'onQuoteCreated',
         ];

@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-$bundles = [
+return [
     Symfony\Bundle\FrameworkBundle\FrameworkBundle::class => ['all' => true],
     Symfony\Bundle\SecurityBundle\SecurityBundle::class => ['all' => true],
     Symfony\Bundle\TwigBundle\TwigBundle::class => ['all' => true],
@@ -60,10 +60,3 @@ $bundles = [
     Symfony\UX\Chartjs\ChartjsBundle::class => ['all' => true],
     Meilisearch\Bundle\MeilisearchBundle::class => ['all' => true],
 ];
-
-if (($_ENV['SOLIDINVOICE_PLATFORM'] ?? $_SERVER['SOLIDINVOICE_PLATFORM'] ?? null) === 'saas') {
-    $bundles[SolidWorx\Platform\SaasBundle\SolidWorxPlatformSaasBundle::class] = ['all' => true];
-    $bundles[SolidInvoice\SaasBundle\SolidInvoiceSaasBundle::class] = ['all' => true];
-}
-
-return $bundles;
