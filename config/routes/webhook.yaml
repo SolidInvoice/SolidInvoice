@@ -1,3 +1,0 @@
-webhook:
-    resource: '@FrameworkBundle/Resources/config/routing/webhook.xml'
-    prefix: /webhook
