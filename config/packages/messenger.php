@@ -11,7 +11,6 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use SolidInvoice\ApiBundle\Message\WebhookDelivery;
 use SolidInvoice\CronBundle\Messenger\SentrySchedulerMiddleware;
 use Symfony\Config\FrameworkConfig;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
@@ -44,7 +43,4 @@ return static function (FrameworkConfig $config): void {
 
     // Configure failure transport
     $messenger->failureTransport('failed');
-
-    // Route messages to async transport
-    $messenger->routing(WebhookDelivery::class)->senders(['async']);
 };
