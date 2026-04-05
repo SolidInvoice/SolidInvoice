@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ApiBundle\Message\Handler;
 
+use Psr\Log\LoggerInterface;
 use SolidInvoice\ApiBundle\Message\WebhookDelivery;
 use SolidInvoice\ApiBundle\Repository\WebhookRepository;
 use SolidInvoice\ApiBundle\Webhook\WebhookUrlPolicy;
@@ -27,6 +28,7 @@ final class WebhookDeliveryHandler
         private readonly WebhookRepository $webhookRepository,
         private readonly HttpClientInterface $httpClient,
         private readonly WebhookUrlPolicy $webhookUrlPolicy,
+        private readonly LoggerInterface $logger,
         #[Autowire(param: 'solidinvoice.webhook_timeout')]
         private readonly int $webhookTimeout,
     ) {
@@ -46,7 +48,7 @@ final class WebhookDeliveryHandler
 
         $signature = 'sha256=' . hash_hmac('sha256', $message->payload, $webhook->getSecret());
 
-        $this->httpClient->request('POST', $webhook->getUrl(), [
+        $response = $this->httpClient->request('POST', $webhook->getUrl(), [
             'headers' => [
                 'Content-Type' => 'application/json',
                 'X-SolidInvoice-Event' => $message->event,
@@ -55,5 +57,16 @@ final class WebhookDeliveryHandler
             'body' => $message->payload,
             'timeout' => $this->webhookTimeout,
         ]);
+
+        $statusCode = $response->getStatusCode();
+
+        if ($statusCode < 200 || $statusCode >= 300) {
+            $this->logger->warning('Webhook delivery to "{url}" returned HTTP {status}', [
+                'url' => $webhook->getUrl(),
+                'status' => $statusCode,
+                'event' => $message->event,
+                'webhook_id' => $webhook->getId(),
+            ]);
+        }
     }
 }
