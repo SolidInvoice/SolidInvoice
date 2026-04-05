@@ -1,12 +1,11 @@
 platform:
     name: SolidInvoice
-    version: 2.4.x
+    version: 3.0.x
 
     security:
         two_factor:
             enabled: true
             base_template: "@SolidInvoiceCore/Layout/two_factor_security.html.twig"
-
     models:
         user: SolidInvoice\UserBundle\Entity\User
 
@@ -14,10 +13,8 @@ saas:
     doctrine:
         subscriptions:
             entity: SolidInvoice\CoreBundle\Entity\Company
-
     payment:
         return_route: saas_payment_success
-
     integration:
         lemon_squeezy:
             enabled: true
