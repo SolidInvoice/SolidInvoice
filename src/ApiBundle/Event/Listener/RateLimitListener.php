@@ -65,6 +65,7 @@ final class RateLimitListener
                     'Retry-After' => (string) max(0, $retryAfter),
                     'X-RateLimit-Limit' => (string) $limit->getLimit(),
                     'X-RateLimit-Remaining' => (string) $limit->getRemainingTokens(),
+                    'X-RateLimit-Reset' => (string) $limit->getRetryAfter()->getTimestamp(),
                 ]
             )
         );

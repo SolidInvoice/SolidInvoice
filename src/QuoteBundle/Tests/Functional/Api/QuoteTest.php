@@ -49,7 +49,7 @@ final class QuoteTest extends ApiTestCase
         QuoteFactory::createMany(3, [
             'client' => $client,
             'users' => $contacts,
-            'discount' => (new Discount())->setType('percentage')->setValue(0),
+            'discount' => (new Discount())->setType(Discount::TYPE_PERCENTAGE)->setValue(0),
         ]);
 
         $data = $this->requestGetCollection('/api/quotes');
@@ -68,7 +68,7 @@ final class QuoteTest extends ApiTestCase
         QuoteFactory::createMany(2, [
             'client' => $client,
             'users' => $contacts,
-            'discount' => (new Discount())->setType('percentage')->setValue(0),
+            'discount' => (new Discount())->setType(Discount::TYPE_PERCENTAGE)->setValue(0),
         ]);
 
         $data = $this->requestGetCollection($this->getIriFromResource($client) . '/quotes');
@@ -172,7 +172,7 @@ final class QuoteTest extends ApiTestCase
             'status' => QuoteStatus::Draft,
             'due' => new DateTimeImmutable('2005-01-20'),
             'discount' => (new Discount())
-                ->setType('percentage')
+                ->setType(Discount::TYPE_PERCENTAGE)
                 ->setValue(0),
             'lines' => [
                 (new Line())
@@ -232,7 +232,7 @@ final class QuoteTest extends ApiTestCase
             'status' => QuoteStatus::Draft,
             'due' => new DateTimeImmutable('2005-01-20'),
             'discount' => (new Discount())
-                ->setType('percentage')
+                ->setType(Discount::TYPE_PERCENTAGE)
                 ->setValue(0),
             'lines' => [
                 (new Line())
