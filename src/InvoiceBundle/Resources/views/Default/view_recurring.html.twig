@@ -71,7 +71,7 @@
                             </li>
                         {% endif %}
 
-                        {% if invoice.status == 'active' %}
+                        {% if invoice.status == enum('SolidInvoice\\InvoiceBundle\\Enum\\RecurringInvoiceStatus').Active %}
                             <li><hr class="dropdown-divider"></li>
                             <li>
                                 <a class="dropdown-item" href="{{ path('_action_recurring_invoice', {'action' : 'pause', 'id' : invoice.id}) }}">
@@ -81,7 +81,7 @@
                             </li>
                         {% endif %}
 
-                        {% if invoice.status == 'paused' %}
+                        {% if invoice.status == enum('SolidInvoice\\InvoiceBundle\\Enum\\RecurringInvoiceStatus').Paused %}
                             <li><hr class="dropdown-divider"></li>
                             <li>
                                 <a class="dropdown-item" href="{{ path('_action_recurring_invoice', {'action' : 'resume', 'id' : invoice.id}) }}">
@@ -120,7 +120,7 @@
                     {{ ux_icon('tabler:check', {width: 18, height: 18}) }}
                     {{ "invoice.recurring.activate"|trans }}
                 </a>
-            {% elseif invoice.status == 'paused' %}
+            {% elseif invoice.status == enum('SolidInvoice\\InvoiceBundle\\Enum\\RecurringInvoiceStatus').Paused %}
                 <a href="{{ path('_action_recurring_invoice', {'action' : 'resume', 'id' : invoice.id}) }}" class="btn btn-success btn-hero">
                     {{ ux_icon('tabler:player-play', {width: 18, height: 18}) }}
                     {{ "invoice.recurring.resume"|trans }}
@@ -360,7 +360,7 @@
             {% endif %}
 
             {# Upcoming Occurrences Card - Only for Active Invoices #}
-            {% if invoice.status == 'active' and nextOccurrences is defined and nextOccurrences|length > 0 %}
+            {% if invoice.status == enum('SolidInvoice\\InvoiceBundle\\Enum\\RecurringInvoiceStatus').Active and nextOccurrences is defined and nextOccurrences|length > 0 %}
                 <div class="doc-sidebar-card">
                     <div class="doc-sidebar-card-header">
                         <div class="doc-sidebar-card-icon">

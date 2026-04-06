@@ -187,7 +187,7 @@
                             {% endif %}
                             {% set paid = 0 %}
                             {% if (isRecurring is not defined or isRecurring is same as(false)) and invoice.payments|length > 0 and not invoice.balance.isZero %}
-                                {% for payment in invoice.payments|filter((v) => v.status == 'captured') %}
+                                {% for payment in invoice.payments|filter((v) => v.status == enum('SolidInvoice\\PaymentBundle\\Enum\\PaymentStatus').Captured) %}
                                     <tr>
                                         <td colspan="{{ footerSpan }}" class="no-line text-right">
                                             <strong>
