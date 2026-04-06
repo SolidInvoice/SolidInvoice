@@ -37,7 +37,7 @@ final class ContactPersistProcessor implements ProcessorInterface
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): mixed
     {
         if ($data instanceof Contact && isset($uriVariables['clientId'])) {
-            $client = $this->clientRepository->find($uriVariables['clientId']);
+            $client = $this->clientRepository->findOneBy(['id' => $uriVariables['clientId']]);
             if (! $client instanceof Client) {
                 throw new NotFoundHttpException(sprintf('Client "%s" not found.', $uriVariables['clientId']));
             }

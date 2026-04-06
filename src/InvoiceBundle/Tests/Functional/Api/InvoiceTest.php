@@ -49,7 +49,7 @@ final class InvoiceTest extends ApiTestCase
         InvoiceFactory::createMany(3, [
             'client' => $client,
             'users' => $contacts,
-            'discount' => (new Discount())->setType('percentage')->setValue(0),
+            'discount' => (new Discount())->setType(Discount::TYPE_PERCENTAGE)->setValue(0),
         ]);
 
         $data = $this->requestGetCollection('/api/invoices');
@@ -68,7 +68,7 @@ final class InvoiceTest extends ApiTestCase
         InvoiceFactory::createMany(2, [
             'client' => $client,
             'users' => $contacts,
-            'discount' => (new Discount())->setType('percentage')->setValue(0),
+            'discount' => (new Discount())->setType(Discount::TYPE_PERCENTAGE)->setValue(0),
         ]);
 
         $data = $this->requestGetCollection($this->getIriFromResource($client) . '/invoices');
@@ -175,7 +175,7 @@ final class InvoiceTest extends ApiTestCase
             'due' => new DateTimeImmutable('2005-01-20'),
             'paidDate' => null,
             'discount' => (new Discount())
-                ->setType('percentage')
+                ->setType(Discount::TYPE_PERCENTAGE)
                 ->setValue(0),
             'lines' => [
                 (new Line())

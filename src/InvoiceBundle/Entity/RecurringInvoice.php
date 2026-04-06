@@ -31,7 +31,6 @@ use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\ApiBundle\State\Processor\GenerateInvoiceFromRecurringProcessor;
 use SolidInvoice\ApiBundle\State\Processor\RecurringInvoiceTransitionProcessor;
 use SolidInvoice\ApiBundle\State\Provider\RecurringInvoiceItemProvider;
-use SolidInvoice\ApiBundle\State\Provider\RecurringInvoiceTransitionProvider;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
@@ -83,7 +82,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     operations: [
         new Post(
             name: 'recurring_invoice_transition',
-            provider: RecurringInvoiceTransitionProvider::class,
+            provider: RecurringInvoiceItemProvider::class,
             processor: RecurringInvoiceTransitionProcessor::class,
             input: false,
             output: RecurringInvoice::class,

@@ -50,7 +50,7 @@ final class RecurringInvoiceTest extends ApiTestCase
         RecurringInvoiceFactory::createMany(3, [
             'client' => $client,
             'users' => $contacts,
-            'discount' => (new Discount())->setType('percentage')->setValue(0),
+            'discount' => (new Discount())->setType(Discount::TYPE_PERCENTAGE)->setValue(0),
         ]);
 
         $data = $this->requestGetCollection('/api/recurring-invoices');
@@ -184,7 +184,7 @@ final class RecurringInvoiceTest extends ApiTestCase
                     ->setQty(1)
             ],
             'discount' => (new Discount())
-                ->setType('percentage')
+                ->setType(Discount::TYPE_PERCENTAGE)
                 ->setValue(0),
         ])->_real();
 
@@ -253,7 +253,7 @@ final class RecurringInvoiceTest extends ApiTestCase
                     ->setQty(1)
             ],
             'discount' => (new Discount())
-                ->setType('percentage')
+                ->setType(Discount::TYPE_PERCENTAGE)
                 ->setValue(0),
         ])->_real();
 
