@@ -38,7 +38,6 @@ use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\ApiBundle\State\Processor\QuoteToInvoiceProcessor;
 use SolidInvoice\ApiBundle\State\Processor\QuoteTransitionProcessor;
 use SolidInvoice\ApiBundle\State\Provider\QuoteItemProvider;
-use SolidInvoice\ApiBundle\State\Provider\QuoteTransitionProvider;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Doctrine\Type\BigIntegerType;
@@ -101,7 +100,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     operations: [
         new Post(
             name: 'quote_transition',
-            provider: QuoteTransitionProvider::class,
+            provider: QuoteItemProvider::class,
             processor: QuoteTransitionProcessor::class,
             input: false,
             output: Quote::class,

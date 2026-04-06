@@ -63,7 +63,12 @@ final class RecordPaymentProcessor implements ProcessorInterface
 
         $client = $invoice->getClient();
         $invoiceCurrency = $client?->getCurrencyCode();
-        if ($invoiceCurrency !== null && $data->currency !== $invoiceCurrency) {
+
+        if ($invoiceCurrency === null) {
+            throw new UnprocessableEntityHttpException('Invoice has no resolvable currency.');
+        }
+
+        if ($data->currency !== $invoiceCurrency) {
             throw new UnprocessableEntityHttpException(
                 sprintf('Payment currency "%s" does not match invoice currency "%s".', $data->currency, $invoiceCurrency)
             );
