@@ -23,7 +23,7 @@ use Symfony\Bridge\Doctrine\Types\UlidType;
 /**
  * @extends EntityRepository<ApiTokenHistory>
  */
-final class ApiTokenHistoryRepository extends EntityRepository
+class ApiTokenHistoryRepository extends EntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
