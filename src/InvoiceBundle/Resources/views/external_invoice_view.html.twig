@@ -49,7 +49,7 @@
                             {% endif %}
                         </div>
                         {% if not invoice.paid and payments_configured(false) > 0 %}
-                            <a href="{{ path('_payments_create', {'uuid': invoice.uuid}) }}" class="btn btn-primary {{ invoice.status == 'overdue' ? 'btn-danger' : '' }}">
+                            <a href="{{ path('_payments_create', {'uuid': invoice.uuid}) }}" class="btn btn-primary {{ invoice.status == enum('SolidInvoice\\InvoiceBundle\\Enum\\InvoiceStatus').Overdue ? 'btn-danger' : '' }}">
                                 {{ ux_icon('tabler:credit-card', {width: 18, height: 18}) }}
                                 {{ 'invoice.action.pay_now'|trans }}
                             </a>
@@ -93,9 +93,9 @@
                                 {% if invoice.due is not empty %}
                                     <div class="col-sm-4 mb-3 mb-sm-0">
                                         <div class="ext-doc-metadata-label text-uppercase small mb-1">{{ 'invoice.due_date'|trans }}</div>
-                                        <div class="ext-doc-metadata-value fw-medium {{ invoice.status == 'overdue' ? 'text-danger' : '' }}">
+                                        <div class="ext-doc-metadata-value fw-medium {{ invoice.status == enum('SolidInvoice\\InvoiceBundle\\Enum\\InvoiceStatus').Overdue ? 'text-danger' : '' }}">
                                             {{ invoice.due|date('M d, Y') }}
-                                            {% if invoice.status == 'overdue' %}
+                                            {% if invoice.status == enum('SolidInvoice\\InvoiceBundle\\Enum\\InvoiceStatus').Overdue %}
                                                 <span class="badge bg-danger-lt ms-1">{{ 'invoice.invoice_status.overdue'|trans }}</span>
                                             {% endif %}
                                         </div>
@@ -210,7 +210,7 @@
                                         </div>
                                     {% endif %}
                                     {% if invoice.payments|length > 0 and not invoice.balance.isZero %}
-                                        {% for payment in invoice.payments|filter((v) => v.status == 'captured') %}
+                                        {% for payment in invoice.payments|filter((v) => v.status == enum('SolidInvoice\\PaymentBundle\\Enum\\PaymentStatus').Captured) %}
                                             <div class="ext-doc-totals-row">
                                                 <div class="ext-doc-totals-label">
                                                     {{ 'invoice.payment.label'|trans }}
