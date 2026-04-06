@@ -33,7 +33,7 @@ final class RecurringInvoiceTransitionProcessor implements ProcessorInterface
     {
         assert($data instanceof RecurringInvoice);
 
-        $transition = (string) ($uriVariables['transition'] ?? '');
+        $transition = (string) ($context['request']?->attributes->get('transition') ?? '');
 
         if (! $this->recurringInvoiceStateMachine->can($data, $transition)) {
             throw new UnprocessableEntityHttpException(

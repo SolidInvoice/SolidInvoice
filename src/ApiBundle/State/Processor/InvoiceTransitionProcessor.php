@@ -33,7 +33,7 @@ final class InvoiceTransitionProcessor implements ProcessorInterface
     {
         assert($data instanceof Invoice);
 
-        $transition = (string) ($uriVariables['transition'] ?? '');
+        $transition = (string) ($context['request']?->attributes->get('transition') ?? '');
 
         if (! $this->invoiceStateMachine->can($data, $transition)) {
             throw new UnprocessableEntityHttpException(

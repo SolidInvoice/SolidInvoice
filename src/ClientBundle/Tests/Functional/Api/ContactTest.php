@@ -54,14 +54,13 @@ final class ContactTest extends ApiTestCase
         $foreignClient = ClientFactory::createOne(['company' => $otherCompany])->_real();
         self::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
 
-        // Note: ContactPersistProcessor uses find() which bypasses company SQL filters,
-        // so contact creation for a foreign client currently returns 201 (not 404).
-        // This test documents the current behavior; isolation at this endpoint is not enforced.
+        // ContactPersistProcessor uses findOneBy() which applies the CompanyFilter,
+        // so a foreign client is not found and a 404 is returned.
         self::$client->request('POST', $this->getIriFromResource($foreignClient) . '/contacts', [
             'json' => ['firstName' => 'Hacker', 'email' => 'x@y.com'],
             'headers' => ['content-type' => 'application/ld+json', 'accept' => 'application/ld+json'],
         ]);
-        static::assertResponseStatusCodeSame(201);
+        static::assertResponseStatusCodeSame(404);
     }
 
     public function testCreate(): void
