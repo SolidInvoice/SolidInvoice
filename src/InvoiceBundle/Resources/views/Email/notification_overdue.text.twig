@@ -26,7 +26,7 @@
 {% if invoice.balance -%}
 {{ 'invoice.notification_overdue.outstanding_balance'|trans({}, 'email') }}: {{ invoice.balance|formatCurrency(invoice.client.currency) }}
 {% endif -%}
-{{ 'invoice.notification_overdue.status'|trans({}, 'email') }}: {{ invoice.status }}
+{{ 'invoice.notification_overdue.status'|trans({}, 'email') }}: {{ invoice.status.value }}
 
 {{ '-'|repeat(60) }}
 {{ 'invoice.notification_overdue.view_invoice'|trans({}, 'email') }}: {{ url('_invoices_view', {'id': invoice.id}) }}
