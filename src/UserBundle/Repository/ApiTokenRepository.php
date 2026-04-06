@@ -31,7 +31,7 @@ use function array_map;
 /**
  * @extends EntityRepository<ApiToken>
  */
-final class ApiTokenRepository extends EntityRepository
+class ApiTokenRepository extends EntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

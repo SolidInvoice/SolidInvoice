@@ -47,10 +47,14 @@ final class RecordPaymentTest extends ApiTestCase
             'internal' => false,
         ]);
 
-        $result = $this->requestPost(
-            $this->getIriFromResource($invoice) . '/payments',
-            ['amount' => 1000, 'currency' => 'USD']
-        );
+        $response = self::$client->request('POST', $this->getIriFromResource($invoice) . '/payments', [
+            'json' => ['amount' => 1000, 'currency' => 'USD'],
+            'headers' => ['content-type' => 'application/ld+json', 'accept' => 'application/ld+json'],
+        ]);
+
+        static::assertResponseStatusCodeSame(Response::HTTP_CREATED);
+
+        $result = $response->toArray(false);
 
         self::assertArrayHasKey('id', $result);
         self::assertSame('captured', $result['status']);
