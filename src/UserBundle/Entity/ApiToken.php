@@ -106,7 +106,7 @@ class ApiToken
         $this->history = new ArrayCollection();
     }
 
-    public function getId(): Ulid
+    public function getId(): ?Ulid
     {
         return $this->id;
     }

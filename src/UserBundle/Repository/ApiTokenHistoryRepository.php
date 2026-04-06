@@ -13,17 +13,17 @@ declare(strict_types=1);
 
 namespace SolidInvoice\UserBundle\Repository;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Order;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\UserBundle\Entity\ApiToken;
 use SolidInvoice\UserBundle\Entity\ApiTokenHistory;
+use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 
 /**
- * @extends ServiceEntityRepository<ApiTokenHistory>
+ * @extends EntityRepository<ApiTokenHistory>
  */
-class ApiTokenHistoryRepository extends ServiceEntityRepository
+final class ApiTokenHistoryRepository extends EntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
