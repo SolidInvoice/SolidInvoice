@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace SolidInvoice\UserBundle\Repository;
 
 use DateTimeInterface;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\UserBundle\Entity\ApiToken;
 use SolidInvoice\UserBundle\Entity\ApiTokenHistory;
 use SolidInvoice\UserBundle\Entity\User;
+use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Uid\Ulid;
@@ -29,9 +29,9 @@ use function array_combine;
 use function array_map;
 
 /**
- * @extends ServiceEntityRepository<ApiToken>
+ * @extends EntityRepository<ApiToken>
  */
-class ApiTokenRepository extends ServiceEntityRepository
+final class ApiTokenRepository extends EntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
