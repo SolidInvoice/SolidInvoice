@@ -19,7 +19,6 @@ use Pagerfanta\Exception\OutOfRangeCurrentPageException;
 use Pagerfanta\Pagerfanta;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use Ramsey\Uuid\Rfc4122\UuidV1;
 use ReflectionObject;
 use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
 use SolidInvoice\DataGridBundle\Exception\InvalidGridException;
@@ -35,6 +34,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\TaggedLocator;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Uid\Ulid;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveArg;
@@ -481,6 +481,6 @@ class DataGrid extends AbstractController
      */
     public function hydrateContext(string $context): array
     {
-        return unserialize($context, ['allowed_classes' => [UuidV1::class]]);
+        return unserialize($context, ['allowed_classes' => [Ulid::class]]);
     }
 }

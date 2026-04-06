@@ -14,11 +14,11 @@ namespace SolidInvoice\DataGridBundle\GridBuilder\Filter;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\QueryBuilder;
-use Ramsey\Uuid\Uuid;
 use SolidInvoice\DataGridBundle\Filter\ColumnFilterInterface;
 use SolidInvoice\DataGridBundle\Source\ORMSource;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bridge\Doctrine\Types\UlidType;
+use Symfony\Component\Uid\Ulid;
 use function array_filter;
 use function array_map;
 use function array_values;
@@ -97,7 +97,7 @@ final class EntityFilter implements ColumnFilterInterface
             if ('' !== $value) {
                 $queryBuilder->join($this->class, $hash)
                     ->andWhere(sprintf('%1$s.id = :%1$s', $hash))
-                    ->setParameter($hash, Uuid::fromString($value), UlidType::NAME);
+                    ->setParameter($hash, Ulid::fromString($value), UlidType::NAME);
             }
         }
     }

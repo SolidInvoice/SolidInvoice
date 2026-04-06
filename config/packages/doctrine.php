@@ -12,8 +12,6 @@ declare(strict_types=1);
  */
 
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
-use Ramsey\Uuid\Doctrine\UuidType;
 use SolidInvoice\CoreBundle\Doctrine\Filter\ArchivableFilter;
 use SolidInvoice\CoreBundle\Doctrine\Filter\CompanyFilter;
 use SolidInvoice\CoreBundle\Doctrine\Function\ToNumberFunction;
@@ -34,14 +32,6 @@ return static function (DoctrineConfig $config): void {
         ->charset('UTF8')
         ->useSavepoints(true)
     ;
-
-    $dbalConfig
-        ->type(UuidType::NAME)
-        ->class(UuidType::class);
-
-    $dbalConfig
-        ->type(UuidBinaryOrderedTimeType::NAME)
-        ->class(UuidBinaryOrderedTimeType::class);
 
     $dbalConfig
         ->type(BigIntegerType::NAME)
