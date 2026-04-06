@@ -42,14 +42,21 @@ final class OpenApiFactory implements OpenApiFactoryInterface
     {
         $openApi = $this->decorated->__invoke($context);
 
-        $tags = [
-            new Tag('Invoices', 'Manage invoices and their lifecycle transitions'),
-            new Tag('Quotes', 'Manage quotes and convert them to invoices'),
-            new Tag('Clients', 'Manage clients, their contacts, and credit'),
-            new Tag('Payments', 'Track and record payments against invoices'),
-            new Tag('Tax', 'Manage tax rates applied to invoice lines'),
-            new Tag('Recurring Invoices', 'Manage recurring invoice templates and generate invoices from them'),
+        $descriptions = [
+            'Invoice' => 'Manage invoices and their lifecycle transitions',
+            'Quote' => 'Manage quotes and convert them to invoices',
+            'Client' => 'Manage clients, their contacts, and credit',
+            'Contact' => 'Manage contacts belonging to a client',
+            'Payment' => 'Track and record payments against invoices',
+            'Tax' => 'Manage tax rates applied to invoice lines',
+            'RecurringInvoice' => 'Manage recurring invoice templates and generate invoices from them',
+            'ApiToken' => 'Manage API tokens for authentication',
         ];
+
+        $tags = array_map(
+            static fn (Tag $tag) => new Tag($tag->getName(), $descriptions[$tag->getName()] ?? $tag->getDescription()),
+            $openApi->getTags(),
+        );
 
         return $openApi
             ->withServers([
