@@ -25,9 +25,6 @@
     "babdev/pagerfanta-bundle": {
         "version": "v4.4.0"
     },
-    "behat/transliterator": {
-        "version": "v1.3.0"
-    },
     "clue/stream-filter": {
         "version": "v1.4.1"
     },
