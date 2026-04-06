@@ -37,6 +37,8 @@ class PaymentMethod implements GatewayConfigInterface, Stringable
 {
     final public const TABLE_NAME = 'payment_methods';
 
+    final public const FACTORY_OFFLINE = 'offline';
+
     use TimeStampable;
     use CompanyAware;
 
@@ -224,7 +226,7 @@ class PaymentMethod implements GatewayConfigInterface, Stringable
 
     public function isOffline(): bool
     {
-        return 'offline' === $this->factoryName;
+        return self::FACTORY_OFFLINE === $this->factoryName;
     }
 
     public function __toString(): string
