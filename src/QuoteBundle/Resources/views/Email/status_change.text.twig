@@ -16,7 +16,7 @@
 {% if quote.client -%}
 {{ 'quote.status_change.client'|trans({}, 'email') }}: {{ quote.client.name }}
 {% endif -%}
-{{ 'quote.status_change.new_status'|trans({}, 'email') }}: {{ quote.status.value }}
+{{ 'quote.status_change.new_status'|trans({}, 'email') }}: {{ quote.status.label }}
 
 {{ '-'|repeat(60) }}
 {{ 'quote.status_change.view_quote'|trans({}, 'email') }}: {{ url('_quotes_view', {'id': quote.id}) }}

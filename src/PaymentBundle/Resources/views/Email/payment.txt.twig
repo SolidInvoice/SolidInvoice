@@ -24,7 +24,7 @@
 
 {{ 'payment.details.method'|trans({}, 'email') }}: {{ payment.method.name ?? payment.method }}
 {{ 'payment.details.date'|trans({}, 'email') }}: {{ payment.created|date }}
-{{ 'payment.details.status'|trans({}, 'email') }}: {{ payment.status.value }}
+{{ 'payment.details.status'|trans({}, 'email') }}: {{ payment.status.label }}
 
 {% if payment.invoice is not empty %}
 {{ '-'|repeat(60) }}
