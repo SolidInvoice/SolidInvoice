@@ -30,7 +30,7 @@
    STATUS WATERMARK
 ============================================================================ #}
 {% if setting('quote/watermark') %}
-    <watermarktext content="{{ quote.status|upper }}" alpha="0.08"/>
+    <watermarktext content="{{ quote.status.value|upper }}" alpha="0.08"/>
 {% endif %}
 
 {# ============================================================================
@@ -124,7 +124,7 @@
                         </td>
                     </tr>
                     {# Validity indicator #}
-                    {% if quote.status != 'accepted' and quote.status != 'declined' and quote.status != 'cancelled' %}
+                    {% if quote.status != enum('SolidInvoice\\QuoteBundle\\Enum\\QuoteStatus').Accepted and quote.status != enum('SolidInvoice\\QuoteBundle\\Enum\\QuoteStatus').Declined and quote.status != enum('SolidInvoice\\QuoteBundle\\Enum\\QuoteStatus').Cancelled %}
                         <tr>
                             <td colspan="2" style="text-align: right; padding: 2px 0 4px 0;">
                                 {% if isExpired %}

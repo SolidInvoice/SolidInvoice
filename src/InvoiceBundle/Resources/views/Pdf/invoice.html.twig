@@ -31,7 +31,7 @@
    STATUS WATERMARK
 ============================================================================ #}
 {% if setting('invoice/watermark') %}
-    <watermarktext content="{{ invoice.status|upper }}" alpha="0.08"/>
+    <watermarktext content="{{ invoice.status.value|upper }}" alpha="0.08"/>
 {% endif %}
 
 {# ============================================================================
@@ -125,7 +125,7 @@
                         </td>
                     </tr>
                     {# Due date urgency indicator #}
-                    {% if invoice.status != 'paid' %}
+                    {% if invoice.status != enum('SolidInvoice\\InvoiceBundle\\Enum\\InvoiceStatus').Paid %}
                         <tr>
                             <td colspan="2" style="text-align: right; padding: 2px 0 4px 0;">
                                 {% if isOverdue %}
@@ -303,7 +303,7 @@
 
         {# Partial Payments #}
         {% if invoice.payments|length > 0 and not invoice.balance.zero %}
-            {% for payment in invoice.payments|filter((v) => v.status == 'captured') %}
+            {% for payment in invoice.payments|filter((v) => v.status == enum('SolidInvoice\\PaymentBundle\\Enum\\PaymentStatus').Captured) %}
                 <tr class="payment-row">
                     <td class="label-cell" style="padding: 8px 20px 8px 12px; font-size: 9pt; text-align: right; color: #475569;">
                         {{ 'invoice.payment.label'|trans }}: {{ payment.method.name }}
@@ -346,7 +346,7 @@
 {# ============================================================================
    PAYMENT INSTRUCTIONS (only show if invoice not paid and payments configured)
 ============================================================================ #}
-{% if invoice.status != 'paid' and payments_configured(false) > 0 %}
+{% if invoice.status != enum('SolidInvoice\\InvoiceBundle\\Enum\\InvoiceStatus').Paid and payments_configured(false) > 0 %}
     {% set paymentUrl = url("_payments_create", {"uuid" : invoice.uuid}) %}
     <div class="payment-section" style="margin-top: 24px; padding: 20px; background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px;">
         <table cellpadding="0" cellspacing="0" style="width: 100%;">
