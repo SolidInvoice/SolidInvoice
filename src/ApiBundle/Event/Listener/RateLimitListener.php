@@ -16,7 +16,7 @@ namespace SolidInvoice\ApiBundle\Event\Listener;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
@@ -57,9 +57,9 @@ final class RateLimitListener
         $retryAfter = $limit->getRetryAfter()->getTimestamp() - time();
 
         $event->setResponse(
-            new Response(
-                json_encode(['error' => 'Rate limit exceeded. Please retry after ' . $retryAfter . ' seconds.'], JSON_THROW_ON_ERROR),
-                Response::HTTP_TOO_MANY_REQUESTS,
+            new JsonResponse(
+                ['error' => 'Rate limit exceeded. Please retry after ' . $retryAfter . ' seconds.'],
+                JsonResponse::HTTP_TOO_MANY_REQUESTS,
                 [
                     'Content-Type' => 'application/problem+json',
                     'Retry-After' => (string) max(0, $retryAfter),
