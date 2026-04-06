@@ -44,8 +44,12 @@ final class RateLimitListener
         }
 
         $rateLimitKey = $this->security->getUser()?->getUserIdentifier()
-            ?? $request->getClientIp()
-            ?? 'anonymous';
+            ?? $request->getClientIp();
+
+        if ($rateLimitKey === null) {
+            // IP cannot be resolved; skip rate limiting rather than sharing a single anonymous bucket.
+            return;
+        }
 
         $limiter = $this->limiter->create($rateLimitKey);
         $limit = $limiter->consume();
