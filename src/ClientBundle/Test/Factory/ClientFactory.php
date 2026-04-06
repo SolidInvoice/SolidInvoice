@@ -65,7 +65,7 @@ final class ClientFactory extends PersistentProxyObjectFactory
     protected function defaults(): array
     {
         return [
-            'name' => self::faker()->company(),
+            'name' => self::faker()->unique()->company(),
             'website' => 'https://' . self::faker()->domainName(),
             'status' => self::faker()->randomElement(ClientStatus::cases()),
             'currencyCode' => self::faker()->currencyCode(),
