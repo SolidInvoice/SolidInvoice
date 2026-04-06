@@ -46,13 +46,17 @@
                                     {{ 'payment.client'|trans }}
                                 </div>
                                 <div class="summary-client-info">
-                                    <a href="{{ path('_clients_view', {id: invoice.client.id}) }}" class="client-name-link">
-                                        {{ invoice.client.name }}
-                                        {{ ux_icon('tabler:external-link', {width: 14, height: 14}) }}
-                                    </a>
-                                    {{ client_label(invoice.client.status) }}
+                                    {% if app.user is not empty %}
+                                        <a href="{{ path('_clients_view', {id: invoice.client.id}) }}" class="client-name-link">
+                                            {{ invoice.client.name }}
+                                            {{ ux_icon('tabler:external-link', {width: 14, height: 14}) }}
+                                        </a>
+                                        {{ client_label(invoice.client.status) }}
+                                    {% else %}
+                                        <span class="client-name">{{ invoice.client.name }}</span>
+                                    {% endif %}
                                 </div>
-                                {% if invoice.client.credit.value is not empty %}
+                                {% if app.user is not empty and invoice.client.credit.value is not empty %}
                                     <div class="client-credit-badge">
                                         {{ ux_icon('tabler:wallet', {width: 14, height: 14}) }}
                                         {{ 'payment.create.credit'|trans }}
@@ -71,10 +75,14 @@
                                     <div class="detail-item">
                                         <span class="detail-label">{{ 'invoice.label'|trans }}</span>
                                         <span class="detail-value">
-                                            <a href="{{ path('_invoices_view', {id: invoice.id}) }}" class="invoice-id-link">
+                                            {% if app.user is not empty %}
+                                                <a href="{{ path('_invoices_view', {id: invoice.id}) }}" class="invoice-id-link">
+                                                    {{ invoice.invoiceId }}
+                                                    {{ ux_icon('tabler:external-link', {width: 12, height: 12}) }}
+                                                </a>
+                                            {% else %}
                                                 {{ invoice.invoiceId }}
-                                                {{ ux_icon('tabler:external-link', {width: 12, height: 12}) }}
-                                            </a>
+                                            {% endif %}
                                         </span>
                                     </div>
                                     <div class="detail-item">

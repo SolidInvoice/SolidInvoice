@@ -42,6 +42,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -90,8 +91,16 @@ final class Prepare
             throw new NotFoundHttpException();
         }
 
+        try {
+            $isAuthenticated = $this->authorization->isGranted('IS_AUTHENTICATED_REMEMBERED');
+        } catch (AuthenticationCredentialsNotFoundException) {
+            $isAuthenticated = false;
+        }
+
         if (! $this->invoiceStateMachine->can($invoice, Graph::TRANSITION_PAY)) {
-            $route = $this->router->generate('_invoices_view', ['id' => $invoice->getId()]);
+            $route = $isAuthenticated
+                ? $this->router->generate('_invoices_view', ['id' => $invoice->getId()])
+                : $this->router->generate('_view_invoice_external', ['uuid' => $invoice->getUuid()]);
 
             return new class($route) extends RedirectResponse implements FlashResponse {
                 public function __construct(
@@ -108,12 +117,6 @@ final class Prepare
         }
 
         $this->companySelector->switchCompany($invoice->getCompany()->getId());
-
-        try {
-            $isAuthenticated = $this->authorization->isGranted('IS_AUTHENTICATED_REMEMBERED');
-        } catch (AuthenticationCredentialsNotFoundException) {
-            $isAuthenticated = false;
-        }
 
         if ($this->paymentMethodRepository->getTotalMethodsConfigured($isAuthenticated) < 1) {
             throw new Exception('No payment methods available');
@@ -146,6 +149,10 @@ final class Prepare
 
             /** @var PaymentMethod $paymentMethod */
             $paymentMethod = $data['payment_method'];
+
+            if (! $isAuthenticated && $paymentMethod->isInternal()) {
+                throw new AccessDeniedHttpException();
+            }
 
             $paymentName = $paymentMethod->getGatewayName();
 
@@ -217,7 +224,11 @@ final class Prepare
                 return $response;
             }
 
-            return new RedirectResponse($this->router->generate('_payments_index'));
+            return new RedirectResponse(
+                $isAuthenticated
+                    ? $this->router->generate('_payments_index')
+                    : $this->router->generate('_view_invoice_external', ['uuid' => $invoice->getUuid()])
+            );
         }
 
         return [

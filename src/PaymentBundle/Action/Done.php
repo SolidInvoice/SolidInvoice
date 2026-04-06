@@ -17,6 +17,7 @@ use DateTime;
 use Payum\Core\Model\Token;
 use Payum\Core\Payum;
 use SolidInvoice\CoreBundle\Traits\SaveableTrait;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\PaymentBundle\Event\PaymentCompleteEvent;
@@ -27,6 +28,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
 final class Done
 {
@@ -35,7 +38,8 @@ final class Done
     public function __construct(
         private readonly Payum $payum,
         private readonly RouterInterface $router,
-        private readonly EventDispatcherInterface $eventDispatcher
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly AuthorizationCheckerInterface $authorization,
     ) {
     }
 
@@ -60,6 +64,18 @@ final class Done
 
         if (($response = $event->getResponse()) instanceof Response) {
             return $response;
+        }
+
+        try {
+            $isAuthenticated = $this->authorization->isGranted('IS_AUTHENTICATED_REMEMBERED');
+        } catch (AuthenticationCredentialsNotFoundException) {
+            $isAuthenticated = false;
+        }
+
+        if (! $isAuthenticated && ($invoice = $payment->getInvoice()) instanceof Invoice) {
+            return new RedirectResponse(
+                $this->router->generate('_view_invoice_external', ['uuid' => $invoice->getUuid()])
+            );
         }
 
         return new RedirectResponse($this->router->generate('_payments_index'));
