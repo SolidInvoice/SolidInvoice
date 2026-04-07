@@ -68,10 +68,7 @@ abstract class ApiTestCase extends ApiPlatformTestCase
             });
         }
 
-        ResetDatabaseManager::resetBeforeEachTest(
-            static fn () => static::bootKernel(),
-            static fn () => static::ensureKernelShutdown(),
-        );
+        ResetDatabaseManager::resetBeforeEachTest(static::bootKernel());
 
         $_SERVER['SOLIDINVOICE_LOCALE'] = $_ENV['SOLIDINVOICE_LOCALE'] = 'en_US';
         $_SERVER['SOLIDINVOICE_INSTALLED'] = $_ENV['SOLIDINVOICE_INSTALLED'] = date(DateTimeInterface::ATOM);
@@ -94,10 +91,7 @@ abstract class ApiTestCase extends ApiPlatformTestCase
      */
     public static function _resetDatabaseBeforeFirstTest(): void
     {
-        ResetDatabaseManager::resetBeforeFirstTest(
-            static fn () => static::bootKernel(),
-            static fn () => static::ensureKernelShutdown(),
-        );
+        ResetDatabaseManager::resetBeforeFirstTest(static::bootKernel());
     }
 
     protected function setUp(): void

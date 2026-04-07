@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a555ae78a485e86c9bb05c614341f767",
+    "content-hash": "be68ec7c5a7f30646c15b324cceed4b2",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -743,22 +743,23 @@
         },
         {
             "name": "brick/math",
-            "version": "0.17.0",
+            "version": "0.14.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/brick/math.git",
-                "reference": "a62af7ab2e3cee9f9bf4cf77a5d1e6ba408a44ee"
+                "reference": "63422359a44b7f06cae63c3b429b59e8efcc0629"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/brick/math/zipball/a62af7ab2e3cee9f9bf4cf77a5d1e6ba408a44ee",
-                "reference": "a62af7ab2e3cee9f9bf4cf77a5d1e6ba408a44ee",
+                "url": "https://api.github.com/repos/brick/math/zipball/63422359a44b7f06cae63c3b429b59e8efcc0629",
+                "reference": "63422359a44b7f06cae63c3b429b59e8efcc0629",
                 "shasum": ""
             },
             "require": {
                 "php": "^8.2"
             },
             "require-dev": {
+                "php-coveralls/php-coveralls": "^2.2",
                 "phpstan/phpstan": "2.1.22",
                 "phpunit/phpunit": "^11.5"
             },
@@ -790,7 +791,7 @@
             ],
             "support": {
                 "issues": "https://github.com/brick/math/issues",
-                "source": "https://github.com/brick/math/tree/0.17.0"
+                "source": "https://github.com/brick/math/tree/0.14.8"
             },
             "funding": [
                 {
@@ -798,7 +799,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-03-17T12:54:54+00:00"
+            "time": "2026-02-10T14:33:43+00:00"
         },
         {
             "name": "carbonphp/carbon-doctrine-types",

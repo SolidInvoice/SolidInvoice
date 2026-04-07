@@ -15,7 +15,6 @@ namespace SolidInvoice\InvoiceBundle\Tests\Service;
 
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
-use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -23,12 +22,15 @@ use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Exception\InvalidTransitionException;
 use SolidInvoice\InvoiceBundle\Model\Graph;
 use SolidInvoice\InvoiceBundle\Service\InvoiceStatusTransitionService;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Workflow\StateMachine;
+use Zenstruck\Foundry\Test\Factories;
 
 /** @covers \SolidInvoice\InvoiceBundle\Service\InvoiceStatusTransitionService */
-final class InvoiceStatusTransitionServiceTest extends TestCase
+final class InvoiceStatusTransitionServiceTest extends KernelTestCase
 {
     use DoctrineTestTrait;
+    use Factories;
     use MockeryPHPUnitIntegration;
 
     public function testApplyTransition(): void
