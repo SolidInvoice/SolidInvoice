@@ -5818,16 +5818,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "3.11.3",
+            "version": "3.11.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CarbonPHP/carbon.git",
-                "reference": "6a7e652845bb018c668220c2a545aded8594fbbf"
+                "reference": "e890471a3494740f7d9326d72ce6a8c559ffee60"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CarbonPHP/carbon/zipball/6a7e652845bb018c668220c2a545aded8594fbbf",
-                "reference": "6a7e652845bb018c668220c2a545aded8594fbbf",
+                "url": "https://api.github.com/repos/CarbonPHP/carbon/zipball/e890471a3494740f7d9326d72ce6a8c559ffee60",
+                "reference": "e890471a3494740f7d9326d72ce6a8c559ffee60",
                 "shasum": ""
             },
             "require": {
@@ -5919,7 +5919,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-03-11T17:23:39+00:00"
+            "time": "2026-04-07T09:57:54+00:00"
         },
         {
             "name": "nette/schema",
@@ -8968,17 +8968,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SolidWorx/platform.git",
-                "reference": "86f8f65ba5a207878000115a4bac4c1e37972016"
+                "reference": "eb88aef4c9088618f422b3cdc3059d6af3710d71"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SolidWorx/platform/zipball/86f8f65ba5a207878000115a4bac4c1e37972016",
-                "reference": "86f8f65ba5a207878000115a4bac4c1e37972016",
+                "url": "https://api.github.com/repos/SolidWorx/platform/zipball/eb88aef4c9088618f422b3cdc3059d6af3710d71",
+                "reference": "eb88aef4c9088618f422b3cdc3059d6af3710d71",
                 "shasum": ""
             },
             "require": {
                 "doctrine/doctrine-bundle": "^2.13 || ^3.0",
-                "doctrine/orm": "^2.15 || ^3.3",
+                "doctrine/orm": "^2.15",
                 "endroid/qr-code": "^6.0",
                 "knplabs/knp-menu-bundle": "^3.6",
                 "league/uri": "^7.8",
@@ -9046,7 +9046,7 @@
                 "issues": "https://github.com/SolidWorx/platform/issues",
                 "source": "https://github.com/SolidWorx/platform/tree/main"
             },
-            "time": "2026-04-06T19:32:30+00:00"
+            "time": "2026-04-07T19:26:21+00:00"
         },
         {
             "name": "solidworx/toggler",
