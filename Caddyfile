@@ -5,6 +5,10 @@
 
 	auto_https {$AUTO_HTTPS:disable_redirects}
 
+	servers {
+		trusted_proxies static {$CADDY_TRUSTED_PROXIES:private_ranges}
+	}
+
 	# Logging
 	log {
 		output stdout

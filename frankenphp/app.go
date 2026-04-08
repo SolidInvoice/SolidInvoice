@@ -267,6 +267,12 @@ func setupCommands() {
 				}
 			}
 
+			// When HTTPS is disabled, the app is running behind a reverse proxy.
+			// Configure Symfony to trust proxy headers so it sees the original protocol.
+			if disableHttps && os.Getenv("SYMFONY_TRUSTED_PROXIES") == "" {
+				must(os.Setenv("SYMFONY_TRUSTED_PROXIES", "PRIVATE_SUBNETS,REMOTE_ADDR"))
+			}
+
 			// Configure SSL strategy
 			var autoHttps string
 			var tlsDirective string

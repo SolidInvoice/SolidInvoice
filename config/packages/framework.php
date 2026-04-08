@@ -22,6 +22,14 @@ return static function (FrameworkConfig $config): void {
         ->log(true)
     ;
 
+    $config->trustedHeaders([
+        'x-forwarded-for',
+        'x-forwarded-proto',
+        'x-forwarded-port',
+        'x-forwarded-host',
+        'x-forwarded-prefix',
+    ]);
+
     $config->session()
         ->name('SOLIDINVOICE_APP');
 
