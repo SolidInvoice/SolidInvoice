@@ -36,6 +36,7 @@ final class CreditNormalizer implements NormalizerAwareInterface, NormalizerInte
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
         if ($type === Credit::class) {
+            $data = is_float($data) ? (string) $data : $data;
             $delta = BigNumber::of($data)->toBigDecimal()->multipliedBy(100);
             $existing = $context[AbstractObjectNormalizer::OBJECT_TO_POPULATE] ?? null;
 

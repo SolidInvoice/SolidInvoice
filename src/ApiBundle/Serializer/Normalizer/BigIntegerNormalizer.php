@@ -32,6 +32,8 @@ final class BigIntegerNormalizer implements NormalizerInterface, DenormalizerInt
      */
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): BigNumber
     {
+        $data = is_float($data) ? (string) $data : $data;
+
         if ($context['api_denormalize'] ?? false) {
             return BigNumber::of($data)->toBigDecimal()->multipliedBy(100);
         }

@@ -44,7 +44,9 @@ final class Credit implements AjaxResponse
      */
     public function put(Request $request, Client $client): JsonResponse
     {
-        $value = BigNumber::of(((json_decode($request->getContent() ?: '[]', true, 512, JSON_THROW_ON_ERROR)['credit'] ?? 0)))
+        $creditInput = (json_decode($request->getContent() ?: '[]', true, 512, JSON_THROW_ON_ERROR)['credit'] ?? 0);
+        $creditInput = is_float($creditInput) ? (string) $creditInput : $creditInput;
+        $value = BigNumber::of($creditInput)
             ->toBigDecimal()
             ->multipliedBy(100)
             ->toBigInteger();
