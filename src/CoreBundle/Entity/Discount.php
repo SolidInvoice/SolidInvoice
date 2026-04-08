@@ -68,7 +68,7 @@ class Discount
      */
     public function setValueMoney(BigNumber|float|int|string $valueMoney): self
     {
-        $this->valueMoney = BigNumber::of($valueMoney);
+        $this->valueMoney = BigNumber::of(is_float($valueMoney) ? (string) $valueMoney : $valueMoney);
 
         return $this;
     }
@@ -101,13 +101,13 @@ class Discount
     {
         switch ($this->getType()) {
             case self::TYPE_PERCENTAGE:
-                $this->setValuePercentage(BigNumber::of($value)->toBigDecimal()->toFloat());
+                $this->setValuePercentage(BigNumber::of(is_float($value) ? (string) $value : $value)->toBigDecimal()->toFloat());
                 $this->setValueMoney(BigDecimal::zero());
                 break;
 
             case self::TYPE_MONEY:
                 $this->setValuePercentage(0.0);
-                $this->setValueMoney(BigNumber::of($value));
+                $this->setValueMoney(BigNumber::of(is_float($value) ? (string) $value : $value));
                 break;
         }
 
