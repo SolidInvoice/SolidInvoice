@@ -51,6 +51,6 @@ final class Calculator
             $percentage /= 100;
         }
 
-        return MoneyFormatter::toFloat(BigNumber::of($amount)->toBigDecimal()->multipliedBy($percentage / 100));
+        return MoneyFormatter::toFloat(BigNumber::of($amount)->toBigDecimal()->multipliedBy((string) ($percentage / 100)));
     }
 }
