@@ -103,7 +103,7 @@ final class QuoteDummyDataLoader implements DummyDataLoaderInterface
 
                 for ($j = 0; $j < $lineCount; ++$j) {
                     $price = random_int(500, 50000);
-                    $qty = (float) random_int(1, 10);
+                    $qty = random_int(1, 10);
 
                     $line = new Line();
                     $line->setDescription($this->faker->sentence(5))
@@ -119,7 +119,7 @@ final class QuoteDummyDataLoader implements DummyDataLoaderInterface
                         $line->setTax($tax);
 
                         if ($tax->getType() === Tax::TYPE_EXCLUSIVE) {
-                            $taxAmount = $lineTotal->multipliedBy($tax->getRate())->dividedBy(100, 0, RoundingMode::HalfUp);
+                            $taxAmount = $lineTotal->multipliedBy((string) $tax->getRate())->dividedBy(100, 0, RoundingMode::HalfUp);
                             $taxTotal = $taxTotal->plus($taxAmount);
                         }
                     }
