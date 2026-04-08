@@ -55,7 +55,7 @@ class MoneyFormatterExtension extends AbstractExtension
                 $value = BigNumber::of($value)->toBigDecimal();
 
                 if ($value->getScale() > 0) {
-                    $value = $value->toScale(0, RoundingMode::HALF_EVEN);
+                    $value = $value->toScale(0, RoundingMode::HalfEven);
                 }
 
                 return $this

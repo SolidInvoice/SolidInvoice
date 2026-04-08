@@ -52,7 +52,7 @@ final class BigIntegerNormalizer implements NormalizerInterface, DenormalizerInt
     public function normalize(mixed $object, ?string $format = null, array $context = []): float
     {
         if (isset($context['api_attribute'])) {
-            return $object->toBigDecimal()->dividedBy(100, 2, RoundingMode::HALF_EVEN)->toFloat();
+            return $object->toBigDecimal()->dividedBy(100, 2, RoundingMode::HalfEven)->toFloat();
         }
 
         return $object->toBigDecimal()->toFloat();

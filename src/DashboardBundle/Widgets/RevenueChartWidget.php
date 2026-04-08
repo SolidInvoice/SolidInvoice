@@ -87,7 +87,7 @@ final readonly class RevenueChartWidget implements WidgetInterface
                 $date = $now->modify(sprintf('-%d months', $i));
                 $monthKey = $date->format('Y-m');
                 $data[] = isset($revenueData[$monthKey][$currency])
-                    ? $revenueData[$monthKey][$currency]->dividedBy(BigNumber::of(100), RoundingMode::HALF_EVEN)->toFloat() // Convert cents to currency units
+                    ? $revenueData[$monthKey][$currency]->dividedBy(BigNumber::of(100), RoundingMode::HalfEven)->toFloat() // Convert cents to currency units
                     : 0;
             }
 

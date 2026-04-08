@@ -119,7 +119,7 @@ final class QuoteDummyDataLoader implements DummyDataLoaderInterface
                         $line->setTax($tax);
 
                         if ($tax->getType() === Tax::TYPE_EXCLUSIVE) {
-                            $taxAmount = $lineTotal->multipliedBy($tax->getRate())->dividedBy(100, 0, RoundingMode::HALF_UP);
+                            $taxAmount = $lineTotal->multipliedBy($tax->getRate())->dividedBy(100, 0, RoundingMode::HalfUp);
                             $taxTotal = $taxTotal->plus($taxAmount);
                         }
                     }
