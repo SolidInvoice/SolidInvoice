@@ -35,6 +35,13 @@
 	@health path /health
 	respond @health "OK" 200
 
+	# When behind Cloudflare, the intermediate proxy (e.g. Traefik, cloudflared)
+	# may set X-Forwarded-Proto to "http" because its connection to Caddy is plain HTTP.
+	# Cloudflare's Cf-Visitor header carries the original scheme, so use it to fix the proto.
+	@cloudflare header Cf-Visitor *https*
+	request_header @cloudflare X-Forwarded-Proto "https"
+	request_header @cloudflare X-Forwarded-Port "443"
+
 	# Basic security headers (for self-hosted deployments)
 	header {
 		X-Content-Type-Options "nosniff"
