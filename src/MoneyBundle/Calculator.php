@@ -36,7 +36,7 @@ final class Calculator
         $invoiceTotal = $entity->getBaseTotal()->toBigDecimal()->plus($entity->getTax());
 
         if (Discount::TYPE_PERCENTAGE === $discount->getType()) {
-            return BigDecimal::of($this->calculatePercentage($invoiceTotal, $discount->getValue()));
+            return BigDecimal::of((string) $this->calculatePercentage($invoiceTotal, $discount->getValue()));
         }
 
         return $discount->getValueMoney();
@@ -45,7 +45,7 @@ final class Calculator
     /**
      * @throws MathException
      */
-    public function calculatePercentage(BigNumber|int|float|string $amount, float $percentage = 0.0): float
+    public function calculatePercentage(BigNumber|int|string $amount, float $percentage = 0.0): float
     {
         if ($percentage > 100) {
             $percentage /= 100;
