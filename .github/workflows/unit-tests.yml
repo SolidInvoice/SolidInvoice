@@ -23,7 +23,7 @@ jobs:
         php: [ '8.4' ]
         coverage: [ false ]
         include:
-          - php: '8.4'
+          - php: '8.5'
             coverage: true
       fail-fast: false
 
