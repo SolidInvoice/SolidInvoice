@@ -216,14 +216,32 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
 
-      - name: Login to DockerHub
-        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
+      - uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v6.0.0
         with:
-          username: ${{ vars.DOCKER_USER }}
-          password: ${{ secrets.DOCKER_PAT }}
+          go-version-file: frankenphp/go.mod
+          cache-dependency-path: frankenphp/go.sum
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3.11.1
+      - name: Install PHP
+        uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f
+        with:
+          coverage: none
+          ini-values: memory_limit=-1
+          php-version: ${{ env.PHP_VERSION }}
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y autoconf automake bison cmake flex libtool pkg-config re2c upx
+
+      - name: Restore static-php cache
+        id: restore-static-php
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: frankenphp/dist/static-php-cli
+          key: linux-${{ matrix.arch }}-static-php-${{ env.PHP_VERSION }}-${{ hashFiles('frankenphp/build-static.sh', 'frankenphp/build-solidinvoice.sh') }}
+          restore-keys: |
+              linux-${{ matrix.arch }}-static-php-${{ env.PHP_VERSION }}-
+              linux-${{ matrix.arch }}-static-php-
 
       - name: Download archive
         uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
@@ -232,20 +250,49 @@ jobs:
           path: build/dist
 
       - name: Build SolidInvoice
+        run: ./scripts/build_binary.sh ${{ needs.prepare.outputs.ref }}
+        env:
+          GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+          RELEASE: ${{ needs.prepare.outputs.release }}
+          # Unset CI so build-static.sh preserves downloads/ and source/ for caching
+          CI: ""
+          SPC_OPT_DOWNLOAD_ARGS: "--ignore-cache-sources=php-src --retry 5 --prefer-pre-built"
+
+      - name: Save static-php cache
+        if: steps.restore-static-php.outputs.cache-hit != 'true'
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: frankenphp/dist/static-php-cli
+          key: linux-${{ matrix.arch }}-static-php-${{ env.PHP_VERSION }}-${{ hashFiles('frankenphp/build-static.sh', 'frankenphp/build-solidinvoice.sh') }}
+
+      - name: Login to DockerHub
+        if: needs.prepare.outputs.release == '1'
+        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
+        with:
+          username: ${{ vars.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PAT }}
+
+      - name: Set up Docker Buildx
+        if: needs.prepare.outputs.release == '1'
+        uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3.11.1
+
+      - name: Copy binary to Docker context
+        if: needs.prepare.outputs.release == '1'
+        run: cp frankenphp/dist/solidinvoice-linux-${{ matrix.arch }} docker/solidinvoice
+
+      - name: Build and push Docker image
+        if: needs.prepare.outputs.release == '1'
         id: build
         uses: docker/bake-action@3acf805d94d93a86cce4ca44798a76464a75b88c # v6.9.0
         with:
-          targets: build-static
+          targets: package
           source: .
           set: |
-            build-static.platform=${{ matrix.platform }}
-            build-static.tags=
-            ${{ needs.prepare.outputs.release == '1' && 'build-static.output=type=image,name=solidinvoice/solidinvoice,push-by-digest=true,name-canonical=true,push=true' || '' }}
-            build-static.cache-from=type=gha,scope=release-${{ matrix.arch }}
-            build-static.cache-to=type=gha,scope=release-${{ matrix.arch }},mode=max,ignore-error=true
+            package.platform=${{ matrix.platform }}
+            package.tags=
+            package.output=type=image,name=solidinvoice/solidinvoice,push-by-digest=true,name-canonical=true,push=true
         env:
-          # GITHUB_TOKEN used by static-php-cli for GitHub API rate limiting inside Docker
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
           LATEST: ${{ !contains(needs.prepare.outputs.ref, '-') }}
 
@@ -253,7 +300,7 @@ jobs:
         if: needs.prepare.outputs.release == '1'
         run: |
           mkdir -p /tmp/digests
-          digest=$(jq -r '."build-static"."containerimage.digest"' <<< "$METADATA")
+          digest=$(jq -r '."package"."containerimage.digest"' <<< "$METADATA")
           touch "/tmp/digests/${digest#sha256:}"
         env:
           METADATA: ${{ steps.build.outputs.metadata }}
@@ -266,24 +313,6 @@ jobs:
           path: /tmp/digests/*
           if-no-files-found: error
           retention-days: 1
-
-      - name: Extract binary and upload to GitHub release
-        if: needs.prepare.outputs.release == '1'
-        run: |
-          digest=$(jq -r '."build-static"."containerimage.digest"' <<< "$METADATA")
-          docker create --platform="$PLATFORM" --name si-binary \
-            "solidinvoice/solidinvoice@${digest}"
-          docker cp "si-binary:/usr/local/bin/solidinvoice" "solidinvoice-linux-${ARCH}"
-          docker rm si-binary
-          gh release upload "$VERSION" \
-            "solidinvoice-linux-${ARCH}" \
-            --repo solidinvoice/solidinvoice --clobber
-        env:
-          METADATA: ${{ steps.build.outputs.metadata }}
-          GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
-          PLATFORM: ${{ matrix.platform }}
-          ARCH: ${{ matrix.arch }}
-          VERSION: ${{ needs.prepare.outputs.ref }}
   publish-docker:
     name: Publish multi-platform Docker image
     needs: [prepare, build-linux]
