@@ -36,8 +36,8 @@ final class BigIntegerNormalizerTest extends TestCase
     public function testSupportsNormalization(): void
     {
         self::assertTrue($this->normalizer->supportsNormalization(BigInteger::of(1)));
-        self::assertTrue($this->normalizer->supportsNormalization(BigDecimal::of(1.1)));
-        self::assertTrue($this->normalizer->supportsNormalization(BigNumber::of(1.1)));
+        self::assertTrue($this->normalizer->supportsNormalization(BigDecimal::of('1.1')));
+        self::assertTrue($this->normalizer->supportsNormalization(BigNumber::of('1.1')));
         self::assertFalse($this->normalizer->supportsNormalization(BigInteger::class));
     }
 
@@ -63,6 +63,6 @@ final class BigIntegerNormalizerTest extends TestCase
     public function testDenormalization(): void
     {
         self::assertEquals(BigInteger::of(10000), $this->normalizer->denormalize(10000, BigNumber::class));
-        self::assertEquals(BigNumber::of(10000.1), $this->normalizer->denormalize(10000.1, BigNumber::class));
+        self::assertEquals(BigNumber::of('10000.1'), $this->normalizer->denormalize(10000.1, BigNumber::class));
     }
 }

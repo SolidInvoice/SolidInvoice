@@ -36,7 +36,7 @@ class CalculatorTest extends TestCase
         $entity->setDiscount($discount);
         $entity->setBaseTotal(20000);
 
-        self::assertEquals(BigDecimal::of(2000.0), $calculator->calculateDiscount($entity));
+        self::assertEquals(BigDecimal::of(2000), $calculator->calculateDiscount($entity));
     }
 
     /**
