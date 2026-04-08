@@ -85,7 +85,6 @@ jobs:
             runner: ubuntu-24.04-arm
     runs-on: ${{ matrix.runner }}
     env:
-      HOMEBREW_NO_AUTO_UPDATE: 1
       SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
       PHP_VERSION: 8.3
     steps:
@@ -97,6 +96,56 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
 
+      - uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v6.0.0
+        with:
+          go-version-file: frankenphp/go.mod
+          cache-dependency-path: frankenphp/go.sum
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f
+        with:
+          coverage: none
+          ini-values: memory_limit=-1
+          php-version: ${{ env.PHP_VERSION }}
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y autoconf automake bison cmake flex libtool pkg-config re2c upx
+
+      - name: Restore static-php cache
+        id: restore-static-php
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: frankenphp/dist/static-php-cli
+          key: linux-${{ matrix.arch }}-static-php-${{ env.PHP_VERSION }}-${{ hashFiles('frankenphp/build-static.sh', 'frankenphp/build-solidinvoice.sh') }}
+          restore-keys: |
+              linux-${{ matrix.arch }}-static-php-${{ env.PHP_VERSION }}-
+              linux-${{ matrix.arch }}-static-php-
+
+      - name: Download archive
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+        with:
+          name: SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.tar.gz
+          path: build/dist
+
+      - name: Build SolidInvoice
+        run: ./scripts/build_binary.sh ${{ needs.prepare.outputs.ref }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE: 0
+          # Unset CI so build-static.sh preserves downloads/ and source/ for caching
+          CI: ""
+          SPC_OPT_DOWNLOAD_ARGS: "--ignore-cache-sources=php-src --retry 5 --prefer-pre-built"
+
+      - name: Save static-php cache
+        if: steps.restore-static-php.outputs.cache-hit != 'true'
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: frankenphp/dist/static-php-cli
+          key: linux-${{ matrix.arch }}-static-php-${{ env.PHP_VERSION }}-${{ hashFiles('frankenphp/build-static.sh', 'frankenphp/build-solidinvoice.sh') }}
+
       - name: Login to DockerHub
         uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
         with:
@@ -106,36 +155,27 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3.11.1
 
-      - name: Download archive
-        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
-        with:
-          name: SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.tar.gz
-          path: build/dist
+      - name: Copy binary to Docker context
+        run: cp frankenphp/dist/solidinvoice-linux-${{ matrix.arch }} docker/solidinvoice
 
-      - name: Build SolidInvoice
+      - name: Build and push Docker image
         id: build
         uses: docker/bake-action@3acf805d94d93a86cce4ca44798a76464a75b88c # v6.9.0
         with:
-          targets: build-static
+          targets: package
           source: .
           set: |
-            build-static.platform=${{ matrix.platform }}
-            build-static.tags=
-            build-static.output=type=image,name=solidinvoice/solidinvoice,push-by-digest=true,name-canonical=true,push=true
-            build-static.cache-from=type=gha,scope=nightly-${{ matrix.arch }}
-            build-static.cache-to=type=gha,scope=nightly-${{ matrix.arch }},mode=max,ignore-error=true
+            package.platform=${{ matrix.platform }}
+            package.tags=
+            package.output=type=image,name=solidinvoice/solidinvoice,push-by-digest=true,name-canonical=true,push=true
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE: 0
-          LATEST: 0
           NIGHTLY: 1
           SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
 
       - name: Export digest for manifest merge
         run: |
           mkdir -p /tmp/digests
-          digest=$(jq -r '."build-static"."containerimage.digest"' <<< "$METADATA")
+          digest=$(jq -r '."package"."containerimage.digest"' <<< "$METADATA")
           touch "/tmp/digests/${digest#sha256:}"
         env:
           METADATA: ${{ steps.build.outputs.metadata }}
