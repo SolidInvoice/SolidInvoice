@@ -80,7 +80,7 @@ class Credit implements Stringable
      */
     public function setValue(BigNumber | float | int | string $value): self
     {
-        $this->value = BigNumber::of($value);
+        $this->value = BigNumber::of(is_float($value) ? (string) $value : $value);
 
         return $this;
     }

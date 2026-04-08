@@ -177,7 +177,9 @@ abstract class BaseInvoice
      */
     public function hasDiscount(): bool
     {
-        return BigNumber::of($this->discount->getValue())->isPositive();
+        $value = $this->discount->getValue();
+
+        return BigNumber::of(is_float($value) ? (string) $value : $value)->isPositive();
     }
 
     public function getTerms(): ?string
