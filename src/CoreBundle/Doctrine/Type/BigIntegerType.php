@@ -55,7 +55,7 @@ final class BigIntegerType extends Type
 
         if ($value instanceof BigNumber) {
             try {
-                return $value->toScale(0, RoundingMode::HALF_EVEN)->toInt();
+                return $value->toScale(0, RoundingMode::HalfEven)->toInt();
             } catch (MathException $e) {
                 throw ConversionException::conversionFailedSerialization($value, $this->getName(), $e::class, $e);
             }

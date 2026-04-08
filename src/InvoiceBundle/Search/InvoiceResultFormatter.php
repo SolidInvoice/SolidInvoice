@@ -58,7 +58,7 @@ final class InvoiceResultFormatter implements QualifiedResultFormatterInterface
             status: $hit['status'] ?? null,
             meta: isset($hit['total'])
                 ? $this->moneyFormatter->format(new Money(
-                    BigDecimal::of((string) $hit['total'])->multipliedBy(100)->toScale(0, RoundingMode::HALF_EVEN)->toInt(),
+                    BigDecimal::of((string) $hit['total'])->multipliedBy(100)->toScale(0, RoundingMode::HalfEven)->toInt(),
                     new Currency($hit['client']['currencyCode'] ?? $this->systemConfig->getCurrency()->getCode()),
                 ))
                 : null,

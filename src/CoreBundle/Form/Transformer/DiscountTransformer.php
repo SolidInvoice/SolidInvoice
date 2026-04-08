@@ -38,7 +38,7 @@ class DiscountTransformer implements DataTransformerInterface
             return 0.0;
         }
 
-        return BigNumber::of($value)->toBigDecimal()->dividedBy(100, 2, RoundingMode::HALF_EVEN)->toFloat();
+        return BigNumber::of($value)->toBigDecimal()->dividedBy(100, 2, RoundingMode::HalfEven)->toFloat();
     }
 
     /**
