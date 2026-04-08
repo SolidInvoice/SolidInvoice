@@ -52,7 +52,7 @@ class MoneyFormatterExtension extends AbstractExtension
                     $currency = null;
                 }
 
-                $value = BigNumber::of($value)->toBigDecimal();
+                $value = BigNumber::of(is_float($value) ? (string) $value : $value)->toBigDecimal();
 
                 if ($value->getScale() > 0) {
                     $value = $value->toScale(0, RoundingMode::HalfEven);

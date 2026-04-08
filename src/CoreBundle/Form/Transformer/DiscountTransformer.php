@@ -38,6 +38,8 @@ class DiscountTransformer implements DataTransformerInterface
             return 0.0;
         }
 
+        $value = is_float($value) ? (string) $value : $value;
+
         return BigNumber::of($value)->toBigDecimal()->dividedBy(100, 2, RoundingMode::HalfEven)->toFloat();
     }
 
@@ -49,6 +51,8 @@ class DiscountTransformer implements DataTransformerInterface
      */
     public function reverseTransform(mixed $value): BigNumber
     {
+        $value = is_float($value) ? (string) $value : $value;
+
         return BigNumber::of($value)
             ->toBigDecimal()
             ->multipliedBy(100)
