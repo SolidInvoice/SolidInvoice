@@ -31,7 +31,7 @@ jobs:
         id: check
         run: |
           echo "ref=nightly" >> "${GITHUB_OUTPUT}"
-          
+
   build-dist:
     permissions:
       contents: read
@@ -69,11 +69,21 @@ jobs:
           path: build/dist/SolidInvoice-${{ needs.prepare.outputs.ref || github.ref }}.tar.gz
 
   build-linux:
-    name: Build Docker Image
+    name: Build Linux ${{ matrix.arch }} image
     needs: [prepare, build-dist]
     permissions:
       contents: read
-    runs-on: self-hosted
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            platform: linux/amd64
+            runner: ubuntu-24.04
+          - arch: arm64
+            platform: linux/arm64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
     env:
       HOMEBREW_NO_AUTO_UPDATE: 1
       SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
@@ -83,9 +93,6 @@ jobs:
         uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
         with:
           egress-policy: audit
-
-      - name: Set cache directory
-        run: echo "DOCKER_CACHE_DIR=$HOME/.docker-cache" >> "$GITHUB_ENV"
 
       - name: Checkout code
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
@@ -98,14 +105,6 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3.11.1
-        with:
-            install: true
-            platforms: linux/amd64,linux/arm64
-            cleanup: false
-            name: persistent-builder
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0
 
       - name: Download archive
         uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
@@ -114,14 +113,17 @@ jobs:
           path: build/dist
 
       - name: Build SolidInvoice
+        id: build
         uses: docker/bake-action@3acf805d94d93a86cce4ca44798a76464a75b88c # v6.9.0
         with:
-            targets: build-static
-            source: .
-            push: true
-            set: |
-                build-static.cache-from=type=local,src=${{ env.DOCKER_CACHE_DIR }}
-                build-static.cache-to=type=local,dest=${{ env.DOCKER_CACHE_DIR }}-new,mode=max,ignore-error=true
+          targets: build-static
+          source: .
+          set: |
+            build-static.platform=${{ matrix.platform }}
+            build-static.tags=
+            build-static.output=type=image,name=solidinvoice/solidinvoice,push-by-digest=true,name-canonical=true,push=true
+            build-static.cache-from=type=gha,scope=nightly-${{ matrix.arch }}
+            build-static.cache-to=type=gha,scope=nightly-${{ matrix.arch }},mode=max,ignore-error=true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -130,7 +132,56 @@ jobs:
           NIGHTLY: 1
           SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
 
-      - name: Move cache
+      - name: Export digest for manifest merge
         run: |
-            rm -rf "$DOCKER_CACHE_DIR"
-            mv "${DOCKER_CACHE_DIR}-new" "$DOCKER_CACHE_DIR"
+          mkdir -p /tmp/digests
+          digest=$(jq -r '."build-static"."containerimage.digest"' <<< "$METADATA")
+          touch "/tmp/digests/${digest#sha256:}"
+        env:
+          METADATA: ${{ steps.build.outputs.metadata }}
+
+      - name: Upload digest artifact
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        with:
+          name: digest-nightly-${{ matrix.arch }}
+          path: /tmp/digests/*
+          if-no-files-found: error
+          retention-days: 1
+
+  publish-docker:
+    name: Publish multi-platform Docker image
+    needs: [prepare, build-linux]
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden the runner
+        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
+        with:
+          egress-policy: audit
+
+      - name: Login to DockerHub
+        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
+        with:
+          username: ${{ vars.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PAT }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3.11.1
+
+      - name: Download digests
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+        with:
+          pattern: digest-nightly-*
+          path: /tmp/digests
+          merge-multiple: true
+
+      - name: Create and push multi-platform manifest
+        run: |
+          IMAGE="solidinvoice/solidinvoice"
+
+          # Combine per-platform digests into a single multi-arch manifest
+          # shellcheck disable=SC2086
+          docker buildx imagetools create \
+            -t "${IMAGE}:nightly" \
+            $(printf "${IMAGE}@sha256:%s " $(ls /tmp/digests/))

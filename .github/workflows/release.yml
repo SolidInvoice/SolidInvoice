@@ -203,7 +203,7 @@ jobs:
           - arch: arm64
             platform: linux/arm64
             runner: ubuntu-24.04-arm
-    runs-on: self-hosted # ${{ matrix.runner }}
+    runs-on: ${{ matrix.runner }}
     env:
       SOLIDINVOICE_VERSION: ${{ needs.prepare.outputs.ref }}
       PHP_VERSION: 8.4
@@ -241,8 +241,8 @@ jobs:
             build-static.platform=${{ matrix.platform }}
             build-static.tags=
             ${{ needs.prepare.outputs.release == '1' && 'build-static.output=type=image,name=solidinvoice/solidinvoice,push-by-digest=true,name-canonical=true,push=true' || '' }}
-            build-static.cache-from=type=local,src=${{ github.workspace }}/.docker-cache-${{ matrix.arch }}
-            build-static.cache-to=type=local,dest=${{ github.workspace }}/.docker-cache-${{ matrix.arch }}-new,mode=max,ignore-error=true
+            build-static.cache-from=type=gha,scope=release-${{ matrix.arch }}
+            build-static.cache-to=type=gha,scope=release-${{ matrix.arch }},mode=max,ignore-error=true
         env:
           # GITHUB_TOKEN used by static-php-cli for GitHub API rate limiting inside Docker
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -284,11 +284,6 @@ jobs:
           PLATFORM: ${{ matrix.platform }}
           ARCH: ${{ matrix.arch }}
           VERSION: ${{ needs.prepare.outputs.ref }}
-      - name: Move cache
-        run: |
-          rm -rf ${{ github.workspace }}/.docker-cache-${{ matrix.arch }}
-          mv ${{ github.workspace }}/.docker-cache-${{ matrix.arch }}-new ${{ github.workspace }}/.docker-cache-${{ matrix.arch }}
-
   publish-docker:
     name: Publish multi-platform Docker image
     needs: [prepare, build-linux]
