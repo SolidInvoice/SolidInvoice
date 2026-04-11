@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of SolidInvoice project.
  *
@@ -37,7 +39,7 @@ class TransportSetting implements Stringable
     #[ORM\Column(type: UlidType::NAME)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UlidGenerator::class)]
-    private Ulid $id;
+    private ?Ulid $id = null;
 
     #[ORM\Column(type: Types::STRING, length: 255)]
     #[Assert\NotBlank()]
