@@ -44,7 +44,13 @@ final class Register extends AbstractController
         $invitation = null;
 
         if ($request->query->has('invitation')) {
-            $invitation = $this->invitationRepository->find(Ulid::fromString($request->query->get('invitation')));
+            $invitationId = $request->query->getString('invitation');
+
+            if (! Ulid::isValid($invitationId)) {
+                throw $this->createNotFoundException('Invitation is not valid');
+            }
+
+            $invitation = $this->invitationRepository->find(Ulid::fromString($invitationId));
 
             if (! $invitation instanceof UserInvitation) {
                 throw $this->createNotFoundException('Invitation is not valid');
