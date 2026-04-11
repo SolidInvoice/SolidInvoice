@@ -22,6 +22,7 @@ use SolidInvoice\UserBundle\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Uid\Ulid;
 
 final class AcceptInvitation
 {
@@ -34,6 +35,10 @@ final class AcceptInvitation
 
     public function __invoke(string $id): RedirectResponse
     {
+        if (! Ulid::isValid($id)) {
+            throw new NotFoundHttpException('Invitation is not valid');
+        }
+
         $invitation = $this->repository->find($id);
 
         if (! $invitation instanceof UserInvitation) {
