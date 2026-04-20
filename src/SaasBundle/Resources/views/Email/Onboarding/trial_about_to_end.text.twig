@@ -1,4 +1,3 @@
-{% set days_remaining = date('now') < trial_end ? date('now').diff(trial_end).days : 0 %}
 {{ 'onboarding.trial_about_to_end.heading'|trans({'%days%': days_remaining}, 'email') }}
 {{ '='|repeat(60) }}
 

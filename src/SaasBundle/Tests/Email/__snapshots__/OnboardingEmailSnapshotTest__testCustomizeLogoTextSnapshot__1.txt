@@ -1,0 +1,21 @@
+Your logo. Your colors. Your invoices.
+============================================================
+
+Branded invoices get paid faster and look unmistakably yours. Upload a logo, pick a color, and every document you send — invoices, quotes, receipts — is transformed.
+
+Takes three minutes
+------------------------------------------------------------
+
+1. Upload your logo
+   PNG, SVG, or JPG. It appears on invoices, quotes, and the client portal.
+
+2. Pick a primary color
+   Used for buttons, headings, and accents across every document you send.
+
+3. Customise your sender email
+   Send from billing@yourstudio.com — not a generic no-reply address.
+
+Brand your workspace: http://localhost/settings
+
+See you inside,
+— The SolidInvoice team

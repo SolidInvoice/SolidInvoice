@@ -1,0 +1,17 @@
+Add your first client in under a minute.
+============================================================
+
+Clients are the foundation of everything in SolidInvoice. Once one is in your workspace, invoices, quotes, and payment history all snap into place.
+
+What you&#039;ll need
+------------------------------------------------------------
+Just the essentials — you can fill in more later.
+
+* Client name or company
+* An email for sending invoices
+* Default currency (we&#039;ll pick one based on your region)
+
+Add your first client: http://localhost/clients/add
+
+See you inside,
+— The SolidInvoice team

@@ -1,0 +1,18 @@
+Your invoicing setup starts here, Alex.
+============================================================
+
+Thanks for creating your SolidInvoice workspace. Over the next few days we&#039;ll walk you through getting paid faster — starting with the basics and ending with a workflow that runs itself.
+
+Here&#039;s what you&#039;ll unlock in your first week:
+
+* Track every client — Keep contacts, billing addresses, and history in one place.
+* Send pro invoices — Branded, itemised, and delivered straight to the inbox.
+* Accept online payments — Stripe, PayPal, or direct bank — clients choose how to pay.
+* See what&#039;s owed — A dashboard that tells you exactly where the money sits.
+
+The fastest path is to add your first client. It takes about thirty seconds and unlocks everything else.
+
+Open your dashboard: http://localhost/dashboard
+
+See you inside,
+— The SolidInvoice team

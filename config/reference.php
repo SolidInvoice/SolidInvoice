@@ -1673,10 +1673,10 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         scopes?: list<scalar|Param|null>,
  *     },
  *     graphql?: bool|array{
- *         enabled?: bool|Param, // Default: false
+ *         enabled?: bool|Param, // Default: true
  *         default_ide?: scalar|Param|null, // Default: "graphiql"
  *         graphiql?: bool|array{
- *             enabled?: bool|Param, // Default: false
+ *             enabled?: bool|Param, // Default: true
  *         },
  *         introspection?: bool|array{
  *             enabled?: bool|Param, // Default: true
