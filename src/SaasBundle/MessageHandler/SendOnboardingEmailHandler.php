@@ -45,66 +45,64 @@ final readonly class SendOnboardingEmailHandler
 
     public function __invoke(SendOnboardingEmailMessage $message): void
     {
-        // Ensure we start without any company scope for cross-tenant lookups.
+        // Clear any existing company scope up front, then guarantee it's reset
+        // on every exit path (including early returns and exceptions) so a
+        // skipped message never leaves the worker with tenant filtering off.
         $this->companySelector->reset();
 
-        if ($message->userId === null) {
-            return;
-        }
-
-        $userManager = $this->registry->getManagerForClass(User::class);
-        $user = $userManager?->find(User::class, $message->userId);
-
-        if (! $user instanceof User) {
-            $this->logger->warning('Onboarding email skipped: user not found', [
-                'user_id' => $message->userId->toString(),
-                'step_key' => $message->stepKey,
-            ]);
-            return;
-        }
-
-        $trialManager = $this->registry->getManagerForClass(Trial::class);
-        $trial = $trialManager?->getRepository(Trial::class)->findOneBy(['user' => $user]);
-
-        if (! $trial instanceof Trial) {
-            $this->logger->warning('Onboarding email skipped: no trial for user', [
-                'user_id' => $message->userId->toString(),
-                'step_key' => $message->stepKey,
-            ]);
-            return;
-        }
-
-        $subscription = $trial->getSubscription();
-
-        if ($subscription->getStatus() !== SubscriptionStatus::TRIAL) {
-            // User upgraded, cancelled, or trial expired between dispatch and
-            // handling — stop the sequence silently.
-            return;
-        }
-
-        $company = $subscription->getSubscriber();
-
-        if (! $company instanceof Company) {
-            $this->logger->warning('Onboarding email skipped: subscriber is not a Company', [
-                'user_id' => $message->userId->toString(),
-                'step_key' => $message->stepKey,
-            ]);
-            return;
-        }
-
-        $step = $this->stepRegistry->get($message->stepKey);
-
-        if ($step === null) {
-            $this->logger->warning('Onboarding email skipped: unknown step', [
-                'user_id' => $message->userId->toString(),
-                'step_key' => $message->stepKey,
-            ]);
-            return;
-        }
-
-        $this->companySelector->switchCompany($company->getId());
-
         try {
+            $userManager = $this->registry->getManagerForClass(User::class);
+            $user = $userManager?->find(User::class, $message->userId);
+
+            if (! $user instanceof User) {
+                $this->logger->warning('Onboarding email skipped: user not found', [
+                    'user_id' => $message->userId->toString(),
+                    'step_key' => $message->stepKey,
+                ]);
+                return;
+            }
+
+            $trialManager = $this->registry->getManagerForClass(Trial::class);
+            $trial = $trialManager?->getRepository(Trial::class)->findOneBy(['user' => $user]);
+
+            if (! $trial instanceof Trial) {
+                $this->logger->warning('Onboarding email skipped: no trial for user', [
+                    'user_id' => $message->userId->toString(),
+                    'step_key' => $message->stepKey,
+                ]);
+                return;
+            }
+
+            $subscription = $trial->getSubscription();
+
+            if ($subscription->getStatus() !== SubscriptionStatus::TRIAL) {
+                // User upgraded, cancelled, or trial expired between dispatch and
+                // handling — stop the sequence silently.
+                return;
+            }
+
+            $company = $subscription->getSubscriber();
+
+            if (! $company instanceof Company) {
+                $this->logger->warning('Onboarding email skipped: subscriber is not a Company', [
+                    'user_id' => $message->userId->toString(),
+                    'step_key' => $message->stepKey,
+                ]);
+                return;
+            }
+
+            $step = $this->stepRegistry->get($message->stepKey);
+
+            if ($step === null) {
+                $this->logger->warning('Onboarding email skipped: unknown step', [
+                    'user_id' => $message->userId->toString(),
+                    'step_key' => $message->stepKey,
+                ]);
+                return;
+            }
+
+            $this->companySelector->switchCompany($company->getId());
+
             $context = new OnboardingContext(
                 user: $user,
                 company: $company,

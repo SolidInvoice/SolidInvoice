@@ -18,7 +18,7 @@ use Symfony\Component\Uid\Ulid;
 final readonly class SendOnboardingEmailMessage
 {
     public function __construct(
-        public ?Ulid $userId,
+        public Ulid $userId,
         public string $stepKey,
     ) {
     }

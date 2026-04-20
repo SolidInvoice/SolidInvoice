@@ -12,6 +12,7 @@ declare(strict_types=1);
  */
 
 use SolidInvoice\CronBundle\Messenger\SentrySchedulerMiddleware;
+use SolidInvoice\SaasBundle\Message\SendOnboardingEmailMessage;
 use Symfony\Config\FrameworkConfig;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
 
@@ -33,6 +34,12 @@ return static function (FrameworkConfig $config): void {
         ->multiplier(2) // Exponential backoff
         ->maxDelay(60000) // Max 60 seconds between retries
         ->jitter(0.1); // 10% random jitter to prevent thundering herd
+
+    // Route onboarding emails through the async transport so the hourly
+    // scheduler returns quickly and Messenger's retry strategy handles
+    // transient mailer failures.
+    $messenger->routing(SendOnboardingEmailMessage::class)
+        ->senders(['async']);
 
     // Configure default bus
     $messenger->defaultBus('messenger.bus.default');
