@@ -11,8 +11,6 @@
 {% block title %}{{ 'onboarding.trial_about_to_end.subject'|trans({}, 'email') }}{% endblock %}
 
 {% block content %}
-    {% set days_remaining = date('now') < trial_end ? date('now').diff(trial_end).days : 0 %}
-
     <span class="onb-eyebrow danger">{{ 'onboarding.trial_about_to_end.eyebrow'|trans({}, 'email') }}</span>
     <h1 class="onb-h1">{{ 'onboarding.trial_about_to_end.heading'|trans({'%days%': days_remaining}, 'email') }}</h1>
     <p class="onb-p lede">{{ 'onboarding.trial_about_to_end.lede'|trans({}, 'email') }}</p>

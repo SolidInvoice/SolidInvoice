@@ -1,0 +1,19 @@
+Turn invoices into payments — automatically.
+============================================================
+
+Connect a payment method once and every invoice you send gets a &quot;Pay now&quot; button. Clients pay in two clicks; the money lands in your account within days.
+
+Invoices with online pay settle 3× faster
+Average: 4 days vs. 14 days for bank-transfer-only invoices.
+
+How it works
+------------------------------------------------------------
+
+1. Connect Stripe or PayPal in Settings → Payment methods (30 seconds).
+2. Every invoice automatically shows a &quot;Pay now&quot; button.
+3. Your client pays. You get notified. Status flips to Paid.
+
+Connect a payment method: http://localhost/payments/methods
+
+See you inside,
+— The SolidInvoice team

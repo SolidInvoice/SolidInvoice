@@ -1,0 +1,13 @@
+Send your first invoice today.
+============================================================
+
+A good invoice looks professional, says exactly what the work was, and makes it obvious how to pay. SolidInvoice gives you all three out of the box.
+
+Everything included, nothing to configure
+------------------------------------------------------------
+Line items, taxes, discounts, recurring schedules, due dates, and a &quot;Pay now&quot; button — they&#039;re all one click away. When your client opens the email, they see a branded invoice with a single clear action.
+
+Create your first invoice: http://localhost/invoices/create
+
+See you inside,
+— The SolidInvoice team
