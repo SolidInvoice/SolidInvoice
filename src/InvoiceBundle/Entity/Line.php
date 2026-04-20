@@ -176,9 +176,9 @@ class Line implements LineInterface, Stringable
     /**
      * @throws MathException
      */
-    public function setPrice(BigNumber|float|int|string $price): static
+    public function setPrice(BigNumber|int|string $price): static
     {
-        $this->price = BigNumber::of(is_float($price) ? (string) $price : $price);
+        $this->price = BigNumber::of($price);
 
         return $this;
     }
@@ -215,9 +215,9 @@ class Line implements LineInterface, Stringable
     /**
      * @throws MathException
      */
-    public function setTotal(BigNumber|float|int|string $total): static
+    public function setTotal(BigNumber|int|string $total): static
     {
-        $this->total = BigNumber::of(is_float($total) ? (string) $total : $total);
+        $this->total = BigNumber::of($total);
 
         return $this;
     }

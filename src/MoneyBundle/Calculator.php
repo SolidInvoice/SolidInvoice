@@ -16,6 +16,7 @@ namespace SolidInvoice\MoneyBundle;
 use Brick\Math\BigDecimal;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
+use Brick\Math\RoundingMode;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\InvoiceBundle\Entity\BaseInvoice;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
@@ -51,6 +52,6 @@ final class Calculator
             $percentage /= 100;
         }
 
-        return MoneyFormatter::toFloat(BigNumber::of($amount)->toBigDecimal()->multipliedBy((string) ($percentage / 100)));
+        return MoneyFormatter::toFloat(BigNumber::of($amount)->toBigDecimal()->multipliedBy(BigDecimal::of((string) $percentage)->dividedBy(100, 10, RoundingMode::HalfEven)));
     }
 }
