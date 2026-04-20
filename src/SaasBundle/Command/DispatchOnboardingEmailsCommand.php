@@ -15,6 +15,7 @@ namespace SolidInvoice\SaasBundle\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Psr\Clock\ClockInterface;
 use Psr\Log\LoggerInterface;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingDispatcher;
 use SolidInvoice\UserBundle\Entity\User;
@@ -38,6 +39,7 @@ final class DispatchOnboardingEmailsCommand extends Command
     public function __construct(
         private readonly ManagerRegistry $registry,
         private readonly OnboardingDispatcher $dispatcher,
+        private readonly ClockInterface $clock,
         private readonly LoggerInterface $logger,
     ) {
         parent::__construct();
@@ -60,12 +62,17 @@ final class DispatchOnboardingEmailsCommand extends Command
         $dispatched = 0;
 
         try {
+            // Subscription.status is not flipped when a trial lapses — the app
+            // only compares endDate against now — so filter expired trials out
+            // here to keep this scan bounded as historical trial volume grows.
             $qb = $entityManager->createQueryBuilder()
                 ->select('t')
                 ->from(Trial::class, 't')
                 ->innerJoin('t.subscription', 's')
                 ->where('s.status = :status')
-                ->setParameter('status', SubscriptionStatus::TRIAL);
+                ->andWhere('s.endDate > :now')
+                ->setParameter('status', SubscriptionStatus::TRIAL)
+                ->setParameter('now', $this->clock->now());
 
             foreach ($qb->getQuery()->toIterable() as $trial) {
                 assert($trial instanceof Trial);
