@@ -12,6 +12,7 @@ declare(strict_types=1);
  */
 
 use SolidInvoice\DashboardBundle\Checklist\ChecklistItemInterface;
+use SolidInvoice\SaasBundle\Onboarding\OnboardingEmailStepInterface;
 use SolidInvoice\SaasBundle\SolidInvoiceSaasBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
@@ -31,6 +32,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->tag('dashboard.checklist_item');
 
     $services
+        ->instanceof(OnboardingEmailStepInterface::class)
+        ->tag(OnboardingEmailStepInterface::DI_TAG);
+
+    $services
         ->load(SolidInvoiceSaasBundle::NAMESPACE . '\\', dirname(__DIR__, 3))
-        ->exclude(dirname(__DIR__, 3) . '/{DependencyInjection,Entity,Resources,Tests}');
+        ->exclude(dirname(__DIR__, 3) . '/{DependencyInjection,Entity,Message,Resources,Tests}');
 };
