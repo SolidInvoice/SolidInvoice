@@ -61,5 +61,3 @@ yarn-error.log
 .phpunit.result.cache
 .phpunit.cache
 ###< phpunit/phpunit ###
-
-.context
