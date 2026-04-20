@@ -1,0 +1,102 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of SolidInvoice project.
+ *
+ * (c) Pierre du Plessis <open-source@solidworx.co>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace SolidInvoice\SaasBundle\Command;
+
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
+use Psr\Log\LoggerInterface;
+use SolidInvoice\SaasBundle\Onboarding\OnboardingDispatcher;
+use SolidInvoice\UserBundle\Entity\User;
+use SolidWorx\Platform\PlatformBundle\Console\Command;
+use SolidWorx\Platform\SaasBundle\Entity\Trial;
+use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Scheduler\Attribute\AsCronTask;
+use Throwable;
+use function assert;
+use function Sentry\captureException;
+use function sprintf;
+
+#[AsCommand(
+    name: 'solidinvoice:saas:dispatch-onboarding-emails',
+    description: 'Dispatch the next due onboarding email for each user currently on a trial',
+)]
+#[AsCronTask(expression: '#hourly', schedule: 'onboarding_emails')]
+final class DispatchOnboardingEmailsCommand extends Command
+{
+    public function __construct(
+        private readonly ManagerRegistry $registry,
+        private readonly OnboardingDispatcher $dispatcher,
+        private readonly LoggerInterface $logger,
+    ) {
+        parent::__construct();
+    }
+
+    protected function handle(): int
+    {
+        $entityManager = $this->registry->getManagerForClass(Trial::class);
+        assert($entityManager instanceof EntityManagerInterface);
+
+        // Trials span companies; disable the CompanyFilter for the duration of
+        // the scan so queries can see every tenant's data.
+        $filters = $entityManager->getFilters();
+        $companyFilterEnabled = $filters->isEnabled('company');
+
+        if ($companyFilterEnabled) {
+            $filters->disable('company');
+        }
+
+        $dispatched = 0;
+
+        try {
+            $qb = $entityManager->createQueryBuilder()
+                ->select('t')
+                ->from(Trial::class, 't')
+                ->innerJoin('t.subscription', 's')
+                ->where('s.status = :status')
+                ->setParameter('status', SubscriptionStatus::TRIAL);
+
+            foreach ($qb->getQuery()->toIterable() as $trial) {
+                assert($trial instanceof Trial);
+
+                $user = $trial->getUser();
+                $subscription = $trial->getSubscription();
+
+                if (! $user instanceof User) {
+                    continue;
+                }
+
+                try {
+                    $this->dispatcher->tick($user, $subscription);
+                    ++$dispatched;
+                } catch (Throwable $e) {
+                    captureException($e);
+                    $this->logger->error('Onboarding dispatcher failed for user', [
+                        'user_id' => $user->getId()?->toString(),
+                        'subscription_id' => $subscription->getId()->toBase58(),
+                        'exception' => $e->getMessage(),
+                    ]);
+                }
+            }
+        } finally {
+            if ($companyFilterEnabled) {
+                $filters->enable('company');
+            }
+        }
+
+        $this->io->success(sprintf('Processed %d active trials', $dispatched));
+
+        return self::SUCCESS;
+    }
+}

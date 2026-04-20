@@ -1,0 +1,15 @@
+onboarding:
+    welcome:
+        subject: Welcome to SolidInvoice
+    add_first_client:
+        subject: Add your first client in under a minute
+    send_first_invoice:
+        subject: Send your first invoice today
+    turn_invoices_into_payments:
+        subject: Turn invoices into payments
+    customize_logo:
+        subject: Customize your invoices with your logo
+    trial_about_to_end:
+        subject: Your trial is about to end
+    upgrade_offer:
+        subject: "Ready for unlimited invoicing? A special offer inside"
