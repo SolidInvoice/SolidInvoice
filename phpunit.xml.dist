@@ -1,59 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- http://www.phpunit.de/manual/current/en/appendixes.configuration.html -->
-<phpunit
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.6/phpunit.xsd"
-        backupGlobals="false"
-        backupStaticAttributes="false"
-        colors="true"
-        verbose="true"
-        executionOrder="random"
-        failOnWarning="true"
-        failOnRisky="true"
-        beStrictAboutTestsThatDoNotTestAnything="true"
-        beStrictAboutOutputDuringTests="true"
-        beStrictAboutTodoAnnotatedTests="true"
-        beStrictAboutChangesToGlobalState="true"
-        convertErrorsToExceptions="true"
-        convertNoticesToExceptions="true"
-        convertWarningsToExceptions="true"
-        convertDeprecationsToExceptions="false"
-        processIsolation="false"
-        stopOnFailure="false"
-        bootstrap="tests/bootstrap.php"
->
-    <coverage>
-        <include>
-            <directory>src</directory>
-        </include>
-        <exclude>
-            <directory>src/*Bundle/Resources</directory>
-            <directory>src/*Bundle/Tests</directory>
-        </exclude>
-    </coverage>
-    <testsuites>
-        <testsuite name="SolidInvoice Test Suite">
-            <directory>src/*Bundle/Tests</directory>
-        </testsuite>
-    </testsuites>
-    <php>
-        <ini name="display_errors" value="1" />
-        <ini name="error_reporting" value="-1" />
-        <env name="PANTHER_NO_HEADLESS" value="0" />
-        <env name="PANTHER_APP_ENV" value="test" />
-        <env name="SOLIDINVOICE_DATABASE_URL" value="sqlite:///%kernel.cache_dir%/solidinvoice.db"/>
-        <server name="SOLIDINVOICE_APP_SECRET" value="$ecretf0rt3st" />
-        <server name="SOLIDINVOICE_ENV" value="test" />
-        <server name="SOLIDINVOICE_DEBUG" value="0" />
-        <server name="KERNEL_CLASS" value="SolidInvoice\Kernel" />
-        <server name="SHELL_VERBOSITY" value="-1" />
-        <server name="BROWSER_ALWAYS_START_WEBSERVER" value="1"/>
-    </php>
-    <listeners>
-        <listener class="Mockery\Adapter\Phpunit\TestListener"/>
-    </listeners>
-    <extensions>
-        <extension class="Symfony\Component\Panther\ServerExtension"/>
-        <extension class="Zenstruck\Browser\Test\BrowserExtension" />
-    </extensions>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/12.5/phpunit.xsd" backupGlobals="false" colors="true" executionOrder="random" failOnWarning="true" failOnRisky="true" beStrictAboutTestsThatDoNotTestAnything="true" beStrictAboutOutputDuringTests="true" beStrictAboutChangesToGlobalState="true" processIsolation="false" stopOnFailure="false" bootstrap="tests/bootstrap.php" cacheDirectory=".phpunit.cache" backupStaticProperties="false">
+  <testsuites>
+    <testsuite name="SolidInvoice Test Suite">
+      <directory>src/*Bundle/Tests</directory>
+    </testsuite>
+  </testsuites>
+  <php>
+    <ini name="display_errors" value="1"/>
+    <ini name="error_reporting" value="-1"/>
+    <env name="PANTHER_NO_HEADLESS" value="0"/>
+    <env name="PANTHER_APP_ENV" value="test"/>
+    <env name="SOLIDINVOICE_DATABASE_URL" value="sqlite:///%kernel.cache_dir%/solidinvoice.db"/>
+    <server name="SOLIDINVOICE_APP_SECRET" value="$ecretf0rt3st"/>
+    <server name="SOLIDINVOICE_ENV" value="test"/>
+    <server name="SOLIDINVOICE_DEBUG" value="0"/>
+    <server name="KERNEL_CLASS" value="SolidInvoice\Kernel"/>
+    <server name="SHELL_VERBOSITY" value="-1"/>
+    <server name="BROWSER_ALWAYS_START_WEBSERVER" value="1"/>
+  </php>
+  <extensions>
+    <bootstrap class="Symfony\Component\Panther\ServerExtension"/>
+    <bootstrap class="Zenstruck\Browser\Test\BrowserExtension"/>
+  </extensions>
+  <source>
+    <include>
+      <directory>src</directory>
+    </include>
+    <exclude>
+      <directory>src/*Bundle/Resources</directory>
+      <directory>src/*Bundle/Tests</directory>
+    </exclude>
+  </source>
 </phpunit>

@@ -12,6 +12,7 @@
 namespace SolidInvoice\PaymentBundle\Tests\Twig\Components;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
+use PHPUnit\Framework\Attributes\DataProvider;
 use SolidInvoice\CoreBundle\Test\LiveComponentTest;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\PaymentBundle\Factory\PaymentFactories;
@@ -19,9 +20,7 @@ use SolidInvoice\PaymentBundle\Twig\Components\PaymentSettings;
 
 final class PaymentSettingsTest extends LiveComponentTest
 {
-    /**
-     * @dataProvider paymentMethodsProvider
-     */
+    #[DataProvider('paymentMethodsProvider')]
     public function testRenderPaymentSettings(string $method): void
     {
         $component = $this->createLiveComponent(
@@ -248,9 +247,10 @@ final class PaymentSettingsTest extends LiveComponentTest
     /**
      * @return iterable<string, array{0: string}>
      */
-    public function paymentMethodsProvider(): iterable
+    public static function paymentMethodsProvider(): iterable
     {
-        $paymentFactories = self::getContainer()->get(PaymentFactories::class);
+        static::bootKernel();
+        $paymentFactories = static::getContainer()->get(PaymentFactories::class);
 
         foreach ($paymentFactories->getFactories() as $method => $factory) {
             yield $method => [$method];

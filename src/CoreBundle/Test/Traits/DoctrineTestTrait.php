@@ -15,6 +15,7 @@ namespace SolidInvoice\CoreBundle\Test\Traits;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use PHPUnit\Framework\Attributes\Before;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 
 /**
@@ -28,9 +29,7 @@ trait DoctrineTestTrait
 
     protected EntityManagerInterface $em;
 
-    /**
-     * @before
-     */
+    #[Before]
     public function setupDoctrine(): void
     {
         $this->registry = static::getContainer()->get('doctrine');

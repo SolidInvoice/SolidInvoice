@@ -15,6 +15,9 @@ namespace SolidInvoice\InstallBundle\Test;
 
 use DateTimeInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use PHPUnit\Framework\Attributes\After;
+use PHPUnit\Framework\Attributes\Before;
+use PHPUnit\Framework\Attributes\BeforeClass;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Test\Traits\SymfonyKernelTrait;
@@ -28,9 +31,7 @@ trait EnsureApplicationInstalled
 
     protected Company $company;
 
-    /**
-     * @before
-     */
+    #[Before]
     public function installApplication(): void
     {
         if (Configuration::isBooted() && ! Configuration::instance()->isPersistenceAvailable()) {
@@ -56,9 +57,7 @@ trait EnsureApplicationInstalled
         static::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
     }
 
-    /**
-     * @after
-     */
+    #[After]
     public function resetInstallation(): void
     {
         unset(
@@ -72,8 +71,8 @@ trait EnsureApplicationInstalled
 
     /**
      * @internal
-     * @beforeClass
      */
+    #[BeforeClass]
     public static function _resetDatabaseBeforeFirstTest(): void
     {
         ResetDatabaseManager::resetBeforeFirstTest(static::bootKernel());

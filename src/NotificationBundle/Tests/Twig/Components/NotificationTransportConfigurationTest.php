@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\NotificationBundle\Tests\Twig\Components;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
+use PHPUnit\Framework\Attributes\DataProvider;
 use SolidInvoice\CoreBundle\Test\LiveComponentTest;
 use SolidInvoice\NotificationBundle\Entity\TransportSetting;
 use SolidInvoice\NotificationBundle\Repository\TransportSettingRepository;
@@ -251,9 +252,7 @@ final class NotificationTransportConfigurationTest extends LiveComponentTest
         self::assertStringContainsString('Load By ID Test', $rendered);
     }
 
-    /**
-     * @dataProvider transportTypesProvider
-     */
+    #[DataProvider('transportTypesProvider')]
     public function testMultipleTransportTypes(string $transportName): void
     {
         $user = $this->getUser();

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InvoiceBundle\Tests\Action;
 
 use DateTimeImmutable;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Log\NullLogger;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
@@ -51,9 +52,7 @@ final class ViewTest extends KernelTestCase
 
     private const INVOICE_ID = '181aaf4a-0097-11ef-9b64-5a2cf21a5680';
 
-    /**
-     * @dataProvider invoiceStatusProvider
-     */
+    #[DataProvider('invoiceStatusProvider')]
     public function testView(InvoiceStatus $status): void
     {
         $request = Request::createFromGlobals();
@@ -191,7 +190,7 @@ final class ViewTest extends KernelTestCase
     /**
      * @return iterable<array{0: InvoiceStatus}>
      */
-    public function invoiceStatusProvider(): iterable
+    public static function invoiceStatusProvider(): iterable
     {
         foreach (InvoiceStatus::cases() as $status) {
             if ($status !== InvoiceStatus::New) {

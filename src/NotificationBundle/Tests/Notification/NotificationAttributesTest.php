@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\NotificationBundle\Tests\Notification;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ClientBundle\Notification\ClientCreateNotification;
 use SolidInvoice\InvoiceBundle\Notification\InvoiceStatusNotification;
@@ -29,9 +30,7 @@ use SolidInvoice\QuoteBundle\Notification\QuoteStatusNotification;
  */
 final class NotificationAttributesTest extends TestCase
 {
-    /**
-     * @dataProvider notificationClassProvider
-     */
+    #[DataProvider('notificationClassProvider')]
     public function testNotificationHasAsNotificationAttribute(string $class): void
     {
         $reflection = new \ReflectionClass($class);
@@ -40,9 +39,7 @@ final class NotificationAttributesTest extends TestCase
         self::assertCount(1, $attributes, sprintf('Class %s must have exactly one AsNotification attribute', $class));
     }
 
-    /**
-     * @dataProvider notificationClassProvider
-     */
+    #[DataProvider('notificationClassProvider')]
     public function testNotificationAttributeHasName(string $class): void
     {
         $attribute = $this->getNotificationAttribute($class);
@@ -50,9 +47,7 @@ final class NotificationAttributesTest extends TestCase
         self::assertNotEmpty($attribute->name, sprintf('Class %s must have a non-empty name', $class));
     }
 
-    /**
-     * @dataProvider notificationClassProvider
-     */
+    #[DataProvider('notificationClassProvider')]
     public function testNotificationAttributeHasTitle(string $class): void
     {
         $attribute = $this->getNotificationAttribute($class);
@@ -60,9 +55,7 @@ final class NotificationAttributesTest extends TestCase
         self::assertNotEmpty($attribute->title, sprintf('Class %s must have a non-empty title', $class));
     }
 
-    /**
-     * @dataProvider notificationClassProvider
-     */
+    #[DataProvider('notificationClassProvider')]
     public function testNotificationAttributeHasDescription(string $class): void
     {
         $attribute = $this->getNotificationAttribute($class);
@@ -70,9 +63,7 @@ final class NotificationAttributesTest extends TestCase
         self::assertNotEmpty($attribute->description, sprintf('Class %s must have a non-empty description', $class));
     }
 
-    /**
-     * @dataProvider notificationClassProvider
-     */
+    #[DataProvider('notificationClassProvider')]
     public function testNotificationAttributeHasIcon(string $class): void
     {
         $attribute = $this->getNotificationAttribute($class);
@@ -81,9 +72,7 @@ final class NotificationAttributesTest extends TestCase
         self::assertStringStartsWith('tabler:', $attribute->icon, sprintf('Icon for %s must be a Tabler icon', $class));
     }
 
-    /**
-     * @dataProvider notificationClassProvider
-     */
+    #[DataProvider('notificationClassProvider')]
     public function testNotificationAttributeHasCategory(string $class): void
     {
         $attribute = $this->getNotificationAttribute($class);
