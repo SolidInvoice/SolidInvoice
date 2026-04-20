@@ -13,7 +13,7 @@ invoice:
     tax: Tax
     discount: Discount
     title: 'Invoice #%id%'
-    notes: Notes
+    notes: Internal Notes
     terms: Terms
     client:
         choose: 'Choose a client'

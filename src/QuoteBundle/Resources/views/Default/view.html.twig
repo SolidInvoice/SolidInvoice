@@ -79,6 +79,28 @@
         {% block footer %}
             {{ parent() }}
 
+            {% if quote.notes is not empty or quote.clientNotes is not empty %}
+                <div class="row">
+                    {% if quote.notes is not empty %}
+                        <div class="col-3 no-print">
+                            <strong>{{ 'invoice.notes'|trans }}</strong>
+                            <p class="text-muted well well-sm no-shadow">
+                                {{ quote.notes }}
+                            </p>
+                        </div>
+                    {% endif %}
+
+                    {% if quote.clientNotes is not empty %}
+                        <div class="col-3">
+                            <strong>{{ 'Client Notes'|trans }}</strong>
+                            <p class="text-muted well well-sm no-shadow">
+                                {{ quote.clientNotes|nl2br }}
+                            </p>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endif %}
+
             <div class="row no-print">
                 <div class="col-12">
                     <div class="btn-group">
@@ -92,15 +114,3 @@
         {% endblock footer %}
     {% endembed %}
 {% endblock content %}
-{% block footer %}
-    {{ parent() }}
-
-    {% if quote.notes is not empty %}
-        <div class="col-6 no-print">
-            <strong>{{ 'quote.notes'|trans }}</strong>
-            <p class="text-muted well well-sm no-shadow">
-                {{ quote.notes }}
-            </p>
-        </div>
-    {% endif %}
-{% endblock footer %}

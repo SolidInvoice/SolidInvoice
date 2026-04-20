@@ -207,6 +207,10 @@ class Quote
     #[Groups(['quote_api:read', 'quote_api:write'])]
     private ?string $notes = null;
 
+    #[ORM\Column(name: 'client_notes', type: Types::TEXT, nullable: true)]
+    #[Groups(['quote_api:read', 'quote_api:write'])]
+    private ?string $clientNotes = null;
+
     #[ORM\Column(name: 'due', type: Types::DATE_IMMUTABLE, nullable: true)]
     #[Assert\Type(type: DateTimeInterface::class)]
     #[Groups(['quote_api:read', 'quote_api:write'])]
@@ -415,6 +419,17 @@ class Quote
     public function setNotes(?string $notes): self
     {
         $this->notes = $notes;
+        return $this;
+    }
+
+    public function getClientNotes(): ?string
+    {
+        return $this->clientNotes;
+    }
+
+    public function setClientNotes(?string $clientNotes): self
+    {
+        $this->clientNotes = $clientNotes;
         return $this;
     }
 

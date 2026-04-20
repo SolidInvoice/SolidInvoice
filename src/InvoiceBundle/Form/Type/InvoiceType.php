@@ -92,7 +92,8 @@ class InvoiceType extends AbstractType
         $builder->add('invoiceId', null, ['data' => $data]);
 
         $builder->add('terms');
-        $builder->add('notes', null, ['help' => 'Notes will not be visible to the client']);
+        $builder->add('notes', null, ['help' => 'Notes will not be visible to the client', 'label' => 'Internal Notes']);
+        $builder->add('clientNotes', null, ['label' => 'External Notes', 'help' => 'Notes will be visible to the client']);
         $builder->add('total', HiddenMoneyType::class, ['currency' => $options['currency']]);
         $builder->add('baseTotal', HiddenMoneyType::class, ['currency' => $options['currency']]);
         $builder->add('tax', HiddenMoneyType::class, ['currency' => $options['currency']]);

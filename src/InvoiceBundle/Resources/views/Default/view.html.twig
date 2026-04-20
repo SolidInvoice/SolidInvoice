@@ -75,14 +75,28 @@
         {% block footer %}
             {{ parent() }}
 
-            {% if invoice.notes is not empty %}
-                <div class="col-6 no-print">
-                    <strong>{{ 'invoice.notes'|trans }}</strong>
-                    <p class="text-muted well well-sm no-shadow">
-                        {{ invoice.notes }}
-                    </p>
+            {% if invoice.notes is not empty or invoice.clientNotes is not empty %}
+                <div class="row">
+                    {% if invoice.notes is not empty %}
+                        <div class="col-3 no-print">
+                            <strong>{{ 'Internal Notes'|trans }}</strong>
+                            <p class="text-muted well well-sm no-shadow">
+                                {{ invoice.notes }}
+                            </p>
+                        </div>
+                    {% endif %}
+
+                    {% if invoice.clientNotes is not empty %}
+                        <div class="col-3">
+                            <strong>{{ 'Client Notes'|trans }}</strong>
+                            <p class="text-muted well well-sm no-shadow">
+                                {{ invoice.clientNotes|nl2br }}
+                            </p>
+                        </div>
+                    {% endif %}
                 </div>
             {% endif %}
+
 
             <div class="row no-print">
                 <div class="col-12">
