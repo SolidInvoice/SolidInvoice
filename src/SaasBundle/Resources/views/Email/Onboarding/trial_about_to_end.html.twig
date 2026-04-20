@@ -1,7 +1,83 @@
-{% extends '@SolidInvoiceCore/Layout/Email/base.html.twig' %}
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends '@SolidInvoiceSaas/Email/Onboarding/_layout.html.twig' %}
 
 {% block title %}{{ 'onboarding.trial_about_to_end.subject'|trans({}, 'email') }}{% endblock %}
 
 {% block content %}
-    <p>Your trial is about to end.</p>
+    {% set days_remaining = date('now') < trial_end ? date('now').diff(trial_end).days : 0 %}
+
+    <span class="onb-eyebrow danger">{{ 'onboarding.trial_about_to_end.eyebrow'|trans({}, 'email') }}</span>
+    <h1 class="onb-h1">{{ 'onboarding.trial_about_to_end.heading'|trans({'%days%': days_remaining}, 'email') }}</h1>
+    <p class="onb-p lede">{{ 'onboarding.trial_about_to_end.lede'|trans({}, 'email') }}</p>
+
+    {# Countdown urgency box #}
+    <div class="onb-urgency">
+        <div class="onb-days">{{ '%02d'|format(days_remaining) }}</div>
+        <div class="onb-days-label">{{ 'onboarding.trial_about_to_end.days_label'|trans({}, 'email') }}</div>
+        <div class="onb-days-sub">
+            {{ 'onboarding.trial_about_to_end.trial_ends'|trans({'%date%': trial_end|date('F j, Y \\a\\t g:ia')}, 'email')|raw }}
+        </div>
+    </div>
+
+    <h2 class="onb-h2">{{ 'onboarding.trial_about_to_end.usage_heading'|trans({}, 'email') }}</h2>
+
+    {% apply inky_to_html %}
+        <row>
+            <columns small="4" large="4" class="onb-stack" style="padding: 5px;">
+                <div class="onb-usage">
+                    <div class="onb-usage-big">&mdash;</div>
+                    <div class="onb-usage-label">{{ 'onboarding.trial_about_to_end.usage.clients'|trans({}, 'email') }}</div>
+                </div>
+            </columns>
+            <columns small="4" large="4" class="onb-stack" style="padding: 5px;">
+                <div class="onb-usage">
+                    <div class="onb-usage-big">&mdash;</div>
+                    <div class="onb-usage-label">{{ 'onboarding.trial_about_to_end.usage.invoices'|trans({}, 'email') }}</div>
+                </div>
+            </columns>
+            <columns small="4" large="4" class="onb-stack" style="padding: 5px;">
+                <div class="onb-usage">
+                    <div class="onb-usage-big" style="color: #2e963a;">&mdash;</div>
+                    <div class="onb-usage-label">{{ 'onboarding.trial_about_to_end.usage.collected'|trans({}, 'email') }}</div>
+                </div>
+            </columns>
+        </row>
+    {% endapply %}
+
+    <p class="onb-p" style="margin-top: 20px;">{{ 'onboarding.trial_about_to_end.body_intro'|trans({}, 'email') }}</p>
+
+    <h2 class="onb-h2">{{ 'onboarding.trial_about_to_end.if_not_heading'|trans({}, 'email') }}</h2>
+    <ul style="margin: 8px 0 24px 0; Margin: 8px 0 24px 0; padding: 0 0 0 20px; font-size: 14px; line-height: 1.75; color: #475569;">
+        <li>{{ 'onboarding.trial_about_to_end.if_not.1'|trans({}, 'email')|raw }}</li>
+        <li>{{ 'onboarding.trial_about_to_end.if_not.2'|trans({}, 'email') }}</li>
+        <li>{{ 'onboarding.trial_about_to_end.if_not.3'|trans({}, 'email') }}</li>
+        <li>{{ 'onboarding.trial_about_to_end.if_not.4'|trans({}, 'email') }}</li>
+    </ul>
+
+    {# Primary + secondary CTAs — inky columns for mobile stacking #}
+    {% apply inky_to_html %}
+        <row class="collapse">
+            <columns small="12" large="12">
+                <center>
+                    <a href="{{ url('_dashboard') }}" class="onb-cta" rel="external" target="_blank" style="margin: 0 6px;">
+                        {{ 'onboarding.trial_about_to_end.cta.upgrade'|trans({}, 'email') }} &rarr;
+                    </a>
+                    <a href="{{ url('_dashboard') }}" class="onb-cta secondary" rel="external" target="_blank" style="margin: 0 6px;">
+                        {{ 'onboarding.trial_about_to_end.cta.free'|trans({}, 'email') }} &rarr;
+                    </a>
+                </center>
+            </columns>
+        </row>
+    {% endapply %}
+
+    <p class="onb-fine-print" style="margin-top: 20px;">{{ 'onboarding.trial_about_to_end.fine_print'|trans({}, 'email') }}</p>
 {% endblock %}
+
+{% block ps %}{{ 'onboarding.trial_about_to_end.ps'|trans({}, 'email')|raw }}{% endblock %}

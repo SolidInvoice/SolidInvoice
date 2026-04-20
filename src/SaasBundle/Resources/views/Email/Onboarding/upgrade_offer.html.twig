@@ -1,7 +1,96 @@
-{% extends '@SolidInvoiceCore/Layout/Email/base.html.twig' %}
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends '@SolidInvoiceSaas/Email/Onboarding/_layout.html.twig' %}
 
 {% block title %}{{ 'onboarding.upgrade_offer.subject'|trans({}, 'email') }}{% endblock %}
 
 {% block content %}
-    <p>Ready for unlimited invoicing? A special offer inside.</p>
+    <span class="onb-eyebrow">{{ 'onboarding.upgrade_offer.eyebrow'|trans({}, 'email') }}</span>
+    <h1 class="onb-h1">{{ 'onboarding.upgrade_offer.heading'|trans({}, 'email') }}</h1>
+    <p class="onb-p lede">{{ 'onboarding.upgrade_offer.lede'|trans({}, 'email')|raw }}</p>
+
+    {# Pricing card #}
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" class="onb-pricing" style="margin: 24px 0 8px 0; Margin: 24px 0 8px 0;">
+        <tr>
+            <td style="padding: 0;">
+                <div class="onb-plan-name">{{ plan.name|default('SolidInvoice Pro') }}</div>
+                <div>
+                    <span class="onb-price">$12</span>
+                    <span class="onb-price-per">{{ 'onboarding.upgrade_offer.per'|trans({}, 'email') }}</span>
+                    <span class="onb-price-was">$19</span>
+                    <span class="onb-save-pill">{{ 'onboarding.upgrade_offer.save'|trans({}, 'email') }}</span>
+                </div>
+                <div style="font-size: 13px; color: #64748b; margin-top: 4px; Margin-top: 4px;">
+                    {{ 'onboarding.upgrade_offer.locked_in'|trans({}, 'email') }}
+                </div>
+                <ul class="onb-pricing-list">
+                    <li><span class="onb-check-dot">&#10003;</span>{{ 'onboarding.upgrade_offer.feature.1'|trans({}, 'email') }}</li>
+                    <li><span class="onb-check-dot">&#10003;</span>{{ 'onboarding.upgrade_offer.feature.2'|trans({}, 'email') }}</li>
+                    <li><span class="onb-check-dot">&#10003;</span>{{ 'onboarding.upgrade_offer.feature.3'|trans({}, 'email') }}</li>
+                    <li><span class="onb-check-dot">&#10003;</span>{{ 'onboarding.upgrade_offer.feature.4'|trans({}, 'email') }}</li>
+                    <li><span class="onb-check-dot">&#10003;</span>{{ 'onboarding.upgrade_offer.feature.5'|trans({}, 'email') }}</li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+
+    <h2 class="onb-h2">{{ 'onboarding.upgrade_offer.compare_heading'|trans({}, 'email') }}</h2>
+
+    <table class="onb-compare" role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+        <thead>
+            <tr>
+                <th>&nbsp;</th>
+                <th class="center">{{ 'onboarding.upgrade_offer.compare.free'|trans({}, 'email') }}</th>
+                <th class="pro center">{{ 'onboarding.upgrade_offer.compare.pro'|trans({}, 'email') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ 'onboarding.upgrade_offer.compare.row.invoices'|trans({}, 'email') }}</td>
+                <td class="center">5</td>
+                <td class="pro-cell">{{ 'onboarding.upgrade_offer.compare.unlimited'|trans({}, 'email') }}</td>
+            </tr>
+            <tr>
+                <td>{{ 'onboarding.upgrade_offer.compare.row.clients'|trans({}, 'email') }}</td>
+                <td class="center">10</td>
+                <td class="pro-cell">{{ 'onboarding.upgrade_offer.compare.unlimited'|trans({}, 'email') }}</td>
+            </tr>
+            <tr>
+                <td>{{ 'onboarding.upgrade_offer.compare.row.recurring'|trans({}, 'email') }}</td>
+                <td class="center" style="color: #94a3b8;">&#10005;</td>
+                <td class="center" style="color: #2e963a;">&#10003;</td>
+            </tr>
+            <tr>
+                <td>{{ 'onboarding.upgrade_offer.compare.row.reminders'|trans({}, 'email') }}</td>
+                <td class="center" style="color: #94a3b8;">&#10005;</td>
+                <td class="center" style="color: #2e963a;">&#10003;</td>
+            </tr>
+            <tr>
+                <td>{{ 'onboarding.upgrade_offer.compare.row.portal'|trans({}, 'email') }}</td>
+                <td class="center" style="color: #94a3b8;">&#10005;</td>
+                <td class="center" style="color: #2e963a;">&#10003;</td>
+            </tr>
+            <tr>
+                <td>{{ 'onboarding.upgrade_offer.compare.row.team'|trans({}, 'email') }}</td>
+                <td class="center">1</td>
+                <td class="pro-cell">{{ 'onboarding.upgrade_offer.compare.up_to_10'|trans({}, 'email') }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="onb-cta-wrapper">
+        <a href="{{ url('_dashboard') }}" class="onb-cta" rel="external" target="_blank">
+            {{ 'onboarding.upgrade_offer.cta'|trans({}, 'email') }} &rarr;
+        </a>
+    </div>
+
+    <p class="onb-fine-print">{{ 'onboarding.upgrade_offer.fine_print'|trans({}, 'email') }}</p>
 {% endblock %}
+
+{% block ps %}{{ 'onboarding.upgrade_offer.ps'|trans({}, 'email')|raw }}{% endblock %}

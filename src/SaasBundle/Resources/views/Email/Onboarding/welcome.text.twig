@@ -1,1 +1,18 @@
-Welcome to SolidInvoice.
+{{ 'onboarding.welcome.heading'|trans({'%name%': user.firstName|default(user.email)}, 'email') }}
+{{ '='|repeat(60) }}
+
+{{ 'onboarding.welcome.lede'|trans({}, 'email') }}
+
+{{ 'onboarding.welcome.intro'|trans({}, 'email') }}
+
+* {{ 'onboarding.welcome.feature.clients.title'|trans({}, 'email') }} — {{ 'onboarding.welcome.feature.clients.desc'|trans({}, 'email') }}
+* {{ 'onboarding.welcome.feature.invoices.title'|trans({}, 'email') }} — {{ 'onboarding.welcome.feature.invoices.desc'|trans({}, 'email') }}
+* {{ 'onboarding.welcome.feature.payments.title'|trans({}, 'email') }} — {{ 'onboarding.welcome.feature.payments.desc'|trans({}, 'email') }}
+* {{ 'onboarding.welcome.feature.dashboard.title'|trans({}, 'email') }} — {{ 'onboarding.welcome.feature.dashboard.desc'|trans({}, 'email') }}
+
+{{ 'onboarding.welcome.closing'|trans({}, 'email') }}
+
+{{ 'onboarding.welcome.cta'|trans({}, 'email') }}: {{ url('_dashboard') }}
+
+{{ 'onboarding.signature.greeting'|trans({}, 'email') }}
+{{ 'onboarding.signature.team'|trans({}, 'email') }}

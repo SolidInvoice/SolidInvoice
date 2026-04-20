@@ -1,7 +1,75 @@
-{% extends '@SolidInvoiceCore/Layout/Email/base.html.twig' %}
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends '@SolidInvoiceSaas/Email/Onboarding/_layout.html.twig' %}
 
 {% block title %}{{ 'onboarding.turn_invoices_into_payments.subject'|trans({}, 'email') }}{% endblock %}
 
 {% block content %}
-    <p>Turn invoices into payments.</p>
+    <span class="onb-eyebrow">{{ 'onboarding.turn_invoices_into_payments.eyebrow'|trans({}, 'email') }}</span>
+    <h1 class="onb-h1">{{ 'onboarding.turn_invoices_into_payments.heading'|trans({}, 'email') }}</h1>
+    <p class="onb-p lede">{{ 'onboarding.turn_invoices_into_payments.lede'|trans({}, 'email') }}</p>
+
+    {# Payment methods grid — 4 tiles, stack in mobile #}
+    {% apply inky_to_html %}
+        <row>
+            <columns small="6" large="3" class="onb-stack" style="padding: 5px;">
+                <div class="onb-pay-tile">
+                    <div class="onb-pay-logo" style="color: #635BFF;">stripe</div>
+                    <div class="onb-pay-name">{{ 'onboarding.turn_invoices_into_payments.method.cards'|trans({}, 'email') }}</div>
+                </div>
+            </columns>
+            <columns small="6" large="3" class="onb-stack" style="padding: 5px;">
+                <div class="onb-pay-tile">
+                    <div class="onb-pay-logo" style="color: #003087;">PayPal</div>
+                    <div class="onb-pay-name">{{ 'onboarding.turn_invoices_into_payments.method.wallet'|trans({}, 'email') }}</div>
+                </div>
+            </columns>
+            <columns small="6" large="3" class="onb-stack" style="padding: 5px;">
+                <div class="onb-pay-tile">
+                    <div class="onb-pay-logo">ACH</div>
+                    <div class="onb-pay-name">{{ 'onboarding.turn_invoices_into_payments.method.bank'|trans({}, 'email') }}</div>
+                </div>
+            </columns>
+            <columns small="6" large="3" class="onb-stack" style="padding: 5px;">
+                <div class="onb-pay-tile">
+                    <div class="onb-pay-logo">SEPA</div>
+                    <div class="onb-pay-name">{{ 'onboarding.turn_invoices_into_payments.method.eu_bank'|trans({}, 'email') }}</div>
+                </div>
+            </columns>
+        </row>
+    {% endapply %}
+
+    {# Callout: invoices settle faster #}
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" class="onb-callout">
+        <tr>
+            <td width="54" style="vertical-align: middle; padding-right: 14px;">
+                <span class="onb-callout-icon">&#9889;</span>
+            </td>
+            <td style="vertical-align: middle; line-height: 1.5;">
+                <div class="onb-callout-title">{{ 'onboarding.turn_invoices_into_payments.callout.title'|trans({}, 'email') }}</div>
+                <div class="onb-callout-sub">{{ 'onboarding.turn_invoices_into_payments.callout.sub'|trans({}, 'email') }}</div>
+            </td>
+        </tr>
+    </table>
+
+    <h2 class="onb-h2">{{ 'onboarding.turn_invoices_into_payments.how_heading'|trans({}, 'email') }}</h2>
+    <ol style="margin: 10px 0 24px 0; Margin: 10px 0 24px 0; padding: 0 0 0 20px; font-size: 14px; line-height: 1.75; color: #475569;">
+        <li>{{ 'onboarding.turn_invoices_into_payments.how.1'|trans({}, 'email')|raw }}</li>
+        <li>{{ 'onboarding.turn_invoices_into_payments.how.2'|trans({}, 'email')|raw }}</li>
+        <li>{{ 'onboarding.turn_invoices_into_payments.how.3'|trans({}, 'email')|raw }}</li>
+    </ol>
+
+    <div class="onb-cta-wrapper">
+        <a href="{{ url('_payment_settings_index') }}" class="onb-cta" rel="external" target="_blank">
+            {{ 'onboarding.turn_invoices_into_payments.cta'|trans({}, 'email') }} &rarr;
+        </a>
+    </div>
 {% endblock %}
+
+{% block ps %}{{ 'onboarding.turn_invoices_into_payments.ps'|trans({}, 'email')|raw }}{% endblock %}

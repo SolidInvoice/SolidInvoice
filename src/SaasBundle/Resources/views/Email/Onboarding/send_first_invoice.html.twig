@@ -1,7 +1,106 @@
-{% extends '@SolidInvoiceCore/Layout/Email/base.html.twig' %}
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends '@SolidInvoiceSaas/Email/Onboarding/_layout.html.twig' %}
 
 {% block title %}{{ 'onboarding.send_first_invoice.subject'|trans({}, 'email') }}{% endblock %}
 
 {% block content %}
-    <p>Send your first invoice today.</p>
+    <span class="onb-eyebrow">{{ 'onboarding.send_first_invoice.eyebrow'|trans({}, 'email') }}</span>
+    <h1 class="onb-h1">{{ 'onboarding.send_first_invoice.heading'|trans({}, 'email') }}</h1>
+    <p class="onb-p lede">{{ 'onboarding.send_first_invoice.lede'|trans({}, 'email') }}</p>
+
+    {# Mini invoice preview #}
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
+           style="border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; margin: 20px 0; Margin: 20px 0; background: #ffffff;">
+        <tr>
+            <td style="padding: 22px 22px 16px 22px;">
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                    <tr>
+                        <td style="vertical-align: top;">
+                            <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #64748b;">{{ 'onboarding.send_first_invoice.mock.label'|trans({}, 'email') }}</div>
+                            <div style="font-size: 18px; font-weight: 700; color: #1e293b; font-family: monospace; margin-top: 2px;">#INV-0001</div>
+                        </td>
+                        <td align="right" style="vertical-align: top;">
+                            <span style="display: inline-block; padding: 4px 10px; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; background: #fff8e1; color: #f0a015; border-radius: 999px;">
+                                {{ 'onboarding.send_first_invoice.mock.status_sent'|trans({}, 'email') }}
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td style="border-top: 1px solid #f1f5f9; padding: 14px 22px;">
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                    <tr>
+                        <td style="width: 50%; vertical-align: top; padding-right: 10px;">
+                            <div style="font-size: 10px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">{{ 'onboarding.send_first_invoice.mock.billed_to'|trans({}, 'email') }}</div>
+                            <div style="font-size: 12px; color: #1e293b; line-height: 1.4; margin-top: 4px;">
+                                <b>{{ 'onboarding.send_first_invoice.mock.client_name'|trans({}, 'email') }}</b><br />
+                                {{ 'onboarding.send_first_invoice.mock.client_email'|trans({}, 'email') }}
+                            </div>
+                        </td>
+                        <td style="width: 50%; vertical-align: top; padding-left: 10px;">
+                            <div style="font-size: 10px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">{{ 'onboarding.send_first_invoice.mock.due'|trans({}, 'email') }}</div>
+                            <div style="font-size: 12px; color: #1e293b; line-height: 1.4; margin-top: 4px;">
+                                <b>{{ 'onboarding.send_first_invoice.mock.due_date'|trans({}, 'email') }}</b><br />
+                                {{ 'onboarding.send_first_invoice.mock.due_terms'|trans({}, 'email') }}
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td style="border-top: 1px solid #f1f5f9; padding: 10px 22px 0 22px;">
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="font-size: 12px;">
+                    <tr>
+                        <th align="left" style="font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; padding: 8px 0;">{{ 'onboarding.send_first_invoice.mock.col_desc'|trans({}, 'email') }}</th>
+                        <th align="right" style="font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; padding: 8px 0;">{{ 'onboarding.send_first_invoice.mock.col_qty'|trans({}, 'email') }}</th>
+                        <th align="right" style="font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; padding: 8px 0;">{{ 'onboarding.send_first_invoice.mock.col_rate'|trans({}, 'email') }}</th>
+                        <th align="right" style="font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; padding: 8px 0;">{{ 'onboarding.send_first_invoice.mock.col_amount'|trans({}, 'email') }}</th>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 13px; color: #1e293b; padding: 10px 0; border-top: 1px solid #f1f5f9;">{{ 'onboarding.send_first_invoice.mock.item1'|trans({}, 'email') }}</td>
+                        <td align="right" style="font-family: monospace; padding: 10px 0; border-top: 1px solid #f1f5f9; color: #1e293b;">6</td>
+                        <td align="right" style="font-family: monospace; padding: 10px 0; border-top: 1px solid #f1f5f9; color: #1e293b;">$120</td>
+                        <td align="right" style="font-family: monospace; padding: 10px 0; border-top: 1px solid #f1f5f9; color: #1e293b;">$720</td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 13px; color: #1e293b; padding: 10px 0; border-top: 1px solid #f1f5f9;">{{ 'onboarding.send_first_invoice.mock.item2'|trans({}, 'email') }}</td>
+                        <td align="right" style="font-family: monospace; padding: 10px 0; border-top: 1px solid #f1f5f9; color: #1e293b;">1</td>
+                        <td align="right" style="font-family: monospace; padding: 10px 0; border-top: 1px solid #f1f5f9; color: #1e293b;">$1,800</td>
+                        <td align="right" style="font-family: monospace; padding: 10px 0; border-top: 1px solid #f1f5f9; color: #1e293b;">$1,800</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 14px 22px 20px 22px;">
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                    <tr>
+                        <td style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.08em;">{{ 'onboarding.send_first_invoice.mock.total_due'|trans({}, 'email') }}</td>
+                        <td align="right" style="font-family: monospace; font-size: 22px; font-weight: 700; color: #2e963a; letter-spacing: -0.01em;">$2,520.00</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <h2 class="onb-h2">{{ 'onboarding.send_first_invoice.included_heading'|trans({}, 'email') }}</h2>
+    <p class="onb-p">{{ 'onboarding.send_first_invoice.included_body'|trans({}, 'email') }}</p>
+
+    <div class="onb-cta-wrapper">
+        <a href="{{ url('_invoices_create') }}" class="onb-cta" rel="external" target="_blank">
+            {{ 'onboarding.send_first_invoice.cta'|trans({}, 'email') }} &rarr;
+        </a>
+    </div>
 {% endblock %}
+
+{% block ps %}{{ 'onboarding.send_first_invoice.ps'|trans({}, 'email')|raw }}{% endblock %}
