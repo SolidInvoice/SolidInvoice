@@ -17,7 +17,6 @@ use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 use function array_values;
 use function count;
 use function iterator_to_array;
-use function usort;
 
 final class OnboardingStepRegistry
 {
@@ -30,18 +29,10 @@ final class OnboardingStepRegistry
      * @param iterable<OnboardingEmailStepInterface> $steps
      */
     public function __construct(
-        #[AutowireIterator(OnboardingEmailStepInterface::DI_TAG)]
+        #[AutowireIterator(OnboardingEmailStepInterface::DI_TAG, defaultPriorityMethod: 'priority')]
         iterable $steps,
     ) {
-        $sorted = iterator_to_array($steps, false);
-
-        usort(
-            $sorted,
-            static fn (OnboardingEmailStepInterface $a, OnboardingEmailStepInterface $b): int
-                => $b::priority() <=> $a::priority() ?: $a::key() <=> $b::key(),
-        );
-
-        $this->steps = array_values($sorted);
+        $this->steps = array_values(iterator_to_array($steps, false));
     }
 
     /**
