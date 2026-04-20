@@ -20,6 +20,8 @@ use DateTimeInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Faker\Factory;
 use Faker\Generator;
+use PHPUnit\Framework\Attributes\Before;
+use PHPUnit\Framework\Attributes\BeforeClass;
 use SolidInvoice\ApiBundle\ApiTokenManager;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
@@ -57,9 +59,7 @@ abstract class ApiTestCase extends ApiPlatformTestCase
      */
     abstract protected function getResourceClass(): string;
 
-    /**
-     * @before
-     */
+    #[Before]
     public function installApplication(): void
     {
         if (Configuration::isBooted() && ! Configuration::instance()->isPersistenceAvailable()) {
@@ -87,8 +87,8 @@ abstract class ApiTestCase extends ApiPlatformTestCase
 
     /**
      * @internal
-     * @beforeClass
      */
+    #[BeforeClass]
     public static function _resetDatabaseBeforeFirstTest(): void
     {
         ResetDatabaseManager::resetBeforeFirstTest(static::bootKernel());

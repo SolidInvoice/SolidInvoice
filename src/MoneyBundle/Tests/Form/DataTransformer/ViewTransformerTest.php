@@ -17,6 +17,7 @@ use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\MoneyBundle\Form\DataTransformer\ViewTransformer;
 
@@ -32,9 +33,7 @@ final class ViewTransformerTest extends TestCase
         $this->viewTransformer = new ViewTransformer();
     }
 
-    /**
-     * @dataProvider reverseTransformDataProvider
-     */
+    #[DataProvider('reverseTransformDataProvider')]
     public function testReverseTransform(?float $value, int $expected): void
     {
         $result = $this->viewTransformer->reverseTransform($value);
@@ -47,8 +46,8 @@ final class ViewTransformerTest extends TestCase
      * @throws MathException
      * @throws NumberFormatException
      * @throws RoundingNecessaryException
-     * @dataProvider transformDataProvider
      */
+    #[DataProvider('transformDataProvider')]
     public function testTransformsMoneyObjectToFloat(BigNumber|string|int|float|null $money, float | int $expected): void
     {
         $value = $this->viewTransformer->transform($money);
@@ -59,7 +58,7 @@ final class ViewTransformerTest extends TestCase
     /**
      * @return iterable<array<float|int|null>>
      */
-    public function reverseTransformDataProvider(): iterable
+    public static function reverseTransformDataProvider(): iterable
     {
         yield [null, 0];
         yield [10, 1000];
@@ -80,7 +79,7 @@ final class ViewTransformerTest extends TestCase
      * @return iterable<array<string|float|null>>
      * @throws MathException
      */
-    public function transformDataProvider(): iterable
+    public static function transformDataProvider(): iterable
     {
         yield [null, 0.0];
         yield [1.0, 0.01];

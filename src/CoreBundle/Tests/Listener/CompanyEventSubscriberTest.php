@@ -21,6 +21,7 @@ use Doctrine\ORM\Query\Filter\SQLFilter;
 use Doctrine\ORM\Query\FilterCollection;
 use Doctrine\Persistence\ManagerRegistry;
 use Mockery as M;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
@@ -121,9 +122,7 @@ final class CompanyEventSubscriberTest extends TestCase
         self::assertSame($company->getId()->toHex(), $filter->getParameter('companyId'));
     }
 
-    /**
-     * @dataProvider provideCompanySelectionRoutes
-     */
+    #[DataProvider('provideCompanySelectionRoutes')]
     public function testItContinueTheRequestWhenACompanyIsNotSetAndTheUserIsOnACompanySelectPage(string $route): void
     {
         // Test that it continues the request when a company is not set and the user is on a company select page

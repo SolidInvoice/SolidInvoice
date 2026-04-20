@@ -17,6 +17,7 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use Money\Currency;
 use Money\Money;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatter;
 use SolidInvoice\SettingsBundle\SystemConfig;
@@ -25,9 +26,7 @@ class MoneyFormatterTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    /**
-     * @dataProvider localeProvider
-     */
+    #[DataProvider('localeProvider')]
     public function testFormatCurrencyWithDefaultValues(string $locale, string $currency, string $format): void
     {
         $systemConfig = $this->getSystemConfigMock($currency);
@@ -39,9 +38,7 @@ class MoneyFormatterTest extends TestCase
         self::assertSame($format, $formatter->format($money));
     }
 
-    /**
-     * @dataProvider symbolProvider
-     */
+    #[DataProvider('symbolProvider')]
     public function testGetCurrencySymbol(string $locale, string $currency, string $symbol): void
     {
         $systemConfig = $this->getSystemConfigMock($currency);
@@ -52,9 +49,7 @@ class MoneyFormatterTest extends TestCase
         self::assertSame($symbol, $formatter->getCurrencySymbol($currency));
     }
 
-    /**
-     * @dataProvider thousandSeparatorProvider
-     */
+    #[DataProvider('thousandSeparatorProvider')]
     public function testGetThousandSeparator(string $locale, string $separator): void
     {
         $systemConfig = $this->getSystemConfigMock();
@@ -64,9 +59,7 @@ class MoneyFormatterTest extends TestCase
         self::assertSame($separator, $formatter->getThousandSeparator());
     }
 
-    /**
-     * @dataProvider decimalSeparatorProvider
-     */
+    #[DataProvider('decimalSeparatorProvider')]
     public function testGetDecimalSeparator(string $locale, string $separator): void
     {
         $systemConfig = $this->getSystemConfigMock();
@@ -76,9 +69,7 @@ class MoneyFormatterTest extends TestCase
         self::assertSame($separator, $formatter->getDecimalSeparator());
     }
 
-    /**
-     * @dataProvider patternProvider
-     */
+    #[DataProvider('patternProvider')]
     public function testGetPattern(string $locale, string $pattern): void
     {
         $systemConfig = $this->getSystemConfigMock();
@@ -91,7 +82,7 @@ class MoneyFormatterTest extends TestCase
     /**
      * @return array<array<string>>
      */
-    public function localeProvider(): array
+    public static function localeProvider(): array
     {
         return [
             [
@@ -112,7 +103,7 @@ class MoneyFormatterTest extends TestCase
     /**
      * @return array<array<string>>
      */
-    public function symbolProvider(): array
+    public static function symbolProvider(): array
     {
         return [
             [
@@ -133,7 +124,7 @@ class MoneyFormatterTest extends TestCase
     /**
      * @return array<array<string>>
      */
-    public function thousandSeparatorProvider(): array
+    public static function thousandSeparatorProvider(): array
     {
         return [
             [
@@ -154,7 +145,7 @@ class MoneyFormatterTest extends TestCase
     /**
      * @return array<array<string>>
      */
-    public function decimalSeparatorProvider(): array
+    public static function decimalSeparatorProvider(): array
     {
         return [
             [
@@ -175,7 +166,7 @@ class MoneyFormatterTest extends TestCase
     /**
      * @return array<array<string>>
      */
-    public function patternProvider(): array
+    public static function patternProvider(): array
     {
         return [
             [

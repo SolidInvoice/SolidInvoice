@@ -15,6 +15,7 @@ namespace SolidInvoice\SaasBundle\Tests\EventSubscriber;
 
 use DateTimeImmutable;
 use Mockery as M;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Clock\ClockInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
@@ -70,9 +71,7 @@ final class RequestListenerTest extends KernelTestCase
         self::assertNull($event->getResponse());
     }
 
-    /**
-     * @dataProvider provideSkippedRoutes
-     */
+    #[DataProvider('provideSkippedRoutes')]
     public function testOnRequestWithSkippedRoute(string $route): void
     {
         $listener = $this->createListener(new User());

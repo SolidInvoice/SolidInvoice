@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\NotificationBundle\Tests\Twig\Components;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use SolidInvoice\CoreBundle\Test\LiveComponentTest;
 use SolidInvoice\NotificationBundle\Entity\TransportSetting;
 use SolidInvoice\NotificationBundle\Twig\Components\NotificationMarketplace;
@@ -521,9 +522,7 @@ final class NotificationMarketplaceTest extends LiveComponentTest
         self::assertStringContainsString('Twilio', $rendered);
     }
 
-    /**
-     * @dataProvider popularIntegrationsProvider
-     */
+    #[DataProvider('popularIntegrationsProvider')]
     public function testPopularIntegrations(string $integrationName, string $tab): void
     {
         $component = $this->createLiveComponent(

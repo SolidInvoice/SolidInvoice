@@ -11,16 +11,16 @@
 
 namespace SolidInvoice\InstallBundle\Tests\Config;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\InstallBundle\Config\DatabaseConfig;
 
 final class DatabaseConfigTest extends TestCase
 {
     /**
-     * @dataProvider paramsToDatabaseUrlProvider
-     *
      * @param array<string, string> $params
      */
+    #[DataProvider('paramsToDatabaseUrlProvider')]
     public function testParamsToDatabaseUrl(array $params, string $expected, string $expectedExceptionMessage = ''): void
     {
         if ($expectedExceptionMessage !== '') {

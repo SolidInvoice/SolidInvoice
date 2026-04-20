@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\InstallBundle\Tests\Functional;
 
 use Doctrine\DBAL\Connection;
+use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\AppRequirements;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Panther\Client;
@@ -22,9 +23,7 @@ use Zenstruck\Browser\PantherBrowser;
 use Zenstruck\Browser\Test\HasBrowser;
 use function Zenstruck\Foundry\faker;
 
-/**
- * @group installation
- */
+#[Group('installation')]
 final class InstallationTest extends PantherTestCase
 {
     use HasBrowser;

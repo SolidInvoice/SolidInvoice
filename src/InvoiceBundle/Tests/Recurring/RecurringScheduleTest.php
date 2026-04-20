@@ -12,6 +12,7 @@
 namespace SolidInvoice\InvoiceBundle\Tests\Recurring;
 
 use DateTimeInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\Clock\ClockInterface;
 use SolidInvoice\CronBundle\Enum\ScheduleEndType;
@@ -24,9 +25,7 @@ use function iterator_to_array;
 
 final class RecurringScheduleTest extends TestCase
 {
-    /**
-     * @dataProvider getEndDateDataProvider
-     */
+    #[DataProvider('getEndDateDataProvider')]
     public function testGetEndDate(RecurringOptions $options, ?string $expected): void
     {
         $scheduleFormatter = new RecurringSchedule('en', $this->createMock(ClockInterface::class));
@@ -36,9 +35,8 @@ final class RecurringScheduleTest extends TestCase
 
     /**
      * @param list<string> $expected
-     *
-     * @dataProvider getOccurrencesProvider
      */
+    #[DataProvider('getOccurrencesProvider')]
     public function testGetOccurrences(RecurringOptions $options, array $expected): void
     {
         $scheduleFormatter = new RecurringSchedule('en', new MockClock('2024-01-01'));

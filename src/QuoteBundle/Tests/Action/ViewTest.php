@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\QuoteBundle\Tests\Action;
 
 use DateTimeImmutable;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Log\NullLogger;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
@@ -46,9 +47,7 @@ final class ViewTest extends KernelTestCase
 
     private const QUOTE_ID = '181aaf4a-0097-11ef-9b64-5a2cf21a5680';
 
-    /**
-     * @dataProvider quoteStatusProvider
-     */
+    #[DataProvider('quoteStatusProvider')]
     public function testView(QuoteStatus $status): void
     {
         $request = Request::createFromGlobals();
@@ -108,7 +107,7 @@ final class ViewTest extends KernelTestCase
     /**
      * @return iterable<array{0: QuoteStatus}>
      */
-    public function quoteStatusProvider(): iterable
+    public static function quoteStatusProvider(): iterable
     {
         foreach (QuoteStatus::cases() as $status) {
             if ($status !== QuoteStatus::New) {
