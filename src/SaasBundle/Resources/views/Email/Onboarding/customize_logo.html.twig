@@ -1,7 +1,94 @@
-{% extends '@SolidInvoiceCore/Layout/Email/base.html.twig' %}
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends '@SolidInvoiceSaas/Email/Onboarding/_layout.html.twig' %}
 
 {% block title %}{{ 'onboarding.customize_logo.subject'|trans({}, 'email') }}{% endblock %}
 
 {% block content %}
-    <p>Customize your invoices with your logo.</p>
+    <span class="onb-eyebrow accent">{{ 'onboarding.customize_logo.eyebrow'|trans({}, 'email') }}</span>
+    <h1 class="onb-h1">{{ 'onboarding.customize_logo.heading'|trans({}, 'email') }}</h1>
+    <p class="onb-p lede">{{ 'onboarding.customize_logo.lede'|trans({}, 'email') }}</p>
+
+    {# Before / After split — two tiles #}
+    {% apply inky_to_html %}
+        <row>
+            <columns small="12" large="6" class="onb-stack" style="padding: 6px;">
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
+                       style="border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; background: #f8fafc;">
+                    <tr>
+                        <td style="padding: 8px 14px; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #64748b; background: #ffffff; border-bottom: 1px solid #f1f5f9;">
+                            {{ 'onboarding.customize_logo.before_label'|trans({}, 'email') }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="background: #ffffff; padding: 14px; min-height: 180px;">
+                            <div style="height: 16px; width: 90px; background: #e2e8f0; border-radius: 3px; margin-bottom: 14px;">&nbsp;</div>
+                            <div style="height: 6px; width: 60%; background: #f1f5f9; border-radius: 2px; margin-bottom: 6px;">&nbsp;</div>
+                            <div style="height: 6px; width: 80%; background: #f1f5f9; border-radius: 2px; margin-bottom: 6px;">&nbsp;</div>
+                            <hr style="border: 0; border-top: 1px solid #f1f5f9; margin: 10px 0;" />
+                            <div style="height: 6px; width: 100%; background: #f1f5f9; border-radius: 2px; margin-bottom: 6px;">&nbsp;</div>
+                            <div style="height: 6px; width: 80%; background: #f1f5f9; border-radius: 2px; margin-bottom: 6px;">&nbsp;</div>
+                            <div style="height: 6px; width: 90%; background: #f1f5f9; border-radius: 2px; margin-bottom: 20px;">&nbsp;</div>
+                            <div style="height: 24px; width: 80px; background: #e2e8f0; border-radius: 4px; margin-left: auto;">&nbsp;</div>
+                        </td>
+                    </tr>
+                </table>
+            </columns>
+            <columns small="12" large="6" class="onb-stack" style="padding: 6px;">
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
+                       style="border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; background: #f8fafc;">
+                    <tr>
+                        <td style="padding: 8px 14px; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #2e963a; background: #ffffff; border-bottom: 1px solid #f1f5f9;">
+                            {{ 'onboarding.customize_logo.after_label'|trans({}, 'email') }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="background: #ffffff; padding: 14px; min-height: 180px;">
+                            <div style="margin-bottom: 14px;">
+                                <span style="font-size: 11px; font-weight: 700; color: #2e963a;">{{ 'onboarding.customize_logo.after_brand'|trans({}, 'email') }}</span>
+                            </div>
+                            <div style="height: 6px; width: 60%; background: #f1f5f9; border-radius: 2px; margin-bottom: 6px;">&nbsp;</div>
+                            <div style="height: 6px; width: 80%; background: #f1f5f9; border-radius: 2px; margin-bottom: 6px;">&nbsp;</div>
+                            <div style="height: 3px; width: 30px; background: #2e963a; margin: 10px 0; border-radius: 2px;">&nbsp;</div>
+                            <div style="height: 6px; width: 100%; background: #f1f5f9; border-radius: 2px; margin-bottom: 6px;">&nbsp;</div>
+                            <div style="height: 6px; width: 80%; background: #f1f5f9; border-radius: 2px; margin-bottom: 6px;">&nbsp;</div>
+                            <div style="height: 6px; width: 90%; background: #f1f5f9; border-radius: 2px; margin-bottom: 20px;">&nbsp;</div>
+                            <div style="height: 24px; width: 80px; background: #2e963a; border-radius: 4px; margin-left: auto;">&nbsp;</div>
+                        </td>
+                    </tr>
+                </table>
+            </columns>
+        </row>
+    {% endapply %}
+
+    <h2 class="onb-h2">{{ 'onboarding.customize_logo.steps_heading'|trans({}, 'email') }}</h2>
+
+    {# Step list #}
+    {% for step in ['1', '2', '3'] %}
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" class="onb-step">
+            <tr>
+                <td width="44" style="vertical-align: top; padding-right: 14px;">
+                    <span class="onb-step-num">{{ step }}</span>
+                </td>
+                <td style="vertical-align: top;">
+                    <h4>{{ ('onboarding.customize_logo.step.' ~ step ~ '.title')|trans({}, 'email') }}</h4>
+                    <p>{{ ('onboarding.customize_logo.step.' ~ step ~ '.desc')|trans({}, 'email') }}</p>
+                </td>
+            </tr>
+        </table>
+    {% endfor %}
+
+    <div class="onb-cta-wrapper" style="margin-top: 24px;">
+        <a href="{{ url('_settings') }}" class="onb-cta" rel="external" target="_blank">
+            {{ 'onboarding.customize_logo.cta'|trans({}, 'email') }} &rarr;
+        </a>
+    </div>
 {% endblock %}
+
+{% block ps %}{{ 'onboarding.customize_logo.ps'|trans({}, 'email')|raw }}{% endblock %}

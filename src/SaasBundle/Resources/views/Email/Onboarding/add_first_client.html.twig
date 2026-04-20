@@ -1,7 +1,100 @@
-{% extends '@SolidInvoiceCore/Layout/Email/base.html.twig' %}
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends '@SolidInvoiceSaas/Email/Onboarding/_layout.html.twig' %}
 
 {% block title %}{{ 'onboarding.add_first_client.subject'|trans({}, 'email') }}{% endblock %}
 
 {% block content %}
-    <p>Add your first client in under a minute.</p>
+    <span class="onb-eyebrow">{{ 'onboarding.add_first_client.eyebrow'|trans({}, 'email') }}</span>
+    <h1 class="onb-h1">{{ 'onboarding.add_first_client.heading'|trans({}, 'email') }}</h1>
+    <p class="onb-p lede">{{ 'onboarding.add_first_client.lede'|trans({}, 'email') }}</p>
+
+    {# Product-frame mockup of the client list #}
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
+           style="border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; margin: 20px 0; Margin: 20px 0; background: #ffffff;">
+        <tr>
+            <td style="background: #f8fafc; border-bottom: 1px solid #f1f5f9; padding: 10px 14px; font-size: 11px; color: #64748b;">
+                <span style="display: inline-block; width: 8px; height: 8px; border-radius: 999px; background: #e2e8f0; margin-right: 4px;">&nbsp;</span>
+                <span style="display: inline-block; width: 8px; height: 8px; border-radius: 999px; background: #e2e8f0; margin-right: 4px;">&nbsp;</span>
+                <span style="display: inline-block; width: 8px; height: 8px; border-radius: 999px; background: #e2e8f0; margin-right: 10px;">&nbsp;</span>
+                <span style="font-family: monospace; background: #ffffff; border: 1px solid #f1f5f9; border-radius: 6px; padding: 2px 10px; color: #64748b;">
+                    {{ 'onboarding.add_first_client.mock.url'|trans({}, 'email') }}
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 10px 14px; background: #f8fafc; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #64748b;">
+                {{ 'onboarding.add_first_client.mock.header'|trans({}, 'email') }}
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 12px 14px; border-top: 1px solid #f1f5f9;">
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                    <tr>
+                        <td width="36" style="vertical-align: middle;">
+                            <span style="display: inline-block; width: 28px; height: 28px; line-height: 28px; text-align: center; border-radius: 999px; background: #e8f5e9; color: #1f6c29; font-size: 10px; font-weight: 700;">NB</span>
+                        </td>
+                        <td style="vertical-align: middle;">
+                            <div style="font-size: 13px; font-weight: 600; color: #1e293b;">{{ 'onboarding.add_first_client.mock.client1.name'|trans({}, 'email') }}</div>
+                            <div style="font-size: 11px; color: #64748b;">{{ 'onboarding.add_first_client.mock.client1.sub'|trans({}, 'email') }}</div>
+                        </td>
+                        <td align="right" style="vertical-align: middle; font-family: monospace; font-size: 12px; font-weight: 600; color: #1e293b;">$4,850</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 12px 14px; border-top: 1px solid #f1f5f9;">
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                    <tr>
+                        <td width="36" style="vertical-align: middle;">
+                            <span style="display: inline-block; width: 28px; height: 28px; line-height: 28px; text-align: center; border-radius: 999px; background: #fff8e1; color: #f0a015; font-size: 10px; font-weight: 700;">MK</span>
+                        </td>
+                        <td style="vertical-align: middle;">
+                            <div style="font-size: 13px; font-weight: 600; color: #1e293b;">{{ 'onboarding.add_first_client.mock.client2.name'|trans({}, 'email') }}</div>
+                            <div style="font-size: 11px; color: #64748b;">{{ 'onboarding.add_first_client.mock.client2.sub'|trans({}, 'email') }}</div>
+                        </td>
+                        <td align="right" style="vertical-align: middle; font-family: monospace; font-size: 12px; font-weight: 600; color: #1e293b;">$1,200</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 12px 14px; border-top: 1px dashed #e2e8f0; background: #f8fafc;">
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                    <tr>
+                        <td width="36" style="vertical-align: middle;">
+                            <span style="display: inline-block; width: 28px; height: 28px; line-height: 28px; text-align: center; border-radius: 999px; background: #e2e8f0; color: #94a3b8; font-size: 14px; font-weight: 700;">+</span>
+                        </td>
+                        <td style="vertical-align: middle;">
+                            <div style="font-size: 13px; font-weight: 600; color: #94a3b8;">{{ 'onboarding.add_first_client.mock.empty.name'|trans({}, 'email') }}</div>
+                            <div style="font-size: 11px; color: #94a3b8;">{{ 'onboarding.add_first_client.mock.empty.sub'|trans({}, 'email') }}</div>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <h2 class="onb-h2">{{ 'onboarding.add_first_client.needs_heading'|trans({}, 'email') }}</h2>
+    <p class="onb-p">{{ 'onboarding.add_first_client.needs_intro'|trans({}, 'email') }}</p>
+    <ul style="margin: 8px 0 20px 0; Margin: 8px 0 20px 0; padding: 0 0 0 20px; font-size: 14px; line-height: 1.75; color: #475569;">
+        <li>{{ 'onboarding.add_first_client.needs.1'|trans({}, 'email') }}</li>
+        <li>{{ 'onboarding.add_first_client.needs.2'|trans({}, 'email') }}</li>
+        <li>{{ 'onboarding.add_first_client.needs.3'|trans({}, 'email') }}</li>
+    </ul>
+
+    <div class="onb-cta-wrapper">
+        <a href="{{ url('_clients_add') }}" class="onb-cta" rel="external" target="_blank">
+            {{ 'onboarding.add_first_client.cta'|trans({}, 'email') }} &rarr;
+        </a>
+    </div>
 {% endblock %}
+
+{% block ps %}{{ 'onboarding.add_first_client.ps'|trans({}, 'email')|raw }}{% endblock %}

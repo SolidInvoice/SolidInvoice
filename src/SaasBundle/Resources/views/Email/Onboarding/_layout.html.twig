@@ -1,0 +1,90 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% apply inline_css(source('@SolidInvoiceSaas/Email/Onboarding/_styles.css.twig')) %}
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="x-apple-disable-message-reformatting" />
+        <meta name="color-scheme" content="light" />
+        <meta name="supported-color-schemes" content="light" />
+        <title>{% block title %}{% endblock %}</title>
+    </head>
+    <body class="onb-body">
+        <table class="onb-wrapper" role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+            <tr>
+                <td align="center" style="padding: 24px 12px;">
+                    {# Envelope — the white card the email "sits" in #}
+                    <table class="onb-envelope" role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width: 640px;">
+                        {# ─── Header with wordmark ─── #}
+                        <tr>
+                            <td class="onb-header">
+                                {% apply inky_to_html %}
+                                    <row>
+                                        <columns small="12" large="12">
+                                            <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                                                <tr>
+                                                    <td style="vertical-align: middle; padding-right: 10px;">
+                                                        {{- app_logo(28) -}}
+                                                    </td>
+                                                    <td style="vertical-align: middle;">
+                                                        <span class="onb-wordmark">Solid<b>Invoice</b></span>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </columns>
+                                    </row>
+                                {% endapply %}
+                            </td>
+                        </tr>
+
+                        {# ─── Body ─── #}
+                        <tr>
+                            <td class="onb-content">
+                                {{- block('content') -}}
+
+                                {# Signature #}
+                                {% if block('signature') is defined %}
+                                    {{- block('signature') -}}
+                                {% else %}
+                                    <div class="onb-signature">
+                                        <p style="margin: 0 0 4px 0;">{{ 'onboarding.signature.greeting'|trans({}, 'email') }}</p>
+                                        <p class="onb-sig-name" style="margin: 0;">{{ 'onboarding.signature.team'|trans({}, 'email') }}</p>
+                                    </div>
+                                {% endif %}
+
+                                {# Optional P.S. #}
+                                {% if block('ps') is defined %}
+                                    <div class="onb-ps">
+                                        <b>P.S.</b> {{- block('ps') -}}
+                                    </div>
+                                {% endif %}
+                            </td>
+                        </tr>
+
+                        {# ─── Footer ─── #}
+                        <tr>
+                            <td class="onb-footer">
+                                <p class="onb-footer-brand">Solid<b>Invoice</b></p>
+                                <p class="onb-footer-copy">
+                                    {{ 'onboarding.footer.tagline'|trans({}, 'email') }}<br />
+                                    {{ 'onboarding.footer.reason'|trans({}, 'email') }}<br />
+                                    <a href="{{ url('_settings_notifications') }}">{{ 'onboarding.footer.preferences'|trans({}, 'email') }}</a>
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </body>
+    </html>
+{% endapply %}

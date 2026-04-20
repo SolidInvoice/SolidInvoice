@@ -1,7 +1,65 @@
-{% extends '@SolidInvoiceCore/Layout/Email/base.html.twig' %}
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends '@SolidInvoiceSaas/Email/Onboarding/_layout.html.twig' %}
 
 {% block title %}{{ 'onboarding.welcome.subject'|trans({}, 'email') }}{% endblock %}
 
 {% block content %}
-    <p>Welcome to SolidInvoice.</p>
+    <span class="onb-eyebrow">{{ 'onboarding.welcome.eyebrow'|trans({}, 'email') }}</span>
+    <h1 class="onb-h1">{{ 'onboarding.welcome.heading'|trans({'%name%': user.firstName|default(user.email)}, 'email') }}</h1>
+    <p class="onb-p lede">{{ 'onboarding.welcome.lede'|trans({}, 'email') }}</p>
+
+    <p class="onb-p">{{ 'onboarding.welcome.intro'|trans({}, 'email') }}</p>
+
+    {# Feature tile grid — 2x2 with stacking on mobile via inky columns #}
+    {% apply inky_to_html %}
+        <row>
+            <columns small="12" large="6" class="onb-stack" style="padding: 7px;">
+                <div class="onb-feature">
+                    <div class="onb-feature-icon">{# users #}&#128101;</div>
+                    <h3>{{ 'onboarding.welcome.feature.clients.title'|trans({}, 'email') }}</h3>
+                    <p>{{ 'onboarding.welcome.feature.clients.desc'|trans({}, 'email') }}</p>
+                </div>
+            </columns>
+            <columns small="12" large="6" class="onb-stack" style="padding: 7px;">
+                <div class="onb-feature">
+                    <div class="onb-feature-icon">{# invoice #}&#128196;</div>
+                    <h3>{{ 'onboarding.welcome.feature.invoices.title'|trans({}, 'email') }}</h3>
+                    <p>{{ 'onboarding.welcome.feature.invoices.desc'|trans({}, 'email') }}</p>
+                </div>
+            </columns>
+        </row>
+        <row>
+            <columns small="12" large="6" class="onb-stack" style="padding: 7px;">
+                <div class="onb-feature">
+                    <div class="onb-feature-icon accent">{# card #}&#128179;</div>
+                    <h3>{{ 'onboarding.welcome.feature.payments.title'|trans({}, 'email') }}</h3>
+                    <p>{{ 'onboarding.welcome.feature.payments.desc'|trans({}, 'email') }}</p>
+                </div>
+            </columns>
+            <columns small="12" large="6" class="onb-stack" style="padding: 7px;">
+                <div class="onb-feature">
+                    <div class="onb-feature-icon accent">{# chart #}&#128200;</div>
+                    <h3>{{ 'onboarding.welcome.feature.dashboard.title'|trans({}, 'email') }}</h3>
+                    <p>{{ 'onboarding.welcome.feature.dashboard.desc'|trans({}, 'email') }}</p>
+                </div>
+            </columns>
+        </row>
+    {% endapply %}
+
+    <p class="onb-p" style="margin-top: 24px;">{{ 'onboarding.welcome.closing'|trans({}, 'email') }}</p>
+
+    <div class="onb-cta-wrapper">
+        <a href="{{ url('_dashboard') }}" class="onb-cta" rel="external" target="_blank">
+            {{ 'onboarding.welcome.cta'|trans({}, 'email') }} &rarr;
+        </a>
+    </div>
 {% endblock %}
+
+{% block ps %}{{ 'onboarding.welcome.ps'|trans({}, 'email')|raw }}{% endblock %}

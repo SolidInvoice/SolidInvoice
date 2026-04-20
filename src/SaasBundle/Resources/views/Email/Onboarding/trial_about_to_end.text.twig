@@ -1,1 +1,25 @@
-Your trial is about to end.
+{% set days_remaining = date('now') < trial_end ? date('now').diff(trial_end).days : 0 %}
+{{ 'onboarding.trial_about_to_end.heading'|trans({'%days%': days_remaining}, 'email') }}
+{{ '='|repeat(60) }}
+
+{{ 'onboarding.trial_about_to_end.lede'|trans({}, 'email') }}
+
+{{ 'onboarding.trial_about_to_end.days_label'|trans({}, 'email') }}: {{ days_remaining }}
+{{ 'onboarding.trial_about_to_end.trial_ends'|trans({'%date%': trial_end|date('F j, Y \\a\\t g:ia')}, 'email')|striptags }}
+
+{{ 'onboarding.trial_about_to_end.body_intro'|trans({}, 'email') }}
+
+{{ 'onboarding.trial_about_to_end.if_not_heading'|trans({}, 'email') }}
+{{ '-'|repeat(60) }}
+
+* {{ 'onboarding.trial_about_to_end.if_not.1'|trans({}, 'email')|striptags }}
+* {{ 'onboarding.trial_about_to_end.if_not.2'|trans({}, 'email') }}
+* {{ 'onboarding.trial_about_to_end.if_not.3'|trans({}, 'email') }}
+* {{ 'onboarding.trial_about_to_end.if_not.4'|trans({}, 'email') }}
+
+{{ 'onboarding.trial_about_to_end.cta.upgrade'|trans({}, 'email') }}: {{ url('_dashboard') }}
+
+{{ 'onboarding.trial_about_to_end.fine_print'|trans({}, 'email') }}
+
+{{ 'onboarding.signature.greeting'|trans({}, 'email') }}
+{{ 'onboarding.signature.team'|trans({}, 'email') }}

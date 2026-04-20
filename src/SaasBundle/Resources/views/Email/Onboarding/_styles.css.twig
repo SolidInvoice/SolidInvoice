@@ -1,0 +1,581 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+/* ─── Onboarding email design tokens & components ─── */
+/* Piggybacks on foundation.css + modern.css; overrides only what onboarding needs. */
+
+body { background: #f4f6fa; }
+
+.onb-body {
+    background: #f4f6fa;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: #1e293b;
+    margin: 0;
+    padding: 0;
+}
+
+/* Wrapper table keeps the envelope centred on all clients */
+.onb-wrapper {
+    width: 100%;
+    background: #f4f6fa;
+}
+
+.onb-envelope {
+    max-width: 640px;
+    margin: 0 auto;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+}
+
+/* Header (wordmark) */
+.onb-header {
+    padding: 28px 40px 20px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.onb-wordmark {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1e293b;
+    letter-spacing: -0.01em;
+    vertical-align: middle;
+}
+
+.onb-wordmark b { color: #2e963a; font-weight: 700; }
+
+/* Body */
+.onb-content { padding: 40px 40px 32px; color: #1e293b; }
+
+.onb-eyebrow {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #2e963a;
+    margin: 0 0 14px 0;
+    Margin: 0 0 14px 0;
+}
+
+.onb-eyebrow.accent { color: #f0a015; }
+.onb-eyebrow.danger { color: #ef4444; }
+
+.onb-h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1e293b;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+    margin: 0 0 16px 0;
+    Margin: 0 0 16px 0;
+}
+
+.onb-h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 28px 0 10px 0;
+    Margin: 28px 0 10px 0;
+    letter-spacing: -0.01em;
+}
+
+.onb-p {
+    font-size: 15px;
+    line-height: 1.65;
+    color: #475569;
+    margin: 0 0 14px 0;
+    Margin: 0 0 14px 0;
+}
+
+.onb-p.lede { font-size: 16px; }
+
+.onb-p a, .onb-inline-link {
+    color: #2e963a;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(46, 150, 58, 0.4);
+}
+
+/* CTA button (inline-block, table-based for Outlook) */
+.onb-cta-wrapper {
+    text-align: center;
+    margin: 28px 0 8px 0;
+    Margin: 28px 0 8px 0;
+}
+
+.onb-cta-wrapper.left { text-align: left; }
+
+.onb-cta {
+    display: inline-block;
+    padding: 14px 28px;
+    background: #2e963a;
+    color: #ffffff !important;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 10px;
+    text-decoration: none;
+    box-shadow: 0 6px 18px rgba(46, 150, 58, 0.35);
+    mso-padding-alt: 0;
+    mso-text-raise: 0;
+}
+
+.onb-cta.secondary {
+    background: transparent;
+    color: #2e963a !important;
+    box-shadow: none;
+    padding: 14px 20px;
+}
+
+/* Feature tiles */
+.onb-feature {
+    background: #f8fafc;
+    border: 1px solid #f1f5f9;
+    border-radius: 12px;
+    padding: 18px;
+    vertical-align: top;
+}
+
+.onb-feature .onb-feature-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: #e8f5e9;
+    color: #2e963a;
+    display: inline-block;
+    line-height: 38px;
+    text-align: center;
+    margin: 0 0 12px 0;
+    Margin: 0 0 12px 0;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.onb-feature .onb-feature-icon.accent {
+    background: #fff8e1;
+    color: #f0a015;
+}
+
+.onb-feature h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 4px 0;
+    Margin: 0 0 4px 0;
+}
+
+.onb-feature p {
+    font-size: 13px;
+    color: #64748b;
+    margin: 0;
+    Margin: 0;
+    line-height: 1.5;
+}
+
+/* Step list */
+.onb-step {
+    background: #f8fafc;
+    border: 1px solid #f1f5f9;
+    border-radius: 12px;
+    padding: 16px;
+    margin: 0 0 14px 0;
+    Margin: 0 0 14px 0;
+}
+
+.onb-step-num {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    border-radius: 999px;
+    background: #2e963a;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+    vertical-align: top;
+}
+
+.onb-step h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 2px 0;
+    Margin: 0 0 2px 0;
+}
+
+.onb-step p {
+    font-size: 13px;
+    color: #64748b;
+    margin: 0;
+    Margin: 0;
+    line-height: 1.5;
+}
+
+/* Pricing card */
+.onb-pricing {
+    border: 2px solid #2e963a;
+    border-radius: 16px;
+    padding: 28px;
+    background: #f1f9f2;
+    position: relative;
+}
+
+.onb-pricing .onb-plan-name {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #1f6c29;
+    margin: 0 0 8px 0;
+    Margin: 0 0 8px 0;
+}
+
+.onb-pricing .onb-price {
+    font-size: 44px;
+    font-weight: 800;
+    color: #1e293b;
+    letter-spacing: -0.03em;
+    line-height: 1;
+}
+
+.onb-pricing .onb-price-per {
+    font-size: 14px;
+    color: #64748b;
+    margin-left: 6px;
+    Margin-left: 6px;
+}
+
+.onb-pricing .onb-price-was {
+    font-size: 14px;
+    color: #64748b;
+    text-decoration: line-through;
+    margin-left: 10px;
+    Margin-left: 10px;
+}
+
+.onb-save-pill {
+    display: inline-block;
+    background: #f0a015;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    padding: 3px 9px;
+    border-radius: 999px;
+    margin-left: 8px;
+    Margin-left: 8px;
+}
+
+.onb-pricing-list {
+    list-style: none;
+    padding: 0;
+    margin: 18px 0 0 0;
+    Margin: 18px 0 0 0;
+}
+
+.onb-pricing-list li {
+    font-size: 14px;
+    color: #1e293b;
+    padding: 4px 0;
+}
+
+.onb-check-dot {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+    text-align: center;
+    border-radius: 999px;
+    background: #2e963a;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    margin-right: 10px;
+    Margin-right: 10px;
+    vertical-align: middle;
+}
+
+/* Compare table */
+.onb-compare {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 22px 0;
+    Margin: 22px 0;
+    font-size: 13px;
+}
+
+.onb-compare th,
+.onb-compare td {
+    padding: 11px 12px;
+    text-align: left;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.onb-compare th {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #64748b;
+    background: #f8fafc;
+}
+
+.onb-compare th.pro { color: #2e963a; }
+.onb-compare td { color: #475569; }
+.onb-compare td.center { text-align: center; }
+.onb-compare td.pro-cell {
+    color: #2e963a;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Urgency / countdown */
+.onb-urgency {
+    background: #fff8e1;
+    border: 1px solid rgba(240, 160, 21, 0.35);
+    border-radius: 14px;
+    padding: 22px;
+    text-align: center;
+    margin: 20px 0 28px 0;
+    Margin: 20px 0 28px 0;
+}
+
+.onb-urgency .onb-days {
+    font-size: 52px;
+    font-weight: 800;
+    color: #f0a015;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    margin: 0;
+    Margin: 0;
+}
+
+.onb-urgency .onb-days-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #475569;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin: 6px 0 0 0;
+    Margin: 6px 0 0 0;
+}
+
+.onb-urgency .onb-days-sub {
+    font-size: 13px;
+    color: #64748b;
+    margin: 10px 0 0 0;
+    Margin: 10px 0 0 0;
+}
+
+/* Usage cells */
+.onb-usage {
+    border: 1px solid #f1f5f9;
+    border-radius: 10px;
+    background: #f8fafc;
+    padding: 14px 12px;
+    text-align: center;
+}
+
+.onb-usage .onb-usage-big {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1e293b;
+    letter-spacing: -0.02em;
+    margin: 0;
+    Margin: 0;
+}
+
+.onb-usage .onb-usage-label {
+    font-size: 11px;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+    margin: 2px 0 0 0;
+    Margin: 2px 0 0 0;
+}
+
+/* Payment tiles */
+.onb-pay-tile {
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 14px 10px;
+    text-align: center;
+    background: #ffffff;
+}
+
+.onb-pay-tile .onb-pay-logo {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1e293b;
+    letter-spacing: -0.01em;
+}
+
+.onb-pay-tile .onb-pay-name {
+    font-size: 11px;
+    font-weight: 600;
+    color: #475569;
+    margin: 6px 0 0 0;
+    Margin: 6px 0 0 0;
+}
+
+/* Callout row */
+.onb-callout {
+    background: #e8f5e9;
+    border: 1px solid rgba(46, 150, 58, 0.25);
+    border-radius: 12px;
+    padding: 18px;
+    margin-top: 4px;
+    Margin-top: 4px;
+}
+
+.onb-callout .onb-callout-icon {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    border-radius: 999px;
+    background: #2e963a;
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 700;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.onb-callout-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+    Margin: 0;
+}
+
+.onb-callout-sub {
+    font-size: 13px;
+    color: #64748b;
+    margin: 2px 0 0 0;
+    Margin: 2px 0 0 0;
+}
+
+/* Signature + P.S. */
+.onb-signature {
+    margin-top: 28px;
+    Margin-top: 28px;
+    font-size: 15px;
+    color: #475569;
+    line-height: 1.6;
+}
+
+.onb-signature .onb-sig-name {
+    font-weight: 600;
+    color: #1e293b;
+    margin-top: 4px;
+    Margin-top: 4px;
+}
+
+.onb-ps {
+    margin-top: 24px;
+    Margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px dashed #e2e8f0;
+    font-size: 14px;
+    color: #64748b;
+    line-height: 1.6;
+}
+
+.onb-ps b { color: #475569; }
+
+.onb-fine-print {
+    font-size: 12px;
+    color: #64748b;
+    line-height: 1.5;
+    text-align: center;
+    margin-top: 16px;
+    Margin-top: 16px;
+}
+
+/* Footer */
+.onb-footer {
+    padding: 24px 40px 32px;
+    background: #f8fafc;
+    border-top: 1px solid #f1f5f9;
+    text-align: center;
+}
+
+.onb-footer-brand {
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+    margin: 0 0 6px 0;
+    Margin: 0 0 6px 0;
+}
+
+.onb-footer-brand b { color: #2e963a; }
+
+.onb-footer-copy {
+    font-size: 12px;
+    color: #64748b;
+    line-height: 1.6;
+    margin: 0;
+    Margin: 0;
+}
+
+.onb-footer-copy a {
+    color: #64748b;
+    text-decoration: underline;
+}
+
+/* Utility bits */
+.onb-divider {
+    height: 1px;
+    background: #f1f5f9;
+    border: 0;
+    margin: 32px 0;
+    Margin: 32px 0;
+}
+
+.onb-divider-accent {
+    height: 4px;
+    width: 40px;
+    background: #2e963a;
+    border: 0;
+    border-radius: 2px;
+    margin: 0 0 20px 0;
+    Margin: 0 0 20px 0;
+}
+
+.onb-code {
+    display: inline-block;
+    background: #e8f5e9;
+    color: #1f6c29;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* Mobile */
+@media only screen and (max-width: 620px) {
+    .onb-envelope { border-radius: 0; }
+    .onb-header,
+    .onb-content,
+    .onb-footer { padding-left: 20px !important; padding-right: 20px !important; }
+    .onb-h1 { font-size: 24px !important; }
+    .onb-urgency .onb-days { font-size: 42px !important; }
+    .onb-pricing .onb-price { font-size: 36px !important; }
+    .onb-stack {
+        display: block !important;
+        width: 100% !important;
+        padding: 0 0 10px 0 !important;
+    }
+}
