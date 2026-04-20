@@ -17,6 +17,7 @@ use DateTimeImmutable;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
+use ReflectionProperty;
 use SolidInvoice\SaasBundle\Message\SendOnboardingEmailMessage;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingDispatcher;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingScheduleCalculator;
@@ -31,6 +32,7 @@ use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use Symfony\Component\Clock\MockClock;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Uid\Ulid;
 
 final class OnboardingDispatcherTest extends TestCase
 {
@@ -38,7 +40,7 @@ final class OnboardingDispatcherTest extends TestCase
 
     public function testDispatchesFirstStepWhenNoProgressAndTargetReached(): void
     {
-        $user = new User();
+        $user = $this->user();
         $subscription = $this->subscription();
 
         $userSettingRepository = M::mock(UserSettingRepositoryInterface::class);
@@ -59,7 +61,7 @@ final class OnboardingDispatcherTest extends TestCase
             ->withArgs(static function (SendOnboardingEmailMessage $message): bool {
                 return $message->stepKey === 'first';
             })
-            ->andReturn(new Envelope(new SendOnboardingEmailMessage(null, 'first')));
+            ->andReturn(new Envelope(new SendOnboardingEmailMessage(new Ulid(), 'first')));
 
         $dispatcher = new OnboardingDispatcher(
             new OnboardingStepRegistry([new StepFirst(), new StepSecond()]),
@@ -75,7 +77,7 @@ final class OnboardingDispatcherTest extends TestCase
 
     public function testDispatchesNextStepAfterLast(): void
     {
-        $user = new User();
+        $user = $this->user();
         $subscription = $this->subscription();
 
         $existing = (new UserSetting())->setValue('first');
@@ -97,7 +99,7 @@ final class OnboardingDispatcherTest extends TestCase
             ->withArgs(static function (SendOnboardingEmailMessage $message): bool {
                 return $message->stepKey === 'second';
             })
-            ->andReturn(new Envelope(new SendOnboardingEmailMessage(null, 'second')));
+            ->andReturn(new Envelope(new SendOnboardingEmailMessage(new Ulid(), 'second')));
 
         $dispatcher = new OnboardingDispatcher(
             new OnboardingStepRegistry([new StepFirst(), new StepSecond()]),
@@ -113,7 +115,7 @@ final class OnboardingDispatcherTest extends TestCase
 
     public function testNoOpWhenSequenceAlreadyComplete(): void
     {
-        $user = new User();
+        $user = $this->user();
         $subscription = $this->subscription();
 
         $existing = (new UserSetting())->setValue('second');
@@ -142,7 +144,7 @@ final class OnboardingDispatcherTest extends TestCase
 
     public function testNoDispatchWhenTargetTimeInFuture(): void
     {
-        $user = new User();
+        $user = $this->user();
         $subscription = $this->subscription();
 
         $existing = (new UserSetting())->setValue('first');
@@ -173,7 +175,7 @@ final class OnboardingDispatcherTest extends TestCase
 
     public function testAdvancesSettingBeforeDispatch(): void
     {
-        $user = new User();
+        $user = $this->user();
         $subscription = $this->subscription();
 
         $userSettingRepository = M::mock(UserSettingRepositoryInterface::class);
@@ -221,5 +223,14 @@ final class OnboardingDispatcherTest extends TestCase
         $subscription->setEndDate(new DateTimeImmutable('2025-01-08 00:00:00'));
 
         return $subscription;
+    }
+
+    private function user(): User
+    {
+        $user = new User();
+        $idProperty = new ReflectionProperty($user, 'id');
+        $idProperty->setValue($user, new Ulid());
+
+        return $user;
     }
 }

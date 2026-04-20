@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\Onboarding;
 
+use LogicException;
 use Psr\Clock\ClockInterface;
 use Psr\Log\LoggerInterface;
 use SolidInvoice\SaasBundle\Message\SendOnboardingEmailMessage;
@@ -74,16 +75,18 @@ final readonly class OnboardingDispatcher
             return;
         }
 
+        $userId = $user->getId() ?? throw new LogicException('User must be persisted before dispatching onboarding email.');
+
         $this->userSettingRepository->saveSetting(
             $user,
             UserSettingType::OnboardingEmailSequenceLastStep,
             $next::key(),
         );
 
-        $this->messageBus->dispatch(new SendOnboardingEmailMessage($user->getId(), $next::key()));
+        $this->messageBus->dispatch(new SendOnboardingEmailMessage($userId, $next::key()));
 
         $this->logger->info('Dispatched onboarding email step', [
-            'user_id' => $user->getId()?->toString(),
+            'user_id' => $userId->toString(),
             'step_key' => $next::key(),
             'step_index' => $index,
         ]);

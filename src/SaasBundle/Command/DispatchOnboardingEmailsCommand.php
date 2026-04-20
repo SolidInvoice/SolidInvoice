@@ -26,7 +26,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Scheduler\Attribute\AsCronTask;
 use Throwable;
 use function assert;
-use function Sentry\captureException;
+use function function_exists;
 use function sprintf;
 
 #[AsCommand(
@@ -50,16 +50,18 @@ final class DispatchOnboardingEmailsCommand extends Command
         $entityManager = $this->registry->getManagerForClass(Trial::class);
         assert($entityManager instanceof EntityManagerInterface);
 
-        // Trials span companies; disable the CompanyFilter for the duration of
-        // the scan so queries can see every tenant's data.
+        // Trials span companies; suspend the CompanyFilter for the duration of
+        // the scan so queries can see every tenant's data. suspend()/restore()
+        // preserves the filter instance and its parameters — disable()/enable()
+        // would drop the companyId and risk re-enabling an unscoped filter.
         $filters = $entityManager->getFilters();
         $companyFilterEnabled = $filters->isEnabled('company');
 
         if ($companyFilterEnabled) {
-            $filters->disable('company');
+            $filters->suspend('company');
         }
 
-        $dispatched = 0;
+        $processed = 0;
 
         try {
             // Subscription.status is not flipped when a trial lapses — the app
@@ -84,11 +86,14 @@ final class DispatchOnboardingEmailsCommand extends Command
                     continue;
                 }
 
+                ++$processed;
+
                 try {
                     $this->dispatcher->tick($user, $subscription);
-                    ++$dispatched;
                 } catch (Throwable $e) {
-                    captureException($e);
+                    if (function_exists('Sentry\\captureException')) {
+                        \Sentry\captureException($e);
+                    }
                     $this->logger->error('Onboarding dispatcher failed for user', [
                         'user_id' => $user->getId()?->toString(),
                         'subscription_id' => $subscription->getId()->toBase58(),
@@ -98,11 +103,11 @@ final class DispatchOnboardingEmailsCommand extends Command
             }
         } finally {
             if ($companyFilterEnabled) {
-                $filters->enable('company');
+                $filters->restore('company');
             }
         }
 
-        $this->io->success(sprintf('Processed %d active trials', $dispatched));
+        $this->io->success(sprintf('Processed %d active trials', $processed));
 
         return self::SUCCESS;
     }
