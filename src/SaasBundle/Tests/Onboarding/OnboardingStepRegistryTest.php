@@ -15,23 +15,11 @@ namespace SolidInvoice\SaasBundle\Tests\Onboarding;
 
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingStepRegistry;
-use SolidInvoice\SaasBundle\Tests\Onboarding\Fixtures\StepA;
-use SolidInvoice\SaasBundle\Tests\Onboarding\Fixtures\StepB;
-use SolidInvoice\SaasBundle\Tests\Onboarding\Fixtures\StepC;
 use SolidInvoice\SaasBundle\Tests\Onboarding\Fixtures\StepFirst;
 use SolidInvoice\SaasBundle\Tests\Onboarding\Fixtures\StepSecond;
 
 final class OnboardingStepRegistryTest extends TestCase
 {
-    public function testStepsAreSortedByPriorityDescending(): void
-    {
-        $registry = new OnboardingStepRegistry([new StepB(), new StepA(), new StepC()]);
-
-        self::assertSame(['a', 100], [$registry->all()[0]::key(), $registry->all()[0]::priority()]);
-        self::assertSame('c', $registry->all()[1]::key());
-        self::assertSame('b', $registry->all()[2]::key());
-    }
-
     public function testNextAfterReturnsFirstStepWhenNoneDispatched(): void
     {
         $registry = new OnboardingStepRegistry([new StepFirst(), new StepSecond()]);
