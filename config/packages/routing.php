@@ -18,5 +18,5 @@ return static function (FrameworkConfig $config): void {
     $config
         ->router()
         ->utf8(true)
-        ->defaultUri(env('default::SOLIDINVOICE_APPLICATION_URL'));
+        ->defaultUri(env('SOLIDINVOICE_APPLICATION_URL'));
 };
