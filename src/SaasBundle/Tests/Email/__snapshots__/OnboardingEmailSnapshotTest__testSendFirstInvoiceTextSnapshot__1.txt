@@ -1,11 +1,11 @@
-Send your first invoice today.
+Time to send your first invoice.
 ============================================================
 
-A good invoice looks professional, says exactly what the work was, and makes it obvious how to pay. SolidInvoice gives you all three out of the box.
+Sending a professional invoice takes under five minutes. Pick your client, add line items, set a due date — SolidInvoice handles the formatting, delivery, and tracking.
 
-Everything included, nothing to configure
+Included on every invoice, nothing extra to configure
 ------------------------------------------------------------
-Line items, taxes, discounts, recurring schedules, due dates, and a &quot;Pay now&quot; button — they&#039;re all one click away. When your client opens the email, they see a branded invoice with a single clear action.
+Line items, taxes, discounts, recurring schedules, and due dates — built in. Add a payment method in the next step and your client gets a &#039;Pay now&#039; button too.
 
 Create your first invoice: http://localhost/invoices/create
 

@@ -8,7 +8,7 @@
  #}
 {% extends '@SolidInvoiceSaas/Email/Onboarding/_layout.html.twig' %}
 
-{% block title %}{{ 'onboarding.trial_about_to_end.subject'|trans({}, 'email') }}{% endblock %}
+{% block title %}{{ 'onboarding.trial_about_to_end.subject'|trans({'%days%': days_remaining}, 'email') }}{% endblock %}
 
 {% block content %}
     <span class="onb-eyebrow danger">{{ 'onboarding.trial_about_to_end.eyebrow'|trans({}, 'email') }}</span>
@@ -53,29 +53,23 @@
 
     <h2 class="onb-h2">{{ 'onboarding.trial_about_to_end.if_not_heading'|trans({}, 'email') }}</h2>
     <ul style="margin: 8px 0 24px 0; Margin: 8px 0 24px 0; padding: 0 0 0 20px; font-size: 14px; line-height: 1.75; color: #475569;">
-        <li>{{ 'onboarding.trial_about_to_end.if_not.1'|trans({}, 'email')|raw }}</li>
+        <li>{{ 'onboarding.trial_about_to_end.if_not.1'|trans({}, 'email') }}</li>
         <li>{{ 'onboarding.trial_about_to_end.if_not.2'|trans({}, 'email') }}</li>
         <li>{{ 'onboarding.trial_about_to_end.if_not.3'|trans({}, 'email') }}</li>
         <li>{{ 'onboarding.trial_about_to_end.if_not.4'|trans({}, 'email') }}</li>
     </ul>
 
-    {# Primary + secondary CTAs — inky columns for mobile stacking #}
-    {% apply inky_to_html %}
-        <row class="collapse">
-            <columns small="12" large="12">
-                <center>
-                    <a href="{{ url('_dashboard') }}" class="onb-cta" rel="external" target="_blank" style="margin: 0 6px;">
-                        {{ 'onboarding.trial_about_to_end.cta.upgrade'|trans({}, 'email') }} &rarr;
-                    </a>
-                    <a href="{{ url('_dashboard') }}" class="onb-cta secondary" rel="external" target="_blank" style="margin: 0 6px;">
-                        {{ 'onboarding.trial_about_to_end.cta.free'|trans({}, 'email') }} &rarr;
-                    </a>
-                </center>
-            </columns>
-        </row>
-    {% endapply %}
+    <div class="onb-cta-wrapper">
+        <a href="{{ url('saas_subscription_checkout') }}" class="onb-cta" rel="external" target="_blank">
+            {{ 'onboarding.trial_about_to_end.cta.upgrade'|trans({}, 'email') }} &rarr;
+        </a>
+    </div>
 
     <p class="onb-fine-print" style="margin-top: 20px;">{{ 'onboarding.trial_about_to_end.fine_print'|trans({}, 'email') }}</p>
 {% endblock %}
 
-{% block ps %}{{ 'onboarding.trial_about_to_end.ps'|trans({}, 'email')|raw }}{% endblock %}
+{% block ps %}
+{% if coupon_code %}
+    {{ 'onboarding.trial_about_to_end.ps'|trans({'%coupon_code%': coupon_code}, 'email')|raw }}
+{% endif %}
+{% endblock %}

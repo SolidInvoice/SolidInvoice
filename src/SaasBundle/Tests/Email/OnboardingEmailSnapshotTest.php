@@ -20,6 +20,7 @@ use SolidInvoice\SaasBundle\Onboarding\OnboardingContext;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingEmailStepInterface;
 use SolidInvoice\SaasBundle\Onboarding\Step\AddFirstClientStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\CustomizeLogoStep;
+use SolidInvoice\SaasBundle\Onboarding\Step\RecurringBillingStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\SendFirstInvoiceStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\TrialAboutToEndStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\TurnInvoicesIntoPaymentsStep;
@@ -119,14 +120,24 @@ final class OnboardingEmailSnapshotTest extends KernelTestCase
         $this->assertMatchesTextSnapshot($this->renderText(self::getContainer()->get(CustomizeLogoStep::class)));
     }
 
+    public function testRecurringBillingHtmlSnapshot(): void
+    {
+        $this->assertMatchesHtmlSnapshot($this->renderHtml(self::getContainer()->get(RecurringBillingStep::class)));
+    }
+
+    public function testRecurringBillingTextSnapshot(): void
+    {
+        $this->assertMatchesTextSnapshot($this->renderText(self::getContainer()->get(RecurringBillingStep::class)));
+    }
+
     public function testUpgradeOfferHtmlSnapshot(): void
     {
-        $this->assertMatchesHtmlSnapshot($this->renderHtml(self::getContainer()->get(UpgradeOfferStep::class)));
+        $this->assertMatchesHtmlSnapshot($this->renderHtml($this->upgradeOfferStep()));
     }
 
     public function testUpgradeOfferTextSnapshot(): void
     {
-        $this->assertMatchesTextSnapshot($this->renderText(self::getContainer()->get(UpgradeOfferStep::class)));
+        $this->assertMatchesTextSnapshot($this->renderText($this->upgradeOfferStep()));
     }
 
     public function testTrialAboutToEndHtmlSnapshot(): void
@@ -181,8 +192,13 @@ final class OnboardingEmailSnapshotTest extends KernelTestCase
         );
     }
 
+    private function upgradeOfferStep(): UpgradeOfferStep
+    {
+        return new UpgradeOfferStep($this->translator, 'SOLID30');
+    }
+
     private function trialAboutToEndStep(): TrialAboutToEndStep
     {
-        return new TrialAboutToEndStep($this->translator, new MockClock(self::FROZEN_NOW));
+        return new TrialAboutToEndStep($this->translator, new MockClock(self::FROZEN_NOW), 'SOLID30');
     }
 }

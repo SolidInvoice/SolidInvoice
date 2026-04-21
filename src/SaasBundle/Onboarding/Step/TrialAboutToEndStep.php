@@ -15,6 +15,7 @@ namespace SolidInvoice\SaasBundle\Onboarding\Step;
 
 use Psr\Clock\ClockInterface;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingContext;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class TrialAboutToEndStep extends AbstractOnboardingEmailStep
@@ -22,6 +23,8 @@ final class TrialAboutToEndStep extends AbstractOnboardingEmailStep
     public function __construct(
         TranslatorInterface $translator,
         private readonly ClockInterface $clock,
+        #[Autowire(env: 'SAAS_ONBOARDING_COUPON_CODE')]
+        private readonly string $couponCode = '',
     ) {
         parent::__construct($translator);
     }
@@ -46,6 +49,7 @@ final class TrialAboutToEndStep extends AbstractOnboardingEmailStep
 
         return parent::templateContext($context) + [
             'days_remaining' => $daysRemaining,
+            'coupon_code' => $this->couponCode,
         ];
     }
 }

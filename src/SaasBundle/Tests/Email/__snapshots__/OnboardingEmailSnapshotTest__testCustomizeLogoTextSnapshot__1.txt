@@ -1,21 +1,21 @@
-Your logo. Your colors. Your invoices.
+Your logo. Your brand. Your invoices.
 ============================================================
 
-Branded invoices get paid faster and look unmistakably yours. Upload a logo, pick a color, and every document you send — invoices, quotes, receipts — is transformed.
+Clients judge professionalism before they read a single line item. A branded invoice — your logo, your colors, your name — signals that you run a real business.
 
-Takes three minutes
+Three things to customize
 ------------------------------------------------------------
 
 1. Upload your logo
-   PNG, SVG, or JPG. It appears on invoices, quotes, and the client portal.
+   PNG, SVG, or JPG. Appears on every invoice and quote you send.
 
 2. Pick a primary color
-   Used for buttons, headings, and accents across every document you send.
+   Used for buttons and accents on every document you send.
 
-3. Customise your sender email
-   Send from billing@yourstudio.com — not a generic no-reply address.
+3. Set your sender name
+   Customize the name clients see when your invoices land in their inbox.
 
-Brand your workspace: http://localhost/settings
+Brand your invoices: http://localhost/settings
 
 See you inside,
 — The SolidInvoice team

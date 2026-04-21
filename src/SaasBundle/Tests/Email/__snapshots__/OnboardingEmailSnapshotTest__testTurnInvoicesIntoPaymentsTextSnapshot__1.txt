@@ -1,17 +1,17 @@
-Turn invoices into payments — automatically.
+Invoices don&#039;t pay themselves.
 ============================================================
 
-Connect a payment method once and every invoice you send gets a &quot;Pay now&quot; button. Clients pay in two clicks; the money lands in your account within days.
+Connect Stripe or PayPal once and every invoice you send gets a &#039;Pay now&#039; button. Your client pays from any device in seconds — you&#039;re notified the moment it goes through.
 
-Invoices with online pay settle 3× faster
-Average: 4 days vs. 14 days for bank-transfer-only invoices.
+Invoices with an online payment option get paid significantly faster than bank-transfer-only invoices
+When paying is easy, clients pay. Make it easy.
 
 How it works
 ------------------------------------------------------------
 
-1. Connect Stripe or PayPal in Settings → Payment methods (30 seconds).
-2. Every invoice automatically shows a &quot;Pay now&quot; button.
-3. Your client pays. You get notified. Status flips to Paid.
+1. Go to Settings → Payment methods and connect Stripe or PayPal (30 seconds).
+2. Every invoice you send automatically includes a &#039;Pay now&#039; button.
+3. Your client pays. You&#039;re notified immediately. Invoice status flips to Paid.
 
 Connect a payment method: http://localhost/payments/methods
 

@@ -1,0 +1,82 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends '@SolidInvoiceSaas/Email/Onboarding/_layout.html.twig' %}
+
+{% block title %}{{ 'onboarding.recurring_billing.subject'|trans({}, 'email') }}{% endblock %}
+
+{% block content %}
+    <span class="onb-eyebrow accent">{{ 'onboarding.recurring_billing.eyebrow'|trans({}, 'email') }}</span>
+    <h1 class="onb-h1">{{ 'onboarding.recurring_billing.heading'|trans({}, 'email') }}</h1>
+    <p class="onb-p lede">{{ 'onboarding.recurring_billing.lede'|trans({}, 'email') }}</p>
+
+    <h2 class="onb-h2">{{ 'onboarding.recurring_billing.how_heading'|trans({}, 'email') }}</h2>
+
+    {% for step in ['1', '2', '3'] %}
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" class="onb-step">
+            <tr>
+                <td width="44" style="vertical-align: top; padding-right: 14px;">
+                    <span class="onb-step-num">{{ step }}</span>
+                </td>
+                <td style="vertical-align: top; padding-top: 10px;">
+                    <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #475569;">{{ ('onboarding.recurring_billing.how.' ~ step)|trans({}, 'email') }}</p>
+                </td>
+            </tr>
+        </table>
+    {% endfor %}
+
+    {# Before / After comparison #}
+    <h2 class="onb-h2" style="margin-top: 32px;">{{ 'onboarding.recurring_billing.compare_heading'|trans({}, 'email') }}</h2>
+
+    {% apply inky_to_html %}
+        <row>
+            <columns small="12" large="6" class="onb-stack" style="padding: 6px;">
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
+                       style="border: 1px solid #fecaca; border-radius: 12px; overflow: hidden; background: #fff;">
+                    <tr>
+                        <td style="padding: 10px 14px; background: #fef2f2; font-size: 11px; font-weight: 700; color: #991b1b; letter-spacing: 0.06em; text-transform: uppercase; border-bottom: 1px solid #fecaca;">
+                            {{ 'onboarding.recurring_billing.before_heading'|trans({}, 'email') }}
+                        </td>
+                    </tr>
+                    {% for i in ['1', '2', '3'] %}
+                        <tr>
+                            <td style="padding: 10px 14px; border-top: 1px solid #fef2f2; font-size: 13px; color: #64748b; line-height: 1.5;">
+                                <span style="color: #dc2626; margin-right: 8px;">&#10005;</span>{{ ('onboarding.recurring_billing.before.' ~ i)|trans({}, 'email') }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </columns>
+            <columns small="12" large="6" class="onb-stack" style="padding: 6px;">
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
+                       style="border: 1px solid #bbf7d0; border-radius: 12px; overflow: hidden; background: #fff;">
+                    <tr>
+                        <td style="padding: 10px 14px; background: #f0fdf4; font-size: 11px; font-weight: 700; color: #166534; letter-spacing: 0.06em; text-transform: uppercase; border-bottom: 1px solid #bbf7d0;">
+                            {{ 'onboarding.recurring_billing.after_heading'|trans({}, 'email') }}
+                        </td>
+                    </tr>
+                    {% for i in ['1', '2', '3'] %}
+                        <tr>
+                            <td style="padding: 10px 14px; border-top: 1px solid #f0fdf4; font-size: 13px; color: #1e293b; line-height: 1.5;">
+                                <span style="color: #2e963a; margin-right: 8px;">&#10003;</span>{{ ('onboarding.recurring_billing.after.' ~ i)|trans({}, 'email') }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </columns>
+        </row>
+    {% endapply %}
+
+    <div class="onb-cta-wrapper" style="margin-top: 28px;">
+        <a href="{{ url('_dashboard') }}" class="onb-cta" rel="external" target="_blank">
+            {{ 'onboarding.recurring_billing.cta'|trans({}, 'email') }} &rarr;
+        </a>
+    </div>
+{% endblock %}
+
+{% block ps %}{{ 'onboarding.recurring_billing.ps'|trans({}, 'email') }}{% endblock %}
