@@ -295,6 +295,7 @@ final class InstallationTest extends PantherTestCase
                 static fn (Client $client) => $client->waitFor('input[name="installation[user_account][firstName]"]')
             )
             ->assertSee('User Account')
+            ->assertSee('Application URL')
             ->assertSee('Locale')
             ->assertSee('First Name')
             ->assertSee('Last Name')

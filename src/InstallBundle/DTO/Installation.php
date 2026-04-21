@@ -20,6 +20,7 @@ final class Installation
         public DatabaseConfig $databaseConfig = new DatabaseConfig(),
         #[Valid(groups: ['user_account'])]
         public UserAccount $userAccount = new UserAccount(),
+        public ?string $applicationUrl = null,
         public string $currentStep = 'start',
         public ?string $token = '',
     ) {
