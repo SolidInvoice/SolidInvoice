@@ -1,18 +1,15 @@
 Your logo. Your brand. Your invoices.
 ============================================================
 
-Clients judge professionalism before they read a single line item. A branded invoice — your logo, your colors, your name — signals that you run a real business.
+Clients judge professionalism before they read a single line item. A branded invoice — your logo, your name — signals that you run a real business.
 
-Three things to customize
+Two things to customize
 ------------------------------------------------------------
 
 1. Upload your logo
    PNG, SVG, or JPG. Appears on every invoice and quote you send.
 
-2. Pick a primary color
-   Used for buttons and accents on every document you send.
-
-3. Set your sender name
+2. Set your sender name
    Customize the name clients see when your invoices land in their inbox.
 
 Brand your invoices: http://localhost/settings

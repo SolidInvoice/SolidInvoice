@@ -5,7 +5,6 @@ onboarding:
     footer:
         tagline: Invoicing for freelancers and small businesses.
         reason: You're receiving this because you signed up for SolidInvoice.
-        preferences: Email preferences
     welcome:
         subject: "Welcome to SolidInvoice — let's get you paid"
         eyebrow: Your trial just started
@@ -52,7 +51,6 @@ onboarding:
             2: An email address for invoices
             3: Billing currency
         cta: Add your first client
-        ps: "got a client list in a spreadsheet? Import from CSV and skip the manual entry entirely."
     send_first_invoice:
         subject: "Your first invoice is one click away"
         eyebrow: "Step 2 · Your first invoice"
@@ -125,23 +123,20 @@ onboarding:
         subject: "Put your brand on your invoices"
         eyebrow: "Step 5 · Make it yours"
         heading: "Your logo. Your brand. Your invoices."
-        lede: "Clients judge professionalism before they read a single line item. A branded invoice — your logo, your colors, your name — signals that you run a real business."
+        lede: "Clients judge professionalism before they read a single line item. A branded invoice — your logo, your name — signals that you run a real business."
         before_label: Before
         after_label: After
         after_brand: Your Studio
-        steps_heading: Three things to customize
+        steps_heading: Two things to customize
         step:
             1:
                 title: Upload your logo
                 desc: "PNG, SVG, or JPG. Appears on every invoice and quote you send."
             2:
-                title: Pick a primary color
-                desc: "Used for buttons and accents on every document you send."
-            3:
                 title: Set your sender name
                 desc: "Customize the name clients see when your invoices land in their inbox."
         cta: Brand your invoices
-        ps: "on the paid plan, SolidInvoice branding is removed from your invoices — your clients see only your name."
+        ps: "on the paid plan, you can disable SolidInvoice branding in Settings — your clients will see only your name."
     trial_about_to_end:
         subject: "Your trial ends in %days% days"
         eyebrow: "Heads up · Trial ending"
