@@ -40,7 +40,7 @@ final readonly class ChecklistManager
      */
     public function getItems(): array
     {
-        $items = [...$this->items];
+        $items = array_filter([...$this->items], static fn (ChecklistItemInterface $item): bool => $item->active());
         usort($items, static fn (ChecklistItemInterface $a, ChecklistItemInterface $b): int => $b->getPriority() <=> $a->getPriority());
 
         return $items;

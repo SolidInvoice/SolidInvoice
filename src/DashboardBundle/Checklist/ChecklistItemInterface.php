@@ -49,4 +49,10 @@ interface ChecklistItemInterface
      * The company filter ensures only current company data is checked.
      */
     public function isComplete(): bool;
+
+    /**
+     * Whether this item should appear in the checklist.
+     * Return false to hide the item without removing it from the codebase.
+     */
+    public function active(): bool;
 }

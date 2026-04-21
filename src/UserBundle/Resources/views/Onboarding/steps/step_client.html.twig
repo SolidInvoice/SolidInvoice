@@ -55,7 +55,8 @@
             }) }}
 
             {{ form_widget(form.navigator.skip, {
-                'attr': {'class': 'btn btn-link w-100 mt-2 text-muted'}
+                'label': 'onboarding.navigation.skip_client'|trans({}, 'onboarding'),
+                'attr': {'class': 'btn btn-link w-100 mt-2 text-muted small'}
             }) }}
 
             {{ form_widget(form.navigator.back, {
