@@ -48,6 +48,11 @@ final readonly class CustomizeSettingsItem implements ChecklistItemInterface
         return -200;
     }
 
+    public function active(): bool
+    {
+        return false;
+    }
+
     public function isComplete(): bool
     {
         // Check if at least 2 of the key company settings have been configured

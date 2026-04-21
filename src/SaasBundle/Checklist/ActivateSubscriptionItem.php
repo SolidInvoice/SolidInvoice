@@ -55,6 +55,11 @@ final readonly class ActivateSubscriptionItem implements ChecklistItemInterface
         return -1000; // Lowest priority - should appear last
     }
 
+    public function active(): bool
+    {
+        return true;
+    }
+
     public function isComplete(): bool
     {
         $companyId = $this->companySelector->getCompany();

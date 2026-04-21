@@ -45,7 +45,8 @@ final class ChecklistItemsTest extends KernelTestCase
         self::assertSame('dashboard.checklist.upload_logo.description', $item->getDescription());
         self::assertSame('tabler:photo-up', $item->getIcon());
         self::assertSame('_settings', $item->getRoute());
-        self::assertSame(-100, $item->getPriority());
+        self::assertSame(-300, $item->getPriority());
+        self::assertTrue($item->active());
     }
 
     public function testUploadLogoItemIsNotCompleteWhenLogoNotSet(): void
@@ -90,7 +91,8 @@ final class ChecklistItemsTest extends KernelTestCase
         self::assertSame('dashboard.checklist.create_client.description', $item->getDescription());
         self::assertSame('tabler:users', $item->getIcon());
         self::assertSame('_clients_add', $item->getRoute());
-        self::assertSame(-300, $item->getPriority());
+        self::assertSame(-600, $item->getPriority());
+        self::assertTrue($item->active());
     }
 
     public function testCreateClientItemIsNotCompleteWhenNoClientsExist(): void
@@ -131,6 +133,7 @@ final class ChecklistItemsTest extends KernelTestCase
         self::assertSame('tabler:settings', $item->getIcon());
         self::assertSame('_settings', $item->getRoute());
         self::assertSame(-200, $item->getPriority());
+        self::assertFalse($item->active());
     }
 
     public function testCustomizeSettingsItemIsCompleteWhenTwoSettingsAreConfigured(): void
@@ -170,6 +173,7 @@ final class ChecklistItemsTest extends KernelTestCase
         self::assertSame('tabler:receipt-tax', $item->getIcon());
         self::assertSame('_tax_rates', $item->getRoute());
         self::assertSame(-400, $item->getPriority());
+        self::assertFalse($item->active());
     }
 
     public function testAddTaxRateItemIsNotCompleteWhenNoTaxRatesExist(): void
@@ -191,7 +195,8 @@ final class ChecklistItemsTest extends KernelTestCase
         self::assertSame('dashboard.checklist.send_invoice.description', $item->getDescription());
         self::assertSame('tabler:file-invoice', $item->getIcon());
         self::assertSame('_invoices_create', $item->getRoute());
-        self::assertSame(-600, $item->getPriority());
+        self::assertSame(-500, $item->getPriority());
+        self::assertTrue($item->active());
     }
 
     public function testSendInvoiceItemIsNotCompleteWhenNoInvoicesExist(): void
@@ -241,7 +246,8 @@ final class ChecklistItemsTest extends KernelTestCase
         self::assertSame('dashboard.checklist.configure_payment_gateway.description', $item->getDescription());
         self::assertSame('tabler:credit-card', $item->getIcon());
         self::assertSame('_payment_settings_index', $item->getRoute());
-        self::assertSame(-500, $item->getPriority());
+        self::assertSame(-400, $item->getPriority());
+        self::assertTrue($item->active());
     }
 
     public function testConfigurePaymentGatewayItemIsNotCompleteWhenNoPaymentMethodsExist(): void

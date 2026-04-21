@@ -96,11 +96,15 @@ final class Onboarding extends AbstractController
             }
         }
 
+        $formData = $form->getData();
+        assert($formData instanceof OnboardingData);
+
         // Render current step
         return $this->render('@SolidInvoiceUser/Onboarding/onboarding.html.twig', [
             'form' => $form->getStepForm(),
             'currentStep' => $form->getCursor()->getCurrentStep(),
             'progress' => $this->calculateProgress($form),
+            'hasClient' => $formData->clientName !== null && $formData->clientName !== '',
         ]);
     }
 

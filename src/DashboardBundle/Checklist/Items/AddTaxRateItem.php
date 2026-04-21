@@ -48,6 +48,11 @@ final readonly class AddTaxRateItem implements ChecklistItemInterface
         return -400;
     }
 
+    public function active(): bool
+    {
+        return false;
+    }
+
     public function isComplete(): bool
     {
         // Company filter ensures we only count tax rates for the current company

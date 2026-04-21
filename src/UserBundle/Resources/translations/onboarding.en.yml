@@ -3,6 +3,7 @@ onboarding:
         back: Back
         continue: Continue
         skip: "I'll do this later"
+        skip_client: "Skip — I'll add clients & invoices from the dashboard"
         finish: 'Go to Dashboard'
         create_invoice: 'Create & View My Invoice'
 
@@ -86,4 +87,9 @@ onboarding:
         pro_tip_text: 'You can customize your invoice templates, add your logo, and configure payment gateways in Settings.'
         docs_link: 'View Documentation'
         dashboard_link: 'Go to Dashboard'
+        cta_create_invoice: 'Create Your First Invoice →'
+        next_steps_title: "Here's what to do next:"
+        next_add_client: 'Add your first client'
+        next_send_invoice: 'Send your first invoice'
+        next_connect_payment: 'Connect a payment gateway'
 
