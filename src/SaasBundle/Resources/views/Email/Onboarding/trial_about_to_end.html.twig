@@ -8,11 +8,11 @@
  #}
 {% extends '@SolidInvoiceSaas/Email/Onboarding/_layout.html.twig' %}
 
-{% block title %}{{ 'onboarding.trial_about_to_end.subject'|trans({'%days%': days_remaining}, 'email') }}{% endblock %}
+{% block title %}{{ 'onboarding.trial_about_to_end.subject'|trans({'%days%': days_remaining, '%count%': days_remaining}, 'email') }}{% endblock %}
 
 {% block content %}
     <span class="onb-eyebrow danger">{{ 'onboarding.trial_about_to_end.eyebrow'|trans({}, 'email') }}</span>
-    <h1 class="onb-h1">{{ 'onboarding.trial_about_to_end.heading'|trans({'%days%': days_remaining}, 'email') }}</h1>
+    <h1 class="onb-h1">{{ 'onboarding.trial_about_to_end.heading'|trans({'%days%': days_remaining, '%count%': days_remaining}, 'email') }}</h1>
     <p class="onb-p lede">{{ 'onboarding.trial_about_to_end.lede'|trans({}, 'email') }}</p>
 
     {# Countdown urgency box #}
@@ -30,19 +30,19 @@
         <row>
             <columns small="4" large="4" class="onb-stack" style="padding: 5px;">
                 <div class="onb-usage">
-                    <div class="onb-usage-big">&mdash;</div>
+                    <div class="onb-usage-big">{{ usage_clients }}</div>
                     <div class="onb-usage-label">{{ 'onboarding.trial_about_to_end.usage.clients'|trans({}, 'email') }}</div>
                 </div>
             </columns>
             <columns small="4" large="4" class="onb-stack" style="padding: 5px;">
                 <div class="onb-usage">
-                    <div class="onb-usage-big">&mdash;</div>
+                    <div class="onb-usage-big">{{ usage_invoices }}</div>
                     <div class="onb-usage-label">{{ 'onboarding.trial_about_to_end.usage.invoices'|trans({}, 'email') }}</div>
                 </div>
             </columns>
             <columns small="4" large="4" class="onb-stack" style="padding: 5px;">
                 <div class="onb-usage">
-                    <div class="onb-usage-big" style="color: #2e963a;">&mdash;</div>
+                    <div class="onb-usage-big" style="color: #2e963a;">{{ usage_collected }}</div>
                     <div class="onb-usage-label">{{ 'onboarding.trial_about_to_end.usage.collected'|trans({}, 'email') }}</div>
                 </div>
             </columns>

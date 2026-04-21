@@ -111,6 +111,18 @@ class InvoiceRepository extends EntityRepository
         }
     }
 
+    public function getTotalInvoices(): int
+    {
+        try {
+            return (int) $this->createQueryBuilder('i')
+                ->select('COUNT(i)')
+                ->getQuery()
+                ->getSingleScalarResult();
+        } catch (NoResultException | NonUniqueResultException) {
+            return 0;
+        }
+    }
+
     /**
      * Get the total number of invoices for a specific status.
      *
