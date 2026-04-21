@@ -15,8 +15,6 @@ namespace SolidInvoice\SaasBundle\Tests;
 
 use Override;
 use SolidInvoice\Kernel;
-use SolidInvoice\SaasBundle\SolidInvoiceSaasBundle;
-use SolidWorx\Platform\SaasBundle\SolidWorxPlatformSaasBundle;
 
 final class SaasTestKernel extends Kernel
 {
@@ -37,12 +35,7 @@ final class SaasTestKernel extends Kernel
     #[Override]
     public function registerBundles(): iterable
     {
-        foreach (parent::registerBundles() as $bundle) {
-            yield $bundle;
-        }
-
-        yield new SolidWorxPlatformSaasBundle();
-        yield new SolidInvoiceSaasBundle();
+        yield from parent::registerBundles();
     }
 
     #[Override]

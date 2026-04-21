@@ -1,9 +1,9 @@
-Your trial ends in 2 days.
+Your trial ends in 3 days.
 ============================================================
 
-When your trial ends, your account locks. Your data stays safe — clients, invoices, payment history — but you won&#039;t be able to access or send anything until you subscribe.
+When your trial ends, your account locks. Your data stays safe — clients, invoices, payment history — but you won't be able to access or send anything until you subscribe.
 
-Days remaining: 2
+Days remaining: 3
 Trial ends April 22, 2026 at 12:00am
 
 Subscribing takes about 30 seconds. Your workspace picks up exactly where it left off — nothing is archived, nothing is hidden.
@@ -11,8 +11,8 @@ Subscribing takes about 30 seconds. Your workspace picks up exactly where it lef
 What happens when your trial ends
 ------------------------------------------------------------
 
-* Your account locks — you won&#039;t be able to log in or access any data.
-* Pending invoices won&#039;t be delivered. Recurring billing pauses.
+* Your account locks — you won't be able to log in or access any data.
+* Pending invoices won't be delivered. Recurring billing pauses.
 * Clients can still pay existing invoices via their direct payment links.
 * Reactivate any time — everything restores immediately on subscription.
 
@@ -20,7 +20,7 @@ Subscribe and keep going: http://localhost/billing/subscription/activate
 
 Questions about billing or what to expect? Reply to this email — we read every one.
 
-use code SOLID30 at checkout for 30% off your first three months. Offer expires when your trial does.
+P.S. use code SOLID30 at checkout for 30% off your first three months. Offer expires when your trial does.
 
 See you inside,
 — The SolidInvoice team

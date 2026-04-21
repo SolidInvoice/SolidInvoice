@@ -14,5 +14,7 @@ Two things to customize
 
 Brand your invoices: http://localhost/settings
 
+P.S. on the paid plan, you can disable SolidInvoice branding in Settings — your clients will see only your name.
+
 See you inside,
 — The SolidInvoice team

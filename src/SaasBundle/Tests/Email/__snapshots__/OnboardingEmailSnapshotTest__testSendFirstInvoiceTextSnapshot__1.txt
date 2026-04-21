@@ -5,9 +5,11 @@ Sending a professional invoice takes under five minutes. Pick your client, add l
 
 Included on every invoice, nothing extra to configure
 ------------------------------------------------------------
-Line items, taxes, discounts, recurring schedules, and due dates — built in. Add a payment method in the next step and your client gets a &#039;Pay now&#039; button too.
+Line items, taxes, discounts, recurring schedules, and due dates — built in. Add a payment method in the next step and your client gets a 'Pay now' button too.
 
 Create your first invoice: http://localhost/invoices/create
+
+P.S. tip: connect a payment method before sending and your client will see a 'Pay now' button. Online invoices get paid much faster.
 
 See you inside,
 — The SolidInvoice team

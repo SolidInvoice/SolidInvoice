@@ -1,7 +1,7 @@
-Invoices don&#039;t pay themselves.
+Invoices don't pay themselves.
 ============================================================
 
-Connect Stripe or PayPal once and every invoice you send gets a &#039;Pay now&#039; button. Your client pays from any device in seconds — you&#039;re notified the moment it goes through.
+Connect Stripe or PayPal once and every invoice you send gets a 'Pay now' button. Your client pays from any device in seconds — you're notified the moment it goes through.
 
 Invoices with an online payment option get paid significantly faster than bank-transfer-only invoices
 When paying is easy, clients pay. Make it easy.
@@ -10,10 +10,12 @@ How it works
 ------------------------------------------------------------
 
 1. Go to Settings → Payment methods and connect Stripe or PayPal (30 seconds).
-2. Every invoice you send automatically includes a &#039;Pay now&#039; button.
-3. Your client pays. You&#039;re notified immediately. Invoice status flips to Paid.
+2. Every invoice you send automatically includes a 'Pay now' button.
+3. Your client pays. You're notified immediately. Invoice status flips to Paid.
 
 Connect a payment method: http://localhost/payments/methods
+
+P.S. SolidInvoice adds zero fees on top of your payment provider. You pay only what Stripe or PayPal charge.
 
 See you inside,
 — The SolidInvoice team
