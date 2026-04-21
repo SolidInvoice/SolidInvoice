@@ -1,7 +1,7 @@
 One last thing before your trial closes.
 ============================================================
 
-When your trial ends, your account locks. Before that happens — here&#039;s an offer to make subscribing an easy decision.
+When your trial ends, your account locks. Before that happens — here's an offer to make subscribing an easy decision.
 
 SolidInvoice Pro — $12.00 / month
 
@@ -18,6 +18,8 @@ Your discount code: SOLID30
 Subscribe now: http://localhost/billing/subscription/activate
 
 Cancel anytime. No surprise fees. Your data restores immediately on subscription.
+
+P.S. your account locks when the trial ends. Subscribe before that happens to keep sending without interruption.
 
 See you inside,
 — The SolidInvoice team

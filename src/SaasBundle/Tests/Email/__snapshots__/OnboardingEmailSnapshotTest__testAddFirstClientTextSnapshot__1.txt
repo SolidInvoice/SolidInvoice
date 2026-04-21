@@ -1,9 +1,9 @@
-No client, no invoice. Let&#039;s fix that.
+No client, no invoice. Let's fix that.
 ============================================================
 
 Your client list is where everything starts. Add one client and you can immediately create quotes, invoices, and track every payment they owe — all in one place.
 
-What you&#039;ll need
+What you'll need
 ------------------------------------------------------------
 Three fields to get started. You can fill in the rest later.
 

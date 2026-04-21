@@ -41,7 +41,7 @@ abstract class AbstractOnboardingEmailStep implements OnboardingEmailStepInterfa
         ));
 
         $email->htmlTemplate('@SolidInvoiceSaas/Email/Onboarding/' . static::key() . '.html.twig');
-        $email->textTemplate('@SolidInvoiceSaas/Email/Onboarding/' . static::key() . '.text.twig');
+        $email->textTemplate('@SolidInvoiceSaas/Email/Onboarding/' . static::key() . '.txt.twig');
 
         $email->context($this->templateContext($context));
 

@@ -27,5 +27,7 @@ With SolidInvoice
 
 Set up recurring billing: http://localhost/dashboard
 
+P.S. even one recurring client makes this worth doing — you'll save hours every month.
+
 See you inside,
 — The SolidInvoice team

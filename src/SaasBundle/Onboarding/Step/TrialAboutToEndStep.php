@@ -44,7 +44,7 @@ final class TrialAboutToEndStep extends AbstractOnboardingEmailStep
         $now = $this->clock->now();
 
         $daysRemaining = $now < $context->trialEnd
-            ? $now->diff($context->trialEnd)->days
+            ? (int) ceil(($context->trialEnd->getTimestamp() - $now->getTimestamp()) / 86400)
             : 0;
 
         return parent::templateContext($context) + [
