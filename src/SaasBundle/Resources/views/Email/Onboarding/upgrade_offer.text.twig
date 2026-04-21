@@ -1,18 +1,23 @@
 {{ 'onboarding.upgrade_offer.heading'|trans({}, 'email') }}
 {{ '='|repeat(60) }}
 
-{{ 'onboarding.upgrade_offer.lede'|trans({}, 'email')|striptags }}
+{{ 'onboarding.upgrade_offer.lede'|trans({}, 'email') }}
 
-{{ plan.name|default('SolidInvoice Pro') }} — $12 {{ 'onboarding.upgrade_offer.per'|trans({}, 'email') }} (was $19, {{ 'onboarding.upgrade_offer.save'|trans({}, 'email') }})
-{{ 'onboarding.upgrade_offer.locked_in'|trans({}, 'email') }}
+{{ plan.name|default('SolidInvoice') }} — ${{ (plan.price / 100)|number_format(2) }} {{ 'onboarding.upgrade_offer.per'|trans({}, 'email') }}
 
 * {{ 'onboarding.upgrade_offer.feature.1'|trans({}, 'email') }}
 * {{ 'onboarding.upgrade_offer.feature.2'|trans({}, 'email') }}
 * {{ 'onboarding.upgrade_offer.feature.3'|trans({}, 'email') }}
 * {{ 'onboarding.upgrade_offer.feature.4'|trans({}, 'email') }}
 * {{ 'onboarding.upgrade_offer.feature.5'|trans({}, 'email') }}
+* {{ 'onboarding.upgrade_offer.feature.6'|trans({}, 'email') }}
 
-{{ 'onboarding.upgrade_offer.cta'|trans({}, 'email') }}: {{ url('_dashboard') }}
+{% if coupon_code %}
+{{ 'onboarding.upgrade_offer.coupon_heading'|trans({}, 'email') }}: {{ coupon_code }}
+{{ 'onboarding.upgrade_offer.coupon_desc'|trans({}, 'email') }}
+
+{% endif %}
+{{ 'onboarding.upgrade_offer.cta'|trans({}, 'email') }}: {{ url('saas_subscription_checkout') }}
 
 {{ 'onboarding.upgrade_offer.fine_print'|trans({}, 'email') }}
 

@@ -7,34 +7,34 @@ onboarding:
         reason: You're receiving this because you signed up for SolidInvoice.
         preferences: Email preferences
     welcome:
-        subject: Welcome to SolidInvoice
-        eyebrow: Welcome aboard
-        heading: "Your invoicing setup starts here, %name%."
-        lede: "Thanks for creating your SolidInvoice workspace. Over the next few days we'll walk you through getting paid faster — starting with the basics and ending with a workflow that runs itself."
-        intro: "Here's what you'll unlock in your first week:"
+        subject: "Welcome to SolidInvoice — let's get you paid"
+        eyebrow: Your trial just started
+        heading: "Good to have you, %name%."
+        lede: "Your trial is live. Over the next few emails we'll walk you through getting your first invoice paid — step by step, starting now."
+        intro: "Here's what we'll cover together:"
         feature:
             clients:
-                title: Track every client
-                desc: Keep contacts, billing addresses, and history in one place.
+                title: Add your first client
+                desc: The foundation. Name, email, currency — takes sixty seconds.
             invoices:
-                title: Send pro invoices
-                desc: Branded, itemised, and delivered straight to the inbox.
+                title: Send a professional invoice
+                desc: Line items, taxes, discounts, and a due date — all built in.
             payments:
-                title: Accept online payments
-                desc: Stripe, PayPal, or direct bank — clients choose how to pay.
+                title: Connect online payments
+                desc: Stripe or PayPal — clients pay in two clicks, you're notified instantly.
             dashboard:
-                title: See what's owed
-                desc: A dashboard that tells you exactly where the money sits.
-        closing: "The fastest path is to add your first client. It takes about thirty seconds and unlocks everything else."
+                title: Automate recurring work
+                desc: Set up recurring billing and automatic reminders. Get paid every month without lifting a finger.
+        closing: "Start with the first step: add a client. Everything else builds from there."
         cta: Open your dashboard
-        ps: "if you have questions, just hit reply to this email — a real person answers."
+        ps: "questions? Hit reply — a real person answers."
     add_first_client:
-        subject: Add your first client in under a minute
-        eyebrow: Step 1 of 4 · Setup
-        heading: "Add your first client in under a minute."
-        lede: "Clients are the foundation of everything in SolidInvoice. Once one is in your workspace, invoices, quotes, and payment history all snap into place."
+        subject: "Add your first client — 60 seconds to get started"
+        eyebrow: "Step 1 · Your first client"
+        heading: "No client, no invoice. Let's fix that."
+        lede: "Your client list is where everything starts. Add one client and you can immediately create quotes, invoices, and track every payment they owe — all in one place."
         mock:
-            url: app.solidinvoice.app/clients
+            url: app.solidinvoice.co/clients
             header: Your clients
             client1:
                 name: Northbeam Design Studio
@@ -44,20 +44,20 @@ onboarding:
                 sub: "billing@mapleknox.com · 1 invoice"
             empty:
                 name: Your next client appears here
-                sub: "name, email, currency, and billing address"
+                sub: "name, email, and billing address"
         needs_heading: What you'll need
-        needs_intro: "Just the essentials — you can fill in more later."
+        needs_intro: "Three fields to get started. You can fill in the rest later."
         needs:
-            1: Client name or company
-            2: An email for sending invoices
-            3: "Default currency (we'll pick one based on your region)"
+            1: Client name or company name
+            2: An email address for invoices
+            3: Billing currency
         cta: Add your first client
-        ps: "already have a client list in a spreadsheet? Import from CSV and skip this step entirely."
+        ps: "got a client list in a spreadsheet? Import from CSV and skip the manual entry entirely."
     send_first_invoice:
-        subject: Send your first invoice today
-        eyebrow: Step 2 of 4 · Get paid
-        heading: "Send your first invoice today."
-        lede: "A good invoice looks professional, says exactly what the work was, and makes it obvious how to pay. SolidInvoice gives you all three out of the box."
+        subject: "Your first invoice is one click away"
+        eyebrow: "Step 2 · Your first invoice"
+        heading: "Time to send your first invoice."
+        lede: "Sending a professional invoice takes under five minutes. Pick your client, add line items, set a due date — SolidInvoice handles the formatting, delivery, and tracking."
         mock:
             label: Invoice
             status_sent: Sent
@@ -74,86 +74,79 @@ onboarding:
             item1: Brand identity · discovery
             item2: Logo design & revisions
             total_due: Total due
-        included_heading: Everything included, nothing to configure
-        included_body: "Line items, taxes, discounts, recurring schedules, due dates, and a \"Pay now\" button — they're all one click away. When your client opens the email, they see a branded invoice with a single clear action."
+        included_heading: "Included on every invoice, nothing extra to configure"
+        included_body: "Line items, taxes, discounts, recurring schedules, and due dates — built in. Add a payment method in the next step and your client gets a 'Pay now' button too."
         cta: Create your first invoice
-        ps: "clients pay invoices with a \"Pay now\" button <b>3× faster</b> than ones without. Online payments unlock in the next email."
+        ps: "tip: connect a payment method before sending and your client will see a 'Pay now' button. Online invoices get paid much faster."
     turn_invoices_into_payments:
-        subject: Turn invoices into payments
-        eyebrow: Step 3 of 4 · Get paid faster
-        heading: "Turn invoices into payments — automatically."
-        lede: "Connect a payment method once and every invoice you send gets a \"Pay now\" button. Clients pay in two clicks; the money lands in your account within days."
+        subject: "Let your clients pay with one click"
+        eyebrow: "Step 3 · Online payments"
+        heading: "Invoices don't pay themselves."
+        lede: "Connect Stripe or PayPal once and every invoice you send gets a 'Pay now' button. Your client pays from any device in seconds — you're notified the moment it goes through."
         method:
             cards: Cards
             wallet: Wallet
             bank: Bank
             eu_bank: EU bank
         callout:
-            title: "Invoices with online pay settle 3× faster"
-            sub: "Average: 4 days vs. 14 days for bank-transfer-only invoices."
+            title: "Invoices with an online payment option get paid significantly faster than bank-transfer-only invoices"
+            sub: "When paying is easy, clients pay. Make it easy."
         how_heading: How it works
         how:
-            1: "Connect Stripe or PayPal in Settings → Payment methods (30 seconds)."
-            2: "Every invoice automatically shows a \"Pay now\" button."
-            3: "Your client pays. You get notified. Status flips to <b style=\"color: #2e963a;\">Paid</b>."
+            1: "Go to Settings → Payment methods and connect Stripe or PayPal (30 seconds)."
+            2: "Every invoice you send automatically includes a 'Pay now' button."
+            3: "Your client pays. You're notified immediately. Invoice status flips to <b style=\"color: #2e963a;\">Paid</b>."
         cta: Connect a payment method
-        ps: "fees are whatever your payment provider charges — SolidInvoice adds nothing on top. Ever."
+        ps: "SolidInvoice adds zero fees on top of your payment provider. You pay only what Stripe or PayPal charge."
+    recurring_billing:
+        subject: "Set up once, get paid every month"
+        eyebrow: "Step 4 · Recurring billing"
+        heading: "Your best clients pay you every month. Automate it."
+        lede: "Create an invoice once and SolidInvoice sends it automatically on your schedule. Set up payment reminders and overdue invoices get followed up — without you lifting a finger."
+        how_heading: How it works
+        how:
+            1: "Create an invoice and mark it as recurring — set the frequency and start date."
+            2: "SolidInvoice sends it automatically on schedule. Your client receives it and pays it."
+            3: "Enable reminders and overdue invoices get followed up automatically — no chasing required."
+        compare_heading: Stop doing this manually
+        before_heading: Without recurring billing
+        after_heading: With SolidInvoice
+        before:
+            1: Manual invoicing every billing cycle
+            2: Tracking who owes what in a spreadsheet
+            3: Chasing late payments yourself
+        after:
+            1: Automatic invoices sent on your schedule
+            2: Dashboard shows every outstanding amount
+            3: Reminders sent automatically on your behalf
+        cta: Set up recurring billing
+        ps: "even one recurring client makes this worth doing — you'll save hours every month."
     customize_logo:
-        subject: Customize your invoices with your logo
-        eyebrow: Step 4 of 4 · Make it yours
-        heading: "Your logo. Your colors. Your invoices."
-        lede: "Branded invoices get paid faster and look unmistakably yours. Upload a logo, pick a color, and every document you send — invoices, quotes, receipts — is transformed."
+        subject: "Put your brand on your invoices"
+        eyebrow: "Step 5 · Make it yours"
+        heading: "Your logo. Your brand. Your invoices."
+        lede: "Clients judge professionalism before they read a single line item. A branded invoice — your logo, your colors, your name — signals that you run a real business."
         before_label: Before
         after_label: After
         after_brand: Your Studio
-        steps_heading: Takes three minutes
+        steps_heading: Three things to customize
         step:
             1:
                 title: Upload your logo
-                desc: "PNG, SVG, or JPG. It appears on invoices, quotes, and the client portal."
+                desc: "PNG, SVG, or JPG. Appears on every invoice and quote you send."
             2:
                 title: Pick a primary color
-                desc: "Used for buttons, headings, and accents across every document you send."
+                desc: "Used for buttons and accents on every document you send."
             3:
-                title: Customise your sender email
-                desc: "Send from billing@yourstudio.com — not a generic no-reply address."
-        cta: Brand your workspace
-        ps: "businesses with branded invoices report <b>18% fewer payment disputes</b>. Yours will look like a million bucks."
-    upgrade_offer:
-        subject: "Ready for unlimited invoicing? A special offer inside"
-        eyebrow: A special offer
-        heading: Ready for unlimited invoicing?
-        lede: "You've been busy on SolidInvoice — nice work. Here's what unlocks on Pro, at a discount while it's still early."
-        per: / month
-        save: Save 36%
-        locked_in: Locked in for 12 months when you upgrade this week.
-        feature:
-            1: "Unlimited invoices, quotes, and clients"
-            2: "Recurring billing and automatic reminders"
-            3: "Custom domains and white-label client portal"
-            4: "Team seats and role-based permissions"
-            5: "Priority email support (replies in under 4h)"
-        compare_heading: "Free vs. Pro, side-by-side"
-        compare:
-            free: Free
-            pro: Pro
-            unlimited: Unlimited
-            up_to_10: Up to 10
-            row:
-                invoices: Invoices per month
-                clients: Clients
-                recurring: Recurring invoices
-                reminders: Automatic reminders
-                portal: White-label portal
-                team: Team members
-        cta: "Upgrade to Pro — $12/mo"
-        fine_print: "Cancel anytime. 30-day money-back guarantee. No surprise fees."
-        ps: "invoicing more than five clients a month? The free plan will cap you. Upgrade before that happens to keep sending without interruption."
+                title: Set your sender name
+                desc: "Customize the name clients see when your invoices land in their inbox."
+        cta: Brand your invoices
+        ps: "on the paid plan, SolidInvoice branding is removed from your invoices — your clients see only your name."
     trial_about_to_end:
-        subject: Your trial is about to end
-        eyebrow: Heads up · Account notice
+        subject: "Your trial ends in %days% days"
+        eyebrow: "Heads up · Trial ending"
         heading: "Your trial ends in %days% days."
-        lede: "You've been busy. Here's a quick recap of what you've built on SolidInvoice so far — and what happens when the trial closes."
+        lede: "When your trial ends, your account locks. Your data stays safe — clients, invoices, payment history — but you won't be able to access or send anything until you subscribe."
         days_label: Days remaining
         trial_ends: "Trial ends <b style=\"color: #475569;\">%date%</b>"
         usage_heading: Your workspace so far
@@ -161,15 +154,32 @@ onboarding:
             clients: Clients added
             invoices: Invoices sent
             collected: Collected
-        body_intro: "If you upgrade before your trial ends, everything stays exactly as it is — no data is lost, no invoices are archived, no clients are hidden. Just uninterrupted invoicing."
-        if_not_heading: "What happens if you don't upgrade"
+        body_intro: "Subscribing takes about 30 seconds. Your workspace picks up exactly where it left off — nothing is archived, nothing is hidden."
+        if_not_heading: "What happens when your trial ends"
         if_not:
-            1: "Your workspace moves to the <b>Free plan</b> — 5 invoices, 10 clients per month."
-            2: "Existing invoices stay accessible and clients can still pay them."
-            3: "Recurring invoices and automatic reminders pause."
-            4: "You can upgrade any time to reactivate everything."
+            1: "Your account locks — you won't be able to log in or access any data."
+            2: "Pending invoices won't be delivered. Recurring billing pauses."
+            3: "Clients can still pay existing invoices via their direct payment links."
+            4: "Reactivate any time — everything restores immediately on subscription."
         cta:
-            upgrade: Upgrade and keep going
-            free: Stay on Free
-        fine_print: "Questions about pricing, billing, or what to expect? Just reply — we read every email."
-        ps: "use code STAYSOLID at checkout for 20% off your first three months. Offer expires with your trial."
+            upgrade: Subscribe and keep going
+        fine_print: "Questions about billing or what to expect? Reply to this email — we read every one."
+        ps: "use code <b>%coupon_code%</b> at checkout for 30% off your first three months. Offer expires when your trial does."
+    upgrade_offer:
+        subject: "Your special offer expires with your trial"
+        eyebrow: Last chance
+        heading: "One last thing before your trial closes."
+        lede: "When your trial ends, your account locks. Before that happens — here's an offer to make subscribing an easy decision."
+        per: / month
+        coupon_heading: "Your discount code"
+        coupon_desc: "30% off your first three months. Enter this code at checkout."
+        feature:
+            1: "Unlimited clients and invoices"
+            2: "Recurring billing on any schedule"
+            3: "Automatic payment reminders"
+            4: "Online payments via your own Stripe or PayPal account"
+            5: "Multiple team members on one account"
+            6: "Backups, updates, and SolidInvoice branding removed from your invoices"
+        cta: "Subscribe now"
+        fine_print: "Cancel anytime. No surprise fees. Your data restores immediately on subscription."
+        ps: "your account locks when the trial ends. Subscribe before that happens to keep sending without interruption."

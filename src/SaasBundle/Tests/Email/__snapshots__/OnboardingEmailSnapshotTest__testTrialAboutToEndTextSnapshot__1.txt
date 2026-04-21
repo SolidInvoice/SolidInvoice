@@ -1,24 +1,26 @@
 Your trial ends in 2 days.
 ============================================================
 
-You&#039;ve been busy. Here&#039;s a quick recap of what you&#039;ve built on SolidInvoice so far — and what happens when the trial closes.
+When your trial ends, your account locks. Your data stays safe — clients, invoices, payment history — but you won&#039;t be able to access or send anything until you subscribe.
 
 Days remaining: 2
 Trial ends April 22, 2026 at 12:00am
 
-If you upgrade before your trial ends, everything stays exactly as it is — no data is lost, no invoices are archived, no clients are hidden. Just uninterrupted invoicing.
+Subscribing takes about 30 seconds. Your workspace picks up exactly where it left off — nothing is archived, nothing is hidden.
 
-What happens if you don&#039;t upgrade
+What happens when your trial ends
 ------------------------------------------------------------
 
-* Your workspace moves to the Free plan — 5 invoices, 10 clients per month.
-* Existing invoices stay accessible and clients can still pay them.
-* Recurring invoices and automatic reminders pause.
-* You can upgrade any time to reactivate everything.
+* Your account locks — you won&#039;t be able to log in or access any data.
+* Pending invoices won&#039;t be delivered. Recurring billing pauses.
+* Clients can still pay existing invoices via their direct payment links.
+* Reactivate any time — everything restores immediately on subscription.
 
-Upgrade and keep going: http://localhost/dashboard
+Subscribe and keep going: http://localhost/billing/subscription/activate
 
-Questions about pricing, billing, or what to expect? Just reply — we read every email.
+Questions about billing or what to expect? Reply to this email — we read every one.
+
+use code SOLID30 at checkout for 30% off your first three months. Offer expires when your trial does.
 
 See you inside,
 — The SolidInvoice team

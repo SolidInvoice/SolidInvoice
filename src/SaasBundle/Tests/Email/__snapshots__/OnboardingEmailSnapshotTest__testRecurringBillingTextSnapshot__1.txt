@@ -1,0 +1,31 @@
+Your best clients pay you every month. Automate it.
+============================================================
+
+Create an invoice once and SolidInvoice sends it automatically on your schedule. Set up payment reminders and overdue invoices get followed up — without you lifting a finger.
+
+How it works
+------------------------------------------------------------
+
+1. Create an invoice and mark it as recurring — set the frequency and start date.
+
+2. SolidInvoice sends it automatically on schedule. Your client receives it and pays it.
+
+3. Enable reminders and overdue invoices get followed up automatically — no chasing required.
+
+Stop doing this manually
+------------------------------------------------------------
+
+Without recurring billing
+* Manual invoicing every billing cycle
+* Tracking who owes what in a spreadsheet
+* Chasing late payments yourself
+
+With SolidInvoice
+* Automatic invoices sent on your schedule
+* Dashboard shows every outstanding amount
+* Reminders sent automatically on your behalf
+
+Set up recurring billing: http://localhost/dashboard
+
+See you inside,
+— The SolidInvoice team

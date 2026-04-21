@@ -1,20 +1,23 @@
-Ready for unlimited invoicing?
+One last thing before your trial closes.
 ============================================================
 
-You&#039;ve been busy on SolidInvoice — nice work. Here&#039;s what unlocks on Pro, at a discount while it&#039;s still early.
+When your trial ends, your account locks. Before that happens — here&#039;s an offer to make subscribing an easy decision.
 
-SolidInvoice Pro — $12 / month (was $19, Save 36%)
-Locked in for 12 months when you upgrade this week.
+SolidInvoice Pro — $12.00 / month
 
-* Unlimited invoices, quotes, and clients
-* Recurring billing and automatic reminders
-* Custom domains and white-label client portal
-* Team seats and role-based permissions
-* Priority email support (replies in under 4h)
+* Unlimited clients and invoices
+* Recurring billing on any schedule
+* Automatic payment reminders
+* Online payments via your own Stripe or PayPal account
+* Multiple team members on one account
+* Backups, updates, and SolidInvoice branding removed from your invoices
 
-Upgrade to Pro — $12/mo: http://localhost/dashboard
+Your discount code: SOLID30
+30% off your first three months. Enter this code at checkout.
 
-Cancel anytime. 30-day money-back guarantee. No surprise fees.
+Subscribe now: http://localhost/billing/subscription/activate
+
+Cancel anytime. No surprise fees. Your data restores immediately on subscription.
 
 See you inside,
 — The SolidInvoice team
