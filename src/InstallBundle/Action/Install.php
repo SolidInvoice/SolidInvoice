@@ -78,6 +78,7 @@ final class Install extends AbstractController
                 'installed' => date(DateTimeInterface::ATOM),
                 'locale' => $formData->userAccount->locale,
                 'installation_id' => Uuid::v4()->toString(),
+                'application_url' => (string) $formData->applicationUrl,
             ]);
 
             $form->reset();

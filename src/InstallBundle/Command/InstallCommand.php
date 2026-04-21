@@ -92,7 +92,8 @@ class InstallCommand extends Command
             ->addOption('skip-user', null, InputOption::VALUE_NONE, 'Skip creating the admin user')
             ->addOption('admin-password', null, InputOption::VALUE_REQUIRED, 'The password of admin user')
             ->addOption('admin-email', null, InputOption::VALUE_REQUIRED, 'The email address of admin user')
-            ->addOption('locale', null, InputOption::VALUE_REQUIRED, 'The locale to use');
+            ->addOption('locale', null, InputOption::VALUE_REQUIRED, 'The locale to use')
+            ->addOption('application-url', null, InputOption::VALUE_REQUIRED, 'The URL where this SolidInvoice instance will be accessible (including protocol, e.g. https://invoices.example.com). Use `bin/console secrets:set SOLIDINVOICE_APPLICATION_URL` to update this after installation.');
     }
 
     /**
@@ -126,7 +127,7 @@ class InstallCommand extends Command
      */
     private function validate(InputInterface $input): self
     {
-        $values = ['database-host', 'database-user', 'locale'];
+        $values = ['database-host', 'database-user', 'locale', 'application-url'];
 
         if (! $input->getOption('skip-user')) {
             $values = [...$values, 'admin-password', 'admin-email'];
@@ -139,6 +140,13 @@ class InstallCommand extends Command
         }
         if (! array_key_exists($locale = $input->getOption('locale'), Locales::getNames())) {
             throw new InvalidArgumentException(sprintf('The locale "%s" is invalid', $locale));
+        }
+
+        $applicationUrl = $input->getOption('application-url');
+        $scheme = parse_url((string) $applicationUrl, PHP_URL_SCHEME);
+
+        if (! in_array($scheme, ['http', 'https'], true) || filter_var($applicationUrl, FILTER_VALIDATE_URL) === false) {
+            throw new InvalidArgumentException(sprintf('The application URL "%s" is not a valid URL. It must include a protocol (http:// or https://).', $applicationUrl));
         }
 
         return $this;
@@ -229,6 +237,7 @@ class InstallCommand extends Command
             'database_user' => $input->getOption('database-user'),
             'database_password' => $input->getOption('database-password'),
             'locale' => $input->getOption('locale'),
+            'application_url' => $input->getOption('application-url'),
             'app_secret' => Key::createNewRandomKey()->saveToAsciiSafeString(),
         ];
 
@@ -287,6 +296,7 @@ class InstallCommand extends Command
             'database-password' => new Question('<question>please enter your database password:</question> '),
             'locale' => (new Question('<question>Please enter a locale:</question> '))
                 ->setAutocompleterValues(array_keys(Locales::getNames())),
+            'application-url' => new Question('<question>Please enter the application URL (including protocol, e.g. https://invoices.example.com):</question> '),
         ];
 
         if (! $input->getOption('skip-user')) {

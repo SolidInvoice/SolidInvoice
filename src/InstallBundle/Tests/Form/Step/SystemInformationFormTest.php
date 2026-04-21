@@ -18,6 +18,8 @@ use SolidInvoice\InstallBundle\DTO\UserAccount;
 use SolidInvoice\InstallBundle\Form\Step\UserAccountStep;
 use SolidInvoice\MoneyBundle\Form\Type\CurrencyType;
 use Symfony\Component\Form\PreloadedExtension;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Intl\Locales;
 
 /**
@@ -25,6 +27,15 @@ use Symfony\Component\Intl\Locales;
  */
 final class SystemInformationFormTest extends FormTestCase
 {
+    private RequestStack $requestStack;
+
+    protected function setUp(): void
+    {
+        $this->requestStack = new RequestStack();
+
+        parent::setUp();
+    }
+
     public function testSubmit(): void
     {
         $locale = $this->faker->randomKey(Locales::getNames());
@@ -33,6 +44,7 @@ final class SystemInformationFormTest extends FormTestCase
         $lastName = $this->faker->lastName;
 
         $formData = [
+            'applicationUrl' => 'https://invoices.example.com',
             'locale' => $locale,
             'emailAddress' => $email,
             'firstName' => $firstName,
@@ -62,6 +74,7 @@ final class SystemInformationFormTest extends FormTestCase
         $password = $this->faker->password(8, 20);
 
         $formData = [
+            'applicationUrl' => 'https://invoices.example.com',
             'locale' => $locale,
             'emailAddress' => $email,
             'firstName' => $firstName,
@@ -87,11 +100,22 @@ final class SystemInformationFormTest extends FormTestCase
         $form = $this->factory->create(UserAccountStep::class);
         $view = $form->createView();
 
+        self::assertArrayHasKey('applicationUrl', $view->children);
         self::assertArrayHasKey('locale', $view->children);
         self::assertArrayHasKey('firstName', $view->children);
         self::assertArrayHasKey('lastName', $view->children);
         self::assertArrayHasKey('emailAddress', $view->children);
         self::assertArrayHasKey('password', $view->children);
+    }
+
+    public function testApplicationUrlFieldDefaultsToCurrentRequestHost(): void
+    {
+        $this->requestStack->push(Request::create('https://invoices.example.com/install'));
+
+        $form = $this->factory->create(UserAccountStep::class);
+        $view = $form->createView();
+
+        self::assertSame('https://invoices.example.com', $view->children['applicationUrl']->vars['value']);
     }
 
     public function testConfigureOptions(): void
@@ -140,7 +164,7 @@ final class SystemInformationFormTest extends FormTestCase
     protected function getExtensions(): array
     {
         return [
-            new PreloadedExtension([new CurrencyType('en')], []),
+            new PreloadedExtension([new UserAccountStep($this->requestStack), new CurrencyType('en')], []),
         ];
     }
 }

@@ -12,9 +12,11 @@ declare(strict_types=1);
  */
 
 use Symfony\Config\FrameworkConfig;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
 
 return static function (FrameworkConfig $config): void {
     $config
         ->router()
-        ->utf8(true);
+        ->utf8(true)
+        ->defaultUri(env('default::SOLIDINVOICE_APPLICATION_URL'));
 };
