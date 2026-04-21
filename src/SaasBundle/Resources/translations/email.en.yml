@@ -138,9 +138,9 @@ onboarding:
         cta: Brand your invoices
         ps: "on the paid plan, you can disable SolidInvoice branding in Settings — your clients will see only your name."
     trial_about_to_end:
-        subject: "Your trial ends in %days% days"
+        subject: "Your trial ends tomorrow|Your trial ends in %days% days"
         eyebrow: "Heads up · Trial ending"
-        heading: "Your trial ends in %days% days."
+        heading: "Your trial ends tomorrow.|Your trial ends in %days% days."
         lede: "When your trial ends, your account locks. Your data stays safe — clients, invoices, payment history — but you won't be able to access or send anything until you subscribe."
         days_label: Days remaining
         trial_ends: "Trial ends <b style=\"color: #475569;\">%date%</b>"

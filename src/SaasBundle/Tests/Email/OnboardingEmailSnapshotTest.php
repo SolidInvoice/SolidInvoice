@@ -15,7 +15,9 @@ namespace SolidInvoice\SaasBundle\Tests\Email;
 
 use DateTimeImmutable;
 use ReflectionProperty;
+use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
+use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingContext;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingEmailStepInterface;
 use SolidInvoice\SaasBundle\Onboarding\Step\AddFirstClientStep;
@@ -199,6 +201,12 @@ final class OnboardingEmailSnapshotTest extends KernelTestCase
 
     private function trialAboutToEndStep(): TrialAboutToEndStep
     {
-        return new TrialAboutToEndStep($this->translator, new MockClock(self::FROZEN_NOW), 'SOLID30');
+        return new TrialAboutToEndStep(
+            $this->translator,
+            new MockClock(self::FROZEN_NOW),
+            self::getContainer()->get(ClientRepository::class),
+            self::getContainer()->get(InvoiceRepository::class),
+            'SOLID30',
+        );
     }
 }
