@@ -1,0 +1,3 @@
+monolog:
+    channels:
+        - mcp
