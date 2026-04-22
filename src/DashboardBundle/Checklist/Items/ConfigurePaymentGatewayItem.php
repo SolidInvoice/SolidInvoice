@@ -45,7 +45,7 @@ final readonly class ConfigurePaymentGatewayItem implements ChecklistItemInterfa
 
     public function getPriority(): int
     {
-        return -400;
+        return -500;
     }
 
     public function active(): bool

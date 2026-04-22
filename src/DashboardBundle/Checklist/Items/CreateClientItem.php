@@ -45,7 +45,7 @@ final readonly class CreateClientItem implements ChecklistItemInterface
 
     public function getPriority(): int
     {
-        return -600;
+        return -300;
     }
 
     public function active(): bool

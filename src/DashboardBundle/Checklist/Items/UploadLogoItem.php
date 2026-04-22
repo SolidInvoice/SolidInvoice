@@ -45,7 +45,7 @@ final readonly class UploadLogoItem implements ChecklistItemInterface
 
     public function getPriority(): int
     {
-        return -300;
+        return -600;
     }
 
     public function active(): bool

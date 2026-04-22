@@ -46,7 +46,7 @@ final readonly class SendInvoiceItem implements ChecklistItemInterface
 
     public function getPriority(): int
     {
-        return -500;
+        return -400;
     }
 
     public function active(): bool
