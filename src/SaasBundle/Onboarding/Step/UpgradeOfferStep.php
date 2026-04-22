@@ -21,7 +21,7 @@ final class UpgradeOfferStep extends AbstractOnboardingEmailStep
 {
     public function __construct(
         TranslatorInterface $translator,
-        #[Autowire(env: 'SAAS_ONBOARDING_COUPON_CODE')]
+        #[Autowire(env: 'SOLIDINVOICE_SAAS_ONBOARDING_COUPON_CODE')]
         private readonly string $couponCode = '',
     ) {
         parent::__construct($translator);

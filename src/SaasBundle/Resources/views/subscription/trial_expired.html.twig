@@ -58,10 +58,42 @@
                 </ul>
             </div>
 
+            {# Limited-time promo to entice activation #}
+            {% if coupon_code|default('') is not empty %}
+                <div class="subscription-promo card border-azure bg-azure-lt mb-4 text-start">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="subscription-promo-icon text-azure">
+                                {{ ux_icon('tabler:gift', {width: 32, height: 32}) }}
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="fw-bold fs-3 mb-1">
+                                    {{ 'Don\'t go just yet — here\'s 20% off'|trans }}
+                                </div>
+                                <div class="text-secondary">
+                                    {% trans with {'%code%': coupon_code} %}
+                                        Activate your subscription now and use code <strong>%code%</strong> at checkout to get <strong>20%% off your first 3 months</strong>. Keep your invoices flowing without missing a beat.
+                                    {% endtrans %}
+                                </div>
+                            </div>
+                            <div class="subscription-promo-code text-center">
+                                <div class="text-uppercase text-secondary small mb-1">{{ 'Promo code'|trans }}</div>
+                                <span class="badge bg-azure text-white fs-2 px-3 py-2 font-monospace">{{ coupon_code }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
             {# Primary CTA #}
             <div class="subscription-actions">
                 <a href="{{ path('saas_subscription_checkout') }}" class="btn btn-primary btn-lg">
-                    {{ ux_icon('tabler:credit-card', {width: 20, height: 20}) }} {{ 'Activate Subscription'|trans }}
+                    {{ ux_icon('tabler:credit-card', {width: 20, height: 20}) }}
+                    {% if coupon_code|default('') is not empty %}
+                        {{ 'Activate & Save 20%'|trans }}
+                    {% else %}
+                        {{ 'Activate Subscription'|trans }}
+                    {% endif %}
                 </a>
                 <a href="https://solidinvoice.co/contact" class="btn btn-ghost" target="_blank" rel="external noreferrer noopener">
                     {{ ux_icon('tabler:help', {width: 18, height: 18}) }} {{ 'Contact Support'|trans }}

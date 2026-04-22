@@ -199,6 +199,38 @@ final class RequestListenerTest extends KernelTestCase
         self::assertStringContainsString('Trial Expired Page', $response->getContent());
     }
 
+    public function testOnRequestWithExpiredTrialPassesCouponCodeToTemplate(): void
+    {
+        $now = new DateTimeImmutable('2024-01-15');
+        $endDate = new DateTimeImmutable('2024-01-10');
+        $subscription = $this->createSubscription(SubscriptionStatus::TRIAL, $endDate);
+
+        $capturedContext = null;
+        $listener = $this->createListener(
+            new User(),
+            $now,
+            $subscription,
+            'WELCOME20',
+            static function (array $context) use (&$capturedContext): void {
+                $capturedContext = $context;
+            },
+        );
+
+        $request = new Request();
+        $request->attributes->set('_route', '_dashboard');
+
+        $event = new RequestEvent(
+            M::mock(HttpKernelInterface::class),
+            $request,
+            HttpKernelInterface::MAIN_REQUEST
+        );
+
+        $listener->onRequest($event);
+
+        self::assertIsArray($capturedContext);
+        self::assertSame('WELCOME20', $capturedContext['coupon_code']);
+    }
+
     public function testOnRequestWithTrialStatusBeforeEndDate(): void
     {
         $now = new DateTimeImmutable('2024-01-10');
@@ -255,7 +287,9 @@ final class RequestListenerTest extends KernelTestCase
     private function createListener(
         ?User $user = null,
         ?DateTimeImmutable $now = null,
-        ?Subscription $subscription = null
+        ?Subscription $subscription = null,
+        string $couponCode = '',
+        ?callable $onTrialExpiredRender = null,
     ): RequestListener {
         // Get real services from container
         $companySelector = self::getContainer()->get(CompanySelector::class);
@@ -282,7 +316,13 @@ final class RequestListenerTest extends KernelTestCase
             ->with(M::pattern('/@SolidInvoiceSaas\/subscription\/cancelled\.html\.twig/'), M::any())
             ->andReturn('<html>Cancelled Page</html>');
         $twig->shouldReceive('render')
-            ->with(M::pattern('/@SolidInvoiceSaas\/subscription\/trial_expired\.html\.twig/'), M::any())
+            ->with(M::pattern('/@SolidInvoiceSaas\/subscription\/trial_expired\.html\.twig/'), M::on(static function (array $context) use ($onTrialExpiredRender): bool {
+                if ($onTrialExpiredRender !== null) {
+                    $onTrialExpiredRender($context);
+                }
+
+                return true;
+            }))
             ->andReturn('<html>Trial Expired Page</html>');
         $twig->shouldReceive('render')
             ->with(M::pattern('/@SolidInvoiceSaas\/_alert_banner\.html\.twig/'), M::any())
@@ -303,7 +343,8 @@ final class RequestListenerTest extends KernelTestCase
             $twig,
             $security,
             $urlGenerator,
-            $clock
+            $clock,
+            $couponCode,
         );
     }
 

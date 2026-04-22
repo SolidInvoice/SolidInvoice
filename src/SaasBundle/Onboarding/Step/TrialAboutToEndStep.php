@@ -29,7 +29,7 @@ final class TrialAboutToEndStep extends AbstractOnboardingEmailStep
         private readonly ClockInterface $clock,
         private readonly ClientRepository $clientRepository,
         private readonly InvoiceRepository $invoiceRepository,
-        #[Autowire(env: 'SAAS_ONBOARDING_COUPON_CODE')]
+        #[Autowire(env: 'SOLIDINVOICE_SAAS_ONBOARDING_COUPON_CODE')]
         private readonly string $couponCode = '',
     ) {
         parent::__construct($translator);
