@@ -26,7 +26,7 @@
             <div class="form-hint text-muted mt-2">
                 {{ ux_icon('tabler:info-circle', {width: 16, height: 16, class: 'me-1'}) }}
                 {{ 'This feature requires an active subscription. Upgrade your plan now to unlock this feature.'|trans }}
-                <a href="{{ path('billing_index') }}" class="ms-1">{{ 'Upgrade Now'|trans }}</a>
+                <a href="{{ path('saas_subscription_checkout') }}" class="ms-1">{{ 'Upgrade Now'|trans }}</a>
             </div>
         </div>
     {% else %}
@@ -50,7 +50,7 @@
             <div class="form-hint text-muted mt-2">
                 {{ ux_icon('tabler:info-circle', {width: 16, height: 16, class: 'me-1'}) }}
                 {{ 'This feature requires an active subscription. Upgrade your plan now to unlock this feature.'|trans }}
-                <a href="{{ path('billing_index') }}" class="ms-1">{{ 'Upgrade Now'|trans }}</a>
+                <a href="{{ path('saas_subscription_checkout') }}" class="ms-1">{{ 'Upgrade Now'|trans }}</a>
             </div>
         </div>
     {% else %}
