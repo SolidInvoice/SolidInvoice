@@ -191,6 +191,7 @@ final class ChecklistManagerTest extends KernelTestCase
         $item->method('getRoute')->willReturn($route);
         $item->method('getPriority')->willReturn($priority);
         $item->method('isComplete')->willReturn($isComplete);
+        $item->method('active')->willReturn(true);
 
         return $item;
     }
