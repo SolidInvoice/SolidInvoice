@@ -2132,6 +2132,37 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         settings?: mixed, // Configure indices settings, see: https://www.meilisearch.com/docs/reference/api/settings // Default: []
  *     }>,
  * }
+ * @psalm-type McpConfig = array{
+ *     app?: scalar|Param|null, // Default: "app"
+ *     version?: scalar|Param|null, // Default: "0.0.1"
+ *     description?: scalar|Param|null, // Default: null
+ *     icons?: list<array{ // Default: []
+ *         src?: scalar|Param|null,
+ *         mime_type?: scalar|Param|null, // Default: null
+ *         sizes?: list<scalar|Param|null>,
+ *     }>,
+ *     website_url?: scalar|Param|null, // Default: null
+ *     pagination_limit?: int|Param, // Default: 50
+ *     instructions?: scalar|Param|null, // Default: null
+ *     client_transports?: array{
+ *         stdio?: bool|Param, // Default: false
+ *         http?: bool|Param, // Default: false
+ *     },
+ *     discovery?: array{
+ *         scan_dirs?: list<scalar|Param|null>,
+ *         exclude_dirs?: list<scalar|Param|null>,
+ *     },
+ *     http?: array{
+ *         path?: scalar|Param|null, // Default: "/_mcp"
+ *         session?: array{
+ *             store?: "file"|"memory"|"cache"|"framework"|Param, // Default: "file"
+ *             directory?: scalar|Param|null, // Default: "%kernel.cache_dir%/mcp-sessions"
+ *             cache_pool?: scalar|Param|null, // Default: "cache.mcp.sessions"
+ *             prefix?: scalar|Param|null, // Default: "mcp-"
+ *             ttl?: int|Param, // Default: 3600
+ *         },
+ *     },
+ * }
  * @psalm-type SchebTwoFactorConfig = array{
  *     persister?: scalar|Param|null, // Default: "scheb_two_factor.persister.doctrine"
  *     model_manager_name?: scalar|Param|null, // Default: null
@@ -2291,6 +2322,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     knpu_oauth2_client?: KnpuOauth2ClientConfig,
  *     symfonycasts_reset_password?: SymfonycastsResetPasswordConfig,
  *     meilisearch?: MeilisearchConfig,
+ *     mcp?: McpConfig,
  *     scheb_two_factor?: SchebTwoFactorConfig,
  *     twig_extra?: TwigExtraConfig,
  *     knp_menu?: KnpMenuConfig,
@@ -2326,6 +2358,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         knpu_oauth2_client?: KnpuOauth2ClientConfig,
  *         symfonycasts_reset_password?: SymfonycastsResetPasswordConfig,
  *         meilisearch?: MeilisearchConfig,
+ *         mcp?: McpConfig,
  *     },
  *     "when@test"?: array{
  *         imports?: ImportsConfig,
@@ -2355,6 +2388,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         knpu_oauth2_client?: KnpuOauth2ClientConfig,
  *         symfonycasts_reset_password?: SymfonycastsResetPasswordConfig,
  *         meilisearch?: MeilisearchConfig,
+ *         mcp?: McpConfig,
  *     },
  *     ...<string, ExtensionType|array{ // extra keys must follow the when@%env% pattern or match an extension alias
  *         imports?: ImportsConfig,

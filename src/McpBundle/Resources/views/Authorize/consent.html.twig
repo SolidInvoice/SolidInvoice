@@ -1,0 +1,110 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends '@SolidInvoiceCore/Layout/login.html.twig' %}
+
+{% block page_title %}{{ app_name }} - {{ 'mcp.consent.title'|trans({}, 'SolidInvoiceMcpBundle') }}{% endblock %}
+
+{% block content %}
+    <div class="page page-center">
+        <div class="container container-tight py-4">
+            <div class="text-center mb-4">
+                <span class="navbar-brand navbar-brand-autodark text-white h1">
+                    {{ app_logo(showDefault: true, showOnlyAppIcon: true) }} {{ app_name }}
+                </span>
+            </div>
+
+            <div class="card card-md">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-3">
+                        {{ 'mcp.consent.heading'|trans({'%client%': client.name}, 'SolidInvoiceMcpBundle') }}
+                    </h2>
+
+                    {% if client.redirectUris|length > 0 %}
+                        <p class="text-muted small text-center text-break">
+                            {{ 'mcp.consent.redirect'|trans({'%uri%': client.redirectUris|first}, 'SolidInvoiceMcpBundle') }}
+                        </p>
+                    {% endif %}
+
+                    <form method="post" action="{{ path('mcp_oauth_authorize') }}{% if app.request.queryString %}?{{ app.request.queryString }}{% endif %}">
+                        <input type="hidden" name="state" value="{{ state|default('')|e('html_attr') }}">
+
+                        <div class="mb-3">
+                            <label class="form-label">{{ 'mcp.consent.company'|trans({}, 'SolidInvoiceMcpBundle') }}</label>
+
+                            {% if companies|length == 1 %}
+                                {% set company = companies|first %}
+                                <div class="form-control d-flex align-items-center" style="background-color: var(--tblr-bg-surface-secondary);">
+                                    <strong>{{ company.name }}</strong>
+                                    <input type="hidden" name="company_id" value="{{ company.id }}">
+                                </div>
+                            {% else %}
+                                <select class="form-select" name="company_id" required>
+                                    {% for company in companies %}
+                                        <option value="{{ company.id }}" {% if active_company_id and company.id == active_company_id %}selected{% endif %}>
+                                            {{ company.name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            {% endif %}
+                        </div>
+
+                        <h3 class="mt-4 mb-2">{{ 'mcp.consent.permissions'|trans({}, 'SolidInvoiceMcpBundle') }}</h3>
+
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <label class="form-check">
+                                    <input class="form-check-input" type="checkbox" checked disabled>
+                                    <span class="form-check-label">
+                                        {{ ux_icon('tabler:eye') }}
+                                        {{ 'mcp.consent.scope.read'|trans({}, 'SolidInvoiceMcpBundle') }}
+                                    </span>
+                                </label>
+                            </li>
+
+                            {% if supports_write %}
+                                <li class="mb-2">
+                                    <label class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="grant_write" value="1" checked>
+                                        <span class="form-check-label">
+                                            {{ ux_icon('tabler:pencil') }}
+                                            {{ 'mcp.consent.scope.write'|trans({}, 'SolidInvoiceMcpBundle') }}
+                                        </span>
+                                    </label>
+                                </li>
+                            {% endif %}
+                        </ul>
+
+                        <div class="mb-3">
+                            <label class="form-check">
+                                <input class="form-check-input" type="checkbox" name="remember" value="1">
+                                <span class="form-check-label">
+                                    {{ 'mcp.consent.remember'|trans({}, 'SolidInvoiceMcpBundle') }}
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="form-footer d-flex gap-2">
+                            <button type="submit" name="action" value="deny" class="btn btn-ghost-secondary flex-fill">
+                                {{ 'mcp.consent.cancel'|trans({}, 'SolidInvoiceMcpBundle') }}
+                            </button>
+                            <button type="submit" name="action" value="approve" class="btn btn-primary flex-fill">
+                                {{ 'mcp.consent.authorize'|trans({}, 'SolidInvoiceMcpBundle') }}
+                            </button>
+                        </div>
+                    </form>
+
+                    <p class="text-muted small text-center mt-3 mb-0">
+                        {{ 'mcp.consent.revoke_hint'|trans({'%link%': path('mcp_connected_apps_list')}, 'SolidInvoiceMcpBundle')|raw }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

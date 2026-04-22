@@ -18,4 +18,9 @@ return static function (FrameworkConfig $config): void {
         ->policy('sliding_window')
         ->limit(300)
         ->interval('1 minute');
+
+    $config->rateLimiter()->limiter('mcp_oauth_register')
+        ->policy('fixed_window')
+        ->limit(60)
+        ->interval('1 hour');
 };
