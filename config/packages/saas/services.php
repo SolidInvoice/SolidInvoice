@@ -19,4 +19,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters->set('env(SOLIDINVOICE_LEMON_SQUEEZY_API_KEY)', null);
     $parameters->set('env(SOLIDINVOICE_LEMON_SQUEEZY_STORE_ID)', null);
     $parameters->set('env(SOLIDINVOICE_LEMON_SQUEEZY_WEBHOOK_SECRET)', '');
+    $parameters->set('env(SOLIDINVOICE_SAAS_ONBOARDING_COUPON_CODE)', '');
 };

@@ -18,6 +18,7 @@ use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
 use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionProviderInterface;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -56,6 +57,8 @@ final readonly class RequestListener implements EventSubscriberInterface
         private Security $security,
         private UrlGeneratorInterface $urlGenerator,
         private ClockInterface $clock,
+        #[Autowire(env: 'SOLIDINVOICE_SAAS_ONBOARDING_COUPON_CODE')]
+        private string $onboardingCouponCode = '',
     ) {
     }
 
@@ -114,6 +117,7 @@ final readonly class RequestListener implements EventSubscriberInterface
                         new Response(
                             $this->twig->render('@SolidInvoiceSaas/subscription/trial_expired.html.twig', [
                                 'subscription' => $subscription,
+                                'coupon_code' => $this->onboardingCouponCode,
                             ]),
                         )
                     );
