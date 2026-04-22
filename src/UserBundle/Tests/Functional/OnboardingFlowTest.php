@@ -115,7 +115,7 @@ final class OnboardingFlowTest extends WebTestCase
             // Skip client step
             ->assertSuccessful()
             ->assertSee('Add your first client')
-            ->click('I\'ll do this later')
+            ->click('#onboarding_navigator_skip')
             // Should go to complete step (invoice auto-skipped)
             ->assertSuccessful()
             ->assertSee('You\'re all set!')
