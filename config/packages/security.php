@@ -15,6 +15,8 @@ use SolidInvoice\ApiBundle\Event\Listener\AuthenticationFailHandler;
 use SolidInvoice\ApiBundle\Event\Listener\AuthenticationSuccessHandler;
 use SolidInvoice\ApiBundle\Security\ApiTokenAuthenticator;
 use SolidInvoice\ApiBundle\Security\Provider\ApiTokenUserProvider;
+use SolidInvoice\McpBundle\Security\McpOAuthAuthenticator;
+use SolidInvoice\McpBundle\Security\McpOAuthUserProvider;
 use SolidInvoice\UserBundle\Security\OAuth\OAuthAuthenticator;
 use SolidWorx\Platform\PlatformBundle\DependencyInjection\Extension\LoginExtension;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -34,6 +36,10 @@ return static function (SecurityConfig $config): void {
     $config
         ->provider('api_token_user_provider')
         ->id(ApiTokenUserProvider::class);
+
+    $config
+        ->provider('mcp_oauth_user_provider')
+        ->id(McpOAuthUserProvider::class);
 
     $config
         ->firewall('assets')
@@ -69,6 +75,25 @@ return static function (SecurityConfig $config): void {
         ->provider('api_token_user_provider')
         ->customAuthenticators([ApiTokenAuthenticator::class]);
 
+    $config
+        ->firewall('mcp_oauth_endpoints')
+        ->pattern('^/oauth/(token|register|revoke)$')
+        ->stateless(true)
+        ->security(false);
+
+    $config
+        ->firewall('mcp_well_known')
+        ->pattern('^/\.well-known/(oauth-authorization-server|oauth-protected-resource)')
+        ->stateless(true)
+        ->security(false);
+
+    $config
+        ->firewall('mcp')
+        ->pattern('^/_mcp')
+        ->stateless(true)
+        ->provider('mcp_oauth_user_provider')
+        ->customAuthenticators([McpOAuthAuthenticator::class]);
+
     $mainFirewallConfig = LoginExtension::configureDefaultFormLogin($config, true);
 
     $mainFirewallConfig
@@ -87,6 +112,9 @@ return static function (SecurityConfig $config): void {
             '/(?:login|register)$|' .
             '/forgot-password|' .
             '/oauth/connect|' .
+            '/oauth/(token|register|revoke)$|' .
+            '/\.well-known/oauth-authorization-server|' .
+            '/\.well-known/oauth-protected-resource|' .
             '/install|' .
             '/verify$|' .
             '/logout$|' .

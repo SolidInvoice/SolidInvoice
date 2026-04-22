@@ -1,0 +1,21 @@
+mcp:
+    app: 'SolidInvoice'
+    version: '%env(default::APP_VERSION)%'
+    description: 'MCP server for SolidInvoice'
+    client_transports:
+        stdio: false
+        http: true
+    http:
+        path: /_mcp
+        session:
+            store: file
+            ttl: 3600
+    discovery:
+        # Tool classes live in business bundles under src/<Bundle>/Mcp.
+        scan_dirs:
+            - src
+        exclude_dirs:
+            - src/McpBundle/Entity
+            - src/McpBundle/OAuth
+            - src/McpBundle/Security
+            - src/McpBundle/Action

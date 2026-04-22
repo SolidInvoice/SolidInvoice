@@ -1,0 +1,23 @@
+mcp:
+    consent:
+        title: "Authorize application"
+        heading: "%client% wants to access your SolidInvoice account"
+        redirect: "Callback: %uri%"
+        company: "Company"
+        permissions: "Permissions requested"
+        scope:
+            read: "Read your invoices, quotes, clients, payments, taxes and analytics"
+            write: "Create and modify invoices, quotes, clients, payments and taxes"
+        remember: "Don't ask me again for this app + company"
+        cancel: "Cancel"
+        authorize: "Authorize"
+        revoke_hint: "You can revoke this app at any time from your <a href=\"%link%\">connected apps</a>."
+    error:
+        title: "Authorization error"
+    connected_apps:
+        title: "Connected apps"
+        empty: "You haven't connected any AI agents yet."
+        revoke: "Revoke"
+        last_used: "Last used"
+        never_used: "Never used"
+        scopes: "Scopes"

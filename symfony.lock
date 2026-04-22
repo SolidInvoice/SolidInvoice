@@ -738,6 +738,9 @@
             "ref": "60df16a0ff39e942f6579e624d5630fc6b4e0cc1"
         }
     },
+    "symfony/mcp-bundle": {
+        "version": "v0.8.0"
+    },
     "symfony/mercure-notifier": {
         "version": "5.4",
         "recipe": {

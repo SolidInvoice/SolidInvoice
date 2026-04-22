@@ -1,0 +1,70 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends '@SolidInvoiceCore/Layout/default.html.twig' %}
+
+{% block title %}{{ 'mcp.connected_apps.title'|trans({}, 'SolidInvoiceMcpBundle') }}{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <h2 class="page-title">
+            {{ ux_icon('tabler:plug-connected') }}
+            {{ 'mcp.connected_apps.title'|trans({}, 'SolidInvoiceMcpBundle') }}
+        </h2>
+    </div>
+
+    {% if connected_apps is empty %}
+        <div class="empty">
+            <p class="empty-title">{{ 'mcp.connected_apps.empty'|trans({}, 'SolidInvoiceMcpBundle') }}</p>
+        </div>
+    {% else %}
+        <div class="row row-cards">
+            {% for app in connected_apps %}
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-start">
+                                <div class="flex-grow-1">
+                                    <h3 class="card-title">{{ app.client.name }}</h3>
+
+                                    <div class="mb-2 text-muted small">
+                                        {{ 'mcp.connected_apps.scopes'|trans({}, 'SolidInvoiceMcpBundle') }}:
+                                        {% for scope in app.scopes %}
+                                            <span class="badge bg-blue-lt">{{ scope }}</span>
+                                        {% endfor %}
+                                    </div>
+
+                                    <div class="mb-2 text-muted small">
+                                        {{ app.company.name }}
+                                    </div>
+
+                                    <div class="text-muted small">
+                                        {% if app.last_used %}
+                                            {{ 'mcp.connected_apps.last_used'|trans({}, 'SolidInvoiceMcpBundle') }}:
+                                            {{ app.last_used|date('Y-m-d H:i') }}
+                                        {% else %}
+                                            {{ 'mcp.connected_apps.never_used'|trans({}, 'SolidInvoiceMcpBundle') }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <form method="post" action="{{ path('mcp_connected_apps_revoke', {'id': app.client.id}) }}">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        {{ ux_icon('tabler:x') }}
+                                        {{ 'mcp.connected_apps.revoke'|trans({}, 'SolidInvoiceMcpBundle') }}
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}

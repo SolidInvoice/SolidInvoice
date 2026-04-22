@@ -30,6 +30,7 @@ $bundles = [
     SolidInvoice\InstallBundle\SolidInvoiceInstallBundle::class => ['all' => true],
     SolidInvoice\InvoiceBundle\SolidInvoiceInvoiceBundle::class => ['all' => true],
     SolidInvoice\MailerBundle\SolidInvoiceMailerBundle::class => ['all' => true],
+    SolidInvoice\McpBundle\SolidInvoiceMcpBundle::class => ['all' => true],
     SolidInvoice\MoneyBundle\SolidInvoiceMoneyBundle::class => ['all' => true],
     SolidInvoice\NotificationBundle\SolidInvoiceNotificationBundle::class => ['all' => true],
     SolidInvoice\PaymentBundle\SolidInvoicePaymentBundle::class => ['all' => true],
@@ -59,6 +60,7 @@ $bundles = [
     SolidWorx\Platform\UiBundle\SolidWorxPlatformUiBundle::class => ['all' => true],
     Symfony\UX\Chartjs\ChartjsBundle::class => ['all' => true],
     Meilisearch\Bundle\MeilisearchBundle::class => ['all' => true],
+    Symfony\AI\McpBundle\McpBundle::class => ['all' => true],
 ];
 
 if (($_ENV['SOLIDINVOICE_PLATFORM'] ?? $_SERVER['SOLIDINVOICE_PLATFORM'] ?? null) === 'saas') {
