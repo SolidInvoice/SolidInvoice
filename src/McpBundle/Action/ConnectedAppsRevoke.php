@@ -19,6 +19,7 @@ use SolidInvoice\McpBundle\Entity\McpRefreshToken;
 use SolidInvoice\McpBundle\Entity\OAuthClient;
 use SolidInvoice\McpBundle\Repository\OAuthClientRepository;
 use SolidInvoice\UserBundle\Entity\User;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -61,8 +62,8 @@ final class ConnectedAppsRevoke
             ->update(McpAccessToken::class, 't')
             ->set('t.revoked', 'true')
             ->where('t.oauthClient = :client AND t.user = :user')
-            ->setParameter('client', $client)
-            ->setParameter('user', $user)
+            ->setParameter('client', $client->getId(), UlidType::NAME)
+            ->setParameter('user', $user->getId(), UlidType::NAME)
             ->getQuery()
             ->execute();
 
@@ -73,8 +74,8 @@ final class ConnectedAppsRevoke
                 SELECT t.id FROM ' . McpAccessToken::class . ' t
                 WHERE t.oauthClient = :client AND t.user = :user
             )')
-            ->setParameter('client', $client)
-            ->setParameter('user', $user)
+            ->setParameter('client', $client->getId(), UlidType::NAME)
+            ->setParameter('user', $user->getId(), UlidType::NAME)
             ->getQuery()
             ->execute();
 
