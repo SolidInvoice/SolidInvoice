@@ -43,13 +43,13 @@ class OAuthClient implements ClientEntityInterface
     /**
      * @var list<string>
      */
-    #[ORM\Column(type: Types::JSON)]
+    #[ORM\Column(name: 'redirect_uris', type: Types::JSON)]
     private array $redirectUris = [];
 
     /**
      * @var list<string>
      */
-    #[ORM\Column(type: Types::JSON)]
+    #[ORM\Column(name: 'grant_types', type: Types::JSON)]
     private array $grantTypes = ['authorization_code', 'refresh_token'];
 
     /**
@@ -58,10 +58,10 @@ class OAuthClient implements ClientEntityInterface
     #[ORM\Column(type: Types::JSON)]
     private array $scopes = ['mcp:read'];
 
-    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    #[ORM\Column(name: 'secret_hash', type: Types::STRING, length: 255, nullable: true)]
     private ?string $secretHash = null;
 
-    #[ORM\Column(type: Types::STRING, length: 32)]
+    #[ORM\Column(name: 'token_endpoint_auth_method', type: Types::STRING, length: 32)]
     private string $tokenEndpointAuthMethod = 'none';
 
     #[ORM\ManyToOne(targetEntity: User::class)]

@@ -19,15 +19,19 @@ use RuntimeException;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * Manages RSA signing keys used for OAuth2 access-token JWTs.
+ * Manages the RSA signing keys used for OAuth2 access-token JWTs.
  *
- * Keys live in var/oauth/ and are generated via bin/console mcp:keys:generate.
+ * Keys are persisted under SOLIDINVOICE_CONFIG_DIR/oauth/ so they survive
+ * redeployments alongside the rest of the app config. `bin/console
+ * mcp:keys:generate` writes them; FrankenPHP's launcher calls that command on
+ * first boot so deployments don't need a manual setup step.
  */
 final class KeyManager
 {
     public function __construct(
-        private readonly string $projectDir,
+        private readonly string $configDir,
         private readonly string $encryptionKey,
+        private readonly Filesystem $filesystem = new Filesystem(),
     ) {
     }
 
@@ -43,12 +47,13 @@ final class KeyManager
 
     public function getKeyDir(): string
     {
-        return $this->projectDir . '/var/oauth';
+        return rtrim($this->configDir, '/') . '/oauth';
     }
 
     public function hasKeys(): bool
     {
-        return file_exists($this->getPrivateKeyPath()) && file_exists($this->getPublicKeyPath());
+        return $this->filesystem->exists($this->getPrivateKeyPath())
+            && $this->filesystem->exists($this->getPublicKeyPath());
     }
 
     public function getPrivateKey(): CryptKeyInterface
@@ -72,23 +77,24 @@ final class KeyManager
 
     /**
      * Returns true if keys were generated, false if they already existed.
+     *
+     * Uses OpenSSL's CSPRNG for the key material — no need to mix in the app
+     * secret (OPENSSL_KEYTYPE_RSA already draws from /dev/urandom). The app
+     * secret is only used as the auth-code encryption key over in ServerFactory.
      */
     public function generate(bool $force = false): bool
     {
-        $filesystem = new Filesystem();
-        $filesystem->mkdir($this->getKeyDir(), 0700);
+        $this->filesystem->mkdir($this->getKeyDir(), 0700);
 
         if ($this->hasKeys() && ! $force) {
             return false;
         }
 
-        $config = [
+        $resource = openssl_pkey_new([
             'digest_alg' => 'sha256',
             'private_key_bits' => 2048,
             'private_key_type' => OPENSSL_KEYTYPE_RSA,
-        ];
-
-        $resource = openssl_pkey_new($config);
+        ]);
 
         if ($resource === false) {
             throw new RuntimeException('Failed to generate RSA key pair: ' . (openssl_error_string() ?: 'unknown error'));
@@ -104,13 +110,11 @@ final class KeyManager
             throw new RuntimeException('Failed to read public key details.');
         }
 
-        $publicKeyPem = $details['key'];
+        $this->filesystem->dumpFile($this->getPrivateKeyPath(), $privateKeyPem);
+        $this->filesystem->chmod($this->getPrivateKeyPath(), 0600);
 
-        file_put_contents($this->getPrivateKeyPath(), $privateKeyPem);
-        chmod($this->getPrivateKeyPath(), 0600);
-
-        file_put_contents($this->getPublicKeyPath(), $publicKeyPem);
-        chmod($this->getPublicKeyPath(), 0644);
+        $this->filesystem->dumpFile($this->getPublicKeyPath(), $details['key']);
+        $this->filesystem->chmod($this->getPublicKeyPath(), 0644);
 
         return true;
     }

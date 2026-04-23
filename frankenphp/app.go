@@ -496,6 +496,11 @@ func setupCommands() {
 					if err := runConsoleCommand("cache:clear"); err != nil {
 						log.Error(ctx, errors.Join(errors.New("failed to clear cache"), err))
 					}
+					// Generate OAuth2 signing keys for the MCP server on first boot.
+					// Idempotent — skipped if the keys already exist in SOLIDINVOICE_CONFIG_DIR/oauth/.
+					if err := runConsoleCommand("mcp:keys:generate"); err != nil {
+						log.Error(ctx, errors.Join(errors.New("failed to generate MCP OAuth signing keys"), err))
+					}
 				case lu.AppRunning:
 					if !skipIntro {
 						outputAppInfo()

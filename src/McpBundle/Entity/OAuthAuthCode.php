@@ -60,13 +60,13 @@ class OAuthAuthCode implements AuthCodeEntityInterface
     /**
      * @var list<string>
      */
-    #[ORM\Column(type: Types::JSON)]
+    #[ORM\Column(name: 'scope_values', type: Types::JSON)]
     private array $scopeValues = [];
 
-    #[ORM\Column(type: Types::STRING, length: 2048, nullable: true)]
+    #[ORM\Column(name: 'redirect_uri', type: Types::STRING, length: 2048, nullable: true)]
     private ?string $redirectUri = null;
 
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
+    #[ORM\Column(name: 'expires_at', type: Types::DATETIME_IMMUTABLE)]
     private DateTimeImmutable $expiresAt;
 
     #[ORM\Column(type: Types::BOOLEAN)]

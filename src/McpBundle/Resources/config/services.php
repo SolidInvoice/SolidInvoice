@@ -22,7 +22,6 @@ use SolidInvoice\McpBundle\Repository\OAuthAuthCodeRepository;
 use SolidInvoice\McpBundle\Repository\OAuthClientRepository;
 use SolidInvoice\McpBundle\SolidInvoiceMcpBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -44,7 +43,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services->set(KeyManager::class)
         ->args([
-            param('kernel.project_dir'),
+            '%env(SOLIDINVOICE_CONFIG_DIR)%',
             '%env(SOLIDINVOICE_APP_SECRET)%',
         ]);
 
