@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
-use SolidInvoice\CoreBundle\Entity\Company;
+use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\McpBundle\OAuth\ScopeEntity;
 use SolidInvoice\McpBundle\Repository\OAuthAuthCodeRepository;
@@ -34,6 +34,7 @@ class OAuthAuthCode implements AuthCodeEntityInterface
 {
     final public const string TABLE_NAME = 'mcp_oauth_auth_code';
 
+    use CompanyAware;
     use TimeStampable;
 
     #[ORM\Column(type: UlidType::NAME)]
@@ -52,10 +53,6 @@ class OAuthAuthCode implements AuthCodeEntityInterface
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'user_id', nullable: false, onDelete: 'CASCADE')]
     private User $user;
-
-    #[ORM\ManyToOne(targetEntity: Company::class)]
-    #[ORM\JoinColumn(name: 'company_id', nullable: false, onDelete: 'CASCADE')]
-    private Company $company;
 
     /**
      * @var list<string>
@@ -144,18 +141,6 @@ class OAuthAuthCode implements AuthCodeEntityInterface
     public function setUserIdentifier(string $identifier): void
     {
         // Derived from User relation; noop.
-    }
-
-    public function getCompany(): Company
-    {
-        return $this->company;
-    }
-
-    public function setCompany(Company $company): self
-    {
-        $this->company = $company;
-
-        return $this;
     }
 
     /**

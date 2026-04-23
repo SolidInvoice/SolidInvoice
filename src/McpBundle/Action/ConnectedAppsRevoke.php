@@ -19,31 +19,43 @@ use SolidInvoice\McpBundle\Entity\McpRefreshToken;
 use SolidInvoice\McpBundle\Entity\OAuthClient;
 use SolidInvoice\McpBundle\Repository\OAuthClientRepository;
 use SolidInvoice\UserBundle\Entity\User;
-use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Uid\Ulid;
 
 #[Route(path: '/profile/connected-apps/{id}/revoke', name: 'mcp_connected_apps_revoke', methods: ['POST'])]
 final class ConnectedAppsRevoke
 {
+    public const string CSRF_TOKEN_ID = 'mcp_connected_apps_revoke';
+
     public function __construct(
         private readonly OAuthClientRepository $clientRepository,
         private readonly EntityManagerInterface $entityManager,
         private readonly Security $security,
         private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly CsrfTokenManagerInterface $csrfTokenManager,
     ) {
     }
 
-    public function __invoke(string $id): Response
+    public function __invoke(Request $request, string $id): Response
     {
         $user = $this->security->getUser();
 
         if (! $user instanceof User) {
-            return new RedirectResponse('/login');
+            return new RedirectResponse($this->urlGenerator->generate('_login_main'));
+        }
+
+        $csrfToken = (string) $request->request->get('_csrf_token', '');
+
+        if (! $this->csrfTokenManager->isTokenValid(new CsrfToken(self::CSRF_TOKEN_ID, $csrfToken))) {
+            throw new BadRequestHttpException('Invalid CSRF token.');
         }
 
         try {

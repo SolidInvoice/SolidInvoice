@@ -35,6 +35,8 @@ final class McpOAuthAuthenticator extends AbstractAuthenticator
 {
     public const string ATTR_ACCESS_TOKEN_ID = 'mcp_oauth_access_token_id';
 
+    public const string ATTR_ACCESS_TOKEN = 'mcp_oauth_access_token';
+
     public const string ATTR_SCOPES = 'mcp_oauth_scopes';
 
     public const string ATTR_COMPANY_ID = 'mcp_oauth_company_id';
@@ -85,6 +87,7 @@ final class McpOAuthAuthenticator extends AbstractAuthenticator
         }
 
         $request->attributes->set(self::ATTR_ACCESS_TOKEN_ID, $jti);
+        $request->attributes->set(self::ATTR_ACCESS_TOKEN, $token);
         $request->attributes->set(self::ATTR_SCOPES, \is_array($scopes) ? $scopes : []);
         $request->attributes->set(self::ATTR_COMPANY_ID, $token->getCompany()->getId()?->toRfc4122());
 
@@ -93,23 +96,19 @@ final class McpOAuthAuthenticator extends AbstractAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        $jti = $request->attributes->get(self::ATTR_ACCESS_TOKEN_ID);
+        $accessToken = $request->attributes->get(self::ATTR_ACCESS_TOKEN);
 
-        if (! \is_string($jti)) {
+        if (! $accessToken instanceof McpAccessToken) {
             return null;
         }
 
-        $accessToken = $this->accessTokenRepository->findByJti($jti);
+        $companyId = $accessToken->getCompany()->getId();
 
-        if ($accessToken instanceof McpAccessToken) {
-            $companyId = $accessToken->getCompany()->getId();
-
-            if ($companyId !== null) {
-                $this->companySelector->switchCompany($companyId);
-            }
-
-            $this->accessTokenRepository->touch($accessToken);
+        if ($companyId !== null) {
+            $this->companySelector->switchCompany($companyId);
         }
+
+        $this->accessTokenRepository->touch($accessToken);
 
         return null;
     }

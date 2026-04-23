@@ -139,13 +139,8 @@ final class McpAccessTokenRepository extends EntityRepository implements AccessT
 
     private function bindCompanyIfMissing(McpAccessToken $accessToken): void
     {
-        try {
-            // If company is already set (e.g. by a future direct binding), skip.
-            $accessToken->getCompany();
-
+        if ($accessToken->hasCompany()) {
             return;
-        } catch (\Error) {
-            // typed property not initialised — fall through to bind from the consent grant
         }
 
         $user = $accessToken->getUser();

@@ -34,6 +34,7 @@
 
                     <form method="post" action="{{ path('mcp_oauth_authorize') }}{% if app.request.queryString %}?{{ app.request.queryString }}{% endif %}">
                         <input type="hidden" name="state" value="{{ state|default('')|e('html_attr') }}">
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token(csrf_token_id) }}">
 
                         <div class="mb-3">
                             <label class="form-label">{{ 'mcp.consent.company'|trans({}, 'SolidInvoiceMcpBundle') }}</label>

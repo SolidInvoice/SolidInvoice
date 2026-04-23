@@ -17,6 +17,8 @@ use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer\Key\InMemory;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
 use Lcobucci\JWT\UnencryptedToken;
+use Lcobucci\JWT\Validation\Constraint\SignedWith;
+use Lcobucci\JWT\Validation\RequiredConstraintsViolated;
 use SolidInvoice\McpBundle\OAuth\KeyManager;
 use SolidInvoice\McpBundle\Repository\McpAccessTokenRepository;
 use SolidInvoice\McpBundle\Repository\McpRefreshTokenRepository;
@@ -57,10 +59,13 @@ final class Revoke
     private function tryRevokeAccessToken(string $token): bool
     {
         try {
+            $signer = new Sha256();
+            $verificationKey = InMemory::file($this->keyManager->getPublicKeyPath());
+
             $config = Configuration::forAsymmetricSigner(
-                new Sha256(),
+                $signer,
                 InMemory::plainText('empty', 'empty'),
-                InMemory::file($this->keyManager->getPublicKeyPath()),
+                $verificationKey,
             );
 
             $parsed = $config->parser()->parse($token);
@@ -68,6 +73,12 @@ final class Revoke
             if (! $parsed instanceof UnencryptedToken) {
                 return false;
             }
+
+            // Reject forged or tampered tokens before trusting any claim — the
+            // revocation endpoint is unauthenticated (RFC 7009), so verifying
+            // the RS256 signature is the only thing binding the request to a
+            // legitimate token.
+            $config->validator()->assert($parsed, new SignedWith($signer, $verificationKey));
 
             $jti = $parsed->claims()->get('jti');
 
@@ -78,6 +89,8 @@ final class Revoke
             $this->accessTokenRepository->revokeAccessToken($jti);
 
             return true;
+        } catch (RequiredConstraintsViolated) {
+            return false;
         } catch (\Throwable) {
             return false;
         }

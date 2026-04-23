@@ -21,7 +21,7 @@ use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
 use League\OAuth2\Server\Entities\Traits\AccessTokenTrait;
-use SolidInvoice\CoreBundle\Entity\Company;
+use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\McpBundle\OAuth\ScopeEntity;
 use SolidInvoice\McpBundle\Repository\McpAccessTokenRepository;
@@ -37,6 +37,7 @@ class McpAccessToken implements AccessTokenEntityInterface
     final public const string TABLE_NAME = 'mcp_access_token';
 
     use AccessTokenTrait;
+    use CompanyAware;
     use TimeStampable;
 
     #[ORM\Column(type: UlidType::NAME)]
@@ -55,10 +56,6 @@ class McpAccessToken implements AccessTokenEntityInterface
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'user_id', nullable: false, onDelete: 'CASCADE')]
     private User $user;
-
-    #[ORM\ManyToOne(targetEntity: Company::class)]
-    #[ORM\JoinColumn(name: 'company_id', nullable: false, onDelete: 'CASCADE')]
-    private Company $company;
 
     /**
      * @var list<string>
@@ -154,16 +151,9 @@ class McpAccessToken implements AccessTokenEntityInterface
         // Identifier is derived from the persisted User relation; noop.
     }
 
-    public function getCompany(): Company
+    public function hasCompany(): bool
     {
-        return $this->company;
-    }
-
-    public function setCompany(Company $company): self
-    {
-        $this->company = $company;
-
-        return $this;
+        return isset($this->company);
     }
 
     /**
