@@ -16,6 +16,7 @@ namespace SolidInvoice\McpBundle\Action;
 use SolidInvoice\McpBundle\Repository\McpAccessTokenRepository;
 use SolidInvoice\McpBundle\Repository\OAuthClientRepository;
 use SolidInvoice\UserBundle\Entity\User;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,7 +45,7 @@ final class ConnectedAppsList
         $tokens = $this->accessTokenRepository->createQueryBuilder('t')
             ->andWhere('t.user = :user')
             ->andWhere('t.revoked = :revoked')
-            ->setParameter('user', $user)
+            ->setParameter('user', $user->getId(), UlidType::NAME)
             ->setParameter('revoked', false)
             ->orderBy('t.created', 'DESC')
             ->getQuery()
