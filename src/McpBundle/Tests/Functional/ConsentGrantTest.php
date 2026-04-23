@@ -54,8 +54,13 @@ final class ConsentGrantTest extends KernelTestCase
 
         self::assertFalse($consent->hasPriorConsent($client, $user, $this->company, ['mcp:read']));
 
-        $consent->remember($client, $user, $this->company, ['mcp:read']);
+        // Without the remember flag, the grant is persisted but hasPriorConsent
+        // returns false — the user is prompted again.
+        $consent->remember($client, $user, $this->company, ['mcp:read'], remember: false);
+        self::assertFalse($consent->hasPriorConsent($client, $user, $this->company, ['mcp:read']));
 
+        // With the remember flag, hasPriorConsent returns true.
+        $consent->remember($client, $user, $this->company, ['mcp:read'], remember: true);
         self::assertTrue($consent->hasPriorConsent($client, $user, $this->company, ['mcp:read']));
 
         // Asking for a scope that wasn't granted must still fail.
@@ -82,8 +87,8 @@ final class ConsentGrantTest extends KernelTestCase
         $consent = $container->get(ConsentService::class);
         self::assertInstanceOf(ConsentService::class, $consent);
 
-        $consent->remember($client, $user, $this->company, ['mcp:read']);
-        $consent->remember($client, $user, $this->company, ['mcp:write']);
+        $consent->remember($client, $user, $this->company, ['mcp:read'], remember: true);
+        $consent->remember($client, $user, $this->company, ['mcp:write'], remember: true);
 
         self::assertTrue($consent->hasPriorConsent($client, $user, $this->company, ['mcp:read', 'mcp:write']));
 

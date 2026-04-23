@@ -21,6 +21,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 
 #[Route(path: '/profile/connected-apps', name: 'mcp_connected_apps_list', methods: ['GET'])]
@@ -31,6 +32,7 @@ final class ConnectedAppsList
         private readonly McpAccessTokenRepository $accessTokenRepository,
         private readonly Security $security,
         private readonly Environment $twig,
+        private readonly UrlGeneratorInterface $urlGenerator,
     ) {
     }
 
@@ -39,7 +41,7 @@ final class ConnectedAppsList
         $user = $this->security->getUser();
 
         if (! $user instanceof User) {
-            return new RedirectResponse('/login');
+            return new RedirectResponse($this->urlGenerator->generate('_login_main'));
         }
 
         $tokens = $this->accessTokenRepository->createQueryBuilder('t')

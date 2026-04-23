@@ -15,7 +15,7 @@ namespace SolidInvoice\McpBundle\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use SolidInvoice\CoreBundle\Entity\Company;
+use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\McpBundle\Repository\ConsentGrantRepository;
 use SolidInvoice\UserBundle\Entity\User;
@@ -30,6 +30,7 @@ class ConsentGrant
 {
     final public const string TABLE_NAME = 'mcp_consent_grant';
 
+    use CompanyAware;
     use TimeStampable;
 
     #[ORM\Column(type: UlidType::NAME)]
@@ -46,15 +47,21 @@ class ConsentGrant
     #[ORM\JoinColumn(name: 'user_id', nullable: false, onDelete: 'CASCADE')]
     private User $user;
 
-    #[ORM\ManyToOne(targetEntity: Company::class)]
-    #[ORM\JoinColumn(name: 'company_id', nullable: false, onDelete: 'CASCADE')]
-    private Company $company;
-
     /**
      * @var list<string>
      */
     #[ORM\Column(type: Types::JSON)]
     private array $scopes = [];
+
+    /**
+     * When true, subsequent /oauth/authorize requests from this client for the
+     * same user+company+scopes skip the consent UI (driven by the "remember"
+     * checkbox on the consent page). When false, the grant still exists so the
+     * token/refresh flow can resolve the bound company, but the consent page
+     * is shown again on each authorise request.
+     */
+    #[ORM\Column(name: 'remember_consent', type: Types::BOOLEAN, options: ['default' => false])]
+    private bool $remember = false;
 
     public function getId(): ?Ulid
     {
@@ -85,18 +92,6 @@ class ConsentGrant
         return $this;
     }
 
-    public function getCompany(): Company
-    {
-        return $this->company;
-    }
-
-    public function setCompany(Company $company): self
-    {
-        $this->company = $company;
-
-        return $this;
-    }
-
     /**
      * @return list<string>
      */
@@ -111,6 +106,18 @@ class ConsentGrant
     public function setScopes(array $scopes): self
     {
         $this->scopes = array_values($scopes);
+
+        return $this;
+    }
+
+    public function isRemember(): bool
+    {
+        return $this->remember;
+    }
+
+    public function setRemember(bool $remember): self
+    {
+        $this->remember = $remember;
 
         return $this;
     }

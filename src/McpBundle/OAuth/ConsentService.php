@@ -27,13 +27,18 @@ final class ConsentService
     }
 
     /**
+     * True only when the user previously ticked the "remember" checkbox for
+     * this client + company + (at least) these scopes. Grants that exist
+     * purely for token-binding (remember = false) do not auto-approve — the
+     * user is prompted again so they can explicitly confirm each time.
+     *
      * @param list<string> $requestedScopes
      */
     public function hasPriorConsent(OAuthClient $client, User $user, Company $company, array $requestedScopes): bool
     {
         $grant = $this->repository->findGrant($client, $user, $company);
 
-        if (! $grant instanceof ConsentGrant) {
+        if (! $grant instanceof ConsentGrant || ! $grant->isRemember()) {
             return false;
         }
 
@@ -47,9 +52,14 @@ final class ConsentService
     }
 
     /**
+     * Persist (or update) the consent grant. The grant is load-bearing for
+     * token/refresh company binding, so it is always saved. The $remember
+     * flag only controls whether {@see hasPriorConsent} returns true for
+     * future authorise requests.
+     *
      * @param list<string> $scopes
      */
-    public function remember(OAuthClient $client, User $user, Company $company, array $scopes): void
+    public function remember(OAuthClient $client, User $user, Company $company, array $scopes, bool $remember): void
     {
         $grant = $this->repository->findGrant($client, $user, $company);
 
@@ -62,6 +72,13 @@ final class ConsentService
 
         $merged = array_values(array_unique([...$grant->getScopes(), ...$scopes]));
         $grant->setScopes($merged);
+
+        // Only flip "remember" on → never off. If a user ticked remember last
+        // time, we respect that; a fresh grant without the checkbox just
+        // leaves the default false.
+        if ($remember) {
+            $grant->setRemember(true);
+        }
 
         $this->repository->save($grant);
     }

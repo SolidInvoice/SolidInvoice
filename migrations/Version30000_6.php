@@ -102,6 +102,7 @@ final class Version30000_6 extends AbstractMigration
         $consentTable->addColumn('user_id', UlidType::NAME);
         $consentTable->addColumn('company_id', UlidType::NAME);
         $consentTable->addColumn('scopes', Types::JSON);
+        $consentTable->addColumn('remember_consent', Types::BOOLEAN, ['default' => false]);
         $consentTable->addColumn('created', Types::DATETIME_MUTABLE);
         $consentTable->addColumn('updated', Types::DATETIME_MUTABLE, ['notnull' => false]);
         $consentTable->setPrimaryKey(['id']);

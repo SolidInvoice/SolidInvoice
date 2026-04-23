@@ -34,12 +34,17 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Uid\Ulid;
 use Twig\Environment;
 
 #[Route(path: '/oauth/authorize', name: 'mcp_oauth_authorize', methods: ['GET', 'POST'])]
 final class Authorize
 {
+    private const string CONSENT_CSRF_TOKEN_ID = 'mcp_oauth_consent';
+
     public function __construct(
         private readonly ServerFactory $serverFactory,
         private readonly ConsentService $consentService,
@@ -48,6 +53,8 @@ final class Authorize
         private readonly CompanySelector $companySelector,
         private readonly Environment $twig,
         private readonly LoggerInterface $logger,
+        private readonly CsrfTokenManagerInterface $csrfTokenManager,
+        private readonly UrlGeneratorInterface $urlGenerator,
     ) {
     }
 
@@ -61,7 +68,7 @@ final class Authorize
             // to the dashboard.
             $request->getSession()->set('_security.main.target_path', $request->getUri());
 
-            return new RedirectResponse('/login');
+            return new RedirectResponse($this->urlGenerator->generate('_login_main'));
         }
 
         $server = $this->serverFactory->createAuthorizationServer();
@@ -124,6 +131,7 @@ final class Authorize
                 'requested_scopes' => $requestedScopeValues,
                 'supports_write' => \in_array(McpScope::Write->value, $requestedScopeValues, true),
                 'state' => $request->query->get('state'),
+                'csrf_token_id' => self::CONSENT_CSRF_TOKEN_ID,
             ]),
         );
     }
@@ -223,6 +231,12 @@ final class Authorize
         OAuthClient $client,
         array $requestedScopeValues,
     ): Response {
+        $csrfToken = (string) $request->request->get('_csrf_token', '');
+
+        if (! $this->csrfTokenManager->isTokenValid(new CsrfToken(self::CONSENT_CSRF_TOKEN_ID, $csrfToken))) {
+            return $this->renderError('invalid_request', 'CSRF token validation failed.', Response::HTTP_BAD_REQUEST);
+        }
+
         if ($request->request->get('action') === 'deny') {
             $redirect = $authRequest->getRedirectUri() ?? ($client->getRedirectUris()[0] ?? null);
 
@@ -258,10 +272,11 @@ final class Authorize
             $grantedScopeValues[] = McpScope::Write->value;
         }
 
-        // Always persist the consent grant so the token/refresh flow can resolve the
-        // bound company later. The "remember" checkbox only affects whether we skip
-        // the consent UI on future authorise requests (handled via hasPriorConsent).
-        $this->consentService->remember($client, $user, $company, $grantedScopeValues);
+        // The grant is always persisted so the token/refresh flow can resolve
+        // the bound company. The "remember" checkbox only controls whether
+        // subsequent authorise requests skip the consent UI for this grant.
+        $remember = $request->request->get('remember') === '1';
+        $this->consentService->remember($client, $user, $company, $grantedScopeValues, $remember);
 
         return $this->approveAndComplete($server, $authRequest, $user, $client, $company, $grantedScopeValues);
     }

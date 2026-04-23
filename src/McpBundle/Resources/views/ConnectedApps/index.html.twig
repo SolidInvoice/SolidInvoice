@@ -57,6 +57,7 @@
                                 </div>
 
                                 <form method="post" action="{{ path('mcp_connected_apps_revoke', {'id': app.client.id}) }}">
+                                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('mcp_connected_apps_revoke') }}">
                                     <button type="submit" class="btn btn-sm btn-outline-danger">
                                         {{ ux_icon('tabler:x', {width: 16, height: 16, class: 'me-1'}) }}
                                         {{ 'mcp.connected_apps.revoke'|trans({}, 'SolidInvoiceMcpBundle') }}

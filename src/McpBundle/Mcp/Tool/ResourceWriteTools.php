@@ -25,6 +25,8 @@ use SolidInvoice\McpBundle\Mcp\Attribute\McpScopeRequired;
 use SolidInvoice\McpBundle\Mcp\McpScopeGuard;
 use SolidInvoice\McpBundle\Security\McpScope;
 use SolidInvoice\TaxBundle\Entity\Tax;
+use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -64,6 +66,19 @@ final class ResourceWriteTools
         'tax' => Tax::class,
     ];
 
+    /**
+     * Allowlist of settable fields per resource. Anything outside this list
+     * is rejected — AI agents cannot reach framework fields like setCreatedBy,
+     * timestamp traits, or any future audit field by guessing setter names.
+     *
+     * @var array<string, list<string>>
+     */
+    private const array SETTABLE_FIELDS = [
+        Client::class => ['name', 'website', 'status', 'currency_code', 'vat_number'],
+        Contact::class => ['first_name', 'last_name', 'email'],
+        Tax::class => ['name', 'rate', 'type'],
+    ];
+
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly ValidatorInterface $validator,
@@ -71,6 +86,7 @@ final class ResourceWriteTools
         private readonly CompanySelector $companySelector,
         private readonly CompanyRepository $companyRepository,
         private readonly McpScopeGuard $scopeGuard,
+        private readonly PropertyAccessorInterface $propertyAccessor,
     ) {
     }
 
@@ -265,33 +281,54 @@ final class ResourceWriteTools
         // Never accept client-supplied company / ID. These are system-managed.
         unset($data['company'], $data['company_id'], $data['id']);
 
+        $allowed = self::SETTABLE_FIELDS[$entity::class] ?? [];
+
         foreach ($data as $field => $value) {
             if (! \is_string($field)) {
                 continue;
             }
 
-            $setter = 'set' . str_replace(' ', '', ucwords(str_replace('_', ' ', $field)));
-
-            if (! method_exists($entity, $setter)) {
-                throw new ToolCallException(sprintf('Field "%s" is not settable on this resource.', $field));
+            if (! \in_array($field, $allowed, true)) {
+                throw new ToolCallException(sprintf(
+                    'Field "%s" is not settable on this resource. Allowed fields: %s.',
+                    $field,
+                    implode(', ', $allowed),
+                ));
             }
 
-            $value = $this->coerceFieldValue($entity, $setter, $value);
+            $value = $this->coerceFieldValue($entity, $field, $value);
 
-            $entity->{$setter}($value);
+            try {
+                // PropertyAccess resolves snake_case -> camelCase property/setter,
+                // handles method-style setters, constructor-promoted properties,
+                // and public properties uniformly.
+                $this->propertyAccessor->setValue($entity, $field, $value);
+            } catch (NoSuchPropertyException $exception) {
+                throw new ToolCallException(sprintf(
+                    'Field "%s" is not settable on this resource: %s',
+                    $field,
+                    $exception->getMessage(),
+                ));
+            }
         }
     }
 
-    private function coerceFieldValue(object $entity, string $setter, mixed $value): mixed
+    /**
+     * Coerces string input into BackedEnum values so PropertyAccess can call
+     * the typed setter without a TypeError. Other types pass through
+     * unchanged — the setter's own signature handles final validation.
+     */
+    private function coerceFieldValue(object $entity, string $field, mixed $value): mixed
     {
-        $reflection = new \ReflectionMethod($entity, $setter);
-        $parameters = $reflection->getParameters();
+        $camelProperty = lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $field))));
 
-        if ($parameters === []) {
+        $reflection = new \ReflectionClass($entity);
+
+        if (! $reflection->hasProperty($camelProperty)) {
             return $value;
         }
 
-        $type = $parameters[0]->getType();
+        $type = $reflection->getProperty($camelProperty)->getType();
 
         if (! $type instanceof \ReflectionNamedType) {
             return $value;
