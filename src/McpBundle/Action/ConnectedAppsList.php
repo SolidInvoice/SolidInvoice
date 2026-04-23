@@ -61,9 +61,16 @@ final class ConnectedAppsList
                     'client' => $token->getOAuthClient(),
                     'scopes' => $token->getScopeValues(),
                     'company' => $token->getCompany(),
-                    'last_used' => $token->getCreated(),
+                    'last_used' => $token->getLastUsedAt() ?? $token->getCreated(),
                     'token_count' => 0,
                 ];
+            } else {
+                $tokenLastUsed = $token->getLastUsedAt() ?? $token->getCreated();
+                $current = $byClient[$clientId]['last_used'];
+
+                if ($tokenLastUsed !== null && ($current === null || $tokenLastUsed > $current)) {
+                    $byClient[$clientId]['last_used'] = $tokenLastUsed;
+                }
             }
 
             ++$byClient[$clientId]['token_count'];

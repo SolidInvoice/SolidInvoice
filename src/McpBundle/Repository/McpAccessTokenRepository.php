@@ -113,6 +113,22 @@ final class McpAccessTokenRepository extends EntityRepository implements AccessT
         return $this->findOneBy(['jti' => $jti]);
     }
 
+    /**
+     * Record that the token was used now. Uses a direct UPDATE to avoid flushing
+     * unrelated pending changes on the EM and to keep the happy-path cheap.
+     */
+    public function touch(McpAccessToken $token): void
+    {
+        $this->getEntityManager()->createQueryBuilder()
+            ->update(McpAccessToken::class, 't')
+            ->set('t.lastUsedAt', ':now')
+            ->where('t.jti = :jti')
+            ->setParameter('now', new \DateTimeImmutable())
+            ->setParameter('jti', $token->getJti())
+            ->getQuery()
+            ->execute();
+    }
+
     private function bindCompanyIfMissing(McpAccessToken $accessToken): void
     {
         try {

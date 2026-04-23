@@ -101,6 +101,15 @@ final class Authorize
 
         $activeCompanyId = $this->companySelector->getCompany()?->toRfc4122();
 
+        // Single-company users with prior consent for the same scopes skip
+        // the consent page. Multi-company users always see the picker so they
+        // can pick which tenant this token should be bound to.
+        $priorCompany = $this->resolvePriorConsentCompany($client, $user, $companies, $activeCompanyId, $requestedScopeValues);
+
+        if ($priorCompany instanceof Company) {
+            return $this->approveAndComplete($server, $authRequest, $user, $client, $priorCompany, $requestedScopeValues);
+        }
+
         return new Response(
             $this->twig->render('@SolidInvoiceMcp/Authorize/consent.html.twig', [
                 'client' => $client,
@@ -112,6 +121,90 @@ final class Authorize
                 'state' => $request->query->get('state'),
             ]),
         );
+    }
+
+    /**
+     * @param \Doctrine\Common\Collections\Collection<int, Company> $companies
+     * @param list<string>                                          $requestedScopes
+     */
+    private function resolvePriorConsentCompany(
+        OAuthClient $client,
+        User $user,
+        \Doctrine\Common\Collections\Collection $companies,
+        ?string $activeCompanyId,
+        array $requestedScopes,
+    ): ?Company {
+        // Only skip the consent page for users with one company, or when an
+        // active company is set and there's a prior grant for it. Multi-company
+        // users without an active company always see the picker.
+        $candidate = null;
+
+        if ($companies->count() === 1) {
+            $candidate = $companies->first() ?: null;
+        } elseif ($activeCompanyId !== null) {
+            foreach ($companies as $company) {
+                if ($company->getId()?->toRfc4122() === $activeCompanyId) {
+                    $candidate = $company;
+
+                    break;
+                }
+            }
+        }
+
+        if (! $candidate instanceof Company) {
+            return null;
+        }
+
+        return $this->consentService->hasPriorConsent($client, $user, $candidate, $requestedScopes)
+            ? $candidate
+            : null;
+    }
+
+    /**
+     * @param list<string> $grantedScopeValues
+     */
+    private function approveAndComplete(
+        AuthorizationServer $server,
+        AuthorizationRequestInterface $authRequest,
+        User $user,
+        OAuthClient $client,
+        Company $company,
+        array $grantedScopeValues,
+    ): Response {
+        $grantedScopes = [];
+
+        foreach ($grantedScopeValues as $scopeValue) {
+            foreach ($authRequest->getScopes() as $scope) {
+                if ($scope->getIdentifier() === $scopeValue) {
+                    $grantedScopes[] = $scope;
+                }
+            }
+        }
+
+        $authRequest->setScopes($grantedScopes);
+
+        $userId = $user->getId()?->toRfc4122();
+
+        if ($userId === null || $userId === '') {
+            return $this->renderError('server_error', 'User identifier unavailable.', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        $authRequest->setUser(new OAuthUserEntity($userId));
+        $authRequest->setAuthorizationApproved(true);
+
+        $this->pendingAuthorization->set($user, $company);
+
+        try {
+            $psrResponse = $server->completeAuthorizationRequest($authRequest, (new Psr17Factory())->createResponse());
+        } catch (OAuthServerException $exception) {
+            $this->logger->notice('OAuth completeAuthorize rejected', ['reason' => $exception->getMessage()]);
+
+            return $this->renderError($exception->getErrorType(), $exception->getMessage(), $exception->getHttpStatusCode());
+        } finally {
+            $this->pendingAuthorization->clear();
+        }
+
+        return (new HttpFoundationFactory())->createResponse($psrResponse);
     }
 
     /**
@@ -160,44 +253,11 @@ final class Authorize
             $grantedScopeValues[] = McpScope::Write->value;
         }
 
-        $grantedScopes = [];
-
-        foreach ($grantedScopeValues as $scopeValue) {
-            foreach ($authRequest->getScopes() as $scope) {
-                if ($scope->getIdentifier() === $scopeValue) {
-                    $grantedScopes[] = $scope;
-                }
-            }
-        }
-
-        $authRequest->setScopes($grantedScopes);
-
-        $userId = $user->getId()?->toRfc4122();
-
-        if ($userId === null || $userId === '') {
-            return $this->renderError('server_error', 'User identifier unavailable.', Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-
-        $authRequest->setUser(new OAuthUserEntity($userId));
-        $authRequest->setAuthorizationApproved(true);
-
         if ($request->request->get('remember') === '1') {
             $this->consentService->remember($client, $user, $company, $grantedScopeValues);
         }
 
-        $this->pendingAuthorization->set($user, $company);
-
-        try {
-            $psrResponse = $server->completeAuthorizationRequest($authRequest, (new Psr17Factory())->createResponse());
-        } catch (OAuthServerException $exception) {
-            $this->logger->notice('OAuth completeAuthorize rejected', ['reason' => $exception->getMessage()]);
-
-            return $this->renderError($exception->getErrorType(), $exception->getMessage(), $exception->getHttpStatusCode());
-        } finally {
-            $this->pendingAuthorization->clear();
-        }
-
-        return (new HttpFoundationFactory())->createResponse($psrResponse);
+        return $this->approveAndComplete($server, $authRequest, $user, $client, $company, $grantedScopeValues);
     }
 
     private function findUserCompany(User $user, string $companyId): ?Company
