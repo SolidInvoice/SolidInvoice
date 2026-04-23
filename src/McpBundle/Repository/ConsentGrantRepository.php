@@ -38,4 +38,17 @@ final class ConsentGrantRepository extends EntityRepository
             'company' => $company,
         ]);
     }
+
+    /**
+     * Find the most recent consent grant for a client+user pair, across any
+     * company they might have. Used by the token-issuance flow to resolve the
+     * bound company from the consent that authorised this client.
+     */
+    public function findGrantForClientUser(OAuthClient $client, User $user): ?ConsentGrant
+    {
+        return $this->findOneBy(
+            ['client' => $client, 'user' => $user],
+            ['created' => 'DESC'],
+        );
+    }
 }

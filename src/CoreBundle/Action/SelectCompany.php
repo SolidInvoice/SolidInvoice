@@ -51,7 +51,8 @@ final class SelectCompany
 
         if ($companies->count() === 1) {
             $request->getSession()->set('company', $companies->first()->getId());
-            return new RedirectResponse($this->router->generate('_dashboard'));
+
+            return new RedirectResponse($this->resolvePostLoginTarget($request));
         }
 
         return ['companies' => $companies];
@@ -69,9 +70,29 @@ final class SelectCompany
 
         if ($companies->exists(static fn (int $key, Company $company) => $company->getId()->equals($uuid))) {
             $request->getSession()->set('company', $uuid);
-            return new RedirectResponse($this->router->generate('_dashboard'));
+
+            return new RedirectResponse($this->resolvePostLoginTarget($request));
         }
 
         throw new BadRequestHttpException('Invalid company');
+    }
+
+    /**
+     * Honour the target URL Symfony Security saved when the user was bounced
+     * to the login page (e.g. deep-link to /oauth/authorize). Fall back to the
+     * dashboard if nothing was captured.
+     */
+    private function resolvePostLoginTarget(Request $request): string
+    {
+        $session = $request->getSession();
+        $target = $session->get('_security.main.target_path');
+
+        if (\is_string($target) && $target !== '') {
+            $session->remove('_security.main.target_path');
+
+            return $target;
+        }
+
+        return $this->router->generate('_dashboard');
     }
 }

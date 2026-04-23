@@ -57,6 +57,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             service(McpRefreshTokenRepository::class),
             service(OAuthAuthCodeRepository::class),
             service(McpScopeRepository::class),
+            '%env(SOLIDINVOICE_MCP_ACCESS_TOKEN_TTL)%',
+            '%env(SOLIDINVOICE_MCP_REFRESH_TOKEN_TTL)%',
+            '%env(SOLIDINVOICE_MCP_AUTH_CODE_TTL)%',
         ]);
 
     $services->set(DynamicClientRegistration::class)

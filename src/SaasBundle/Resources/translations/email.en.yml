@@ -33,7 +33,7 @@ onboarding:
         heading: "No client, no invoice. Let's fix that."
         lede: "Your client list is where everything starts. Add one client and you can immediately create quotes, invoices, and track every payment they owe — all in one place."
         mock:
-            url: app.solidinvoice.co/clients
+            url: solidinvoice.app/clients
             header: Your clients
             client1:
                 name: Northbeam Design Studio
