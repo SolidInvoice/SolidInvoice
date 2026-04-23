@@ -72,6 +72,9 @@ class McpAccessToken implements AccessTokenEntityInterface
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $revoked = false;
 
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    private ?DateTimeImmutable $lastUsedAt = null;
+
     /**
      * @var array<string, ScopeEntityInterface>
      */
@@ -239,6 +242,18 @@ class McpAccessToken implements AccessTokenEntityInterface
     public function revoke(): self
     {
         $this->revoked = true;
+
+        return $this;
+    }
+
+    public function getLastUsedAt(): ?DateTimeImmutable
+    {
+        return $this->lastUsedAt;
+    }
+
+    public function touch(DateTimeImmutable $at): self
+    {
+        $this->lastUsedAt = $at;
 
         return $this;
     }
