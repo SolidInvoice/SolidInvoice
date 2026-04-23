@@ -48,7 +48,7 @@ class McpRefreshToken implements RefreshTokenEntityInterface
     #[ORM\JoinColumn(name: 'access_token_id', nullable: false, onDelete: 'CASCADE')]
     private McpAccessToken $accessToken;
 
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
+    #[ORM\Column(name: 'expires_at', type: Types::DATETIME_IMMUTABLE)]
     private DateTimeImmutable $expiresAt;
 
     #[ORM\Column(type: Types::BOOLEAN)]

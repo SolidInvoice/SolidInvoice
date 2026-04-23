@@ -31,6 +31,12 @@
                 </span>
                 <span class="profile-nav-text">{{ 'API Keys'|trans }}</span>
             </a>
+            <a href="{{ path('mcp_connected_apps_list') }}" class="profile-nav-item{{ menuItem is defined and menuItem is same as('connected-apps') ? ' active' : '' }}">
+                <span class="profile-nav-icon">
+                    {{ ux_icon('tabler:plug-connected', {width: 20, height: 20}) }}
+                </span>
+                <span class="profile-nav-text">{{ 'Connected Apps'|trans }}</span>
+            </a>
         </nav>
     </div>
 </aside>

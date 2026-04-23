@@ -75,6 +75,7 @@ final class Version30000_6 extends AbstractMigration
         $accessTokenTable->addColumn('scope_values', Types::JSON);
         $accessTokenTable->addColumn('expires_at', Types::DATETIME_IMMUTABLE);
         $accessTokenTable->addColumn('revoked', Types::BOOLEAN, ['default' => false]);
+        $accessTokenTable->addColumn('last_used_at', Types::DATETIME_IMMUTABLE, ['notnull' => false]);
         $accessTokenTable->addColumn('created', Types::DATETIME_MUTABLE);
         $accessTokenTable->addColumn('updated', Types::DATETIME_MUTABLE, ['notnull' => false]);
         $accessTokenTable->setPrimaryKey(['id']);

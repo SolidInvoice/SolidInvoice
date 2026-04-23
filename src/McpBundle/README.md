@@ -21,7 +21,14 @@ Every tool call runs under **exactly one company** — bound at consent time, im
    bin/console mcp:keys:generate
    ```
 
-   Keys are written to `var/oauth/` (gitignored).
+   Keys are written to `$SOLIDINVOICE_CONFIG_DIR/oauth/` (persistent config directory,
+   survives redeployments). The FrankenPHP launcher runs this command automatically on
+   startup — deployments using `solidinvoice run` don't need this step.
+
+   The command uses OpenSSL's CSPRNG (`OPENSSL_KEYTYPE_RSA` / `/dev/urandom`) for key
+   material. The `SOLIDINVOICE_APP_SECRET` is separately used as the encryption key
+   for OAuth auth-code payloads via `league/oauth2-server`'s `AuthorizationServer` —
+   not for the RSA keys themselves.
 
 3. **Run the migration**:
 
@@ -104,6 +111,23 @@ npx @modelcontextprotocol/inspector https://your-solidinvoice-host/_mcp
 The inspector walks through DCR + OAuth flow automatically.
 
 In Claude Desktop: add a remote MCP server pointing to `https://your-solidinvoice-host/_mcp`.
+
+## Session storage
+
+MCP sessions (per-connection state between JSON-RPC calls) can be persisted in
+several backends. Pick the one that matches your deployment topology via env vars:
+
+| Store       | How to enable                                              | Notes                                                               |
+|-------------|------------------------------------------------------------|---------------------------------------------------------------------|
+| `file`      | `SOLIDINVOICE_MCP_SESSION_STORE=file` (default)            | On-disk in `var/cache/<env>/mcp-sessions/`. Single-node deployments. |
+| `memory`    | `SOLIDINVOICE_MCP_SESSION_STORE=memory`                    | In-process. Resets on every worker restart — dev only.               |
+| `cache`     | `SOLIDINVOICE_MCP_SESSION_STORE=cache` + point `SOLIDINVOICE_MCP_SESSION_CACHE_POOL` at a Redis-backed PSR-6 pool | Multi-node deployments (Redis, Memcached, etc.).                    |
+| `framework` | `SOLIDINVOICE_MCP_SESSION_STORE=framework`                 | Shares the app's Symfony session handler.                            |
+
+Additional env vars:
+
+- `SOLIDINVOICE_MCP_SESSION_PREFIX` — key prefix (default `mcp-`)
+- `SOLIDINVOICE_MCP_SESSION_TTL` — session TTL in seconds (default `3600`)
 
 ## Audit logging
 

@@ -63,16 +63,16 @@ class McpAccessToken implements AccessTokenEntityInterface
     /**
      * @var list<string>
      */
-    #[ORM\Column(type: Types::JSON)]
+    #[ORM\Column(name: 'scope_values', type: Types::JSON)]
     private array $scopeValues = [];
 
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
+    #[ORM\Column(name: 'expires_at', type: Types::DATETIME_IMMUTABLE)]
     private DateTimeImmutable $expiresAt;
 
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $revoked = false;
 
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    #[ORM\Column(name: 'last_used_at', type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?DateTimeImmutable $lastUsedAt = null;
 
     /**

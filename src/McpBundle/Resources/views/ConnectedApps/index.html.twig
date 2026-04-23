@@ -7,11 +7,13 @@
  # with this source code in the file LICENSE.
  #}
 
-{% extends '@SolidInvoiceCore/Layout/default.html.twig' %}
+{% extends '@SolidInvoiceUser/Layout/profile.html.twig' %}
+
+{% set menuItem = 'connected-apps' %}
 
 {% block title %}{{ 'mcp.connected_apps.title'|trans({}, 'SolidInvoiceMcpBundle') }}{% endblock %}
 
-{% block body %}
+{% block profile_content %}
     <div class="page-header">
         <h2 class="page-title">
             {{ ux_icon('tabler:plug-connected') }}
