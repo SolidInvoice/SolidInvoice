@@ -13,19 +13,27 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Mcp;
 
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Mcp\Capability\Attribute\McpTool;
 use Mcp\Exception\ToolCallException;
 use Psr\Log\LoggerInterface;
+use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\ClientBundle\Entity\Contact;
+use SolidInvoice\ClientBundle\Repository\ClientRepository;
+use SolidInvoice\CoreBundle\Billing\TotalCalculator;
+use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\InvoiceBundle\Cloner\InvoiceCloner;
 use SolidInvoice\InvoiceBundle\Email\ManualInvoiceReminderEmail;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
 use SolidInvoice\McpBundle\Mcp\Attribute\McpScopeRequired;
 use SolidInvoice\McpBundle\Mcp\McpScopeGuard;
 use SolidInvoice\McpBundle\Mcp\Tool\EntityNormalizer;
+use SolidInvoice\McpBundle\Mcp\Tool\LineItemBuilder;
 use SolidInvoice\McpBundle\Mcp\Tool\UlidParser;
 use SolidInvoice\McpBundle\Security\McpScope;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -38,7 +46,12 @@ final class InvoiceWriteTools
     public function __construct(
         private readonly InvoiceRepository $invoiceRepository,
         private readonly RecurringInvoiceRepository $recurringInvoiceRepository,
+        private readonly ClientRepository $clientRepository,
         private readonly InvoiceCloner $cloner,
+        private readonly InvoiceManager $invoiceManager,
+        private readonly LineItemBuilder $lineItemBuilder,
+        private readonly TotalCalculator $totalCalculator,
+        private readonly BillingIdGenerator $billingIdGenerator,
         private readonly EntityManagerInterface $entityManager,
         private readonly EntityNormalizer $normalizer,
         #[Autowire(service: 'state_machine.invoice')]
@@ -49,6 +62,113 @@ final class InvoiceWriteTools
         private readonly LoggerInterface $logger,
         private readonly McpScopeGuard $scopeGuard,
     ) {
+    }
+
+    /**
+     * Create a new invoice for an existing client.
+     *
+     * Totals (subtotal / tax / discount / total) are calculated server-side
+     * from the line items. The invoice starts as a draft — apply
+     * `apply_invoice_transition` to move it through the workflow.
+     *
+     * @param string                          $client_id      Client ULID (must belong to the active company)
+     * @param list<array<string, mixed>>      $lines          Line items: [{description, price, qty, tax_id?}, ...].
+     *                                                        Price is in the minor unit (e.g. cents).
+     * @param string|null                     $invoice_date   ISO-8601 date (defaults to today)
+     * @param string|null                     $due            ISO-8601 due date (optional)
+     * @param string|null                     $discount_type  "percentage" or "money" (optional)
+     * @param int|float|null                  $discount_value Numeric discount value; required if discount_type is set
+     * @param string|null                     $terms          Optional terms text
+     * @param string|null                     $notes          Optional notes text
+     * @param list<string>                    $contact_ids    Client contact ULIDs to attach to the invoice (optional)
+     * @param string|null                     $invoice_id     Explicit invoice number (generated if omitted)
+     *
+     * @return array<string, mixed>
+     */
+    #[McpTool(name: 'create_invoice', description: 'Create a new invoice for a client, with line items, optional discount, due date, and contacts.')]
+    #[McpScopeRequired(McpScope::Write)]
+    public function createInvoice(
+        string $client_id,
+        array $lines,
+        ?string $invoice_date = null,
+        ?string $due = null,
+        ?string $discount_type = null,
+        int|float|null $discount_value = null,
+        ?string $terms = null,
+        ?string $notes = null,
+        array $contact_ids = [],
+        ?string $invoice_id = null,
+    ): array {
+        $this->scopeGuard->require(McpScope::Write);
+
+        $client = $this->clientRepository->find(UlidParser::parse($client_id, 'client_id'));
+
+        if (! $client instanceof Client) {
+            throw new ToolCallException(sprintf('Client %s not found.', $client_id));
+        }
+
+        $invoice = new Invoice();
+        $invoice->setClient($client);
+        $invoice->setInvoiceDate($this->parseDate($invoice_date, new DateTimeImmutable()));
+
+        if ($due !== null) {
+            $invoice->setDue($this->parseDate($due, new DateTimeImmutable()));
+        }
+
+        foreach ($this->lineItemBuilder->buildInvoiceLines($lines) as $line) {
+            $invoice->addLine($line);
+        }
+
+        $invoice->setDiscount($this->lineItemBuilder->buildDiscount($discount_type, $discount_value));
+
+        if ($terms !== null) {
+            $invoice->setTerms($terms);
+        }
+
+        if ($notes !== null) {
+            $invoice->setNotes($notes);
+        }
+
+        foreach ($contact_ids as $index => $contactId) {
+            if (! \is_string($contactId)) {
+                throw new ToolCallException(sprintf('contact_ids[%d] must be a string.', $index));
+            }
+
+            $contact = $this->entityManager
+                ->getRepository(Contact::class)
+                ->find(UlidParser::parse($contactId, sprintf('contact_ids[%d]', $index)));
+
+            if (! $contact instanceof Contact || $contact->getClient()?->getId()?->equals($client->getId()) !== true) {
+                throw new ToolCallException(sprintf('Contact %s does not belong to this client.', $contactId));
+            }
+
+            $invoice->addUser($contact);
+        }
+
+        $invoice->setInvoiceId(
+            $invoice_id !== null && $invoice_id !== ''
+                ? $invoice_id
+                : $this->billingIdGenerator->generate($invoice, ['field' => 'invoiceId']),
+        );
+
+        $this->totalCalculator->calculateTotals($invoice);
+
+        $invoice = $this->invoiceManager->create($invoice);
+
+        return $this->normalizer->normalize($invoice);
+    }
+
+    private function parseDate(?string $value, DateTimeImmutable $default): DateTimeImmutable
+    {
+        if ($value === null || $value === '') {
+            return $default;
+        }
+
+        try {
+            return new DateTimeImmutable($value);
+        } catch (\Exception) {
+            throw new ToolCallException(sprintf('Invalid date "%s". Use ISO-8601 format (YYYY-MM-DD).', $value));
+        }
     }
 
     /**

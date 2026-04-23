@@ -103,12 +103,28 @@ final class EntityNormalizer
      */
     private function recurringInvoice(RecurringInvoice $invoice): array
     {
+        $options = $invoice->getRecurringOptions();
+
         return [
             'id' => $invoice->getId()?->toRfc4122(),
             'status' => $invoice->getStatus()?->value,
             'client' => $this->clientSummary($invoice->getClient()),
             'currency' => $invoice->getClient()?->getCurrencyCode(),
             'total' => $this->bigNumber($invoice->getTotal()),
+            'base_total' => $this->bigNumber($invoice->getBaseTotal()),
+            'tax' => $this->bigNumber($invoice->getTax()),
+            'date_start' => $this->date($invoice->getDateStart()),
+            'date_end' => $this->date($invoice->getDateEnd()),
+            'schedule' => [
+                'type' => $options->getType()->value,
+                'days' => $options->getDays(),
+                'end_type' => $options->getEndType()->value,
+                'end_date' => $this->date($options->getEndDate()),
+                'end_occurrence' => $options->getEndOccurrence(),
+            ],
+            'generated_invoice_count' => $invoice->getInvoices()->count(),
+            'terms' => $invoice->getTerms(),
+            'notes' => $invoice->getNotes(),
             'created' => $this->date($invoice->getCreated()),
         ];
     }
@@ -127,7 +143,6 @@ final class EntityNormalizer
             'total' => $this->bigNumber($quote->getTotal()),
             'base_total' => $this->bigNumber($quote->getBaseTotal()),
             'tax' => $this->bigNumber($quote->getTax()),
-            'quote_date' => $this->date($quote->getQuoteDate()),
             'due' => $this->date($quote->getDue()),
             'created' => $this->date($quote->getCreated()),
             'terms' => $quote->getTerms(),
