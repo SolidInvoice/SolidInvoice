@@ -12,6 +12,7 @@
 namespace SolidInvoice\InvoiceBundle\DataGrid;
 
 use Brick\Math\BigNumber;
+use Brick\Math\RoundingMode;
 use Doctrine\ORM\EntityManagerInterface;
 use Money\Money;
 use SolidInvoice\DataGridBundle\Grid;
@@ -75,7 +76,7 @@ abstract class BaseInvoiceGrid extends Grid
                 ->formatValue(function (float | BigNumber $value, Invoice $invoice): Money {
                     $discountAmount = $this->calculator->calculateDiscount($invoice);
 
-                    return new Money((string) $discountAmount, $invoice->getClient()?->getCurrency());
+                    return new Money((string) $discountAmount->toScale(0, RoundingMode::HalfUp), $invoice->getClient()?->getCurrency());
                 }),
         ];
     }
