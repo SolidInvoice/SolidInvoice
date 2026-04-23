@@ -45,11 +45,13 @@ final class ConnectedAppsRevoke
             return new RedirectResponse('/login');
         }
 
-        if (! Ulid::isValid($id)) {
+        try {
+            $ulid = Ulid::fromString($id);
+        } catch (\InvalidArgumentException) {
             return new RedirectResponse($this->urlGenerator->generate('mcp_connected_apps_list'));
         }
 
-        $client = $this->clientRepository->findOneBy(['id' => Ulid::fromString($id)]);
+        $client = $this->clientRepository->find($ulid);
 
         if (! $client instanceof OAuthClient) {
             return new RedirectResponse($this->urlGenerator->generate('mcp_connected_apps_list'));

@@ -44,11 +44,13 @@ final class McpOAuthUserProvider implements UserProviderInterface
 
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
-        if (! Ulid::isValid($identifier)) {
+        try {
+            $ulid = Ulid::fromString($identifier);
+        } catch (\InvalidArgumentException) {
             throw new UserNotFoundException();
         }
 
-        $user = $this->userRepository->find(Ulid::fromString($identifier));
+        $user = $this->userRepository->find($ulid);
 
         if (! $user instanceof User) {
             throw new UserNotFoundException();

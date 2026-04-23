@@ -16,7 +16,7 @@
 {% block profile_content %}
     <div class="page-header">
         <h2 class="page-title">
-            {{ ux_icon('tabler:plug-connected') }}
+            {{ ux_icon('tabler:plug-connected', {width: 24, height: 24, class: 'me-2'}) }}
             {{ 'mcp.connected_apps.title'|trans({}, 'SolidInvoiceMcpBundle') }}
         </h2>
     </div>
@@ -58,7 +58,7 @@
 
                                 <form method="post" action="{{ path('mcp_connected_apps_revoke', {'id': app.client.id}) }}">
                                     <button type="submit" class="btn btn-sm btn-outline-danger">
-                                        {{ ux_icon('tabler:x') }}
+                                        {{ ux_icon('tabler:x', {width: 16, height: 16, class: 'me-1'}) }}
                                         {{ 'mcp.connected_apps.revoke'|trans({}, 'SolidInvoiceMcpBundle') }}
                                     </button>
                                 </form>

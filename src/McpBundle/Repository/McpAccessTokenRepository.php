@@ -20,8 +20,8 @@ use League\OAuth2\Server\Entities\ScopeEntityInterface;
 use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationException;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use LogicException;
+use SolidInvoice\McpBundle\Entity\ConsentGrant;
 use SolidInvoice\McpBundle\Entity\McpAccessToken;
-use SolidInvoice\McpBundle\Entity\OAuthAuthCode;
 use SolidInvoice\McpBundle\Entity\OAuthClient;
 use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
 use Symfony\Component\Uid\Ulid;
@@ -33,7 +33,7 @@ final class McpAccessTokenRepository extends EntityRepository implements AccessT
 {
     public function __construct(
         ManagerRegistry $registry,
-        private readonly OAuthAuthCodeRepository $authCodeRepository,
+        private readonly ConsentGrantRepository $consentGrantRepository,
     ) {
         parent::__construct($registry, McpAccessToken::class);
     }
@@ -61,10 +61,18 @@ final class McpAccessTokenRepository extends EntityRepository implements AccessT
 
         $token->setScopeValues($scopeValues);
 
-        if ($userIdentifier !== null && Ulid::isValid($userIdentifier)) {
-            $user = $this->getEntityManager()
-                ->getReference(\SolidInvoice\UserBundle\Entity\User::class, Ulid::fromString($userIdentifier));
-            $token->setUser($user);
+        if ($userIdentifier !== null && $userIdentifier !== '') {
+            try {
+                $userUlid = Ulid::fromString($userIdentifier);
+            } catch (\InvalidArgumentException) {
+                $userUlid = null;
+            }
+
+            if ($userUlid !== null) {
+                $user = $this->getEntityManager()
+                    ->getReference(\SolidInvoice\UserBundle\Entity\User::class, $userUlid);
+                $token->setUser($user);
+            }
         }
 
         return $token;
@@ -137,28 +145,21 @@ final class McpAccessTokenRepository extends EntityRepository implements AccessT
 
             return;
         } catch (\Error) {
-            // typed property not initialised — fall through to bind from prior auth code
+            // typed property not initialised — fall through to bind from the consent grant
         }
 
         $user = $accessToken->getUser();
         $client = $accessToken->getOAuthClient();
 
-        $priorCode = $this->authCodeRepository->createQueryBuilder('c')
-            ->andWhere('c.oauthClient = :client')
-            ->andWhere('c.user = :user')
-            ->andWhere('c.revoked = :revoked')
-            ->setParameter('client', $client)
-            ->setParameter('user', $user)
-            ->setParameter('revoked', false)
-            ->orderBy('c.created', 'DESC')
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getOneOrNullResult();
+        // The consent grant is the stable record of this user's authorisation for
+        // this client. Unlike the auth code it doesn't get revoked after the first
+        // token exchange, so it also works for refresh-token flows later.
+        $grant = $this->consentGrantRepository->findGrantForClientUser($client, $user);
 
-        if (! $priorCode instanceof OAuthAuthCode) {
-            throw new LogicException('Cannot bind access token: no authorizing consent found for this client and user.');
+        if (! $grant instanceof ConsentGrant) {
+            throw new LogicException('Cannot bind access token: no consent grant found for this client and user.');
         }
 
-        $accessToken->setCompany($priorCode->getCompany());
+        $accessToken->setCompany($grant->getCompany());
     }
 }

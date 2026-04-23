@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\McpBundle\Repository;
 
 use Doctrine\Persistence\ManagerRegistry;
+use InvalidArgumentException;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use SolidInvoice\McpBundle\Entity\OAuthClient;
@@ -32,11 +33,17 @@ final class OAuthClientRepository extends EntityRepository implements ClientRepo
 
     public function getClientEntity(string $clientIdentifier): ?ClientEntityInterface
     {
-        if (! Ulid::isValid($clientIdentifier)) {
+        // Ulid::fromString() accepts both the Crockford base32 form (26 chars)
+        // and the RFC 4122 UUID form (36 chars) that OAuthClient::getIdentifier()
+        // emits for the client_id. Ulid::isValid() only covers the former, so
+        // use fromString() with a try/catch to accept both.
+        try {
+            $ulid = Ulid::fromString($clientIdentifier);
+        } catch (InvalidArgumentException) {
             return null;
         }
 
-        return $this->findOneBy(['id' => Ulid::fromString($clientIdentifier)]);
+        return $this->findOneBy(['id' => $ulid]);
     }
 
     public function validateClient(string $clientIdentifier, ?string $clientSecret, ?string $grantType): bool

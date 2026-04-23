@@ -56,7 +56,12 @@ final class Authorize
         $user = $this->security->getUser();
 
         if (! $user instanceof User) {
-            return new RedirectResponse('/login?redirect=' . urlencode($request->getRequestUri()));
+            // Save the current request URL so Symfony Security can redirect
+            // back here after login. SelectCompany then picks it up on the way
+            // to the dashboard.
+            $request->getSession()->set('_security.main.target_path', $request->getUri());
+
+            return new RedirectResponse('/login');
         }
 
         $server = $this->serverFactory->createAuthorizationServer();
@@ -235,7 +240,7 @@ final class Authorize
 
         $companyId = (string) $request->request->get('company_id', '');
 
-        if ($companyId === '' || ! Ulid::isValid($companyId)) {
+        if ($companyId === '') {
             return $this->renderError('invalid_request', 'A company must be selected.', Response::HTTP_BAD_REQUEST);
         }
 
@@ -253,16 +258,21 @@ final class Authorize
             $grantedScopeValues[] = McpScope::Write->value;
         }
 
-        if ($request->request->get('remember') === '1') {
-            $this->consentService->remember($client, $user, $company, $grantedScopeValues);
-        }
+        // Always persist the consent grant so the token/refresh flow can resolve the
+        // bound company later. The "remember" checkbox only affects whether we skip
+        // the consent UI on future authorise requests (handled via hasPriorConsent).
+        $this->consentService->remember($client, $user, $company, $grantedScopeValues);
 
         return $this->approveAndComplete($server, $authRequest, $user, $client, $company, $grantedScopeValues);
     }
 
     private function findUserCompany(User $user, string $companyId): ?Company
     {
-        $ulid = Ulid::fromString($companyId);
+        try {
+            $ulid = Ulid::fromString($companyId);
+        } catch (\InvalidArgumentException) {
+            return null;
+        }
 
         foreach ($user->getCompanies() as $company) {
             if ($company->getId()?->equals($ulid)) {
