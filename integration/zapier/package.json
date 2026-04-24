@@ -1,0 +1,25 @@
+{
+  "name": "solidinvoice-zapier",
+  "version": "1.0.1",
+  "description": "Zapier integration for SolidInvoice — connect invoices, quotes, clients, and payments to 8000+ apps.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --testTimeout 10000",
+    "validate": "zapier validate"
+  },
+  "engines": {
+    "node": ">=22",
+    "npm": ">=8"
+  },
+  "dependencies": {
+    "zapier-platform-core": "18.0.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nock": "^13.5.5"
+  },
+  "private": true,
+  "zapier": {
+    "convertedByCLIVersion": "18.5.0"
+  }
+}

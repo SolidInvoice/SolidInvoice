@@ -1,0 +1,81 @@
+name: Zapier Integration
+
+on:
+  pull_request:
+    paths:
+      - 'integration/zapier/**'
+      - '.github/workflows/zapier.yml'
+  push:
+    branches:
+      - main
+      - 3.0.x
+    paths:
+      - 'integration/zapier/**'
+      - '.github/workflows/zapier.yml'
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Action to take'
+        type: choice
+        required: true
+        default: test
+        options:
+          - test
+          - push
+          - promote
+      version:
+        description: 'Version to promote (required for promote)'
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate & Test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: integration/zapier
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@v2
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate integration schema
+        env:
+          ZAPIER_DEPLOY_KEY: ${{ secrets.ZAPIER_DEPLOY_KEY }}
+        run: npx zapier validate
+
+      - name: Run tests
+        run: npm test
+
+      - name: Push to Zapier
+        if: >-
+          github.event_name == 'push' ||
+          (github.event_name == 'workflow_dispatch' && inputs.action != 'test')
+        env:
+          ZAPIER_DEPLOY_KEY: ${{ secrets.ZAPIER_DEPLOY_KEY }}
+        run: npx zapier push
+
+      - name: Promote version
+        if: github.event_name == 'workflow_dispatch' && inputs.action == 'promote'
+        env:
+          ZAPIER_DEPLOY_KEY: ${{ secrets.ZAPIER_DEPLOY_KEY }}
+          PROMOTE_VERSION: ${{ inputs.version }}
+        run: |
+          if [ -z "$PROMOTE_VERSION" ]; then
+            echo "::error::version input is required for promote"
+            exit 1
+          fi
+          npx zapier promote "$PROMOTE_VERSION"
