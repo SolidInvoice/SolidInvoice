@@ -24,6 +24,7 @@ use SolidInvoice\McpBundle\Mcp\McpScopeGuard;
 use SolidInvoice\McpBundle\Mcp\Tool\EntityNormalizer;
 use SolidInvoice\McpBundle\Mcp\Tool\UlidParser;
 use SolidInvoice\McpBundle\Security\McpScope;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 
 final class RecurringInvoiceReadTools
 {
@@ -76,7 +77,7 @@ final class RecurringInvoiceReadTools
                 throw new ToolCallException(sprintf('Client %s not found.', $client_id));
             }
 
-            $qb->andWhere('r.client = :client')->setParameter('client', $client);
+            $qb->andWhere('r.client = :client')->setParameter('client', $client->getId(), UlidType::NAME);
         }
 
         return $this->normalizer->normalizeMany($qb->getQuery()->getResult());

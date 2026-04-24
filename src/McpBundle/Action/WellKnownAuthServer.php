@@ -36,7 +36,6 @@ final class WellKnownAuthServer
             'token_endpoint_auth_methods_supported' => ['none', 'client_secret_basic', 'client_secret_post'],
             'code_challenge_methods_supported' => ['S256'],
             'scopes_supported' => McpScope::values(),
-            'service_documentation' => $base . '/_mcp',
         ]);
     }
 }

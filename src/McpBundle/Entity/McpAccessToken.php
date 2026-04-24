@@ -98,6 +98,10 @@ class McpAccessToken implements AccessTokenEntityInterface
 
     public function getJti(): string
     {
+        if (! isset($this->jti) || $this->jti === '') {
+            throw new \LogicException('Access token identifier is not set.');
+        }
+
         return $this->jti;
     }
 

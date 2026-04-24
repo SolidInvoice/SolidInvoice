@@ -89,9 +89,7 @@ final class Revoke
             $this->accessTokenRepository->revokeAccessToken($jti);
 
             return true;
-        } catch (RequiredConstraintsViolated) {
-            return false;
-        } catch (\Throwable) {
+        } catch (RequiredConstraintsViolated | \InvalidArgumentException | \RuntimeException) {
             return false;
         }
     }

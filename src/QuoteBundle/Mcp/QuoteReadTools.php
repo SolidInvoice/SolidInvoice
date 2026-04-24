@@ -24,6 +24,7 @@ use SolidInvoice\McpBundle\Mcp\Tool\UlidParser;
 use SolidInvoice\McpBundle\Security\McpScope;
 use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 
 final class QuoteReadTools
 {
@@ -74,7 +75,7 @@ final class QuoteReadTools
                 throw new ToolCallException(sprintf('Client %s not found.', $client_id));
             }
 
-            $qb->andWhere('q.client = :client')->setParameter('client', $client);
+            $qb->andWhere('q.client = :client')->setParameter('client', $client->getId(), UlidType::NAME);
         }
 
         return $this->normalizer->normalizeMany($qb->getQuery()->getResult());

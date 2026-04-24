@@ -43,6 +43,9 @@ final class ConnectedAppsList
         }
 
         $tokens = $this->accessTokenRepository->createQueryBuilder('t')
+            ->select('t, c, co')
+            ->join('t.oauthClient', 'c')
+            ->join('t.company', 'co')
             ->andWhere('t.user = :user')
             ->andWhere('t.revoked = :revoked')
             ->setParameter('user', $user->getId(), UlidType::NAME)
