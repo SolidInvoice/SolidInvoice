@@ -11,6 +11,9 @@ const beforeRequest = (request, z, bundle) => {
   if (request.method === 'PATCH') {
     request.headers['Content-Type'] = 'application/merge-patch+json';
   }
+  if (request.url) {
+    request.url = request.url.replace(/([^:])\/{2,}/g, '$1/');
+  }
   return request;
 };
 

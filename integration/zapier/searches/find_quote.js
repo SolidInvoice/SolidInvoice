@@ -39,8 +39,21 @@ module.exports = {
   operation: {
     perform,
     inputFields: [
-      { key: 'id', label: 'Quote ULID', type: 'string', required: false },
-      { key: 'quoteId', label: 'Quote Number', type: 'string', required: false },
+      {
+        key: 'id',
+        label: 'Quote',
+        type: 'string',
+        required: false,
+        dynamic: 'new_quote.id.quoteId',
+        helpText: 'Pick a quote, or leave empty to filter by the fields below.',
+      },
+      {
+        key: 'quoteId',
+        label: 'Quote Number',
+        type: 'string',
+        required: false,
+        dynamic: 'new_quote.quoteId.quoteId',
+      },
       quoteStatusField(false),
       {
         key: 'client',

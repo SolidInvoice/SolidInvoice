@@ -40,7 +40,14 @@ module.exports = {
   operation: {
     perform,
     inputFields: [
-      { key: 'id', label: 'Payment ULID', type: 'string', required: false },
+      {
+        key: 'id',
+        label: 'Payment',
+        type: 'string',
+        required: false,
+        dynamic: 'new_payment.id.reference',
+        helpText: 'Pick a payment, or leave empty to filter by the fields below.',
+      },
       { key: 'reference', label: 'Reference', type: 'string', required: false },
       {
         key: 'status',

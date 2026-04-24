@@ -39,8 +39,21 @@ module.exports = {
   operation: {
     perform,
     inputFields: [
-      { key: 'id', label: 'Invoice ULID', type: 'string', required: false },
-      { key: 'invoiceId', label: 'Invoice Number', type: 'string', required: false },
+      {
+        key: 'id',
+        label: 'Invoice',
+        type: 'string',
+        required: false,
+        dynamic: 'new_invoice.id.invoiceId',
+        helpText: 'Pick an invoice, or leave empty to filter by the fields below.',
+      },
+      {
+        key: 'invoiceId',
+        label: 'Invoice Number',
+        type: 'string',
+        required: false,
+        dynamic: 'new_invoice.invoiceId.invoiceId',
+      },
       invoiceStatusField(false),
       {
         key: 'client',
