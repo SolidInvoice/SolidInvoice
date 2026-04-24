@@ -24,6 +24,7 @@ use SolidInvoice\McpBundle\Mcp\Attribute\McpScopeRequired;
 use SolidInvoice\McpBundle\Mcp\McpScopeGuard;
 use SolidInvoice\McpBundle\Mcp\Tool\UlidParser;
 use SolidInvoice\McpBundle\Security\McpScope;
+use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 
 final class AnalyticsTools
@@ -117,7 +118,7 @@ final class AnalyticsTools
             ->getQuery()
             ->getSingleScalarResult();
 
-        return [$client->getCurrencyCode() ?? 'USD' => (string) ($sum ?? 0)];
+        return [$this->requireClientCurrency($client) => (string) ($sum ?? 0)];
     }
 
     /**
@@ -153,7 +154,7 @@ final class AnalyticsTools
             ->getQuery()
             ->getSingleScalarResult();
 
-        return [$client->getCurrencyCode() ?? 'USD' => (string) ($sum ?? 0)];
+        return [$this->requireClientCurrency($client) => (string) ($sum ?? 0)];
     }
 
     /**
@@ -199,10 +200,13 @@ final class AnalyticsTools
             default => throw new ToolCallException('group_by must be one of: day, week, month.'),
         };
 
+        // Half-open range: >= start AND < end+1day avoids the off-by-one
+        // you'd get with BETWEEN, which is inclusive on both bounds and would
+        // count payments completed at 00:00:00 of the day after end_date.
         $qb = $this->paymentRepository->createQueryBuilder('p')
             ->andWhere('p.status = :status')
-            ->andWhere('p.completed BETWEEN :start AND :end')
-            ->setParameter('status', 'captured')
+            ->andWhere('p.completed >= :start AND p.completed < :end')
+            ->setParameter('status', PaymentStatus::Captured->value)
             ->setParameter('start', $start)
             ->setParameter('end', $end->modify('+1 day'));
 
@@ -258,6 +262,20 @@ final class AnalyticsTools
         }
 
         return $client;
+    }
+
+    private function requireClientCurrency(Client $client): string
+    {
+        $currency = $client->getCurrencyCode();
+
+        if ($currency === null || $currency === '') {
+            throw new ToolCallException(sprintf(
+                'Client %s has no currency configured.',
+                $client->getId()?->toRfc4122() ?? '',
+            ));
+        }
+
+        return $currency;
     }
 
     private function parseDate(string $value): DateTimeImmutable

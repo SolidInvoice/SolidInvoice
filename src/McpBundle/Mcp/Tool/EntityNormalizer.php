@@ -15,6 +15,7 @@ namespace SolidInvoice\McpBundle\Mcp\Tool;
 
 use Brick\Math\BigNumber;
 use DateTimeInterface;
+use Mcp\Exception\ToolCallException;
 use Money\Money;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
@@ -24,7 +25,6 @@ use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\TaxBundle\Entity\Tax;
-use Symfony\Component\Uid\Ulid;
 
 /**
  * Normalises business entities to plain arrays suitable for MCP tool results.
@@ -46,7 +46,10 @@ final class EntityNormalizer
             $entity instanceof Payment => $this->payment($entity),
             $entity instanceof PaymentMethod => $this->paymentMethod($entity),
             $entity instanceof Tax => $this->tax($entity),
-            default => $this->generic($entity),
+            default => throw new ToolCallException(sprintf(
+                'Unsupported entity type "%s". Add a dedicated serializer before exposing it via MCP.',
+                $entity::class,
+            )),
         };
     }
 
@@ -241,35 +244,6 @@ final class EntityNormalizer
             'rate' => $tax->getRate(),
             'type' => $tax->getType(),
         ];
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    private function generic(object $entity): array
-    {
-        $result = [];
-
-        foreach ((array) $entity as $key => $value) {
-            $key = preg_replace('/\W/', '_', (string) $key);
-
-            if (\is_scalar($value) || $value === null) {
-                $result[$key] = $value;
-            } elseif ($value instanceof DateTimeInterface) {
-                $result[$key] = $this->date($value);
-            } elseif ($value instanceof Ulid) {
-                $result[$key] = $value->toRfc4122();
-            } elseif ($value instanceof Money) {
-                $result[$key] = $this->money($value);
-            }
-        }
-
-        if (method_exists($entity, 'getId')) {
-            $id = $entity->getId();
-            $result['id'] = $id instanceof Ulid ? $id->toRfc4122() : $id;
-        }
-
-        return $result;
     }
 
     /**

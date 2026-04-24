@@ -23,6 +23,7 @@ use SolidInvoice\McpBundle\Mcp\Attribute\McpScopeRequired;
 use SolidInvoice\McpBundle\Mcp\McpScopeGuard;
 use SolidInvoice\McpBundle\Mcp\Tool\UlidParser;
 use SolidInvoice\McpBundle\Security\McpScope;
+use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 
 final class ClientReadTools
@@ -89,15 +90,17 @@ final class ClientReadTools
             ->select('COALESCE(SUM(p.totalAmount), 0)')
             ->andWhere('p.client = :client AND p.status = :status')
             ->setParameter('client', $client)
-            ->setParameter('status', 'captured')
+            ->setParameter('status', PaymentStatus::Captured->value)
             ->getQuery()
             ->getSingleScalarResult() ?? 0);
+
+        $clientStatus = $client->getStatus();
 
         return [
             'client' => [
                 'id' => $client->getId()?->toRfc4122(),
                 'name' => $client->getName(),
-                'status' => $client->getStatus(),
+                'status' => $clientStatus instanceof \BackedEnum ? $clientStatus->value : $clientStatus,
                 'currency' => $client->getCurrencyCode(),
             ],
             'counts_by_status' => $countByStatus,

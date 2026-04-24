@@ -260,6 +260,15 @@ final class InvoiceWriteTools
 
         $cloned = $this->cloner->clone($invoice);
 
+        // InvoiceCloner::clone() only persists+flushes Invoice clones
+        // (via invoiceManager->create()); RecurringInvoice clones come back
+        // transient. Persist here so the MCP caller gets a saved entity and
+        // the normalised payload exposes a real id rather than null.
+        if ($cloned instanceof RecurringInvoice) {
+            $this->entityManager->persist($cloned);
+            $this->entityManager->flush();
+        }
+
         return $this->normalizer->normalize($cloned);
     }
 
@@ -294,7 +303,15 @@ final class InvoiceWriteTools
                 'company_id' => $invoice->getCompany()->getId()->toRfc4122(),
             ]);
         } catch (TransportExceptionInterface $exception) {
-            throw new ToolCallException('Failed to send reminder: ' . $exception->getMessage());
+            // Don't surface transport-level detail (SMTP host, auth failures,
+            // relay internals) to the AI agent — log it and keep the user
+            // message generic.
+            $this->logger->error('Failed to send manual MCP reminder', [
+                'invoice_id' => $invoice->getInvoiceId(),
+                'exception' => $exception,
+            ]);
+
+            throw new ToolCallException('Failed to send reminder. See server logs for details.');
         }
 
         return [
