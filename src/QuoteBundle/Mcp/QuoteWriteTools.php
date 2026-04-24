@@ -212,6 +212,12 @@ final class QuoteWriteTools
 
         $cloned = $this->cloner->clone($quote);
 
+        // QuoteCloner::clone() only builds the entity and applies the workflow
+        // transition; it does not persist or flush. Persist here so the MCP
+        // caller gets a saved entity (and a real id in the response).
+        $this->entityManager->persist($cloned);
+        $this->entityManager->flush();
+
         return $this->normalizer->normalize($cloned);
     }
 
@@ -236,6 +242,13 @@ final class QuoteWriteTools
 
         if ($quote->getInvoice() !== null) {
             throw new ToolCallException('This quote has already been converted to an invoice.');
+        }
+
+        if ($quote->getStatus() !== QuoteStatus::Accepted) {
+            throw new ToolCallException(sprintf(
+                'Only accepted quotes can be converted to an invoice. Current status: "%s".',
+                $quote->getStatus()?->value ?? 'unknown',
+            ));
         }
 
         $invoice = $this->invoiceManager->createFromQuote($quote);

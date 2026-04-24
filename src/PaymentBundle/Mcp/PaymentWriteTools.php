@@ -93,6 +93,18 @@ final class PaymentWriteTools
             ));
         }
 
+        // Reject overpayment so the MCP tool matches the behaviour of the
+        // Prepare action (src/PaymentBundle/Action/Prepare.php).
+        $balance = $invoice->getBalance();
+
+        if ($balance->isLessThan($amount)) {
+            throw new ToolCallException(sprintf(
+                'Payment amount %d exceeds invoice balance %s.',
+                $amount,
+                $balance->__toString(),
+            ));
+        }
+
         if (! $this->invoiceWorkflow->can($invoice, InvoiceGraph::TRANSITION_PAY)) {
             throw new ToolCallException(sprintf(
                 '"pay" transition cannot be applied to invoice in status "%s".',

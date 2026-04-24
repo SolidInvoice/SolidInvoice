@@ -70,14 +70,22 @@ final class ResourceQueryTools
             ->from($class, 'e')
             ->select('e');
 
-        $this->applyFilters($qb, $class, $filters);
+        $metadata = $this->entityManager->getClassMetadata($class);
+        $this->applyFilters($qb, $metadata, $filters);
 
         $countQb = (clone $qb)->select('COUNT(e)');
         $total = (int) $countQb->getQuery()->getSingleScalarResult();
 
-        if ($order_by !== null && preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $order_by)) {
+        if ($order_by !== null) {
+            $fieldNames = $metadata->getFieldNames();
+            $orderField = $this->normaliseField($order_by, $fieldNames, $metadata->getAssociationNames(), $metadata);
+
+            if ($orderField === null || ! \in_array($orderField, $fieldNames, true)) {
+                throw new ToolCallException(sprintf('Unknown order_by field "%s".', $order_by));
+            }
+
             $direction = strtolower($order) === 'asc' ? 'ASC' : 'DESC';
-            $qb->orderBy('e.' . $order_by, $direction);
+            $qb->orderBy('e.' . $orderField, $direction);
         }
 
         $qb->setFirstResult(($page - 1) * $items_per_page)
@@ -126,16 +134,15 @@ final class ResourceQueryTools
     }
 
     /**
-     * @param class-string         $class
-     * @param array<string, mixed> $filters
+     * @param \Doctrine\ORM\Mapping\ClassMetadata<object> $metadata
+     * @param array<string, mixed>                        $filters
      */
-    private function applyFilters(QueryBuilder $qb, string $class, array $filters): void
+    private function applyFilters(QueryBuilder $qb, \Doctrine\ORM\Mapping\ClassMetadata $metadata, array $filters): void
     {
         if ($filters === []) {
             return;
         }
 
-        $metadata = $this->entityManager->getClassMetadata($class);
         $fieldNames = $metadata->getFieldNames();
         $associationNames = $metadata->getAssociationNames();
         $i = 0;
@@ -154,13 +161,27 @@ final class ResourceQueryTools
             ++$i;
             $paramName = 'f' . $i;
 
-            if (\in_array($actualField, $associationNames, true) && \is_string($value)) {
+            if (\in_array($actualField, $associationNames, true)) {
+                // Reject OneToMany/ManyToMany — e.<field> = :ulid only works
+                // for owning-side singular associations; collection filters
+                // would surface as a DQL QueryException to the MCP client.
+                if (! $metadata->isSingleValuedAssociation($actualField)) {
+                    throw new ToolCallException(sprintf(
+                        'Filter "%s" targets a collection association and is not supported.',
+                        $field,
+                    ));
+                }
+
+                if (! \is_string($value)) {
+                    throw new ToolCallException(sprintf('Filter "%s" must be a ULID string.', $field));
+                }
+
                 try {
                     $qb->andWhere(sprintf('e.%s = :%s', $actualField, $paramName))
                         ->setParameter($paramName, Ulid::fromString($value));
 
                     continue;
-                } catch (\InvalidArgumentException $e) {
+                } catch (\InvalidArgumentException) {
                     throw new ToolCallException(sprintf('Filter "%s" must be a valid ULID.', $field));
                 }
             }
