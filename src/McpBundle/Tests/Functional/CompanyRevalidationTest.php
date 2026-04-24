@@ -18,7 +18,6 @@ use Doctrine\Persistence\ManagerRegistry;
 use League\OAuth2\Server\ResourceServer;
 use Psr\Http\Message\ServerRequestInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
-use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\McpBundle\Entity\McpAccessToken;
 use SolidInvoice\McpBundle\Entity\OAuthClient;
@@ -31,6 +30,8 @@ use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 use Zenstruck\Foundry\Test\Factories;
 
 /**
@@ -87,7 +88,6 @@ final class CompanyRevalidationTest extends KernelTestCase
         // the account after consent was already granted.
         $user->removeCompany($this->company);
         $em->flush();
-        $em->clear();
 
         $authenticator = new McpOAuthAuthenticator(
             $this->buildMockServerFactory($jti, $user->getId()->toRfc4122()),
@@ -145,7 +145,10 @@ final class CompanyRevalidationTest extends KernelTestCase
 
         // No exception: the user still belongs to the company the token was issued for.
         $passport = $authenticator->authenticate($request);
-        self::assertSame($user->getId()->toRfc4122(), $passport->getUser()->getUserIdentifier());
+        self::assertInstanceOf(SelfValidatingPassport::class, $passport);
+        $badge = $passport->getBadge(UserBadge::class);
+        self::assertInstanceOf(UserBadge::class, $badge);
+        self::assertSame($user->getId()->toRfc4122(), $badge->getUserIdentifier());
     }
 
     /**
