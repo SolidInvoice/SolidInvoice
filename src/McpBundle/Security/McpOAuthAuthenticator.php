@@ -41,11 +41,15 @@ final class McpOAuthAuthenticator extends AbstractAuthenticator
 
     public const string ATTR_COMPANY_ID = 'mcp_oauth_company_id';
 
+    private readonly PsrHttpFactory $psrHttpFactory;
+
     public function __construct(
         private readonly ServerFactory $serverFactory,
         private readonly McpAccessTokenRepository $accessTokenRepository,
         private readonly CompanySelector $companySelector,
+        private readonly Psr17Factory $psr17Factory = new Psr17Factory(),
     ) {
+        $this->psrHttpFactory = new PsrHttpFactory($psr17Factory, $psr17Factory, $psr17Factory, $psr17Factory);
     }
 
     public function supports(Request $request): bool
@@ -56,9 +60,7 @@ final class McpOAuthAuthenticator extends AbstractAuthenticator
 
     public function authenticate(Request $request): Passport
     {
-        $psr17 = new Psr17Factory();
-        $factory = new PsrHttpFactory($psr17, $psr17, $psr17, $psr17);
-        $psrRequest = $factory->createRequest($request);
+        $psrRequest = $this->psrHttpFactory->createRequest($request);
 
         try {
             $validatedRequest = $this->serverFactory

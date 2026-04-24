@@ -26,6 +26,7 @@ use SolidInvoice\McpBundle\Mcp\Tool\UlidParser;
 use SolidInvoice\McpBundle\Security\McpScope;
 use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 
 final class AnalyticsTools
 {
@@ -113,7 +114,7 @@ final class AnalyticsTools
         $sum = $this->invoiceRepository->createQueryBuilder('i')
             ->select('COALESCE(SUM(i.balance), 0)')
             ->andWhere('i.client = :client AND i.status IN (:statuses)')
-            ->setParameter('client', $client)
+            ->setParameter('client', $client->getId(), UlidType::NAME)
             ->setParameter('statuses', [InvoiceStatus::Pending, InvoiceStatus::Overdue])
             ->getQuery()
             ->getSingleScalarResult();
@@ -149,7 +150,7 @@ final class AnalyticsTools
         $sum = $this->invoiceRepository->createQueryBuilder('i')
             ->select('COALESCE(SUM(i.balance), 0)')
             ->andWhere('i.client = :client AND i.status = :status')
-            ->setParameter('client', $client)
+            ->setParameter('client', $client->getId(), UlidType::NAME)
             ->setParameter('status', InvoiceStatus::Overdue)
             ->getQuery()
             ->getSingleScalarResult();

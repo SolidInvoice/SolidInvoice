@@ -11,7 +11,8 @@ mcp:
         remember: "Don't ask me again for this app + company"
         cancel: "Cancel"
         authorize: "Authorize"
-        revoke_hint: "You can revoke this app at any time from your <a href=\"%link%\">connected apps</a>."
+        revoke_hint: "You can revoke this app at any time from your"
+        revoke_hint_link: "connected apps"
     error:
         title: "Authorization error"
     connected_apps:

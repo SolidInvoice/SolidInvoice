@@ -46,6 +46,8 @@ final class Authorize
 {
     private const string CONSENT_CSRF_TOKEN_ID = 'mcp_oauth_consent';
 
+    private readonly PsrHttpFactory $psrHttpFactory;
+
     public function __construct(
         private readonly ServerFactory $serverFactory,
         private readonly ConsentService $consentService,
@@ -56,7 +58,9 @@ final class Authorize
         private readonly LoggerInterface $logger,
         private readonly CsrfTokenManagerInterface $csrfTokenManager,
         private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly Psr17Factory $psr17Factory = new Psr17Factory(),
     ) {
+        $this->psrHttpFactory = new PsrHttpFactory($psr17Factory, $psr17Factory, $psr17Factory, $psr17Factory);
     }
 
     public function __invoke(Request $request): Response
@@ -215,7 +219,7 @@ final class Authorize
         $this->pendingAuthorization->set($user, $company);
 
         try {
-            $psrResponse = $server->completeAuthorizationRequest($authRequest, (new Psr17Factory())->createResponse());
+            $psrResponse = $server->completeAuthorizationRequest($authRequest, $this->psr17Factory->createResponse());
         } catch (OAuthServerException $exception) {
             $this->logger->notice('OAuth completeAuthorize rejected', ['reason' => $exception->getMessage()]);
 
@@ -307,10 +311,7 @@ final class Authorize
 
     private function toPsrRequest(Request $request): \Psr\Http\Message\ServerRequestInterface
     {
-        $psr17 = new Psr17Factory();
-        $factory = new PsrHttpFactory($psr17, $psr17, $psr17, $psr17);
-
-        return $factory->createRequest($request);
+        return $this->psrHttpFactory->createRequest($request);
     }
 
     private function renderError(string $code, string $description, int $status): Response

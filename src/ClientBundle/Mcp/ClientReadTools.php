@@ -25,6 +25,7 @@ use SolidInvoice\McpBundle\Mcp\Tool\UlidParser;
 use SolidInvoice\McpBundle\Security\McpScope;
 use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 
 final class ClientReadTools
 {
@@ -55,33 +56,33 @@ final class ClientReadTools
             throw new ToolCallException(sprintf('Client %s not found.', $client_id));
         }
 
+        $statusRows = $this->invoiceRepository->createQueryBuilder('i')
+            ->select('i.status AS status, COUNT(i) AS cnt')
+            ->andWhere('i.client = :client')
+            ->setParameter('client', $client->getId(), UlidType::NAME)
+            ->groupBy('i.status')
+            ->getQuery()
+            ->getResult();
+
         $countByStatus = [];
 
-        foreach (InvoiceStatus::cases() as $status) {
-            $count = (int) $this->invoiceRepository->createQueryBuilder('i')
-                ->select('COUNT(i)')
-                ->andWhere('i.client = :client AND i.status = :status')
-                ->setParameter('client', $client)
-                ->setParameter('status', $status)
-                ->getQuery()
-                ->getSingleScalarResult();
-
-            if ($count > 0) {
-                $countByStatus[$status->value] = $count;
-            }
+        foreach ($statusRows as $row) {
+            $status = $row['status'];
+            $key = $status instanceof \BackedEnum ? $status->value : (string) $status;
+            $countByStatus[$key] = (int) $row['cnt'];
         }
 
         $totalInvoiced = (string) ($this->invoiceRepository->createQueryBuilder('i')
             ->select('COALESCE(SUM(i.total), 0)')
             ->andWhere('i.client = :client')
-            ->setParameter('client', $client)
+            ->setParameter('client', $client->getId(), UlidType::NAME)
             ->getQuery()
             ->getSingleScalarResult() ?? 0);
 
         $outstanding = (string) ($this->invoiceRepository->createQueryBuilder('i')
             ->select('COALESCE(SUM(i.balance), 0)')
             ->andWhere('i.client = :client AND i.status IN (:statuses)')
-            ->setParameter('client', $client)
+            ->setParameter('client', $client->getId(), UlidType::NAME)
             ->setParameter('statuses', [InvoiceStatus::Pending, InvoiceStatus::Overdue])
             ->getQuery()
             ->getSingleScalarResult() ?? 0);
@@ -89,7 +90,7 @@ final class ClientReadTools
         $totalPaid = (string) ($this->paymentRepository->createQueryBuilder('p')
             ->select('COALESCE(SUM(p.totalAmount), 0)')
             ->andWhere('p.client = :client AND p.status = :status')
-            ->setParameter('client', $client)
+            ->setParameter('client', $client->getId(), UlidType::NAME)
             ->setParameter('status', PaymentStatus::Captured->value)
             ->getQuery()
             ->getSingleScalarResult() ?? 0);

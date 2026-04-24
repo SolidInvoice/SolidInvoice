@@ -19,6 +19,7 @@ use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
@@ -76,6 +77,16 @@ final class McpAuditListener
             'method' => $method,
             'tool' => $toolName,
         ];
+    }
+
+    #[AsEventListener(event: ExceptionEvent::class, priority: -16)]
+    public function onException(ExceptionEvent $event): void
+    {
+        if (! $event->isMainRequest()) {
+            return;
+        }
+
+        unset($this->pending[spl_object_hash($event->getRequest())]);
     }
 
     #[AsEventListener(event: ResponseEvent::class, priority: -16)]

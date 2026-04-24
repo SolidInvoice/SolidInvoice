@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace SolidInvoice\McpBundle\Action;
 
 use JsonException;
+use League\Uri\Exceptions\SyntaxError;
+use League\Uri\Uri;
 use SolidInvoice\McpBundle\Entity\OAuthClient;
 use SolidInvoice\McpBundle\Repository\OAuthClientRepository;
 use SolidInvoice\McpBundle\Security\McpScope;
@@ -66,8 +68,22 @@ final class DynamicClientRegistration
         }
 
         foreach ($redirectUris as $uri) {
-            if (! \is_string($uri) || filter_var($uri, FILTER_VALIDATE_URL) === false) {
+            if (! \is_string($uri)) {
                 return $this->error('invalid_redirect_uri', sprintf('Invalid redirect URI: %s', (string) $uri));
+            }
+
+            try {
+                $parsed = Uri::new($uri);
+            } catch (SyntaxError) {
+                return $this->error('invalid_redirect_uri', sprintf('Invalid redirect URI: %s', $uri));
+            }
+
+            $isHttps = $parsed->getScheme() === 'https';
+            $isLocalhost = $parsed->getScheme() === 'http'
+                && \in_array($parsed->getHost(), ['localhost', '127.0.0.1', '[::1]'], true);
+
+            if (! $isHttps && ! $isLocalhost) {
+                return $this->error('invalid_redirect_uri', sprintf('Redirect URI must use HTTPS or be a localhost HTTP URI: %s', $uri));
             }
         }
 
