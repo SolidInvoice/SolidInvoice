@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1d2da273cac1fa866268627dad75905b",
+    "content-hash": "1afe3208bec679c430810186c8fb154d",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -12607,22 +12607,22 @@
         },
         {
             "name": "symfony/gateway-api-notifier",
-            "version": "v7.4.4",
+            "version": "v8.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/gateway-api-notifier.git",
-                "reference": "15baa41466f43907bfb0ebe53b98b92e49d940d3"
+                "reference": "4dbe986cad269296b152078c7bceb39bf565eff4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/gateway-api-notifier/zipball/15baa41466f43907bfb0ebe53b98b92e49d940d3",
-                "reference": "15baa41466f43907bfb0ebe53b98b92e49d940d3",
+                "url": "https://api.github.com/repos/symfony/gateway-api-notifier/zipball/4dbe986cad269296b152078c7bceb39bf565eff4",
+                "reference": "4dbe986cad269296b152078c7bceb39bf565eff4",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.2",
-                "symfony/http-client": "^6.4|^7.0|^8.0",
-                "symfony/notifier": "^7.2|^8.0"
+                "php": ">=8.4",
+                "symfony/http-client": "^7.4|^8.0",
+                "symfony/notifier": "^7.4|^8.0"
             },
             "type": "symfony-notifier-bridge",
             "autoload": {
@@ -12659,7 +12659,7 @@
                 "sms"
             ],
             "support": {
-                "source": "https://github.com/symfony/gateway-api-notifier/tree/v7.4.4"
+                "source": "https://github.com/symfony/gateway-api-notifier/tree/v8.0.4"
             },
             "funding": [
                 {
@@ -12679,7 +12679,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-01-05T08:47:25+00:00"
+            "time": "2026-01-05T09:27:50+00:00"
         },
         {
             "name": "symfony/gitter-notifier",
@@ -15869,16 +15869,16 @@
         },
         {
             "name": "symfony/polyfill-php83",
-            "version": "v1.33.0",
+            "version": "v1.36.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php83.git",
-                "reference": "17f6f9a6b1735c0f163024d959f700cfbc5155e5"
+                "reference": "3600c2cb22399e25bb226e4a135ce91eeb2a6149"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php83/zipball/17f6f9a6b1735c0f163024d959f700cfbc5155e5",
-                "reference": "17f6f9a6b1735c0f163024d959f700cfbc5155e5",
+                "url": "https://api.github.com/repos/symfony/polyfill-php83/zipball/3600c2cb22399e25bb226e4a135ce91eeb2a6149",
+                "reference": "3600c2cb22399e25bb226e4a135ce91eeb2a6149",
                 "shasum": ""
             },
             "require": {
@@ -15925,7 +15925,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php83/tree/v1.33.0"
+                "source": "https://github.com/symfony/polyfill-php83/tree/v1.36.0"
             },
             "funding": [
                 {
@@ -15945,7 +15945,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-07-08T02:45:35+00:00"
+            "time": "2026-04-10T17:25:58+00:00"
         },
         {
             "name": "symfony/polyfill-php84",

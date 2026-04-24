@@ -105,7 +105,7 @@
         "symfony/form": "^7.4",
         "symfony/framework-bundle": "^7.1",
         "symfony/free-mobile-notifier": "^7.1",
-        "symfony/gateway-api-notifier": "^7.1",
+        "symfony/gateway-api-notifier": "^8.0",
         "symfony/gitter-notifier": "^7.1",
         "symfony/google-chat-notifier": "^7.1",
         "symfony/google-mailer": "^7.1",
