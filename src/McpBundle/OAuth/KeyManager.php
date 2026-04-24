@@ -30,10 +30,10 @@ final class KeyManager
 {
     public function __construct(
         private readonly string $configDir,
-        private readonly string $encryptionKey,
+        private readonly ?string $encryptionKey,
         private readonly Filesystem $filesystem = new Filesystem(),
     ) {
-        if ($this->encryptionKey === '') {
+        if ($this->encryptionKey === null || $this->encryptionKey === '') {
             throw new RuntimeException('SOLIDINVOICE_APP_SECRET must be configured before using MCP (used as the OAuth auth-code encryption key).');
         }
     }
@@ -78,7 +78,7 @@ final class KeyManager
 
     public function getEncryptionKey(): string
     {
-        return $this->encryptionKey;
+        return (string) $this->encryptionKey;
     }
 
     /**
