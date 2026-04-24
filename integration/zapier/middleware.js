@@ -36,8 +36,8 @@ const afterResponse = (response, z) => {
   const title = data['hydra:title'] || data.title;
 
   if (response.status === 401 || response.status === 403) {
-    throw new z.errors.RefreshAuthError(
-      hydraDescription || 'The API token is invalid, expired, or does not have access to this resource.'
+    throw new z.errors.ExpiredAuthError(
+      hydraDescription || 'The API token is invalid, expired, or does not have access to this resource. Reconnect the SolidInvoice account in Zapier.'
     );
   }
 

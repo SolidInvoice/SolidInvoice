@@ -1,6 +1,7 @@
 'use strict';
 
-const { App, BASE_URL, createTester, makeBundle, nock } = require('./helper');
+const { App, BASE_URL, createTester, makeBundle, hydraCollection, nock } = require('./helper');
+const samples = require('../utils/samples');
 
 describe('authentication', () => {
   it('passes the test endpoint when the token works', async () => {
@@ -9,11 +10,8 @@ describe('authentication', () => {
     nock(BASE_URL, {
       reqheaders: { 'X-API-TOKEN': 'test-token-123' },
     })
-      .get('/api/profile/api-tokens')
-      .reply(200, {
-        '@context': '/api/contexts/Collection',
-        'hydra:member': [{ id: 'tok_1', name: 'Zapier' }],
-      });
+      .get('/api/clients')
+      .reply(200, hydraCollection([samples.client]));
 
     const result = await tester(App.authentication.test, makeBundle());
     expect(result['hydra:member']).toBeDefined();
@@ -25,11 +23,11 @@ describe('authentication', () => {
     await expect(tester(App.authentication.test, bundle)).rejects.toThrow(/must start with https/);
   });
 
-  it('throws RefreshAuthError on a 401', async () => {
+  it('surfaces an ExpiredAuthError on a 401 so Zapier prompts reconnection', async () => {
     const tester = createTester();
 
     nock(BASE_URL)
-      .get('/api/profile/api-tokens')
+      .get('/api/clients')
       .reply(401, {
         '@type': 'hydra:Error',
         'hydra:title': 'Unauthorized',
