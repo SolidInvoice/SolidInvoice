@@ -15,7 +15,6 @@ namespace SolidInvoice\McpBundle\OAuth;
 
 use DateInterval;
 use League\OAuth2\Server\AuthorizationServer;
-use League\OAuth2\Server\Grant\AuthCodeGrant;
 use League\OAuth2\Server\Grant\RefreshTokenGrant;
 use League\OAuth2\Server\ResourceServer;
 use SolidInvoice\McpBundle\Repository\McpAccessTokenRepository;
@@ -49,7 +48,7 @@ final class ServerFactory
             $this->keyManager->getEncryptionKey(),
         );
 
-        $authCodeGrant = new AuthCodeGrant(
+        $authCodeGrant = new StrictS256AuthCodeGrant(
             $this->authCodeRepository,
             $this->refreshTokenRepository,
             new DateInterval($this->authCodeTtl),

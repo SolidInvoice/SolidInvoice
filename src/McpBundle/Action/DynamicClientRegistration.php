@@ -46,7 +46,6 @@ final class DynamicClientRegistration
                     ['error' => 'rate_limited', 'error_description' => 'Too many registration attempts. Try again later.'],
                     Response::HTTP_TOO_MANY_REQUESTS,
                     [
-                        // RFC 7231: Retry-After is either delta-seconds or an HTTP-date.
                         'Retry-After' => (string) $retryAfterSeconds,
                         'X-RateLimit-Reset' => (string) $retryAfter->getTimestamp(),
                     ],

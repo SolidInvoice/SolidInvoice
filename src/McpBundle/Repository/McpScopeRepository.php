@@ -45,6 +45,11 @@ final class McpScopeRepository implements ScopeRepositoryInterface
             }
         }
 
+        // write access implies read access
+        if (isset($filtered[McpScope::Write->value]) && ! isset($filtered[McpScope::Read->value])) {
+            $filtered[McpScope::Read->value] = new ScopeEntity(McpScope::Read->value);
+        }
+
         return array_values($filtered);
     }
 }

@@ -30,7 +30,7 @@ use Symfony\Component\HttpKernel\Event\ResponseEvent;
 final class McpAuditListener
 {
     /**
-     * @var array<string, array{start: float, body: string|null}>
+     * @var array<string, array{start: float, method: string|null, tool: string|null}>
      */
     private array $pending = [];
 
@@ -54,9 +54,27 @@ final class McpAuditListener
             return;
         }
 
+        $method = null;
+        $toolName = null;
+
+        $body = $request->getContent() ?: null;
+
+        if ($body !== null) {
+            $parsed = json_decode($body, true);
+
+            if (\is_array($parsed)) {
+                $method = \is_string($parsed['method'] ?? null) ? $parsed['method'] : null;
+
+                if ($method === 'tools/call' && \is_array($parsed['params'] ?? null)) {
+                    $toolName = \is_string($parsed['params']['name'] ?? null) ? $parsed['params']['name'] : null;
+                }
+            }
+        }
+
         $this->pending[spl_object_hash($request)] = [
             'start' => microtime(true),
-            'body' => $request->getContent() ?: null,
+            'method' => $method,
+            'tool' => $toolName,
         ];
     }
 
@@ -79,20 +97,8 @@ final class McpAuditListener
 
         $latencyMs = (int) round((microtime(true) - $state['start']) * 1000);
 
-        $method = null;
-        $toolName = null;
-
-        if ($state['body'] !== null) {
-            $parsed = json_decode($state['body'], true);
-
-            if (\is_array($parsed)) {
-                $method = \is_string($parsed['method'] ?? null) ? $parsed['method'] : null;
-
-                if ($method === 'tools/call' && \is_array($parsed['params'] ?? null)) {
-                    $toolName = \is_string($parsed['params']['name'] ?? null) ? $parsed['params']['name'] : null;
-                }
-            }
-        }
+        $method = $state['method'];
+        $toolName = $state['tool'];
 
         $user = $this->security->getUser();
 

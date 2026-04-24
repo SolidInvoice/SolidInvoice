@@ -239,7 +239,7 @@ final class EntityNormalizer
     private function tax(Tax $tax): array
     {
         return [
-            'id' => $tax->getId()->toRfc4122(),
+            'id' => $tax->getId()?->toRfc4122(),
             'name' => $tax->getName(),
             'rate' => $tax->getRate(),
             'type' => $tax->getType(),
