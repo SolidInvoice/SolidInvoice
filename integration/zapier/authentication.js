@@ -17,7 +17,7 @@ const normalizeUrl = (z, rawUrl) => {
 const test = async (z, bundle) => {
   const base = normalizeUrl(z, bundle.authData.server_url);
   const response = await z.request({
-    url: `${base}/api/profile/api-tokens`,
+    url: `${base}/api/clients`,
     method: 'GET',
   });
   return response.data;
