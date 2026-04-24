@@ -33,7 +33,7 @@ module.exports = {
       required: true,
       default: DEFAULT_INSTANCE_URL,
       helpText:
-        'The HTTPS URL of your SolidInvoice instance. Use `https://app.solidinvoice.co` for the hosted version, or your self-hosted URL (e.g. `https://billing.mycompany.com`). HTTP URLs are not supported; TLS is required.',
+        'The HTTPS URL of your SolidInvoice instance. Use `https://solidinvoice.app` for the hosted version, or your self-hosted URL (e.g. `https://billing.mycompany.com`). HTTP URLs are not supported; TLS is required.',
     },
     {
       key: 'api_token',

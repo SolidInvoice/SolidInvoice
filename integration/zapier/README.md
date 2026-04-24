@@ -97,7 +97,7 @@ All triggers are polling-only. REST Hooks are deferred until SolidInvoice ships 
 
 ## Authentication notes
 
-- Custom auth with two fields: `server_url` (instance URL, default `https://app.solidinvoice.co`) and `api_token` (X-API-TOKEN value).
+- Custom auth with two fields: `server_url` (instance URL, default `https://solidinvoice.app`) and `api_token` (X-API-TOKEN value).
 - Tokens are scoped to a single company. For multi-company deployments, users create one Zapier connection per company.
 - Field keys preserved from the UI-builder 1.0.0 version for backward compatibility with existing Zaps.
 

@@ -1,6 +1,6 @@
 'use strict';
 
-const DEFAULT_INSTANCE_URL = 'https://app.solidinvoice.co';
+const DEFAULT_INSTANCE_URL = 'https://solidinvoice.app';
 
 const INVOICE_STATUSES = [
   'new',
