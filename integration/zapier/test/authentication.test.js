@@ -19,6 +19,12 @@ describe('authentication', () => {
     expect(result['hydra:member']).toBeDefined();
   });
 
+  it('rejects plain-http URLs', async () => {
+    const tester = createTester();
+    const bundle = makeBundle({ authData: { api_token: 'x', server_url: 'http://insecure.test' } });
+    await expect(tester(App.authentication.test, bundle)).rejects.toThrow(/must start with https/);
+  });
+
   it('throws RefreshAuthError on a 401', async () => {
     const tester = createTester();
 

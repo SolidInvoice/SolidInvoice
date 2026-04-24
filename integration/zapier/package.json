@@ -1,7 +1,7 @@
 {
   "name": "solidinvoice-zapier",
   "version": "1.0.1",
-  "description": "Zapier integration for SolidInvoice — connect invoices, quotes, clients, and payments to 8000+ apps.",
+  "description": "SolidInvoice is an open-source billing platform for freelancers and small businesses. Manage clients, invoices, quotes, and payments.",
   "main": "index.js",
   "scripts": {
     "test": "jest --testTimeout 10000",

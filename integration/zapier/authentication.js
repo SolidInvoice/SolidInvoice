@@ -4,9 +4,9 @@ const { DEFAULT_INSTANCE_URL } = require('./constants');
 
 const normalizeUrl = (z, rawUrl) => {
   const url = (rawUrl || '').trim().replace(/\/+$/, '');
-  if (!/^https?:\/\//i.test(url)) {
+  if (!/^https:\/\//i.test(url)) {
     throw new z.errors.Error(
-      `SolidInvoice URL must start with http:// or https:// (got "${rawUrl}").`,
+      `SolidInvoice URL must start with https:// (got "${rawUrl}"). Zapier requires TLS for all API traffic.`,
       'AuthenticationError',
       400
     );
@@ -33,7 +33,7 @@ module.exports = {
       required: true,
       default: DEFAULT_INSTANCE_URL,
       helpText:
-        'The URL of your SolidInvoice instance, including `https://`. Use `https://app.solidinvoice.co` for the hosted version, or your self-hosted URL (e.g. `https://billing.mycompany.com`). Do not include a trailing slash or API path.',
+        'The HTTPS URL of your SolidInvoice instance. Use `https://app.solidinvoice.co` for the hosted version, or your self-hosted URL (e.g. `https://billing.mycompany.com`). HTTP URLs are not supported; TLS is required.',
     },
     {
       key: 'api_token',
