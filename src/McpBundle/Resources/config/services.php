@@ -15,6 +15,7 @@ use SolidInvoice\McpBundle\Action\DynamicClientRegistration;
 use SolidInvoice\McpBundle\OAuth\KeyManager;
 use SolidInvoice\McpBundle\OAuth\PendingAuthorization;
 use SolidInvoice\McpBundle\OAuth\ServerFactory;
+use SolidInvoice\McpBundle\OAuth\ServerFactoryInterface;
 use SolidInvoice\McpBundle\Repository\McpAccessTokenRepository;
 use SolidInvoice\McpBundle\Repository\McpRefreshTokenRepository;
 use SolidInvoice\McpBundle\Repository\McpScopeRepository;
@@ -48,6 +49,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ]);
 
     $services->set(PendingAuthorization::class);
+
+    $services->alias(ServerFactoryInterface::class, ServerFactory::class);
 
     $services->set(ServerFactory::class)
         ->args([

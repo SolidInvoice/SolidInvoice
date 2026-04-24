@@ -25,7 +25,7 @@ use SolidInvoice\McpBundle\OAuth\ConsentService;
 use SolidInvoice\McpBundle\OAuth\OAuthUserEntity;
 use SolidInvoice\McpBundle\OAuth\PendingAuthorization;
 use SolidInvoice\McpBundle\OAuth\ScopeEntity;
-use SolidInvoice\McpBundle\OAuth\ServerFactory;
+use SolidInvoice\McpBundle\OAuth\ServerFactoryInterface;
 use SolidInvoice\McpBundle\Security\McpScope;
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
@@ -49,7 +49,7 @@ final class Authorize
     private readonly PsrHttpFactory $psrHttpFactory;
 
     public function __construct(
-        private readonly ServerFactory $serverFactory,
+        private readonly ServerFactoryInterface $serverFactory,
         private readonly ConsentService $consentService,
         private readonly PendingAuthorization $pendingAuthorization,
         private readonly Security $security,
@@ -167,7 +167,7 @@ final class Authorize
             $candidate = $companies->first() ?: null;
         } elseif ($activeCompanyId !== null) {
             foreach ($companies as $company) {
-                if ($company->getId()?->toRfc4122() === $activeCompanyId) {
+                if ($company->getId()->toRfc4122() === $activeCompanyId) {
                     $candidate = $company;
 
                     break;
@@ -301,7 +301,7 @@ final class Authorize
         }
 
         foreach ($user->getCompanies() as $company) {
-            if ($company->getId()?->equals($ulid)) {
+            if ($company->getId()->equals($ulid)) {
                 return $company;
             }
         }
