@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1d2da273cac1fa866268627dad75905b",
+    "content-hash": "db45de1f785c5da2e97d39833ff039e3",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -14201,22 +14201,22 @@
         },
         {
             "name": "symfony/mercure-notifier",
-            "version": "v7.4.4",
+            "version": "v8.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/mercure-notifier.git",
-                "reference": "2dc7022784e5edcb7ce5efae19508912de2f60b3"
+                "reference": "5180065eba3be87eb55531ddcfed1f2928e17a83"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/mercure-notifier/zipball/2dc7022784e5edcb7ce5efae19508912de2f60b3",
-                "reference": "2dc7022784e5edcb7ce5efae19508912de2f60b3",
+                "url": "https://api.github.com/repos/symfony/mercure-notifier/zipball/5180065eba3be87eb55531ddcfed1f2928e17a83",
+                "reference": "5180065eba3be87eb55531ddcfed1f2928e17a83",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.2",
+                "php": ">=8.4",
                 "symfony/mercure": "^0.5.2|^0.6|^0.7",
-                "symfony/notifier": "^7.3|^8.0",
+                "symfony/notifier": "^7.4|^8.0",
                 "symfony/service-contracts": "^2.5|^3"
             },
             "type": "symfony-notifier-bridge",
@@ -14249,7 +14249,7 @@
                 "notifier"
             ],
             "support": {
-                "source": "https://github.com/symfony/mercure-notifier/tree/v7.4.4"
+                "source": "https://github.com/symfony/mercure-notifier/tree/v8.0.4"
             },
             "funding": [
                 {
@@ -14269,7 +14269,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-01-05T08:47:25+00:00"
+            "time": "2026-01-05T09:27:50+00:00"
         },
         {
             "name": "symfony/message-bird-notifier",
@@ -15869,16 +15869,16 @@
         },
         {
             "name": "symfony/polyfill-php83",
-            "version": "v1.33.0",
+            "version": "v1.36.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php83.git",
-                "reference": "17f6f9a6b1735c0f163024d959f700cfbc5155e5"
+                "reference": "3600c2cb22399e25bb226e4a135ce91eeb2a6149"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php83/zipball/17f6f9a6b1735c0f163024d959f700cfbc5155e5",
-                "reference": "17f6f9a6b1735c0f163024d959f700cfbc5155e5",
+                "url": "https://api.github.com/repos/symfony/polyfill-php83/zipball/3600c2cb22399e25bb226e4a135ce91eeb2a6149",
+                "reference": "3600c2cb22399e25bb226e4a135ce91eeb2a6149",
                 "shasum": ""
             },
             "require": {
@@ -15925,7 +15925,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php83/tree/v1.33.0"
+                "source": "https://github.com/symfony/polyfill-php83/tree/v1.36.0"
             },
             "funding": [
                 {
@@ -15945,7 +15945,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-07-08T02:45:35+00:00"
+            "time": "2026-04-10T17:25:58+00:00"
         },
         {
             "name": "symfony/polyfill-php84",
@@ -20218,30 +20218,27 @@
         },
         {
             "name": "symfony/web-link",
-            "version": "v7.4.8",
+            "version": "v8.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/web-link.git",
-                "reference": "0711009963009e7d6d59149327f3ad633ee3fe25"
+                "reference": "f76065fd8d59284332c8beaf2d7e1449f8c532c3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/web-link/zipball/0711009963009e7d6d59149327f3ad633ee3fe25",
-                "reference": "0711009963009e7d6d59149327f3ad633ee3fe25",
+                "url": "https://api.github.com/repos/symfony/web-link/zipball/f76065fd8d59284332c8beaf2d7e1449f8c532c3",
+                "reference": "f76065fd8d59284332c8beaf2d7e1449f8c532c3",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.2",
+                "php": ">=8.4",
                 "psr/link": "^1.1|^2.0"
-            },
-            "conflict": {
-                "symfony/http-kernel": "<6.4"
             },
             "provide": {
                 "psr/link-implementation": "1.0|2.0"
             },
             "require-dev": {
-                "symfony/http-kernel": "^6.4|^7.0|^8.0"
+                "symfony/http-kernel": "^7.4|^8.0"
             },
             "type": "library",
             "autoload": {
@@ -20281,7 +20278,7 @@
                 "push"
             ],
             "support": {
-                "source": "https://github.com/symfony/web-link/tree/v7.4.8"
+                "source": "https://github.com/symfony/web-link/tree/v8.0.8"
             },
             "funding": [
                 {
@@ -20301,7 +20298,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-03-24T13:12:05+00:00"
+            "time": "2026-03-30T15:14:47+00:00"
         },
         {
             "name": "symfony/webhook",
