@@ -24,6 +24,7 @@ use SolidInvoice\McpBundle\Entity\OAuthClient;
 use SolidInvoice\McpBundle\OAuth\ConsentService;
 use SolidInvoice\McpBundle\OAuth\OAuthUserEntity;
 use SolidInvoice\McpBundle\OAuth\PendingAuthorization;
+use SolidInvoice\McpBundle\OAuth\ScopeEntity;
 use SolidInvoice\McpBundle\OAuth\ServerFactory;
 use SolidInvoice\McpBundle\Security\McpScope;
 use SolidInvoice\UserBundle\Entity\User;
@@ -105,6 +106,12 @@ final class Authorize
 
         if ($requestedScopeValues === []) {
             $requestedScopeValues = [McpScope::Read->value];
+
+            // Materialise the scope on the authorization request itself so the
+            // approval loop in approveAndComplete() can grant it — otherwise
+            // the issued token ends up with no scopes despite the consent page
+            // showing read access.
+            $authRequest->setScopes([new ScopeEntity(McpScope::Read->value)]);
         }
 
         if ($request->isMethod('POST')) {

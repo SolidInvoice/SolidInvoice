@@ -14,11 +14,13 @@ declare(strict_types=1);
 namespace SolidInvoice\McpBundle\Action;
 
 use Doctrine\ORM\EntityManagerInterface;
+use SolidInvoice\McpBundle\Entity\ConsentGrant;
 use SolidInvoice\McpBundle\Entity\McpAccessToken;
 use SolidInvoice\McpBundle\Entity\McpRefreshToken;
 use SolidInvoice\McpBundle\Entity\OAuthClient;
 use SolidInvoice\McpBundle\Repository\OAuthClientRepository;
 use SolidInvoice\UserBundle\Entity\User;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -86,6 +88,16 @@ final class ConnectedAppsRevoke
                 SELECT t.id FROM ' . McpAccessToken::class . ' t
                 WHERE t.oauthClient = :client AND t.user = :user
             )')
+            ->setParameter('client', $client->getId(), UlidType::NAME)
+            ->setParameter('user', $user->getId(), UlidType::NAME)
+            ->getQuery()
+            ->execute();
+
+        // Also clear remembered consent so the same client can't silently mint
+        // fresh tokens from a prior "don't ask me again" grant.
+        $this->entityManager->createQueryBuilder()
+            ->delete(ConsentGrant::class, 'g')
+            ->where('g.client = :client AND g.user = :user')
             ->setParameter('client', $client->getId(), UlidType::NAME)
             ->setParameter('user', $user->getId(), UlidType::NAME)
             ->getQuery()

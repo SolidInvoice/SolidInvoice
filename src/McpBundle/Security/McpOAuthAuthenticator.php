@@ -115,14 +115,20 @@ final class McpOAuthAuthenticator extends AbstractAuthenticator
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
+        $message = $exception->getMessage();
+        // Strip CR/LF and double-quotes before interpolating into the
+        // WWW-Authenticate header so upstream error text can't break the
+        // header or inject additional fields.
+        $headerSafeMessage = preg_replace('/[\r\n]+/', ' ', str_replace('"', "'", $message)) ?? '';
+
         return new JsonResponse(
             [
                 'error' => 'invalid_token',
-                'error_description' => $exception->getMessage(),
+                'error_description' => $message,
             ],
             Response::HTTP_UNAUTHORIZED,
             [
-                'WWW-Authenticate' => sprintf('Bearer error="invalid_token", error_description="%s"', addslashes($exception->getMessage())),
+                'WWW-Authenticate' => sprintf('Bearer error="invalid_token", error_description="%s"', $headerSafeMessage),
             ],
         );
     }
