@@ -39,10 +39,17 @@ final class DynamicClientRegistration
             $limit = $limiter->consume();
 
             if (! $limit->isAccepted()) {
+                $retryAfter = $limit->getRetryAfter();
+                $retryAfterSeconds = max(0, $retryAfter->getTimestamp() - time());
+
                 return new JsonResponse(
                     ['error' => 'rate_limited', 'error_description' => 'Too many registration attempts. Try again later.'],
                     Response::HTTP_TOO_MANY_REQUESTS,
-                    ['Retry-After' => (string) $limit->getRetryAfter()->getTimestamp()],
+                    [
+                        // RFC 7231: Retry-After is either delta-seconds or an HTTP-date.
+                        'Retry-After' => (string) $retryAfterSeconds,
+                        'X-RateLimit-Reset' => (string) $retryAfter->getTimestamp(),
+                    ],
                 );
             }
         }
@@ -65,7 +72,14 @@ final class DynamicClientRegistration
             }
         }
 
-        $name = (string) ($payload['client_name'] ?? 'Unnamed MCP Client');
+        $name = $payload['client_name'] ?? 'Unnamed MCP Client';
+
+        if (! \is_string($name) || trim($name) === '' || mb_strlen($name) > 255) {
+            return $this->error('invalid_client_metadata', 'client_name must be a non-empty string up to 255 characters.');
+        }
+
+        $name = trim($name);
+
         $tokenEndpointAuthMethod = (string) ($payload['token_endpoint_auth_method'] ?? 'none');
 
         if (! \in_array($tokenEndpointAuthMethod, ['none', 'client_secret_basic', 'client_secret_post'], true)) {
@@ -124,6 +138,9 @@ final class DynamicClientRegistration
 
         if ($plainSecret !== null) {
             $response['client_secret'] = $plainSecret;
+            // RFC 7591 §3.2.1: client_secret_expires_at is REQUIRED whenever
+            // client_secret is returned. 0 signals a non-expiring secret.
+            $response['client_secret_expires_at'] = 0;
         }
 
         return new JsonResponse($response, Response::HTTP_CREATED);

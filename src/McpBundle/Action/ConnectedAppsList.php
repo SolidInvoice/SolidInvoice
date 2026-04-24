@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SolidInvoice\McpBundle\Action;
 
 use SolidInvoice\McpBundle\Repository\McpAccessTokenRepository;
-use SolidInvoice\McpBundle\Repository\OAuthClientRepository;
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -28,7 +27,6 @@ use Twig\Environment;
 final class ConnectedAppsList
 {
     public function __construct(
-        private readonly OAuthClientRepository $clientRepository,
         private readonly McpAccessTokenRepository $accessTokenRepository,
         private readonly Security $security,
         private readonly Environment $twig,
@@ -53,30 +51,33 @@ final class ConnectedAppsList
             ->getQuery()
             ->getResult();
 
+        // Group by (client, company) — the same OAuth client can be authorised
+        // for multiple tenants, and each pair is revoked independently.
         /** @var array<string, array{client: \SolidInvoice\McpBundle\Entity\OAuthClient, scopes: list<string>, company: \SolidInvoice\CoreBundle\Entity\Company, last_used: \DateTimeInterface|null, token_count: int}> $byClient */
         $byClient = [];
 
         foreach ($tokens as $token) {
-            $clientId = $token->getOAuthClient()->getIdentifier();
+            $company = $token->getCompany();
+            $groupKey = $token->getOAuthClient()->getIdentifier() . ':' . ($company->getId()?->toRfc4122() ?? '');
 
-            if (! isset($byClient[$clientId])) {
-                $byClient[$clientId] = [
+            if (! isset($byClient[$groupKey])) {
+                $byClient[$groupKey] = [
                     'client' => $token->getOAuthClient(),
                     'scopes' => $token->getScopeValues(),
-                    'company' => $token->getCompany(),
+                    'company' => $company,
                     'last_used' => $token->getLastUsedAt() ?? $token->getCreated(),
                     'token_count' => 0,
                 ];
             } else {
                 $tokenLastUsed = $token->getLastUsedAt() ?? $token->getCreated();
-                $current = $byClient[$clientId]['last_used'];
+                $current = $byClient[$groupKey]['last_used'];
 
                 if ($tokenLastUsed !== null && ($current === null || $tokenLastUsed > $current)) {
-                    $byClient[$clientId]['last_used'] = $tokenLastUsed;
+                    $byClient[$groupKey]['last_used'] = $tokenLastUsed;
                 }
             }
 
-            ++$byClient[$clientId]['token_count'];
+            ++$byClient[$groupKey]['token_count'];
         }
 
         return new Response(

@@ -33,6 +33,9 @@ final class KeyManager
         private readonly string $encryptionKey,
         private readonly Filesystem $filesystem = new Filesystem(),
     ) {
+        if ($this->encryptionKey === '') {
+            throw new RuntimeException('SOLIDINVOICE_APP_SECRET must be configured before using MCP (used as the OAuth auth-code encryption key).');
+        }
     }
 
     public function getPrivateKeyPath(): string
@@ -60,7 +63,10 @@ final class KeyManager
     {
         $this->assertKeysExist();
 
-        return new CryptKey($this->getPrivateKeyPath(), null, false);
+        // The private key is generated with 0600 permissions (see generate()),
+        // so League's permission check gives us defence-in-depth against
+        // operator mistakes that widen access to OAuth signing material.
+        return new CryptKey($this->getPrivateKeyPath());
     }
 
     public function getPublicKey(): CryptKeyInterface

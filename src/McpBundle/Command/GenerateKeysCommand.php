@@ -14,12 +14,9 @@ declare(strict_types=1);
 namespace SolidInvoice\McpBundle\Command;
 
 use SolidInvoice\McpBundle\OAuth\KeyManager;
+use SolidWorx\Platform\PlatformBundle\Console\Command;
 use Symfony\Component\Console\Attribute\AsCommand;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'mcp:keys:generate',
@@ -38,27 +35,26 @@ final class GenerateKeysCommand extends Command
         $this->addOption('force', null, InputOption::VALUE_NONE, 'Overwrite existing keys');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function handle(): int
     {
-        $io = new SymfonyStyle($input, $output);
-        $force = (bool) $input->getOption('force');
+        $force = (bool) $this->io->getOption('force');
 
         if ($this->keyManager->hasKeys() && ! $force) {
-            $io->info(sprintf('Keys already exist at %s. Use --force to regenerate.', $this->keyManager->getKeyDir()));
+            $this->io->info(sprintf('Keys already exist at %s. Use --force to regenerate.', $this->keyManager->getKeyDir()));
 
-            return Command::SUCCESS;
+            return self::SUCCESS;
         }
 
         $generated = $this->keyManager->generate($force);
 
         if (! $generated) {
-            $io->info('Keys already exist; nothing to do.');
+            $this->io->info('Keys already exist; nothing to do.');
 
-            return Command::SUCCESS;
+            return self::SUCCESS;
         }
 
-        $io->success(sprintf('RSA keys generated at %s.', $this->keyManager->getKeyDir()));
+        $this->io->success(sprintf('RSA keys generated at %s.', $this->keyManager->getKeyDir()));
 
-        return Command::SUCCESS;
+        return self::SUCCESS;
     }
 }
