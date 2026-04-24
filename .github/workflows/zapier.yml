@@ -7,7 +7,6 @@ on:
       - '.github/workflows/zapier.yml'
   push:
     branches:
-      - main
       - 3.0.x
     paths:
       - 'integration/zapier/**'
@@ -45,20 +44,18 @@ jobs:
 
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
+      - uses: oven-sh/setup-bun@735343b667d3e6f658f44d0eca948eb6282f2b76 # v2
 
       - name: Install dependencies
-        run: npm ci
+        run: bun install
 
       - name: Validate integration schema
         env:
           ZAPIER_DEPLOY_KEY: ${{ secrets.ZAPIER_DEPLOY_KEY }}
-        run: npx zapier validate
+        run: bunx zapier-platform-cli validate
 
       - name: Run tests
-        run: npm test
+        run: bun run test
 
       - name: Push to Zapier
         if: >-
@@ -66,7 +63,7 @@ jobs:
           (github.event_name == 'workflow_dispatch' && inputs.action != 'test')
         env:
           ZAPIER_DEPLOY_KEY: ${{ secrets.ZAPIER_DEPLOY_KEY }}
-        run: npx zapier push
+        run: bunx zapier-platform-cli push
 
       - name: Promote version
         if: github.event_name == 'workflow_dispatch' && inputs.action == 'promote'
@@ -78,4 +75,4 @@ jobs:
             echo "::error::version input is required for promote"
             exit 1
           fi
-          npx zapier promote "$PROMOTE_VERSION"
+          bunx zapier-platform-cli promote "$PROMOTE_VERSION"
