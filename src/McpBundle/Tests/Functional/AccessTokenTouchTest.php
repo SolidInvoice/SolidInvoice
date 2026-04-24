@@ -67,6 +67,7 @@ final class AccessTokenTouchTest extends KernelTestCase
 
         self::assertNull($token->getLastUsedAt());
 
+        $beforeTouch = new DateTimeImmutable('-1 second');
         $accessTokenRepo->touch($token);
 
         // Round-trip: reload from DB to verify the UPDATE committed.
@@ -75,7 +76,11 @@ final class AccessTokenTouchTest extends KernelTestCase
 
         $reloaded = $accessTokenRepo->findByJti($token->getJti());
         self::assertInstanceOf(McpAccessToken::class, $reloaded);
-        self::assertNotNull($reloaded->getLastUsedAt());
-        self::assertLessThanOrEqual(new DateTimeImmutable('+1 second'), $reloaded->getLastUsedAt());
+        $lastUsedAt = $reloaded->getLastUsedAt();
+        self::assertNotNull($lastUsedAt);
+        // Bound below by pre-touch time to catch silently-stale writes,
+        // and above by now+1s to catch clock drift / future timestamps.
+        self::assertGreaterThanOrEqual($beforeTouch, $lastUsedAt);
+        self::assertLessThanOrEqual(new DateTimeImmutable('+1 second'), $lastUsedAt);
     }
 }
