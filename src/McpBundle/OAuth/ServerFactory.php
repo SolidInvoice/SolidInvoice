@@ -23,7 +23,7 @@ use SolidInvoice\McpBundle\Repository\McpScopeRepository;
 use SolidInvoice\McpBundle\Repository\OAuthAuthCodeRepository;
 use SolidInvoice\McpBundle\Repository\OAuthClientRepository;
 
-final class ServerFactory
+final class ServerFactory implements ServerFactoryInterface
 {
     public function __construct(
         private readonly KeyManager $keyManager,

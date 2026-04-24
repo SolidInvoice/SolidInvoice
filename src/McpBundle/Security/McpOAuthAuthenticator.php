@@ -17,7 +17,7 @@ use League\OAuth2\Server\Exception\OAuthServerException;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\McpBundle\Entity\McpAccessToken;
-use SolidInvoice\McpBundle\OAuth\ServerFactory;
+use SolidInvoice\McpBundle\OAuth\ServerFactoryInterface;
 use SolidInvoice\McpBundle\Repository\McpAccessTokenRepository;
 use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -44,10 +44,10 @@ final class McpOAuthAuthenticator extends AbstractAuthenticator
     private readonly PsrHttpFactory $psrHttpFactory;
 
     public function __construct(
-        private readonly ServerFactory $serverFactory,
+        private readonly ServerFactoryInterface $serverFactory,
         private readonly McpAccessTokenRepository $accessTokenRepository,
         private readonly CompanySelector $companySelector,
-        private readonly Psr17Factory $psr17Factory = new Psr17Factory(),
+        Psr17Factory $psr17Factory = new Psr17Factory(),
     ) {
         $this->psrHttpFactory = new PsrHttpFactory($psr17Factory, $psr17Factory, $psr17Factory, $psr17Factory);
     }
@@ -88,10 +88,14 @@ final class McpOAuthAuthenticator extends AbstractAuthenticator
             throw new CustomUserMessageAuthenticationException('Access token revoked or not found.');
         }
 
+        if (! $token->getUser()->getCompanies()->contains($token->getCompany())) {
+            throw new CustomUserMessageAuthenticationException('User no longer has access to the company this token was issued for.');
+        }
+
         $request->attributes->set(self::ATTR_ACCESS_TOKEN_ID, $jti);
         $request->attributes->set(self::ATTR_ACCESS_TOKEN, $token);
         $request->attributes->set(self::ATTR_SCOPES, \is_array($scopes) ? $scopes : []);
-        $request->attributes->set(self::ATTR_COMPANY_ID, $token->getCompany()->getId()?->toRfc4122());
+        $request->attributes->set(self::ATTR_COMPANY_ID, $token->getCompany()->getId()->toRfc4122());
 
         return new SelfValidatingPassport(new UserBadge($userId));
     }
