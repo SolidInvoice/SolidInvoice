@@ -19,11 +19,12 @@ use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Uid\Ulid;
+use function strtolower;
 
 /**
  * @extends ServiceEntityRepository<Company>
  */
-final class CompanyRepository extends ServiceEntityRepository
+class CompanyRepository extends ServiceEntityRepository
 {
     public function __construct(
         ManagerRegistry $registry,
@@ -48,10 +49,47 @@ final class CompanyRepository extends ServiceEntityRepository
         }
     }
 
+    public function updateCustomDomain(?string $value): ?string
+    {
+        $companyId = $this->companySelector->getCompany();
+
+        if (! $companyId instanceof Ulid) {
+            return $value;
+        }
+
+        $company = $this->find($companyId);
+
+        if (! $company instanceof Company) {
+            return $value;
+        }
+
+        $company->setCustomDomain($value);
+
+        $this->getEntityManager()->flush();
+
+        return $company->getCustomDomain();
+    }
+
     public function save(Company $company): void
     {
         $this->getEntityManager()->persist($company);
         $this->getEntityManager()->flush();
+    }
+
+    public function findOneByCustomDomain(string $host): ?Company
+    {
+        $host = strtolower($host);
+
+        if ($host === '') {
+            return null;
+        }
+
+        return $this->createQueryBuilder('c')
+            ->where('LOWER(c.customDomain) = :host')
+            ->setParameter('host', $host)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
     public function deleteCompany(?Ulid $companyId): void

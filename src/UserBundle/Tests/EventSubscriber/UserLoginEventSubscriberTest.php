@@ -17,11 +17,21 @@ use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
+use ReflectionProperty;
+use SolidInvoice\CoreBundle\Company\HostType;
+use SolidInvoice\CoreBundle\Company\ResolvedHost;
+use SolidInvoice\CoreBundle\Entity\Company;
+use SolidInvoice\CoreBundle\Listener\HostRoutingListener;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\EventSubscriber\UserLoginEventSubscriber;
 use SolidInvoice\UserBundle\Repository\UserRepository;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Event\AuthenticationSuccessEvent;
+use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
+use Symfony\Component\Uid\Ulid;
 
 /** @covers \SolidInvoice\UserBundle\EventSubscriber\UserLoginEventSubscriber */
 final class UserLoginEventSubscriberTest extends TestCase
@@ -56,10 +66,79 @@ final class UserLoginEventSubscriberTest extends TestCase
             ->once()
             ->with($user);
 
-        $subscriber = new UserLoginEventSubscriber($entityManager);
+        $subscriber = new UserLoginEventSubscriber($entityManager, new RequestStack());
 
         $subscriber->onLogin($loginEvent);
 
         self::assertInstanceOf(DateTimeImmutable::class, $user->getLastLogin());
+    }
+
+    public function testOnAuthenticationSuccessRejectsUserNotInCustomDomainCompany(): void
+    {
+        $entityManager = M::mock(EntityManagerInterface::class);
+
+        $user = new User();
+        $user->setVerified(true);
+
+        $domainCompany = new Company();
+        $this->assignCompanyId($domainCompany, new Ulid());
+
+        $token = M::mock(TokenInterface::class);
+        $token->shouldReceive('getUser')->andReturn($user);
+
+        $event = new AuthenticationSuccessEvent($token);
+
+        $request = new Request();
+        $request->attributes->set(
+            HostRoutingListener::REQUEST_ATTR,
+            new ResolvedHost(HostType::CustomDomain, 'acme.example', 'https', 443, $domainCompany)
+        );
+
+        $stack = new RequestStack();
+        $stack->push($request);
+
+        $subscriber = new UserLoginEventSubscriber($entityManager, $stack);
+
+        $this->expectException(BadCredentialsException::class);
+
+        $subscriber->onAuthenticationSuccess($event);
+    }
+
+    public function testOnAuthenticationSuccessAllowsUserInCustomDomainCompany(): void
+    {
+        $entityManager = M::mock(EntityManagerInterface::class);
+
+        $domainCompany = new Company();
+        $this->assignCompanyId($domainCompany, new Ulid());
+
+        $user = new User();
+        $user->setVerified(true);
+        $user->addCompany($domainCompany);
+
+        $token = M::mock(TokenInterface::class);
+        $token->shouldReceive('getUser')->andReturn($user);
+
+        $event = new AuthenticationSuccessEvent($token);
+
+        $request = new Request();
+        $request->attributes->set(
+            HostRoutingListener::REQUEST_ATTR,
+            new ResolvedHost(HostType::CustomDomain, 'acme.example', 'https', 443, $domainCompany)
+        );
+
+        $stack = new RequestStack();
+        $stack->push($request);
+
+        $subscriber = new UserLoginEventSubscriber($entityManager, $stack);
+
+        $subscriber->onAuthenticationSuccess($event);
+
+        self::assertTrue($user->getCompanies()->contains($domainCompany));
+    }
+
+    private function assignCompanyId(Company $company, Ulid $id): void
+    {
+        $property = new ReflectionProperty($company, 'id');
+        $property->setValue($company, $id);
     }
 }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Listener;
 
 use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\CoreBundle\Company\ResolvedHost;
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -58,6 +59,15 @@ final class CompanyEventSubscriber implements EventSubscriberInterface
 
         $session = $request->getSession();
         assert($session instanceof SessionInterface);
+
+        $resolved = $request->attributes->get(HostRoutingListener::REQUEST_ATTR);
+
+        if ($resolved instanceof ResolvedHost && $resolved->isCustomDomain() && $resolved->company !== null) {
+            $companyId = $resolved->company->getId();
+            $this->companySelector->switchCompany($companyId);
+            $session->set('company', $companyId);
+            return;
+        }
 
         if ($session->has('company')) {
             $this->companySelector->switchCompany($session->get('company'));

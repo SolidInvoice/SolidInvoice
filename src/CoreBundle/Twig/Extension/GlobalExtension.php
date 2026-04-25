@@ -16,7 +16,9 @@ namespace SolidInvoice\CoreBundle\Twig\Extension;
 use Carbon\Carbon;
 use DateTime;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\CoreBundle\Company\ResolvedHost;
 use SolidInvoice\CoreBundle\Entity\Company;
+use SolidInvoice\CoreBundle\Listener\HostRoutingListener;
 use SolidInvoice\CoreBundle\Pdf\Generator;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\MoneyBundle\Calculator;
@@ -119,7 +121,17 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
             new TwigFunction('company_id', $this->companySelector->getCompany(...)),
 
             new TwigFunction('can_print_pdf', $this->pdfGenerator->canPrintPdf(...)),
+
+            new TwigFunction('is_custom_domain', $this->isCustomDomain(...)),
         ];
+    }
+
+    public function isCustomDomain(): bool
+    {
+        $request = $this->requestStack->getMainRequest();
+        $resolved = $request?->attributes->get(HostRoutingListener::REQUEST_ATTR);
+
+        return $resolved instanceof ResolvedHost && $resolved->isCustomDomain();
     }
 
     /**

@@ -23,12 +23,12 @@ use function assert;
 use function strtoupper;
 use function substr;
 
-final class CompanySelector implements ResetInterface
+class CompanySelector implements ResetInterface
 {
     private ?Ulid $companyId = null;
 
     public function __construct(
-        private readonly ManagerRegistry $registry,
+        protected readonly ManagerRegistry $registry,
     ) {
     }
 
