@@ -29,6 +29,7 @@ use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Test\Factory\UserFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
@@ -93,6 +94,7 @@ final class CompanyRevalidationTest extends KernelTestCase
             $this->buildMockServerFactory($jti, $user->getId()->toRfc4122()),
             $accessTokenRepo,
             $container->get(CompanySelector::class),
+            $container->get(AuthorizationCheckerInterface::class),
         );
 
         $request = Request::create('/_mcp', 'POST', [], [], [], ['HTTP_AUTHORIZATION' => 'Bearer fake.jwt.token']);
@@ -139,6 +141,7 @@ final class CompanyRevalidationTest extends KernelTestCase
             $this->buildMockServerFactory($jti, $user->getId()->toRfc4122()),
             $accessTokenRepo,
             $container->get(CompanySelector::class),
+            $container->get(AuthorizationCheckerInterface::class),
         );
 
         $request = Request::create('/_mcp', 'POST', [], [], [], ['HTTP_AUTHORIZATION' => 'Bearer fake.jwt.token']);

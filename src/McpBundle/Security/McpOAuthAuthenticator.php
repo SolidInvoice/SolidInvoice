@@ -24,6 +24,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\AccessDecision;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
@@ -47,6 +49,7 @@ final class McpOAuthAuthenticator extends AbstractAuthenticator
         private readonly ServerFactoryInterface $serverFactory,
         private readonly McpAccessTokenRepository $accessTokenRepository,
         private readonly CompanySelector $companySelector,
+        private readonly AuthorizationCheckerInterface $authorizationChecker,
         Psr17Factory $psr17Factory = new Psr17Factory(),
     ) {
         $this->psrHttpFactory = new PsrHttpFactory($psr17Factory, $psr17Factory, $psr17Factory, $psr17Factory);
@@ -116,12 +119,32 @@ final class McpOAuthAuthenticator extends AbstractAuthenticator
 
         $this->accessTokenRepository->touch($accessToken);
 
+        $decision = new AccessDecision();
+
+        // Symfony 7.3+ accepts an AccessDecision as a third optional argument;
+        // the interface declaration still describes it via comment-only signature.
+        // @phpstan-ignore arguments.count
+        $granted = $this->authorizationChecker->isGranted(Attribute::ACCESS, null, $decision);
+
+        if (! $granted) {
+            return $this->buildAccessDeniedResponse($this->extractReason($decision));
+        }
+
         return null;
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
-        $message = $exception->getMessage();
+        return $this->buildErrorResponse('invalid_token', $exception->getMessage(), Response::HTTP_UNAUTHORIZED);
+    }
+
+    private function buildAccessDeniedResponse(string $reason): Response
+    {
+        return $this->buildErrorResponse('access_denied', $reason, Response::HTTP_FORBIDDEN);
+    }
+
+    private function buildErrorResponse(string $error, string $message, int $statusCode): JsonResponse
+    {
         // Strip CR/LF and double-quotes before interpolating into the
         // WWW-Authenticate header so upstream error text can't break the
         // header or inject additional fields.
@@ -129,13 +152,28 @@ final class McpOAuthAuthenticator extends AbstractAuthenticator
 
         return new JsonResponse(
             [
-                'error' => 'invalid_token',
+                'error' => $error,
                 'error_description' => $message,
             ],
-            Response::HTTP_UNAUTHORIZED,
+            $statusCode,
             [
-                'WWW-Authenticate' => sprintf('Bearer error="invalid_token", error_description="%s"', $headerSafeMessage),
+                'WWW-Authenticate' => sprintf('Bearer error="%s", error_description="%s"', $error, $headerSafeMessage),
             ],
         );
+    }
+
+    private function extractReason(AccessDecision $decision): string
+    {
+        $reasons = [];
+
+        foreach ($decision->votes as $vote) {
+            foreach ($vote->reasons as $reason) {
+                $reasons[] = $reason;
+            }
+        }
+
+        $message = trim(implode(' ', $reasons));
+
+        return $message === '' ? 'Access denied.' : $message;
     }
 }

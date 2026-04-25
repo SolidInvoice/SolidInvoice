@@ -190,6 +190,10 @@ final readonly class RequestListener implements EventSubscriberInterface
 
     private function getSubscription(Request $request): ?Subscription
     {
+        if ($request->attributes->get('_stateless') === true) {
+            return null;
+        }
+
         if (in_array($request->attributes->get('_route'), self::SKIPPED_ROUTES, true)) {
             return null;
         }
