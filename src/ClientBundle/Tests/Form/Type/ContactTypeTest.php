@@ -13,9 +13,17 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Tests\Form\Type;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Mockery as M;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\ClientBundle\Form\Type\ContactType;
+use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
+use SolidInvoice\CoreBundle\Form\Type\CustomFieldValueCollectionType;
+use SolidInvoice\CoreBundle\Repository\CustomFieldRepository;
+use SolidInvoice\CoreBundle\Repository\CustomFieldValueRepository;
+use SolidInvoice\CoreBundle\Service\CustomField\CustomFieldTypeResolver;
 use SolidInvoice\CoreBundle\Tests\FormTestCase;
+use Symfony\Component\Form\PreloadedExtension;
 
 class ContactTypeTest extends FormTestCase
 {
@@ -39,8 +47,23 @@ class ContactTypeTest extends FormTestCase
         $this->assertFormData(ContactType::class, $formData, $object);
     }
 
+    /**
+     * @return PreloadedExtension[]
+     */
     protected function getExtensions(): array
     {
-        return [];
+        $fieldRepo = M::mock(CustomFieldRepository::class);
+        $fieldRepo->shouldReceive('findByTargetOrdered')
+            ->with(M::type(CustomFieldTarget::class))
+            ->andReturn([]);
+
+        $valueRepo = M::mock(CustomFieldValueRepository::class);
+        $em = M::mock(EntityManagerInterface::class);
+
+        return [
+            new PreloadedExtension([
+                new CustomFieldValueCollectionType($fieldRepo, $valueRepo, new CustomFieldTypeResolver(), $em),
+            ], []),
+        ];
     }
 }
