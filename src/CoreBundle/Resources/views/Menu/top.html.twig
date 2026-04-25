@@ -11,30 +11,32 @@
     <header class="navbar navbar-expand-sm d-none d-lg-flex d-print-none">
         <div class="container-xl">
             <div class="navbar-nav flex-row order-md-last">
-                <div class="nav-item dropdown">
-                    <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-label="Open user menu">
-                        {{ app_logo(25) }}
-                        {{ company_name() }}
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                        {% set availableCompanies = app.user.companies|filter(v => not v.id.equals(company_id())) %}
-                        {% for company in availableCompanies %}
-                            <a href="{{ path('_switch_company', {'id': company.id}) }}" class="dropdown-item">
-                                {{ company }}
+                {% if not is_custom_domain() %}
+                    <div class="nav-item dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-label="Open user menu">
+                            {{ app_logo(25) }}
+                            {{ company_name() }}
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                            {% set availableCompanies = app.user.companies|filter(v => not v.id.equals(company_id())) %}
+                            {% for company in availableCompanies %}
+                                <a href="{{ path('_switch_company', {'id': company.id}) }}" class="dropdown-item">
+                                    {{ company }}
+                                </a>
+                            {% endfor %}
+
+                            {% if availableCompanies|length > 0 %}
+                                <div class="dropdown-divider">
+                                </div>
+                            {% endif %}
+
+                            <a href="{{ path('_create_company') }}" class="dropdown-item">
+                                {{ ux_icon('tabler:plus', {width: 16, height: 16}) }}
+                                {{ 'Add Company'|trans }}
                             </a>
-                        {% endfor %}
-
-                        {% if availableCompanies|length > 0 %}
-                            <div class="dropdown-divider">
-                            </div>
-                        {% endif %}
-
-                        <a href="{{ path('_create_company') }}" class="dropdown-item">
-                            {{ ux_icon('tabler:plus', {width: 16, height: 16}) }}
-                            {{ 'Add Company'|trans }}
-                        </a>
+                        </div>
                     </div>
-                </div>
+                {% endif %}
 
                 <div class="nav-item dropdown mx-4">
                     <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-label="Open create menu">

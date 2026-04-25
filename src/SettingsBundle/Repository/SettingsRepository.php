@@ -18,8 +18,10 @@ use Doctrine\Persistence\ManagerRegistry;
 use InvalidArgumentException;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
+use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\SettingsBundle\Entity\Setting;
 use Throwable;
+use function assert;
 use function is_array;
 
 /**
@@ -47,6 +49,12 @@ class SettingsRepository extends ServiceEntityRepository
         try {
             $entityManager->wrapInTransaction(function () use ($settings): void {
                 foreach ($settings as $key => $value) {
+                    if ('system/company/custom_domain' === $key) {
+                        $companyRepository = $this->getEntityManager()->getRepository(Company::class);
+                        assert($companyRepository instanceof CompanyRepository);
+                        $value = $companyRepository->updateCustomDomain(empty($value) ? null : $value);
+                    }
+
                     $this->createQueryBuilder('s')
                         ->update()
                         ->set('s.value', ':val')

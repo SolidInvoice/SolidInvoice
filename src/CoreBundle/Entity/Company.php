@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Entity;
 
+use const PHP_URL_HOST;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -44,11 +45,22 @@ use SolidWorx\Platform\SaasBundle\Subscriber\SubscribableInterface;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
+use function function_exists;
+use function idn_to_ascii;
+use function is_string;
+use function parse_url;
+use function preg_replace;
+use function rtrim;
+use function str_contains;
+use function strtolower;
+use function trim;
 
 #[ORM\Table(name: Company::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
+#[UniqueEntity(fields: ['customDomain'], ignoreNull: true)]
 class Company implements Stringable, SubscribableInterface
 {
     final public const TABLE_NAME = 'companies';
@@ -71,6 +83,11 @@ class Company implements Stringable, SubscribableInterface
 
     #[Assert\NotBlank()]
     public ?string $currency = '';
+
+    #[ORM\Column(name: 'custom_domain', type: Types::STRING, length: 253, unique: true, nullable: true)]
+    #[Assert\Length(max: 253)]
+    #[Assert\Hostname(requireTld: true)]
+    private ?string $customDomain = null;
 
     // Related entities: Only added here to enable orphan removal
     /**
@@ -253,5 +270,52 @@ class Company implements Stringable, SubscribableInterface
         }
 
         return $this;
+    }
+
+    public function getCustomDomain(): ?string
+    {
+        return $this->customDomain;
+    }
+
+    public function setCustomDomain(?string $customDomain): self
+    {
+        $this->customDomain = self::normalizeCustomDomain($customDomain);
+
+        return $this;
+    }
+
+    private static function normalizeCustomDomain(?string $value): ?string
+    {
+        if ($value === null) {
+            return null;
+        }
+
+        $value = trim($value);
+
+        if ($value === '') {
+            return null;
+        }
+
+        if (str_contains($value, '://')) {
+            $host = parse_url($value, PHP_URL_HOST);
+            if (is_string($host) && $host !== '') {
+                $value = $host;
+            }
+        }
+
+        // strip path / query / fragment if any leaked in
+        $value = preg_replace('~[/?#].*$~', '', $value) ?? $value;
+        $value = preg_replace('~:\d+$~', '', $value) ?? $value;
+        $value = rtrim($value, '.');
+        $value = strtolower($value);
+
+        if (function_exists('idn_to_ascii')) {
+            $ascii = idn_to_ascii($value);
+            if (is_string($ascii) && $ascii !== '') {
+                $value = $ascii;
+            }
+        }
+
+        return $value === '' ? null : $value;
     }
 }

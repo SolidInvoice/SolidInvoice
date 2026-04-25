@@ -25,8 +25,11 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\CoreBundle\Company\HostType;
+use SolidInvoice\CoreBundle\Company\ResolvedHost;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Listener\CompanyEventSubscriber;
+use SolidInvoice\CoreBundle\Listener\HostRoutingListener;
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -205,6 +208,40 @@ final class CompanyEventSubscriberTest extends TestCase
 
         self::assertNull($event->getResponse());
         self::assertSame($company->getId(), $companySelector->getCompany());
+        self::assertSame($company->getId()->toHex(), $filter->getParameter('companyId'));
+    }
+
+    public function testItSwitchesToTheResolvedCompanyOnACustomDomainAndSkipsRedirect(): void
+    {
+        $router = M::mock(RouterInterface::class);
+        $registry = M::mock(ManagerRegistry::class);
+        $security = M::mock(Security::class);
+
+        $companySelector = new CompanySelector($registry);
+
+        $security->shouldNotReceive('getUser');
+        $router->shouldNotReceive('generate');
+
+        $company = new Company();
+        $this->setCompanyId($company, new Ulid());
+        $filter = $this->expectSwitchCompanyCalls($registry, $company);
+
+        $session = new Session(new MockArraySessionStorage());
+        $request = new Request();
+        $request->setSession($session);
+        $request->attributes->set(
+            HostRoutingListener::REQUEST_ATTR,
+            new ResolvedHost(HostType::CustomDomain, 'acme.example', 'https', 443, $company)
+        );
+
+        $listener = new CompanyEventSubscriber($router, $companySelector, $security, date('Y'));
+
+        $event = new RequestEvent(M::mock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
+        $listener->onKernelRequest($event);
+
+        self::assertNull($event->getResponse());
+        self::assertSame($company->getId(), $companySelector->getCompany());
+        self::assertSame($company->getId(), $session->get('company'));
         self::assertSame($company->getId()->toHex(), $filter->getParameter('companyId'));
     }
 

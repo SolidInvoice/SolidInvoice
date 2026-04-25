@@ -15,10 +15,14 @@ namespace SolidInvoice\UserBundle\EventSubscriber;
 
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use SolidInvoice\CoreBundle\Company\ResolvedHost;
+use SolidInvoice\CoreBundle\Listener\HostRoutingListener;
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Exception\UserNotVerifiedException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Event\AuthenticationSuccessEvent;
+use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
 
 /**
@@ -27,7 +31,8 @@ use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
 final class UserLoginEventSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager
+        private readonly EntityManagerInterface $entityManager,
+        private readonly RequestStack $requestStack,
     ) {
     }
 
@@ -49,6 +54,20 @@ final class UserLoginEventSubscriber implements EventSubscriberInterface
 
         if (! $user->isVerified()) {
             throw new UserNotVerifiedException();
+        }
+
+        $request = $this->requestStack->getMainRequest();
+        $resolved = $request?->attributes->get(HostRoutingListener::REQUEST_ATTR);
+
+        if ($resolved instanceof ResolvedHost && $resolved->isCustomDomain() && $resolved->company !== null) {
+            $companyId = $resolved->company->getId();
+            $belongs = $user->getCompanies()->exists(
+                static fn ($key, $company) => $company->getId()->equals($companyId)
+            );
+
+            if (! $belongs) {
+                throw new BadCredentialsException();
+            }
         }
     }
 
