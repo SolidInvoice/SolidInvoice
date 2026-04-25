@@ -17,6 +17,9 @@ use SolidInvoice\CoreBundle\Action\Search;
 use SolidInvoice\CoreBundle\Action\SearchSuggestions;
 use SolidInvoice\CoreBundle\Action\SelectCompany;
 use SolidInvoice\CoreBundle\Action\ViewBilling;
+use SolidInvoice\CoreBundle\Export\Action\DownloadExport;
+use SolidInvoice\CoreBundle\Export\Action\ListExports;
+use SolidInvoice\CoreBundle\Export\Action\RequestExport;
 use Symfony\Bundle\FrameworkBundle\Controller\RedirectController;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
@@ -69,5 +72,20 @@ return static function (RoutingConfigurator $routingConfigurator): void {
     $routingConfigurator
         ->add('_search_suggestions', '/search/suggestions')
         ->controller(SearchSuggestions::class)
+        ->methods(['GET']);
+
+    $routingConfigurator
+        ->add('_export_list', '/profile/exports')
+        ->controller(ListExports::class)
+        ->methods(['GET']);
+
+    $routingConfigurator
+        ->add('_export_request', '/profile/exports')
+        ->controller(RequestExport::class)
+        ->methods(['POST']);
+
+    $routingConfigurator
+        ->add('_export_download', '/profile/exports/{id}/download')
+        ->controller(DownloadExport::class)
         ->methods(['GET']);
 };

@@ -1,0 +1,22 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{{ 'Your data export is ready'|trans|upper }}
+
+{{ 'The full data export you requested has completed. The archive contains one file per entity type plus a manifest describing the contents.'|trans }}
+
+{{ 'Details'|trans }}:
+----------------
+{{ 'Format'|trans }}: {{ job.format.value|upper }}
+{{ 'Requested'|trans }}: {{ job.createdAt|date('Y-m-d H:i') }}
+{% if job.fileSize %}{{ 'Archive size'|trans }}: {{ (job.fileSize / 1024 / 1024)|number_format(2) }} MB
+{% endif %}
+
+{{ 'Download your export'|trans }}: {{ downloadUrl }}
+
+{{ 'This download link requires authentication as the user who requested the export.'|trans }}

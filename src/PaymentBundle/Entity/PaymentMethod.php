@@ -18,6 +18,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Payum\Core\Model\GatewayConfigInterface;
+use SolidInvoice\CoreBundle\Export\Attribute\ExportIgnore;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
@@ -63,6 +64,7 @@ class PaymentMethod implements GatewayConfigInterface, Stringable
      * @var array<string, string>
      */
     #[ORM\Column(name: 'config', type: 'array', nullable: true)]
+    #[ExportIgnore]
     private array $config = [];
 
     #[ORM\Column(name: 'internal', type: Types::BOOLEAN, nullable: true)]

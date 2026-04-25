@@ -145,6 +145,41 @@
                     </div>
                 {% endif %}
 
+                {# Export button with format picker #}
+                {% set exportQuery = {
+                    grid: name,
+                    sort: sort,
+                    search: search,
+                    gridFilters: gridFilters,
+                    context: context|json_encode,
+                } %}
+                <div class="dropdown datagrid-export-dropdown">
+                    <button
+                        type="button"
+                        class="dropdown-toggle"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                        aria-label="{{ 'Export'|trans }}"
+                        title="{{ 'Export'|trans }}"
+                    >
+                        {{ ux_icon('tabler:download', {width: 18, height: 18}) }}
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end">
+                        <a href="{{ path('_datagrid_export', exportQuery|merge({format: 'csv'})) }}" class="dropdown-item" target="_blank" rel="noopener">
+                            {{ ux_icon('tabler:file-type-csv', {width: 16, height: 16}) }}
+                            {{ 'Export as CSV'|trans }}
+                        </a>
+                        <a href="{{ path('_datagrid_export', exportQuery|merge({format: 'json'})) }}" class="dropdown-item" target="_blank" rel="noopener">
+                            {{ ux_icon('tabler:braces', {width: 16, height: 16}) }}
+                            {{ 'Export as JSON'|trans }}
+                        </a>
+                        <a href="{{ path('_datagrid_export', exportQuery|merge({format: 'xml'})) }}" class="dropdown-item" target="_blank" rel="noopener">
+                            {{ ux_icon('tabler:file-type-xml', {width: 16, height: 16}) }}
+                            {{ 'Export as XML'|trans }}
+                        </a>
+                    </div>
+                </div>
+
                 {# Column Visibility Picker #}
                 {% block column_picker %}
                     {% if grid.columns|length > 3 %}

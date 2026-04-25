@@ -50,4 +50,7 @@ return static function (RoutingConfigurator $routingConfigurator): void {
         ->prefix('/');
 
     $routingConfigurator->import('.', 'mcp');
+
+    $routingConfigurator->import('@SolidInvoiceDataGridBundle/Resources/config/routing.php')
+        ->prefix('/');
 };
