@@ -54,5 +54,11 @@
             </div>
         </div>
 
+        {% if form.customFields|length > 0 %}
+        <div class="mt-2">
+            <strong class="d-block mb-1">{{ 'Custom fields'|trans }}</strong>
+            {{ form_widget(form.customFields) }}
+        </div>
+        {% endif %}
     </div>
 </div>
