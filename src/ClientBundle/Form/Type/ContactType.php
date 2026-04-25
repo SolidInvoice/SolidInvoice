@@ -17,7 +17,6 @@ use SolidInvoice\ClientBundle\Entity\Contact;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
 
 /**
  * @see \SolidInvoice\ClientBundle\Tests\Form\Type\ContactTypeTest
@@ -29,19 +28,6 @@ class ContactType extends AbstractType
         $builder->add('firstName', null, ['sanitize_html' => true, 'allow_single_quotes' => true]);
         $builder->add('lastName', null, ['sanitize_html' => true, 'allow_single_quotes' => true]);
         $builder->add('email');
-
-        $builder->add(
-            'additionalContactDetails',
-            LiveCollectionType::class,
-            [
-                'entry_type' => ContactDetailType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'by_reference' => false,
-                'required' => false,
-                'label' => 'contact_details',
-            ]
-        );
     }
 
     public function configureOptions(OptionsResolver $resolver): void

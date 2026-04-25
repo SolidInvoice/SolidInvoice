@@ -18,11 +18,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use SolidInvoice\ClientBundle\Entity\AdditionalContactDetail;
 use SolidInvoice\ClientBundle\Entity\Address;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
-use SolidInvoice\ClientBundle\Entity\ContactType;
 use SolidInvoice\ClientBundle\Entity\Credit;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -103,12 +101,6 @@ class Company implements Stringable, SubscribableInterface
     public Collection $taxes;
 
     /**
-     * @var Collection<int, AdditionalContactDetail>
-     */
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: AdditionalContactDetail::class, cascade: ['persist'], orphanRemoval: true)]
-    public Collection $additionalContactDetails;
-
-    /**
      * @var Collection<int, Address>
      */
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Address::class, cascade: ['persist'], orphanRemoval: true)]
@@ -125,12 +117,6 @@ class Company implements Stringable, SubscribableInterface
      */
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Contact::class, cascade: ['persist'], orphanRemoval: true)]
     public Collection $contacts;
-
-    /**
-     * @var Collection<int, ContactType>
-     */
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: ContactType::class, cascade: ['persist'], orphanRemoval: true)]
-    public Collection $contactTypes;
 
     /**
      * @var Collection<int, Credit>

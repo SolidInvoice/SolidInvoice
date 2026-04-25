@@ -17,7 +17,6 @@ use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use JsonException;
-use SolidInvoice\ClientBundle\Entity\ContactType;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\SettingsBundle\Config\ProviderInterface;
@@ -51,7 +50,7 @@ final readonly class DefaultData
     public function __invoke(Company $company, array $data): void
     {
         $this->createAppConfig($company, $data);
-        $this->createContactTypes();
+        // TODO(Task 31): replace ContactType seeding with CustomField defaults.
         $this->createPaymentMethods();
 
         $this->em->flush();
@@ -80,42 +79,6 @@ final readonly class DefaultData
 
                 $this->em->persist($settingEntity);
             }
-        }
-    }
-
-    private function createContactTypes(): void
-    {
-        $contactTypes = [
-            [
-                'name' => 'email',
-                'required' => true,
-                'type' => 'email',
-                'field_options' => [
-                    'constraints' => ['email'],
-                ],
-            ],
-            [
-                'name' => 'mobile',
-                'required' => false,
-                'type' => 'text',
-                'field_options' => []
-            ],
-            [
-                'name' => 'phone',
-                'required' => false,
-                'type' => 'text',
-                'field_options' => []
-            ],
-        ];
-
-        foreach ($contactTypes as $contactType) {
-            $contactTypeEntity = new ContactType();
-            $contactTypeEntity->setName($contactType['name']);
-            $contactTypeEntity->setRequired($contactType['required']);
-            $contactTypeEntity->setType($contactType['type']);
-            $contactTypeEntity->setOptions($contactType['field_options']);
-
-            $this->em->persist($contactTypeEntity);
         }
     }
 
