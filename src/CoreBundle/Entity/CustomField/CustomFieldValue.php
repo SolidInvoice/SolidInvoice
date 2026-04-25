@@ -54,6 +54,11 @@ class CustomFieldValue
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $value = null;
 
+    public function __construct()
+    {
+        $this->id = new Ulid();
+    }
+
     public function getId(): ?Ulid
     {
         return $this->id;

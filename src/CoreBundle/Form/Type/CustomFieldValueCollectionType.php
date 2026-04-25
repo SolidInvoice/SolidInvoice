@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Form\Type;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Event\PostFlushEventArgs;
+use Doctrine\ORM\Event\PostPersistEventArgs;
 use SolidInvoice\CoreBundle\Entity\CustomField\CustomFieldValue;
 use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
 use SolidInvoice\CoreBundle\Repository\CustomFieldRepository;
@@ -71,11 +73,20 @@ final class CustomFieldValueCollectionType extends AbstractType
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (PostSubmitEvent $event) use ($defs, $target, $existingValues): void {
             $form = $event->getForm();
             $parent = $form->getConfig()->getOption('parent_record');
-            if ($parent === null || ! method_exists($parent, 'getId') || ! $parent->getId() instanceof Ulid) {
+            if ($parent === null || ! method_exists($parent, 'getId')) {
                 return;
             }
 
+            $parentId = $parent->getId();
             $companyId = method_exists($parent, 'getCompany') ? $parent->getCompany() : null;
+            // An entity is "persisted" (has a stable Doctrine-assigned ID) only when it
+            // is already managed by the UnitOfWork. For new (unpersisted) entities,
+            // Doctrine will overwrite any constructor-set ID on first persist, so we must
+            // defer targetId assignment until after postPersist.
+            $parentIsManaged = $parentId instanceof Ulid && $this->em->contains($parent);
+
+            /** @var list<CustomFieldValue> $pendingValues */
+            $pendingValues = [];
 
             foreach ($defs as $def) {
                 $child = $form->get($def->getFieldKey());
@@ -94,16 +105,82 @@ final class CustomFieldValueCollectionType extends AbstractType
                     $value = (new CustomFieldValue())
                         ->setField($def)
                         ->setTarget($target)
-                        ->setTargetId($parent->getId())
                         ->setValue($serialized);
                     if ($companyId !== null) {
                         $value->setCompany($companyId);
                     }
 
-                    $this->em->persist($value);
+                    if ($parentIsManaged) {
+                        $value->setTargetId($parentId);
+                        $this->em->persist($value);
+                    } else {
+                        // Parent has no stable Doctrine ID yet (new record). Defer
+                        // target-ID assignment to postPersist so it runs after Doctrine
+                        // assigns the real ULID.
+                        $pendingValues[] = $value;
+                    }
                 } else {
                     $existing->setValue($serialized);
                 }
+            }
+
+            if ($pendingValues !== []) {
+                $em = $this->em;
+                $listener = null;
+                $listenerObj = new class($parent, $pendingValues, $em, $listener) {
+                    /**
+                     * @var list<CustomFieldValue>
+                     */
+                    private array $toFlush = [];
+
+                    /**
+                     * @param list<CustomFieldValue> $pending
+                     */
+                    public function __construct(
+                        private readonly object $parent,
+                        private readonly array $pending,
+                        private readonly EntityManagerInterface $em,
+                        private mixed &$selfRef,
+                    ) {
+                    }
+
+                    public function postPersist(PostPersistEventArgs $args): void
+                    {
+                        if ($args->getObject() !== $this->parent) {
+                            return;
+                        }
+
+                        $id = $this->parent->getId();
+                        if (! $id instanceof Ulid) {
+                            return;
+                        }
+
+                        foreach ($this->pending as $value) {
+                            $value->setTargetId($id);
+                            $this->em->persist($value);
+                            $this->toFlush[] = $value;
+                        }
+                    }
+
+                    public function postFlush(PostFlushEventArgs $args): void
+                    {
+                        if ($this->toFlush === []) {
+                            return;
+                        }
+
+                        $toFlush = $this->toFlush;
+                        $this->toFlush = [];
+
+                        // Unregister before flushing to prevent re-entry.
+                        if ($this->selfRef !== null) {
+                            $this->em->getEventManager()->removeEventListener(['postPersist', 'postFlush'], $this->selfRef);
+                        }
+
+                        $this->em->flush();
+                    }
+                };
+                $listener = $listenerObj;
+                $this->em->getEventManager()->addEventListener(['postPersist', 'postFlush'], $listenerObj);
             }
         });
     }
