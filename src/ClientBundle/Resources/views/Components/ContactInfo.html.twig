@@ -57,6 +57,8 @@
                     </div>
                 </div>
 
+                <twig:CustomFieldsList :target="enum('SolidInvoice\\CoreBundle\\Enum\\CustomFieldTarget').CONTACT" :recordId="computed.contact.id" />
+
             {% endif %}
         </div>
     </div>
