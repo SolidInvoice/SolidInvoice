@@ -190,6 +190,7 @@
             <div class="tab-content">
                 {# Info Tab #}
                 <div class="tab-pane fade show active" id="client-info" role="tabpanel" aria-labelledby="info-tab">
+                    <twig:CustomFieldsList :target="enum('SolidInvoice\\CoreBundle\\Enum\\CustomFieldTarget').CLIENT" :recordId="client.id" />
                     <twig:ContactCollection :client="client" count="{{ client.contacts|length }}" />
                     <twig:AddressCollection :client="client" count="{{ client.addresses|length }}" />
                 </div>
