@@ -17,7 +17,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
-use SolidInvoice\ClientBundle\Entity\ContactType;
 use SolidInvoice\CoreBundle\Company\DefaultData;
 use SolidInvoice\CoreBundle\Config\SystemConfigProvider;
 use SolidInvoice\CoreBundle\Entity\Company;
@@ -44,11 +43,6 @@ final class DefaultDataTest extends TestCase
             ->expects('persist')
             ->with(M::type(Setting::class))
             ->times(24);
-
-        $entityManager
-            ->expects('persist')
-            ->with(M::type(ContactType::class))
-            ->times(3);
 
         $entityManager->expects('persist')
             ->with(M::type(PaymentMethod::class))

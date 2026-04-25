@@ -79,9 +79,6 @@
                                     <address class="col-6">
                                         <strong>{{ user }}</strong><br/>
                                         {{ icon('envelope-o') }} {{ 'email'|trans }}: {{ user.email }}<br/>
-                                        {% for info in user.additionalContactDetails %}
-                                            {{ info.type|title }}: {{ info.value }}<br>
-                                        {% endfor %}
                                     </address>
                                 {% endfor %}
                             </p>

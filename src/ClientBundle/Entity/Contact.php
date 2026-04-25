@@ -41,7 +41,6 @@ use Symfony\Component\Serializer\Annotation as Serialize;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
-use function strtolower;
 
 /*#[ApiResource(
     types: ['https://schema.org/Person'],
@@ -189,33 +188,6 @@ class Contact implements Serializable, Stringable
     private ?string $email = null;
 
     /**
-     * @var Collection<int, AdditionalContactDetail>
-     */
-    #[ORM\OneToMany(mappedBy: 'contact', targetEntity: AdditionalContactDetail::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
-    #[Assert\Valid]
-    // #[Serialize\Groups(['contact_api:read', 'contact_api:write'])]
-    /*#[ApiProperty(
-        openapiContext: [
-            'type' => 'array',
-            'items' => [
-                'type' => 'object',
-                'properties' => [
-                    'type' => [
-                        'type' => 'string',
-                    ],
-                    'value' => [
-                        'type' => 'string',
-                    ],
-                ],
-            ],
-        ],
-        extraProperties: [
-            SchemaPropertyMetadataFactory::JSON_SCHEMA_USER_DEFINED => true,
-        ],
-    )]*/
-    private Collection $additionalContactDetails;
-
-    /**
      * @var Collection<int, Invoice>
      */
     #[ORM\ManyToMany(targetEntity: Invoice::class, mappedBy: 'users')]
@@ -235,7 +207,6 @@ class Contact implements Serializable, Stringable
 
     public function __construct()
     {
-        $this->additionalContactDetails = new ArrayCollection();
         $this->invoices = new ArrayCollection();
         $this->recurringInvoices = new ArrayCollection();
         $this->quotes = new ArrayCollection();
@@ -280,43 +251,6 @@ class Contact implements Serializable, Stringable
         $this->client = $client;
 
         return $this;
-    }
-
-    public function addAdditionalContactDetail(?AdditionalContactDetail $detail): self
-    {
-        if ($detail !== null) {
-            $this->additionalContactDetails->add($detail);
-            $detail->setContact($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAdditionalContactDetail(AdditionalContactDetail $detail): self
-    {
-        $this->additionalContactDetails->removeElement($detail);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, AdditionalContactDetail>
-     */
-    public function getAdditionalContactDetails(): Collection
-    {
-        return $this->additionalContactDetails;
-    }
-
-    public function getAdditionalContactDetail(string $type): ?AdditionalContactDetail
-    {
-        $type = strtolower($type);
-        foreach ($this->additionalContactDetails as $detail) {
-            if (strtolower((string) $detail->getType()) === $type) {
-                return $detail;
-            }
-        }
-
-        return null;
     }
 
     public function serialize(): string

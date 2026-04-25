@@ -404,11 +404,6 @@
                                             {{ ux_icon('tabler:mail', {width: 12, height: 12}) }}
                                             {{ user.email }}
                                         </div>
-                                        {% for info in user.additionalContactDetails %}
-                                            <div class="contact-detail">
-                                                {{ info.type|title }}: {{ info.value }}
-                                            </div>
-                                        {% endfor %}
                                     </div>
                                 {% endfor %}
                             </div>

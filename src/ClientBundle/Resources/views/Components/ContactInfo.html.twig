@@ -57,17 +57,6 @@
                     </div>
                 </div>
 
-                {% if computed.contact.additionalContactDetails|length > 0 %}
-                    <div class="client-contact-extra">
-                        <div class="client-contact-extra-title">{{ 'client.contact.details.extra'|trans }}</div>
-                        {% for details in computed.contact.additionalContactDetails %}
-                            <div class="client-contact-extra-item">
-                                <span class="client-contact-extra-label">{{ details.type|title }}:</span>
-                                <span class="client-contact-extra-value">{{ details.value }}</span>
-                            </div>
-                        {% endfor %}
-                    </div>
-                {% endif %}
             {% endif %}
         </div>
     </div>
