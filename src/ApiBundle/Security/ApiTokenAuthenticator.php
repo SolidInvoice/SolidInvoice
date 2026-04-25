@@ -25,6 +25,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\AccessDecision;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
@@ -39,7 +41,8 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
         private readonly ApiTokenUserProvider $userProvider,
         private readonly ManagerRegistry $registry,
         private readonly TranslatorInterface $translator,
-        private readonly CompanySelector $companySelector
+        private readonly CompanySelector $companySelector,
+        private readonly AuthorizationCheckerInterface $authorizationChecker,
     ) {
     }
 
@@ -79,9 +82,38 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
             }
 
             $this->companySelector->switchCompany($apiToken->getCompany()->getId());
+
+            $decision = new AccessDecision();
+
+            // Symfony 7.3+ accepts an AccessDecision as a third optional argument;
+            // the interface declaration still describes it via comment-only signature.
+            // @phpstan-ignore arguments.count
+            $granted = $this->authorizationChecker->isGranted(Attribute::ACCESS, null, $decision);
+
+            if (! $granted) {
+                return new JsonResponse(
+                    ['message' => $this->extractReason($decision)],
+                    Response::HTTP_FORBIDDEN,
+                );
+            }
         }
 
         return null;
+    }
+
+    private function extractReason(AccessDecision $decision): string
+    {
+        $reasons = [];
+
+        foreach ($decision->votes as $vote) {
+            foreach ($vote->reasons as $reason) {
+                $reasons[] = $reason;
+            }
+        }
+
+        $message = trim(implode(' ', $reasons));
+
+        return $message === '' ? 'Access denied.' : $message;
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
