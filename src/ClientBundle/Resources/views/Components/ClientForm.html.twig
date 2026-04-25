@@ -199,6 +199,23 @@
                     </div>
                 </div>
             </section>
+            {# Section 4: Custom Fields (Optional) #}
+            {% if form.customFields|length > 0 %}
+            <section class="form-page-section client-form-section-optional" id="client-custom-fields">
+                <div class="section-header">
+                    <div class="section-icon">
+                        {{ ux_icon('tabler:forms', {width: 20, height: 20}) }}
+                    </div>
+                    <div class="section-header-text">
+                        <h2 class="section-title">{{ 'Custom fields'|trans }}</h2>
+                    </div>
+                </div>
+
+                <div class="section-content">
+                    {{ form_widget(form.customFields) }}
+                </div>
+            </section>
+            {% endif %}
         </div>
 
         {{ form_rest(form) }}

@@ -16,6 +16,8 @@ namespace SolidInvoice\ClientBundle\Form\Type;
 use RuntimeException;
 use SolidInvoice\ClientBundle\Entity\Address;
 use SolidInvoice\ClientBundle\Entity\Client;
+use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
+use SolidInvoice\CoreBundle\Form\Type\CustomFieldValueCollectionType;
 use SolidInvoice\MoneyBundle\Form\Type\CurrencyType;
 use SolidInvoice\SaasBundle\Feature\Feature;
 use SolidInvoice\SettingsBundle\SystemConfig;
@@ -119,6 +121,11 @@ class ClientType extends AbstractType
             ]
         );
 
+
+        $builder->add('customFields', CustomFieldValueCollectionType::class, [
+            'target' => CustomFieldTarget::CLIENT,
+            'parent_record' => $options['data'],
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
