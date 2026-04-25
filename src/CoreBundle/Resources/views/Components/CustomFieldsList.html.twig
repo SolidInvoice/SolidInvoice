@@ -1,0 +1,42 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% set rows = this.rows %}
+{% if rows is not empty %}
+<div class="card mt-3">
+    <div class="card-header">
+        <h3 class="card-title">{{ 'Custom fields'|trans }}</h3>
+    </div>
+    <div class="card-body">
+        <div class="datagrid">
+            {% for row in rows %}
+                <div class="datagrid-item">
+                    <div class="datagrid-title">{{ row.field.label }}</div>
+                    <div class="datagrid-content">
+                        {% set t = row.field.type.value %}
+                        {% if row.raw is null %}
+                            <span class="text-muted">—</span>
+                        {% elseif t == 'url' %}
+                            <a href="{{ row.raw }}" target="_blank" rel="noopener">{{ row.raw }}</a>
+                        {% elseif t == 'email' %}
+                            <a href="mailto:{{ row.raw }}">{{ row.raw }}</a>
+                        {% elseif t == 'date' %}
+                            {{ row.raw|date('M d, Y') }}
+                        {% elseif t == 'textarea' %}
+                            <span class="text-pre-wrap">{{ row.formatted|nl2br }}</span>
+                        {% else %}
+                            {{ row.formatted }}
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
