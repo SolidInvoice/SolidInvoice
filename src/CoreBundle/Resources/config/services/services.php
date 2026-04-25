@@ -14,11 +14,18 @@ declare(strict_types=1);
 use Gedmo\Timestampable\TimestampableListener;
 use Mpociot\VatCalculator\VatCalculator;
 use SolidInvoice\CoreBundle\DummyData\DummyDataLoader;
+use SolidInvoice\CoreBundle\Export\Serializer\ExportSerializer;
+use SolidInvoice\CoreBundle\Export\Serializer\Normalizer\ExportCurrencyNormalizer;
+use SolidInvoice\CoreBundle\Export\Serializer\Normalizer\ExportDateTimeNormalizer;
+use SolidInvoice\CoreBundle\Export\Serializer\Normalizer\ExportEnumNormalizer;
+use SolidInvoice\CoreBundle\Export\Serializer\Normalizer\ExportMoneyNormalizer;
+use SolidInvoice\CoreBundle\Export\Serializer\Normalizer\ExportUlidNormalizer;
 use SolidInvoice\CoreBundle\Routing\Loader\AbstractDirectoryLoader;
 use SolidInvoice\CoreBundle\Search\MultiSearchService;
 use SolidInvoice\CoreBundle\Search\SearchQueryParser;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symfony\Component\Serializer\Serializer as SymfonySerializer;
 use Symfony\Component\Uid\Command\GenerateUlidCommand;
 use Symfony\Component\Uid\Command\GenerateUuidCommand;
 use Symfony\Component\Uid\Command\InspectUlidCommand;
@@ -111,4 +118,37 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $services->set(SearchQueryParser::class)
         ->arg('$formatters', tagged_iterator('solidinvoice.search.result_formatter'));
+
+    // Export normalizers are composed into a dedicated serializer below and must not
+    // be tagged as global serializer.normalizer (they would conflict with the API
+    // Platform normalizer chain).
+    foreach ([
+        ExportUlidNormalizer::class,
+        ExportMoneyNormalizer::class,
+        ExportEnumNormalizer::class,
+        ExportDateTimeNormalizer::class,
+        ExportCurrencyNormalizer::class,
+    ] as $normalizerClass) {
+        $services->set($normalizerClass)->autoconfigure(false);
+    }
+
+    $services->set('solidinvoice.core.export.serializer', SymfonySerializer::class)
+        ->args([
+            [
+                service(ExportUlidNormalizer::class),
+                service(ExportMoneyNormalizer::class),
+                service(ExportEnumNormalizer::class),
+                service(ExportDateTimeNormalizer::class),
+                service(ExportCurrencyNormalizer::class),
+                service('serializer.normalizer.object'),
+            ],
+            [
+                service('serializer.encoder.json'),
+                service('serializer.encoder.csv'),
+                service('serializer.encoder.xml'),
+            ],
+        ]);
+
+    $services->set(ExportSerializer::class)
+        ->args([service('solidinvoice.core.export.serializer')]);
 };

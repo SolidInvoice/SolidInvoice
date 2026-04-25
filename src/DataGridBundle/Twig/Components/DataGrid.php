@@ -22,8 +22,7 @@ use Psr\Container\NotFoundExceptionInterface;
 use ReflectionObject;
 use SolidInvoice\DataGridBundle\Attributes\AsDataGrid;
 use SolidInvoice\DataGridBundle\Exception\InvalidGridException;
-use SolidInvoice\DataGridBundle\Filter\SearchFilter;
-use SolidInvoice\DataGridBundle\Filter\SortFilter;
+use SolidInvoice\DataGridBundle\Export\GridQueryService;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
 use SolidInvoice\DataGridBundle\GridBuilder\Query;
 use SolidInvoice\DataGridBundle\GridInterface;
@@ -46,7 +45,6 @@ use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 use Symfony\UX\TwigComponent\Attribute\PostMount;
 use Twig\Error\LoaderError;
 use Twig\Error\SyntaxError;
-use function array_map;
 use function explode;
 use function unserialize;
 
@@ -150,6 +148,7 @@ class DataGrid extends AbstractController
         private readonly SourceInterface $source,
         #[TaggedLocator(AsDataGrid::DI_TAG, 'name')]
         private readonly ServiceLocator $serviceLocator,
+        private readonly GridQueryService $gridQueryService,
     ) {
     }
 
@@ -444,19 +443,7 @@ class DataGrid extends AbstractController
 
     private function filterQuery(GridInterface $grid, QueryBuilder $builder): void
     {
-        (new SortFilter(...explode(',', $this->sort)))->filter($builder, null);
-
-        $searchFields = array_filter($grid->columns(), static fn (Column $column) => $column->isSearchable());
-        $searchFields = array_map(static fn (Column $column) => $column->getField(), $searchFields);
-        (new SearchFilter($searchFields))->filter($builder, $this->search);
-
-        // Use the filters LiveProp (URL-persisted) instead of formValues
-        foreach ($grid->filters() as $column => $filter) {
-            $filterValue = $this->gridFilters[$column] ?? '';
-            if ($filterValue !== '' && $filterValue !== []) {
-                $filter->filter($builder, $filterValue);
-            }
-        }
+        $this->gridQueryService->applyFilters($grid, $builder, $this->sort, $this->search, $this->gridFilters);
     }
 
     public function title(): ?string

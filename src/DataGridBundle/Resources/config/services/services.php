@@ -29,4 +29,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services
         ->load(SolidInvoiceDataGridBundle::NAMESPACE . '\\', dirname(__DIR__, 3))
         ->exclude(dirname(__DIR__, 3) . '/{DependencyInjection,Entity,Resources,Tests}');
+
+    $services
+        ->load(SolidInvoiceDataGridBundle::NAMESPACE . '\\Action\\', dirname(__DIR__, 3) . '/Action')
+        ->autowire(true)
+        ->tag('controller.service_arguments');
 };

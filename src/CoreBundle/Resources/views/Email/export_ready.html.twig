@@ -1,0 +1,57 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends "@SolidInvoiceCore/Layout/Email/notification.html.twig" %}
+{% import "@SolidInvoiceCore/Layout/Email/components.html.twig" as email %}
+
+{%- block title -%}
+    {{ 'Your data export is ready'|trans }}
+{%- endblock -%}
+
+{%- block content -%}
+    {% apply inky_to_html %}
+        <row>
+            <columns>
+                <p style="color: #0891b2; font-size: 18px; font-weight: 600; line-height: 1.5; margin: 0 0 16px 0; Margin: 0 0 16px 0;">
+                    📦 {{ 'Export ready for download'|trans }}
+                </p>
+                <p style="color: #1e293b; font-size: 16px; line-height: 1.5; margin: 0 0 24px 0; Margin: 0 0 24px 0;">
+                    {{ 'The full data export you requested has completed. The archive contains one file per entity type plus a manifest describing the contents.'|trans }}
+                </p>
+            </columns>
+        </row>
+    {% endapply %}
+
+    {{ email.spacer('sm') }}
+
+    {{ email.info_row('Format', job.format.value|upper) }}
+    {{ email.spacer('xs') }}
+    {{ email.info_row('Requested', job.createdAt|date('Y-m-d H:i')) }}
+
+    {% if job.fileSize %}
+        {{ email.spacer('xs') }}
+        {{ email.info_row('Archive size', (job.fileSize / 1024 / 1024)|number_format(2) ~ ' MB') }}
+    {% endif %}
+
+    {{ email.divider('md') }}
+
+    {{ email.button('Download Export'|trans, downloadUrl, 'primary', 'large') }}
+
+    {{ email.spacer('md') }}
+
+    {% apply inky_to_html %}
+        <row>
+            <columns>
+                <p style="color: #64748b; font-size: 13px; line-height: 1.5; margin: 0; Margin: 0;">
+                    {{ 'This download link requires authentication as the user who requested the export.'|trans }}
+                </p>
+            </columns>
+        </row>
+    {% endapply %}
+{%- endblock -%}

@@ -13,32 +13,19 @@ declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
-use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 
-/**
- * Renames the custom-domain setting key from `system/company/custom_domain` to
- * `system/domain/custom_domain` so the field can live under its own top-level
- * "Domain" section in the settings UI rather than nested under "Company".
- *
- * Safe by design: `Company::customDomain` is the source of truth for inbound
- * host resolution. `CompanyRepository::findOneByCustomDomain()` and
- * `HostRoutingListener` both read from the `companies.custom_domain` column,
- * not from this `app_config` row, so renaming the setting key does not affect
- * how inbound requests resolve to a tenant.
- */
 final class Version30000_8 extends AbstractMigration
 {
-    private const OLD_KEY = 'system/company/custom_domain';
-
-    private const NEW_KEY = 'system/domain/custom_domain';
 
     public function getDescription(): string
     {
-        return 'Rename custom_domain setting from system/company to system/domain section';
+        return 'Create export_jobs table for tracking full company data export requests';
     }
 
     public function isTransactional(): bool
@@ -48,33 +35,28 @@ final class Version30000_8 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-    }
+        $table = $schema->createTable('export_jobs');
 
-    /**
-     * @throws Exception
-     */
-    public function postUp(Schema $schema): void
-    {
-        $this->connection->update(
-            'app_config',
-            ['setting_key' => self::NEW_KEY],
-            ['setting_key' => self::OLD_KEY]
-        );
+        $table->addColumn('id', UlidType::NAME);
+        $table->addColumn('company_id', UlidType::NAME, ['notnull' => true]);
+        $table->addColumn('requested_by', UlidType::NAME, ['notnull' => true]);
+        $table->addColumn('format', Types::STRING, ['length' => 10, 'notnull' => true]);
+        $table->addColumn('status', Types::STRING, ['length' => 20, 'notnull' => true]);
+        $table->addColumn('archive_path', Types::STRING, ['length' => 512, 'notnull' => false]);
+        $table->addColumn('file_size', Types::BIGINT, ['notnull' => false]);
+        $table->addColumn('created_at', Types::DATETIME_IMMUTABLE, ['notnull' => true]);
+        $table->addColumn('completed_at', Types::DATETIME_IMMUTABLE, ['notnull' => false]);
+        $table->addColumn('failure_reason', Types::TEXT, ['notnull' => false]);
+
+        $table->setPrimaryKey(['id']);
+        $table->addIndex(['company_id']);
+        $table->addIndex(['requested_by']);
+        $table->addIndex(['status']);
+        $table->addForeignKeyConstraint('companies', ['company_id'], ['id'], ['onDelete' => 'CASCADE']);
     }
 
     public function down(Schema $schema): void
     {
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function postDown(Schema $schema): void
-    {
-        $this->connection->update(
-            'app_config',
-            ['setting_key' => self::OLD_KEY],
-            ['setting_key' => self::NEW_KEY]
-        );
+        $schema->dropTable('export_jobs');
     }
 }

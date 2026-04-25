@@ -78,6 +78,10 @@
                             {{ ux_icon('tabler:lock', {width: 16, height: 16}) }}
                             {{ 'API Keys'|trans }}
                         </a>
+                        <a href="{{ path('_export_list') }}" class="dropdown-item">
+                            {{ ux_icon('tabler:database-export', {width: 16, height: 16}) }}
+                            {{ 'Data Export'|trans }}
+                        </a>
                         <twig:Ui:Security:LogoutLink />
                     </div>
                 </div>

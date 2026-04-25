@@ -17,6 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\CoreBundle\Entity\Company;
+use SolidInvoice\CoreBundle\Export\Attribute\ExportIgnore;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\UserBundle\Repository\UserRepository;
 use SolidWorx\Platform\PlatformBundle\Security\TwoFactor\Traits\UserTwoFactor;
@@ -24,6 +25,7 @@ use SolidWorx\Platform\SaasBundle\Trial\TrialUserInterface;
 
 #[ORM\Table(name: User::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ExportIgnore]
 class User extends \SolidWorx\Platform\PlatformBundle\Model\User implements TrialUserInterface
 {
     final public const string TABLE_NAME = 'users';

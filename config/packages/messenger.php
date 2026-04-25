@@ -11,6 +11,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use SolidInvoice\CoreBundle\Export\Message\RequestCompanyExport;
 use SolidInvoice\CronBundle\Messenger\SentrySchedulerMiddleware;
 use SolidInvoice\SaasBundle\Message\SendOnboardingEmailMessage;
 use Symfony\Config\FrameworkConfig;
@@ -39,6 +40,11 @@ return static function (FrameworkConfig $config): void {
     // scheduler returns quickly and Messenger's retry strategy handles
     // transient mailer failures.
     $messenger->routing(SendOnboardingEmailMessage::class)
+        ->senders(['async']);
+
+    // Full company data exports are long-running and email the user on completion,
+    // so they must run out-of-band from the HTTP request that triggered them.
+    $messenger->routing(RequestCompanyExport::class)
         ->senders(['async']);
 
     // Configure default bus

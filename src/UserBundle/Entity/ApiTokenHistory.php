@@ -15,6 +15,7 @@ namespace SolidInvoice\UserBundle\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use SolidInvoice\CoreBundle\Export\Attribute\ExportIgnore;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\UserBundle\Repository\ApiTokenHistoryRepository;
@@ -24,6 +25,7 @@ use Symfony\Component\Uid\Ulid;
 
 #[ORM\Table(name: ApiTokenHistory::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: ApiTokenHistoryRepository::class)]
+#[ExportIgnore]
 class ApiTokenHistory
 {
     final public const TABLE_NAME = 'api_token_history';

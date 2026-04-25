@@ -26,6 +26,7 @@ use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\ApiBundle\State\Processor\ApiTokenCreateProcessor;
 use SolidInvoice\ApiBundle\State\Provider\ApiTokenCollectionProvider;
 use SolidInvoice\ApiBundle\State\Provider\ApiTokenItemProvider;
+use SolidInvoice\CoreBundle\Export\Attribute\ExportIgnore;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\UserBundle\Repository\ApiTokenRepository;
@@ -39,6 +40,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(ApiToken::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: ApiTokenRepository::class)]
+#[ExportIgnore]
 #[UniqueEntity(['name', 'user'])]
 #[ApiResource(
     uriTemplate: '/profile/api-tokens',
