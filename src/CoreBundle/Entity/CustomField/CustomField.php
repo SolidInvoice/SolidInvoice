@@ -73,6 +73,11 @@ class CustomField
     #[ORM\Column(type: Types::INTEGER, options: ['default' => 0])]
     private int $position = 0;
 
+    public function __construct()
+    {
+        $this->id = new Ulid();
+    }
+
     public function getId(): ?Ulid
     {
         return $this->id;

@@ -207,6 +207,7 @@ class Contact implements Serializable, Stringable
 
     public function __construct()
     {
+        $this->id = new Ulid();
         $this->invoices = new ArrayCollection();
         $this->recurringInvoices = new ArrayCollection();
         $this->quotes = new ArrayCollection();

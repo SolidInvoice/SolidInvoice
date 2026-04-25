@@ -216,6 +216,7 @@ class Client implements Stringable
 
     public function __construct()
     {
+        $this->id = new Ulid();
         $this->contacts = new ArrayCollection();
         $this->quotes = new ArrayCollection();
         $this->invoices = new ArrayCollection();
