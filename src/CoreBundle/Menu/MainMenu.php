@@ -37,6 +37,7 @@ class MainMenu
         self::api($section);
         self::users($section);
         self::settings($section);
+        self::customFields($section);
     }
 
     public static function user(ItemInterface $item, User $user): ItemInterface
@@ -139,6 +140,17 @@ class MainMenu
             [
                 'route' => '_users_list',
                 'extras' => ['icon' => 'users'],
+            ],
+        );
+    }
+
+    public static function customFields(ItemInterface $item): ItemInterface
+    {
+        return $item->addChild(
+            'menu.top.custom_fields',
+            [
+                'route' => '_settings_custom_fields',
+                'extras' => ['icon' => 'forms'],
             ],
         );
     }
