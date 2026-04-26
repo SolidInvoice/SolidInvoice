@@ -11,6 +11,7 @@ menu:
         integrations: Integrations
         tax: 'Tax Rates'
         users: 'Users'
+        custom_fields: 'Custom Fields'
 exception:
     error:
         text: 'The following error occurred:'
