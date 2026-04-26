@@ -15,6 +15,7 @@ use SolidInvoice\SettingsBundle\Action\CustomField\CreateAction as CustomFieldCr
 use SolidInvoice\SettingsBundle\Action\CustomField\DeleteAction as CustomFieldDeleteAction;
 use SolidInvoice\SettingsBundle\Action\CustomField\EditAction as CustomFieldEditAction;
 use SolidInvoice\SettingsBundle\Action\CustomField\IndexAction as CustomFieldIndexAction;
+use SolidInvoice\SettingsBundle\Action\CustomField\ReorderAction as CustomFieldReorderAction;
 use SolidInvoice\SettingsBundle\Action\Index;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
@@ -41,5 +42,10 @@ return static function (RoutingConfigurator $routingConfigurator): void {
     $routingConfigurator
         ->add('_settings_custom_fields_delete', '/settings/custom-fields/{id}/delete')
         ->controller(CustomFieldDeleteAction::class)
+        ->methods(['POST']);
+
+    $routingConfigurator
+        ->add('_settings_custom_fields_reorder', '/settings/custom-fields/reorder')
+        ->controller(CustomFieldReorderAction::class)
         ->methods(['POST']);
 };

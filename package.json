@@ -37,6 +37,7 @@
         "@symfony/webpack-encore": "^5.1.0",
         "@types/bootstrap": "^5.2.10",
         "@types/jquery": "^3.5.29",
+        "@types/sortablejs": "^1.15.9",
         "bootstrap": "^5.3.8",
         "chart.js": "^3.4.1 || ^4.0",
         "cloudinary": "^2.1.0",
@@ -59,6 +60,7 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^6.4.0",
+        "@popperjs/core": "^2.11.8",
         "@stimulus-components/checkbox-select-all": "^6.0.0",
         "@stimulus-components/clipboard": "^5.0.0",
         "@stimulus-components/password-visibility": "^3.0.0",
@@ -67,8 +69,8 @@
         "caniuse-lite": "^1.0.30001756",
         "intl-messageformat": "^10.5.0",
         "jquery": "^3.7.1",
-        "@popperjs/core": "^2.11.8",
-        "regenerator-runtime": "^0.14.1"
+        "regenerator-runtime": "^0.14.1",
+        "sortablejs": "^1.15.7"
     },
     "engines": {
         "node": "22"
