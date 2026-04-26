@@ -85,7 +85,7 @@ class CompanyRepository extends ServiceEntityRepository
         }
 
         return $this->createQueryBuilder('c')
-            ->where('LOWER(c.customDomain) = :host')
+            ->where('c.customDomain = :host')
             ->setParameter('host', $host)
             ->setMaxResults(1)
             ->getQuery()
