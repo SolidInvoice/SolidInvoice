@@ -284,7 +284,7 @@ class Company implements Stringable, SubscribableInterface
         return $this;
     }
 
-    private static function normalizeCustomDomain(?string $value): ?string
+    public static function normalizeCustomDomain(?string $value): ?string
     {
         if ($value === null) {
             return null;

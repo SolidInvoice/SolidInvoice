@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Validator\Constraints;
 
 use const PHP_URL_HOST;
+use SolidInvoice\CoreBundle\Entity\Company;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -55,9 +56,9 @@ final class NotApplicationUrlHostValidator extends ConstraintValidator
         }
 
         $applicationHost = rtrim(strtolower($applicationHost), '.');
-        $candidate = rtrim(strtolower($value), '.');
+        $candidate = Company::normalizeCustomDomain($value);
 
-        if ($candidate === $applicationHost) {
+        if ($candidate !== null && $candidate === $applicationHost) {
             $this->context->buildViolation($constraint->message)->addViolation();
         }
     }

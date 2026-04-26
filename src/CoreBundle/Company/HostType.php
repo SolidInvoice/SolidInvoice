@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Company;
 
-enum HostType
+enum HostType: string
 {
-    case DefaultHost;
-    case CustomDomain;
-    case Unknown;
+    case DefaultHost = 'default';
+    case CustomDomain = 'custom_domain';
+    case Unknown = 'unknown';
 }

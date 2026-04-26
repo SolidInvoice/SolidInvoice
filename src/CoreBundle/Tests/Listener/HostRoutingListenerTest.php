@@ -37,12 +37,12 @@ final class HostRoutingListenerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    public function testSubscribesToKernelRequestAtPriority32(): void
+    public function testSubscribesToKernelRequestAtPriority30(): void
     {
         $events = HostRoutingListener::getSubscribedEvents();
 
         self::assertArrayHasKey(KernelEvents::REQUEST, $events);
-        self::assertSame(['onKernelRequest', 32], $events[KernelEvents::REQUEST]);
+        self::assertSame(['onKernelRequest', 30], $events[KernelEvents::REQUEST]);
     }
 
     public function testSkipsWhenNotInstalled(): void

@@ -59,7 +59,11 @@ final class UserLoginEventSubscriber implements EventSubscriberInterface
         $request = $this->requestStack->getMainRequest();
         $resolved = $request?->attributes->get(HostRoutingListener::REQUEST_ATTR);
 
-        if ($resolved instanceof ResolvedHost && $resolved->isCustomDomain() && $resolved->company !== null) {
+        if ($resolved instanceof ResolvedHost && $resolved->isCustomDomain()) {
+            if ($resolved->company === null) {
+                throw new BadCredentialsException();
+            }
+
             $companyId = $resolved->company->getId();
             $belongs = $user->getCompanies()->exists(
                 static fn ($key, $company) => $company->getId()->equals($companyId)

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Tests\Validator\Constraints;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use SolidInvoice\CoreBundle\Validator\Constraints\NotApplicationUrlHost;
 use SolidInvoice\CoreBundle\Validator\Constraints\NotApplicationUrlHostValidator;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
@@ -57,6 +58,27 @@ final class NotApplicationUrlHostValidatorTest extends ConstraintValidatorTestCa
         $this->validator->validate('APP.example.com', $constraint);
 
         $this->buildViolation($constraint->message)->assertRaised();
+    }
+
+    #[DataProvider('provideUrlAndPortPrefixedInputs')]
+    public function testUrlAndPortPrefixedInputsFail(string $input): void
+    {
+        $constraint = new NotApplicationUrlHost();
+
+        $this->validator->validate($input, $constraint);
+
+        $this->buildViolation($constraint->message)->assertRaised();
+    }
+
+    /**
+     * @return iterable<string, array{string}>
+     */
+    public static function provideUrlAndPortPrefixedInputs(): iterable
+    {
+        yield 'scheme prefix' => ['https://app.example.com'];
+        yield 'port suffix' => ['app.example.com:8080'];
+        yield 'scheme and path' => ['https://app.example.com/some/path'];
+        yield 'trailing dot' => ['app.example.com.'];
     }
 
     public function testEmptyApplicationUrlSkipsValidation(): void

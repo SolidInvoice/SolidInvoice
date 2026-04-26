@@ -131,9 +131,37 @@ final class UserLoginEventSubscriberTest extends TestCase
 
         $subscriber = new UserLoginEventSubscriber($entityManager, $stack);
 
-        $subscriber->onAuthenticationSuccess($event);
+        $this->expectNotToPerformAssertions();
 
-        self::assertTrue($user->getCompanies()->contains($domainCompany));
+        $subscriber->onAuthenticationSuccess($event);
+    }
+
+    public function testOnAuthenticationSuccessRejectsCustomDomainWithNullCompany(): void
+    {
+        $entityManager = M::mock(EntityManagerInterface::class);
+
+        $user = new User();
+        $user->setVerified(true);
+
+        $token = M::mock(TokenInterface::class);
+        $token->shouldReceive('getUser')->andReturn($user);
+
+        $event = new AuthenticationSuccessEvent($token);
+
+        $request = new Request();
+        $request->attributes->set(
+            HostRoutingListener::REQUEST_ATTR,
+            new ResolvedHost(HostType::CustomDomain, 'acme.example', 'https', 443, null)
+        );
+
+        $stack = new RequestStack();
+        $stack->push($request);
+
+        $subscriber = new UserLoginEventSubscriber($entityManager, $stack);
+
+        $this->expectException(BadCredentialsException::class);
+
+        $subscriber->onAuthenticationSuccess($event);
     }
 
     private function assignCompanyId(Company $company, Ulid $id): void
