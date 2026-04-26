@@ -1,0 +1,63 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends '@SolidInvoiceCore/Layout/default.html.twig' %}
+
+{% block title %}{{ ux_icon('tabler:forms', {width: 24, height: 24, class: 'me-2'}) }}{{ "Custom fields"|trans }}{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h2 class="page-title">{{ 'Custom fields'|trans }}</h2>
+        <div class="page-actions">
+            <a href="{{ path('_settings_custom_fields_create') }}" class="btn btn-primary">
+                {{ ux_icon('tabler:plus', {width: 16, height: 16}) }}
+                {{ 'Add field'|trans }}
+            </a>
+        </div>
+    </div>
+
+    <div class="card mt-3">
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#tab-client">{{ 'Client fields'|trans }}</a></li>
+            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-contact">{{ 'Contact fields'|trans }}</a></li>
+        </ul>
+        <div class="tab-content">
+            {% for tabId, rows in {'client': client, 'contact': contact} %}
+                <div class="tab-pane{% if loop.first %} active show{% endif %}" id="tab-{{ tabId }}">
+                    {% if rows is empty %}
+                        <div class="card-body text-center text-muted">
+                            {{ 'No custom fields yet — click Add field to create one.'|trans }}
+                        </div>
+                    {% else %}
+                        <div class="list-group list-group-flush"
+                             data-controller="custom-field-reorder"
+                             data-custom-field-reorder-url-value="{{ path('_settings_custom_fields_reorder') }}">
+                            {% for row in rows %}
+                                <div class="list-group-item d-flex align-items-center" data-id="{{ row.field.id }}">
+                                    <span class="me-3 text-muted" data-handle>{{ ux_icon('tabler:grip-vertical') }}</span>
+                                    <div class="flex-fill">
+                                        <strong>{{ row.field.label }}</strong>
+                                        <span class="badge bg-secondary-lt ms-2">{{ row.field.type.label }}</span>
+                                        {% if row.field.required %}<span class="badge bg-yellow-lt ms-1">{{ 'Required'|trans }}</span>{% endif %}
+                                        <div class="text-muted small">field_key: <code>{{ row.field.fieldKey }}</code> · {{ row.count }} {{ 'values'|trans }}</div>
+                                    </div>
+                                    <a href="{{ path('_settings_custom_fields_edit', {id: row.field.id}) }}" class="btn btn-sm btn-link">{{ 'Edit'|trans }}</a>
+                                    <form method="post" action="{{ path('_settings_custom_fields_delete', {id: row.field.id}) }}" class="d-inline" onsubmit="return confirm('{{ 'Delete %label%? %count% records have a value for this field. These values will be permanently deleted.'|trans({'%label%': row.field.label, '%count%': row.count}) }}')">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('cf_delete_' ~ row.field.id) }}">
+                                        <button class="btn btn-sm btn-link text-danger" type="submit">{{ 'Delete'|trans }}</button>
+                                    </form>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

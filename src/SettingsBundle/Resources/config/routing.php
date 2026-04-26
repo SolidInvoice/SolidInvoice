@@ -11,6 +11,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use SolidInvoice\SettingsBundle\Action\CustomField\IndexAction as CustomFieldIndexAction;
 use SolidInvoice\SettingsBundle\Action\Index;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
@@ -18,4 +19,9 @@ return static function (RoutingConfigurator $routingConfigurator): void {
     $routingConfigurator
         ->add('_settings', '/settings')
         ->controller(Index::class);
+
+    $routingConfigurator
+        ->add('_settings_custom_fields', '/settings/custom-fields')
+        ->controller(CustomFieldIndexAction::class)
+        ->methods(['GET']);
 };
