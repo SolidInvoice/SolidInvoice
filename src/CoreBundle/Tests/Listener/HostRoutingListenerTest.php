@@ -22,6 +22,7 @@ use SolidInvoice\CoreBundle\Company\HostType;
 use SolidInvoice\CoreBundle\Company\ResolvedHost;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Listener\HostRoutingListener;
+use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -47,10 +48,10 @@ final class HostRoutingListenerTest extends TestCase
 
     public function testSkipsWhenNotInstalled(): void
     {
-        $resolver = M::mock(CompanyDomainResolver::class);
-        $resolver->shouldNotReceive('resolve');
+        $repository = M::mock(CompanyRepository::class);
+        $repository->shouldNotReceive('findOneByCustomDomain');
 
-        $listener = new HostRoutingListener($resolver, $this->router(), null);
+        $listener = new HostRoutingListener($this->resolver($repository), $this->router(), null);
 
         $request = Request::create('https://anything.example/');
         $listener->onKernelRequest($this->event($request));
@@ -60,10 +61,10 @@ final class HostRoutingListenerTest extends TestCase
 
     public function testSkipsInstallerRoute(): void
     {
-        $resolver = M::mock(CompanyDomainResolver::class);
-        $resolver->shouldNotReceive('resolve');
+        $repository = M::mock(CompanyRepository::class);
+        $repository->shouldNotReceive('findOneByCustomDomain');
 
-        $listener = new HostRoutingListener($resolver, $this->router(), '2025');
+        $listener = new HostRoutingListener($this->resolver($repository), $this->router(), '2025');
 
         $request = Request::create('https://anything.example/install');
         $listener->onKernelRequest($this->event($request));
@@ -73,12 +74,14 @@ final class HostRoutingListenerTest extends TestCase
 
     public function testThrowsNotFoundForUnknownHost(): void
     {
-        $resolver = M::mock(CompanyDomainResolver::class);
-        $resolver->shouldReceive('resolve')
-            ->once()
-            ->andReturn(new ResolvedHost(HostType::Unknown, 'rogue.example', 'https', 443));
+        $repository = M::mock(CompanyRepository::class);
+        $repository->shouldReceive('findOneByCustomDomain')->once()->with('rogue.example')->andReturnNull();
 
-        $listener = new HostRoutingListener($resolver, $this->router(), '2025');
+        $listener = new HostRoutingListener(
+            $this->resolver($repository, 'https://app.example.com'),
+            $this->router(),
+            '2025',
+        );
 
         $this->expectException(NotFoundHttpException::class);
 
@@ -87,20 +90,25 @@ final class HostRoutingListenerTest extends TestCase
 
     public function testStoresResolvedHostAndSyncsRouterContext(): void
     {
-        $resolved = new ResolvedHost(HostType::DefaultHost, 'app.example.com', 'https', 443);
-        $resolver = M::mock(CompanyDomainResolver::class);
-        $resolver->shouldReceive('resolve')->once()->andReturn($resolved);
+        $repository = M::mock(CompanyRepository::class);
+        $repository->shouldNotReceive('findOneByCustomDomain');
 
         $context = new RequestContext();
         $router = M::mock(RouterInterface::class);
         $router->shouldReceive('getContext')->andReturn($context);
 
-        $listener = new HostRoutingListener($resolver, $router, '2025');
+        $listener = new HostRoutingListener(
+            $this->resolver($repository, 'https://app.example.com'),
+            $router,
+            '2025',
+        );
 
         $request = Request::create('https://app.example.com/dashboard');
         $listener->onKernelRequest($this->event($request));
 
-        self::assertSame($resolved, $request->attributes->get(HostRoutingListener::REQUEST_ATTR));
+        $resolved = $request->attributes->get(HostRoutingListener::REQUEST_ATTR);
+        self::assertInstanceOf(ResolvedHost::class, $resolved);
+        self::assertSame(HostType::DefaultHost, $resolved->type);
         self::assertSame('app.example.com', $context->getHost());
         self::assertSame('https', $context->getScheme());
         self::assertSame(443, $context->getHttpsPort());
@@ -109,11 +117,14 @@ final class HostRoutingListenerTest extends TestCase
     #[DataProvider('provideSelectorRoutes')]
     public function testThrowsNotFoundForSelectorRouteOnCustomDomain(string $route): void
     {
-        $resolved = new ResolvedHost(HostType::CustomDomain, 'acme.example', 'https', 443, new Company());
-        $resolver = M::mock(CompanyDomainResolver::class);
-        $resolver->shouldReceive('resolve')->once()->andReturn($resolved);
+        $repository = M::mock(CompanyRepository::class);
+        $repository->shouldReceive('findOneByCustomDomain')->once()->with('acme.example')->andReturn(new Company());
 
-        $listener = new HostRoutingListener($resolver, $this->router(), '2025');
+        $listener = new HostRoutingListener(
+            $this->resolver($repository, 'https://app.example.com'),
+            $this->router(),
+            '2025',
+        );
 
         $request = Request::create('https://acme.example/select-company');
         $request->attributes->set('_route', $route);
@@ -148,5 +159,10 @@ final class HostRoutingListenerTest extends TestCase
         $router = M::mock(RouterInterface::class);
         $router->shouldReceive('getContext')->zeroOrMoreTimes()->andReturn(new RequestContext());
         return $router;
+    }
+
+    private function resolver(CompanyRepository $repository, string $applicationUrl = ''): CompanyDomainResolver
+    {
+        return new CompanyDomainResolver($repository, $applicationUrl);
     }
 }
