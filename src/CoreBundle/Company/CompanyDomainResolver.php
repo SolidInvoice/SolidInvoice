@@ -13,13 +13,10 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Company;
 
-use const PHP_URL_HOST;
-use const PHP_URL_PORT;
-use const PHP_URL_SCHEME;
+use League\Uri\Uri;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use Symfony\Contracts\Service\ResetInterface;
-use function is_string;
-use function parse_url;
+use Throwable;
 use function rtrim;
 use function strtolower;
 
@@ -102,24 +99,26 @@ class CompanyDomainResolver implements ResetInterface
             return;
         }
 
-        $host = parse_url($this->applicationUrl, PHP_URL_HOST);
+        try {
+            $uri = Uri::new($this->applicationUrl);
+        } catch (Throwable) {
+            return;
+        }
 
-        if (! is_string($host) || $host === '') {
+        $host = $uri->getHost();
+
+        if ($host === null || $host === '') {
             return;
         }
 
         $this->defaultHost = rtrim(strtolower($host), '.');
 
-        $scheme = parse_url($this->applicationUrl, PHP_URL_SCHEME);
-        if (is_string($scheme) && $scheme !== '') {
+        $scheme = $uri->getScheme();
+        if ($scheme !== null && $scheme !== '') {
             $this->defaultScheme = strtolower($scheme);
         }
 
-        $port = parse_url($this->applicationUrl, PHP_URL_PORT);
-        if (is_int($port)) {
-            $this->defaultPort = $port;
-        } else {
-            $this->defaultPort = $this->defaultScheme === 'http' ? 80 : 443;
-        }
+        $port = $uri->getPort();
+        $this->defaultPort = $port ?? ($this->defaultScheme === 'http' ? 80 : 443);
     }
 }
