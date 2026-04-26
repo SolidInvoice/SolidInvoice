@@ -11,6 +11,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use SolidInvoice\SettingsBundle\Action\CustomField\CreateAction as CustomFieldCreateAction;
+use SolidInvoice\SettingsBundle\Action\CustomField\DeleteAction as CustomFieldDeleteAction;
+use SolidInvoice\SettingsBundle\Action\CustomField\EditAction as CustomFieldEditAction;
 use SolidInvoice\SettingsBundle\Action\CustomField\IndexAction as CustomFieldIndexAction;
 use SolidInvoice\SettingsBundle\Action\Index;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
@@ -24,4 +27,19 @@ return static function (RoutingConfigurator $routingConfigurator): void {
         ->add('_settings_custom_fields', '/settings/custom-fields')
         ->controller(CustomFieldIndexAction::class)
         ->methods(['GET']);
+
+    $routingConfigurator
+        ->add('_settings_custom_fields_create', '/settings/custom-fields/new')
+        ->controller(CustomFieldCreateAction::class)
+        ->methods(['GET', 'POST']);
+
+    $routingConfigurator
+        ->add('_settings_custom_fields_edit', '/settings/custom-fields/{id}/edit')
+        ->controller(CustomFieldEditAction::class)
+        ->methods(['GET', 'POST']);
+
+    $routingConfigurator
+        ->add('_settings_custom_fields_delete', '/settings/custom-fields/{id}/delete')
+        ->controller(CustomFieldDeleteAction::class)
+        ->methods(['POST']);
 };
