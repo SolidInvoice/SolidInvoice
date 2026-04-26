@@ -1,5 +1,5 @@
 <html><body>
-<div class="form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="ClientForm" data-live-url-value="/_components/ClientForm" data-live-props-value='{"formData":null,"formName":"client","client":{"name":"","website":"","currencyCode":"","contacts":[{"firstName":"","lastName":"","email":"","additionalContactDetails":[]}],"addresses":[{"street1":"","street2":"","city":"","state":"","zip":"","country":""}],"taxIdentifiers":[],"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
+<div class="form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="ClientForm" data-live-url-value="/_components/ClientForm" data-live-props-value='{"formData":null,"formName":"client","client":{"name":"","website":"","currencyCode":"","contacts":[{"firstName":"","lastName":"","email":"","customFields":{"additional_email":"","phone":"","mobile":""}}],"addresses":[{"street1":"","street2":"","city":"","state":"","zip":"","country":""}],"taxIdentifiers":[],"customFields":[],"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
     <form name="client" method="post" data-model="on(change)|*" data-action="live#action:prevent" data-live-action-param="save" class="client-form">
 
     
@@ -279,23 +279,25 @@
             </div>
         </div>
 
-                            <div class="additional-details-section">
-                <div class="additional-details-header">
-                    <span class="additional-details-label">
-                        <svg viewbox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg>
-                        Additional Contact Details
-                    </span>
-                </div>
-
-                <div class="additional-details-list">
-                                    </div>
-
-                
-
-                <div class="additional-details-add">
-                    <button type="button" id="client_contacts_0_additionalContactDetails_add" name="client[contacts][0][additionalContactDetails][add]" data-action="live#action" data-live-action-param="addCollectionItem" data-live-name-param="client[contacts][0][additionalContactDetails]" class="btn btn-sm btn-ghost add-detail-btn btn">Add Additional Details</button>
-                </div>
-            </div>
+                <div class="mt-2">
+            <strong class="d-block mb-1">Custom fields</strong>
+            <div id="client_contacts_0_customFields">
+<div class="mb-3">    
+            <label class="control-label form-label" for="client_contacts_0_customFields_additional_email">Additional Email</label>    <div class="input-group input-icon-group">
+        <span class="input-group-text">
+            <svg viewbox="0 0 24 24" fill="currentColor" width="18" height="18" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><path d="m3 7l9 6l9-6"></path></g></svg>
+        </span>
+        <input type="email" id="client_contacts_0_customFields_additional_email" name="client[contacts][0][customFields][additional_email]" class="form-control" value="">
+    </div>
+</div>
+<div class="mb-3">    
+            <label class="control-label form-label" for="client_contacts_0_customFields_phone">Phone</label><input type="text" id="client_contacts_0_customFields_phone" name="client[contacts][0][customFields][phone]" class="form-control">
+</div>
+<div class="mb-3">    
+            <label class="control-label form-label" for="client_contacts_0_customFields_mobile">Mobile</label><input type="text" id="client_contacts_0_customFields_mobile" name="client[contacts][0][customFields][mobile]" class="form-control">
+</div>
+</div>
+        </div>
             </div>
 </div>
 </fieldset>
@@ -660,10 +662,13 @@
                     </div>
                 </div>
             </section>
-        </div>
+                                </div>
 
         <fieldset class="mb-3">                
     <div id="client_taxIdentifiers"></div>
+</fieldset>
+<fieldset class="mb-3">                
+    <div id="client_customFields"></div>
 </fieldset>
 <input type="hidden" id="client__token" name="client[_token]" data-controller="csrf-protection">
 
