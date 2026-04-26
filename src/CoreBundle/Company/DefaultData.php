@@ -18,6 +18,9 @@ use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use JsonException;
 use SolidInvoice\CoreBundle\Entity\Company;
+use SolidInvoice\CoreBundle\Entity\CustomField\CustomField;
+use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
+use SolidInvoice\CoreBundle\Enum\CustomFieldType;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\SettingsBundle\Config\ProviderInterface;
 use SolidInvoice\SettingsBundle\DTO\Config;
@@ -50,10 +53,30 @@ final readonly class DefaultData
     public function __invoke(Company $company, array $data): void
     {
         $this->createAppConfig($company, $data);
-        // TODO(Task 31): replace ContactType seeding with CustomField defaults.
+        $this->createDefaultCustomFields($company);
         $this->createPaymentMethods();
 
         $this->em->flush();
+    }
+
+    private function createDefaultCustomFields(Company $company): void
+    {
+        $defaults = [
+            ['additional_email', 'Additional Email', CustomFieldType::EMAIL, 0],
+            ['phone', 'Phone', CustomFieldType::TEXT, 1],
+            ['mobile', 'Mobile', CustomFieldType::TEXT, 2],
+        ];
+
+        foreach ($defaults as [$key, $label, $type, $position]) {
+            $field = (new CustomField())
+                ->setTarget(CustomFieldTarget::CONTACT)
+                ->setLabel($label)
+                ->setFieldKey($key)
+                ->setType($type)
+                ->setPosition($position)
+                ->setCompany($company);
+            $this->em->persist($field);
+        }
     }
 
     /**
