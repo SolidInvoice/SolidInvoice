@@ -20,7 +20,7 @@ use Throwable;
 use function rtrim;
 use function strtolower;
 
-class CompanyDomainResolver implements ResetInterface
+final class CompanyDomainResolver implements ResetInterface
 {
     /**
      * @var array<string, ResolvedHost>
