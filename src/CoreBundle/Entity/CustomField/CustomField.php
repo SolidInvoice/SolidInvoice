@@ -13,8 +13,17 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Entity\CustomField;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use SolidInvoice\CoreBundle\Action\Api\CustomFieldReorderAction;
 use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
 use SolidInvoice\CoreBundle\Enum\CustomFieldType;
 use SolidInvoice\CoreBundle\Repository\CustomFieldRepository;
@@ -22,9 +31,38 @@ use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
+use Symfony\Component\Serializer\Annotation as Serialize;
+use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
 
+#[ApiResource(
+    shortName: 'CustomField',
+    operations: [
+        new Get(),
+        new GetCollection(),
+        new Post(),
+        new Patch(),
+        new Delete(),
+        new Post(
+            uriTemplate: '/custom-fields/reorder',
+            controller: CustomFieldReorderAction::class,
+            name: 'custom_field_reorder',
+            read: false,
+            deserialize: false,
+            validate: false,
+            write: false,
+        ),
+    ],
+    normalizationContext: [
+        'groups' => ['custom_field:read'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ],
+    denormalizationContext: [
+        'groups' => ['custom_field:write'],
+    ],
+)]
+#[ApiFilter(SearchFilter::class, properties: ['target' => 'exact'])]
 #[ORM\Table(name: CustomField::TABLE_NAME)]
 #[ORM\Index(name: 'idx_cf_company_target_pos', columns: ['company_id', 'target', 'position'])]
 #[ORM\UniqueConstraint(name: 'uq_cf_company_target_key', columns: ['company_id', 'target', 'field_key'])]
@@ -40,37 +78,45 @@ class CustomField
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UlidGenerator::class)]
+    #[Serialize\Groups(['custom_field:read'])]
     private ?Ulid $id = null;
 
     #[ORM\Column(name: 'target', type: Types::STRING, length: 32, enumType: CustomFieldTarget::class)]
     #[Assert\NotNull]
+    #[Serialize\Groups(['custom_field:read', 'custom_field:write'])]
     private ?CustomFieldTarget $target = null;
 
     #[ORM\Column(type: Types::STRING, length: 125)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 125)]
+    #[Serialize\Groups(['custom_field:read', 'custom_field:write'])]
     private ?string $label = null;
 
     #[ORM\Column(name: 'field_key', type: Types::STRING, length: 64)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 64)]
     #[Assert\Regex(pattern: '/^[a-z][a-z0-9_]*$/', message: 'Field key must start with a lowercase letter and contain only lowercase letters, digits, and underscores.')]
+    #[Serialize\Groups(['custom_field:read', 'custom_field:write'])]
     private ?string $fieldKey = null;
 
     #[ORM\Column(name: 'type', type: Types::STRING, length: 32, enumType: CustomFieldType::class)]
     #[Assert\NotNull]
+    #[Serialize\Groups(['custom_field:read', 'custom_field:write'])]
     private ?CustomFieldType $type = null;
 
     /**
      * @var list<array{value: string, label: string}>|null
      */
     #[ORM\Column(type: Types::JSON, nullable: true)]
+    #[Serialize\Groups(['custom_field:read', 'custom_field:write'])]
     private ?array $options = null;
 
     #[ORM\Column(type: Types::BOOLEAN, options: ['default' => false])]
+    #[Serialize\Groups(['custom_field:read', 'custom_field:write'])]
     private bool $required = false;
 
     #[ORM\Column(type: Types::INTEGER, options: ['default' => 0])]
+    #[Serialize\Groups(['custom_field:read'])]
     private int $position = 0;
 
     public function __construct()
