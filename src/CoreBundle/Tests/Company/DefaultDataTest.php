@@ -20,6 +20,7 @@ use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Company\DefaultData;
 use SolidInvoice\CoreBundle\Config\SystemConfigProvider;
 use SolidInvoice\CoreBundle\Entity\Company;
+use SolidInvoice\CoreBundle\Entity\CustomField\CustomField;
 use SolidInvoice\InvoiceBundle\Config\ConfigProvider as InvoiceConfigProvider;
 use SolidInvoice\MailerBundle\Config\ConfigProvider as MailerConfigProvider;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
@@ -43,6 +44,10 @@ final class DefaultDataTest extends TestCase
             ->expects('persist')
             ->with(M::type(Setting::class))
             ->times(24);
+
+        $entityManager->expects('persist')
+            ->with(M::type(CustomField::class))
+            ->times(3);
 
         $entityManager->expects('persist')
             ->with(M::type(PaymentMethod::class))
