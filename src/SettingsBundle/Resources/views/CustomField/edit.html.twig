@@ -1,0 +1,50 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends '@SolidInvoiceCore/Layout/default.html.twig' %}
+
+{% block title %}{{ ux_icon('tabler:forms', {width: 24, height: 24, class: 'me-2'}) }}{{ (mode == 'create' ? 'New custom field' : 'Edit custom field')|trans }}{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h2 class="page-title">{{ (mode == 'create' ? 'New custom field' : 'Edit custom field')|trans }}</h2>
+    </div>
+
+    <div class="card mt-3">
+        <div class="card-body">
+            {{ form_start(form) }}
+                <div class="row g-3">
+                    <div class="col-md-6">{{ form_row(form.label) }}</div>
+                    <div class="col-md-6">{{ form_row(form.fieldKey) }}</div>
+                    <div class="col-md-6">
+                        {% if mode == 'edit' and usageCount > 0 %}
+                            <div class="alert alert-info">
+                                {{ 'This field has %count% values; type cannot be changed. Delete and recreate to change type.'|trans({'%count%': usageCount}) }}
+                            </div>
+                            {{ form_row(form.type, {attr: {disabled: 'disabled'}}) }}
+                        {% else %}
+                            {{ form_row(form.type) }}
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">{{ form_row(form.required) }}</div>
+                </div>
+
+                <div class="mt-3" data-controller="custom-field-options" data-custom-field-options-type-value="{{ form.type.vars.value ?? '' }}">
+                    <h4>{{ 'Options'|trans }} <small class="text-muted">{{ '(only for SELECT and MULTI_SELECT)'|trans }}</small></h4>
+                    {{ form_widget(form.options) }}
+                </div>
+
+                <div class="mt-4">
+                    <button class="btn btn-primary" type="submit">{{ 'Save'|trans }}</button>
+                    <a class="btn btn-link" href="{{ path('_settings_custom_fields') }}">{{ 'Cancel'|trans }}</a>
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
