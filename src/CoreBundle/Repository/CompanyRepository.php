@@ -15,11 +15,11 @@ namespace SolidInvoice\CoreBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use LogicException;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Uid\Ulid;
-use function strtolower;
 
 /**
  * @extends ServiceEntityRepository<Company>
@@ -54,13 +54,13 @@ class CompanyRepository extends ServiceEntityRepository
         $companyId = $this->companySelector->getCompany();
 
         if (! $companyId instanceof Ulid) {
-            return $value;
+            throw new LogicException('Cannot update custom domain without an active company context.');
         }
 
         $company = $this->find($companyId);
 
         if (! $company instanceof Company) {
-            return $value;
+            throw new LogicException('Cannot update custom domain: active company could not be loaded.');
         }
 
         $company->setCustomDomain($value);
@@ -78,9 +78,9 @@ class CompanyRepository extends ServiceEntityRepository
 
     public function findOneByCustomDomain(string $host): ?Company
     {
-        $host = strtolower($host);
+        $host = Company::normalizeCustomDomain($host);
 
-        if ($host === '') {
+        if ($host === null) {
             return null;
         }
 

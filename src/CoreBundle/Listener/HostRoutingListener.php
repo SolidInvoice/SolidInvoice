@@ -36,7 +36,7 @@ final class HostRoutingListener implements EventSubscriberInterface
 {
     public const REQUEST_ATTR = '_resolved_host';
 
-    public const PRIORITY = 32;
+    public const PRIORITY = 30;
 
     private const SELECTOR_ROUTES = [
         '_select_company',
