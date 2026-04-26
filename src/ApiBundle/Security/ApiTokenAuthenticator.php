@@ -70,12 +70,12 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
         if (null !== $apiToken) {
             $resolved = $request->attributes->get(HostRoutingListener::REQUEST_ATTR);
 
-            if ($resolved instanceof ResolvedHost
-                && $resolved->isCustomDomain()
-                && $resolved->company !== null
-                && ! $resolved->company->getId()->equals($apiToken->getCompany()->getId())
-            ) {
-                throw new CustomUserMessageAuthenticationException('Invalid API token');
+            if ($resolved instanceof ResolvedHost && $resolved->isCustomDomain()) {
+                if ($resolved->company === null
+                    || ! $resolved->company->getId()->equals($apiToken->getCompany()->getId())
+                ) {
+                    throw new CustomUserMessageAuthenticationException('Invalid API token');
+                }
             }
 
             $this->companySelector->switchCompany($apiToken->getCompany()->getId());
