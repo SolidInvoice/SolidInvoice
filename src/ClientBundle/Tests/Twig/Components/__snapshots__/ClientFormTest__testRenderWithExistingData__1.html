@@ -1,5 +1,5 @@
 <html><body>
-<div class="form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="ClientForm" data-live-url-value="/_components/ClientForm" data-live-props-value='{"formData":null,"formName":"client","client":{"name":"Foo Bar","website":"https:\/\/example.com","currencyCode":"SBD","contacts":[],"addresses":[],"taxIdentifiers":[],"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
+<div class="form-page" id="in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed" data-controller="live" data-live-name-value="ClientForm" data-live-url-value="/_components/ClientForm" data-live-props-value='{"formData":null,"formName":"client","client":{"name":"Foo Bar","website":"https:\/\/example.com","currencyCode":"SBD","contacts":[],"addresses":[],"taxIdentifiers":[],"customFields":[],"_token":""},"isValidated":false,"validatedFields":[],"@attributes":{"id":"in-a-real-scenario-it-would-already-have-one---provide-one-yourself-if-needed"},"@checksum":"REPLACED_CHECKSUM"}'>
     <form name="client" method="post" data-model="on(change)|*" data-action="live#action:prevent" data-live-action-param="save" class="client-form">
 
     
@@ -306,7 +306,7 @@
                     </div>
                 </div>
             </section>
-        </div>
+                                </div>
 
         <fieldset class="mb-3">                
     <div id="client_contacts"></div>
@@ -316,6 +316,9 @@
 </fieldset>
 <fieldset class="mb-3">                
     <div id="client_taxIdentifiers"></div>
+</fieldset>
+<fieldset class="mb-3">                
+    <div id="client_customFields"></div>
 </fieldset>
 <input type="hidden" id="client__token" name="client[_token]" data-controller="csrf-protection">
 

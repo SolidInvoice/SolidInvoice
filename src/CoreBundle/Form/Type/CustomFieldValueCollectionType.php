@@ -49,7 +49,7 @@ final class CustomFieldValueCollectionType extends AbstractType
 
         $existingValues = [];
         $parent = $options['parent_record'] ?? null;
-        if ($parent !== null && method_exists($parent, 'getId') && $parent->getId() instanceof Ulid) {
+        if ($defs !== [] && $parent !== null && method_exists($parent, 'getId') && $parent->getId() instanceof Ulid) {
             foreach ($this->values->findForRecord($target, $parent->getId()) as $v) {
                 $existingValues[(string) $v->getField()->getId()] = $v;
             }
@@ -78,7 +78,15 @@ final class CustomFieldValueCollectionType extends AbstractType
             }
 
             $parentId = $parent->getId();
-            $companyId = method_exists($parent, 'getCompany') ? $parent->getCompany() : null;
+            $companyId = null;
+            if (method_exists($parent, 'getCompany')) {
+                try {
+                    $companyId = $parent->getCompany();
+                } catch (\Error) {
+                    // Company not yet initialized on the entity — skip persistence for this submit.
+                    return;
+                }
+            }
             // An entity is "persisted" (has a stable Doctrine-assigned ID) only when it
             // is already managed by the UnitOfWork. For new (unpersisted) entities,
             // Doctrine will overwrite any constructor-set ID on first persist, so we must
@@ -187,11 +195,14 @@ final class CustomFieldValueCollectionType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setRequired(['target', 'parent_record']);
+        $resolver->setRequired(['target']);
         $resolver->setAllowedTypes('target', CustomFieldTarget::class);
+        $resolver->setDefined('parent_record');
+        $resolver->setAllowedTypes('parent_record', ['object', 'null']);
         $resolver->setDefaults([
             'mapped' => false,
             'label' => false,
+            'parent_record' => null,
         ]);
     }
 
