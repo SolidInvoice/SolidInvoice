@@ -1,0 +1,29 @@
+{% extends '@SolidInvoiceInvoice/Templates/_email_base.html.twig' %}
+{% set accent = '#d4a94a' %}
+
+{% block intro %}
+    {% apply inky_to_html %}
+        <row>
+            <columns>
+                <table style="width: 100%; background: #0b0b0b; border-radius: 8px; padding: 24px;">
+                    <tr>
+                        <td>
+                            <p style="color: #d4a94a; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; margin: 0 0 8px 0; Margin: 0 0 8px 0;">
+                                {{ 'invoice.pdf.title'|trans }}
+                            </p>
+                            <p style="color: #f5f1e8; font-family: Georgia, serif; font-size: 36px; line-height: 1.0; margin: 0; Margin: 0;">
+                                {{ invoice.invoiceId }}
+                            </p>
+                            <p style="color: #d4a94a; font-family: Georgia, serif; font-size: 22px; margin: 12px 0 0 0; Margin: 12px 0 0 0;">
+                                {{ (invoice_has_outstanding_balance(invoice) ? invoice.balance : invoice.total)|formatCurrency(invoice.client.currency) }}
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+                <p style="color: #475569; font-size: 14px; line-height: 1.6; margin: 16px 0 0 0; Margin: 16px 0 0 0;">
+                    {{ 'invoice.info'|trans({'%company%': setting('system/company/company_name'), '%created%': invoice.created|date}, 'email') }}
+                </p>
+            </columns>
+        </row>
+    {% endapply %}
+{% endblock %}

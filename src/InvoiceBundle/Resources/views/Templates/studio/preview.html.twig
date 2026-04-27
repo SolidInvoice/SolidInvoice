@@ -1,0 +1,67 @@
+{# Studio / Agency preview #}
+{% set currency = invoice.client.currency %}
+{% set hasOutstandingBalance = invoice_has_outstanding_balance(invoice) %}
+
+<div class="invoice-template invoice-template-studio">
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-5">
+            <div class="d-flex justify-content-between mb-4">
+                <div>{% if app_logo() is not empty %}{{ app_logo(40) }}{% endif %}</div>
+                <div class="text-end">
+                    <div class="text-muted small text-uppercase" style="letter-spacing: 2px;">{{ 'invoice.pdf.title'|trans }}</div>
+                    <div class="fs-5 fw-bold">#{{ invoice.invoiceId }}</div>
+                </div>
+            </div>
+
+            <div class="p-4 mb-4 rounded" style="background: #f8fafc; border-left: 4px solid #2e963a;">
+                <div class="text-muted small text-uppercase mb-1" style="letter-spacing: 2px;">{{ 'invoice.template.studio.project_label'|trans }}</div>
+                <div class="display-6 fw-bold text-dark mb-0">{{ invoice.client }} {{ 'invoice.template.studio.engagement'|trans }}</div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="text-muted small text-uppercase mb-1">{{ 'invoice.template.studio.studio'|trans }}</div>
+                    <strong>{{ company_name() }}</strong>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-muted small text-uppercase mb-1">{{ 'invoice.template.studio.client'|trans }}</div>
+                    <strong>{{ invoice.client }}</strong>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-muted small text-uppercase mb-1">{{ 'invoice.date'|trans }}</div>
+                    <div>{{ invoice.invoiceDate|date('F j, Y') }}</div>
+                </div>
+            </div>
+
+            <table class="table">
+                <thead style="background: #0f172a; color: #ffffff;">
+                    <tr>
+                        <th class="text-uppercase small">{{ 'invoice.template.studio.deliverable'|trans }}</th>
+                        <th class="text-uppercase small text-end">{{ 'invoice.item.heading.qty'|trans }}</th>
+                        <th class="text-uppercase small text-end">{{ 'invoice.item.heading.price'|trans }}</th>
+                        <th class="text-uppercase small text-end">{{ 'invoice.item.heading.total'|trans }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for line in invoice.lines %}
+                        <tr>
+                            <td>{{ line.description|nl2br }}</td>
+                            <td class="text-end">{{ line.qty }}</td>
+                            <td class="text-end">{{ line.price|formatCurrency(currency) }}</td>
+                            <td class="text-end fw-bold">{{ line.total|formatCurrency(currency) }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="p-4 rounded mt-4" style="background: linear-gradient(135deg, #2e963a 0%, #166534 100%); color: #ffffff;">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="small text-uppercase" style="letter-spacing: 2px; opacity: 0.85;">{% if hasOutstandingBalance %}{{ 'invoice.balance_due'|trans }}{% else %}{{ 'invoice.total_due'|trans }}{% endif %}</div>
+                        <div class="display-5 fw-bold">{{ (hasOutstandingBalance ? invoice.balance : invoice.total)|formatCurrency(currency) }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

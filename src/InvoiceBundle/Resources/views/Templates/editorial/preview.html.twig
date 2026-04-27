@@ -1,0 +1,59 @@
+{# Editorial preview #}
+{% set currency = invoice.client.currency %}
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&display=swap">
+
+<div class="invoice-template invoice-template-editorial" style="font-family: 'Cormorant Garamond', Georgia, serif; color: #2a2a2a;">
+    <div class="card border-0 shadow-sm" style="background: #faf6ee;">
+        <div class="card-body p-5">
+            <div class="d-flex justify-content-between align-items-end pb-3 mb-4 border-bottom border-dark">
+                <div>
+                    <div class="text-uppercase mb-1" style="color: #94704a; letter-spacing: 4px; font-size: 12px;">{{ 'invoice.template.editorial.heading'|trans }}</div>
+                    <div style="font-size: 56px; font-style: italic; line-height: 1;">No. {{ invoice.invoiceId }}</div>
+                </div>
+                <div class="text-end">
+                    <div class="fst-italic fs-4">{{ company_name() }}</div>
+                    <div class="text-muted small">{{ invoice.invoiceDate|date('F j, Y') }}</div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div style="color: #94704a; font-style: italic;">I. {{ 'invoice.from'|trans }}</div>
+                    <div class="fw-semibold">{{ company_name() }}</div>
+                </div>
+                <div class="col-md-6">
+                    <div style="color: #94704a; font-style: italic;">II. {{ 'invoice.to'|trans }}</div>
+                    <div class="fw-semibold">{{ invoice.client }}</div>
+                </div>
+            </div>
+
+            <div style="color: #94704a; font-style: italic;" class="mb-2">III. {{ 'invoice.item.heading.description'|trans }}</div>
+            <table class="table" style="background: transparent;">
+                <tbody>
+                    {% for line in invoice.lines %}
+                        <tr style="border-bottom: 1px solid #e8dcc4;">
+                            <td>
+                                <em>{{ line.description|nl2br }}</em>
+                                <div class="text-muted small">{{ line.qty }} × {{ line.price|formatCurrency(currency) }}</div>
+                            </td>
+                            <td class="text-end fs-5">{{ line.total|formatCurrency(currency) }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="row justify-content-end mt-4">
+                <div class="col-md-5">
+                    <div style="color: #94704a; font-style: italic;" class="text-end mb-2">IV. {{ 'invoice.total'|trans }}</div>
+                    <div class="d-flex justify-content-between mb-2"><span>{{ 'invoice.subtotal'|trans }}</span><span>{{ invoice.baseTotal|formatCurrency(currency) }}</span></div>
+                    {% if invoice.tax.positive %}<div class="d-flex justify-content-between mb-2"><span>{{ 'invoice.tax'|trans }}</span><span>{{ invoice.tax|formatCurrency(currency) }}</span></div>{% endif %}
+                    <div class="d-flex justify-content-between p-3 rounded" style="background: #f5ebd9;">
+                        <strong>{{ 'invoice.total'|trans }}</strong>
+                        <strong class="fs-4" style="color: #94704a;">{{ invoice.total|formatCurrency(currency) }}</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

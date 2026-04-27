@@ -1,0 +1,93 @@
+{#
+ # Freelancer Friendly — warm, conversational; peach/green palette.
+ #}
+{% extends '@SolidInvoiceInvoice/Templates/_pdf_base.html.twig' %}
+{% import '@SolidInvoiceInvoice/Templates/_macros.html.twig' as inv %}
+
+{% set currency = invoice.client.currency %}
+{% set hasOutstandingBalance = invoice_has_outstanding_balance(invoice) %}
+{% set primary = invoice_primary_contact(invoice) %}
+{% set greeting = primary is not null and primary.firstName is not empty ? primary.firstName : invoice.client.name %}
+
+{% block extra_styles %}
+    body { background-color: #fffaf3; }
+{% endblock %}
+
+{% block body_attrs %} style="background-color: #fffaf3;"{% endblock %}
+
+{% block body %}
+<div style="padding: 16px 0;">
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 24px;">
+        <tr>
+            <td style="vertical-align: middle;">
+                {% if setting('system/company/logo') is not empty %}{{ app_logo(40) }}{% endif %}
+                <div style="font-size: 14pt; font-weight: bold; color: #1e293b; margin-top: 8px;">{{ company_name() }}</div>
+            </td>
+            <td style="vertical-align: middle; text-align: right;">
+                <div style="font-size: 9pt; color: #94704a; letter-spacing: 2px; text-transform: uppercase;">{{ 'invoice.pdf.title'|trans }}</div>
+                <div style="font-size: 18pt; font-weight: bold; color: #1e293b;">#{{ invoice.invoiceId }}</div>
+            </td>
+        </tr>
+    </table>
+
+    <div style="font-family: Georgia, serif; font-size: 16pt; color: #1e293b; margin-bottom: 8px;">
+        {{ 'invoice.template.friendly.greeting'|trans({'%name%': greeting}) }}
+    </div>
+    <div style="font-size: 10pt; color: #475569; line-height: 1.6; margin-bottom: 24px;">
+        {{ 'invoice.template.friendly.intro'|trans }}
+    </div>
+
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 24px;">
+        <tr>
+            <td style="background-color: #fff1e0; padding: 16px 18px; vertical-align: top; width: 33%;">
+                <div style="font-size: 8pt; color: #94704a; text-transform: uppercase; letter-spacing: 1px;">{{ 'invoice.date'|trans }}</div>
+                <div style="font-size: 11pt; font-weight: 600; color: #1e293b;">{{ invoice.invoiceDate|date('F j, Y') }}</div>
+            </td>
+            <td style="width: 4px;"></td>
+            <td style="background-color: #fff1e0; padding: 16px 18px; vertical-align: top; width: 33%;">
+                <div style="font-size: 8pt; color: #94704a; text-transform: uppercase; letter-spacing: 1px;">{{ 'invoice.due_date'|trans }}</div>
+                <div style="font-size: 11pt; font-weight: 600; color: #1e293b;">{% if invoice.due %}{{ invoice.due|date('F j, Y') }}{% else %}—{% endif %}</div>
+            </td>
+            <td style="width: 4px;"></td>
+            <td style="background-color: #ecf7ee; padding: 16px 18px; vertical-align: top; width: 34%;">
+                <div style="font-size: 8pt; color: #2e963a; text-transform: uppercase; letter-spacing: 1px;">{% if hasOutstandingBalance %}{{ 'invoice.balance_due'|trans }}{% else %}{{ 'invoice.total_due'|trans }}{% endif %}</div>
+                <div style="font-size: 14pt; font-weight: bold; color: #166534;">{{ (hasOutstandingBalance ? invoice.balance : invoice.total)|formatCurrency(currency) }}</div>
+            </td>
+        </tr>
+    </table>
+
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 24px;">
+        <tr>
+            <td style="width: 50%; vertical-align: top;">{{ inv.from_block() }}</td>
+            <td style="width: 50%; vertical-align: top;">{{ inv.bill_to_block(invoice) }}</td>
+        </tr>
+    </table>
+
+    <table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
+        <thead>
+            <tr>
+                <th style="padding: 10px 12px; font-size: 8pt; text-transform: uppercase; letter-spacing: 1px; color: #94704a; text-align: left; border-bottom: 1px solid #e8d7b8;">{{ 'invoice.item.heading.description'|trans }}</th>
+                <th style="padding: 10px 12px; font-size: 8pt; text-transform: uppercase; letter-spacing: 1px; color: #94704a; text-align: right; border-bottom: 1px solid #e8d7b8; width: 60px;">{{ 'invoice.item.heading.qty'|trans }}</th>
+                <th style="padding: 10px 12px; font-size: 8pt; text-transform: uppercase; letter-spacing: 1px; color: #94704a; text-align: right; border-bottom: 1px solid #e8d7b8; width: 100px;">{{ 'invoice.item.heading.total'|trans }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for line in invoice.lines %}
+                <tr>
+                    <td style="padding: 12px; font-size: 10pt; color: #1e293b; border-bottom: 1px solid #f1eada;">{{ line.description|nl2br }}</td>
+                    <td style="padding: 12px; font-size: 10pt; color: #475569; border-bottom: 1px solid #f1eada; text-align: right;">{{ line.qty }}</td>
+                    <td style="padding: 12px; font-size: 10pt; color: #1e293b; border-bottom: 1px solid #f1eada; text-align: right; font-weight: 600;">{{ line.total|formatCurrency(currency) }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {{ inv.totals_block(invoice, currency, {totalBg: '#ecf7ee', totalColor: '#166534', balanceBg: '#fff1e0', balanceColor: '#94704a'}) }}
+    {{ inv.terms_block(invoice, {labelColor: '#94704a', borderColor: '#e8d7b8'}) }}
+
+    <div style="margin-top: 24px; font-family: Georgia, serif; font-size: 11pt; color: #475569; font-style: italic;">
+        {{ 'invoice.template.friendly.signoff'|trans }}
+    </div>
+    {{ inv.payment_cta(invoice) }}
+</div>
+{% endblock %}

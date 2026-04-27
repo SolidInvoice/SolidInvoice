@@ -272,6 +272,30 @@ invoice:
             description: 'Open-source invoicing software for freelancers and small businesses'
             visit_website: 'Visit SolidInvoice.co'
             github: 'GitHub'
+    template:
+        editorial:
+            heading: 'Statement of Account'
+            signoff: 'With gratitude,'
+        photographer:
+            subtitle: 'Photography & Visual Storytelling'
+            client_label: 'For'
+            studio_label: 'From the studio of'
+            intro_title: 'Thank you for the collaboration'
+            signoff: 'Looking forward to our next chapter,'
+        studio:
+            project_label: 'Project'
+            engagement: 'engagement'
+            studio: 'Studio'
+            client: 'Client'
+            deliverable: 'Deliverable'
+        friendly:
+            greeting: 'Hi %name%,'
+            intro: 'Thanks again for working with us. Here''s the invoice covering the work — happy to chat if anything looks off.'
+            signoff: 'Cheers, and talk soon.'
+        modern:
+            label: 'Statement'
+        compact:
+            label: 'INVOICE'
 
 invoice_status_update: 'Invoice Status Update'
 
