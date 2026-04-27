@@ -79,10 +79,12 @@ final class HostRoutingListener implements EventSubscriberInterface
 
         $request->attributes->set(self::REQUEST_ATTR, $resolved);
 
-        $this->syncRouterContext($resolved);
+        if ($resolved->isCustomDomain()) {
+            $this->syncRouterContext($resolved);
 
-        if ($resolved->isCustomDomain() && $this->isSelectorRoute($request)) {
-            throw new NotFoundHttpException();
+            if ($this->isSelectorRoute($request)) {
+                throw new NotFoundHttpException();
+            }
         }
     }
 
