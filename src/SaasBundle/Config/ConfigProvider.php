@@ -11,12 +11,10 @@
 
 namespace SolidInvoice\SaasBundle\Config;
 
-use SolidInvoice\CoreBundle\Validator\Constraints\NotApplicationUrlHost;
+use SolidInvoice\SaasBundle\Form\Type\CustomDomainType;
 use SolidInvoice\SettingsBundle\Config\ProviderInterface;
 use SolidInvoice\SettingsBundle\DTO\Config;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Validator\Constraints\Hostname;
 
 final class ConfigProvider implements ProviderInterface
 {
@@ -34,14 +32,8 @@ final class ConfigProvider implements ProviderInterface
                 'system/company/custom_domain',
                 null,
                 'Custom domain for this company (leave empty to use the default URL).',
-                TextType::class,
-                [
-                    'trial_restricted' => true,
-                    'constraints' => [
-                        new Hostname(['requireTld' => true]),
-                        new NotApplicationUrlHost(),
-                    ],
-                ],
+                CustomDomainType::class,
+                ['trial_restricted' => true],
             ),
         ];
     }
