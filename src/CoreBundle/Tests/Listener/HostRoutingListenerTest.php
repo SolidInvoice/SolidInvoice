@@ -88,12 +88,12 @@ final class HostRoutingListenerTest extends TestCase
         $listener->onKernelRequest($this->event(Request::create('https://rogue.example/')));
     }
 
-    public function testStoresResolvedHostAndSyncsRouterContext(): void
+    public function testStoresResolvedHostAndLeavesDefaultHostContextUntouched(): void
     {
         $repository = M::mock(CompanyRepository::class);
         $repository->shouldNotReceive('findOneByCustomDomain');
 
-        $context = new RequestContext();
+        $context = new RequestContext('', 'GET', 'app.example.com', 'http', 8080, 0);
         $router = M::mock(RouterInterface::class);
         $router->shouldReceive('getContext')->andReturn($context);
 
@@ -103,13 +103,40 @@ final class HostRoutingListenerTest extends TestCase
             '2025',
         );
 
-        $request = Request::create('https://app.example.com/dashboard');
+        $request = Request::create('http://app.example.com:8080/dashboard');
         $listener->onKernelRequest($this->event($request));
 
         $resolved = $request->attributes->get(HostRoutingListener::REQUEST_ATTR);
         self::assertInstanceOf(ResolvedHost::class, $resolved);
         self::assertSame(HostType::DefaultHost, $resolved->type);
+        // Default host requests must not override Symfony's RouterListener context
         self::assertSame('app.example.com', $context->getHost());
+        self::assertSame('http', $context->getScheme());
+        self::assertSame(8080, $context->getHttpPort());
+    }
+
+    public function testSyncsRouterContextForCustomDomain(): void
+    {
+        $repository = M::mock(CompanyRepository::class);
+        $repository->shouldReceive('findOneByCustomDomain')->once()->with('acme.example')->andReturn(new Company());
+
+        $context = new RequestContext('', 'GET', 'acme.example', 'http', 80, 0);
+        $router = M::mock(RouterInterface::class);
+        $router->shouldReceive('getContext')->andReturn($context);
+
+        $listener = new HostRoutingListener(
+            $this->resolver($repository, 'https://app.example.com'),
+            $router,
+            '2025',
+        );
+
+        $request = Request::create('http://acme.example/dashboard');
+        $listener->onKernelRequest($this->event($request));
+
+        $resolved = $request->attributes->get(HostRoutingListener::REQUEST_ATTR);
+        self::assertInstanceOf(ResolvedHost::class, $resolved);
+        self::assertSame(HostType::CustomDomain, $resolved->type);
+        self::assertSame('acme.example', $context->getHost());
         self::assertSame('https', $context->getScheme());
         self::assertSame(443, $context->getHttpsPort());
     }
