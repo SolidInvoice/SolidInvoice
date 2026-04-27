@@ -58,7 +58,14 @@ final class Settings extends AbstractController
         private readonly SettingsRepository $settingsRepository,
         private readonly PropertyAccessorInterface $propertyAccessor,
         private readonly ?\SolidInvoice\SaasBundle\Service\SubscriptionService $subscriptionService = null,
+        private readonly string $customDomainDnsRecord = '',
     ) {
+    }
+
+    #[ExposeInTemplate('custom_domain_dns_record')]
+    public function getCustomDomainDnsRecord(): string
+    {
+        return $this->customDomainDnsRecord;
     }
 
     #[PreMount()]
