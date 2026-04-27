@@ -27,6 +27,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autowire()
         ->private()
         ->bind('$installed', env('SOLIDINVOICE_INSTALLED'))
+        ->bind('$customDomainDnsRecord', env('SOLIDINVOICE_CUSTOM_DOMAIN_DNS_RECORD'))
     ;
 
     $services
