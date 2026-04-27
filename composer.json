@@ -193,7 +193,7 @@
         "twig/markdown-extra": "^3.4",
         "twig/string-extra": "^3.10",
         "twig/twig": "^3.4",
-        "webmozart/assert": "^1.11",
+        "webmozart/assert": "^2.3",
         "webonyx/graphql-php": "^15.0",
         "willdurand/negotiation": "^3.0"
     },
