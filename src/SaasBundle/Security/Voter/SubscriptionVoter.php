@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace SolidInvoice\SaasBundle\Security\Voter;
 
 use Psr\Clock\ClockInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use SolidInvoice\ApiBundle\Security\Attribute as ApiAttribute;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
@@ -30,13 +32,17 @@ use Throwable;
 
 final class SubscriptionVoter extends Voter
 {
+    private readonly LoggerInterface $logger;
+
     public function __construct(
         private readonly ToggleInterface $toggler,
         private readonly SubscriptionProviderInterface $subscriptionProvider,
         private readonly CompanySelector $companySelector,
         private readonly CompanyRepository $companyRepository,
         private readonly ClockInterface $clock,
+        ?LoggerInterface $logger = null,
     ) {
+        $this->logger = $logger ?? new NullLogger();
     }
 
     protected function supports(string $attribute, mixed $subject): bool
@@ -80,9 +86,19 @@ final class SubscriptionVoter extends Voter
                     : $this->deny($vote, 'Your subscription has ended. Renew it to continue using this resource.'),
                 SubscriptionStatus::PAUSED => $this->deny($vote, 'Your subscription is currently paused. Reactivate it to continue using this resource.'),
                 SubscriptionStatus::PENDING => $this->deny($vote, 'Your subscription payment is still being processed. Access will resume once it completes.'),
-                default => true,
+                // Any other known-or-future SubscriptionStatus (INACTIVE, PAST_DUE, UNPAID, …)
+                // fails closed. Future enum cases must be wired up explicitly above.
+                default => $this->deny($vote, 'Your subscription is not currently active.'),
             };
-        } catch (Throwable) {
+        } catch (Throwable $e) {
+            // Self-hosted dev/test environments may not have the SaaS schema present even
+            // when this voter is registered. Log and grant so authentication still works
+            // — production SaaS deployments will surface the failure via the logger.
+            $this->logger->warning(
+                'SubscriptionVoter failed to evaluate access; granting by default.',
+                ['exception' => $e],
+            );
+
             return true;
         }
     }

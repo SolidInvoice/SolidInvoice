@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace SolidInvoice\McpBundle\Tests\Functional;
 
 use DateTimeImmutable;
+use League\OAuth2\Server\ResourceServer;
 use Mockery as M;
+use Psr\Http\Message\ServerRequestInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\McpBundle\Entity\McpAccessToken;
@@ -34,6 +36,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecision;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Vote;
+use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Zenstruck\Foundry\Test\Factories;
 
 /**
@@ -122,6 +125,29 @@ final class SubscriptionGateTest extends KernelTestCase
         self::assertSame('Access denied.', $body['error_description']);
     }
 
+    /**
+     * On self-hosted installs SaasBundle is not loaded, so no voter supports
+     * `mcp.access`. The affirmative strategy would otherwise default to deny
+     * when all voters abstain — the authenticator must treat that as a grant.
+     */
+    public function testAllVotersAbstainAllowsRequest(): void
+    {
+        $token = $this->createPersistedToken();
+
+        $authenticator = $this->buildAuthenticator($token, $this->abstainingAuthorizationChecker());
+
+        $request = Request::create('/_mcp', 'POST', [], [], [], ['HTTP_AUTHORIZATION' => 'Bearer fake.jwt.token']);
+        $authenticator->authenticate($request);
+
+        $response = $authenticator->onAuthenticationSuccess(
+            $request,
+            M::mock(TokenInterface::class),
+            'mcp',
+        );
+
+        self::assertNull($response, 'No voter denied → request should not be blocked.');
+    }
+
     private function createPersistedToken(): McpAccessToken
     {
         $container = self::getContainer();
@@ -185,6 +211,23 @@ final class SubscriptionGateTest extends KernelTestCase
         return $checker;
     }
 
+    private function abstainingAuthorizationChecker(): AuthorizationCheckerInterface
+    {
+        $checker = M::mock(AuthorizationCheckerInterface::class);
+        $checker
+            ->shouldReceive('isGranted')
+            ->with(McpAttribute::ACCESS, null, M::any())
+            ->andReturnUsing(static function (string $attribute, mixed $subject, AccessDecision $decision): bool {
+                // Mirrors AffirmativeStrategy when no voter votes: returns false
+                // with no denial recorded in the AccessDecision.
+                $decision->isGranted = false;
+
+                return false;
+            });
+
+        return $checker;
+    }
+
     private function denyingAuthorizationChecker(?string $reason): AuthorizationCheckerInterface
     {
         $checker = M::mock(AuthorizationCheckerInterface::class);
@@ -194,11 +237,12 @@ final class SubscriptionGateTest extends KernelTestCase
             ->andReturnUsing(static function (string $attribute, mixed $subject, AccessDecision $decision) use ($reason): bool {
                 $decision->isGranted = false;
 
+                $vote = new Vote();
+                $vote->result = VoterInterface::ACCESS_DENIED;
                 if ($reason !== null) {
-                    $vote = new Vote();
                     $vote->addReason($reason);
-                    $decision->votes[] = $vote;
                 }
+                $decision->votes[] = $vote;
 
                 return false;
             });
@@ -208,14 +252,14 @@ final class SubscriptionGateTest extends KernelTestCase
 
     private function buildMockServerFactory(string $jti, string $userId): ServerFactoryInterface
     {
-        $validatedRequest = $this->createStub(\Psr\Http\Message\ServerRequestInterface::class);
+        $validatedRequest = $this->createStub(ServerRequestInterface::class);
         $validatedRequest->method('getAttribute')->willReturnMap([
             ['oauth_access_token_id', null, $jti],
             ['oauth_user_id', null, $userId],
             ['oauth_scopes', null, ['mcp:read']],
         ]);
 
-        $resourceServer = $this->createStub(\League\OAuth2\Server\ResourceServer::class);
+        $resourceServer = $this->createStub(ResourceServer::class);
         $resourceServer->method('validateAuthenticatedRequest')->willReturn($validatedRequest);
 
         $factory = $this->createStub(ServerFactoryInterface::class);
