@@ -71,6 +71,7 @@ final class PaymentDummyDataLoader implements DummyDataLoaderInterface
             $payment->setNumber($this->faker->numerify('PAY-######'));
             $payment->setTotalAmount($invoice->getTotal()->toBigInteger()->toInt());
             $payment->setCurrencyCode($currencyCode);
+            $payment->setCreated($invoice->getPaidDate());
 
             $firstContact = $client->getContacts()->first();
             if (false !== $firstContact) {
