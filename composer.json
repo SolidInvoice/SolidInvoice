@@ -127,7 +127,7 @@
         "symfony/mcp-bundle": "^0.8",
         "symfony/mercure-notifier": "^7.1",
         "symfony/message-bird-notifier": "^7.1",
-        "symfony/message-media-notifier": "^7.1",
+        "symfony/message-media-notifier": "^8.0",
         "symfony/messenger": "^7.1",
         "symfony/microsoft-teams-notifier": "^7.1",
         "symfony/mime": "^7.1",
