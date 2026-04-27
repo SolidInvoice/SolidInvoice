@@ -1,0 +1,71 @@
+{# Compact Dense preview #}
+{% set currency = invoice.client.currency %}
+
+<div class="invoice-template invoice-template-compact">
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <div class="d-flex">
+                <div style="background: #2e963a; width: 8px;"></div>
+                <div class="flex-grow-1 p-3 text-white" style="background: #0f172a;">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="fs-5 fw-bold mb-0">{{ company_name() }}</div>
+                            <div class="text-secondary small" style="letter-spacing: 1px;">{{ 'invoice.pdf.title'|trans }} #{{ invoice.invoiceId }}</div>
+                        </div>
+                        <div class="text-end">
+                            <div class="text-secondary small">{{ 'invoice.date'|trans }}: {{ invoice.invoiceDate|date('Y-m-d') }}{% if invoice.due %} · {{ 'invoice.due_date'|trans }}: {{ invoice.due|date('Y-m-d') }}{% endif %}</div>
+                            <div class="fs-5 fw-bold">{{ invoice.total|formatCurrency(currency) }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-3">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="text-muted small text-uppercase">{{ 'invoice.from'|trans }}</div>
+                        <strong>{{ company_name() }}</strong>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="text-muted small text-uppercase">{{ 'invoice.to'|trans }}</div>
+                        <strong>{{ invoice.client }}</strong>
+                    </div>
+                </div>
+
+                <table class="table table-sm table-striped mb-3">
+                    <thead style="background: #0f172a; color: #ffffff;">
+                        <tr>
+                            <th class="text-uppercase small">#</th>
+                            <th class="text-uppercase small">{{ 'invoice.item.heading.description'|trans }}</th>
+                            <th class="text-uppercase small text-end">{{ 'invoice.item.heading.qty'|trans }}</th>
+                            <th class="text-uppercase small text-end">{{ 'invoice.item.heading.price'|trans }}</th>
+                            <th class="text-uppercase small text-end">{{ 'invoice.item.heading.total'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for line in invoice.lines %}
+                            <tr>
+                                <td class="text-muted small">{{ loop.index }}</td>
+                                <td class="small">{{ line.description|nl2br }}</td>
+                                <td class="text-end font-monospace small">{{ line.qty }}</td>
+                                <td class="text-end font-monospace small">{{ line.price|formatCurrency(currency) }}</td>
+                                <td class="text-end font-monospace small fw-bold">{{ line.total|formatCurrency(currency) }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <div class="row justify-content-end">
+                    <div class="col-md-5">
+                        <div class="d-flex justify-content-between mb-2"><span>{{ 'invoice.subtotal'|trans }}</span><span class="font-monospace">{{ invoice.baseTotal|formatCurrency(currency) }}</span></div>
+                        {% if invoice.tax.positive %}<div class="d-flex justify-content-between mb-2 text-muted"><span>{{ 'invoice.tax'|trans }}</span><span class="font-monospace">{{ invoice.tax|formatCurrency(currency) }}</span></div>{% endif %}
+                        <div class="d-flex justify-content-between p-3 rounded" style="background: #0f172a; color: #ffffff;">
+                            <strong>{{ 'invoice.total'|trans }}</strong>
+                            <strong class="font-monospace">{{ invoice.total|formatCurrency(currency) }}</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

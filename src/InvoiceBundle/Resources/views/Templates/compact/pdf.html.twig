@@ -1,0 +1,63 @@
+{#
+ # Compact Dense — information-rich, zebra rows, dark header, green left rail.
+ #}
+{% extends '@SolidInvoiceInvoice/Templates/_pdf_base.html.twig' %}
+{% import '@SolidInvoiceInvoice/Templates/_macros.html.twig' as inv %}
+
+{% set currency = invoice.client.currency %}
+
+{% block body %}
+<table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-bottom: 16px;">
+    <tr>
+        <td style="background-color: #2e963a; width: 6px;"></td>
+        <td style="background-color: #0f172a; padding: 14px 18px;">
+            <table cellpadding="0" cellspacing="0" style="width: 100%;">
+                <tr>
+                    <td style="vertical-align: middle; color: #ffffff;">
+                        <div style="font-size: 16pt; font-weight: bold;">{{ company_name() }}</div>
+                        <div style="font-size: 8pt; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px;">{{ 'invoice.pdf.title'|trans }} #{{ invoice.invoiceId }}</div>
+                    </td>
+                    <td style="vertical-align: middle; text-align: right; color: #ffffff;">
+                        <div style="font-size: 8pt; color: #94a3b8;">{{ 'invoice.date'|trans }}: {{ invoice.invoiceDate|date('Y-m-d') }}{% if invoice.due %} · {{ 'invoice.due_date'|trans }}: {{ invoice.due|date('Y-m-d') }}{% endif %}</div>
+                        <div style="font-size: 16pt; font-weight: bold;">{{ invoice.total|formatCurrency(currency) }}</div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<table cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 12px;">
+    <tr>
+        <td style="width: 50%; vertical-align: top;">{{ inv.from_block() }}</td>
+        <td style="width: 50%; vertical-align: top;">{{ inv.bill_to_block(invoice) }}</td>
+    </tr>
+</table>
+
+<table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-bottom: 16px;">
+    <thead>
+        <tr style="background-color: #0f172a; color: #ffffff;">
+            <th style="padding: 8px 12px; font-size: 8pt; text-align: center; width: 32px;">#</th>
+            <th style="padding: 8px 12px; font-size: 8pt; text-align: left;">{{ 'invoice.item.heading.description'|trans }}</th>
+            <th style="padding: 8px 12px; font-size: 8pt; text-align: right; width: 60px;">{{ 'invoice.item.heading.qty'|trans }}</th>
+            <th style="padding: 8px 12px; font-size: 8pt; text-align: right; width: 90px;">{{ 'invoice.item.heading.price'|trans }}</th>
+            <th style="padding: 8px 12px; font-size: 8pt; text-align: right; width: 100px;">{{ 'invoice.item.heading.total'|trans }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for line in invoice.lines %}
+            <tr{% if loop.index0 is divisible by(2) %} style="background-color: #f8fafc;"{% endif %}>
+                <td style="padding: 8px 12px; font-size: 8pt; text-align: center; color: #64748b;">{{ loop.index }}</td>
+                <td style="padding: 8px 12px; font-size: 8pt; color: #1e293b;">{{ line.description|nl2br }}</td>
+                <td style="padding: 8px 12px; font-size: 8pt; text-align: right; font-family: 'Courier New', monospace;">{{ line.qty }}</td>
+                <td style="padding: 8px 12px; font-size: 8pt; text-align: right; font-family: 'Courier New', monospace;">{{ line.price|formatCurrency(currency) }}</td>
+                <td style="padding: 8px 12px; font-size: 8pt; text-align: right; font-family: 'Courier New', monospace; font-weight: 600;">{{ line.total|formatCurrency(currency) }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{{ inv.totals_block(invoice, currency, {totalBg: '#0f172a', totalColor: '#ffffff', balanceBg: '#0f172a', balanceColor: '#fbbf24'}) }}
+{{ inv.terms_block(invoice) }}
+{{ inv.payment_cta(invoice) }}
+{% endblock %}

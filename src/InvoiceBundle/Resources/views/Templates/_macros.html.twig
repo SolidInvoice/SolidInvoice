@@ -1,0 +1,188 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #
+ # Shared macros for invoice templates. Used by every template under
+ # `Templates/{slug}/{pdf,email,preview}.html.twig` to keep markup consistent.
+ #}
+
+{% macro bill_to_block(invoice, label='invoice.to') %}
+    <div>
+        <div style="font-size: 8pt; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; color: #64748b; margin-bottom: 8px;">
+            {{ label|trans }}
+        </div>
+        <div style="font-size: 14pt; font-weight: 600; color: #1e293b; margin-bottom: 8px;">
+            {{ invoice.client }}
+        </div>
+        <div style="font-size: 9pt; color: #475569; line-height: 1.6;">
+            {% if invoice.client.vatNumber is not empty %}
+                <div><span style="font-weight: 600; color: #1e293b;">{{ 'tax.vat_number'|trans }}:</span> {{ invoice.client.vatNumber }}</div>
+            {% endif %}
+
+            {% for clientAddress in invoice.client.addresses %}
+                <div>{{ clientAddress|replace({"\n": ", "}) }}</div>
+            {% endfor %}
+
+            {% set primary = invoice_primary_contact(invoice) %}
+            {% if primary is not null and primary.email is not empty %}
+                <div style="margin-top: 4px;">{{ primary.email }}</div>
+            {% endif %}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro from_block(label='invoice.from') %}
+    <div>
+        <div style="font-size: 8pt; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; color: #64748b; margin-bottom: 8px;">
+            {{ label|trans }}
+        </div>
+        <div style="font-size: 14pt; font-weight: 600; color: #1e293b; margin-bottom: 8px;">
+            {{ company_name() }}
+        </div>
+        <div style="font-size: 9pt; color: #475569; line-height: 1.6;">
+            {% set vatNumber = setting('system/company/vat_number') %}
+            {% if vatNumber is not empty %}
+                <div><span style="font-weight: 600; color: #1e293b;">{{ 'tax.vat_number'|trans }}:</span> {{ vatNumber }}</div>
+            {% endif %}
+
+            {% set companyEmail = setting('system/company/contact_details/email') %}
+            {% if companyEmail is not empty %}
+                <div>{{ companyEmail }}</div>
+            {% endif %}
+
+            {% set companyPhone = setting('system/company/contact_details/phone_number') %}
+            {% if companyPhone is not empty %}
+                <div>{{ companyPhone }}</div>
+            {% endif %}
+
+            {% set companyAddress = setting('system/company/contact_details/address', null, true) %}
+            {% if companyAddress is not empty %}
+                <div>{{ address(companyAddress)|replace({"\n": ", "}) }}</div>
+            {% endif %}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro meta_pair(label, value, mono=false) %}
+    <div style="margin-bottom: 6px;">
+        <div style="font-size: 8pt; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">{{ label }}</div>
+        <div style="font-size: 10pt; color: #1e293b; font-weight: 500;{% if mono %} font-family: 'Courier New', monospace;{% endif %}">{{ value }}</div>
+    </div>
+{% endmacro %}
+
+{#
+ # totals_block
+ #
+ # palette keys: subtotalLabel, taxLabel, discountLabel, totalLabel, totalBg, totalColor,
+ # balanceBg, balanceColor, paymentColor, monoFont
+ #}
+{% macro totals_block(invoice, currency, palette={}) %}
+    {% set p = {
+        subtotalColor: '#1e293b',
+        labelColor: '#475569',
+        discountColor: '#ef4444',
+        paymentColor: '#10b981',
+        totalBg: '#f0fdf4',
+        totalColor: '#166534',
+        balanceBg: '#fef3c7',
+        balanceColor: '#92400e',
+        mono: 'Courier New, monospace'
+    }|merge(palette) %}
+    {% set hasOutstandingBalance = invoice_has_outstanding_balance(invoice) %}
+
+    <table cellpadding="0" cellspacing="0" style="width: 280px; border-collapse: collapse; margin-left: auto;">
+        <tr>
+            <td style="padding: 8px 20px 8px 12px; font-size: 9pt; text-align: right; font-weight: 600; color: {{ p.subtotalColor }};">
+                {{ 'invoice.subtotal'|trans }}
+            </td>
+            <td style="padding: 8px 12px; font-size: 9pt; text-align: right; font-family: {{ p.mono }}; color: #1e293b;">
+                {{ invoice.baseTotal|formatCurrency(currency) }}
+            </td>
+        </tr>
+        {% if invoice.tax.positive %}
+            <tr>
+                <td style="padding: 8px 20px 8px 12px; font-size: 9pt; text-align: right; color: {{ p.labelColor }};">
+                    {{ 'invoice.tax'|trans }}
+                </td>
+                <td style="padding: 8px 12px; font-size: 9pt; text-align: right; font-family: {{ p.mono }}; color: #1e293b;">
+                    {{ invoice.tax|formatCurrency(currency) }}
+                </td>
+            </tr>
+        {% endif %}
+        {% if invoice.discount.type is not empty %}
+            <tr>
+                <td style="padding: 8px 20px 8px 12px; font-size: 9pt; text-align: right; color: {{ p.labelColor }};">
+                    {{ 'invoice.discount'|trans }}
+                </td>
+                <td style="padding: 8px 12px; font-size: 9pt; text-align: right; font-family: {{ p.mono }}; color: {{ p.discountColor }};">
+                    -{{ discount(invoice)|formatCurrency(currency) }}
+                </td>
+            </tr>
+        {% endif %}
+        {% if hasOutstandingBalance %}
+            {% for payment in invoice_captured_payments(invoice) %}
+                <tr>
+                    <td style="padding: 8px 20px 8px 12px; font-size: 9pt; text-align: right; color: {{ p.labelColor }};">
+                        {{ 'invoice.payment.label'|trans }}: {{ payment.method.name }}
+                    </td>
+                    <td style="padding: 8px 12px; font-size: 9pt; text-align: right; font-family: {{ p.mono }}; color: {{ p.paymentColor }};">
+                        -{{ payment.totalAmount|formatCurrency(currency) }}
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+        <tr><td colspan="2" style="padding: 8px 0; border-bottom: 1px solid #e2e8f0;"></td></tr>
+        {% if hasOutstandingBalance %}
+            <tr style="background-color: {{ p.balanceBg }};">
+                <td style="padding: 14px 20px 14px 12px; font-size: 12pt; font-weight: bold; text-align: right; color: #1e293b;">
+                    {{ 'invoice.balance'|trans }}
+                </td>
+                <td style="padding: 14px 12px; font-size: 14pt; font-weight: bold; text-align: right; font-family: {{ p.mono }}; color: {{ p.balanceColor }};">
+                    {{ invoice.balance|formatCurrency(currency) }}
+                </td>
+            </tr>
+        {% else %}
+            <tr style="background-color: {{ p.totalBg }};">
+                <td style="padding: 14px 20px 14px 12px; font-size: 12pt; font-weight: bold; text-align: right; color: #1e293b;">
+                    {{ 'invoice.total'|trans }}
+                </td>
+                <td style="padding: 14px 12px; font-size: 14pt; font-weight: bold; text-align: right; font-family: {{ p.mono }}; color: {{ p.totalColor }};">
+                    {{ invoice.total|formatCurrency(currency) }}
+                </td>
+            </tr>
+        {% endif %}
+    </table>
+{% endmacro %}
+
+{% macro terms_block(invoice, palette={}) %}
+    {% if invoice.terms is not empty %}
+        {% set p = {labelColor: '#64748b', textColor: '#475569', borderColor: '#e2e8f0'}|merge(palette) %}
+        <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid {{ p.borderColor }};">
+            <div style="font-size: 9pt; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; color: {{ p.labelColor }}; margin-bottom: 8px;">
+                {{ 'invoice.terms'|trans }}
+            </div>
+            <div style="font-size: 9pt; color: {{ p.textColor }}; line-height: 1.6;">
+                {{ invoice.terms|nl2br }}
+            </div>
+        </div>
+    {% endif %}
+{% endmacro %}
+
+{% macro payment_cta(invoice, color='#2e963a') %}
+    {% if invoice.status != enum('SolidInvoice\\InvoiceBundle\\Enum\\InvoiceStatus').Paid and payments_configured(false) > 0 %}
+        {% set paymentUrl = url("_payments_create", {"uuid" : invoice.uuid}) %}
+        <table cellpadding="0" cellspacing="0" style="margin-top: 16px;">
+            <tr>
+                <td style="background-color: {{ color }}; padding: 10px 20px; border-radius: 6px;">
+                    <a href="{{ paymentUrl }}" style="color: #ffffff; font-size: 10pt; font-weight: bold; text-decoration: none;">
+                        {{ 'invoice.action.pay_now'|trans }}
+                    </a>
+                </td>
+            </tr>
+        </table>
+    {% endif %}
+{% endmacro %}

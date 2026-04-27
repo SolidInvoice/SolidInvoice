@@ -1,0 +1,72 @@
+{# Modern Minimal preview #}
+{% set currency = invoice.client.currency %}
+{% set hasOutstandingBalance = invoice_has_outstanding_balance(invoice) %}
+
+<div class="invoice-template invoice-template-modern" style="background: #ffffff;">
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-5">
+            <div class="mb-5">
+                <div class="text-muted text-uppercase mb-2" style="font-size: 12px; letter-spacing: 4px;">{{ 'invoice.pdf.title'|trans }} · #{{ invoice.invoiceId }}</div>
+                <div class="text-muted text-uppercase mb-2" style="font-size: 13px; letter-spacing: 2px;">
+                    {% if hasOutstandingBalance %}{{ 'invoice.balance_due'|trans }}{% else %}{{ 'invoice.total_due'|trans }}{% endif %}
+                </div>
+                <div class="display-3 fw-bold text-dark mb-0" style="line-height: 1;">
+                    {{ (hasOutstandingBalance ? invoice.balance : invoice.total)|formatCurrency(currency) }}
+                </div>
+            </div>
+
+            <div class="row mb-5 pt-4 border-top">
+                <div class="col-md-4">
+                    <div class="text-muted small text-uppercase mb-1" style="letter-spacing: 1px;">{{ 'invoice.from'|trans }}</div>
+                    <div class="fw-bold">{{ company_name() }}</div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-muted small text-uppercase mb-1" style="letter-spacing: 1px;">{{ 'invoice.to'|trans }}</div>
+                    <div class="fw-bold">{{ invoice.client }}</div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-muted small text-uppercase mb-1" style="letter-spacing: 1px;">{{ 'invoice.date'|trans }}</div>
+                    <div>{{ invoice.invoiceDate|date('F j, Y') }}</div>
+                    {% if invoice.due %}
+                        <div class="text-muted small text-uppercase mb-1 mt-2" style="letter-spacing: 1px;">{{ 'invoice.due_date'|trans }}</div>
+                        <div>{{ invoice.due|date('F j, Y') }}</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <table class="table table-borderless">
+                <thead>
+                    <tr class="border-bottom">
+                        <th class="text-muted small text-uppercase" style="letter-spacing: 1px;">{{ 'invoice.item.heading.description'|trans }}</th>
+                        <th class="text-muted small text-uppercase text-end" style="letter-spacing: 1px;">{{ 'invoice.item.heading.qty'|trans }}</th>
+                        <th class="text-muted small text-uppercase text-end" style="letter-spacing: 1px;">{{ 'invoice.item.heading.price'|trans }}</th>
+                        <th class="text-muted small text-uppercase text-end" style="letter-spacing: 1px;">{{ 'invoice.item.heading.total'|trans }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for line in invoice.lines %}
+                        <tr class="border-bottom">
+                            <td class="py-3">{{ line.description|nl2br }}</td>
+                            <td class="py-3 text-end">{{ line.qty }}</td>
+                            <td class="py-3 text-end">{{ line.price|formatCurrency(currency) }}</td>
+                            <td class="py-3 text-end fw-bold">{{ line.total|formatCurrency(currency) }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="row justify-content-end mt-4">
+                <div class="col-md-5">
+                    <div class="d-flex justify-content-between mb-2"><span>{{ 'invoice.subtotal'|trans }}</span><span>{{ invoice.baseTotal|formatCurrency(currency) }}</span></div>
+                    {% if invoice.tax.positive %}<div class="d-flex justify-content-between mb-2 text-muted"><span>{{ 'invoice.tax'|trans }}</span><span>{{ invoice.tax|formatCurrency(currency) }}</span></div>{% endif %}
+                    <div class="d-flex justify-content-between border-top pt-3 mt-3">
+                        <span class="fw-bold fs-5">{{ hasOutstandingBalance ? 'invoice.balance'|trans : 'invoice.total'|trans }}</span>
+                        <span class="fw-bold fs-3">{{ (hasOutstandingBalance ? invoice.balance : invoice.total)|formatCurrency(currency) }}</span>
+                    </div>
+                </div>
+            </div>
+
+            {% if invoice.terms is not empty %}<div class="mt-5 text-muted small">{{ invoice.terms|nl2br }}</div>{% endif %}
+        </div>
+    </div>
+</div>

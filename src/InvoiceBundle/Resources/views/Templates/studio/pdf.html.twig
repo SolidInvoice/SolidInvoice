@@ -1,0 +1,76 @@
+{#
+ # Studio / Agency — project-centric, big project name, green totals callout.
+ #}
+{% extends '@SolidInvoiceInvoice/Templates/_pdf_base.html.twig' %}
+{% import '@SolidInvoiceInvoice/Templates/_macros.html.twig' as inv %}
+
+{% set currency = invoice.client.currency %}
+{% set hasOutstandingBalance = invoice_has_outstanding_balance(invoice) %}
+
+{% block body %}
+<div style="margin-bottom: 20px;">
+    <table cellpadding="0" cellspacing="0" style="width: 100%;">
+        <tr>
+            <td style="vertical-align: top;">
+                {% if setting('system/company/logo') is not empty %}{{ app_logo(40) }}{% endif %}
+            </td>
+            <td style="vertical-align: top; text-align: right;">
+                <div style="font-size: 8pt; color: #64748b; letter-spacing: 2px; text-transform: uppercase;">{{ 'invoice.pdf.title'|trans }}</div>
+                <div style="font-size: 14pt; font-weight: bold; color: #1e293b;">#{{ invoice.invoiceId }}</div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div style="background-color: #f8fafc; padding: 24px 28px; margin-bottom: 24px; border-left: 4px solid #2e963a;">
+    <div style="font-size: 9pt; color: #64748b; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px;">{{ 'invoice.template.studio.project_label'|trans }}</div>
+    <div style="font-size: 24pt; font-weight: bold; color: #0f172a; line-height: 1.1;">{{ invoice.client }} {{ 'invoice.template.studio.engagement'|trans }}</div>
+</div>
+
+<table cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 24px;">
+    <tr>
+        <td style="width: 33%; vertical-align: top;">{{ inv.from_block('invoice.template.studio.studio') }}</td>
+        <td style="width: 33%; vertical-align: top;">{{ inv.bill_to_block(invoice, 'invoice.template.studio.client') }}</td>
+        <td style="width: 34%; vertical-align: top;">
+            {{ inv.meta_pair('invoice.date'|trans, invoice.invoiceDate|date('F j, Y')) }}
+            {% if invoice.due %}
+                {{ inv.meta_pair('invoice.due_date'|trans, invoice.due|date('F j, Y')) }}
+            {% endif %}
+        </td>
+    </tr>
+</table>
+
+<table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-bottom: 24px; border: 1px solid #e2e8f0;">
+    <thead>
+        <tr style="background-color: #0f172a; color: #ffffff;">
+            <th style="padding: 10px 14px; font-size: 8pt; text-align: left;">{{ 'invoice.template.studio.deliverable'|trans }}</th>
+            <th style="padding: 10px 14px; font-size: 8pt; text-align: right; width: 70px;">{{ 'invoice.item.heading.qty'|trans }}</th>
+            <th style="padding: 10px 14px; font-size: 8pt; text-align: right; width: 90px;">{{ 'invoice.item.heading.price'|trans }}</th>
+            <th style="padding: 10px 14px; font-size: 8pt; text-align: right; width: 100px;">{{ 'invoice.item.heading.total'|trans }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for line in invoice.lines %}
+            <tr>
+                <td style="padding: 12px 14px; font-size: 9pt; color: #1e293b; border-bottom: 1px solid #f1f5f9;">{{ line.description|nl2br }}</td>
+                <td style="padding: 12px 14px; font-size: 9pt; color: #1e293b; border-bottom: 1px solid #f1f5f9; text-align: right;">{{ line.qty }}</td>
+                <td style="padding: 12px 14px; font-size: 9pt; color: #1e293b; border-bottom: 1px solid #f1f5f9; text-align: right;">{{ line.price|formatCurrency(currency) }}</td>
+                <td style="padding: 12px 14px; font-size: 9pt; color: #1e293b; border-bottom: 1px solid #f1f5f9; text-align: right; font-weight: 600;">{{ line.total|formatCurrency(currency) }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<table cellpadding="0" cellspacing="0" style="width: 100%; background-color: #2e963a; margin-bottom: 16px;">
+    <tr>
+        <td style="padding: 20px 28px; color: #ffffff;">
+            <div style="font-size: 9pt; letter-spacing: 2px; text-transform: uppercase;">{% if hasOutstandingBalance %}{{ 'invoice.balance_due'|trans }}{% else %}{{ 'invoice.total_due'|trans }}{% endif %}</div>
+            <div style="font-size: 28pt; font-weight: bold;">{{ (hasOutstandingBalance ? invoice.balance : invoice.total)|formatCurrency(currency) }}</div>
+        </td>
+    </tr>
+</table>
+
+{{ inv.totals_block(invoice, currency) }}
+{{ inv.terms_block(invoice) }}
+{{ inv.payment_cta(invoice) }}
+{% endblock %}
