@@ -15,6 +15,7 @@ namespace SolidInvoice\CoreBundle\Tests\Company;
 
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\CoreBundle\Company\CompanyDomainResolver;
 use SolidInvoice\CoreBundle\Company\HostType;
@@ -72,6 +73,31 @@ final class CompanyDomainResolverTest extends TestCase
         self::assertSame('https', $resolved->scheme);
         self::assertSame(443, $resolved->port);
         self::assertSame($company, $resolved->company);
+    }
+
+    #[DataProvider('provideLoopbackHosts')]
+    public function testTreatsLoopbackHostsAsDefault(string $host): void
+    {
+        $repository = M::mock(CompanyRepository::class);
+        $repository->shouldNotReceive('findOneByCustomDomain');
+
+        $resolver = new CompanyDomainResolver($repository, 'https://app.example.com');
+
+        $resolved = $resolver->resolve($host);
+
+        self::assertTrue($resolved->isDefaultHost(), 'Loopback host ' . $host . ' should resolve as DefaultHost');
+    }
+
+    /**
+     * @return iterable<string, array{string}>
+     */
+    public static function provideLoopbackHosts(): iterable
+    {
+        yield 'localhost' => ['localhost'];
+        yield 'localhost with port stripped' => ['LOCALHOST'];
+        yield 'IPv4 loopback' => ['127.0.0.1'];
+        yield 'IPv6 loopback' => ['::1'];
+        yield 'IPv6 loopback bracketed' => ['[::1]'];
     }
 
     public function testReturnsUnknownWhenHostNotFound(): void

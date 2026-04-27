@@ -17,11 +17,15 @@ use League\Uri\Uri;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use Symfony\Contracts\Service\ResetInterface;
 use Throwable;
+use function in_array;
 use function rtrim;
 use function strtolower;
+use function trim;
 
 final class CompanyDomainResolver implements ResetInterface
 {
+    private const LOOPBACK_HOSTS = ['localhost', '127.0.0.1', '::1', '[::1]'];
+
     /**
      * @var array<string, ResolvedHost>
      */
@@ -51,7 +55,7 @@ final class CompanyDomainResolver implements ResetInterface
 
         $this->parseDefaultHost();
 
-        if ($this->defaultHost === null || $host === $this->defaultHost) {
+        if ($this->defaultHost === null || $host === $this->defaultHost || $this->isLoopbackHost($host)) {
             return $this->cache[$host] = new ResolvedHost(
                 HostType::DefaultHost,
                 $this->defaultHost ?? $host,
@@ -85,6 +89,12 @@ final class CompanyDomainResolver implements ResetInterface
         $this->cache = [];
         $this->defaultHostParsed = false;
         $this->defaultHost = null;
+    }
+
+    private function isLoopbackHost(string $host): bool
+    {
+        return in_array(trim($host, '[]'), ['localhost', '127.0.0.1', '::1'], true)
+            || in_array($host, self::LOOPBACK_HOSTS, true);
     }
 
     private function parseDefaultHost(): void
