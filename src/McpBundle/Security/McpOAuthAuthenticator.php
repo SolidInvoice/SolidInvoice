@@ -26,7 +26,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecision;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
@@ -125,12 +124,7 @@ final class McpOAuthAuthenticator extends AbstractAuthenticator
         // Symfony 7.3+ accepts an AccessDecision as a third optional argument;
         // the interface declaration still describes it via comment-only signature.
         // @phpstan-ignore arguments.count
-        $granted = $this->authorizationChecker->isGranted(Attribute::ACCESS, null, $decision);
-
-        // Treat "no voter denied" as a grant: on self-hosted installs the SaaS
-        // voter is not registered, so all voters abstain and the affirmative
-        // strategy would otherwise default to denial.
-        if (! $granted && $this->hasDenialVote($decision)) {
+        if (! $this->authorizationChecker->isGranted(Attribute::ACCESS, null, $decision)) {
             return $this->buildAccessDeniedResponse($this->extractReason($decision));
         }
 
@@ -179,16 +173,5 @@ final class McpOAuthAuthenticator extends AbstractAuthenticator
         $message = trim(implode(' ', $reasons));
 
         return $message === '' ? 'Access denied.' : $message;
-    }
-
-    private function hasDenialVote(AccessDecision $decision): bool
-    {
-        foreach ($decision->votes as $vote) {
-            if ($vote->result === VoterInterface::ACCESS_DENIED) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

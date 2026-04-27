@@ -27,7 +27,6 @@ use SolidWorx\Platform\SaasBundle\Entity\Plan;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
 use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionProviderInterface;
-use SolidWorx\Toggler\ToggleInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Vote;
@@ -65,19 +64,11 @@ final class SubscriptionVoterTest extends KernelTestCase
 
     public function testAbstainsForUnsupportedAttribute(): void
     {
-        $voter = $this->createVoter(saasEnabled: true);
+        $voter = $this->createVoter();
 
         $result = $voter->vote(M::mock(TokenInterface::class), null, ['ROLE_USER']);
 
         self::assertSame(VoterInterface::ACCESS_ABSTAIN, $result);
-    }
-
-    #[DataProvider('provideAttributes')]
-    public function testGrantsWhenSaasDisabled(string $attribute): void
-    {
-        $voter = $this->createVoter(saasEnabled: false);
-
-        self::assertVoteResult(VoterInterface::ACCESS_GRANTED, $voter, $attribute);
     }
 
     #[DataProvider('provideAttributes')]
@@ -86,7 +77,6 @@ final class SubscriptionVoterTest extends KernelTestCase
         self::getContainer()->get(CompanySelector::class)->reset();
 
         $voter = $this->createVoter(
-            saasEnabled: true,
             subscription: $this->createSubscription(SubscriptionStatus::PAUSED),
         );
 
@@ -96,7 +86,7 @@ final class SubscriptionVoterTest extends KernelTestCase
     #[DataProvider('provideAttributes')]
     public function testGrantsWhenNoSubscription(string $attribute): void
     {
-        $voter = $this->createVoter(saasEnabled: true, subscription: null);
+        $voter = $this->createVoter(subscription: null);
 
         self::assertVoteResult(VoterInterface::ACCESS_GRANTED, $voter, $attribute);
     }
@@ -105,7 +95,6 @@ final class SubscriptionVoterTest extends KernelTestCase
     public function testGrantsWhenSubscriptionActive(string $attribute): void
     {
         $voter = $this->createVoter(
-            saasEnabled: true,
             subscription: $this->createSubscription(SubscriptionStatus::ACTIVE),
         );
 
@@ -116,7 +105,6 @@ final class SubscriptionVoterTest extends KernelTestCase
     public function testGrantsTrialBeforeEndDate(string $attribute): void
     {
         $voter = $this->createVoter(
-            saasEnabled: true,
             now: new DateTimeImmutable('2026-01-10'),
             subscription: $this->createSubscription(SubscriptionStatus::TRIAL, new DateTimeImmutable('2026-01-15')),
         );
@@ -128,7 +116,6 @@ final class SubscriptionVoterTest extends KernelTestCase
     public function testDeniesTrialAfterEndDate(string $attribute): void
     {
         $voter = $this->createVoter(
-            saasEnabled: true,
             now: new DateTimeImmutable('2026-01-20'),
             subscription: $this->createSubscription(SubscriptionStatus::TRIAL, new DateTimeImmutable('2026-01-15')),
         );
@@ -140,7 +127,6 @@ final class SubscriptionVoterTest extends KernelTestCase
     public function testGrantsCancelledWithinGrace(string $attribute): void
     {
         $voter = $this->createVoter(
-            saasEnabled: true,
             now: new DateTimeImmutable('2026-01-10'),
             subscription: $this->createSubscription(SubscriptionStatus::CANCELLED, new DateTimeImmutable('2026-01-15')),
         );
@@ -152,7 +138,6 @@ final class SubscriptionVoterTest extends KernelTestCase
     public function testDeniesCancelledAfterGrace(string $attribute): void
     {
         $voter = $this->createVoter(
-            saasEnabled: true,
             now: new DateTimeImmutable('2026-01-20'),
             subscription: $this->createSubscription(SubscriptionStatus::CANCELLED, new DateTimeImmutable('2026-01-15')),
         );
@@ -164,7 +149,6 @@ final class SubscriptionVoterTest extends KernelTestCase
     public function testGrantsExpiredWithinGrace(string $attribute): void
     {
         $voter = $this->createVoter(
-            saasEnabled: true,
             now: new DateTimeImmutable('2026-01-10'),
             subscription: $this->createSubscription(SubscriptionStatus::EXPIRED, new DateTimeImmutable('2026-01-15')),
         );
@@ -176,7 +160,6 @@ final class SubscriptionVoterTest extends KernelTestCase
     public function testDeniesExpiredAfterGrace(string $attribute): void
     {
         $voter = $this->createVoter(
-            saasEnabled: true,
             now: new DateTimeImmutable('2026-01-20'),
             subscription: $this->createSubscription(SubscriptionStatus::EXPIRED, new DateTimeImmutable('2026-01-15')),
         );
@@ -188,7 +171,6 @@ final class SubscriptionVoterTest extends KernelTestCase
     public function testDeniesPaused(string $attribute): void
     {
         $voter = $this->createVoter(
-            saasEnabled: true,
             subscription: $this->createSubscription(SubscriptionStatus::PAUSED),
         );
 
@@ -199,7 +181,6 @@ final class SubscriptionVoterTest extends KernelTestCase
     public function testDeniesPending(string $attribute): void
     {
         $voter = $this->createVoter(
-            saasEnabled: true,
             subscription: $this->createSubscription(SubscriptionStatus::PENDING),
         );
 
@@ -207,30 +188,8 @@ final class SubscriptionVoterTest extends KernelTestCase
     }
 
     #[DataProvider('provideAttributes')]
-    public function testGrantsOnUnexpectedException(string $attribute): void
-    {
-        $toggler = M::mock(ToggleInterface::class);
-        $toggler->shouldReceive('isActive')->with('saas_enabled')->andThrow(new \RuntimeException('table missing'));
-
-        $container = self::getContainer();
-
-        $voter = new SubscriptionVoter(
-            $toggler,
-            M::mock(SubscriptionProviderInterface::class),
-            $container->get(CompanySelector::class),
-            $container->get(CompanyRepository::class),
-            M::mock(ClockInterface::class),
-        );
-
-        self::assertVoteResult(VoterInterface::ACCESS_GRANTED, $voter, $attribute);
-    }
-
-    #[DataProvider('provideAttributes')]
     public function testGrantsWhenSubscriptionProviderThrows(string $attribute): void
     {
-        $toggler = M::mock(ToggleInterface::class);
-        $toggler->shouldReceive('isActive')->with('saas_enabled')->andReturnTrue();
-
         $provider = M::mock(SubscriptionProviderInterface::class);
         $provider->shouldReceive('getSubscriptionFor')
             ->andThrow(new \RuntimeException('subscription table missing'));
@@ -238,7 +197,6 @@ final class SubscriptionVoterTest extends KernelTestCase
         $container = self::getContainer();
 
         $voter = new SubscriptionVoter(
-            $toggler,
             $provider,
             $container->get(CompanySelector::class),
             $container->get(CompanyRepository::class),
@@ -252,7 +210,6 @@ final class SubscriptionVoterTest extends KernelTestCase
     public function testDeniesUnhandledSubscriptionStatus(string $attribute): void
     {
         $voter = $this->createVoter(
-            saasEnabled: true,
             subscription: $this->createSubscription(SubscriptionStatus::PAST_DUE),
         );
 
@@ -274,14 +231,10 @@ final class SubscriptionVoterTest extends KernelTestCase
     }
 
     private function createVoter(
-        bool $saasEnabled,
         ?Subscription $subscription = null,
         ?DateTimeImmutable $now = null,
     ): SubscriptionVoter {
         $container = self::getContainer();
-
-        $toggler = M::mock(ToggleInterface::class);
-        $toggler->shouldReceive('isActive')->with('saas_enabled')->andReturn($saasEnabled);
 
         $subscriptionProvider = M::mock(SubscriptionProviderInterface::class);
         $subscriptionProvider->shouldReceive('getSubscriptionFor')->andReturn($subscription);
@@ -290,7 +243,6 @@ final class SubscriptionVoterTest extends KernelTestCase
         $clock->shouldReceive('now')->andReturn($now ?? new DateTimeImmutable('2026-01-01'));
 
         return new SubscriptionVoter(
-            $toggler,
             $subscriptionProvider,
             $container->get(CompanySelector::class),
             $container->get(CompanyRepository::class),

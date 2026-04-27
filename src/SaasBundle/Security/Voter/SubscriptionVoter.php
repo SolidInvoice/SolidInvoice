@@ -23,19 +23,26 @@ use SolidInvoice\McpBundle\Security\Attribute as McpAttribute;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
 use SolidWorx\Platform\SaasBundle\Subscription\SubscriptionProviderInterface;
-use SolidWorx\Toggler\ToggleInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Uid\Ulid;
 use Throwable;
 
+/**
+ * Subscription-aware voter for the MCP and API access attributes.
+ *
+ * Only registered on SaaS deployments (this bundle is conditionally loaded
+ * via `SOLIDINVOICE_PLATFORM=saas`), so the `saas_enabled` toggle does not
+ * need to be re-checked here — its presence in the voter list already
+ * implies the SaaS platform is active. The per-bundle access voters
+ * (`McpAccessVoter`, `ApiAccessVoter`) handle self-hosted installs.
+ */
 final class SubscriptionVoter extends Voter
 {
     private readonly LoggerInterface $logger;
 
     public function __construct(
-        private readonly ToggleInterface $toggler,
         private readonly SubscriptionProviderInterface $subscriptionProvider,
         private readonly CompanySelector $companySelector,
         private readonly CompanyRepository $companyRepository,
@@ -53,10 +60,6 @@ final class SubscriptionVoter extends Voter
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token, ?Vote $vote = null): bool
     {
         try {
-            if (! $this->toggler->isActive('saas_enabled')) {
-                return true;
-            }
-
             // Without a resolved company we can't check the subscription state. Fail closed
             // so a misconfigured CompanySelector can't accidentally expose cross-tenant data.
             $companyId = $this->companySelector->getCompany();

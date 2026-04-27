@@ -31,7 +31,6 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecision;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Vote;
-use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zenstruck\Foundry\Test\Factories;
 
@@ -111,28 +110,6 @@ final class SubscriptionGateTest extends KernelTestCase
         self::assertSame('Access denied.', $body['message']);
     }
 
-    /**
-     * On self-hosted installs SaasBundle is not loaded, so no voter supports
-     * `api.access`. The affirmative strategy would otherwise default to deny
-     * when all voters abstain — the authenticator must treat that as a grant.
-     */
-    public function testAllVotersAbstainAllowsRequest(): void
-    {
-        $token = $this->createApiToken();
-
-        $authenticator = $this->buildAuthenticator($this->abstainingAuthorizationChecker());
-
-        $request = Request::create('/api/clients', 'GET', [], [], [], ['HTTP_X-API-TOKEN' => $token->getToken()]);
-
-        $response = $authenticator->onAuthenticationSuccess(
-            $request,
-            M::mock(TokenInterface::class),
-            'api',
-        );
-
-        self::assertNull($response, 'No voter denied → request should not be blocked.');
-    }
-
     private function createApiToken(): ApiToken
     {
         $container = self::getContainer();
@@ -190,27 +167,11 @@ final class SubscriptionGateTest extends KernelTestCase
             ->andReturnUsing(static function (string $attribute, mixed $subject, AccessDecision $decision) use ($reason): bool {
                 $decision->isGranted = false;
 
-                $vote = new Vote();
-                $vote->result = VoterInterface::ACCESS_DENIED;
                 if ($reason !== null) {
+                    $vote = new Vote();
                     $vote->addReason($reason);
+                    $decision->votes[] = $vote;
                 }
-                $decision->votes[] = $vote;
-
-                return false;
-            });
-
-        return $checker;
-    }
-
-    private function abstainingAuthorizationChecker(): AuthorizationCheckerInterface
-    {
-        $checker = M::mock(AuthorizationCheckerInterface::class);
-        $checker
-            ->shouldReceive('isGranted')
-            ->with(ApiAttribute::ACCESS, null, M::any())
-            ->andReturnUsing(static function (string $attribute, mixed $subject, AccessDecision $decision): bool {
-                $decision->isGranted = false;
 
                 return false;
             });
