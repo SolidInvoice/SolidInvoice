@@ -225,6 +225,40 @@ final class SubscriptionVoterTest extends KernelTestCase
         self::assertVoteResult(VoterInterface::ACCESS_GRANTED, $voter, $attribute);
     }
 
+    #[DataProvider('provideAttributes')]
+    public function testGrantsWhenSubscriptionProviderThrows(string $attribute): void
+    {
+        $toggler = M::mock(ToggleInterface::class);
+        $toggler->shouldReceive('isActive')->with('saas_enabled')->andReturnTrue();
+
+        $provider = M::mock(SubscriptionProviderInterface::class);
+        $provider->shouldReceive('getSubscriptionFor')
+            ->andThrow(new \RuntimeException('subscription table missing'));
+
+        $container = self::getContainer();
+
+        $voter = new SubscriptionVoter(
+            $toggler,
+            $provider,
+            $container->get(CompanySelector::class),
+            $container->get(CompanyRepository::class),
+            M::mock(ClockInterface::class),
+        );
+
+        self::assertVoteResult(VoterInterface::ACCESS_GRANTED, $voter, $attribute);
+    }
+
+    #[DataProvider('provideAttributes')]
+    public function testDeniesUnhandledSubscriptionStatus(string $attribute): void
+    {
+        $voter = $this->createVoter(
+            saasEnabled: true,
+            subscription: $this->createSubscription(SubscriptionStatus::PAST_DUE),
+        );
+
+        self::assertDeniedWithReason($voter, $attribute, 'Your subscription is not currently active.');
+    }
+
     private static function assertVoteResult(int $expected, SubscriptionVoter $voter, string $attribute): void
     {
         self::assertSame($expected, $voter->vote(M::mock(TokenInterface::class), null, [$attribute]));
