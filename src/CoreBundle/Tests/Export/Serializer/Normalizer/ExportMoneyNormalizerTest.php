@@ -39,6 +39,16 @@ final class ExportMoneyNormalizerTest extends TestCase
         );
     }
 
+    public function testZeroDecimalCurrencySerializesAsWholeNumber(): void
+    {
+        $money = new Money(1500, new Currency('JPY'));
+
+        self::assertSame(
+            ['amount' => '1500', 'currency' => 'JPY'],
+            $this->normalizer->normalize($money),
+        );
+    }
+
     public function testNormalizesBigNumberToDecimalString(): void
     {
         $result = $this->normalizer->normalize(BigInteger::of(5000));

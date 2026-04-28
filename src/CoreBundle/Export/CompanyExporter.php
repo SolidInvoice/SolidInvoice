@@ -19,13 +19,14 @@ use FilesystemIterator;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RuntimeException;
+use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\ExportJob;
 use SolidInvoice\CoreBundle\Export\Discovery\EntityDiscovery;
 use SolidInvoice\CoreBundle\Export\Discovery\EntityExportSpec;
 use SolidInvoice\CoreBundle\Export\Enum\ExportFormat;
 use SolidInvoice\CoreBundle\Export\Serializer\ExportSerializer;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use ZipArchive;
 use function array_map;
 use function sys_get_temp_dir;
@@ -49,9 +50,11 @@ final class CompanyExporter
     public function __construct(
         private readonly ManagerRegistry $registry,
         private readonly EntityDiscovery $discovery,
+        private readonly EntityRowNormalizer $rowNormalizer,
         private readonly ExportSerializer $serializer,
         private readonly ManifestGenerator $manifestGenerator,
         private readonly Filesystem $filesystem,
+        private readonly CompanySelector $companySelector,
         private readonly string $projectDir,
     ) {
     }
@@ -104,19 +107,15 @@ final class CompanyExporter
         $counts = [];
 
         foreach ($specs as $spec) {
-            $repository = $manager->getRepository($spec->entityClass);
-            $entities = $repository->findAll();
+            $entities = $this->fetchEntities($manager, $spec);
+            $metadata = $manager->getClassMetadata($spec->entityClass);
 
-            $normalized = array_map(
-                fn (object $entity): mixed => $this->serializer->normalize(
-                    $entity,
-                    $format,
-                    $this->normalizationContext($spec),
-                ),
+            $rows = array_map(
+                fn (object $entity): array => $this->rowNormalizer->normalize($entity, $metadata, $spec),
                 $entities,
             );
 
-            $payload = $this->serializer->encode($normalized, $format, $format->encoderContext($spec->filename));
+            $payload = $this->serializer->encode($rows, $format, $format->encoderContext($spec->filename));
 
             $filename = $stagingDir . '/' . $spec->filename . '.' . $format->extension();
             $this->filesystem->dumpFile($filename, $payload);
@@ -128,16 +127,39 @@ final class CompanyExporter
     }
 
     /**
-     * @return array<string, mixed>
+     * Fetches the entity rows to export.
+     *
+     * For CompanyAware roots, we rely on the active CompanyFilter to scope rows.
+     * For child entities (no `company_id`), we explicitly join through the spec's
+     * `companyScopeAssociation` so a child's parent must belong to the active
+     * company — this prevents cross-tenant leakage.
+     *
+     * @return list<object>
      */
-    private function normalizationContext(EntityExportSpec $spec): array
+    private function fetchEntities(EntityManagerInterface $manager, EntityExportSpec $spec): array
     {
-        return [
-            AbstractObjectNormalizer::ATTRIBUTES => $spec->includedProperties,
-            AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
-            AbstractObjectNormalizer::SKIP_UNINITIALIZED_VALUES => true,
-            AbstractObjectNormalizer::ENABLE_MAX_DEPTH => true,
-        ];
+        if ($spec->companyScopeAssociation === null) {
+            /** @var list<object> $result */
+            $result = $manager->getRepository($spec->entityClass)->findAll();
+
+            return $result;
+        }
+
+        $activeCompanyId = $this->companySelector->getCompany();
+        if ($activeCompanyId === null) {
+            return [];
+        }
+
+        /** @var list<object> $result */
+        $result = $manager->getRepository($spec->entityClass)
+            ->createQueryBuilder('e')
+            ->innerJoin('e.' . $spec->companyScopeAssociation, 'p')
+            ->andWhere('p.company = :company')
+            ->setParameter('company', $activeCompanyId, UlidType::NAME)
+            ->getQuery()
+            ->getResult();
+
+        return $result;
     }
 
     private function archivePath(ExportJob $job): string

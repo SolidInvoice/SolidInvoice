@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\CoreBundle\Export\Message\Handler;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\ExportJob;
@@ -46,6 +47,7 @@ use Throwable;
 final readonly class ProcessCompanyExportHandler
 {
     public function __construct(
+        private ManagerRegistry $registry,
         private EntityManagerInterface $entityManager,
         private ExportJobRepository $exportJobRepository,
         private UserRepository $userRepository,
@@ -99,13 +101,34 @@ final readonly class ProcessCompanyExportHandler
                 'exception' => $e,
             ]);
 
-            $job->markFailed(sprintf('%s: %s', $e::class, $e->getMessage()));
-            $this->entityManager->flush();
+            $this->persistFailure($job, $e);
 
             throw $e;
         } finally {
             $this->companySelector->reset();
         }
+    }
+
+    /**
+     * Persists the Failed status, reopening the EntityManager if Doctrine closed it
+     * during the original failure (constraint violation, lost connection, etc).
+     * Without this, the failure write would itself throw EntityManagerClosed and the
+     * job would be silently stuck in Processing.
+     */
+    private function persistFailure(ExportJob $job, Throwable $cause): void
+    {
+        if (! $this->entityManager->isOpen()) {
+            $this->registry->resetManager();
+        }
+
+        $manager = $this->registry->getManager();
+        assert($manager instanceof EntityManagerInterface);
+
+        $tracked = $manager->find(ExportJob::class, $job->getId()) ?? $job;
+        $tracked->markFailed(sprintf('%s: %s', $cause::class, $cause->getMessage()));
+
+        $manager->persist($tracked);
+        $manager->flush();
     }
 
     private function sendEmail(ExportJob $job, Ulid $userId): void

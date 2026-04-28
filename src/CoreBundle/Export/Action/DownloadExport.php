@@ -27,7 +27,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Ulid;
 
-#[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
+#[IsGranted('IS_AUTHENTICATED_FULLY')]
 final class DownloadExport
 {
     public function __construct(

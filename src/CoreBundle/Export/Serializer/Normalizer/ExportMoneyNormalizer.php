@@ -66,9 +66,10 @@ final class ExportMoneyNormalizer implements NormalizerInterface
     public static function amountToDecimalString(BigNumber $amount, int $subunitExponent): string
     {
         $divisor = 10 ** $subunitExponent;
-        $scale = max($subunitExponent, 1);
 
-        return $amount->toBigDecimal()->dividedBy($divisor, $scale, RoundingMode::HALF_EVEN)->__toString();
+        return $amount->toBigDecimal()
+            ->dividedBy($divisor, $subunitExponent, RoundingMode::HalfEven)
+            ->__toString();
     }
 
     private function subunitExponent(Currency $currency): int

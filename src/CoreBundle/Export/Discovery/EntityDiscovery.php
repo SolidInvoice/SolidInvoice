@@ -23,19 +23,23 @@ use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use function array_values;
 use function class_uses;
 use function in_array;
-use function ksort;
 use function strtolower;
+use function usort;
 
 /**
  * Discovers entities to include in a full company export by walking Doctrine metadata.
  *
  * Rules:
- *   - Entity must use the `CompanyAware` trait (recursively through parent classes
- *     and composed traits).
- *   - Child entities are picked up via OneToMany/ManyToMany associations on
- *     company-aware roots, as long as the target is not itself company-aware
- *     (which would make it its own root).
- *   - Entities or properties annotated with `#[ExportIgnore]` are skipped.
+ *   - Roots: entities that use the `CompanyAware` trait (recursively through parent
+ *     classes and composed traits) and have a real table.
+ *   - Children: non-CompanyAware entities that have an owning-side ToOne association
+ *     pointing at a CompanyAware root (e.g. `Invoice\RecurringOptions.recurringInvoice`
+ *     pointing at `RecurringInvoice`). The owning association name is recorded as
+ *     `companyScopeAssociation` on the spec so the exporter can join through it and
+ *     filter by the active company at query time — children have no `company_id`
+ *     of their own and would otherwise leak across tenants.
+ *   - Mapped superclasses, abstract STI parents, and entities/properties annotated
+ *     `#[ExportIgnore]` are skipped.
  *
  * The discovery list is stable (sorted by filename) so exports are reproducible.
  */
@@ -54,7 +58,7 @@ final class EntityDiscovery
         $manager = $this->registry->getManager();
         assert($manager instanceof EntityManagerInterface);
 
-        /** @var array<string, EntityExportSpec> $specs */
+        /** @var array<class-string, EntityExportSpec> $specs */
         $specs = [];
 
         foreach ($manager->getMetadataFactory()->getAllMetadata() as $metadata) {
@@ -65,45 +69,23 @@ final class EntityDiscovery
             }
 
             $reflection = new ReflectionClass($metadata->getName());
-
-            if ($this->hasIgnoreAttribute($reflection)) {
-                continue;
-            }
-
-            if (! $this->usesCompanyAware($reflection)) {
-                continue;
-            }
-
-            $spec = $this->buildSpec($metadata, $reflection);
-            $specs[$spec->filename] = $spec;
-        }
-
-        foreach ($manager->getMetadataFactory()->getAllMetadata() as $metadata) {
-            assert($metadata instanceof ClassMetadata);
-
-            if ($this->skipMetadata($metadata)) {
-                continue;
-            }
-
-            $reflection = new ReflectionClass($metadata->getName());
-
             if ($this->hasIgnoreAttribute($reflection)) {
                 continue;
             }
 
             if ($this->usesCompanyAware($reflection)) {
+                $specs[$metadata->getName()] = $this->buildSpec($metadata, $reflection, null);
                 continue;
             }
 
-            if (! $this->isChildOfCompanyAwareRoot($metadata)) {
-                continue;
+            $companyScope = $this->companyScopeAssociation($metadata);
+            if ($companyScope !== null) {
+                $specs[$metadata->getName()] = $this->buildSpec($metadata, $reflection, $companyScope);
             }
-
-            $spec = $this->buildSpec($metadata, $reflection);
-            $specs[$spec->filename] = $spec;
         }
 
-        ksort($specs);
+        // Stable order by filename for reproducible exports.
+        usort($specs, static fn (EntityExportSpec $a, EntityExportSpec $b): int => $a->filename <=> $b->filename);
 
         return array_values($specs);
     }
@@ -181,8 +163,11 @@ final class EntityDiscovery
      * @param ClassMetadata<object> $metadata
      * @param ReflectionClass<object> $reflection
      */
-    private function buildSpec(ClassMetadata $metadata, ReflectionClass $reflection): EntityExportSpec
-    {
+    private function buildSpec(
+        ClassMetadata $metadata,
+        ReflectionClass $reflection,
+        ?string $companyScopeAssociation,
+    ): EntityExportSpec {
         $included = [];
 
         foreach ($metadata->fieldMappings as $fieldName => $mapping) {
@@ -199,28 +184,30 @@ final class EntityDiscovery
         }
 
         foreach ($metadata->associationMappings as $assocName => $assocMapping) {
-            if (! $reflection->hasProperty((string) $assocName)) {
+            $name = (string) $assocName;
+
+            if (! $reflection->hasProperty($name)) {
                 continue;
             }
 
-            $property = $reflection->getProperty((string) $assocName);
+            $property = $reflection->getProperty($name);
             if ($this->hasPropertyIgnoreAttribute($property)) {
                 continue;
             }
 
             // Only owning-side ToOne associations are included inline (as FK IDs).
-            // ToMany collections are handled via their child entity's own export file.
-            if ($metadata->isSingleValuedAssociation((string) $assocName)) {
-                $included[] = (string) $assocName;
+            // ToMany collections are handled via their child entity's own export file,
+            // and inverse-side ToOne associations have no FK column on this entity.
+            if ($metadata->isSingleValuedAssociation($name) && $this->isOwningSide($assocMapping)) {
+                $included[] = $name;
             }
         }
 
-        $filename = $this->filenameFor($metadata);
-
         return new EntityExportSpec(
             entityClass: $metadata->getName(),
-            filename: $filename,
+            filename: $this->filenameFor($metadata),
             includedProperties: $included,
+            companyScopeAssociation: $companyScopeAssociation,
         );
     }
 
@@ -230,17 +217,42 @@ final class EntityDiscovery
     }
 
     /**
+     * Doctrine ORM 3.x exposes association mappings as typed value objects with an
+     * `isOwningSide` property; older array-shaped mappings used the same key. This
+     * helper handles both representations.
+     */
+    private function isOwningSide(mixed $assocMapping): bool
+    {
+        if (is_array($assocMapping)) {
+            return (bool) ($assocMapping['isOwningSide'] ?? false);
+        }
+
+        if (is_object($assocMapping) && property_exists($assocMapping, 'isOwningSide')) {
+            return (bool) $assocMapping->isOwningSide;
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns the owning-side ToOne association on this entity that points at a
+     * CompanyAware parent, or null if no such association exists. The returned
+     * association name is the path the exporter joins through to scope queries
+     * to the active company.
+     *
      * @param ClassMetadata<object> $metadata
      */
-    private function isChildOfCompanyAwareRoot(ClassMetadata $metadata): bool
+    private function companyScopeAssociation(ClassMetadata $metadata): ?string
     {
         $manager = $this->registry->getManagerForClass($metadata->getName());
         if (! $manager instanceof EntityManagerInterface) {
-            return false;
+            return null;
         }
 
         foreach ($metadata->associationMappings as $assocName => $assocMapping) {
-            if (! $metadata->isSingleValuedAssociation((string) $assocName)) {
+            $name = (string) $assocName;
+
+            if (! $metadata->isSingleValuedAssociation($name) || ! $this->isOwningSide($assocMapping)) {
                 continue;
             }
 
@@ -258,11 +270,11 @@ final class EntityDiscovery
             }
 
             if ($this->usesCompanyAware($targetReflection)) {
-                return true;
+                return $name;
             }
         }
 
-        return false;
+        return null;
     }
 
     /**
