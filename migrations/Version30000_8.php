@@ -53,6 +53,7 @@ final class Version30000_8 extends AbstractMigration
         $table->addIndex(['requested_by']);
         $table->addIndex(['status']);
         $table->addForeignKeyConstraint('companies', ['company_id'], ['id'], ['onDelete' => 'CASCADE']);
+        $table->addForeignKeyConstraint('users', ['requested_by'], ['id'], ['onDelete' => 'CASCADE']);
     }
 
     public function down(Schema $schema): void

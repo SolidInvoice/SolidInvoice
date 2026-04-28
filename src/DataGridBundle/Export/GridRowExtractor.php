@@ -81,10 +81,6 @@ final class GridRowExtractor
         $field = $column->getField();
         $associationField = $this->associationField($field, $metadata);
 
-        if ($associationField !== null) {
-            return $this->extractRelation($column, $entity, $associationField);
-        }
-
         try {
             $raw = $this->propertyAccessor->getValue($entity, $field);
         } catch (NoSuchPropertyException) {
@@ -92,34 +88,28 @@ final class GridRowExtractor
         }
 
         $value = $column->getFormatValue()($raw, $entity);
+        $normalized = $this->normalizeValue($column, $field, $value);
 
-        return $this->normalizeValue($column, $field, $value);
+        if ($associationField !== null) {
+            $normalized[$associationField . '_id'] = $this->extractRelationId($entity, $associationField);
+        }
+
+        return $normalized;
     }
 
-    /**
-     * @return array<string, scalar|null>
-     */
-    private function extractRelation(Column $column, object $entity, string $associationField): array
+    private function extractRelationId(object $entity, string $associationField): ?string
     {
         try {
             $related = $this->propertyAccessor->getValue($entity, $associationField);
         } catch (NoSuchPropertyException) {
-            return [$column->getField() => null, $column->getField() . '_id' => null];
+            return null;
         }
 
         if (! is_object($related)) {
-            return [$column->getField() => null, $column->getField() . '_id' => null];
+            return null;
         }
 
-        $formatted = $column->getFormatValue()($related, $entity);
-        $display = $this->toDisplayString($formatted, $related);
-
-        $relatedId = $this->extractUlid($related);
-
-        return [
-            $column->getField() => $display,
-            $column->getField() . '_id' => $relatedId,
-        ];
+        return $this->extractUlid($related);
     }
 
     /**
@@ -177,27 +167,6 @@ final class GridRowExtractor
         }
 
         return [$field => null];
-    }
-
-    private function toDisplayString(mixed $formatted, object $related): ?string
-    {
-        if ($formatted instanceof BackedEnum) {
-            return (string) $formatted->value;
-        }
-
-        if (is_scalar($formatted)) {
-            return (string) $formatted;
-        }
-
-        if ($formatted instanceof Stringable) {
-            return (string) $formatted;
-        }
-
-        if ($related instanceof Stringable) {
-            return (string) $related;
-        }
-
-        return null;
     }
 
     private function extractUlid(object $related): ?string

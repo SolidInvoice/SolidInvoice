@@ -16,11 +16,14 @@ namespace SolidInvoice\CoreBundle\Export\Attribute;
 use Attribute;
 
 /**
- * Opts an entity class or entity property out of data export.
+ * Opts an entity class or entity property out of the full company export.
  *
  * Applied at class level, the entity is skipped entirely by the full company
  * export. Applied at property level, the property is stripped from the
- * serialized output for both grid and full exports.
+ * serialized output for the full company export only.
+ *
+ * Grid exports are defined by the configured grid columns and do not consult
+ * this attribute.
  */
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_PROPERTY)]
 final class ExportIgnore

@@ -30,13 +30,13 @@
 
     {{ email.spacer('sm') }}
 
-    {{ email.info_row('Format', job.format.value|upper) }}
+    {{ email.info_row('Format'|trans, job.format.value|upper) }}
     {{ email.spacer('xs') }}
-    {{ email.info_row('Requested', job.createdAt|date('Y-m-d H:i')) }}
+    {{ email.info_row('Requested'|trans, job.createdAt|date('Y-m-d H:i')) }}
 
     {% if job.fileSize %}
         {{ email.spacer('xs') }}
-        {{ email.info_row('Archive size', (job.fileSize / 1024 / 1024)|number_format(2) ~ ' MB') }}
+        {{ email.info_row('Archive size'|trans, (job.fileSize / 1024 / 1024)|number_format(2) ~ ' MB') }}
     {% endif %}
 
     {{ email.divider('md') }}

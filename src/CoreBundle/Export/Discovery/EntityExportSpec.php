@@ -21,11 +21,17 @@ final readonly class EntityExportSpec
     /**
      * @param class-string $entityClass
      * @param list<string> $includedProperties Property names to emit for this entity.
+     * @param string|null $companyScopeAssociation Optional dotted path of owning-side
+     *   ToOne associations on this entity that ultimately reaches a CompanyAware
+     *   parent. When set, the exporter joins through this path and filters by the
+     *   active company so child entities (which lack their own `company_id`) are
+     *   not exported across tenants.
      */
     public function __construct(
         public string $entityClass,
         public string $filename,
         public array $includedProperties,
+        public ?string $companyScopeAssociation = null,
     ) {
     }
 }

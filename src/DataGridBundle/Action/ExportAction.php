@@ -25,9 +25,13 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use ValueError;
+use function array_filter;
+use function explode;
 use function is_array;
+use function is_scalar;
 use function is_string;
 use function json_decode;
+use function preg_match;
 
 #[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
 final class ExportAction
@@ -48,9 +52,9 @@ final class ExportAction
         $format = $this->resolveFormat($request);
         $context = $this->resolveContext($request);
 
-        $sort = (string) $request->query->get('sort', '');
+        $sort = $this->resolveSort($request);
         $search = (string) $request->query->get('search', '');
-        $gridFilters = $request->query->all('gridFilters');
+        $gridFilters = $this->resolveGridFilters($request);
 
         try {
             $payload = $this->exporter->export($gridName, $format, $context, $sort, $search, $gridFilters);
@@ -79,6 +83,72 @@ final class ExportAction
         } catch (ValueError) {
             throw new BadRequestHttpException(sprintf('Unsupported export format "%s".', $format));
         }
+    }
+
+    /**
+     * Validates the `sort` query parameter to one of: empty string, `field`, or
+     * `field,direction`. Anything else is rejected. This keeps malformed input from
+     * unpacking into SortFilter's two-argument constructor and triggering
+     * ArgumentCountError downstream.
+     */
+    private function resolveSort(Request $request): string
+    {
+        $sort = (string) $request->query->get('sort', '');
+
+        if ($sort === '') {
+            return '';
+        }
+
+        $parts = explode(',', $sort);
+        if (count($parts) > 2) {
+            throw new BadRequestHttpException('Malformed "sort" query parameter.');
+        }
+
+        if (! preg_match('/^[A-Za-z0-9_.]+$/', $parts[0])) {
+            throw new BadRequestHttpException('Invalid sort field.');
+        }
+
+        $direction = strtolower($parts[1] ?? 'asc');
+        if (! in_array($direction, ['asc', 'desc'], true)) {
+            throw new BadRequestHttpException('Sort direction must be "asc" or "desc".');
+        }
+
+        return $parts[0] . ',' . $direction;
+    }
+
+    /**
+     * Validates `gridFilters` shape. Each value must be a scalar, an array of scalars,
+     * or an associative array with `start`/`end` keys (the date-range filter). Anything
+     * else is rejected before reaching column filter implementations, which assume
+     * specific shapes via assertions disabled in production.
+     *
+     * @return array<string, mixed>
+     */
+    private function resolveGridFilters(Request $request): array
+    {
+        $raw = $request->query->all('gridFilters');
+
+        foreach ($raw as $key => $value) {
+            if (! is_string($key) || ! preg_match('/^[A-Za-z0-9_]+$/', $key)) {
+                throw new BadRequestHttpException('Invalid grid filter key.');
+            }
+
+            if (is_scalar($value) || $value === null) {
+                continue;
+            }
+
+            if (is_array($value)) {
+                $allScalar = array_filter($value, static fn ($v): bool => ! (is_scalar($v) || $v === null)) === [];
+                if (! $allScalar) {
+                    throw new BadRequestHttpException(sprintf('Filter "%s" has unsupported nested values.', $key));
+                }
+                continue;
+            }
+
+            throw new BadRequestHttpException(sprintf('Filter "%s" has unsupported value type.', $key));
+        }
+
+        return $raw;
     }
 
     /**

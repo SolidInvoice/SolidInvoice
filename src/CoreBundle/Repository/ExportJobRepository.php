@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Repository;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\CoreBundle\Entity\ExportJob;
+use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Uid\Ulid;
 
 /**
- * @extends ServiceEntityRepository<ExportJob>
+ * @extends EntityRepository<ExportJob>
  */
-final class ExportJobRepository extends ServiceEntityRepository
+final class ExportJobRepository extends EntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -46,11 +46,5 @@ final class ExportJobRepository extends ServiceEntityRepository
             ->getResult();
 
         return $result;
-    }
-
-    public function save(ExportJob $job): void
-    {
-        $this->getEntityManager()->persist($job);
-        $this->getEntityManager()->flush();
     }
 }
