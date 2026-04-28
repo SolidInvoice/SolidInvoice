@@ -34,7 +34,7 @@
                 </div>
 
                 <table class="table table-sm table-striped mb-3">
-                    <thead style="background: #0f172a; color: #ffffff;">
+                    <thead style="background: #334155; color: #ffffff;">
                         <tr>
                             <th class="text-uppercase small">#</th>
                             <th class="text-uppercase small">{{ 'invoice.item.heading.description'|trans }}</th>
@@ -61,8 +61,8 @@
                         <div class="d-flex justify-content-between mb-2"><span>{{ 'invoice.subtotal'|trans }}</span><span class="font-monospace">{{ invoice.baseTotal|formatCurrency(currency) }}</span></div>
                         {% if invoice.tax.positive %}<div class="d-flex justify-content-between mb-2 text-muted"><span>{{ 'invoice.tax'|trans }}</span><span class="font-monospace">{{ invoice.tax|formatCurrency(currency) }}</span></div>{% endif %}
                         {% if invoice.discount.type is not empty %}<div class="d-flex justify-content-between mb-2 text-muted"><span>{{ 'invoice.discount'|trans }}</span><span class="font-monospace text-danger">-{{ discount(invoice)|formatCurrency(currency) }}</span></div>{% endif %}
-                        <div class="d-flex justify-content-between p-3 rounded" style="background: #0f172a; color: #ffffff;">
-                            <strong>{{ hasOutstandingBalance ? 'invoice.balance'|trans : 'invoice.total'|trans }}</strong>
+                        <div class="d-flex justify-content-between p-3 rounded" style="background: #1e293b; color: #ffffff;">
+                            <strong style="color: #e2e8f0;">{{ hasOutstandingBalance ? 'invoice.balance'|trans : 'invoice.total'|trans }}</strong>
                             <strong class="font-monospace">{{ (hasOutstandingBalance ? invoice.balance : invoice.total)|formatCurrency(currency) }}</strong>
                         </div>
                     </div>

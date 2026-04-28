@@ -88,8 +88,10 @@
         paymentColor: '#10b981',
         totalBg: '#f0fdf4',
         totalColor: '#166534',
+        totalLabelColor: '#1e293b',
         balanceBg: '#fef3c7',
         balanceColor: '#92400e',
+        balanceLabelColor: '#1e293b',
         mono: 'Courier New, monospace'
     }|merge(palette) %}
     {% set hasOutstandingBalance = invoice_has_outstanding_balance(invoice) %}
@@ -138,7 +140,7 @@
         <tr><td colspan="2" style="padding: 8px 0; border-bottom: 1px solid #e2e8f0;"></td></tr>
         {% if hasOutstandingBalance %}
             <tr style="background-color: {{ p.balanceBg }};">
-                <td style="padding: 14px 20px 14px 12px; font-size: 12pt; font-weight: bold; text-align: right; color: #1e293b;">
+                <td style="padding: 14px 20px 14px 12px; font-size: 12pt; font-weight: bold; text-align: right; color: {{ p.balanceLabelColor }};">
                     {{ 'invoice.balance'|trans }}
                 </td>
                 <td style="padding: 14px 12px; font-size: 14pt; font-weight: bold; text-align: right; font-family: {{ p.mono }}; color: {{ p.balanceColor }};">
@@ -147,7 +149,7 @@
             </tr>
         {% else %}
             <tr style="background-color: {{ p.totalBg }};">
-                <td style="padding: 14px 20px 14px 12px; font-size: 12pt; font-weight: bold; text-align: right; color: #1e293b;">
+                <td style="padding: 14px 20px 14px 12px; font-size: 12pt; font-weight: bold; text-align: right; color: {{ p.totalLabelColor }};">
                     {{ 'invoice.total'|trans }}
                 </td>
                 <td style="padding: 14px 12px; font-size: 14pt; font-weight: bold; text-align: right; font-family: {{ p.mono }}; color: {{ p.totalColor }};">
