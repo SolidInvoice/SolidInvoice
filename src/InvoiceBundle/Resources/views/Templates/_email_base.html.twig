@@ -17,6 +17,10 @@
 {% set hasOutstandingBalance = invoice_has_outstanding_balance(invoice) %}
 {% set accent = accent|default('#2e963a') %}
 {% set headingFont = headingFont|default('helvetica, Arial, sans-serif') %}
+{% set isPaid = invoice.status == enum('SolidInvoice\\InvoiceBundle\\Enum\\InvoiceStatus').Paid %}
+{# JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT — keep dynamic
+ # values inside the JSON-LD script tag from breaking out via `</script>`. #}
+{% set jsonFlags = constant('JSON_HEX_TAG') b-or constant('JSON_HEX_AMP') b-or constant('JSON_HEX_APOS') b-or constant('JSON_HEX_QUOT') %}
 
 {%- block title -%}
     {{ "invoice.title"|trans({"%id%" : invoice.invoiceId}, 'email') }}
@@ -30,38 +34,38 @@
     <script type="application/ld+json">
         [
             {
-                "@context": "http://schema.org",
+                "@context": "https://schema.org",
                 "@type": "Invoice",
-                "accountId": "{{ invoice.invoiceId }}",
+                "accountId": {{ invoice.invoiceId|json_encode(jsonFlags)|raw }},
                 "minimumPaymentDue": {
                     "@type": "PriceSpecification",
-                    "price": "{{ invoice.total|formatCurrency(invoice.client.currency) }}"
+                    "price": {{ invoice.total|formatCurrency(invoice.client.currency)|json_encode(jsonFlags)|raw }}
                 },
                 {% if invoice.due %}
-                "paymentDue": "{{ invoice.due|date('c', 'UTC') }}",
+                "paymentDue": {{ invoice.due|date('c', 'UTC')|json_encode(jsonFlags)|raw }},
                 {% endif %}
-                "paymentStatus": "PaymentDue",
+                "paymentStatus": {{ (isPaid ? 'PaymentComplete' : 'PaymentDue')|json_encode(jsonFlags)|raw }},
                 "provider": {
                     "@type": "Organization",
-                    "name": "{{ company_name() }}"
+                    "name": {{ company_name()|json_encode(jsonFlags)|raw }}
                 },
                 "customer": {
                     "@type": "Organization",
-                    "name": "{{ invoice.client.name }}"
+                    "name": {{ invoice.client.name|json_encode(jsonFlags)|raw }}
                 },
                 "totalPaymentDue": {
                     "@type": "PriceSpecification",
-                    "price": "{{ invoice.balance|formatCurrency(invoice.client.currency) }}"
+                    "price": {{ invoice.balance|formatCurrency(invoice.client.currency)|json_encode(jsonFlags)|raw }}
                 }
             },
             {
-                "@context": "http://schema.org",
+                "@context": "https://schema.org",
                 "@type": "EmailMessage",
                 "description": "View invoice",
                 "potentialAction": {
                     "@type": "ViewAction",
                     "name": "View invoice",
-                    "target": "{{ invoicePath }}"
+                    "target": {{ invoicePath|json_encode(jsonFlags)|raw }}
                 }
             }
         ]
@@ -74,7 +78,7 @@
             <row>
                 <columns>
                     <p style="color: #1e293b; font-size: 16px; line-height: 1.5; font-family: {{ headingFont }}; margin: 0 0 24px 0; Margin: 0 0 24px 0;">
-                        {{ 'invoice.info'|trans({'%company%': company_name(), '%created%': invoice.created|date}, 'email') }}
+                        {{ 'invoice.info'|trans({'%company%': company_name(), '%created%': invoice.invoiceDate|date}, 'email') }}
                     </p>
                 </columns>
             </row>
@@ -105,7 +109,7 @@
     {% if hasOutstandingBalance %}
         {% for payment in invoice_captured_payments(invoice) %}
             {{ email.spacer('xs') }}
-            {{ email.info_row('invoice.payment_method'|trans({'%method%': payment.method.name}, 'email'), (payment.totalAmount * -1)|formatCurrency(invoice.client.currency)) }}
+            {{ email.info_row('invoice.payment_method'|trans({'%method%': payment.method.name}, 'email'), '-' ~ payment.totalAmount|formatCurrency(invoice.client.currency)) }}
         {% endfor %}
     {% endif %}
 

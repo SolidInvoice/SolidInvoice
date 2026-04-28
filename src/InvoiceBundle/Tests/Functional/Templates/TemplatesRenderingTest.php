@@ -18,6 +18,7 @@ use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\DataProvider;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
+use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Pdf\Generator;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -79,11 +80,26 @@ final class TemplatesRenderingTest extends KernelTestCase
         self::assertStringContainsString((string) $invoice->getClient(), $output);
 
         match ($channel) {
-            'pdf' => self::assertStringContainsString('</html>', $output),
-            'email' => self::assertStringContainsString('schema.org', $output),
+            // PDF and preview render every line item — assert the description
+            // surfaces so a regression that drops `{% for line in invoice.lines %}`
+            // is caught.
+            'pdf' => $this->assertChannelContains($output, ['</html>', 'Sample line item']),
             'preview' => self::assertStringContainsString('Sample line item', $output),
+            // Email is a summary (totals only, no per-line breakdown), so we
+            // verify the schema.org payload + the displayed total instead.
+            'email' => $this->assertChannelContains($output, ['schema.org', '$1,500.00']),
             default => self::fail("Unknown channel: {$channel}"),
         };
+    }
+
+    /**
+     * @param list<string> $needles
+     */
+    private function assertChannelContains(string $output, array $needles): void
+    {
+        foreach ($needles as $needle) {
+            self::assertStringContainsString($needle, $output);
+        }
     }
 
     #[DataProvider('pdfTemplateProvider')]
@@ -136,7 +152,7 @@ final class TemplatesRenderingTest extends KernelTestCase
             'email' => 'jane@example.com',
         ]);
 
-        $invoice = InvoiceFactory::createOne([
+        return InvoiceFactory::createOne([
             'company' => $this->company,
             'client' => $client,
             'status' => InvoiceStatus::Pending,
@@ -150,20 +166,15 @@ final class TemplatesRenderingTest extends KernelTestCase
             'total' => BigInteger::of(150000),
             'baseTotal' => BigInteger::of(150000),
             'tax' => BigInteger::of(0),
+            'discount' => (new Discount())->setType(null),
+            'lines' => [
+                (new Line())
+                    ->setDescription('Sample line item')
+                    ->setPrice(BigInteger::of(75000))
+                    ->setQty(2.0)
+                    ->setTotal(BigInteger::of(150000)),
+            ],
             'users' => [$contact],
-        ]);
-
-        $real = $invoice->_real();
-
-        $line = (new Line())
-            ->setDescription('Sample line item')
-            ->setPrice(BigInteger::of(75000))
-            ->setQty(2.0)
-            ->setTotal(BigInteger::of(150000));
-        $real->addLine($line);
-
-        $invoice->_save();
-
-        return $real;
+        ])->_real();
     }
 }

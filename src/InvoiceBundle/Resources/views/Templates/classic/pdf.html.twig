@@ -27,10 +27,13 @@
 
 <table cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 24px;">
     <tr>
-        <td style="width: 50%; vertical-align: top; padding-right: 16px;">
+        <td style="width: 33%; vertical-align: top; padding-right: 16px;">
+            {{ inv.from_block() }}
+        </td>
+        <td style="width: 33%; vertical-align: top; padding-right: 16px;">
             {{ inv.bill_to_block(invoice) }}
         </td>
-        <td style="width: 50%; vertical-align: top;">
+        <td style="width: 34%; vertical-align: top;">
             {{ inv.meta_pair('invoice.date'|trans, invoice.invoiceDate|date('F j, Y')) }}
             {% if invoice.due %}
                 {{ inv.meta_pair('invoice.due_date'|trans, invoice.due|date('F j, Y')) }}
