@@ -11,7 +11,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace SolidInvoice\InvoiceBundle\Tests\Email;
+namespace SolidInvoice\InvoiceBundle\Tests\Functional\Email;
 
 use DateTimeImmutable;
 use DateTimeZone;

@@ -5,6 +5,7 @@
 {% import '@SolidInvoiceInvoice/Templates/_macros.html.twig' as inv %}
 
 {% set currency = invoice.client.currency %}
+{% set hasOutstandingBalance = invoice_has_outstanding_balance(invoice) %}
 
 {% block body %}
 <table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-bottom: 16px;">
@@ -19,7 +20,7 @@
                     </td>
                     <td style="vertical-align: middle; text-align: right; color: #ffffff;">
                         <div style="font-size: 8pt; color: #94a3b8;">{{ 'invoice.date'|trans }}: {{ invoice.invoiceDate|date('Y-m-d') }}{% if invoice.due %} · {{ 'invoice.due_date'|trans }}: {{ invoice.due|date('Y-m-d') }}{% endif %}</div>
-                        <div style="font-size: 16pt; font-weight: bold;">{{ invoice.total|formatCurrency(currency) }}</div>
+                        <div style="font-size: 16pt; font-weight: bold;">{{ (hasOutstandingBalance ? invoice.balance : invoice.total)|formatCurrency(currency) }}</div>
                     </td>
                 </tr>
             </table>
