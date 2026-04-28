@@ -38,7 +38,7 @@
                     "price": "{{ invoice.total|formatCurrency(invoice.client.currency) }}"
                 },
                 {% if invoice.due %}
-                "paymentDue": "{{ invoice.due|date('c') }}",
+                "paymentDue": "{{ invoice.due|date('c', 'UTC') }}",
                 {% endif %}
                 "paymentStatus": "PaymentDue",
                 "provider": {
