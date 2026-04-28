@@ -59,7 +59,7 @@
                 {% endfor %}
             </table>
 
-            {{ inv.totals_block(invoice, currency, {totalBg: '#a2492b', totalColor: '#faf3e6', balanceBg: '#a2492b', balanceColor: '#faf3e6', mono: 'Georgia, serif', discountColor: '#a2492b'}) }}
+            {{ inv.totals_block(invoice, currency, {totalBg: '#a2492b', totalColor: '#faf3e6', totalLabelColor: '#faf3e6', balanceBg: '#a2492b', balanceColor: '#faf3e6', balanceLabelColor: '#faf3e6', mono: 'Georgia, serif', discountColor: '#a2492b'}) }}
             {{ inv.terms_block(invoice, {labelColor: '#a2492b', borderColor: '#e8d7b8'}) }}
             {{ inv.payment_cta(invoice, '#a2492b') }}
         </td>

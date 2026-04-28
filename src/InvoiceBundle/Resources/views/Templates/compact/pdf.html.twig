@@ -36,7 +36,7 @@
 
 <table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-bottom: 16px;">
     <thead>
-        <tr style="background-color: #0f172a; color: #ffffff;">
+        <tr style="background-color: #334155; color: #ffffff;">
             <th style="padding: 8px 12px; font-size: 8pt; text-align: center; width: 32px;">#</th>
             <th style="padding: 8px 12px; font-size: 8pt; text-align: left;">{{ 'invoice.item.heading.description'|trans }}</th>
             <th style="padding: 8px 12px; font-size: 8pt; text-align: right; width: 60px;">{{ 'invoice.item.heading.qty'|trans }}</th>
@@ -57,7 +57,7 @@
     </tbody>
 </table>
 
-{{ inv.totals_block(invoice, currency, {totalBg: '#0f172a', totalColor: '#ffffff', balanceBg: '#0f172a', balanceColor: '#fbbf24'}) }}
+{{ inv.totals_block(invoice, currency, {totalBg: '#1e293b', totalColor: '#ffffff', totalLabelColor: '#e2e8f0', balanceBg: '#1e293b', balanceColor: '#fbbf24', balanceLabelColor: '#e2e8f0'}) }}
 {{ inv.terms_block(invoice) }}
 {{ inv.payment_cta(invoice) }}
 {% endblock %}
