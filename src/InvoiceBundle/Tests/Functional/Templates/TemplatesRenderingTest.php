@@ -78,18 +78,12 @@ final class TemplatesRenderingTest extends KernelTestCase
         self::assertStringContainsString($invoice->getInvoiceId(), $output);
         self::assertStringContainsString((string) $invoice->getClient(), $output);
 
-        switch ($channel) {
-            case 'pdf':
-                self::assertStringContainsString('<html>', $output);
-                self::assertStringContainsString('</html>', $output);
-                break;
-            case 'email':
-                self::assertStringContainsString('schema.org', $output);
-                break;
-            case 'preview':
-                self::assertStringContainsString('Sample line item', $output);
-                break;
-        }
+        match ($channel) {
+            'pdf' => self::assertStringContainsString('</html>', $output),
+            'email' => self::assertStringContainsString('schema.org', $output),
+            'preview' => self::assertStringContainsString('Sample line item', $output),
+            default => self::fail("Unknown channel: {$channel}"),
+        };
     }
 
     #[DataProvider('pdfTemplateProvider')]

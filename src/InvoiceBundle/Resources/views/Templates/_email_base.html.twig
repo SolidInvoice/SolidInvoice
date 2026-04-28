@@ -37,9 +37,15 @@
                     "@type": "PriceSpecification",
                     "price": "{{ invoice.total|formatCurrency(invoice.client.currency) }}"
                 },
-                "paymentDue": "{{ invoice.due|date }}",
+                {% if invoice.due %}
+                "paymentDue": "{{ invoice.due|date('c') }}",
+                {% endif %}
                 "paymentStatus": "PaymentDue",
                 "provider": {
+                    "@type": "Organization",
+                    "name": "{{ company_name() }}"
+                },
+                "customer": {
                     "@type": "Organization",
                     "name": "{{ invoice.client.name }}"
                 },
@@ -68,7 +74,7 @@
             <row>
                 <columns>
                     <p style="color: #1e293b; font-size: 16px; line-height: 1.5; font-family: {{ headingFont }}; margin: 0 0 24px 0; Margin: 0 0 24px 0;">
-                        {{ 'invoice.info'|trans({'%company%': setting('system/company/company_name'), '%created%': invoice.created|date}, 'email') }}
+                        {{ 'invoice.info'|trans({'%company%': company_name(), '%created%': invoice.created|date}, 'email') }}
                     </p>
                 </columns>
             </row>
@@ -99,7 +105,7 @@
     {% if hasOutstandingBalance %}
         {% for payment in invoice_captured_payments(invoice) %}
             {{ email.spacer('xs') }}
-            {{ email.info_row('invoice.payment_method'|trans({'%method%': payment.method.name}, 'email'), (payment.total * -1)|formatCurrency(invoice.client.currency)) }}
+            {{ email.info_row('invoice.payment_method'|trans({'%method%': payment.method.name}, 'email'), (payment.totalAmount * -1)|formatCurrency(invoice.client.currency)) }}
         {% endfor %}
     {% endif %}
 

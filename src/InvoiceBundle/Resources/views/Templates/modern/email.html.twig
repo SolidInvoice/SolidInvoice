@@ -1,5 +1,4 @@
 {% extends '@SolidInvoiceInvoice/Templates/_email_base.html.twig' %}
-{% import "@SolidInvoiceCore/Layout/Email/components.html.twig" as email %}
 
 {% set accent = '#0f172a' %}
 
@@ -14,7 +13,7 @@
                     {{ (invoice_has_outstanding_balance(invoice) ? invoice.balance : invoice.total)|formatCurrency(invoice.client.currency) }}
                 </p>
                 <p style="color: #475569; font-size: 15px; line-height: 1.5; margin: 0 0 24px 0; Margin: 0 0 24px 0;">
-                    {{ 'invoice.info'|trans({'%company%': setting('system/company/company_name'), '%created%': invoice.created|date}, 'email') }}
+                    {{ 'invoice.info'|trans({'%company%': company_name(), '%created%': invoice.created|date}, 'email') }}
                 </p>
             </columns>
         </row>

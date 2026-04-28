@@ -6,14 +6,14 @@
     {% apply inky_to_html %}
         <row>
             <columns>
-                <table style="width: 100%; background: #faf3e6; border-left: 4px solid #a2492b; border-radius: 4px; padding: 20px;">
+                <table role="presentation" style="width: 100%; background: #faf3e6; border-left: 4px solid #a2492b; border-radius: 4px; padding: 20px;">
                     <tr>
                         <td>
                             <p style="color: #a2492b; font-family: Georgia, serif; font-size: 24px; line-height: 1.2; margin: 0 0 8px 0; Margin: 0 0 8px 0;">
                                 {{ 'invoice.template.photographer.intro_title'|trans }}
                             </p>
                             <p style="color: #2a2418; font-family: Georgia, serif; font-size: 15px; line-height: 1.6; margin: 0; Margin: 0;">
-                                {{ 'invoice.info'|trans({'%company%': setting('system/company/company_name'), '%created%': invoice.created|date}, 'email') }}
+                                {{ 'invoice.info'|trans({'%company%': company_name(), '%created%': invoice.created|date}, 'email') }}
                             </p>
                         </td>
                     </tr>

@@ -34,6 +34,13 @@
     <div class="card border-0 mt-2" style="background: #ffffff;">
         <div class="card-body p-5">
             <table class="table">
+                <thead>
+                    <tr style="border-bottom: 1px solid #e0d8c8;">
+                        <th scope="col" class="text-uppercase small text-muted">{{ 'invoice.item.heading.description'|trans }}</th>
+                        <th scope="col" class="text-uppercase small text-muted text-end">{{ 'invoice.item.heading.qty'|trans }} × {{ 'invoice.item.heading.price'|trans }}</th>
+                        <th scope="col" class="text-uppercase small text-muted text-end">{{ 'invoice.item.heading.total'|trans }}</th>
+                    </tr>
+                </thead>
                 <tbody>
                     {% for line in invoice.lines %}
                         <tr style="border-bottom: 1px solid #e0d8c8;">
@@ -48,9 +55,10 @@
                 <div class="col-md-5">
                     <div class="d-flex justify-content-between mb-2"><span>{{ 'invoice.subtotal'|trans }}</span><span>{{ invoice.baseTotal|formatCurrency(currency) }}</span></div>
                     {% if invoice.tax.positive %}<div class="d-flex justify-content-between mb-2 text-muted"><span>{{ 'invoice.tax'|trans }}</span><span>{{ invoice.tax|formatCurrency(currency) }}</span></div>{% endif %}
+                    {% if invoice.discount.type is not empty %}<div class="d-flex justify-content-between mb-2 text-muted"><span>{{ 'invoice.discount'|trans }}</span><span class="text-danger">-{{ discount(invoice)|formatCurrency(currency) }}</span></div>{% endif %}
                     <div class="d-flex justify-content-between p-3" style="background: #1a1a1a; color: #d4a94a;">
-                        <strong>{{ 'invoice.total'|trans }}</strong>
-                        <strong style="font-family: Georgia, serif;">{{ invoice.total|formatCurrency(currency) }}</strong>
+                        <strong>{{ hasOutstandingBalance ? 'invoice.balance'|trans : 'invoice.total'|trans }}</strong>
+                        <strong style="font-family: Georgia, serif;">{{ (hasOutstandingBalance ? invoice.balance : invoice.total)|formatCurrency(currency) }}</strong>
                     </div>
                 </div>
             </div>

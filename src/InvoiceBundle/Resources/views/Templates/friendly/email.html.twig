@@ -3,6 +3,7 @@
 
 {% set primary = invoice_primary_contact(invoice) %}
 {% set greeting = primary is not null and primary.firstName is not empty ? primary.firstName : invoice.client.name %}
+{% set hasOutstandingBalance = invoice_has_outstanding_balance(invoice) %}
 
 {% block intro %}
     {% apply inky_to_html %}
@@ -14,7 +15,7 @@
                 <p style="color: #475569; font-size: 15px; line-height: 1.6; margin: 0 0 20px 0; Margin: 0 0 20px 0;">
                     {{ 'invoice.template.friendly.intro'|trans }}
                 </p>
-                <table style="width: 100%; margin: 0 0 8px 0; Margin: 0 0 8px 0;">
+                <table role="presentation" style="width: 100%; margin: 0 0 8px 0; Margin: 0 0 8px 0;">
                     <tr>
                         <td style="background: #fff1e0; padding: 12px 14px; border-radius: 6px;">
                             <p style="color: #94704a; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; margin: 0 0 2px 0; Margin: 0 0 2px 0;">{{ 'invoice.due_date'|trans }}</p>
@@ -22,8 +23,12 @@
                         </td>
                         <td style="width: 8px;"></td>
                         <td style="background: #ecf7ee; padding: 12px 14px; border-radius: 6px;">
-                            <p style="color: #2e963a; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; margin: 0 0 2px 0; Margin: 0 0 2px 0;">{{ 'invoice.total_due'|trans }}</p>
-                            <p style="color: #166534; font-size: 14px; font-weight: 700; margin: 0; Margin: 0;">{{ invoice.total|formatCurrency(invoice.client.currency) }}</p>
+                            <p style="color: #2e963a; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; margin: 0 0 2px 0; Margin: 0 0 2px 0;">
+                                {% if hasOutstandingBalance %}{{ 'invoice.balance_due'|trans }}{% else %}{{ 'invoice.total_due'|trans }}{% endif %}
+                            </p>
+                            <p style="color: #166534; font-size: 14px; font-weight: 700; margin: 0; Margin: 0;">
+                                {{ (hasOutstandingBalance ? invoice.balance : invoice.total)|formatCurrency(invoice.client.currency) }}
+                            </p>
                         </td>
                     </tr>
                 </table>

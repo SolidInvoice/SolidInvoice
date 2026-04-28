@@ -18,7 +18,7 @@
         <tr>
             <td style="vertical-align: bottom;">
                 <div style="font-size: 9pt; letter-spacing: 4px; text-transform: uppercase; color: #94704a;">{{ 'invoice.template.editorial.heading'|trans }}</div>
-                <div style="font-style: italic; font-size: 32pt; color: #1a1a1a; line-height: 1.0;">No. {{ invoice.invoiceId }}</div>
+                <div style="font-style: italic; font-size: 32pt; color: #1a1a1a; line-height: 1.0;">{{ 'invoice.number_prefix'|trans }} {{ invoice.invoiceId }}</div>
             </td>
             <td style="vertical-align: bottom; text-align: right;">
                 <div style="font-style: italic; font-size: 14pt; color: #2a2a2a;">{{ company_name() }}</div>
