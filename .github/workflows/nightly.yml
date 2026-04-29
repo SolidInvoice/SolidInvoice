@@ -139,6 +139,16 @@ jobs:
           CI: ""
           SPC_OPT_DOWNLOAD_ARGS: "--ignore-cache-sources=php-src --retry 5 --prefer-pre-built"
 
+      - name: Upload spc logs on failure
+        if: failure()
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        with:
+          name: spc-logs-${{ matrix.arch }}
+          path: |
+            frankenphp/dist/static-php-cli/log/
+          if-no-files-found: warn
+          retention-days: 7
+
       - name: Save static-php cache
         if: steps.restore-static-php.outputs.cache-hit != 'true'
         uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0

@@ -93,12 +93,26 @@ else
 	BUILD_TAGS="nobadger,nomysql,nopgx,nowatcher"
 fi
 
+# Tee the go build output to a log file so failures are diagnosable
+# even when the parent (static-php-cli) suppresses our stdout/stderr.
+GO_BUILD_LOG="$(pwd)/dist/static-php-cli/log/go-build.log"
+mkdir -p "$(dirname "${GO_BUILD_LOG}")"
+
+set +e
 go build \
+  -v \
   -buildmode=pie \
   -ldflags "-linkmode=external -extldflags '${EXTLDFLAGS} ' -X 'github.com/caddyserver/caddy/v2.CustomVersion=${VERSION}'" \
   -tags="${BUILD_TAGS}" \
 	-o "${OUTPUT}" \
-	.
+	. 2>&1 | tee "${GO_BUILD_LOG}"
+GO_BUILD_RC=${PIPESTATUS[0]}
+set -e
+
+if [ "${GO_BUILD_RC}" -ne 0 ]; then
+	echo "go build failed with exit code ${GO_BUILD_RC}; full output saved to ${GO_BUILD_LOG}" >&2
+	exit "${GO_BUILD_RC}"
+fi
 
 echo ""
 echo "Custom binary built successfully: ${OUTPUT}"
