@@ -39,6 +39,10 @@ final class CompanyListener
         $metaData = $em->getClassMetadata($object::class);
 
         if ($metaData->hasAssociation('company')) {
+            if ($metaData->getReflectionProperty('company')->isInitialized($object)) {
+                return;
+            }
+
             $repository = $em->getRepository(Company::class);
             $companyId = $this->companySelector->getCompany();
 
