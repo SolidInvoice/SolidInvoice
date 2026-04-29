@@ -168,7 +168,7 @@ func setupCommands() {
 				}
 			}
 
-			config, _, err := caddycmd.LoadConfig(filepath.Join(appPath, "Caddyfile"), "")
+			config, _, _, err := caddycmd.LoadConfig(filepath.Join(appPath, "Caddyfile"), "")
 			if err != nil {
 				return err
 			}
@@ -425,7 +425,7 @@ func setupCommands() {
 					}
 				}
 
-				config, _, err := caddycmd.LoadConfig(filepath.Join(appPath, "Caddyfile"), "")
+				config, _, _, err := caddycmd.LoadConfig(filepath.Join(appPath, "Caddyfile"), "")
 				if err != nil {
 					return err
 				}
