@@ -3,7 +3,6 @@ module solidinvoice
 go 1.26.0
 
 require (
-	github.com/bradfitz/gomemcache v0.0.0-20260422231931-4d751bb6e37c
 	github.com/caddyserver/caddy/v2 v2.11.2
 	github.com/caddyserver/certmagic v0.25.2
 	github.com/charmbracelet/lipgloss v1.1.0
@@ -11,15 +10,11 @@ require (
 	github.com/dunglas/caddy-cbrotli v1.0.1
 	github.com/dunglas/frankenphp v1.12.2
 	github.com/dunglas/frankenphp/caddy v1.12.2
-	github.com/go-playground/validator/v10 v10.28.0
+	github.com/go-playground/validator/v10 v10.30.2
 	github.com/luno/jettison v0.0.0-20240722160230-b42bd507a5f6
 	github.com/luno/lu v0.0.0-20250306165345-9dc624600fb2
-	github.com/quic-go/quic-go v0.59.0
 	github.com/spf13/cobra v1.10.2
-	github.com/strukturag/libheif v1.21.2
-	github.com/tatsuhiro-t/go-nghttp2 v0.0.0-20240125091020-1a2cbf860c2d
 	go.uber.org/zap v1.27.1
-	golang.org/x/net v0.52.0
 )
 
 require (
@@ -74,7 +69,7 @@ require (
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/fsnotify/fsnotify v1.9.0 // indirect
 	github.com/fxamacker/cbor/v2 v2.9.1 // indirect
-	github.com/gabriel-vasile/mimetype v1.4.10 // indirect
+	github.com/gabriel-vasile/mimetype v1.4.13 // indirect
 	github.com/go-chi/chi/v5 v5.2.5 // indirect
 	github.com/go-jose/go-jose/v3 v3.0.5 // indirect
 	github.com/go-jose/go-jose/v4 v4.1.4 // indirect
@@ -138,6 +133,7 @@ require (
 	github.com/prometheus/otlptranslator v1.0.0 // indirect
 	github.com/prometheus/procfs v0.20.1 // indirect
 	github.com/quic-go/qpack v0.6.0 // indirect
+	github.com/quic-go/quic-go v0.59.0 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/robfig/cron/v3 v3.0.1 // indirect
 	github.com/rs/cors v1.11.1 // indirect
@@ -211,6 +207,7 @@ require (
 	golang.org/x/crypto/x509roots/fallback v0.0.0-20260323153451-8400f4a93807 // indirect
 	golang.org/x/exp v0.0.0-20260312153236-7ab1446f8b90 // indirect
 	golang.org/x/mod v0.34.0 // indirect
+	golang.org/x/net v0.52.0 // indirect
 	golang.org/x/oauth2 v0.36.0 // indirect
 	golang.org/x/sync v0.20.0 // indirect
 	golang.org/x/sys v0.43.0 // indirect
