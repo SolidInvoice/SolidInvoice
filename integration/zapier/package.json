@@ -1,6 +1,6 @@
 {
   "name": "solidinvoice-zapier",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "SolidInvoice is an open-source billing platform for freelancers and small businesses. Manage clients, invoices, quotes, and payments.",
   "main": "index.js",
   "scripts": {
