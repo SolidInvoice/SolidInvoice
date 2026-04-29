@@ -2,7 +2,7 @@
 
 const beforeRequest = (request, z, bundle) => {
   request.headers = request.headers || {};
-  if (bundle.authData && bundle.authData.api_token) {
+  if (!request.headers['X-API-TOKEN'] && bundle.authData && bundle.authData.api_token) {
     request.headers['X-API-TOKEN'] = bundle.authData.api_token;
   }
   if (!request.headers.Accept) {

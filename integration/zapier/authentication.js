@@ -19,6 +19,11 @@ const test = async (z, bundle) => {
   const response = await z.request({
     url: `${base}/api/clients`,
     method: 'GET',
+    headers: {
+      'X-API-TOKEN': bundle.authData.api_token,
+      Accept: 'application/ld+json',
+    },
+    params: { itemsPerPage: 1 },
   });
   return response.data;
 };

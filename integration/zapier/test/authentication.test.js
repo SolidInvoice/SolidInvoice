@@ -11,6 +11,7 @@ describe('authentication', () => {
       reqheaders: { 'X-API-TOKEN': 'test-token-123' },
     })
       .get('/api/clients')
+      .query(true)
       .reply(200, hydraCollection([samples.client]));
 
     const result = await tester(App.authentication.test, makeBundle());
@@ -28,6 +29,7 @@ describe('authentication', () => {
 
     nock(BASE_URL)
       .get('/api/clients')
+      .query(true)
       .reply(401, {
         '@type': 'hydra:Error',
         'hydra:title': 'Unauthorized',
