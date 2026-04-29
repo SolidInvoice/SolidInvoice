@@ -5,7 +5,15 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --testTimeout 10000",
-    "validate": "zapier validate"
+    "validate": "zapier-platform validate",
+    "push": "zapier-platform push",
+    "describe": "zapier-platform describe",
+    "versions": "zapier-platform versions",
+    "logs": "zapier-platform logs",
+    "invoke": "zapier-platform invoke",
+    "promote": "zapier-platform promote",
+    "deploy": "npm run validate && npm test && npm run push",
+    "check": "npm run validate && npm test"
   },
   "engines": {
     "node": ">=22",
