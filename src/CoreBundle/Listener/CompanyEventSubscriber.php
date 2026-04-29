@@ -57,6 +57,10 @@ final class CompanyEventSubscriber implements EventSubscriberInterface
             return;
         }
 
+        if ($this->companySelector->getCompany() !== null) {
+            return;
+        }
+
         $session = $request->getSession();
         assert($session instanceof SessionInterface);
 
