@@ -22,6 +22,10 @@ const afterResponse = (response, z) => {
     return response;
   }
 
+  if (response.request && response.request.headers && response.request.headers['X-Zapier-Auth-Test']) {
+    return response;
+  }
+
   let data = response.data;
   if (!data && response.content) {
     try {

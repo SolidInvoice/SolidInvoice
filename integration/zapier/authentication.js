@@ -38,6 +38,8 @@ const test = async (z, bundle) => {
     headers: {
       'X-API-TOKEN': bundle.authData.api_token,
       Accept: 'application/ld+json',
+      'User-Agent': 'SolidInvoice-Zapier/1.0 (+https://zapier.com)',
+      'X-Zapier-Auth-Test': '1',
     },
     params: { itemsPerPage: 1 },
     skipThrowForStatus: true,
@@ -47,7 +49,8 @@ const test = async (z, bundle) => {
     status: response.status,
     requestHeadersSent: Object.keys(response.request?.headers || {}),
     hasXApiTokenHeader: !!(response.request?.headers?.['X-API-TOKEN'] || response.request?.headers?.['x-api-token']),
-    bodyPreview: (response.content || '').slice(0, 400),
+    responseHeaders: response.headers || {},
+    bodyPreview: (response.content || '').slice(0, 600),
   });
 
   if (response.status === 401 || response.status === 403) {
