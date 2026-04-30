@@ -245,6 +245,40 @@ final class CompanyEventSubscriberTest extends TestCase
         self::assertSame($company->getId()->toHex(), $filter->getParameter('companyId'));
     }
 
+    public function testItSkipsWhenCompanySelectorAlreadyHasACompany(): void
+    {
+        // Locks in the MCP / OAuth fix: when an upstream authenticator (eg the
+        // MCP firewall) has already set the company on CompanySelector, the
+        // session-based redirect must not run — otherwise stateless requests
+        // get redirected to /select-company.
+        $router = M::mock(RouterInterface::class);
+        $registry = M::mock(ManagerRegistry::class);
+        $security = M::mock(Security::class);
+
+        $companySelector = new CompanySelector($registry);
+
+        $company = new Company();
+        $this->setCompanyId($company, new Ulid());
+        $filter = $this->expectSwitchCompanyCalls($registry, $company);
+        $companySelector->switchCompany($company->getId());
+
+        $security->shouldNotReceive('getUser');
+        $router->shouldNotReceive('generate');
+
+        $session = new Session(new MockArraySessionStorage());
+        $request = new Request();
+        $request->setSession($session);
+
+        $listener = new CompanyEventSubscriber($router, $companySelector, $security, date('Y'));
+
+        $event = new RequestEvent(M::mock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST);
+        $listener->onKernelRequest($event);
+
+        self::assertNull($event->getResponse());
+        self::assertSame($company->getId(), $companySelector->getCompany());
+        self::assertSame($company->getId()->toHex(), $filter->getParameter('companyId'));
+    }
+
     /**
      * @return iterable<array<string>>
      */
