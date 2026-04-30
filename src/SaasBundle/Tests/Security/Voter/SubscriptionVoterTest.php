@@ -23,6 +23,7 @@ use SolidInvoice\CoreBundle\Repository\CompanyRepository;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\McpBundle\Security\Attribute as McpAttribute;
 use SolidInvoice\SaasBundle\Security\Voter\SubscriptionVoter;
+use SolidInvoice\SaasBundle\Service\SubscriptionEligibility;
 use SolidWorx\Platform\SaasBundle\Entity\Plan;
 use SolidWorx\Platform\SaasBundle\Entity\Subscription;
 use SolidWorx\Platform\SaasBundle\Enum\SubscriptionStatus;
@@ -197,10 +198,9 @@ final class SubscriptionVoterTest extends KernelTestCase
         $container = self::getContainer();
 
         $voter = new SubscriptionVoter(
-            $provider,
+            new SubscriptionEligibility($provider, M::mock(ClockInterface::class)),
             $container->get(CompanySelector::class),
             $container->get(CompanyRepository::class),
-            M::mock(ClockInterface::class),
         );
 
         self::assertVoteResult(VoterInterface::ACCESS_GRANTED, $voter, $attribute);
@@ -243,10 +243,9 @@ final class SubscriptionVoterTest extends KernelTestCase
         $clock->shouldReceive('now')->andReturn($now ?? new DateTimeImmutable('2026-01-01'));
 
         return new SubscriptionVoter(
-            $subscriptionProvider,
+            new SubscriptionEligibility($subscriptionProvider, $clock),
             $container->get(CompanySelector::class),
             $container->get(CompanyRepository::class),
-            $clock,
         );
     }
 

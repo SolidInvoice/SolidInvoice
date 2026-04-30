@@ -19,6 +19,7 @@ use League\OAuth2\Server\RequestTypes\AuthorizationRequestInterface;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Psr\Log\LoggerInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\CoreBundle\Company\UserEligibleCompanies;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\McpBundle\Entity\OAuthClient;
 use SolidInvoice\McpBundle\OAuth\ConsentService;
@@ -54,6 +55,7 @@ final class Authorize
         private readonly PendingAuthorization $pendingAuthorization,
         private readonly Security $security,
         private readonly CompanySelector $companySelector,
+        private readonly UserEligibleCompanies $eligibleCompanies,
         private readonly Environment $twig,
         private readonly LoggerInterface $logger,
         private readonly CsrfTokenManagerInterface $csrfTokenManager,
@@ -97,9 +99,9 @@ final class Authorize
             return $this->renderError('invalid_client', 'Unknown client.', Response::HTTP_BAD_REQUEST);
         }
 
-        $companies = $user->getCompanies();
+        $companies = $this->eligibleCompanies->getFor($user);
 
-        if ($companies->count() === 0) {
+        if ($companies === []) {
             return $this->renderError('access_denied', 'No companies available for this user.', Response::HTTP_FORBIDDEN);
         }
 
@@ -119,7 +121,7 @@ final class Authorize
         }
 
         if ($request->isMethod('POST')) {
-            return $this->handleConsent($request, $server, $authRequest, $user, $client, $requestedScopeValues);
+            return $this->handleConsent($request, $server, $authRequest, $user, $client, $companies, $requestedScopeValues);
         }
 
         $activeCompanyId = $this->companySelector->getCompany()?->toRfc4122();
@@ -148,13 +150,13 @@ final class Authorize
     }
 
     /**
-     * @param \Doctrine\Common\Collections\Collection<int, Company> $companies
-     * @param list<string>                                          $requestedScopes
+     * @param list<Company> $companies
+     * @param list<string>  $requestedScopes
      */
     private function resolvePriorConsentCompany(
         OAuthClient $client,
         User $user,
-        \Doctrine\Common\Collections\Collection $companies,
+        array $companies,
         ?string $activeCompanyId,
         array $requestedScopes,
     ): ?Company {
@@ -163,8 +165,8 @@ final class Authorize
         // users without an active company always see the picker.
         $candidate = null;
 
-        if ($companies->count() === 1) {
-            $candidate = $companies->first() ?: null;
+        if (\count($companies) === 1) {
+            $candidate = $companies[0];
         } elseif ($activeCompanyId !== null) {
             foreach ($companies as $company) {
                 if ($company->getId()->toRfc4122() === $activeCompanyId) {
@@ -232,7 +234,8 @@ final class Authorize
     }
 
     /**
-     * @param list<string> $requestedScopeValues
+     * @param list<Company> $companies
+     * @param list<string>  $requestedScopeValues
      */
     private function handleConsent(
         Request $request,
@@ -240,6 +243,7 @@ final class Authorize
         AuthorizationRequestInterface $authRequest,
         User $user,
         OAuthClient $client,
+        array $companies,
         array $requestedScopeValues,
     ): Response {
         $csrfToken = (string) $request->request->get('_csrf_token', '');
@@ -269,7 +273,7 @@ final class Authorize
             return $this->renderError('invalid_request', 'A company must be selected.', Response::HTTP_BAD_REQUEST);
         }
 
-        $company = $this->findUserCompany($user, $companyId);
+        $company = $this->findEligibleCompany($companies, $companyId);
 
         if (! $company instanceof Company) {
             return $this->renderError('access_denied', 'Invalid company selected.', Response::HTTP_FORBIDDEN);
@@ -292,7 +296,10 @@ final class Authorize
         return $this->approveAndComplete($server, $authRequest, $user, $client, $company, $grantedScopeValues);
     }
 
-    private function findUserCompany(User $user, string $companyId): ?Company
+    /**
+     * @param list<Company> $companies
+     */
+    private function findEligibleCompany(array $companies, string $companyId): ?Company
     {
         try {
             $ulid = Ulid::fromString($companyId);
@@ -300,7 +307,7 @@ final class Authorize
             return null;
         }
 
-        foreach ($user->getCompanies() as $company) {
+        foreach ($companies as $company) {
             if ($company->getId()->equals($ulid)) {
                 return $company;
             }
