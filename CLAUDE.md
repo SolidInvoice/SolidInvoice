@@ -10,7 +10,7 @@ Open-source invoicing application for small businesses/freelancers. Features: cl
 
 ## Technology Stack
 
-**Backend:** Symfony 7.4+, PHP 8.4+, Doctrine ORM, API Platform 4.0+, payum/payum-bundle, moneyphp/money
+**Backend:** Symfony 7.1+, PHP 8.4+, Doctrine ORM, API Platform 4.0+, payum/payum-bundle, moneyphp/money
 
 **Frontend:** Webpack (Encore), Stimulus, Tabler (Bootstrap 5.3), Sass, Bun
 
@@ -27,7 +27,7 @@ Open-source invoicing application for small businesses/freelancers. Features: cl
 ├── bin/             # Executables (console, phpunit)
 ├── config/          # Symfony config (packages/, routes/, services.php)
 ├── migrations/      # Database migrations
-├── src/             # 19 bundles (see below)
+├── src/             # 20 bundles (see below)
 ├── templates/       # Twig template overrides
 ├── tests/           # Test bootstrap
 ```
@@ -42,7 +42,7 @@ Open-source invoicing application for small businesses/freelancers. Features: cl
 
 **UI:** DashboardBundle, DataGridBundle, FormBundle, MenuBundle
 
-**Specialized:** NotificationBundle, MoneyBundle, SaasBundle
+**Specialized:** NotificationBundle, MoneyBundle, SaasBundle, McpBundle
 
 ### Bundle Structure
 
