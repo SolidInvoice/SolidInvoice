@@ -119,9 +119,27 @@ docker run -p 8080:80 solidinvoice/solidinvoice
 
 Full image and configuration options: **[hub.docker.com/r/solidinvoice/solidinvoice](https://hub.docker.com/r/solidinvoice/solidinvoice)**
 
-### Option 3 — Release archive
+### Option 3 — Single binary or Homebrew
 
-Download the latest `.zip` or `.tar.gz` from the [releases page](https://github.com/SolidInvoice/SolidInvoice/releases) and extract it into your web root.
+Get up and running in seconds with a self-contained binary — no PHP, no web server, no extensions to install.
+
+**macOS / Linux (Homebrew):**
+
+```bash
+brew install solidworx/tap/solidinvoice
+solidinvoice run
+```
+
+**Direct binary download:**
+
+Grab the latest binary for your platform from the [releases page](https://github.com/SolidInvoice/SolidInvoice/releases), make it executable, and run it:
+
+```bash
+chmod +x solidinvoice
+./solidinvoice run
+```
+
+That's it — open `http://localhost:8765` and you're invoicing.
 
 ### Option 4 — From source (for developers)
 
