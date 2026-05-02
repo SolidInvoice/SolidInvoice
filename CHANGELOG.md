@@ -1,6 +1,309 @@
 Changelog
 =========
 
+3.0.x (Unreleased)
+------------------
+
+The 3.0.x series is a major release focused on a complete UI redesign and new authentication options. Pre-release builds are available as `3.0.0-alpha1` and `3.0.0-alpha2`.
+
+### Highlights
+
+* Full UI re-design across the entire application: dashboard, client list and view, invoice and quote create/list/view, payments, recurring invoices, tax rates, users, payment configuration, API tokens, integrations, registration, company select, 2FA configuration, email templates and external invoice/quote pages
+* Re-designed installation pages, error pages and PDF templates for invoices and quotes
+* Mobile-friendly responsive layout
+* New user onboarding flow with an onboarding checklist
+* User email verification
+* Google OAuth login
+* Two Factor Authentication (2FA)
+* First and last name fields added to user accounts
+* User-specific settings storage
+* Add support for the Flat Rate tax type
+* Add option to mark invoices as overdue automatically and send notifications
+* Add invoice payment reminders
+* Add option to create a new client directly from the invoice or quote create page
+* Add option to delete a company from settings
+* Meilisearch integration for fast cross-company search
+* Add Helm charts for Kubernetes deployments
+* Multi-platform package distribution support
+* Replace Zenstruck Schedule Bundle with Symfony Scheduler
+* Add Symfony Messenger integration for asynchronous tasks
+
+### Bug fixes
+
+* Fix company name on external invoice links
+* Fix send button on invoice and quote pages
+* Handle SMTP transport failures gracefully with proper error messages
+* Fix HTML sanitizer encoding special characters in line item descriptions
+* Skip running messenger commands before the application is installed
+* Fix editing invoices and quotes
+* Cascade all entities during deletion so nothing is left behind
+* Installation command now creates an admin user if one does not exist instead of resetting an existing one
+
+2.3.16 / 2026-03-01
+-------------------
+
+* Fix HTML sanitizer encoding special characters (such as `&`, `<`, `>`) in line item descriptions
+* Handle SMTP transport failures gracefully with proper error messages instead of failing silently
+
+2.3.15 / 2026-02-20
+-------------------
+
+* Invoice PDF now shows the invoice date instead of the date the invoice was created
+* Display the actual discount amount instead of the raw percentage in invoice and quote grids
+* Remove HTML sanitization on contact detail values to allow special characters
+
+2.3.14 / 2026-01-15
+-------------------
+
+* Maintenance release with internal cleanup and dependency updates
+
+2.3.13 / 2026-01-12
+-------------------
+
+* Fix auto-incrementing of invoice IDs when a prefix is configured
+* Fix currency not being set correctly when creating a payment
+
+2.3.12 / 2025-12-27
+-------------------
+
+* Fix adding a prefix and suffix to generated invoice and quote IDs
+
+2.3.11 / 2025-12-09
+-------------------
+
+* No longer automatically adds default tax rates during installation – tax rates can be configured manually after install
+* Fix incorrect currency being displayed in some areas of the application
+
+2.3.10 / 2025-11-03
+-------------------
+
+* Update Symfony UX LiveComponent to the latest version for stability and performance fixes
+
+2.3.9 / 2025-10-21
+------------------
+
+* Currency codes are now validated to be exactly 3 characters
+* Multi-line item descriptions are now displayed correctly on invoices and quotes
+* Allow single quotes inside sanitized values (so apostrophes in client/company names are preserved)
+* Reduce the size of the company logo on generated PDF files
+* Fix calculation of exclusive tax on line items
+
+2.3.8 / 2025-06-20
+------------------
+
+* Fix performance issues when loading API tokens
+
+2.3.7 / 2025-06-03
+------------------
+
+* Fix the mailer sender address not being read correctly from configuration
+* Set a fixed logo size to ensure consistent rendering
+* Simplify the registration process
+* Compatibility fixes for PHP 8.4
+
+2.3.6 / 2025-05-26
+------------------
+
+* Fix the password reset process when no mailer is configured globally
+* Remove the requirement for the PHP `gmp` extension
+* Allow user invites to be sent when using environment-based mailer configuration
+
+2.3.5 / 2025-05-04
+------------------
+
+* Fix database password being incorrectly reset during the installation process
+* Migrate all date handling to immutable date objects to prevent accidental mutations
+* Simplify the process of adding users to quotes and invoices
+* Fix saving line items with decimal quantities
+* Fix the billing controller to look up records by UUID
+* Improvements to workflow action buttons (send, accept, pay, etc.)
+
+2.3.4 / 2025-05-02
+------------------
+
+* Fix issues in the installation process
+* Set a default release version when none is provided by the build
+* Don't override the config directory if it has already been set (helps with packaged builds)
+* Replace Select2 with Tom Select for nicer, faster dropdowns
+* Fix email template rendering
+* Use the invoice/quote ID when generating PDF filenames
+
+2.3.3 / 2025-04-30
+------------------
+
+* Improvements to the static binary build script
+* Only fetch recurring invoices that actually have recurring options configured
+* Add validation when creating a new company
+* Remove unneeded environment variables from the default `docker-compose.yml`
+* Fix saving the company address from the settings page
+
+2.3.2 / 2025-04-27
+------------------
+
+* Fix the migration that converts UUID values to ULID
+
+2.3.1 / 2025-04-22
+------------------
+
+* Only show cron set-up information when not running inside FrankenPHP (where the scheduler is built in)
+* Remove empty addresses when saving a new client so blank addresses are not stored
+
+2.3.0 / 2025-04-21
+------------------
+
+A large modernisation release with several technical upgrades that may affect users running the application:
+
+### Requirements
+
+* Bump minimum PHP version to **8.1**
+* Bump minimum Node version to **18**
+* Symfony upgraded from 5.4 to 6.4 and then to **7.x**
+* Update API Platform to version **4**
+
+### New features and enhancements
+
+* Add custom invoice and quote number generator with configurable prefix/suffix
+* Add explicit invoice date and due date fields to invoices
+* Add option to publish (mark as pending) an invoice without sending it
+* Add option to add custom (offline) payment gateways
+* Add additional fields when capturing payments
+* Add support for **SQLite** databases
+* Add a static binary distribution built with FrankenPHP
+* Skip applicable steps during installation when running under FrankenPHP
+* Replace UUID-based primary keys with ULIDs for better ordering and performance
+* New DataGrid implementation with cleaner UI and better filtering
+* Update settings, contacts, addresses and other forms to use Symfony UX LiveComponent for a smoother experience
+* Replace yarn with **bun** as the JavaScript package manager
+* Manage configuration through Symfony Secrets
+* All environment variables now use the `SOLIDINVOICE_` prefix (existing config can be migrated automatically)
+* Convert internal YAML configs to PHP for better performance
+* Replace the in-house notification system with **Symfony Notifier**
+* Add Codecov bundle analysis to CI
+
+### Bug fixes
+
+* Update the company logo handling and storage
+* Fix various ApiPlatform deprecations
+
+2.2.6 / 2024-04-19
+------------------
+
+* Fix incorrect option when adding a tax type to a line item
+* Fix money data transformer discarding cent values on save
+* Fix error when saving contact details with an empty type
+* Add a subject line to the password reset request email
+* Re-open the entity manager when it has been closed (avoids fatal errors after a failed query)
+* Additional Sentry configuration options for self-hosted Sentry instances
+* Move environment configuration to a separate, dedicated path
+
+2.2.5 / 2023-09-06
+------------------
+
+* Add option to set a global default mailer instead of falling back to a null transport
+
+2.2.4 / 2023-09-06
+------------------
+
+* Add Sentry integration for error reporting
+* Fix auto-incrementing of invoice and quote IDs
+* Fix various currency handling issues
+* Fix the actions dropdown on the data grid
+* Fix repository methods used when deleting entities
+* Filter out PDO drivers that are not supported by Doctrine during installation
+* Fix migrations when running on MariaDB 10.5
+
+2.2.3 / 2023-05-15
+------------------
+
+* Fix setting tax rates on invoices and quotes
+* Fix adding users to quotes and invoices
+
+2.2.2 / 2023-05-01
+------------------
+
+* Fix the BackGrid object formatter
+* Update Docker images
+* Update API docs to expose more information
+* Add an event listener that updates a user's last login timestamp
+* Fix updating the company name not propagating to all references
+* Pre-fill default data when creating a new company
+
+2.2.1 / 2023-04-17
+------------------
+
+* Fix creating recurring invoices
+* Fix the quote workflow transition when sending a quote
+* Fix saving payment IDs
+* **[BC break]** Replace numeric entity IDs with UUIDs across the application; legacy numeric `invoiceId` and `quoteId` fields are still exposed for display
+* Fix overlap between client name and amount owing on the invoice list screen
+* Fix saving contacts on invoices and quotes
+* Fix setting the company when using the API
+* Remove a global variable update for MySQL from migrations
+
+2.2.0 / 2023-03-23
+------------------
+
+* Add support for **multiple companies** per installation
+* Add option to disable the "watermark" status overlay on invoices and quotes
+* Replace the in-house cron runner with Zenstruck Schedule Bundle
+* Redirect to the system setup wizard when the application has no users
+* Upgrade Symfony to **5.4**
+* Fix various rendering errors
+* Fix sending of quotes and invoices
+* Fix multiple currency formatting issues
+
+2.1.2 / 2022-11-12
+------------------
+
+* Upgrade Payum to fix payment integration errors with several gateways
+* Fix the route used when editing a non-recurring invoice
+* Fix the page title on installation pages
+* Update theme and JavaScript dependencies
+
+2.1.1 / 2022-09-27
+------------------
+
+* Fix installation process to correctly save the database password
+* Upgrade Guzzle to version 7
+* Small API improvements
+
+2.1.0 / 2022-09-01
+------------------
+
+A modernisation release that brings the asset pipeline, mailer and authentication stack up to date.
+
+### Requirements
+
+* Bump minimum PHP version to **7.3.5**, with support added up to **PHP 8**
+* Upgrade Symfony to version **4** (and split out individual Symfony components)
+
+### Frontend
+
+* Replace RequireJS with **Webpack Encore** for asset bundling
+* Update the UI for more consistency across the application
+* Update Node version in Docker from 8 to 12
+
+### Backend
+
+* Replace **SwiftMailer** with **Symfony Mailer**
+* Replace **FOSUserBundle** with native Symfony security
+* Remove **SyliusFlowBundle**
+* Split recurring invoices into a separate entity
+* Make payment extensions public by default
+* Migrate to Symfony Flex
+* Migrate from Travis CI to GitHub Actions
+* Add Rector for automated refactoring
+* Replace Behat with Symfony Panther for functional tests
+* Upgrade PHPUnit to version 8
+* Add CodeQL analysis
+
+### Bug fixes
+
+* Show that the default Invoice/Quote item quantity will be saved if left empty
+* Fix online payments
+* Fix PDF CSS includes
+* Fix various SASS imports and dependency versions
+
 2.0.4 / 2020-03-29
 ------------------
 
@@ -139,6 +442,11 @@ Changelog
 
 * Add multi-currency support (#148)
 * Fix JS translations not setting global Translator variable anymore (#126)
+
+1.0.3 / 2016-12-12
+------------------
+
+* Fix credit modal displaying behind the backdrop overlay (#127)
 
 1.0.2 / 2016-10-15
 ------------------
