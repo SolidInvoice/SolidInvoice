@@ -28,6 +28,6 @@ SolidInvoice requires PHP version **7.4.15** or higher, but the latest PHP versi
 
 ## Next Steps
 
-1. [**Download SolidInvoice**](./downloading.md) — choose between distribution package, Docker, or installing from source.
+1. [**Download SolidInvoice**](./downloading.mdx) — choose between distribution package, Docker, or installing from source.
 2. [**Configure your web server**](./configuring-your-webserver.md) — set up Apache or Nginx to serve the application.
 3. [**Run the system installation wizard**](./system-installation.md) — configure the database and create your first admin user.

@@ -1,0 +1,111 @@
+---
+title: Downloading
+description: Download SolidInvoice via distribution package, Docker, or source.
+sidebar_position: 2
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Downloading
+
+There are different ways of obtaining SolidInvoice. The recommended option is the **Distribution Package** — it requires no PHP toolchain on the destination machine — but choose whichever fits your environment.
+
+<Tabs groupId="install-method">
+
+  <TabItem value="package" label="Distribution Package" default>
+
+    To install a packaged version of SolidInvoice, download the latest release from [github.com/SolidInvoice/SolidInvoice/releases/latest](https://github.com/SolidInvoice/SolidInvoice/releases/latest).
+
+    Extract the archive to a folder that is accessible from your web server (see [Configuring your WebServer](./configuring-your-webserver.md) for more information).
+
+    :::info
+    If you're on a shared hosting environment, or only have FTP access to a server, you can use FTP to upload all the files to the server.
+    :::
+
+    Once you have extracted the package contents, [configure your web server](./configuring-your-webserver.md), then [run the installation wizard](./system-installation.md).
+
+  </TabItem>
+
+  <TabItem value="docker" label="Docker">
+
+    SolidInvoice has an official Docker image at [hub.docker.com/r/solidinvoice/solidinvoice](https://hub.docker.com/r/solidinvoice/solidinvoice).
+
+    If you don't have Docker installed yet, follow the instructions at [docker.com/get-started](https://www.docker.com/get-started/).
+
+    Run the image:
+
+    ```bash
+    docker run -d -p 8765:8765 solidinvoice/solidinvoice
+    ```
+
+    Then open [http://127.0.0.1:8765](http://127.0.0.1:8765) to [complete the installation](./system-installation.md).
+
+    :::tip
+    You can change `8765` to any port that you want SolidInvoice to run on.
+    :::
+
+  </TabItem>
+
+  <TabItem value="composer" label="Composer">
+
+    Installing from source via Composer requires PHP 8.2+ and [Composer](https://getcomposer.org/) on your machine.
+
+    If you don't yet have Composer installed:
+
+    ```bash
+    curl -sS https://getcomposer.org/installer | php
+    ```
+
+    Create a new SolidInvoice project:
+
+    ```bash
+    php composer.phar create-project solidinvoice/solidinvoice
+    ```
+
+    This downloads SolidInvoice into a directory called `solidinvoice` and installs all PHP dependencies.
+
+    Install the Node packages and build the web assets:
+
+    ```bash
+    yarn install
+    yarn build
+    ```
+
+    Then [configure your web server](./configuring-your-webserver.md) to serve the `public/` directory and [run the installation wizard](./system-installation.md).
+
+    If you encounter any issues, please submit a [bug report](https://github.com/SolidInvoice/SolidInvoice/issues).
+
+  </TabItem>
+
+  <TabItem value="git" label="Git">
+
+    Install via Git when you want to track upstream changes or contribute back. Requires PHP 8.2+, [Composer](https://getcomposer.org/), and [Bun](https://bun.sh/) (or Yarn) on your machine.
+
+    Clone the repository:
+
+    ```bash
+    git clone https://github.com/SolidInvoice/SolidInvoice.git
+    cd SolidInvoice
+    ```
+
+    Install PHP dependencies:
+
+    ```bash
+    php composer.phar install
+    ```
+
+    Install the Node packages and build the web assets:
+
+    ```bash
+    yarn install
+    yarn build
+    ```
+
+    Then [configure your web server](./configuring-your-webserver.md) to serve the `public/` directory and [run the installation wizard](./system-installation.md).
+
+    If you encounter any issues, please submit a [bug report](https://github.com/SolidInvoice/SolidInvoice/issues).
+
+  </TabItem>
+
+</Tabs>

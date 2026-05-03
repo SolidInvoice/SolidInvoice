@@ -54,6 +54,10 @@ const config: Config = {
     locales: ['en'],
   },
 
+  clientModules: [
+    require.resolve('./src/clientModules/external-link-tracker.ts'),
+  ],
+
   presets: [
     [
       'classic',
