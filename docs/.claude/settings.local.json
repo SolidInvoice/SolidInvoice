@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/pierre/.claude/plugins/cache/claude-plugins-official/skill-creator/unknown/skills/skill-creator/**)",
+      "Bash(python -m scripts.package_skill /Users/pierre/projects/SolidWorx/SolidInvoice/SolidInvoice/.claude/skills/solidinvoice-feature-docs)",
+      "Read(//Users/pierre/projects/SolidWorx/SolidInvoice/SolidInvoice/.claude/skills/**)",
+      "Bash(zip -FS -r /Users/pierre/projects/SolidWorx/SolidInvoice/SolidInvoice/solidinvoice-feature-docs.skill solidinvoice-feature-docs -x '*/evals/*' '*/__pycache__/*' '*.pyc' '*/.DS_Store')"
+    ]
+  }
+}

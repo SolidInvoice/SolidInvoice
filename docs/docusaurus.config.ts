@@ -11,8 +11,8 @@ const config: Config = {
     v4: true,
   },
 
-  url: 'https://docs.solidinvoice.co',
-  baseUrl: '/',
+  url: 'https://solidinvoice.co',
+  baseUrl: '/docs/',
 
   organizationName: 'SolidInvoice',
   projectName: 'SolidInvoice',
