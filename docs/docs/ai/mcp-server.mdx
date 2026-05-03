@@ -1,0 +1,255 @@
+---
+title: MCP server
+description: Connect AI agents like Claude, Cursor, and Codex to SolidInvoice over the Model Context Protocol.
+sidebar_position: 1
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# MCP server
+
+SolidInvoice ships with a built-in [Model Context Protocol](https://modelcontextprotocol.io/) (MCP) server. Once you connect an AI agent to it, the agent can read your invoices, quotes, clients, and payments — and, if you grant write access, create and update them on your behalf.
+
+Every connection is bound to a single company at consent time and authenticated with OAuth 2.1. An agent connected to Company A can never see Company B's data, even if you belong to both.
+
+## Endpoint URL
+
+The MCP server is always served at the path `/_mcp` on your SolidInvoice instance.
+
+| Deployment   | URL                                            |
+|--------------|------------------------------------------------|
+| Cloud SaaS   | `https://solidinvoice.app/_mcp`                |
+| Self-hosted  | `https://<your-solidinvoice-host>/_mcp`        |
+
+:::info
+The transport is **Streamable HTTP** (the standard remote-MCP transport), not stdio. Any agent that supports remote MCP servers with OAuth can connect — no proxy or wrapper script is required.
+:::
+
+:::warning
+A self-hosted instance must be reachable over HTTPS for OAuth to work. The flow involves browser redirects, so `localhost` works for local testing but a private LAN address generally will not — use a tunnel (Cloudflare Tunnel, ngrok) if you need to expose a dev instance to a hosted agent.
+:::
+
+## How authorization works
+
+You don't paste API keys anywhere. The first time an agent connects, it walks you through a standard OAuth consent flow:
+
+1. The agent discovers SolidInvoice's OAuth endpoints from `/.well-known/oauth-authorization-server` and registers itself dynamically.
+2. Your browser opens to the SolidInvoice consent page. Sign in if you aren't already.
+3. On the consent screen you choose:
+   - **Which company** the agent will act on (if you belong to more than one).
+   - **Which scopes** to grant — `mcp:read` is always enabled; `mcp:write` is opt-in and only shown if the agent asked for it.
+4. After you approve, the agent receives an access token (valid for 24 hours) and a refresh token (valid for 90 days, rotated on each use). Tokens are bound to the company and scopes you chose; nothing about that binding can be changed later without re-consenting.
+
+You can review and revoke any connected agent at any time from `Profile → Connected apps` (`/profile/connected-apps`).
+
+## Connecting your agent
+
+The exact steps depend on the agent. The URL is always your `/_mcp` endpoint; everything else is handled by OAuth.
+
+<Tabs groupId="mcp-agent">
+  <TabItem value="claude-desktop" label="Claude Desktop">
+
+In Claude Desktop, open `Settings → Connectors → Add custom connector` and enter:
+
+- **Name**: `SolidInvoice`
+- **URL**: `https://solidinvoice.app/_mcp` (or your self-hosted URL)
+
+Claude opens a browser window to complete OAuth. Approve the consent screen and the connector is ready to use in any chat.
+
+  </TabItem>
+  <TabItem value="claude-code" label="Claude Code">
+
+From a terminal:
+
+```bash
+claude mcp add --transport http solidinvoice https://solidinvoice.app/_mcp
+```
+
+For a self-hosted instance, swap the URL. The first tool call in a session triggers the OAuth flow in your browser.
+
+To make the connection available across all your projects, add `--scope user`:
+
+```bash
+claude mcp add --scope user --transport http solidinvoice https://solidinvoice.app/_mcp
+```
+
+  </TabItem>
+  <TabItem value="cursor" label="Cursor">
+
+Open `Settings → MCP → Add new MCP server` and add:
+
+```json
+{
+  "mcpServers": {
+    "solidinvoice": {
+      "url": "https://solidinvoice.app/_mcp"
+    }
+  }
+}
+```
+
+Cursor will prompt you to authorize in the browser on first use.
+
+  </TabItem>
+  <TabItem value="codex" label="Codex CLI">
+
+Add the server to `~/.codex/config.toml`:
+
+```ini title="~/.codex/config.toml"
+[mcp_servers.solidinvoice]
+url = "https://solidinvoice.app/_mcp"
+```
+
+Restart Codex. The first request triggers browser-based OAuth.
+
+  </TabItem>
+  <TabItem value="goose" label="Goose">
+
+In Goose, add an extension of type `Remote (HTTP)` pointing at your `/_mcp` URL. Goose handles dynamic registration and OAuth automatically.
+
+  </TabItem>
+  <TabItem value="inspector" label="MCP Inspector">
+
+The official inspector is the quickest way to test a connection without configuring a full agent:
+
+```bash
+npx @modelcontextprotocol/inspector https://solidinvoice.app/_mcp
+```
+
+It walks through dynamic client registration, opens the consent page in your browser, then drops you into a UI where you can list and call every tool the server exposes.
+
+  </TabItem>
+  <TabItem value="generic" label="Other agents">
+
+Any MCP client that supports the **Streamable HTTP** transport with **OAuth 2.1 (authorization code + PKCE)** and **Dynamic Client Registration (RFC 7591)** can connect with no extra setup:
+
+- Server URL: `https://solidinvoice.app/_mcp` (or your self-hosted URL)
+- Auth: discovered automatically from `/.well-known/oauth-authorization-server`
+- Scopes: request `mcp:read` and (if the agent needs to make changes) `mcp:write`
+
+If your client cannot perform DCR or OAuth, it cannot use this server — there is intentionally no static API-key fallback.
+
+  </TabItem>
+</Tabs>
+
+:::tip
+After connecting, ask the agent something like *"List my unpaid invoices"* or *"Show this month's revenue"* to verify everything works.
+:::
+
+## Picking a company
+
+If you belong to multiple companies, the consent screen shows a company picker. The choice is locked into the access token — to point the same agent at a different company, revoke it from `Profile → Connected apps` and reconnect.
+
+:::tip
+You can connect the same agent to multiple companies by registering it more than once under different names — for example `solidinvoice-acme` and `solidinvoice-personal`. Each registration gets its own consent and its own token, so the agent can act against either company by picking the matching connection.
+:::
+
+## Available tools
+
+The server exposes a single, consistent toolset across every agent. Tools requiring `mcp:write` will only succeed if you granted write access at consent time.
+
+### Read tools (`mcp:read`)
+
+| Tool                           | What it does                                                                                  |
+|--------------------------------|-----------------------------------------------------------------------------------------------|
+| `list_resource`                | List records of any resource (invoice, quote, client, contact, payment, tax, recurring invoice) with filters and pagination. |
+| `get_resource`                 | Fetch a single record by ID.                                                                  |
+| `list_invoices_by_status`      | List invoices filtered by status (draft, pending, paid, overdue, etc.).                       |
+| `list_overdue_invoices`        | List overdue invoices, optionally for a specific client.                                      |
+| `list_quotes_by_status`        | List quotes filtered by status.                                                               |
+| `list_recurring_invoices`      | List recurring invoices, optionally filtered by status and/or client.                         |
+| `list_payment_methods`         | List configured payment methods for the active company.                                       |
+| `list_tax_rates`               | List tax rates configured for the active company.                                             |
+| `list_workflow_transitions`    | List workflow transitions currently enabled on a record.                                      |
+| `get_company_info`             | Return id, name, and default currency for the active company.                                 |
+| `get_client_summary`           | Totals invoiced, outstanding balance, total paid, and counts for a client.                    |
+| `get_dashboard_stats`          | Outstanding/overdue totals per currency, invoice counts by status, client count.              |
+| `get_invoice_status_distribution` | Count of invoices grouped by status.                                                       |
+| `get_revenue_by_period`        | Revenue from captured payments between two dates, grouped by day/week/month.                  |
+| `get_total_outstanding`        | Total outstanding invoiced amounts per currency, optionally filtered by client.               |
+| `get_total_overdue`            | Total overdue invoiced amounts per currency, optionally filtered by client.                   |
+
+### Write tools (`mcp:write`)
+
+| Tool                           | What it does                                                                                  |
+|--------------------------------|-----------------------------------------------------------------------------------------------|
+| `create_resource`              | Create a flat resource — `client`, `contact`, or `tax`.                                       |
+| `update_resource`              | Update scalar fields on an existing client, contact, or tax.                                  |
+| `delete_resource`              | Delete a client, contact, or tax.                                                             |
+| `create_invoice`               | Create an invoice for a client with line items, optional discount, due date, and contacts.    |
+| `create_quote`                 | Create a quote for a client with line items, optional discount, due date, and contacts.       |
+| `create_recurring_invoice`     | Create a recurring invoice on a daily, weekly, monthly, or yearly cadence.                    |
+| `clone_invoice`                | Clone an existing invoice into a new draft with the same line items.                          |
+| `clone_quote`                  | Clone an existing quote into a new draft with the same line items.                            |
+| `convert_quote_to_invoice`     | Convert a quote into a new invoice, copying client, line items, and totals.                   |
+| `apply_invoice_transition`     | Apply a workflow transition (`accept`, `cancel`, `overdue`, `pay`, `reopen`, `archive`) to an invoice. |
+| `apply_quote_transition`       | Apply a workflow transition (`send`, `accept`, `decline`, `cancel`, `reopen`, `archive`) to a quote. |
+| `apply_recurring_transition`   | Apply a workflow transition to a recurring invoice.                                           |
+| `record_payment`               | Record an offline payment against an invoice and transition it to paid.                       |
+| `add_contact`                  | Add a contact (email + optional name) to an existing client.                                  |
+| `send_invoice_reminder`        | Email a manual reminder for an invoice to its contacts.                                       |
+
+:::note
+The agent always operates as the user who consented, on the company chosen at consent time. Any `company`/`company_id` an agent tries to pass in a write call is ignored — the active company is enforced server-side.
+:::
+
+## Managing connected apps
+
+Visit `/profile/connected-apps` while signed in to:
+
+- See every agent that has been authorized, the company it is bound to, and the scopes it holds.
+- Revoke an agent. Revocation immediately invalidates its access and refresh tokens; the next request from that agent will fail with `401 invalid_token` and the user will need to re-consent.
+
+Revoking an agent does not delete its registration, so the same agent can be reconnected later without going through dynamic registration again.
+
+## Self-hosted: enabling the server
+
+The MCP server is bundled with SolidInvoice 3.0 and enabled by default. The only one-time prerequisites are:
+
+- **OAuth signing keys.** Run `bin/console mcp:keys:generate` once; keys are written to `$SOLIDINVOICE_CONFIG_DIR/oauth/` and survive redeployments. The single-binary launcher (`solidinvoice run`) does this automatically on first start.
+- **Database migrations.** Run `bin/console doctrine:migrations:migrate` to create the OAuth and token tables.
+
+For multi-node deployments, switch the MCP session store off the default on-disk backend so sessions survive across nodes:
+
+```ini title=".env.local"
+SOLIDINVOICE_MCP_SESSION_STORE=cache
+SOLIDINVOICE_MCP_SESSION_CACHE_POOL=cache.app
+```
+
+| Store       | When to use                                                                          |
+|-------------|--------------------------------------------------------------------------------------|
+| `file`      | Default. Single-node deployments.                                                    |
+| `memory`    | Local development only — sessions reset on every worker restart.                     |
+| `cache`     | Multi-node deployments. Point `SOLIDINVOICE_MCP_SESSION_CACHE_POOL` at a Redis pool. |
+| `framework` | Re-uses your application's Symfony session handler.                                  |
+
+## Troubleshooting
+
+<details>
+<summary>The browser opens but consent fails with "company required"</summary>
+
+You belong to multiple companies and didn't pick one. Re-trigger the connection in the agent and select a company on the consent screen.
+
+</details>
+
+<details>
+<summary>Tools that change data return "insufficient scope"</summary>
+
+The agent only requested — or you only granted — `mcp:read`. Revoke the connection from `Profile → Connected apps` and reconnect, making sure the agent requests `mcp:write` and you tick the write checkbox on the consent screen.
+
+</details>
+
+<details>
+<summary>Requests started returning `401 invalid_token`</summary>
+
+The token expired or was revoked. Most agents refresh automatically; if not, reconnect from the agent's MCP settings. Check `Profile → Connected apps` to confirm the agent hasn't been revoked.
+
+</details>
+
+<details>
+<summary>Self-hosted: OAuth redirect fails</summary>
+
+SolidInvoice must be reachable from the agent's browser over HTTPS at the same hostname the agent was configured with. Mixed `http`/`https` or hostname mismatches between the configured URL and the redirect target will break the flow.
+
+</details>
