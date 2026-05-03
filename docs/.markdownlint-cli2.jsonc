@@ -1,0 +1,47 @@
+{
+  // SolidInvoice docs markdown lint config.
+  // Targets: docs/**/*.{md,mdx}
+  // Run: bun run lint:md
+  "config": {
+    "default": true,
+
+    // MDX uses inline HTML and JSX components — required for <Tabs>, admonitions, etc.
+    "MD033": false,
+
+    // Docusaurus admonitions (:::info, :::warning) confuse the no-bare-urls rule
+    "MD034": false,
+
+    // No hard line wrapping in prose — long URLs, tables, and code references make a hard limit
+    // counterproductive. Editor wrap is fine; rendered output handles wrapping.
+    "MD013": false,
+
+    // Permit duplicate sibling headings — common in installation guides ("Steps" under each platform)
+    "MD024": {
+      "siblings_only": true
+    },
+
+    // Pages have both a frontmatter `title:` AND a body `# Heading` (the title used for SEO/sidebar,
+    // the H1 used as the rendered page heading). This is the Docusaurus convention.
+    "MD025": false,
+
+    // Same reason as MD025 — frontmatter handles the page title, body has its own H1.
+    "MD041": false,
+
+    // Allow `:::admonition` style blocks without language tag at start
+    "MD040": false,
+
+    // Markdown table column alignment is rendered correctly regardless of pipe alignment in source
+    "MD060": false
+  },
+  "globs": [
+    "docs/**/*.md",
+    "docs/**/*.mdx"
+  ],
+  "ignores": [
+    "node_modules/**",
+    "build/**",
+    ".docusaurus/**",
+    "CLAUDE.md",
+    "**/CLAUDE.md"
+  ]
+}

@@ -1,0 +1,38 @@
+# SolidInvoice Documentation
+
+> SolidInvoice is open-source invoicing software for freelancers and small businesses. Built on Symfony 7 and PHP 8.4. Self-hostable with full data ownership, or available as a hosted SaaS at $8/month flat — no per-client limits. Features include quotes, invoices (recurring and one-off), client management, payments via Payum (Stripe, PayPal), multi-currency, tax/discount handling, and a REST API.
+
+## Getting Started
+
+- [SolidInvoice Documentation](https://solidinvoice.co/docs/intro): Overview of SolidInvoice, key features, and entry points to the rest of the docs.
+
+## Installation
+
+- [Installation Guide](https://solidinvoice.co/docs/installation-guide): Overview of installation paths and system requirements (PHP 7.4.15+, web server, database).
+- [Downloading](https://solidinvoice.co/docs/installation-guide/downloading): How to obtain SolidInvoice — distribution package, Docker container, or building from source via Composer/Git.
+- [Configuring your WebServer](https://solidinvoice.co/docs/installation-guide/configuring-your-webserver): Apache and Nginx virtual host configuration examples.
+- [System Installation](https://solidinvoice.co/docs/installation-guide/system-installation): Running the web-based installation wizard to configure database, admin user, locale, and currency.
+
+## Operations
+
+- [Cron Job Setup](https://solidinvoice.co/docs/cron-job-setup): Setting up the recurring task cron job on Linux, Windows, cPanel, or Plesk for automated recurring invoices. (Not needed when running the single-binary distribution.)
+
+## Companies
+
+- [Overview](https://solidinvoice.co/docs/companies/overview): SolidInvoice supports multiple companies per user; each company has isolated clients, invoices, and settings.
+- [Creating a company](https://solidinvoice.co/docs/companies/creating-a-company): Step-by-step guide to creating a new company entity from the company dropdown.
+- [Switching between companies](https://solidinvoice.co/docs/companies/switching-between-companies): How to switch the active company context.
+
+## Managing Clients
+
+- [Create new Client](https://solidinvoice.co/docs/managing-clients/create-new-client): Adding a new client to your company.
+
+## Integrations
+
+- [Sentry](https://solidinvoice.co/docs/integrations/sentry): Configuring Sentry error tracking via the `SENTRY_DSN` environment variable, for both Docker and distribution-package deployments.
+
+## External Resources
+
+- [REST API Documentation](https://solidinvoice.app/api/docs): Auto-generated OpenAPI/Swagger reference for the SolidInvoice REST API. Authentication via `X-API-TOKEN` header.
+- [GitHub Repository](https://github.com/SolidInvoice/SolidInvoice): Source code, issues, contributions, releases.
+- [Contribution Guide](https://github.com/SolidInvoice/SolidInvoice/blob/3.0.x/CONTRIBUTING.md): How to contribute to SolidInvoice.

@@ -13,6 +13,7 @@
 		"write-translations": "docusaurus write-translations",
 		"write-heading-ids": "docusaurus write-heading-ids",
 		"typecheck": "tsc",
+		"lint:md": "markdownlint-cli2",
 		"preview": "bun run build && wrangler dev"
 	},
 	"dependencies": {
@@ -31,6 +32,7 @@
 		"@docusaurus/tsconfig": "^3.10.1",
 		"@docusaurus/types": "^3.10.1",
 		"@types/react": "^19.0.0",
+		"markdownlint-cli2": "^0.22.1",
 		"typescript": "~6.0.2",
 		"wrangler": "^4.87.0"
 	},

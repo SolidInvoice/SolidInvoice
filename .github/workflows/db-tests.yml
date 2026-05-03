@@ -2,6 +2,8 @@ name: DB Tests
 
 on:
     pull_request:
+        paths-ignore:
+            - 'docs/**'
 
 permissions:
     contents: read

@@ -8,6 +8,8 @@ on:
   push:
     branches:
       - 3.0.x
+    paths-ignore:
+      - 'docs/**'
 
 env:
   SOLIDINVOICE_ENV: prod

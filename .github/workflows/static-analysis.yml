@@ -1,6 +1,9 @@
 name: Static Analysis
 
-on: [ pull_request ]
+on:
+  pull_request:
+    paths-ignore:
+      - 'docs/**'
 
 jobs:
   phpstan:
