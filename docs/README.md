@@ -1,36 +1,41 @@
-# SolidInvoice Documentation
+# Website
 
-SolidInvoice is a powerful, intuitive, and fully open-source invoicing solution designed to simplify your billing processes, enhance productivity, and streamline your financial operations.
+This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
 
-Whether you're a freelancer, small business owner, or managing invoices for larger organizations, SolidInvoice provides a reliable, scalable platform tailored to meet your invoicing and billing needs.
+## Installation
 
-### Key Features
+```bash
+yarn
+```
 
-* **Simple Invoice Management**: Easily create, track, and send professional invoices.
-* **Client Management**: Efficiently manage client information, contact details, and billing preferences.
-* **Quotes and Estimates**: Quickly generate and send accurate quotes that can be seamlessly converted into invoices.
-* **Payments Integration**: Accept payments effortlessly through integrated payment gateways such as PayPal, Stripe, and more.
-* **Multi-Currency Support**: Invoice your clients globally with robust multi-currency handling.
-* **Customization and Branding**: Personalize invoices, quotes, and emails to match your business brand.
+## Local Development
 
-### Getting Started
+```bash
+yarn start
+```
 
-* [Installation Guide](installation-guide/): Step-by-step instructions to install SolidInvoice on your preferred hosting environment.
-* [Configuration](https://chatgpt.com/c/configuration/overview.md): Learn how to configure SolidInvoice to best suit your business requirements.
-* [User Guide](https://chatgpt.com/c/user-guide/overview.md): Comprehensive instructions on managing invoices, clients, quotes, and payments effectively.
+This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
 
-### Resources
+## Build
 
-* [**API Documentation**](https://solidinvoice.app/api/docs): Integrate SolidInvoice seamlessly into your existing tools and workflows.
+```bash
+yarn build
+```
 
-### Contribute
+This command generates static content into the `build` directory and can be served using any static contents hosting service.
 
-SolidInvoice thrives on community contributions. Learn how you can help improve the software by visiting our [Contribution Guide](https://github.com/SolidInvoice/SolidInvoice/blob/2.4.x/CONTRIBUTING.md).
+## Deployment
 
-### Feedback
+Using SSH:
 
-We welcome your feedback to continuously improve SolidInvoice. If you have suggestions or encounter any issues, please reach out through our [Support Channels](https://github.com/SolidInvoice/SolidInvoice/issues/new/choose).
+```bash
+USE_SSH=true yarn deploy
+```
 
-***
+Not using SSH:
 
-Thank you for choosing SolidInvoice! We're committed to supporting your business success through effective invoicing and financial management solutions.
+```bash
+GIT_USER=<Your GitHub username> yarn deploy
+```
+
+If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
