@@ -2,34 +2,28 @@ import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
-// This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
-
 const config: Config = {
   title: 'SolidInvoice Docs',
-  tagline: 'Simple and elegant invoicing solution',
+  tagline: 'Open-source invoicing for freelancers and small businesses',
   favicon: 'img/favicon.ico',
 
-  // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
-    v4: true, // Improve compatibility with the upcoming Docusaurus v4
+    v4: true,
   },
 
-  // Set the production url of your site here
   url: 'https://docs.solidinvoice.co',
-  // Set the /<baseUrl>/ pathname under which your site is served
-  // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
 
-  // GitHub pages deployment config.
-  // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'solidinvoice', // Usually your GitHub org/user name.
-  projectName: 'solidinvoice', // Usually your repo name.
+  organizationName: 'SolidInvoice',
+  projectName: 'SolidInvoice',
 
   onBrokenLinks: 'throw',
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: 'throw',
+    },
+  },
 
-  // Even if you don't use internationalization, you can use this field to set
-  // useful metadata like html lang. For example, if your site is Chinese, you
-  // may want to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
@@ -41,37 +35,26 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
+          routeBasePath: '/',
           editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+            'https://github.com/SolidInvoice/SolidInvoice/edit/3.0.x/docs/',
         },
-        blog: {
-          showReadingTime: true,
-          feedOptions: {
-            type: ['rss', 'atom'],
-            xslt: true,
-          },
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/solidinvoice/solidinvoice/tree/3.0.x/docs/',
-          // Useful options to enforce blogging best practices
-          onInlineTags: 'warn',
-          onInlineAuthors: 'warn',
-          onUntruncatedBlogPosts: 'warn',
-        },
+        blog: false,
         theme: {
           customCss: './src/css/custom.css',
+        },
+        sitemap: {
+          changefreq: 'weekly',
+          priority: 0.5,
         },
       } satisfies Preset.Options,
     ],
   ],
 
   themeConfig: {
-    // Replace with your project's social card
-    image: 'img/docusaurus-social-card.jpg',
+    image: 'img/solidinvoice-social-card.png',
     colorMode: {
+      defaultMode: 'light',
       respectPrefersColorScheme: true,
     },
     navbar: {
@@ -83,12 +66,20 @@ const config: Config = {
       items: [
         {
           type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
+          sidebarId: 'docsSidebar',
           position: 'left',
-          label: 'Tutorial',
+          label: 'Documentation',
         },
-        {to: 'https://solidinvoice.co/blog', label: 'Blog', position: 'left'},
-        {to: 'https://solidinvoice.co', label: 'Cloud Hosted Option', position: 'left'},
+        {
+          to: 'https://solidinvoice.co/blog',
+          label: 'Blog',
+          position: 'left',
+        },
+        {
+          to: 'https://solidinvoice.co',
+          label: 'Cloud Hosted',
+          position: 'left',
+        },
         {
           href: 'https://github.com/SolidInvoice/SolidInvoice',
           label: 'GitHub',
@@ -100,11 +91,15 @@ const config: Config = {
       style: 'dark',
       links: [
         {
-          title: 'Docs',
+          // Phase 3 will replace these once content is migrated:
+          // Installation → /installation-guide
+          // Companies → /companies/overview
+          // Integrations → /integrations/sentry
+          title: 'Documentation',
           items: [
             {
-              label: 'Tutorial',
-              to: '/docs/intro',
+              label: 'Get Started',
+              to: '/intro',
             },
           ],
         },
@@ -112,16 +107,16 @@ const config: Config = {
           title: 'Community',
           items: [
             {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+              label: 'GitHub Discussions',
+              href: 'https://github.com/SolidInvoice/SolidInvoice/discussions',
             },
             {
-              label: 'Discord',
-              href: 'https://discordapp.com/invite/docusaurus',
+              label: 'Report an Issue',
+              href: 'https://github.com/SolidInvoice/SolidInvoice/issues',
             },
             {
-              label: 'X',
-              href: 'https://x.com/docusaurus',
+              label: 'X (Twitter)',
+              href: 'https://x.com/solidinvoice',
             },
           ],
         },
@@ -129,8 +124,12 @@ const config: Config = {
           title: 'More',
           items: [
             {
+              label: 'Main Site',
+              href: 'https://solidinvoice.co',
+            },
+            {
               label: 'Blog',
-              to: '/blog',
+              href: 'https://solidinvoice.co/blog',
             },
             {
               label: 'GitHub',
@@ -139,13 +138,27 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} SolidInvoice.`,
+      copyright: `Copyright © ${new Date().getFullYear()} SolidInvoice. Built with Docusaurus.`,
     },
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
+      additionalLanguages: ['bash', 'php', 'yaml', 'json', 'nginx', 'apacheconf', 'docker', 'ini'],
     },
   } satisfies Preset.ThemeConfig,
+
+  plugins: [
+    [
+      require.resolve('@easyops-cn/docusaurus-search-local'),
+      {
+        hashed: true,
+        indexBlog: false,
+        docsRouteBasePath: '/',
+        highlightSearchTermsOnTargetPage: true,
+        explicitSearchResultPath: true,
+      },
+    ],
+  ],
 };
 
 export default config;
