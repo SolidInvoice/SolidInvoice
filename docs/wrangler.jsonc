@@ -39,8 +39,6 @@
 	 * https://developers.cloudflare.com/workers/wrangler/configuration/#service-bindings
 	 */
 	// "services": [  {   "binding": "MY_SERVICE",   "service": "my-service"  } ]
-
-	{
     "observability": {
         "enabled": true,
         "head_sampling_rate": 1,
