@@ -118,15 +118,23 @@ const config: Config = {
       style: 'dark',
       links: [
         {
-          // Phase 3 will replace these once content is migrated:
-          // Installation → /installation-guide
-          // Companies → /companies/overview
-          // Integrations → /integrations/sentry
           title: 'Documentation',
           items: [
             {
               label: 'Get Started',
               to: '/intro',
+            },
+            {
+              label: 'Installation',
+              to: '/installation-guide',
+            },
+            {
+              label: 'Companies',
+              to: '/companies/overview',
+            },
+            {
+              label: 'Integrations',
+              to: '/integrations/sentry',
             },
           ],
         },

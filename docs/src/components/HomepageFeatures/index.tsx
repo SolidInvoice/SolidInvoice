@@ -96,7 +96,7 @@ const FeatureList: FeatureItem[] = [
   },
   {
     title: 'Self-Hosted',
-    href: '/intro',
+    href: '/installation-guide',
     Icon: ServerIcon,
     description: (
       <>

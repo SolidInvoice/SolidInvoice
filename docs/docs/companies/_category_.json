@@ -1,0 +1,9 @@
+{
+  "label": "🏢 Companies",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "title": "Companies",
+    "description": "Manage one or more companies in SolidInvoice."
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "label": "Integrations",
+  "position": 6,
+  "link": {
+    "type": "generated-index",
+    "title": "Integrations",
+    "description": "Connect SolidInvoice with external services."
+  }
+}
