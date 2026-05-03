@@ -1,12 +1,95 @@
 .features {
-  display: flex;
-  align-items: center;
-  padding: 4rem 0;
-  width: 100%;
+  padding: 5rem 0 6rem;
+  background: var(--ifm-background-color);
+}
+
+@media screen and (max-width: 996px) {
+  .features {
+    padding: 3rem 0 4rem;
+  }
+}
+
+.sectionHeader {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 3rem;
+}
+
+.sectionTitle {
+  font-size: clamp(1.75rem, 1.25rem + 1.5vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.75rem;
+}
+
+.sectionSubtitle {
+  font-size: 1.125rem;
+  color: var(--si-color-muted);
+  margin: 0;
+}
+
+.featureColumn {
+  text-decoration: none !important;
+  color: inherit;
+  margin-bottom: 1.5rem;
+  display: block;
+}
+
+.featureColumn:hover {
+  color: inherit;
+}
+
+.featureCard {
+  background: var(--ifm-background-color);
+  border: 1px solid var(--si-color-border);
+  border-radius: 0.75rem;
+  padding: 1.75rem;
+  height: 100%;
+  transition: all 200ms ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.featureCard:hover {
+  border-color: var(--ifm-color-primary-lighter);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px -12px rgba(34, 197, 94, 0.25);
+}
+
+[data-theme='dark'] .featureCard {
+  background: var(--si-color-navy-soft);
+}
+
+[data-theme='dark'] .featureCard:hover {
+  box-shadow: 0 12px 32px -12px rgba(74, 222, 128, 0.25);
 }
 
 .featureIcon {
-  font-size: 4rem;
-  line-height: 1;
-  margin-bottom: 1rem;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(34, 197, 94, 0.1);
+  color: var(--ifm-color-primary-dark);
+  border-radius: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+[data-theme='dark'] .featureIcon {
+  background: rgba(74, 222, 128, 0.12);
+  color: var(--ifm-color-primary);
+}
+
+.featureTitle {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.01em;
+}
+
+.featureDescription {
+  color: var(--si-color-muted);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  margin: 0;
 }
