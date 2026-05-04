@@ -88,6 +88,12 @@ return static function (SecurityConfig $config): void {
         ->security(false);
 
     $config
+        ->firewall('api_well_known')
+        ->pattern('^/\.well-known/api-catalog$')
+        ->stateless(true)
+        ->security(false);
+
+    $config
         ->firewall('mcp')
         ->pattern('^/_mcp')
         ->stateless(true)
@@ -115,6 +121,7 @@ return static function (SecurityConfig $config): void {
             '/oauth/(token|register|revoke)$|' .
             '/\.well-known/oauth-authorization-server|' .
             '/\.well-known/oauth-protected-resource|' .
+            '/\.well-known/api-catalog$|' .
             '/install|' .
             '/verify$|' .
             '/logout$|' .
