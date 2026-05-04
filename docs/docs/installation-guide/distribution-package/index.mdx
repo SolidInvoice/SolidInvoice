@@ -105,12 +105,12 @@ Open your browser at the URL the webserver is serving and finish setup with the 
 
 ## 3. Run the background worker
 
-SolidInvoice uses a single background worker for both async messages (emails, search indexing, webhook dispatch) and scheduled tasks (recurring invoices, reminders, overdue checks). The worker runs `bin/console messenger:consume --all` in a loop.
+SolidInvoice uses a single background worker for both async messages (emails, webhook dispatch) and scheduled tasks (recurring invoices, reminders, overdue checks). The worker runs `bin/console messenger:consume --all` in a loop.
 
 Follow the [cron job setup guide](./cron-job-setup.md) — it covers systemd, cron, cPanel, Plesk, and Windows Task Scheduler.
 
 :::warning
-Without the worker running, async features and scheduled tasks won't fire — emails won't send, recurring invoices won't generate, and search indexing won't update.
+Without the worker running, async features and scheduled tasks won't fire — emails won't send and recurring invoices won't generate.
 :::
 
 ## Useful environment variables

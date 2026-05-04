@@ -77,7 +77,7 @@ docker run -d -p 8765:8765 -v solidinvoice_data:/etc/solidinvoice solidinvoice/s
 Pull from [Docker Hub](https://hub.docker.com/r/solidinvoice/solidinvoice).
 
 :::info
-Recurring tasks and async work (email sending, search indexing) run automatically inside the container — no separate cron job or messenger consumer to set up.
+Recurring tasks and async work (email sending) run automatically inside the container — no separate cron job or messenger consumer to set up.
 :::
 
 ## Update

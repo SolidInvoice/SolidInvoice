@@ -118,7 +118,7 @@ A confirmation screen with a quick summary of what was set up.
 Click `Launch SolidInvoice` to go to the login page. Sign in with the admin email and password you set during the wizard.
 
 :::info
-If you installed via the [distribution package](./distribution-package/index.mdx) or from [Git](./git.md), one more thing is left: starting the background worker that handles emails, search indexing, and recurring invoices. See the [Cron job setup](./distribution-package/cron-job-setup.md) guide for systemd, cron, cPanel, Plesk, and Windows configurations.
+If you installed via the [distribution package](./distribution-package/index.mdx) or from [Git](./git.md), one more thing is left: starting the background worker that handles emails and recurring invoices. See the [Cron job setup](./distribution-package/cron-job-setup.md) guide for systemd, cron, cPanel, Plesk, and Windows configurations.
 
 If you used [Quick install](./quick-install.mdx), [Homebrew](./homebrew.md), or [Docker](./docker.md), the worker is already running for you — nothing else to do.
 :::

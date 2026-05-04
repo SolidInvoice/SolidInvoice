@@ -39,7 +39,7 @@ symfony serve
 This reads the project's `.symfony.local.yaml` and:
 
 - Starts an HTTPS web server on port `7005` (configurable in `.symfony.local.yaml`).
-- Starts the async messenger consumer as a managed worker, so scheduled tasks and async messages (emails, search indexing) are processed without you having to run `messenger:consume` separately.
+- Starts the async messenger consumer as a managed worker, so scheduled tasks and async messages (emails) are processed without you having to run `messenger:consume` separately.
 
 The committed `.symfony.local.yaml` already contains both the HTTP and worker configuration:
 

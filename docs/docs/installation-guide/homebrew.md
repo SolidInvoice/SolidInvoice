@@ -32,7 +32,7 @@ The application starts on `https://localhost:8765` with a self-signed certificat
 For SSL, custom domains, worker mode, and the full list of `run` flags, see the [quick install guide](./quick-install.mdx#ssl).
 
 :::info
-Recurring tasks and async work (email sending, search indexing) run automatically — there is no separate cron job or messenger consumer to set up.
+Recurring tasks and async work (email sending) run automatically — there is no separate cron job or messenger consumer to set up.
 :::
 
 ## Update

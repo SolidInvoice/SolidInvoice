@@ -9,7 +9,7 @@ import TabItem from '@theme/TabItem';
 
 # Cron job setup
 
-SolidInvoice uses a single background worker for both async messages (email, search indexing, webhooks) and scheduled tasks (recurring invoices, reminders, overdue checks). The command is the same in every case:
+SolidInvoice uses a single background worker for both async messages (email, webhooks) and scheduled tasks (recurring invoices, reminders, overdue checks). The command is the same in every case:
 
 ```bash
 bin/console messenger:consume --all --time-limit=3600 --memory-limit=128M
@@ -18,7 +18,7 @@ bin/console messenger:consume --all --time-limit=3600 --memory-limit=128M
 The platform-specific configurations below are alternative ways to keep that command running. Pick whichever fits your environment.
 
 :::warning
-Without a worker running, async features and scheduled tasks won't fire — emails won't send, recurring invoices won't generate, and search indexing won't update.
+Without a worker running, async features and scheduled tasks won't fire — emails won't send and recurring invoices won't generate.
 :::
 
 :::info
