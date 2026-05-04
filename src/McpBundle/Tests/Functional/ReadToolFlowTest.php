@@ -99,8 +99,9 @@ final class ReadToolFlowTest extends KernelTestCase
 
         $result = $tool->listOverdueInvoices();
 
-        self::assertCount(1, $result);
-        self::assertSame('overdue', $result[0]['status']);
+        self::assertSame(1, $result['count']);
+        self::assertCount(1, $result['results']);
+        self::assertSame('overdue', $result['results'][0]['status']);
     }
 
     public function testDashboardStatsReturnsStructuredTotals(): void

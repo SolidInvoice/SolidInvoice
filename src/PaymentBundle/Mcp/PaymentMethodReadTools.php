@@ -32,7 +32,7 @@ final class PaymentMethodReadTools
     /**
      * List payment methods configured for the current company.
      *
-     * @return list<array<string, mixed>>
+     * @return array{results: list<array<string, mixed>>, count: int}
      */
     #[McpTool(name: 'list_payment_methods', description: 'List configured payment methods for the current company.')]
     #[McpScopeRequired(McpScope::Read)]
@@ -45,6 +45,8 @@ final class PaymentMethodReadTools
             ->getQuery()
             ->getResult();
 
-        return $this->normalizer->normalizeMany($methods);
+        $results = $this->normalizer->normalizeMany($methods);
+
+        return ['results' => $results, 'count' => count($results)];
     }
 }

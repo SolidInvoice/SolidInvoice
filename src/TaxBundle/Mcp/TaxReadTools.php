@@ -32,7 +32,7 @@ final class TaxReadTools
     /**
      * List tax rates configured for the current company.
      *
-     * @return list<array<string, mixed>>
+     * @return array{results: list<array<string, mixed>>, count: int}
      */
     #[McpTool(name: 'list_tax_rates', description: 'List tax rates configured for the current company.')]
     #[McpScopeRequired(McpScope::Read)]
@@ -45,6 +45,8 @@ final class TaxReadTools
             ->getQuery()
             ->getResult();
 
-        return $this->normalizer->normalizeMany($taxes);
+        $results = $this->normalizer->normalizeMany($taxes);
+
+        return ['results' => $results, 'count' => count($results)];
     }
 }

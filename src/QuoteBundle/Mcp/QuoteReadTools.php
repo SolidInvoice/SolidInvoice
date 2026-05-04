@@ -43,7 +43,7 @@ final class QuoteReadTools
      * @param string|null $client_id Optional client ULID
      * @param int         $limit     Max rows (1..100)
      *
-     * @return list<array<string, mixed>>
+     * @return array{results: list<array<string, mixed>>, count: int}
      */
     #[McpTool(name: 'list_quotes_by_status', description: 'List quotes filtered by status.')]
     #[McpScopeRequired(McpScope::Read)]
@@ -78,6 +78,8 @@ final class QuoteReadTools
             $qb->andWhere('q.client = :client')->setParameter('client', $client->getId(), UlidType::NAME);
         }
 
-        return $this->normalizer->normalizeMany($qb->getQuery()->getResult());
+        $results = $this->normalizer->normalizeMany($qb->getQuery()->getResult());
+
+        return ['results' => $results, 'count' => count($results)];
     }
 }
