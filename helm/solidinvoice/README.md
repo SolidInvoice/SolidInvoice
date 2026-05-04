@@ -225,6 +225,6 @@ SolidInvoice on Kubernetes consists of the following components:
 ## Links
 
 - [SolidInvoice on GitHub](https://github.com/SolidWorx/SolidInvoice)
-- [SolidInvoice Documentation](https://docs.solidinvoice.co)
+- [SolidInvoice Documentation](https://solidinvoice.co/docs)
 - [Helm Documentation](https://helm.sh/docs/)
 - [Bitnami Charts](https://github.com/bitnami/charts)

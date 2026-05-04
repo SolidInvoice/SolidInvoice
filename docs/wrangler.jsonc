@@ -7,7 +7,8 @@
 	"name": "solidinvoice-docs",
 	"compatibility_date": "2026-05-03",
 	"assets": {
-		"directory": "./build"
+		"directory": "./build",
+		"not_found_handling": "404-page"
 	},
 	"observability": {
 		"enabled": true

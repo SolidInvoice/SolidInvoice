@@ -5,7 +5,7 @@
 	"scripts": {
 		"docusaurus": "docusaurus",
 		"start": "docusaurus start",
-		"build": "docusaurus build --out-dir build/docs",
+		"build": "docusaurus build --out-dir build/docs && cp build/docs/404.html build/404.html",
 		"swizzle": "docusaurus swizzle",
 		"deploy": "bun run build && wrangler deploy",
 		"clear": "docusaurus clear",

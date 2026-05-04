@@ -171,7 +171,7 @@ bun run build
 ## 📚 Documentation
 
 - 🌐 Website — [solidinvoice.co](https://solidinvoice.co)
-- 📖 Docs & guides — [`/docs`](docs/)
+- 📖 Docs & guides — [solidinvoice.co/docs](https://solidinvoice.co/docs)
 - 🔄 Upgrading — [`UPGRADE.md`](UPGRADE.md)
 - 📝 Changelog — [`CHANGELOG.md`](CHANGELOG.md)
 
@@ -209,7 +209,7 @@ SolidInvoice is open-source software released under the [MIT License](LICENSE).
 
 <div align="center">
 
-**[Website](https://solidinvoice.co)** · **[Hosted](https://solidinvoice.co)** · **[Docs](docs/)** · **[Releases](https://github.com/SolidInvoice/SolidInvoice/releases)** · **[Sponsor](https://github.com/sponsors/SolidInvoice?o=esc)**
+**[Website](https://solidinvoice.co)** · **[Hosted](https://solidinvoice.co)** · **[Docs](https://solidinvoice.co/docs)** · **[Releases](https://github.com/SolidInvoice/SolidInvoice/releases)** · **[Sponsor](https://github.com/sponsors/SolidInvoice?o=esc)**
 
 Made with ❤️ by [SolidWorx](https://solidworx.co) and [contributors](https://github.com/SolidInvoice/SolidInvoice/graphs/contributors).
 
