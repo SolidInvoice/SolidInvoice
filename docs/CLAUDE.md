@@ -182,6 +182,18 @@ import TabItem from '@theme/TabItem';
 - Inline UI elements in backticks: `+ Add Company`, `Create` button.
 - Use admonitions for side notes and cautions, not bold inline warnings.
 
+## Troubleshooting sections
+
+Many pages end with a `## Troubleshooting` section. Format it consistently across the site so users can scan for their symptom:
+
+- One `### subheading` per problem. The subheading is the **symptom or error message** the user will recognise — verbatim error strings go in backticks (`` `redirect_uri_mismatch` from Google ``), behavioural symptoms in plain prose (`Google buttons don't appear on the login page`).
+- Follow each subheading with **1–2 short paragraphs** of body text explaining the cause and the fix. Do not use bullet lists or definition-list style (`**term** — explanation`) for the entries themselves — the subheading *is* the index, the paragraph is the answer.
+- Keep entries focused on one symptom each. If a single root cause produces several symptoms, pick the most recognisable one as the subheading and mention the others in the body.
+- Order entries by likelihood, not alphabetically. The most common problem goes first.
+- Reference exact UI labels, env var names, and commands in backticks, the same as elsewhere on the page.
+
+The [Troubleshooting section on the system installation page](./docs/installation-guide/system-installation.md) is the canonical example — match its shape on any new page that needs one.
+
 ## Building & verifying
 
 Before claiming a doc change is complete, run a build to catch broken links and frontmatter errors:
