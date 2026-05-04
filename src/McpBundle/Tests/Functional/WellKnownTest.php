@@ -20,6 +20,7 @@ use Zenstruck\Foundry\Test\Factories;
 /**
  * @covers \SolidInvoice\McpBundle\Action\WellKnownAuthServer
  * @covers \SolidInvoice\McpBundle\Action\WellKnownProtectedResource
+ * @covers \SolidInvoice\McpBundle\Action\WellKnownServerCard
  *
  * @group functional
  */
@@ -64,5 +65,25 @@ final class WellKnownTest extends WebTestCase
         self::assertArrayHasKey('authorization_servers', $data);
         self::assertSame(['header'], $data['bearer_methods_supported']);
         self::assertSame(['mcp:read', 'mcp:write'], $data['scopes_supported']);
+    }
+
+    public function testServerCard(): void
+    {
+        self::ensureKernelShutdown();
+        $client = self::createClient();
+        $client->request('GET', '/.well-known/mcp/server-card.json');
+
+        self::assertResponseIsSuccessful();
+
+        $data = json_decode((string) $client->getResponse()->getContent(), true);
+
+        self::assertIsArray($data);
+        self::assertSame('SolidInvoice', $data['serverInfo']['name']);
+        self::assertArrayHasKey('version', $data['serverInfo']);
+        self::assertSame('http', $data['transport']['type']);
+        self::assertStringEndsWith('/_mcp', $data['transport']['endpoint']);
+        self::assertSame('oauth2', $data['authorization']['type']);
+        self::assertSame(['mcp:read', 'mcp:write'], $data['authorization']['scopes']);
+        self::assertArrayHasKey('tools', $data['capabilities']);
     }
 }
