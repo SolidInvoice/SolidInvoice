@@ -213,7 +213,7 @@ final class AnalyticsTools
 
         $rows = $qb->select(
             'p.currencyCode AS currency',
-            'p.totalAmount_amount AS amount',
+            'p.totalAmount AS amount',
             'p.completed AS completed',
         )->getQuery()->getArrayResult();
 
