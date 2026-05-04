@@ -48,12 +48,14 @@ return static function (McpConfig $config): void {
     $config->discovery()
         ->scanDirs(['src'])
         ->excludeDirs([
-            // Tests/ and Test/ are excluded by basename (no slash) so Finder
-            // skips every bundle's test dirs — discovering them in prod
-            // triggers autoload of dev-only PHPUnit/Foundry classes (e.g.
-            // PersistentProxyObjectFactory) and crashes the MCP controller.
+            // Tests/, Test/ and DataFixtures/ are excluded by basename (no
+            // slash) so Finder skips them in every bundle — discovering them
+            // in prod triggers autoload of dev-only classes (PHPUnit, Foundry's
+            // PersistentProxyObjectFactory, doctrine/fixtures Fixture) and
+            // crashes the MCP controller.
             'Tests',
             'Test',
+            'DataFixtures',
             'src/McpBundle/Entity',
             'src/McpBundle/OAuth',
             'src/McpBundle/Security',
