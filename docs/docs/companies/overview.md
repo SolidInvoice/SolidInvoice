@@ -1,19 +1,27 @@
 ---
 title: Overview
-description: Manage multiple companies in SolidInvoice.
+description: How companies work in SolidInvoice.
 sidebar_position: 1
 ---
 
 # Overview
 
-SolidInvoice provides support for managing multiple companies.
+A company in SolidInvoice is a self-contained workspace. Everything you do in the app — adding clients, sending quotes, issuing invoices, tracking payments — happens inside one company at a time.
 
-A company can be any type of entity that needs to manage clients and send out invoices — a registered business or just a personal account.
+## What lives in a company
 
-## Company information
+Clients, contacts, quotes, invoices, recurring invoices, payments, tax rates, payment methods, settings, and templates are all scoped to a single company. Data from one company is never visible to another, even when the same user belongs to both.
 
-A company needs at least a name and a currency set. All clients, invoices, quotes, settings, and other resources are unique to a company and not shared between companies.
+Each company has its own currency. It's set when you create the company and is used as the company-wide default for invoices, quotes, and payments. (Individual clients can override the currency on a per-client basis.)
 
-A user can create as many companies as they like — there are no limits on the number of companies you can create.
+## How users and companies relate
 
-A user can also be invited to be part of another company, and will have access to all the resources of every company they are invited to.
+- A user can create as many companies as they like. There is no limit on the self-hosted version.
+- A user can be invited into a company that already exists. Invited users see all data in that company.
+- Switching between the companies you belong to happens in-app — you don't sign out and back in.
+
+## Next steps
+
+- [Create a company](./creating-a-company.md)
+- [Switch between companies](./switching-between-companies.md)
+- [Delete a company](./deleting-a-company.md)
