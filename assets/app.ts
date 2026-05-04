@@ -1,4 +1,5 @@
 import './scss/app.scss';
+import './webmcp';
 
 // @ts-expect-error - No types available
 import CsrfProtection from '@solidworx/platform/controllers/csrf_protection';
