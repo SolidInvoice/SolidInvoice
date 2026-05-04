@@ -16,16 +16,19 @@ namespace SolidInvoice\McpBundle\Action;
 use SolidInvoice\CoreBundle\SolidInvoiceCoreBundle;
 use SolidInvoice\McpBundle\Security\McpScope;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 #[Route(path: '/.well-known/mcp/server-card.json', name: 'mcp_well_known_server_card', methods: ['GET'])]
 final class WellKnownServerCard
 {
-    public function __invoke(Request $request): JsonResponse
-    {
-        $base = rtrim($request->getSchemeAndHttpHost() . $request->getBaseUrl(), '/');
+    public function __construct(
+        private readonly UrlGeneratorInterface $urlGenerator,
+    ) {
+    }
 
+    public function __invoke(): JsonResponse
+    {
         return new JsonResponse([
             'serverInfo' => [
                 'name' => SolidInvoiceCoreBundle::APP_NAME,
@@ -33,11 +36,11 @@ final class WellKnownServerCard
             ],
             'transport' => [
                 'type' => 'http',
-                'endpoint' => $base . '/_mcp',
+                'endpoint' => $this->urlGenerator->generate('_mcp_endpoint', [], UrlGeneratorInterface::ABSOLUTE_URL),
             ],
             'authorization' => [
                 'type' => 'oauth2',
-                'metadata' => $base . '/.well-known/oauth-protected-resource',
+                'metadata' => $this->urlGenerator->generate('mcp_well_known_protected_resource', [], UrlGeneratorInterface::ABSOLUTE_URL),
                 'scopes' => McpScope::values(),
             ],
             'capabilities' => [

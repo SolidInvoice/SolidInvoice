@@ -14,33 +14,39 @@ declare(strict_types=1);
 namespace SolidInvoice\ApiBundle\Action;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 #[Route(path: '/.well-known/api-catalog', name: 'api_well_known_catalog', methods: ['GET'])]
 final class WellKnownApiCatalog
 {
-    public function __invoke(Request $request): JsonResponse
+    public function __construct(
+        private readonly UrlGeneratorInterface $urlGenerator,
+    ) {
+    }
+
+    public function __invoke(): JsonResponse
     {
-        $base = rtrim($request->getSchemeAndHttpHost() . $request->getBaseUrl(), '/');
+        $apiBase = $this->urlGenerator->generate('api_entrypoint', ['index' => 'index'], UrlGeneratorInterface::ABSOLUTE_URL);
+        $apiBase = rtrim(preg_replace('#/index$#', '', $apiBase) ?? $apiBase, '/');
 
         $response = new JsonResponse([
             'linkset' => [
                 [
-                    'anchor' => $base . '/api',
+                    'anchor' => $apiBase,
                     'service-desc' => [
                         [
-                            'href' => $base . '/api/docs.jsonld',
+                            'href' => $this->urlGenerator->generate('api_doc', ['_format' => 'jsonld'], UrlGeneratorInterface::ABSOLUTE_URL),
                             'type' => 'application/ld+json',
                         ],
                         [
-                            'href' => $base . '/api/docs.json',
+                            'href' => $this->urlGenerator->generate('api_doc', ['_format' => 'json'], UrlGeneratorInterface::ABSOLUTE_URL),
                             'type' => 'application/vnd.openapi+json;version=3.1',
                         ],
                     ],
                     'service-doc' => [
                         [
-                            'href' => $base . '/api/docs',
+                            'href' => $this->urlGenerator->generate('api_doc', ['_format' => 'html'], UrlGeneratorInterface::ABSOLUTE_URL),
                             'type' => 'text/html',
                         ],
                     ],

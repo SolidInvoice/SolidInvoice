@@ -21,6 +21,7 @@ use Zenstruck\Foundry\Test\Factories;
  * @covers \SolidInvoice\McpBundle\Action\WellKnownAuthServer
  * @covers \SolidInvoice\McpBundle\Action\WellKnownProtectedResource
  * @covers \SolidInvoice\McpBundle\Action\WellKnownServerCard
+ * @covers \SolidInvoice\McpBundle\Action\WellKnownAgentSkillsIndex
  *
  * @group functional
  */
@@ -85,5 +86,21 @@ final class WellKnownTest extends WebTestCase
         self::assertSame('oauth2', $data['authorization']['type']);
         self::assertSame(['mcp:read', 'mcp:write'], $data['authorization']['scopes']);
         self::assertArrayHasKey('tools', $data['capabilities']);
+    }
+
+    public function testAgentSkillsIndex(): void
+    {
+        self::ensureKernelShutdown();
+        $client = self::createClient();
+        $client->request('GET', '/.well-known/agent-skills/index.json');
+
+        self::assertResponseIsSuccessful();
+
+        $data = json_decode((string) $client->getResponse()->getContent(), true);
+
+        self::assertIsArray($data);
+        self::assertArrayHasKey('$schema', $data);
+        self::assertArrayHasKey('skills', $data);
+        self::assertIsArray($data['skills']);
     }
 }

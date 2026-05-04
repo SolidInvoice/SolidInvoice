@@ -83,7 +83,7 @@ return static function (SecurityConfig $config): void {
 
     $config
         ->firewall('mcp_well_known')
-        ->pattern('^/\.well-known/(oauth-authorization-server|oauth-protected-resource|mcp/server-card\.json)')
+        ->pattern('^/\.well-known/(oauth-authorization-server|oauth-protected-resource|mcp/server-card\.json|agent-skills/index\.json)')
         ->stateless(true)
         ->security(false);
 
@@ -122,6 +122,7 @@ return static function (SecurityConfig $config): void {
             '/\.well-known/oauth-authorization-server|' .
             '/\.well-known/oauth-protected-resource|' .
             '/\.well-known/mcp/server-card\.json$|' .
+            '/\.well-known/agent-skills/index\.json$|' .
             '/\.well-known/api-catalog$|' .
             '/install|' .
             '/verify$|' .

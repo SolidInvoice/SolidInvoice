@@ -11,10 +11,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use SolidInvoice\ApiBundle\Action\WellKnownApiCatalog;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 return static function (RoutingConfigurator $routingConfigurator): void {
-    $routingConfigurator->add('api_login_check', '/login');
-
-    $routingConfigurator->import('.', 'api_platform');
+    $routingConfigurator->import(WellKnownApiCatalog::class, 'attribute');
 };
