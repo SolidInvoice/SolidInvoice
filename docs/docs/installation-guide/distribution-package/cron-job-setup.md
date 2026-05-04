@@ -25,7 +25,7 @@ Without a worker running, async features and scheduled tasks won't fire — emai
 You only need to set up a worker when running from the [distribution package](./index.mdx) or from [Git](../git.md). The [quick install](../quick-install.mdx), [Homebrew](../homebrew.md), and [Docker](../docker.md) installs run the worker automatically.
 :::
 
-## Pick a platform
+## Pick a platform {#pick-a-platform}
 
 <Tabs groupId="cron-platform">
   <TabItem value="systemd" label="systemd" default>
@@ -178,7 +178,7 @@ You only need to set up a worker when running from the [distribution package](./
   </TabItem>
 </Tabs>
 
-## Verifying the worker is running
+## Verifying the worker is running {#verifying-the-worker-is-running}
 
 Tail the application log or check the messenger queue:
 

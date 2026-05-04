@@ -8,7 +8,7 @@ sidebar_position: 7
 
 When you open SolidInvoice for the first time, you're sent to `/install`. The wizard checks your system, sets up the database, configures the application, and creates your admin user.
 
-## Before you start
+## Before you start {#before-you-start}
 
 - Browse to the application's root URL. On a fresh install you'll be redirected to `/install` automatically.
 - Have your database connection details to hand. If you plan to use SQLite (the embedded database) you don't need anything extra.
@@ -17,13 +17,13 @@ When you open SolidInvoice for the first time, you're sent to `/install`. The wi
 The Quick install, Homebrew, and Docker images bundle their own PHP runtime. They auto-skip the **System Requirements** step described below — you'll go straight from the welcome screen to the database step.
 :::
 
-## Welcome
+## Welcome {#welcome}
 
 The first screen introduces the wizard. Click `Begin Installation` to start.
 
 ![The installation wizard welcome screen](/img/installation-guide/wizard-welcome.png)
 
-## System Requirements
+## System Requirements {#system-requirements}
 
 This step verifies your environment can run SolidInvoice. Two summary cards show how many `Required` and `Recommended` checks pass. The `Next` button stays disabled while any required check is failing.
 
@@ -38,7 +38,7 @@ The **System Information** card below the checks shows the OS, web server, PHP v
 
 If you change a setting, refresh the page (the browser's reload button) to re-run the checks. Once all required checks pass, click `Next`.
 
-## Database configuration
+## Database configuration {#database-configuration}
 
 Pick the database engine SolidInvoice should use.
 
@@ -67,7 +67,7 @@ For MySQL, MariaDB, or PostgreSQL, fill in the connection details:
 
 Click `Next`. SolidInvoice connects to the server to verify the credentials before moving on; any errors are shown above the form.
 
-## Your account
+## Your account {#your-account}
 
 This step combines two things: how the app will refer to itself, and the admin user you'll log in as.
 
@@ -83,7 +83,7 @@ This step combines two things: how the app will refer to itself, and the admin u
 
 Click `Next` to continue.
 
-## Review
+## Review {#review}
 
 A summary of everything you've entered, so you can confirm before any changes are made.
 
@@ -91,7 +91,7 @@ A summary of everything you've entered, so you can confirm before any changes ar
 
 Click `Previous` to amend a setting, or `Install` to start the install.
 
-## Install
+## Install {#install}
 
 The wizard streams progress for five sub-steps over Server-Sent Events. Each card shows a status icon, a `View logs` button to expand the live output, and a `Retry` button if the step fails.
 
@@ -109,7 +109,7 @@ If a step fails, expand its `View logs` panel to read the error, fix the underly
 
 When all five sub-steps show a green check, the `Next` button at the bottom is re-enabled. Click it.
 
-## Finish
+## Finish {#finish}
 
 A confirmation screen with a quick summary of what was set up.
 
@@ -123,28 +123,28 @@ If you installed via the [distribution package](./distribution-package/index.mdx
 If you used [Quick install](./quick-install.mdx), [Homebrew](./homebrew.md), or [Docker](./docker.md), the worker is already running for you — nothing else to do.
 :::
 
-## Troubleshooting
+## Troubleshooting {#troubleshooting}
 
-### `/install` returns 404 instead of showing the wizard
+### `/install` returns 404 instead of showing the wizard {#install-returns-404-instead-of-showing-the-wizard}
 
 The application already considers itself installed. SolidInvoice writes an `installed:` timestamp to its config file (under the directory shown as `Config Directory` on the requirements screen). Only remove that line if you genuinely intend to reinstall — clearing it without also dropping the existing database will leave the next install in a broken half-state.
 
-### A required check is marked `Failed`
+### A required check is marked `Failed` {#a-required-check-is-marked-failed}
 
 Fix the underlying issue (install the missing PHP extension, raise `memory_limit`, fix a directory permission, etc.) and reload the page to re-run the checks. The `PHP Config File` row in the **System Information** card shows you which `php.ini` to edit.
 
-### `SQLSTATE… Access denied` on the database step
+### `SQLSTATE… Access denied` on the database step {#sqlstate-access-denied-on-the-database-step}
 
 The credentials are wrong, or the user lacks permission to create the target database. Either grant the user `CREATE` on the database, or pre-create it manually and connect with a user that has full rights on it.
 
-### `Could not connect` / connection timeout
+### `Could not connect` / connection timeout {#could-not-connect--connection-timeout}
 
 The host and port are reachable from where you ran the wizard but not from the SolidInvoice host. Verify the database server is listening on the address you entered and that no firewall is in the way.
 
-### `Creating database schema` fails
+### `Creating database schema` fails {#creating-database-schema-fails}
 
 The chosen user can connect but lacks DDL rights on the target database. Re-grant rights or switch to a user that owns the database.
 
-### The install screen stalls and never shows progress
+### The install screen stalls and never shows progress {#the-install-screen-stalls-and-never-shows-progress}
 
 The wizard streams progress over Server-Sent Events. If you're behind a reverse proxy, make sure it isn't buffering responses (for nginx, set `proxy_buffering off;` on the SolidInvoice location). Open the browser console — you'll see `EventSource` errors when the stream is being held back.

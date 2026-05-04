@@ -12,7 +12,7 @@ SolidInvoice runs anywhere you can run a binary, a Docker container, or PHP. Pic
 The [hosted version of SolidInvoice](https://solidinvoice.co) takes care of installation, updates, backups, and SSL for $8/month. Sign up and skip this guide entirely.
 :::
 
-## Pick an install method
+## Pick an install method {#pick-an-install-method}
 
 | If you want to… | Use this |
 | --- | --- |

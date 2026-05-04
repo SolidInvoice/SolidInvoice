@@ -19,14 +19,14 @@ This is the most involved install method. You're responsible for the webserver, 
 The [hosted version of SolidInvoice](https://solidinvoice.co) takes care of the webserver, updates, and backups for $8/month.
 :::
 
-## System requirements
+## System requirements {#system-requirements}
 
 - **PHP 8.4 or higher** with the following extensions enabled: `curl`, `gd`, `intl`, `json`, `openssl`, `pdo`, `soap`, `xsl`. You'll also need a `pdo` driver for your database (`pdo_mysql`, `pdo_pgsql`, or `pdo_sqlite`).
 - A webserver — **Nginx** (recommended) or **Apache** with `mod_rewrite`.
 - A supported database (MySQL, MariaDB, PostgreSQL, or SQLite).
 - The ability to run a cron job and a long-running PHP process on the host.
 
-## 1. Download
+## 1. Download {#1-download}
 
 Download the latest archive from the SolidWorx download server:
 
@@ -44,7 +44,7 @@ Extract it to a directory served by your webserver, for example `/opt/solidinvoi
 On shared hosting with FTP-only access, download the archive locally, extract it, and upload the extracted files to your hosting account.
 :::
 
-## 2. Configure the webserver
+## 2. Configure the webserver {#2-configure-the-webserver}
 
 Point your webserver at the `public/` directory inside the extracted archive.
 
@@ -103,7 +103,7 @@ The exact paths (PHP-FPM socket, log directories) differ by operating system and
 
 Open your browser at the URL the webserver is serving and finish setup with the [first-run wizard](../system-installation.md) — it walks you through the database connection, the admin user, and the basic application settings.
 
-## 3. Run the background worker
+## 3. Run the background worker {#3-run-the-background-worker}
 
 SolidInvoice uses a single background worker for both async messages (emails, webhook dispatch) and scheduled tasks (recurring invoices, reminders, overdue checks). The worker runs `bin/console messenger:consume --all` in a loop.
 
@@ -113,7 +113,7 @@ Follow the [cron job setup guide](./cron-job-setup.md) — it covers systemd, cr
 Without the worker running, async features and scheduled tasks won't fire — emails won't send and recurring invoices won't generate.
 :::
 
-## Useful environment variables
+## Useful environment variables {#useful-environment-variables}
 
 The first-run wizard configures everything you need to get started. The variables below are useful when you want to override settings, automate deployment, or configure things the wizard doesn't ask about. Set them in `.env.local` (or your webserver's environment).
 
@@ -130,7 +130,7 @@ The first-run wizard configures everything you need to get started. The variable
 
 Other integrations (Sentry, Meilisearch, Google OAuth) have their own environment variables and are documented on their respective pages.
 
-## Updating
+## Updating {#updating}
 
 1. Stop the messenger worker: `sudo systemctl stop solidinvoice-worker.service` (or comment out the cron entry).
 2. Back up your database and the project directory.

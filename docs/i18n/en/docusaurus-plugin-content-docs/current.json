@@ -1,0 +1,62 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.docsSidebar.category.📥 Installation Guide": {
+    "message": "📥 Installation Guide",
+    "description": "The label for category '📥 Installation Guide' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Distribution package": {
+    "message": "Distribution package",
+    "description": "The label for category 'Distribution package' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.🏢 Companies": {
+    "message": "🏢 Companies",
+    "description": "The label for category '🏢 Companies' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.🏢 Companies.link.generated-index.title": {
+    "message": "Companies",
+    "description": "The generated-index page title for category '🏢 Companies' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.🏢 Companies.link.generated-index.description": {
+    "message": "Manage one or more companies in SolidInvoice.",
+    "description": "The generated-index page description for category '🏢 Companies' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.👥 Managing Clients": {
+    "message": "👥 Managing Clients",
+    "description": "The label for category '👥 Managing Clients' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.👥 Managing Clients.link.generated-index.title": {
+    "message": "Managing Clients",
+    "description": "The generated-index page title for category '👥 Managing Clients' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.👥 Managing Clients.link.generated-index.description": {
+    "message": "Add and manage your clients.",
+    "description": "The generated-index page description for category '👥 Managing Clients' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.🤖 AI": {
+    "message": "🤖 AI",
+    "description": "The label for category '🤖 AI' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.🤖 AI.link.generated-index.title": {
+    "message": "AI",
+    "description": "The generated-index page title for category '🤖 AI' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.🤖 AI.link.generated-index.description": {
+    "message": "Use SolidInvoice with AI agents and assistants.",
+    "description": "The generated-index page description for category '🤖 AI' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.🔌 Integrations": {
+    "message": "🔌 Integrations",
+    "description": "The label for category '🔌 Integrations' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.🔌 Integrations.link.generated-index.title": {
+    "message": "Integrations",
+    "description": "The generated-index page title for category '🔌 Integrations' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.🔌 Integrations.link.generated-index.description": {
+    "message": "Connect SolidInvoice with external services.",
+    "description": "The generated-index page description for category '🔌 Integrations' in sidebar 'docsSidebar'"
+  }
+}

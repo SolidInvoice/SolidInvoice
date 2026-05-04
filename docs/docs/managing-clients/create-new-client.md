@@ -8,13 +8,13 @@ sidebar_position: 2
 
 Add a client before you issue them quotes or invoices. The form captures the client's company-level information, at least one contact person, and any number of billing or shipping addresses — all on a single page.
 
-## Open the create form
+## Open the create form {#open-the-create-form}
 
 From the sidebar, click `Clients` → `Add Client`, or go to `/clients/add` directly.
 
 ![The Add Client form showing the Client Info, Contact Info, and Address Info sections](/img/managing-clients/create-client-form.png)
 
-## Client Info
+## Client Info {#client-info}
 
 The top card captures the client's company-level details.
 
@@ -23,7 +23,7 @@ The top card captures the client's company-level details.
 - **`Currency code`** *(optional)* — the currency you'll bill this client in. Leave it on `System Default` to inherit your company's default currency. See [Client currency](./client-currency.md) for how the choice flows through to invoices and quotes.
 - **`Vat number`** *(optional)* — the client's VAT or tax registration number. The `Validate` button on the right runs a format check against the VAT-validation service for the chosen country prefix.
 
-## Contact Info
+## Contact Info {#contact-info}
 
 A client must have **at least one contact person**. The card is marked `Required` for that reason. Each contact captures:
 
@@ -35,7 +35,7 @@ Below the standard fields, every contact has an `Additional Contact Details` sec
 
 To add another contact while creating the client, click `+ Add Contact` at the bottom of the section. To remove a row before saving, click its `Delete` button. After save, contacts can also be added or edited from the client view page.
 
-## Address Info
+## Address Info {#address-info}
 
 Addresses are optional — the section is marked `Optional`. Add one or more if you want billing or shipping addresses to appear on this client's invoices and quotes.
 
@@ -46,7 +46,7 @@ Click `+ Add Address` to start a new address. Fields per address:
 
 Addresses don't have a billing-vs-shipping type — they're a flat list, and the first one entered is treated as the default for new documents.
 
-## Save
+## Save {#save}
 
 Click `Save Client` at the bottom of the form. SolidInvoice persists the client (with its contacts and addresses), shows a success message, and redirects you to [the client view page](./viewing-a-client.md).
 
@@ -54,6 +54,6 @@ Click `Save Client` at the bottom of the form. SolidInvoice persists the client 
 You can leave `Address Info` empty and add addresses later from the client view page — the same is true for additional contacts.
 :::
 
-## What happens next
+## What happens next {#what-happens-next}
 
 The new client appears on the `Active` tab of the [client list](./client-list.md) and becomes selectable when creating new quotes or invoices. The [client view page](./viewing-a-client.md) — where you land after saving — gives you everything you need to add credit, edit details, or start their first invoice.

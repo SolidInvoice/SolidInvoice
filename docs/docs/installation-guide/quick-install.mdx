@@ -11,7 +11,7 @@ import TabItem from '@theme/TabItem';
 
 The quick install bundles SolidInvoice, PHP, and a webserver into a single self-contained download. It is the fastest way to get a production-ready instance running and is the recommended install method for most users.
 
-## System requirements
+## System requirements {#system-requirements}
 
 - 64-bit Linux (`x86_64` or `arm64`) or macOS (Intel or Apple Silicon).
 - A database — SQLite works out of the box; MySQL, MariaDB, or PostgreSQL are also supported.
@@ -22,7 +22,7 @@ You do **not** need PHP, Composer, Nginx, Apache, or a separate cron job — the
 There is no native Windows build. Run the Linux binary inside [WSL2](https://learn.microsoft.com/windows/wsl/install) instead.
 :::
 
-## Download and run
+## Download and run {#download-and-run}
 
 <Tabs groupId="os">
   <TabItem value="linux" label="Linux" default>
@@ -55,11 +55,11 @@ The application starts on `https://localhost:8765` with a self-signed certificat
 Recurring tasks (such as recurring invoices) and async work (email sending) run automatically — there is no separate cron job or messenger consumer to set up.
 :::
 
-## SSL
+## SSL {#ssl}
 
 The application uses [Caddy](https://caddyserver.com/) under the hood, so HTTPS is enabled by default.
 
-### Self-signed (default)
+### Self-signed (default) {#self-signed-default}
 
 ```bash
 ./solidinvoice run
@@ -67,7 +67,7 @@ The application uses [Caddy](https://caddyserver.com/) under the hood, so HTTPS 
 
 Useful for local testing. Browsers will show a warning that you have to accept once.
 
-### Let's Encrypt (recommended for production)
+### Let's Encrypt (recommended for production) {#lets-encrypt-recommended-for-production}
 
 ```bash
 ./solidinvoice run --domain=invoice.example.com --lets-encrypt
@@ -78,7 +78,7 @@ Issues and renews a free SSL certificate from [Let's Encrypt](https://letsencryp
 - The domain's DNS `A`/`AAAA` record must point at the server's public IP.
 - Ports `80` and `443` must be reachable from the public internet (Let's Encrypt validates ownership over them).
 
-### Custom certificate
+### Custom certificate {#custom-certificate}
 
 ```bash
 ./solidinvoice run \
@@ -89,7 +89,7 @@ Issues and renews a free SSL certificate from [Let's Encrypt](https://letsencryp
 
 Use this when you already have a certificate (wildcard, EV, or one issued by a corporate CA).
 
-### Behind a reverse proxy
+### Behind a reverse proxy {#behind-a-reverse-proxy}
 
 ```bash
 ./solidinvoice run --disable-https
@@ -97,7 +97,7 @@ Use this when you already have a certificate (wildcard, EV, or one issued by a c
 
 Use when an upstream proxy (Cloudflare, Nginx, an ingress controller) terminates TLS for you. SolidInvoice listens over plain HTTP and trusts the proxy's `X-Forwarded-*` headers.
 
-## Available flags
+## Available flags {#available-flags}
 
 All flags below apply to the `run` command.
 
@@ -118,7 +118,7 @@ All flags below apply to the `run` command.
 | `--metrics-port <port>` | `9090` | Port for the metrics endpoint. |
 | `--skip-intro` | `false` | Suppress the boot banner. |
 
-## Other commands
+## Other commands {#other-commands}
 
 ```bash
 ./solidinvoice console <command>   # run any Symfony console command (e.g. cache:clear)
@@ -127,7 +127,7 @@ All flags below apply to the `run` command.
 ./solidinvoice build-info          # print build details
 ```
 
-## Health check
+## Health check {#health-check}
 
 ```bash
 curl http://localhost:8765/health
@@ -135,11 +135,11 @@ curl http://localhost:8765/health
 
 Returns `OK` (HTTP 200) when the application is running.
 
-## Updating
+## Updating {#updating}
 
 Replace the binary with the latest release and restart it. Application data lives in `~/.SolidInvoice/`, separately from the binary, so updates don't touch your invoices, clients, or settings.
 
-## Worker mode (high-traffic deployments)
+## Worker mode (high-traffic deployments) {#worker-mode-high-traffic-deployments}
 
 For instances handling sustained traffic, enable worker mode:
 

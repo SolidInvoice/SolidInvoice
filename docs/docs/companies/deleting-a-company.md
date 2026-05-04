@@ -10,11 +10,11 @@ sidebar_position: 4
 Deleting a company permanently removes it and **all its data**: clients, contacts, quotes, invoices, payments, settings, and templates. There is no undo.
 :::
 
-## Before you delete
+## Before you delete {#before-you-delete}
 
 You can only delete the company that's currently active. If the one you want to remove is not the active company, [switch to it first](./switching-between-companies.md).
 
-## Steps
+## Steps {#steps}
 
 1. Go to `Settings` from the sidebar.
 2. Scroll to the bottom of the page to the **Danger Zone** panel.

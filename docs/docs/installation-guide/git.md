@@ -10,7 +10,7 @@ sidebar_position: 6
 Installing from Git is intended for contributors and developers who want to hack on the SolidInvoice source. **It is not recommended for production use** — for that, use the [quick install](./quick-install.mdx), [Homebrew](./homebrew.md), or [Docker](./docker.md).
 :::
 
-## System requirements
+## System requirements {#system-requirements}
 
 - PHP 8.4 or higher with the `curl`, `gd`, `intl`, `json`, `openssl`, `pdo`, `soap`, and `xsl` extensions.
 - [Composer](https://getcomposer.org/).
@@ -18,7 +18,7 @@ Installing from Git is intended for contributors and developers who want to hack
 - [Symfony CLI](https://symfony.com/download) — recommended for the local web server (see below). Optional if you bring your own webserver.
 - A supported database (MySQL, MariaDB, PostgreSQL, or SQLite).
 
-## Clone and install
+## Clone and install {#clone-and-install}
 
 ```bash
 git clone https://github.com/SolidInvoice/SolidInvoice.git
@@ -28,7 +28,7 @@ bun install
 bun run build
 ```
 
-## Run the local web server
+## Run the local web server {#run-the-local-web-server}
 
 The recommended way to run SolidInvoice for development is the [Symfony CLI](https://symfony.com/doc/current/setup/symfony_cli.html#running-the-local-web-server) — it ships a local web server with HTTPS, Docker integration, and a workers manager.
 
@@ -66,11 +66,11 @@ To follow the worker logs alongside the web server logs:
 symfony server:log
 ```
 
-## Bring-your-own webserver
+## Bring-your-own webserver {#bring-your-own-webserver}
 
 If you'd rather use Nginx or Apache directly, point the document root at `public/` (see the [distribution package guide](./distribution-package/index.mdx#2-configure-the-webserver) for example configs) and set up the [background worker](./distribution-package/cron-job-setup.md) the same way.
 
-## Finish setup
+## Finish setup {#finish-setup}
 
 Open the URL Symfony CLI prints (typically `https://127.0.0.1:7005`) and finish setup with the [first-run wizard](./system-installation.md).
 
