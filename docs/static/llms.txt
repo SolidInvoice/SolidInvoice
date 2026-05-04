@@ -8,14 +8,14 @@
 
 ## Installation
 
-- [Installation Guide](https://solidinvoice.co/docs/installation-guide): Overview of installation paths and system requirements (PHP 7.4.15+, web server, database).
-- [Downloading](https://solidinvoice.co/docs/installation-guide/downloading): How to obtain SolidInvoice — distribution package, Docker container, or building from source via Composer/Git.
-- [Configuring your WebServer](https://solidinvoice.co/docs/installation-guide/configuring-your-webserver): Apache and Nginx virtual host configuration examples.
+- [Installation Guide](https://solidinvoice.co/docs/installation-guide): Overview of all installation methods with a decision matrix to pick the right one.
+- [Quick install](https://solidinvoice.co/docs/installation-guide/quick-install): Recommended install — self-contained executable that bundles PHP, the webserver, and the messenger consumer. SSL via Let's Encrypt or custom certs.
+- [Homebrew](https://solidinvoice.co/docs/installation-guide/homebrew): Install via the SolidWorx Homebrew tap on macOS or Linux.
+- [Docker](https://solidinvoice.co/docs/installation-guide/docker): Run as a container, with a Docker Compose example covering app + MySQL.
+- [Distribution package](https://solidinvoice.co/docs/installation-guide/distribution-package): Install on an existing PHP webserver (Nginx/Apache) — covers webserver config, cron, and the messenger consumer.
+- [Cron job setup](https://solidinvoice.co/docs/installation-guide/distribution-package/cron-job-setup): Recurring task cron on Linux, Windows, cPanel, or Plesk. Only needed for distribution-package and Git installs.
+- [Git (advanced)](https://solidinvoice.co/docs/installation-guide/git): Clone the source for contributors or developers — not for production use.
 - [System Installation](https://solidinvoice.co/docs/installation-guide/system-installation): Running the web-based installation wizard to configure database, admin user, locale, and currency.
-
-## Operations
-
-- [Cron Job Setup](https://solidinvoice.co/docs/cron-job-setup): Setting up the recurring task cron job on Linux, Windows, cPanel, or Plesk for automated recurring invoices. (Not needed when running the single-binary distribution.)
 
 ## Companies
 

@@ -1,7 +1,7 @@
 ---
 title: System Installation
 description: Run the installation wizard.
-sidebar_position: 4
+sidebar_position: 7
 ---
 
 # System Installation
@@ -53,12 +53,16 @@ You need to create an admin user. The provided details will be the credentials y
 
 ## Final Steps
 
-After the setup process is complete, the last step is to set up the cron job.
+:::info
+If you installed using the [quick install](./quick-install.mdx), [Homebrew](./homebrew.md), or [Docker](./docker.md), recurring tasks and async work are already running for you — skip the rest of this section and log in.
+:::
 
-The cron job is used to run scheduled tasks like recurring invoices. Setting up the cron job will be different based on your hosting provider — see the [Cron Job Setup](../cron-job-setup.md) guide for instructions.
+If you installed via the [distribution package](./distribution-package/index.mdx) or from [Git](./git.md), the last step is to run the background worker that powers async messages (emails, search indexing) and scheduled tasks (recurring invoices, reminders).
+
+See the [Cron job setup](./distribution-package/cron-job-setup.md) guide for systemd, cron, cPanel, Plesk, and Windows configurations.
 
 :::warning
-If you do not set up the cron job, functionality will be limited and scheduled tasks won't be able to run. It is **highly recommended** to set up the cron job.
+Without the cron job and messenger consumer, recurring billing won't fire and async features (emails, search indexing) won't run.
 :::
 
 When you're ready to use the application, press the _Log in now_ button to log into SolidInvoice.

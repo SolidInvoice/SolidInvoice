@@ -1,33 +1,25 @@
 ---
 title: Installation Guide
-description: Install SolidInvoice on your preferred hosting environment.
+description: Choose how to install SolidInvoice — quick install, Homebrew, Docker, distribution package, or from source.
 sidebar_position: 1
 ---
 
 # Installation Guide
 
-SolidInvoice is an open-source application that lets you manage clients and contacts and send invoices and quotes.
+SolidInvoice runs anywhere you can run a binary, a Docker container, or PHP. Pick the method that fits your environment — each path below is self-contained, so you only follow the steps that apply to it.
 
-## System Requirements
-
-:::info
-SolidInvoice requires PHP version **7.4.15** or higher, but the latest PHP version is always recommended.
+:::tip[Don't want to host it yourself?]
+The [hosted version of SolidInvoice](https://solidinvoice.co) takes care of installation, updates, backups, and SSL for $8/month. Sign up and skip this guide entirely.
 :::
 
-**Requirements:**
+## Pick an install method
 
-- PHP 8.2 or higher
-- A web server:
-  - Nginx (recommended)
-  - Apache
-- Any supported database:
-  - MySQL
-  - PostgreSQL
-  - MariaDB
-  - SQLite (embedded database)
+| If you want to… | Use this |
+| --- | --- |
+| Get running in under a minute, no PHP or webserver setup | [Quick install](./quick-install.mdx) **(recommended)** |
+| Install from a package manager on macOS or Linux | [Homebrew](./homebrew.md) |
+| Run SolidInvoice as a container alongside your other services | [Docker](./docker.md) |
+| Deploy to shared hosting, an existing webserver, or have full control over the stack | [Distribution package](./distribution-package/index.mdx) |
+| Hack on the source or contribute back upstream | [Git (advanced)](./git.md) |
 
-## Next Steps
-
-1. [**Download SolidInvoice**](./downloading.mdx) — choose between distribution package, Docker, or installing from source.
-2. [**Configure your web server**](./configuring-your-webserver.md) — set up Apache or Nginx to serve the application.
-3. [**Run the system installation wizard**](./system-installation.md) — configure the database and create your first admin user.
+After installing, finish setup with the [first-run wizard](./system-installation.md).

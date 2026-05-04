@@ -1,0 +1,9 @@
+{
+  "label": "Distribution package",
+  "position": 5,
+  "link": {
+    "type": "doc",
+    "id": "installation-guide/distribution-package/index"
+  },
+  "collapsed": true
+}

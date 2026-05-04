@@ -1,0 +1,139 @@
+---
+title: Distribution package
+description: Install SolidInvoice from the distribution archive on an existing PHP webserver.
+sidebar_position: 1
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Distribution package
+
+The distribution package is a pre-built archive of SolidInvoice that you serve from an existing PHP webserver. Choose this method when you can't use the [quick install](../quick-install.mdx) — for example on shared hosting, on a managed PHP host, or when company policy requires you to use a specific webserver.
+
+:::warning
+This is the most involved install method. You're responsible for the webserver, PHP, the database, the cron job, and the async worker. If you have a choice, the [quick install](../quick-install.mdx), [Homebrew](../homebrew.md), or [Docker](../docker.md) installs handle all of this for you.
+:::
+
+:::tip[Skip the setup entirely]
+The [hosted version of SolidInvoice](https://solidinvoice.co) takes care of the webserver, updates, and backups for $8/month.
+:::
+
+## System requirements
+
+- **PHP 8.4 or higher** with the following extensions enabled: `curl`, `gd`, `intl`, `json`, `openssl`, `pdo`, `soap`, `xsl`. You'll also need a `pdo` driver for your database (`pdo_mysql`, `pdo_pgsql`, or `pdo_sqlite`).
+- A webserver — **Nginx** (recommended) or **Apache** with `mod_rewrite`.
+- A supported database (MySQL, MariaDB, PostgreSQL, or SQLite).
+- The ability to run a cron job and a long-running PHP process on the host.
+
+## 1. Download
+
+Download the latest archive from the SolidWorx download server:
+
+```bash
+# Zip
+curl -LO https://download.solidworx.co/solidinvoice/latest/archive/zip
+
+# Or tar.gz
+curl -LO https://download.solidworx.co/solidinvoice/latest/archive/tar.gz
+```
+
+Extract it to a directory served by your webserver, for example `/opt/solidinvoice`.
+
+:::info
+On shared hosting with FTP-only access, download the archive locally, extract it, and upload the extracted files to your hosting account.
+:::
+
+## 2. Configure the webserver
+
+Point your webserver at the `public/` directory inside the extracted archive.
+
+<Tabs groupId="webserver">
+  <TabItem value="nginx" label="Nginx" default>
+
+  ```nginx
+  server {
+      server_name yourdomain.com www.yourdomain.com;
+      root /opt/solidinvoice/public;
+
+      location / {
+          # try to serve file directly, fallback to index.php
+          try_files $uri /index.php$is_args$args;
+      }
+
+      location ~ ^/index\.php(/|$) {
+          fastcgi_pass unix:/var/run/php-fpm.sock;
+          fastcgi_split_path_info ^(.+\.php)(/.*)$;
+          include fastcgi_params;
+          fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+          fastcgi_param HTTPS off;
+      }
+
+      error_log /var/log/nginx/solidinvoice_error.log;
+      access_log /var/log/nginx/solidinvoice_access.log;
+  }
+  ```
+
+  </TabItem>
+  <TabItem value="apache" label="Apache">
+
+  ```apacheconf
+  <VirtualHost *:80>
+      ServerName yourdomain.com
+      ServerAlias www.yourdomain.com
+
+      DocumentRoot /opt/solidinvoice/public
+      <Directory /opt/solidinvoice/public>
+          # enable the .htaccess rewrites
+          AllowOverride All
+          Require all granted
+      </Directory>
+
+      ErrorLog /var/log/apache2/solidinvoice.error.log
+      CustomLog /var/log/apache2/solidinvoice.access.log combined
+  </VirtualHost>
+  ```
+
+  </TabItem>
+</Tabs>
+
+:::warning
+The exact paths (PHP-FPM socket, log directories) differ by operating system and PHP version. Adjust to match your environment.
+:::
+
+Open your browser at the URL the webserver is serving and finish setup with the [first-run wizard](../system-installation.md) — it walks you through the database connection, the admin user, and the basic application settings.
+
+## 3. Run the background worker
+
+SolidInvoice uses a single background worker for both async messages (emails, search indexing, webhook dispatch) and scheduled tasks (recurring invoices, reminders, overdue checks). The worker runs `bin/console messenger:consume --all` in a loop.
+
+Follow the [cron job setup guide](./cron-job-setup.md) — it covers systemd, cron, cPanel, Plesk, and Windows Task Scheduler.
+
+:::warning
+Without the worker running, async features and scheduled tasks won't fire — emails won't send, recurring invoices won't generate, and search indexing won't update.
+:::
+
+## Useful environment variables
+
+The first-run wizard configures everything you need to get started. The variables below are useful when you want to override settings, automate deployment, or configure things the wizard doesn't ask about. Set them in `.env.local` (or your webserver's environment).
+
+| Variable | Description |
+| --- | --- |
+| `SOLIDINVOICE_ENV` | Application environment. Use `prod` in production. |
+| `SOLIDINVOICE_DEBUG` | Enable verbose error pages. Set to `0` in production. |
+| `SOLIDINVOICE_APP_SECRET` | Long random string used to sign cookies and CSRF tokens. |
+| `SOLIDINVOICE_APPLICATION_URL` | Public URL of the installation, e.g. `https://invoice.example.com`. |
+| `SOLIDINVOICE_DATABASE_URL` | Database DSN. The first-run wizard can also write this for you. |
+| `SOLIDINVOICE_MAILER_DSN` | Outbound mail transport (SMTP, Mailgun, SendGrid, etc.). |
+| `SOLIDINVOICE_MAILER_SENDER` | The `From:` address SolidInvoice sends mail from. |
+| `SOLIDINVOICE_LOCALE` | Default locale (e.g. `en`). |
+
+Other integrations (Sentry, Meilisearch, Google OAuth) have their own environment variables and are documented on their respective pages.
+
+## Updating
+
+1. Stop the messenger worker: `sudo systemctl stop solidinvoice-worker.service` (or comment out the cron entry).
+2. Back up your database and the project directory.
+3. Download the new archive and replace the project files, **keeping** your `.env.local` and any custom changes.
+4. Run `bin/console cache:clear --env=prod` and `bin/console doctrine:migrations:migrate --env=prod --no-interaction`.
+5. Restart the worker.

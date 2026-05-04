@@ -9,9 +9,9 @@ import styles from './404.module.css';
 const POPULAR_LINKS = [
   {to: '/intro', label: 'Documentation overview'},
   {to: '/installation-guide', label: 'Installation Guide'},
-  {to: '/installation-guide/downloading', label: 'Downloading'},
+  {to: '/installation-guide/quick-install', label: 'Quick install'},
   {to: '/companies/overview', label: 'Companies overview'},
-  {to: '/cron-job-setup', label: 'Cron Job Setup'},
+  {to: '/installation-guide/distribution-package/cron-job-setup', label: 'Cron job setup'},
   {to: '/integrations/sentry', label: 'Sentry integration'},
 ];
 
