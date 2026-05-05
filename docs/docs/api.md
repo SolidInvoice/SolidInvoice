@@ -2,7 +2,7 @@
 title: API
 description: Authenticate and use the SolidInvoice REST API.
 sidebar_label: "🛠️ API"
-sidebar_position: 6
+sidebar_position: 7
 ---
 
 # API
