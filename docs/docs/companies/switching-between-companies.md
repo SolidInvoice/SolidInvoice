@@ -8,7 +8,7 @@ sidebar_position: 3
 
 Two places to switch: at login (when you have more than one company), and any time after, from the topbar.
 
-## At login {#at-login}
+## At login
 
 If you belong to a single company, login takes you straight to its dashboard. If you belong to two or more, login lands on the company picker.
 
@@ -16,7 +16,7 @@ If you belong to a single company, login takes you straight to its dashboard. If
 
 Click any card to enter that company. You stay signed in — there's no second login.
 
-## While using the app {#while-using-the-app}
+## While using the app
 
 Open the company dropdown in the top right. The dropdown lists every other company you belong to (the current one is excluded). Click any of them to switch.
 

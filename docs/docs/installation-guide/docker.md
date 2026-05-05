@@ -8,12 +8,12 @@ sidebar_position: 4
 
 The official Docker image runs the same self-contained build used in the [quick install](./quick-install.mdx). Multi-architecture images are published — Docker pulls the right one for your host automatically.
 
-## System requirements {#system-requirements}
+## System requirements
 
 - [Docker](https://www.docker.com/get-started/) installed on the host.
 - [Docker Compose](https://docs.docker.com/compose/) if you want to use the bundled compose example.
 
-## Quick start {#quick-start}
+## Quick start
 
 ```bash
 docker run -d -p 8765:8765 -v solidinvoice_data:/etc/solidinvoice solidinvoice/solidinvoice
@@ -25,7 +25,7 @@ The application starts on [http://127.0.0.1:8765](http://127.0.0.1:8765). Contin
 Change `8765` on the left side of the `-p` flag to expose SolidInvoice on a different host port (e.g. `-p 80:8765`).
 :::
 
-## Docker Compose {#docker-compose}
+## Docker Compose
 
 For a complete stack (app + database), use a `docker-compose.yml` like the one shipped with the repository:
 
@@ -64,7 +64,7 @@ docker compose up -d
 The example above uses an empty MySQL root password for simplicity. Set `MYSQL_ROOT_PASSWORD` and `MYSQL_PASSWORD` (and use `MYSQL_USER`) before running this in production.
 :::
 
-## Persisting data {#persisting-data}
+## Persisting data
 
 Mount a volume (or bind mount) at `/etc/solidinvoice` so application data survives container restarts and image upgrades:
 
@@ -72,7 +72,7 @@ Mount a volume (or bind mount) at `/etc/solidinvoice` so application data surviv
 docker run -d -p 8765:8765 -v solidinvoice_data:/etc/solidinvoice solidinvoice/solidinvoice
 ```
 
-## Image source {#image-source}
+## Image source
 
 Pull from [Docker Hub](https://hub.docker.com/r/solidinvoice/solidinvoice).
 
@@ -80,7 +80,7 @@ Pull from [Docker Hub](https://hub.docker.com/r/solidinvoice/solidinvoice).
 Recurring tasks and async work (email sending) run automatically inside the container — no separate cron job or messenger consumer to set up.
 :::
 
-## Update {#update}
+## Update
 
 ```bash
 docker pull solidinvoice/solidinvoice:latest

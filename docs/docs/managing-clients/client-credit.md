@@ -10,7 +10,7 @@ Client credit is a prepaid balance held on a client's account that you can later
 
 Every client has exactly one credit balance, denominated in the client's currency.
 
-## Where it lives {#where-it-lives}
+## Where it lives
 
 Open any client's view page (`/clients/view/{id}`) and look for the `Credit Balance` card sitting below the financial metrics row:
 
@@ -18,7 +18,7 @@ Open any client's view page (`/clients/view/{id}`) and look for the `Credit Bala
 
 The card always shows the client's current balance — `$0.00` (or the equivalent in the client's currency) when no credit has been added.
 
-## Adding credit {#adding-credit}
+## Adding credit
 
 Click `+ Add Credit` on the card to open the modal:
 
@@ -29,7 +29,7 @@ Click `+ Add Credit` on the card to open the modal:
 
 Click `Save`. The modal closes and the `Credit Balance` card updates immediately to show the new total.
 
-## Deducting credit {#deducting-credit}
+## Deducting credit
 
 Use the same `+ Add Credit` modal. Type a negative number — `-20` to remove `20` from the balance, for example.
 
@@ -37,7 +37,7 @@ Use the same `+ Add Credit` modal. Type a negative number — `-20` to remove `2
 SolidInvoice does not stop you from going below zero this way. If you enter a deduction larger than the current balance, the resulting balance will be negative. There is no separate "deduct" form — negative amounts are the only way to reduce credit manually.
 :::
 
-## Applying credit to an invoice {#applying-credit-to-an-invoice}
+## Applying credit to an invoice
 
 Credit is **applied at payment time**, not automatically when an invoice is created. To pay an invoice using a client's credit balance:
 
@@ -57,7 +57,7 @@ If the amount entered exceeds either limit:
 - More than the **available credit** → SolidInvoice rejects the payment with `Not enough credit available on this client's account`.
 - More than the **invoice balance** → SolidInvoice rejects the payment with `Amount exceeds invoice balance`.
 
-## Tracking credit history {#tracking-credit-history}
+## Tracking credit history
 
 The credit balance is a single rolling number. SolidInvoice does not currently store a history of every adjustment — you can see *what the balance is now*, but not *every time it changed*.
 
@@ -66,7 +66,7 @@ If you need an audit trail, record each adjustment in your accounting system or 
 - **Payments using credit** — every time credit is applied to an invoice, a `Payment` row is created with method `Credit`. These are visible on the client's `Payments` tab and contribute to `Total Income`.
 - **Manual adjustments** (the `+ Add Credit` modal) leave no per-transaction record beyond the resulting balance.
 
-## When to use credit vs other tools {#when-to-use-credit-vs-other-tools}
+## When to use credit vs other tools
 
 Credit is the right tool when you've **already received the money** but haven't matched it to an invoice yet. Common cases:
 

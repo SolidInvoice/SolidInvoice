@@ -10,7 +10,7 @@ SolidInvoice can use Google as an identity provider, letting users sign in or re
 
 The integration is optional. With no Google client configured, the application uses email/password authentication only.
 
-## What this enables {#what-this-enables}
+## What this enables
 
 When the integration is configured, three new entry points appear in the UI:
 
@@ -26,7 +26,7 @@ Behind the scenes, when a user completes the Google flow, SolidInvoice does the 
 4. Otherwise, if public registration is enabled, a new user is created using the email and verification status returned by Google.
 5. Otherwise, authentication is rejected with an error message on the login page.
 
-## Create a Google OAuth client {#create-a-google-oauth-client}
+## Create a Google OAuth client
 
 Before SolidInvoice can talk to Google, you need a Google OAuth 2.0 client.
 
@@ -48,7 +48,7 @@ Before SolidInvoice can talk to Google, you need a Google OAuth 2.0 client.
 The redirect URI must match exactly — including the scheme (`http`/`https`), host, and trailing path. Mismatches show up as a `redirect_uri_mismatch` error from Google after the user clicks the sign-in button.
 :::
 
-## Configure SolidInvoice {#configure-solidinvoice}
+## Configure SolidInvoice
 
 Set two environment variables on the SolidInvoice instance, then restart the application:
 
@@ -79,13 +79,13 @@ SOLIDINVOICE_OAUTH_CLIENT_GOOGLE_CLIENT_SECRET=GOCSPX-your-client-secret
 If the Google buttons don't appear after setting the variables, clear the application cache: `bin/console cache:clear`.
 :::
 
-## Signing in with Google {#signing-in-with-google}
+## Signing in with Google
 
 On the login page, click `Login with Google`. The browser is redirected to Google, the user authorizes the SolidInvoice application, and Google redirects back to `/oauth/check/google`. SolidInvoice signs the user in (matching by Google ID first, then by email) and redirects to the company selector.
 
 Already-existing accounts are matched on email automatically — a user who originally signed up with an email/password and later clicks `Login with Google` will end up signed into their existing account, with the Google ID stored for future logins.
 
-## Registration through Google {#registration-through-google}
+## Registration through Google
 
 When public registration is enabled on your instance, the registration page shows a `Sign up with Google` button alongside the email/password form. Clicking it follows the same Google flow; if no SolidInvoice user matches the returning email, a new user is created with:
 
@@ -95,7 +95,7 @@ When public registration is enabled on your instance, the registration page show
 
 If public registration is disabled, the `Sign up with Google` button is hidden, and Google sign-in is rejected for any email that doesn't already have a SolidInvoice account.
 
-## Linking an existing account {#linking-an-existing-account}
+## Linking an existing account
 
 Users who already signed up with email/password can link their account to Google from the profile page. While signed in, navigate to `/profile`, scroll to the `Security` section, and click `Sign in with Google` on the `Google Account` row. After completing the Google flow, the row updates to show a `Linked` badge, and the user can sign in with either Google or their original password from then on.
 
@@ -105,16 +105,16 @@ Users who already signed up with email/password can link their account to Google
 A SolidInvoice account can be linked to one Google account at a time. If a user wants to switch the linked Google identity, they need to unlink the current one through database access — there is currently no in-app unlink button.
 :::
 
-## Troubleshooting {#troubleshooting}
+## Troubleshooting
 
-### `redirect_uri_mismatch` from Google {#redirect_uri_mismatch-from-google}
+### `redirect_uri_mismatch` from Google
 
 The redirect URI configured in the Google Cloud Console does not exactly match the URL SolidInvoice is calling back on. Compare scheme, host, and path — the path must be `/oauth/check/google`, and the scheme and host must match the public URL of your installation.
 
-### Google buttons don't appear on the login or registration page {#google-buttons-dont-appear-on-the-login-or-registration-page}
+### Google buttons don't appear on the login or registration page
 
 Both `SOLIDINVOICE_OAUTH_CLIENT_GOOGLE_CLIENT_ID` and `SOLIDINVOICE_OAUTH_CLIENT_GOOGLE_CLIENT_SECRET` must be set and non-empty. After changing either variable, clear the application cache with `bin/console cache:clear` and reload the page.
 
-### Authentication is rejected after the Google flow {#authentication-is-rejected-after-the-google-flow}
+### Authentication is rejected after the Google flow
 
 Public registration is disabled and the Google account's email is not associated with an existing SolidInvoice user. Either enable registration so the user can be created automatically, or have an admin create the user first with the matching email address.

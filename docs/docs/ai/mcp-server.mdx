@@ -13,7 +13,7 @@ SolidInvoice ships with a built-in [Model Context Protocol](https://modelcontext
 
 Every connection is bound to a single company at consent time and authenticated with OAuth 2.1. An agent connected to Company A can never see Company B's data, even if you belong to both.
 
-## Endpoint URL {#endpoint-url}
+## Endpoint URL
 
 The MCP server is always served at the path `/_mcp` on your SolidInvoice instance.
 
@@ -30,7 +30,7 @@ The transport is **Streamable HTTP** (the standard remote-MCP transport), not st
 A self-hosted instance must be reachable over HTTPS for OAuth to work. The flow involves browser redirects, so `localhost` works for local testing but a private LAN address generally will not — use a tunnel (Cloudflare Tunnel, ngrok) if you need to expose a dev instance to a hosted agent.
 :::
 
-## How authorization works {#how-authorization-works}
+## How authorization works
 
 You don't paste API keys anywhere. The first time an agent connects, it walks you through a standard OAuth consent flow:
 
@@ -43,7 +43,7 @@ You don't paste API keys anywhere. The first time an agent connects, it walks yo
 
 You can review and revoke any connected agent at any time from `Profile → Connected apps` (`/profile/connected-apps`).
 
-## Connecting your agent {#connecting-your-agent}
+## Connecting your agent
 
 The exact steps depend on the agent. The URL is always your `/_mcp` endpoint; everything else is handled by OAuth.
 
@@ -137,7 +137,7 @@ If your client cannot perform DCR or OAuth, it cannot use this server — there 
 After connecting, ask the agent something like *"List my unpaid invoices"* or *"Show this month's revenue"* to verify everything works.
 :::
 
-## Picking a company {#picking-a-company}
+## Picking a company
 
 If you belong to multiple companies, the consent screen shows a company picker. The choice is locked into the access token — to point the same agent at a different company, revoke it from `Profile → Connected apps` and reconnect.
 
@@ -145,11 +145,11 @@ If you belong to multiple companies, the consent screen shows a company picker. 
 You can connect the same agent to multiple companies by registering it more than once under different names — for example `solidinvoice-acme` and `solidinvoice-personal`. Each registration gets its own consent and its own token, so the agent can act against either company by picking the matching connection.
 :::
 
-## Available tools {#available-tools}
+## Available tools
 
 The server exposes a single, consistent toolset across every agent. Tools requiring `mcp:write` will only succeed if you granted write access at consent time.
 
-### Read tools (`mcp:read`) {#read-tools-mcpread}
+### Read tools (`mcp:read`)
 
 | Tool                           | What it does                                                                                  |
 |--------------------------------|-----------------------------------------------------------------------------------------------|
@@ -170,7 +170,7 @@ The server exposes a single, consistent toolset across every agent. Tools requir
 | `get_total_outstanding`        | Total outstanding invoiced amounts per currency, optionally filtered by client.               |
 | `get_total_overdue`            | Total overdue invoiced amounts per currency, optionally filtered by client.                   |
 
-### Write tools (`mcp:write`) {#write-tools-mcpwrite}
+### Write tools (`mcp:write`)
 
 | Tool                           | What it does                                                                                  |
 |--------------------------------|-----------------------------------------------------------------------------------------------|
@@ -194,7 +194,7 @@ The server exposes a single, consistent toolset across every agent. Tools requir
 The agent always operates as the user who consented, on the company chosen at consent time. Any `company`/`company_id` an agent tries to pass in a write call is ignored — the active company is enforced server-side.
 :::
 
-## Managing connected apps {#managing-connected-apps}
+## Managing connected apps
 
 Visit `/profile/connected-apps` while signed in to:
 
@@ -203,7 +203,7 @@ Visit `/profile/connected-apps` while signed in to:
 
 Revoking an agent does not delete its registration, so the same agent can be reconnected later without going through dynamic registration again.
 
-## Self-hosted: enabling the server {#self-hosted-enabling-the-server}
+## Self-hosted: enabling the server
 
 The MCP server is bundled with SolidInvoice 3.0 and enabled by default. The only one-time prerequisites are:
 
@@ -224,7 +224,7 @@ SOLIDINVOICE_MCP_SESSION_CACHE_POOL=cache.app
 | `cache`     | Multi-node deployments. Point `SOLIDINVOICE_MCP_SESSION_CACHE_POOL` at a Redis pool. |
 | `framework` | Re-uses your application's Symfony session handler.                                  |
 
-## Troubleshooting {#troubleshooting}
+## Troubleshooting
 
 <details>
 <summary>The browser opens but consent fails with "company required"</summary>

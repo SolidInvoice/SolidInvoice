@@ -10,7 +10,7 @@ The `Clients` page (sidebar → `Clients` → `List Clients`, or `/clients`) is 
 
 ![The Clients list with stats row, Active/Archived tabs, and a populated grid](/img/managing-clients/client-list-active.png)
 
-## What's on the page {#whats-on-the-page}
+## What's on the page
 
 The top row shows four at-a-glance stats for the current company:
 
@@ -28,11 +28,11 @@ Each tab shows its own grid with the same columns: `Name`, `Website`, `Currency`
 
 The two icons at the right of every row are `View` (eye icon) — opens the client's detail page — and `Edit` (pencil icon) — opens the same form used to create the client.
 
-## Creating a client {#creating-a-client}
+## Creating a client
 
 Click the green `+ Create Client` button at the top right. See [Creating a client](./create-new-client.md) for the full form walkthrough.
 
-## Archiving a client {#archiving-a-client}
+## Archiving a client
 
 Archiving keeps a client's history (quotes, invoices, payments, contacts, addresses) but hides them from the list of clients you can pick when creating new quotes or invoices.
 
@@ -45,11 +45,11 @@ Archived clients move to the `Archived` tab. They no longer count toward the `Ac
 Archiving is a soft action — nothing is deleted. You can restore an archived client at any time, and all their invoices, quotes, and payments remain visible from the dashboard and reports.
 :::
 
-## Restoring an archived client {#restoring-an-archived-client}
+## Restoring an archived client
 
 Switch to the `Archived` tab, tick the client(s), and use the `Activate` batch action. The clients move back to `Active` and become available for new work again.
 
-## Deleting a client {#deleting-a-client}
+## Deleting a client
 
 Deletion is permanent and available from both the `Active` and `Archived` tabs — you don't need to archive a client before deleting them.
 

@@ -9,7 +9,7 @@ sidebar_position: 6
 
 SolidInvoice exposes a REST API at `/api/*` that mirrors the web UI: clients, invoices, quotes, payments, recurring invoices, taxes, and more. Authentication is via a per-user API token. The full endpoint reference is auto-generated and served by your SolidInvoice instance at `/api/docs`.
 
-## Creating an API token {#creating-an-api-token}
+## Creating an API token
 
 Sign in to SolidInvoice and open `Settings` → `API Keys` (or visit `/profile/api` directly). Click the green `+ Create Token` button at the top right of the list.
 
@@ -30,7 +30,7 @@ Click `Save`. The dialog updates to show the generated token value:
 The token is shown **only once**, immediately after creation. Click the `Copy` button and store it in a password manager or your integration's secret store before clicking `I have copied the token`. If you lose it, revoke the token and create a new one — there is no way to retrieve the original value later.
 :::
 
-## Viewing your tokens {#viewing-your-tokens}
+## Viewing your tokens
 
 The token list shows everything you've created, with these columns:
 
@@ -43,7 +43,7 @@ The four stat cards above the list summarise the same data across all your token
 
 The list is searchable and sortable. The token value itself is never shown again after creation — only its name.
 
-## Viewing request history {#viewing-request-history}
+## Viewing request history
 
 Every successful API request authenticated with a token is recorded against that token. Click `View History` on a token's row in the list to open a modal with the captured requests.
 
@@ -60,7 +60,7 @@ Each row records:
 
 The history list is filterable by date range, method, and status range, and is capped at the 100 most recent entries displayed at a time. Failed authentication attempts (no token or wrong token) are **not** recorded — only successful ones.
 
-## Revoking a token {#revoking-a-token}
+## Revoking a token
 
 To revoke a token, tick its checkbox in the list, then choose `Revoke` from the batch-actions toolbar.
 
@@ -70,7 +70,7 @@ Revocation is **immediate** and there is no confirmation dialog. The token row i
 
 If you need to rotate a token without downtime, create the new token first, switch your integration over to the new value, verify it's working (look for the new token's `Last Used` timestamp updating), and only then revoke the old token.
 
-## Authenticating requests {#authenticating-requests}
+## Authenticating requests
 
 Send the token in the `X-API-TOKEN` HTTP header on every request:
 
@@ -90,7 +90,7 @@ If a request lacks a valid token, the server responds with `401 Unauthorized` an
 { "message": "No API token provided" }
 ```
 
-## Response formats {#response-formats}
+## Response formats
 
 The API supports content negotiation via the `Accept` header. Available formats:
 
@@ -111,7 +111,7 @@ curl -H "X-API-TOKEN: <your-token>" \
 
 Errors are returned in [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807) `application/problem+json` format with a human-readable `title`, `detail`, and a machine-readable `type`.
 
-## Rate limits {#rate-limits}
+## Rate limits
 
 The API is rate-limited to **300 requests per minute**, using a sliding window. The bucket is keyed by token when authenticated, falling back to client IP for unauthenticated requests.
 
@@ -125,7 +125,7 @@ Every API response includes the current state of your bucket in the headers:
 
 If you exceed the limit, the response is `429 Too Many Requests` with a `Retry-After` header and an `application/problem+json` body. Back off until `Retry-After` seconds have elapsed before retrying.
 
-## Endpoint reference {#endpoint-reference}
+## Endpoint reference
 
 The interactive Swagger UI for your installation is the authoritative reference — it always reflects the exact resources and fields available on your version:
 
@@ -146,20 +146,20 @@ The main resource roots are:
 
 All resources support standard CRUD verbs: `GET` for collections and items, `POST` to create, `PATCH` to update, `DELETE` to remove. Monetary amounts are expressed in **minor currency units** (e.g. cents for USD), and the currency itself comes from the associated client.
 
-## Troubleshooting {#troubleshooting}
+## Troubleshooting
 
-### `401 Unauthorized` on every request {#401-unauthorized-on-every-request}
+### `401 Unauthorized` on every request
 
 The token is missing, mistyped, or has been revoked. Double-check the `X-API-TOKEN` header value against the original — leading or trailing whitespace and stray quote characters are common culprits when copying from terminals or password managers. If the token genuinely no longer works, generate a new one and update your integration.
 
-### `429 Too Many Requests` {#429-too-many-requests}
+### `429 Too Many Requests`
 
 You've exceeded 300 requests per minute. Look at the `Retry-After` header in the response and wait at least that many seconds before retrying. For high-volume integrations, batch requests where possible, cache read-heavy responses, and stagger requests across the rate-limit window rather than firing them in tight loops.
 
-### Authentication succeeds but the request is rejected with `403` {#authentication-succeeds-but-the-request-is-rejected-with-403}
+### Authentication succeeds but the request is rejected with `403`
 
 The token is valid but the authenticated user lacks permission for the action you requested. Verify the user owns the resource (or has the right role on the company that owns it) and that the token was generated while that company was active in the UI.
 
-### Request history isn't recording your calls {#request-history-isnt-recording-your-calls}
+### Request history isn't recording your calls
 
 Only **successful** authentication is recorded. If your requests are returning `401`, they won't appear in `View History` even if they reach the server. Make at least one request that returns `2xx` and refresh the history to confirm the token works.

@@ -8,23 +8,23 @@ sidebar_position: 2
 
 There are three places to start the create-company form. The form itself is the same in all three.
 
-## On your first login {#on-your-first-login}
+## On your first login
 
 The first time you log in (or any time you log in without belonging to any company yet), SolidInvoice takes you straight to the create-company page. You can't reach the rest of the app until at least one company exists.
 
 ![The create-company page on first login](/img/companies/create-company-first-run.png)
 
-## From the topbar {#from-the-topbar}
+## From the topbar
 
 Once you're inside a company, open the company dropdown in the top right (the button labelled with the current company name) and click `+ Add Company`.
 
 ![The company dropdown with the Add Company entry](/img/companies/topbar-add-company.png)
 
-## From the company picker {#from-the-company-picker}
+## From the company picker
 
 If you log in and belong to more than one company, the picker page also has a `Create Company` button below the list of companies you can switch to.
 
-## Filling in the form {#filling-in-the-form}
+## Filling in the form
 
 Two fields, both required:
 

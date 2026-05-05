@@ -8,20 +8,20 @@ sidebar_position: 3
 
 The Homebrew tap installs the same self-contained build used in the [quick install](./quick-install.mdx) under a managed path and keeps it up to date with `brew upgrade`.
 
-## System requirements {#system-requirements}
+## System requirements
 
 - macOS or Linux with [Homebrew](https://brew.sh/) installed.
 - A database — SQLite works out of the box; MySQL, MariaDB, or PostgreSQL are also supported.
 
 No PHP, webserver, or cron job is required.
 
-## Install {#install}
+## Install
 
 ```bash
 brew install solidworx/tap/solidinvoice
 ```
 
-## Run {#run}
+## Run
 
 ```bash
 solidinvoice run
@@ -35,7 +35,7 @@ For SSL, custom domains, worker mode, and the full list of `run` flags, see the 
 Recurring tasks and async work (email sending) run automatically — there is no separate cron job or messenger consumer to set up.
 :::
 
-## Update {#update}
+## Update
 
 ```bash
 brew upgrade solidworx/tap/solidinvoice
