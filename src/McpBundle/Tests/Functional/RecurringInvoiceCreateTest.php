@@ -143,7 +143,7 @@ final class RecurringInvoiceCreateTest extends KernelTestCase
 
         $result = $tool->listRecurringInvoices();
 
-        self::assertSame([], $result);
+        self::assertSame(['results' => [], 'count' => 0], $result);
     }
 
     public function testCreateRecurringReadOnlyRejected(): void

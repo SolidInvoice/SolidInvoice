@@ -17,6 +17,7 @@ use Doctrine\ORM\QueryBuilder;
 use Faker\Generator;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
+use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Test\Traits\FakerTestTrait;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\UserBundle\DataFixtures\ORM\LoadData;
@@ -60,11 +61,15 @@ final class UserInvitationRepositoryTest extends KernelTestCase
         $executor = $this->databaseTool->loadFixtures([LoadData::class], true);
         $inviter = $executor->getReferenceRepository()->getReference('user2', User::class);
 
+        // The fixtures executor clears the EntityManager, so re-fetch the
+        // company as a managed entity before associating it with new records.
+        $company = self::getContainer()->get('doctrine')->getRepository(Company::class)->find($this->company->getId());
+
         // Create a pending invitation
         $invitation = new UserInvitation();
         $invitation->setEmail($this->faker->email)
             ->setInvitedBy($inviter)
-            ->setCompany($this->company)
+            ->setCompany($company)
             ->setStatus(UserInvitation::STATUS_PENDING);
         $this->repository->save($invitation);
 
@@ -74,7 +79,7 @@ final class UserInvitationRepositoryTest extends KernelTestCase
         $invitation2 = new UserInvitation();
         $invitation2->setEmail($this->faker->email)
             ->setInvitedBy($inviter)
-            ->setCompany($this->company)
+            ->setCompany($company)
             ->setStatus(UserInvitation::STATUS_PENDING);
         $this->repository->save($invitation2);
 

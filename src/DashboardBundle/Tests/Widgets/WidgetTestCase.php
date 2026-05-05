@@ -59,6 +59,17 @@ abstract class WidgetTestCase extends KernelTestCase
         // Replace ULIDs
         $html = preg_replace('#[0-9A-Za-z]{26}#', '01JBYEQCR7DJ2YW4EXP6FYJZCR', $html);
 
+        // Replace month-year labels (e.g. "May 2025") with stable placeholders so
+        // the chart snapshot does not need to be regenerated every month. Chart
+        // payloads are rendered into HTML attributes where the JSON quotes are
+        // entity-encoded (&quot;), so preserve that encoding in the replacement
+        // to avoid breaking attribute boundaries during DOM serialization.
+        $html = preg_replace(
+            '#(?<q>"|&quot;)(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{4}(?P=q)#',
+            '$1MONTH YEAR$1',
+            $html
+        );
+
         return trim($html);
     }
 }

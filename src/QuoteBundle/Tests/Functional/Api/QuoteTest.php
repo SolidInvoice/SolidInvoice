@@ -84,7 +84,7 @@ final class QuoteTest extends ApiTestCase
         $otherCompany = CompanyFactory::new()->create();
         self::getContainer()->get(CompanySelector::class)->switchCompany($otherCompany->getId());
         $foreignClient = ClientFactory::createOne(['company' => $otherCompany]);
-        $foreignQuote = QuoteFactory::createOne(['client' => $foreignClient])->_real();
+        $foreignQuote = QuoteFactory::createOne(['client' => $foreignClient, 'company' => $otherCompany])->_real();
         self::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
 
         $response = self::$client->request('GET', $this->getIriFromResource($foreignQuote), [

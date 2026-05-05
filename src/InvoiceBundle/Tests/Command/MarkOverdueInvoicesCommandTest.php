@@ -15,6 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Tests\Command;
 
 use DateTimeImmutable;
 use PHPUnit\Framework\Assert;
+use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Command\MarkOverdueInvoicesCommand;
@@ -49,12 +50,14 @@ final class MarkOverdueInvoicesCommandTest extends KernelTestCase
             'status' => InvoiceStatus::Pending,
             'due' => new DateTimeImmutable('2 days ago'),
             'company' => $company1,
+            'client' => ClientFactory::createOne(['company' => $company1]),
         ]);
 
         InvoiceFactory::createOne([
             'status' => InvoiceStatus::Pending,
             'due' => new DateTimeImmutable('yesterday'),
             'company' => $company2,
+            'client' => ClientFactory::createOne(['company' => $company2]),
         ]);
 
         // Create non-overdue invoice (should not be processed)
@@ -62,6 +65,7 @@ final class MarkOverdueInvoicesCommandTest extends KernelTestCase
             'status' => InvoiceStatus::Pending,
             'due' => new DateTimeImmutable('tomorrow'),
             'company' => $company1,
+            'client' => ClientFactory::createOne(['company' => $company1]),
         ]);
 
         // Create paid invoice (should not be processed)
@@ -69,6 +73,7 @@ final class MarkOverdueInvoicesCommandTest extends KernelTestCase
             'status' => InvoiceStatus::Paid,
             'due' => new DateTimeImmutable('yesterday'),
             'company' => $company1,
+            'client' => ClientFactory::createOne(['company' => $company1]),
         ]);
 
         $output = $this->runCommand();
@@ -85,6 +90,7 @@ final class MarkOverdueInvoicesCommandTest extends KernelTestCase
             'status' => InvoiceStatus::Pending,
             'due' => new DateTimeImmutable('tomorrow'),
             'company' => $company,
+            'client' => ClientFactory::createOne(['company' => $company]),
         ]);
 
         $output = $this->runCommand();
@@ -104,18 +110,21 @@ final class MarkOverdueInvoicesCommandTest extends KernelTestCase
             'status' => InvoiceStatus::Pending,
             'due' => new DateTimeImmutable('yesterday'),
             'company' => $company1,
+            'client' => ClientFactory::createOne(['company' => $company1]),
         ]);
 
         InvoiceFactory::createOne([
             'status' => InvoiceStatus::Pending,
             'due' => new DateTimeImmutable('yesterday'),
             'company' => $company2,
+            'client' => ClientFactory::createOne(['company' => $company2]),
         ]);
 
         InvoiceFactory::createOne([
             'status' => InvoiceStatus::Pending,
             'due' => new DateTimeImmutable('yesterday'),
             'company' => $company3,
+            'client' => ClientFactory::createOne(['company' => $company3]),
         ]);
 
         $output = $this->runCommand();
