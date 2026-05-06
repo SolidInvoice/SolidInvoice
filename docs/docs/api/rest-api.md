@@ -1,13 +1,16 @@
 ---
-title: API
+title: REST API
 description: Authenticate and use the SolidInvoice REST API.
-sidebar_label: "🛠️ API"
-sidebar_position: 7
+sidebar_position: 1
 ---
 
-# API
+# REST API
 
 SolidInvoice exposes a REST API at `/api/*` that mirrors the web UI: clients, invoices, quotes, payments, recurring invoices, taxes, and more. Authentication is via a per-user API token. The full endpoint reference is auto-generated and served by your SolidInvoice instance at `/api/docs`.
+
+:::tip
+Prefer a flexible query language over fixed endpoints? See the [GraphQL API](./graphql.md) for an alternative way to access the same data.
+:::
 
 ## Creating an API token
 
