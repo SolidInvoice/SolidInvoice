@@ -22,6 +22,7 @@ For a **self-hosted instance**, replace the domain with your own:
 ```text
 https://your-domain.example/api/graphql
 ```
+
 :::
 
 :::tip

@@ -1,0 +1,9 @@
+{
+  "label": "🧾 Invoices",
+  "position": 6,
+  "link": {
+    "type": "generated-index",
+    "title": "Invoices",
+    "description": "Create, manage, and track invoices for your clients."
+  }
+}
