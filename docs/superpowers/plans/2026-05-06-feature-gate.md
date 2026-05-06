@@ -10,7 +10,13 @@
 
 **Source spec:** `docs/superpowers/specs/2026-05-06-feature-gate-design.md`
 
-**Working tree note:** Vendor changes are made in-place under `vendor/solidworx/platform/`. The user will commit them to the platform repo separately. Each task ends with a `git add -A && git commit` from the SolidInvoice working tree, capturing both vendor and app changes for review.
+**Working tree note:** `vendor/solidworx/platform/` is a symlink to a checked-out platform repo at `/Users/pierre/projects/SolidWorx/platform/` (currently on `main`). Vendor edits are saved in that repo's working tree. SolidInvoice's `.gitignore` excludes `/vendor/`, so:
+
+- Tasks that touch only vendor files commit inside the platform repo: `cd vendor/solidworx/platform && git add … && git commit …`.
+- Tasks that touch SolidInvoice files commit at the SolidInvoice top level.
+- Task 3 touches both — it needs two commits, one in each repo.
+
+`vendor/bin/phpunit`, `vendor/bin/phpstan`, etc. inside the symlink resolve to the platform repo's tools and work normally.
 
 ---
 
@@ -74,10 +80,10 @@ cd vendor/solidworx/platform && vendor/bin/phpunit --filter Feature
 
 Expected: all tests pass (the move is mechanical — no behavior change).
 
-- [ ] **Step 5: Commit**
+- [ ] **Step 5: Commit (in the platform repo)**
 
 ```bash
-cd /Users/pierre/projects/SolidWorx/SolidInvoice/SolidInvoice
+cd vendor/solidworx/platform
 git add -A
 git commit -m "Move FeatureType enum from SaasBundle to PlatformBundle"
 ```
@@ -264,10 +270,10 @@ cd vendor/solidworx/platform && vendor/bin/phpunit --filter Feature
 
 Expected: all green.
 
-- [ ] **Step 7: Commit**
+- [ ] **Step 7: Commit (in the platform repo)**
 
 ```bash
-cd /Users/pierre/projects/SolidWorx/SolidInvoice/SolidInvoice
+cd vendor/solidworx/platform
 git add -A
 git commit -m "Move FeatureValue from SaasBundle to PlatformBundle"
 ```
@@ -356,11 +362,22 @@ cd /Users/pierre/projects/SolidWorx/SolidInvoice/SolidInvoice && bin/phpstan ana
 
 Expected: no errors.
 
-- [ ] **Step 7: Commit**
+- [ ] **Step 7: Commit — two commits, one per repo**
+
+Vendor changes (the move + vendor consumer updates):
 
 ```bash
+cd vendor/solidworx/platform
 git add -A
 git commit -m "Move SubscribableInterface from SaasBundle to PlatformBundle"
+```
+
+SolidInvoice change (`Company` entity import):
+
+```bash
+cd /Users/pierre/projects/SolidWorx/SolidInvoice/SolidInvoice
+git add src/CoreBundle/Entity/Company.php
+git commit -m "Update Company entity for relocated SubscribableInterface"
 ```
 
 ---
@@ -499,10 +516,10 @@ cd vendor/solidworx/platform && vendor/bin/phpunit tests/Bundle/PlatformBundle/F
 
 Expected: PASS (2 tests).
 
-- [ ] **Step 6: Commit**
+- [ ] **Step 6: Commit (in the platform repo)**
 
 ```bash
-cd /Users/pierre/projects/SolidWorx/SolidInvoice/SolidInvoice
+cd vendor/solidworx/platform
 git add -A
 git commit -m "Add UpgradeOptions and PlanReference DTOs to PlatformBundle"
 ```
@@ -624,10 +641,10 @@ cd vendor/solidworx/platform && vendor/bin/phpunit tests/Bundle/PlatformBundle/F
 
 Expected: PASS.
 
-- [ ] **Step 6: Commit**
+- [ ] **Step 6: Commit (in the platform repo)**
 
 ```bash
-cd /Users/pierre/projects/SolidWorx/SolidInvoice/SolidInvoice
+cd vendor/solidworx/platform
 git add -A
 git commit -m "Add SubscriberResolver interface and NullSubscriberResolver"
 ```
@@ -855,10 +872,10 @@ cd vendor/solidworx/platform && vendor/bin/phpunit tests/Bundle/PlatformBundle/F
 
 Expected: PASS (5 tests).
 
-- [ ] **Step 6: Commit**
+- [ ] **Step 6: Commit (in the platform repo)**
 
 ```bash
-cd /Users/pierre/projects/SolidWorx/SolidInvoice/SolidInvoice
+cd vendor/solidworx/platform
 git add -A
 git commit -m "Add FeatureGate interface and NoopFeatureGate default"
 ```
@@ -938,9 +955,10 @@ bin/phpunit --testsuite=unit
 
 Expected: green (no functional change to existing behaviour).
 
-- [ ] **Step 4: Commit**
+- [ ] **Step 4: Commit (in the platform repo)**
 
 ```bash
+cd vendor/solidworx/platform
 git add -A
 git commit -m "Wire FeatureGate and SubscriberResolver defaults in PlatformBundle"
 ```
@@ -959,17 +977,15 @@ This helper exposes a feature's configured default value without requiring a `Pl
 
 - [ ] **Step 1: Add a failing test for the new helper**
 
-Append to `vendor/solidworx/platform/tests/Bundle/Saas/Feature/PlanFeatureManagerTest.php` (inside the existing class):
+Existing `setUp` registers three features in `FeatureConfigRegistry`: `max_users` (integer, default 10), `api_access` (boolean), `storage_gb` (integer). Reuse `max_users` for the assertion. Append inside the existing test class:
 
 ```php
 public function testGetConfigDefaultReturnsRegistryDefault(): void
 {
-    // Existing fixtures register a 'max_clients' integer feature with default 5
-    // (mirroring the test's existing setUp). Verify directly without a Plan.
-    $value = $this->manager->getConfigDefault('max_clients');
+    $value = $this->manager->getConfigDefault('max_users');
 
-    self::assertSame('max_clients', $value->key);
-    self::assertSame(5, $value->value);
+    self::assertSame('max_users', $value->key);
+    self::assertSame(10, $value->value);
 }
 
 public function testGetConfigDefaultThrowsForUnknownKey(): void
@@ -980,7 +996,7 @@ public function testGetConfigDefaultThrowsForUnknownKey(): void
 }
 ```
 
-(If the existing `setUp` does not already register a `max_clients` feature, swap the key and default value to whatever the existing fixtures register — open the file first to confirm.)
+(If `$this->manager` is named differently in the existing class — e.g. a local in each test — adapt the assertion to instantiate `PlanFeatureManager` the same way other tests in the file do.)
 
 - [ ] **Step 2: Run the new tests, expect failure**
 
@@ -1026,10 +1042,10 @@ cd vendor/solidworx/platform && vendor/bin/phpunit --filter Feature
 
 Expected: green.
 
-- [ ] **Step 6: Commit**
+- [ ] **Step 6: Commit (in the platform repo)**
 
 ```bash
-cd /Users/pierre/projects/SolidWorx/SolidInvoice/SolidInvoice
+cd vendor/solidworx/platform
 git add -A
 git commit -m "Add PlanFeatureManager::getConfigDefault helper"
 ```
@@ -1341,9 +1357,10 @@ bin/console debug:container "SolidWorx\\Platform\\PlatformBundle\\Feature\\Featu
 
 Expected: alias resolves to `SolidWorx\Platform\SaasBundle\Feature\PlanFeatureGate`.
 
-- [ ] **Step 7: Commit**
+- [ ] **Step 7: Commit (in the platform repo)**
 
 ```bash
+cd vendor/solidworx/platform
 git add -A
 git commit -m "Add PlanFeatureGate and override FeatureGate alias in SaasBundle"
 ```
@@ -1541,9 +1558,10 @@ cd /Users/pierre/projects/SolidWorx/SolidInvoice/SolidInvoice && bin/console cac
 
 Expected: success, no errors about missing Twig functions or services.
 
-- [ ] **Step 8: Commit**
+- [ ] **Step 8: Commit (in the platform repo)**
 
 ```bash
+cd vendor/solidworx/platform
 git add -A
 git commit -m "Move Feature Twig extension to PlatformBundle and back with FeatureGate"
 ```
