@@ -11,7 +11,6 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use SolidInvoice\CoreBundle\Company\CompanySubscriberResolver;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use SolidWorx\Platform\PlatformBundle\Feature\SubscriberResolver;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -32,5 +31,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // Expose wiring-contract aliases publicly so functional smoke tests can
     // assert the correct concrete implementation is resolved.
     $services->alias('test.' . FeatureGate::class, FeatureGate::class)->public();
-    $services->alias('test.' . SubscriberResolver::class, CompanySubscriberResolver::class)->public();
+    $services->alias('test.' . SubscriberResolver::class, SubscriberResolver::class)->public();
 };
