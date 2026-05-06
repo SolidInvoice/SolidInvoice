@@ -25,7 +25,7 @@ use function assert;
 use function strtoupper;
 use function substr;
 
-final class CompanySelector implements ResetInterface
+final class CompanySelector implements CompanySelectorInterface, ResetInterface
 {
     private ?Ulid $companyId = null;
 
