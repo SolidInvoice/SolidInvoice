@@ -131,7 +131,7 @@
         "symfony/messenger": "^7.1",
         "symfony/microsoft-teams-notifier": "^7.1",
         "symfony/mime": "^7.1",
-        "symfony/mobyt-notifier": "^7.1",
+        "symfony/mobyt-notifier": "^8.0",
         "symfony/monolog-bundle": "^3.7",
         "symfony/object-mapper": "^7.1",
         "symfony/octopush-notifier": "^7.1",

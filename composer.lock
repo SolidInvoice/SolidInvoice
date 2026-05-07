@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "62d2d5e220d738d87e84aff05b68c13f",
+    "content-hash": "727055e0bfd4693789c388409a80dccb",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -14677,22 +14677,22 @@
         },
         {
             "name": "symfony/mobyt-notifier",
-            "version": "v7.4.0",
+            "version": "v8.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/mobyt-notifier.git",
-                "reference": "e35993e327743c29ae7560154fb806902b57bad7"
+                "reference": "58e3a66b2800bac6c28683428d87a370449d024a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/mobyt-notifier/zipball/e35993e327743c29ae7560154fb806902b57bad7",
-                "reference": "e35993e327743c29ae7560154fb806902b57bad7",
+                "url": "https://api.github.com/repos/symfony/mobyt-notifier/zipball/58e3a66b2800bac6c28683428d87a370449d024a",
+                "reference": "58e3a66b2800bac6c28683428d87a370449d024a",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.2",
-                "symfony/http-client": "^6.4|^7.0|^8.0",
-                "symfony/notifier": "^7.2|^8.0"
+                "php": ">=8.4",
+                "symfony/http-client": "^7.4|^8.0",
+                "symfony/notifier": "^7.4|^8.0"
             },
             "type": "symfony-notifier-bridge",
             "autoload": {
@@ -14725,7 +14725,7 @@
                 "sms"
             ],
             "support": {
-                "source": "https://github.com/symfony/mobyt-notifier/tree/v7.4.0"
+                "source": "https://github.com/symfony/mobyt-notifier/tree/v8.0.0"
             },
             "funding": [
                 {
@@ -14745,7 +14745,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-08-04T07:05:15+00:00"
+            "time": "2025-08-04T07:36:47+00:00"
         },
         {
             "name": "symfony/monolog-bridge",
