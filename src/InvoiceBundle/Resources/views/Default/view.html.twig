@@ -127,10 +127,19 @@
                     {{ ux_icon('tabler:credit-card', {width: 18, height: 18}) }}
                     {{ "invoice.view.toolbar.pay_now"|trans }}
                 </a>
-                <a href="{{ path('_send_invoice', {'id' : invoice.id}) }}" class="btn btn-primary btn-hero {{ invoice.status == enum('SolidInvoice\\InvoiceBundle\\Enum\\InvoiceStatus').Overdue ? 'btn-hero-urgent' : '' }}">
-                    {{ ux_icon('tabler:send', {width: 18, height: 18}) }}
-                    {{ "invoice.view.toolbar.send"|trans }}
-                </a>
+                {% if is_email_verification_gated() %}
+                    <button type="button" class="btn btn-primary btn-hero disabled {{ invoice.status == enum('SolidInvoice\\InvoiceBundle\\Enum\\InvoiceStatus').Overdue ? 'btn-hero-urgent' : '' }}" disabled
+                            data-bs-toggle="tooltip"
+                            title="{{ email_verification_message('sending this invoice') }}">
+                        {{ ux_icon('tabler:send', {width: 18, height: 18}) }}
+                        {{ "invoice.view.toolbar.send"|trans }}
+                    </button>
+                {% else %}
+                    <a href="{{ path('_send_invoice', {'id' : invoice.id}) }}" class="btn btn-primary btn-hero {{ invoice.status == enum('SolidInvoice\\InvoiceBundle\\Enum\\InvoiceStatus').Overdue ? 'btn-hero-urgent' : '' }}">
+                        {{ ux_icon('tabler:send', {width: 18, height: 18}) }}
+                        {{ "invoice.view.toolbar.send"|trans }}
+                    </a>
+                {% endif %}
             {% elseif workflow_can(invoice, 'accept') %}
                 <div class="btn-group">
                     <a href="{{ path('_action_invoice', {'action' : 'accept', 'id' : invoice.id}) }}" class="btn btn-primary btn-hero">
@@ -142,10 +151,19 @@
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li>
-                            <a class="dropdown-item" href="{{ path('_send_invoice', {'id' : invoice.id}) }}">
-                                {{ ux_icon('tabler:send', {width: 16, height: 16}) }}
-                                {{ 'invoice.view.toolbar.publish_and_send'|trans }}
-                            </a>
+                            {% if is_email_verification_gated() %}
+                                <button type="button" class="dropdown-item disabled" disabled
+                                        data-bs-toggle="tooltip"
+                                        title="{{ email_verification_message('sending this invoice') }}">
+                                    {{ ux_icon('tabler:send', {width: 16, height: 16}) }}
+                                    {{ 'invoice.view.toolbar.publish_and_send'|trans }}
+                                </button>
+                            {% else %}
+                                <a class="dropdown-item" href="{{ path('_send_invoice', {'id' : invoice.id}) }}">
+                                    {{ ux_icon('tabler:send', {width: 16, height: 16}) }}
+                                    {{ 'invoice.view.toolbar.publish_and_send'|trans }}
+                                </a>
+                            {% endif %}
                         </li>
                     </ul>
                 </div>
