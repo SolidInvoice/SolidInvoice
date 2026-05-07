@@ -53,6 +53,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autowire(true)
         ->tag('controller.service_arguments');
 
+    $services->set(\SolidInvoice\CoreBundle\Email\NullEmailVerificationGate::class);
+    $services->alias(
+        \SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface::class,
+        \SolidInvoice\CoreBundle\Email\NullEmailVerificationGate::class,
+    );
+
     $services
         ->set(TimestampableListener::class)
         ->tag('doctrine.event_subscriber')
