@@ -15,6 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Action;
 
 use Generator;
 use Psr\Log\LoggerInterface;
+use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
 use SolidInvoice\CoreBundle\Response\FlashResponse;
 use SolidInvoice\InvoiceBundle\Email\ManualInvoiceReminderEmail;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -30,12 +31,24 @@ final class SendManualReminder extends AbstractController
     public function __construct(
         private readonly MailerInterface $mailer,
         private readonly RouterInterface $router,
-        private readonly LoggerInterface $logger
+        private readonly LoggerInterface $logger,
+        private readonly EmailVerificationGateInterface $emailVerificationGate,
     ) {
     }
 
     public function __invoke(Request $request, Invoice $invoice): RedirectResponse
     {
+        if ($this->emailVerificationGate->isGated()) {
+            $route = $this->router->generate('_invoices_view', ['id' => $invoice->getId()]);
+
+            return new class($route) extends RedirectResponse implements FlashResponse {
+                public function getFlash(): Generator
+                {
+                    yield FlashResponse::FLASH_ERROR => 'email_verification.flash.send_reminder';
+                }
+            };
+        }
+
         // Check if invoice has contacts to send to
         if ($invoice->getUsers()->isEmpty()) {
             return $this->createErrorResponse($invoice, 'invoice.manual_reminder.error.no_contacts');
