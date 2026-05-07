@@ -276,10 +276,5 @@
             "assets:install %PUBLIC_DIR%": "symfony-cmd",
             "requirements-checker": "script"
         }
-    },
-    "repositories": [{
-        "name": "solidworx/platform",
-        "type": "path",
-        "url": "/Users/pierre/projects/SolidWorx/platform"
-    }]
+    }
 }
