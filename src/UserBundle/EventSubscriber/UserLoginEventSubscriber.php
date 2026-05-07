@@ -18,7 +18,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use SolidInvoice\CoreBundle\Company\ResolvedHost;
 use SolidInvoice\CoreBundle\Listener\HostRoutingListener;
 use SolidInvoice\UserBundle\Entity\User;
-use SolidInvoice\UserBundle\Exception\UserNotVerifiedException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Event\AuthenticationSuccessEvent;
@@ -51,10 +50,6 @@ final class UserLoginEventSubscriber implements EventSubscriberInterface
     {
         $user = $event->getAuthenticationToken()->getUser();
         assert($user instanceof User);
-
-        if (! $user->isVerified()) {
-            throw new UserNotVerifiedException();
-        }
 
         $request = $this->requestStack->getMainRequest();
         $resolved = $request?->attributes->get(HostRoutingListener::REQUEST_ATTR);
