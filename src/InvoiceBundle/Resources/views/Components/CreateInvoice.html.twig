@@ -301,12 +301,14 @@
                                     {{ 'invoice.save.publish'|trans }}
                                 </button>
                             </li>
+                            {% if not is_email_verification_gated() %}
                             <li>
                                 <button type="button" class="dropdown-item" {{ live_action('saveSend:prevent') }}>
                                     {{ ux_icon('tabler:send', {width: 16, height: 16}) }}
                                     {{ 'invoice.save.send'|trans }}
                                 </button>
                             </li>
+                            {% endif %}
                         </ul>
                     {% else %}
                         <button type="button" class="btn btn-primary btn-save-primary" {{ live_action('saveDraft:prevent') }}>
@@ -323,12 +325,14 @@
                                     {{ 'invoice.save.publish'|trans }}
                                 </button>
                             </li>
+                            {% if not is_email_verification_gated() %}
                             <li>
                                 <button type="button" class="dropdown-item" {{ live_action('saveSend:prevent') }}>
                                     {{ ux_icon('tabler:send', {width: 16, height: 16}) }}
                                     {{ 'invoice.save.send'|trans }}
                                 </button>
                             </li>
+                            {% endif %}
                         </ul>
                     {% endif %}
                 </div>

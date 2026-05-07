@@ -18,6 +18,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
+use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
 use SolidInvoice\MoneyBundle\Calculator;
 use SolidInvoice\QuoteBundle\DTO\QuoteFormDTO;
 use SolidInvoice\QuoteBundle\Entity\Quote;
@@ -67,6 +68,7 @@ final class CreateQuote extends AbstractController
         private readonly RouterInterface $router,
         private readonly QuoteFormManager $formManager,
         private readonly Calculator $calculator,
+        private readonly EmailVerificationGateInterface $emailVerificationGate,
     ) {
         $this->dto = new QuoteFormDTO();
     }
@@ -174,6 +176,11 @@ final class CreateQuote extends AbstractController
     #[LiveAction]
     public function saveSend(): ?Response
     {
+        if ($this->emailVerificationGate->isGated()) {
+            $this->addFlash('error', 'email_verification.flash.send_quote');
+            return null;
+        }
+
         return $this->saveQuote('send');
     }
 

@@ -18,6 +18,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
+use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
 use SolidInvoice\InvoiceBundle\DTO\InvoiceFormDTO;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
@@ -70,6 +71,7 @@ final class CreateInvoice extends AbstractController
         private readonly RouterInterface $router,
         private readonly InvoiceFormManager $formManager,
         private readonly Calculator $calculator,
+        private readonly EmailVerificationGateInterface $emailVerificationGate,
     ) {
         $this->dto = new InvoiceFormDTO();
     }
@@ -177,6 +179,11 @@ final class CreateInvoice extends AbstractController
     #[LiveAction]
     public function saveSend(): ?Response
     {
+        if ($this->emailVerificationGate->isGated()) {
+            $this->addFlash('error', 'email_verification.flash.send_invoice');
+            return null;
+        }
+
         return $this->saveInvoice('send');
     }
 
@@ -202,15 +209,11 @@ final class CreateInvoice extends AbstractController
 
             $this->formManager->updateInvoiceFromDTO($this->invoice, $dto);
 
-            if ('send' === $action || 'publish' === $action) {
+            if ('publish' === $action) {
                 $this->invoiceStateMachine->apply($this->invoice, Graph::TRANSITION_ACCEPT);
             }
 
             $this->entityManager->flush();
-
-            if ('send' === $action) {
-                $this->mailer->send(new InvoiceEmail($this->invoice));
-            }
 
             $this->addFlash('success', 'invoice.edit.success');
 

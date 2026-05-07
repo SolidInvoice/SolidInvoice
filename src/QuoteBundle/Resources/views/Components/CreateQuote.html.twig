@@ -297,12 +297,14 @@
                                     {{ 'quote.save.publish'|trans }}
                                 </button>
                             </li>
+                            {% if not is_email_verification_gated() %}
                             <li>
                                 <button type="button" class="dropdown-item" data-action="live#action" data-live-action-param="saveSend">
                                     {{ ux_icon('tabler:send', {width: 16, height: 16}) }}
                                     {{ 'quote.save.send'|trans }}
                                 </button>
                             </li>
+                            {% endif %}
                         </ul>
                     {% else %}
                         <button type="button" class="btn btn-primary btn-save-primary" data-action="live#action" data-live-action-param="saveDraft">
@@ -319,12 +321,14 @@
                                     {{ 'quote.save.publish'|trans }}
                                 </button>
                             </li>
+                            {% if not is_email_verification_gated() %}
                             <li>
                                 <button type="button" class="dropdown-item" data-action="live#action" data-live-action-param="saveSend">
                                     {{ ux_icon('tabler:send', {width: 16, height: 16}) }}
                                     {{ 'quote.save.send'|trans }}
                                 </button>
                             </li>
+                            {% endif %}
                         </ul>
                     {% endif %}
                 </div>
