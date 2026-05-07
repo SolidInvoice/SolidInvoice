@@ -13,8 +13,8 @@
  # @param string icon - Tabler icon name (e.g., 'tabler:clock-hour-4')
  # @param string title - bold title text
  # @param string message - main message text
- # @param string cta_label - button text
- # @param string cta_url - button URL
+ # @param string|null cta_label - optional button text (omit for no CTA)
+ # @param string|null cta_url - optional button URL (omit for no CTA)
  #}
 
 <div class="alert alert-{{ type }} alert-banner mb-0" role="alert">
@@ -25,8 +25,10 @@
         <div class="flex-grow-1">
             <strong>{{ title }}</strong> - {{ message }}
         </div>
-        <a href="{{ cta_url }}" class="btn btn-{{ type }} btn-sm">
-            {{ cta_label }}
-        </a>
+        {% if cta_label is defined and cta_url is defined and cta_label and cta_url %}
+            <a href="{{ cta_url }}" class="btn btn-{{ type }} btn-sm">
+                {{ cta_label }}
+            </a>
+        {% endif %}
     </div>
 </div>
