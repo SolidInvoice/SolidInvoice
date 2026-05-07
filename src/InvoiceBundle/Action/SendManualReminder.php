@@ -38,6 +38,10 @@ final class SendManualReminder extends AbstractController
 
     public function __invoke(Request $request, Invoice $invoice): RedirectResponse
     {
+        if (! $this->isCsrfTokenValid('send_manual_reminder', $request->request->get('_token'))) {
+            return $this->createErrorResponse($invoice, 'invoice.manual_reminder.error.invalid_csrf');
+        }
+
         if ($this->emailVerificationGate->isGated()) {
             $route = $this->router->generate('_invoices_view', ['id' => $invoice->getId()]);
 
@@ -52,10 +56,6 @@ final class SendManualReminder extends AbstractController
         // Check if invoice has contacts to send to
         if ($invoice->getUsers()->isEmpty()) {
             return $this->createErrorResponse($invoice, 'invoice.manual_reminder.error.no_contacts');
-        }
-
-        if (! $this->isCsrfTokenValid('send_manual_reminder', $request->request->get('_token'))) {
-            return $this->createErrorResponse($invoice, 'invoice.manual_reminder.error.invalid_csrf');
         }
 
         // Send manual reminder email

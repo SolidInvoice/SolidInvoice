@@ -47,6 +47,14 @@ final class SendManualReminderTest extends KernelTestCase
         return $gate;
     }
 
+    private function createClosedGate(): EmailVerificationGateInterface
+    {
+        $gate = $this->createStub(EmailVerificationGateInterface::class);
+        $gate->method('isGated')->willReturn(true);
+
+        return $gate;
+    }
+
     private function createRequestWithCsrfToken(): Request
     {
         $session = new Session(new MockArraySessionStorage());
@@ -223,6 +231,55 @@ final class SendManualReminderTest extends KernelTestCase
         $request->setSession($session);
 
         // Push the request onto the RequestStack so CSRF token manager can access it
+        $requestStack = self::getContainer()->get('request_stack');
+        $requestStack->push($request);
+
+        $request->request->set('_token', 'invalid_token');
+
+        $response = $action($request, $invoice->_real());
+
+        self::assertInstanceOf(RedirectResponse::class, $response);
+        self::assertInstanceOf(FlashResponse::class, $response);
+
+        $flashes = iterator_to_array($response->getFlash());
+        self::assertArrayHasKey(FlashResponse::FLASH_ERROR, $flashes);
+        self::assertSame('invoice.manual_reminder.error.invalid_csrf', $flashes[FlashResponse::FLASH_ERROR]);
+    }
+
+    public function testSendManualReminderWhenGatedAndInvalidCsrfTokenReturnsCsrfError(): void
+    {
+        $mailer = $this->createMock(MailerInterface::class);
+        $mailer->expects(self::never())->method('send');
+
+        $router = $this->createMock(RouterInterface::class);
+        $router->expects(self::once())
+            ->method('generate')
+            ->with('_invoices_view', self::callback(fn (array $params): bool => $params['id'] instanceof Ulid))
+            ->willReturn('/invoices/view/123');
+
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects(self::never())->method('info');
+        $logger->expects(self::never())->method('error');
+
+        $action = new SendManualReminder($mailer, $router, $logger, $this->createClosedGate());
+        $action->setContainer(self::getContainer());
+
+        $client = ClientFactory::createOne(['company' => $this->company, 'currencyCode' => 'USD']);
+        $contact = ContactFactory::createOne(['client' => $client, 'company' => $this->company]);
+
+        $invoice = InvoiceFactory::createOne([
+            'company' => $this->company,
+            'client' => $client,
+            'status' => InvoiceStatus::Pending,
+            'users' => [$contact],
+        ]);
+
+        $session = new Session(new MockArraySessionStorage());
+        $session->start();
+
+        $request = Request::create('/send-manual-reminder', 'POST');
+        $request->setSession($session);
+
         $requestStack = self::getContainer()->get('request_stack');
         $requestStack->push($request);
 
