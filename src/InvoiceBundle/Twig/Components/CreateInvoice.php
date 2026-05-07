@@ -209,11 +209,15 @@ final class CreateInvoice extends AbstractController
 
             $this->formManager->updateInvoiceFromDTO($this->invoice, $dto);
 
-            if ('publish' === $action) {
+            if ('send' === $action || 'publish' === $action) {
                 $this->invoiceStateMachine->apply($this->invoice, Graph::TRANSITION_ACCEPT);
             }
 
             $this->entityManager->flush();
+
+            if ('send' === $action) {
+                $this->mailer->send(new InvoiceEmail($this->invoice));
+            }
 
             $this->addFlash('success', 'invoice.edit.success');
 
